@@ -336,11 +336,11 @@ public class Jackson2ObjectMapperBuilderTests {
 		assertThat(StreamSupport
 				.stream(getSerializerFactoryConfig(objectMapper).serializers().spliterator(), false)
 				.filter(s1 -> s1.findSerializer(null, SimpleType.construct(Foo.class), null) != null)
-				.count()).isEqualTo((long) 1);
+				.count()).isEqualTo(1);
 		assertThat(StreamSupport
 				.stream(getSerializerFactoryConfig(objectMapper).serializers().spliterator(), false)
 				.filter(s -> s.findSerializer(null, SimpleType.construct(Bar.class), null) != null)
-				.count()).isEqualTo((long) 1);
+				.count()).isEqualTo(1);
 	}
 
 	private static SerializerFactoryConfig getSerializerFactoryConfig(ObjectMapper objectMapper) {
@@ -392,7 +392,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modules().mixIn(target, mixInSource)
 				.build();
 
-		assertThat(objectMapper.mixInCount()).isEqualTo((long) 1);
+		assertThat(objectMapper.mixInCount()).isEqualTo(1);
 		assertThat(objectMapper.findMixInClassFor(target)).isSameAs(mixInSource);
 	}
 
@@ -407,7 +407,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modules().mixIns(mixIns)
 				.build();
 
-		assertThat(objectMapper.mixInCount()).isEqualTo((long) 1);
+		assertThat(objectMapper.mixInCount()).isEqualTo(1);
 		assertThat(objectMapper.findMixInClassFor(target)).isSameAs(mixInSource);
 	}
 

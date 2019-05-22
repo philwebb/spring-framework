@@ -43,7 +43,7 @@ public class HttpComponentsHttpInvokerRequestExecutorTests {
 
 		HttpInvokerClientConfiguration config = mockHttpInvokerClientConfiguration("https://fake-service");
 		HttpPost httpPost = executor.createHttpPost(config);
-		assertThat(httpPost.getConfig().getConnectTimeout()).isEqualTo((long) 5000);
+		assertThat(httpPost.getConfig().getConnectTimeout()).isEqualTo(5000);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class HttpComponentsHttpInvokerRequestExecutorTests {
 
 		HttpInvokerClientConfiguration config = mockHttpInvokerClientConfiguration("https://fake-service");
 		HttpPost httpPost = executor.createHttpPost(config);
-		assertThat(httpPost.getConfig().getConnectionRequestTimeout()).isEqualTo((long) 7000);
+		assertThat(httpPost.getConfig().getConnectionRequestTimeout()).isEqualTo(7000);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class HttpComponentsHttpInvokerRequestExecutorTests {
 
 		HttpInvokerClientConfiguration config = mockHttpInvokerClientConfiguration("https://fake-service");
 		HttpPost httpPost = executor.createHttpPost(config);
-		assertThat(httpPost.getConfig().getSocketTimeout()).isEqualTo((long) 10000);
+		assertThat(httpPost.getConfig().getSocketTimeout()).isEqualTo(10000);
 	}
 
 	@Test
@@ -83,9 +83,9 @@ public class HttpComponentsHttpInvokerRequestExecutorTests {
 		executor.setConnectionRequestTimeout(4567);
 		HttpPost httpPost2 = executor.createHttpPost(config);
 		assertThat(httpPost2.getConfig()).isNotNull();
-		assertThat(httpPost2.getConfig().getConnectionRequestTimeout()).isEqualTo((long) 4567);
+		assertThat(httpPost2.getConfig().getConnectionRequestTimeout()).isEqualTo(4567);
 		// Default connection timeout merged
-		assertThat(httpPost2.getConfig().getConnectTimeout()).isEqualTo((long) 1234);
+		assertThat(httpPost2.getConfig().getConnectTimeout()).isEqualTo(1234);
 	}
 
 	@Test
@@ -104,8 +104,8 @@ public class HttpComponentsHttpInvokerRequestExecutorTests {
 		HttpInvokerClientConfiguration config = mockHttpInvokerClientConfiguration("https://fake-service");
 		HttpPost httpPost = executor.createHttpPost(config);
 		RequestConfig requestConfig = httpPost.getConfig();
-		assertThat(requestConfig.getConnectTimeout()).isEqualTo((long) 5000);
-		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo((long) 6789);
+		assertThat(requestConfig.getConnectTimeout()).isEqualTo(5000);
+		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo(6789);
 		assertThat(requestConfig.getSocketTimeout()).isEqualTo((long) -1);
 	}
 
@@ -131,7 +131,7 @@ public class HttpComponentsHttpInvokerRequestExecutorTests {
 		RequestConfig requestConfig = httpPost.getConfig();
 		assertThat(requestConfig.getConnectTimeout()).isEqualTo((long) -1);
 		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo((long) -1);
-		assertThat(requestConfig.getSocketTimeout()).isEqualTo((long) 5000);
+		assertThat(requestConfig.getSocketTimeout()).isEqualTo(5000);
 
 		// Update the Http client so that it returns an updated  config
 		RequestConfig updatedDefaultConfig = RequestConfig.custom()
@@ -140,9 +140,9 @@ public class HttpComponentsHttpInvokerRequestExecutorTests {
 		executor.setReadTimeout(7000);
 		HttpPost httpPost2 = executor.createHttpPost(config);
 		RequestConfig requestConfig2 = httpPost2.getConfig();
-		assertThat(requestConfig2.getConnectTimeout()).isEqualTo((long) 1234);
+		assertThat(requestConfig2.getConnectTimeout()).isEqualTo(1234);
 		assertThat(requestConfig2.getConnectionRequestTimeout()).isEqualTo((long) -1);
-		assertThat(requestConfig2.getSocketTimeout()).isEqualTo((long) 7000);
+		assertThat(requestConfig2.getSocketTimeout()).isEqualTo(7000);
 	}
 
 	@Test

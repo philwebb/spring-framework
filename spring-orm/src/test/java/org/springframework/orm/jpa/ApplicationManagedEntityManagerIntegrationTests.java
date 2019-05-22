@@ -89,12 +89,12 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 		em.persist(p);
 
 		em.flush();
-		assertThat(countRowsInTable(em, "person")).as("1 row must have been inserted").isEqualTo((long) 1);
+		assertThat(countRowsInTable(em, "person")).as("1 row must have been inserted").isEqualTo(1);
 	}
 
 	@Test
 	public void testStateClean() {
-		assertThat(countRowsInTable("person")).as("Should be no people from previous transactions").isEqualTo((long) 0);
+		assertThat(countRowsInTable("person")).as("Should be no people from previous transactions").isEqualTo(0);
 	}
 
 	@Test
@@ -119,13 +119,13 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 		doInstantiateAndSave(em);
 		setComplete();
 		endTransaction();	// Should rollback
-		assertThat(countRowsInTable(em, "person")).as("Tx must have committed back").isEqualTo((long) 1);
+		assertThat(countRowsInTable(em, "person")).as("Tx must have committed back").isEqualTo(1);
 
 		// Now clean up the database
 		startNewTransaction();
 		em.joinTransaction();
 		deleteAllPeopleUsingEntityManager(em);
-		assertThat(countRowsInTable(em, "person")).as("People have been killed").isEqualTo((long) 0);
+		assertThat(countRowsInTable(em, "person")).as("People have been killed").isEqualTo(0);
 		setComplete();
 	}
 
@@ -139,7 +139,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 		em.joinTransaction();
 		doInstantiateAndSave(em);
 		endTransaction();	// Should rollback
-		assertThat(countRowsInTable(em, "person")).as("Tx must have been rolled back").isEqualTo((long) 0);
+		assertThat(countRowsInTable(em, "person")).as("Tx must have been rolled back").isEqualTo(0);
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 
 		setComplete();
 		endTransaction();	// Should rollback
-		assertThat(countRowsInTable(em, "person")).as("Tx must have committed back").isEqualTo((long) 1);
+		assertThat(countRowsInTable(em, "person")).as("Tx must have committed back").isEqualTo(1);
 
 		// Now clean up the database
 		deleteFromTables("person");

@@ -67,7 +67,7 @@ public class ServletRequestUtilsTests {
 
 		int[] array = new int[] {1, 2, 3};
 		int[] values = ServletRequestUtils.getRequiredIntParameters(request, "param");
-		assertThat(values.length).isEqualTo((long) 3);
+		assertThat(values.length).isEqualTo(3);
 		for (int i = 0; i < array.length; i++) {
 			assertThat(values[i]).isEqualTo((long) array[i]);
 		}
@@ -112,7 +112,7 @@ public class ServletRequestUtilsTests {
 
 		long[] array = new long[] {1L, 2L, 3L};
 		long[] values = ServletRequestUtils.getRequiredLongParameters(request, "param");
-		assertThat(values.length).isEqualTo((long) 3);
+		assertThat(values.length).isEqualTo(3);
 		for (int i = 0; i < array.length; i++) {
 			assertThat(values[i]).isEqualTo(array[i]);
 		}
@@ -122,9 +122,9 @@ public class ServletRequestUtilsTests {
 
 		request.setParameter("param2", new String[] {"1", "2"});
 		values = ServletRequestUtils.getRequiredLongParameters(request, "param2");
-		assertThat(values.length).isEqualTo((long) 2);
-		assertThat(values[0]).isEqualTo((long) 1);
-		assertThat(values[1]).isEqualTo((long) 2);
+		assertThat(values.length).isEqualTo(2);
+		assertThat(values[0]).isEqualTo(1);
+		assertThat(values[1]).isEqualTo(2);
 
 		request.removeParameter("param2");
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->
@@ -166,7 +166,7 @@ public class ServletRequestUtilsTests {
 
 		float[] array = new float[] {1.5F, 2.5F, 3};
 		float[] values = ServletRequestUtils.getRequiredFloatParameters(request, "param");
-		assertThat(values.length).isEqualTo((long) 3);
+		assertThat(values.length).isEqualTo(3);
 		for (int i = 0; i < array.length; i++) {
 			assertThat(values[i]).isCloseTo((double) array[i], within((double) 0));
 
@@ -211,7 +211,7 @@ public class ServletRequestUtilsTests {
 
 		double[] array = new double[] {1.5, 2.5, 3};
 		double[] values = ServletRequestUtils.getRequiredDoubleParameters(request, "param");
-		assertThat(values.length).isEqualTo((long) 3);
+		assertThat(values.length).isEqualTo(3);
 		for (int i = 0; i < array.length; i++) {
 			assertThat(values[i]).isCloseTo(array[i], within((double) 0));
 

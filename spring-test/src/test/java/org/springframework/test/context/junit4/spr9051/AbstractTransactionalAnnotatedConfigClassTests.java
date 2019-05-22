@@ -92,7 +92,7 @@ public abstract class AbstractTransactionalAnnotatedConfigClassTests {
 	}
 
 	protected void assertAddPerson(final String name) {
-		assertThat(createPerson(name)).as("Adding '" + name + "'").isEqualTo((long) 1);
+		assertThat(createPerson(name)).as("Adding '" + name + "'").isEqualTo(1);
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public abstract class AbstractTransactionalAnnotatedConfigClassTests {
 
 	@AfterTransaction
 	public void afterTransaction() {
-		assertThat(deletePerson(YODA)).as("Deleting yoda").isEqualTo((long) 1);
+		assertThat(deletePerson(YODA)).as("Deleting yoda").isEqualTo(1);
 		assertNumRowsInPersonTable(0, "after a transactional test method");
 	}
 

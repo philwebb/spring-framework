@@ -47,9 +47,9 @@ public class LiveBeansViewTests {
 	@Test
 	public void registerIgnoredIfPropertyIsNotSet() throws MalformedObjectNameException {
 		ConfigurableApplicationContext context = createApplicationContext("app");
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 		LiveBeansView.registerApplicationContext(context);
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 		LiveBeansView.unregisterApplicationContext(context);
 	}
 
@@ -57,11 +57,11 @@ public class LiveBeansViewTests {
 	public void registerUnregisterSingleContext() throws MalformedObjectNameException {
 		this.environment.setProperty(LiveBeansView.MBEAN_DOMAIN_PROPERTY_NAME, this.name.getMethodName());
 		ConfigurableApplicationContext context = createApplicationContext("app");
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 		LiveBeansView.registerApplicationContext(context);
 		assertSingleLiveBeansViewMbean("app");
 		LiveBeansView.unregisterApplicationContext(context);
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 	}
 
 	@Test
@@ -69,16 +69,16 @@ public class LiveBeansViewTests {
 		this.environment.setProperty(LiveBeansView.MBEAN_DOMAIN_PROPERTY_NAME, this.name.getMethodName());
 		ConfigurableApplicationContext context = createApplicationContext("app");
 		ConfigurableApplicationContext childContext = createApplicationContext("child");
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 		LiveBeansView.registerApplicationContext(context);
 		assertSingleLiveBeansViewMbean("app");
 		LiveBeansView.registerApplicationContext(childContext);
 		// Only one MBean
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 1);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(1);
 		LiveBeansView.unregisterApplicationContext(childContext);
 		assertSingleLiveBeansViewMbean("app"); // Root context removes it
 		LiveBeansView.unregisterApplicationContext(context);
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 	}
 
 	@Test
@@ -86,14 +86,14 @@ public class LiveBeansViewTests {
 		this.environment.setProperty(LiveBeansView.MBEAN_DOMAIN_PROPERTY_NAME, this.name.getMethodName());
 		ConfigurableApplicationContext context = createApplicationContext("app");
 		ConfigurableApplicationContext childContext = createApplicationContext("child");
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 		LiveBeansView.registerApplicationContext(context);
 		assertSingleLiveBeansViewMbean("app");
 		LiveBeansView.registerApplicationContext(childContext);
 		assertSingleLiveBeansViewMbean("app"); // Only one MBean
 		LiveBeansView.unregisterApplicationContext(context);
 		LiveBeansView.unregisterApplicationContext(childContext);
-		assertThat(searchLiveBeansViewMeans().size()).isEqualTo((long) 0);
+		assertThat(searchLiveBeansViewMeans().size()).isEqualTo(0);
 	}
 
 	private ConfigurableApplicationContext createApplicationContext(String applicationName) {
@@ -105,7 +105,7 @@ public class LiveBeansViewTests {
 
 	public void assertSingleLiveBeansViewMbean(String applicationName) throws MalformedObjectNameException {
 		Set<ObjectName> objectNames = searchLiveBeansViewMeans();
-		assertThat(objectNames.size()).isEqualTo((long) 1);
+		assertThat(objectNames.size()).isEqualTo(1);
 		assertThat(objectNames.iterator().next().getCanonicalName()).as("Wrong MBean name").isEqualTo(String.format("%s:application=%s", this.name.getMethodName(), applicationName));
 
 	}

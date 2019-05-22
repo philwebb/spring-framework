@@ -76,7 +76,7 @@ public class HeadersAdaptersTests {
 	public void sizeWithMultipleValuesForHeaderShouldCountHeaders() {
 		this.headers.add("TestHeader", "first");
 		this.headers.add("TestHeader", "second");
-		assertThat(this.headers.size()).isEqualTo((long) 1);
+		assertThat(this.headers.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class HeadersAdaptersTests {
 		this.headers.add("TestHeader", "first");
 		this.headers.add("OtherHeader", "test");
 		this.headers.add("TestHeader", "second");
-		assertThat(this.headers.keySet().size()).isEqualTo((long) 2);
+		assertThat(this.headers.keySet().size()).isEqualTo(2);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class HeadersAdaptersTests {
 		this.headers.add("TestHeader", "first");
 		this.headers.put("TestHeader", Arrays.asList("override"));
 		assertThat(this.headers.getFirst("TestHeader")).isEqualTo("override");
-		assertThat(this.headers.get("TestHeader").size()).isEqualTo((long) 1);
+		assertThat(this.headers.get("TestHeader").size()).isEqualTo(1);
 	}
 
 }

@@ -53,7 +53,7 @@ public class TestContextManagerTests {
 	@Test
 	public void listenerExecutionOrder() throws Exception {
 		// @formatter:off
-		assertThat(this.testContextManager.getTestExecutionListeners().size()).as("Registered TestExecutionListeners").isEqualTo((long) 3);
+		assertThat(this.testContextManager.getTestExecutionListeners().size()).as("Registered TestExecutionListeners").isEqualTo(3);
 
 		this.testContextManager.beforeTestMethod(this, this.testMethod);
 		assertExecutionOrder("beforeTestMethod",

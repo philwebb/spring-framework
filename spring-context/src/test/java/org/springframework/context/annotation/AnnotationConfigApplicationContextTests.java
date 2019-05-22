@@ -57,7 +57,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.getBean(uncapitalize(ComponentForScanning.class.getSimpleName()));
 		context.getBean(uncapitalize(Jsr330NamedForScanning.class.getSimpleName()));
 		Map<String, Object> beans = context.getBeansWithAnnotation(Configuration.class);
-		assertThat(beans.size()).isEqualTo((long) 1);
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.getBean("testBean");
 		context.getBean("name");
 		Map<String, Object> beans = context.getBeansWithAnnotation(Configuration.class);
-		assertThat(beans.size()).isEqualTo((long) 2);
+		assertThat(beans.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.getBean("testBean");
 		context.getBean("name");
 		Map<String, Object> beans = context.getBeansWithAnnotation(Configuration.class);
-		assertThat(beans.size()).isEqualTo((long) 2);
+		assertThat(beans.size()).isEqualTo(2);
 	}
 
 	@Test

@@ -116,7 +116,7 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition cond1 = new CompositeRequestCondition(this.param1);
 		CompositeRequestCondition cond3 = new CompositeRequestCondition(this.param3);
 
-		assertThat(cond1.compareTo(cond3, request)).isEqualTo((long) 1);
+		assertThat(cond1.compareTo(cond3, request)).isEqualTo(1);
 		assertThat(cond3.compareTo(cond1, request)).isEqualTo((long) -1);
 	}
 
@@ -127,9 +127,9 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition empty = new CompositeRequestCondition();
 		CompositeRequestCondition notEmpty = new CompositeRequestCondition(this.param1);
 
-		assertThat(empty.compareTo(empty, request)).isEqualTo((long) 0);
+		assertThat(empty.compareTo(empty, request)).isEqualTo(0);
 		assertThat(notEmpty.compareTo(empty, request)).isEqualTo((long) -1);
-		assertThat(empty.compareTo(notEmpty, request)).isEqualTo((long) 1);
+		assertThat(empty.compareTo(notEmpty, request)).isEqualTo(1);
 	}
 
 	@Test

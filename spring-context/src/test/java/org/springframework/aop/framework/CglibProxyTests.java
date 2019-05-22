@@ -143,7 +143,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		assertThat(condition).isTrue();
 
 		TestBean tb = (TestBean) proxy;
-		assertThat(tb.getAge()).isEqualTo((long) 32);
+		assertThat(tb.getAge()).isEqualTo(32);
 	}
 
 	@Test
@@ -365,11 +365,11 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 
 		proxy.getAge();
-		assertThat(cba.getCalls()).isEqualTo((long) 0);
+		assertThat(cba.getCalls()).isEqualTo(0);
 
 		((Advised) proxy).addAdvice(cba);
 		proxy.getAge();
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
+		assertThat(cba.getCalls()).isEqualTo(1);
 	}
 
 	@Test
@@ -380,15 +380,15 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		proxyFactory.setProxyTargetClass(true);
 
 		MyBean proxy = (MyBean) proxyFactory.getProxy();
-		assertThat(proxy.add(1, 3)).isEqualTo((long) 4);
-		assertThat(advice.getCalls("add")).isEqualTo((long) 1);
+		assertThat(proxy.add(1, 3)).isEqualTo(4);
+		assertThat(advice.getCalls("add")).isEqualTo(1);
 	}
 
 	@Test
 	public void testProxyTargetClassInCaseOfNoInterfaces() {
 		ProxyFactory proxyFactory = new ProxyFactory(new MyBean());
 		MyBean proxy = (MyBean) proxyFactory.getProxy();
-		assertThat(proxy.add(1, 3)).isEqualTo((long) 4);
+		assertThat(proxy.add(1, 3)).isEqualTo(4);
 	}
 
 	@Test  // SPR-13328

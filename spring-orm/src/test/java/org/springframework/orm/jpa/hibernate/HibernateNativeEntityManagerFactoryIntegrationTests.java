@@ -66,7 +66,7 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 		insertPerson(firstName);
 
 		List<Person> people = sharedEntityManager.createQuery("select p from Person as p").getResultList();
-		assertThat(people.size()).isEqualTo((long) 1);
+		assertThat(people.size()).isEqualTo(1);
 		assertThat(people.get(0).getFirstName()).isEqualTo(firstName);
 		assertThat(people.get(0).postLoaded).isSameAs(applicationContext);
 	}
@@ -79,7 +79,7 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 
 		Query q = sessionFactory.getCurrentSession().createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
-		assertThat(people.size()).isEqualTo((long) 1);
+		assertThat(people.size()).isEqualTo(1);
 		assertThat(people.get(0).getFirstName()).isEqualTo(firstName);
 		assertThat(people.get(0).postLoaded).isSameAs(applicationContext);
 	}

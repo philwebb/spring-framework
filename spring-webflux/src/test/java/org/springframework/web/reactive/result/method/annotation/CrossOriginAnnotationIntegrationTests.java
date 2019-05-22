@@ -113,7 +113,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		ResponseEntity<Void> entity = performOptions("/default", this.headers, Void.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
-		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo((long) 1800);
+		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo(1800);
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
 	}
 
@@ -148,7 +148,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		assertThat(entity.getHeaders().getAccessControlAllowHeaders().toArray()).isEqualTo(new String[] {"header1", "header2"});
 		assertThat(entity.getHeaders().getAccessControlExposeHeaders().toArray()).isEqualTo(new String[] {"header3", "header4"});
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
-		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo((long) 123);
+		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo(123);
 	}
 
 	@Test

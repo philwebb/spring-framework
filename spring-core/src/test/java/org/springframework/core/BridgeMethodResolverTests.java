@@ -82,7 +82,7 @@ public class BridgeMethodResolverTests {
 		Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(bridgeMethod);
 		assertThat(bridgedMethod.isBridge()).isFalse();
 		assertThat(bridgedMethod.getName()).isEqualTo("add");
-		assertThat(bridgedMethod.getParameterCount()).isEqualTo((long) 1);
+		assertThat(bridgedMethod.getParameterCount()).isEqualTo(1);
 		assertThat(bridgedMethod.getParameterTypes()[0]).isEqualTo(Date.class);
 	}
 

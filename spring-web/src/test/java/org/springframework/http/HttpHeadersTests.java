@@ -434,7 +434,7 @@ public class HttpHeadersTests {
 	public void accessControlMaxAge() {
 		assertThat(headers.getAccessControlMaxAge()).isEqualTo((long) -1);
 		headers.setAccessControlMaxAge(3600);
-		assertThat(headers.getAccessControlMaxAge()).isEqualTo((long) 3600);
+		assertThat(headers.getAccessControlMaxAge()).isEqualTo(3600);
 	}
 
 	@Test

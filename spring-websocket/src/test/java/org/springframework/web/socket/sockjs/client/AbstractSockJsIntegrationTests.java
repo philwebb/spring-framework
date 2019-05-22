@@ -281,7 +281,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		for (TextMessage message : messages) {
 			assertThat(handler.receivedMessages.remove(message)).as("Message not received: " + message).isTrue();
 		}
-		assertThat(handler.receivedMessages.size()).as("Remaining messages: " + handler.receivedMessages).isEqualTo((long) 0);
+		assertThat(handler.receivedMessages.size()).as("Remaining messages: " + handler.receivedMessages).isEqualTo(0);
 		session.close();
 	}
 

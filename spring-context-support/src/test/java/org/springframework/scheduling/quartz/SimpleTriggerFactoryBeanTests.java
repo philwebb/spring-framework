@@ -36,7 +36,7 @@ public class SimpleTriggerFactoryBeanTests {
 		factory.setRepeatInterval(1000L);
 		factory.afterPropertiesSet();
 		SimpleTrigger trigger = factory.getObject();
-		assertThat(trigger.getRepeatCount()).isEqualTo((long) 5);
+		assertThat(trigger.getRepeatCount()).isEqualTo(5);
 		assertThat(trigger.getRepeatInterval()).isEqualTo(1000L);
 	}
 

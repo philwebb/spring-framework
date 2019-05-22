@@ -145,7 +145,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanOperationInfo oper = info.getOperation("add");
 		MBeanParameterInfo[] params = oper.getSignature();
 
-		assertThat(params.length).as("Invalid number of params").isEqualTo((long) 2);
+		assertThat(params.length).as("Invalid number of params").isEqualTo(2);
 		assertThat(params[0].getName()).as("Incorrect name for x param").isEqualTo("x");
 		assertThat(params[0].getType()).as("Incorrect type for x param").isEqualTo(int.class.getName());
 

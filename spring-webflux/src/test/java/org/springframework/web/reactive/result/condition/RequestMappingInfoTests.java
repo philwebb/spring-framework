@@ -56,7 +56,7 @@ public class RequestMappingInfoTests {
 
 		PathPattern emptyPattern = (new PathPatternParser()).parse("");
 		assertThat(info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(emptyPattern));
-		assertThat(info.getMethodsCondition().getMethods().size()).isEqualTo((long) 0);
+		assertThat(info.getMethodsCondition().getMethods().size()).isEqualTo(0);
 		assertThat(info.getConsumesCondition().isEmpty()).isEqualTo(true);
 		assertThat(info.getProducesCondition().isEmpty()).isEqualTo(true);
 		assertThat(info.getParamsCondition()).isNotNull();
@@ -75,7 +75,7 @@ public class RequestMappingInfoTests {
 	public void prependPatternWithSlash() {
 		RequestMappingInfo actual = paths("foo").build();
 		List<PathPattern> patterns = new ArrayList<>(actual.getPatternsCondition().getPatterns());
-		assertThat(patterns.size()).isEqualTo((long) 1);
+		assertThat(patterns.size()).isEqualTo(1);
 		assertThat(patterns.get(0).getPatternString()).isEqualTo("/foo");
 	}
 

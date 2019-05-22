@@ -182,7 +182,7 @@ public class DefaultMessageListenerContainerTests {
 
 		public void waitForCompletion() throws InterruptedException {
 			this.countDownLatch.await(2, TimeUnit.SECONDS);
-			assertThat(this.countDownLatch.getCount()).as("callback was not invoked").isEqualTo((long) 0);
+			assertThat(this.countDownLatch.getCount()).as("callback was not invoked").isEqualTo(0);
 		}
 	}
 

@@ -116,7 +116,7 @@ public class ResponseBodyResultHandlerTests {
 
 	@Test
 	public void defaultOrder() {
-		assertThat(this.resultHandler.getOrder()).isEqualTo((long) 100);
+		assertThat(this.resultHandler.getOrder()).isEqualTo(100);
 	}
 
 

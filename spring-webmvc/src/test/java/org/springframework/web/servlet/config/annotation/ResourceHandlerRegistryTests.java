@@ -100,7 +100,7 @@ public class ResourceHandlerRegistryTests {
 		assertThat(getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) -1);
 
 		this.registration.setCachePeriod(0);
-		assertThat(getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) 0);
+		assertThat(getHandler("/resources/**").getCacheSeconds()).isEqualTo(0);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class ResourceHandlerRegistryTests {
 		assertThat(registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
 
 		registry.setOrder(0);
-		assertThat(registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
+		assertThat(registry.getHandlerMapping().getOrder()).isEqualTo(0);
 	}
 
 	@Test
@@ -234,7 +234,7 @@ public class ResourceHandlerRegistryTests {
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
 		PathResourceResolver resolver = (PathResourceResolver) resolvers.get(resolvers.size()-1);
 		Map<Resource, Charset> locationCharsets = resolver.getLocationCharsets();
-		assertThat(locationCharsets.size()).isEqualTo((long) 1);
+		assertThat(locationCharsets.size()).isEqualTo(1);
 		assertThat(locationCharsets.values().iterator().next()).isEqualTo(StandardCharsets.ISO_8859_1);
 	}
 

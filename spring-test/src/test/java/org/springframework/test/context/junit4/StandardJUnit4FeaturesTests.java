@@ -93,7 +93,7 @@ public class StandardJUnit4FeaturesTests {
 
 	@Test
 	public void verifyBeforeAnnotation() {
-		assertThat(this.beforeCounter).isEqualTo((long) 1);
+		assertThat(this.beforeCounter).isEqualTo(1);
 	}
 
 	@Test

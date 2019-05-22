@@ -129,11 +129,11 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertThat(jmsMessage.getJMSDestination()).isNull();
 		assertThat(jmsMessage.getJMSDeliveryMode()).isEqualTo((long) DeliveryMode.PERSISTENT);
-		assertThat(jmsMessage.getJMSExpiration()).isEqualTo((long) 0);
+		assertThat(jmsMessage.getJMSExpiration()).isEqualTo(0);
 		assertThat(jmsMessage.getJMSMessageID()).isNull();
 		assertThat(jmsMessage.getJMSPriority()).isEqualTo((long) javax.jms.Message.DEFAULT_PRIORITY);
 		assertThat(jmsMessage.getJMSRedelivered()).isFalse();
-		assertThat(jmsMessage.getJMSTimestamp()).isEqualTo((long) 0);
+		assertThat(jmsMessage.getJMSTimestamp()).isEqualTo(0);
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class SimpleJmsHeaderMapperTests {
 		Object value = jmsMessage.getObjectProperty("foo");
 		assertThat(value).isNotNull();
 		assertThat(value.getClass()).isEqualTo(Integer.class);
-		assertThat(((Integer) value).intValue()).isEqualTo((long) 123);
+		assertThat(((Integer) value).intValue()).isEqualTo(123);
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class SimpleJmsHeaderMapperTests {
 		Object value = jmsMessage.getObjectProperty("custom_foo");
 		assertThat(value).isNotNull();
 		assertThat(value.getClass()).isEqualTo(Integer.class);
-		assertThat(((Integer) value).intValue()).isEqualTo((long) 123);
+		assertThat(((Integer) value).intValue()).isEqualTo(123);
 	}
 
 	@Test

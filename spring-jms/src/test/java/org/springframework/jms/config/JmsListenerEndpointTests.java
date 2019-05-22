@@ -51,8 +51,8 @@ public class JmsListenerEndpointTests {
 		assertThat(container.getDestinationName()).isEqualTo("myQueue");
 		assertThat(container.getMessageSelector()).isEqualTo("foo = 'bar'");
 		assertThat(container.getSubscriptionName()).isEqualTo("mySubscription");
-		assertThat(container.getConcurrentConsumers()).isEqualTo((long) 5);
-		assertThat(container.getMaxConcurrentConsumers()).isEqualTo((long) 10);
+		assertThat(container.getConcurrentConsumers()).isEqualTo(5);
+		assertThat(container.getMaxConcurrentConsumers()).isEqualTo(10);
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 	}
 
@@ -72,7 +72,7 @@ public class JmsListenerEndpointTests {
 		assertThat(config.getDestinationName()).isEqualTo("myQueue");
 		assertThat(config.getMessageSelector()).isEqualTo("foo = 'bar'");
 		assertThat(config.getSubscriptionName()).isEqualTo("mySubscription");
-		assertThat(config.getMaxConcurrency()).isEqualTo((long) 10);
+		assertThat(config.getMaxConcurrency()).isEqualTo(10);
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 	}
 

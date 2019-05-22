@@ -68,11 +68,11 @@ public class NameMatchMethodPointcutTests {
 
 	@Test
 	public void testEmpty() throws Throwable {
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo(0);
 		proxied.getName();
 		proxied.setName("");
 		proxied.echo(null);
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo(0);
 	}
 
 
@@ -80,29 +80,29 @@ public class NameMatchMethodPointcutTests {
 	public void testMatchOneMethod() throws Throwable {
 		pc.addMethodName("echo");
 		pc.addMethodName("set*");
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo(0);
 		proxied.getName();
 		proxied.getName();
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo(0);
 		proxied.echo(null);
-		assertThat(nop.getCount()).isEqualTo((long) 1);
+		assertThat(nop.getCount()).isEqualTo(1);
 
 		proxied.setName("");
-		assertThat(nop.getCount()).isEqualTo((long) 2);
+		assertThat(nop.getCount()).isEqualTo(2);
 		proxied.setAge(25);
-		assertThat(proxied.getAge()).isEqualTo((long) 25);
-		assertThat(nop.getCount()).isEqualTo((long) 3);
+		assertThat(proxied.getAge()).isEqualTo(25);
+		assertThat(nop.getCount()).isEqualTo(3);
 	}
 
 	@Test
 	public void testSets() throws Throwable {
 		pc.setMappedNames("set*", "echo");
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo(0);
 		proxied.getName();
 		proxied.setName("");
-		assertThat(nop.getCount()).isEqualTo((long) 1);
+		assertThat(nop.getCount()).isEqualTo(1);
 		proxied.echo(null);
-		assertThat(nop.getCount()).isEqualTo((long) 2);
+		assertThat(nop.getCount()).isEqualTo(2);
 	}
 
 	@Test
@@ -112,9 +112,9 @@ public class NameMatchMethodPointcutTests {
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(proxied);
 		NopInterceptor nop2 = (NopInterceptor) ((Advised) p2).getAdvisors()[0].getAdvice();
 		p2.getName();
-		assertThat(nop2.getCount()).isEqualTo((long) 2);
+		assertThat(nop2.getCount()).isEqualTo(2);
 		p2.echo(null);
-		assertThat(nop2.getCount()).isEqualTo((long) 3);
+		assertThat(nop2.getCount()).isEqualTo(3);
 	}
 
 	@Test

@@ -462,7 +462,7 @@ public class ContentNegotiatingViewResolverTests {
 		assertThat(result).as("Invalid view").isNotNull();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		result.render(null, request, response);
-		assertThat(response.getStatus()).as("Invalid status code set").isEqualTo((long) 406);
+		assertThat(response.getStatus()).as("Invalid status code set").isEqualTo(406);
 	}
 
 	@Test

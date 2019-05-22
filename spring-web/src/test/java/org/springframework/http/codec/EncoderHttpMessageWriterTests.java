@@ -170,7 +170,7 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Mono.just("body"), forClass(String.class), TEXT_PLAIN, this.response, NO_HINTS).block();
 
-		assertThat(this.response.getHeaders().getContentLength()).isEqualTo((long) 4);
+		assertThat(this.response.getHeaders().getContentLength()).isEqualTo(4);
 	}
 
 	@Test // gh-22952
@@ -190,7 +190,7 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Mono.empty(), forClass(String.class), TEXT_PLAIN, this.response, NO_HINTS).block();
 		StepVerifier.create(this.response.getBody()).expectComplete();
-		assertThat(this.response.getHeaders().getContentLength()).isEqualTo((long) 0);
+		assertThat(this.response.getHeaders().getContentLength()).isEqualTo(0);
 	}
 
 	@Test  // gh-22936

@@ -73,7 +73,7 @@ public class DebugInterceptorTests {
 	}
 
 	private void checkCallCountTotal(DebugInterceptor interceptor) {
-		assertThat(interceptor.getCount()).as("Intercepted call count not being incremented correctly").isEqualTo((long) 1);
+		assertThat(interceptor.getCount()).as("Intercepted call count not being incremented correctly").isEqualTo(1);
 	}
 
 

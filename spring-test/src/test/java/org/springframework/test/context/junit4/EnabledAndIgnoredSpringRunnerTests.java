@@ -64,7 +64,7 @@ public class EnabledAndIgnoredSpringRunnerTests {
 
 	@AfterClass
 	public static void verifyNumTestsExecuted() {
-		assertThat(numTestsExecuted).as("Verifying the number of tests executed.").isEqualTo((long) 3);
+		assertThat(numTestsExecuted).as("Verifying the number of tests executed.").isEqualTo(3);
 	}
 
 	@Test

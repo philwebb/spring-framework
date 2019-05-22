@@ -56,13 +56,13 @@ public abstract class AbstractEjbTxDaoTests extends AbstractTransactionalJUnit4S
 	@Test
 	public void test1InitialState() {
 		int count = dao.getCount(TEST_NAME);
-		assertThat(count).as("New TestEntity should have count=0.").isEqualTo((long) 0);
+		assertThat(count).as("New TestEntity should have count=0.").isEqualTo(0);
 	}
 
 	@Test
 	public void test2IncrementCount1() {
 		int count = dao.incrementCount(TEST_NAME);
-		assertThat(count).as("Expected count=1 after first increment.").isEqualTo((long) 1);
+		assertThat(count).as("Expected count=1 after first increment.").isEqualTo(1);
 	}
 
 	/**
@@ -73,10 +73,10 @@ public abstract class AbstractEjbTxDaoTests extends AbstractTransactionalJUnit4S
 	@Test
 	public void test3IncrementCount2() {
 		int count = dao.getCount(TEST_NAME);
-		assertThat(count).as("Expected count=1 after test2IncrementCount1().").isEqualTo((long) 1);
+		assertThat(count).as("Expected count=1 after test2IncrementCount1().").isEqualTo(1);
 
 		count = dao.incrementCount(TEST_NAME);
-		assertThat(count).as("Expected count=2 now.").isEqualTo((long) 2);
+		assertThat(count).as("Expected count=2 now.").isEqualTo(2);
 	}
 
 	@After

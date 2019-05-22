@@ -104,7 +104,7 @@ public class MBeanClientInterceptorTests extends AbstractMBeanServerTests {
 		assumeTrue(runTests);
 		IJmxTestBean proxy1 = getProxy();
 		int age = proxy1.getAge();
-		assertThat(age).as("The age should be 100").isEqualTo((long) 100);
+		assertThat(age).as("The age should be 100").isEqualTo(100);
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class MBeanClientInterceptorTests extends AbstractMBeanServerTests {
 		assumeTrue(runTests);
 		IJmxTestBean proxy = getProxy();
 		long result = proxy.myOperation();
-		assertThat(result).as("The operation should return 1").isEqualTo((long) 1);
+		assertThat(result).as("The operation should return 1").isEqualTo(1);
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class MBeanClientInterceptorTests extends AbstractMBeanServerTests {
 		assumeTrue(runTests);
 		IJmxTestBean proxy = getProxy();
 		int result = proxy.add(1, 2);
-		assertThat(result).as("The operation should return 3").isEqualTo((long) 3);
+		assertThat(result).as("The operation should return 3").isEqualTo(3);
 	}
 
 	@Test
@@ -203,7 +203,7 @@ public class MBeanClientInterceptorTests extends AbstractMBeanServerTests {
 		// should now be able to access data via the lazy proxy
 		try {
 			assertThat(bean.getName()).isEqualTo("Rob Harrop");
-			assertThat(bean.getAge()).isEqualTo((long) 100);
+			assertThat(bean.getAge()).isEqualTo(100);
 		}
 		finally {
 			connector.stop();
@@ -222,7 +222,7 @@ public class MBeanClientInterceptorTests extends AbstractMBeanServerTests {
 		// should now be able to access data via the lazy proxy
 		try {
 			assertThat(bean.getName()).isEqualTo("Rob Harrop");
-			assertThat(bean.getAge()).isEqualTo((long) 100);
+			assertThat(bean.getAge()).isEqualTo(100);
 		}
 		finally {
 			connector.stop();

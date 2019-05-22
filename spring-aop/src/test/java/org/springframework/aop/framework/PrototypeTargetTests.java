@@ -47,8 +47,8 @@ public class PrototypeTargetTests {
 			tb.doSomething();
 		}
 		TestInterceptor interceptor = (TestInterceptor) bf.getBean("testInterceptor");
-		assertThat(TestBeanImpl.constructionCount).isEqualTo((long) 10);
-		assertThat(interceptor.invocationCount).isEqualTo((long) 10);
+		assertThat(TestBeanImpl.constructionCount).isEqualTo(10);
+		assertThat(interceptor.invocationCount).isEqualTo(10);
 	}
 
 	@Test
@@ -61,8 +61,8 @@ public class PrototypeTargetTests {
 			tb.doSomething();
 		}
 		TestInterceptor interceptor = (TestInterceptor) bf.getBean("testInterceptor");
-		assertThat(TestBeanImpl.constructionCount).isEqualTo((long) 1);
-		assertThat(interceptor.invocationCount).isEqualTo((long) 10);
+		assertThat(TestBeanImpl.constructionCount).isEqualTo(1);
+		assertThat(interceptor.invocationCount).isEqualTo(10);
 	}
 
 

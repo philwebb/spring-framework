@@ -45,7 +45,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 		this.servletRequest.setContent("[\"x\"]".getBytes("UTF-8"));
 		handleRequest(new XhrReceivingTransportHandler());
 
-		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 204);
+		assertThat(this.servletResponse.getStatus()).isEqualTo(204);
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 
 		new XhrReceivingTransportHandler().handleRequest(this.request, this.response, wsHandler, session);
 
-		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 500);
+		assertThat(this.servletResponse.getStatus()).isEqualTo(500);
 		verifyNoMoreInteractions(wsHandler);
 	}
 

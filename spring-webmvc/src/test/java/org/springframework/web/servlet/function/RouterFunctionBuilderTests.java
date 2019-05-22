@@ -54,7 +54,7 @@ public class RouterFunctionBuilderTests {
 				.map(handlerFunction -> handle(handlerFunction, getFooRequest))
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
-		assertThat(responseStatus.get().intValue()).isEqualTo((long) 200);
+		assertThat(responseStatus.get().intValue()).isEqualTo(200);
 
 		servletRequest = new MockHttpServletRequest("HEAD", "/foo");
 		ServerRequest headFooRequest = new DefaultServerRequest(servletRequest, emptyList());
@@ -63,7 +63,7 @@ public class RouterFunctionBuilderTests {
 				.map(handlerFunction -> handle(handlerFunction, getFooRequest))
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
-		assertThat(responseStatus.get().intValue()).isEqualTo((long) 202);
+		assertThat(responseStatus.get().intValue()).isEqualTo(202);
 
 		servletRequest = new MockHttpServletRequest("POST", "/");
 		servletRequest.setContentType("text/plain");
@@ -73,7 +73,7 @@ public class RouterFunctionBuilderTests {
 				.map(handlerFunction -> handle(handlerFunction, barRequest))
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
-		assertThat(responseStatus.get().intValue()).isEqualTo((long) 204);
+		assertThat(responseStatus.get().intValue()).isEqualTo(204);
 
 		servletRequest = new MockHttpServletRequest("POST", "/");
 		ServerRequest invalidRequest = new DefaultServerRequest(servletRequest, emptyList());
@@ -114,7 +114,7 @@ public class RouterFunctionBuilderTests {
 				.map(handlerFunction -> handle(handlerFunction, resourceRequest))
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
-		assertThat(responseStatus.get().intValue()).isEqualTo((long) 200);
+		assertThat(responseStatus.get().intValue()).isEqualTo(200);
 
 		servletRequest = new MockHttpServletRequest("POST", "/resources/foo.txt");
 		ServerRequest invalidRequest = new DefaultServerRequest(servletRequest, emptyList());
@@ -143,7 +143,7 @@ public class RouterFunctionBuilderTests {
 				.map(handlerFunction -> handle(handlerFunction, fooRequest))
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
-		assertThat(responseStatus.get().intValue()).isEqualTo((long) 200);
+		assertThat(responseStatus.get().intValue()).isEqualTo(200);
 	}
 
 	@Test
@@ -157,20 +157,20 @@ public class RouterFunctionBuilderTests {
 				})
 				.before(request -> {
 					int count = filterCount.getAndIncrement();
-					assertThat(count).isEqualTo((long) 0);
+					assertThat(count).isEqualTo(0);
 					return request;
 				})
 				.after((request, response) -> {
 					int count = filterCount.getAndIncrement();
-					assertThat(count).isEqualTo((long) 3);
+					assertThat(count).isEqualTo(3);
 					return response;
 				})
 				.filter((request, next) -> {
 					int count = filterCount.getAndIncrement();
-					assertThat(count).isEqualTo((long) 1);
+					assertThat(count).isEqualTo(1);
 					ServerResponse responseMono = next.handle(request);
 					count = filterCount.getAndIncrement();
-					assertThat(count).isEqualTo((long) 2);
+					assertThat(count).isEqualTo(2);
 					return responseMono;
 				})
 				.onError(IllegalStateException.class,
@@ -183,7 +183,7 @@ public class RouterFunctionBuilderTests {
 
 		route.route(fooRequest)
 				.map(handlerFunction -> handle(handlerFunction, fooRequest));
-		assertThat(filterCount.get()).isEqualTo((long) 4);
+		assertThat(filterCount.get()).isEqualTo(4);
 
 		filterCount.set(0);
 
@@ -194,7 +194,7 @@ public class RouterFunctionBuilderTests {
 				.map(handlerFunction -> handle(handlerFunction, barRequest))
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
-		assertThat(responseStatus.get().intValue()).isEqualTo((long) 500);
+		assertThat(responseStatus.get().intValue()).isEqualTo(500);
 	}
 
 }

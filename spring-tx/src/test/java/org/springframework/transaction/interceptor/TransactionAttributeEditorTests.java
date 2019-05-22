@@ -98,7 +98,7 @@ public class TransactionAttributeEditorTests {
 		assertThat(ta).isNotNull();
 		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_MANDATORY);
 		assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
-		assertThat(ta.getTimeout()).isEqualTo((long) 10);
+		assertThat(ta.getTimeout()).isEqualTo(10);
 		assertThat(ta.isReadOnly()).isFalse();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
 		assertThat(ta.rollbackOn(new Exception())).isFalse();
@@ -139,7 +139,7 @@ public class TransactionAttributeEditorTests {
 		assertThat(source).isEqualTo(ta);
 		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
 		assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
-		assertThat(ta.getTimeout()).isEqualTo((long) 10);
+		assertThat(ta.getTimeout()).isEqualTo(10);
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
 		assertThat(ta.rollbackOn(new Exception())).isFalse();
@@ -166,7 +166,7 @@ public class TransactionAttributeEditorTests {
 		assertThat(source).isEqualTo(ta);
 		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
 		assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
-		assertThat(ta.getTimeout()).isEqualTo((long) 10);
+		assertThat(ta.getTimeout()).isEqualTo(10);
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new IllegalArgumentException())).isTrue();
 		assertThat(ta.rollbackOn(new IllegalStateException())).isFalse();

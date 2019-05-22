@@ -293,7 +293,7 @@ public class ViewResolutionResultHandlerTests {
 		resultHandler.handleResult(exchange, handlerResult).block(Duration.ZERO);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat(response.getStatusCode().value()).isEqualTo((long) 303);
+		assertThat(response.getStatusCode().value()).isEqualTo(303);
 		assertThat(response.getHeaders().getLocation().toString()).isEqualTo("/");
 	}
 

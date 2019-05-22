@@ -77,7 +77,7 @@ public class TestContextConcurrencyTests {
 			});
 			assertThat(actualMethods).isEqualTo(expectedMethods);
 		});
-		assertThat(tcm.getTestContext().attributeNames().length).isEqualTo((long) 0);
+		assertThat(tcm.getTestContext().attributeNames().length).isEqualTo(0);
 	}
 
 

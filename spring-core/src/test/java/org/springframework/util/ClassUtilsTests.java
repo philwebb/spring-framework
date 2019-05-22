@@ -254,8 +254,8 @@ public class ClassUtilsTests {
 
 	@Test
 	public void testGetMethodCountForName() {
-		assertThat(ClassUtils.getMethodCountForName(OverloadedMethodsClass.class, "print")).as("Verifying number of overloaded 'print' methods for OverloadedMethodsClass.").isEqualTo((long) 2);
-		assertThat(ClassUtils.getMethodCountForName(SubOverloadedMethodsClass.class, "print")).as("Verifying number of overloaded 'print' methods for SubOverloadedMethodsClass.").isEqualTo((long) 4);
+		assertThat(ClassUtils.getMethodCountForName(OverloadedMethodsClass.class, "print")).as("Verifying number of overloaded 'print' methods for OverloadedMethodsClass.").isEqualTo(2);
+		assertThat(ClassUtils.getMethodCountForName(SubOverloadedMethodsClass.class, "print")).as("Verifying number of overloaded 'print' methods for SubOverloadedMethodsClass.").isEqualTo(4);
 	}
 
 	@Test
@@ -323,7 +323,7 @@ public class ClassUtilsTests {
 	public void testGetAllInterfaces() {
 		DerivedTestObject testBean = new DerivedTestObject();
 		List<Class<?>> ifcs = Arrays.asList(ClassUtils.getAllInterfaces(testBean));
-		assertThat(ifcs.size()).as("Correct number of interfaces").isEqualTo((long) 4);
+		assertThat(ifcs.size()).as("Correct number of interfaces").isEqualTo(4);
 		assertThat(ifcs.contains(Serializable.class)).as("Contains Serializable").isTrue();
 		assertThat(ifcs.contains(ITestObject.class)).as("Contains ITestBean").isTrue();
 		assertThat(ifcs.contains(ITestInterface.class)).as("Contains IOther").isTrue();

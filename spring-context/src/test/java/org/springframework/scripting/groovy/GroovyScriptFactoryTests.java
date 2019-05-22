@@ -242,7 +242,7 @@ public class GroovyScriptFactoryTests {
 		refreshable.refresh();
 
 		assertThat(messenger.getMessage()).as("Message is incorrect after refresh.").isEqualTo(desiredMessage);
-		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo((long) 2);
+		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo(2);
 	}
 
 	@Test
@@ -267,7 +267,7 @@ public class GroovyScriptFactoryTests {
 
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertThat(messenger2.getMessage()).isEqualTo("Byebye World!");
-		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo((long) 2);
+		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo(2);
 	}
 
 	@Test
@@ -372,9 +372,9 @@ public class GroovyScriptFactoryTests {
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).isFalse();
-		assertThat(countingAspect.getCalls()).isEqualTo((long) 0);
+		assertThat(countingAspect.getCalls()).isEqualTo(0);
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
-		assertThat(countingAspect.getCalls()).isEqualTo((long) 1);
+		assertThat(countingAspect.getCalls()).isEqualTo(1);
 
 		ctx.close();
 		assertThat(countingAspect.getCalls()).isEqualTo((long) -200);
@@ -418,9 +418,9 @@ public class GroovyScriptFactoryTests {
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).isTrue();
-		assertThat(countingAspect.getCalls()).isEqualTo((long) 0);
+		assertThat(countingAspect.getCalls()).isEqualTo(0);
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
-		assertThat(countingAspect.getCalls()).isEqualTo((long) 1);
+		assertThat(countingAspect.getCalls()).isEqualTo(1);
 
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 	}
@@ -458,7 +458,7 @@ public class GroovyScriptFactoryTests {
 	public void testAnonymousScriptDetected() throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("groovy-with-xsd.xml", getClass());
 		Map<?, Messenger> beans = ctx.getBeansOfType(Messenger.class);
-		assertThat(beans.size()).isEqualTo((long) 4);
+		assertThat(beans.size()).isEqualTo(4);
 		assertThat(ctx.getBean(MyBytecodeProcessor.class).processed.contains(
 				"org.springframework.scripting.groovy.GroovyMessenger2")).isTrue();
 	}
@@ -518,7 +518,7 @@ public class GroovyScriptFactoryTests {
 
 		ContextScriptBean bean = (ContextScriptBean) ctx.getBean("bean");
 		assertThat(bean.getName()).as("The first property ain't bein' injected.").isEqualTo("Sophie Marceau");
-		assertThat(bean.getAge()).as("The second property ain't bein' injected.").isEqualTo((long) 31);
+		assertThat(bean.getAge()).as("The second property ain't bein' injected.").isEqualTo(31);
 		assertThat(bean.getTestBean()).isEqualTo(tb);
 		assertThat(bean.getApplicationContext()).isEqualTo(ctx);
 

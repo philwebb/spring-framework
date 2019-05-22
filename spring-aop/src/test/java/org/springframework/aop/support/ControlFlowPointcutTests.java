@@ -44,16 +44,16 @@ public class ControlFlowPointcutTests {
 
 		// Not advised, not under One
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo(0);
 
 		// Will be advised
 		assertThat(new One().getAge(proxied)).isEqualTo((long) target.getAge());
-		assertThat(nop.getCount()).isEqualTo((long) 1);
+		assertThat(nop.getCount()).isEqualTo(1);
 
 		// Won't be advised
 		assertThat(new One().nomatch(proxied)).isEqualTo((long) target.getAge());
-		assertThat(nop.getCount()).isEqualTo((long) 1);
-		assertThat(cflow.getEvaluations()).isEqualTo((long) 3);
+		assertThat(nop.getCount()).isEqualTo(1);
+		assertThat(cflow.getEvaluations()).isEqualTo(3);
 	}
 
 	/**
@@ -76,18 +76,18 @@ public class ControlFlowPointcutTests {
 
 		// Not advised, not under One
 		target.setAge(16);
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo(0);
 
 		// Not advised; under One but not a setter
-		assertThat(new One().getAge(proxied)).isEqualTo((long) 16);
-		assertThat(nop.getCount()).isEqualTo((long) 0);
+		assertThat(new One().getAge(proxied)).isEqualTo(16);
+		assertThat(nop.getCount()).isEqualTo(0);
 
 		// Won't be advised
 		new One().set(proxied);
-		assertThat(nop.getCount()).isEqualTo((long) 1);
+		assertThat(nop.getCount()).isEqualTo(1);
 
 		// We saved most evaluations
-		assertThat(cflow.getEvaluations()).isEqualTo((long) 1);
+		assertThat(cflow.getEvaluations()).isEqualTo(1);
 	}
 
 	@Test

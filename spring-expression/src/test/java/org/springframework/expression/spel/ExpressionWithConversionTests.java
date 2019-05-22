@@ -90,12 +90,12 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 	public void testSetParameterizedList() throws Exception {
 		StandardEvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
 		Expression e = parser.parseExpression("listOfInteger.size()");
-		assertThat(e.getValue(context, Integer.class).intValue()).isEqualTo((long) 0);
+		assertThat(e.getValue(context, Integer.class).intValue()).isEqualTo(0);
 		context.setTypeConverter(new TypeConvertorUsingConversionService());
 		// Assign a List<String> to the List<Integer> field - the component elements should be converted
 		parser.parseExpression("listOfInteger").setValue(context,listOfString);
 		// size now 3
-		assertThat(e.getValue(context, Integer.class).intValue()).isEqualTo((long) 3);
+		assertThat(e.getValue(context, Integer.class).intValue()).isEqualTo(3);
 		Class<?> clazz = parser.parseExpression("listOfInteger[1].getClass()").getValue(context, Class.class); // element type correctly Integer
 		assertThat(clazz).isEqualTo(Integer.class);
 	}
@@ -129,7 +129,7 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 		// OK up to here, so the evaluation should be fine...
 		// ... but this fails
 		int result = (Integer) parser.parseExpression("#target.sum(#root)").getValue(evaluationContext, "1,2,3,4");
-		assertThat(result).as("Wrong result: " + result).isEqualTo((long) 10);
+		assertThat(result).as("Wrong result: " + result).isEqualTo(10);
 
 	}
 

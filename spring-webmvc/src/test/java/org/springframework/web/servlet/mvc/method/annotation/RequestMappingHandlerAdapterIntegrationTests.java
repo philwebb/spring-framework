@@ -193,17 +193,17 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		assertThat(model.get("value")).isEqualTo("/contextPath");
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
-		assertThat(modelAttr.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttr.getAge()).isEqualTo(25);
 		assertThat(modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
 		assertThat(request.getSession().getAttribute("modelAttr")).isSameAs(modelAttr);
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
 		assertThat(bindingResult.getTarget()).isSameAs(modelAttr);
-		assertThat(bindingResult.getErrorCount()).isEqualTo((long) 1);
+		assertThat(bindingResult.getErrorCount()).isEqualTo(1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
-		assertThat(modelAttrByConvention.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
 		assertThat(modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
 		assertThat(request.getSession().getAttribute(conventionAttrName)).isSameAs(modelAttrByConvention);
 
@@ -275,17 +275,17 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		assertThat(model.get("value")).isEqualTo("/contextPath");
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
-		assertThat(modelAttr.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttr.getAge()).isEqualTo(25);
 		assertThat(modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
 		assertThat(request.getSession().getAttribute("modelAttr")).isSameAs(modelAttr);
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
 		assertThat(bindingResult.getTarget()).isSameAs(modelAttr);
-		assertThat(bindingResult.getErrorCount()).isEqualTo((long) 1);
+		assertThat(bindingResult.getErrorCount()).isEqualTo(1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
-		assertThat(modelAttrByConvention.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
 		assertThat(modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
 		assertThat(request.getSession().getAttribute(conventionAttrName)).isSameAs(modelAttrByConvention);
 

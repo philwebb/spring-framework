@@ -48,8 +48,8 @@ public class OrderUtilsTests {
 
 	@Test
 	public void getDefaultOrder() {
-		assertThat(OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
-		assertThat(OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
+		assertThat(OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo(33);
+		assertThat(OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo(33);
 	}
 
 	@Test

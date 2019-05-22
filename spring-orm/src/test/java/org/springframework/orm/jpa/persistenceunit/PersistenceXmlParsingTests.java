@@ -56,10 +56,10 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).isEqualTo((long) 1);
+		assertThat(info.length).isEqualTo(1);
 		assertThat(info[0].getPersistenceUnitName()).isEqualTo("OrderManagement");
 
-		assertThat(info[0].getJarFileUrls().size()).isEqualTo((long) 2);
+		assertThat(info[0].getJarFileUrls().size()).isEqualTo(2);
 		assertThat(info[0].getJarFileUrls().get(0)).isEqualTo(new ClassPathResource("order.jar").getURL());
 		assertThat(info[0].getJarFileUrls().get(1)).isEqualTo(new ClassPathResource("order-supplemental.jar").getURL());
 
@@ -74,7 +74,7 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).isEqualTo((long) 1);
+		assertThat(info.length).isEqualTo(1);
 		assertThat(info[0].getPersistenceUnitName()).isEqualTo("OrderManagement");
 
 		assertThat(info[0].excludeUnlistedClasses()).as("Exclude unlisted should default false in 1.0.").isFalse();
@@ -88,13 +88,13 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).isEqualTo((long) 1);
+		assertThat(info.length).isEqualTo(1);
 
 		assertThat(info[0].getPersistenceUnitName()).isEqualTo("OrderManagement2");
 
-		assertThat(info[0].getMappingFileNames().size()).isEqualTo((long) 1);
+		assertThat(info[0].getMappingFileNames().size()).isEqualTo(1);
 		assertThat(info[0].getMappingFileNames().get(0)).isEqualTo("mappings.xml");
-		assertThat(info[0].getProperties().keySet().size()).isEqualTo((long) 0);
+		assertThat(info[0].getProperties().keySet().size()).isEqualTo(0);
 
 		assertThat(info[0].excludeUnlistedClasses()).as("Exclude unlisted should default false in 1.0.").isFalse();
 	}
@@ -107,14 +107,14 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).isEqualTo((long) 1);
+		assertThat(info.length).isEqualTo(1);
 		assertThat(info[0].getPersistenceUnitName()).isEqualTo("OrderManagement3");
 
-		assertThat(info[0].getJarFileUrls().size()).isEqualTo((long) 2);
+		assertThat(info[0].getJarFileUrls().size()).isEqualTo(2);
 		assertThat(info[0].getJarFileUrls().get(0)).isEqualTo(new ClassPathResource("order.jar").getURL());
 		assertThat(info[0].getJarFileUrls().get(1)).isEqualTo(new ClassPathResource("order-supplemental.jar").getURL());
 
-		assertThat(info[0].getProperties().keySet().size()).isEqualTo((long) 0);
+		assertThat(info[0].getProperties().keySet().size()).isEqualTo(0);
 		assertThat(info[0].getJtaDataSource()).isNull();
 		assertThat(info[0].getNonJtaDataSource()).isNull();
 
@@ -133,13 +133,13 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).isEqualTo((long) 1);
+		assertThat(info.length).isEqualTo(1);
 		assertThat(info[0].getPersistenceUnitName()).isEqualTo("OrderManagement4");
 
-		assertThat(info[0].getMappingFileNames().size()).isEqualTo((long) 1);
+		assertThat(info[0].getMappingFileNames().size()).isEqualTo(1);
 		assertThat(info[0].getMappingFileNames().get(0)).isEqualTo("order-mappings.xml");
 
-		assertThat(info[0].getManagedClassNames().size()).isEqualTo((long) 3);
+		assertThat(info[0].getManagedClassNames().size()).isEqualTo(3);
 		assertThat(info[0].getManagedClassNames().get(0)).isEqualTo("com.acme.Order");
 		assertThat(info[0].getManagedClassNames().get(1)).isEqualTo("com.acme.Customer");
 		assertThat(info[0].getManagedClassNames().get(2)).isEqualTo("com.acme.Item");
@@ -147,7 +147,7 @@ public class PersistenceXmlParsingTests {
 		assertThat(info[0].excludeUnlistedClasses()).as("Exclude unlisted should be true when no value.").isTrue();
 
 		assertThat(info[0].getTransactionType()).isSameAs(PersistenceUnitTransactionType.RESOURCE_LOCAL);
-		assertThat(info[0].getProperties().keySet().size()).isEqualTo((long) 0);
+		assertThat(info[0].getProperties().keySet().size()).isEqualTo(0);
 
 		builder.clear();
 	}
@@ -160,19 +160,19 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).isEqualTo((long) 1);
+		assertThat(info.length).isEqualTo(1);
 		assertThat(info[0].getPersistenceUnitName()).isEqualTo("OrderManagement5");
 
-		assertThat(info[0].getMappingFileNames().size()).isEqualTo((long) 2);
+		assertThat(info[0].getMappingFileNames().size()).isEqualTo(2);
 		assertThat(info[0].getMappingFileNames().get(0)).isEqualTo("order1.xml");
 		assertThat(info[0].getMappingFileNames().get(1)).isEqualTo("order2.xml");
 
-		assertThat(info[0].getJarFileUrls().size()).isEqualTo((long) 2);
+		assertThat(info[0].getJarFileUrls().size()).isEqualTo(2);
 		assertThat(info[0].getJarFileUrls().get(0)).isEqualTo(new ClassPathResource("order.jar").getURL());
 		assertThat(info[0].getJarFileUrls().get(1)).isEqualTo(new ClassPathResource("order-supplemental.jar").getURL());
 
 		assertThat(info[0].getPersistenceProviderClassName()).isEqualTo("com.acme.AcmePersistence");
-		assertThat(info[0].getProperties().keySet().size()).isEqualTo((long) 0);
+		assertThat(info[0].getProperties().keySet().size()).isEqualTo(0);
 
 		assertThat(info[0].excludeUnlistedClasses()).as("Exclude unlisted should default false in 1.0.").isFalse();
 	}
@@ -191,7 +191,7 @@ public class PersistenceXmlParsingTests {
 				new PathMatchingResourcePatternResolver(), dataSourceLookup);
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
-		assertThat(info.length).isEqualTo((long) 2);
+		assertThat(info.length).isEqualTo(2);
 
 		PersistenceUnitInfo pu1 = info[0];
 
@@ -199,10 +199,10 @@ public class PersistenceXmlParsingTests {
 
 		assertThat(pu1.getPersistenceProviderClassName()).isEqualTo("com.acme.AcmePersistence");
 
-		assertThat(pu1.getMappingFileNames().size()).isEqualTo((long) 1);
+		assertThat(pu1.getMappingFileNames().size()).isEqualTo(1);
 		assertThat(pu1.getMappingFileNames().get(0)).isEqualTo("ormap2.xml");
 
-		assertThat(pu1.getJarFileUrls().size()).isEqualTo((long) 1);
+		assertThat(pu1.getJarFileUrls().size()).isEqualTo(1);
 		assertThat(pu1.getJarFileUrls().get(0)).isEqualTo(new ClassPathResource("order.jar").getURL());
 
 		assertThat(pu1.excludeUnlistedClasses()).isFalse();
@@ -210,7 +210,7 @@ public class PersistenceXmlParsingTests {
 		assertThat(pu1.getTransactionType()).isSameAs(PersistenceUnitTransactionType.RESOURCE_LOCAL);
 
 		Properties props = pu1.getProperties();
-		assertThat(props.keySet().size()).isEqualTo((long) 2);
+		assertThat(props.keySet().size()).isEqualTo(2);
 		assertThat(props.getProperty("com.acme.persistence.sql-logging")).isEqualTo("on");
 		assertThat(props.getProperty("foo")).isEqualTo("bar");
 
@@ -225,7 +225,7 @@ public class PersistenceXmlParsingTests {
 		assertThat(pu2.getTransactionType()).isSameAs(PersistenceUnitTransactionType.JTA);
 		assertThat(pu2.getPersistenceProviderClassName()).isEqualTo("com.acme.AcmePersistence");
 
-		assertThat(pu2.getMappingFileNames().size()).isEqualTo((long) 1);
+		assertThat(pu2.getMappingFileNames().size()).isEqualTo(1);
 		assertThat(pu2.getMappingFileNames().get(0)).isEqualTo("order2.xml");
 
 		// the following assertions fail only during coverage runs
@@ -246,9 +246,9 @@ public class PersistenceXmlParsingTests {
 				new PathMatchingResourcePatternResolver(), new JndiDataSourceLookup());
 		String resource = "/org/springframework/orm/jpa/persistence-example6.xml";
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
-		assertThat(info.length).isEqualTo((long) 1);
+		assertThat(info.length).isEqualTo(1);
 		assertThat(info[0].getPersistenceUnitName()).isEqualTo("pu");
-		assertThat(info[0].getProperties().keySet().size()).isEqualTo((long) 0);
+		assertThat(info[0].getProperties().keySet().size()).isEqualTo(0);
 
 		assertThat(info[0].excludeUnlistedClasses()).as("Exclude unlisted should default false in 1.0.").isFalse();
 	}
@@ -301,7 +301,7 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).as("The number of persistence units is incorrect.").isEqualTo((long) 4);
+		assertThat(info.length).as("The number of persistence units is incorrect.").isEqualTo(4);
 
 		PersistenceUnitInfo noExclude = info[0];
 		assertThat(noExclude).as("noExclude should not be null.").isNotNull();
@@ -332,7 +332,7 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo[] info = reader.readPersistenceUnitInfos(resource);
 
 		assertThat(info).isNotNull();
-		assertThat(info.length).as("The number of persistence units is incorrect.").isEqualTo((long) 4);
+		assertThat(info.length).as("The number of persistence units is incorrect.").isEqualTo(4);
 
 		PersistenceUnitInfo noExclude = info[0];
 		assertThat(noExclude).as("noExclude should not be null.").isNotNull();

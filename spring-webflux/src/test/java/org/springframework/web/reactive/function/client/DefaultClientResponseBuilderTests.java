@@ -90,9 +90,9 @@ public class DefaultClientResponseBuilderTests {
 				.build();
 
 		assertThat(result.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-		assertThat(result.headers().asHttpHeaders().size()).isEqualTo((long) 1);
+		assertThat(result.headers().asHttpHeaders().size()).isEqualTo(1);
 		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
-		assertThat(result.cookies().size()).isEqualTo((long) 1);
+		assertThat(result.cookies().size()).isEqualTo(1);
 		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
 
 		StepVerifier.create(result.bodyToFlux(String.class))

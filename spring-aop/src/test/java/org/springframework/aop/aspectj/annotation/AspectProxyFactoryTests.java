@@ -69,10 +69,10 @@ public class AspectProxyFactoryTests {
 		ITestBean proxy1 = pf1.getProxy();
 		ITestBean proxy2 = pf2.getProxy();
 
-		assertThat(proxy1.getAge()).isEqualTo((long) 0);
-		assertThat(proxy1.getAge()).isEqualTo((long) 1);
-		assertThat(proxy2.getAge()).isEqualTo((long) 0);
-		assertThat(proxy1.getAge()).isEqualTo((long) 2);
+		assertThat(proxy1.getAge()).isEqualTo(0);
+		assertThat(proxy1.getAge()).isEqualTo(1);
+		assertThat(proxy2.getAge()).isEqualTo(0);
+		assertThat(proxy1.getAge()).isEqualTo(2);
 	}
 
 	@Test

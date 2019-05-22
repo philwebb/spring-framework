@@ -62,7 +62,7 @@ public class SpringJUnit4ClassRunnerTests {
 		SpringJUnit4ClassRunner runner = new SpringJUnit4ClassRunner(getClass());
 		long timeout = runner.getSpringTimeout(new FrameworkMethod(getClass().getDeclaredMethod(
 			"springTimeoutWithMetaAnnotation")));
-		assertThat(timeout).isEqualTo((long) 10);
+		assertThat(timeout).isEqualTo(10);
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class SpringJUnit4ClassRunnerTests {
 		SpringJUnit4ClassRunner runner = new SpringJUnit4ClassRunner(getClass());
 		long timeout = runner.getSpringTimeout(new FrameworkMethod(getClass().getDeclaredMethod(
 			"springTimeoutWithMetaAnnotationAndOverride")));
-		assertThat(timeout).isEqualTo((long) 42);
+		assertThat(timeout).isEqualTo(42);
 	}
 
 	// -------------------------------------------------------------------------

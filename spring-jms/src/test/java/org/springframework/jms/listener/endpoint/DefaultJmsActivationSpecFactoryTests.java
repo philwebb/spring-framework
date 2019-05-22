@@ -53,8 +53,8 @@ public class DefaultJmsActivationSpecFactoryTests {
 		StubActiveMQActivationSpec spec = (StubActiveMQActivationSpec) activationSpecFactory.createActivationSpec(
 				new StubActiveMQResourceAdapter(), activationSpecConfig);
 
-		assertThat(spec.getMaxSessions()).isEqualTo((long) 5);
-		assertThat(spec.getMaxMessagesPerSessions()).isEqualTo((long) 3);
+		assertThat(spec.getMaxSessions()).isEqualTo(5);
+		assertThat(spec.getMaxMessagesPerSessions()).isEqualTo(3);
 		assertThat(spec.isUseRAManagedTransaction()).isTrue();
 	}
 
@@ -72,8 +72,8 @@ public class DefaultJmsActivationSpecFactoryTests {
 				.createActivationSpec(new StubWebSphereResourceAdapterImpl(), activationSpecConfig);
 
 		assertThat(spec.getDestination()).isEqualTo(destination);
-		assertThat(spec.getMaxConcurrency()).isEqualTo((long) 5);
-		assertThat(spec.getMaxBatchSize()).isEqualTo((long) 3);
+		assertThat(spec.getMaxConcurrency()).isEqualTo(5);
+		assertThat(spec.getMaxBatchSize()).isEqualTo(3);
 	}
 
 

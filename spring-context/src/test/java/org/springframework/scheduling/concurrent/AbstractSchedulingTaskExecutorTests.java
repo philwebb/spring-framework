@@ -239,7 +239,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		catch (InterruptedException ex) {
 			throw new IllegalStateException(ex);
 		}
-		assertThat(latch.getCount()).as("latch did not count down,").isEqualTo((long) 0);
+		assertThat(latch.getCount()).as("latch did not count down,").isEqualTo(0);
 	}
 
 

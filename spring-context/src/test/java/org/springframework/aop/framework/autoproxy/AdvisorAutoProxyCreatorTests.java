@@ -92,20 +92,20 @@ public class AdvisorAutoProxyCreatorTests {
 		assertThat(lockable2.locked()).isFalse();
 		// equals 2 calls on shared nop, because it's first and sees calls
 		// against the Lockable interface introduced by the specific advisor
-		assertThat(nop1.getCount()).isEqualTo((long) 2);
-		assertThat(nop2.getCount()).isEqualTo((long) 0);
+		assertThat(nop1.getCount()).isEqualTo(2);
+		assertThat(nop2.getCount()).isEqualTo(0);
 		lockable1.lock();
 		assertThat(lockable1.locked()).isTrue();
 		assertThat(lockable2.locked()).isFalse();
-		assertThat(nop1.getCount()).isEqualTo((long) 5);
-		assertThat(nop2.getCount()).isEqualTo((long) 0);
+		assertThat(nop1.getCount()).isEqualTo(5);
+		assertThat(nop2.getCount()).isEqualTo(0);
 
 		PackageVisibleMethod packageVisibleMethod = (PackageVisibleMethod) bf.getBean("packageVisibleMethod");
-		assertThat(nop1.getCount()).isEqualTo((long) 5);
-		assertThat(nop2.getCount()).isEqualTo((long) 0);
+		assertThat(nop1.getCount()).isEqualTo(5);
+		assertThat(nop2.getCount()).isEqualTo(0);
 		packageVisibleMethod.doSomething();
-		assertThat(nop1.getCount()).isEqualTo((long) 6);
-		assertThat(nop2.getCount()).isEqualTo((long) 1);
+		assertThat(nop1.getCount()).isEqualTo(6);
+		assertThat(nop2.getCount()).isEqualTo(1);
 		boolean condition = packageVisibleMethod instanceof Lockable;
 		assertThat(condition).isTrue();
 		Lockable lockable3 = (Lockable) packageVisibleMethod;
@@ -140,7 +140,7 @@ public class AdvisorAutoProxyCreatorTests {
 		assertThat(test.getName()).isEqualTo("Rod");
 		// Check that references survived prototype creation
 		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
-		assertThat(CountingTestBean.count).as("Only 2 CountingTestBeans instantiated").isEqualTo((long) 2);
+		assertThat(CountingTestBean.count).as("Only 2 CountingTestBeans instantiated").isEqualTo(2);
 		CountingTestBean.count = 0;
 	}
 
@@ -153,10 +153,10 @@ public class AdvisorAutoProxyCreatorTests {
 		Advised advised = (Advised) test;
 		boolean condition = advised.getTargetSource() instanceof LazyInitTargetSource;
 		assertThat(condition).isTrue();
-		assertThat(CountingTestBean.count).as("No CountingTestBean instantiated yet").isEqualTo((long) 0);
+		assertThat(CountingTestBean.count).as("No CountingTestBean instantiated yet").isEqualTo(0);
 		assertThat(test.getName()).isEqualTo("Rod");
 		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
-		assertThat(CountingTestBean.count).as("Only 1 CountingTestBean instantiated").isEqualTo((long) 1);
+		assertThat(CountingTestBean.count).as("Only 1 CountingTestBean instantiated").isEqualTo(1);
 		CountingTestBean.count = 0;
 	}
 
@@ -220,7 +220,7 @@ public class AdvisorAutoProxyCreatorTests {
 		testBean.setAge(23);
 		testBean.getAge();
 
-		assertThat(beforeAdvice.getCalls()).as("Incorrect number of calls to proxy").isEqualTo((long) 2);
+		assertThat(beforeAdvice.getCalls()).as("Incorrect number of calls to proxy").isEqualTo(2);
 	}
 
 }

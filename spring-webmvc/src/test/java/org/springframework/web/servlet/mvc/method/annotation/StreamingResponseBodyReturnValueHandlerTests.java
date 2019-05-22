@@ -112,7 +112,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		this.handler.handleReturnValue(emitter, returnType, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getHeader("foo")).isEqualTo("bar");
 
 		assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
@@ -127,7 +127,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		this.handler.handleReturnValue(emitter, returnType, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isFalse();
-		assertThat(this.response.getStatus()).isEqualTo((long) 204);
+		assertThat(this.response.getStatus()).isEqualTo(204);
 	}
 
 	@Test

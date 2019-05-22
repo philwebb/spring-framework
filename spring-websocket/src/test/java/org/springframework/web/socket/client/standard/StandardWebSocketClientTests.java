@@ -73,7 +73,7 @@ public class StandardWebSocketClientTests {
 		WebSocketSession session = this.wsClient.doHandshake(this.wsHandler, this.headers, uri).get();
 
 		assertThat(session.getLocalAddress()).isNotNull();
-		assertThat(session.getLocalAddress().getPort()).isEqualTo((long) 80);
+		assertThat(session.getLocalAddress().getPort()).isEqualTo(80);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class StandardWebSocketClientTests {
 		WebSocketSession session = this.wsClient.doHandshake(this.wsHandler, this.headers, uri).get();
 
 		assertThat(session.getLocalAddress()).isNotNull();
-		assertThat(session.getLocalAddress().getPort()).isEqualTo((long) 443);
+		assertThat(session.getLocalAddress().getPort()).isEqualTo(443);
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class StandardWebSocketClientTests {
 
 		assertThat(session.getRemoteAddress()).isNotNull();
 		assertThat(session.getRemoteAddress().getHostName()).isEqualTo("localhost");
-		assertThat(session.getLocalAddress().getPort()).isEqualTo((long) 443);
+		assertThat(session.getLocalAddress().getPort()).isEqualTo(443);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class StandardWebSocketClientTests {
 
 		WebSocketSession session = this.wsClient.doHandshake(this.wsHandler, this.headers, uri).get();
 
-		assertThat(session.getHandshakeHeaders().size()).isEqualTo((long) 1);
+		assertThat(session.getHandshakeHeaders().size()).isEqualTo(1);
 		assertThat(session.getHandshakeHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
@@ -162,7 +162,7 @@ public class StandardWebSocketClientTests {
 
 		Map<String, List<String>> headers = new HashMap<>();
 		endpointConfig.getConfigurator().beforeRequest(headers);
-		assertThat(headers.size()).isEqualTo((long) 1);
+		assertThat(headers.size()).isEqualTo(1);
 	}
 
 	@Test

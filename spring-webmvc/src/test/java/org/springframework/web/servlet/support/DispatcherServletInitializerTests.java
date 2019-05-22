@@ -59,7 +59,7 @@ public class DispatcherServletInitializerTests {
 	public void register() throws ServletException {
 		initializer.onStartup(servletContext);
 
-		assertThat(servlets.size()).isEqualTo((long) 1);
+		assertThat(servlets.size()).isEqualTo(1);
 		assertThat(servlets.get(SERVLET_NAME)).isNotNull();
 
 		DispatcherServlet servlet = (DispatcherServlet) servlets.get(SERVLET_NAME);
@@ -70,12 +70,12 @@ public class DispatcherServletInitializerTests {
 		boolean condition = servletContext.getBean("bean") instanceof MyBean;
 		assertThat(condition).isTrue();
 
-		assertThat(registrations.size()).isEqualTo((long) 1);
+		assertThat(registrations.size()).isEqualTo(1);
 		assertThat(registrations.get(SERVLET_NAME)).isNotNull();
 
 		MockServletRegistration registration = registrations.get(SERVLET_NAME);
 		assertThat(registration.getMappings()).isEqualTo(Collections.singleton(SERVLET_MAPPING));
-		assertThat(registration.getLoadOnStartup()).isEqualTo((long) 1);
+		assertThat(registration.getLoadOnStartup()).isEqualTo(1);
 		assertThat(registration.getRunAsRole()).isEqualTo(ROLE_NAME);
 	}
 

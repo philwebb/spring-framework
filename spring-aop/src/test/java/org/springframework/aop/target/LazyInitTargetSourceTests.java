@@ -50,7 +50,7 @@ public class LazyInitTargetSourceTests {
 
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
 		assertThat(bf.containsSingleton("target")).isFalse();
-		assertThat(tb.getAge()).isEqualTo((long) 10);
+		assertThat(tb.getAge()).isEqualTo(10);
 		assertThat(bf.containsSingleton("target")).isTrue();
 	}
 

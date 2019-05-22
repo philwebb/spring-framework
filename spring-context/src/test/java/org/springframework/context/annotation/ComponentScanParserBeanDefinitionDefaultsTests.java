@@ -48,9 +48,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultWithNoOverridesTests.xml");
 		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be false").isFalse();
-		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo(0);
 		context.refresh();
-		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo(1);
 	}
 
 	@Test
@@ -59,11 +59,11 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultLazyInitTrueTests.xml");
 		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be true").isTrue();
-		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo(0);
 		context.refresh();
-		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should not have been instantiated yet").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should not have been instantiated yet").isEqualTo(0);
 		context.getBean(TEST_BEAN_NAME);
-		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo(1);
 	}
 
 	@Test
@@ -72,9 +72,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultLazyInitFalseTests.xml");
 		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be false").isFalse();
-		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo(0);
 		context.refresh();
-		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo(1);
 	}
 
 	@Test

@@ -42,17 +42,17 @@ public class SimpleScanTests {
 		FooService fooService = (FooService) ctx.getBean("fooServiceImpl");
 		ServiceInvocationCounter serviceInvocationCounter = (ServiceInvocationCounter) ctx.getBean("serviceInvocationCounter");
 
-		assertThat(serviceInvocationCounter.getCount()).isEqualTo((long) 0);
+		assertThat(serviceInvocationCounter.getCount()).isEqualTo(0);
 
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertThat(serviceInvocationCounter.getCount()).isEqualTo((long) 1);
+		assertThat(serviceInvocationCounter.getCount()).isEqualTo(1);
 
 		String value = fooService.foo(1);
 		assertThat(value).isEqualTo("bar");
-		assertThat(serviceInvocationCounter.getCount()).isEqualTo((long) 2);
+		assertThat(serviceInvocationCounter.getCount()).isEqualTo(2);
 
 		fooService.foo(1);
-		assertThat(serviceInvocationCounter.getCount()).isEqualTo((long) 3);
+		assertThat(serviceInvocationCounter.getCount()).isEqualTo(3);
 	}
 
 }

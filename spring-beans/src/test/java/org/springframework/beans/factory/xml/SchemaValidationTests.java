@@ -60,7 +60,7 @@ public class SchemaValidationTests {
 
 		TestBean foo = (TestBean) bf.getBean("fooBean");
 		assertThat(foo.getSpouse()).as("Spouse is null").isNotNull();
-		assertThat(foo.getFriends().size()).as("Incorrect number of friends").isEqualTo((long) 2);
+		assertThat(foo.getFriends().size()).as("Incorrect number of friends").isEqualTo(2);
 	}
 
 }

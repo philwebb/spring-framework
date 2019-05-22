@@ -53,7 +53,7 @@ public class ReflectiveLoadTimeWeaverTests {
 				return "CAFEDEAD".getBytes();
 			}
 		});
-		assertThat(classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo((long) 1);
+		assertThat(classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo(1);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ReflectiveLoadTimeWeaverTests {
 		ReflectiveLoadTimeWeaver weaver = new ReflectiveLoadTimeWeaver(classLoader);
 		ClassLoader throwawayClassLoader = weaver.getThrowawayClassLoader();
 		assertThat(throwawayClassLoader).isNotNull();
-		assertThat(classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo((long) 1);
+		assertThat(classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo(1);
 	}
 
 

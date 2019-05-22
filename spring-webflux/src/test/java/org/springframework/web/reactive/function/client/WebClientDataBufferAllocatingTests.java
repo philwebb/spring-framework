@@ -104,7 +104,7 @@ public class WebClientDataBufferAllocatingTests extends AbstractDataBufferAlloca
 				.bodyToMono(Void.class);
 
 		StepVerifier.create(mono).expectComplete().verify(Duration.ofSeconds(3));
-		assertThat(this.server.getRequestCount()).isEqualTo((long) 1);
+		assertThat(this.server.getRequestCount()).isEqualTo(1);
 	}
 
 	@Test // SPR-17482
@@ -120,7 +120,7 @@ public class WebClientDataBufferAllocatingTests extends AbstractDataBufferAlloca
 				.bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {});
 
 		StepVerifier.create(mono).expectError(UnsupportedMediaTypeException.class).verify(Duration.ofSeconds(3));
-		assertThat(this.server.getRequestCount()).isEqualTo((long) 1);
+		assertThat(this.server.getRequestCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -164,7 +164,7 @@ public class WebClientDataBufferAllocatingTests extends AbstractDataBufferAlloca
 				.bodyToMono(String.class);
 
 		StepVerifier.create(mono).expectErrorSatisfies(actual -> assertThat(actual).isSameAs(expected)).verify(DELAY);
-		assertThat(this.server.getRequestCount()).isEqualTo((long) 1);
+		assertThat(this.server.getRequestCount()).isEqualTo(1);
 	}
 
 }

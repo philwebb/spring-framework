@@ -121,7 +121,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		}
 		catch (NotWritablePropertyException ex) {
 			assertThat(ex.getPossibleMatches()).as("Possible matches not determined").isNotNull();
-			assertThat(ex.getPossibleMatches().length).as("Invalid amount of alternatives").isEqualTo((long) 1);
+			assertThat(ex.getPossibleMatches().length).as("Invalid amount of alternatives").isEqualTo(1);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		}
 		catch (NotWritablePropertyException ex) {
 			assertThat(ex.getPossibleMatches()).as("Possible matches not determined").isNotNull();
-			assertThat(ex.getPossibleMatches().length).as("Invalid amount of alternatives").isEqualTo((long) 3);
+			assertThat(ex.getPossibleMatches().length).as("Invalid amount of alternatives").isEqualTo(3);
 		}
 	}
 

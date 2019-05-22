@@ -147,9 +147,9 @@ public class ReflectionTestUtilsTests {
 		assertThat(getField(person, "favoriteNumber")).isEqualTo(PI);
 
 		// Get directly
-		assertThat(person.getId()).as("ID (private field in a superclass)").isEqualTo((long) 99);
+		assertThat(person.getId()).as("ID (private field in a superclass)").isEqualTo(99);
 		assertThat(person.getName()).as("name (protected field)").isEqualTo("Tom");
-		assertThat(person.getAge()).as("age (private field)").isEqualTo((long) 42);
+		assertThat(person.getAge()).as("age (private field)").isEqualTo(42);
 		assertThat(person.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
 		assertThat(person.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
@@ -159,9 +159,9 @@ public class ReflectionTestUtilsTests {
 		assertSetFieldAndGetFieldBehavior(proxy);
 
 		// Get directly from Target
-		assertThat(target.getId()).as("ID (private field in a superclass)").isEqualTo((long) 99);
+		assertThat(target.getId()).as("ID (private field in a superclass)").isEqualTo(99);
 		assertThat(target.getName()).as("name (protected field)").isEqualTo("Tom");
-		assertThat(target.getAge()).as("age (private field)").isEqualTo((long) 42);
+		assertThat(target.getAge()).as("age (private field)").isEqualTo(42);
 		assertThat(target.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
 		assertThat(target.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
 		assertThat(target.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
@@ -255,9 +255,9 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "setLikesPets", Boolean.FALSE, boolean.class);
 		invokeSetterMethod(person, "setFavoriteNumber", Integer.valueOf(42), Number.class);
 
-		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo((long) 1);
+		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo(1);
 		assertThat(person.getName()).as("name (private method)").isEqualTo("Jerry");
-		assertThat(person.getAge()).as("age (protected method)").isEqualTo((long) 33);
+		assertThat(person.getAge()).as("age (protected method)").isEqualTo(33);
 		assertThat(person.getEyeColor()).as("eye color (package private method)").isEqualTo("green");
 		assertThat(person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(false);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(Integer.valueOf(42));
@@ -279,9 +279,9 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "likesPets", Boolean.TRUE);
 		invokeSetterMethod(person, "favoriteNumber", PI, Number.class);
 
-		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo((long) 99);
+		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo(99);
 		assertThat(person.getName()).as("name (private method)").isEqualTo("Tom");
-		assertThat(person.getAge()).as("age (protected method)").isEqualTo((long) 42);
+		assertThat(person.getAge()).as("age (protected method)").isEqualTo(42);
 		assertThat(person.getEyeColor()).as("eye color (package private method)").isEqualTo("blue");
 		assertThat(person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(true);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(PI);
@@ -327,7 +327,7 @@ public class ReflectionTestUtilsTests {
 	public void invokeMethodWithAutoboxingAndUnboxing() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer difference = invokeMethod(component, "subtract", 5, 2);
-		assertThat(difference.intValue()).as("subtract(5, 2)").isEqualTo((long) 3);
+		assertThat(difference.intValue()).as("subtract(5, 2)").isEqualTo(3);
 	}
 
 	@Test
@@ -335,14 +335,14 @@ public class ReflectionTestUtilsTests {
 	public void invokeMethodWithPrimitiveVarArgs() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer sum = invokeMethod(component, "add", 1, 2, 3, 4);
-		assertThat(sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
+		assertThat(sum.intValue()).as("add(1,2,3,4)").isEqualTo(10);
 	}
 
 	@Test
 	public void invokeMethodWithPrimitiveVarArgsAsSingleArgument() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer sum = invokeMethod(component, "add", new int[] { 1, 2, 3, 4 });
-		assertThat(sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
+		assertThat(sum.intValue()).as("add(1,2,3,4)").isEqualTo(10);
 	}
 
 	@Test

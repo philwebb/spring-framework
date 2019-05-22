@@ -48,10 +48,10 @@ public class SimpleConfigTests {
 		assertThat(condition).isTrue();
 		assertThat(future.get()).isEqualTo("bar");
 
-		assertThat(serviceInvocationCounter.getCount()).isEqualTo((long) 2);
+		assertThat(serviceInvocationCounter.getCount()).isEqualTo(2);
 
 		fooService.foo(1);
-		assertThat(serviceInvocationCounter.getCount()).isEqualTo((long) 3);
+		assertThat(serviceInvocationCounter.getCount()).isEqualTo(3);
 	}
 
 	public String[] getConfigLocations() {

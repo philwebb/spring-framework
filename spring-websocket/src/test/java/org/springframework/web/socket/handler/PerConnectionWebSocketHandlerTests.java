@@ -47,13 +47,13 @@ public class PerConnectionWebSocketHandlerTests {
 		WebSocketSession session = new TestWebSocketSession();
 		handler.afterConnectionEstablished(session);
 
-		assertThat(EchoHandler.initCount).isEqualTo((long) 1);
-		assertThat(EchoHandler.destroyCount).isEqualTo((long) 0);
+		assertThat(EchoHandler.initCount).isEqualTo(1);
+		assertThat(EchoHandler.destroyCount).isEqualTo(0);
 
 		handler.afterConnectionClosed(session, CloseStatus.NORMAL);
 
-		assertThat(EchoHandler.initCount).isEqualTo((long) 1);
-		assertThat(EchoHandler.destroyCount).isEqualTo((long) 1);
+		assertThat(EchoHandler.initCount).isEqualTo(1);
+		assertThat(EchoHandler.destroyCount).isEqualTo(1);
 	}
 
 

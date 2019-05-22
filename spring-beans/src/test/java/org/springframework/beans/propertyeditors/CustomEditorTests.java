@@ -1354,12 +1354,12 @@ public class CustomEditorTests {
 		bw.registerCustomEditor(Hashtable.class, new CustomMapEditor(Hashtable.class));
 
 		bw.setPropertyValue("vector", new String[] {"a", "b"});
-		assertThat(tb.getVector().size()).isEqualTo((long) 2);
+		assertThat(tb.getVector().size()).isEqualTo(2);
 		assertThat(tb.getVector().get(0)).isEqualTo("a");
 		assertThat(tb.getVector().get(1)).isEqualTo("b");
 
 		bw.setPropertyValue("hashtable", Collections.singletonMap("foo", "bar"));
-		assertThat(tb.getHashtable().size()).isEqualTo((long) 1);
+		assertThat(tb.getHashtable().size()).isEqualTo(1);
 		assertThat(tb.getHashtable().get("foo")).isEqualTo("bar");
 	}
 
@@ -1390,7 +1390,7 @@ public class CustomEditorTests {
 			}
 		});
 		bw.setPropertyValue("array", new String[] {"a", "b"});
-		assertThat(tb.getArray().length).isEqualTo((long) 2);
+		assertThat(tb.getArray().length).isEqualTo(2);
 		assertThat(tb.getArray()[0].getName()).isEqualTo("a");
 		assertThat(tb.getArray()[1].getName()).isEqualTo("b");
 	}
@@ -1414,7 +1414,7 @@ public class CustomEditorTests {
 		ClassArrayEditor classArrayEditor = new ClassArrayEditor();
 		classArrayEditor.setAsText("java.lang.String,java.util.HashMap");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
-		assertThat(classes.length).isEqualTo((long) 2);
+		assertThat(classes.length).isEqualTo(2);
 		assertThat(classes[0]).isEqualTo(String.class);
 		assertThat(classes[1]).isEqualTo(HashMap.class);
 		assertThat(classArrayEditor.getAsText()).isEqualTo("java.lang.String,java.util.HashMap");
@@ -1427,7 +1427,7 @@ public class CustomEditorTests {
 		ClassArrayEditor classArrayEditor = new ClassArrayEditor();
 		classArrayEditor.setAsText("java.lang.String[],java.util.Map[],int[],float[][][]");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
-		assertThat(classes.length).isEqualTo((long) 4);
+		assertThat(classes.length).isEqualTo(4);
 		assertThat(classes[0]).isEqualTo(String[].class);
 		assertThat(classes[1]).isEqualTo(Map[].class);
 		assertThat(classes[2]).isEqualTo(int[].class);

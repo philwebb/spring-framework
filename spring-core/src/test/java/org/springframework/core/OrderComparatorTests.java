@@ -41,17 +41,17 @@ public class OrderComparatorTests {
 
 	@Test
 	public void compareOrderedInstancesSame() {
-		assertThat(this.comparator.compare(new StubOrdered(100), new StubOrdered(100))).isEqualTo((long) 0);
+		assertThat(this.comparator.compare(new StubOrdered(100), new StubOrdered(100))).isEqualTo(0);
 	}
 
 	@Test
 	public void compareOrderedInstancesAfter() {
-		assertThat(this.comparator.compare(new StubOrdered(982300), new StubOrdered(100))).isEqualTo((long) 1);
+		assertThat(this.comparator.compare(new StubOrdered(982300), new StubOrdered(100))).isEqualTo(1);
 	}
 
 	@Test
 	public void compareOrderedInstancesNullFirst() {
-		assertThat(this.comparator.compare(null, new StubOrdered(100))).isEqualTo((long) 1);
+		assertThat(this.comparator.compare(null, new StubOrdered(100))).isEqualTo(1);
 	}
 
 	@Test
@@ -61,12 +61,12 @@ public class OrderComparatorTests {
 
 	@Test
 	public void compareOrderedInstancesDoubleNull() {
-		assertThat(this.comparator.compare(null, null)).isEqualTo((long) 0);
+		assertThat(this.comparator.compare(null, null)).isEqualTo(0);
 	}
 
 	@Test
 	public void compareTwoNonOrderedInstancesEndsUpAsSame() {
-		assertThat(this.comparator.compare(new Object(), new Object())).isEqualTo((long) 0);
+		assertThat(this.comparator.compare(new Object(), new Object())).isEqualTo(0);
 	}
 
 	@Test
@@ -87,14 +87,14 @@ public class OrderComparatorTests {
 	public void compareWithSourceProviderArrayNoMatch() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(5L, new Object[]{new Object(), new Object()}));
-		assertThat(customComparator.compare(new Object(), 5L)).isEqualTo((long) 0);
+		assertThat(customComparator.compare(new Object(), 5L)).isEqualTo(0);
 	}
 
 	@Test
 	public void compareWithSourceProviderEmpty() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(50L, new Object()));
-		assertThat(customComparator.compare(new Object(), 5L)).isEqualTo((long) 0);
+		assertThat(customComparator.compare(new Object(), 5L)).isEqualTo(0);
 	}
 
 

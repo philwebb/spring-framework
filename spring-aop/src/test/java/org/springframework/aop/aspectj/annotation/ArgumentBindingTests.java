@@ -69,7 +69,7 @@ public class ArgumentBindingTests {
 		Method methodUsedForParameterTypeDiscovery =
 				getClass().getMethod("methodWithOneParam", String.class);
 		String[] pnames = discoverer.getParameterNames(methodUsedForParameterTypeDiscovery);
-		assertThat(pnames.length).as("one parameter name").isEqualTo((long) 1);
+		assertThat(pnames.length).as("one parameter name").isEqualTo(1);
 		assertThat(pnames[0]).isEqualTo("formal");
 	}
 

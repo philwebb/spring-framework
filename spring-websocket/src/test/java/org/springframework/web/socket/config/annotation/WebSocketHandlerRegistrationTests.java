@@ -63,20 +63,20 @@ public class WebSocketHandlerRegistrationTests {
 		this.registration.addHandler(handler, "/foo", "/bar");
 
 		List<Mapping> mappings = this.registration.getMappings();
-		assertThat(mappings.size()).isEqualTo((long) 2);
+		assertThat(mappings.size()).isEqualTo(2);
 
 		Mapping m1 = mappings.get(0);
 		assertThat(m1.webSocketHandler).isEqualTo(handler);
 		assertThat(m1.path).isEqualTo("/foo");
 		assertThat(m1.interceptors).isNotNull();
-		assertThat(m1.interceptors.length).isEqualTo((long) 1);
+		assertThat(m1.interceptors.length).isEqualTo(1);
 		assertThat(m1.interceptors[0].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 
 		Mapping m2 = mappings.get(1);
 		assertThat(m2.webSocketHandler).isEqualTo(handler);
 		assertThat(m2.path).isEqualTo("/bar");
 		assertThat(m2.interceptors).isNotNull();
-		assertThat(m2.interceptors.length).isEqualTo((long) 1);
+		assertThat(m2.interceptors.length).isEqualTo(1);
 		assertThat(m2.interceptors[0].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
 
@@ -88,13 +88,13 @@ public class WebSocketHandlerRegistrationTests {
 		this.registration.addHandler(handler, "/foo").addInterceptors(interceptor);
 
 		List<Mapping> mappings = this.registration.getMappings();
-		assertThat(mappings.size()).isEqualTo((long) 1);
+		assertThat(mappings.size()).isEqualTo(1);
 
 		Mapping mapping = mappings.get(0);
 		assertThat(mapping.webSocketHandler).isEqualTo(handler);
 		assertThat(mapping.path).isEqualTo("/foo");
 		assertThat(mapping.interceptors).isNotNull();
-		assertThat(mapping.interceptors.length).isEqualTo((long) 2);
+		assertThat(mapping.interceptors.length).isEqualTo(2);
 		assertThat(mapping.interceptors[0]).isEqualTo(interceptor);
 		assertThat(mapping.interceptors[1].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
@@ -107,13 +107,13 @@ public class WebSocketHandlerRegistrationTests {
 		this.registration.addHandler(handler, "/foo").addInterceptors(interceptor).setAllowedOrigins();
 
 		List<Mapping> mappings = this.registration.getMappings();
-		assertThat(mappings.size()).isEqualTo((long) 1);
+		assertThat(mappings.size()).isEqualTo(1);
 
 		Mapping mapping = mappings.get(0);
 		assertThat(mapping.webSocketHandler).isEqualTo(handler);
 		assertThat(mapping.path).isEqualTo("/foo");
 		assertThat(mapping.interceptors).isNotNull();
-		assertThat(mapping.interceptors.length).isEqualTo((long) 2);
+		assertThat(mapping.interceptors.length).isEqualTo(2);
 		assertThat(mapping.interceptors[0]).isEqualTo(interceptor);
 		assertThat(mapping.interceptors[1].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
@@ -126,13 +126,13 @@ public class WebSocketHandlerRegistrationTests {
 		this.registration.addHandler(handler, "/foo").addInterceptors(interceptor).setAllowedOrigins("https://mydomain1.com");
 
 		List<Mapping> mappings = this.registration.getMappings();
-		assertThat(mappings.size()).isEqualTo((long) 1);
+		assertThat(mappings.size()).isEqualTo(1);
 
 		Mapping mapping = mappings.get(0);
 		assertThat(mapping.webSocketHandler).isEqualTo(handler);
 		assertThat(mapping.path).isEqualTo("/foo");
 		assertThat(mapping.interceptors).isNotNull();
-		assertThat(mapping.interceptors.length).isEqualTo((long) 2);
+		assertThat(mapping.interceptors.length).isEqualTo(2);
 		assertThat(mapping.interceptors[0]).isEqualTo(interceptor);
 		assertThat(mapping.interceptors[1].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
@@ -150,7 +150,7 @@ public class WebSocketHandlerRegistrationTests {
 		this.registration.getSockJsServiceRegistration().setTaskScheduler(this.taskScheduler);
 
 		List<Mapping> mappings = this.registration.getMappings();
-		assertThat(mappings.size()).isEqualTo((long) 1);
+		assertThat(mappings.size()).isEqualTo(1);
 
 		Mapping mapping = mappings.get(0);
 		assertThat(mapping.webSocketHandler).isEqualTo(handler);
@@ -170,7 +170,7 @@ public class WebSocketHandlerRegistrationTests {
 		this.registration.addHandler(handler, "/foo").setHandshakeHandler(handshakeHandler);
 
 		List<Mapping> mappings = this.registration.getMappings();
-		assertThat(mappings.size()).isEqualTo((long) 1);
+		assertThat(mappings.size()).isEqualTo(1);
 
 		Mapping mapping = mappings.get(0);
 		assertThat(mapping.webSocketHandler).isEqualTo(handler);
@@ -187,7 +187,7 @@ public class WebSocketHandlerRegistrationTests {
 		this.registration.getSockJsServiceRegistration().setTaskScheduler(this.taskScheduler);
 
 		List<Mapping> mappings = this.registration.getMappings();
-		assertThat(mappings.size()).isEqualTo((long) 1);
+		assertThat(mappings.size()).isEqualTo(1);
 
 		Mapping mapping = mappings.get(0);
 		assertThat(mapping.webSocketHandler).isEqualTo(handler);

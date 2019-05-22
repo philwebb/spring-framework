@@ -64,28 +64,28 @@ public class WebUtilsTests {
 		MultiValueMap<String, String> variables;
 
 		variables = WebUtils.parseMatrixVariables(null);
-		assertThat(variables.size()).isEqualTo((long) 0);
+		assertThat(variables.size()).isEqualTo(0);
 
 		variables = WebUtils.parseMatrixVariables("year");
-		assertThat(variables.size()).isEqualTo((long) 1);
+		assertThat(variables.size()).isEqualTo(1);
 		assertThat(variables.getFirst("year")).isEqualTo("");
 
 		variables = WebUtils.parseMatrixVariables("year=2012");
-		assertThat(variables.size()).isEqualTo((long) 1);
+		assertThat(variables.size()).isEqualTo(1);
 		assertThat(variables.getFirst("year")).isEqualTo("2012");
 
 		variables = WebUtils.parseMatrixVariables("year=2012;colors=red,blue,green");
-		assertThat(variables.size()).isEqualTo((long) 2);
+		assertThat(variables.size()).isEqualTo(2);
 		assertThat(variables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 		assertThat(variables.getFirst("year")).isEqualTo("2012");
 
 		variables = WebUtils.parseMatrixVariables(";year=2012;colors=red,blue,green;");
-		assertThat(variables.size()).isEqualTo((long) 2);
+		assertThat(variables.size()).isEqualTo(2);
 		assertThat(variables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 		assertThat(variables.getFirst("year")).isEqualTo("2012");
 
 		variables = WebUtils.parseMatrixVariables("colors=red;colors=blue;colors=green");
-		assertThat(variables.size()).isEqualTo((long) 1);
+		assertThat(variables.size()).isEqualTo(1);
 		assertThat(variables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 	}
 

@@ -43,7 +43,7 @@ public class SockJsUrlInfoTests {
 	@Test
 	public void sessionId() throws Exception {
 		SockJsUrlInfo info = new SockJsUrlInfo(new URI("https://example.com"));
-		assertThat(info.getSessionId().length()).as("Invalid sessionId: " + info.getSessionId()).isEqualTo((long) 32);
+		assertThat(info.getSessionId().length()).as("Invalid sessionId: " + info.getSessionId()).isEqualTo(32);
 	}
 
 	@Test

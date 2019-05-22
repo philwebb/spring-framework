@@ -92,7 +92,7 @@ public class RequestConditionHolderTests {
 		RequestConditionHolder params11 = new RequestConditionHolder(new ParamsRequestCondition("1"));
 		RequestConditionHolder params12 = new RequestConditionHolder(new ParamsRequestCondition("1", "2"));
 
-		assertThat(params11.compareTo(params12, this.exchange)).isEqualTo((long) 1);
+		assertThat(params11.compareTo(params12, this.exchange)).isEqualTo(1);
 		assertThat(params12.compareTo(params11, this.exchange)).isEqualTo((long) -1);
 	}
 
@@ -102,9 +102,9 @@ public class RequestConditionHolderTests {
 		RequestConditionHolder empty2 = new RequestConditionHolder(null);
 		RequestConditionHolder notEmpty = new RequestConditionHolder(new ParamsRequestCondition("name"));
 
-		assertThat(empty.compareTo(empty2, this.exchange)).isEqualTo((long) 0);
+		assertThat(empty.compareTo(empty2, this.exchange)).isEqualTo(0);
 		assertThat(notEmpty.compareTo(empty, this.exchange)).isEqualTo((long) -1);
-		assertThat(empty.compareTo(notEmpty, this.exchange)).isEqualTo((long) 1);
+		assertThat(empty.compareTo(notEmpty, this.exchange)).isEqualTo(1);
 	}
 
 	@Test

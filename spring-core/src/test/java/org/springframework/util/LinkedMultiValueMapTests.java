@@ -40,7 +40,7 @@ public class LinkedMultiValueMapTests {
 	public void add() {
 		map.add("key", "value1");
 		map.add("key", "value2");
-		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo(1);
 		List<String> expected = new ArrayList<>(2);
 		expected.add("value1");
 		expected.add("value2");
@@ -51,7 +51,7 @@ public class LinkedMultiValueMapTests {
 	public void set() {
 		map.set("key", "value1");
 		map.set("key", "value2");
-		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo(1);
 		assertThat(map.get("key")).isEqualTo(Collections.singletonList("value2"));
 	}
 
@@ -59,7 +59,7 @@ public class LinkedMultiValueMapTests {
 	public void addAll() {
 		map.add("key", "value1");
 		map.addAll("key", Arrays.asList("value2", "value3"));
-		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo(1);
 		List<String> expected = new ArrayList<>(2);
 		expected.add("value1");
 		expected.add("value2");
@@ -70,7 +70,7 @@ public class LinkedMultiValueMapTests {
 	@Test
 	public void addAllWithEmptyList() {
 		map.addAll("key", Collections.emptyList());
-		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo(1);
 		assertThat(map.get("key")).isEqualTo(Collections.emptyList());
 		assertThat(map.getFirst("key")).isNull();
 	}
@@ -99,7 +99,7 @@ public class LinkedMultiValueMapTests {
 		values.add("value2");
 		map.put("key", values);
 		Map<String, String> svm = map.toSingleValueMap();
-		assertThat(svm.size()).isEqualTo((long) 1);
+		assertThat(svm.size()).isEqualTo(1);
 		assertThat(svm.get("key")).isEqualTo("value1");
 	}
 
@@ -107,7 +107,7 @@ public class LinkedMultiValueMapTests {
 	public void toSingleValueMapWithEmptyList() {
 		map.put("key", Collections.emptyList());
 		Map<String, String> svm = map.toSingleValueMap();
-		assertThat(svm.size()).isEqualTo((long) 0);
+		assertThat(svm.size()).isEqualTo(0);
 		assertThat(svm.get("key")).isNull();
 	}
 

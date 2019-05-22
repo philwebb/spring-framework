@@ -102,10 +102,10 @@ public class CommonsPool2TargetSourceTests {
 		//assertEquals(1, conf.getInvocations());
 		pooled.doWork();
 		//	assertEquals("No objects active", 0, conf.getActive());
-		assertThat(conf.getMaxSize()).as("Correct target source").isEqualTo((long) 25);
+		assertThat(conf.getMaxSize()).as("Correct target source").isEqualTo(25);
 		//	assertTrue("Some free", conf.getFree() > 0);
 		//assertEquals(2, conf.getInvocations());
-		assertThat(conf.getMaxSize()).isEqualTo((long) 25);
+		assertThat(conf.getMaxSize()).isEqualTo(25);
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class CommonsPool2TargetSourceTests {
 		boolean condition = ((Advised) serialized).getTargetSource() instanceof SingletonTargetSource;
 		assertThat(condition).isTrue();
 		serialized.setAge(25);
-		assertThat(serialized.getAge()).isEqualTo((long) 25);
+		assertThat(serialized.getAge()).isEqualTo(25);
 	}
 
 	@Test

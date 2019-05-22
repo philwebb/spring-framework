@@ -62,12 +62,12 @@ public class JndiDestinationResolverTests {
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
 		assertThat(destination).isNotNull();
 		assertThat(destination).isSameAs(DESTINATION);
-		assertThat(resolver.getCallCount()).isEqualTo((long) 1);
+		assertThat(resolver.getCallCount()).isEqualTo(1);
 
 		destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
 		assertThat(destination).isNotNull();
 		assertThat(destination).isSameAs(DESTINATION);
-		assertThat(resolver.getCallCount()).isEqualTo((long) 2);
+		assertThat(resolver.getCallCount()).isEqualTo(2);
 	}
 
 	@Test

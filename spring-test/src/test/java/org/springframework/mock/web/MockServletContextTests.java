@@ -93,19 +93,19 @@ public class MockServletContextTests {
 
 	@Test
 	public void servletVersion() {
-		assertThat(sc.getMajorVersion()).isEqualTo((long) 3);
-		assertThat(sc.getMinorVersion()).isEqualTo((long) 1);
-		assertThat(sc.getEffectiveMajorVersion()).isEqualTo((long) 3);
-		assertThat(sc.getEffectiveMinorVersion()).isEqualTo((long) 1);
+		assertThat(sc.getMajorVersion()).isEqualTo(3);
+		assertThat(sc.getMinorVersion()).isEqualTo(1);
+		assertThat(sc.getEffectiveMajorVersion()).isEqualTo(3);
+		assertThat(sc.getEffectiveMinorVersion()).isEqualTo(1);
 
 		sc.setMajorVersion(4);
 		sc.setMinorVersion(0);
 		sc.setEffectiveMajorVersion(4);
 		sc.setEffectiveMinorVersion(0);
-		assertThat(sc.getMajorVersion()).isEqualTo((long) 4);
-		assertThat(sc.getMinorVersion()).isEqualTo((long) 0);
-		assertThat(sc.getEffectiveMajorVersion()).isEqualTo((long) 4);
-		assertThat(sc.getEffectiveMinorVersion()).isEqualTo((long) 0);
+		assertThat(sc.getMajorVersion()).isEqualTo(4);
+		assertThat(sc.getMinorVersion()).isEqualTo(0);
+		assertThat(sc.getEffectiveMajorVersion()).isEqualTo(4);
+		assertThat(sc.getEffectiveMinorVersion()).isEqualTo(0);
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class MockServletContextTests {
 	public void getServletRegistrations() {
 		Map<String, ? extends ServletRegistration> servletRegistrations = sc.getServletRegistrations();
 		assertThat(servletRegistrations).isNotNull();
-		assertThat(servletRegistrations.size()).isEqualTo((long) 0);
+		assertThat(servletRegistrations.size()).isEqualTo(0);
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class MockServletContextTests {
 	public void getFilterRegistrations() {
 		Map<String, ? extends FilterRegistration> filterRegistrations = sc.getFilterRegistrations();
 		assertThat(filterRegistrations).isNotNull();
-		assertThat(filterRegistrations.size()).isEqualTo((long) 0);
+		assertThat(filterRegistrations.size()).isEqualTo(0);
 	}
 
 }

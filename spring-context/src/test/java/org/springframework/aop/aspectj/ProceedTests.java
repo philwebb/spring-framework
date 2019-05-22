@@ -61,7 +61,7 @@ public class ProceedTests {
 	@Test
 	public void testGetArgsIsDefensive() {
 		this.testBean.setAge(5);
-		assertThat(this.testBean.getAge()).as("getArgs is defensive").isEqualTo((long) 5);
+		assertThat(this.testBean.getAge()).as("getArgs is defensive").isEqualTo(5);
 	}
 
 	@Test

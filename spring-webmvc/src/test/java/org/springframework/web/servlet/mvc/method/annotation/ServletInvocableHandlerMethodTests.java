@@ -232,7 +232,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod = handlerMethod.wrapConcurrentResult(new ResponseEntity<>(HttpStatus.OK));
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getContentAsString()).isEqualTo("");
 	}
 
@@ -243,7 +243,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod = handlerMethod.wrapConcurrentResult(null);
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getContentAsString()).isEqualTo("");
 	}
 
@@ -256,7 +256,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod = handlerMethod.wrapConcurrentResult(null);
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getContentAsString()).isEqualTo("");
 	}
 
@@ -267,7 +267,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod = handlerMethod.wrapConcurrentResult(null);
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getContentAsString()).isEqualTo("");
 	}
 
@@ -285,7 +285,7 @@ public class ServletInvocableHandlerMethodTests {
 		hm = hm.wrapConcurrentResult(result);
 		hm.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getContentAsString()).isEqualTo("[[\"foo1\",\"bar1\"],[\"foo2\",\"bar2\"]]");
 	}
 
@@ -303,7 +303,7 @@ public class ServletInvocableHandlerMethodTests {
 		hm = hm.wrapConcurrentResult(result);
 		hm.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getContentAsString()).isEqualTo("[{\"value\":\"foo\"},{\"value\":\"bar\"}]");
 	}
 
@@ -313,7 +313,7 @@ public class ServletInvocableHandlerMethodTests {
 		ServletInvocableHandlerMethod handlerMethod = getHandlerMethod(new ResponseEntityHandler(), "handleRawType");
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo(200);
 		assertThat(this.response.getContentAsString()).isEqualTo("");
 	}
 

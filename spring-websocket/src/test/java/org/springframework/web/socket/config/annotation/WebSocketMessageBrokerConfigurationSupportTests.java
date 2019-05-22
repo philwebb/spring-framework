@@ -74,10 +74,10 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 	public void handlerMapping() {
 		ApplicationContext config = createConfig(TestChannelConfig.class, TestConfigurer.class);
 		SimpleUrlHandlerMapping hm = (SimpleUrlHandlerMapping) config.getBean(HandlerMapping.class);
-		assertThat(hm.getOrder()).isEqualTo((long) 1);
+		assertThat(hm.getOrder()).isEqualTo(1);
 
 		Map<String, Object> handlerMap = hm.getHandlerMap();
-		assertThat(handlerMap.size()).isEqualTo((long) 1);
+		assertThat(handlerMap.size()).isEqualTo(1);
 		assertThat(handlerMap.get("/simpleBroker")).isNotNull();
 	}
 
@@ -114,7 +114,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();
 		assertThat(interceptors.get(interceptors.size() - 1).getClass()).isEqualTo(ImmutableMessageChannelInterceptor.class);
 
-		assertThat(handlers.size()).isEqualTo((long) 1);
+		assertThat(handlers.size()).isEqualTo(1);
 		assertThat(handlers.contains(config.getBean(SubProtocolWebSocketHandler.class))).isTrue();
 	}
 
@@ -127,7 +127,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();
 		assertThat(interceptors.get(interceptors.size() - 1).getClass()).isEqualTo(ImmutableMessageChannelInterceptor.class);
 
-		assertThat(handlers.size()).isEqualTo((long) 2);
+		assertThat(handlers.size()).isEqualTo(2);
 		assertThat(handlers.contains(config.getBean(SimpleBrokerMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(config.getBean(UserDestinationMessageHandler.class))).isTrue();
 	}

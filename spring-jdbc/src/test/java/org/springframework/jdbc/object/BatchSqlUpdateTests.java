@@ -75,16 +75,16 @@ public class BatchSqlUpdateTests {
 		update.update(ids[1]);
 
 		if (flushThroughBatchSize) {
-			assertThat(update.getQueueCount()).isEqualTo((long) 0);
-			assertThat(update.getRowsAffected().length).isEqualTo((long) 2);
+			assertThat(update.getQueueCount()).isEqualTo(0);
+			assertThat(update.getRowsAffected().length).isEqualTo(2);
 		}
 		else {
-			assertThat(update.getQueueCount()).isEqualTo((long) 2);
-			assertThat(update.getRowsAffected().length).isEqualTo((long) 0);
+			assertThat(update.getQueueCount()).isEqualTo(2);
+			assertThat(update.getRowsAffected().length).isEqualTo(0);
 		}
 
 		int[] actualRowsAffected = update.flush();
-		assertThat(update.getQueueCount()).isEqualTo((long) 0);
+		assertThat(update.getQueueCount()).isEqualTo(0);
 
 		if (flushThroughBatchSize) {
 			assertThat(actualRowsAffected.length == 0).as("flush did not execute updates").isTrue();
@@ -101,7 +101,7 @@ public class BatchSqlUpdateTests {
 		assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
 
 		update.reset();
-		assertThat(update.getRowsAffected().length).isEqualTo((long) 0);
+		assertThat(update.getRowsAffected().length).isEqualTo(0);
 
 		verify(preparedStatement).setObject(1, ids[0], Types.INTEGER);
 		verify(preparedStatement).setObject(1, ids[1], Types.INTEGER);

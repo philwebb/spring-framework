@@ -315,8 +315,8 @@ public class SingleConnectionFactoryTests {
 		con2.start();
 		scf.destroy();  // should trigger actual close
 
-		assertThat(con.getStartCount()).isEqualTo((long) 2);
-		assertThat(con.getCloseCount()).isEqualTo((long) 2);
+		assertThat(con.getStartCount()).isEqualTo(2);
+		assertThat(con.getCloseCount()).isEqualTo(2);
 	}
 
 	@Test
@@ -337,9 +337,9 @@ public class SingleConnectionFactoryTests {
 		con2.start();
 		scf.destroy();  // should trigger actual close
 
-		assertThat(con.getStartCount()).isEqualTo((long) 2);
-		assertThat(con.getCloseCount()).isEqualTo((long) 2);
-		assertThat(listener.getCount()).isEqualTo((long) 1);
+		assertThat(con.getStartCount()).isEqualTo(2);
+		assertThat(con.getCloseCount()).isEqualTo(2);
+		assertThat(listener.getCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -373,11 +373,11 @@ public class SingleConnectionFactoryTests {
 		con.getExceptionListener().onException(new JMSException(""));
 		scf.destroy();  // should trigger actual close
 
-		assertThat(con.getStartCount()).isEqualTo((long) 0);
-		assertThat(con.getCloseCount()).isEqualTo((long) 1);
-		assertThat(listener0.getCount()).isEqualTo((long) 3);
-		assertThat(listener1.getCount()).isEqualTo((long) 2);
-		assertThat(listener2.getCount()).isEqualTo((long) 1);
+		assertThat(con.getStartCount()).isEqualTo(0);
+		assertThat(con.getCloseCount()).isEqualTo(1);
+		assertThat(listener0.getCount()).isEqualTo(3);
+		assertThat(listener1.getCount()).isEqualTo(2);
+		assertThat(listener2.getCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -407,11 +407,11 @@ public class SingleConnectionFactoryTests {
 		con1.close();
 		scf.destroy();  // should trigger actual close
 
-		assertThat(con.getStartCount()).isEqualTo((long) 2);
-		assertThat(con.getCloseCount()).isEqualTo((long) 2);
-		assertThat(listener0.getCount()).isEqualTo((long) 2);
-		assertThat(listener1.getCount()).isEqualTo((long) 2);
-		assertThat(listener2.getCount()).isEqualTo((long) 1);
+		assertThat(con.getStartCount()).isEqualTo(2);
+		assertThat(con.getCloseCount()).isEqualTo(2);
+		assertThat(listener0.getCount()).isEqualTo(2);
+		assertThat(listener1.getCount()).isEqualTo(2);
+		assertThat(listener2.getCount()).isEqualTo(1);
 	}
 
 	@Test

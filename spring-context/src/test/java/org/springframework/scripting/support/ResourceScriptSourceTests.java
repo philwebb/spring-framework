@@ -41,7 +41,7 @@ public class ResourceScriptSourceTests {
 
 		ResourceScriptSource scriptSource = new ResourceScriptSource(resource);
 		long lastModified = scriptSource.retrieveLastModifiedTime();
-		assertThat(lastModified).isEqualTo((long) 0);
+		assertThat(lastModified).isEqualTo(0);
 	}
 
 	@Test

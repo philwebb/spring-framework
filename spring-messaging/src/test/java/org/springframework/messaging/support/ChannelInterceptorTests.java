@@ -60,7 +60,7 @@ public class ChannelInterceptorTests {
 		this.channel.addInterceptor(interceptor);
 		this.channel.send(MessageBuilder.withPayload("test").build());
 
-		assertThat(this.messageHandler.getMessages().size()).isEqualTo((long) 1);
+		assertThat(this.messageHandler.getMessages().size()).isEqualTo(1);
 		Message<?> result = this.messageHandler.getMessages().get(0);
 
 		assertThat(result).isNotNull();
@@ -77,9 +77,9 @@ public class ChannelInterceptorTests {
 		Message<?> message = MessageBuilder.withPayload("test").build();
 		this.channel.send(message);
 
-		assertThat(interceptor1.getCounter().get()).isEqualTo((long) 1);
-		assertThat(interceptor2.getCounter().get()).isEqualTo((long) 1);
-		assertThat(this.messageHandler.getMessages().size()).isEqualTo((long) 0);
+		assertThat(interceptor1.getCounter().get()).isEqualTo(1);
+		assertThat(interceptor2.getCounter().get()).isEqualTo(1);
+		assertThat(this.messageHandler.getMessages().size()).isEqualTo(0);
 		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
 		assertThat(interceptor2.wasAfterCompletionInvoked()).isFalse();
 	}

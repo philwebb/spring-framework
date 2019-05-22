@@ -851,10 +851,10 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setAutoGrowNestedPaths(true);
 
 		accessor.setPropertyValue("array[0]", "Test0");
-		assertThat(target.getArray().length).isEqualTo((long) 1);
+		assertThat(target.getArray().length).isEqualTo(1);
 
 		accessor.setPropertyValue("array[2]", "Test2");
-		assertThat(target.getArray().length).isEqualTo((long) 3);
+		assertThat(target.getArray().length).isEqualTo(3);
 		assertThat(target.getArray()[0].equals("Test0") && target.getArray()[1] == null &&
 				target.getArray()[2].equals("Test2")).as("correct values").isTrue();
 	}
@@ -963,9 +963,9 @@ public abstract class AbstractPropertyAccessorTests {
 		PrimitiveArrayBean target = new PrimitiveArrayBean();
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("array", new String[] {"1", "2"});
-		assertThat(target.getArray().length).isEqualTo((long) 2);
-		assertThat(target.getArray()[0]).isEqualTo((long) 1);
-		assertThat(target.getArray()[1]).isEqualTo((long) 2);
+		assertThat(target.getArray().length).isEqualTo(2);
+		assertThat(target.getArray()[0]).isEqualTo(1);
+		assertThat(target.getArray()[1]).isEqualTo(2);
 	}
 
 	@Test
@@ -982,8 +982,8 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("array", input);
 		}
 		sw.stop();
-		assertThat(target.getArray().length).isEqualTo((long) 1024);
-		assertThat(target.getArray()[0]).isEqualTo((long) 0);
+		assertThat(target.getArray().length).isEqualTo(1024);
+		assertThat(target.getArray()[0]).isEqualTo(0);
 		long time1 = sw.getLastTaskTimeMillis();
 		assertThat(sw.getLastTaskTimeMillis() < 100).as("Took too long").isTrue();
 
@@ -1017,8 +1017,8 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("array", input);
 		}
 		sw.stop();
-		assertThat(target.getArray().length).isEqualTo((long) 1024);
-		assertThat(target.getArray()[0]).isEqualTo((long) 0);
+		assertThat(target.getArray().length).isEqualTo(1024);
+		assertThat(target.getArray()[0]).isEqualTo(0);
 		assertThat(sw.getLastTaskTimeMillis() > time1).as("Took too long").isTrue();
 	}
 
@@ -1036,9 +1036,9 @@ public abstract class AbstractPropertyAccessorTests {
 		});
 		int[] input = new int[1024];
 		accessor.setPropertyValue("array", input);
-		assertThat(target.getArray().length).isEqualTo((long) 1024);
-		assertThat(target.getArray()[0]).isEqualTo((long) 1);
-		assertThat(target.getArray()[1]).isEqualTo((long) 1);
+		assertThat(target.getArray().length).isEqualTo(1024);
+		assertThat(target.getArray()[0]).isEqualTo(1);
+		assertThat(target.getArray()[1]).isEqualTo(1);
 	}
 
 	@Test
@@ -1055,9 +1055,9 @@ public abstract class AbstractPropertyAccessorTests {
 		});
 		int[] input = new int[1024];
 		accessor.setPropertyValue("array", input);
-		assertThat(target.getArray().length).isEqualTo((long) 1024);
-		assertThat(target.getArray()[0]).isEqualTo((long) 0);
-		assertThat(target.getArray()[1]).isEqualTo((long) 1);
+		assertThat(target.getArray().length).isEqualTo(1024);
+		assertThat(target.getArray()[0]).isEqualTo(0);
+		assertThat(target.getArray()[1]).isEqualTo(1);
 	}
 
 	@Test
@@ -1067,10 +1067,10 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setAutoGrowNestedPaths(true);
 
 		accessor.setPropertyValue("array[0]", 1);
-		assertThat(target.getArray().length).isEqualTo((long) 1);
+		assertThat(target.getArray().length).isEqualTo(1);
 
 		accessor.setPropertyValue("array[2]", 3);
-		assertThat(target.getArray().length).isEqualTo((long) 3);
+		assertThat(target.getArray().length).isEqualTo(3);
 		assertThat(target.getArray()[0] == 1 && target.getArray()[1] == 0 &&
 				target.getArray()[2] == 3).as("correct values").isTrue();
 	}
@@ -1087,7 +1087,7 @@ public abstract class AbstractPropertyAccessorTests {
 		values.add("4");
 		accessor.setPropertyValue("items", values);
 		Object[] result = target.items;
-		assertThat(result.length).isEqualTo((long) 4);
+		assertThat(result.length).isEqualTo(4);
 		assertThat(result[0]).isEqualTo("1");
 		assertThat(result[1]).isEqualTo("2");
 		assertThat(result[2]).isEqualTo("3");
@@ -1148,13 +1148,13 @@ public abstract class AbstractPropertyAccessorTests {
 		Set<String> list = new HashSet<>();
 		list.add("list1");
 		accessor.setPropertyValue("list", list);
-		assertThat(target.getCollection().size()).isEqualTo((long) 1);
+		assertThat(target.getCollection().size()).isEqualTo(1);
 		assertThat(target.getCollection().containsAll(coll)).isTrue();
-		assertThat(target.getSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSet().size()).isEqualTo(1);
 		assertThat(target.getSet().containsAll(set)).isTrue();
-		assertThat(target.getSortedSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSortedSet().size()).isEqualTo(1);
 		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
-		assertThat(target.getList().size()).isEqualTo((long) 1);
+		assertThat(target.getList().size()).isEqualTo(1);
 		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
@@ -1175,13 +1175,13 @@ public abstract class AbstractPropertyAccessorTests {
 		Set<String> list = new HashSet<>();
 		list.add("list1");
 		accessor.setPropertyValue("list", list.toArray());
-		assertThat(target.getCollection().size()).isEqualTo((long) 1);
+		assertThat(target.getCollection().size()).isEqualTo(1);
 		assertThat(target.getCollection().containsAll(coll)).isTrue();
-		assertThat(target.getSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSet().size()).isEqualTo(1);
 		assertThat(target.getSet().containsAll(set)).isTrue();
-		assertThat(target.getSortedSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSortedSet().size()).isEqualTo(1);
 		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
-		assertThat(target.getList().size()).isEqualTo((long) 1);
+		assertThat(target.getList().size()).isEqualTo(1);
 		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
@@ -1202,13 +1202,13 @@ public abstract class AbstractPropertyAccessorTests {
 		Set<Integer> list = new HashSet<>();
 		list.add(3);
 		accessor.setPropertyValue("list", new int[] {3});
-		assertThat(target.getCollection().size()).isEqualTo((long) 1);
+		assertThat(target.getCollection().size()).isEqualTo(1);
 		assertThat(target.getCollection().containsAll(coll)).isTrue();
-		assertThat(target.getSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSet().size()).isEqualTo(1);
 		assertThat(target.getSet().containsAll(set)).isTrue();
-		assertThat(target.getSortedSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSortedSet().size()).isEqualTo(1);
 		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
-		assertThat(target.getList().size()).isEqualTo((long) 1);
+		assertThat(target.getList().size()).isEqualTo(1);
 		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
@@ -1229,13 +1229,13 @@ public abstract class AbstractPropertyAccessorTests {
 		Set<Integer> list = new HashSet<>();
 		list.add(3);
 		accessor.setPropertyValue("list", new Integer(3));
-		assertThat(target.getCollection().size()).isEqualTo((long) 1);
+		assertThat(target.getCollection().size()).isEqualTo(1);
 		assertThat(target.getCollection().containsAll(coll)).isTrue();
-		assertThat(target.getSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSet().size()).isEqualTo(1);
 		assertThat(target.getSet().containsAll(set)).isTrue();
-		assertThat(target.getSortedSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSortedSet().size()).isEqualTo(1);
 		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
-		assertThat(target.getList().size()).isEqualTo((long) 1);
+		assertThat(target.getList().size()).isEqualTo(1);
 		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
@@ -1253,11 +1253,11 @@ public abstract class AbstractPropertyAccessorTests {
 		Set<String> list = new HashSet<>();
 		list.add("list1");
 		accessor.setPropertyValue("list", "list1");
-		assertThat(target.getSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSet().size()).isEqualTo(1);
 		assertThat(target.getSet().containsAll(set)).isTrue();
-		assertThat(target.getSortedSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSortedSet().size()).isEqualTo(1);
 		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
-		assertThat(target.getList().size()).isEqualTo((long) 1);
+		assertThat(target.getList().size()).isEqualTo(1);
 		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
@@ -1271,11 +1271,11 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("set", "set1 ");
 		accessor.setPropertyValue("sortedSet", "sortedSet1");
 		accessor.setPropertyValue("list", "list1 ");
-		assertThat(target.getSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSet().size()).isEqualTo(1);
 		assertThat(target.getSet().contains("set1")).isTrue();
-		assertThat(target.getSortedSet().size()).isEqualTo((long) 1);
+		assertThat(target.getSortedSet().size()).isEqualTo(1);
 		assertThat(target.getSortedSet().contains("sortedSet1")).isTrue();
-		assertThat(target.getList().size()).isEqualTo((long) 1);
+		assertThat(target.getList().size()).isEqualTo(1);
 		assertThat(target.getList().contains("list1")).isTrue();
 
 		accessor.setPropertyValue("list", Collections.singletonList("list1 "));
@@ -1306,9 +1306,9 @@ public abstract class AbstractPropertyAccessorTests {
 		Map<String, String> sortedMap = new TreeMap<>();
 		sortedMap.put("sortedKey", "sortedValue");
 		accessor.setPropertyValue("sortedMap", sortedMap);
-		assertThat(target.getMap().size()).isEqualTo((long) 1);
+		assertThat(target.getMap().size()).isEqualTo(1);
 		assertThat(target.getMap().get("key")).isEqualTo("value");
-		assertThat(target.getSortedMap().size()).isEqualTo((long) 1);
+		assertThat(target.getSortedMap().size()).isEqualTo(1);
 		assertThat(target.getSortedMap().get("sortedKey")).isEqualTo("sortedValue");
 	}
 

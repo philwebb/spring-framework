@@ -194,7 +194,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertThat(mav).isNotNull();
-		assertThat(mav.getModelMap().size()).isEqualTo((long) 1);
+		assertThat(mav.getModelMap().size()).isEqualTo(1);
 		assertThat(mav.getModelMap().get("exceptionClassName")).isEqualTo("IllegalArgumentException");
 	}
 

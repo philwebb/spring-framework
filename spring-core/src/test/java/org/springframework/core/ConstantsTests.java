@@ -35,7 +35,7 @@ public class ConstantsTests {
 	public void constants() {
 		Constants c = new Constants(A.class);
 		assertThat(c.getClassName()).isEqualTo(A.class.getName());
-		assertThat(c.getSize()).isEqualTo((long) 9);
+		assertThat(c.getSize()).isEqualTo(9);
 
 		assertThat(c.asNumber("DOG").intValue()).isEqualTo((long) A.DOG);
 		assertThat(c.asNumber("dog").intValue()).isEqualTo((long) A.DOG);
@@ -60,11 +60,11 @@ public class ConstantsTests {
 		assertThat(names.contains("S1")).isTrue();
 
 		names = c.getNames("D");
-		assertThat(names.size()).isEqualTo((long) 1);
+		assertThat(names.size()).isEqualTo(1);
 		assertThat(names.contains("DOG")).isTrue();
 
 		names = c.getNames("d");
-		assertThat(names.size()).isEqualTo((long) 1);
+		assertThat(names.size()).isEqualTo(1);
 		assertThat(names.contains("DOG")).isTrue();
 	}
 
@@ -73,22 +73,22 @@ public class ConstantsTests {
 		Constants c = new Constants(A.class);
 
 		Set<?> values = c.getValues("");
-		assertThat(values.size()).isEqualTo((long) 7);
+		assertThat(values.size()).isEqualTo(7);
 		assertThat(values.contains(Integer.valueOf(0))).isTrue();
 		assertThat(values.contains(Integer.valueOf(66))).isTrue();
 		assertThat(values.contains("")).isTrue();
 
 		values = c.getValues("D");
-		assertThat(values.size()).isEqualTo((long) 1);
+		assertThat(values.size()).isEqualTo(1);
 		assertThat(values.contains(Integer.valueOf(0))).isTrue();
 
 		values = c.getValues("prefix");
-		assertThat(values.size()).isEqualTo((long) 2);
+		assertThat(values.size()).isEqualTo(2);
 		assertThat(values.contains(Integer.valueOf(1))).isTrue();
 		assertThat(values.contains(Integer.valueOf(2))).isTrue();
 
 		values = c.getValuesForProperty("myProperty");
-		assertThat(values.size()).isEqualTo((long) 2);
+		assertThat(values.size()).isEqualTo(2);
 		assertThat(values.contains(Integer.valueOf(1))).isTrue();
 		assertThat(values.contains(Integer.valueOf(2))).isTrue();
 	}
@@ -101,22 +101,22 @@ public class ConstantsTests {
 			Constants c = new Constants(A.class);
 
 			Set<?> values = c.getValues("");
-			assertThat(values.size()).isEqualTo((long) 7);
+			assertThat(values.size()).isEqualTo(7);
 			assertThat(values.contains(Integer.valueOf(0))).isTrue();
 			assertThat(values.contains(Integer.valueOf(66))).isTrue();
 			assertThat(values.contains("")).isTrue();
 
 			values = c.getValues("D");
-			assertThat(values.size()).isEqualTo((long) 1);
+			assertThat(values.size()).isEqualTo(1);
 			assertThat(values.contains(Integer.valueOf(0))).isTrue();
 
 			values = c.getValues("prefix");
-			assertThat(values.size()).isEqualTo((long) 2);
+			assertThat(values.size()).isEqualTo(2);
 			assertThat(values.contains(Integer.valueOf(1))).isTrue();
 			assertThat(values.contains(Integer.valueOf(2))).isTrue();
 
 			values = c.getValuesForProperty("myProperty");
-			assertThat(values.size()).isEqualTo((long) 2);
+			assertThat(values.size()).isEqualTo(2);
 			assertThat(values.contains(Integer.valueOf(1))).isTrue();
 			assertThat(values.contains(Integer.valueOf(2))).isTrue();
 		}
@@ -130,12 +130,12 @@ public class ConstantsTests {
 		Constants c = new Constants(A.class);
 
 		Set<?> names = c.getNamesForSuffix("_PROPERTY");
-		assertThat(names.size()).isEqualTo((long) 2);
+		assertThat(names.size()).isEqualTo(2);
 		assertThat(names.contains("NO_PROPERTY")).isTrue();
 		assertThat(names.contains("YES_PROPERTY")).isTrue();
 
 		Set<?> values = c.getValuesForSuffix("_PROPERTY");
-		assertThat(values.size()).isEqualTo((long) 2);
+		assertThat(values.size()).isEqualTo(2);
 		assertThat(values.contains(Integer.valueOf(3))).isTrue();
 		assertThat(values.contains(Integer.valueOf(4))).isTrue();
 	}
@@ -192,30 +192,30 @@ public class ConstantsTests {
 	public void getValuesWithNullPrefix() throws Exception {
 		Constants c = new Constants(A.class);
 		Set<?> values = c.getValues(null);
-		assertThat(values.size()).as("Must have returned *all* public static final values").isEqualTo((long) 7);
+		assertThat(values.size()).as("Must have returned *all* public static final values").isEqualTo(7);
 	}
 
 	@Test
 	public void getValuesWithEmptyStringPrefix() throws Exception {
 		Constants c = new Constants(A.class);
 		Set<Object> values = c.getValues("");
-		assertThat(values.size()).as("Must have returned *all* public static final values").isEqualTo((long) 7);
+		assertThat(values.size()).as("Must have returned *all* public static final values").isEqualTo(7);
 	}
 
 	@Test
 	public void getValuesWithWhitespacedStringPrefix() throws Exception {
 		Constants c = new Constants(A.class);
 		Set<?> values = c.getValues(" ");
-		assertThat(values.size()).as("Must have returned *all* public static final values").isEqualTo((long) 7);
+		assertThat(values.size()).as("Must have returned *all* public static final values").isEqualTo(7);
 	}
 
 	@Test
 	public void withClassThatExposesNoConstants() throws Exception {
 		Constants c = new Constants(NoConstants.class);
-		assertThat(c.getSize()).isEqualTo((long) 0);
+		assertThat(c.getSize()).isEqualTo(0);
 		final Set<?> values = c.getValues("");
 		assertThat(values).isNotNull();
-		assertThat(values.size()).isEqualTo((long) 0);
+		assertThat(values.size()).isEqualTo(0);
 	}
 
 	@Test

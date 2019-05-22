@@ -105,7 +105,7 @@ public class ResourceHandlerRegistryTests {
 		assertThat(this.registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
 
 		this.registry.setOrder(0);
-		assertThat(this.registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
+		assertThat(this.registry.getHandlerMapping().getOrder()).isEqualTo(0);
 	}
 
 	@Test

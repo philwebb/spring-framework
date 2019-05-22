@@ -66,8 +66,8 @@ public class SimpMessageTypeMessageConditionTests {
 	@Test
 	public void compareTo() {
 		Message<byte[]> message = message(null);
-		assertThat(condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.MESSAGE), message)).isEqualTo((long) 0);
-		assertThat(condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.SUBSCRIBE), message)).isEqualTo((long) 0);
+		assertThat(condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.MESSAGE), message)).isEqualTo(0);
+		assertThat(condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.SUBSCRIBE), message)).isEqualTo(0);
 	}
 
 	private Message<byte[]> message(SimpMessageType messageType) {

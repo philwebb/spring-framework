@@ -376,7 +376,7 @@ public class TransactionalEventListenerTests {
 			for (String phase : phases) {
 				List<Object> eventsForPhase = getEvents(phase);
 				assertThat(eventsForPhase.size()).as("Expected no events for phase '" + phase + "' " +
-								"but got " + eventsForPhase + ":").isEqualTo((long) 0);
+								"but got " + eventsForPhase + ":").isEqualTo(0);
 			}
 		}
 

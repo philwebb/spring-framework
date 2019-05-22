@@ -83,7 +83,7 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(this.message);
-		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo(1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -99,7 +99,7 @@ public class ExecutorSubscribableChannelTests {
 		verify(this.handler, never()).handleMessage(this.message);
 		this.runnableCaptor.getValue().run();
 		verify(this.handler).handleMessage(this.message);
-		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo(1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -153,7 +153,7 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(expected);
-		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo(1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -166,8 +166,8 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verifyNoMoreInteractions(this.handler);
-		assertThat(interceptor1.getCounter().get()).isEqualTo((long) 1);
-		assertThat(interceptor2.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor1.getCounter().get()).isEqualTo(1);
+		assertThat(interceptor2.getCounter().get()).isEqualTo(1);
 		assertThat(interceptor1.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -185,7 +185,7 @@ public class ExecutorSubscribableChannelTests {
 			assertThat(actual.getCause()).isSameAs(expected);
 		}
 		verify(this.handler).handleMessage(this.message);
-		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo(1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 

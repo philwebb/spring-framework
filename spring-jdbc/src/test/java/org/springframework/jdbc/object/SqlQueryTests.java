@@ -613,7 +613,7 @@ public class SqlQueryTests  {
 		ids.add(2);
 		List<Customer> cust = query.findCustomers(ids);
 
-		assertThat(cust.size()).as("We got two customers back").isEqualTo((long) 2);
+		assertThat(cust.size()).as("We got two customers back").isEqualTo(2);
 		assertThat(1).as("First customer id was assigned correctly").isEqualTo((long) cust.get(0).getId());
 		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
 		assertThat(2).as("Second customer id was assigned correctly").isEqualTo((long) cust.get(1).getId());
@@ -662,7 +662,7 @@ public class SqlQueryTests  {
 		CustomerQuery query = new CustomerQuery(dataSource);
 		List<Customer> cust = query.findCustomers(1);
 
-		assertThat(cust.size()).as("We got two customers back").isEqualTo((long) 2);
+		assertThat(cust.size()).as("We got two customers back").isEqualTo(2);
 		assertThat(1).as("First customer id was assigned correctly").isEqualTo((long) cust.get(0).getId());
 		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
 		assertThat(2).as("Second customer id was assigned correctly").isEqualTo((long) cust.get(1).getId());

@@ -97,9 +97,9 @@ public class HotSwappableTargetSourceTests {
 		// in AdvisedSupport
 		//assertEquals(target2, ((Advised) proxied).getTarget());
 
-		assertThat(proxied.getCount()).isEqualTo((long) 20);
+		assertThat(proxied.getCount()).isEqualTo(20);
 		proxied.doWork();
-		assertThat(target2.getCount()).isEqualTo((long) 21);
+		assertThat(target2.getCount()).isEqualTo(21);
 
 		// Swap it back
 		swapper.swap(target1);

@@ -57,7 +57,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 		//		beanFactory.getBean("name-value1", TestBean.class);
 		TestBean nameValue = beanFactory.getBean(name, TestBean.class);
 		assertThat(nameValue.getName()).isEqualTo(name);
-		assertThat(nameValue.getAge()).isEqualTo((long) 10);
+		assertThat(nameValue.getAge()).isEqualTo(10);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 
 		assertThat(typeRef.getName()).isEqualTo("at");
 		assertThat(typeRef.getValue()).isEqualTo("austria");
-		assertThat(typeRef.getAge()).isEqualTo((long) 10);
+		assertThat(typeRef.getAge()).isEqualTo(10);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 	public void constructorWithNameEndingInRef() throws Exception {
 		DefaultListableBeanFactory beanFactory = createFactory("simpleConstructorNamespaceHandlerTests.xml");
 		DummyBean derivedBean = beanFactory.getBean("beanWithRefConstructorArg", DummyBean.class);
-		assertThat(derivedBean.getAge()).isEqualTo((long) 10);
+		assertThat(derivedBean.getAge()).isEqualTo(10);
 		assertThat(derivedBean.getName()).isEqualTo("silly name");
 	}
 

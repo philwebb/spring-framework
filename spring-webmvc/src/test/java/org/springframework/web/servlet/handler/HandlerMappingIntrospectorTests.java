@@ -87,7 +87,7 @@ public class HandlerMappingIntrospectorTests {
 		cxt.refresh();
 
 		List<HandlerMapping> actual = getIntrospector(cxt).getHandlerMappings();
-		assertThat(actual.size()).isEqualTo((long) 2);
+		assertThat(actual.size()).isEqualTo(2);
 		assertThat(actual.get(0).getClass()).isEqualTo(BeanNameUrlHandlerMapping.class);
 		assertThat(actual.get(1).getClass()).isEqualTo(RequestMappingHandlerMapping.class);
 	}

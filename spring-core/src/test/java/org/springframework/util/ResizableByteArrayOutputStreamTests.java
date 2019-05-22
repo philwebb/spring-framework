@@ -58,7 +58,7 @@ public class ResizableByteArrayOutputStreamTests {
 		for (int i = 0; i < 129; i++) {
 			this.baos.write(0);
 		}
-		assertThat(this.baos.capacity()).isEqualTo((long) 256);
+		assertThat(this.baos.capacity()).isEqualTo(256);
 	}
 
 	@Test

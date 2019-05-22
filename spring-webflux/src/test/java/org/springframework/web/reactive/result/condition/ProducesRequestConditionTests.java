@@ -145,7 +145,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition noneMatch = none.getMatchingCondition(exchange);
 		ProducesRequestCondition htmlMatch = html.getMatchingCondition(exchange);
 
-		assertThat(noneMatch.compareTo(htmlMatch, exchange)).isEqualTo((long) 1);
+		assertThat(noneMatch.compareTo(htmlMatch, exchange)).isEqualTo(1);
 	}
 
 	@Test
@@ -173,8 +173,8 @@ public class ProducesRequestConditionTests {
 		exchange = MockServerWebExchange.from(
 				get("/").header("Accept", "application/pdf"));
 
-		assertThat(html.compareTo(xml, exchange)).isEqualTo((long) 0);
-		assertThat(xml.compareTo(html, exchange)).isEqualTo((long) 0);
+		assertThat(html.compareTo(xml, exchange)).isEqualTo(0);
+		assertThat(xml.compareTo(html, exchange)).isEqualTo(0);
 
 		// See SPR-7000
 		exchange = MockServerWebExchange.from(

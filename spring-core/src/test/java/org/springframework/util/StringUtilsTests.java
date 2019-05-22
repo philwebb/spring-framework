@@ -414,7 +414,7 @@ public class StringUtilsTests {
 		String[] input1 = new String[] {"myString2"};
 		String[] input2 = new String[] {"myString1", "myString2"};
 		String[] result = StringUtils.concatenateStringArrays(input1, input2);
-		assertThat(result.length).isEqualTo((long) 3);
+		assertThat(result.length).isEqualTo(3);
 		assertThat(result[0]).isEqualTo("myString2");
 		assertThat(result[1]).isEqualTo("myString1");
 		assertThat(result[2]).isEqualTo("myString2");
@@ -430,7 +430,7 @@ public class StringUtilsTests {
 		String[] input1 = new String[] {"myString2"};
 		String[] input2 = new String[] {"myString1", "myString2"};
 		String[] result = StringUtils.mergeStringArrays(input1, input2);
-		assertThat(result.length).isEqualTo((long) 2);
+		assertThat(result.length).isEqualTo(2);
 		assertThat(result[0]).isEqualTo("myString2");
 		assertThat(result[1]).isEqualTo("myString1");
 
@@ -478,21 +478,21 @@ public class StringUtilsTests {
 	@Test
 	public void testTokenizeToStringArray() {
 		String[] sa = StringUtils.tokenizeToStringArray("a,b , ,c", ",");
-		assertThat(sa.length).isEqualTo((long) 3);
+		assertThat(sa.length).isEqualTo(3);
 		assertThat(sa[0].equals("a") && sa[1].equals("b") && sa[2].equals("c")).as("components are correct").isTrue();
 	}
 
 	@Test
 	public void testTokenizeToStringArrayWithNotIgnoreEmptyTokens() {
 		String[] sa = StringUtils.tokenizeToStringArray("a,b , ,c", ",", true, false);
-		assertThat(sa.length).isEqualTo((long) 4);
+		assertThat(sa.length).isEqualTo(4);
 		assertThat(sa[0].equals("a") && sa[1].equals("b") && sa[2].equals("") && sa[3].equals("c")).as("components are correct").isTrue();
 	}
 
 	@Test
 	public void testTokenizeToStringArrayWithNotTrimTokens() {
 		String[] sa = StringUtils.tokenizeToStringArray("a,b ,c", ",", false, true);
-		assertThat(sa.length).isEqualTo((long) 3);
+		assertThat(sa.length).isEqualTo(3);
 		assertThat(sa[0].equals("a") && sa[1].equals("b ") && sa[2].equals("c")).as("components are correct").isTrue();
 	}
 
@@ -513,7 +513,7 @@ public class StringUtilsTests {
 	@Test
 	public void testDelimitedListToStringArrayWithComma() {
 		String[] sa = StringUtils.delimitedListToStringArray("a,b", ",");
-		assertThat(sa.length).isEqualTo((long) 2);
+		assertThat(sa.length).isEqualTo(2);
 		assertThat(sa[0]).isEqualTo("a");
 		assertThat(sa[1]).isEqualTo("b");
 	}
@@ -521,7 +521,7 @@ public class StringUtilsTests {
 	@Test
 	public void testDelimitedListToStringArrayWithSemicolon() {
 		String[] sa = StringUtils.delimitedListToStringArray("a;b", ";");
-		assertThat(sa.length).isEqualTo((long) 2);
+		assertThat(sa.length).isEqualTo(2);
 		assertThat(sa[0]).isEqualTo("a");
 		assertThat(sa[1]).isEqualTo("b");
 	}
@@ -529,7 +529,7 @@ public class StringUtilsTests {
 	@Test
 	public void testDelimitedListToStringArrayWithEmptyString() {
 		String[] sa = StringUtils.delimitedListToStringArray("a,b", "");
-		assertThat(sa.length).isEqualTo((long) 3);
+		assertThat(sa.length).isEqualTo(3);
 		assertThat(sa[0]).isEqualTo("a");
 		assertThat(sa[1]).isEqualTo(",");
 		assertThat(sa[2]).isEqualTo("b");
@@ -538,7 +538,7 @@ public class StringUtilsTests {
 	@Test
 	public void testDelimitedListToStringArrayWithNullDelimiter() {
 		String[] sa = StringUtils.delimitedListToStringArray("a,b", null);
-		assertThat(sa.length).isEqualTo((long) 1);
+		assertThat(sa.length).isEqualTo(1);
 		assertThat(sa[0]).isEqualTo("a,b");
 	}
 
@@ -588,7 +588,7 @@ public class StringUtilsTests {
 	public void testCommaDelimitedListToStringArrayEmptyStrings() {
 		// Could read these from files
 		String[] sa = StringUtils.commaDelimitedListToStringArray("a,,b");
-		assertThat(sa.length).as("a,,b produces array length 3").isEqualTo((long) 3);
+		assertThat(sa.length).as("a,,b produces array length 3").isEqualTo(3);
 		assertThat(sa[0].equals("a") && sa[1].equals("") && sa[2].equals("b")).as("components are correct").isTrue();
 
 		sa = new String[] {"", "", "a", ""};

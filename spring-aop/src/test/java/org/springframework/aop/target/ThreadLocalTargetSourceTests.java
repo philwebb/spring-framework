@@ -89,18 +89,18 @@ public class ThreadLocalTargetSourceTests {
 	public void testCanGetStatsViaMixin() {
 		ThreadLocalTargetSourceStats stats = (ThreadLocalTargetSourceStats) beanFactory.getBean("apartment");
 		// +1 because creating target for stats call counts
-		assertThat(stats.getInvocationCount()).isEqualTo((long) 1);
+		assertThat(stats.getInvocationCount()).isEqualTo(1);
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
 		apartment.doWork();
 		// +1 again
-		assertThat(stats.getInvocationCount()).isEqualTo((long) 3);
+		assertThat(stats.getInvocationCount()).isEqualTo(3);
 		// + 1 for states call!
-		assertThat(stats.getHitCount()).isEqualTo((long) 3);
+		assertThat(stats.getHitCount()).isEqualTo(3);
 		apartment.doWork();
-		assertThat(stats.getInvocationCount()).isEqualTo((long) 6);
-		assertThat(stats.getHitCount()).isEqualTo((long) 6);
+		assertThat(stats.getInvocationCount()).isEqualTo(6);
+		assertThat(stats.getHitCount()).isEqualTo(6);
 		// Only one thread so only one object can have been bound
-		assertThat(stats.getObjectCount()).isEqualTo((long) 1);
+		assertThat(stats.getObjectCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class ThreadLocalTargetSourceTests {
 		assertThat(r.mine.getCount()).isEqualTo((long) (INITIAL_COUNT + 3));
 
 		// Bound to two threads
-		assertThat(((ThreadLocalTargetSourceStats) apartment).getObjectCount()).isEqualTo((long) 2);
+		assertThat(((ThreadLocalTargetSourceStats) apartment).getObjectCount()).isEqualTo(2);
 	}
 
 	/**

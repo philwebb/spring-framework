@@ -230,7 +230,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(String.class, int.class)).isTrue();
 		Integer three = conversionService.convert("3", int.class);
-		assertThat(three.intValue()).isEqualTo((long) 3);
+		assertThat(three.intValue()).isEqualTo(3);
 	}
 
 	@Test
@@ -398,7 +398,7 @@ public class GenericConversionServiceTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(list);
 		TypeDescriptor targetType = TypeDescriptor.valueOf(String[].class);
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertThat(((String[]) conversionService.convert(list, sourceType, targetType)).length).isEqualTo((long) 0);
+		assertThat(((String[]) conversionService.convert(list, sourceType, targetType)).length).isEqualTo(0);
 	}
 
 	@Test

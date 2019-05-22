@@ -60,7 +60,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		proxyFactory.setTarget(tb);
 		ITestBean1 proxy = (ITestBean1) proxyFactory.getProxy();
 		proxy.getAge();
-		assertThat(ptm.commits).isEqualTo((long) 1);
+		assertThat(ptm.commits).isEqualTo(1);
 
 		ITestBean1 serializedProxy = (ITestBean1) SerializationTestUtils.serializeAndDeserialize(proxy);
 		serializedProxy.getAge();
@@ -68,7 +68,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		TransactionInterceptor serializedTi = (TransactionInterceptor) advised.getAdvisors()[0].getAdvice();
 		CallCountingTransactionManager serializedPtm =
 				(CallCountingTransactionManager) serializedTi.getTransactionManager();
-		assertThat(serializedPtm.commits).isEqualTo((long) 2);
+		assertThat(serializedPtm.commits).isEqualTo(2);
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		TransactionAttribute actual = atas.getTransactionAttribute(interfaceMethod, TestBean3.class);
 		assertThat(actual.getPropagationBehavior()).isEqualTo((long) TransactionAttribute.PROPAGATION_REQUIRES_NEW);
 		assertThat(actual.getIsolationLevel()).isEqualTo((long) TransactionAttribute.ISOLATION_REPEATABLE_READ);
-		assertThat(actual.getTimeout()).isEqualTo((long) 5);
+		assertThat(actual.getTimeout()).isEqualTo(5);
 		assertThat(actual.isReadOnly()).isTrue();
 
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();

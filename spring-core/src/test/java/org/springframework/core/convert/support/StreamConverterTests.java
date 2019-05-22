@@ -67,7 +67,7 @@ public class StreamConverterTests {
 		assertThat(content.get(0)).isEqualTo("1");
 		assertThat(content.get(1)).isEqualTo("2");
 		assertThat(content.get(2)).isEqualTo("3");
-		assertThat(content.size()).as("Wrong number of elements").isEqualTo((long) 3);
+		assertThat(content.size()).as("Wrong number of elements").isEqualTo(3);
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class StreamConverterTests {
 		assertThat(content[0]).isEqualTo(Long.valueOf(1L));
 		assertThat(content[1]).isEqualTo(Long.valueOf(2L));
 		assertThat(content[2]).isEqualTo(Long.valueOf(3L));
-		assertThat(content.length).as("Wrong number of elements").isEqualTo((long) 3);
+		assertThat(content.length).as("Wrong number of elements").isEqualTo(3);
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class StreamConverterTests {
 		assertThat(content.get(0)).isEqualTo(1);
 		assertThat(content.get(1)).isEqualTo(2);
 		assertThat(content.get(2)).isEqualTo(3);
-		assertThat(content.size()).as("Wrong number of elements").isEqualTo((long) 3);
+		assertThat(content.size()).as("Wrong number of elements").isEqualTo(3);
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class StreamConverterTests {
 		assertThat(condition).as("Converted object must be a stream").isTrue();
 		@SuppressWarnings("unchecked")
 		Stream<Integer> content = (Stream<Integer>) result;
-		assertThat(content.mapToInt(x -> x).sum()).isEqualTo((long) 6);
+		assertThat(content.mapToInt(x -> x).sum()).isEqualTo(6);
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class StreamConverterTests {
 		assertThat(condition).as("Converted object must be a stream").isTrue();
 		@SuppressWarnings("unchecked")
 		Stream<Boolean> content = (Stream<Boolean>) result;
-		assertThat(content.filter(x -> x).count()).isEqualTo((long) 2);
+		assertThat(content.filter(x -> x).count()).isEqualTo(2);
 	}
 
 	@Test

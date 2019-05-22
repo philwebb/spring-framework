@@ -63,7 +63,7 @@ public class ParameterizableViewControllerTests {
 		this.controller.setStatusCode(HttpStatus.NOT_FOUND);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 		assertThat(modelAndView.getViewName()).isEqualTo("view");
-		assertThat(this.response.getStatus()).isEqualTo((long) 404);
+		assertThat(this.response.getStatus()).isEqualTo(404);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class ParameterizableViewControllerTests {
 		this.controller.setStatusCode(HttpStatus.NO_CONTENT);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 		assertThat(modelAndView).isNull();
-		assertThat(this.response.getStatus()).isEqualTo((long) 204);
+		assertThat(this.response.getStatus()).isEqualTo(204);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class ParameterizableViewControllerTests {
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/foo");
-		assertThat(this.response.getStatus()).as("3xx status should be left to RedirectView to set").isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).as("3xx status should be left to RedirectView to set").isEqualTo(200);
 		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}
 
@@ -92,7 +92,7 @@ public class ParameterizableViewControllerTests {
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/foo");
-		assertThat(this.response.getStatus()).as("3xx status should be left to RedirectView to set").isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).as("3xx status should be left to RedirectView to set").isEqualTo(200);
 		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}
 
@@ -110,7 +110,7 @@ public class ParameterizableViewControllerTests {
 		this.controller.setStatusOnly(true);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 		assertThat(modelAndView).isNull();
-		assertThat(this.response.getStatus()).isEqualTo((long) 404);
+		assertThat(this.response.getStatus()).isEqualTo(404);
 	}
 
 }

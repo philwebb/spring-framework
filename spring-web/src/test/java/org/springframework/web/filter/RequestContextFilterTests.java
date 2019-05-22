@@ -90,7 +90,7 @@ public class RequestContextFilterTests {
 		assertThatIllegalStateException().isThrownBy(
 				RequestContextHolder::currentRequestAttributes);
 
-		assertThat(fc.invocations).isEqualTo((long) 1);
+		assertThat(fc.invocations).isEqualTo(1);
 	}
 
 }

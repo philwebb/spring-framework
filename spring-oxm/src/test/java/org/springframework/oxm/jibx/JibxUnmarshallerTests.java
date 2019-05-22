@@ -61,7 +61,7 @@ public class JibxUnmarshallerTests extends AbstractUnmarshallerTests<JibxMarshal
 	protected void testFlights(Object o) {
 		Flights flights = (Flights) o;
 		assertThat(flights).as("Flights is null").isNotNull();
-		assertThat(flights.sizeFlightList()).as("Invalid amount of flight elements").isEqualTo((long) 1);
+		assertThat(flights.sizeFlightList()).as("Invalid amount of flight elements").isEqualTo(1);
 		testFlight(flights.getFlight(0));
 	}
 

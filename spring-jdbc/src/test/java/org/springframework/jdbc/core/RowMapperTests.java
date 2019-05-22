@@ -84,13 +84,13 @@ public class RowMapperTests {
 	@After
 	public void verifyResults() {
 		assertThat(result).isNotNull();
-		assertThat(result.size()).isEqualTo((long) 2);
+		assertThat(result.size()).isEqualTo(2);
 		TestBean testBean1 = result.get(0);
 		TestBean testBean2 = result.get(1);
 		assertThat(testBean1.getName()).isEqualTo("tb1");
 		assertThat(testBean2.getName()).isEqualTo("tb2");
-		assertThat(testBean1.getAge()).isEqualTo((long) 1);
-		assertThat(testBean2.getAge()).isEqualTo((long) 2);
+		assertThat(testBean1.getAge()).isEqualTo(1);
+		assertThat(testBean2.getAge()).isEqualTo(2);
 	}
 
 	@Test

@@ -375,7 +375,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		then(resourceMessageConverter).should(times(1)).write(any(ByteArrayResource.class),
 				eq(MediaType.APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 	}
 
 	@Test  // SPR-9841
@@ -409,7 +409,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		then(resourceRegionMessageConverter).should(times(1)).write(
 				anyCollection(), eq(MediaType.APPLICATION_OCTET_STREAM),
 				argThat(outputMessage -> "bytes".equals(outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES))));
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 206);
+		assertThat(servletResponse.getStatus()).isEqualTo(206);
 	}
 
 	@Test
@@ -424,7 +424,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		then(resourceRegionMessageConverter).should(never()).write(
 				anyCollection(), eq(MediaType.APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 416);
+		assertThat(servletResponse.getStatus()).isEqualTo(416);
 	}
 
 

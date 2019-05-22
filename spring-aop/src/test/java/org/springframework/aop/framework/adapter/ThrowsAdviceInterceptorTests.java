@@ -53,21 +53,21 @@ public class ThrowsAdviceInterceptorTests {
 		MethodInvocation mi = mock(MethodInvocation.class);
 		given(mi.proceed()).willReturn(ret);
 		assertThat(ti.invoke(mi)).isEqualTo(ret);
-		assertThat(th.getCalls()).isEqualTo((long) 0);
+		assertThat(th.getCalls()).isEqualTo(0);
 	}
 
 	@Test
 	public void testNoHandlerMethodForThrowable() throws Throwable {
 		MyThrowsHandler th = new MyThrowsHandler();
 		ThrowsAdviceInterceptor ti = new ThrowsAdviceInterceptor(th);
-		assertThat(ti.getHandlerMethodCount()).isEqualTo((long) 2);
+		assertThat(ti.getHandlerMethodCount()).isEqualTo(2);
 		Exception ex = new Exception();
 		MethodInvocation mi = mock(MethodInvocation.class);
 		given(mi.proceed()).willThrow(ex);
 		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
 				ti.invoke(mi))
 			.isSameAs(ex);
-		assertThat(th.getCalls()).isEqualTo((long) 0);
+		assertThat(th.getCalls()).isEqualTo(0);
 	}
 
 	@Test
@@ -82,8 +82,8 @@ public class ThrowsAdviceInterceptorTests {
 		assertThatExceptionOfType(FileNotFoundException.class).isThrownBy(() ->
 				ti.invoke(mi))
 			.isSameAs(ex);
-		assertThat(th.getCalls()).isEqualTo((long) 1);
-		assertThat(th.getCalls("ioException")).isEqualTo((long) 1);
+		assertThat(th.getCalls()).isEqualTo(1);
+		assertThat(th.getCalls("ioException")).isEqualTo(1);
 	}
 
 	@Test
@@ -97,8 +97,8 @@ public class ThrowsAdviceInterceptorTests {
 		assertThatExceptionOfType(ConnectException.class).isThrownBy(() ->
 				ti.invoke(mi))
 			.isSameAs(ex);
-		assertThat(th.getCalls()).isEqualTo((long) 1);
-		assertThat(th.getCalls("remoteException")).isEqualTo((long) 1);
+		assertThat(th.getCalls()).isEqualTo(1);
+		assertThat(th.getCalls("remoteException")).isEqualTo(1);
 	}
 
 	@Test
@@ -122,8 +122,8 @@ public class ThrowsAdviceInterceptorTests {
 		assertThatExceptionOfType(Throwable.class).isThrownBy(() ->
 				ti.invoke(mi))
 			.isSameAs(t);
-		assertThat(th.getCalls()).isEqualTo((long) 1);
-		assertThat(th.getCalls("remoteException")).isEqualTo((long) 1);
+		assertThat(th.getCalls()).isEqualTo(1);
+		assertThat(th.getCalls("remoteException")).isEqualTo(1);
 	}
 
 

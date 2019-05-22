@@ -58,9 +58,9 @@ public class JdbcBeanDefinitionReaderTests {
 		JdbcBeanDefinitionReader reader = new JdbcBeanDefinitionReader(bf);
 		reader.setDataSource(dataSource);
 		reader.loadBeanDefinitions(sql);
-		assertThat(bf.getBeanDefinitionCount()).as("Incorrect number of bean definitions").isEqualTo((long) 1);
+		assertThat(bf.getBeanDefinitionCount()).as("Incorrect number of bean definitions").isEqualTo(1);
 		TestBean tb = (TestBean) bf.getBean("one");
-		assertThat(tb.getAge()).as("Age in TestBean was wrong.").isEqualTo((long) 53);
+		assertThat(tb.getAge()).as("Age in TestBean was wrong.").isEqualTo(53);
 
 		verify(resultSet).close();
 		verify(statement).close();

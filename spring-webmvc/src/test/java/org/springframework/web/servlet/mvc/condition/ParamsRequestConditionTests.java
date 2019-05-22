@@ -120,7 +120,7 @@ public class ParamsRequestConditionTests {
 		ParamsRequestCondition condition1 = new ParamsRequestCondition("response_type!=code");
 		ParamsRequestCondition condition2 = new ParamsRequestCondition("response_type");
 
-		assertThat(condition1.compareTo(condition2, request)).as("Negated match should not count as more specific").isEqualTo((long) 0);
+		assertThat(condition1.compareTo(condition2, request)).as("Negated match should not count as more specific").isEqualTo(0);
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class ParamsRequestConditionTests {
 
 		ParamsRequestCondition result = condition1.combine(condition2);
 		Collection<ParamExpression> conditions = result.getContent();
-		assertThat(conditions.size()).isEqualTo((long) 2);
+		assertThat(conditions.size()).isEqualTo(2);
 	}
 
 }

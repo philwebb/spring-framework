@@ -91,7 +91,7 @@ public class RequestMappingExceptionHandlingIntegrationTests extends AbstractReq
 		assertThatExceptionOfType(HttpStatusCodeException.class).isThrownBy(() ->
 				performGet("/SPR-16318", headers, String.class).getBody())
 			.satisfies(ex -> {
-				assertThat(ex.getRawStatusCode()).isEqualTo((long) 500);
+				assertThat(ex.getRawStatusCode()).isEqualTo(500);
 				assertThat(ex.getResponseHeaders().getContentType().toString()).isEqualTo("application/problem+json");
 				assertThat(ex.getResponseBodyAsString()).isEqualTo("{\"reason\":\"error\"}");
 			});

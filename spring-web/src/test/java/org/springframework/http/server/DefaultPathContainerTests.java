@@ -78,11 +78,11 @@ public class DefaultPathContainerTests {
 		PathContainer container = PathContainer.parsePath(rawValue);
 
 		if ("".equals(rawValue)) {
-			assertThat(container.elements().size()).isEqualTo((long) 0);
+			assertThat(container.elements().size()).isEqualTo(0);
 			return;
 		}
 
-		assertThat(container.elements().size()).isEqualTo((long) 1);
+		assertThat(container.elements().size()).isEqualTo(1);
 		PathSegment segment = (PathSegment) container.elements().get(0);
 
 		assertThat(segment.value()).as("value: '" + rawValue + "'").isEqualTo(rawValue);

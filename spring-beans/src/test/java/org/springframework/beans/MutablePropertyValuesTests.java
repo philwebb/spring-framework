@@ -88,7 +88,7 @@ public class MutablePropertyValuesTests extends AbstractPropertyValuesTests {
 
 		pvs2.addPropertyValue(new PropertyValue("forname", "Gordon"));
 		changes = pvs2.changesSince(pvs);
-		assertThat(changes.getPropertyValues().length).as("1 change").isEqualTo((long) 1);
+		assertThat(changes.getPropertyValues().length).as("1 change").isEqualTo(1);
 		PropertyValue fn = changes.getPropertyValue("forname");
 		assertThat(fn != null).as("change is forname").isTrue();
 		assertThat(fn.getValue().equals("Gordon")).as("new value is gordon").isTrue();

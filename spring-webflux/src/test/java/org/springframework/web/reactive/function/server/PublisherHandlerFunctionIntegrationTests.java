@@ -71,7 +71,7 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		List<Person> body = result.getBody();
-		assertThat(body.size()).isEqualTo((long) 2);
+		assertThat(body.size()).isEqualTo(2);
 		assertThat(body.get(0).getName()).isEqualTo("John");
 		assertThat(body.get(1).getName()).isEqualTo("Jane");
 	}

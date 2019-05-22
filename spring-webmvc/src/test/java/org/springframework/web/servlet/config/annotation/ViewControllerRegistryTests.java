@@ -89,7 +89,7 @@ public class ViewControllerRegistryTests {
 		this.request.setContextPath("/context");
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 302);
+		assertThat(this.response.getStatus()).isEqualTo(302);
 		assertThat(this.response.getRedirectedUrl()).isEqualTo("/context/redirectTo");
 		assertThat(redirectView.getApplicationContext()).isNotNull();
 	}
@@ -106,7 +106,7 @@ public class ViewControllerRegistryTests {
 		this.request.setContextPath("/context");
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
-		assertThat(this.response.getStatus()).isEqualTo((long) 308);
+		assertThat(this.response.getStatus()).isEqualTo(308);
 		assertThat(response.getRedirectedUrl()).isEqualTo("/redirectTo?a=b");
 		assertThat(redirectView.getApplicationContext()).isNotNull();
 	}
@@ -126,11 +126,11 @@ public class ViewControllerRegistryTests {
 	public void order() {
 		this.registry.addViewController("/path");
 		SimpleUrlHandlerMapping handlerMapping = this.registry.buildHandlerMapping();
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) 1);
+		assertThat(handlerMapping.getOrder()).isEqualTo(1);
 
 		this.registry.setOrder(2);
 		handlerMapping = this.registry.buildHandlerMapping();
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) 2);
+		assertThat(handlerMapping.getOrder()).isEqualTo(2);
 	}
 
 

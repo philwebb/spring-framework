@@ -199,7 +199,7 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 		Mono<DataBuffer> input = stringBuffer("{\"test\": 1}");
 
 		testDecode(input, TestObject.class, step -> step
-				.consumeNextWith(o -> assertThat(o.getTest()).isEqualTo((long) 1))
+				.consumeNextWith(o -> assertThat(o.getTest()).isEqualTo(1))
 				.verifyComplete()
 		);
 	}

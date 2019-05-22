@@ -47,7 +47,7 @@ public class ResponseEntityTests {
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(responseEntity.getHeaders().containsKey(headerName)).isTrue();
 		List<String> list = responseEntity.getHeaders().get(headerName);
-		assertThat(list.size()).isEqualTo((long) 2);
+		assertThat(list.size()).isEqualTo(2);
 		assertThat(list.get(0)).isEqualTo(headerValue1);
 		assertThat(list.get(1)).isEqualTo(headerValue2);
 		assertThat(responseEntity.getBody()).isEqualTo(entity);
@@ -208,8 +208,8 @@ public class ResponseEntityTests {
 		HttpHeaders responseHeaders = responseEntity.getHeaders();
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseHeaders.size()).isEqualTo((long) 1);
-		assertThat(responseHeaders.get("X-CustomHeader").size()).isEqualTo((long) 1);
+		assertThat(responseHeaders.size()).isEqualTo(1);
+		assertThat(responseHeaders.get("X-CustomHeader").size()).isEqualTo(1);
 		assertThat(responseHeaders.getFirst("X-CustomHeader")).isEqualTo("vale");
 
 	}
@@ -283,7 +283,7 @@ public class ResponseEntityTests {
 		Integer entity = 42;
 		ResponseEntity<Integer> responseEntity = ResponseEntity.status(200).body(entity);
 
-		assertThat(responseEntity.getStatusCode().value()).isEqualTo((long) 200);
+		assertThat(responseEntity.getStatusCode().value()).isEqualTo(200);
 		assertThat(responseEntity.getBody()).isEqualTo(entity);
 	}
 
@@ -292,7 +292,7 @@ public class ResponseEntityTests {
 		Integer entity = 42;
 		ResponseEntity<Integer> responseEntity = ResponseEntity.status(299).body(entity);
 
-		assertThat(responseEntity.getStatusCodeValue()).isEqualTo((long) 299);
+		assertThat(responseEntity.getStatusCodeValue()).isEqualTo(299);
 		assertThat(responseEntity.getBody()).isEqualTo(entity);
 	}
 

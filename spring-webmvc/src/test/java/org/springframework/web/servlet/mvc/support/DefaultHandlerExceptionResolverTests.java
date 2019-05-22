@@ -72,7 +72,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 405);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(405);
 		assertThat(response.getHeader("Allow")).as("Invalid Allow header").isEqualTo("POST, PUT");
 	}
 
@@ -83,7 +83,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 415);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(415);
 		assertThat(response.getHeader("Accept")).as("Invalid Accept header").isEqualTo("application/pdf");
 	}
 
@@ -95,7 +95,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 500);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(500);
 		assertThat(response.getErrorMessage()).isEqualTo("Missing URI template variable 'foo' for method parameter of type String");
 	}
 
@@ -105,7 +105,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 400);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(400);
 		assertThat(response.getErrorMessage()).isEqualTo("Required bar parameter 'foo' is not present");
 	}
 
@@ -116,7 +116,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 400);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(400);
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 400);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(400);
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 400);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(400);
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 500);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(500);
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 400);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(400);
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 400);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(400);
 		assertThat(response.getErrorMessage().contains("request part")).isTrue();
 		assertThat(response.getErrorMessage().contains("name")).isTrue();
 		assertThat(response.getErrorMessage().contains("not present")).isTrue();
@@ -177,7 +177,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 400);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(400);
 	}
 
 	@Test
@@ -189,7 +189,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 404);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(404);
 	}
 
 	@Test
@@ -199,7 +199,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 500);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(500);
 
 		// SPR-9653
 		assertThat(request.getAttribute("javax.servlet.error.exception")).isSameAs(ex);
@@ -211,7 +211,7 @@ public class DefaultHandlerExceptionResolverTests {
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
 		assertThat(mav).as("No ModelAndView returned").isNotNull();
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).as("Invalid status code").isEqualTo((long) 503);
+		assertThat(response.getStatus()).as("Invalid status code").isEqualTo(503);
 	}
 
 

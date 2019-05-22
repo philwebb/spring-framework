@@ -170,9 +170,9 @@ public class BeanFactoryGenericsTests {
 				new ClassPathResource("genericBeanTests.xml", getClass()));
 		GenericBean<?> gb = (GenericBean<?>) bf.getBean("listOfArrays");
 
-		assertThat(gb.getListOfArrays().size()).isEqualTo((long) 1);
+		assertThat(gb.getListOfArrays().size()).isEqualTo(1);
 		String[] array = gb.getListOfArrays().get(0);
-		assertThat(array.length).isEqualTo((long) 2);
+		assertThat(array.length).isEqualTo(2);
 		assertThat(array[0]).isEqualTo("value1");
 		assertThat(array[1]).isEqualTo("value2");
 	}
@@ -339,10 +339,10 @@ public class BeanFactoryGenericsTests {
 		GenericBean<?> gb = (GenericBean<?>) bf.getBean("genericBean");
 
 		assertThat(gb.getShortMap()).isNotSameAs(gb.getPlainMap());
-		assertThat(gb.getPlainMap().size()).isEqualTo((long) 2);
+		assertThat(gb.getPlainMap().size()).isEqualTo(2);
 		assertThat(gb.getPlainMap().get("1")).isEqualTo("0");
 		assertThat(gb.getPlainMap().get("2")).isEqualTo("3");
-		assertThat(gb.getShortMap().size()).isEqualTo((long) 2);
+		assertThat(gb.getShortMap().size()).isEqualTo(2);
 		assertThat(gb.getShortMap().get(new Short("4"))).isEqualTo(new Integer(5));
 		assertThat(gb.getShortMap().get(new Short("6"))).isEqualTo(new Integer(7));
 	}
@@ -362,10 +362,10 @@ public class BeanFactoryGenericsTests {
 		GenericBean<?> gb = (GenericBean<?>) bf.getBean("genericBean");
 
 		assertThat(gb.getShortMap()).isNotSameAs(gb.getPlainMap());
-		assertThat(gb.getPlainMap().size()).isEqualTo((long) 2);
+		assertThat(gb.getPlainMap().size()).isEqualTo(2);
 		assertThat(gb.getPlainMap().get("1")).isEqualTo("0");
 		assertThat(gb.getPlainMap().get("2")).isEqualTo("3");
-		assertThat(gb.getShortMap().size()).isEqualTo((long) 2);
+		assertThat(gb.getShortMap().size()).isEqualTo(2);
 		assertThat(gb.getShortMap().get(new Short("1"))).isEqualTo(new Integer(0));
 		assertThat(gb.getShortMap().get(new Short("2"))).isEqualTo(new Integer(3));
 	}
@@ -385,7 +385,7 @@ public class BeanFactoryGenericsTests {
 		GenericBean<?> gb = (GenericBean<?>) bf.getBean("genericBean");
 
 		assertThat(gb.getShortMap()).isSameAs(gb.getPlainMap());
-		assertThat(gb.getShortMap().size()).isEqualTo((long) 2);
+		assertThat(gb.getShortMap().size()).isEqualTo(2);
 		assertThat(gb.getShortMap().get(new Short("1"))).isEqualTo(new Integer(0));
 		assertThat(gb.getShortMap().get(new Short("2"))).isEqualTo(new Integer(3));
 	}
@@ -603,7 +603,7 @@ public class BeanFactoryGenericsTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(
 				new ClassPathResource("genericBeanTests.xml", getClass()));
 		List<?> list = (List<?>) bf.getBean("list");
-		assertThat(list.size()).isEqualTo((long) 1);
+		assertThat(list.size()).isEqualTo(1);
 		assertThat(list.get(0)).isEqualTo(new URL("http://localhost:8080"));
 	}
 
@@ -613,7 +613,7 @@ public class BeanFactoryGenericsTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(
 				new ClassPathResource("genericBeanTests.xml", getClass()));
 		Set<?> set = (Set<?>) bf.getBean("set");
-		assertThat(set.size()).isEqualTo((long) 1);
+		assertThat(set.size()).isEqualTo(1);
 		assertThat(set.iterator().next()).isEqualTo(new URL("http://localhost:8080"));
 	}
 
@@ -623,7 +623,7 @@ public class BeanFactoryGenericsTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(
 				new ClassPathResource("genericBeanTests.xml", getClass()));
 		Map<?, ?> map = (Map<?, ?>) bf.getBean("map");
-		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo(1);
 		assertThat(map.keySet().iterator().next()).isEqualTo(new Integer(10));
 		assertThat(map.values().iterator().next()).isEqualTo(new URL("http://localhost:8080"));
 	}
@@ -658,7 +658,7 @@ public class BeanFactoryGenericsTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(
 				new ClassPathResource("genericBeanTests.xml", getClass()));
 		UrlSet us = (UrlSet) bf.getBean("setBean");
-		assertThat(us.size()).isEqualTo((long) 1);
+		assertThat(us.size()).isEqualTo(1);
 		assertThat(us.iterator().next()).isEqualTo(new URL("https://www.springframework.org"));
 	}
 
@@ -684,7 +684,7 @@ public class BeanFactoryGenericsTests {
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);
-		assertThat(beans.size()).isEqualTo((long) 1);
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	/**
@@ -716,7 +716,7 @@ public class BeanFactoryGenericsTests {
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);
-		assertThat(beans.size()).isEqualTo((long) 1);
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -737,7 +737,7 @@ public class BeanFactoryGenericsTests {
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);
-		assertThat(beans.size()).isEqualTo((long) 1);
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -756,7 +756,7 @@ public class BeanFactoryGenericsTests {
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);
-		assertThat(beans.size()).isEqualTo((long) 1);
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -777,7 +777,7 @@ public class BeanFactoryGenericsTests {
 		assertThat(bf.getType("mock")).isNull();
 		assertThat(bf.getType("mock")).isNull();
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);
-		assertThat(beans.size()).isEqualTo((long) 0);
+		assertThat(beans.size()).isEqualTo(0);
 	}
 
 	@Test
@@ -798,7 +798,7 @@ public class BeanFactoryGenericsTests {
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);
-		assertThat(beans.size()).isEqualTo((long) 1);
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	@Test  // SPR-16720
@@ -820,7 +820,7 @@ public class BeanFactoryGenericsTests {
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		assertThat(bf.getType("mock")).isEqualTo(Runnable.class);
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);
-		assertThat(beans.size()).isEqualTo((long) 1);
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -840,11 +840,11 @@ public class BeanFactoryGenericsTests {
 		String[] numberStoreNames = bf.getBeanNamesForType(ResolvableType.forClass(NumberStore.class));
 		String[] doubleStoreNames = bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(NumberStore.class, Double.class));
 		String[] floatStoreNames = bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(NumberStore.class, Float.class));
-		assertThat(numberStoreNames.length).isEqualTo((long) 2);
+		assertThat(numberStoreNames.length).isEqualTo(2);
 		assertThat(numberStoreNames[0]).isEqualTo("doubleStore");
 		assertThat(numberStoreNames[1]).isEqualTo("floatStore");
-		assertThat(doubleStoreNames.length).isEqualTo((long) 0);
-		assertThat(floatStoreNames.length).isEqualTo((long) 0);
+		assertThat(doubleStoreNames.length).isEqualTo(0);
+		assertThat(floatStoreNames.length).isEqualTo(0);
 	}
 
 	@Test
@@ -869,12 +869,12 @@ public class BeanFactoryGenericsTests {
 		String[] numberStoreNames = bf.getBeanNamesForType(ResolvableType.forClass(NumberStore.class));
 		String[] doubleStoreNames = bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(NumberStore.class, Double.class));
 		String[] floatStoreNames = bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(NumberStore.class, Float.class));
-		assertThat(numberStoreNames.length).isEqualTo((long) 2);
+		assertThat(numberStoreNames.length).isEqualTo(2);
 		assertThat(numberStoreNames[0]).isEqualTo("store1");
 		assertThat(numberStoreNames[1]).isEqualTo("store2");
-		assertThat(doubleStoreNames.length).isEqualTo((long) 1);
+		assertThat(doubleStoreNames.length).isEqualTo(1);
 		assertThat(doubleStoreNames[0]).isEqualTo("store1");
-		assertThat(floatStoreNames.length).isEqualTo((long) 1);
+		assertThat(floatStoreNames.length).isEqualTo(1);
 		assertThat(floatStoreNames[0]).isEqualTo("store2");
 
 		ObjectProvider<NumberStore<?>> numberStoreProvider = bf.getBeanProvider(ResolvableType.forClass(NumberStore.class));
@@ -894,17 +894,17 @@ public class BeanFactoryGenericsTests {
 		for (NumberStore<?> instance : numberStoreProvider) {
 			resolved.add(instance);
 		}
-		assertThat(resolved.size()).isEqualTo((long) 2);
+		assertThat(resolved.size()).isEqualTo(2);
 		assertThat(resolved.get(0)).isSameAs(bf.getBean("store1"));
 		assertThat(resolved.get(1)).isSameAs(bf.getBean("store2"));
 
 		resolved = numberStoreProvider.stream().collect(Collectors.toList());
-		assertThat(resolved.size()).isEqualTo((long) 2);
+		assertThat(resolved.size()).isEqualTo(2);
 		assertThat(resolved.get(0)).isSameAs(bf.getBean("store1"));
 		assertThat(resolved.get(1)).isSameAs(bf.getBean("store2"));
 
 		resolved = numberStoreProvider.orderedStream().collect(Collectors.toList());
-		assertThat(resolved.size()).isEqualTo((long) 2);
+		assertThat(resolved.size()).isEqualTo(2);
 		assertThat(resolved.get(0)).isSameAs(bf.getBean("store2"));
 		assertThat(resolved.get(1)).isSameAs(bf.getBean("store1"));
 
@@ -912,30 +912,30 @@ public class BeanFactoryGenericsTests {
 		for (NumberStore<Double> instance : doubleStoreProvider) {
 			resolved.add(instance);
 		}
-		assertThat(resolved.size()).isEqualTo((long) 1);
+		assertThat(resolved.size()).isEqualTo(1);
 		assertThat(resolved.contains(bf.getBean("store1"))).isTrue();
 
 		resolved = doubleStoreProvider.stream().collect(Collectors.toList());
-		assertThat(resolved.size()).isEqualTo((long) 1);
+		assertThat(resolved.size()).isEqualTo(1);
 		assertThat(resolved.contains(bf.getBean("store1"))).isTrue();
 
 		resolved = doubleStoreProvider.orderedStream().collect(Collectors.toList());
-		assertThat(resolved.size()).isEqualTo((long) 1);
+		assertThat(resolved.size()).isEqualTo(1);
 		assertThat(resolved.contains(bf.getBean("store1"))).isTrue();
 
 		resolved = new ArrayList<>();
 		for (NumberStore<Float> instance : floatStoreProvider) {
 			resolved.add(instance);
 		}
-		assertThat(resolved.size()).isEqualTo((long) 1);
+		assertThat(resolved.size()).isEqualTo(1);
 		assertThat(resolved.contains(bf.getBean("store2"))).isTrue();
 
 		resolved = floatStoreProvider.stream().collect(Collectors.toList());
-		assertThat(resolved.size()).isEqualTo((long) 1);
+		assertThat(resolved.size()).isEqualTo(1);
 		assertThat(resolved.contains(bf.getBean("store2"))).isTrue();
 
 		resolved = floatStoreProvider.orderedStream().collect(Collectors.toList());
-		assertThat(resolved.size()).isEqualTo((long) 1);
+		assertThat(resolved.size()).isEqualTo(1);
 		assertThat(resolved.contains(bf.getBean("store2"))).isTrue();
 	}
 
@@ -954,7 +954,7 @@ public class BeanFactoryGenericsTests {
 
 		ObjectProvider<NumberStore<?>> numberStoreProvider = bf.getBeanProvider(ResolvableType.forClass(NumberStore.class));
 		List<NumberStore<?>> resolved = numberStoreProvider.orderedStream().collect(Collectors.toList());
-		assertThat(resolved.size()).isEqualTo((long) 2);
+		assertThat(resolved.size()).isEqualTo(2);
 		assertThat(resolved.get(0)).isSameAs(bf.getBean("store2"));
 		assertThat(resolved.get(1)).isSameAs(bf.getBean("store1"));
 	}
@@ -978,9 +978,9 @@ public class BeanFactoryGenericsTests {
 	public static class CollectionDependentBean {
 
 		public CollectionDependentBean(NamedUrlList list, NamedUrlSet set, NamedUrlMap map) {
-			assertThat(list.size()).isEqualTo((long) 1);
-			assertThat(set.size()).isEqualTo((long) 1);
-			assertThat(map.size()).isEqualTo((long) 1);
+			assertThat(list.size()).isEqualTo(1);
+			assertThat(set.size()).isEqualTo(1);
+			assertThat(map.size()).isEqualTo(1);
 		}
 	}
 

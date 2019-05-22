@@ -67,21 +67,21 @@ public class AnnotationTransactionNamespaceHandlerTests {
 		CallCountingTransactionManager ptm = (CallCountingTransactionManager) context.getBean("transactionManager");
 
 		// try with transactional
-		assertThat(ptm.begun).as("Should not have any started transactions").isEqualTo((long) 0);
+		assertThat(ptm.begun).as("Should not have any started transactions").isEqualTo(0);
 		testBean.findAllFoos();
-		assertThat(ptm.begun).as("Should have 1 started transaction").isEqualTo((long) 1);
-		assertThat(ptm.commits).as("Should have 1 committed transaction").isEqualTo((long) 1);
+		assertThat(ptm.begun).as("Should have 1 started transaction").isEqualTo(1);
+		assertThat(ptm.commits).as("Should have 1 committed transaction").isEqualTo(1);
 
 		// try with non-transaction
 		testBean.doSomething();
-		assertThat(ptm.begun).as("Should not have started another transaction").isEqualTo((long) 1);
+		assertThat(ptm.begun).as("Should not have started another transaction").isEqualTo(1);
 
 		// try with exceptional
 		assertThatExceptionOfType(Throwable.class).isThrownBy(() ->
 				testBean.exceptional(new IllegalArgumentException("foo")))
 			.satisfies(ex -> {
-				assertThat(ptm.begun).as("Should have another started transaction").isEqualTo((long) 2);
-				assertThat(ptm.rollbacks).as("Should have 1 rolled back transaction").isEqualTo((long) 1);
+				assertThat(ptm.begun).as("Should have another started transaction").isEqualTo(2);
+				assertThat(ptm.rollbacks).as("Should have 1 rolled back transaction").isEqualTo(1);
 			});
 	}
 
@@ -90,9 +90,9 @@ public class AnnotationTransactionNamespaceHandlerTests {
 		TransactionalTestBean testBean = getTestBean();
 		CallCountingTransactionManager ptm = (CallCountingTransactionManager) context.getBean("transactionManager");
 
-		assertThat(ptm.begun).as("Should not have any started transactions").isEqualTo((long) 0);
+		assertThat(ptm.begun).as("Should not have any started transactions").isEqualTo(0);
 		testBean.annotationsOnProtectedAreIgnored();
-		assertThat(ptm.begun).as("Should not have any started transactions").isEqualTo((long) 0);
+		assertThat(ptm.begun).as("Should not have any started transactions").isEqualTo(0);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class AnnotationTransactionNamespaceHandlerTests {
 	public void transactionalEventListenerRegisteredProperly() {
 		assertThat(this.context.containsBean(TransactionManagementConfigUtils
 				.TRANSACTIONAL_EVENT_LISTENER_FACTORY_BEAN_NAME)).isTrue();
-		assertThat(this.context.getBeansOfType(TransactionalEventListenerFactory.class).size()).isEqualTo((long) 1);
+		assertThat(this.context.getBeansOfType(TransactionalEventListenerFactory.class).size()).isEqualTo(1);
 	}
 
 	private TransactionalTestBean getTestBean() {

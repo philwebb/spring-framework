@@ -164,7 +164,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition noneMatch = none.getMatchingCondition(request);
 		ProducesRequestCondition htmlMatch = html.getMatchingCondition(request);
 
-		assertThat(noneMatch.compareTo(htmlMatch, request)).isEqualTo((long) 1);
+		assertThat(noneMatch.compareTo(htmlMatch, request)).isEqualTo(1);
 	}
 
 	@Test
@@ -189,8 +189,8 @@ public class ProducesRequestConditionTests {
 
 		request = createRequest("application/pdf");
 
-		assertThat(html.compareTo(xml, request)).isEqualTo((long) 0);
-		assertThat(xml.compareTo(html, request)).isEqualTo((long) 0);
+		assertThat(html.compareTo(xml, request)).isEqualTo(0);
+		assertThat(xml.compareTo(html, request)).isEqualTo(0);
 
 		// See SPR-7000
 		request = createRequest("text/html;q=0.9,application/xml");

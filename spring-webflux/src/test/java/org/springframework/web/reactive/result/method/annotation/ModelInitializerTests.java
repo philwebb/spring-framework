@@ -110,7 +110,7 @@ public class ModelInitializerTests {
 		this.modelInitializer.initModel(handlerMethod, context, this.exchange).block(Duration.ofMillis(5000));
 
 		Map<String, Object> model = context.getModel().asMap();
-		assertThat(model.size()).isEqualTo((long) 5);
+		assertThat(model.size()).isEqualTo(5);
 
 		Object value = model.get("bean");
 		assertThat(((TestBean) value).getName()).isEqualTo("Bean");
@@ -139,10 +139,10 @@ public class ModelInitializerTests {
 
 		WebSession session = this.exchange.getSession().block(Duration.ZERO);
 		assertThat(session).isNotNull();
-		assertThat(session.getAttributes().size()).isEqualTo((long) 0);
+		assertThat(session.getAttributes().size()).isEqualTo(0);
 
 		context.saveModel();
-		assertThat(session.getAttributes().size()).isEqualTo((long) 1);
+		assertThat(session.getAttributes().size()).isEqualTo(1);
 		assertThat(((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Bean");
 	}
 
@@ -162,7 +162,7 @@ public class ModelInitializerTests {
 		this.modelInitializer.initModel(handlerMethod, context, this.exchange).block(Duration.ofMillis(5000));
 
 		context.saveModel();
-		assertThat(session.getAttributes().size()).isEqualTo((long) 1);
+		assertThat(session.getAttributes().size()).isEqualTo(1);
 		assertThat(((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Session Bean");
 	}
 
@@ -196,7 +196,7 @@ public class ModelInitializerTests {
 		context.getSessionStatus().setComplete();
 		context.saveModel();
 
-		assertThat(session.getAttributes().size()).isEqualTo((long) 0);
+		assertThat(session.getAttributes().size()).isEqualTo(0);
 	}
 
 

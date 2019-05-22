@@ -130,15 +130,15 @@ public class InMemoryWebSessionStoreTests {
 
 		// Create 100 sessions
 		IntStream.range(0, 100).forEach(i -> insertSession());
-		assertThat(sessions.size()).isEqualTo((long) 100);
+		assertThat(sessions.size()).isEqualTo(100);
 
 		// Force a new clock (31 min later), don't use setter which would clean expired sessions
 		accessor.setPropertyValue("clock", Clock.offset(this.store.getClock(), Duration.ofMinutes(31)));
-		assertThat(sessions.size()).isEqualTo((long) 100);
+		assertThat(sessions.size()).isEqualTo(100);
 
 		// Create 1 more which forces a time-based check (clock moved forward)
 		insertSession();
-		assertThat(sessions.size()).isEqualTo((long) 1);
+		assertThat(sessions.size()).isEqualTo(1);
 	}
 
 	@Test

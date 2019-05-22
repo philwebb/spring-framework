@@ -113,7 +113,7 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition cond3 = new CompositeRequestCondition(this.param3);
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
 
-		assertThat(cond1.compareTo(cond3, exchange)).isEqualTo((long) 1);
+		assertThat(cond1.compareTo(cond3, exchange)).isEqualTo(1);
 		assertThat(cond3.compareTo(cond1, exchange)).isEqualTo((long) -1);
 	}
 
@@ -123,9 +123,9 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition notEmpty = new CompositeRequestCondition(this.param1);
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
 
-		assertThat(empty.compareTo(empty, exchange)).isEqualTo((long) 0);
+		assertThat(empty.compareTo(empty, exchange)).isEqualTo(0);
 		assertThat(notEmpty.compareTo(empty, exchange)).isEqualTo((long) -1);
-		assertThat(empty.compareTo(notEmpty, exchange)).isEqualTo((long) 1);
+		assertThat(empty.compareTo(notEmpty, exchange)).isEqualTo(1);
 	}
 
 	@Test

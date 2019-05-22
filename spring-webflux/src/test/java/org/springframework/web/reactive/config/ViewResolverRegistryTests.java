@@ -70,7 +70,7 @@ public class ViewResolverRegistryTests {
 	@Test
 	public void noResolvers() {
 		assertThat(this.registry.getViewResolvers()).isNotNull();
-		assertThat(this.registry.getViewResolvers().size()).isEqualTo((long) 0);
+		assertThat(this.registry.getViewResolvers().size()).isEqualTo(0);
 		assertThat(this.registry.hasRegistrations()).isFalse();
 	}
 
@@ -80,7 +80,7 @@ public class ViewResolverRegistryTests {
 		this.registry.viewResolver(viewResolver);
 
 		assertThat(this.registry.getViewResolvers().get(0)).isSameAs(viewResolver);
-		assertThat(this.registry.getViewResolvers().size()).isEqualTo((long) 1);
+		assertThat(this.registry.getViewResolvers().size()).isEqualTo(1);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ViewResolverRegistryTests {
 		View view = new HttpMessageWriterView(new Jackson2JsonEncoder());
 		this.registry.defaultViews(view);
 
-		assertThat(this.registry.getDefaultViews().size()).isEqualTo((long) 1);
+		assertThat(this.registry.getDefaultViews().size()).isEqualTo(1);
 		assertThat(this.registry.getDefaultViews().get(0)).isSameAs(view);
 	}
 
@@ -97,7 +97,7 @@ public class ViewResolverRegistryTests {
 		this.registry.scriptTemplate().prefix("/").suffix(".html");
 
 		List<ViewResolver> viewResolvers = this.registry.getViewResolvers();
-		assertThat(viewResolvers.size()).isEqualTo((long) 1);
+		assertThat(viewResolvers.size()).isEqualTo(1);
 		assertThat(viewResolvers.get(0).getClass()).isEqualTo(ScriptTemplateViewResolver.class);
 		DirectFieldAccessor accessor =  new DirectFieldAccessor(viewResolvers.get(0));
 		assertThat(accessor.getPropertyValue("prefix")).isEqualTo("/");

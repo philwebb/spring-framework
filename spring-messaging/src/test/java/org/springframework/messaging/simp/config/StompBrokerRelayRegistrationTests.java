@@ -57,8 +57,8 @@ public class StompBrokerRelayRegistrationTests {
 		assertThat(handler.getClientPasscode()).isEqualTo("clientpasscode");
 		assertThat(handler.getSystemLogin()).isEqualTo("syslogin");
 		assertThat(handler.getSystemPasscode()).isEqualTo("syspasscode");
-		assertThat(handler.getSystemHeartbeatReceiveInterval()).isEqualTo((long) 123);
-		assertThat(handler.getSystemHeartbeatSendInterval()).isEqualTo((long) 456);
+		assertThat(handler.getSystemHeartbeatReceiveInterval()).isEqualTo(123);
+		assertThat(handler.getSystemHeartbeatSendInterval()).isEqualTo(456);
 		assertThat(handler.getVirtualHost()).isEqualTo("example.org");
 	}
 

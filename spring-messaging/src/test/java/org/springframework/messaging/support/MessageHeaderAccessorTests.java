@@ -45,7 +45,7 @@ public class MessageHeaderAccessorTests {
 	@Test
 	public void newEmptyHeaders() {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor();
-		assertThat(accessor.toMap().size()).isEqualTo((long) 0);
+		assertThat(accessor.toMap().size()).isEqualTo(0);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor(message);
 		MessageHeaders actual = accessor.getMessageHeaders();
 
-		assertThat(actual.size()).isEqualTo((long) 3);
+		assertThat(actual.size()).isEqualTo(3);
 		assertThat(actual.get("foo")).isEqualTo("bar");
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}
@@ -76,7 +76,7 @@ public class MessageHeaderAccessorTests {
 		accessor.setHeader("foo", "BAR");
 		MessageHeaders actual = accessor.getMessageHeaders();
 
-		assertThat(actual.size()).isEqualTo((long) 3);
+		assertThat(actual.size()).isEqualTo(3);
 		assertThat(actual.getId()).isNotEqualTo(message.getHeaders().getId());
 		assertThat(actual.get("foo")).isEqualTo("BAR");
 		assertThat(actual.get("bar")).isEqualTo("baz");
@@ -111,7 +111,7 @@ public class MessageHeaderAccessorTests {
 		accessor.removeHeaders("fo*");
 
 		MessageHeaders actual = accessor.getMessageHeaders();
-		assertThat(actual.size()).isEqualTo((long) 2);
+		assertThat(actual.size()).isEqualTo(2);
 		assertThat(actual.get("foo")).isNull();
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}
@@ -129,7 +129,7 @@ public class MessageHeaderAccessorTests {
 		accessor.copyHeaders(map2);
 
 		MessageHeaders actual = accessor.getMessageHeaders();
-		assertThat(actual.size()).isEqualTo((long) 3);
+		assertThat(actual.size()).isEqualTo(3);
 		assertThat(actual.get("foo")).isEqualTo("BAR");
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}
@@ -147,7 +147,7 @@ public class MessageHeaderAccessorTests {
 		accessor.copyHeadersIfAbsent(map2);
 
 		MessageHeaders actual = accessor.getMessageHeaders();
-		assertThat(actual.size()).isEqualTo((long) 3);
+		assertThat(actual.size()).isEqualTo(3);
 		assertThat(actual.get("foo")).isEqualTo("bar");
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}
@@ -158,7 +158,7 @@ public class MessageHeaderAccessorTests {
 		headers.copyHeaders(null);
 		headers.copyHeadersIfAbsent(null);
 
-		assertThat(headers.getMessageHeaders().size()).isEqualTo((long) 1);
+		assertThat(headers.getMessageHeaders().size()).isEqualTo(1);
 		assertThat(headers.getMessageHeaders().keySet()).isEqualTo(Collections.singleton("id"));
 	}
 
@@ -175,9 +175,9 @@ public class MessageHeaderAccessorTests {
 		accessor.setHeader("foo", "bar3");
 		Map<String, Object> map3 = accessor.toMap();
 
-		assertThat(map1.size()).isEqualTo((long) 1);
-		assertThat(map2.size()).isEqualTo((long) 1);
-		assertThat(map3.size()).isEqualTo((long) 1);
+		assertThat(map1.size()).isEqualTo(1);
+		assertThat(map2.size()).isEqualTo(1);
+		assertThat(map3.size()).isEqualTo(1);
 
 		assertThat(map1.get("foo")).isEqualTo("bar1");
 		assertThat(map2.get("foo")).isEqualTo("bar2");

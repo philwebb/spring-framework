@@ -159,17 +159,17 @@ public class ApplicationContextExpressionTests {
 
 			TestBean tb1 = ac.getBean("tb1", TestBean.class);
 			assertThat(tb1.getName()).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertThat(tb1.getAge()).isEqualTo((long) 42);
+			assertThat(tb1.getAge()).isEqualTo(42);
 
 			TestBean tb2 = ac.getBean("tb2", TestBean.class);
 			assertThat(tb2.getName()).isEqualTo("{ XXXmyNameYYY42ZZZ }");
-			assertThat(tb2.getAge()).isEqualTo((long) 42);
+			assertThat(tb2.getAge()).isEqualTo(42);
 			assertThat(tb2.getCountry()).isEqualTo("123 UK");
 
 			ValueTestBean tb3 = ac.getBean("tb3", ValueTestBean.class);
 			assertThat(tb3.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertThat(tb3.age).isEqualTo((long) 42);
-			assertThat(tb3.ageFactory.getObject().intValue()).isEqualTo((long) 42);
+			assertThat(tb3.age).isEqualTo(42);
+			assertThat(tb3.ageFactory.getObject().intValue()).isEqualTo(42);
 			assertThat(tb3.country).isEqualTo("123 UK");
 			assertThat(tb3.countryFactory.getObject()).isEqualTo("123 UK");
 			System.getProperties().put("country", "US");
@@ -188,19 +188,19 @@ public class ApplicationContextExpressionTests {
 
 			ConstructorValueTestBean tb4 = ac.getBean("tb4", ConstructorValueTestBean.class);
 			assertThat(tb4.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertThat(tb4.age).isEqualTo((long) 42);
+			assertThat(tb4.age).isEqualTo(42);
 			assertThat(tb4.country).isEqualTo("123 UK");
 			assertThat(tb4.tb).isSameAs(tb0);
 
 			MethodValueTestBean tb5 = ac.getBean("tb5", MethodValueTestBean.class);
 			assertThat(tb5.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertThat(tb5.age).isEqualTo((long) 42);
+			assertThat(tb5.age).isEqualTo(42);
 			assertThat(tb5.country).isEqualTo("123 UK");
 			assertThat(tb5.tb).isSameAs(tb0);
 
 			PropertyValueTestBean tb6 = ac.getBean("tb6", PropertyValueTestBean.class);
 			assertThat(tb6.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertThat(tb6.age).isEqualTo((long) 42);
+			assertThat(tb6.age).isEqualTo(42);
 			assertThat(tb6.country).isEqualTo("123 UK");
 			assertThat(tb6.tb).isSameAs(tb0);
 		}

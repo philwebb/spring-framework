@@ -39,7 +39,7 @@ public class ManagedSetTests {
 		child.add("three");
 		child.setMergeEnabled(true);
 		Set mergedSet = child.merge(parent);
-		assertThat(mergedSet.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
+		assertThat(mergedSet.size()).as("merge() obviously did not work.").isEqualTo(3);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class ManagedSetTests {
 		ManagedSet child = new ManagedSet();
 		child.setMergeEnabled(true);
 		Set mergedSet = child.merge(parent);
-		assertThat(mergedSet.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
+		assertThat(mergedSet.size()).as("merge() obviously did not work.").isEqualTo(2);
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class ManagedSetTests {
 		child.add("one");
 		child.setMergeEnabled(true);
 		Set mergedSet = child.merge(parent);
-		assertThat(mergedSet.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
+		assertThat(mergedSet.size()).as("merge() obviously did not work.").isEqualTo(2);
 	}
 
 }

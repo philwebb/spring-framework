@@ -72,9 +72,9 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 
 		tb = context.getBean("privateInstance", TestBean.class); //4
 		assertThat(tb.getName()).isEqualTo("privateInstance");
-		assertThat(tb.getAge()).isEqualTo((long) 1);
+		assertThat(tb.getAge()).isEqualTo(1);
 		tb2 = context.getBean("privateInstance", TestBean.class); //4
-		assertThat(tb2.getAge()).isEqualTo((long) 2);
+		assertThat(tb2.getAge()).isEqualTo(2);
 		assertThat(tb).isNotSameAs(tb2);
 
 		Object bean = context.getBean("requestScopedInstance"); //5

@@ -220,20 +220,20 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 
 		// reflective method accessor is the only one by default
 		List<MethodResolver> methodResolvers = ctx.getMethodResolvers();
-		assertThat(methodResolvers.size()).isEqualTo((long) 1);
+		assertThat(methodResolvers.size()).isEqualTo(1);
 
 		MethodResolver dummy = new DummyMethodResolver();
 		ctx.addMethodResolver(dummy);
-		assertThat(ctx.getMethodResolvers().size()).isEqualTo((long) 2);
+		assertThat(ctx.getMethodResolvers().size()).isEqualTo(2);
 
 		List<MethodResolver> copy = new ArrayList<>();
 		copy.addAll(ctx.getMethodResolvers());
 		assertThat(ctx.removeMethodResolver(dummy)).isTrue();
 		assertThat(ctx.removeMethodResolver(dummy)).isFalse();
-		assertThat(ctx.getMethodResolvers().size()).isEqualTo((long) 1);
+		assertThat(ctx.getMethodResolvers().size()).isEqualTo(1);
 
 		ctx.setMethodResolvers(copy);
-		assertThat(ctx.getMethodResolvers().size()).isEqualTo((long) 2);
+		assertThat(ctx.getMethodResolvers().size()).isEqualTo(2);
 	}
 
 	@Test

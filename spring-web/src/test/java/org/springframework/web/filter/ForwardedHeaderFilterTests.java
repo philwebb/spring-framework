@@ -251,7 +251,7 @@ public class ForwardedHeaderFilterTests {
 		assertThat(actual.getRequestURL().toString()).isEqualTo("https://84.198.58.199/mvc-showcase");
 		assertThat(actual.getScheme()).isEqualTo("https");
 		assertThat(actual.getServerName()).isEqualTo("84.198.58.199");
-		assertThat(actual.getServerPort()).isEqualTo((long) 443);
+		assertThat(actual.getServerPort()).isEqualTo(443);
 		assertThat(actual.isSecure()).isTrue();
 
 		assertThat(actual.getHeader(X_FORWARDED_PROTO)).isNull();
@@ -276,7 +276,7 @@ public class ForwardedHeaderFilterTests {
 		assertThat(actual.getRequestURL().toString()).isEqualTo("http://localhost/mvc-showcase");
 		assertThat(actual.getScheme()).isEqualTo("http");
 		assertThat(actual.getServerName()).isEqualTo("localhost");
-		assertThat(actual.getServerPort()).isEqualTo((long) 80);
+		assertThat(actual.getServerPort()).isEqualTo(80);
 		assertThat(actual.isSecure()).isFalse();
 
 		assertThat(actual.getHeader(X_FORWARDED_PROTO)).isNull();
@@ -300,7 +300,7 @@ public class ForwardedHeaderFilterTests {
 		assertThat(actual.getRequestURL().toString()).isEqualTo("https://84.198.58.199/mvc-showcase");
 		assertThat(actual.getScheme()).isEqualTo("https");
 		assertThat(actual.getServerName()).isEqualTo("84.198.58.199");
-		assertThat(actual.getServerPort()).isEqualTo((long) 443);
+		assertThat(actual.getServerPort()).isEqualTo(443);
 		assertThat(actual.isSecure()).isTrue();
 
 		assertThat(actual.getHeader(X_FORWARDED_SSL)).isNull();

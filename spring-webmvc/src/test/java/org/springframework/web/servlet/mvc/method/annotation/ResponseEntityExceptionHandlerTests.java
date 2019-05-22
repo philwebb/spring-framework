@@ -222,7 +222,7 @@ public class ResponseEntityExceptionHandlerTests {
 		ServletRequestBindingException ex = new ServletRequestBindingException("message");
 		assertThat(resolver.resolveException(this.servletRequest, this.servletResponse, null, ex)).isNotNull();
 
-		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 400);
+		assertThat(this.servletResponse.getStatus()).isEqualTo(400);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("error content");
 		assertThat(this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}
@@ -252,7 +252,7 @@ public class ResponseEntityExceptionHandlerTests {
 		servlet.init(new MockServletConfig());
 		servlet.service(this.servletRequest, this.servletResponse);
 
-		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 400);
+		assertThat(this.servletResponse.getStatus()).isEqualTo(400);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("error content");
 		assertThat(this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}

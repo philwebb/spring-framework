@@ -137,9 +137,9 @@ public class JmsInvokerTests {
 		ITestBean proxy = (ITestBean) pfb.getObject();
 
 		assertThat(proxy.getName()).isEqualTo("myname");
-		assertThat(proxy.getAge()).isEqualTo((long) 99);
+		assertThat(proxy.getAge()).isEqualTo(99);
 		proxy.setAge(50);
-		assertThat(proxy.getAge()).isEqualTo((long) 50);
+		assertThat(proxy.getAge()).isEqualTo(50);
 		proxy.setStringArray(new String[] {"str1", "str2"});
 		assertThat(Arrays.equals(new String[] {"str1", "str2"}, proxy.getStringArray())).isTrue();
 		assertThatIllegalStateException().isThrownBy(() ->

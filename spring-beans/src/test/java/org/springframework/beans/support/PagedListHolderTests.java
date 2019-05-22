@@ -152,17 +152,17 @@ public class PagedListHolderTests {
 		assertThat(holder.getPageList().get(1) == tb3).as("Correct page list contents").isTrue();
 
 		holder.nextPage();
-		assertThat(holder.getPage()).isEqualTo((long) 1);
+		assertThat(holder.getPage()).isEqualTo(1);
 		holder.previousPage();
-		assertThat(holder.getPage()).isEqualTo((long) 0);
+		assertThat(holder.getPage()).isEqualTo(0);
 		holder.nextPage();
-		assertThat(holder.getPage()).isEqualTo((long) 1);
+		assertThat(holder.getPage()).isEqualTo(1);
 		holder.nextPage();
-		assertThat(holder.getPage()).isEqualTo((long) 1);
+		assertThat(holder.getPage()).isEqualTo(1);
 		holder.previousPage();
-		assertThat(holder.getPage()).isEqualTo((long) 0);
+		assertThat(holder.getPage()).isEqualTo(0);
 		holder.previousPage();
-		assertThat(holder.getPage()).isEqualTo((long) 0);
+		assertThat(holder.getPage()).isEqualTo(0);
 	}
 
 

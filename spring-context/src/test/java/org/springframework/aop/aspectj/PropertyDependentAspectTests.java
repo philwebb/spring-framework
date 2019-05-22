@@ -70,8 +70,8 @@ public class PropertyDependentAspectTests {
 
 		counter.increment();
 		JoinPointMonitorAspect callCountingAspect = (JoinPointMonitorAspect)context.getBean("monitoringAspect");
-		assertThat(callCountingAspect.beforeExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
-		assertThat(callCountingAspect.aroundExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
+		assertThat(callCountingAspect.beforeExecutions).as("Advise didn't get executed").isEqualTo(1);
+		assertThat(callCountingAspect.aroundExecutions).as("Advise didn't get executed").isEqualTo(1);
 	}
 
 	private void checkAtAspectJAspect(String appContextFile) {
@@ -82,8 +82,8 @@ public class PropertyDependentAspectTests {
 
 		counter.increment();
 		JoinPointMonitorAtAspectJAspect callCountingAspect = (JoinPointMonitorAtAspectJAspect)context.getBean("monitoringAspect");
-		assertThat(callCountingAspect.beforeExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
-		assertThat(callCountingAspect.aroundExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
+		assertThat(callCountingAspect.beforeExecutions).as("Advise didn't get executed").isEqualTo(1);
+		assertThat(callCountingAspect.aroundExecutions).as("Advise didn't get executed").isEqualTo(1);
 	}
 
 }

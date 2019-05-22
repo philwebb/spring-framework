@@ -40,13 +40,13 @@ public class RollbackRuleTests {
 	@Test
 	public void foundImmediatelyWithString() {
 		RollbackRuleAttribute rr = new RollbackRuleAttribute(java.lang.Exception.class.getName());
-		assertThat(rr.getDepth(new Exception())).isEqualTo((long) 0);
+		assertThat(rr.getDepth(new Exception())).isEqualTo(0);
 	}
 
 	@Test
 	public void foundImmediatelyWithClass() {
 		RollbackRuleAttribute rr = new RollbackRuleAttribute(Exception.class);
-		assertThat(rr.getDepth(new Exception())).isEqualTo((long) 0);
+		assertThat(rr.getDepth(new Exception())).isEqualTo(0);
 	}
 
 	@Test

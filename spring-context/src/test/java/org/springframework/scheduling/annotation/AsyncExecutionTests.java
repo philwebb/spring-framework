@@ -372,7 +372,7 @@ public class AsyncExecutionTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> listenerCalled == 2);
-		assertThat(listenerConstructed).isEqualTo((long) 1);
+		assertThat(listenerConstructed).isEqualTo(1);
 	}
 
 	@Test
@@ -395,7 +395,7 @@ public class AsyncExecutionTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> listenerCalled == 2);
-		assertThat(listenerConstructed).isEqualTo((long) 2);
+		assertThat(listenerConstructed).isEqualTo(2);
 	}
 
 

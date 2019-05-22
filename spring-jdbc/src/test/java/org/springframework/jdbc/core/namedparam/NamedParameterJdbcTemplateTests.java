@@ -278,7 +278,7 @@ public class NamedParameterJdbcTemplateTests {
 			customers.add(cust);
 		});
 
-		assertThat(customers.size()).isEqualTo((long) 1);
+		assertThat(customers.size()).isEqualTo(1);
 		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
 		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
@@ -302,7 +302,7 @@ public class NamedParameterJdbcTemplateTests {
 			customers.add(cust);
 		});
 
-		assertThat(customers.size()).isEqualTo((long) 1);
+		assertThat(customers.size()).isEqualTo(1);
 		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
 		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
@@ -325,7 +325,7 @@ public class NamedParameterJdbcTemplateTests {
 					cust.setForename(rs.getString(COLUMN_NAMES[1]));
 					return cust;
 				});
-		assertThat(customers.size()).isEqualTo((long) 1);
+		assertThat(customers.size()).isEqualTo(1);
 		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
 		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
@@ -348,7 +348,7 @@ public class NamedParameterJdbcTemplateTests {
 					cust.setForename(rs.getString(COLUMN_NAMES[1]));
 					return cust;
 				});
-		assertThat(customers.size()).isEqualTo((long) 1);
+		assertThat(customers.size()).isEqualTo(1);
 		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
 		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
@@ -388,7 +388,7 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("priceId", 1);
 		int rowsAffected = namedParameterTemplate.update(UPDATE_NAMED_PARAMETERS, params);
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1);
 		verify(preparedStatement).setObject(2, 1);
@@ -404,7 +404,7 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
 		int rowsAffected = namedParameterTemplate.update(UPDATE_NAMED_PARAMETERS, params);
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
 		verify(preparedStatement).setObject(2, 1, Types.INTEGER);
@@ -491,7 +491,7 @@ public class NamedParameterJdbcTemplateTests {
 				parameters
 		);
 
-		assertThat(actualRowsAffected.length).as("executed 2 updates").isEqualTo((long) 2);
+		assertThat(actualRowsAffected.length).as("executed 2 updates").isEqualTo(2);
 
 		InOrder inOrder = inOrder(preparedStatement);
 

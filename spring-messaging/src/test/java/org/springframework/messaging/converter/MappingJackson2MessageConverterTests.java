@@ -86,7 +86,7 @@ public class MappingJackson2MessageConverterTests {
 		MyBean actual = (MyBean) converter.fromMessage(message, MyBean.class);
 
 		assertThat(actual.getString()).isEqualTo("Foo");
-		assertThat(actual.getNumber()).isEqualTo((long) 42);
+		assertThat(actual.getNumber()).isEqualTo(42);
 		assertThat(actual.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});

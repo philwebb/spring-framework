@@ -44,7 +44,7 @@ public abstract class AbstractCacheOperationTests<O extends JCacheOperation<?>> 
 	public void simple() {
 		O operation = createSimpleOperation();
 		assertThat(operation.getCacheName()).as("Wrong cache name").isEqualTo("simpleCache");
-		assertThat(operation.getAnnotations().size()).as("Unexpected number of annotation on " + operation.getMethod()).isEqualTo((long) 1);
+		assertThat(operation.getAnnotations().size()).as("Unexpected number of annotation on " + operation.getMethod()).isEqualTo(1);
 		assertThat(operation.getAnnotations().iterator().next()).as("Wrong method annotation").isEqualTo(operation.getCacheAnnotation());
 
 		assertThat(operation.getCacheResolver()).as("cache resolver should be set").isNotNull();

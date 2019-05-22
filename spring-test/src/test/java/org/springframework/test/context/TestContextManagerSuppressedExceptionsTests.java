@@ -54,7 +54,7 @@ public class TestContextManagerSuppressedExceptionsTests {
 
 	private void test(String useCase, Class<?> testClass, Callback callback) throws Exception {
 		TestContextManager testContextManager = new TestContextManager(testClass);
-		assertThat(testContextManager.getTestExecutionListeners().size()).as("Registered TestExecutionListeners").isEqualTo((long) 2);
+		assertThat(testContextManager.getTestExecutionListeners().size()).as("Registered TestExecutionListeners").isEqualTo(2);
 
 		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> {
 				Method testMethod = getClass().getMethod("toString");

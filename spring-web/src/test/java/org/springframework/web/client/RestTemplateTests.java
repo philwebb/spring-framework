@@ -225,7 +225,7 @@ public class RestTemplateTests {
 		template.setMessageConverters(Arrays.asList(firstConverter, secondConverter));
 		template.getForObject("https://example.com/", String.class);
 
-		assertThat(requestHeaders.getAccept().size()).as("Sent duplicate Accept header values").isEqualTo((long) 1);
+		assertThat(requestHeaders.getAccept().size()).as("Sent duplicate Accept header values").isEqualTo(1);
 	}
 
 	@Test
@@ -360,7 +360,7 @@ public class RestTemplateTests {
 		mockResponseStatus(HttpStatus.OK);
 
 		template.postForLocation("https://example.com", null);
-		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
+		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo(0);
 
 		verify(response).close();
 	}
@@ -414,7 +414,7 @@ public class RestTemplateTests {
 
 		String result = template.postForObject("https://example.com", null, String.class);
 		assertThat(result).as("Invalid POST result").isNull();
-		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
+		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo(0);
 
 		verify(response).close();
 	}
@@ -435,7 +435,7 @@ public class RestTemplateTests {
 		ResponseEntity<String> result = template.postForEntity("https://example.com", null, String.class);
 		assertThat(result.hasBody()).as("Invalid POST result").isFalse();
 		assertThat(result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
+		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo(0);
 		assertThat(result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 
 		verify(response).close();
@@ -459,7 +459,7 @@ public class RestTemplateTests {
 		mockResponseStatus(HttpStatus.OK);
 
 		template.put("https://example.com", null);
-		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
+		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo(0);
 
 		verify(response).close();
 	}
@@ -494,7 +494,7 @@ public class RestTemplateTests {
 
 		String result = template.patchForObject("https://example.com", null, String.class);
 		assertThat(result).as("Invalid POST result").isNull();
-		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
+		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo(0);
 
 		verify(response).close();
 	}

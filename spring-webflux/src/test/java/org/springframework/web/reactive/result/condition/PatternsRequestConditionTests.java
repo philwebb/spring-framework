@@ -153,13 +153,13 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = createPatternsCondition("/foo*");
 		PatternsRequestCondition c2 = createPatternsCondition("/foo*");
 
-		assertThat(c1.compareTo(c2, MockServerWebExchange.from(get("/foo")))).isEqualTo((long) 0);
+		assertThat(c1.compareTo(c2, MockServerWebExchange.from(get("/foo")))).isEqualTo(0);
 	}
 
 	@Test
 	public void equallyMatchingPatternsAreBothPresent() throws Exception {
 		PatternsRequestCondition c = createPatternsCondition("/a", "/b");
-		assertThat(c.getPatterns().size()).isEqualTo((long) 2);
+		assertThat(c.getPatterns().size()).isEqualTo(2);
 		Iterator<PathPattern> itr = c.getPatterns().iterator();
 		assertThat(itr.next().getPatternString()).isEqualTo("/a");
 		assertThat(itr.next().getPatternString()).isEqualTo("/b");
@@ -172,12 +172,12 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = createPatternsCondition("/fo*");
 		PatternsRequestCondition c2 = createPatternsCondition("/foo");
 
-		assertThat(c1.compareTo(c2, exchange)).isEqualTo((long) 1);
+		assertThat(c1.compareTo(c2, exchange)).isEqualTo(1);
 
 		c1 = createPatternsCondition("/fo*");
 		c2 = createPatternsCondition("/*oo");
 
-		assertThat(c1.compareTo(c2, exchange)).as("Patterns are equally specific even if not the same").isEqualTo((long) 0);
+		assertThat(c1.compareTo(c2, exchange)).as("Patterns are equally specific even if not the same").isEqualTo(0);
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition match2 = c2.getMatchingCondition(exchange);
 
 		assertThat(match1).isNotNull();
-		assertThat(match1.compareTo(match2, exchange)).isEqualTo((long) 1);
+		assertThat(match1.compareTo(match2, exchange)).isEqualTo(1);
 	}
 
 	private PatternsRequestCondition createPatternsCondition(String... patterns) {

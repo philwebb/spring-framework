@@ -105,7 +105,7 @@ public class SqlUpdateTests {
 		Updater pc = new Updater();
 		int rowsAffected = pc.run();
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class SqlUpdateTests {
 		IntUpdater pc = new IntUpdater();
 		int rowsAffected = pc.run(1);
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 	}
 
@@ -128,7 +128,7 @@ public class SqlUpdateTests {
 		IntIntUpdater pc = new IntIntUpdater();
 		int rowsAffected = pc.run(1, 1);
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);
 	}
@@ -173,7 +173,7 @@ public class SqlUpdateTests {
 
 		NamedParameterUpdater pc = new NamedParameterUpdater();
 		int rowsAffected = pc.run(1, 1);
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 1, Types.DECIMAL);
 	}
@@ -186,7 +186,7 @@ public class SqlUpdateTests {
 		StringUpdater pc = new StringUpdater();
 		int rowsAffected = pc.run("rod");
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(preparedStatement).setString(1, "rod");
 	}
 
@@ -198,7 +198,7 @@ public class SqlUpdateTests {
 		MixedUpdater pc = new MixedUpdater();
 		int rowsAffected = pc.run(1, 1, "rod", true);
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 1, Types.NUMERIC, 2);
 		verify(preparedStatement).setString(3, "rod");
@@ -222,9 +222,9 @@ public class SqlUpdateTests {
 		KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 		int rowsAffected = pc.run("rod", generatedKeyHolder);
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
-		assertThat(generatedKeyHolder.getKeyList().size()).isEqualTo((long) 1);
-		assertThat(generatedKeyHolder.getKey().intValue()).isEqualTo((long) 11);
+		assertThat(rowsAffected).isEqualTo(1);
+		assertThat(generatedKeyHolder.getKeyList().size()).isEqualTo(1);
+		assertThat(generatedKeyHolder.getKey().intValue()).isEqualTo(11);
 		verify(preparedStatement).setString(1, "rod");
 		verify(resultSet).close();
 	}
@@ -237,7 +237,7 @@ public class SqlUpdateTests {
 
 		int rowsAffected = pc.run(1, 1, "rod", true);
 
-		assertThat(rowsAffected).isEqualTo((long) 1);
+		assertThat(rowsAffected).isEqualTo(1);
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);
 		verify(preparedStatement).setString(3, "rod");
@@ -252,7 +252,7 @@ public class SqlUpdateTests {
 		MaxRowsUpdater pc = new MaxRowsUpdater();
 
 		int rowsAffected = pc.run();
-		assertThat(rowsAffected).isEqualTo((long) 3);
+		assertThat(rowsAffected).isEqualTo(3);
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class SqlUpdateTests {
 		MaxRowsUpdater pc = new MaxRowsUpdater();
 		int rowsAffected = pc.run();
 
-		assertThat(rowsAffected).isEqualTo((long) 5);
+		assertThat(rowsAffected).isEqualTo(5);
 	}
 
 	@Test
@@ -285,7 +285,7 @@ public class SqlUpdateTests {
 		RequiredRowsUpdater pc = new RequiredRowsUpdater();
 		int rowsAffected = pc.run();
 
-		assertThat(rowsAffected).isEqualTo((long) 3);
+		assertThat(rowsAffected).isEqualTo(3);
 	}
 
 	@Test

@@ -172,7 +172,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	public void testPropertyAccess() throws Exception {
 		EvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
 		int year = (Integer) parser.parseExpression("Birthdate.Year + 1900").getValue(context); // 1856
-		assertThat(year).isEqualTo((long) 1856);
+		assertThat(year).isEqualTo(1856);
 
 		String city = (String) parser.parseExpression("placeOfBirth.City").getValue(context);
 		assertThat(city).isEqualTo("SmilJan");
@@ -322,21 +322,21 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	public void testNumericalOperators() throws Exception {
 		// Addition
 		int two = parser.parseExpression("1 + 1").getValue(Integer.class); // 2
-		assertThat(two).isEqualTo((long) 2);
+		assertThat(two).isEqualTo(2);
 
 		String testString = parser.parseExpression("'test' + ' ' + 'string'").getValue(String.class); // 'test string'
 		assertThat(testString).isEqualTo("test string");
 
 		// Subtraction
 		int four =  parser.parseExpression("1 - -3").getValue(Integer.class); // 4
-		assertThat(four).isEqualTo((long) 4);
+		assertThat(four).isEqualTo(4);
 
 		double d = parser.parseExpression("1000.00 - 1e4").getValue(Double.class); // -9000
 		assertThat(d).isCloseTo(-9000.0d, within((double) 0));
 
 		// Multiplication
 		int six =  parser.parseExpression("-2 * -3").getValue(Integer.class); // 6
-		assertThat(six).isEqualTo((long) 6);
+		assertThat(six).isEqualTo(6);
 
 		double twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Double.class); // 24.0
 		assertThat(twentyFour).isCloseTo(24.0d, within((double) 0));
@@ -350,10 +350,10 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		// Modulus
 		int three =  parser.parseExpression("7 % 4").getValue(Integer.class); // 3
-		assertThat(three).isEqualTo((long) 3);
+		assertThat(three).isEqualTo(3);
 
 		int oneInt = parser.parseExpression("8 / 5 % 2").getValue(Integer.class); // 1
-		assertThat(oneInt).isEqualTo((long) 1);
+		assertThat(oneInt).isEqualTo(1);
 
 		// Operator precedence
 		int minusTwentyOne = parser.parseExpression("1+2-3*8").getValue(Integer.class); // -21
@@ -475,7 +475,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
 		List<Inventor> list = (List<Inventor>) parser.parseExpression("Members2.?[nationality == 'Serbian']").getValue(societyContext);
-		assertThat(list.size()).isEqualTo((long) 1);
+		assertThat(list.size()).isEqualTo(1);
 		assertThat(list.get(0).getName()).isEqualTo("Nikola Tesla");
 	}
 

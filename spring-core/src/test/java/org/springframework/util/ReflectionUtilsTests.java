@@ -166,7 +166,7 @@ public class ReflectionUtilsTests {
 		dest.magic = 11;
 		testValidCopy(src, dest);
 		// Should have left this one alone
-		assertThat(dest.magic).isEqualTo((long) 11);
+		assertThat(dest.magic).isEqualTo(11);
 	}
 
 	@Test
@@ -214,7 +214,7 @@ public class ReflectionUtilsTests {
 				++absquatulateCount;
 			}
 		}
-		assertThat(absquatulateCount).as("Found 2 absquatulates").isEqualTo((long) 2);
+		assertThat(absquatulateCount).as("Found 2 absquatulates").isEqualTo(2);
 	}
 
 	@Test

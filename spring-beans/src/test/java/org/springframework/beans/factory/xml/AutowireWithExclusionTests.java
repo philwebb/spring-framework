@@ -41,7 +41,7 @@ public class AutowireWithExclusionTests {
 		TestBean rob = (TestBean) beanFactory.getBean("rob");
 		TestBean sally = (TestBean) beanFactory.getBean("sally");
 		assertThat(rob.getSpouse()).isEqualTo(sally);
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class AutowireWithExclusionTests {
 		beanFactory.preInstantiateSingletons();
 		TestBean rob = (TestBean) beanFactory.getBean("rob");
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props1");
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class AutowireWithExclusionTests {
 		child.registerBeanDefinition("rob2", robDef);
 		TestBean rob = (TestBean) child.getBean("rob2");
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props1");
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class AutowireWithExclusionTests {
 		child.registerBeanDefinition("props3", propsDef);
 		TestBean rob = (TestBean) child.getBean("rob2");
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props1");
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class AutowireWithExclusionTests {
 		child.registerBeanDefinition("props3", propsDef);
 		TestBean rob = (TestBean) child.getBean("rob2");
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props3");
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class AutowireWithExclusionTests {
 		child.registerBeanDefinition("props3", propsDef);
 		TestBean rob = (TestBean) child.getBean("rob2");
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props3");
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class AutowireWithExclusionTests {
 		beanFactory.preInstantiateSingletons();
 		TestBean rob = (TestBean) beanFactory.getBean("rob");
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props1");
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class AutowireWithExclusionTests {
 		beanFactory.preInstantiateSingletons();
 		TestBean rob = (TestBean) beanFactory.getBean("rob");
 		assertThat(rob.getSomeProperties().getProperty("name")).isEqualTo("props1");
-		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo((long) 1);
+		assertThat(CountingFactory.getFactoryBeanInstanceCount()).isEqualTo(1);
 	}
 
 	@Test

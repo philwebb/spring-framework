@@ -155,7 +155,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 			byteBuffer.put("foo".getBytes(StandardCharsets.UTF_8));
 			byteBuffer.flip();
 			long pos = invocation.getArgument(1);
-			assertThat(pos).isEqualTo((long) 0);
+			assertThat(pos).isEqualTo(0);
 			DataBuffer dataBuffer = invocation.getArgument(2);
 			CompletionHandler<Integer, DataBuffer> completionHandler = invocation.getArgument(3);
 			completionHandler.completed(3, dataBuffer);
@@ -424,7 +424,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 			long pos = invocation.getArgument(1);
 			CompletionHandler<Integer, ByteBuffer> completionHandler = invocation.getArgument(3);
 
-			assertThat(pos).isEqualTo((long) 0);
+			assertThat(pos).isEqualTo(0);
 
 			int written = buffer.remaining();
 			buffer.position(buffer.limit());
@@ -677,7 +677,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 	private static void assertReleased(DataBuffer dataBuffer) {
 		if (dataBuffer instanceof NettyDataBuffer) {
 			ByteBuf byteBuf = ((NettyDataBuffer) dataBuffer).getNativeBuffer();
-			assertThat(byteBuf.refCnt()).isEqualTo((long) 0);
+			assertThat(byteBuf.refCnt()).isEqualTo(0);
 		}
 	}
 
@@ -762,7 +762,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 		int result = matcher.match(foo);
 		assertThat(result).isEqualTo((long) -1);
 		result = matcher.match(bar);
-		assertThat(result).isEqualTo((long) 1);
+		assertThat(result).isEqualTo(1);
 
 
 		release(foo, bar);
@@ -775,10 +775,10 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 		byte[] delims = "oo".getBytes(StandardCharsets.UTF_8);
 		DataBufferUtils.Matcher matcher = DataBufferUtils.matcher(delims);
 		int result = matcher.match(foo);
-		assertThat(result).isEqualTo((long) 2);
+		assertThat(result).isEqualTo(2);
 		foo.readPosition(2);
 		result = matcher.match(foo);
-		assertThat(result).isEqualTo((long) 3);
+		assertThat(result).isEqualTo(3);
 		foo.readPosition(3);
 		result = matcher.match(foo);
 		assertThat(result).isEqualTo((long) -1);

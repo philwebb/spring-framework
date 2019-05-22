@@ -105,14 +105,14 @@ public class ConcreteTransactionalJUnit4SpringContextTests extends AbstractTrans
 
 	@BeforeTransaction
 	public void beforeTransaction() {
-		assertThat(countRowsInPersonTable()).as("Verifying the number of rows in the person table before a transactional test method.").isEqualTo((long) 1);
-		assertThat(addPerson(YODA)).as("Adding yoda").isEqualTo((long) 1);
+		assertThat(countRowsInPersonTable()).as("Verifying the number of rows in the person table before a transactional test method.").isEqualTo(1);
+		assertThat(addPerson(YODA)).as("Adding yoda").isEqualTo(1);
 	}
 
 	@AfterTransaction
 	public void afterTransaction() {
-		assertThat(deletePerson(YODA)).as("Deleting yoda").isEqualTo((long) 1);
-		assertThat(countRowsInPersonTable()).as("Verifying the number of rows in the person table after a transactional test method.").isEqualTo((long) 1);
+		assertThat(deletePerson(YODA)).as("Deleting yoda").isEqualTo(1);
+		assertThat(countRowsInPersonTable()).as("Verifying the number of rows in the person table after a transactional test method.").isEqualTo(1);
 	}
 
 
@@ -172,9 +172,9 @@ public class ConcreteTransactionalJUnit4SpringContextTests extends AbstractTrans
 	@Test
 	public void modifyTestDataWithinTransaction() {
 		assertInTransaction(true);
-		assertThat(addPerson(JANE)).as("Adding jane").isEqualTo((long) 1);
-		assertThat(addPerson(SUE)).as("Adding sue").isEqualTo((long) 1);
-		assertThat(countRowsInPersonTable()).as("Verifying the number of rows in the person table in modifyTestDataWithinTransaction().").isEqualTo((long) 4);
+		assertThat(addPerson(JANE)).as("Adding jane").isEqualTo(1);
+		assertThat(addPerson(SUE)).as("Adding sue").isEqualTo(1);
+		assertThat(countRowsInPersonTable()).as("Verifying the number of rows in the person table in modifyTestDataWithinTransaction().").isEqualTo(4);
 	}
 
 

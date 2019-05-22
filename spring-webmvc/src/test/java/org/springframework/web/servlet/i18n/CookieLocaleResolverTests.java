@@ -301,7 +301,7 @@ public class CookieLocaleResolverTests {
 		assertThat(cookie.getName()).isEqualTo("LanguageKoek");
 		assertThat(cookie.getDomain()).isEqualTo(".springframework.org");
 		assertThat(cookie.getPath()).isEqualTo("/mypath");
-		assertThat(cookie.getMaxAge()).isEqualTo((long) 10000);
+		assertThat(cookie.getMaxAge()).isEqualTo(10000);
 		assertThat(cookie.getSecure()).isTrue();
 
 		request = new MockHttpServletRequest();
@@ -409,7 +409,7 @@ public class CookieLocaleResolverTests {
 		assertThat(locale).isEqualTo(Locale.TAIWAN);
 
 		Cookie[] cookies = response.getCookies();
-		assertThat(cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo(1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");
@@ -431,7 +431,7 @@ public class CookieLocaleResolverTests {
 		assertThat(timeZone).isNull();
 
 		Cookie[] cookies = response.getCookies();
-		assertThat(cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo(1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");
@@ -452,7 +452,7 @@ public class CookieLocaleResolverTests {
 		assertThat(locale).isEqualTo(Locale.CANADA_FRENCH);
 
 		Cookie[] cookies = response.getCookies();
-		assertThat(cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo(1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");
@@ -476,7 +476,7 @@ public class CookieLocaleResolverTests {
 		assertThat(timeZone).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		Cookie[] cookies = response.getCookies();
-		assertThat(cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo(1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");

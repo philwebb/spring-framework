@@ -110,7 +110,7 @@ public class RequestMethodsRequestConditionTests {
 		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = c1.compareTo(c1, exchange);
-		assertThat(result).as("Invalid comparison result ").isEqualTo((long) 0);
+		assertThat(result).as("Invalid comparison result ").isEqualTo(0);
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class RequestMethodsRequestConditionTests {
 		RequestMethodsRequestCondition condition2 = new RequestMethodsRequestCondition(POST);
 
 		RequestMethodsRequestCondition result = condition1.combine(condition2);
-		assertThat(result.getContent().size()).isEqualTo((long) 2);
+		assertThat(result.getContent().size()).isEqualTo(2);
 	}
 
 

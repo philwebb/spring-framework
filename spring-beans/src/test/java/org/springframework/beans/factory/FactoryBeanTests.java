@@ -118,8 +118,8 @@ public class FactoryBeanTests {
 		assertThat(impl1.getImpl2()).isNotNull();
 		assertThat(impl1.getImpl2()).isNotNull();
 		assertThat(impl1.getImpl2().getImpl1()).isSameAs(impl1);
-		assertThat(counter.getCount("bean1")).isEqualTo((long) 1);
-		assertThat(counter.getCount("bean2")).isEqualTo((long) 1);
+		assertThat(counter.getCount("bean1")).isEqualTo(1);
+		assertThat(counter.getCount("bean2")).isEqualTo(1);
 	}
 
 

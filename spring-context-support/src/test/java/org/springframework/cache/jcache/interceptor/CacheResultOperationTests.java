@@ -56,11 +56,11 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 		assertThat(operation.getExceptionCacheResolver()).isEqualTo(defaultExceptionCacheResolver);
 
 		CacheInvocationParameter[] allParameters = operation.getAllParameters(2L);
-		assertThat(allParameters.length).isEqualTo((long) 1);
+		assertThat(allParameters.length).isEqualTo(1);
 		assertCacheInvocationParameter(allParameters[0], Long.class, 2L, 0);
 
 		CacheInvocationParameter[] keyParameters = operation.getKeyParameters(2L);
-		assertThat(keyParameters.length).isEqualTo((long) 1);
+		assertThat(keyParameters.length).isEqualTo(1);
 		assertCacheInvocationParameter(keyParameters[0], Long.class, 2L, 0);
 	}
 
@@ -71,7 +71,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
 
 		CacheInvocationParameter[] keyParameters = operation.getKeyParameters(3L, Boolean.TRUE, "Foo");
-		assertThat(keyParameters.length).isEqualTo((long) 2);
+		assertThat(keyParameters.length).isEqualTo(2);
 		assertCacheInvocationParameter(keyParameters[0], Long.class, 3L, 0);
 		assertCacheInvocationParameter(keyParameters[1], String.class, "Foo", 2);
 	}
@@ -106,11 +106,11 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 		CacheInvocationParameter[] parameters = operation.getAllParameters(2L, "foo");
 
 		Set<Annotation> firstParameterAnnotations = parameters[0].getAnnotations();
-		assertThat(firstParameterAnnotations.size()).isEqualTo((long) 1);
+		assertThat(firstParameterAnnotations.size()).isEqualTo(1);
 		assertThat(firstParameterAnnotations.iterator().next().annotationType()).isEqualTo(CacheKey.class);
 
 		Set<Annotation> secondParameterAnnotations = parameters[1].getAnnotations();
-		assertThat(secondParameterAnnotations.size()).isEqualTo((long) 1);
+		assertThat(secondParameterAnnotations.size()).isEqualTo(1);
 		assertThat(secondParameterAnnotations.iterator().next().annotationType()).isEqualTo(Value.class);
 	}
 

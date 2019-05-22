@@ -108,8 +108,8 @@ public class XmlBeanDefinitionReaderTests {
 	}
 
 	private void testBeanDefinitions(BeanDefinitionRegistry registry) {
-		assertThat(registry.getBeanDefinitionCount()).isEqualTo((long) 24);
-		assertThat(registry.getBeanDefinitionNames().length).isEqualTo((long) 24);
+		assertThat(registry.getBeanDefinitionCount()).isEqualTo(24);
+		assertThat(registry.getBeanDefinitionNames().length).isEqualTo(24);
 		assertThat(Arrays.asList(registry.getBeanDefinitionNames()).contains("rod")).isTrue();
 		assertThat(Arrays.asList(registry.getBeanDefinitionNames()).contains("aliased")).isTrue();
 		assertThat(registry.containsBeanDefinition("rod")).isTrue();
@@ -118,7 +118,7 @@ public class XmlBeanDefinitionReaderTests {
 		assertThat(registry.getBeanDefinition("aliased").getBeanClassName()).isEqualTo(TestBean.class.getName());
 		assertThat(registry.isAlias("youralias")).isTrue();
 		String[] aliases = registry.getAliases("aliased");
-		assertThat(aliases.length).isEqualTo((long) 2);
+		assertThat(aliases.length).isEqualTo(2);
 		assertThat(ObjectUtils.containsElement(aliases, "myalias")).isTrue();
 		assertThat(ObjectUtils.containsElement(aliases, "youralias")).isTrue();
 	}

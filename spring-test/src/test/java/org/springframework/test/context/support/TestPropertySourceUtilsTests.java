@@ -155,7 +155,7 @@ public class TestPropertySourceUtilsTests {
 
 		MutablePropertySources propertySources = environment.getPropertySources();
 		propertySources.remove(MockPropertySource.MOCK_PROPERTIES_PROPERTY_SOURCE_NAME);
-		assertThat(propertySources.size()).isEqualTo((long) 0);
+		assertThat(propertySources.size()).isEqualTo(0);
 
 		String pair = "key = value";
 		ByteArrayResource resource = new ByteArrayResource(pair.getBytes(), "from inlined property: " + pair);
@@ -163,7 +163,7 @@ public class TestPropertySourceUtilsTests {
 		given(resourceLoader.getResource(anyString())).willReturn(resource);
 
 		addPropertiesFilesToEnvironment(environment, resourceLoader, FOO_LOCATIONS);
-		assertThat(propertySources.size()).isEqualTo((long) 1);
+		assertThat(propertySources.size()).isEqualTo(1);
 		assertThat(environment.getProperty("key")).isEqualTo("value");
 	}
 
@@ -215,10 +215,10 @@ public class TestPropertySourceUtilsTests {
 		ConfigurableEnvironment environment = new MockEnvironment();
 		MutablePropertySources propertySources = environment.getPropertySources();
 		propertySources.remove(MockPropertySource.MOCK_PROPERTIES_PROPERTY_SOURCE_NAME);
-		assertThat(propertySources.size()).isEqualTo((long) 0);
+		assertThat(propertySources.size()).isEqualTo(0);
 		addInlinedPropertiesToEnvironment(environment, asArray("  "));
-		assertThat(propertySources.size()).isEqualTo((long) 1);
-		assertThat(((Map) propertySources.iterator().next().getSource()).size()).isEqualTo((long) 0);
+		assertThat(propertySources.size()).isEqualTo(1);
+		assertThat(((Map) propertySources.iterator().next().getSource()).size()).isEqualTo(0);
 	}
 
 	@Test

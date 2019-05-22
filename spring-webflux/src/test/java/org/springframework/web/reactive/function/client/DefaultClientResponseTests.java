@@ -248,7 +248,7 @@ public class DefaultClientResponseTests {
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThatIllegalArgumentException().isThrownBy(
 				result::getStatusCode);
-		assertThat(result.getStatusCodeValue()).isEqualTo((long) 999);
+		assertThat(result.getStatusCodeValue()).isEqualTo(999);
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -314,7 +314,7 @@ public class DefaultClientResponseTests {
 		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
 		assertThatIllegalArgumentException().isThrownBy(
 				result::getStatusCode);
-		assertThat(result.getStatusCodeValue()).isEqualTo((long) 999);
+		assertThat(result.getStatusCodeValue()).isEqualTo(999);
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 

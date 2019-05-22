@@ -59,7 +59,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		proxy.setName("myName");
 		assertThat(RemoteBean.name).isEqualTo("myName");
-		assertThat(factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo(1);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
-		assertThat(factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo(1);
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
-		assertThat(factory.counter).isEqualTo((long) 2);
+		assertThat(factory.counter).isEqualTo(2);
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class RmiSupportTests {
 		assertThat(condition1).isFalse();
 		proxy.setName("myName");
 		assertThat(RemoteBean.name).isEqualTo("myName");
-		assertThat(factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo(1);
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class RmiSupportTests {
 			.withCauseInstanceOf(NoSuchMethodException.class)
 			.withMessageContaining("setOtherName")
 			.withMessageContaining("IWrongBusinessBean");
-		assertThat(factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo(1);
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class RmiSupportTests {
 		assertThat(condition1).isFalse();
 		assertThatExceptionOfType(springExceptionClass).isThrownBy(() ->
 				proxy.setName(rmiExceptionClass.getName()));
-		assertThat(factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo(1);
 	}
 
 	@Test

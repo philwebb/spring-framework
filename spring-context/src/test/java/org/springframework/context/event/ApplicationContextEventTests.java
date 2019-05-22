@@ -191,7 +191,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 
 		smc.multicastEvent(new MyEvent(this));
 		smc.multicastEvent(new MyOtherEvent(this));
-		assertThat(listener1.seenEvents.size()).isEqualTo((long) 2);
+		assertThat(listener1.seenEvents.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 
 		smc.multicastEvent(new MyEvent(this));
 		smc.multicastEvent(new MyOtherEvent(this));
-		assertThat(listener1.seenEvents.size()).isEqualTo((long) 2);
+		assertThat(listener1.seenEvents.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -222,7 +222,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 
 		smc.multicastEvent(new MyEvent(this));
 		smc.multicastEvent(new MyOtherEvent(this));
-		assertThat(listener1.seenEvents.size()).isEqualTo((long) 2);
+		assertThat(listener1.seenEvents.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -241,7 +241,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 
 		smc.multicastEvent(new MyEvent(this));
 		smc.multicastEvent(new MyOtherEvent(this));
-		assertThat(listener1.seenEvents.size()).isEqualTo((long) 2);
+		assertThat(listener1.seenEvents.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -298,7 +298,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 		assertThat(listener1.seenEvents.contains(event4)).isTrue();
 
 		AbstractApplicationEventMulticaster multicaster = context.getBean(AbstractApplicationEventMulticaster.class);
-		assertThat(multicaster.retrieverCache.size()).isEqualTo((long) 2);
+		assertThat(multicaster.retrieverCache.size()).isEqualTo(2);
 
 		context.close();
 	}
@@ -320,7 +320,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 		assertThat(listener.seenPayloads.contains("event4")).isTrue();
 
 		AbstractApplicationEventMulticaster multicaster = context.getBean(AbstractApplicationEventMulticaster.class);
-		assertThat(multicaster.retrieverCache.size()).isEqualTo((long) 2);
+		assertThat(multicaster.retrieverCache.size()).isEqualTo(2);
 
 		context.close();
 	}
@@ -387,7 +387,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 
 		BeanThatBroadcasts broadcaster = context.getBean("broadcaster", BeanThatBroadcasts.class);
 		context.publishEvent(new MyEvent(context));
-		assertThat(broadcaster.receivedCount).as("The event was not received by the listener").isEqualTo((long) 2);
+		assertThat(broadcaster.receivedCount).as("The event was not received by the listener").isEqualTo(2);
 
 		context.close();
 	}
@@ -403,7 +403,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 		context.publishEvent(new MyEvent(this));
 		context.publishEvent(new MyEvent(this));
 		TestBean listener = context.getBean(TestBean.class);
-		assertThat(((BeanThatListens) listener.getFriends().iterator().next()).getEventCount()).isEqualTo((long) 3);
+		assertThat(((BeanThatListens) listener.getFriends().iterator().next()).getEventCount()).isEqualTo(3);
 
 		context.close();
 	}
@@ -510,7 +510,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 
 		context.publishEvent(new MyEvent(this));
 		BeanThatListens listener = context.getBean(BeanThatListens.class);
-		assertThat(listener.getEventCount()).isEqualTo((long) 4);
+		assertThat(listener.getEventCount()).isEqualTo(4);
 
 		context.close();
 	}

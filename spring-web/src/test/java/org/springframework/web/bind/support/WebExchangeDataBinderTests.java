@@ -155,12 +155,12 @@ public class WebExchangeDataBinderTests {
 		formData.add("stringArray", "abc");
 		formData.add("stringArray", "123,def");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertThat(this.testBean.getStringArray().length).as("Expected all three items to be bound").isEqualTo((long) 3);
+		assertThat(this.testBean.getStringArray().length).as("Expected all three items to be bound").isEqualTo(3);
 
 		formData.remove("stringArray");
 		formData.add("stringArray", "123,def");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertThat(this.testBean.getStringArray().length).as("Expected only 1 item to be bound").isEqualTo((long) 1);
+		assertThat(this.testBean.getStringArray().length).as("Expected only 1 item to be bound").isEqualTo(1);
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class WebExchangeDataBinderTests {
 		assertThat(bean.getSomeList()).isEqualTo(Arrays.asList("123", "abc"));
 		assertThat(bean.getSomeArray()).isEqualTo(new String[] {"dec", "456"});
 		assertThat(bean.getPart().filename()).isEqualTo("foo.txt");
-		assertThat(bean.getSomePartList().size()).isEqualTo((long) 2);
+		assertThat(bean.getSomePartList().size()).isEqualTo(2);
 		assertThat(bean.getSomePartList().get(0).filename()).isEqualTo("foo.txt");
 		assertThat(bean.getSomePartList().get(1).filename()).isEqualTo("spring.png");
 	}

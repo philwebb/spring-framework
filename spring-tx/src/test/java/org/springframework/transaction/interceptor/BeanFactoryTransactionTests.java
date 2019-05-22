@@ -99,7 +99,7 @@ public class BeanFactoryTransactionTests {
 	public void testProxyFactory2Lazy() {
 		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory2Lazy");
 		assertThat(factory.containsSingleton("target")).isFalse();
-		assertThat(testBean.getAge()).isEqualTo((long) 666);
+		assertThat(testBean.getAge()).isEqualTo(666);
 		assertThat(factory.containsSingleton("target")).isTrue();
 	}
 
@@ -117,7 +117,7 @@ public class BeanFactoryTransactionTests {
 
 		ini.setName(newName);
 		assertThat(ini.getName()).isEqualTo(newName);
-		assertThat(ptm.commits).isEqualTo((long) 2);
+		assertThat(ptm.commits).isEqualTo(2);
 	}
 
 	@Test
@@ -136,8 +136,8 @@ public class BeanFactoryTransactionTests {
 		doTestGetsAreNotTransactional(testBean);
 		// Can't assert it's equal to 4 as the pointcut may be optimized and only invoked once
 		assertThat(0 < txnCounter.counter && txnCounter.counter <= 4).isTrue();
-		assertThat(preCounter.counter).isEqualTo((long) 4);
-		assertThat(postCounter.counter).isEqualTo((long) 4);
+		assertThat(preCounter.counter).isEqualTo(4);
+		assertThat(postCounter.counter).isEqualTo(4);
 	}
 
 	private void doTestGetsAreNotTransactional(final ITestBean testBean) {
@@ -211,7 +211,7 @@ public class BeanFactoryTransactionTests {
 		PlatformTransactionManagerFacade.delegate = txMan;
 
 		TestBean tb = (TestBean) factory.getBean("hotSwapped");
-		assertThat(tb.getAge()).isEqualTo((long) 666);
+		assertThat(tb.getAge()).isEqualTo(666);
 		int newAge = 557;
 		tb.setAge(newAge);
 		assertThat(tb.getAge()).isEqualTo((long) newAge);
@@ -224,9 +224,9 @@ public class BeanFactoryTransactionTests {
 		tb.setAge(newAge);
 		assertThat(target2.getAge()).isEqualTo((long) newAge);
 
-		assertThat(txMan.inflight).isEqualTo((long) 0);
-		assertThat(txMan.commits).isEqualTo((long) 2);
-		assertThat(txMan.rollbacks).isEqualTo((long) 0);
+		assertThat(txMan.inflight).isEqualTo(0);
+		assertThat(txMan.commits).isEqualTo(2);
+		assertThat(txMan.rollbacks).isEqualTo(0);
 	}
 
 

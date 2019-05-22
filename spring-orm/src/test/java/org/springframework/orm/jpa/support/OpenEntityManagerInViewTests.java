@@ -406,8 +406,8 @@ public class OpenEntityManagerInViewTests {
 		filter2.doFilter(this.request, this.response, filterChain3);
 		assertThat(TransactionSynchronizationManager.hasResource(factory)).isFalse();
 		assertThat(TransactionSynchronizationManager.hasResource(factory2)).isFalse();
-		assertThat(count.get()).isEqualTo((long) 1);
-		assertThat(count2.get()).isEqualTo((long) 1);
+		assertThat(count.get()).isEqualTo(1);
+		assertThat(count2.get()).isEqualTo(1);
 		assertThat(request.getAttribute("invoked")).isNotNull();
 		verify(asyncWebRequest, times(2)).addCompletionHandler(any(Runnable.class));
 		verify(asyncWebRequest).addTimeoutHandler(any(Runnable.class));
@@ -424,8 +424,8 @@ public class OpenEntityManagerInViewTests {
 		filter.doFilter(this.request, this.response, filterChain3);
 		assertThat(TransactionSynchronizationManager.hasResource(factory)).isFalse();
 		assertThat(TransactionSynchronizationManager.hasResource(factory2)).isFalse();
-		assertThat(count.get()).isEqualTo((long) 2);
-		assertThat(count2.get()).isEqualTo((long) 2);
+		assertThat(count.get()).isEqualTo(2);
+		assertThat(count2.get()).isEqualTo(2);
 
 		verify(this.manager).close();
 		verify(manager2).close();

@@ -53,7 +53,7 @@ public class DeclareParentsDelegateRefTests {
 	@Test
 	public void testIntroductionDelegation() {
 		((ICounter)noMethodsBean).increment();
-		assertThat(counter.getCount()).as("Delegate's counter should be updated").isEqualTo((long) 1);
+		assertThat(counter.getCount()).as("Delegate's counter should be updated").isEqualTo(1);
 	}
 
 }

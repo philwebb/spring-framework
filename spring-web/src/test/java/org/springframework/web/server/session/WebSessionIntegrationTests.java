@@ -70,14 +70,14 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String id = extractSessionId(response.getHeaders());
 		assertThat(id).isNotNull();
-		assertThat(this.handler.getSessionRequestCount()).isEqualTo((long) 1);
+		assertThat(this.handler.getSessionRequestCount()).isEqualTo(1);
 
 		request = RequestEntity.get(createUri()).header("Cookie", "SESSION=" + id).build();
 		response = this.restTemplate.exchange(request, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().get("Set-Cookie")).isNull();
-		assertThat(this.handler.getSessionRequestCount()).isEqualTo((long) 2);
+		assertThat(this.handler.getSessionRequestCount()).isEqualTo(2);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String id = extractSessionId(response.getHeaders());
 		assertThat(id).isNotNull();
-		assertThat(this.handler.getSessionRequestCount()).isEqualTo((long) 1);
+		assertThat(this.handler.getSessionRequestCount()).isEqualTo(1);
 
 		// Second request: same session
 		request = RequestEntity.get(createUri()).header("Cookie", "SESSION=" + id).build();
@@ -98,7 +98,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().get("Set-Cookie")).isNull();
-		assertThat(this.handler.getSessionRequestCount()).isEqualTo((long) 2);
+		assertThat(this.handler.getSessionRequestCount()).isEqualTo(2);
 
 		// Now fast-forward by 31 minutes
 		InMemoryWebSessionStore store = (InMemoryWebSessionStore) this.sessionManager.getSessionStore();
@@ -113,7 +113,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		id = extractSessionId(response.getHeaders());
 		assertThat(id).as("Expected new session id").isNotNull();
-		assertThat(this.handler.getSessionRequestCount()).isEqualTo((long) 1);
+		assertThat(this.handler.getSessionRequestCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String oldId = extractSessionId(response.getHeaders());
 		assertThat(oldId).isNotNull();
-		assertThat(this.handler.getSessionRequestCount()).isEqualTo((long) 1);
+		assertThat(this.handler.getSessionRequestCount()).isEqualTo(1);
 
 		// Second request: session id changes
 		URI uri = new URI("http://localhost:" + this.port + "/?changeId");
@@ -163,7 +163,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		String newId = extractSessionId(response.getHeaders());
 		assertThat(newId).as("Expected new session id").isNotNull();
 		assertThat(newId).isNotEqualTo(oldId);
-		assertThat(this.handler.getSessionRequestCount()).isEqualTo((long) 2);
+		assertThat(this.handler.getSessionRequestCount()).isEqualTo(2);
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 	private String extractSessionId(HttpHeaders headers) {
 		List<String> headerValues = headers.get("Set-Cookie");
 		assertThat(headerValues).isNotNull();
-		assertThat(headerValues.size()).isEqualTo((long) 1);
+		assertThat(headerValues.size()).isEqualTo(1);
 
 		for (String s : headerValues.get(0).split(";")){
 			if (s.startsWith("SESSION=")) {

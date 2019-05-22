@@ -163,7 +163,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "handleGenericString", GenericTestEvent.class);
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertThat(adapter.getOrder()).isEqualTo((long) 0);
+		assertThat(adapter.getOrder()).isEqualTo(0);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "handleRaw", ApplicationEvent.class);
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertThat(adapter.getOrder()).isEqualTo((long) 42);
+		assertThat(adapter.getOrder()).isEqualTo(42);
 	}
 
 	@Test

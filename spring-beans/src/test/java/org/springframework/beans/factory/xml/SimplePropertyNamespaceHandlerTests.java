@@ -42,7 +42,7 @@ public class SimplePropertyNamespaceHandlerTests {
 		ITestBean rob = (TestBean) beanFactory.getBean("rob");
 		ITestBean sally = (TestBean) beanFactory.getBean("sally");
 		assertThat(rob.getName()).isEqualTo("Rob Harrop");
-		assertThat(rob.getAge()).isEqualTo((long) 24);
+		assertThat(rob.getAge()).isEqualTo(24);
 		assertThat(sally).isEqualTo(rob.getSpouse());
 	}
 
@@ -54,7 +54,7 @@ public class SimplePropertyNamespaceHandlerTests {
 		TestBean sally = (TestBean) beanFactory.getBean("sally2");
 		ITestBean rob = sally.getSpouse();
 		assertThat(rob.getName()).isEqualTo("Rob Harrop");
-		assertThat(rob.getAge()).isEqualTo((long) 24);
+		assertThat(rob.getAge()).isEqualTo(24);
 		assertThat(sally).isEqualTo(rob.getSpouse());
 	}
 

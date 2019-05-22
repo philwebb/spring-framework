@@ -114,7 +114,7 @@ public class RouterFunctionTests {
 					}
 				});
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
-		assertThat((int) resultHandlerFunction.get().entity()).isEqualTo((long) 42);
+		assertThat((int) resultHandlerFunction.get().entity()).isEqualTo(42);
 	}
 
 

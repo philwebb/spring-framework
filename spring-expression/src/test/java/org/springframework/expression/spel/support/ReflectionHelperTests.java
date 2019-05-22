@@ -253,11 +253,11 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		Object[] newArray = ReflectionHelper.setupArgumentsForVarargsInvocation(
 				new Class<?>[] {String[].class}, "a", "b", "c");
 
-		assertThat(newArray.length).isEqualTo((long) 1);
+		assertThat(newArray.length).isEqualTo(1);
 		Object firstParam = newArray[0];
 		assertThat(firstParam.getClass().getComponentType()).isEqualTo(String.class);
 		Object[] firstParamArray = (Object[]) firstParam;
-		assertThat(firstParamArray.length).isEqualTo((long) 3);
+		assertThat(firstParamArray.length).isEqualTo(3);
 		assertThat(firstParamArray[0]).isEqualTo("a");
 		assertThat(firstParamArray[1]).isEqualTo("b");
 		assertThat(firstParamArray[2]).isEqualTo("c");

@@ -226,12 +226,12 @@ public class CronTriggerTests {
 		TriggerContext context1 = getTriggerContext(date);
 		Object actual1 = date = trigger.nextExecutionTime(context1);
 		assertThat(actual1).isEqualTo(calendar.getTime());
-		assertThat(calendar.get(Calendar.DAY_OF_MONTH)).isEqualTo((long) 2);
+		assertThat(calendar.get(Calendar.DAY_OF_MONTH)).isEqualTo(2);
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		TriggerContext context2 = getTriggerContext(date);
 		Object actual = date = trigger.nextExecutionTime(context2);
 		assertThat(actual).isEqualTo(calendar.getTime());
-		assertThat(calendar.get(Calendar.DAY_OF_MONTH)).isEqualTo((long) 3);
+		assertThat(calendar.get(Calendar.DAY_OF_MONTH)).isEqualTo(3);
 	}
 
 	@Test

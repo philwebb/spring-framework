@@ -44,15 +44,15 @@ public class LazyCreationTargetSourceTests {
 		};
 
 		InitCountingBean proxy = (InitCountingBean) ProxyFactory.getProxy(targetSource);
-		assertThat(InitCountingBean.initCount).as("Init count should be 0").isEqualTo((long) 0);
+		assertThat(InitCountingBean.initCount).as("Init count should be 0").isEqualTo(0);
 		assertThat(targetSource.getTargetClass()).as("Target class incorrect").isEqualTo(InitCountingBean.class);
-		assertThat(InitCountingBean.initCount).as("Init count should still be 0 after getTargetClass()").isEqualTo((long) 0);
+		assertThat(InitCountingBean.initCount).as("Init count should still be 0 after getTargetClass()").isEqualTo(0);
 
 		proxy.doSomething();
-		assertThat(InitCountingBean.initCount).as("Init count should now be 1").isEqualTo((long) 1);
+		assertThat(InitCountingBean.initCount).as("Init count should now be 1").isEqualTo(1);
 
 		proxy.doSomething();
-		assertThat(InitCountingBean.initCount).as("Init count should still be 1").isEqualTo((long) 1);
+		assertThat(InitCountingBean.initCount).as("Init count should still be 1").isEqualTo(1);
 	}
 
 

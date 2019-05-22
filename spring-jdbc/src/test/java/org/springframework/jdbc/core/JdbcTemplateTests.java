@@ -768,7 +768,7 @@ public class JdbcTemplateTests {
 		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
 
 		int[][] actualRowsAffected = template.batchUpdate(sql, ids, 2, setter);
-		assertThat(actualRowsAffected[0].length).as("executed 2 updates").isEqualTo((long) 2);
+		assertThat(actualRowsAffected[0].length).as("executed 2 updates").isEqualTo(2);
 		assertThat(actualRowsAffected[0][0]).isEqualTo((long) rowsAffected1[0]);
 		assertThat(actualRowsAffected[0][1]).isEqualTo((long) rowsAffected1[1]);
 		assertThat(actualRowsAffected[1][0]).isEqualTo((long) rowsAffected2[0]);
@@ -1088,7 +1088,7 @@ public class JdbcTemplateTests {
 		given(this.resultSet.getObject(2)).willReturn("second value");
 
 		Map<String, Object> map = this.template.queryForMap("my query");
-		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo(1);
 		assertThat(map.get("x")).isEqualTo("first value");
 	}
 

@@ -74,7 +74,7 @@ public class AtomFeedHttpMessageConverterTests {
 		assertThat(result.getTitle()).isEqualTo("title");
 		assertThat(result.getSubtitle().getValue()).isEqualTo("subtitle");
 		List<?> entries = result.getEntries();
-		assertThat(entries.size()).isEqualTo((long) 2);
+		assertThat(entries.size()).isEqualTo(2);
 
 		Entry entry1 = (Entry) entries.get(0);
 		assertThat(entry1.getId()).isEqualTo("id1");

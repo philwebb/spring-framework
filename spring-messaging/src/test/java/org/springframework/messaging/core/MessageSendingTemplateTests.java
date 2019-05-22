@@ -106,7 +106,7 @@ public class MessageSendingTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("home");
 		assertThat(this.template.message).isNotNull();
-		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo((long) 2);
+		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo(2);
 		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 	}
 
@@ -116,7 +116,7 @@ public class MessageSendingTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.message).isNotNull();
-		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo((long) 2);
+		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo(2);
 		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 	}
 
@@ -153,7 +153,7 @@ public class MessageSendingTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("home");
 		assertThat(this.template.message).isNotNull();
-		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo((long) 2);
+		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo(2);
 		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 
 		assertThat(this.postProcessor.getMessage()).isNotNull();
@@ -166,7 +166,7 @@ public class MessageSendingTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.message).isNotNull();
-		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo((long) 2);
+		assertThat(this.template.message.getHeaders().size()).as("expected 'id' and 'timestamp' headers only").isEqualTo(2);
 		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 
 		assertThat(this.postProcessor.getMessage()).isNotNull();

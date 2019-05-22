@@ -84,7 +84,7 @@ public class SynchronossPartHttpMessageReaderTests {
 		ServerHttpRequest request = generateMultipartRequest();
 		ResolvableType elementType = forClassWithGenerics(MultiValueMap.class, String.class, Part.class);
 		MultiValueMap<String, Part> parts = this.reader.readMono(elementType, request, emptyMap()).block();
-		assertThat(parts.size()).isEqualTo((long) 2);
+		assertThat(parts.size()).isEqualTo(2);
 
 		assertThat(parts.containsKey("fooPart")).isTrue();
 		Part part = parts.getFirst("fooPart");
@@ -93,7 +93,7 @@ public class SynchronossPartHttpMessageReaderTests {
 		assertThat(part.name()).isEqualTo("fooPart");
 		assertThat(((FilePart) part).filename()).isEqualTo("foo.txt");
 		DataBuffer buffer = DataBufferUtils.join(part.content()).block();
-		assertThat(buffer.readableByteCount()).isEqualTo((long) 12);
+		assertThat(buffer.readableByteCount()).isEqualTo(12);
 		byte[] byteContent = new byte[12];
 		buffer.read(byteContent);
 		assertThat(new String(byteContent)).isEqualTo("Lorem Ipsum.");
@@ -120,7 +120,7 @@ public class SynchronossPartHttpMessageReaderTests {
 		part.transferTo(dest).block(Duration.ofSeconds(5));
 
 		assertThat(dest.exists()).isTrue();
-		assertThat(dest.length()).isEqualTo((long) 12);
+		assertThat(dest.length()).isEqualTo(12);
 		assertThat(dest.delete()).isTrue();
 	}
 

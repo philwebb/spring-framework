@@ -233,7 +233,7 @@ public class WebClientIntegrationTests {
 				.consumeNextWith(entity -> {
 					assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 					assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
-					assertThat(entity.getHeaders().getContentLength()).isEqualTo((long) 31);
+					assertThat(entity.getHeaders().getContentLength()).isEqualTo(31);
 					assertThat(entity.getBody()).isEqualTo(content);
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
@@ -260,7 +260,7 @@ public class WebClientIntegrationTests {
 				.consumeNextWith(entity -> {
 					assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 					assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
-					assertThat(entity.getHeaders().getContentLength()).isEqualTo((long) 58);
+					assertThat(entity.getHeaders().getContentLength()).isEqualTo(58);
 					Pojo pojo1 = new Pojo("foo1", "bar1");
 					Pojo pojo2 = new Pojo("foo2", "bar2");
 					assertThat(entity.getBody()).isEqualTo(Arrays.asList(pojo1, pojo2));
@@ -540,7 +540,7 @@ public class WebClientIntegrationTests {
 				.exchange();
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertThat(response.rawStatusCode()).isEqualTo((long) 555))
+				.consumeNextWith(response -> assertThat(response.rawStatusCode()).isEqualTo(555))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 

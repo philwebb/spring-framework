@@ -39,7 +39,7 @@ public class StandardTypeLocatorTests {
 		assertThat(locator.findType("java.lang.String")).isEqualTo(String.class);
 
 		List<String> prefixes = locator.getImportPrefixes();
-		assertThat(prefixes.size()).isEqualTo((long) 1);
+		assertThat(prefixes.size()).isEqualTo(1);
 		assertThat(prefixes.contains("java.lang")).isTrue();
 		assertThat(prefixes.contains("java.util")).isFalse();
 

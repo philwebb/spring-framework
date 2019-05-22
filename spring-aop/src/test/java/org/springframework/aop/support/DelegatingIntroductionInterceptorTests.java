@@ -204,7 +204,7 @@ public class DelegatingIntroductionInterceptorTests {
 		}));
 
 		TimeStamped tsp = (TimeStamped) factory.getProxy();
-		assertThat(tsp.getTimeStamp()).isEqualTo((long) 0);
+		assertThat(tsp.getTimeStamp()).isEqualTo(0);
 
 		assertThat(tsp.toString()).isEqualTo(raw.toString());
 	}

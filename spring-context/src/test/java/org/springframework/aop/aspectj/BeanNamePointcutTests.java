@@ -80,7 +80,7 @@ public class BeanNamePointcutTests {
 		// Call two methods to test for SPR-3953-like condition
 		this.testBean1.setAge(20);
 		this.testBean1.setName("");
-		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo((long) 2);
+		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo(2);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class BeanNamePointcutTests {
 		boolean condition = this.testBean2 instanceof Advised;
 		assertThat(condition).as("Non-matching bean must *not* be advised (proxied)").isFalse();
 		this.testBean2.setAge(20);
-		assertThat(this.counterAspect.getCount()).as("Advice must *not* have been executed").isEqualTo((long) 0);
+		assertThat(this.counterAspect.getCount()).as("Advice must *not* have been executed").isEqualTo(0);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class BeanNamePointcutTests {
 		assertThat(condition1).as("Matching bean must be advised (proxied)").isTrue();
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
-		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo((long) 2);
+		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo(2);
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean1");
 		boolean condition = !(fb instanceof Advised);
 		assertThat(condition).as("FactoryBean itself must *not* be advised").isTrue();
@@ -118,7 +118,7 @@ public class BeanNamePointcutTests {
 		assertThat(condition).as("FactoryBean itself must be advised").isTrue();
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
-		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo((long) 2);
+		assertThat(this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo(2);
 	}
 
 	@Test
@@ -128,9 +128,9 @@ public class BeanNamePointcutTests {
 		boolean condition1 = this.dontInterceptThis instanceof Advised;
 		assertThat(condition1).as("Non-matching bean must *not* be advised (proxied)").isFalse();
 		interceptThis.setAge(20);
-		assertThat(testInterceptor.interceptionCount).isEqualTo((long) 1);
+		assertThat(testInterceptor.interceptionCount).isEqualTo(1);
 		dontInterceptThis.setAge(20);
-		assertThat(testInterceptor.interceptionCount).isEqualTo((long) 1);
+		assertThat(testInterceptor.interceptionCount).isEqualTo(1);
 	}
 
 

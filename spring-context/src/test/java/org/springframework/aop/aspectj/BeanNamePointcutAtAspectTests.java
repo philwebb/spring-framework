@@ -63,7 +63,7 @@ public class BeanNamePointcutAtAspectTests {
 		// Call two methods to test for SPR-3953-like condition
 		testBean1.setAge(20);
 		testBean1.setName("");
-		assertThat(counterAspect.count).isEqualTo((long) 2);
+		assertThat(counterAspect.count).isEqualTo(2);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class BeanNamePointcutAtAspectTests {
 		assertThat(condition).as("Didn't expect a proxy").isFalse();
 
 		testBean3.setAge(20);
-		assertThat(counterAspect.count).isEqualTo((long) 0);
+		assertThat(counterAspect.count).isEqualTo(0);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class BeanNamePointcutAtAspectTests {
 		boolean condition = proxyTestBean instanceof Advised;
 		assertThat(condition).as("Expected a proxy").isTrue();
 		proxyTestBean.setAge(20);
-		assertThat(myCounterAspect.count).as("Programmatically created proxy shouldn't match bean()").isEqualTo((long) 0);
+		assertThat(myCounterAspect.count).as("Programmatically created proxy shouldn't match bean()").isEqualTo(0);
 	}
 
 }

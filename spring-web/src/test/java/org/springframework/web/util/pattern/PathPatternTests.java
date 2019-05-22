@@ -568,7 +568,7 @@ public class PathPatternTests {
 		pp = parse("/aaa/bbb");
 		pri = getPathRemaining(pp, "/aaa/bbb");
 		assertThat(pri.getPathRemaining().value()).isEqualTo("");
-		assertThat(pri.getUriVariables().size()).isEqualTo((long) 0);
+		assertThat(pri.getUriVariables().size()).isEqualTo(0);
 
 		pp = parse("/*/{foo}/b*");
 		pri = getPathRemaining(pp, "/foo");
@@ -785,7 +785,7 @@ public class PathPatternTests {
 		assertThat(checkCapture("/{one}/", "//")).isNull();
 		assertThat(checkCapture("", "/abc")).isNull();
 
-		assertThat(checkCapture("", "").getUriVariables().size()).isEqualTo((long) 0);
+		assertThat(checkCapture("", "").getUriVariables().size()).isEqualTo(0);
 		checkCapture("{id}", "99", "id", "99");
 		checkCapture("/customer/{customerId}", "/customer/78", "customerId", "78");
 		checkCapture("/customer/{customerId}/banana", "/customer/42/banana", "customerId",
@@ -795,7 +795,7 @@ public class PathPatternTests {
 				"apple");
 		checkCapture("/{bla}.*", "/testing.html", "bla", "testing");
 		PathPattern.PathMatchInfo extracted = checkCapture("/abc", "/abc");
-		assertThat(extracted.getUriVariables().size()).isEqualTo((long) 0);
+		assertThat(extracted.getUriVariables().size()).isEqualTo(0);
 		checkCapture("/{bla}/foo","/a/foo");
 	}
 
@@ -902,32 +902,32 @@ public class PathPatternTests {
 	public void patternComparator() {
 		Comparator<PathPattern> comparator = PathPattern.SPECIFICITY_COMPARATOR;
 
-		assertThat(comparator.compare(parse("/hotels/new"), parse("/hotels/new"))).isEqualTo((long) 0);
+		assertThat(comparator.compare(parse("/hotels/new"), parse("/hotels/new"))).isEqualTo(0);
 
 		assertThat(comparator.compare(parse("/hotels/new"), parse("/hotels/*"))).isEqualTo((long) -1);
-		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/new"))).isEqualTo((long) 1);
-		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/*"))).isEqualTo((long) 0);
+		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/new"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/*"))).isEqualTo(0);
 
 		assertThat(comparator.compare(parse("/hotels/new"), parse("/hotels/{hotel}"))).isEqualTo((long) -1);
-		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/new"))).isEqualTo((long) 1);
-		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/{hotel}"))).isEqualTo((long) 0);
+		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/new"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/{hotel}"))).isEqualTo(0);
 		assertThat(comparator.compare(parse("/hotels/{hotel}/booking"),
 				parse("/hotels/{hotel}/bookings/{booking}"))).isEqualTo((long) -1);
 		assertThat(comparator.compare(parse("/hotels/{hotel}/bookings/{booking}"),
-				parse("/hotels/{hotel}/booking"))).isEqualTo((long) 1);
+				parse("/hotels/{hotel}/booking"))).isEqualTo(1);
 
 		assertThat(comparator.compare(
 				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"),
 				parse("/**"))).isEqualTo((long) -1);
 		assertThat(comparator.compare(parse("/**"),
-				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"))).isEqualTo((long) 1);
-		assertThat(comparator.compare(parse("/**"), parse("/**"))).isEqualTo((long) 0);
+				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/**"), parse("/**"))).isEqualTo(0);
 
 		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/*"))).isEqualTo((long) -1);
-		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/{hotel}"))).isEqualTo((long) 1);
+		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/{hotel}"))).isEqualTo(1);
 
 		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/*/**"))).isEqualTo((long) -1);
-		assertThat(comparator.compare(parse("/hotels/*/**"), parse("/hotels/*"))).isEqualTo((long) 1);
+		assertThat(comparator.compare(parse("/hotels/*/**"), parse("/hotels/*"))).isEqualTo(1);
 
 // TODO: shouldn't the wildcard lower the score?
 //		assertEquals(-1,
@@ -938,21 +938,21 @@ public class PathPatternTests {
 				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"),
 				parse("/hotels/**"))).isEqualTo((long) -1);
 		assertThat(comparator.compare(parse("/hotels/**"),
-				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"))).isEqualTo((long) 1);
+				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"))).isEqualTo(1);
 		assertThat(comparator.compare(parse("/hotels/foo/bar/**"),
-				parse("/hotels/{hotel}"))).isEqualTo((long) 1);
+				parse("/hotels/{hotel}"))).isEqualTo(1);
 		assertThat(comparator.compare(parse("/hotels/{hotel}"),
 				parse("/hotels/foo/bar/**"))).isEqualTo((long) -1);
 
 		// SPR-8683
-		assertThat(comparator.compare(parse("/**"), parse("/hotels/{hotel}"))).isEqualTo((long) 1);
+		assertThat(comparator.compare(parse("/**"), parse("/hotels/{hotel}"))).isEqualTo(1);
 
 		// longer is better
-		assertThat(comparator.compare(parse("/hotels"), parse("/hotels2"))).isEqualTo((long) 1);
+		assertThat(comparator.compare(parse("/hotels"), parse("/hotels2"))).isEqualTo(1);
 
 		// SPR-13139
 		assertThat(comparator.compare(parse("*"), parse("*/**"))).isEqualTo((long) -1);
-		assertThat(comparator.compare(parse("*/**"), parse("*"))).isEqualTo((long) 1);
+		assertThat(comparator.compare(parse("*/**"), parse("*"))).isEqualTo(1);
 	}
 
 	@Test

@@ -184,7 +184,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertThat(mv.getViewName()).isEqualTo("index");
-		assertThat(mv.getModel().size()).isEqualTo((long) 1);
+		assertThat(mv.getModel().size()).isEqualTo(1);
 		assertThat(mv.getModel().get("name")).isEqualTo("value");
 	}
 

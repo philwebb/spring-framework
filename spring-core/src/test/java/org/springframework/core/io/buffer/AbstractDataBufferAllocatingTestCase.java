@@ -139,7 +139,7 @@ public abstract class AbstractDataBufferAllocatingTestCase {
 						}
 						continue;
 					}
-					assertThat(total).as("ByteBuf Leak: " + total + " unreleased allocations").isEqualTo((long) 0);
+					assertThat(total).as("ByteBuf Leak: " + total + " unreleased allocations").isEqualTo(0);
 				}
 			}
 		}

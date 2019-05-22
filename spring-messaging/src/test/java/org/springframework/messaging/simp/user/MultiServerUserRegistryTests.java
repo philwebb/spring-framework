@@ -66,7 +66,7 @@ public class MultiServerUserRegistryTests {
 		given(this.localRegistry.getUserCount()).willReturn(1);
 		given(this.localRegistry.getUser("joe")).willReturn(user);
 
-		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		assertThat(this.registry.getUser("joe")).isSameAs(user);
 	}
 
@@ -85,16 +85,16 @@ public class MultiServerUserRegistryTests {
 		// Add remote registry
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
-		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		SimpUser user = this.registry.getUser("joe");
 		assertThat(user).isNotNull();
 		assertThat(user.hasSessions()).isTrue();
-		assertThat(user.getSessions().size()).isEqualTo((long) 1);
+		assertThat(user.getSessions().size()).isEqualTo(1);
 		SimpSession session = user.getSession("remote-sess");
 		assertThat(session).isNotNull();
 		assertThat(session.getId()).isEqualTo("remote-sess");
 		assertThat(session.getUser()).isSameAs(user);
-		assertThat(session.getSubscriptions().size()).isEqualTo((long) 1);
+		assertThat(session.getSubscriptions().size()).isEqualTo(1);
 		SimpSubscription subscription = session.getSubscriptions().iterator().next();
 		assertThat(subscription.getId()).isEqualTo("remote-sub");
 		assertThat(subscription.getSession()).isSameAs(session);
@@ -124,9 +124,9 @@ public class MultiServerUserRegistryTests {
 		// Add remote registry
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
-		assertThat(this.registry.getUserCount()).isEqualTo((long) 3);
+		assertThat(this.registry.getUserCount()).isEqualTo(3);
 		Set<SimpSubscription> matches = this.registry.findSubscriptions(s -> s.getDestination().equals("/match"));
-		assertThat(matches.size()).isEqualTo((long) 2);
+		assertThat(matches.size()).isEqualTo(2);
 		Iterator<SimpSubscription> iterator = matches.iterator();
 		Set<String> sessionIds = new HashSet<>(2);
 		sessionIds.add(iterator.next().getSession().getId());
@@ -155,16 +155,16 @@ public class MultiServerUserRegistryTests {
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
 
-		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		SimpUser user = this.registry.getUsers().iterator().next();
 		assertThat(user.hasSessions()).isTrue();
-		assertThat(user.getSessions().size()).isEqualTo((long) 2);
+		assertThat(user.getSessions().size()).isEqualTo(2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertThat(user.getSession("sess123")).isSameAs(localSession);
 		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
 
 		user = this.registry.getUser("joe");
-		assertThat(user.getSessions().size()).isEqualTo((long) 2);
+		assertThat(user.getSessions().size()).isEqualTo(2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertThat(user.getSession("sess123")).isSameAs(localSession);
 		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
@@ -184,9 +184,9 @@ public class MultiServerUserRegistryTests {
 		this.registry.addRemoteRegistryDto(message, this.converter, -1);
 
 
-		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		this.registry.purgeExpiredRegistries();
-		assertThat(this.registry.getUserCount()).isEqualTo((long) 0);
+		assertThat(this.registry.getUserCount()).isEqualTo(0);
 	}
 
 }

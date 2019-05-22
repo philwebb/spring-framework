@@ -236,14 +236,14 @@ public abstract class AbstractAopProxyTests {
 		Person p = (Person) createAopProxy(pf).getProxy();
 
 		p.echo(null);
-		assertThat(cta.getCalls()).isEqualTo((long) 0);
+		assertThat(cta.getCalls()).isEqualTo(0);
 		try {
 			p.echo(new IOException());
 		}
 		catch (IOException ex) {
 			/* expected */
 		}
-		assertThat(cta.getCalls()).isEqualTo((long) 1);
+		assertThat(cta.getCalls()).isEqualTo(1);
 
 		// Will throw exception if it fails
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
@@ -264,21 +264,21 @@ public abstract class AbstractAopProxyTests {
 		// Check we can add a new advisor to the target
 		NopInterceptor ni = new NopInterceptor();
 		p2.getAge();
-		assertThat(ni.getCount()).isEqualTo((long) 0);
+		assertThat(ni.getCount()).isEqualTo(0);
 		a2.addAdvice(ni);
 		p2.getAge();
-		assertThat(ni.getCount()).isEqualTo((long) 1);
+		assertThat(ni.getCount()).isEqualTo(1);
 
 		cta = (CountingThrowsAdvice) a2.getAdvisors()[3].getAdvice();
 		p2.echo(null);
-		assertThat(cta.getCalls()).isEqualTo((long) 1);
+		assertThat(cta.getCalls()).isEqualTo(1);
 		try {
 			p2.echo(new IOException());
 		}
 		catch (IOException ex) {
 
 		}
-		assertThat(cta.getCalls()).isEqualTo((long) 2);
+		assertThat(cta.getCalls()).isEqualTo(2);
 	}
 
 	/**
@@ -325,9 +325,9 @@ public abstract class AbstractAopProxyTests {
 		// = 4 invocations on 1 and another one on 2
 		assertThat(advised1.getSpouse().getAge()).as("Advised one spouse has correct age").isEqualTo((long) age2);
 
-		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo((long) 4);
+		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo(4);
 		// Got hit by call to advised1.getSpouse().getAge()
-		assertThat(di2.getCount()).as("one was invoked correct number of times").isEqualTo((long) 3);
+		assertThat(di2.getCount()).as("one was invoked correct number of times").isEqualTo(3);
 	}
 
 
@@ -343,16 +343,16 @@ public abstract class AbstractAopProxyTests {
 		advised1.setAge(age1); // = 1 invocation
 		advised1.setSpouse(advised1); // = 2 invocations
 
-		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo((long) 2);
+		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo(2);
 
 		// = 3 invocations
 		assertThat(advised1.getAge()).as("Advised one has correct age").isEqualTo((long) age1);
-		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo((long) 3);
+		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo(3);
 
 		// = 5 invocations, as reentrant call to spouse is advised also
 		assertThat(advised1.getSpouse().getAge()).as("Advised spouse has correct age").isEqualTo((long) age1);
 
-		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo((long) 5);
+		assertThat(di1.getCount()).as("one was invoked correct number of times").isEqualTo(5);
 	}
 
 	@Test
@@ -365,17 +365,17 @@ public abstract class AbstractAopProxyTests {
 
 		proxyFactory.addAdvice(0, di);
 		INeedsToSeeProxy proxied = (INeedsToSeeProxy) createProxy(proxyFactory);
-		assertThat(di.getCount()).isEqualTo((long) 0);
-		assertThat(target.getCount()).isEqualTo((long) 0);
+		assertThat(di.getCount()).isEqualTo(0);
+		assertThat(target.getCount()).isEqualTo(0);
 		proxied.incrementViaThis();
-		assertThat(target.getCount()).as("Increment happened").isEqualTo((long) 1);
+		assertThat(target.getCount()).as("Increment happened").isEqualTo(1);
 
-		assertThat(di.getCount()).as("Only one invocation via AOP as use of this wasn't proxied").isEqualTo((long) 1);
+		assertThat(di.getCount()).as("Only one invocation via AOP as use of this wasn't proxied").isEqualTo(1);
 		// 1 invocation
-		assertThat(proxied.getCount()).as("Increment happened").isEqualTo((long) 1);
+		assertThat(proxied.getCount()).as("Increment happened").isEqualTo(1);
 		proxied.incrementViaProxy(); // 2 invocations
-		assertThat(target.getCount()).as("Increment happened").isEqualTo((long) 2);
-		assertThat(di.getCount()).as("3 more invocations via AOP as the first call was reentrant through the proxy").isEqualTo((long) 4);
+		assertThat(target.getCount()).as("Increment happened").isEqualTo(2);
+		assertThat(di.getCount()).as("3 more invocations via AOP as the first call was reentrant through the proxy").isEqualTo(4);
 	}
 
 	@Test
@@ -624,7 +624,7 @@ public abstract class AbstractAopProxyTests {
 		assertThat(lockable.locked()).isTrue();
 		lockable.unlock();
 		itb.setAge(1);
-		assertThat(itb.getAge()).isEqualTo((long) 1);
+		assertThat(itb.getAge()).isEqualTo(1);
 	}
 
 	@Test
@@ -656,32 +656,32 @@ public abstract class AbstractAopProxyTests {
 		pc.addAdvice(0, di);
 
 		ITestBean t = (ITestBean) createProxy(pc);
-		assertThat(di.getCount()).isEqualTo((long) 0);
+		assertThat(di.getCount()).isEqualTo(0);
 		t.setAge(23);
-		assertThat(t.getAge()).isEqualTo((long) 23);
-		assertThat(di.getCount()).isEqualTo((long) 2);
+		assertThat(t.getAge()).isEqualTo(23);
+		assertThat(di.getCount()).isEqualTo(2);
 
 		Advised advised = (Advised) t;
-		assertThat(advised.getAdvisors().length).as("Have 1 advisor").isEqualTo((long) 1);
+		assertThat(advised.getAdvisors().length).as("Have 1 advisor").isEqualTo(1);
 		assertThat(advised.getAdvisors()[0].getAdvice()).isEqualTo(di);
 		NopInterceptor di2 = new NopInterceptor();
 		advised.addAdvice(1, di2);
 		t.getName();
-		assertThat(di.getCount()).isEqualTo((long) 3);
-		assertThat(di2.getCount()).isEqualTo((long) 1);
+		assertThat(di.getCount()).isEqualTo(3);
+		assertThat(di2.getCount()).isEqualTo(1);
 		// will remove di
 		advised.removeAdvisor(0);
 		t.getAge();
 		// Unchanged
-		assertThat(di.getCount()).isEqualTo((long) 3);
-		assertThat(di2.getCount()).isEqualTo((long) 2);
+		assertThat(di.getCount()).isEqualTo(3);
+		assertThat(di2.getCount()).isEqualTo(2);
 
 		CountingBeforeAdvice cba = new CountingBeforeAdvice();
-		assertThat(cba.getCalls()).isEqualTo((long) 0);
+		assertThat(cba.getCalls()).isEqualTo(0);
 		advised.addAdvice(cba);
 		t.setAge(16);
-		assertThat(t.getAge()).isEqualTo((long) 16);
-		assertThat(cba.getCalls()).isEqualTo((long) 2);
+		assertThat(t.getAge()).isEqualTo(16);
+		assertThat(cba.getCalls()).isEqualTo(2);
 	}
 
 	@Test
@@ -809,7 +809,7 @@ public abstract class AbstractAopProxyTests {
 			.withMessageContaining("frozen");
 		// Check it still works: proxy factory state shouldn't have been corrupted
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(((Advised) proxied).getAdvisors().length).isEqualTo((long) 1);
+		assertThat(((Advised) proxied).getAdvisors().length).isEqualTo(1);
 	}
 
 	/**
@@ -832,7 +832,7 @@ public abstract class AbstractAopProxyTests {
 			.withMessageContaining("frozen");
 		// Check it still works: proxy factory state shouldn't have been corrupted
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(advised.getAdvisors().length).isEqualTo((long) 1);
+		assertThat(advised.getAdvisors().length).isEqualTo(1);
 	}
 
 	@Test
@@ -851,13 +851,13 @@ public abstract class AbstractAopProxyTests {
 				advised.removeAdvisor(0))
 			.withMessageContaining("frozen");
 		// Didn't get removed
-		assertThat(advised.getAdvisors().length).isEqualTo((long) 1);
+		assertThat(advised.getAdvisors().length).isEqualTo(1);
 		pc.setFrozen(false);
 		// Can now remove it
 		advised.removeAdvisor(0);
 		// Check it still works: proxy factory state shouldn't have been corrupted
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(advised.getAdvisors().length).isEqualTo((long) 0);
+		assertThat(advised.getAdvisors().length).isEqualTo(0);
 	}
 
 	@Test
@@ -915,8 +915,8 @@ public abstract class AbstractAopProxyTests {
 		assertThat(pc.isOpaque()).as("Opaque now true for this config").isTrue();
 		ITestBean proxied = (ITestBean) createProxy(pc);
 		proxied.setAge(10);
-		assertThat(proxied.getAge()).isEqualTo((long) 10);
-		assertThat(mba.getCalls()).isEqualTo((long) 1);
+		assertThat(proxied.getAge()).isEqualTo(10);
+		assertThat(mba.getCalls()).isEqualTo(1);
 
 		boolean condition = proxied instanceof Advised;
 		assertThat(condition).as("Cannot be cast to Advised").isFalse();
@@ -934,31 +934,31 @@ public abstract class AbstractAopProxyTests {
 		// Should be automatically added as a listener
 		pc.addListener(acf);
 		assertThat(pc.isActive()).isFalse();
-		assertThat(l.activates).isEqualTo((long) 0);
-		assertThat(acf.refreshes).isEqualTo((long) 0);
+		assertThat(l.activates).isEqualTo(0);
+		assertThat(acf.refreshes).isEqualTo(0);
 		ITestBean proxied = (ITestBean) createProxy(pc);
-		assertThat(acf.refreshes).isEqualTo((long) 1);
-		assertThat(l.activates).isEqualTo((long) 1);
+		assertThat(acf.refreshes).isEqualTo(1);
+		assertThat(l.activates).isEqualTo(1);
 		assertThat(pc.isActive()).isTrue();
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(l.adviceChanges).isEqualTo((long) 0);
+		assertThat(l.adviceChanges).isEqualTo(0);
 		NopInterceptor di = new NopInterceptor();
 		pc.addAdvice(0, di);
-		assertThat(l.adviceChanges).isEqualTo((long) 1);
-		assertThat(acf.refreshes).isEqualTo((long) 2);
+		assertThat(l.adviceChanges).isEqualTo(1);
+		assertThat(acf.refreshes).isEqualTo(2);
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
 		pc.removeAdvice(di);
-		assertThat(l.adviceChanges).isEqualTo((long) 2);
-		assertThat(acf.refreshes).isEqualTo((long) 3);
+		assertThat(l.adviceChanges).isEqualTo(2);
+		assertThat(acf.refreshes).isEqualTo(3);
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
 		pc.getProxy();
-		assertThat(l.activates).isEqualTo((long) 1);
+		assertThat(l.activates).isEqualTo(1);
 
 		pc.removeListener(l);
-		assertThat(l.adviceChanges).isEqualTo((long) 2);
+		assertThat(l.adviceChanges).isEqualTo(2);
 		pc.addAdvisor(new DefaultPointcutAdvisor(new NopInterceptor()));
 		// No longer counting
-		assertThat(l.adviceChanges).isEqualTo((long) 2);
+		assertThat(l.adviceChanges).isEqualTo(2);
 	}
 
 	@Test
@@ -1013,12 +1013,12 @@ public abstract class AbstractAopProxyTests {
 		pc.addAdvisor(dp);
 		pc.setTarget(tb);
 		ITestBean it = (ITestBean) createProxy(pc);
-		assertThat(dp.count).isEqualTo((long) 0);
+		assertThat(dp.count).isEqualTo(0);
 		it.getAge();
-		assertThat(dp.count).isEqualTo((long) 1);
+		assertThat(dp.count).isEqualTo(1);
 		it.setAge(11);
-		assertThat(it.getAge()).isEqualTo((long) 11);
-		assertThat(dp.count).isEqualTo((long) 2);
+		assertThat(it.getAge()).isEqualTo(11);
+		assertThat(dp.count).isEqualTo(2);
 	}
 
 	@Test
@@ -1032,16 +1032,16 @@ public abstract class AbstractAopProxyTests {
 		this.mockTargetSource.setTarget(tb);
 		pc.setTargetSource(mockTargetSource);
 		ITestBean it = (ITestBean) createProxy(pc);
-		assertThat(dp.count).isEqualTo((long) 0);
+		assertThat(dp.count).isEqualTo(0);
 		it.getAge();
 		// Statically vetoed
-		assertThat(dp.count).isEqualTo((long) 0);
+		assertThat(dp.count).isEqualTo(0);
 		it.setAge(11);
-		assertThat(it.getAge()).isEqualTo((long) 11);
-		assertThat(dp.count).isEqualTo((long) 1);
+		assertThat(it.getAge()).isEqualTo(11);
+		assertThat(dp.count).isEqualTo(1);
 		// Applies statically but not dynamically
 		it.setName("joe");
-		assertThat(dp.count).isEqualTo((long) 1);
+		assertThat(dp.count).isEqualTo(1);
 	}
 
 	@Test
@@ -1152,7 +1152,7 @@ public abstract class AbstractAopProxyTests {
 		it.setName(name2);
 		// NameReverter saved it back
 		assertThat(it.getName()).isEqualTo(name1);
-		assertThat(saver.names.size()).isEqualTo((long) 2);
+		assertThat(saver.names.size()).isEqualTo(2);
 		assertThat(saver.names.get(0)).isEqualTo(name2);
 		assertThat(saver.names.get(1)).isEqualTo(name1);
 	}
@@ -1181,17 +1181,17 @@ public abstract class AbstractAopProxyTests {
 		});
 
 		IOverloads proxy = (IOverloads) createProxy(pc);
-		assertThat(overLoadInts.getCount()).isEqualTo((long) 0);
-		assertThat(overLoadVoids.getCount()).isEqualTo((long) 0);
+		assertThat(overLoadInts.getCount()).isEqualTo(0);
+		assertThat(overLoadVoids.getCount()).isEqualTo(0);
 		proxy.overload();
-		assertThat(overLoadInts.getCount()).isEqualTo((long) 0);
-		assertThat(overLoadVoids.getCount()).isEqualTo((long) 1);
-		assertThat(proxy.overload(25)).isEqualTo((long) 25);
-		assertThat(overLoadInts.getCount()).isEqualTo((long) 1);
-		assertThat(overLoadVoids.getCount()).isEqualTo((long) 1);
+		assertThat(overLoadInts.getCount()).isEqualTo(0);
+		assertThat(overLoadVoids.getCount()).isEqualTo(1);
+		assertThat(proxy.overload(25)).isEqualTo(25);
+		assertThat(overLoadInts.getCount()).isEqualTo(1);
+		assertThat(overLoadVoids.getCount()).isEqualTo(1);
 		proxy.noAdvice();
-		assertThat(overLoadInts.getCount()).isEqualTo((long) 1);
-		assertThat(overLoadVoids.getCount()).isEqualTo((long) 1);
+		assertThat(overLoadInts.getCount()).isEqualTo(1);
+		assertThat(overLoadVoids.getCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -1224,7 +1224,7 @@ public abstract class AbstractAopProxyTests {
 		});
 
 		// Just test anything: it will fail if context wasn't found
-		assertThat(proxy.getAge()).isEqualTo((long) 0);
+		assertThat(proxy.getAge()).isEqualTo(0);
 	}
 
 	@Test
@@ -1248,12 +1248,12 @@ public abstract class AbstractAopProxyTests {
 		assertThat(proxyA.equals(a)).isFalse();
 
 		// Equality checks were handled by the proxy
-		assertThat(i1.getCount()).isEqualTo((long) 0);
+		assertThat(i1.getCount()).isEqualTo(0);
 
 		// When we invoke A, it's NopInterceptor will have count == 1
 		// and won't think it's equal to B's NopInterceptor
 		proxyA.absquatulate();
-		assertThat(i1.getCount()).isEqualTo((long) 1);
+		assertThat(i1.getCount()).isEqualTo(1);
 		assertThat(proxyA.equals(proxyB)).isFalse();
 	}
 
@@ -1274,16 +1274,16 @@ public abstract class AbstractAopProxyTests {
 		pf.addAdvisor(matchesNoArgs);
 		assertThat(pf.getAdvisors()[1]).as("Advisor was added").isEqualTo(matchesNoArgs);
 		ITestBean proxied = (ITestBean) createProxy(pf);
-		assertThat(cba.getCalls()).isEqualTo((long) 0);
-		assertThat(cba.getCalls("getAge")).isEqualTo((long) 0);
+		assertThat(cba.getCalls()).isEqualTo(0);
+		assertThat(cba.getCalls("getAge")).isEqualTo(0);
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
-		assertThat(cba.getCalls("getAge")).isEqualTo((long) 1);
-		assertThat(cba.getCalls("setAge")).isEqualTo((long) 0);
+		assertThat(cba.getCalls()).isEqualTo(1);
+		assertThat(cba.getCalls("getAge")).isEqualTo(1);
+		assertThat(cba.getCalls("setAge")).isEqualTo(0);
 		// Won't be advised
 		proxied.setAge(26);
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
-		assertThat(proxied.getAge()).isEqualTo((long) 26);
+		assertThat(cba.getCalls()).isEqualTo(1);
+		assertThat(proxied.getAge()).isEqualTo(26);
 	}
 
 	@Test
@@ -1356,20 +1356,20 @@ public abstract class AbstractAopProxyTests {
 		assertThat(pf.getAdvisors()[1]).as("Advisor was added").isEqualTo(matchesNoArgs);
 		ITestBean proxied = (ITestBean) createProxy(pf);
 
-		assertThat(cca.getCalls()).isEqualTo((long) 0);
-		assertThat(cca.getCalls("getAge")).isEqualTo((long) 0);
+		assertThat(cca.getCalls()).isEqualTo(0);
+		assertThat(cca.getCalls("getAge")).isEqualTo(0);
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(cca.getCalls()).isEqualTo((long) 2);
-		assertThat(cca.getCalls("getAge")).isEqualTo((long) 2);
-		assertThat(cca.getCalls("setAge")).isEqualTo((long) 0);
+		assertThat(cca.getCalls()).isEqualTo(2);
+		assertThat(cca.getCalls("getAge")).isEqualTo(2);
+		assertThat(cca.getCalls("setAge")).isEqualTo(0);
 		// Won't be advised
 		proxied.setAge(26);
-		assertThat(cca.getCalls()).isEqualTo((long) 2);
-		assertThat(proxied.getAge()).isEqualTo((long) 26);
-		assertThat(cca.getCalls()).isEqualTo((long) 4);
+		assertThat(cca.getCalls()).isEqualTo(2);
+		assertThat(proxied.getAge()).isEqualTo(26);
+		assertThat(cca.getCalls()).isEqualTo(4);
 		assertThatExceptionOfType(SpecializedUncheckedException.class).as("Should have thrown CannotGetJdbcConnectionException").isThrownBy(() ->
 				proxied.exceptional(new SpecializedUncheckedException("foo", (SQLException)null)));
-		assertThat(cca.getCalls()).isEqualTo((long) 6);
+		assertThat(cca.getCalls()).isEqualTo(6);
 	}
 
 	@Test
@@ -1396,18 +1396,18 @@ public abstract class AbstractAopProxyTests {
 		ITestBean proxied = (ITestBean) createProxy(pf);
 		// Won't throw an exception
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat(ba.getCalls()).isEqualTo((long) 1);
-		assertThat(ba.getCalls("getAge")).isEqualTo((long) 1);
-		assertThat(nop1.getCount()).isEqualTo((long) 1);
-		assertThat(nop2.getCount()).isEqualTo((long) 1);
+		assertThat(ba.getCalls()).isEqualTo(1);
+		assertThat(ba.getCalls("getAge")).isEqualTo(1);
+		assertThat(nop1.getCount()).isEqualTo(1);
+		assertThat(nop2.getCount()).isEqualTo(1);
 		// Will fail, after invoking Nop1
 		assertThatExceptionOfType(RuntimeException.class).as("before advice should have ended chain").isThrownBy(() ->
 				proxied.setAge(26))
 			.matches(rex::equals);
-		assertThat(ba.getCalls()).isEqualTo((long) 2);
-		assertThat(nop1.getCount()).isEqualTo((long) 2);
+		assertThat(ba.getCalls()).isEqualTo(2);
+		assertThat(nop1.getCount()).isEqualTo(2);
 		// Nop2 didn't get invoked when the exception was thrown
-		assertThat(nop2.getCount()).isEqualTo((long) 1);
+		assertThat(nop2.getCount()).isEqualTo(1);
 		// Shouldn't have changed value in joinpoint
 		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
 	}
@@ -1436,7 +1436,7 @@ public abstract class AbstractAopProxyTests {
 		pf.addAdvisor(matchesInt);
 		assertThat(pf.getAdvisors()[1]).as("Advisor was added").isEqualTo(matchesInt);
 		ITestBean proxied = (ITestBean) createProxy(pf);
-		assertThat(aa.sum).isEqualTo((long) 0);
+		assertThat(aa.sum).isEqualTo(0);
 		int i1 = 12;
 		int i2 = 13;
 
@@ -1459,17 +1459,17 @@ public abstract class AbstractAopProxyTests {
 		pf.addAdvice(car);
 		assertThat(pf.getAdvisors()[1].getAdvice()).as("Advice was wrapped in Advisor and added").isEqualTo(car);
 		ITestBean proxied = (ITestBean) createProxy(pf);
-		assertThat(car.getCalls()).isEqualTo((long) 0);
+		assertThat(car.getCalls()).isEqualTo(0);
 		int age = 10;
 		proxied.setAge(age);
 		assertThat(proxied.getAge()).isEqualTo((long) age);
-		assertThat(car.getCalls()).isEqualTo((long) 2);
+		assertThat(car.getCalls()).isEqualTo(2);
 		Exception exc = new Exception();
 		// On exception it won't be invoked
 		assertThatExceptionOfType(Throwable.class).isThrownBy(() ->
 				proxied.exceptional(exc))
 			.satisfies(ex -> assertThat(ex).isSameAs(exc));
-		assertThat(car.getCalls()).isEqualTo((long) 2);
+		assertThat(car.getCalls()).isEqualTo(2);
 	}
 
 
@@ -1492,9 +1492,9 @@ public abstract class AbstractAopProxyTests {
 		pf.addAdvisor(matchesEchoInvocations);
 		assertThat(pf.getAdvisors()[1]).as("Advisor was added").isEqualTo(matchesEchoInvocations);
 		IEcho proxied = (IEcho) createProxy(pf);
-		assertThat(th.getCalls()).isEqualTo((long) 0);
+		assertThat(th.getCalls()).isEqualTo(0);
 		assertThat(proxied.getA()).isEqualTo((long) target.getA());
-		assertThat(th.getCalls()).isEqualTo((long) 0);
+		assertThat(th.getCalls()).isEqualTo(0);
 		Exception ex = new Exception();
 		// Will be advised but doesn't match
 		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
@@ -1504,7 +1504,7 @@ public abstract class AbstractAopProxyTests {
 		assertThatExceptionOfType(FileNotFoundException.class).isThrownBy(() ->
 				proxied.echoException(1, fex))
 			.matches(fex::equals);
-		assertThat(th.getCalls("ioException")).isEqualTo((long) 1);
+		assertThat(th.getCalls("ioException")).isEqualTo(1);
 	}
 
 	@Test
@@ -1518,9 +1518,9 @@ public abstract class AbstractAopProxyTests {
 		pf.addAdvice(new NopInterceptor());
 		pf.addAdvice(th);
 		IEcho proxied = (IEcho) createProxy(pf);
-		assertThat(th.getCalls()).isEqualTo((long) 0);
+		assertThat(th.getCalls()).isEqualTo(0);
 		assertThat(proxied.getA()).isEqualTo((long) target.getA());
-		assertThat(th.getCalls()).isEqualTo((long) 0);
+		assertThat(th.getCalls()).isEqualTo(0);
 		Exception ex = new Exception();
 		// Will be advised but doesn't match
 		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
@@ -1533,7 +1533,7 @@ public abstract class AbstractAopProxyTests {
 				proxied.echoException(1, mex))
 			.matches(mex::equals);
 
-		assertThat(th.getCalls("remoteException")).isEqualTo((long) 1);
+		assertThat(th.getCalls("remoteException")).isEqualTo(1);
 	}
 
 	private static class CheckMethodInvocationIsSameInAndOutInterceptor implements MethodInterceptor {

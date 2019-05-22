@@ -534,19 +534,19 @@ public class MethodJmsListenerEndpointTests {
 		public void resolveHeaderAndPayload(@Payload String content, @Header int myCounter) {
 			this.invocations.put("resolveHeaderAndPayload", true);
 			assertThat(content).as("Wrong @Payload resolution").isEqualTo("my payload");
-			assertThat(myCounter).as("Wrong @Header resolution").isEqualTo((long) 55);
+			assertThat(myCounter).as("Wrong @Header resolution").isEqualTo(55);
 		}
 
 		public void resolveCustomHeaderNameAndPayload(@Payload String content, @Header("myCounter") int counter) {
 			this.invocations.put("resolveCustomHeaderNameAndPayload", true);
 			assertThat(content).as("Wrong @Payload resolution").isEqualTo("my payload");
-			assertThat(counter).as("Wrong @Header resolution").isEqualTo((long) 24);
+			assertThat(counter).as("Wrong @Header resolution").isEqualTo(24);
 		}
 
 		public void resolveCustomHeaderNameAndPayloadWithHeaderNameSet(@Payload String content, @Header(name = "myCounter") int counter) {
 			this.invocations.put("resolveCustomHeaderNameAndPayloadWithHeaderNameSet", true);
 			assertThat(content).as("Wrong @Payload resolution").isEqualTo("my payload");
-			assertThat(counter).as("Wrong @Header resolution").isEqualTo((long) 24);
+			assertThat(counter).as("Wrong @Header resolution").isEqualTo(24);
 		}
 
 		public void resolveHeaders(String content, @Headers Map<String, Object> headers) {

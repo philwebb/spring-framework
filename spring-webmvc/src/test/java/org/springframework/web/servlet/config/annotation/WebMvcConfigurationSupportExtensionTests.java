@@ -137,14 +137,14 @@ public class WebMvcConfigurationSupportExtensionTests {
 		HandlerExecutionChain chain = rmHandlerMapping.getHandler(new MockHttpServletRequest("GET", "/"));
 		assertThat(chain).isNotNull();
 		assertThat(chain.getInterceptors()).isNotNull();
-		assertThat(chain.getInterceptors().length).isEqualTo((long) 4);
+		assertThat(chain.getInterceptors().length).isEqualTo(4);
 		assertThat(chain.getInterceptors()[0].getClass().getSimpleName()).isEqualTo("CorsInterceptor");
 		assertThat(chain.getInterceptors()[1].getClass()).isEqualTo(LocaleChangeInterceptor.class);
 		assertThat(chain.getInterceptors()[2].getClass()).isEqualTo(ConversionServiceExposingInterceptor.class);
 		assertThat(chain.getInterceptors()[3].getClass()).isEqualTo(ResourceUrlProviderExposingInterceptor.class);
 
 		Map<RequestMappingInfo, HandlerMethod> map = rmHandlerMapping.getHandlerMethods();
-		assertThat(map.size()).isEqualTo((long) 2);
+		assertThat(map.size()).isEqualTo(2);
 		RequestMappingInfo info = map.entrySet().stream()
 				.filter(entry -> entry.getValue().getBeanType().equals(UserController.class))
 				.findFirst()
@@ -157,7 +157,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 				this.config.mvcConversionService(), this.config.mvcResourceUrlProvider());
 		handlerMapping.setApplicationContext(this.context);
 		assertThat(handlerMapping).isNotNull();
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) 1);
+		assertThat(handlerMapping.getOrder()).isEqualTo(1);
 		assertThat(handlerMapping.getUrlPathHelper().getClass()).isEqualTo(TestPathHelper.class);
 		assertThat(handlerMapping.getPathMatcher().getClass()).isEqualTo(TestPathMatcher.class);
 		chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/path"));
@@ -182,7 +182,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 		chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/resources/foo.gif"));
 		assertThat(chain).isNotNull();
 		assertThat(chain.getHandler()).isNotNull();
-		assertThat(chain.getInterceptors().length).as(Arrays.toString(chain.getInterceptors())).isEqualTo((long) 5);
+		assertThat(chain.getInterceptors().length).as(Arrays.toString(chain.getInterceptors())).isEqualTo(5);
 		assertThat(chain.getInterceptors()[0].getClass().getSimpleName()).isEqualTo("CorsInterceptor");
 		// PathExposingHandlerInterceptor at chain.getInterceptors()[1]
 		assertThat(chain.getInterceptors()[2].getClass()).isEqualTo(LocaleChangeInterceptor.class);
@@ -211,7 +211,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 
 		// Message converters
 		List<HttpMessageConverter<?>> converters = adapter.getMessageConverters();
-		assertThat(converters.size()).isEqualTo((long) 2);
+		assertThat(converters.size()).isEqualTo(2);
 		assertThat(converters.get(0).getClass()).isEqualTo(StringHttpMessageConverter.class);
 		assertThat(converters.get(1).getClass()).isEqualTo(MappingJackson2HttpMessageConverter.class);
 		ObjectMapper objectMapper = ((MappingJackson2HttpMessageConverter) converters.get(1)).getObjectMapper();
@@ -224,11 +224,11 @@ public class WebMvcConfigurationSupportExtensionTests {
 		// Custom argument resolvers and return value handlers
 		List<HandlerMethodArgumentResolver> argResolvers =
 				(List<HandlerMethodArgumentResolver>) fieldAccessor.getPropertyValue("customArgumentResolvers");
-		assertThat(argResolvers.size()).isEqualTo((long) 1);
+		assertThat(argResolvers.size()).isEqualTo(1);
 
 		List<HandlerMethodReturnValueHandler> handlers =
 				(List<HandlerMethodReturnValueHandler>) fieldAccessor.getPropertyValue("customReturnValueHandlers");
-		assertThat(handlers.size()).isEqualTo((long) 1);
+		assertThat(handlers.size()).isEqualTo(1);
 
 		// Async support options
 		assertThat(fieldAccessor.getPropertyValue("taskExecutor").getClass()).isEqualTo(ConcurrentTaskExecutor.class);
@@ -236,11 +236,11 @@ public class WebMvcConfigurationSupportExtensionTests {
 
 		CallableProcessingInterceptor[] callableInterceptors =
 				(CallableProcessingInterceptor[]) fieldAccessor.getPropertyValue("callableInterceptors");
-		assertThat(callableInterceptors.length).isEqualTo((long) 1);
+		assertThat(callableInterceptors.length).isEqualTo(1);
 
 		DeferredResultProcessingInterceptor[] deferredResultInterceptors =
 				(DeferredResultProcessingInterceptor[]) fieldAccessor.getPropertyValue("deferredResultInterceptors");
-		assertThat(deferredResultInterceptors.length).isEqualTo((long) 1);
+		assertThat(deferredResultInterceptors.length).isEqualTo(1);
 
 		assertThat(fieldAccessor.getPropertyValue("ignoreDefaultModelOnRedirect")).isEqualTo(false);
 	}
@@ -306,7 +306,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 		List<HandlerExceptionResolver> resolvers = ((HandlerExceptionResolverComposite)
 				this.config.handlerExceptionResolver(null)).getExceptionResolvers();
 
-		assertThat(resolvers.size()).isEqualTo((long) 2);
+		assertThat(resolvers.size()).isEqualTo(2);
 		assertThat(resolvers.get(0).getClass()).isEqualTo(ResponseStatusExceptionResolver.class);
 		assertThat(resolvers.get(1).getClass()).isEqualTo(SimpleMappingExceptionResolver.class);
 	}
@@ -320,19 +320,19 @@ public class WebMvcConfigurationSupportExtensionTests {
 		List<ViewResolver> viewResolvers = viewResolver.getViewResolvers();
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(viewResolvers.get(0));
-		assertThat(viewResolvers.size()).isEqualTo((long) 1);
+		assertThat(viewResolvers.size()).isEqualTo(1);
 		assertThat(viewResolvers.get(0).getClass()).isEqualTo(ContentNegotiatingViewResolver.class);
 		assertThat((boolean) (Boolean) accessor.getPropertyValue("useNotAcceptableStatusCode")).isFalse();
 		assertThat(accessor.getPropertyValue("contentNegotiationManager")).isNotNull();
 
 		List<View> defaultViews = (List<View>) accessor.getPropertyValue("defaultViews");
 		assertThat(defaultViews).isNotNull();
-		assertThat(defaultViews.size()).isEqualTo((long) 1);
+		assertThat(defaultViews.size()).isEqualTo(1);
 		assertThat(defaultViews.get(0).getClass()).isEqualTo(MappingJackson2JsonView.class);
 
 		viewResolvers = (List<ViewResolver>) accessor.getPropertyValue("viewResolvers");
 		assertThat(viewResolvers).isNotNull();
-		assertThat(viewResolvers.size()).isEqualTo((long) 1);
+		assertThat(viewResolvers.size()).isEqualTo(1);
 		assertThat(viewResolvers.get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
 		accessor = new DirectFieldAccessor(viewResolvers.get(0));
 		assertThat(accessor.getPropertyValue("prefix")).isEqualTo("/");
@@ -342,7 +342,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 	@Test
 	public void crossOrigin() {
 		Map<String, CorsConfiguration> configs = this.config.getCorsConfigurations();
-		assertThat(configs.size()).isEqualTo((long) 1);
+		assertThat(configs.size()).isEqualTo(1);
 		assertThat(configs.get("/resources/**").getAllowedOrigins().get(0)).isEqualTo("*");
 	}
 

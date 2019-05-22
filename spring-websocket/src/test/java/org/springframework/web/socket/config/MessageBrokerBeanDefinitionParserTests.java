@@ -241,7 +241,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		SimpleUrlHandlerMapping suhm = (SimpleUrlHandlerMapping) hm;
 		assertThat(suhm.getUrlMap()).hasSize(1);
-		assertThat(suhm.getOrder()).isEqualTo((long) 2);
+		assertThat(suhm.getOrder()).isEqualTo(2);
 
 		HttpRequestHandler httpRequestHandler = (HttpRequestHandler) suhm.getUrlMap().get("/foo/**");
 		assertThat(httpRequestHandler).isNotNull();
@@ -265,10 +265,10 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertThat(messageBroker.getSystemLogin()).isEqualTo("syslogin");
 		assertThat(messageBroker.getSystemPasscode()).isEqualTo("syspass");
 		assertThat(messageBroker.getRelayHost()).isEqualTo("relayhost");
-		assertThat(messageBroker.getRelayPort()).isEqualTo((long) 1234);
+		assertThat(messageBroker.getRelayPort()).isEqualTo(1234);
 		assertThat(messageBroker.getVirtualHost()).isEqualTo("spring.io");
-		assertThat(messageBroker.getSystemHeartbeatReceiveInterval()).isEqualTo((long) 5000);
-		assertThat(messageBroker.getSystemHeartbeatSendInterval()).isEqualTo((long) 5000);
+		assertThat(messageBroker.getSystemHeartbeatReceiveInterval()).isEqualTo(5000);
+		assertThat(messageBroker.getSystemHeartbeatSendInterval()).isEqualTo(5000);
 		assertThat(messageBroker.getDestinationPrefixes()).containsExactlyInAnyOrder("/topic","/queue");
 		assertThat(messageBroker.isPreservePublishOrder()).isTrue();
 
@@ -401,12 +401,12 @@ public class MessageBrokerBeanDefinitionParserTests {
 		SimpAnnotationMethodMessageHandler handler = this.appContext.getBean(SimpAnnotationMethodMessageHandler.class);
 
 		List<HandlerMethodArgumentResolver> customResolvers = handler.getCustomArgumentResolvers();
-		assertThat(customResolvers.size()).isEqualTo((long) 2);
+		assertThat(customResolvers.size()).isEqualTo(2);
 		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(0))).isTrue();
 		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(1))).isTrue();
 
 		List<HandlerMethodReturnValueHandler> customHandlers = handler.getCustomReturnValueHandlers();
-		assertThat(customHandlers.size()).isEqualTo((long) 2);
+		assertThat(customHandlers.size()).isEqualTo(2);
 		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(0))).isTrue();
 		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(1))).isTrue();
 	}
@@ -418,7 +418,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		CompositeMessageConverter compositeConverter = this.appContext.getBean(CompositeMessageConverter.class);
 		assertThat(compositeConverter).isNotNull();
 
-		assertThat(compositeConverter.getConverters().size()).isEqualTo((long) 4);
+		assertThat(compositeConverter.getConverters().size()).isEqualTo(4);
 		assertThat(compositeConverter.getConverters().iterator().next().getClass()).isEqualTo(StringMessageConverter.class);
 	}
 
@@ -429,7 +429,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		CompositeMessageConverter compositeConverter = this.appContext.getBean(CompositeMessageConverter.class);
 		assertThat(compositeConverter).isNotNull();
 
-		assertThat(compositeConverter.getConverters().size()).isEqualTo((long) 1);
+		assertThat(compositeConverter.getConverters().size()).isEqualTo(1);
 		assertThat(compositeConverter.getConverters().iterator().next().getClass()).isEqualTo(StringMessageConverter.class);
 	}
 

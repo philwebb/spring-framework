@@ -96,7 +96,7 @@ public class DefaultEntityResponseBuilderTests {
 	public void contentLength() {
 		String body = "foo";
 		EntityResponse<String> result = EntityResponse.fromObject(body).contentLength(42).build();
-		assertThat(result.headers().getContentLength()).isEqualTo((long) 42);
+		assertThat(result.headers().getContentLength()).isEqualTo(42);
 	}
 
 	@Test

@@ -62,42 +62,42 @@ public class AfterReturningGenericTypeMatchingTests {
 	@Test
 	public void testReturnTypeExactMatching() {
 		testBean.getStrings();
-		assertThat(counterAspect.getStringsInvocationsCount).isEqualTo((long) 1);
-		assertThat(counterAspect.getIntegersInvocationsCount).isEqualTo((long) 0);
+		assertThat(counterAspect.getStringsInvocationsCount).isEqualTo(1);
+		assertThat(counterAspect.getIntegersInvocationsCount).isEqualTo(0);
 
 		counterAspect.reset();
 
 		testBean.getIntegers();
-		assertThat(counterAspect.getStringsInvocationsCount).isEqualTo((long) 0);
-		assertThat(counterAspect.getIntegersInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getStringsInvocationsCount).isEqualTo(0);
+		assertThat(counterAspect.getIntegersInvocationsCount).isEqualTo(1);
 	}
 
 	@Test
 	public void testReturnTypeRawMatching() {
 		testBean.getStrings();
-		assertThat(counterAspect.getRawsInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getRawsInvocationsCount).isEqualTo(1);
 
 		counterAspect.reset();
 
 		testBean.getIntegers();
-		assertThat(counterAspect.getRawsInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getRawsInvocationsCount).isEqualTo(1);
 	}
 
 	@Test
 	public void testReturnTypeUpperBoundMatching() {
 		testBean.getIntegers();
-		assertThat(counterAspect.getNumbersInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getNumbersInvocationsCount).isEqualTo(1);
 	}
 
 	@Test
 	public void testReturnTypeLowerBoundMatching() {
 		testBean.getTestBeans();
-		assertThat(counterAspect.getTestBeanInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getTestBeanInvocationsCount).isEqualTo(1);
 
 		counterAspect.reset();
 
 		testBean.getEmployees();
-		assertThat(counterAspect.getTestBeanInvocationsCount).isEqualTo((long) 0);
+		assertThat(counterAspect.getTestBeanInvocationsCount).isEqualTo(0);
 	}
 
 }

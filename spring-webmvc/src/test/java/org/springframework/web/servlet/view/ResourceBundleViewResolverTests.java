@@ -91,7 +91,7 @@ public class ResourceBundleViewResolverTests {
 		assertThat(jv.getUrl()).as("debugView must have correct URL").isEqualTo("jsp/debug/debug.jsp");
 
 		Map<String, Object> m = jv.getStaticAttributes();
-		assertThat(m.size()).as("Must have 2 static attributes").isEqualTo((long) 2);
+		assertThat(m.size()).as("Must have 2 static attributes").isEqualTo(2);
 		assertThat(m.get("foo")).as("attribute foo").isEqualTo("bar");
 		assertThat(m.get("postcode")).as("attribute postcode").isEqualTo("SE10 9JY");
 
@@ -143,7 +143,7 @@ public class ResourceBundleViewResolverTests {
 		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
 		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
 		assertThat(tv.getBeanName()).as("test has correct name").isEqualTo("test");
-		assertThat(tv.initCount).as("test should have been initialized once, not ").isEqualTo((long) 1);
+		assertThat(tv.initCount).as("test should have been initialized once, not ").isEqualTo(1);
 	}
 
 	@Test

@@ -96,9 +96,9 @@ public class HttpInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 		assertThat(proxy.getName()).isEqualTo("myname");
-		assertThat(proxy.getAge()).isEqualTo((long) 99);
+		assertThat(proxy.getAge()).isEqualTo(99);
 		proxy.setAge(50);
-		assertThat(proxy.getAge()).isEqualTo((long) 50);
+		assertThat(proxy.getAge()).isEqualTo(50);
 		proxy.setStringArray(new String[] {"str1", "str2"});
 		assertThat(Arrays.equals(new String[] {"str1", "str2"}, proxy.getStringArray())).isTrue();
 		proxy.setSomeIntegerArray(new Integer[] {1, 2, 3});
@@ -213,9 +213,9 @@ public class HttpInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 		assertThat(proxy.getName()).isEqualTo("myname");
-		assertThat(proxy.getAge()).isEqualTo((long) 99);
+		assertThat(proxy.getAge()).isEqualTo(99);
 		proxy.setAge(50);
-		assertThat(proxy.getAge()).isEqualTo((long) 50);
+		assertThat(proxy.getAge()).isEqualTo(50);
 
 		assertThatIllegalStateException().isThrownBy(() ->
 				proxy.exceptional(new IllegalStateException()));
@@ -283,9 +283,9 @@ public class HttpInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 		assertThat(proxy.getName()).isEqualTo("myname");
-		assertThat(proxy.getAge()).isEqualTo((long) 99);
+		assertThat(proxy.getAge()).isEqualTo(99);
 		proxy.setAge(50);
-		assertThat(proxy.getAge()).isEqualTo((long) 50);
+		assertThat(proxy.getAge()).isEqualTo(50);
 
 		assertThatIllegalStateException().isThrownBy(() ->
 				proxy.exceptional(new IllegalStateException()));
@@ -305,7 +305,7 @@ public class HttpInvokerTests {
 			public Object invoke(RemoteInvocation invocation, Object targetObject)
 					throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 				assertThat(invocation.getAttributes()).isNotNull();
-				assertThat(invocation.getAttributes().size()).isEqualTo((long) 1);
+				assertThat(invocation.getAttributes().size()).isEqualTo(1);
 				assertThat(invocation.getAttributes().get("myKey")).isEqualTo("myValue");
 				assertThat(invocation.getAttribute("myKey")).isEqualTo("myValue");
 				return super.invoke(invocation, targetObject);
@@ -324,7 +324,7 @@ public class HttpInvokerTests {
 				assertThatIllegalStateException().isThrownBy(() ->
 						invocation.addAttribute("myKey", "myValue"));
 				assertThat(invocation.getAttributes()).isNotNull();
-				assertThat(invocation.getAttributes().size()).isEqualTo((long) 1);
+				assertThat(invocation.getAttributes().size()).isEqualTo(1);
 				assertThat(invocation.getAttributes().get("myKey")).isEqualTo("myValue");
 				assertThat(invocation.getAttribute("myKey")).isEqualTo("myValue");
 				return invocation;
@@ -348,7 +348,7 @@ public class HttpInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 		assertThat(proxy.getName()).isEqualTo("myname");
-		assertThat(proxy.getAge()).isEqualTo((long) 99);
+		assertThat(proxy.getAge()).isEqualTo(99);
 	}
 
 	@Test
@@ -401,7 +401,7 @@ public class HttpInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 		assertThat(proxy.getName()).isEqualTo("myname");
-		assertThat(proxy.getAge()).isEqualTo((long) 99);
+		assertThat(proxy.getAge()).isEqualTo(99);
 	}
 
 	@Test

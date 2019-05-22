@@ -58,7 +58,7 @@ public class SimpleMappingExceptionResolverTests {
 	@Test
 	public void setOrder() {
 		exceptionResolver.setOrder(2);
-		assertThat(exceptionResolver.getOrder()).isEqualTo((long) 2);
+		assertThat(exceptionResolver.getOrder()).isEqualTo(2);
 	}
 
 	@Test

@@ -72,7 +72,7 @@ public class BeanUtilsTests {
 	public void testInstantiateClassWithOptionalPrimitiveType() throws NoSuchMethodException {
 		Constructor<BeanWithPrimitiveTypes> ctor = BeanWithPrimitiveTypes.class.getDeclaredConstructor(int.class, boolean.class, String.class);
 		BeanWithPrimitiveTypes bean = BeanUtils.instantiateClass(ctor, null, null, "foo");
-		assertThat(bean.getCounter()).isEqualTo((long) 0);
+		assertThat(bean.getCounter()).isEqualTo(0);
 		assertThat(bean.isFlag()).isEqualTo(false);
 		assertThat(bean.getValue()).isEqualTo("foo");
 	}

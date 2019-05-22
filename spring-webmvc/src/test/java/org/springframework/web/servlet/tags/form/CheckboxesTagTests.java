@@ -360,7 +360,7 @@ public class CheckboxesTagTests extends AbstractFormTagTests {
 
 		int result = this.tag.doStartTag();
 		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
-		assertThat(editor.allProcessedValues.size()).isEqualTo((long) 3);
+		assertThat(editor.allProcessedValues.size()).isEqualTo(3);
 
 		String output = getOutput();
 
@@ -695,7 +695,7 @@ public class CheckboxesTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertThat(rootElement.elements().size()).as("Both tag and hidden element rendered incorrectly").isEqualTo((long) 3);
+		assertThat(rootElement.elements().size()).as("Both tag and hidden element rendered incorrectly").isEqualTo(3);
 		Element spanElement = (Element) document.getRootElement().elements().get(0);
 		Element checkboxElement = (Element) spanElement.elements().get(0);
 		assertThat(checkboxElement.getName()).isEqualTo("input");

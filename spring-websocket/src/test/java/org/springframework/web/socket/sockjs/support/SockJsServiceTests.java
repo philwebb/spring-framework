@@ -236,7 +236,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 
 		assertThat(this.servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
 		assertThat(this.servletResponse.getContentAsString().startsWith("<!DOCTYPE html>\n")).isTrue();
-		assertThat(this.servletResponse.getContentLength()).isEqualTo((long) 490);
+		assertThat(this.servletResponse.getContentLength()).isEqualTo(490);
 		assertThat(this.response.getHeaders().getCacheControl()).isEqualTo("no-store, no-cache, must-revalidate, max-age=0");
 		assertThat(this.response.getHeaders().getETag()).isEqualTo("\"0096cbd37f2a5218c33bb0826a7c74cbf\"");
 	}
@@ -262,7 +262,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 		this.servletRequest.setContentType("");
 		resetResponseAndHandleRequest("GET", "/echo/info", HttpStatus.OK);
 
-		assertThat(this.servletResponse.getStatus()).as("Invalid/empty content should have been ignored").isEqualTo((long) 200);
+		assertThat(this.servletResponse.getStatus()).as("Invalid/empty content should have been ignored").isEqualTo(200);
 	}
 
 

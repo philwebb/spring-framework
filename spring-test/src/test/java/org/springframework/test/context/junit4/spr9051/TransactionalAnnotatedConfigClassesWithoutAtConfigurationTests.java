@@ -120,7 +120,7 @@ public class TransactionalAnnotatedConfigClassesWithoutAtConfigurationTests exte
 	@AfterTransaction
 	@Override
 	public void afterTransaction() {
-		assertThat(deletePerson(YODA)).as("Deleting yoda").isEqualTo((long) 1);
+		assertThat(deletePerson(YODA)).as("Deleting yoda").isEqualTo(1);
 
 		// NOTE: We would actually expect that there are now ZERO entries in the
 		// person table, since the transaction is rolled back by the framework;

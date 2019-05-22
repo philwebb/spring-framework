@@ -163,12 +163,12 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 	public void testNotificationMetadata() throws Exception {
 		ModelMBeanInfo info = (ModelMBeanInfo) getMBeanInfo();
 		MBeanNotificationInfo[] notifications = info.getNotifications();
-		assertThat(notifications.length).as("Incorrect number of notifications").isEqualTo((long) 1);
+		assertThat(notifications.length).as("Incorrect number of notifications").isEqualTo(1);
 		assertThat(notifications[0].getName()).as("Incorrect notification name").isEqualTo("My Notification");
 
 		String[] notifTypes = notifications[0].getNotifTypes();
 
-		assertThat(notifTypes.length).as("Incorrect number of notification types").isEqualTo((long) 2);
+		assertThat(notifTypes.length).as("Incorrect number of notification types").isEqualTo(2);
 		assertThat(notifTypes[0]).as("Notification type.foo not found").isEqualTo("type.foo");
 		assertThat(notifTypes[1]).as("Notification type.bar not found").isEqualTo("type.bar");
 	}

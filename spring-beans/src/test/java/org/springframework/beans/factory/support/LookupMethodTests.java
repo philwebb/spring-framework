@@ -76,7 +76,7 @@ public class LookupMethodTests {
 		TestBean expected = bean.getTwoArguments("haha", 72);
 		assertThat(expected.getClass()).isEqualTo(TestBean.class);
 		assertThat(expected.getName()).isEqualTo("haha");
-		assertThat(expected.getAge()).isEqualTo((long) 72);
+		assertThat(expected.getAge()).isEqualTo(72);
 	}
 
 	@Test

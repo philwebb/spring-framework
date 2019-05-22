@@ -156,12 +156,12 @@ public class ServletRequestDataBinderTests {
 		request.addParameter("stringArray", "abc");
 		request.addParameter("stringArray", "123,def");
 		binder.bind(request);
-		assertThat(target.getStringArray().length).as("Expected all three items to be bound").isEqualTo((long) 3);
+		assertThat(target.getStringArray().length).as("Expected all three items to be bound").isEqualTo(3);
 
 		request.removeParameter("stringArray");
 		request.addParameter("stringArray", "123,def");
 		binder.bind(request);
-		assertThat(target.getStringArray().length).as("Expected only 1 item to be bound").isEqualTo((long) 1);
+		assertThat(target.getStringArray().length).as("Expected only 1 item to be bound").isEqualTo(1);
 	}
 
 	@Test

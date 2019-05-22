@@ -30,47 +30,47 @@ public class DataSizeTests {
 
 	@Test
 	public void ofBytesToBytes() {
-		assertThat(DataSize.ofBytes(1024).toBytes()).isEqualTo((long) 1024);
+		assertThat(DataSize.ofBytes(1024).toBytes()).isEqualTo(1024);
 	}
 
 	@Test
 	public void ofBytesToKilobytes() {
-		assertThat(DataSize.ofBytes(1024).toKilobytes()).isEqualTo((long) 1);
+		assertThat(DataSize.ofBytes(1024).toKilobytes()).isEqualTo(1);
 	}
 
 	@Test
 	public void ofKilobytesToKilobytes() {
-		assertThat(DataSize.ofKilobytes(1024).toKilobytes()).isEqualTo((long) 1024);
+		assertThat(DataSize.ofKilobytes(1024).toKilobytes()).isEqualTo(1024);
 	}
 
 	@Test
 	public void ofKilobytesToMegabytes() {
-		assertThat(DataSize.ofKilobytes(1024).toMegabytes()).isEqualTo((long) 1);
+		assertThat(DataSize.ofKilobytes(1024).toMegabytes()).isEqualTo(1);
 	}
 
 	@Test
 	public void ofMegabytesToMegabytes() {
-		assertThat(DataSize.ofMegabytes(1024).toMegabytes()).isEqualTo((long) 1024);
+		assertThat(DataSize.ofMegabytes(1024).toMegabytes()).isEqualTo(1024);
 	}
 
 	@Test
 	public void ofMegabytesToGigabytes() {
-		assertThat(DataSize.ofMegabytes(2048).toGigabytes()).isEqualTo((long) 2);
+		assertThat(DataSize.ofMegabytes(2048).toGigabytes()).isEqualTo(2);
 	}
 
 	@Test
 	public void ofGigabytesToGigabytes() {
-		assertThat(DataSize.ofGigabytes(4096).toGigabytes()).isEqualTo((long) 4096);
+		assertThat(DataSize.ofGigabytes(4096).toGigabytes()).isEqualTo(4096);
 	}
 
 	@Test
 	public void ofGigabytesToTerabytes() {
-		assertThat(DataSize.ofGigabytes(4096).toTerabytes()).isEqualTo((long) 4);
+		assertThat(DataSize.ofGigabytes(4096).toTerabytes()).isEqualTo(4);
 	}
 
 	@Test
 	public void ofTerabytesToGigabytes() {
-		assertThat(DataSize.ofTerabytes(1).toGigabytes()).isEqualTo((long) 1024);
+		assertThat(DataSize.ofTerabytes(1).toGigabytes()).isEqualTo(1024);
 	}
 
 	@Test

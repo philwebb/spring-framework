@@ -67,9 +67,9 @@ public class JmsMessageEndpointManagerTests {
 		config.setReplyQosSettings(settings);
 		endpoint.setActivationSpecConfig(config);
 		assertThat(endpoint.getReplyQosSettings()).isNotNull();
-		assertThat(endpoint.getReplyQosSettings().getDeliveryMode()).isEqualTo((long) 1);
-		assertThat(endpoint.getReplyQosSettings().getPriority()).isEqualTo((long) 3);
-		assertThat(endpoint.getReplyQosSettings().getTimeToLive()).isEqualTo((long) 5);
+		assertThat(endpoint.getReplyQosSettings().getDeliveryMode()).isEqualTo(1);
+		assertThat(endpoint.getReplyQosSettings().getPriority()).isEqualTo(3);
+		assertThat(endpoint.getReplyQosSettings().getTimeToLive()).isEqualTo(5);
 	}
 
 	@Test

@@ -127,7 +127,7 @@ public class HandlersBeanDefinitionParserTests {
 		assertThat(condition2).isTrue();
 
 		SimpleUrlHandlerMapping urlHandlerMapping = (SimpleUrlHandlerMapping) handlerMapping;
-		assertThat(urlHandlerMapping.getOrder()).isEqualTo((long) 2);
+		assertThat(urlHandlerMapping.getOrder()).isEqualTo(2);
 
 		WebSocketHttpRequestHandler handler = (WebSocketHttpRequestHandler) urlHandlerMapping.getUrlMap().get("/foo");
 		assertThat(handler).isNotNull();
@@ -219,10 +219,10 @@ public class HandlersBeanDefinitionParserTests {
 		assertThat(transportService.getName()).isEqualTo("testSockJsService");
 		assertThat(transportService.isWebSocketEnabled()).isFalse();
 		assertThat(transportService.isSessionCookieNeeded()).isFalse();
-		assertThat(transportService.getStreamBytesLimit()).isEqualTo((long) 2048);
-		assertThat(transportService.getDisconnectDelay()).isEqualTo((long) 256);
-		assertThat(transportService.getHttpMessageCacheSize()).isEqualTo((long) 1024);
-		assertThat(transportService.getHeartbeatTime()).isEqualTo((long) 20);
+		assertThat(transportService.getStreamBytesLimit()).isEqualTo(2048);
+		assertThat(transportService.getDisconnectDelay()).isEqualTo(256);
+		assertThat(transportService.getHttpMessageCacheSize()).isEqualTo(1024);
+		assertThat(transportService.getHeartbeatTime()).isEqualTo(20);
 		assertThat(transportService.getSockJsClientLibraryUrl()).isEqualTo("/js/sockjs.min.js");
 		assertThat(transportService.getMessageCodec().getClass()).isEqualTo(TestMessageCodec.class);
 

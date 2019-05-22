@@ -80,7 +80,7 @@ public class HttpComponentsAsyncClientHttpRequestFactoryTests extends AbstractAs
 		assertThat(requestConfigAttribute).isNotNull();
 		RequestConfig requestConfig = (RequestConfig) requestConfigAttribute;
 
-		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo((long) 4567);
+		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo(4567);
 		// No way to access the request config of the HTTP client so no way to "merge" our customizations
 		assertThat(requestConfig.getConnectTimeout()).isEqualTo((long) -1);
 	}

@@ -130,21 +130,21 @@ public class MockHttpServletResponseTests {
 	@Test
 	public void contentLength() {
 		response.setContentLength(66);
-		assertThat(response.getContentLength()).isEqualTo((long) 66);
+		assertThat(response.getContentLength()).isEqualTo(66);
 		assertThat(response.getHeader("Content-Length")).isEqualTo("66");
 	}
 
 	@Test
 	public void contentLengthHeader() {
 		response.addHeader("Content-Length", "66");
-		assertThat(response.getContentLength()).isEqualTo((long) 66);
+		assertThat(response.getContentLength()).isEqualTo(66);
 		assertThat(response.getHeader("Content-Length")).isEqualTo("66");
 	}
 
 	@Test
 	public void contentLengthIntHeader() {
 		response.addIntHeader("Content-Length", 66);
-		assertThat(response.getContentLength()).isEqualTo((long) 66);
+		assertThat(response.getContentLength()).isEqualTo(66);
 		assertThat(response.getHeader("Content-Length")).isEqualTo("66");
 	}
 
@@ -154,7 +154,7 @@ public class MockHttpServletResponseTests {
 		response.addHeader(headerName, "value1");
 		Collection<String> responseHeaders = response.getHeaderNames();
 		assertThat(responseHeaders).isNotNull();
-		assertThat(responseHeaders.size()).isEqualTo((long) 1);
+		assertThat(responseHeaders.size()).isEqualTo(1);
 		assertThat(responseHeaders.iterator().next()).as("HTTP header casing not being preserved").isEqualTo(headerName);
 	}
 
@@ -192,7 +192,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.flushBuffer();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo(1);
 	}
 
 	@Test
@@ -215,7 +215,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.getOutputStream().flush();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo(1);
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().flush();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo(1);
 	}
 
 	@Test // SPR-16683
@@ -235,7 +235,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().close();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo(1);
 	}
 
 	@Test

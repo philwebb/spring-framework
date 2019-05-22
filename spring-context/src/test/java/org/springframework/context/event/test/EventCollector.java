@@ -58,7 +58,7 @@ public class EventCollector {
 	 */
 	public void assertNoEventReceived(String listenerId) {
 		List<Object> events = this.content.getOrDefault(listenerId, Collections.emptyList());
-		assertThat(events.size()).as("Expected no events but got " + events).isEqualTo((long) 0);
+		assertThat(events.size()).as("Expected no events but got " + events).isEqualTo(0);
 	}
 
 	/**

@@ -539,7 +539,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		this.server.unregisterMBean(new ObjectName(OBJECT_NAME));
 		exporter.destroy();
-		assertThat(listener.getUnregistered().size()).as("Listener should not have been invoked (MBean previously unregistered by external agent)").isEqualTo((long) 0);
+		assertThat(listener.getUnregistered().size()).as("Listener should not have been invoked (MBean previously unregistered by external agent)").isEqualTo(0);
 	}
 
 	@Test  // SPR-3302
@@ -681,8 +681,8 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 	private void assertListener(MockMBeanExporterListener listener) throws MalformedObjectNameException {
 		ObjectName desired = ObjectNameManager.getInstance(OBJECT_NAME);
-		assertThat(listener.getRegistered().size()).as("Incorrect number of registrations").isEqualTo((long) 1);
-		assertThat(listener.getUnregistered().size()).as("Incorrect number of unregistrations").isEqualTo((long) 1);
+		assertThat(listener.getRegistered().size()).as("Incorrect number of registrations").isEqualTo(1);
+		assertThat(listener.getUnregistered().size()).as("Incorrect number of unregistrations").isEqualTo(1);
 		assertThat(listener.getRegistered().get(0)).as("Incorrect ObjectName in register").isEqualTo(desired);
 		assertThat(listener.getUnregistered().get(0)).as("Incorrect ObjectName in unregister").isEqualTo(desired);
 	}

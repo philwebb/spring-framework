@@ -80,10 +80,10 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("aspects.xml");
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
-		assertThat(tb.getAge()).isEqualTo((long) 68);
+		assertThat(tb.getAge()).isEqualTo(68);
 		MethodInvokingFactoryBean factoryBean = (MethodInvokingFactoryBean) bf.getBean("&factoryBean");
 		assertThat(AopUtils.isAopProxy(factoryBean.getTargetObject())).isTrue();
-		assertThat(((ITestBean) factoryBean.getTargetObject()).getAge()).isEqualTo((long) 68);
+		assertThat(((ITestBean) factoryBean.getTargetObject()).getAge()).isEqualTo(68);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class AspectJAutoProxyCreatorTests {
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
 		tb.setAge(10);
-		assertThat(tb.getAge()).isEqualTo((long) 20);
+		assertThat(tb.getAge()).isEqualTo(20);
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("aspectsWithOrdering.xml");
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
-		assertThat(tb.getAge()).isEqualTo((long) 71);
+		assertThat(tb.getAge()).isEqualTo(71);
 	}
 
 	@Test
@@ -201,17 +201,17 @@ public class AspectJAutoProxyCreatorTests {
 		TestBeanAdvisor tba = (TestBeanAdvisor) ac.getBean("advisor");
 
 		MultiplyReturnValue mrv = (MultiplyReturnValue) ac.getBean("aspect");
-		assertThat(mrv.getMultiple()).isEqualTo((long) 3);
+		assertThat(mrv.getMultiple()).isEqualTo(3);
 
 		tba.count = 0;
 		mrv.invocations = 0;
 
 		assertThat(AopUtils.isAopProxy(shouldBeWeaved)).as("Autoproxying must apply from @AspectJ aspect").isTrue();
 		assertThat(shouldBeWeaved.getName()).isEqualTo("Adrian");
-		assertThat(mrv.invocations).isEqualTo((long) 0);
+		assertThat(mrv.invocations).isEqualTo(0);
 		assertThat(shouldBeWeaved.getAge()).isEqualTo((long) (34 * mrv.getMultiple()));
-		assertThat(tba.count).as("Spring advisor must be invoked").isEqualTo((long) 2);
-		assertThat(mrv.invocations).as("Must be able to hold state in aspect").isEqualTo((long) 1);
+		assertThat(tba.count).as("Spring advisor must be invoked").isEqualTo(2);
+		assertThat(mrv.invocations).as("Must be able to hold state in aspect").isEqualTo(1);
 	}
 
 	@Test
@@ -221,17 +221,17 @@ public class AspectJAutoProxyCreatorTests {
 		ITestBean adrian1 = (ITestBean) bf.getBean("adrian");
 		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
 
-		assertThat(adrian1.getAge()).isEqualTo((long) 0);
-		assertThat(adrian1.getAge()).isEqualTo((long) 1);
+		assertThat(adrian1.getAge()).isEqualTo(0);
+		assertThat(adrian1.getAge()).isEqualTo(1);
 
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
 		assertThat(adrian2).isNotSameAs(adrian1);
 		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
-		assertThat(adrian2.getAge()).isEqualTo((long) 0);
-		assertThat(adrian2.getAge()).isEqualTo((long) 1);
-		assertThat(adrian2.getAge()).isEqualTo((long) 2);
-		assertThat(adrian2.getAge()).isEqualTo((long) 3);
-		assertThat(adrian1.getAge()).isEqualTo((long) 2);
+		assertThat(adrian2.getAge()).isEqualTo(0);
+		assertThat(adrian2.getAge()).isEqualTo(1);
+		assertThat(adrian2.getAge()).isEqualTo(2);
+		assertThat(adrian2.getAge()).isEqualTo(3);
+		assertThat(adrian1.getAge()).isEqualTo(2);
 	}
 
 	@Test
@@ -253,21 +253,21 @@ public class AspectJAutoProxyCreatorTests {
 
 		adrian1.getSpouse();
 
-		assertThat(adrian1.getAge()).as("Advice has now been instantiated").isEqualTo((long) 0);
+		assertThat(adrian1.getAge()).as("Advice has now been instantiated").isEqualTo(0);
 		adrian1.setAge(11);
-		assertThat(adrian1.getAge()).as("Any int setter increments").isEqualTo((long) 2);
+		assertThat(adrian1.getAge()).as("Any int setter increments").isEqualTo(2);
 		adrian1.setName("Adrian");
 		//assertEquals("Any other setter does not increment", 2, adrian1.getAge());
 
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
 		assertThat(adrian2).isNotSameAs(adrian1);
 		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
-		assertThat(adrian2.getAge()).isEqualTo((long) 34);
+		assertThat(adrian2.getAge()).isEqualTo(34);
 		adrian2.getSpouse();
-		assertThat(adrian2.getAge()).as("Aspect now fired").isEqualTo((long) 0);
-		assertThat(adrian2.getAge()).isEqualTo((long) 1);
-		assertThat(adrian2.getAge()).isEqualTo((long) 2);
-		assertThat(adrian1.getAge()).isEqualTo((long) 3);
+		assertThat(adrian2.getAge()).as("Aspect now fired").isEqualTo(0);
+		assertThat(adrian2.getAge()).isEqualTo(1);
+		assertThat(adrian2.getAge()).isEqualTo(2);
+		assertThat(adrian1.getAge()).isEqualTo(3);
 	}
 
 	@Test
@@ -329,7 +329,7 @@ public class AspectJAutoProxyCreatorTests {
 
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
-		assertThat(adrian.getAge()).isEqualTo((long) 68);
+		assertThat(adrian.getAge()).isEqualTo(68);
 	}
 
 	@Test
@@ -347,7 +347,7 @@ public class AspectJAutoProxyCreatorTests {
 
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
-		assertThat(adrian.getAge()).isEqualTo((long) 68);
+		assertThat(adrian.getAge()).isEqualTo(68);
 	}
 
 	@Test
@@ -357,10 +357,10 @@ public class AspectJAutoProxyCreatorTests {
 		UnreliableBean bean = (UnreliableBean) bf.getBean("unreliableBean");
 		RetryAspect aspect = (RetryAspect) bf.getBean("retryAspect");
 		int attempts = bean.unreliable();
-		assertThat(attempts).isEqualTo((long) 2);
-		assertThat(aspect.getBeginCalls()).isEqualTo((long) 2);
-		assertThat(aspect.getRollbackCalls()).isEqualTo((long) 1);
-		assertThat(aspect.getCommitCalls()).isEqualTo((long) 1);
+		assertThat(attempts).isEqualTo(2);
+		assertThat(aspect.getBeginCalls()).isEqualTo(2);
+		assertThat(aspect.getRollbackCalls()).isEqualTo(1);
+		assertThat(aspect.getCommitCalls()).isEqualTo(1);
 	}
 
 	@Test
@@ -368,7 +368,7 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("withBeanNameAutoProxyCreator.xml");
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
-		assertThat(tb.getAge()).isEqualTo((long) 68);
+		assertThat(tb.getAge()).isEqualTo(68);
 	}
 
 

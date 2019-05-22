@@ -191,7 +191,7 @@ public class RequestPartMethodArgumentResolverTests {
 		boolean condition = actual instanceof MultipartFile[];
 		assertThat(condition).isTrue();
 		MultipartFile[] parts = (MultipartFile[]) actual;
-		assertThat(parts.length).isEqualTo((long) 2);
+		assertThat(parts.length).isEqualTo(2);
 		assertThat(multipartFile1).isEqualTo(parts[0]);
 		assertThat(multipartFile2).isEqualTo(parts[1]);
 	}
@@ -261,7 +261,7 @@ public class RequestPartMethodArgumentResolverTests {
 		boolean condition = result instanceof Part[];
 		assertThat(condition).isTrue();
 		Part[] parts = (Part[]) result;
-		assertThat(parts.length).isEqualTo((long) 2);
+		assertThat(parts.length).isEqualTo(2);
 		assertThat(part1).isEqualTo(parts[0]);
 		assertThat(part2).isEqualTo(parts[1]);
 	}

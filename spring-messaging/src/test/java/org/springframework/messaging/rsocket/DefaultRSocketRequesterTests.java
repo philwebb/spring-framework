@@ -124,7 +124,7 @@ public class DefaultRSocketRequesterTests {
 		assertThat(payloads).isNotNull();
 
 		if (Arrays.equals(new String[] {""}, expectedValues)) {
-			assertThat(payloads.size()).isEqualTo((long) 1);
+			assertThat(payloads.size()).isEqualTo(1);
 			assertThat(payloads.get(0).getMetadataUtf8()).isEqualTo("toA");
 			assertThat(payloads.get(0).getDataUtf8()).isEqualTo("");
 		}

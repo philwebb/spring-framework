@@ -91,9 +91,9 @@ public class JmsListenerContainerFactoryTests {
 
 		assertDefaultJmsConfig(container);
 		assertThat(container.getCacheLevel()).isEqualTo((long) DefaultMessageListenerContainer.CACHE_CONSUMER);
-		assertThat(container.getConcurrentConsumers()).isEqualTo((long) 3);
-		assertThat(container.getMaxConcurrentConsumers()).isEqualTo((long) 10);
-		assertThat(container.getMaxMessagesPerTask()).isEqualTo((long) 5);
+		assertThat(container.getConcurrentConsumers()).isEqualTo(3);
+		assertThat(container.getMaxConcurrentConsumers()).isEqualTo(10);
+		assertThat(container.getMaxMessagesPerTask()).isEqualTo(5);
 
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 		assertThat(container.getDestinationName()).isEqualTo("myQueue");
@@ -112,7 +112,7 @@ public class JmsListenerContainerFactoryTests {
 		JmsMessageEndpointManager container = factory.createListenerContainer(endpoint);
 
 		assertDefaultJcaConfig(container);
-		assertThat(container.getActivationSpecConfig().getMaxConcurrency()).isEqualTo((long) 10);
+		assertThat(container.getActivationSpecConfig().getMaxConcurrency()).isEqualTo(10);
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 		assertThat(container.getActivationSpecConfig().getDestinationName()).isEqualTo("myQueue");
 	}
@@ -156,8 +156,8 @@ public class JmsListenerContainerFactoryTests {
 		endpoint.setDestination("myQueue");
 		endpoint.setConcurrency("4-6");
 		DefaultMessageListenerContainer container = factory.createListenerContainer(endpoint);
-		assertThat(container.getConcurrentConsumers()).isEqualTo((long) 4);
-		assertThat(container.getMaxConcurrentConsumers()).isEqualTo((long) 6);
+		assertThat(container.getConcurrentConsumers()).isEqualTo(4);
+		assertThat(container.getMaxConcurrentConsumers()).isEqualTo(6);
 	}
 
 

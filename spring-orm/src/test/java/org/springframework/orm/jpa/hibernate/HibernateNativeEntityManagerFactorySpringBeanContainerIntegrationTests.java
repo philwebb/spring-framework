@@ -168,8 +168,8 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 				JpaLifecycleOptions.INSTANCE, fallbackProducer
 		);
 
-		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo((long) 1);
-		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo((long) 0);
+		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo(1);
+		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo(0);
 
 		assertThat(bean).isNotNull();
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();
@@ -189,8 +189,8 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 				JpaLifecycleOptions.INSTANCE, fallbackProducer
 		);
 
-		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo((long) 0);
-		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo((long) 1);
+		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo(0);
+		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo(1);
 
 		assertThat(bean).isNotNull();
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();
@@ -211,8 +211,8 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 				NativeLifecycleOptions.INSTANCE, fallbackProducer
 		);
 
-		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo((long) 1);
-		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo((long) 0);
+		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo(1);
+		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo(0);
 
 		assertThat(bean).isNotNull();
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();
@@ -232,8 +232,8 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 				NativeLifecycleOptions.INSTANCE, fallbackProducer
 		);
 
-		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo((long) 0);
-		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo((long) 1);
+		assertThat(fallbackProducer.currentUnnamedInstantiationCount()).isEqualTo(0);
+		assertThat(fallbackProducer.currentNamedInstantiationCount()).isEqualTo(1);
 
 		assertThat(bean).isNotNull();
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();

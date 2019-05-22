@@ -106,7 +106,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		Element rootElement = document.getRootElement();
 
 		List children = rootElement.elements();
-		assertThat(children.size()).as("Incorrect number of children").isEqualTo((long) 4);
+		assertThat(children.size()).as("Incorrect number of children").isEqualTo(4);
 
 		Element element = (Element) rootElement.selectSingleNode("option[@value = 'UK']");
 		assertThat(element.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
@@ -142,7 +142,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		Element rootElement = document.getRootElement();
 
 		List children = rootElement.elements();
-		assertThat(children.size()).as("Incorrect number of children").isEqualTo((long) 4);
+		assertThat(children.size()).as("Incorrect number of children").isEqualTo(4);
 
 		Element element = (Element) rootElement.selectSingleNode("option[@value = 'UK']");
 		assertThat(element.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
@@ -186,7 +186,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		Element rootElement = document.getRootElement();
 
 		List children = rootElement.elements();
-		assertThat(children.size()).as("Incorrect number of children").isEqualTo((long) 6);
+		assertThat(children.size()).as("Incorrect number of children").isEqualTo(6);
 
 		Element element = (Element) rootElement.selectSingleNode("option[text() = '12.34f']");
 		assertThat(element).as("Option node should not be null").isNotNull();
@@ -217,7 +217,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		Element rootElement = document.getRootElement();
 
 		List children = rootElement.elements();
-		assertThat(children.size()).as("Incorrect number of children").isEqualTo((long) 0);
+		assertThat(children.size()).as("Incorrect number of children").isEqualTo(0);
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		Element rootElement = document.getRootElement();
 
 		List children = rootElement.elements();
-		assertThat(children.size()).as("Incorrect number of children").isEqualTo((long) 0);
+		assertThat(children.size()).as("Incorrect number of children").isEqualTo(0);
 	}
 
 	@Test
@@ -261,7 +261,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
 
-		assertThat(rootElement.elements().size()).isEqualTo((long) 2);
+		assertThat(rootElement.elements().size()).isEqualTo(2);
 		Node value1 = rootElement.selectSingleNode("option[@value = 'VALUE_1']");
 		Node value2 = rootElement.selectSingleNode("option[@value = 'VALUE_2']");
 		assertThat(value1.getText()).isEqualTo("TestEnum: VALUE_1");
@@ -291,7 +291,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
 
-		assertThat(rootElement.elements().size()).isEqualTo((long) 2);
+		assertThat(rootElement.elements().size()).isEqualTo(2);
 		Node value1 = rootElement.selectSingleNode("option[@value = 'Value: VALUE_1']");
 		Node value2 = rootElement.selectSingleNode("option[@value = 'Value: VALUE_2']");
 		assertThat(value1.getText()).isEqualTo("Label: VALUE_1");

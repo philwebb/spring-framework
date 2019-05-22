@@ -342,7 +342,7 @@ public class BeanWrapperGenericsTests {
 		Object obj = gb.getMapOfListOfInteger().get("testKey").get(0);
 		boolean condition = obj instanceof Integer;
 		assertThat(condition).isTrue();
-		assertThat(((Integer) obj).intValue()).isEqualTo((long) 1);
+		assertThat(((Integer) obj).intValue()).isEqualTo(1);
 	}
 
 	@Test
@@ -359,7 +359,7 @@ public class BeanWrapperGenericsTests {
 		Object obj = gb.getListOfMapOfInteger().get(0).get("testKey");
 		boolean condition = obj instanceof Integer;
 		assertThat(condition).isTrue();
-		assertThat(((Integer) obj).intValue()).isEqualTo((long) 5);
+		assertThat(((Integer) obj).intValue()).isEqualTo(5);
 	}
 
 	@Test
@@ -375,7 +375,7 @@ public class BeanWrapperGenericsTests {
 		Object obj = gb.getMapOfListOfListOfInteger().get("testKey").get(0).get(0);
 		boolean condition = obj instanceof Integer;
 		assertThat(condition).isTrue();
-		assertThat(((Integer) obj).intValue()).isEqualTo((long) 1);
+		assertThat(((Integer) obj).intValue()).isEqualTo(1);
 	}
 
 	@Test

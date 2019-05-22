@@ -338,7 +338,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		uriVariables = getUriTemplateVariables(request);
 
 		assertThat(matrixVariables).isNotNull();
-		assertThat(matrixVariables.size()).isEqualTo((long) 2);
+		assertThat(matrixVariables.size()).isEqualTo(2);
 		assertThat(matrixVariables.getFirst("a")).isEqualTo("42");
 		assertThat(matrixVariables.getFirst("b")).isEqualTo("c");
 		assertThat(uriVariables.get("foo")).isEqualTo("a=42");

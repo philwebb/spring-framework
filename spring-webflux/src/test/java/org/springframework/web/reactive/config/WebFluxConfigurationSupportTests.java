@@ -105,7 +105,7 @@ public class WebFluxConfigurationSupportTests {
 		RequestMappingHandlerMapping mapping = context.getBean(name, RequestMappingHandlerMapping.class);
 		assertThat(mapping).isNotNull();
 
-		assertThat(mapping.getOrder()).isEqualTo((long) 0);
+		assertThat(mapping.getOrder()).isEqualTo(0);
 
 		PathPatternParser patternParser = mapping.getPathPatternParser();
 		assertThat(patternParser).isNotNull();
@@ -136,7 +136,7 @@ public class WebFluxConfigurationSupportTests {
 		assertThat(matchOptionalTrailingSlash).isFalse();
 
 		Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
-		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo(1);
 		assertThat(map.keySet().iterator().next().getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(new PathPatternParser().parse("/api/user/{id}")));
 	}
 
@@ -149,7 +149,7 @@ public class WebFluxConfigurationSupportTests {
 		assertThat(adapter).isNotNull();
 
 		List<HttpMessageReader<?>> readers = adapter.getMessageReaders();
-		assertThat(readers.size()).isEqualTo((long) 13);
+		assertThat(readers.size()).isEqualTo(13);
 
 		ResolvableType multiValueMapType = forClassWithGenerics(MultiValueMap.class, String.class, String.class);
 
@@ -187,7 +187,7 @@ public class WebFluxConfigurationSupportTests {
 		assertThat(adapter).isNotNull();
 
 		List<HttpMessageReader<?>> messageReaders = adapter.getMessageReaders();
-		assertThat(messageReaders.size()).isEqualTo((long) 2);
+		assertThat(messageReaders.size()).isEqualTo(2);
 
 		assertHasMessageReader(messageReaders, forClass(String.class), TEXT_PLAIN);
 		assertHasMessageReader(messageReaders, forClass(TestBean.class), APPLICATION_XML);
@@ -201,10 +201,10 @@ public class WebFluxConfigurationSupportTests {
 		ResponseEntityResultHandler handler = context.getBean(name, ResponseEntityResultHandler.class);
 		assertThat(handler).isNotNull();
 
-		assertThat(handler.getOrder()).isEqualTo((long) 0);
+		assertThat(handler.getOrder()).isEqualTo(0);
 
 		List<HttpMessageWriter<?>> writers = handler.getMessageWriters();
-		assertThat(writers.size()).isEqualTo((long) 11);
+		assertThat(writers.size()).isEqualTo(11);
 
 		assertHasMessageWriter(writers, forClass(byte[].class), APPLICATION_OCTET_STREAM);
 		assertHasMessageWriter(writers, forClass(ByteBuffer.class), APPLICATION_OCTET_STREAM);
@@ -229,10 +229,10 @@ public class WebFluxConfigurationSupportTests {
 		ResponseBodyResultHandler handler = context.getBean(name, ResponseBodyResultHandler.class);
 		assertThat(handler).isNotNull();
 
-		assertThat(handler.getOrder()).isEqualTo((long) 100);
+		assertThat(handler.getOrder()).isEqualTo(100);
 
 		List<HttpMessageWriter<?>> writers = handler.getMessageWriters();
-		assertThat(writers.size()).isEqualTo((long) 11);
+		assertThat(writers.size()).isEqualTo(11);
 
 		assertHasMessageWriter(writers, forClass(byte[].class), APPLICATION_OCTET_STREAM);
 		assertHasMessageWriter(writers, forClass(ByteBuffer.class), APPLICATION_OCTET_STREAM);
@@ -260,11 +260,11 @@ public class WebFluxConfigurationSupportTests {
 		assertThat(handler.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
 
 		List<ViewResolver> resolvers = handler.getViewResolvers();
-		assertThat(resolvers.size()).isEqualTo((long) 1);
+		assertThat(resolvers.size()).isEqualTo(1);
 		assertThat(resolvers.get(0).getClass()).isEqualTo(FreeMarkerViewResolver.class);
 
 		List<View> views = handler.getDefaultViews();
-		assertThat(views.size()).isEqualTo((long) 1);
+		assertThat(views.size()).isEqualTo(1);
 
 		MimeType type = MimeTypeUtils.parseMimeType("application/json");
 		assertThat(views.get(0).getSupportedMediaTypes().get(0)).isEqualTo(type);

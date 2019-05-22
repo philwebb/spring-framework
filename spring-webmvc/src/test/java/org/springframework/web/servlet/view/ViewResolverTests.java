@@ -492,7 +492,7 @@ public class ViewResolverTests {
 		viewResolver.resolveViewName("view", Locale.getDefault());
 		viewResolver.resolveViewName("view", Locale.getDefault());
 
-		assertThat(count.intValue()).isEqualTo((long) 2);
+		assertThat(count.intValue()).isEqualTo(2);
 
 		viewResolver.setCacheUnresolved(true);
 
@@ -502,7 +502,7 @@ public class ViewResolverTests {
 		viewResolver.resolveViewName("view", Locale.getDefault());
 		viewResolver.resolveViewName("view", Locale.getDefault());
 
-		assertThat(count.intValue()).isEqualTo((long) 3);
+		assertThat(count.intValue()).isEqualTo(3);
 	}
 
 

@@ -61,9 +61,9 @@ public class DefaultClientRequestBuilderTests {
 		.build();
 		assertThat(result.url()).isEqualTo(new URI("https://example.com"));
 		assertThat(result.method()).isEqualTo(GET);
-		assertThat(result.headers().size()).isEqualTo((long) 1);
+		assertThat(result.headers().size()).isEqualTo(1);
 		assertThat(result.headers().getFirst("foo")).isEqualTo("baar");
-		assertThat(result.cookies().size()).isEqualTo((long) 1);
+		assertThat(result.cookies().size()).isEqualTo(1);
 		assertThat(result.cookies().getFirst("baz")).isEqualTo("quux");
 	}
 

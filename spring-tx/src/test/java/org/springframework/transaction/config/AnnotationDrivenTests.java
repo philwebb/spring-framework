@@ -68,17 +68,17 @@ public class AnnotationDrivenTests {
 		TransactionalService service = context.getBean("service", TransactionalService.class);
 		assertThat(AopUtils.isCglibProxy(service)).isTrue();
 		service.setSomething("someName");
-		assertThat(tm1.commits).isEqualTo((long) 1);
-		assertThat(tm2.commits).isEqualTo((long) 0);
+		assertThat(tm1.commits).isEqualTo(1);
+		assertThat(tm2.commits).isEqualTo(0);
 		service.doSomething();
-		assertThat(tm1.commits).isEqualTo((long) 1);
-		assertThat(tm2.commits).isEqualTo((long) 1);
+		assertThat(tm1.commits).isEqualTo(1);
+		assertThat(tm2.commits).isEqualTo(1);
 		service.setSomething("someName");
-		assertThat(tm1.commits).isEqualTo((long) 2);
-		assertThat(tm2.commits).isEqualTo((long) 1);
+		assertThat(tm1.commits).isEqualTo(2);
+		assertThat(tm2.commits).isEqualTo(1);
 		service.doSomething();
-		assertThat(tm1.commits).isEqualTo((long) 2);
-		assertThat(tm2.commits).isEqualTo((long) 2);
+		assertThat(tm1.commits).isEqualTo(2);
+		assertThat(tm2.commits).isEqualTo(2);
 	}
 
 	@Test

@@ -82,7 +82,7 @@ public class ResourceHandlerFunctionTests {
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
 		assertThat(mav).isNull();
 
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 		byte[] expectedBytes = Files.readAllBytes(this.resource.getFile().toPath());
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
 		assertThat(actualBytes).isEqualTo(expectedBytes);
@@ -108,9 +108,9 @@ public class ResourceHandlerFunctionTests {
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
 		assertThat(mav).isNull();
 
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
-		assertThat(actualBytes.length).isEqualTo((long) 0);
+		assertThat(actualBytes.length).isEqualTo(0);
 		assertThat(servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
 		assertThat(servletResponse.getContentLength()).isEqualTo(this.resource.contentLength());
 	}
@@ -129,10 +129,10 @@ public class ResourceHandlerFunctionTests {
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
 		assertThat(mav).isNull();
 
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 		assertThat(servletResponse.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
-		assertThat(actualBytes.length).isEqualTo((long) 0);
+		assertThat(actualBytes.length).isEqualTo(0);
 	}
 
 }

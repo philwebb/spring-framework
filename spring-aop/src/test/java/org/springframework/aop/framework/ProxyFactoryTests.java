@@ -67,8 +67,8 @@ public class ProxyFactoryTests {
 		advised.addAdvice(nop);
 		pf.addAdvisor(advisor);
 		assertThat(pf.indexOf(new NopInterceptor())).isEqualTo((long) -1);
-		assertThat(pf.indexOf(nop)).isEqualTo((long) 0);
-		assertThat(pf.indexOf(advisor)).isEqualTo((long) 1);
+		assertThat(pf.indexOf(nop)).isEqualTo(0);
+		assertThat(pf.indexOf(advisor)).isEqualTo(1);
 		assertThat(advised.indexOf(new DefaultPointcutAdvisor(null))).isEqualTo((long) -1);
 	}
 
@@ -83,12 +83,12 @@ public class ProxyFactoryTests {
 		pf.addAdvisor(advisor);
 		ITestBean proxied = (ITestBean) pf.getProxy();
 		proxied.setAge(5);
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
-		assertThat(nop.getCount()).isEqualTo((long) 1);
+		assertThat(cba.getCalls()).isEqualTo(1);
+		assertThat(nop.getCount()).isEqualTo(1);
 		assertThat(pf.removeAdvisor(advisor)).isTrue();
-		assertThat(proxied.getAge()).isEqualTo((long) 5);
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
-		assertThat(nop.getCount()).isEqualTo((long) 2);
+		assertThat(proxied.getAge()).isEqualTo(5);
+		assertThat(cba.getCalls()).isEqualTo(1);
+		assertThat(nop.getCount()).isEqualTo(2);
 		assertThat(pf.removeAdvisor(new DefaultPointcutAdvisor(null))).isFalse();
 	}
 
@@ -105,21 +105,21 @@ public class ProxyFactoryTests {
 		pf.addAdvice(nop2);
 		ITestBean proxied = (ITestBean) pf.getProxy();
 		proxied.setAge(5);
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
-		assertThat(nop.getCount()).isEqualTo((long) 1);
-		assertThat(nop2.getCount()).isEqualTo((long) 1);
+		assertThat(cba.getCalls()).isEqualTo(1);
+		assertThat(nop.getCount()).isEqualTo(1);
+		assertThat(nop2.getCount()).isEqualTo(1);
 		// Removes counting before advisor
 		pf.removeAdvisor(1);
-		assertThat(proxied.getAge()).isEqualTo((long) 5);
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
-		assertThat(nop.getCount()).isEqualTo((long) 2);
-		assertThat(nop2.getCount()).isEqualTo((long) 2);
+		assertThat(proxied.getAge()).isEqualTo(5);
+		assertThat(cba.getCalls()).isEqualTo(1);
+		assertThat(nop.getCount()).isEqualTo(2);
+		assertThat(nop2.getCount()).isEqualTo(2);
 		// Removes Nop1
 		pf.removeAdvisor(0);
-		assertThat(proxied.getAge()).isEqualTo((long) 5);
-		assertThat(cba.getCalls()).isEqualTo((long) 1);
-		assertThat(nop.getCount()).isEqualTo((long) 2);
-		assertThat(nop2.getCount()).isEqualTo((long) 3);
+		assertThat(proxied.getAge()).isEqualTo(5);
+		assertThat(cba.getCalls()).isEqualTo(1);
+		assertThat(nop.getCount()).isEqualTo(2);
+		assertThat(nop2.getCount()).isEqualTo(3);
 
 		// Check out of bounds
 		try {
@@ -136,8 +136,8 @@ public class ProxyFactoryTests {
 			// Ok
 		}
 
-		assertThat(proxied.getAge()).isEqualTo((long) 5);
-		assertThat(nop2.getCount()).isEqualTo((long) 4);
+		assertThat(proxied.getAge()).isEqualTo(5);
+		assertThat(nop2.getCount()).isEqualTo(4);
 	}
 
 	@Test
@@ -156,16 +156,16 @@ public class ProxyFactoryTests {
 		// Replace etc methods on advised should be same as on ProxyFactory
 		Advised advised = (Advised) proxied;
 		proxied.setAge(5);
-		assertThat(cba1.getCalls()).isEqualTo((long) 1);
-		assertThat(cba2.getCalls()).isEqualTo((long) 0);
-		assertThat(nop.getCount()).isEqualTo((long) 1);
+		assertThat(cba1.getCalls()).isEqualTo(1);
+		assertThat(cba2.getCalls()).isEqualTo(0);
+		assertThat(nop.getCount()).isEqualTo(1);
 		assertThat(advised.replaceAdvisor(new DefaultPointcutAdvisor(new NopInterceptor()), advisor2)).isFalse();
 		assertThat(advised.replaceAdvisor(advisor1, advisor2)).isTrue();
 		assertThat(pf.getAdvisors()[0]).isEqualTo(advisor2);
-		assertThat(proxied.getAge()).isEqualTo((long) 5);
-		assertThat(cba1.getCalls()).isEqualTo((long) 1);
-		assertThat(nop.getCount()).isEqualTo((long) 2);
-		assertThat(cba2.getCalls()).isEqualTo((long) 1);
+		assertThat(proxied.getAge()).isEqualTo(5);
+		assertThat(cba1.getCalls()).isEqualTo(1);
+		assertThat(nop.getCount()).isEqualTo(2);
+		assertThat(cba2.getCalls()).isEqualTo(1);
 		assertThat(pf.replaceAdvisor(new DefaultPointcutAdvisor(null), advisor1)).isFalse();
 	}
 
@@ -197,7 +197,7 @@ public class ProxyFactoryTests {
 		TestBeanSubclass raw = new TestBeanSubclass();
 		ProxyFactory factory = new ProxyFactory(raw);
 		//System.out.println("Proxied interfaces are " + StringUtils.arrayToDelimitedString(factory.getProxiedInterfaces(), ","));
-		assertThat(factory.getProxiedInterfaces().length).as("Found correct number of interfaces").isEqualTo((long) 5);
+		assertThat(factory.getProxiedInterfaces().length).as("Found correct number of interfaces").isEqualTo(5);
 		ITestBean tb = (ITestBean) factory.getProxy();
 		assertThat(tb).as("Picked up secondary interface").isInstanceOf(IOther.class);
 		raw.setAge(25);
@@ -288,7 +288,7 @@ public class ProxyFactoryTests {
 		DebugInterceptor debugInterceptor = new DebugInterceptor();
 		config.addAdvice(0, debugInterceptor);
 		it.getSpouse();
-		assertThat(debugInterceptor.getCount()).isEqualTo((long) 1);
+		assertThat(debugInterceptor.getCount()).isEqualTo(1);
 		config.removeAdvice(debugInterceptor);
 		it.getSpouse();
 		// not invoked again

@@ -303,7 +303,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
-		assertThat(output.length()).isEqualTo((long) 0);
+		assertThat(output.length()).isEqualTo(0);
 	}
 
 	@Test
@@ -315,7 +315,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
-		assertThat(output.length()).isEqualTo((long) 0);
+		assertThat(output.length()).isEqualTo(0);
 	}
 
 	@Test
@@ -496,7 +496,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
-		assertThat(output.length()).isEqualTo((long) 0);
+		assertThat(output.length()).isEqualTo(0);
 
 		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE, scope)).isEqualTo(existingAttribute);
 	}

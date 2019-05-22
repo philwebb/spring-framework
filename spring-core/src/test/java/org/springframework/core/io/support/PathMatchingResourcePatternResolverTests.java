@@ -68,14 +68,14 @@ public class PathMatchingResourcePatternResolverTests {
 	public void singleResourceOnFileSystem() throws IOException {
 		Resource[] resources =
 				resolver.getResources("org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.class");
-		assertThat(resources.length).isEqualTo((long) 1);
+		assertThat(resources.length).isEqualTo(1);
 		assertProtocolAndFilenames(resources, "file", "PathMatchingResourcePatternResolverTests.class");
 	}
 
 	@Test
 	public void singleResourceInJar() throws IOException {
 		Resource[] resources = resolver.getResources("org/reactivestreams/Publisher.class");
-		assertThat(resources.length).isEqualTo((long) 1);
+		assertThat(resources.length).isEqualTo(1);
 		assertProtocolAndFilenames(resources, "jar", "Publisher.class");
 	}
 

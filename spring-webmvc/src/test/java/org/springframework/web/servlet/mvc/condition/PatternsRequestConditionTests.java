@@ -198,7 +198,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = new PatternsRequestCondition("/foo*");
 		PatternsRequestCondition c2 = new PatternsRequestCondition("/foo*");
 
-		assertThat(c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo"))).isEqualTo((long) 0);
+		assertThat(c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo"))).isEqualTo(0);
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = new PatternsRequestCondition("/fo*");
 		PatternsRequestCondition c2 = new PatternsRequestCondition("/foo");
 
-		assertThat(c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo"))).isEqualTo((long) 1);
+		assertThat(c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo"))).isEqualTo(1);
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition match1 = c1.getMatchingCondition(request);
 		PatternsRequestCondition match2 = c2.getMatchingCondition(request);
 
-		assertThat(match1.compareTo(match2, request)).isEqualTo((long) 1);
+		assertThat(match1.compareTo(match2, request)).isEqualTo(1);
 	}
 
 }

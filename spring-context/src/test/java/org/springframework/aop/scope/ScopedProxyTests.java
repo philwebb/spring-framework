@@ -80,7 +80,7 @@ public class ScopedProxyTests {
 
 		ITestBean bean = (ITestBean) ctx.getBean("testBean");
 		assertThat(bean.getName()).isEqualTo("male");
-		assertThat(bean.getAge()).isEqualTo((long) 99);
+		assertThat(bean.getAge()).isEqualTo(99);
 
 		assertThat(scope.getMap().containsKey("scopedTarget.testBean")).isTrue();
 		assertThat(scope.getMap().get("scopedTarget.testBean").getClass()).isEqualTo(TestBean.class);
@@ -109,7 +109,7 @@ public class ScopedProxyTests {
 		ITestBean deserialized = (ITestBean) SerializationTestUtils.serializeAndDeserialize(bean);
 		assertThat(deserialized).isNotNull();
 		assertThat(AopUtils.isJdkDynamicProxy(deserialized)).isTrue();
-		assertThat(bean.getAge()).isEqualTo((long) 101);
+		assertThat(bean.getAge()).isEqualTo(101);
 		boolean condition = deserialized instanceof ScopedObject;
 		assertThat(condition).isTrue();
 		ScopedObject scopedDeserialized = (ScopedObject) deserialized;

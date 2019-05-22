@@ -449,8 +449,8 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		int resultI = expression.getValue(new TestClass1(), Integer.TYPE);
 		assertCanCompile(expression);
 		int resultC = expression.getValue(new TestClass1(), Integer.TYPE);
-		assertThat(resultI).isEqualTo((long) 42);
-		assertThat(resultC).isEqualTo((long) 42);
+		assertThat(resultI).isEqualTo(42);
+		assertThat(resultC).isEqualTo(42);
 
 		expression = parser.parseExpression("T(Integer).valueOf(42)");
 		expression.getValue(Integer.class);
@@ -902,10 +902,10 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 
 		expression = parser.parseExpression("#root");
 		int i = (Integer) expression.getValue(42);
-		assertThat(i).isEqualTo((long) 42);
+		assertThat(i).isEqualTo(42);
 		assertCanCompile(expression);
 		i = (Integer) expression.getValue(42);
-		assertThat(i).isEqualTo((long) 42);
+		assertThat(i).isEqualTo(42);
 	}
 
 	public static String concat(String a, String b) {
@@ -3475,7 +3475,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		Object o = expression.getValue();
 		assertThat(o.getClass().getName()).isEqualTo(testclass8);
 		TestClass8 tc8 = (TestClass8) o;
-		assertThat(tc8.i).isEqualTo((long) 42);
+		assertThat(tc8.i).isEqualTo(42);
 		assertThat(tc8.s).isEqualTo("123");
 		assertThat(tc8.d).isCloseTo(4.0d, within(0.5d));
 
@@ -3495,7 +3495,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		o = expression.getValue();
 		assertThat(o.getClass().getName()).isEqualTo(testclass8);
 		tc8 = (TestClass8) o;
-		assertThat(tc8.i).isEqualTo((long) 42);
+		assertThat(tc8.i).isEqualTo(42);
 
 		// private class, can't compile it
 		String testclass9 = "org.springframework.expression.spel.SpelCompilationCoverageTests$TestClass9";
@@ -3628,21 +3628,21 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		expression = parser.parseExpression("twelve(1,2,3)");
 		assertCantCompile(expression);
 		expression.getValue(tc);
-		assertThat(tc.i).isEqualTo((long) 6);
+		assertThat(tc.i).isEqualTo(6);
 		assertCanCompile(expression);
 		tc.reset();
 		expression.getValue(tc);
-		assertThat(tc.i).isEqualTo((long) 6);
+		assertThat(tc.i).isEqualTo(6);
 		tc.reset();
 
 		expression = parser.parseExpression("twelve(1)");
 		assertCantCompile(expression);
 		expression.getValue(tc);
-		assertThat(tc.i).isEqualTo((long) 1);
+		assertThat(tc.i).isEqualTo(1);
 		assertCanCompile(expression);
 		tc.reset();
 		expression.getValue(tc);
-		assertThat(tc.i).isEqualTo((long) 1);
+		assertThat(tc.i).isEqualTo(1);
 		tc.reset();
 
 		// one string then varargs string
@@ -3848,7 +3848,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		assertCanCompile(expression);
 		tc.reset();
 		expression.getValue(tc);
-		assertThat(tc.i).isEqualTo((long) 1);
+		assertThat(tc.i).isEqualTo(1);
 		tc.reset();
 
 		// static method, no args, void return
@@ -3858,7 +3858,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		assertCanCompile(expression);
 		tc.reset();
 		expression.getValue(tc);
-		assertThat(TestClass5._i).isEqualTo((long) 1);
+		assertThat(TestClass5._i).isEqualTo(1);
 		tc.reset();
 
 		// non-static method, reference type return
@@ -3924,7 +3924,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		assertCanCompile(expression);
 		tc.reset();
 		expression.getValue(tc);
-		assertThat(tc.i).isEqualTo((long) 231);
+		assertThat(tc.i).isEqualTo(231);
 		tc.reset();
 
 		// static method, one parameter of primitive type
@@ -3934,7 +3934,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		assertCanCompile(expression);
 		tc.reset();
 		expression.getValue(tc);
-		assertThat(TestClass5._i).isEqualTo((long) 111);
+		assertThat(TestClass5._i).isEqualTo(111);
 		tc.reset();
 
 		// method that gets type converted parameters
@@ -4043,8 +4043,8 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		int resultI = expression.getValue(new TestClass1(), Integer.TYPE);
 		assertCanCompile(expression);
 		int resultC = expression.getValue(new TestClass1(), Integer.TYPE);
-		assertThat(resultI).isEqualTo((long) 42);
-		assertThat(resultC).isEqualTo((long) 42);
+		assertThat(resultI).isEqualTo(42);
+		assertThat(resultC).isEqualTo(42);
 	}
 
 	@Test
@@ -4071,10 +4071,10 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	public void methodReference_simpleInstanceMethodNoArgReturnPrimitive() throws Exception {
 		expression = parser.parseExpression("intValue()");
 		int resultI = expression.getValue(new Integer(42), Integer.TYPE);
-		assertThat(resultI).isEqualTo((long) 42);
+		assertThat(resultI).isEqualTo(42);
 		assertCanCompile(expression);
 		int resultC = expression.getValue(new Integer(42), Integer.TYPE);
-		assertThat(resultC).isEqualTo((long) 42);
+		assertThat(resultC).isEqualTo(42);
 	}
 
 	@Test
@@ -4083,8 +4083,8 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		int resultI = expression.getValue("abc", Integer.TYPE);
 		assertCanCompile(expression);
 		int resultC = expression.getValue("abc", Integer.TYPE);
-		assertThat(resultI).isEqualTo((long) 1);
-		assertThat(resultC).isEqualTo((long) 1);
+		assertThat(resultI).isEqualTo(1);
+		assertThat(resultC).isEqualTo(1);
 	}
 
 	@Test
@@ -5093,12 +5093,12 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		Set<Object> classloadersUsed = new HashSet<>();
 		for (int i = 0; i < 1500; i++) {  // 1500 is greater than SpelCompiler.CLASSES_DEFINED_LIMIT
 			expression = parser.parseExpression("4 + 5");
-			assertThat((int) expression.getValue(Integer.class)).isEqualTo((long) 9);
+			assertThat((int) expression.getValue(Integer.class)).isEqualTo(9);
 			assertCanCompile(expression);
 			f.setAccessible(true);
 			CompiledExpression cEx = (CompiledExpression) f.get(expression);
 			classloadersUsed.add(cEx.getClass().getClassLoader());
-			assertThat((int) expression.getValue(Integer.class)).isEqualTo((long) 9);
+			assertThat((int) expression.getValue(Integer.class)).isEqualTo(9);
 		}
 		assertThat(classloadersUsed.size() > 1).isTrue();
 	}

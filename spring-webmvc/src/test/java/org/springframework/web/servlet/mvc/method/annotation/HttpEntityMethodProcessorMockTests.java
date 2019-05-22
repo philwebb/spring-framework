@@ -524,7 +524,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		then(resourceMessageConverter).should(times(1)).write(
 				any(ByteArrayResource.class), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 	}
 
 	@Test
@@ -541,7 +541,7 @@ public class HttpEntityMethodProcessorMockTests {
 		then(resourceRegionMessageConverter).should(times(1)).write(
 				anyCollection(), eq(APPLICATION_OCTET_STREAM),
 				argThat(outputMessage -> "bytes".equals(outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES))));
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 206);
+		assertThat(servletResponse.getStatus()).isEqualTo(206);
 	}
 
 	@Test
@@ -557,7 +557,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		then(resourceRegionMessageConverter).should(never()).write(
 				anyCollection(), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 416);
+		assertThat(servletResponse.getStatus()).isEqualTo(416);
 	}
 
 	@Test //SPR-16754
@@ -573,7 +573,7 @@ public class HttpEntityMethodProcessorMockTests {
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityResource, mavContainer, webRequest);
 		then(resourceMessageConverter).should(times(1)).write(
 				any(InputStreamResource.class), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 		assertThat(servletResponse.getHeader(HttpHeaders.ACCEPT_RANGES)).isNull();
 	}
 
@@ -590,7 +590,7 @@ public class HttpEntityMethodProcessorMockTests {
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityResource, mavContainer, webRequest);
 
 		then(resourceRegionMessageConverter).should(never()).write(anyCollection(), any(), any());
-		assertThat(servletResponse.getStatus()).isEqualTo((long) 206);
+		assertThat(servletResponse.getStatus()).isEqualTo(206);
 	}
 
 	@Test  //SPR-14767
@@ -694,14 +694,14 @@ public class HttpEntityMethodProcessorMockTests {
 			assertResponseBody(body);
 		}
 		else {
-			assertThat(servletResponse.getContentAsByteArray().length).isEqualTo((long) 0);
+			assertThat(servletResponse.getContentAsByteArray().length).isEqualTo(0);
 		}
 		if (etag != null) {
-			assertThat(servletResponse.getHeaderValues(HttpHeaders.ETAG).size()).isEqualTo((long) 1);
+			assertThat(servletResponse.getHeaderValues(HttpHeaders.ETAG).size()).isEqualTo(1);
 			assertThat(servletResponse.getHeader(HttpHeaders.ETAG)).isEqualTo(etag);
 		}
 		if (lastModified != -1) {
-			assertThat(servletResponse.getHeaderValues(HttpHeaders.LAST_MODIFIED).size()).isEqualTo((long) 1);
+			assertThat(servletResponse.getHeaderValues(HttpHeaders.LAST_MODIFIED).size()).isEqualTo(1);
 			assertThat(servletResponse.getDateHeader(HttpHeaders.LAST_MODIFIED) / 1000).isEqualTo(lastModified / 1000);
 		}
 	}

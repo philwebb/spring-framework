@@ -109,12 +109,12 @@ public class InitializeDatabaseIntegrationTests {
 		context = new ClassPathXmlApplicationContext("org/springframework/jdbc/config/jdbc-initialize-cache-config.xml");
 		assertCorrectSetup(context.getBean("dataSource", DataSource.class));
 		CacheData cache = context.getBean(CacheData.class);
-		assertThat(cache.getCachedData().size()).isEqualTo((long) 1);
+		assertThat(cache.getCachedData().size()).isEqualTo(1);
 	}
 
 	private void assertCorrectSetup(DataSource dataSource) {
 		JdbcTemplate jt = new JdbcTemplate(dataSource);
-		assertThat(jt.queryForObject("select count(*) from T_TEST", Integer.class).intValue()).isEqualTo((long) 1);
+		assertThat(jt.queryForObject("select count(*) from T_TEST", Integer.class).intValue()).isEqualTo(1);
 	}
 
 

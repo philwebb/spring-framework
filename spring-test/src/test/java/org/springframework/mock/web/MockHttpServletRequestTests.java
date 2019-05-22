@@ -231,11 +231,11 @@ public class MockHttpServletRequestTests {
 		params.put("key3", new String[] { "value3A", "value3B" });
 		request.setParameters(params);
 		String[] values1 = request.getParameterValues("key1");
-		assertThat(values1.length).isEqualTo((long) 1);
+		assertThat(values1.length).isEqualTo(1);
 		assertThat(request.getParameter("key1")).isEqualTo("newValue1");
 		assertThat(request.getParameter("key2")).isEqualTo("value2");
 		String[] values3 = request.getParameterValues("key3");
-		assertThat(values3.length).isEqualTo((long) 2);
+		assertThat(values3.length).isEqualTo(2);
 		assertThat(values3[0]).isEqualTo("value3A");
 		assertThat(values3[1]).isEqualTo("value3B");
 	}
@@ -249,12 +249,12 @@ public class MockHttpServletRequestTests {
 		params.put("key3", new String[] { "value3A", "value3B" });
 		request.addParameters(params);
 		String[] values1 = request.getParameterValues("key1");
-		assertThat(values1.length).isEqualTo((long) 2);
+		assertThat(values1.length).isEqualTo(2);
 		assertThat(values1[0]).isEqualTo("value1");
 		assertThat(values1[1]).isEqualTo("newValue1");
 		assertThat(request.getParameter("key2")).isEqualTo("value2");
 		String[] values3 = request.getParameterValues("key3");
-		assertThat(values3.length).isEqualTo((long) 2);
+		assertThat(values3.length).isEqualTo(2);
 		assertThat(values3[0]).isEqualTo("value3A");
 		assertThat(values3[1]).isEqualTo("value3B");
 	}
@@ -266,9 +266,9 @@ public class MockHttpServletRequestTests {
 		params.put("key2", "value2");
 		params.put("key3", new String[] { "value3A", "value3B" });
 		request.addParameters(params);
-		assertThat(request.getParameterMap().size()).isEqualTo((long) 3);
+		assertThat(request.getParameterMap().size()).isEqualTo(3);
 		request.removeAllParameters();
-		assertThat(request.getParameterMap().size()).isEqualTo((long) 0);
+		assertThat(request.getParameterMap().size()).isEqualTo(0);
 	}
 
 	@Test
@@ -280,7 +280,7 @@ public class MockHttpServletRequestTests {
 		Cookie[] cookies = request.getCookies();
 		List<String> cookieHeaders = Collections.list(request.getHeaders("Cookie"));
 
-		assertThat(cookies.length).isEqualTo((long) 2);
+		assertThat(cookies.length).isEqualTo(2);
 		assertThat(cookies[0].getName()).isEqualTo("foo");
 		assertThat(cookies[0].getValue()).isEqualTo("bar");
 		assertThat(cookies[1].getName()).isEqualTo("baz");
@@ -394,20 +394,20 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void getServerPortWithDefaultPort() {
-		assertThat(request.getServerPort()).isEqualTo((long) 80);
+		assertThat(request.getServerPort()).isEqualTo(80);
 	}
 
 	@Test
 	public void getServerPortWithCustomPort() {
 		request.setServerPort(8080);
-		assertThat(request.getServerPort()).isEqualTo((long) 8080);
+		assertThat(request.getServerPort()).isEqualTo(8080);
 	}
 
 	@Test
 	public void getServerPortViaHostHeaderAsIpv6AddressWithoutPort() {
 		String testServer = "[2001:db8:0:1]";
 		request.addHeader(HOST, testServer);
-		assertThat(request.getServerPort()).isEqualTo((long) 80);
+		assertThat(request.getServerPort()).isEqualTo(80);
 	}
 
 	@Test
@@ -422,7 +422,7 @@ public class MockHttpServletRequestTests {
 	public void getServerPortViaHostHeaderWithoutPort() {
 		String testServer = "test.server";
 		request.addHeader(HOST, testServer);
-		assertThat(request.getServerPort()).isEqualTo((long) 80);
+		assertThat(request.getServerPort()).isEqualTo(80);
 	}
 
 	@Test

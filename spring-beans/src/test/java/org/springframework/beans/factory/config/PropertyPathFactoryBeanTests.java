@@ -52,7 +52,7 @@ public class PropertyPathFactoryBeanTests {
 		boolean condition = result1 instanceof TestBean;
 		assertThat(condition).isTrue();
 		assertThat(result1 == result2).isTrue();
-		assertThat(((TestBean) result1).getAge()).isEqualTo((long) 99);
+		assertThat(((TestBean) result1).getAge()).isEqualTo(99);
 	}
 
 	@Test
@@ -70,9 +70,9 @@ public class PropertyPathFactoryBeanTests {
 		assertThat(condition1).isTrue();
 		boolean condition = result3 instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertThat(((TestBean) result1).getAge()).isEqualTo((long) 11);
-		assertThat(((TestBean) result2).getAge()).isEqualTo((long) 11);
-		assertThat(((TestBean) result3).getAge()).isEqualTo((long) 11);
+		assertThat(((TestBean) result1).getAge()).isEqualTo(11);
+		assertThat(((TestBean) result2).getAge()).isEqualTo(11);
+		assertThat(((TestBean) result3).getAge()).isEqualTo(11);
 		assertThat(result1 != result2).isTrue();
 		assertThat(result1 != result3).isTrue();
 		assertThat(result2 != result3).isTrue();

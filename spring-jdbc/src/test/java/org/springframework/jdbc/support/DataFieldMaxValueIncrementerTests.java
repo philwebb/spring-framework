@@ -65,7 +65,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setPaddingLength(2);
 		incrementer.afterPropertiesSet();
 
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 10);
+		assertThat(incrementer.nextLongValue()).isEqualTo(10);
 		assertThat(incrementer.nextStringValue()).isEqualTo("12");
 
 		verify(resultSet, times(2)).close();
@@ -89,11 +89,11 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setPaddingLength(3);
 		incrementer.afterPropertiesSet();
 
-		assertThat(incrementer.nextIntValue()).isEqualTo((long) 0);
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 1);
+		assertThat(incrementer.nextIntValue()).isEqualTo(0);
+		assertThat(incrementer.nextLongValue()).isEqualTo(1);
 		assertThat(incrementer.nextStringValue()).isEqualTo("002");
-		assertThat(incrementer.nextIntValue()).isEqualTo((long) 3);
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 4);
+		assertThat(incrementer.nextIntValue()).isEqualTo(3);
+		assertThat(incrementer.nextLongValue()).isEqualTo(4);
 
 		verify(statement, times(6)).executeUpdate("insert into myseq values(null)");
 		verify(statement).executeUpdate("delete from myseq where seq < 2");
@@ -120,11 +120,11 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setDeleteSpecificValues(true);
 		incrementer.afterPropertiesSet();
 
-		assertThat(incrementer.nextIntValue()).isEqualTo((long) 0);
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 1);
+		assertThat(incrementer.nextIntValue()).isEqualTo(0);
+		assertThat(incrementer.nextLongValue()).isEqualTo(1);
 		assertThat(incrementer.nextStringValue()).isEqualTo("002");
-		assertThat(incrementer.nextIntValue()).isEqualTo((long) 3);
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 4);
+		assertThat(incrementer.nextIntValue()).isEqualTo(3);
+		assertThat(incrementer.nextLongValue()).isEqualTo(4);
 
 		verify(statement, times(6)).executeUpdate("insert into myseq values(null)");
 		verify(statement).executeUpdate("delete from myseq where seq in (-1, 0, 1)");
@@ -150,10 +150,10 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setPaddingLength(1);
 		incrementer.afterPropertiesSet();
 
-		assertThat(incrementer.nextIntValue()).isEqualTo((long) 1);
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 2);
+		assertThat(incrementer.nextIntValue()).isEqualTo(1);
+		assertThat(incrementer.nextLongValue()).isEqualTo(2);
 		assertThat(incrementer.nextStringValue()).isEqualTo("3");
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 4);
+		assertThat(incrementer.nextLongValue()).isEqualTo(4);
 
 		verify(statement, times(2)).executeUpdate("update myseq set seq = last_insert_id(seq + 2)");
 		verify(resultSet, times(2)).close();
@@ -175,7 +175,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setPaddingLength(2);
 		incrementer.afterPropertiesSet();
 
-		assertThat(incrementer.nextLongValue()).isEqualTo((long) 10);
+		assertThat(incrementer.nextLongValue()).isEqualTo(10);
 		assertThat(incrementer.nextStringValue()).isEqualTo("12");
 
 		verify(resultSet, times(2)).close();
@@ -198,7 +198,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.afterPropertiesSet();
 
 		assertThat(incrementer.nextStringValue()).isEqualTo("00010");
-		assertThat(incrementer.nextIntValue()).isEqualTo((long) 12);
+		assertThat(incrementer.nextIntValue()).isEqualTo(12);
 
 		verify(resultSet, times(2)).close();
 		verify(statement, times(2)).close();

@@ -71,7 +71,7 @@ public class BshScriptFactoryTests {
 		boolean condition = !messenger.toString().equals(calc.toString());
 		assertThat(condition).isTrue();
 
-		assertThat(calc.add(2, 3)).isEqualTo((long) 5);
+		assertThat(calc.add(2, 3)).isEqualTo(5);
 
 		String desiredMessage = "Hello World!";
 		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
@@ -169,7 +169,7 @@ public class BshScriptFactoryTests {
 		refreshable.refresh();
 
 		assertThat(messenger.getMessage()).as("Message is incorrect after refresh").isEqualTo(desiredMessage);
-		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo((long) 2);
+		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo(2);
 	}
 
 	@Test
@@ -194,7 +194,7 @@ public class BshScriptFactoryTests {
 
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertThat(messenger2.getMessage()).isEqualTo("Byebye World!");
-		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo((long) 2);
+		assertThat(refreshable.getRefreshCount()).as("Incorrect refresh count").isEqualTo(2);
 	}
 
 	@Test

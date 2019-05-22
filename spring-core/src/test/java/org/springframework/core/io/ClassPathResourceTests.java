@@ -123,7 +123,7 @@ public class ClassPathResourceTests {
 	private void assertDescriptionContainsExpectedPath(ClassPathResource resource, String expectedPath) {
 		Matcher matcher = DESCRIPTION_PATTERN.matcher(resource.getDescription());
 		assertThat(matcher.matches()).isTrue();
-		assertThat(matcher.groupCount()).isEqualTo((long) 1);
+		assertThat(matcher.groupCount()).isEqualTo(1);
 		String match = matcher.group(1);
 
 		assertThat(match).isEqualTo(expectedPath);

@@ -53,22 +53,22 @@ public class ResourceDatabasePopulatorTests {
 	@Test
 	public void constructWithResource() {
 		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script1);
-		assertThat(databasePopulator.scripts.size()).isEqualTo((long) 1);
+		assertThat(databasePopulator.scripts.size()).isEqualTo(1);
 	}
 
 	@Test
 	public void constructWithMultipleResources() {
 		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script1, script2);
-		assertThat(databasePopulator.scripts.size()).isEqualTo((long) 2);
+		assertThat(databasePopulator.scripts.size()).isEqualTo(2);
 	}
 
 	@Test
 	public void constructWithMultipleResourcesAndThenAddScript() {
 		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script1, script2);
-		assertThat(databasePopulator.scripts.size()).isEqualTo((long) 2);
+		assertThat(databasePopulator.scripts.size()).isEqualTo(2);
 
 		databasePopulator.addScript(script3);
-		assertThat(databasePopulator.scripts.size()).isEqualTo((long) 3);
+		assertThat(databasePopulator.scripts.size()).isEqualTo(3);
 	}
 
 	@Test
@@ -102,13 +102,13 @@ public class ResourceDatabasePopulatorTests {
 	@Test
 	public void setScriptsAndThenAddScript() {
 		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-		assertThat(databasePopulator.scripts.size()).isEqualTo((long) 0);
+		assertThat(databasePopulator.scripts.size()).isEqualTo(0);
 
 		databasePopulator.setScripts(script1, script2);
-		assertThat(databasePopulator.scripts.size()).isEqualTo((long) 2);
+		assertThat(databasePopulator.scripts.size()).isEqualTo(2);
 
 		databasePopulator.addScript(script3);
-		assertThat(databasePopulator.scripts.size()).isEqualTo((long) 3);
+		assertThat(databasePopulator.scripts.size()).isEqualTo(3);
 	}
 
 }

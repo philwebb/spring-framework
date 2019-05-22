@@ -212,19 +212,19 @@ public class DefaultWebClientTests {
 		// Now, verify what each client has..
 
 		WebClient.Builder builder1 = client1.mutate();
-		builder1.filters(filters -> assertThat(filters.size()).isEqualTo((long) 1));
-		builder1.defaultHeaders(headers -> assertThat(headers.size()).isEqualTo((long) 1));
-		builder1.defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo((long) 1));
+		builder1.filters(filters -> assertThat(filters.size()).isEqualTo(1));
+		builder1.defaultHeaders(headers -> assertThat(headers.size()).isEqualTo(1));
+		builder1.defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo(1));
 
 		WebClient.Builder builder2 = client2.mutate();
-		builder2.filters(filters -> assertThat(filters.size()).isEqualTo((long) 2));
-		builder2.defaultHeaders(headers -> assertThat(headers.size()).isEqualTo((long) 2));
-		builder2.defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo((long) 2));
+		builder2.filters(filters -> assertThat(filters.size()).isEqualTo(2));
+		builder2.defaultHeaders(headers -> assertThat(headers.size()).isEqualTo(2));
+		builder2.defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo(2));
 
 		WebClient.Builder builder1a = client1a.mutate();
-		builder1a.filters(filters -> assertThat(filters.size()).isEqualTo((long) 2));
-		builder1a.defaultHeaders(headers -> assertThat(headers.size()).isEqualTo((long) 2));
-		builder1a.defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo((long) 2));
+		builder1a.filters(filters -> assertThat(filters.size()).isEqualTo(2));
+		builder1a.defaultHeaders(headers -> assertThat(headers.size()).isEqualTo(2));
+		builder1a.defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo(2));
 	}
 
 	@Test

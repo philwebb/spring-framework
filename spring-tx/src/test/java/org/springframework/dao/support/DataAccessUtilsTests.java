@@ -99,8 +99,8 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertThat(DataAccessUtils.intResult(col)).isEqualTo((long) 5);
-		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.intResult(col)).isEqualTo(5);
+		assertThat(DataAccessUtils.longResult(col)).isEqualTo(5);
 	}
 
 	@Test
@@ -114,8 +114,8 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertThat(DataAccessUtils.intResult(col)).isEqualTo((long) 5);
-		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.intResult(col)).isEqualTo(5);
+		assertThat(DataAccessUtils.longResult(col)).isEqualTo(5);
 	}
 
 	@Test
@@ -139,8 +139,8 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Long.valueOf(5L));
 		assertThat(DataAccessUtils.objectResult(col, Long.class)).isEqualTo(Long.valueOf(5L));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertThat(DataAccessUtils.intResult(col)).isEqualTo((long) 5);
-		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.intResult(col)).isEqualTo(5);
+		assertThat(DataAccessUtils.longResult(col)).isEqualTo(5);
 	}
 
 	@Test

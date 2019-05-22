@@ -111,7 +111,7 @@ public class InterceptingClientHttpRequestFactoryTests {
 			@Override
 			public ClientHttpResponse execute() throws IOException {
 				List<String> headerValues = getHeaders().get(headerName);
-				assertThat(headerValues.size()).isEqualTo((long) 2);
+				assertThat(headerValues.size()).isEqualTo(2);
 				assertThat(headerValues.get(0)).isEqualTo(headerValue);
 				assertThat(headerValues.get(1)).isEqualTo(otherValue);
 				return super.execute();

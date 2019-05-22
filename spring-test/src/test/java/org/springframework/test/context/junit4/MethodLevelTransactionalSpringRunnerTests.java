@@ -72,33 +72,33 @@ public class MethodLevelTransactionalSpringRunnerTests extends AbstractTransacti
 
 	@AfterClass
 	public static void verifyFinalTestData() {
-		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo((long) 4);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo(4);
 	}
 
 	@Before
 	public void verifyInitialTestData() {
 		clearPersonTable(jdbcTemplate);
-		assertThat(addPerson(jdbcTemplate, BOB)).as("Adding bob").isEqualTo((long) 1);
-		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the initial number of rows in the person table.").isEqualTo((long) 1);
+		assertThat(addPerson(jdbcTemplate, BOB)).as("Adding bob").isEqualTo(1);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the initial number of rows in the person table.").isEqualTo(1);
 	}
 
 	@Test
 	@Transactional("transactionManager2")
 	public void modifyTestDataWithinTransaction() {
 		assertInTransaction(true);
-		assertThat(deletePerson(jdbcTemplate, BOB)).as("Deleting bob").isEqualTo((long) 1);
-		assertThat(addPerson(jdbcTemplate, JANE)).as("Adding jane").isEqualTo((long) 1);
-		assertThat(addPerson(jdbcTemplate, SUE)).as("Adding sue").isEqualTo((long) 1);
-		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table within a transaction.").isEqualTo((long) 2);
+		assertThat(deletePerson(jdbcTemplate, BOB)).as("Deleting bob").isEqualTo(1);
+		assertThat(addPerson(jdbcTemplate, JANE)).as("Adding jane").isEqualTo(1);
+		assertThat(addPerson(jdbcTemplate, SUE)).as("Adding sue").isEqualTo(1);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table within a transaction.").isEqualTo(2);
 	}
 
 	@Test
 	public void modifyTestDataWithoutTransaction() {
 		assertInTransaction(false);
-		assertThat(addPerson(jdbcTemplate, LUKE)).as("Adding luke").isEqualTo((long) 1);
-		assertThat(addPerson(jdbcTemplate, LEIA)).as("Adding leia").isEqualTo((long) 1);
-		assertThat(addPerson(jdbcTemplate, YODA)).as("Adding yoda").isEqualTo((long) 1);
-		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table without a transaction.").isEqualTo((long) 4);
+		assertThat(addPerson(jdbcTemplate, LUKE)).as("Adding luke").isEqualTo(1);
+		assertThat(addPerson(jdbcTemplate, LEIA)).as("Adding leia").isEqualTo(1);
+		assertThat(addPerson(jdbcTemplate, YODA)).as("Adding yoda").isEqualTo(1);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table without a transaction.").isEqualTo(4);
 	}
 
 }

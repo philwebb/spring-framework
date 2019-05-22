@@ -159,7 +159,7 @@ public class UriComponentsBuilderTests {
 		assertThat(result.getScheme()).isEqualTo("https");
 		assertThat(result.getUserInfo()).isEqualTo("arjen:foobar");
 		assertThat(result.getHost()).isEqualTo("java.sun.com");
-		assertThat(result.getPort()).isEqualTo((long) 80);
+		assertThat(result.getPort()).isEqualTo(80);
 		assertThat(result.getPath()).isEqualTo("/javase/6/docs/api/java/util/BitSet.html");
 		assertThat(result.getQuery()).isEqualTo("foo=bar");
 		MultiValueMap<String, String> expectedQueryParams = new LinkedMultiValueMap<>(1);
@@ -365,7 +365,7 @@ public class UriComponentsBuilderTests {
 		UriComponents result = UriComponentsBuilder.fromHttpRequest(httpRequest).build();
 
 		assertThat(result.getHost()).isEqualTo("webtest.foo.bar.com");
-		assertThat(result.getPort()).isEqualTo((long) 443);
+		assertThat(result.getPort()).isEqualTo(443);
 	}
 
 	@Test  // SPR-11140
@@ -396,7 +396,7 @@ public class UriComponentsBuilderTests {
 		UriComponents result = UriComponentsBuilder.fromHttpRequest(httpRequest).build();
 
 		assertThat(result.getHost()).isEqualTo("foobarhost");
-		assertThat(result.getPort()).isEqualTo((long) 9090);
+		assertThat(result.getPort()).isEqualTo(9090);
 	}
 
 	@Test  // SPR-11872
@@ -879,7 +879,7 @@ public class UriComponentsBuilderTests {
 		assertThat(result.getScheme()).isEqualTo("https");
 		assertThat(result.getHost()).isEqualTo("84.198.58.199");
 		assertThat(result.getPath()).isEqualTo("/rest/mobile/users/1");
-		assertThat(result.getPort()).isEqualTo((long) 9090);
+		assertThat(result.getPort()).isEqualTo(9090);
 		assertThat(result.toUriString()).isEqualTo("https://84.198.58.199:9090/rest/mobile/users/1");
 	}
 
@@ -898,7 +898,7 @@ public class UriComponentsBuilderTests {
 		assertThat(result.getScheme()).isEqualTo("https");
 		assertThat(result.getHost()).isEqualTo("84.198.58.199");
 		assertThat(result.getPath()).isEqualTo("/rest/mobile/users/1");
-		assertThat(result.getPort()).isEqualTo((long) 9090);
+		assertThat(result.getPort()).isEqualTo(9090);
 		assertThat(result.toUriString()).isEqualTo("https://84.198.58.199:9090/rest/mobile/users/1");
 	}
 

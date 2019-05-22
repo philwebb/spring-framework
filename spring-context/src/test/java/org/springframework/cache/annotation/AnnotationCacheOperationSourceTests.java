@@ -233,7 +233,7 @@ public class AnnotationCacheOperationSourceTests {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "noCacheNameSpecified");
 		CacheOperation cacheOperation = ops.iterator().next();
 		assertThat(cacheOperation.getCacheNames()).as("cache names set must not be null").isNotNull();
-		assertThat(cacheOperation.getCacheNames().size()).as("no cache names specified").isEqualTo((long) 0);
+		assertThat(cacheOperation.getCacheNames().size()).as("no cache names specified").isEqualTo(0);
 	}
 
 	@Test

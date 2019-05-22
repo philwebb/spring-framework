@@ -68,19 +68,19 @@ public class ContextCacheUtilsTests {
 	@Test
 	public void retrieveMaxCacheSizeFromSystemProperty() {
 		System.setProperty(MAX_CONTEXT_CACHE_SIZE_PROPERTY_NAME, "42");
-		assertThat(retrieveMaxCacheSize()).isEqualTo((long) 42);
+		assertThat(retrieveMaxCacheSize()).isEqualTo(42);
 	}
 
 	@Test
 	public void retrieveMaxCacheSizeFromSystemPropertyContainingWhitespace() {
 		System.setProperty(MAX_CONTEXT_CACHE_SIZE_PROPERTY_NAME, "42\t");
-		assertThat(retrieveMaxCacheSize()).isEqualTo((long) 42);
+		assertThat(retrieveMaxCacheSize()).isEqualTo(42);
 	}
 
 	@Test
 	public void retrieveMaxCacheSizeFromSpringProperty() {
 		SpringProperties.setProperty(MAX_CONTEXT_CACHE_SIZE_PROPERTY_NAME, "99");
-		assertThat(retrieveMaxCacheSize()).isEqualTo((long) 99);
+		assertThat(retrieveMaxCacheSize()).isEqualTo(99);
 	}
 
 	private static void assertDefaultValue() {

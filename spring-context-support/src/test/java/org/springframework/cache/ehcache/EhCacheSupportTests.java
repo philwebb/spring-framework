@@ -159,10 +159,10 @@ public class EhCacheSupportTests {
 			CacheConfiguration config = cache.getCacheConfiguration();
 			assertThat(cache.getName()).isEqualTo("myCache1");
 			if (useCacheManagerFb){
-				assertThat(config.getMaxEntriesLocalHeap()).as("myCache1.maxElements").isEqualTo((long) 300);
+				assertThat(config.getMaxEntriesLocalHeap()).as("myCache1.maxElements").isEqualTo(300);
 			}
 			else {
-				assertThat(config.getMaxEntriesLocalHeap()).as("myCache1.maxElements").isEqualTo((long) 10000);
+				assertThat(config.getMaxEntriesLocalHeap()).as("myCache1.maxElements").isEqualTo(10000);
 			}
 
 			// Cache region is not defined. Should create one with default properties.

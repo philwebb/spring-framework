@@ -359,7 +359,7 @@ public class XStreamMarshallerTests {
 	private static void assertXpathNotExists(String xPathExpression, String inXMLString){
 		Source source = Input.fromString(inXMLString).build();
 		Iterable<Node> nodes = new JAXPXPathEngine().selectNodes(xPathExpression, source);
-		assertThat(count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo((long) 0);
+		assertThat(count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo(0);
 	}
 
 	private static int count(Iterable<Node> nodes) {

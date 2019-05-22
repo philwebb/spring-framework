@@ -446,53 +446,53 @@ public class AntPathMatcherTests {
 	public void patternComparator() {
 		Comparator<String> comparator = pathMatcher.getPatternComparator("/hotels/new");
 
-		assertThat(comparator.compare(null, null)).isEqualTo((long) 0);
-		assertThat(comparator.compare(null, "/hotels/new")).isEqualTo((long) 1);
+		assertThat(comparator.compare(null, null)).isEqualTo(0);
+		assertThat(comparator.compare(null, "/hotels/new")).isEqualTo(1);
 		assertThat(comparator.compare("/hotels/new", null)).isEqualTo((long) -1);
 
-		assertThat(comparator.compare("/hotels/new", "/hotels/new")).isEqualTo((long) 0);
+		assertThat(comparator.compare("/hotels/new", "/hotels/new")).isEqualTo(0);
 
 		assertThat(comparator.compare("/hotels/new", "/hotels/*")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/*", "/hotels/new")).isEqualTo((long) 1);
-		assertThat(comparator.compare("/hotels/*", "/hotels/*")).isEqualTo((long) 0);
+		assertThat(comparator.compare("/hotels/*", "/hotels/new")).isEqualTo(1);
+		assertThat(comparator.compare("/hotels/*", "/hotels/*")).isEqualTo(0);
 
 		assertThat(comparator.compare("/hotels/new", "/hotels/{hotel}")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/new")).isEqualTo((long) 1);
-		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/{hotel}")).isEqualTo((long) 0);
+		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/new")).isEqualTo(1);
+		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/{hotel}")).isEqualTo(0);
 		assertThat(comparator.compare("/hotels/{hotel}/booking", "/hotels/{hotel}/bookings/{booking}")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/{hotel}/bookings/{booking}", "/hotels/{hotel}/booking")).isEqualTo((long) 1);
+		assertThat(comparator.compare("/hotels/{hotel}/bookings/{booking}", "/hotels/{hotel}/booking")).isEqualTo(1);
 
 		// SPR-10550
 		assertThat(comparator.compare("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}", "/**")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")).isEqualTo((long) 1);
-		assertThat(comparator.compare("/**", "/**")).isEqualTo((long) 0);
+		assertThat(comparator.compare("/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")).isEqualTo(1);
+		assertThat(comparator.compare("/**", "/**")).isEqualTo(0);
 
 		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/*")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/*", "/hotels/{hotel}")).isEqualTo((long) 1);
+		assertThat(comparator.compare("/hotels/*", "/hotels/{hotel}")).isEqualTo(1);
 
 		assertThat(comparator.compare("/hotels/*", "/hotels/*/**")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/*/**", "/hotels/*")).isEqualTo((long) 1);
+		assertThat(comparator.compare("/hotels/*/**", "/hotels/*")).isEqualTo(1);
 
 		assertThat(comparator.compare("/hotels/new", "/hotels/new.*")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/{hotel}.*")).isEqualTo((long) 2);
+		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/{hotel}.*")).isEqualTo(2);
 
 		// SPR-6741
 		assertThat(comparator.compare("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}", "/hotels/**")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")).isEqualTo((long) 1);
-		assertThat(comparator.compare("/hotels/foo/bar/**", "/hotels/{hotel}")).isEqualTo((long) 1);
+		assertThat(comparator.compare("/hotels/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")).isEqualTo(1);
+		assertThat(comparator.compare("/hotels/foo/bar/**", "/hotels/{hotel}")).isEqualTo(1);
 		assertThat(comparator.compare("/hotels/{hotel}", "/hotels/foo/bar/**")).isEqualTo((long) -1);
-		assertThat(comparator.compare("/hotels/**/bookings/**", "/hotels/**")).isEqualTo((long) 2);
+		assertThat(comparator.compare("/hotels/**/bookings/**", "/hotels/**")).isEqualTo(2);
 		assertThat(comparator.compare("/hotels/**", "/hotels/**/bookings/**")).isEqualTo((long) -2);
 
 		// SPR-8683
-		assertThat(comparator.compare("/**", "/hotels/{hotel}")).isEqualTo((long) 1);
+		assertThat(comparator.compare("/**", "/hotels/{hotel}")).isEqualTo(1);
 
 		// longer is better
-		assertThat(comparator.compare("/hotels", "/hotels2")).isEqualTo((long) 1);
+		assertThat(comparator.compare("/hotels", "/hotels2")).isEqualTo(1);
 
 		// SPR-13139
 		assertThat(comparator.compare("*", "*/**")).isEqualTo((long) -1);
-		assertThat(comparator.compare("*/**", "*")).isEqualTo((long) 1);
+		assertThat(comparator.compare("*/**", "*")).isEqualTo(1);
 	}
 
 	@Test
@@ -637,22 +637,22 @@ public class AntPathMatcherTests {
 	@Test
 	public void preventCreatingStringMatchersIfPathDoesNotStartsWithPatternPrefix() {
 		pathMatcher.setCachePatterns(true);
-		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo((long) 0);
+		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo(0);
 
 		pathMatcher.match("test?", "test");
-		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo((long) 1);
+		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo(1);
 
 		pathMatcher.match("test?", "best");
 		pathMatcher.match("test/*", "view/test.jpg");
 		pathMatcher.match("test/**/test.jpg", "view/test.jpg");
 		pathMatcher.match("test/{name}.jpg", "view/test.jpg");
-		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo((long) 1);
+		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo(1);
 	}
 
 	@Test
 	public void creatingStringMatchersIfPatternPrefixCannotDetermineIfPathMatch() {
 		pathMatcher.setCachePatterns(true);
-		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo((long) 0);
+		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo(0);
 
 		pathMatcher.match("test", "testian");
 		pathMatcher.match("test?", "testFf");
@@ -663,7 +663,7 @@ public class AntPathMatcherTests {
 		pathMatcher.match("/**/{name}.jpg", "/test/lorem.jpg");
 		pathMatcher.match("/*/dir/{name}.jpg", "/*/dir/lorem.jpg");
 
-		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo((long) 7);
+		assertThat(pathMatcher.stringMatcherCache.size()).isEqualTo(7);
 	}
 
 	@Test

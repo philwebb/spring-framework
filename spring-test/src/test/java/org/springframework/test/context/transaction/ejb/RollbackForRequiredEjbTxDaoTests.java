@@ -72,10 +72,10 @@ public class RollbackForRequiredEjbTxDaoTests extends CommitForRequiredEjbTxDaoT
 		// participate in the existing transaction (if present), which in this case is the
 		// transaction managed by the TestContext framework which will be rolled back
 		// after each test method.
-		assertThat(count).as("Expected count=0 after test2IncrementCount1().").isEqualTo((long) 0);
+		assertThat(count).as("Expected count=0 after test2IncrementCount1().").isEqualTo(0);
 
 		count = dao.incrementCount(TEST_NAME);
-		assertThat(count).as("Expected count=1 now.").isEqualTo((long) 1);
+		assertThat(count).as("Expected count=1 now.").isEqualTo(1);
 	}
 
 }

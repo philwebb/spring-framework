@@ -56,8 +56,8 @@ public class DefaultSimpUserRegistryTests {
 		SimpUser simpUser = registry.getUser("joe");
 		assertThat(simpUser).isNotNull();
 
-		assertThat(registry.getUserCount()).isEqualTo((long) 1);
-		assertThat(simpUser.getSessions().size()).isEqualTo((long) 1);
+		assertThat(registry.getUserCount()).isEqualTo(1);
+		assertThat(simpUser.getSessions().size()).isEqualTo(1);
 		assertThat(simpUser.getSession("123")).isNotNull();
 	}
 
@@ -81,8 +81,8 @@ public class DefaultSimpUserRegistryTests {
 		SimpUser simpUser = registry.getUser("joe");
 		assertThat(simpUser).isNotNull();
 
-		assertThat(registry.getUserCount()).isEqualTo((long) 1);
-		assertThat(simpUser.getSessions().size()).isEqualTo((long) 3);
+		assertThat(registry.getUserCount()).isEqualTo(1);
+		assertThat(simpUser.getSessions().size()).isEqualTo(3);
 		assertThat(simpUser.getSession("123")).isNotNull();
 		assertThat(simpUser.getSession("456")).isNotNull();
 		assertThat(simpUser.getSession("789")).isNotNull();
@@ -107,7 +107,7 @@ public class DefaultSimpUserRegistryTests {
 
 		SimpUser simpUser = registry.getUser("joe");
 		assertThat(simpUser).isNotNull();
-		assertThat(simpUser.getSessions().size()).isEqualTo((long) 3);
+		assertThat(simpUser.getSessions().size()).isEqualTo(3);
 
 		CloseStatus status = CloseStatus.GOING_AWAY;
 		message = createMessage(SimpMessageType.DISCONNECT, "456");
@@ -118,7 +118,7 @@ public class DefaultSimpUserRegistryTests {
 		disconnectEvent = new SessionDisconnectEvent(this, message, "789", status, user);
 		registry.onApplicationEvent(disconnectEvent);
 
-		assertThat(simpUser.getSessions().size()).isEqualTo((long) 1);
+		assertThat(simpUser.getSessions().size()).isEqualTo(1);
 		assertThat(simpUser.getSession("123")).isNotNull();
 	}
 
@@ -150,7 +150,7 @@ public class DefaultSimpUserRegistryTests {
 			}
 		});
 
-		assertThat(matches.size()).isEqualTo((long) 2);
+		assertThat(matches.size()).isEqualTo(2);
 
 		Iterator<SimpSubscription> iterator = matches.iterator();
 		Set<String> sessionIds = new HashSet<>(2);

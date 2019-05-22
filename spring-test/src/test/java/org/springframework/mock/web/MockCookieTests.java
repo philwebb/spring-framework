@@ -68,7 +68,7 @@ public class MockCookieTests {
 
 		assertCookie(cookie, "SESSION", "123");
 		assertThat(cookie.getDomain()).isEqualTo("example.com");
-		assertThat(cookie.getMaxAge()).isEqualTo((long) 60);
+		assertThat(cookie.getMaxAge()).isEqualTo(60);
 		assertThat(cookie.getPath()).isEqualTo("/");
 		assertThat(cookie.getSecure()).isTrue();
 		assertThat(cookie.isHttpOnly()).isTrue();
@@ -110,7 +110,7 @@ public class MockCookieTests {
 
 		assertCookie(cookie, "SESSION", "123");
 		assertThat(cookie.getDomain()).isEqualTo("example.com");
-		assertThat(cookie.getMaxAge()).isEqualTo((long) 60);
+		assertThat(cookie.getMaxAge()).isEqualTo(60);
 		assertThat(cookie.getPath()).isEqualTo("/");
 		assertThat(cookie.getSecure()).isTrue();
 		assertThat(cookie.isHttpOnly()).isTrue();

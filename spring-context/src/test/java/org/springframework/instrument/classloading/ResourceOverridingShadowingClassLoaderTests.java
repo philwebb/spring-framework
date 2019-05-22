@@ -67,14 +67,14 @@ public class ResourceOverridingShadowingClassLoaderTests {
 	public void testFindsExistingResourceWithGetResourcesAndNoOverrides() throws IOException {
 		assertThat(thisClassLoader.getResources(EXISTING_RESOURCE)).isNotNull();
 		assertThat(overridingLoader.getResources(EXISTING_RESOURCE)).isNotNull();
-		assertThat(countElements(overridingLoader.getResources(EXISTING_RESOURCE))).isEqualTo((long) 1);
+		assertThat(countElements(overridingLoader.getResources(EXISTING_RESOURCE))).isEqualTo(1);
 	}
 
 	@Test
 	public void testDoesNotFindExistingResourceWithGetResourcesAndNullOverride() throws IOException {
 		assertThat(thisClassLoader.getResources(EXISTING_RESOURCE)).isNotNull();
 		overridingLoader.override(EXISTING_RESOURCE, null);
-		assertThat(countElements(overridingLoader.getResources(EXISTING_RESOURCE))).isEqualTo((long) 0);
+		assertThat(countElements(overridingLoader.getResources(EXISTING_RESOURCE))).isEqualTo(0);
 	}
 
 	private int countElements(Enumeration<?> e) {

@@ -61,7 +61,7 @@ public class FastByteArrayOutputStreamTests {
 		for (int i = 0; i < 10; i++) {
 			this.os.write(1);
 		}
-		assertThat(this.os.size()).isEqualTo((long) 10);
+		assertThat(this.os.size()).isEqualTo(10);
 		assertThat(new byte[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}).isEqualTo(this.os.toByteArray());
 	}
 
@@ -76,7 +76,7 @@ public class FastByteArrayOutputStreamTests {
 		this.os.write(this.helloBytes);
 		assertByteArrayEqualsString(this.os);
 		this.os.reset();
-		assertThat(this.os.size()).isEqualTo((long) 0);
+		assertThat(this.os.size()).isEqualTo(0);
 		this.os.write(this.helloBytes);
 		assertByteArrayEqualsString(this.os);
 	}
@@ -151,7 +151,7 @@ public class FastByteArrayOutputStreamTests {
 		int bytesRead = inputStream.read(actual);
 		assertThat(bytesRead).isEqualTo((long) this.helloBytes.length);
 		assertThat(actual).isEqualTo(this.helloBytes);
-		assertThat(inputStream.available()).isEqualTo((long) 0);
+		assertThat(inputStream.available()).isEqualTo(0);
 	}
 
 	@Test
@@ -164,8 +164,8 @@ public class FastByteArrayOutputStreamTests {
 		for (int i = 0; i < bytesRead; i++) {
 			assertThat(actual[i]).isEqualTo((long) this.helloBytes[i]);
 		}
-		assertThat(actual[this.helloBytes.length]).isEqualTo((long) 0);
-		assertThat(inputStream.available()).isEqualTo((long) 0);
+		assertThat(actual[this.helloBytes.length]).isEqualTo(0);
+		assertThat(inputStream.available()).isEqualTo(0);
 	}
 
 	@Test
@@ -173,7 +173,7 @@ public class FastByteArrayOutputStreamTests {
 		this.os.write(this.helloBytes);
 		InputStream inputStream = this.os.getInputStream();
 		assertThat(this.helloBytes[0]).isEqualTo((long) inputStream.read());
-		assertThat(inputStream.skip(1)).isEqualTo((long) 1);
+		assertThat(inputStream.skip(1)).isEqualTo(1);
 		assertThat(this.helloBytes[2]).isEqualTo((long) inputStream.read());
 		assertThat(inputStream.available()).isEqualTo((long) (this.helloBytes.length - 3));
 	}
@@ -183,7 +183,7 @@ public class FastByteArrayOutputStreamTests {
 		this.os.write(this.helloBytes);
 		InputStream inputStream = this.os.getInputStream();
 		assertThat(this.helloBytes.length).isEqualTo(inputStream.skip(1000));
-		assertThat(inputStream.available()).isEqualTo((long) 0);
+		assertThat(inputStream.available()).isEqualTo(0);
 	}
 
 	@Test

@@ -82,7 +82,7 @@ public class PrimaryDataSourceTests {
 	@Sql("data.sql")
 	public void dataSourceTest() {
 		TransactionTestUtils.assertInTransaction(false);
-		assertThat(JdbcTestUtils.countRowsInTable(this.jdbcTemplate, "user")).as("Number of rows in the 'user' table.").isEqualTo((long) 1);
+		assertThat(JdbcTestUtils.countRowsInTable(this.jdbcTemplate, "user")).as("Number of rows in the 'user' table.").isEqualTo(1);
 	}
 
 }
