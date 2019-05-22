@@ -17,7 +17,6 @@
 package org.springframework.validation.beanvalidation;
 
 import java.util.Locale;
-
 import javax.validation.MessageInterpolator;
 
 import org.springframework.context.i18n.LocaleContextHolder;

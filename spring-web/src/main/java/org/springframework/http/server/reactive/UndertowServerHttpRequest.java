@@ -26,7 +26,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntPredicate;
-
 import javax.net.ssl.SSLSession;
 
 import io.undertow.connector.ByteBufferPool;

@@ -18,7 +18,6 @@ package org.springframework.scheduling.quartz;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
 import org.quartz.SchedulerConfigException;

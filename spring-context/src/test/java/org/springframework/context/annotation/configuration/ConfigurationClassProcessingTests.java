@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-
 import javax.annotation.Resource;
 import javax.inject.Provider;
 

@@ -17,7 +17,6 @@
 package org.springframework.oxm.jibx;
 
 import java.io.StringWriter;
-
 import javax.xml.transform.stream.StreamResult;
 
 import org.junit.BeforeClass;

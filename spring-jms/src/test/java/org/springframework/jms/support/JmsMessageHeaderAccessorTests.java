@@ -17,7 +17,6 @@
 package org.springframework.jms.support;
 
 import java.util.Map;
-
 import javax.jms.Destination;
 import javax.jms.JMSException;
 

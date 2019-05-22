@@ -17,7 +17,6 @@
 package org.springframework.test.context.web;
 
 import java.io.File;
-
 import javax.servlet.ServletContext;
 
 import org.junit.Test;

@@ -19,7 +19,6 @@ package org.springframework.mock.web.test;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 

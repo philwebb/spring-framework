@@ -18,7 +18,6 @@ package org.springframework.orm.hibernate5;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-
 import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 

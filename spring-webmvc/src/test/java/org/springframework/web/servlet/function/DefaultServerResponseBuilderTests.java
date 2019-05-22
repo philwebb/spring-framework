@@ -26,7 +26,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-
 import javax.servlet.http.Cookie;
 
 import org.junit.Test;

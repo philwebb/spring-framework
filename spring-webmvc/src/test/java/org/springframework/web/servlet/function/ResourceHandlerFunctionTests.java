@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-
 import javax.servlet.ServletException;
 
 import org.junit.Before;

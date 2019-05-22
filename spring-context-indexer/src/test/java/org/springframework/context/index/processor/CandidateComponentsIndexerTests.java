@@ -19,7 +19,6 @@ package org.springframework.context.index.processor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import javax.annotation.ManagedBean;
 import javax.inject.Named;
 import javax.persistence.Converter;

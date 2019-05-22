@@ -18,7 +18,6 @@ package org.springframework.jmx.export.assembler;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.management.Descriptor;
 import javax.management.MBeanInfo;
 import javax.management.MBeanParameterInfo;

@@ -19,7 +19,6 @@ package org.springframework.jdbc.core.support;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import javax.sql.DataSource;
 
 import org.junit.Test;

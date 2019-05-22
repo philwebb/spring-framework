@@ -17,7 +17,6 @@
 package org.springframework.oxm.jibx;
 
 import java.io.ByteArrayInputStream;
-
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.BeforeClass;

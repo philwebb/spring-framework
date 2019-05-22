@@ -38,7 +38,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
-
 import javax.annotation.Priority;
 import javax.security.auth.Subject;
 

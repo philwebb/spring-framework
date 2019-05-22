@@ -17,7 +17,6 @@
 package org.springframework.web.context.support;
 
 import java.io.File;
-
 import javax.servlet.ServletContext;
 
 import org.springframework.context.ApplicationContext;

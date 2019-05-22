@@ -18,7 +18,6 @@ package org.springframework.util.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Transformer;

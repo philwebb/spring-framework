@@ -18,7 +18,6 @@ package org.springframework.jdbc.datasource.embedded;
 
 import java.sql.SQLException;
 import java.util.Properties;
-
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.LogFactory;

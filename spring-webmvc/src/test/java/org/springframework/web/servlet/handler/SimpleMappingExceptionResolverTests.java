@@ -18,7 +18,6 @@ package org.springframework.web.servlet.handler;
 
 import java.util.Collections;
 import java.util.Properties;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;

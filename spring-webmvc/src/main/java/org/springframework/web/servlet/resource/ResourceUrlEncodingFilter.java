@@ -17,7 +17,6 @@
 package org.springframework.web.servlet.resource;
 
 import java.io.IOException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;

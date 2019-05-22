@@ -17,7 +17,6 @@
 package org.springframework.jms.annotation;
 
 import java.lang.reflect.Method;
-
 import javax.jms.JMSException;
 import javax.jms.Session;
 

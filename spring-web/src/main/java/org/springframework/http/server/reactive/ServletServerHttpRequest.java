@@ -24,7 +24,6 @@ import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.Map;
-
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;

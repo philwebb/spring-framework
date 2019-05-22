@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
-
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.DeploymentException;
 import javax.websocket.Endpoint;

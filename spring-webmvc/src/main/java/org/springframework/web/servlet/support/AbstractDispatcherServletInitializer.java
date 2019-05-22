@@ -17,7 +17,6 @@
 package org.springframework.web.servlet.support;
 
 import java.util.EnumSet;
-
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;

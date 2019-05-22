@@ -21,7 +21,6 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.function.Consumer;
-
 import javax.servlet.http.Cookie;
 
 import org.springframework.core.ParameterizedTypeReference;

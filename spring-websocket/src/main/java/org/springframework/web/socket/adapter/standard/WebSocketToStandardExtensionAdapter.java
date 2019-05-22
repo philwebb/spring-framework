@@ -18,7 +18,6 @@ package org.springframework.web.socket.adapter.standard;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.websocket.Extension;
 
 import org.springframework.web.socket.WebSocketExtension;

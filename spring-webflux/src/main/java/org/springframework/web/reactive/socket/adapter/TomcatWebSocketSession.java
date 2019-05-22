@@ -17,7 +17,6 @@
 package org.springframework.web.reactive.socket.adapter;
 
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
-
 import javax.websocket.Session;
 
 import org.apache.tomcat.websocket.WsSession;

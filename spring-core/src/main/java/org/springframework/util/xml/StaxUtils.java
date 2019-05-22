@@ -18,7 +18,6 @@ package org.springframework.util.xml;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;

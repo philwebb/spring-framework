@@ -19,7 +19,6 @@ package org.springframework.test.web.client.match;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 

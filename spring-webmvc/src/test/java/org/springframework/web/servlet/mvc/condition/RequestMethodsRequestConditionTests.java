@@ -17,7 +17,6 @@
 package org.springframework.web.servlet.mvc.condition;
 
 import java.util.Collections;
-
 import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
 

@@ -18,7 +18,6 @@ package org.springframework.jdbc.core;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetFactory;
 import javax.sql.rowset.RowSetProvider;

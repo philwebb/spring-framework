@@ -18,7 +18,6 @@ package org.springframework.web.context.request;
 
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;

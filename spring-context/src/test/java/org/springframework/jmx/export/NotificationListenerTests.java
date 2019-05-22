@@ -18,7 +18,6 @@ package org.springframework.jmx.export;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.management.Attribute;
 import javax.management.AttributeChangeNotification;
 import javax.management.MalformedObjectNameException;

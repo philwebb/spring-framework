@@ -17,7 +17,6 @@
 package org.springframework.test.web.servlet.result;
 
 import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;

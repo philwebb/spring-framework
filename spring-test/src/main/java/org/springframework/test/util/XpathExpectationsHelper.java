@@ -19,7 +19,6 @@ package org.springframework.test.util;
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

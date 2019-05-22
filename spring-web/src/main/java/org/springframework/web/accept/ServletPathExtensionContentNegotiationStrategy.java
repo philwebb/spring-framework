@@ -17,7 +17,6 @@
 package org.springframework.web.accept;
 
 import java.util.Map;
-
 import javax.servlet.ServletContext;
 
 import org.springframework.core.io.Resource;

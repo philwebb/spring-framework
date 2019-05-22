@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-
 import javax.xml.xpath.XPathExpressionException;
 
 import org.hamcrest.Matcher;

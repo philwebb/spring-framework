@@ -17,7 +17,6 @@
 package org.springframework.oxm.mime;
 
 import java.io.IOException;
-
 import javax.xml.transform.Result;
 
 import org.springframework.lang.Nullable;

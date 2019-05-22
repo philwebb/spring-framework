@@ -18,7 +18,6 @@ package org.springframework.jms.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
 

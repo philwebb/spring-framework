@@ -18,7 +18,6 @@ package org.springframework.jmx.export.assembler;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-
 import javax.management.Descriptor;
 import javax.management.MBeanParameterInfo;
 import javax.management.modelmbean.ModelMBeanNotificationInfo;

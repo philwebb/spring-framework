@@ -17,7 +17,6 @@
 package org.springframework.ejb.access;
 
 import java.lang.reflect.Proxy;
-
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 import javax.ejb.EJBLocalObject;

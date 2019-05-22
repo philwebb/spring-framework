@@ -19,7 +19,6 @@ package org.springframework.aop.framework.autoproxy;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
-
 import javax.servlet.ServletException;
 
 import org.junit.Test;
