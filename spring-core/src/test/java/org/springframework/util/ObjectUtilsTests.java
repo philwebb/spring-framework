@@ -178,7 +178,7 @@ public class ObjectUtilsTests {
 	@Test
 	public void toObjectArrayWithNonPrimitiveArray() {
 		String[] source = new String[] {"Bingo"};
-		assertArrayEquals(source, ObjectUtils.toObjectArray(source));
+		assertThat(ObjectUtils.toObjectArray(source)).isEqualTo(source);
 	}
 
 	@Test

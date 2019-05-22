@@ -40,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNull;
 
 /**
@@ -954,7 +953,7 @@ public class UriComponentsBuilderTests {
 
 		assertThat(uri1.getPathSegments().isEmpty()).isTrue();
 		assertThat(uri2.getPathSegments().isEmpty()).isTrue();
-		assertNotEquals(uri1, uri2);
+		assertThat((Object) uri2).isNotEqualTo(uri1);
 	}
 
 	@Test  // SPR-17256

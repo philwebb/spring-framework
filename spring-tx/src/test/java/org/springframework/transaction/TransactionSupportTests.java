@@ -27,7 +27,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertSame;
 
 /**
@@ -278,8 +277,8 @@ public class TransactionSupportTests {
 		TransactionTemplate template2 = new TransactionTemplate(tm2);
 		TransactionTemplate template3 = new TransactionTemplate(tm2);
 
-		assertNotEquals(template1, template2);
-		assertNotEquals(template1, template3);
+		assertThat((Object) template2).isNotEqualTo(template1);
+		assertThat((Object) template3).isNotEqualTo(template1);
 		assertThat(template3).isEqualTo(template2);
 	}
 

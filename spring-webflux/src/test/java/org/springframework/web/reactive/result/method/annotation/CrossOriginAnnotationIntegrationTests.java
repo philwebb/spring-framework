@@ -147,12 +147,9 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
-		assertArrayEquals(new HttpMethod[] {HttpMethod.GET},
-				entity.getHeaders().getAccessControlAllowMethods().toArray());
-		assertArrayEquals(new String[] {"header1", "header2"},
-				entity.getHeaders().getAccessControlAllowHeaders().toArray());
-		assertArrayEquals(new String[] {"header3", "header4"},
-				entity.getHeaders().getAccessControlExposeHeaders().toArray());
+		assertThat(entity.getHeaders().getAccessControlAllowMethods().toArray()).isEqualTo(new HttpMethod[] {HttpMethod.GET});
+		assertThat(entity.getHeaders().getAccessControlAllowHeaders().toArray()).isEqualTo(new String[] {"header1", "header2"});
+		assertThat(entity.getHeaders().getAccessControlExposeHeaders().toArray()).isEqualTo(new String[] {"header3", "header4"});
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
 		assertEquals(123, entity.getHeaders().getAccessControlMaxAge());
 	}
@@ -202,10 +199,8 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
-		assertArrayEquals(new HttpMethod[] {HttpMethod.GET},
-				entity.getHeaders().getAccessControlAllowMethods().toArray());
-		assertArrayEquals(new String[] {"header1"},
-				entity.getHeaders().getAccessControlAllowHeaders().toArray());
+		assertThat(entity.getHeaders().getAccessControlAllowMethods().toArray()).isEqualTo(new HttpMethod[] {HttpMethod.GET});
+		assertThat(entity.getHeaders().getAccessControlAllowHeaders().toArray()).isEqualTo(new String[] {"header1"});
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isTrue();
 	}
 
@@ -216,8 +211,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
-		assertArrayEquals(new HttpMethod[] {HttpMethod.GET},
-				entity.getHeaders().getAccessControlAllowMethods().toArray());
+		assertThat(entity.getHeaders().getAccessControlAllowMethods().toArray()).isEqualTo(new HttpMethod[] {HttpMethod.GET});
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isTrue();
 	}
 

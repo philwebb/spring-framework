@@ -70,7 +70,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 
 /**
  * @author Stephane Nicoll
@@ -736,7 +735,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertNotEquals(event.content, Thread.currentThread().getName());
+			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
 			collectEvent(event);
 			this.countDownLatch.countDown();
 		}
@@ -783,7 +782,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertNotEquals(event.content, Thread.currentThread().getName());
+			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}
@@ -809,7 +808,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertNotEquals(event.content, Thread.currentThread().getName());
+			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}

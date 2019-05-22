@@ -166,7 +166,7 @@ public class RequestParamMethodArgumentResolverTests {
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 		boolean condition = result instanceof String[];
 		assertThat(condition).isTrue();
-		assertArrayEquals("Invalid result", expected, (String[]) result);
+		assertThat((String[]) result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -506,7 +506,7 @@ public class RequestParamMethodArgumentResolverTests {
 		request.addParameter("name", "123", "456");
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertThat(result.getClass()).isEqualTo(Optional.class);
-		assertArrayEquals(new Integer[] {123, 456}, (Integer[]) ((Optional) result).get());
+		assertThat((Integer[]) ((Optional) result).get()).isEqualTo(new Integer[] {123, 456});
 	}
 
 	@Test

@@ -37,7 +37,6 @@ import org.springframework.expression.spel.support.ReflectionHelper.ArgumentsMat
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -88,13 +87,13 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		assertThat(tv1.toString()).isEqualTo("TypedValue: 'hello' of [java.lang.String]");
 		assertThat(tv2).isEqualTo(tv1);
 		assertThat(tv1).isEqualTo(tv2);
-		assertNotEquals(tv1, tv3);
-		assertNotEquals(tv2, tv3);
-		assertNotEquals(tv3, tv1);
-		assertNotEquals(tv3, tv2);
+		assertThat((Object) tv3).isNotEqualTo(tv1);
+		assertThat((Object) tv3).isNotEqualTo(tv2);
+		assertThat((Object) tv1).isNotEqualTo(tv3);
+		assertThat((Object) tv2).isNotEqualTo(tv3);
 		assertEquals(tv1.hashCode(), tv2.hashCode());
-		assertNotEquals(tv1.hashCode(), tv3.hashCode());
-		assertNotEquals(tv2.hashCode(), tv3.hashCode());
+		assertThat((long) tv3.hashCode()).isNotEqualTo((long) tv1.hashCode());
+		assertThat((long) tv3.hashCode()).isNotEqualTo((long) tv2.hashCode());
 	}
 
 	@Test

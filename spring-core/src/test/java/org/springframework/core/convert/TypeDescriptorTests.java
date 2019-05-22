@@ -48,7 +48,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -630,11 +629,11 @@ public class TypeDescriptorTests {
 
 		TypeDescriptor t15 = new TypeDescriptor(testAnnotatedMethod);
 		TypeDescriptor t16 = new TypeDescriptor(new MethodParameter(getClass().getMethod("testAnnotatedMethodDifferentAnnotationValue", String.class), 0));
-		assertNotEquals(t15, t16);
+		assertThat((Object) t16).isNotEqualTo(t15);
 
 		TypeDescriptor t17 = new TypeDescriptor(testAnnotatedMethod);
 		TypeDescriptor t18 = new TypeDescriptor(new MethodParameter(getClass().getMethod("test5", String.class), 0));
-		assertNotEquals(t17, t18);
+		assertThat((Object) t18).isNotEqualTo(t17);
 	}
 
 	@Test

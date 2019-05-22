@@ -237,8 +237,8 @@ public class TestPropertySourceUtilsTests {
 
 		MergedTestPropertySources mergedPropertySources = buildMergedTestPropertySources(testClass);
 		assertNotNull(mergedPropertySources);
-		assertArrayEquals(expectedLocations, mergedPropertySources.getLocations());
-		assertArrayEquals(expectedProperties, mergedPropertySources.getProperties());
+		assertThat((Object[]) mergedPropertySources.getLocations()).isEqualTo(expectedLocations);
+		assertThat((Object[]) mergedPropertySources.getProperties()).isEqualTo(expectedProperties);
 	}
 
 

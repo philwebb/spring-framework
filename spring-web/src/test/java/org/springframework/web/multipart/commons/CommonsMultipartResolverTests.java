@@ -228,7 +228,7 @@ public class CommonsMultipartResolverTests {
 			MultipartHttpServletRequest request) throws UnsupportedEncodingException {
 
 		MultipartTestBean1 mtb1 = new MultipartTestBean1();
-		assertArrayEquals(null, mtb1.getField1());
+		assertThat((Object[]) mtb1.getField1()).isEqualTo(null);
 		assertThat(mtb1.getField2()).isEqualTo(null);
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(mtb1, "mybean");
 		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
@@ -242,7 +242,7 @@ public class CommonsMultipartResolverTests {
 		assertThat(new String(mtb1.getField2())).isEqualTo(new String(file2.getBytes()));
 
 		MultipartTestBean2 mtb2 = new MultipartTestBean2();
-		assertArrayEquals(null, mtb2.getField1());
+		assertThat((Object[]) mtb2.getField1()).isEqualTo(null);
 		assertThat(mtb2.getField2()).isEqualTo(null);
 		binder = new ServletRequestDataBinder(mtb2, "mybean");
 		binder.registerCustomEditor(String.class, "field1", new StringMultipartFileEditor());

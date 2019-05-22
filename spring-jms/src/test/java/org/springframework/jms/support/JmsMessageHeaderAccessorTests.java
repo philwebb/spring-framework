@@ -27,6 +27,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -61,13 +62,14 @@ public class JmsMessageHeaderAccessorTests {
 		assertThat(headerAccessor.getCorrelationId()).isEqualTo("correlation-1234");
 		assertThat(headerAccessor.getDestination()).isEqualTo(destination);
 		assertThat(headerAccessor.getDeliveryMode()).isEqualTo(Integer.valueOf(1));
-		assertEquals(1234L, headerAccessor.getExpiration(), 0.0);
+		assertThat((double) headerAccessor.getExpiration()).isCloseTo((double) 1234L, within(0.0));
+
 		assertThat(headerAccessor.getMessageId()).isEqualTo("abcd-1234");
 		assertThat(headerAccessor.getPriority()).isEqualTo(Integer.valueOf(9));
 		assertThat(headerAccessor.getReplyTo()).isEqualTo(replyTo);
 		assertThat(headerAccessor.getRedelivered()).isEqualTo(true);
 		assertThat(headerAccessor.getType()).isEqualTo("type");
-		assertEquals(4567L, headerAccessor.getTimestamp(), 0.0);
+		assertThat((double) headerAccessor.getTimestamp()).isCloseTo((double) 4567L, within(0.0));
 
 		// Making sure replyChannel is not mixed with replyTo
 		assertNull(headerAccessor.getReplyChannel());

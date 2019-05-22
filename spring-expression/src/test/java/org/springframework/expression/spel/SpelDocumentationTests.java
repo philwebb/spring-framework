@@ -36,6 +36,7 @@ import org.springframework.expression.spel.testresources.Inventor;
 import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -158,7 +159,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		assertThat(helloWorld).isEqualTo("Hello World");
 
 		double avogadrosNumber  = (Double) parser.parseExpression("6.0221415E+23").getValue();
-		assertEquals(6.0221415E+23, avogadrosNumber, 0);
+		assertThat(avogadrosNumber).isCloseTo(6.0221415E+23, within((double) 0));
 
 		int maxValue = (Integer) parser.parseExpression("0x7FFFFFFF").getValue();  // evals to 2147483647
 		assertEquals(Integer.MAX_VALUE,maxValue);
@@ -334,21 +335,21 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		assertEquals(4,four);
 
 		double d = parser.parseExpression("1000.00 - 1e4").getValue(Double.class); // -9000
-		assertEquals(-9000.0d, d, 0);
+		assertThat(d).isCloseTo(-9000.0d, within((double) 0));
 
 		// Multiplication
 		int six =  parser.parseExpression("-2 * -3").getValue(Integer.class); // 6
 		assertEquals(6,six);
 
 		double twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Double.class); // 24.0
-		assertEquals(24.0d, twentyFour, 0);
+		assertThat(twentyFour).isCloseTo(24.0d, within((double) 0));
 
 		// Division
 		int minusTwo =  parser.parseExpression("6 / -3").getValue(Integer.class); // -2
 		assertEquals(-2,minusTwo);
 
 		double one = parser.parseExpression("8.0 / 4e0 / 2").getValue(Double.class); // 1.0
-		assertEquals(1.0d, one, 0);
+		assertThat(one).isCloseTo(1.0d, within((double) 0));
 
 		// Modulus
 		int three =  parser.parseExpression("7 % 4").getValue(Integer.class); // 3

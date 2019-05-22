@@ -58,15 +58,8 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -697,11 +690,13 @@ public abstract class AbstractPropertyAccessorTests {
 		assertEquals(Long.MAX_VALUE, target.getMyPrimitiveLong());
 		assertEquals(Long.MAX_VALUE, target.getMyLong().longValue());
 
-		assertEquals(Float.MAX_VALUE, target.getMyPrimitiveFloat(), 0.001);
-		assertEquals(Float.MAX_VALUE, target.getMyFloat().floatValue(), 0.001);
+		assertThat((double) target.getMyPrimitiveFloat()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
 
-		assertEquals(Double.MAX_VALUE, target.getMyPrimitiveDouble(), 0.001);
-		assertEquals(Double.MAX_VALUE, target.getMyDouble().doubleValue(), 0.001);
+		assertThat((double) target.getMyFloat().floatValue()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
+
+		assertThat(target.getMyPrimitiveDouble()).isCloseTo(Double.MAX_VALUE, within(0.001));
+
+		assertThat(target.getMyDouble().doubleValue()).isCloseTo(Double.MAX_VALUE, within(0.001));
 
 	}
 

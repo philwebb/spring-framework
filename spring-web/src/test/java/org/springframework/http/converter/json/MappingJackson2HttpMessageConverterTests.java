@@ -42,11 +42,8 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.Nullable;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
@@ -96,8 +93,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertEquals(42F, result.getFraction(), 0F);
-		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
+		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+
+		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 	}
@@ -117,7 +115,8 @@ public class MappingJackson2HttpMessageConverterTests {
 		HashMap<String, Object> result = (HashMap<String, Object>) converter.read(HashMap.class, inputMessage);
 		assertThat(result.get("string")).isEqualTo("Foo");
 		assertThat(result.get("number")).isEqualTo(42);
-		assertEquals(42D, (Double) result.get("fraction"), 0D);
+		assertThat((double) (Double) result.get("fraction")).isCloseTo(42D, within(0D));
+
 		List<String> array = new ArrayList<>();
 		array.add("Foo");
 		array.add("Bar");
@@ -225,8 +224,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertEquals(42F, result.getFraction(), 0F);
-		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
+		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+
+		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
@@ -256,8 +256,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertEquals(42F, result.getFraction(), 0F);
-		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
+		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+
+		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
@@ -288,8 +289,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertEquals(42F, result.getFraction(), 0F);
-		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
+		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+
+		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 

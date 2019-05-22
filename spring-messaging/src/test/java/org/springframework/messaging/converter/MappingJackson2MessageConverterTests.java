@@ -33,12 +33,8 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeType;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThat;
 
-
-
-
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -96,8 +92,9 @@ public class MappingJackson2MessageConverterTests {
 
 		assertThat(actual.getString()).isEqualTo("Foo");
 		assertEquals(42, actual.getNumber());
-		assertEquals(42F, actual.getFraction(), 0F);
-		assertArrayEquals(new String[]{"Foo", "Bar"}, actual.getArray());
+		assertThat((double) actual.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+
+		assertThat((Object[]) actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(actual.isBool()).isTrue();
 		assertArrayEquals(new byte[]{0x1, 0x2}, actual.getBytes());
 	}
@@ -113,7 +110,8 @@ public class MappingJackson2MessageConverterTests {
 
 		assertThat(actual.get("string")).isEqualTo("Foo");
 		assertThat(actual.get("number")).isEqualTo(42);
-		assertEquals(42D, (Double) actual.get("fraction"), 0D);
+		assertThat((double) (Double) actual.get("fraction")).isCloseTo(42D, within(0D));
+
 		assertThat(actual.get("array")).isEqualTo(Arrays.asList("Foo", "Bar"));
 		assertThat(actual.get("bool")).isEqualTo(Boolean.TRUE);
 		assertThat(actual.get("bytes")).isEqualTo("AQI=");

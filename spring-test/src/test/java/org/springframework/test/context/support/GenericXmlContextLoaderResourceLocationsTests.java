@@ -32,6 +32,7 @@ import org.springframework.test.context.ContextLoader;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 
 /**
@@ -135,8 +136,7 @@ public class GenericXmlContextLoaderResourceLocationsTests {
 			logger.debug("Processed  locations: " + ObjectUtils.nullSafeToString(processedLocations));
 		}
 
-		assertArrayEquals("Verifying locations for test [" + this.testClass + "].", this.expectedLocations,
-			processedLocations);
+		assertThat((Object[]) processedLocations).as("Verifying locations for test [" + this.testClass + "].").isEqualTo(this.expectedLocations);
 	}
 
 }

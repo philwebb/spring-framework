@@ -218,11 +218,11 @@ public class ProxyFactoryBeanTests {
 		assertEquals(test1.getAge(), test1_1.getAge());
 		Advised pc1 = (Advised) test1;
 		Advised pc2 = (Advised) test1_1;
-		assertArrayEquals(pc1.getAdvisors(), pc2.getAdvisors());
+		assertThat((Object[]) pc2.getAdvisors()).isEqualTo(pc1.getAdvisors());
 		int oldLength = pc1.getAdvisors().length;
 		NopInterceptor di = new NopInterceptor();
 		pc1.addAdvice(1, di);
-		assertArrayEquals(pc1.getAdvisors(), pc2.getAdvisors());
+		assertThat((Object[]) pc2.getAdvisors()).isEqualTo(pc1.getAdvisors());
 		assertEquals("Now have one more advisor", oldLength + 1, pc2.getAdvisors().length);
 		assertEquals(di.getCount(), 0);
 		test1.setAge(5);

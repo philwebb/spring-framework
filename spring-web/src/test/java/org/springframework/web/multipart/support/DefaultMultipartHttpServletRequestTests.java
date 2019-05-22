@@ -25,6 +25,7 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
@@ -50,7 +51,7 @@ public class DefaultMultipartHttpServletRequestTests {
 
 		String[] values = createMultipartRequest().getParameterValues("key");
 
-		assertArrayEquals(new String[] {"p", "q"}, values);
+		assertThat((Object[]) values).isEqualTo(new String[] {"p", "q"});
 	}
 
 	@Test // SPR-16590
@@ -65,9 +66,9 @@ public class DefaultMultipartHttpServletRequestTests {
 		Map<String, String[]> map = createMultipartRequest().getParameterMap();
 
 		assertEquals(3, map.size());
-		assertArrayEquals(new String[] {"p1", "q1"}, map.get("key1"));
-		assertArrayEquals(new String[] {"p2"}, map.get("key2"));
-		assertArrayEquals(new String[] {"q3"}, map.get("key3"));
+		assertThat((Object[]) map.get("key1")).isEqualTo(new String[] {"p1", "q1"});
+		assertThat((Object[]) map.get("key2")).isEqualTo(new String[] {"p2"});
+		assertThat((Object[]) map.get("key3")).isEqualTo(new String[] {"q3"});
 	}
 
 	private DefaultMultipartHttpServletRequest createMultipartRequest() {

@@ -23,7 +23,6 @@ import org.springframework.core.type.AnnotationMetadata;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -48,15 +47,12 @@ public class DeferredImportSelectorTests {
 
 	@Test
 	public void entryEqualDifferentMetadataAndSameClassName() {
-		assertNotEquals(
-				new Group.Entry(mock(AnnotationMetadata.class), "com.example.Test"),
-				new Group.Entry(mock(AnnotationMetadata.class), "com.example.Test"));
+		assertThat((Object) new Group.Entry(mock(AnnotationMetadata.class), "com.example.Test")).isNotEqualTo(new Group.Entry(mock(AnnotationMetadata.class), "com.example.Test"));
 	}
 
 	@Test
 	public void entryEqualSameMetadataAnDifferentClassName() {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
-		assertNotEquals(new Group.Entry(metadata, "com.example.Test"),
-				new Group.Entry(metadata, "com.example.AnotherTest"));
+		assertThat((Object) new Group.Entry(metadata, "com.example.AnotherTest")).isNotEqualTo(new Group.Entry(metadata, "com.example.Test"));
 	}
 }

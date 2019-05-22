@@ -86,7 +86,7 @@ public class DelegatingSmartContextLoaderTests {
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				getClass(), locations, EMPTY_CLASS_ARRAY, true, null, true, ContextLoader.class);
 		loader.processContextConfiguration(configAttributes);
-		assertArrayEquals(locations, configAttributes.getLocations());
+		assertThat((Object[]) configAttributes.getLocations()).isEqualTo(locations);
 		assertEmpty(configAttributes.getClasses());
 	}
 
@@ -96,7 +96,7 @@ public class DelegatingSmartContextLoaderTests {
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				getClass(), EMPTY_STRING_ARRAY, classes, true, null, true, ContextLoader.class);
 		loader.processContextConfiguration(configAttributes);
-		assertArrayEquals(classes, configAttributes.getClasses());
+		assertThat((Object[]) configAttributes.getClasses()).isEqualTo(classes);
 		assertEmpty(configAttributes.getLocations());
 	}
 

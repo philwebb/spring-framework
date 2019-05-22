@@ -809,7 +809,7 @@ public class MvcNamespaceTests {
 		accessor = new DirectFieldAccessor(resolver);
 		assertThat(accessor.getPropertyValue("prefix")).isEqualTo("freemarker-");
 		assertThat(accessor.getPropertyValue("suffix")).isEqualTo(".freemarker");
-		assertArrayEquals(new String[] {"my*", "*Report"}, (String[]) accessor.getPropertyValue("viewNames"));
+		assertThat((String[]) accessor.getPropertyValue("viewNames")).isEqualTo(new String[] {"my*", "*Report"});
 		assertThat(accessor.getPropertyValue("cacheLimit")).isEqualTo(1024);
 
 		resolver = resolvers.get(4);
@@ -836,7 +836,7 @@ public class MvcNamespaceTests {
 				"/org/springframework/web/servlet/resource/tiles/tiles2.xml"
 		};
 		accessor = new DirectFieldAccessor(tilesConfigurer);
-		assertArrayEquals(definitions, (String[]) accessor.getPropertyValue("definitions"));
+		assertThat((String[]) accessor.getPropertyValue("definitions")).isEqualTo(definitions);
 		assertThat((boolean) accessor.getPropertyValue("checkRefresh")).isTrue();
 		assertThat(accessor.getPropertyValue("definitionsFactoryClass")).isEqualTo(UnresolvingLocaleDefinitionsFactory.class);
 		assertThat(accessor.getPropertyValue("preparerFactoryClass")).isEqualTo(SpringBeanPreparerFactory.class);
@@ -844,7 +844,7 @@ public class MvcNamespaceTests {
 		FreeMarkerConfigurer freeMarkerConfigurer = appContext.getBean(FreeMarkerConfigurer.class);
 		assertNotNull(freeMarkerConfigurer);
 		accessor = new DirectFieldAccessor(freeMarkerConfigurer);
-		assertArrayEquals(new String[] {"/", "/test"}, (String[]) accessor.getPropertyValue("templateLoaderPaths"));
+		assertThat((String[]) accessor.getPropertyValue("templateLoaderPaths")).isEqualTo(new String[] {"/", "/test"});
 
 		GroovyMarkupConfigurer groovyMarkupConfigurer = appContext.getBean(GroovyMarkupConfigurer.class);
 		assertNotNull(groovyMarkupConfigurer);
@@ -861,7 +861,7 @@ public class MvcNamespaceTests {
 		assertThat((boolean) scriptTemplateConfigurer.isSharedEngine()).isFalse();
 		String[] scripts = { "org/springframework/web/servlet/view/script/nashorn/render.js" };
 		accessor = new DirectFieldAccessor(scriptTemplateConfigurer);
-		assertArrayEquals(scripts, (String[]) accessor.getPropertyValue("scripts"));
+		assertThat((String[]) accessor.getPropertyValue("scripts")).isEqualTo(scripts);
 	}
 
 	@Test
@@ -935,9 +935,9 @@ public class MvcNamespaceTests {
 			assertEquals(1, configs.size());
 			CorsConfiguration config = configs.get("/**");
 			assertNotNull(config);
-			assertArrayEquals(new String[]{"*"}, config.getAllowedOrigins().toArray());
-			assertArrayEquals(new String[]{"GET", "HEAD", "POST"}, config.getAllowedMethods().toArray());
-			assertArrayEquals(new String[]{"*"}, config.getAllowedHeaders().toArray());
+			assertThat(config.getAllowedOrigins().toArray()).isEqualTo(new String[]{"*"});
+			assertThat(config.getAllowedMethods().toArray()).isEqualTo(new String[]{"GET", "HEAD", "POST"});
+			assertThat(config.getAllowedHeaders().toArray()).isEqualTo(new String[]{"*"});
 			assertNull(config.getExposedHeaders());
 			assertNull(config.getAllowCredentials());
 			assertThat(config.getMaxAge()).isEqualTo(Long.valueOf(1800));
@@ -960,16 +960,16 @@ public class MvcNamespaceTests {
 			assertEquals(2, configs.size());
 			CorsConfiguration config = configs.get("/api/**");
 			assertNotNull(config);
-			assertArrayEquals(new String[]{"https://domain1.com", "https://domain2.com"}, config.getAllowedOrigins().toArray());
-			assertArrayEquals(new String[]{"GET", "PUT"}, config.getAllowedMethods().toArray());
-			assertArrayEquals(new String[]{"header1", "header2", "header3"}, config.getAllowedHeaders().toArray());
-			assertArrayEquals(new String[]{"header1", "header2"}, config.getExposedHeaders().toArray());
+			assertThat(config.getAllowedOrigins().toArray()).isEqualTo(new String[]{"https://domain1.com", "https://domain2.com"});
+			assertThat(config.getAllowedMethods().toArray()).isEqualTo(new String[]{"GET", "PUT"});
+			assertThat(config.getAllowedHeaders().toArray()).isEqualTo(new String[]{"header1", "header2", "header3"});
+			assertThat(config.getExposedHeaders().toArray()).isEqualTo(new String[]{"header1", "header2"});
 			assertThat((boolean) config.getAllowCredentials()).isFalse();
 			assertThat(config.getMaxAge()).isEqualTo(Long.valueOf(123));
 			config = configs.get("/resources/**");
-			assertArrayEquals(new String[]{"https://domain1.com"}, config.getAllowedOrigins().toArray());
-			assertArrayEquals(new String[]{"GET", "HEAD", "POST"}, config.getAllowedMethods().toArray());
-			assertArrayEquals(new String[]{"*"}, config.getAllowedHeaders().toArray());
+			assertThat(config.getAllowedOrigins().toArray()).isEqualTo(new String[]{"https://domain1.com"});
+			assertThat(config.getAllowedMethods().toArray()).isEqualTo(new String[]{"GET", "HEAD", "POST"});
+			assertThat(config.getAllowedHeaders().toArray()).isEqualTo(new String[]{"*"});
 			assertNull(config.getExposedHeaders());
 			assertNull(config.getAllowCredentials());
 			assertThat(config.getMaxAge()).isEqualTo(Long.valueOf(1800));

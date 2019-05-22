@@ -25,7 +25,6 @@ import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 
 /**
  * Unit tests for {@link EncodedResource}.
@@ -59,7 +58,7 @@ public class EncodedResourceTests {
 	public void equalsWithDifferentEncoding() {
 		EncodedResource er1 = new EncodedResource(resource, UTF8);
 		EncodedResource er2 = new EncodedResource(resource, UTF16);
-		assertNotEquals(er1, er2);
+		assertThat((Object) er2).isNotEqualTo(er1);
 	}
 
 	@Test
@@ -73,14 +72,14 @@ public class EncodedResourceTests {
 	public void equalsWithDifferentCharset() {
 		EncodedResource er1 = new EncodedResource(resource, UTF8_CS);
 		EncodedResource er2 = new EncodedResource(resource, UTF16_CS);
-		assertNotEquals(er1, er2);
+		assertThat((Object) er2).isNotEqualTo(er1);
 	}
 
 	@Test
 	public void equalsWithEncodingAndCharset() {
 		EncodedResource er1 = new EncodedResource(resource, UTF8);
 		EncodedResource er2 = new EncodedResource(resource, UTF8_CS);
-		assertNotEquals(er1, er2);
+		assertThat((Object) er2).isNotEqualTo(er1);
 	}
 
 }

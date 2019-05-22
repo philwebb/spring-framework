@@ -91,8 +91,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean() @DependsOn({"bar", "baz"}) Object foo() { return null; }
 		}
 
-		assertArrayEquals("dependsOn metadata was not propagated",
-				new String[] {"bar", "baz"}, beanDef(Config.class).getDependsOn());
+		assertThat((Object[]) beanDef(Config.class).getDependsOn()).as("dependsOn metadata was not propagated").isEqualTo(new String[] {"bar", "baz"});
 	}
 
 	@Test

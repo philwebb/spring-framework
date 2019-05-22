@@ -26,7 +26,6 @@ import org.springframework.core.MethodParameter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 
 /**
  * @author Juergen Hoeller
@@ -69,14 +68,14 @@ public class SynthesizingMethodParameterTests {
 		MethodParameter methodParameter = new SynthesizingMethodParameter(method, 0);
 		assertThat(methodParameter).isEqualTo(stringParameter);
 		assertThat(stringParameter).isEqualTo(methodParameter);
-		assertNotEquals(longParameter, methodParameter);
-		assertNotEquals(methodParameter, longParameter);
+		assertThat((Object) methodParameter).isNotEqualTo(longParameter);
+		assertThat((Object) longParameter).isNotEqualTo(methodParameter);
 
 		methodParameter = new MethodParameter(method, 0);
 		assertThat(methodParameter).isEqualTo(stringParameter);
 		assertThat(stringParameter).isEqualTo(methodParameter);
-		assertNotEquals(longParameter, methodParameter);
-		assertNotEquals(methodParameter, longParameter);
+		assertThat((Object) methodParameter).isNotEqualTo(longParameter);
+		assertThat((Object) longParameter).isNotEqualTo(methodParameter);
 	}
 
 	@Test
@@ -88,7 +87,7 @@ public class SynthesizingMethodParameterTests {
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		SynthesizingMethodParameter methodParameter = new SynthesizingMethodParameter(method, 0);
 		assertEquals(stringParameter.hashCode(), methodParameter.hashCode());
-		assertNotEquals(longParameter.hashCode(), methodParameter.hashCode());
+		assertThat((long) methodParameter.hashCode()).isNotEqualTo((long) longParameter.hashCode());
 	}
 
 	@Test

@@ -128,7 +128,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Object result = mono.block();
 		boolean condition = result instanceof String[];
 		assertThat(condition).isTrue();
-		assertArrayEquals(new String[] {"foo", "bar"}, (String[]) result);
+		assertThat((String[]) result).isEqualTo(new String[] {"foo", "bar"});
 	}
 
 	@Test

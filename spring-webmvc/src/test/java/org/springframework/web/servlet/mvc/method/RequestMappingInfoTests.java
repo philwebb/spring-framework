@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -214,7 +213,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info1.equals(info2)).isFalse();
-		assertNotEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isNotEqualTo((long) info1.hashCode());
 
 		info2 = paths("/foo").methods(GET, RequestMethod.POST)
 				.params("foo=bar", "customFoo=customBar").headers("foo=bar")
@@ -222,7 +221,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info1.equals(info2)).isFalse();
-		assertNotEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isNotEqualTo((long) info1.hashCode());
 
 		info2 = paths("/foo").methods(GET)
 				.params("/NOOOOOO", "customFoo=customBar").headers("foo=bar")
@@ -230,7 +229,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info1.equals(info2)).isFalse();
-		assertNotEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isNotEqualTo((long) info1.hashCode());
 
 		info2 = paths("/foo").methods(GET)
 				.params("foo=bar", "customFoo=customBar").headers("/NOOOOOO")
@@ -238,7 +237,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info1.equals(info2)).isFalse();
-		assertNotEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isNotEqualTo((long) info1.hashCode());
 
 		info2 = paths("/foo").methods(GET)
 				.params("foo=bar", "customFoo=customBar").headers("foo=bar")
@@ -246,7 +245,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info1.equals(info2)).isFalse();
-		assertNotEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isNotEqualTo((long) info1.hashCode());
 
 		info2 = paths("/foo").methods(GET)
 				.params("foo=bar", "customFoo=customBar").headers("foo=bar")
@@ -254,7 +253,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info1.equals(info2)).isFalse();
-		assertNotEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isNotEqualTo((long) info1.hashCode());
 
 		info2 = paths("/foo").methods(GET)
 				.params("foo=bar", "customFoo=NOOOOOO").headers("foo=bar")
@@ -262,7 +261,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info1.equals(info2)).isFalse();
-		assertNotEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isNotEqualTo((long) info1.hashCode());
 	}
 
 	@Test

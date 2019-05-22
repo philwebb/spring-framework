@@ -128,7 +128,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Object result = resolver.resolveArgument(paramNamedValueStringArray, null, webRequest, null);
 		boolean condition = result instanceof String[];
 		assertThat(condition).isTrue();
-		assertArrayEquals(expected, (String[]) result);
+		assertThat((String[]) result).isEqualTo(expected);
 	}
 
 	@Test

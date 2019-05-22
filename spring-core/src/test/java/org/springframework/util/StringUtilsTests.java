@@ -424,8 +424,8 @@ public class StringUtilsTests {
 		assertThat(result[1]).isEqualTo("myString1");
 		assertThat(result[2]).isEqualTo("myString2");
 
-		assertArrayEquals(input1, StringUtils.concatenateStringArrays(input1, null));
-		assertArrayEquals(input2, StringUtils.concatenateStringArrays(null, input2));
+		assertThat((Object[]) StringUtils.concatenateStringArrays(input1, null)).isEqualTo(input1);
+		assertThat((Object[]) StringUtils.concatenateStringArrays(null, input2)).isEqualTo(input2);
 		assertNull(StringUtils.concatenateStringArrays(null, null));
 	}
 
@@ -439,8 +439,8 @@ public class StringUtilsTests {
 		assertThat(result[0]).isEqualTo("myString2");
 		assertThat(result[1]).isEqualTo("myString1");
 
-		assertArrayEquals(input1, StringUtils.mergeStringArrays(input1, null));
-		assertArrayEquals(input2, StringUtils.mergeStringArrays(null, input2));
+		assertThat((Object[]) StringUtils.mergeStringArrays(input1, null)).isEqualTo(input1);
+		assertThat((Object[]) StringUtils.mergeStringArrays(null, input2)).isEqualTo(input2);
 		assertNull(StringUtils.mergeStringArrays(null, null));
 	}
 

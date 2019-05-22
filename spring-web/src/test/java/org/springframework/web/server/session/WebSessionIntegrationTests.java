@@ -40,7 +40,6 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -166,7 +165,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String newId = extractSessionId(response.getHeaders());
 		assertNotNull("Expected new session id", newId);
-		assertNotEquals(oldId, newId);
+		assertThat((Object) newId).isNotEqualTo(oldId);
 		assertEquals(2, this.handler.getSessionRequestCount());
 	}
 

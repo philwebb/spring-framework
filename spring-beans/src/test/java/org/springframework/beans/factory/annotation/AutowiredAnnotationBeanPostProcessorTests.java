@@ -188,7 +188,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		assertSame(ntb, bean.getNestedTestBean());
 		assertSame(bf, bean.getBeanFactory());
 
-		assertArrayEquals(new String[] {"testBean", "nestedTestBean"}, bf.getDependenciesForBean("annotatedBean"));
+		assertThat((Object[]) bf.getDependenciesForBean("annotatedBean")).isEqualTo(new String[] {"testBean", "nestedTestBean"});
 		bf.destroySingleton("testBean");
 		assertThat(bf.containsSingleton("testBean")).isFalse();
 		assertThat(bf.containsSingleton("annotatedBean")).isFalse();
@@ -1699,7 +1699,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		assertSame(repo, bean.repositoryMap.get("repo"));
 		assertSame(repo, bean.stringRepositoryMap.get("repo"));
 
-		assertArrayEquals(new String[] {"repo"}, bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(Repository.class, String.class)));
+		assertThat((Object[]) bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(Repository.class, String.class))).isEqualTo(new String[] {"repo"});
 	}
 
 	@Test
@@ -2053,8 +2053,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		GenericInterface1Impl bean1 = (GenericInterface1Impl) bf.getBean("bean1");
 		GenericInterface2Impl bean2 = (GenericInterface2Impl) bf.getBean("bean2");
 		assertSame(bean2, bean1.gi2);
-		assertArrayEquals(new String[] {"bean1"}, bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(GenericInterface1.class, String.class)));
-		assertArrayEquals(new String[] {"bean2"}, bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(GenericInterface2.class, String.class)));
+		assertThat((Object[]) bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(GenericInterface1.class, String.class))).isEqualTo(new String[] {"bean1"});
+		assertThat((Object[]) bf.getBeanNamesForType(ResolvableType.forClassWithGenerics(GenericInterface2.class, String.class))).isEqualTo(new String[] {"bean2"});
 	}
 
 	@Test

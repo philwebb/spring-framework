@@ -42,12 +42,8 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.expression.spel.support.StandardTypeLocator;
 import org.springframework.expression.spel.testresources.TestPerson;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.assertj.core.api.Assertions.assertThat;
 
-
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -526,7 +522,8 @@ public class EvaluationTests extends AbstractExpressionTests {
 		int twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Integer.class);
 		assertEquals(24, twentyFour);
 		double one = parser.parseExpression("8.0 / 5e0 % 2").getValue(Double.class);
-		assertEquals(1.6d, one, 0d);
+		assertThat(one).isCloseTo(1.6d, within(0d));
+
 		int o = parser.parseExpression("8.0 / 5e0 % 2").getValue(Integer.class);
 		assertEquals(1, o);
 		int sixteen = parser.parseExpression("-2 ^ 4").getValue(Integer.class);
@@ -710,17 +707,21 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// double
 		e = parser.parseExpression("ddd++");
-		assertEquals(2.0d, helper.ddd,0d);
+		assertThat(helper.ddd).isCloseTo(2.0d, within(0d));
+
 		double return_ddd = e.getValue(ctx, Double.TYPE);
-		assertEquals(2.0d, return_ddd,0d);
-		assertEquals(3.0d, helper.ddd,0d);
+		assertThat(return_ddd).isCloseTo(2.0d, within(0d));
+
+		assertThat(helper.ddd).isCloseTo(3.0d, within(0d));
 
 		// float
 		e = parser.parseExpression("fff++");
-		assertEquals(3.0f, helper.fff,0d);
+		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertEquals(3.0f, return_fff,0d);
-		assertEquals(4.0f, helper.fff,0d);
+		assertThat((double) return_fff).isCloseTo((double) 3.0f, within(0d));
+
+		assertThat((double) helper.fff).isCloseTo((double) 4.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("lll++");
@@ -764,17 +765,21 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// double
 		e = parser.parseExpression("++ddd");
-		assertEquals(2.0d, helper.ddd ,0d);
+		assertThat(helper.ddd).isCloseTo(2.0d, within(0d));
+
 		double return_ddd = e.getValue(ctx, Double.TYPE);
-		assertEquals(3.0d, return_ddd, 0d);
-		assertEquals(3.0d, helper.ddd, 0d);
+		assertThat(return_ddd).isCloseTo(3.0d, within(0d));
+
+		assertThat(helper.ddd).isCloseTo(3.0d, within(0d));
 
 		// float
 		e = parser.parseExpression("++fff");
-		assertEquals(3.0f, helper.fff, 0d);
+		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertEquals(4.0f, return_fff, 0d);
-		assertEquals(4.0f, helper.fff, 0d);
+		assertThat((double) return_fff).isCloseTo((double) 4.0f, within(0d));
+
+		assertThat((double) helper.fff).isCloseTo((double) 4.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("++lll");
@@ -861,17 +866,21 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// double
 		e = parser.parseExpression("ddd--");
-		assertEquals(2.0d, helper.ddd,0d);
+		assertThat(helper.ddd).isCloseTo(2.0d, within(0d));
+
 		double return_ddd = e.getValue(ctx, Double.TYPE);
-		assertEquals(2.0d, return_ddd,0d);
-		assertEquals(1.0d, helper.ddd,0d);
+		assertThat(return_ddd).isCloseTo(2.0d, within(0d));
+
+		assertThat(helper.ddd).isCloseTo(1.0d, within(0d));
 
 		// float
 		e = parser.parseExpression("fff--");
-		assertEquals(3.0f, helper.fff,0d);
+		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertEquals(3.0f, return_fff,0d);
-		assertEquals(2.0f, helper.fff,0d);
+		assertThat((double) return_fff).isCloseTo((double) 3.0f, within(0d));
+
+		assertThat((double) helper.fff).isCloseTo((double) 2.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("lll--");
@@ -914,17 +923,21 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// double
 		e = parser.parseExpression("--ddd");
-		assertEquals(2.0d, helper.ddd,0d);
+		assertThat(helper.ddd).isCloseTo(2.0d, within(0d));
+
 		double return_ddd = e.getValue(ctx, Double.TYPE);
-		assertEquals(1.0d, return_ddd,0d);
-		assertEquals(1.0d, helper.ddd,0d);
+		assertThat(return_ddd).isCloseTo(1.0d, within(0d));
+
+		assertThat(helper.ddd).isCloseTo(1.0d, within(0d));
 
 		// float
 		e = parser.parseExpression("--fff");
-		assertEquals(3.0f, helper.fff,0d);
+		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertEquals(2.0f, return_fff,0d);
-		assertEquals(2.0f, helper.fff,0d);
+		assertThat((double) return_fff).isCloseTo((double) 2.0f, within(0d));
+
+		assertThat((double) helper.fff).isCloseTo((double) 2.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("--lll");

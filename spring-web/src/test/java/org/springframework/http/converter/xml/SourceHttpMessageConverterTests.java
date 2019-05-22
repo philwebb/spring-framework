@@ -51,7 +51,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 
 /**
  * @author Arjen Poutsma
@@ -107,7 +106,7 @@ public class SourceHttpMessageConverterTests {
 		DOMSource result = (DOMSource) converter.read(DOMSource.class, inputMessage);
 		Document document = (Document) result.getNode();
 		assertThat(document.getDocumentElement().getLocalName()).as("Invalid result").isEqualTo("root");
-		assertNotEquals("Invalid result", "Foo Bar", document.getDocumentElement().getTextContent());
+		assertThat((Object) document.getDocumentElement().getTextContent()).as("Invalid result").isNotEqualTo("Foo Bar");
 	}
 
 	@Test
@@ -158,7 +157,7 @@ public class SourceHttpMessageConverterTests {
 			@Override
 			public void characters(char[] ch, int start, int length) {
 				String s = new String(ch, start, length);
-				assertNotEquals("Invalid result", "Foo Bar", s);
+				assertThat((Object) s).as("Invalid result").isNotEqualTo("Foo Bar");
 			}
 		});
 		reader.parse(inputSource);
@@ -223,7 +222,7 @@ public class SourceHttpMessageConverterTests {
 		assertThat(s).isEqualTo("root");
 		try {
 			s = streamReader.getElementText();
-			assertNotEquals("Foo Bar", s);
+			assertThat((Object) s).isNotEqualTo("Foo Bar");
 		}
 		catch (XMLStreamException ex) {
 			// Some parsers raise a parse exception

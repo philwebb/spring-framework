@@ -107,7 +107,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -1445,7 +1444,7 @@ public class DefaultListableBeanFactoryTests {
 		assertNotNull(factoryBeanByType);
 		assertNotNull(bd1FactoryBean);
 		assertNotNull(bd2FactoryBean);
-		assertNotEquals(factoryBeanByType, bd1FactoryBean);
+		assertThat(bd1FactoryBean).isNotEqualTo(factoryBeanByType);
 		assertThat(bd2FactoryBean).isEqualTo(factoryBeanByType);
 	}
 
@@ -1808,7 +1807,7 @@ public class DefaultListableBeanFactoryTests {
 		assertNotNull(bd2FactoryBean);
 		FactoryBeanDependentBean bean = (FactoryBeanDependentBean) lbf.autowire(FactoryBeanDependentBean.class,
 				AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
-		assertNotEquals(bd1FactoryBean, bean.getFactoryBean());
+		assertThat((Object) bean.getFactoryBean()).isNotEqualTo(bd1FactoryBean);
 		assertThat(bean.getFactoryBean()).isEqualTo(bd2FactoryBean);
 	}
 

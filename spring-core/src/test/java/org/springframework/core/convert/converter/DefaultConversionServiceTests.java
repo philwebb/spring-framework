@@ -475,7 +475,7 @@ public class DefaultConversionServiceTests {
 	public void convertArrayToObjectAssignableTargetType() {
 		Long[] array = new Long[] {3L};
 		Long[] result = (Long[]) conversionService.convert(array, Object.class);
-		assertArrayEquals(array, result);
+		assertThat((Object[]) result).isEqualTo(array);
 	}
 
 	@Test
@@ -937,7 +937,7 @@ public class DefaultConversionServiceTests {
 				new String[] {"9", "10", "11", "12"}};
 		List<String[]> converted = conversionService.convert(grid, List.class);
 		String[][] convertedBack = conversionService.convert(converted, String[][].class);
-		assertArrayEquals(grid, convertedBack);
+		assertThat((Object[]) convertedBack).isEqualTo(grid);
 	}
 
 	@Test

@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -83,7 +82,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaders actual = accessor.getMessageHeaders();
 
 		assertEquals(3, actual.size());
-		assertNotEquals(message.getHeaders().getId(), actual.getId());
+		assertThat((Object) actual.getId()).isNotEqualTo(message.getHeaders().getId());
 		assertThat(actual.get("foo")).isEqualTo("BAR");
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}

@@ -43,7 +43,6 @@ import org.springframework.web.socket.sockjs.transport.session.TestSockJsSession
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -280,7 +279,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		String sockJsPath = "/websocket";
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		wsService.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertNotEquals(403, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 403);
 
 		resetRequestAndResponse();
 		List<String> allowed = Collections.singletonList("https://mydomain1.com");
@@ -289,7 +288,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "https://mydomain1.com");
 		wsService.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertNotEquals(403, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 403);
 
 		resetRequestAndResponse();
 		setRequest("GET", sockJsPrefix + sockJsPath);
@@ -303,7 +302,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		String sockJsPath = "/iframe.html";
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertNotEquals(404, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 404);
 		assertThat(this.servletResponse.getHeader("X-Frame-Options")).isEqualTo("SAMEORIGIN");
 
 		resetRequestAndResponse();
@@ -317,7 +316,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.service.setAllowedOrigins(Collections.singletonList("*"));
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertNotEquals(404, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 404);
 		assertNull(this.servletResponse.getHeader("X-Frame-Options"));
 	}
 

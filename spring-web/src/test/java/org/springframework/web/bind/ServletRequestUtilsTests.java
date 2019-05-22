@@ -23,8 +23,7 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 import org.springframework.util.StopWatch;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -171,7 +170,8 @@ public class ServletRequestUtilsTests {
 		float[] values = ServletRequestUtils.getRequiredFloatParameters(request, "param");
 		assertEquals(3, values.length);
 		for (int i = 0; i < array.length; i++) {
-			assertEquals(array[i], values[i], 0);
+			assertThat((double) values[i]).isCloseTo((double) array[i], within((double) 0));
+
 		}
 
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->
@@ -215,7 +215,8 @@ public class ServletRequestUtilsTests {
 		double[] values = ServletRequestUtils.getRequiredDoubleParameters(request, "param");
 		assertEquals(3, values.length);
 		for (int i = 0; i < array.length; i++) {
-			assertEquals(array[i], values[i], 0);
+			assertThat(values[i]).isCloseTo(array[i], within((double) 0));
+
 		}
 
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->

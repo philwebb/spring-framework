@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.fail;
 
 /**
@@ -107,13 +106,13 @@ public class PathPatternParserTests {
 		PathPattern pp3 = caseInsensitiveParser.parse("/def");
 		assertThat(pp2).isEqualTo(pp1);
 		assertEquals(pp1.hashCode(), pp2.hashCode());
-		assertNotEquals(pp1, pp3);
+		assertThat((Object) pp3).isNotEqualTo(pp1);
 		assertThat(pp1.equals("abc")).isFalse();
 
 		pp1 = caseInsensitiveParser.parse("/abc");
 		pp2 = caseSensitiveParser.parse("/abc");
 		assertThat(pp1.equals(pp2)).isFalse();
-		assertNotEquals(pp1.hashCode(), pp2.hashCode());
+		assertThat((long) pp2.hashCode()).isNotEqualTo((long) pp1.hashCode());
 	}
 
 	@Test

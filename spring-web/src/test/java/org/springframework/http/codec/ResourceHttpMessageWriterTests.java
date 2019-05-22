@@ -128,7 +128,7 @@ public class ResourceHttpMessageWriterTests {
 							"resource content.",
 							"--" + boundary + "--"
 					};
-					assertArrayEquals(expected, actualRanges);
+					assertThat((Object[]) actualRanges).isEqualTo(expected);
 				})
 				.expectComplete()
 				.verify();

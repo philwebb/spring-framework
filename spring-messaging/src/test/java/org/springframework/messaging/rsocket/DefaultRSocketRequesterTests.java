@@ -132,10 +132,8 @@ public class DefaultRSocketRequesterTests {
 			assertThat(payloads.get(0).getDataUtf8()).isEqualTo("");
 		}
 		else {
-			assertArrayEquals(new String[] {"toA", "", ""},
-					payloads.stream().map(Payload::getMetadataUtf8).toArray(String[]::new));
-			assertArrayEquals(expectedValues,
-					payloads.stream().map(Payload::getDataUtf8).toArray(String[]::new));
+			assertThat(payloads.stream().map(Payload::getMetadataUtf8).toArray(String[]::new)).isEqualTo(new String[] {"toA", "", ""});
+			assertThat(payloads.stream().map(Payload::getDataUtf8).toArray(String[]::new)).isEqualTo(expectedValues);
 		}
 	}
 

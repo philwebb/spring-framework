@@ -41,7 +41,6 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -106,7 +105,7 @@ public class ServerHttpsRequestIntegrationTests {
 			URI uri = request.getURI();
 			assertThat(uri.getScheme()).isEqualTo("https");
 			assertNotNull(uri.getHost());
-			assertNotEquals(-1, uri.getPort());
+			assertThat((long) uri.getPort()).isNotEqualTo((long) -1);
 			assertNotNull(request.getRemoteAddress());
 			assertThat(uri.getPath()).isEqualTo("/foo");
 			assertThat(uri.getQuery()).isEqualTo("param=bar");

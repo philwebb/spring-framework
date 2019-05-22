@@ -135,11 +135,10 @@ public class BeanMethodQualificationTests {
 	@Test
 	public void testBeanNamesForAnnotation() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(StandardConfig.class);
-		assertArrayEquals(new String[] {"beanMethodQualificationTests.StandardConfig"},
-				ctx.getBeanNamesForAnnotation(Configuration.class));
-		assertArrayEquals(new String[] {}, ctx.getBeanNamesForAnnotation(Scope.class));
-		assertArrayEquals(new String[] {"testBean1"}, ctx.getBeanNamesForAnnotation(Lazy.class));
-		assertArrayEquals(new String[] {"testBean2"}, ctx.getBeanNamesForAnnotation(Boring.class));
+		assertThat((Object[]) ctx.getBeanNamesForAnnotation(Configuration.class)).isEqualTo(new String[] {"beanMethodQualificationTests.StandardConfig"});
+		assertThat((Object[]) ctx.getBeanNamesForAnnotation(Scope.class)).isEqualTo(new String[] {});
+		assertThat((Object[]) ctx.getBeanNamesForAnnotation(Lazy.class)).isEqualTo(new String[] {"testBean1"});
+		assertThat((Object[]) ctx.getBeanNamesForAnnotation(Boring.class)).isEqualTo(new String[] {"testBean2"});
 	}
 
 

@@ -136,10 +136,8 @@ public class GenericApplicationContextTests {
 		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
 		assertSame(context, context.getBean(BeanB.class).applicationContext);
 
-		assertArrayEquals(new String[] {BeanA.class.getName()},
-				context.getDefaultListableBeanFactory().getDependentBeans(BeanB.class.getName()));
-		assertArrayEquals(new String[] {BeanA.class.getName()},
-				context.getDefaultListableBeanFactory().getDependentBeans(BeanC.class.getName()));
+		assertThat((Object[]) context.getDefaultListableBeanFactory().getDependentBeans(BeanB.class.getName())).isEqualTo(new String[] {BeanA.class.getName()});
+		assertThat((Object[]) context.getDefaultListableBeanFactory().getDependentBeans(BeanC.class.getName())).isEqualTo(new String[] {BeanA.class.getName()});
 	}
 
 	@Test

@@ -73,8 +73,8 @@ abstract class AbstractContextConfigurationUtilsTests {
 			Class<? extends ContextLoader> expectedContextLoaderClass, boolean expectedInheritLocations) {
 
 		assertThat(attributes.getDeclaringClass()).as("declaring class").isEqualTo(expectedDeclaringClass);
-		assertArrayEquals("locations", expectedLocations, attributes.getLocations());
-		assertArrayEquals("classes", expectedClasses, attributes.getClasses());
+		assertThat((Object[]) attributes.getLocations()).as("locations").isEqualTo(expectedLocations);
+		assertThat((Object[]) attributes.getClasses()).as("classes").isEqualTo(expectedClasses);
 		assertThat(attributes.isInheritLocations()).as("inherit locations").isEqualTo(expectedInheritLocations);
 		assertThat(attributes.getContextLoaderClass()).as("context loader").isEqualTo(expectedContextLoaderClass);
 	}
@@ -98,9 +98,9 @@ abstract class AbstractContextConfigurationUtilsTests {
 		assertNotNull(mergedConfig);
 		assertThat(mergedConfig.getTestClass()).isEqualTo(expectedTestClass);
 		assertNotNull(mergedConfig.getLocations());
-		assertArrayEquals(expectedLocations, mergedConfig.getLocations());
+		assertThat((Object[]) mergedConfig.getLocations()).isEqualTo(expectedLocations);
 		assertNotNull(mergedConfig.getClasses());
-		assertArrayEquals(expectedClasses, mergedConfig.getClasses());
+		assertThat((Object[]) mergedConfig.getClasses()).isEqualTo(expectedClasses);
 		assertNotNull(mergedConfig.getActiveProfiles());
 		if (expectedContextLoaderClass == null) {
 			assertNull(mergedConfig.getContextLoader());

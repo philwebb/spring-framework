@@ -25,7 +25,6 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
@@ -41,7 +40,7 @@ public class HeadersRequestConditionTests {
 	public void headerEquals() {
 		assertThat(new HeadersRequestCondition("foo")).isEqualTo(new HeadersRequestCondition("foo"));
 		assertThat(new HeadersRequestCondition("FOO")).isEqualTo(new HeadersRequestCondition("foo"));
-		assertNotEquals(new HeadersRequestCondition("foo"), new HeadersRequestCondition("bar"));
+		assertThat((Object) new HeadersRequestCondition("bar")).isNotEqualTo(new HeadersRequestCondition("foo"));
 		assertThat(new HeadersRequestCondition("foo=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
 		assertThat(new HeadersRequestCondition("FOO=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
 	}

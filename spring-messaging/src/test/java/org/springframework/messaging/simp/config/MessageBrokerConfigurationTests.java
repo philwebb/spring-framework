@@ -79,7 +79,6 @@ import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBea
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -475,7 +474,7 @@ public class MessageBrokerConfigurationTests {
 
 		SimpUserRegistry registry = context.getBean(SimpUserRegistry.class);
 		assertNotNull(registry);
-		assertNotEquals(MultiServerUserRegistry.class, registry.getClass());
+		assertThat((Object) registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
 
 		UserDestinationMessageHandler handler = context.getBean(UserDestinationMessageHandler.class);
 		assertNull(handler.getBroadcastDestination());

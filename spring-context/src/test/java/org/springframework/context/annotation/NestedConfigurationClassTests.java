@@ -24,8 +24,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertNotEquals;
-
 /**
  * Tests ensuring that nested static @Configuration classes are automatically detected
  * and registered without the need for explicit registration or @Import. See SPR-8186.
@@ -200,7 +198,7 @@ public class NestedConfigurationClassTests {
 		Object l2i1 = ctx.getBean(L0ConfigEmpty.L1ConfigEmpty.L2ConfigEmpty.class);
 		Object l2i2 = ctx.getBean(L0ConfigEmpty.L1ConfigEmpty.L2ConfigEmpty.class);
 		assertThat(l2i1 == l2i2).isTrue();
-		assertNotEquals(l2i1.toString(), l2i2.toString());
+		assertThat((Object) l2i2.toString()).isNotEqualTo(l2i1.toString());
 	}
 
 	@Test
@@ -221,7 +219,7 @@ public class NestedConfigurationClassTests {
 		Object l2i1 = ctx.getBean(L0ConfigConcrete.L1ConfigEmpty.L2ConfigEmpty.class);
 		Object l2i2 = ctx.getBean(L0ConfigConcrete.L1ConfigEmpty.L2ConfigEmpty.class);
 		assertThat(l2i1 == l2i2).isTrue();
-		assertNotEquals(l2i1.toString(), l2i2.toString());
+		assertThat((Object) l2i2.toString()).isNotEqualTo(l2i1.toString());
 	}
 
 

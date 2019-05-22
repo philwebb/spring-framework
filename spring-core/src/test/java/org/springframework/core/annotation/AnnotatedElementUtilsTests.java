@@ -374,8 +374,8 @@ public class AnnotatedElementUtilsTests {
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(element, name);
 
 		assertNotNull("Should find @ContextConfig on " + element.getSimpleName(), attributes);
-		assertArrayEquals("locations", asArray("explicitDeclaration"), attributes.getStringArray("locations"));
-		assertArrayEquals("value", asArray("explicitDeclaration"), attributes.getStringArray("value"));
+		assertThat((Object[]) attributes.getStringArray("locations")).as("locations").isEqualTo(asArray("explicitDeclaration"));
+		assertThat((Object[]) attributes.getStringArray("value")).as("value").isEqualTo(asArray("explicitDeclaration"));
 
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
@@ -405,8 +405,8 @@ public class AnnotatedElementUtilsTests {
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(clazz, name);
 
 		assertNotNull("Should find @ContextConfig on " + simpleName, attributes);
-		assertArrayEquals("locations for class [" + clazz.getSimpleName() + "]", expected, attributes.getStringArray("locations"));
-		assertArrayEquals("value for class [" + clazz.getSimpleName() + "]", expected, attributes.getStringArray("value"));
+		assertThat((Object[]) attributes.getStringArray("locations")).as("locations for class [" + clazz.getSimpleName() + "]").isEqualTo(expected);
+		assertThat((Object[]) attributes.getStringArray("value")).as("value for class [" + clazz.getSimpleName() + "]").isEqualTo(expected);
 
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(clazz, name)).isTrue();
@@ -419,8 +419,8 @@ public class AnnotatedElementUtilsTests {
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(element, name);
 
 		assertNotNull("Should find @ContextConfig on " + element.getSimpleName(), attributes);
-		assertArrayEquals("value", asArray("test.xml"), attributes.getStringArray("value"));
-		assertArrayEquals("locations", asArray("test.xml"), attributes.getStringArray("locations"));
+		assertThat((Object[]) attributes.getStringArray("value")).as("value").isEqualTo(asArray("test.xml"));
+		assertThat((Object[]) attributes.getStringArray("locations")).as("locations").isEqualTo(asArray("test.xml"));
 
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
@@ -433,8 +433,8 @@ public class AnnotatedElementUtilsTests {
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(element, name);
 
 		assertNotNull("Should find @ContextConfig on " + element.getSimpleName(), attributes);
-		assertArrayEquals("locations", asArray("test.xml"), attributes.getStringArray("locations"));
-		assertArrayEquals("value", asArray("test.xml"), attributes.getStringArray("value"));
+		assertThat((Object[]) attributes.getStringArray("locations")).as("locations").isEqualTo(asArray("test.xml"));
+		assertThat((Object[]) attributes.getStringArray("value")).as("value").isEqualTo(asArray("test.xml"));
 
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
@@ -448,10 +448,10 @@ public class AnnotatedElementUtilsTests {
 		String[] expected = asArray("A.xml", "B.xml");
 
 		assertNotNull("Should find @ImplicitAliasesContextConfig on " + element.getSimpleName(), attributes);
-		assertArrayEquals("groovyScripts", expected, attributes.getStringArray("groovyScripts"));
-		assertArrayEquals("xmlFiles", expected, attributes.getStringArray("xmlFiles"));
-		assertArrayEquals("locations", expected, attributes.getStringArray("locations"));
-		assertArrayEquals("value", expected, attributes.getStringArray("value"));
+		assertThat((Object[]) attributes.getStringArray("groovyScripts")).as("groovyScripts").isEqualTo(expected);
+		assertThat((Object[]) attributes.getStringArray("xmlFiles")).as("xmlFiles").isEqualTo(expected);
+		assertThat((Object[]) attributes.getStringArray("locations")).as("locations").isEqualTo(expected);
+		assertThat((Object[]) attributes.getStringArray("value")).as("value").isEqualTo(expected);
 
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
@@ -494,9 +494,10 @@ public class AnnotatedElementUtilsTests {
 		ContextConfig contextConfig = getMergedAnnotation(element, ContextConfig.class);
 
 		assertNotNull("Should find @ContextConfig on " + element.getSimpleName(), contextConfig);
-		assertArrayEquals("locations", expected, contextConfig.locations());
-		assertArrayEquals("value", expected, contextConfig.value());
-		assertArrayEquals("classes", new Class<?>[0], contextConfig.classes());
+		assertThat((Object[]) contextConfig.locations()).as("locations").isEqualTo(expected);
+		assertThat((Object[]) contextConfig.value()).as("value").isEqualTo(expected);
+		Object[] expecteds = new Class<?>[0];
+		assertThat((Object[]) contextConfig.classes()).as("classes").isEqualTo(expecteds);
 
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
@@ -510,10 +511,10 @@ public class AnnotatedElementUtilsTests {
 		String[] expected = asArray("A.xml", "B.xml");
 
 		assertNotNull("Should find @ImplicitAliasesContextConfig on " + element.getSimpleName(), config);
-		assertArrayEquals("groovyScripts", expected, config.groovyScripts());
-		assertArrayEquals("xmlFiles", expected, config.xmlFiles());
-		assertArrayEquals("locations", expected, config.locations());
-		assertArrayEquals("value", expected, config.value());
+		assertThat((Object[]) config.groovyScripts()).as("groovyScripts").isEqualTo(expected);
+		assertThat((Object[]) config.xmlFiles()).as("xmlFiles").isEqualTo(expected);
+		assertThat((Object[]) config.locations()).as("locations").isEqualTo(expected);
+		assertThat((Object[]) config.value()).as("value").isEqualTo(expected);
 
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
@@ -537,8 +538,8 @@ public class AnnotatedElementUtilsTests {
 		String[] expected = asArray("test.xml");
 
 		assertNotNull("Should find @ContextConfig on " + element.getSimpleName(), attributes);
-		assertArrayEquals("locations", expected, attributes.getStringArray("locations"));
-		assertArrayEquals("value", expected, attributes.getStringArray("value"));
+		assertThat((Object[]) attributes.getStringArray("locations")).as("locations").isEqualTo(expected);
+		assertThat((Object[]) attributes.getStringArray("value")).as("value").isEqualTo(expected);
 	}
 
 	@Test
@@ -690,8 +691,8 @@ public class AnnotatedElementUtilsTests {
 		AnnotationAttributes attributes = findMergedAnnotationAttributes(element, ComponentScan.class);
 
 		assertNotNull("Should find @ComponentScan on " + element, attributes);
-		assertArrayEquals("value: ", expected, attributes.getStringArray("value"));
-		assertArrayEquals("basePackages: ", expected, attributes.getStringArray("basePackages"));
+		assertThat((Object[]) attributes.getStringArray("value")).as("value: ").isEqualTo(expected);
+		assertThat((Object[]) attributes.getStringArray("basePackages")).as("basePackages: ").isEqualTo(expected);
 
 		return attributes;
 	}
@@ -718,19 +719,19 @@ public class AnnotatedElementUtilsTests {
 
 		ContextConfig contextConfig = findMergedAnnotation(element, ContextConfig.class);
 		assertNotNull("@ContextConfig on " + element, contextConfig);
-		assertArrayEquals("locations", xmlLocations, contextConfig.locations());
-		assertArrayEquals("value", xmlLocations, contextConfig.value());
+		assertThat((Object[]) contextConfig.locations()).as("locations").isEqualTo(xmlLocations);
+		assertThat((Object[]) contextConfig.value()).as("value").isEqualTo(xmlLocations);
 
 		// Synthesized annotation
 		TestPropSource testPropSource = AnnotationUtils.findAnnotation(element, TestPropSource.class);
-		assertArrayEquals("locations", propFiles, testPropSource.locations());
-		assertArrayEquals("value", propFiles, testPropSource.value());
+		assertThat((Object[]) testPropSource.locations()).as("locations").isEqualTo(propFiles);
+		assertThat((Object[]) testPropSource.value()).as("value").isEqualTo(propFiles);
 
 		// Merged annotation
 		testPropSource = findMergedAnnotation(element, TestPropSource.class);
 		assertNotNull("@TestPropSource on " + element, testPropSource);
-		assertArrayEquals("locations", propFiles, testPropSource.locations());
-		assertArrayEquals("value", propFiles, testPropSource.value());
+		assertThat((Object[]) testPropSource.locations()).as("locations").isEqualTo(propFiles);
+		assertThat((Object[]) testPropSource.value()).as("value").isEqualTo(propFiles);
 	}
 
 	@Test
@@ -740,10 +741,10 @@ public class AnnotatedElementUtilsTests {
 		ContextConfig contextConfig = findMergedAnnotation(element, ContextConfig.class);
 
 		assertNotNull("Should find @ContextConfig on " + element, contextConfig);
-		assertArrayEquals("locations for " + element, EMPTY, contextConfig.locations());
+		assertThat((Object[]) contextConfig.locations()).as("locations for " + element).isEqualTo(EMPTY);
 		// 'value' in @SpringAppConfig should not override 'value' in @ContextConfig
-		assertArrayEquals("value for " + element, EMPTY, contextConfig.value());
-		assertArrayEquals("classes for " + element, new Class<?>[] {Number.class}, contextConfig.classes());
+		assertThat((Object[]) contextConfig.value()).as("value for " + element).isEqualTo(EMPTY);
+		assertThat((Object[]) contextConfig.classes()).as("classes for " + element).isEqualTo(new Class<?>[] {Number.class});
 	}
 
 	@Test
@@ -760,8 +761,8 @@ public class AnnotatedElementUtilsTests {
 	private void assertWebMapping(AnnotatedElement element) throws ArrayComparisonFailure {
 		WebMapping webMapping = findMergedAnnotation(element, WebMapping.class);
 		assertNotNull(webMapping);
-		assertArrayEquals("value attribute: ", asArray("/test"), webMapping.value());
-		assertArrayEquals("path attribute: ", asArray("/test"), webMapping.path());
+		assertThat((Object[]) webMapping.value()).as("value attribute: ").isEqualTo(asArray("/test"));
+		assertThat((Object[]) webMapping.path()).as("path attribute: ").isEqualTo(asArray("/test"));
 	}
 
 	@Test

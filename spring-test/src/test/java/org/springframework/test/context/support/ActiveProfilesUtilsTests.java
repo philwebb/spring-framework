@@ -31,8 +31,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ActiveProfilesResolver;
 import org.springframework.util.StringUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static org.springframework.test.context.support.ActiveProfilesUtils.resolveActiveProfiles;
 
@@ -47,7 +46,7 @@ import static org.springframework.test.context.support.ActiveProfilesUtils.resol
 public class ActiveProfilesUtilsTests extends AbstractContextConfigurationUtilsTests {
 
 	private void assertResolvedProfiles(Class<?> testClass, String... expected) {
-		assertArrayEquals(expected, resolveActiveProfiles(testClass));
+		assertThat((Object[]) resolveActiveProfiles(testClass)).isEqualTo(expected);
 	}
 
 	@Test

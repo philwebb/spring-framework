@@ -219,10 +219,8 @@ public class AnnotationConfigApplicationContextTests {
 		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
 		assertSame(context, context.getBean(BeanB.class).applicationContext);
 
-		assertArrayEquals(new String[] {"annotationConfigApplicationContextTests.BeanA"},
-				context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanB"));
-		assertArrayEquals(new String[] {"annotationConfigApplicationContextTests.BeanA"},
-				context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanC"));
+		assertThat((Object[]) context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanB")).isEqualTo(new String[] {"annotationConfigApplicationContextTests.BeanA"});
+		assertThat((Object[]) context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanC")).isEqualTo(new String[] {"annotationConfigApplicationContextTests.BeanA"});
 	}
 
 	@Test

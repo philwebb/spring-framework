@@ -30,11 +30,8 @@ import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.MappingJacksonValue;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
@@ -78,8 +75,9 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertEquals(42F, result.getFraction(), 0F);
-		assertArrayEquals(new String[]{"Foo", "Bar"}, result.getArray());
+		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+
+		assertThat((Object[]) result.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[]{0x1, 0x2}, result.getBytes());
 	}

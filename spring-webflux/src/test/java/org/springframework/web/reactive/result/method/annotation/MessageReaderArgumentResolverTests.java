@@ -254,7 +254,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(TestBean[].class);
 		TestBean[] value = resolveValue(param, body);
 
-		assertArrayEquals(new TestBean[] {new TestBean("f1", "b1"), new TestBean("f2", "b2")}, value);
+		assertThat((Object[]) value).isEqualTo(new TestBean[] {new TestBean("f1", "b1"), new TestBean("f2", "b2")});
 	}
 
 	@Test

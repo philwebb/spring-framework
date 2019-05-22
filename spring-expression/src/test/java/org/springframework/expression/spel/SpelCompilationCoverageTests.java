@@ -45,8 +45,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.expression.spel.testdata.PersonInOtherPackage;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -325,8 +324,10 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		double resultI = expression.getValue(new TestClass1(), Double.TYPE);
 		assertCanCompile(expression);
 		double resultC = expression.getValue(new TestClass1(), Double.TYPE);
-		assertEquals(3.4d, resultI, 0.1d);
-		assertEquals(3.4d, resultC, 0.1d);
+		assertThat(resultI).isCloseTo(3.4d, within(0.1d));
+
+		assertThat(resultC).isCloseTo(3.4d, within(0.1d));
+
 		assertThat(expression.getValue()).isEqualTo(3.4d);
 	}
 
@@ -509,8 +510,9 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		float resultI = expression.getValue(new TestClass1(), Float.TYPE);
 		assertCanCompile(expression);
 		float resultC = expression.getValue(new TestClass1(), Float.TYPE);
-		assertEquals(3.4f, resultI, 0.1f);
-		assertEquals(3.4f, resultC, 0.1f);
+		assertThat((double) resultI).isCloseTo((double) 3.4f, within((double) 0.1f));
+
+		assertThat((double) resultC).isCloseTo((double) 3.4f, within((double) 0.1f));
 
 		assertThat(expression.getValue()).isEqualTo(3.4f);
 	}
@@ -3478,7 +3480,8 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		TestClass8 tc8 = (TestClass8) o;
 		assertEquals(42, tc8.i);
 		assertThat(tc8.s).isEqualTo("123");
-		assertEquals(4.0d, tc8.d, 0.5d);
+		assertThat(tc8.d).isCloseTo(4.0d, within(0.5d));
+
 		assertThat(tc8.z).isEqualTo(true);
 
 		// no-arg ctor

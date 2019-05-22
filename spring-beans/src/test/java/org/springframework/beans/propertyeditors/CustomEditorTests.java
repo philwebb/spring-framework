@@ -49,9 +49,7 @@ import org.springframework.tests.sample.beans.IndexedTestBean;
 import org.springframework.tests.sample.beans.NumberTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -466,11 +464,14 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(tb);
 		bw.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class, nf, true));
 		bw.setPropertyValue("bigDecimal", "1000");
-		assertEquals(1000.0f, tb.getBigDecimal().floatValue(), 0f);
+		assertThat((double) tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.0f, within((double) 0f));
+
 		bw.setPropertyValue("bigDecimal", "1000,5");
-		assertEquals(1000.5f, tb.getBigDecimal().floatValue(), 0f);
+		assertThat((double) tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
+
 		bw.setPropertyValue("bigDecimal", "1 000,5");
-		assertEquals(1000.5f, tb.getBigDecimal().floatValue(), 0f);
+		assertThat((double) tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
+
 	}
 
 	@Test

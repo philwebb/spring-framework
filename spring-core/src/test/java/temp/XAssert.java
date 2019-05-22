@@ -29,31 +29,6 @@ import static org.assertj.core.api.Assertions.within;
  */
 public class XAssert {
 
-	public static void assertNotEquals(String message, Object unexpected, Object actual) {
-		assertThat(actual).as(message).isNotEqualTo(unexpected);
-	}
-
-	public static void assertNotEquals(Object unexpected, Object actual) {
-		assertThat(actual).isNotEqualTo(unexpected);
-	}
-
-	public static void assertNotEquals(String message, long unexpected, long actual) {
-		assertThat(actual).as(message).isNotEqualTo(unexpected);
-	}
-
-	public static void assertNotEquals(long unexpected, long actual) {
-		assertThat(actual).isNotEqualTo(unexpected);
-	}
-
-	public static void assertArrayEquals(String message, Object[] expecteds,
-			Object[] actuals) throws ArrayComparisonFailure {
-		assertThat(actuals).as(message).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(Object[] expecteds, Object[] actuals) {
-		assertThat(actuals).isEqualTo(expecteds);
-	}
-
 	public static void assertArrayEquals(String message, boolean[] expecteds,
 			boolean[] actuals) throws ArrayComparisonFailure {
 		assertThat(actuals).as(message).isEqualTo(expecteds);
@@ -150,11 +125,6 @@ public class XAssert {
 
 	public static void assertNotSame(Object unexpected, Object actual) {
 		assertThat(actual).isNotSameAs(unexpected);
-	}
-
-	public static void assertEquals(double expected, double actual, double delta) {
-		assertThat(actual).isCloseTo(expected, within(delta));
-
 	}
 
 	public static void assertEquals(String message, double expected, double actual,
