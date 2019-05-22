@@ -238,8 +238,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	public void buildContextHierarchyMapForTestClassHierarchyWithMultiLevelContextHierarchies() {
 		Map<String, List<ContextConfigurationAttributes>> map = buildContextHierarchyMap(TestClass3WithMultiLevelContextHierarchy.class);
 
-		assertThat(map).hasSize(3);
-		assertThat(map.keySet(), hasItems("alpha", "beta", "gamma"));
+		assertThat(map).hasSize(3).containsKeys("alpha", "beta", "gamma");
 
 		List<ContextConfigurationAttributes> alphaConfig = map.get("alpha");
 		assertThat(alphaConfig).hasSize(3);
@@ -270,8 +269,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		String level6 = GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX + 6;
 		String level7 = GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX + 7;
 
-		assertThat(map).hasSize(7);
-		assertThat(map.keySet(), hasItems(level1, level2, level3, level4, level5, level6, level7));
+		assertThat(map).hasSize(7).containsKeys(level1, level2, level3, level4, level5, level6, level7);
 
 		List<ContextConfigurationAttributes> level1Config = map.get(level1);
 		assertThat(level1Config).hasSize(1);
@@ -300,8 +298,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		String level2 = GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX + 2;
 		String level3 = GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX + 3;
 
-		assertThat(map).hasSize(3);
-		assertThat(map.keySet(), hasItems(level1, level2, level3));
+		assertThat(map).hasSize(3).containsKeys(level1, level2, level3);
 		Iterator<String> levels = map.keySet().iterator();
 		assertThat(levels.next()).isEqualTo(level1);
 		assertThat(levels.next()).isEqualTo(level2);
@@ -345,8 +342,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	public void buildContextHierarchyMapForTestClassHierarchyWithMultiLevelContextHierarchiesAndOverriddenInitializers() {
 		Map<String, List<ContextConfigurationAttributes>> map = buildContextHierarchyMap(TestClass2WithMultiLevelContextHierarchyWithOverriddenInitializers.class);
 
-		assertThat(map).hasSize(2);
-		assertThat(map.keySet(), hasItems("alpha", "beta"));
+		assertThat(map).hasSize(2).containsKeys("alpha", "beta");
 
 		List<ContextConfigurationAttributes> alphaConfig = map.get("alpha");
 		assertThat(alphaConfig).hasSize(2);

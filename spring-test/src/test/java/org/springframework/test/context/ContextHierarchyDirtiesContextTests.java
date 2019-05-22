@@ -100,17 +100,17 @@ public class ContextHierarchyDirtiesContextTests {
 
 		ConfigurableApplicationContext bazContext = (ConfigurableApplicationContext) ContextHierarchyDirtiesContextTests.context;
 		assertEquals("baz", ContextHierarchyDirtiesContextTests.baz);
-		assertThat("bazContext#isActive()", bazContext.isActive()).isEqualTo(isBazContextActive);
+		assertThat(bazContext.isActive()).isEqualTo(isBazContextActive);
 
 		ConfigurableApplicationContext barContext = (ConfigurableApplicationContext) bazContext.getParent();
 		assertThat(barContext).isNotNull();
 		assertEquals("bar", ContextHierarchyDirtiesContextTests.bar);
-		assertThat("barContext#isActive()", barContext.isActive()).isEqualTo(isBarContextActive);
+		assertThat(barContext.isActive()).isEqualTo(isBarContextActive);
 
 		ConfigurableApplicationContext fooContext = (ConfigurableApplicationContext) barContext.getParent();
 		assertThat(fooContext).isNotNull();
 		assertEquals("foo", ContextHierarchyDirtiesContextTests.foo);
-		assertThat("fooContext#isActive()", fooContext.isActive()).isEqualTo(isFooContextActive);
+		assertThat(fooContext.isActive()).isEqualTo(isFooContextActive);
 	}
 
 

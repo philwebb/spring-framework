@@ -57,7 +57,7 @@ public class MockServerSpecTests {
 				.exchange()
 				.expectBody(String.class)
 				.consumeWith(result -> assertThat(
-						result.getResponseBody(), containsString("test-attribute=:A:B")));
+						result.getResponseBody()).contains("test-attribute=:A:B"));
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class MockServerSpecTests {
 				.exchange()
 				.expectBody(String.class)
 				.consumeWith(result -> assertThat(
-						result.getResponseBody(), containsString("test-attribute=:Fwk-A:Fwk-B:App-A:App-B")));
+						result.getResponseBody()).contains("test-attribute=:Fwk-A:Fwk-B:App-A:App-B"));
 	}
 
 

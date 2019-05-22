@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import static org.hamcrest.Matchers.*;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -137,7 +137,7 @@ public class MockMvcHtmlUnitDriverBuilderTests {
 	}
 
 	private void assertMockMvcNotUsed(String url) throws Exception {
-		assertThat(get(url)).isNotEqualTo(containsString(EXPECTED_BODY));
+		assertThat(get(url)).doesNotContain(EXPECTED_BODY);
 	}
 
 	private String get(String url) throws IOException {

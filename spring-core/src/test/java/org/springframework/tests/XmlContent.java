@@ -32,6 +32,7 @@ public class XmlContent implements AssertProvider<XmlContentAssert> {
 	private Object source;
 
 	private XmlContent(Object source) {
+		this.source = source;
 	}
 
 	@Override

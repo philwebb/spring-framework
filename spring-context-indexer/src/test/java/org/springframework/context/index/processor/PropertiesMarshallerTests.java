@@ -27,7 +27,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static org.springframework.context.index.processor.Metadata.hasComponent;
 
 /**
  * Tests for {@link PropertiesMarshaller}.
@@ -46,9 +45,9 @@ public class PropertiesMarshallerTests {
 		PropertiesMarshaller.write(metadata, outputStream);
 		CandidateComponentsMetadata readMetadata = PropertiesMarshaller.read(
 				new ByteArrayInputStream(outputStream.toByteArray()));
-		assertThat(readMetadata, hasComponent("com.foo", "first", "second"));
-		assertThat(readMetadata, hasComponent("com.bar", "first"));
-		assertThat(readMetadata.getItems(), hasSize(2));
+		assertThat(readMetadata).has(Metadata.of("com.foo", "first", "second"));
+		assertThat(readMetadata).has(Metadata.of("com.bar", "first"));
+		assertThat(readMetadata.getItems()).hasSize(2);
 	}
 
 	private static ItemMetadata createItem(String type, String... stereotypes) {

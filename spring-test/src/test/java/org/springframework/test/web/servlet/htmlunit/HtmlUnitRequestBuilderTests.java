@@ -19,6 +19,7 @@ package org.springframework.test.web.servlet.htmlunit;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +46,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -169,8 +169,8 @@ public class HtmlUnitRequestBuilderTests {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
 		assertThat(actualRequest.getContentType()).isEqualTo("application/x-www-form-urlencoded");
-		assertThat(actualRequest.getHeader("Content-Type"),
-				equalTo("application/x-www-form-urlencoded;charset=ISO-8859-1"));
+		assertThat(actualRequest.getHeader("Content-Type"))
+				.isEqualTo("application/x-www-form-urlencoded;charset=ISO-8859-1");
 	}
 
 
@@ -339,8 +339,8 @@ public class HtmlUnitRequestBuilderTests {
 
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
-		List<Locale> expected = asList(new Locale("da"), new Locale("en", "gb"), new Locale("en", ""));
-		assertThat(Collections.list(actualRequest.getLocales())).isEqualTo(expected);
+		assertThat(Collections.list(actualRequest.getLocales()))
+				.containsExactly(new Locale("da"), new Locale("en", "gb"), new Locale("en", ""));
 	}
 
 	@Test
@@ -376,7 +376,7 @@ public class HtmlUnitRequestBuilderTests {
 
 	@Test
 	public void buildRequestParameterMapViaWebRequestDotSetRequestParametersWithSingleRequestParam() {
-		webRequest.setRequestParameters(asList(new NameValuePair("name", "value")));
+		webRequest.setRequestParameters(Arrays.asList(new NameValuePair("name", "value")));
 
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
@@ -386,7 +386,7 @@ public class HtmlUnitRequestBuilderTests {
 
 	@Test
 	public void buildRequestParameterMapViaWebRequestDotSetRequestParametersWithSingleRequestParamWithNullValue() {
-		webRequest.setRequestParameters(asList(new NameValuePair("name", null)));
+		webRequest.setRequestParameters(Arrays.asList(new NameValuePair("name", null)));
 
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
@@ -396,7 +396,7 @@ public class HtmlUnitRequestBuilderTests {
 
 	@Test
 	public void buildRequestParameterMapViaWebRequestDotSetRequestParametersWithSingleRequestParamWithEmptyValue() {
-		webRequest.setRequestParameters(asList(new NameValuePair("name", "")));
+		webRequest.setRequestParameters(Arrays.asList(new NameValuePair("name", "")));
 
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
@@ -406,7 +406,7 @@ public class HtmlUnitRequestBuilderTests {
 
 	@Test
 	public void buildRequestParameterMapViaWebRequestDotSetRequestParametersWithSingleRequestParamWithValueSetToSpace() {
-		webRequest.setRequestParameters(asList(new NameValuePair("name", " ")));
+		webRequest.setRequestParameters(Arrays.asList(new NameValuePair("name", " ")));
 
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
@@ -416,7 +416,7 @@ public class HtmlUnitRequestBuilderTests {
 
 	@Test
 	public void buildRequestParameterMapViaWebRequestDotSetRequestParametersWithMultipleRequestParams() {
-		webRequest.setRequestParameters(asList(new NameValuePair("name1", "value1"), new NameValuePair("name2", "value2")));
+		webRequest.setRequestParameters(Arrays.asList(new NameValuePair("name1", "value1"), new NameValuePair("name2", "value2")));
 
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
@@ -826,7 +826,7 @@ public class HtmlUnitRequestBuilderTests {
 	public void setContextPathEmptyString() {
 		requestBuilder.setContextPath("");
 
-		assertThat(getContextPath(), isEmptyString());
+		assertThat(getContextPath()).isEmpty();
 	}
 
 	@Test
@@ -890,7 +890,7 @@ public class HtmlUnitRequestBuilderTests {
 				.build();
 
 		MockHttpServletRequest performedRequest = mockMvc.perform(requestBuilder).andReturn().getRequest();
-		assertThat(asList(performedRequest.getParameterValues(paramName)), contains(paramValue, paramValue2));
+		assertThat(performedRequest.getParameterValues(paramName)).containsExactly(paramValue, paramValue2);
 	}
 
 	@Test

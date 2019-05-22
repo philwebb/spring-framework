@@ -163,13 +163,13 @@ public class MultiServerUserRegistryTests {
 		SimpUser user = this.registry.getUsers().iterator().next();
 		assertTrue(user.hasSessions());
 		assertEquals(2, user.getSessions().size());
-		assertThat(user.getSessions()).containsExactly(localSession, remoteSession);
+		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertSame(localSession, user.getSession("sess123"));
 		assertEquals(remoteSession, user.getSession("sess456"));
 
 		user = this.registry.getUser("joe");
 		assertEquals(2, user.getSessions().size());
-		assertThat(user.getSessions()).containsExactly(localSession, remoteSession);
+		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertSame(localSession, user.getSession("sess123"));
 		assertEquals(remoteSession, user.getSession("sess456"));
 	}

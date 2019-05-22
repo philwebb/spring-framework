@@ -76,7 +76,7 @@ public class ImportedConfigurationClassEnhancementTests {
 		TestBean testBean2 = config.autowiredConfig.testBean();
 		assertThat(testBean1)
 				.as("got two distinct instances of testBean when singleton scoping was expected")
-				.isNotSameAs(testBean2);
+				.isSameAs(testBean2);
 	}
 
 

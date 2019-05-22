@@ -142,13 +142,13 @@ public class AnnotationAsyncExecutionAspectTests {
 
 		Future<Thread> defaultThread = obj.defaultWork();
 		assertThat(defaultThread.get()).isNotEqualTo(Thread.currentThread());
-		assertThat(defaultThread.get().getName()).isNotEqualTo(startsWith("e1-"));
+		assertThat(defaultThread.get().getName()).doesNotStartWith("e1-");
 
 		ListenableFuture<Thread> e1Thread = obj.e1Work();
-		assertThat(e1Thread.get().getName(), startsWith("e1-"));
+		assertThat(e1Thread.get().getName()).startsWith("e1-");
 
 		CompletableFuture<Thread> e1OtherThread = obj.e1OtherWork();
-		assertThat(e1OtherThread.get().getName(), startsWith("e1-"));
+		assertThat(e1OtherThread.get().getName()).startsWith("e1-");
 	}
 
 	@Test

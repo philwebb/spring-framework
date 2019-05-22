@@ -122,8 +122,9 @@ public class MockWebResponseBuilderTests {
 		assertThat(header.getValue()).isEqualTo("value");
 		header = responseHeaders.get(2);
 		assertThat(header.getName()).isEqualTo("Set-Cookie");
-		assertThat(header.getValue(), startsWith("cookieA=valueA; Path=/path; Domain=domain; Max-Age=1800; Expires="));
-		assertThat(header.getValue(), endsWith("; Secure; HttpOnly"));
+		assertThat(header.getValue())
+				.startsWith("cookieA=valueA; Path=/path; Domain=domain; Max-Age=1800; Expires=")
+				.endsWith("; Secure; HttpOnly");
 	}
 
 	// SPR-14169

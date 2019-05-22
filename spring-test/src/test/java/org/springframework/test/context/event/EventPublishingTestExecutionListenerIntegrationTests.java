@@ -151,8 +151,8 @@ public class EventPublishingTestExecutionListenerIntegrationTests {
 		assertThat(countDownLatch.await(2, TimeUnit.SECONDS)).isEqualTo(true);
 
 		verify(listener, only()).beforeTestMethod(testContext);
-		assertThat(TrackingAsyncUncaughtExceptionHandler.asyncException.getMessage(),
-			startsWith("Asynchronous exception for test method [" + methodName + "] in thread [" + THREAD_NAME_PREFIX));
+		assertThat(TrackingAsyncUncaughtExceptionHandler.asyncException.getMessage())
+			.startsWith("Asynchronous exception for test method [" + methodName + "] in thread [" + THREAD_NAME_PREFIX);
 	}
 
 	@Test
