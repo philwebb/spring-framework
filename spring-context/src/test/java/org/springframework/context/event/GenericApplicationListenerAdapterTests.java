@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.ResolvableType;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -149,8 +149,7 @@ public class GenericApplicationListenerAdapterTests extends AbstractApplicationE
 
 		ApplicationListener<?> listener = mock(listenerType);
 		GenericApplicationListenerAdapter adapter = new GenericApplicationListenerAdapter(listener);
-		assertEquals("Wrong match for event '" + eventType + "' on " + listenerType.getClass().getName(),
-				match, adapter.supportsEventType(eventType));
+		assertThat(adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + listenerType.getClass().getName()).isEqualTo(match);
 	}
 
 }
