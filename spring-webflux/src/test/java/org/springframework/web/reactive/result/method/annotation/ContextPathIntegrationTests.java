@@ -33,7 +33,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests related to the use of context paths.

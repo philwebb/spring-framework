@@ -26,9 +26,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-
 /**
  * @author Juergen Hoeller
  * @author Oliver Gierke
@@ -118,8 +115,8 @@ public class AnnotationAwareOrderComparatorTests {
 		AnnotationAwareOrderComparator.sort(list);
 		assertThat(list.get(0)).isEqualTo(A.class);
 		assertThat(list.get(1)).isEqualTo(B.class);
-		assertNull(list.get(2));
-		assertNull(list.get(3));
+		assertThat(list.get(2)).isNull();
+		assertThat(list.get(3)).isNull();
 	}
 
 

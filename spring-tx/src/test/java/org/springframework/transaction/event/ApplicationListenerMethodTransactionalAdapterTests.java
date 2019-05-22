@@ -27,8 +27,6 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Stephane Nicoll
@@ -65,7 +63,7 @@ public class ApplicationListenerMethodTransactionalAdapterTests {
 	}
 
 	private void assertPhase(Method method, TransactionPhase expected) {
-		assertNotNull("Method must not be null", method);
+		assertThat((Object) method).as("Method must not be null").isNotNull();
 		TransactionalEventListener annotation =
 				AnnotatedElementUtils.findMergedAnnotation(method, TransactionalEventListener.class);
 		assertThat(annotation.phase()).as("Wrong phase for '" + method + "'").isEqualTo(expected);

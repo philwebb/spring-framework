@@ -29,11 +29,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link MessageHeaders}.
@@ -47,7 +42,7 @@ public class MessageHeadersTests {
 	@Test
 	public void testTimestamp() {
 		MessageHeaders headers = new MessageHeaders(null);
-		assertNotNull(headers.getTimestamp());
+		assertThat((Object) headers.getTimestamp()).isNotNull();
 	}
 
 	@Test
@@ -55,39 +50,39 @@ public class MessageHeadersTests {
 		MessageHeaders headers1 = new MessageHeaders(null);
 		Thread.sleep(50L);
 		MessageHeaders headers2 = new MessageHeaders(headers1);
-		assertNotSame(headers1.getTimestamp(), headers2.getTimestamp());
+		assertThat((Object) headers2.getTimestamp()).isNotSameAs(headers1.getTimestamp());
 	}
 
 	@Test
 	public void testTimestampProvided() throws Exception {
 		MessageHeaders headers = new MessageHeaders(null, null, 10L);
-		assertEquals(10L, (long) headers.getTimestamp());
+		assertThat((long) headers.getTimestamp()).isEqualTo(10L);
 	}
 
 	@Test
 	public void testTimestampProvidedNullValue() throws Exception {
 		Map<String, Object> input = Collections.<String, Object>singletonMap(MessageHeaders.TIMESTAMP, 1L);
 		MessageHeaders headers = new MessageHeaders(input, null, null);
-		assertNotNull(headers.getTimestamp());
+		assertThat((Object) headers.getTimestamp()).isNotNull();
 	}
 
 	@Test
 	public void testTimestampNone() throws Exception {
 		MessageHeaders headers = new MessageHeaders(null, null, -1L);
-		assertNull(headers.getTimestamp());
+		assertThat((Object) headers.getTimestamp()).isNull();
 	}
 
 	@Test
 	public void testIdOverwritten() throws Exception {
 		MessageHeaders headers1 = new MessageHeaders(null);
 		MessageHeaders headers2 = new MessageHeaders(headers1);
-		assertNotSame(headers1.getId(), headers2.getId());
+		assertThat((Object) headers2.getId()).isNotSameAs(headers1.getId());
 	}
 
 	@Test
 	public void testId() {
 		MessageHeaders headers = new MessageHeaders(null);
-		assertNotNull(headers.getId());
+		assertThat((Object) headers.getId()).isNotNull();
 	}
 
 	@Test
@@ -101,13 +96,13 @@ public class MessageHeadersTests {
 	public void testIdProvidedNullValue() {
 		Map<String, Object> input = Collections.<String, Object>singletonMap(MessageHeaders.ID, new UUID(0L, 25L));
 		MessageHeaders headers = new MessageHeaders(input, null, null);
-		assertNotNull(headers.getId());
+		assertThat((Object) headers.getId()).isNotNull();
 	}
 
 	@Test
 	public void testIdNone() {
 		MessageHeaders headers = new MessageHeaders(null, MessageHeaders.ID_VALUE_NONE, null);
-		assertNull(headers.getId());
+		assertThat((Object) headers.getId()).isNull();
 	}
 
 	@Test
@@ -142,14 +137,14 @@ public class MessageHeadersTests {
 	public void testNullHeaderValue() {
 		Map<String, Object> map = new HashMap<>();
 		MessageHeaders headers = new MessageHeaders(map);
-		assertNull(headers.get("nosuchattribute"));
+		assertThat(headers.get("nosuchattribute")).isNull();
 	}
 
 	@Test
 	public void testNullHeaderValueWithTypedAccess() {
 		Map<String, Object> map = new HashMap<>();
 		MessageHeaders headers = new MessageHeaders(map);
-		assertNull(headers.get("nosuchattribute", String.class));
+		assertThat(headers.get("nosuchattribute", String.class)).isNull();
 	}
 
 	@Test
@@ -185,9 +180,9 @@ public class MessageHeadersTests {
 		MessageHeaders input = new MessageHeaders(map);
 		MessageHeaders output = (MessageHeaders) SerializationTestUtils.serializeAndDeserialize(input);
 		assertThat(output.get("name")).isEqualTo("joe");
-		assertNull(output.get("address"));
+		assertThat(output.get("address")).isNull();
 		assertThat(input.get("name")).isEqualTo("joe");
-		assertSame(address, input.get("address"));
+		assertThat(input.get("address")).isSameAs(address);
 	}
 
 	@Test
@@ -201,7 +196,7 @@ public class MessageHeadersTests {
 		}
 		MessageHeaders headers = new MyMH();
 		assertThat(headers.getId().toString()).isEqualTo("00000000-0000-0000-0000-000000000001");
-		assertEquals(1, headers.size());
+		assertThat((long) headers.size()).isEqualTo((long) 1);
 	}
 
 }

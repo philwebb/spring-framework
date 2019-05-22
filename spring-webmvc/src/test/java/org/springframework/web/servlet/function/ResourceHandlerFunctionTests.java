@@ -38,8 +38,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Arjen Poutsma
@@ -82,14 +80,14 @@ public class ResourceHandlerFunctionTests {
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(200, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 200);
 		byte[] expectedBytes = Files.readAllBytes(this.resource.getFile().toPath());
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
 		assertThat(actualBytes).isEqualTo(expectedBytes);
 		assertThat(servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
-		assertEquals(this.resource.contentLength(),servletResponse.getContentLength());
+		assertThat((long) servletResponse.getContentLength()).isEqualTo(this.resource.contentLength());
 	}
 
 	@Test
@@ -108,13 +106,13 @@ public class ResourceHandlerFunctionTests {
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(200, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 200);
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
-		assertEquals(0, actualBytes.length);
+		assertThat((long) actualBytes.length).isEqualTo((long) 0);
 		assertThat(servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
-		assertEquals(this.resource.contentLength(),servletResponse.getContentLength());
+		assertThat((long) servletResponse.getContentLength()).isEqualTo(this.resource.contentLength());
 	}
 
 
@@ -129,12 +127,12 @@ public class ResourceHandlerFunctionTests {
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(200, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 200);
 		assertThat(servletResponse.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
-		assertEquals(0, actualBytes.length);
+		assertThat((long) actualBytes.length).isEqualTo((long) 0);
 	}
 
 }

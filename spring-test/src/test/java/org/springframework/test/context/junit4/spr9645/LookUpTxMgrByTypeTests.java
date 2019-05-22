@@ -29,7 +29,7 @@ import org.springframework.tests.transaction.CallCountingTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests that verify the behavior requested in
@@ -61,18 +61,18 @@ public class LookUpTxMgrByTypeTests {
 
 	@Test
 	public void transactionalTest() {
-		assertEquals(1, txManager.begun);
-		assertEquals(1, txManager.inflight);
-		assertEquals(0, txManager.commits);
-		assertEquals(0, txManager.rollbacks);
+		assertThat((long) txManager.begun).isEqualTo((long) 1);
+		assertThat((long) txManager.inflight).isEqualTo((long) 1);
+		assertThat((long) txManager.commits).isEqualTo((long) 0);
+		assertThat((long) txManager.rollbacks).isEqualTo((long) 0);
 	}
 
 	@AfterTransaction
 	public void afterTransaction() {
-		assertEquals(1, txManager.begun);
-		assertEquals(0, txManager.inflight);
-		assertEquals(0, txManager.commits);
-		assertEquals(1, txManager.rollbacks);
+		assertThat((long) txManager.begun).isEqualTo((long) 1);
+		assertThat((long) txManager.inflight).isEqualTo((long) 0);
+		assertThat((long) txManager.commits).isEqualTo((long) 0);
+		assertThat((long) txManager.rollbacks).isEqualTo((long) 1);
 	}
 
 }

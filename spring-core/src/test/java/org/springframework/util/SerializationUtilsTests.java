@@ -21,8 +21,6 @@ import java.math.BigInteger;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test for static utility to help with serialization.
@@ -63,12 +61,12 @@ public class SerializationUtilsTests {
 
 	@Test
 	public void serializeNull() throws Exception {
-		assertNull(SerializationUtils.serialize(null));
+		assertThat((Object) SerializationUtils.serialize(null)).isNull();
 	}
 
 	@Test
 	public void deserializeNull() throws Exception {
-		assertNull(SerializationUtils.deserialize(null));
+		assertThat(SerializationUtils.deserialize(null)).isNull();
 	}
 
 }

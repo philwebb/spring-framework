@@ -45,7 +45,6 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -373,7 +372,7 @@ public class AsyncExecutionTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> listenerCalled == 2);
-		assertEquals(1, listenerConstructed);
+		assertThat((long) listenerConstructed).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -396,7 +395,7 @@ public class AsyncExecutionTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> listenerCalled == 2);
-		assertEquals(2, listenerConstructed);
+		assertThat((long) listenerConstructed).isEqualTo((long) 2);
 	}
 
 

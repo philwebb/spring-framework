@@ -29,8 +29,6 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link ResponseStatusExceptionHandler}.
@@ -73,7 +71,7 @@ public class ResponseStatusExceptionHandlerTests {
 	public void unresolvedException() {
 		Throwable expected = new IllegalStateException();
 		Mono<Void> mono = this.handler.handle(this.exchange, expected);
-		StepVerifier.create(mono).consumeErrorWith(actual -> assertSame(expected, actual)).verify();
+		StepVerifier.create(mono).consumeErrorWith(actual -> assertThat((Object) actual).isSameAs(expected)).verify();
 	}
 
 	@Test  // SPR-16231
@@ -82,7 +80,7 @@ public class ResponseStatusExceptionHandlerTests {
 		this.exchange.getResponse().setStatusCode(HttpStatus.CREATED);
 		Mono<Void> mono = this.exchange.getResponse().setComplete()
 				.then(Mono.defer(() -> this.handler.handle(this.exchange, ex)));
-		StepVerifier.create(mono).consumeErrorWith(actual -> assertSame(ex, actual)).verify();
+		StepVerifier.create(mono).consumeErrorWith(actual -> assertThat((Object) actual).isSameAs(ex)).verify();
 	}
 
 }

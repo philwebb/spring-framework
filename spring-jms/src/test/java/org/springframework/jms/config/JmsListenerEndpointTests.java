@@ -29,7 +29,6 @@ import org.springframework.jms.listener.endpoint.JmsActivationSpecConfig;
 import org.springframework.jms.listener.endpoint.JmsMessageEndpointManager;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -52,8 +51,8 @@ public class JmsListenerEndpointTests {
 		assertThat(container.getDestinationName()).isEqualTo("myQueue");
 		assertThat(container.getMessageSelector()).isEqualTo("foo = 'bar'");
 		assertThat(container.getSubscriptionName()).isEqualTo("mySubscription");
-		assertEquals(5, container.getConcurrentConsumers());
-		assertEquals(10, container.getMaxConcurrentConsumers());
+		assertThat((long) container.getConcurrentConsumers()).isEqualTo((long) 5);
+		assertThat((long) container.getMaxConcurrentConsumers()).isEqualTo((long) 10);
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 	}
 
@@ -73,7 +72,7 @@ public class JmsListenerEndpointTests {
 		assertThat(config.getDestinationName()).isEqualTo("myQueue");
 		assertThat(config.getMessageSelector()).isEqualTo("foo = 'bar'");
 		assertThat(config.getSubscriptionName()).isEqualTo("mySubscription");
-		assertEquals(10, config.getMaxConcurrency());
+		assertThat((long) config.getMaxConcurrency()).isEqualTo((long) 10);
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 	}
 

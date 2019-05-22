@@ -36,9 +36,6 @@ import org.springframework.core.type.filter.TypeFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-
 /**
  * @author Mark Fisher
  * @author Juergen Hoeller
@@ -107,7 +104,7 @@ public class ComponentScanParserTests {
 	public void customAnnotationUsedForBothComponentScanAndQualifier() {
 		ClassPathXmlApplicationContext context = loadContext("customAnnotationUsedForBothComponentScanAndQualifierTests.xml");
 		KustomAnnotationAutowiredBean testBean = (KustomAnnotationAutowiredBean) context.getBean("testBean");
-		assertNotNull(testBean.getDependency());
+		assertThat((Object) testBean.getDependency()).isNotNull();
 		context.close();
 	}
 
@@ -115,7 +112,7 @@ public class ComponentScanParserTests {
 	public void customTypeFilter() {
 		ClassPathXmlApplicationContext context = loadContext("customTypeFilterTests.xml");
 		KustomAnnotationAutowiredBean testBean = (KustomAnnotationAutowiredBean) context.getBean("testBean");
-		assertNotNull(testBean.getDependency());
+		assertThat((Object) testBean.getDependency()).isNotNull();
 		context.close();
 	}
 

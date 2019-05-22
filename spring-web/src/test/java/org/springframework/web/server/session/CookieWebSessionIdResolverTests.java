@@ -23,8 +23,6 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link CookieWebSessionIdResolver}.
@@ -42,9 +40,9 @@ public class CookieWebSessionIdResolverTests {
 		this.resolver.setSessionId(exchange, "123");
 
 		MultiValueMap<String, ResponseCookie> cookies = exchange.getResponse().getCookies();
-		assertEquals(1, cookies.size());
+		assertThat((long) cookies.size()).isEqualTo((long) 1);
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
-		assertNotNull(cookie);
+		assertThat((Object) cookie).isNotNull();
 		assertThat(cookie.toString()).isEqualTo("SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax");
 	}
 
@@ -59,9 +57,9 @@ public class CookieWebSessionIdResolverTests {
 		this.resolver.setSessionId(exchange, "123");
 
 		MultiValueMap<String, ResponseCookie> cookies = exchange.getResponse().getCookies();
-		assertEquals(1, cookies.size());
+		assertThat((long) cookies.size()).isEqualTo((long) 1);
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
-		assertNotNull(cookie);
+		assertThat((Object) cookie).isNotNull();
 		assertThat(cookie.toString()).isEqualTo("SESSION=123; Path=/; Domain=example.org; HttpOnly; SameSite=Strict");
 	}
 

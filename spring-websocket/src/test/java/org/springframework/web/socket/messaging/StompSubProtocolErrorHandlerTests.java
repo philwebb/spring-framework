@@ -26,8 +26,6 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link StompSubProtocolErrorHandler}.
@@ -51,7 +49,7 @@ public class StompSubProtocolErrorHandlerTests {
 		Message<byte[]> actual = this.handler.handleClientMessageProcessingError(null, ex);
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
-		assertNotNull(accessor);
+		assertThat((Object) accessor).isNotNull();
 		assertThat(accessor.getCommand()).isEqualTo(StompCommand.ERROR);
 		assertThat(accessor.getMessage()).isEqualTo(ex.getMessage());
 		byte[] expecteds = new byte[0];
@@ -69,7 +67,7 @@ public class StompSubProtocolErrorHandlerTests {
 		Message<byte[]> actual = this.handler.handleClientMessageProcessingError(clientMessage, new Exception());
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
-		assertNotNull(accessor);
+		assertThat((Object) accessor).isNotNull();
 		assertThat(accessor.getReceiptId()).isEqualTo(receiptId);
 	}
 

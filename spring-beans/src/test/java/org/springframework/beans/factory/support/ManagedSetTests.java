@@ -20,10 +20,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author Rick Evans
@@ -42,7 +39,7 @@ public class ManagedSetTests {
 		child.add("three");
 		child.setMergeEnabled(true);
 		Set mergedSet = child.merge(parent);
-		assertEquals("merge() obviously did not work.", 3, mergedSet.size());
+		assertThat((long) mergedSet.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -50,7 +47,7 @@ public class ManagedSetTests {
 		ManagedSet child = new ManagedSet();
 		child.add("one");
 		child.setMergeEnabled(true);
-		assertSame(child, child.merge(null));
+		assertThat(child.merge(null)).isSameAs(child);
 	}
 
 	@Test
@@ -76,7 +73,7 @@ public class ManagedSetTests {
 		ManagedSet child = new ManagedSet();
 		child.setMergeEnabled(true);
 		Set mergedSet = child.merge(parent);
-		assertEquals("merge() obviously did not work.", 2, mergedSet.size());
+		assertThat((long) mergedSet.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -89,7 +86,7 @@ public class ManagedSetTests {
 		child.add("one");
 		child.setMergeEnabled(true);
 		Set mergedSet = child.merge(parent);
-		assertEquals("merge() obviously did not work.", 2, mergedSet.size());
+		assertThat((long) mergedSet.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
 	}
 
 }

@@ -60,8 +60,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
 
 /**
  * Integration tests for AspectJ auto-proxying. Includes mixing with Spring AOP Advisors
@@ -82,10 +80,10 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("aspects.xml");
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
-		assertEquals(68, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 68);
 		MethodInvokingFactoryBean factoryBean = (MethodInvokingFactoryBean) bf.getBean("&factoryBean");
 		assertThat(AopUtils.isAopProxy(factoryBean.getTargetObject())).isTrue();
-		assertEquals(68, ((ITestBean) factoryBean.getTargetObject()).getAge());
+		assertThat((long) ((ITestBean) factoryBean.getTargetObject()).getAge()).isEqualTo((long) 68);
 	}
 
 	@Test
@@ -94,7 +92,7 @@ public class AspectJAutoProxyCreatorTests {
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
 		tb.setAge(10);
-		assertEquals(20, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 20);
 	}
 
 	@Test
@@ -102,7 +100,7 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("aspectsWithOrdering.xml");
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
-		assertEquals(71, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 71);
 	}
 
 	@Test
@@ -203,17 +201,17 @@ public class AspectJAutoProxyCreatorTests {
 		TestBeanAdvisor tba = (TestBeanAdvisor) ac.getBean("advisor");
 
 		MultiplyReturnValue mrv = (MultiplyReturnValue) ac.getBean("aspect");
-		assertEquals(3, mrv.getMultiple());
+		assertThat((long) mrv.getMultiple()).isEqualTo((long) 3);
 
 		tba.count = 0;
 		mrv.invocations = 0;
 
 		assertThat(AopUtils.isAopProxy(shouldBeWeaved)).as("Autoproxying must apply from @AspectJ aspect").isTrue();
 		assertThat(shouldBeWeaved.getName()).isEqualTo("Adrian");
-		assertEquals(0, mrv.invocations);
-		assertEquals(34 * mrv.getMultiple(), shouldBeWeaved.getAge());
-		assertEquals("Spring advisor must be invoked", 2, tba.count);
-		assertEquals("Must be able to hold state in aspect", 1, mrv.invocations);
+		assertThat((long) mrv.invocations).isEqualTo((long) 0);
+		assertThat((long) shouldBeWeaved.getAge()).isEqualTo((long) (34 * mrv.getMultiple()));
+		assertThat((long) tba.count).as("Spring advisor must be invoked").isEqualTo((long) 2);
+		assertThat((long) mrv.invocations).as("Must be able to hold state in aspect").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -223,17 +221,17 @@ public class AspectJAutoProxyCreatorTests {
 		ITestBean adrian1 = (ITestBean) bf.getBean("adrian");
 		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
 
-		assertEquals(0, adrian1.getAge());
-		assertEquals(1, adrian1.getAge());
+		assertThat((long) adrian1.getAge()).isEqualTo((long) 0);
+		assertThat((long) adrian1.getAge()).isEqualTo((long) 1);
 
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
-		assertNotSame(adrian1, adrian2);
+		assertThat((Object) adrian2).isNotSameAs(adrian1);
 		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
-		assertEquals(0, adrian2.getAge());
-		assertEquals(1, adrian2.getAge());
-		assertEquals(2, adrian2.getAge());
-		assertEquals(3, adrian2.getAge());
-		assertEquals(2, adrian1.getAge());
+		assertThat((long) adrian2.getAge()).isEqualTo((long) 0);
+		assertThat((long) adrian2.getAge()).isEqualTo((long) 1);
+		assertThat((long) adrian2.getAge()).isEqualTo((long) 2);
+		assertThat((long) adrian2.getAge()).isEqualTo((long) 3);
+		assertThat((long) adrian1.getAge()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -247,7 +245,7 @@ public class AspectJAutoProxyCreatorTests {
 		int explicitlySetAge = 25;
 		adrian1.setAge(explicitlySetAge);
 
-		assertEquals("Setter does not initiate advice", explicitlySetAge, adrian1.getAge());
+		assertThat((long) adrian1.getAge()).as("Setter does not initiate advice").isEqualTo((long) explicitlySetAge);
 		// Fire aspect
 
 		AspectMetadata am = new AspectMetadata(PerTargetAspect.class, "someBean");
@@ -255,21 +253,21 @@ public class AspectJAutoProxyCreatorTests {
 
 		adrian1.getSpouse();
 
-		assertEquals("Advice has now been instantiated", 0, adrian1.getAge());
+		assertThat((long) adrian1.getAge()).as("Advice has now been instantiated").isEqualTo((long) 0);
 		adrian1.setAge(11);
-		assertEquals("Any int setter increments", 2, adrian1.getAge());
+		assertThat((long) adrian1.getAge()).as("Any int setter increments").isEqualTo((long) 2);
 		adrian1.setName("Adrian");
 		//assertEquals("Any other setter does not increment", 2, adrian1.getAge());
 
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
-		assertNotSame(adrian1, adrian2);
+		assertThat((Object) adrian2).isNotSameAs(adrian1);
 		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
-		assertEquals(34, adrian2.getAge());
+		assertThat((long) adrian2.getAge()).isEqualTo((long) 34);
 		adrian2.getSpouse();
-		assertEquals("Aspect now fired", 0, adrian2.getAge());
-		assertEquals(1, adrian2.getAge());
-		assertEquals(2, adrian2.getAge());
-		assertEquals(3, adrian1.getAge());
+		assertThat((long) adrian2.getAge()).as("Aspect now fired").isEqualTo((long) 0);
+		assertThat((long) adrian2.getAge()).isEqualTo((long) 1);
+		assertThat((long) adrian2.getAge()).isEqualTo((long) 2);
+		assertThat((long) adrian1.getAge()).isEqualTo((long) 3);
 	}
 
 	@Test
@@ -287,7 +285,7 @@ public class AspectJAutoProxyCreatorTests {
 		ITestBean adrian1 = (ITestBean) bf.getBean("adrian");
 		testAgeAspect(adrian1, 0, 1);
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
-		assertNotSame(adrian1, adrian2);
+		assertThat((Object) adrian2).isNotSameAs(adrian1);
 		testAgeAspect(adrian2, 2, 1);
 	}
 
@@ -298,19 +296,19 @@ public class AspectJAutoProxyCreatorTests {
 		ITestBean adrian1 = (ITestBean) bf.getBean("adrian");
 		testAgeAspect(adrian1, 0, 1);
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
-		assertNotSame(adrian1, adrian2);
+		assertThat((Object) adrian2).isNotSameAs(adrian1);
 		testAgeAspect(adrian2, 0, 1);
 	}
 
 	private void testAgeAspect(ITestBean adrian, int start, int increment) {
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		adrian.setName("");
-		assertEquals(start, adrian.age());
+		assertThat((long) adrian.age()).isEqualTo((long) start);
 		int newAge = 32;
 		adrian.setAge(newAge);
-		assertEquals(start + increment, adrian.age());
+		assertThat((long) adrian.age()).isEqualTo((long) (start + increment));
 		adrian.setAge(0);
-		assertEquals(start + increment * 2, adrian.age());
+		assertThat((long) adrian.age()).isEqualTo((long) (start + increment * 2));
 	}
 
 	@Test
@@ -331,7 +329,7 @@ public class AspectJAutoProxyCreatorTests {
 
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
-		assertEquals(68, adrian.getAge());
+		assertThat((long) adrian.getAge()).isEqualTo((long) 68);
 	}
 
 	@Test
@@ -349,7 +347,7 @@ public class AspectJAutoProxyCreatorTests {
 
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
-		assertEquals(68, adrian.getAge());
+		assertThat((long) adrian.getAge()).isEqualTo((long) 68);
 	}
 
 	@Test
@@ -359,10 +357,10 @@ public class AspectJAutoProxyCreatorTests {
 		UnreliableBean bean = (UnreliableBean) bf.getBean("unreliableBean");
 		RetryAspect aspect = (RetryAspect) bf.getBean("retryAspect");
 		int attempts = bean.unreliable();
-		assertEquals(2, attempts);
-		assertEquals(2, aspect.getBeginCalls());
-		assertEquals(1, aspect.getRollbackCalls());
-		assertEquals(1, aspect.getCommitCalls());
+		assertThat((long) attempts).isEqualTo((long) 2);
+		assertThat((long) aspect.getBeginCalls()).isEqualTo((long) 2);
+		assertThat((long) aspect.getRollbackCalls()).isEqualTo((long) 1);
+		assertThat((long) aspect.getCommitCalls()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -370,7 +368,7 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("withBeanNameAutoProxyCreator.xml");
 
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
-		assertEquals(68, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 68);
 	}
 
 

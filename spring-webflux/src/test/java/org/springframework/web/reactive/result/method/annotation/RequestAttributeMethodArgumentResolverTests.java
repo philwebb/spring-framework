@@ -38,10 +38,6 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebInputException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestAttribute;
 
 /**
@@ -94,7 +90,7 @@ public class RequestAttributeMethodArgumentResolverTests {
 		Foo foo = new Foo();
 		this.exchange.getAttributes().put("foo", foo);
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(foo, mono.block());
+		assertThat(mono.block()).isSameAs(foo);
 	}
 
 	@Test
@@ -103,19 +99,19 @@ public class RequestAttributeMethodArgumentResolverTests {
 		Foo foo = new Foo();
 		this.exchange.getAttributes().put("specialFoo", foo);
 		Mono<Object> mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(foo, mono.block());
+		assertThat(mono.block()).isSameAs(foo);
 	}
 
 	@Test
 	public void resolveNotRequired() {
 		MethodParameter param = this.testMethod.annot(requestAttribute().name("foo").notRequired()).arg();
 		Mono<Object> mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertNull(mono.block());
+		assertThat(mono.block()).isNull();
 
 		Foo foo = new Foo();
 		this.exchange.getAttributes().put("foo", foo);
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(foo, mono.block());
+		assertThat(mono.block()).isSameAs(foo);
 	}
 
 	@Test
@@ -123,7 +119,7 @@ public class RequestAttributeMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestAttribute().name("foo")).arg(Optional.class, Foo.class);
 		Mono<Object> mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
 
-		assertNotNull(mono.block());
+		assertThat(mono.block()).isNotNull();
 		assertThat(mono.block().getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional<?>) mono.block()).isPresent()).isFalse();
 
@@ -135,11 +131,11 @@ public class RequestAttributeMethodArgumentResolverTests {
 		this.exchange.getAttributes().put("foo", foo);
 		mono = this.resolver.resolveArgument(param, bindingContext, this.exchange);
 
-		assertNotNull(mono.block());
+		assertThat(mono.block()).isNotNull();
 		assertThat(mono.block().getClass()).isEqualTo(Optional.class);
 		Optional<?> optional = (Optional<?>) mono.block();
 		assertThat(optional.isPresent()).isTrue();
-		assertSame(foo, optional.get());
+		assertThat(optional.get()).isSameAs(foo);
 	}
 
 	@Test  // SPR-16158
@@ -151,7 +147,7 @@ public class RequestAttributeMethodArgumentResolverTests {
 		Mono<Foo> fooMono = Mono.just(foo);
 		this.exchange.getAttributes().put("fooMono", fooMono);
 		Mono<Object> mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(fooMono, mono.block(Duration.ZERO));
+		assertThat(mono.block(Duration.ZERO)).isSameAs(fooMono);
 
 		// RxJava Single attribute
 		Single<Foo> singleMono = Single.just(foo);
@@ -161,12 +157,12 @@ public class RequestAttributeMethodArgumentResolverTests {
 		Object value = mono.block(Duration.ZERO);
 		boolean condition = value instanceof Mono;
 		assertThat(condition).isTrue();
-		assertSame(foo, ((Mono<?>) value).block(Duration.ZERO));
+		assertThat(((Mono<?>) value).block(Duration.ZERO)).isSameAs(foo);
 
 		// No attribute --> Mono.empty
 		this.exchange.getAttributes().clear();
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(Mono.empty(), mono.block(Duration.ZERO));
+		assertThat(mono.block(Duration.ZERO)).isSameAs(Mono.empty());
 	}
 
 

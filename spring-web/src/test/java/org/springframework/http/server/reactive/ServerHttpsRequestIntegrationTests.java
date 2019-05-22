@@ -40,8 +40,6 @@ import org.springframework.http.server.reactive.bootstrap.ReactorHttpsServer;
 import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * HTTPS-specific integration test for {@link ServerHttpRequest}.
@@ -104,9 +102,9 @@ public class ServerHttpsRequestIntegrationTests {
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
 			URI uri = request.getURI();
 			assertThat(uri.getScheme()).isEqualTo("https");
-			assertNotNull(uri.getHost());
+			assertThat((Object) uri.getHost()).isNotNull();
 			assertThat(uri.getPort()).isNotEqualTo((long) -1);
-			assertNotNull(request.getRemoteAddress());
+			assertThat((Object) request.getRemoteAddress()).isNotNull();
 			assertThat(uri.getPath()).isEqualTo("/foo");
 			assertThat(uri.getQuery()).isEqualTo("param=bar");
 			return Mono.empty();

@@ -30,7 +30,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test for correct application of the bean() PCD for XML-based AspectJ aspects.
@@ -81,7 +80,7 @@ public class BeanNamePointcutTests {
 		// Call two methods to test for SPR-3953-like condition
 		this.testBean1.setAge(20);
 		this.testBean1.setName("");
-		assertEquals("Advice not executed: must have been", 2, this.counterAspect.getCount());
+		assertThat((long) this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -89,7 +88,7 @@ public class BeanNamePointcutTests {
 		boolean condition = this.testBean2 instanceof Advised;
 		assertThat(condition).as("Non-matching bean must *not* be advised (proxied)").isFalse();
 		this.testBean2.setAge(20);
-		assertEquals("Advice must *not* have been executed", 0, this.counterAspect.getCount());
+		assertThat((long) this.counterAspect.getCount()).as("Advice must *not* have been executed").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -104,7 +103,7 @@ public class BeanNamePointcutTests {
 		assertThat(condition1).as("Matching bean must be advised (proxied)").isTrue();
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
 		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
-		assertEquals("Advice not executed: must have been", 2, this.counterAspect.getCount());
+		assertThat((long) this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo((long) 2);
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean1");
 		boolean condition = !(fb instanceof Advised);
 		assertThat(condition).as("FactoryBean itself must *not* be advised").isTrue();
@@ -119,7 +118,7 @@ public class BeanNamePointcutTests {
 		assertThat(condition).as("FactoryBean itself must be advised").isTrue();
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
 		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
-		assertEquals("Advice not executed: must have been", 2, this.counterAspect.getCount());
+		assertThat((long) this.counterAspect.getCount()).as("Advice not executed: must have been").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -129,9 +128,9 @@ public class BeanNamePointcutTests {
 		boolean condition1 = this.dontInterceptThis instanceof Advised;
 		assertThat(condition1).as("Non-matching bean must *not* be advised (proxied)").isFalse();
 		interceptThis.setAge(20);
-		assertEquals(1, testInterceptor.interceptionCount);
+		assertThat((long) testInterceptor.interceptionCount).isEqualTo((long) 1);
 		dontInterceptThis.setAge(20);
-		assertEquals(1, testInterceptor.interceptionCount);
+		assertThat((long) testInterceptor.interceptionCount).isEqualTo((long) 1);
 	}
 
 

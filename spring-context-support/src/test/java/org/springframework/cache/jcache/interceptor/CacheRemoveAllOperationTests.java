@@ -22,7 +22,7 @@ import javax.cache.annotation.CacheRemoveAll;
 
 import org.junit.Test;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Stephane Nicoll
@@ -42,7 +42,7 @@ public class CacheRemoveAllOperationTests extends AbstractCacheOperationTests<Ca
 		CacheRemoveAllOperation operation = createSimpleOperation();
 
 		CacheInvocationParameter[] allParameters = operation.getAllParameters();
-		assertEquals(0, allParameters.length);
+		assertThat((long) allParameters.length).isEqualTo((long) 0);
 	}
 
 }

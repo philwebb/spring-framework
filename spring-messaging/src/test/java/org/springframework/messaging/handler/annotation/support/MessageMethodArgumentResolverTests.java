@@ -33,9 +33,6 @@ import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -70,7 +67,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 0);
 
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThat(this.resolver.resolveArgument(parameter, message)).isSameAs(message);
 	}
 
 	@Test
@@ -79,7 +76,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThat(this.resolver.resolveArgument(parameter, message)).isSameAs(message);
 	}
 
 	@Test
@@ -88,7 +85,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 2);
 
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThat(this.resolver.resolveArgument(parameter, message)).isSameAs(message);
 	}
 
 	@Test
@@ -101,8 +98,8 @@ public class MessageMethodArgumentResolverTests {
 		@SuppressWarnings("unchecked")
 		Message<Integer> actual = (Message<Integer>) this.resolver.resolveArgument(parameter, message);
 
-		assertNotNull(actual);
-		assertSame(message.getHeaders(), actual.getHeaders());
+		assertThat((Object) actual).isNotNull();
+		assertThat((Object) actual.getHeaders()).isSameAs(message.getHeaders());
 		assertThat(actual.getPayload()).isEqualTo(new Integer(4));
 	}
 
@@ -137,7 +134,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 3);
 
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThat(this.resolver.resolveArgument(parameter, message)).isSameAs(message);
 	}
 
 	@Test
@@ -158,7 +155,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 4);
 
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThat(this.resolver.resolveArgument(parameter, message)).isSameAs(message);
 	}
 
 	@Test
@@ -167,7 +164,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 0);
 
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThat(this.resolver.resolveArgument(parameter, message)).isSameAs(message);
 	}
 
 	@Test
@@ -191,7 +188,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 0);
 
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThat(this.resolver.resolveArgument(parameter, message)).isSameAs(message);
 	}
 
 	@Test

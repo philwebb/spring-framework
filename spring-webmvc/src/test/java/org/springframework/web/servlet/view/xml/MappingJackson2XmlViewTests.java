@@ -47,9 +47,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -100,7 +97,7 @@ public class MappingJackson2XmlViewTests {
 
 		String jsonResult = response.getContentAsString();
 		assertThat(jsonResult.length() > 0).isTrue();
-		assertEquals(jsonResult.length(), response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) jsonResult.length());
 
 		validateResult();
 	}
@@ -129,7 +126,7 @@ public class MappingJackson2XmlViewTests {
 
 		view.render(model, request, response);
 
-		assertNull(response.getHeader("Cache-Control"));
+		assertThat((Object) response.getHeader("Cache-Control")).isNull();
 	}
 
 	@Test
@@ -143,7 +140,7 @@ public class MappingJackson2XmlViewTests {
 		view.render(model, request, response);
 
 		assertThat(response.getContentAsString().length() > 0).isTrue();
-		assertEquals(response.getContentAsString().length(), response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) response.getContentAsString().length());
 
 		validateResult();
 	}
@@ -225,7 +222,7 @@ public class MappingJackson2XmlViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertEquals(content.length(), response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) content.length());
 		assertThat(content.contains("foo")).isTrue();
 		assertThat(content.contains("boo")).isFalse();
 		assertThat(content.contains(JsonView.class.getName())).isFalse();
@@ -234,7 +231,7 @@ public class MappingJackson2XmlViewTests {
 	private void validateResult() throws Exception {
 		Object xmlResult =
 				jsContext.evaluateString(jsScope, "(" + response.getContentAsString() + ")", "XML Stream", 1, null);
-		assertNotNull("XML Result did not eval as valid JavaScript", xmlResult);
+		assertThat(xmlResult).as("XML Result did not eval as valid JavaScript").isNotNull();
 		assertThat(response.getContentType()).isEqualTo("application/xml");
 	}
 

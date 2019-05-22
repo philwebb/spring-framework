@@ -36,7 +36,6 @@ import org.springframework.web.reactive.protobuf.Msg;
 import org.springframework.web.reactive.protobuf.SecondMsg;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests for Protobuf support.

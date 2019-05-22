@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for target selection matching (see SPR-3783).
@@ -64,17 +64,17 @@ public class TargetPointcutSelectionTests {
 	@Test
 	public void targetSelectionForMatchedType() {
 		testImpl1.interfaceMethod();
-		assertEquals("Should have been advised by POJO advice for impl", 1, testAspectForTestImpl1.count);
-		assertEquals("Should have been advised by POJO advice for base type", 1, testAspectForAbstractTestImpl.count);
-		assertEquals("Should have been advised by advisor", 1, testInterceptor.count);
+		assertThat((long) testAspectForTestImpl1.count).as("Should have been advised by POJO advice for impl").isEqualTo((long) 1);
+		assertThat((long) testAspectForAbstractTestImpl.count).as("Should have been advised by POJO advice for base type").isEqualTo((long) 1);
+		assertThat((long) testInterceptor.count).as("Should have been advised by advisor").isEqualTo((long) 1);
 	}
 
 	@Test
 	public void targetNonSelectionForMismatchedType() {
 		testImpl2.interfaceMethod();
-		assertEquals("Shouldn't have been advised by POJO advice for impl", 0, testAspectForTestImpl1.count);
-		assertEquals("Should have been advised by POJO advice for base type", 1, testAspectForAbstractTestImpl.count);
-		assertEquals("Shouldn't have been advised by advisor", 0, testInterceptor.count);
+		assertThat((long) testAspectForTestImpl1.count).as("Shouldn't have been advised by POJO advice for impl").isEqualTo((long) 0);
+		assertThat((long) testAspectForAbstractTestImpl.count).as("Should have been advised by POJO advice for base type").isEqualTo((long) 1);
+		assertThat((long) testInterceptor.count).as("Shouldn't have been advised by advisor").isEqualTo((long) 0);
 	}
 
 

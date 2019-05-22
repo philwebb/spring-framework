@@ -47,8 +47,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -115,23 +113,23 @@ public class JavaConfigTests {
 	 * @see org.springframework.test.context.hierarchies.web.ControllerIntegrationTests#verifyRootWacSupport()
 	 */
 	private void verifyRootWacSupport() {
-		assertNotNull(personDao);
-		assertNotNull(personController);
+		assertThat((Object) personDao).isNotNull();
+		assertThat((Object) personController).isNotNull();
 
 		ApplicationContext parent = wac.getParent();
-		assertNotNull(parent);
+		assertThat((Object) parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isTrue();
 		WebApplicationContext root = (WebApplicationContext) parent;
 
 		ServletContext childServletContext = wac.getServletContext();
-		assertNotNull(childServletContext);
+		assertThat((Object) childServletContext).isNotNull();
 		ServletContext rootServletContext = root.getServletContext();
-		assertNotNull(rootServletContext);
-		assertSame(childServletContext, rootServletContext);
+		assertThat((Object) rootServletContext).isNotNull();
+		assertThat((Object) rootServletContext).isSameAs(childServletContext);
 
-		assertSame(root, rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE));
-		assertSame(root, childServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE));
+		assertThat(rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);
+		assertThat(childServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);
 	}
 
 

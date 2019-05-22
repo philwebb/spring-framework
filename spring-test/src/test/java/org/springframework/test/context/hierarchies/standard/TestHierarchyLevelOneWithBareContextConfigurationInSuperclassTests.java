@@ -27,9 +27,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Sam Brannen
@@ -66,8 +63,8 @@ public class TestHierarchyLevelOneWithBareContextConfigurationInSuperclassTests 
 
 	@Test
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNull("parent ApplicationContext", context.getParent());
+		assertThat((Object) context).as("child ApplicationContext").isNotNull();
+		assertThat((Object) context.getParent()).as("parent ApplicationContext").isNull();
 		assertThat(foo).isEqualTo("foo-level-1");
 		assertThat(bar).isEqualTo("bar");
 	}

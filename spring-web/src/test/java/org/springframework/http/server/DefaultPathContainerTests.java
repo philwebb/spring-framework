@@ -27,8 +27,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link DefaultPathContainer}.
@@ -80,11 +78,11 @@ public class DefaultPathContainerTests {
 		PathContainer container = PathContainer.parsePath(rawValue);
 
 		if ("".equals(rawValue)) {
-			assertEquals(0, container.elements().size());
+			assertThat((long) container.elements().size()).isEqualTo((long) 0);
 			return;
 		}
 
-		assertEquals(1, container.elements().size());
+		assertThat((long) container.elements().size()).isEqualTo((long) 1);
 		PathSegment segment = (PathSegment) container.elements().get(0);
 
 		assertThat(segment.value()).as("value: '" + rawValue + "'").isEqualTo(rawValue);
@@ -126,7 +124,7 @@ public class DefaultPathContainerTests {
 	public void subPath() throws Exception {
 		// basic
 		PathContainer path = PathContainer.parsePath("/a/b/c");
-		assertSame(path, path.subPath(0));
+		assertThat((Object) path.subPath(0)).isSameAs(path);
 		assertThat(path.subPath(2).value()).isEqualTo("/b/c");
 		assertThat(path.subPath(4).value()).isEqualTo("/c");
 

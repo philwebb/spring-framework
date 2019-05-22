@@ -52,10 +52,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-
 /**
  * Tests for {@link ContextLoader} and {@link ContextLoaderListener}.
  *
@@ -92,8 +88,8 @@ public class ContextLoaderTests {
 		assertThat(context.containsBean("beans1.bean2")).isFalse();
 		listener.contextDestroyed(event);
 		assertThat(lb.isDestroyed()).as("Destroyed").isTrue();
-		assertNull(sc.getAttribute(contextAttr));
-		assertNull(WebApplicationContextUtils.getWebApplicationContext(sc));
+		assertThat(sc.getAttribute(contextAttr)).isNull();
+		assertThat((Object) WebApplicationContextUtils.getWebApplicationContext(sc)).isNull();
 	}
 
 	/**
@@ -112,7 +108,7 @@ public class ContextLoaderTests {
 		ServletContextListener listener = new ContextLoaderListener() {
 			@Override
 			protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
-				assertNotNull("The ServletContext should not be null.", sc);
+				assertThat((Object) sc).as("The ServletContext should not be null.").isNotNull();
 				assertThat(sc).as("Verifying that we received the expected ServletContext.").isEqualTo(sc);
 				assertThat(wac.isActive()).as("The ApplicationContext should not yet have been refreshed.").isFalse();
 				buffer.append(expectedContents);
@@ -341,7 +337,7 @@ public class ContextLoaderTests {
 						}
 						catch (BeanCreationException ex) {
 							DefaultListableBeanFactory factory = (DefaultListableBeanFactory) getBeanFactory();
-							assertEquals(0, factory.getSingletonCount());
+							assertThat((long) factory.getSingletonCount()).isEqualTo((long) 0);
 							throw ex;
 						}
 					}

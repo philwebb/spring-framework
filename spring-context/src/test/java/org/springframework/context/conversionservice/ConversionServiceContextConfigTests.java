@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Keith Donald
@@ -32,7 +31,7 @@ public class ConversionServiceContextConfigTests {
 	public void testConfigOk() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("org/springframework/context/conversionservice/conversionService.xml");
 		TestClient client = context.getBean("testClient", TestClient.class);
-		assertEquals(2, client.getBars().size());
+		assertThat((long) client.getBars().size()).isEqualTo((long) 2);
 		assertThat(client.getBars().get(0).getValue()).isEqualTo("value1");
 		assertThat(client.getBars().get(1).getValue()).isEqualTo("value2");
 		assertThat(client.isBool()).isTrue();

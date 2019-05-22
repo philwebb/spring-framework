@@ -32,7 +32,6 @@ import org.springframework.remoting.RemoteAccessException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -106,7 +105,7 @@ public class SimpleRemoteSlsbInvokerInterceptorTests {
 		SimpleRemoteSlsbInvokerInterceptor si = configuredInterceptor(mockContext, jndiName);
 		si.setExposeAccessContext(true);
 		RemoteInterface target = (RemoteInterface) configuredProxy(si, RemoteInterface.class);
-		assertNull(target.targetMethod());
+		assertThat(target.targetMethod()).isNull();
 
 		verify(mockContext, times(2)).close();
 		verify(ejb).targetMethod();

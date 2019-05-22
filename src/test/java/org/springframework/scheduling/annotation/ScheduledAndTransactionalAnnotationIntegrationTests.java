@@ -44,9 +44,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-
-
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -253,7 +250,7 @@ public class ScheduledAndTransactionalAnnotationIntegrationTests {
 		@Override
 		public int getInvocationCount() {
 			if (this.myAspect != null) {
-				assertEquals(this.count.get(), this.myAspect.count.get());
+				assertThat((long) this.myAspect.count.get()).isEqualTo((long) this.count.get());
 			}
 			return this.count.get();
 		}

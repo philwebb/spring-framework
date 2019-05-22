@@ -39,11 +39,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-
 /**
  * Unit tests for {@link org.springframework.http.HttpHeaders}.
  *
@@ -124,7 +119,7 @@ public class HttpHeadersTests {
 	public void contentLength() {
 		long length = 42L;
 		headers.setContentLength(length);
-		assertEquals("Invalid Content-Length header", length, headers.getContentLength());
+		assertThat(headers.getContentLength()).as("Invalid Content-Length header").isEqualTo(length);
 		assertThat(headers.getFirst("Content-Length")).as("Invalid Content-Length header").isEqualTo("42");
 	}
 
@@ -241,12 +236,12 @@ public class HttpHeadersTests {
 		calendar.setTimeZone(TimeZone.getTimeZone("CET"));
 		long date = calendar.getTimeInMillis();
 		headers.setDate(date);
-		assertEquals("Invalid Date header", date, headers.getDate());
+		assertThat(headers.getDate()).as("Invalid Date header").isEqualTo(date);
 		assertThat(headers.getFirst("date")).as("Invalid Date header").isEqualTo("Thu, 18 Dec 2008 10:20:00 GMT");
 
 		// RFC 850
 		headers.set("Date", "Thu, 18 Dec 2008 10:20:00 GMT");
-		assertEquals("Invalid Date header", date, headers.getDate());
+		assertThat(headers.getDate()).as("Invalid Date header").isEqualTo(date);
 	}
 
 	@Test
@@ -266,7 +261,7 @@ public class HttpHeadersTests {
 			long date = calendar.getTimeInMillis();
 			headers.setDate(date);
 			assertThat(headers.getFirst("date")).as("Invalid Date header").isEqualTo("Thu, 18 Dec 2008 10:20:00 GMT");
-			assertEquals("Invalid Date header", date, headers.getDate());
+			assertThat(headers.getDate()).as("Invalid Date header").isEqualTo(date);
 		}
 		finally {
 			Locale.setDefault(defaultLocale);
@@ -279,7 +274,7 @@ public class HttpHeadersTests {
 		calendar.setTimeZone(TimeZone.getTimeZone("CET"));
 		long date = calendar.getTimeInMillis();
 		headers.setLastModified(date);
-		assertEquals("Invalid Last-Modified header", date, headers.getLastModified());
+		assertThat(headers.getLastModified()).as("Invalid Last-Modified header").isEqualTo(date);
 		assertThat(headers.getFirst("last-modified")).as("Invalid Last-Modified header").isEqualTo("Thu, 18 Dec 2008 10:20:00 GMT");
 	}
 
@@ -289,7 +284,7 @@ public class HttpHeadersTests {
 		calendar.setTimeZone(TimeZone.getTimeZone("CET"));
 		long date = calendar.getTimeInMillis();
 		headers.setExpires(date);
-		assertEquals("Invalid Expires header", date, headers.getExpires());
+		assertThat(headers.getExpires()).as("Invalid Expires header").isEqualTo(date);
 		assertThat(headers.getFirst("expires")).as("Invalid Expires header").isEqualTo("Thu, 18 Dec 2008 10:20:00 GMT");
 	}
 
@@ -297,14 +292,14 @@ public class HttpHeadersTests {
 	public void expiresZonedDateTime() {
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(2008, 12, 18, 10, 20, 0, 0, ZoneId.of("GMT"));
 		headers.setExpires(zonedDateTime);
-		assertEquals("Invalid Expires header", zonedDateTime.toInstant().toEpochMilli(), headers.getExpires());
+		assertThat(headers.getExpires()).as("Invalid Expires header").isEqualTo(zonedDateTime.toInstant().toEpochMilli());
 		assertThat(headers.getFirst("expires")).as("Invalid Expires header").isEqualTo("Thu, 18 Dec 2008 10:20:00 GMT");
 	}
 
 	@Test  // SPR-10648 (example is from INT-3063)
 	public void expiresInvalidDate() {
 		headers.set("Expires", "-1");
-		assertEquals(-1, headers.getExpires());
+		assertThat(headers.getExpires()).isEqualTo((long) -1);
 	}
 
 	@Test
@@ -313,20 +308,20 @@ public class HttpHeadersTests {
 		calendar.setTimeZone(TimeZone.getTimeZone("CET"));
 		long date = calendar.getTimeInMillis();
 		headers.setIfModifiedSince(date);
-		assertEquals("Invalid If-Modified-Since header", date, headers.getIfModifiedSince());
+		assertThat(headers.getIfModifiedSince()).as("Invalid If-Modified-Since header").isEqualTo(date);
 		assertThat(headers.getFirst("if-modified-since")).as("Invalid If-Modified-Since header").isEqualTo("Thu, 18 Dec 2008 10:20:00 GMT");
 	}
 
 	@Test  // SPR-14144
 	public void invalidIfModifiedSinceHeader() {
 		headers.set(HttpHeaders.IF_MODIFIED_SINCE, "0");
-		assertEquals(-1, headers.getIfModifiedSince());
+		assertThat(headers.getIfModifiedSince()).isEqualTo((long) -1);
 
 		headers.set(HttpHeaders.IF_MODIFIED_SINCE, "-1");
-		assertEquals(-1, headers.getIfModifiedSince());
+		assertThat(headers.getIfModifiedSince()).isEqualTo((long) -1);
 
 		headers.set(HttpHeaders.IF_MODIFIED_SINCE, "XXX");
-		assertEquals(-1, headers.getIfModifiedSince());
+		assertThat(headers.getIfModifiedSince()).isEqualTo((long) -1);
 	}
 
 	@Test
@@ -354,8 +349,8 @@ public class HttpHeadersTests {
 	@Test
 	public void cacheControlEmpty() {
 		headers.setCacheControl(CacheControl.empty());
-		assertNull("Invalid Cache-Control header", headers.getCacheControl());
-		assertNull("Invalid Cache-Control header", headers.getFirst("cache-control"));
+		assertThat((Object) headers.getCacheControl()).as("Invalid Cache-Control header").isNull();
+		assertThat((Object) headers.getFirst("cache-control")).as("Invalid Cache-Control header").isNull();
 	}
 
 	@Test
@@ -368,7 +363,7 @@ public class HttpHeadersTests {
 	@Test
 	public void contentDisposition() {
 		ContentDisposition disposition = headers.getContentDisposition();
-		assertNotNull(disposition);
+		assertThat((Object) disposition).isNotNull();
 		assertThat(headers.getContentDisposition()).as("Invalid Content-Disposition header").isEqualTo(ContentDisposition.empty());
 
 		disposition = ContentDisposition.builder("attachment").name("foo").filename("foo.txt").size(123L).build();
@@ -421,7 +416,7 @@ public class HttpHeadersTests {
 
 	@Test
 	public void accessControlAllowOrigin() {
-		assertNull(headers.getAccessControlAllowOrigin());
+		assertThat((Object) headers.getAccessControlAllowOrigin()).isNull();
 		headers.setAccessControlAllowOrigin("*");
 		assertThat(headers.getAccessControlAllowOrigin()).isEqualTo("*");
 	}
@@ -437,9 +432,9 @@ public class HttpHeadersTests {
 
 	@Test
 	public void accessControlMaxAge() {
-		assertEquals(-1, headers.getAccessControlMaxAge());
+		assertThat(headers.getAccessControlMaxAge()).isEqualTo((long) -1);
 		headers.setAccessControlMaxAge(3600);
-		assertEquals(3600, headers.getAccessControlMaxAge());
+		assertThat(headers.getAccessControlMaxAge()).isEqualTo((long) 3600);
 	}
 
 	@Test
@@ -453,7 +448,7 @@ public class HttpHeadersTests {
 
 	@Test
 	public void accessControlRequestMethod() {
-		assertNull(headers.getAccessControlRequestMethod());
+		assertThat((Object) headers.getAccessControlRequestMethod()).isNull();
 		headers.setAccessControlRequestMethod(HttpMethod.POST);
 		assertThat(headers.getAccessControlRequestMethod()).isEqualTo(HttpMethod.POST);
 	}
@@ -540,7 +535,7 @@ public class HttpHeadersTests {
 		String password = "bar";
 		headers.setBasicAuth(username, password);
 		String authorization = headers.getFirst(HttpHeaders.AUTHORIZATION);
-		assertNotNull(authorization);
+		assertThat((Object) authorization).isNotNull();
 		assertThat(authorization.startsWith("Basic ")).isTrue();
 		byte[] result = Base64.getDecoder().decode(authorization.substring(6).getBytes(StandardCharsets.ISO_8859_1));
 		assertThat(new String(result, StandardCharsets.ISO_8859_1)).isEqualTo("foo:bar");

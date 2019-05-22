@@ -30,8 +30,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * This set of tests refutes the claims made in
@@ -92,8 +90,8 @@ public class AnnotatedConfigClassesWithoutAtConfigurationTests {
 
 	@Test
 	public void testSPR_9051() throws Exception {
-		assertNotNull(enigma);
-		assertNotNull(lifecycleBean);
+		assertThat((Object) enigma).isNotNull();
+		assertThat((Object) lifecycleBean).isNotNull();
 		assertThat(lifecycleBean.isInitialized()).isTrue();
 		Set<String> names = new HashSet<>();
 		names.add(enigma.toString());

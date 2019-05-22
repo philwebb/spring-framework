@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.quartz.CronTrigger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Stephane Nicoll

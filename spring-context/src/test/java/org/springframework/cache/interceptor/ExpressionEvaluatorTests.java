@@ -40,11 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
-
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Costin Leau
  * @author Phillip Webb
@@ -67,7 +62,7 @@ public class ExpressionEvaluatorTests {
 	@Test
 	public void testMultipleCachingSource() {
 		Collection<CacheOperation> ops = getOps("multipleCaching");
-		assertEquals(2, ops.size());
+		assertThat((long) ops.size()).isEqualTo((long) 2);
 		Iterator<CacheOperation> it = ops.iterator();
 		CacheOperation next = it.next();
 		boolean condition1 = next instanceof CacheableOperation;

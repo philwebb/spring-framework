@@ -32,9 +32,6 @@ import org.springframework.expression.spel.testresources.Inventor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Tests for the expression state object - some features are not yet exploited in the language (eg nested scopes)
@@ -59,7 +56,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 		ExpressionState state = getState();
 
 		Object value = state.lookupLocalVariable("foo");
-		assertNull(value);
+		assertThat(value).isNull();
 
 		state.setLocalVariable("foo",34);
 		value = state.lookupLocalVariable("foo");
@@ -98,7 +95,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 		assertThat(typedValue).isEqualTo(TypedValue.NULL);
 
 		state.setVariable("goo", "hello");
-		assertNull(state.lookupLocalVariable("goo"));
+		assertThat(state.lookupLocalVariable("goo")).isNull();
 	}
 
 	@Test
@@ -167,7 +164,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	@Test
 	public void testPopulatedNestedScopes() {
 		ExpressionState state = getState();
-		assertNull(state.lookupLocalVariable("foo"));
+		assertThat(state.lookupLocalVariable("foo")).isNull();
 
 		state.enterScope("foo",34);
 		assertThat(state.lookupLocalVariable("foo")).isEqualTo(34);
@@ -180,7 +177,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 		assertThat(state.lookupLocalVariable("foo")).isEqualTo(34);
 
 		state.exitScope();
-		assertNull(state.lookupLocalVariable("goo"));
+		assertThat(state.lookupLocalVariable("goo")).isNull();
 	}
 
 	@Test
@@ -197,8 +194,8 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	@Test
 	public void testPopulatedNestedScopesMap() {
 		ExpressionState state = getState();
-		assertNull(state.lookupLocalVariable("foo"));
-		assertNull(state.lookupLocalVariable("goo"));
+		assertThat(state.lookupLocalVariable("foo")).isNull();
+		assertThat(state.lookupLocalVariable("goo")).isNull();
 
 		Map<String,Object> m = new HashMap<>();
 		m.put("foo", 34);
@@ -215,8 +212,8 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 
 		state.exitScope();
 		state.exitScope();
-		assertNull(state.lookupLocalVariable("foo"));
-		assertNull(state.lookupLocalVariable("goo"));
+		assertThat(state.lookupLocalVariable("foo")).isNull();
+		assertThat(state.lookupLocalVariable("goo")).isNull();
 	}
 
 	@Test
@@ -240,7 +237,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	@Test
 	public void testTypeLocator() throws EvaluationException {
 		ExpressionState state = getState();
-		assertNotNull(state.getEvaluationContext().getTypeLocator());
+		assertThat((Object) state.getEvaluationContext().getTypeLocator()).isNotNull();
 		assertThat(state.findType("java.lang.Integer")).isEqualTo(Integer.class);
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				state.findType("someMadeUpName"))

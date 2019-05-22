@@ -24,8 +24,6 @@ import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -40,7 +38,7 @@ public class DefaultSingletonBeanRegistryTests {
 
 		TestBean tb = new TestBean();
 		beanRegistry.registerSingleton("tb", tb);
-		assertSame(tb, beanRegistry.getSingleton("tb"));
+		assertThat(beanRegistry.getSingleton("tb")).isSameAs(tb);
 
 		TestBean tb2 = (TestBean) beanRegistry.getSingleton("tb2", new ObjectFactory<Object>() {
 			@Override
@@ -48,19 +46,19 @@ public class DefaultSingletonBeanRegistryTests {
 				return new TestBean();
 			}
 		});
-		assertSame(tb2, beanRegistry.getSingleton("tb2"));
+		assertThat(beanRegistry.getSingleton("tb2")).isSameAs(tb2);
 
-		assertSame(tb, beanRegistry.getSingleton("tb"));
-		assertSame(tb2, beanRegistry.getSingleton("tb2"));
-		assertEquals(2, beanRegistry.getSingletonCount());
+		assertThat(beanRegistry.getSingleton("tb")).isSameAs(tb);
+		assertThat(beanRegistry.getSingleton("tb2")).isSameAs(tb2);
+		assertThat((long) beanRegistry.getSingletonCount()).isEqualTo((long) 2);
 		String[] names = beanRegistry.getSingletonNames();
-		assertEquals(2, names.length);
+		assertThat((long) names.length).isEqualTo((long) 2);
 		assertThat(names[0]).isEqualTo("tb");
 		assertThat(names[1]).isEqualTo("tb2");
 
 		beanRegistry.destroySingletons();
-		assertEquals(0, beanRegistry.getSingletonCount());
-		assertEquals(0, beanRegistry.getSingletonNames().length);
+		assertThat((long) beanRegistry.getSingletonCount()).isEqualTo((long) 0);
+		assertThat((long) beanRegistry.getSingletonNames().length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -70,18 +68,18 @@ public class DefaultSingletonBeanRegistryTests {
 		DerivedTestBean tb = new DerivedTestBean();
 		beanRegistry.registerSingleton("tb", tb);
 		beanRegistry.registerDisposableBean("tb", tb);
-		assertSame(tb, beanRegistry.getSingleton("tb"));
+		assertThat(beanRegistry.getSingleton("tb")).isSameAs(tb);
 
-		assertSame(tb, beanRegistry.getSingleton("tb"));
-		assertEquals(1, beanRegistry.getSingletonCount());
+		assertThat(beanRegistry.getSingleton("tb")).isSameAs(tb);
+		assertThat((long) beanRegistry.getSingletonCount()).isEqualTo((long) 1);
 		String[] names = beanRegistry.getSingletonNames();
-		assertEquals(1, names.length);
+		assertThat((long) names.length).isEqualTo((long) 1);
 		assertThat(names[0]).isEqualTo("tb");
 		assertThat(tb.wasDestroyed()).isFalse();
 
 		beanRegistry.destroySingletons();
-		assertEquals(0, beanRegistry.getSingletonCount());
-		assertEquals(0, beanRegistry.getSingletonNames().length);
+		assertThat((long) beanRegistry.getSingletonCount()).isEqualTo((long) 0);
+		assertThat((long) beanRegistry.getSingletonNames().length).isEqualTo((long) 0);
 		assertThat(tb.wasDestroyed()).isTrue();
 	}
 

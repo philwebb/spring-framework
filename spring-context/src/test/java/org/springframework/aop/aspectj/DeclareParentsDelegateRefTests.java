@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Ramnivas Laddad
@@ -54,7 +53,7 @@ public class DeclareParentsDelegateRefTests {
 	@Test
 	public void testIntroductionDelegation() {
 		((ICounter)noMethodsBean).increment();
-		assertEquals("Delegate's counter should be updated", 1, counter.getCount());
+		assertThat((long) counter.getCount()).as("Delegate's counter should be updated").isEqualTo((long) 1);
 	}
 
 }

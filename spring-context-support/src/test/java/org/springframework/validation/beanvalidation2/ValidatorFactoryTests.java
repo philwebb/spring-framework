@@ -55,11 +55,6 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-
 /**
  * @author Juergen Hoeller
  */
@@ -74,7 +69,7 @@ public class ValidatorFactoryTests {
 
 		ValidPerson person = new ValidPerson();
 		Set<ConstraintViolation<ValidPerson>> result = validator.validate(person);
-		assertEquals(2, result.size());
+		assertThat((long) result.size()).isEqualTo((long) 2);
 		for (ConstraintViolation<ValidPerson> cv : result) {
 			String path = cv.getPropertyPath().toString();
 			assertThat(path).matches(actual -> "name".equals(actual) || "address.street".equals(actual));
@@ -100,7 +95,7 @@ public class ValidatorFactoryTests {
 
 		ValidPerson person = new ValidPerson();
 		Set<ConstraintViolation<ValidPerson>> result = validator.validate(person);
-		assertEquals(2, result.size());
+		assertThat((long) result.size()).isEqualTo((long) 2);
 		for (ConstraintViolation<ValidPerson> cv : result) {
 			String path = cv.getPropertyPath().toString();
 			assertThat(path).matches(actual -> "name".equals(actual) || "address.street".equals(actual));
@@ -126,7 +121,7 @@ public class ValidatorFactoryTests {
 		person.setName("Juergen");
 		person.getAddress().setStreet("Juergen's Street");
 		Set<ConstraintViolation<ValidPerson>> result = validator.validate(person);
-		assertEquals(1, result.size());
+		assertThat((long) result.size()).isEqualTo((long) 1);
 		Iterator<ConstraintViolation<ValidPerson>> iterator = result.iterator();
 		ConstraintViolation<?> cv = iterator.next();
 		assertThat(cv.getPropertyPath().toString()).isEqualTo("");
@@ -144,7 +139,7 @@ public class ValidatorFactoryTests {
 		person.getAddress().setStreet("Phil's Street");
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(person, "person");
 		validator.validate(person, errors);
-		assertEquals(1, errors.getErrorCount());
+		assertThat((long) errors.getErrorCount()).isEqualTo((long) 1);
 		assertThat(errors.getFieldError("address").getRejectedValue()).isInstanceOf(ValidAddress.class);
 	}
 
@@ -156,11 +151,11 @@ public class ValidatorFactoryTests {
 		ValidPerson person = new ValidPerson();
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(person, "person");
 		validator.validate(person, result);
-		assertEquals(2, result.getErrorCount());
+		assertThat((long) result.getErrorCount()).isEqualTo((long) 2);
 		FieldError fieldError = result.getFieldError("name");
 		assertThat(fieldError.getField()).isEqualTo("name");
 		List<String> errorCodes = Arrays.asList(fieldError.getCodes());
-		assertEquals(4, errorCodes.size());
+		assertThat((long) errorCodes.size()).isEqualTo((long) 4);
 		assertThat(errorCodes.contains("NotNull.person.name")).isTrue();
 		assertThat(errorCodes.contains("NotNull.name")).isTrue();
 		assertThat(errorCodes.contains("NotNull.java.lang.String")).isTrue();
@@ -168,7 +163,7 @@ public class ValidatorFactoryTests {
 		fieldError = result.getFieldError("address.street");
 		assertThat(fieldError.getField()).isEqualTo("address.street");
 		errorCodes = Arrays.asList(fieldError.getCodes());
-		assertEquals(5, errorCodes.size());
+		assertThat((long) errorCodes.size()).isEqualTo((long) 5);
 		assertThat(errorCodes.contains("NotNull.person.address.street")).isTrue();
 		assertThat(errorCodes.contains("NotNull.address.street")).isTrue();
 		assertThat(errorCodes.contains("NotNull.street")).isTrue();
@@ -186,10 +181,10 @@ public class ValidatorFactoryTests {
 		person.getAddress().setStreet("Juergen's Street");
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(person, "person");
 		validator.validate(person, result);
-		assertEquals(1, result.getErrorCount());
+		assertThat((long) result.getErrorCount()).isEqualTo((long) 1);
 		ObjectError globalError = result.getGlobalError();
 		List<String> errorCodes = Arrays.asList(globalError.getCodes());
-		assertEquals(2, errorCodes.size());
+		assertThat((long) errorCodes.size()).isEqualTo((long) 2);
 		assertThat(errorCodes.contains("NameAddressValid.person")).isTrue();
 		assertThat(errorCodes.contains("NameAddressValid")).isTrue();
 	}
@@ -206,10 +201,10 @@ public class ValidatorFactoryTests {
 		person.getAddress().setStreet("Juergen's Street");
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(person, "person");
 		validator.validate(person, result);
-		assertEquals(1, result.getErrorCount());
+		assertThat((long) result.getErrorCount()).isEqualTo((long) 1);
 		ObjectError globalError = result.getGlobalError();
 		List<String> errorCodes = Arrays.asList(globalError.getCodes());
-		assertEquals(2, errorCodes.size());
+		assertThat((long) errorCodes.size()).isEqualTo((long) 2);
 		assertThat(errorCodes.contains("NameAddressValid.person")).isTrue();
 		assertThat(errorCodes.contains("NameAddressValid")).isTrue();
 		ctx.close();
@@ -224,7 +219,7 @@ public class ValidatorFactoryTests {
 		person.getAddressList().add(new ValidAddress());
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(person, "person");
 		validator.validate(person, result);
-		assertEquals(3, result.getErrorCount());
+		assertThat((long) result.getErrorCount()).isEqualTo((long) 3);
 		FieldError fieldError = result.getFieldError("name");
 		assertThat(fieldError.getField()).isEqualTo("name");
 		fieldError = result.getFieldError("address.street");
@@ -242,7 +237,7 @@ public class ValidatorFactoryTests {
 		person.getAddressSet().add(new ValidAddress());
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(person, "person");
 		validator.validate(person, result);
-		assertEquals(3, result.getErrorCount());
+		assertThat((long) result.getErrorCount()).isEqualTo((long) 3);
 		FieldError fieldError = result.getFieldError("name");
 		assertThat(fieldError.getField()).isEqualTo("name");
 		fieldError = result.getFieldError("address.street");
@@ -260,7 +255,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNull();
 	}
 
 	@Test
@@ -272,7 +267,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNull();
 	}
 
 	@Test
@@ -289,7 +284,7 @@ public class ValidatorFactoryTests {
 		validator.validate(listContainer, errors);
 
 		FieldError fieldError = errors.getFieldError("list[1]");
-		assertNotNull(fieldError);
+		assertThat((Object) fieldError).isNotNull();
 		assertThat(fieldError.getRejectedValue()).isEqualTo("X");
 		assertThat(errors.getFieldValue("list[1]")).isEqualTo("X");
 	}
@@ -386,7 +381,7 @@ public class ValidatorFactoryTests {
 		@Override
 		public boolean isValid(ValidPerson value, ConstraintValidatorContext context) {
 			if (value.expectsAutowiredValidator) {
-				assertNotNull(this.environment);
+				assertThat((Object) this.environment).isNotNull();
 			}
 			boolean valid = (value.name == null || !value.address.street.contains(value.name));
 			if (!valid && "Phil".equals(value.name)) {

@@ -41,8 +41,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Client and server-side WebSocket integration tests.
@@ -89,8 +87,8 @@ public class WebSocketHandshakeTests extends AbstractWebSocketIntegrationTests {
 		session.sendMessage(new PongMessage());
 
 		serverHandler.await();
-		assertNull(serverHandler.getTransportError());
-		assertEquals(1, serverHandler.getReceivedMessages().size());
+		assertThat((Object) serverHandler.getTransportError()).isNull();
+		assertThat((long) serverHandler.getReceivedMessages().size()).isEqualTo((long) 1);
 		assertThat(serverHandler.getReceivedMessages().get(0).getClass()).isEqualTo(PongMessage.class);
 	}
 

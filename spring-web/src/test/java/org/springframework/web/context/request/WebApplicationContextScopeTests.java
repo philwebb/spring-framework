@@ -29,8 +29,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -58,10 +56,10 @@ public class WebApplicationContextScopeTests {
 		ServletRequestAttributes requestAttributes = new ServletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		try {
-			assertNull(request.getAttribute(NAME));
+			assertThat(request.getAttribute(NAME)).isNull();
 			DerivedTestBean bean = ac.getBean(NAME, DerivedTestBean.class);
-			assertSame(bean, request.getAttribute(NAME));
-			assertSame(bean, ac.getBean(NAME));
+			assertThat(request.getAttribute(NAME)).isSameAs(bean);
+			assertThat(ac.getBean(NAME)).isSameAs(bean);
 			requestAttributes.requestCompleted();
 			assertThat(bean.wasDestroyed()).isTrue();
 		}
@@ -77,10 +75,10 @@ public class WebApplicationContextScopeTests {
 		ServletRequestAttributes requestAttributes = new ServletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		try {
-			assertNull(request.getSession().getAttribute(NAME));
+			assertThat(request.getSession().getAttribute(NAME)).isNull();
 			DerivedTestBean bean = ac.getBean(NAME, DerivedTestBean.class);
-			assertSame(bean, request.getSession().getAttribute(NAME));
-			assertSame(bean, ac.getBean(NAME));
+			assertThat(request.getSession().getAttribute(NAME)).isSameAs(bean);
+			assertThat(ac.getBean(NAME)).isSameAs(bean);
 			request.getSession().invalidate();
 			assertThat(bean.wasDestroyed()).isTrue();
 		}
@@ -92,10 +90,10 @@ public class WebApplicationContextScopeTests {
 	@Test
 	public void testApplicationScope() {
 		WebApplicationContext ac = initApplicationContext(WebApplicationContext.SCOPE_APPLICATION);
-		assertNull(ac.getServletContext().getAttribute(NAME));
+		assertThat(ac.getServletContext().getAttribute(NAME)).isNull();
 		DerivedTestBean bean = ac.getBean(NAME, DerivedTestBean.class);
-		assertSame(bean, ac.getServletContext().getAttribute(NAME));
-		assertSame(bean, ac.getBean(NAME));
+		assertThat(ac.getServletContext().getAttribute(NAME)).isSameAs(bean);
+		assertThat(ac.getBean(NAME)).isSameAs(bean);
 		new ContextCleanupListener().contextDestroyed(new ServletContextEvent(ac.getServletContext()));
 		assertThat(bean.wasDestroyed()).isTrue();
 	}

@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for an issue raised in https://jira.spring.io/browse/SPR-15927.
@@ -50,7 +49,7 @@ public class AutowiredRuleTests {
 
 	@Test
 	public void test() {
-		assertNotNull("TestRule should have been @Autowired", autowiredTestRule);
+		assertThat((Object) autowiredTestRule).as("TestRule should have been @Autowired").isNotNull();
 
 		// Rationale for the following assertion:
 		//

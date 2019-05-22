@@ -26,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * A test fixture with a test sub-class of AbstractMappingContentNegotiationStrategy.
@@ -43,7 +42,7 @@ public class MappingContentNegotiationStrategyTests {
 
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
-		assertEquals(1, mediaTypes.size());
+		assertThat((long) mediaTypes.size()).isEqualTo((long) 1);
 		assertThat(mediaTypes.get(0).toString()).isEqualTo("application/json");
 	}
 
@@ -74,7 +73,7 @@ public class MappingContentNegotiationStrategyTests {
 
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
-		assertEquals(1, mediaTypes.size());
+		assertThat((long) mediaTypes.size()).isEqualTo((long) 1);
 		assertThat(mediaTypes.get(0).toString()).isEqualTo("application/xml");
 	}
 

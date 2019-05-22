@@ -23,8 +23,6 @@ import org.junit.Test;
 import org.springframework.beans.DirectFieldAccessor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for
@@ -47,7 +45,7 @@ public class GroovyMarkupViewResolverTests {
 	public void cacheKey() throws Exception {
 		GroovyMarkupViewResolver resolver = new GroovyMarkupViewResolver();
 		String cacheKey = (String) resolver.getCacheKey("test", Locale.US);
-		assertNotNull(cacheKey);
+		assertThat((Object) cacheKey).isNotNull();
 		assertThat(cacheKey).isEqualTo("test_en_US");
 	}
 

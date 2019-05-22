@@ -48,8 +48,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Arjen Poutsma
@@ -163,7 +161,7 @@ public class DefaultServerResponseBuilderTests {
 	@Test
 	public void contentLength() {
 		ServerResponse response = ServerResponse.ok().contentLength(42).build();
-		assertEquals(42L, response.headers().getContentLength());
+		assertThat(response.headers().getContentLength()).isEqualTo(42L);
 	}
 
 	@Test
@@ -183,7 +181,7 @@ public class DefaultServerResponseBuilderTests {
 		ZonedDateTime now = ZonedDateTime.now();
 		ServerResponse response = ServerResponse.ok().lastModified(now).build();
 		long expected = now.toInstant().toEpochMilli() / 1000;
-		assertEquals(expected, response.headers().getLastModified() / 1000);
+		assertThat(response.headers().getLastModified() / 1000).isEqualTo(expected);
 	}
 
 	@Test
@@ -239,9 +237,9 @@ public class DefaultServerResponseBuilderTests {
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(HttpStatus.CREATED.value(), mockResponse.getStatus());
+		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.CREATED.value());
 		assertThat(mockResponse.getHeader("MyKey")).isEqualTo("MyValue");
 		assertThat(mockResponse.getCookie("name").getValue()).isEqualTo("value");
 	}
@@ -258,9 +256,9 @@ public class DefaultServerResponseBuilderTests {
 
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), mockResponse.getStatus());
+		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 	@Test
@@ -277,9 +275,9 @@ public class DefaultServerResponseBuilderTests {
 
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), mockResponse.getStatus());
+		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 	@Test
@@ -292,7 +290,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new StringHttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
 	}
@@ -309,7 +307,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new MappingJackson2HttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo("[\"foo\",\"bar\"]");
 	}
@@ -327,7 +325,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new StringHttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
@@ -346,7 +344,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new StringHttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
 	}

@@ -28,10 +28,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.IdGenerator;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Mark Fisher
@@ -115,7 +111,7 @@ public class MessageBuilderTests {
 				.setHeader("foo", "bar").build();
 		Message<String> message2 = MessageBuilder.fromMessage(message1).setHeader("another", 1).build();
 		assertThat(message2.getHeaders().get("foo")).isEqualTo("bar");
-		assertNotSame(message1.getHeaders().getId(), message2.getHeaders().getId());
+		assertThat((Object) message2.getHeaders().getId()).isNotSameAs(message1.getHeaders().getId());
 	}
 
 	@Test
@@ -183,7 +179,7 @@ public class MessageBuilderTests {
 		accessor.setHeader("foo", "bar");
 
 		assertThat(headers.get("foo")).isEqualTo("bar");
-		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
+		assertThat(MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class)).isSameAs(accessor);
 	}
 
 	@Test
@@ -196,7 +192,7 @@ public class MessageBuilderTests {
 				accessor.setHeader("foo", "bar"))
 			.withMessageContaining("Already immutable");
 
-		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
+		assertThat(MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class)).isSameAs(accessor);
 	}
 
 	@Test
@@ -209,8 +205,8 @@ public class MessageBuilderTests {
 			}
 		});
 		Message<?> message = MessageBuilder.createMessage("foo", headerAccessor.getMessageHeaders());
-		assertNull(message.getHeaders().getId());
-		assertNull(message.getHeaders().getTimestamp());
+		assertThat((Object) message.getHeaders().getId()).isNull();
+		assertThat((Object) message.getHeaders().getTimestamp()).isNull();
 	}
 
 	@Test

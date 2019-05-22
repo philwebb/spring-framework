@@ -21,8 +21,6 @@ import java.beans.PropertyEditor;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for the {@link CharArrayPropertyEditor} class.
@@ -39,12 +37,12 @@ public class CharArrayPropertyEditorTests {
 		charEditor.setAsText(text);
 
 		Object value = charEditor.getValue();
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition = value instanceof char[];
 		assertThat(condition).isTrue();
 		char[] chars = (char[]) value;
 		for (int i = 0; i < text.length(); ++i) {
-			assertEquals("char[] differs at index '" + i + "'", text.charAt(i), chars[i]);
+			assertThat((long) chars[i]).as("char[] differs at index '" + i + "'").isEqualTo((long) text.charAt(i));
 		}
 		assertThat(charEditor.getAsText()).isEqualTo(text);
 	}

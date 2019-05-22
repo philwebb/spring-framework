@@ -38,7 +38,6 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static org.springframework.web.method.MvcAnnotationPredicates.matrixAttribute;
 
 /**

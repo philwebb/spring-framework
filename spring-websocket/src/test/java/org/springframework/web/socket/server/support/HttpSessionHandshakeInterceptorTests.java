@@ -29,8 +29,6 @@ import org.springframework.web.socket.AbstractHttpRequestTests;
 import org.springframework.web.socket.WebSocketHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for {@link HttpSessionHandshakeInterceptor}.
@@ -52,7 +50,7 @@ public class HttpSessionHandshakeInterceptorTests extends AbstractHttpRequestTes
 		HttpSessionHandshakeInterceptor interceptor = new HttpSessionHandshakeInterceptor();
 		interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes);
 
-		assertEquals(3, attributes.size());
+		assertThat((long) attributes.size()).isEqualTo((long) 3);
 		assertThat(attributes.get("foo")).isEqualTo("bar");
 		assertThat(attributes.get("bar")).isEqualTo("baz");
 		assertThat(attributes.get(HttpSessionHandshakeInterceptor.HTTP_SESSION_ID_ATTR_NAME)).isEqualTo("123");
@@ -71,7 +69,7 @@ public class HttpSessionHandshakeInterceptorTests extends AbstractHttpRequestTes
 		HttpSessionHandshakeInterceptor interceptor = new HttpSessionHandshakeInterceptor(names);
 		interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes);
 
-		assertEquals(2, attributes.size());
+		assertThat((long) attributes.size()).isEqualTo((long) 2);
 		assertThat(attributes.get("foo")).isEqualTo("bar");
 		assertThat(attributes.get(HttpSessionHandshakeInterceptor.HTTP_SESSION_ID_ATTR_NAME)).isEqualTo("123");
 	}
@@ -88,7 +86,7 @@ public class HttpSessionHandshakeInterceptorTests extends AbstractHttpRequestTes
 		interceptor.setCopyHttpSessionId(false);
 		interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes);
 
-		assertEquals(1, attributes.size());
+		assertThat((long) attributes.size()).isEqualTo((long) 1);
 		assertThat(attributes.get("foo")).isEqualTo("bar");
 	}
 
@@ -105,7 +103,7 @@ public class HttpSessionHandshakeInterceptorTests extends AbstractHttpRequestTes
 		interceptor.setCopyAllAttributes(false);
 		interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes);
 
-		assertEquals(1, attributes.size());
+		assertThat((long) attributes.size()).isEqualTo((long) 1);
 		assertThat(attributes.get(HttpSessionHandshakeInterceptor.HTTP_SESSION_ID_ATTR_NAME)).isEqualTo("123");
 	}
 
@@ -117,7 +115,7 @@ public class HttpSessionHandshakeInterceptorTests extends AbstractHttpRequestTes
 		HttpSessionHandshakeInterceptor interceptor = new HttpSessionHandshakeInterceptor();
 		interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes);
 
-		assertNull(this.servletRequest.getSession(false));
+		assertThat((Object) this.servletRequest.getSession(false)).isNull();
 	}
 
 }

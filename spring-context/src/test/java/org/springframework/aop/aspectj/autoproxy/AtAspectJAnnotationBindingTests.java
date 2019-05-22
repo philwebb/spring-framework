@@ -27,7 +27,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Adrian Colyer
@@ -51,7 +50,7 @@ public class AtAspectJAnnotationBindingTests {
 	public void testAnnotationBindingInAroundAdvice() {
 		assertThat(testBean.doThis()).isEqualTo("this value doThis");
 		assertThat(testBean.doThat()).isEqualTo("that value doThat");
-		assertEquals(2, testBean.doArray().length);
+		assertThat((long) testBean.doArray().length).isEqualTo((long) 2);
 	}
 
 	@Test

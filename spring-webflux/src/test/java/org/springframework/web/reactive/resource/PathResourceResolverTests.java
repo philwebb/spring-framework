@@ -28,9 +28,6 @@ import org.springframework.core.io.UrlResource;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.fail;
 
 /**
@@ -62,7 +59,7 @@ public class PathResourceResolverTests {
 		List<Resource> locations = singletonList(location);
 		Resource actual = this.resolver.resolveResource(null, path, locations, null).block(TIMEOUT);
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 	}
 
 	@Test // gh-22272
@@ -77,7 +74,7 @@ public class PathResourceResolverTests {
 		List<Resource> locations = singletonList(location);
 		Resource actual = this.resolver.resolveResource(null, path, locations, null).block(TIMEOUT);
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.getFile().getName()).isEqualTo("foo foo.txt");
 	}
 
@@ -106,7 +103,7 @@ public class PathResourceResolverTests {
 		if (!location.createRelative(requestPath).exists() && !requestPath.contains(":")) {
 			fail(requestPath + " doesn't actually exist as a relative path");
 		}
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 	}
 
 	@Test
@@ -128,7 +125,7 @@ public class PathResourceResolverTests {
 		String locationUrl= new UrlResource(getClass().getResource("./test/")).getURL().toExternalForm();
 		Resource location = new UrlResource(locationUrl.replace("/springframework","/../org/springframework"));
 		List<Resource> locations = singletonList(location);
-		assertNotNull(this.resolver.resolveResource(null, "main.css", locations, null).block(TIMEOUT));
+		assertThat((Object) this.resolver.resolveResource(null, "main.css", locations, null).block(TIMEOUT)).isNotNull();
 	}
 
 	@Test // SPR-12747
@@ -143,7 +140,7 @@ public class PathResourceResolverTests {
 		String path = this.resolver.resolveUrlPathInternal(
 				"", singletonList(webjarsLocation), null).block(TIMEOUT);
 
-		assertNull(path);
+		assertThat((Object) path).isNull();
 	}
 
 	private Resource getResource(String filePath) {

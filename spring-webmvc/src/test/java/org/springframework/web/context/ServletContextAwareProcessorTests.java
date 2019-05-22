@@ -26,9 +26,6 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.ServletContextAwareProcessor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -41,9 +38,9 @@ public class ServletContextAwareProcessorTests {
 		ServletContext servletContext = new MockServletContext();
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext);
 		ServletContextAwareBean bean = new ServletContextAwareBean();
-		assertNull(bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletContext should have been set", bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).as("ServletContext should have been set").isNotNull();
 		assertThat(bean.getServletContext()).isEqualTo(servletContext);
 	}
 
@@ -53,9 +50,9 @@ public class ServletContextAwareProcessorTests {
 		ServletConfig servletConfig = new MockServletConfig(servletContext);
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletConfig);
 		ServletContextAwareBean bean = new ServletContextAwareBean();
-		assertNull(bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletContext should have been set", bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).as("ServletContext should have been set").isNotNull();
 		assertThat(bean.getServletContext()).isEqualTo(servletContext);
 	}
 
@@ -65,9 +62,9 @@ public class ServletContextAwareProcessorTests {
 		ServletConfig servletConfig = new MockServletConfig(servletContext);
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext, servletConfig);
 		ServletContextAwareBean bean = new ServletContextAwareBean();
-		assertNull(bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletContext should have been set", bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).as("ServletContext should have been set").isNotNull();
 		assertThat(bean.getServletContext()).isEqualTo(servletContext);
 	}
 
@@ -77,9 +74,9 @@ public class ServletContextAwareProcessorTests {
 		ServletConfig servletConfig = new MockServletConfig(servletContext);
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(null, servletConfig);
 		ServletContextAwareBean bean = new ServletContextAwareBean();
-		assertNull(bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletContext should have been set", bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).as("ServletContext should have been set").isNotNull();
 		assertThat(bean.getServletContext()).isEqualTo(servletContext);
 	}
 
@@ -88,9 +85,9 @@ public class ServletContextAwareProcessorTests {
 		ServletContext servletContext = new MockServletContext();
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext, null);
 		ServletContextAwareBean bean = new ServletContextAwareBean();
-		assertNull(bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletContext should have been set", bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).as("ServletContext should have been set").isNotNull();
 		assertThat(bean.getServletContext()).isEqualTo(servletContext);
 	}
 
@@ -99,9 +96,9 @@ public class ServletContextAwareProcessorTests {
 		ServletContext servletContext = null;
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext);
 		ServletContextAwareBean bean = new ServletContextAwareBean();
-		assertNull(bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNull(bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isNull();
 	}
 
 	@Test
@@ -109,9 +106,9 @@ public class ServletContextAwareProcessorTests {
 		ServletContext servletContext = new MockServletContext();
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext);
 		ServletConfigAwareBean bean = new ServletConfigAwareBean();
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 	}
 
 	@Test
@@ -120,9 +117,9 @@ public class ServletContextAwareProcessorTests {
 		ServletConfig servletConfig = new MockServletConfig(servletContext);
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletConfig);
 		ServletConfigAwareBean bean = new ServletConfigAwareBean();
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletConfig should have been set", bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).as("ServletConfig should have been set").isNotNull();
 		assertThat(bean.getServletConfig()).isEqualTo(servletConfig);
 	}
 
@@ -132,9 +129,9 @@ public class ServletContextAwareProcessorTests {
 		ServletConfig servletConfig = new MockServletConfig(servletContext);
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext, servletConfig);
 		ServletConfigAwareBean bean = new ServletConfigAwareBean();
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletConfig should have been set", bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).as("ServletConfig should have been set").isNotNull();
 		assertThat(bean.getServletConfig()).isEqualTo(servletConfig);
 	}
 
@@ -144,9 +141,9 @@ public class ServletContextAwareProcessorTests {
 		ServletConfig servletConfig = new MockServletConfig(servletContext);
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(null, servletConfig);
 		ServletConfigAwareBean bean = new ServletConfigAwareBean();
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNotNull("ServletConfig should have been set", bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).as("ServletConfig should have been set").isNotNull();
 		assertThat(bean.getServletConfig()).isEqualTo(servletConfig);
 	}
 
@@ -155,9 +152,9 @@ public class ServletContextAwareProcessorTests {
 		ServletContext servletContext = new MockServletContext();
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext, null);
 		ServletConfigAwareBean bean = new ServletConfigAwareBean();
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 	}
 
 	@Test
@@ -165,9 +162,9 @@ public class ServletContextAwareProcessorTests {
 		ServletContext servletContext = null;
 		ServletContextAwareProcessor processor = new ServletContextAwareProcessor(servletContext);
 		ServletConfigAwareBean bean = new ServletConfigAwareBean();
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 		processor.postProcessBeforeInitialization(bean, "testBean");
-		assertNull(bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isNull();
 	}
 
 }

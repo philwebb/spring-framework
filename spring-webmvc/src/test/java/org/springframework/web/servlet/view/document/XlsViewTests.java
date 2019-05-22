@@ -35,7 +35,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests for AbstractXlsView and its subclasses.

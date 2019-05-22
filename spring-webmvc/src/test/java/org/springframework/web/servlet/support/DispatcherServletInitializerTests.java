@@ -31,8 +31,6 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test case for {@link AbstractDispatcherServletInitializer}.
@@ -61,8 +59,8 @@ public class DispatcherServletInitializerTests {
 	public void register() throws ServletException {
 		initializer.onStartup(servletContext);
 
-		assertEquals(1, servlets.size());
-		assertNotNull(servlets.get(SERVLET_NAME));
+		assertThat((long) servlets.size()).isEqualTo((long) 1);
+		assertThat((Object) servlets.get(SERVLET_NAME)).isNotNull();
 
 		DispatcherServlet servlet = (DispatcherServlet) servlets.get(SERVLET_NAME);
 		assertThat(servlet.getClass()).isEqualTo(MyDispatcherServlet.class);
@@ -72,12 +70,12 @@ public class DispatcherServletInitializerTests {
 		boolean condition = servletContext.getBean("bean") instanceof MyBean;
 		assertThat(condition).isTrue();
 
-		assertEquals(1, registrations.size());
-		assertNotNull(registrations.get(SERVLET_NAME));
+		assertThat((long) registrations.size()).isEqualTo((long) 1);
+		assertThat((Object) registrations.get(SERVLET_NAME)).isNotNull();
 
 		MockServletRegistration registration = registrations.get(SERVLET_NAME);
 		assertThat(registration.getMappings()).isEqualTo(Collections.singleton(SERVLET_MAPPING));
-		assertEquals(1, registration.getLoadOnStartup());
+		assertThat((long) registration.getLoadOnStartup()).isEqualTo((long) 1);
 		assertThat(registration.getRunAsRole()).isEqualTo(ROLE_NAME);
 	}
 

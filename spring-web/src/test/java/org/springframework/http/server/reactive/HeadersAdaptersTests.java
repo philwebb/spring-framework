@@ -33,8 +33,6 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@code HeadersAdapters} {@code MultiValueMap} implementations.
@@ -66,19 +64,19 @@ public class HeadersAdaptersTests {
 
 	@Test
 	public void getWithUnknownHeaderShouldReturnNull() {
-		assertNull(this.headers.get("Unknown"));
+		assertThat((Object) this.headers.get("Unknown")).isNull();
 	}
 
 	@Test
 	public void getFirstWithUnknownHeaderShouldReturnNull() {
-		assertNull(this.headers.getFirst("Unknown"));
+		assertThat((Object) this.headers.getFirst("Unknown")).isNull();
 	}
 
 	@Test
 	public void sizeWithMultipleValuesForHeaderShouldCountHeaders() {
 		this.headers.add("TestHeader", "first");
 		this.headers.add("TestHeader", "second");
-		assertEquals(1, this.headers.size());
+		assertThat((long) this.headers.size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -86,7 +84,7 @@ public class HeadersAdaptersTests {
 		this.headers.add("TestHeader", "first");
 		this.headers.add("OtherHeader", "test");
 		this.headers.add("TestHeader", "second");
-		assertEquals(2, this.headers.keySet().size());
+		assertThat((long) this.headers.keySet().size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -108,7 +106,7 @@ public class HeadersAdaptersTests {
 		this.headers.add("TestHeader", "first");
 		this.headers.put("TestHeader", Arrays.asList("override"));
 		assertThat(this.headers.getFirst("TestHeader")).isEqualTo("override");
-		assertEquals(1, this.headers.get("TestHeader").size());
+		assertThat((long) this.headers.get("TestHeader").size()).isEqualTo((long) 1);
 	}
 
 }

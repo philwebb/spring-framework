@@ -45,7 +45,6 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -89,7 +88,7 @@ public class DefaultServerRequestTests {
 		URI result = request.uriBuilder().build();
 		assertThat(result.getScheme()).isEqualTo("http");
 		assertThat(result.getHost()).isEqualTo("localhost");
-		assertEquals(-1, result.getPort());
+		assertThat((long) result.getPort()).isEqualTo((long) -1);
 		assertThat(result.getPath()).isEqualTo("/path");
 		assertThat(result.getQuery()).isEqualTo("a=1");
 	}
@@ -250,7 +249,7 @@ public class DefaultServerRequestTests {
 				Collections.singletonList(new MappingJackson2HttpMessageConverter()));
 
 		List<String> result = request.body(new ParameterizedTypeReference<List<String>>() {});
-		assertEquals(2, result.size());
+		assertThat((long) result.size()).isEqualTo((long) 2);
 		assertThat(result.get(0)).isEqualTo("foo");
 		assertThat(result.get(1)).isEqualTo("bar");
 	}

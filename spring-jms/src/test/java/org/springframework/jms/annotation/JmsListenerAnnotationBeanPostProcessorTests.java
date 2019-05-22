@@ -47,8 +47,6 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -63,7 +61,7 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 				Config.class, SimpleMessageListenerTestBean.class);
 
 		JmsListenerContainerTestFactory factory = context.getBean(JmsListenerContainerTestFactory.class);
-		assertEquals("One container should have been registered", 1, factory.getListenerContainers().size());
+		assertThat((long) factory.getListenerContainers().size()).as("One container should have been registered").isEqualTo((long) 1);
 		MessageListenerTestContainer container = factory.getListenerContainers().get(0);
 
 		JmsListenerEndpoint endpoint = container.getEndpoint();
@@ -75,7 +73,7 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 
 		SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
 		methodEndpoint.setupListenerContainer(listenerContainer);
-		assertNotNull(listenerContainer.getMessageListener());
+		assertThat(listenerContainer.getMessageListener()).isNotNull();
 
 		assertThat(container.isStarted()).as("Should have been started " + container).isTrue();
 		context.close(); // Close and stop the listeners
@@ -89,7 +87,7 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 
 		try {
 			JmsListenerContainerTestFactory factory = context.getBean(JmsListenerContainerTestFactory.class);
-			assertEquals("one container should have been registered", 1, factory.getListenerContainers().size());
+			assertThat((long) factory.getListenerContainers().size()).as("one container should have been registered").isEqualTo((long) 1);
 
 			JmsListenerEndpoint endpoint = factory.getListenerContainers().get(0).getEndpoint();
 			assertThat(endpoint.getClass()).as("Wrong endpoint type").isEqualTo(MethodJmsListenerEndpoint.class);
@@ -110,7 +108,7 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 				Config.class, ProxyConfig.class, InterfaceProxyTestBean.class);
 		try {
 			JmsListenerContainerTestFactory factory = context.getBean(JmsListenerContainerTestFactory.class);
-			assertEquals("one container should have been registered", 1, factory.getListenerContainers().size());
+			assertThat((long) factory.getListenerContainers().size()).as("one container should have been registered").isEqualTo((long) 1);
 
 			JmsListenerEndpoint endpoint = factory.getListenerContainers().get(0).getEndpoint();
 			assertThat(endpoint.getClass()).as("Wrong endpoint type").isEqualTo(MethodJmsListenerEndpoint.class);
@@ -137,7 +135,7 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 				Config.class, ProxyConfig.class, ClassProxyTestBean.class);
 		try {
 			JmsListenerContainerTestFactory factory = context.getBean(JmsListenerContainerTestFactory.class);
-			assertEquals("one container should have been registered", 1, factory.getListenerContainers().size());
+			assertThat((long) factory.getListenerContainers().size()).as("one container should have been registered").isEqualTo((long) 1);
 
 			JmsListenerEndpoint endpoint = factory.getListenerContainers().get(0).getEndpoint();
 			assertThat(endpoint.getClass()).as("Wrong endpoint type").isEqualTo(MethodJmsListenerEndpoint.class);

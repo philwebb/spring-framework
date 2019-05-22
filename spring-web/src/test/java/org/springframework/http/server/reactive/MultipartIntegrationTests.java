@@ -41,7 +41,6 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Sebastien Deleuze
@@ -91,7 +90,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 			return exchange
 					.getMultipartData()
 					.doOnNext(parts -> {
-						assertEquals(2, parts.size());
+						assertThat((long) parts.size()).isEqualTo((long) 2);
 						assertThat(parts.containsKey("fooPart")).isTrue();
 						assertFooPart(parts.getFirst("fooPart"));
 						assertThat(parts.containsKey("barPart")).isTrue();
@@ -108,7 +107,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 			StepVerifier.create(DataBufferUtils.join(part.content()))
 					.consumeNextWith(buffer -> {
-						assertEquals(12, buffer.readableByteCount());
+						assertThat((long) buffer.readableByteCount()).isEqualTo((long) 12);
 						byte[] byteContent = new byte[12];
 						buffer.read(byteContent);
 						assertThat(new String(byteContent)).isEqualTo("Lorem Ipsum.");

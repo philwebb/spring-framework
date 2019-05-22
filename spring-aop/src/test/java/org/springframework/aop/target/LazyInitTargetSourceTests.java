@@ -26,7 +26,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -51,7 +50,7 @@ public class LazyInitTargetSourceTests {
 
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
 		assertThat(bf.containsSingleton("target")).isFalse();
-		assertEquals(10, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 10);
 		assertThat(bf.containsSingleton("target")).isTrue();
 	}
 

@@ -47,8 +47,6 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
@@ -249,8 +247,8 @@ public class ModelAttributeMethodProcessorTests {
 		this.processor.resolveArgument(this.paramModelAttr, this.container, this.request, binderFactory);
 
 		Object[] values = this.container.getModel().values().toArray();
-		assertSame("Resolved attribute should be updated to be last", testBean, values[1]);
-		assertSame("BindingResult of resolved attr should be last", dataBinder.getBindingResult(), values[2]);
+		assertThat(values[1]).as("Resolved attribute should be updated to be last").isSameAs(testBean);
+		assertThat(values[2]).as("BindingResult of resolved attr should be last").isSameAs(dataBinder.getBindingResult());
 	}
 
 	@Test
@@ -263,7 +261,7 @@ public class ModelAttributeMethodProcessorTests {
 	public void handleNotAnnotatedReturnValue() throws Exception {
 		TestBean testBean = new TestBean("expected");
 		this.processor.handleReturnValue(testBean, this.returnParamNonSimpleType, this.container, this.request);
-		assertSame(testBean, this.container.getModel().get("testBean"));
+		assertThat(this.container.getModel().get("testBean")).isSameAs(testBean);
 	}
 
 

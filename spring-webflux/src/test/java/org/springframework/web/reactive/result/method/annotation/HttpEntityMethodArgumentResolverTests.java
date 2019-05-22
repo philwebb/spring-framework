@@ -49,9 +49,6 @@ import org.springframework.web.server.ServerWebInputException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.post;
@@ -111,7 +108,7 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(String.class);
 		HttpEntity<Object> entity = resolveValueWithEmptyBody(type);
 
-		assertNull(entity.getBody());
+		assertThat(entity.getBody()).isNull();
 	}
 
 	@Test
@@ -202,8 +199,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		HttpEntity<CompletableFuture<String>> entity = resolveValueWithEmptyBody(type);
 
 		entity.getBody().whenComplete((body, ex) -> {
-			assertNull(body);
-			assertNull(ex);
+			assertThat((Object) body).isNull();
+			assertThat((Object) ex).isNull();
 		});
 	}
 
@@ -312,7 +309,7 @@ public class HttpEntityMethodArgumentResolverTests {
 		Mono<Object> result = this.resolver.resolveArgument(param, new BindingContext(), exchange);
 		Object value = result.block(Duration.ofSeconds(5));
 
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(param.getParameterType().isAssignableFrom(value.getClass())).as("Unexpected return value type: " + value.getClass()).isTrue();
 
 		return (T) value;

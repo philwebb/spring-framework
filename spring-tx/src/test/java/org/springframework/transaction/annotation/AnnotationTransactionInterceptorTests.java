@@ -25,7 +25,6 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -331,13 +330,13 @@ public class AnnotationTransactionInterceptorTests {
 	}
 
 	private void assertGetTransactionAndCommitCount(int expectedCount) {
-		assertEquals(expectedCount, this.ptm.begun);
-		assertEquals(expectedCount, this.ptm.commits);
+		assertThat((long) this.ptm.begun).isEqualTo((long) expectedCount);
+		assertThat((long) this.ptm.commits).isEqualTo((long) expectedCount);
 	}
 
 	private void assertGetTransactionAndRollbackCount(int expectedCount) {
-		assertEquals(expectedCount, this.ptm.begun);
-		assertEquals(expectedCount, this.ptm.rollbacks);
+		assertThat((long) this.ptm.begun).isEqualTo((long) expectedCount);
+		assertThat((long) this.ptm.rollbacks).isEqualTo((long) expectedCount);
 	}
 
 

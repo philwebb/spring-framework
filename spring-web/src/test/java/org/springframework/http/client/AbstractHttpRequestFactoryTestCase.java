@@ -33,7 +33,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma

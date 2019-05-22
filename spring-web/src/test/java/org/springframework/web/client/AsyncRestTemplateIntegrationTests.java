@@ -46,10 +46,6 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.fail;
 
 /**
@@ -127,7 +123,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void getNoResponse() throws Exception {
 		Future<ResponseEntity<String>> futureEntity = template.getForEntity(baseUrl + "/get/nothing", String.class);
 		ResponseEntity<String> entity = futureEntity.get();
-		assertNull("Invalid content", entity.getBody());
+		assertThat((Object) entity.getBody()).as("Invalid content").isNull();
 	}
 
 	@Test
@@ -142,7 +138,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		Future<ResponseEntity<String>> responseFuture = template.getForEntity(baseUrl + "/status/nocontent", String.class);
 		ResponseEntity<String> entity = responseFuture.get();
 		assertThat(entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NO_CONTENT);
-		assertNull("Invalid content", entity.getBody());
+		assertThat((Object) entity.getBody()).as("Invalid content").isNull();
 	}
 
 	@Test
@@ -150,7 +146,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		Future<ResponseEntity<String>> responseFuture = template.getForEntity(baseUrl + "/status/notmodified", String.class);
 		ResponseEntity<String> entity = responseFuture.get();
 		assertThat(entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NOT_MODIFIED);
-		assertNull("Invalid content", entity.getBody());
+		assertThat((Object) entity.getBody()).as("Invalid content").isNull();
 	}
 
 	@Test
@@ -277,7 +273,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		responseEntityFuture.addCallback(new ListenableFutureCallback<Object>() {
 			@Override
 			public void onSuccess(Object result) {
-				assertNull(result);
+				assertThat(result).isNull();
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -299,7 +295,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		deletedFuture.addCallback(new ListenableFutureCallback<Object>() {
 			@Override
 			public void onSuccess(Object result) {
-				assertNull(result);
+				assertThat(result).isNull();
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -312,7 +308,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void deleteCallbackWithLambdas() throws Exception  {
 		ListenableFuture<?> deletedFuture = template.delete(new URI(baseUrl + "/delete"));
-		deletedFuture.addCallback(result -> assertNull(result), ex -> fail(ex.getMessage()));
+		deletedFuture.addCallback(result -> assertThat(result).isNull(), ex -> fail(ex.getMessage()));
 		waitTillDone(deletedFuture);
 	}
 
@@ -345,7 +341,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			boolean condition = cause instanceof HttpClientErrorException;
 			assertThat(condition).isTrue();
 			latch.await(5, TimeUnit.SECONDS);
-			assertSame(callbackException[0], cause);
+			assertThat((Object) cause).isSameAs(callbackException[0]);
 		}
 	}
 
@@ -359,8 +355,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			.satisfies(ex -> {
 				HttpClientErrorException cause = (HttpClientErrorException) ex.getCause();
 				assertThat(cause.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-				assertNotNull(cause.getStatusText());
-				assertNotNull(cause.getResponseBodyAsString());
+				assertThat((Object) cause.getStatusText()).isNotNull();
+				assertThat((Object) cause.getResponseBodyAsString()).isNotNull();
 			});
 	}
 
@@ -378,8 +374,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 				assertThat(condition).isTrue();
 				HttpClientErrorException ex = (HttpClientErrorException) t;
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-				assertNotNull(ex.getStatusText());
-				assertNotNull(ex.getResponseBodyAsString());
+				assertThat((Object) ex.getStatusText()).isNotNull();
+				assertThat((Object) ex.getResponseBodyAsString()).isNotNull();
 			}
 		});
 		waitTillDone(future);
@@ -393,8 +389,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			assertThat(condition).isTrue();
 			HttpClientErrorException hcex = (HttpClientErrorException) ex;
 			assertThat(hcex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-			assertNotNull(hcex.getStatusText());
-				assertNotNull(hcex.getResponseBodyAsString());
+			assertThat((Object) hcex.getStatusText()).isNotNull();
+			assertThat((Object) hcex.getResponseBodyAsString()).isNotNull();
 		});
 		waitTillDone(future);
 	}
@@ -412,8 +408,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			HttpServerErrorException cause = (HttpServerErrorException)ex.getCause();
 
 			assertThat(cause.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-			assertNotNull(cause.getStatusText());
-			assertNotNull(cause.getResponseBodyAsString());
+			assertThat((Object) cause.getStatusText()).isNotNull();
+			assertThat((Object) cause.getResponseBodyAsString()).isNotNull();
 		}
 	}
 
@@ -431,8 +427,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 				assertThat(condition).isTrue();
 				HttpServerErrorException hsex = (HttpServerErrorException) ex;
 				assertThat(hsex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-				assertNotNull(hsex.getStatusText());
-				assertNotNull(hsex.getResponseBodyAsString());
+				assertThat((Object) hsex.getStatusText()).isNotNull();
+				assertThat((Object) hsex.getResponseBodyAsString()).isNotNull();
 			}
 		});
 		waitTillDone(future);
@@ -446,8 +442,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			assertThat(condition).isTrue();
 			HttpServerErrorException hsex = (HttpServerErrorException) ex;
 			assertThat(hsex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-			assertNotNull(hsex.getStatusText());
-				assertNotNull(hsex.getResponseBodyAsString());
+			assertThat((Object) hsex.getStatusText()).isNotNull();
+			assertThat((Object) hsex.getResponseBodyAsString()).isNotNull();
 		});
 		waitTillDone(future);
 	}
@@ -602,9 +598,9 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<ResponseEntity<String>> future = template.getForEntity(baseUrl + "/get", String.class);
 
 		interceptor.latch.await(5, TimeUnit.SECONDS);
-		assertNotNull(interceptor.response);
+		assertThat((Object) interceptor.response).isNotNull();
 		assertThat(interceptor.response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(interceptor.exception);
+		assertThat((Object) interceptor.exception).isNull();
 		assertThat(future.get().getBody()).isEqualTo(helloWorld);
 	}
 
@@ -615,9 +611,9 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		template.getForEntity(baseUrl + "/status/notfound", String.class);
 
 		interceptor.latch.await(5, TimeUnit.SECONDS);
-		assertNotNull(interceptor.response);
+		assertThat((Object) interceptor.response).isNotNull();
 		assertThat(interceptor.response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-		assertNull(interceptor.exception);
+		assertThat((Object) interceptor.exception).isNull();
 	}
 
 	private void waitTillDone(ListenableFuture<?> future) {

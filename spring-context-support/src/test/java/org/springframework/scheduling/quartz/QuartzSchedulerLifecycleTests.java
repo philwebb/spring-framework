@@ -23,7 +23,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Mark Fisher
@@ -35,7 +34,7 @@ public class QuartzSchedulerLifecycleTests {
 	public void destroyLazyInitSchedulerWithDefaultShutdownOrderDoesNotHang() {
 		ConfigurableApplicationContext context =
 				new ClassPathXmlApplicationContext("quartzSchedulerLifecycleTests.xml", getClass());
-		assertNotNull(context.getBean("lazyInitSchedulerWithDefaultShutdownOrder"));
+		assertThat(context.getBean("lazyInitSchedulerWithDefaultShutdownOrder")).isNotNull();
 		StopWatch sw = new StopWatch();
 		sw.start("lazyScheduler");
 		context.close();
@@ -48,7 +47,7 @@ public class QuartzSchedulerLifecycleTests {
 	public void destroyLazyInitSchedulerWithCustomShutdownOrderDoesNotHang() {
 		ConfigurableApplicationContext context =
 				new ClassPathXmlApplicationContext("quartzSchedulerLifecycleTests.xml", getClass());
-		assertNotNull(context.getBean("lazyInitSchedulerWithCustomShutdownOrder"));
+		assertThat(context.getBean("lazyInitSchedulerWithCustomShutdownOrder")).isNotNull();
 		StopWatch sw = new StopWatch();
 		sw.start("lazyScheduler");
 		context.close();

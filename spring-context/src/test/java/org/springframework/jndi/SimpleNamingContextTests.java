@@ -40,7 +40,6 @@ import org.springframework.tests.mock.jndi.SimpleNamingContextBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller

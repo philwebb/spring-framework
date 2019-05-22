@@ -31,9 +31,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -53,12 +50,12 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 
 		TestBeanHolder bean = ac.getBean("annotatedBean", TestBeanHolder.class);
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isFalse();
-		assertNotNull(bean.getTestBean());
-		assertNull(bean.getTestBean().getName());
+		assertThat((Object) bean.getTestBean()).isNotNull();
+		assertThat((Object) bean.getTestBean().getName()).isNull();
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) ac.getBean("testBean");
 		tb.setName("tb");
-		assertSame("tb", bean.getTestBean().getName());
+		assertThat((Object) bean.getTestBean().getName()).isSameAs("tb");
 	}
 
 	@Test
@@ -77,11 +74,11 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		FieldResourceInjectionBean bean = ac.getBean("annotatedBean", FieldResourceInjectionBean.class);
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isFalse();
 		assertThat(bean.getTestBeans().isEmpty()).isFalse();
-		assertNull(bean.getTestBeans().get(0).getName());
+		assertThat((Object) bean.getTestBeans().get(0).getName()).isNull();
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) ac.getBean("testBean");
 		tb.setName("tb");
-		assertSame("tb", bean.getTestBean().getName());
+		assertThat((Object) bean.getTestBean().getName()).isSameAs("tb");
 	}
 
 	@Test
@@ -131,7 +128,7 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", bd);
 
 		FieldResourceInjectionBean bean = (FieldResourceInjectionBean) bf.getBean("annotatedBean");
-		assertNotNull(bean.getTestBean());
+		assertThat((Object) bean.getTestBean()).isNotNull();
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
 				bean.getTestBean().getName());
 	}
@@ -148,8 +145,8 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", bd);
 
 		OptionalFieldResourceInjectionBean bean = (OptionalFieldResourceInjectionBean) bf.getBean("annotatedBean");
-		assertNotNull(bean.getTestBean());
-		assertNotNull(bean.getTestBeans());
+		assertThat((Object) bean.getTestBean()).isNotNull();
+		assertThat((Object) bean.getTestBeans()).isNotNull();
 		assertThat(bean.getTestBeans().isEmpty()).isTrue();
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
 				bean.getTestBean().getName());

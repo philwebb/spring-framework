@@ -35,9 +35,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * JUnit-based integration tests that verify support for loading a
@@ -91,22 +88,22 @@ public class JUnit4SpringContextWebTests extends AbstractJUnit4SpringContextTest
 
 	@Test
 	public void basicWacFeatures() throws Exception {
-		assertNotNull("ServletContext should be set in the WAC.", wac.getServletContext());
+		assertThat((Object) wac.getServletContext()).as("ServletContext should be set in the WAC.").isNotNull();
 
-		assertNotNull("ServletContext should have been set via ServletContextAware.", servletContext);
+		assertThat((Object) servletContext).as("ServletContext should have been set via ServletContextAware.").isNotNull();
 
-		assertNotNull("ServletContext should have been autowired from the WAC.", mockServletContext);
-		assertNotNull("MockHttpServletRequest should have been autowired from the WAC.", request);
-		assertNotNull("MockHttpServletResponse should have been autowired from the WAC.", response);
-		assertNotNull("MockHttpSession should have been autowired from the WAC.", session);
-		assertNotNull("ServletWebRequest should have been autowired from the WAC.", webRequest);
+		assertThat((Object) mockServletContext).as("ServletContext should have been autowired from the WAC.").isNotNull();
+		assertThat((Object) request).as("MockHttpServletRequest should have been autowired from the WAC.").isNotNull();
+		assertThat((Object) response).as("MockHttpServletResponse should have been autowired from the WAC.").isNotNull();
+		assertThat((Object) session).as("MockHttpSession should have been autowired from the WAC.").isNotNull();
+		assertThat((Object) webRequest).as("ServletWebRequest should have been autowired from the WAC.").isNotNull();
 
 		Object rootWac = mockServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-		assertNotNull("Root WAC must be stored in the ServletContext as: "
-				+ WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootWac);
-		assertSame("test WAC and Root WAC in ServletContext must be the same object.", wac, rootWac);
-		assertSame("ServletContext instances must be the same object.", mockServletContext, wac.getServletContext());
-		assertSame("ServletContext in the WAC and in the mock request", mockServletContext, request.getServletContext());
+		assertThat(rootWac).as("Root WAC must be stored in the ServletContext as: "
+				+ WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE).isNotNull();
+		assertThat(rootWac).as("test WAC and Root WAC in ServletContext must be the same object.").isSameAs(wac);
+		assertThat((Object) wac.getServletContext()).as("ServletContext instances must be the same object.").isSameAs(mockServletContext);
+		assertThat((Object) request.getServletContext()).as("ServletContext in the WAC and in the mock request").isSameAs(mockServletContext);
 
 		assertThat(mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
 

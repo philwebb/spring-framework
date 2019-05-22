@@ -41,9 +41,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.web.servlet.HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE;
 
 /**
@@ -90,7 +87,7 @@ public class HandlerMappingIntrospectorTests {
 		cxt.refresh();
 
 		List<HandlerMapping> actual = getIntrospector(cxt).getHandlerMappings();
-		assertEquals(2, actual.size());
+		assertThat((long) actual.size()).isEqualTo((long) 2);
 		assertThat(actual.get(0).getClass()).isEqualTo(BeanNameUrlHandlerMapping.class);
 		assertThat(actual.get(1).getClass()).isEqualTo(RequestMappingHandlerMapping.class);
 	}
@@ -108,7 +105,7 @@ public class HandlerMappingIntrospectorTests {
 		MatchableHandlerMapping hm = getIntrospector(cxt).getMatchableHandlerMapping(request);
 
 		assertThat(hm).isEqualTo(cxt.getBean("hm"));
-		assertNull("Attributes changes not ignored", request.getAttribute(BEST_MATCHING_PATTERN_ATTRIBUTE));
+		assertThat(request.getAttribute(BEST_MATCHING_PATTERN_ATTRIBUTE)).as("Attributes changes not ignored").isNull();
 	}
 
 	@Test
@@ -135,7 +132,7 @@ public class HandlerMappingIntrospectorTests {
 		request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST");
 		CorsConfiguration corsConfig = getIntrospector(cxt).getCorsConfiguration(request);
 
-		assertNotNull(corsConfig);
+		assertThat((Object) corsConfig).isNotNull();
 		assertThat(corsConfig.getAllowedOrigins()).isEqualTo(Collections.singletonList("http://localhost:9000"));
 		assertThat(corsConfig.getAllowedMethods()).isEqualTo(Collections.singletonList("POST"));
 	}
@@ -150,7 +147,7 @@ public class HandlerMappingIntrospectorTests {
 		request.addHeader("Origin", "http://localhost:9000");
 		CorsConfiguration corsConfig = getIntrospector(cxt).getCorsConfiguration(request);
 
-		assertNotNull(corsConfig);
+		assertThat((Object) corsConfig).isNotNull();
 		assertThat(corsConfig.getAllowedOrigins()).isEqualTo(Collections.singletonList("http://localhost:9000"));
 		assertThat(corsConfig.getAllowedMethods()).isEqualTo(Collections.singletonList("POST"));
 	}

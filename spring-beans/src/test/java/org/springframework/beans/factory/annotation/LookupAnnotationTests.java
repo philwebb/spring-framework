@@ -25,9 +25,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Karl Pietrzak
@@ -55,59 +52,59 @@ public class LookupAnnotationTests {
 	@Test
 	public void testWithoutConstructorArg() {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		Object expected = bean.get();
 		assertThat(expected.getClass()).isEqualTo(TestBean.class);
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertThat((Object) beanFactory.getBean(BeanConsumer.class).abstractBean).isSameAs(bean);
 	}
 
 	@Test
 	public void testWithOverloadedArg() {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		TestBean expected = bean.get("haha");
 		assertThat(expected.getClass()).isEqualTo(TestBean.class);
 		assertThat(expected.getName()).isEqualTo("haha");
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertThat((Object) beanFactory.getBean(BeanConsumer.class).abstractBean).isSameAs(bean);
 	}
 
 	@Test
 	public void testWithOneConstructorArg() {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		TestBean expected = bean.getOneArgument("haha");
 		assertThat(expected.getClass()).isEqualTo(TestBean.class);
 		assertThat(expected.getName()).isEqualTo("haha");
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertThat((Object) beanFactory.getBean(BeanConsumer.class).abstractBean).isSameAs(bean);
 	}
 
 	@Test
 	public void testWithTwoConstructorArg() {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		TestBean expected = bean.getTwoArguments("haha", 72);
 		assertThat(expected.getClass()).isEqualTo(TestBean.class);
 		assertThat(expected.getName()).isEqualTo("haha");
-		assertEquals(72, expected.getAge());
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertThat((long) expected.getAge()).isEqualTo((long) 72);
+		assertThat((Object) beanFactory.getBean(BeanConsumer.class).abstractBean).isSameAs(bean);
 	}
 
 	@Test
 	public void testWithThreeArgsShouldFail() {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		assertThatExceptionOfType(AbstractMethodError.class).as("TestBean has no three arg constructor").isThrownBy(() ->
 				bean.getThreeArguments("name", 1, 2));
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertThat((Object) beanFactory.getBean(BeanConsumer.class).abstractBean).isSameAs(bean);
 	}
 
 	@Test
 	public void testWithEarlyInjection() {
 		AbstractBean bean = beanFactory.getBean("beanConsumer", BeanConsumer.class).abstractBean;
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		Object expected = bean.get();
 		assertThat(expected.getClass()).isEqualTo(TestBean.class);
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertThat((Object) beanFactory.getBean(BeanConsumer.class).abstractBean).isSameAs(bean);
 	}
 
 

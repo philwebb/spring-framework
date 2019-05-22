@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for {@link MappingMediaTypeFileExtensionResolver}.
@@ -40,7 +39,7 @@ public class MappingMediaTypeFileExtensionResolverTests {
 		MappingMediaTypeFileExtensionResolver resolver = new MappingMediaTypeFileExtensionResolver(mapping);
 		List<String> extensions = resolver.resolveFileExtensions(MediaType.APPLICATION_JSON);
 
-		assertEquals(1, extensions.size());
+		assertThat((long) extensions.size()).isEqualTo((long) 1);
 		assertThat(extensions.get(0)).isEqualTo("json");
 	}
 

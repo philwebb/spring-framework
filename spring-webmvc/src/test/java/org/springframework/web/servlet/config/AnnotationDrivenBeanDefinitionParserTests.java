@@ -51,10 +51,6 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNotSame;
-
 /**
  * Test fixture for the configuration in mvc-config-annotation-driven.xml.
  *
@@ -70,12 +66,12 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	public void testMessageCodesResolver() {
 		loadBeanDefinitions("mvc-config-message-codes-resolver.xml");
 		RequestMappingHandlerAdapter adapter = this.appContext.getBean(RequestMappingHandlerAdapter.class);
-		assertNotNull(adapter);
+		assertThat((Object) adapter).isNotNull();
 		Object initializer = adapter.getWebBindingInitializer();
-		assertNotNull(initializer);
+		assertThat(initializer).isNotNull();
 		MessageCodesResolver resolver =
 				((ConfigurableWebBindingInitializer) initializer).getMessageCodesResolver();
-		assertNotNull(resolver);
+		assertThat((Object) resolver).isNotNull();
 		assertThat(resolver.getClass()).isEqualTo(TestMessageCodesResolver.class);
 		assertThat(new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect")).isEqualTo(false);
 	}
@@ -84,7 +80,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	public void testPathMatchingConfiguration() {
 		loadBeanDefinitions("mvc-config-path-matching.xml");
 		RequestMappingHandlerMapping hm = this.appContext.getBean(RequestMappingHandlerMapping.class);
-		assertNotNull(hm);
+		assertThat((Object) hm).isNotNull();
 		assertThat(hm.useSuffixPatternMatch()).isTrue();
 		assertThat(hm.useTrailingSlashMatch()).isFalse();
 		assertThat(hm.useRegisteredSuffixPatternMatch()).isTrue();
@@ -118,21 +114,21 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	}
 
 	private void testArgumentResolvers(Object bean) {
-		assertNotNull(bean);
+		assertThat(bean).isNotNull();
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("customArgumentResolvers");
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition3 = value instanceof List;
 		assertThat(condition3).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodArgumentResolver> resolvers = (List<HandlerMethodArgumentResolver>) value;
-		assertEquals(3, resolvers.size());
+		assertThat((long) resolvers.size()).isEqualTo((long) 3);
 		boolean condition2 = resolvers.get(0) instanceof ServletWebArgumentResolverAdapter;
 		assertThat(condition2).isTrue();
 		boolean condition1 = resolvers.get(1) instanceof TestHandlerMethodArgumentResolver;
 		assertThat(condition1).isTrue();
 		boolean condition = resolvers.get(2) instanceof TestHandlerMethodArgumentResolver;
 		assertThat(condition).isTrue();
-		assertNotSame(resolvers.get(1), resolvers.get(2));
+		assertThat((Object) resolvers.get(2)).isNotSameAs(resolvers.get(1));
 	}
 
 	@Test
@@ -143,25 +139,25 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	}
 
 	private void testReturnValueHandlers(Object bean) {
-		assertNotNull(bean);
+		assertThat(bean).isNotNull();
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("customReturnValueHandlers");
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition = value instanceof List;
 		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodReturnValueHandler> handlers = (List<HandlerMethodReturnValueHandler>) value;
-		assertEquals(2, handlers.size());
+		assertThat((long) handlers.size()).isEqualTo((long) 2);
 		assertThat(handlers.get(0).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
 		assertThat(handlers.get(1).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
-		assertNotSame(handlers.get(0), handlers.get(1));
+		assertThat((Object) handlers.get(1)).isNotSameAs(handlers.get(0));
 	}
 
 	@Test
 	public void beanNameUrlHandlerMapping() {
 		loadBeanDefinitions("mvc-config.xml");
 		BeanNameUrlHandlerMapping mapping = this.appContext.getBean(BeanNameUrlHandlerMapping.class);
-		assertNotNull(mapping);
-		assertEquals(2, mapping.getOrder());
+		assertThat((Object) mapping).isNotNull();
+		assertThat((long) mapping.getOrder()).isEqualTo((long) 2);
 	}
 
 	private void loadBeanDefinitions(String fileName) {
@@ -173,9 +169,9 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 
 	@SuppressWarnings("unchecked")
 	private void verifyMessageConverters(Object bean, boolean hasDefaultRegistrations) {
-		assertNotNull(bean);
+		assertThat(bean).isNotNull();
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("messageConverters");
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition2 = value instanceof List;
 		assertThat(condition2).isTrue();
 		List<HttpMessageConverter<?>> converters = (List<HttpMessageConverter<?>>) value;
@@ -193,9 +189,9 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 
 	@SuppressWarnings("unchecked")
 	private void verifyResponseBodyAdvice(Object bean) {
-		assertNotNull(bean);
+		assertThat(bean).isNotNull();
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("responseBodyAdvice");
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition1 = value instanceof List;
 		assertThat(condition1).isTrue();
 		List<ResponseBodyAdvice<?>> converters = (List<ResponseBodyAdvice<?>>) value;
@@ -205,9 +201,9 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 
 	@SuppressWarnings("unchecked")
 	private void verifyRequestResponseBodyAdvice(Object bean) {
-		assertNotNull(bean);
+		assertThat(bean).isNotNull();
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("requestResponseBodyAdvice");
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition2 = value instanceof List;
 		assertThat(condition2).isTrue();
 		List<ResponseBodyAdvice<?>> converters = (List<ResponseBodyAdvice<?>>) value;

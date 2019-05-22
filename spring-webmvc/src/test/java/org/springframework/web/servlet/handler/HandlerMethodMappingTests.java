@@ -40,9 +40,6 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 
 /**
@@ -119,14 +116,14 @@ public class HandlerMethodMappingTests {
 		mapping1.setApplicationContext(new StaticApplicationContext(cxt));
 		mapping1.afterPropertiesSet();
 
-		assertEquals(0, mapping1.getHandlerMethods().size());
+		assertThat((long) mapping1.getHandlerMethods().size()).isEqualTo((long) 0);
 
 		AbstractHandlerMethodMapping<String> mapping2 = new MyHandlerMethodMapping();
 		mapping2.setDetectHandlerMethodsInAncestorContexts(true);
 		mapping2.setApplicationContext(new StaticApplicationContext(cxt));
 		mapping2.afterPropertiesSet();
 
-		assertEquals(2, mapping2.getHandlerMethods().size());
+		assertThat((long) mapping2.getHandlerMethods().size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -140,8 +137,8 @@ public class HandlerMethodMappingTests {
 		// Direct URL lookup
 
 		List<String> directUrlMatches = this.mapping.getMappingRegistry().getMappingsByUrl(key1);
-		assertNotNull(directUrlMatches);
-		assertEquals(1, directUrlMatches.size());
+		assertThat((Object) directUrlMatches).isNotNull();
+		assertThat((long) directUrlMatches.size()).isEqualTo((long) 1);
 		assertThat(directUrlMatches.get(0)).isEqualTo(key1);
 
 		// Mapping name lookup
@@ -151,24 +148,24 @@ public class HandlerMethodMappingTests {
 
 		String name1 = this.method1.getName();
 		List<HandlerMethod> handlerMethods = this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(name1);
-		assertNotNull(handlerMethods);
-		assertEquals(1, handlerMethods.size());
+		assertThat((Object) handlerMethods).isNotNull();
+		assertThat((long) handlerMethods.size()).isEqualTo((long) 1);
 		assertThat(handlerMethods.get(0)).isEqualTo(handlerMethod1);
 
 		String name2 = this.method2.getName();
 		handlerMethods = this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(name2);
-		assertNotNull(handlerMethods);
-		assertEquals(1, handlerMethods.size());
+		assertThat((Object) handlerMethods).isNotNull();
+		assertThat((long) handlerMethods.size()).isEqualTo((long) 1);
 		assertThat(handlerMethods.get(0)).isEqualTo(handlerMethod2);
 
 		// CORS lookup
 
 		CorsConfiguration config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod1);
-		assertNotNull(config);
+		assertThat((Object) config).isNotNull();
 		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler.hashCode() + name1));
 
 		config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod2);
-		assertNotNull(config);
+		assertThat((Object) config).isNotNull();
 		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler.hashCode() + name2));
 	}
 
@@ -190,27 +187,27 @@ public class HandlerMethodMappingTests {
 		// Direct URL lookup
 
 		List<String> directUrlMatches = this.mapping.getMappingRegistry().getMappingsByUrl(key1);
-		assertNotNull(directUrlMatches);
-		assertEquals(1, directUrlMatches.size());
+		assertThat((Object) directUrlMatches).isNotNull();
+		assertThat((long) directUrlMatches.size()).isEqualTo((long) 1);
 		assertThat(directUrlMatches.get(0)).isEqualTo(key1);
 
 		// Mapping name lookup
 
 		String name = this.method1.getName();
 		List<HandlerMethod> handlerMethods = this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(name);
-		assertNotNull(handlerMethods);
-		assertEquals(2, handlerMethods.size());
+		assertThat((Object) handlerMethods).isNotNull();
+		assertThat((long) handlerMethods.size()).isEqualTo((long) 2);
 		assertThat(handlerMethods.get(0)).isEqualTo(handlerMethod1);
 		assertThat(handlerMethods.get(1)).isEqualTo(handlerMethod2);
 
 		// CORS lookup
 
 		CorsConfiguration config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod1);
-		assertNotNull(config);
+		assertThat((Object) config).isNotNull();
 		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler1.hashCode() + name));
 
 		config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod2);
-		assertNotNull(config);
+		assertThat((Object) config).isNotNull();
 		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler2.hashCode() + name));
 	}
 
@@ -221,13 +218,13 @@ public class HandlerMethodMappingTests {
 		HandlerMethod handlerMethod = new HandlerMethod(this.handler, this.method1);
 
 		this.mapping.registerMapping(key, this.handler, this.method1);
-		assertNotNull(this.mapping.getHandlerInternal(new MockHttpServletRequest("GET", key)));
+		assertThat((Object) this.mapping.getHandlerInternal(new MockHttpServletRequest("GET", key))).isNotNull();
 
 		this.mapping.unregisterMapping(key);
-		assertNull(mapping.getHandlerInternal(new MockHttpServletRequest("GET", key)));
-		assertNull(this.mapping.getMappingRegistry().getMappingsByUrl(key));
-		assertNull(this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(this.method1.getName()));
-		assertNull(this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod));
+		assertThat((Object) mapping.getHandlerInternal(new MockHttpServletRequest("GET", key))).isNull();
+		assertThat((Object) this.mapping.getMappingRegistry().getMappingsByUrl(key)).isNull();
+		assertThat((Object) this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(this.method1.getName())).isNull();
+		assertThat((Object) this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod)).isNull();
 	}
 
 	@Test
@@ -244,7 +241,7 @@ public class HandlerMethodMappingTests {
 		HandlerMethod handlerMethod = this.mapping.getHandlerInternal(new MockHttpServletRequest("GET", key));
 
 		CorsConfiguration config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod);
-		assertNotNull(config);
+		assertThat((Object) config).isNotNull();
 		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + beanName.hashCode() + this.method1.getName()));
 	}
 

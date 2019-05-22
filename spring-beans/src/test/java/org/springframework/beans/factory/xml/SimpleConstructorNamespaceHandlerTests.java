@@ -26,7 +26,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Costin Leau
@@ -58,7 +57,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 		//		beanFactory.getBean("name-value1", TestBean.class);
 		TestBean nameValue = beanFactory.getBean(name, TestBean.class);
 		assertThat(nameValue.getName()).isEqualTo(name);
-		assertEquals(10, nameValue.getAge());
+		assertThat((long) nameValue.getAge()).isEqualTo((long) 10);
 	}
 
 	@Test
@@ -78,7 +77,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 
 		assertThat(typeRef.getName()).isEqualTo("at");
 		assertThat(typeRef.getValue()).isEqualTo("austria");
-		assertEquals(10, typeRef.getAge());
+		assertThat((long) typeRef.getAge()).isEqualTo((long) 10);
 	}
 
 	@Test
@@ -102,7 +101,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 	public void constructorWithNameEndingInRef() throws Exception {
 		DefaultListableBeanFactory beanFactory = createFactory("simpleConstructorNamespaceHandlerTests.xml");
 		DummyBean derivedBean = beanFactory.getBean("beanWithRefConstructorArg", DummyBean.class);
-		assertEquals(10, derivedBean.getAge());
+		assertThat((long) derivedBean.getAge()).isEqualTo((long) 10);
 		assertThat(derivedBean.getName()).isEqualTo("silly name");
 	}
 

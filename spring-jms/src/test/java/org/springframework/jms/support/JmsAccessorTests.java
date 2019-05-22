@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for the {@link JmsAccessor} class.
@@ -50,11 +49,9 @@ public class JmsAccessorTests {
 	@Test
 	public void testAcknowledgeModeReallyDoesDefaultToAutoAcknowledge() throws Exception {
 		JmsAccessor accessor = new StubJmsAccessor();
-		assertEquals("The [sessionAcknowledgeMode] property of JmsAccessor must default to " +
+		assertThat((long) accessor.getSessionAcknowledgeMode()).as("The [sessionAcknowledgeMode] property of JmsAccessor must default to " +
 				"[Session.AUTO_ACKNOWLEDGE]. Change this test (and the attendant " +
-				"Javadoc) if you have changed the default.",
-				Session.AUTO_ACKNOWLEDGE,
-				accessor.getSessionAcknowledgeMode());
+				"Javadoc) if you have changed the default.").isEqualTo((long) Session.AUTO_ACKNOWLEDGE);
 	}
 
 	@Test

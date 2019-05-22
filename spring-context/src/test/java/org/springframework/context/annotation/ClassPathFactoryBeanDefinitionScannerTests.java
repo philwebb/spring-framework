@@ -32,9 +32,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Mark Pollack
@@ -63,22 +60,22 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		assertThat(tb.getName()).isEqualTo("publicInstance");
 		TestBean tb2 = (TestBean) context.getBean("publicInstance"); //2
 		assertThat(tb2.getName()).isEqualTo("publicInstance");
-		assertSame(tb2, tb);
+		assertThat((Object) tb).isSameAs(tb2);
 
 		tb = (TestBean) context.getBean("protectedInstance"); //3
 		assertThat(tb.getName()).isEqualTo("protectedInstance");
-		assertSame(tb, context.getBean("protectedInstance"));
+		assertThat(context.getBean("protectedInstance")).isSameAs(tb);
 		assertThat(tb.getCountry()).isEqualTo("0");
 		tb2 = context.getBean("protectedInstance", TestBean.class); //3
 		assertThat(tb2.getName()).isEqualTo("protectedInstance");
-		assertSame(tb2, tb);
+		assertThat((Object) tb).isSameAs(tb2);
 
 		tb = context.getBean("privateInstance", TestBean.class); //4
 		assertThat(tb.getName()).isEqualTo("privateInstance");
-		assertEquals(1, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 1);
 		tb2 = context.getBean("privateInstance", TestBean.class); //4
-		assertEquals(2, tb2.getAge());
-		assertNotSame(tb2, tb);
+		assertThat((long) tb2.getAge()).isEqualTo((long) 2);
+		assertThat((Object) tb).isNotSameAs(tb2);
 
 		Object bean = context.getBean("requestScopedInstance"); //5
 		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
@@ -86,9 +83,9 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		assertThat(condition).isTrue();
 
 		QualifiedClientBean clientBean = context.getBean("clientBean", QualifiedClientBean.class);
-		assertSame(context.getBean("publicInstance"), clientBean.testBean);
-		assertSame(context.getBean("dependencyBean"), clientBean.dependencyBean);
-		assertSame(context, clientBean.applicationContext);
+		assertThat((Object) clientBean.testBean).isSameAs(context.getBean("publicInstance"));
+		assertThat((Object) clientBean.dependencyBean).isSameAs(context.getBean("dependencyBean"));
+		assertThat((Object) clientBean.applicationContext).isSameAs(context);
 	}
 
 

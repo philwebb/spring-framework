@@ -49,9 +49,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -544,7 +541,7 @@ public class DataSourceTransactionManagerTests  {
 		assertThat(synch.beforeCompletionCalled).isTrue();
 		assertThat(synch.afterCommitCalled).isTrue();
 		assertThat(synch.afterCompletionCalled).isTrue();
-		assertNull(synch.afterCompletionException);
+		assertThat((Object) synch.afterCompletionException).isNull();
 		verify(con).commit();
 		verify(con).close();
 		verify(con2).close();
@@ -838,8 +835,8 @@ public class DataSourceTransactionManagerTests  {
 						assertThat(TransactionSynchronizationManager.hasResource(ds)).as("Has thread connection").isTrue();
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).as("Synchronization active").isTrue();
 						assertThat(status.isNewTransaction()).as("Is new transaction").isTrue();
-						assertSame(con, DataSourceUtils.getConnection(ds));
-						assertSame(con, DataSourceUtils.getConnection(ds));
+						assertThat((Object) DataSourceUtils.getConnection(ds)).isSameAs(con);
+						assertThat((Object) DataSourceUtils.getConnection(ds)).isSameAs(con);
 					}
 				});
 			}
@@ -869,8 +866,8 @@ public class DataSourceTransactionManagerTests  {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) throws RuntimeException {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).as("Synchronization active").isTrue();
-				assertSame(con1, DataSourceUtils.getConnection(ds));
-				assertSame(con1, DataSourceUtils.getConnection(ds));
+				assertThat((Object) DataSourceUtils.getConnection(ds)).isSameAs(con1);
+				assertThat((Object) DataSourceUtils.getConnection(ds)).isSameAs(con1);
 				TransactionTemplate tt2 = new TransactionTemplate(tm);
 				tt2.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 				tt2.execute(new TransactionCallbackWithoutResult() {
@@ -879,11 +876,11 @@ public class DataSourceTransactionManagerTests  {
 						assertThat(TransactionSynchronizationManager.hasResource(ds)).as("Has thread connection").isTrue();
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).as("Synchronization active").isTrue();
 						assertThat(status.isNewTransaction()).as("Is new transaction").isTrue();
-						assertSame(con2, DataSourceUtils.getConnection(ds));
-						assertSame(con2, DataSourceUtils.getConnection(ds));
+						assertThat((Object) DataSourceUtils.getConnection(ds)).isSameAs(con2);
+						assertThat((Object) DataSourceUtils.getConnection(ds)).isSameAs(con2);
 					}
 				});
-				assertSame(con1, DataSourceUtils.getConnection(ds));
+				assertThat((Object) DataSourceUtils.getConnection(ds)).isSameAs(con1);
 			}
 		});
 

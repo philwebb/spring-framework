@@ -37,8 +37,6 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -83,8 +81,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		exchange.getResponse().setStatusCode(HttpStatus.NOT_MODIFIED);
 
 		assertThat(exchange.checkNotModified(this.currentDate)).isFalse();
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
-		assertEquals(-1, exchange.getResponse().getHeaders().getLastModified());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo((long) -1);
 	}
 
 	@Test // SPR-14559
@@ -92,7 +90,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		String eTag = "\"etagvalue\"";
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").ifNoneMatch("missingquotes"));
 		assertThat(exchange.checkNotModified(eTag)).isFalse();
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
 	}
 
@@ -103,8 +101,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		exchange.getResponse().getHeaders().add("Last-Modified", CURRENT_TIME);
 
 		assertThat(exchange.checkNotModified(currentDate)).isTrue();
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
-		assertEquals(1, exchange.getResponse().getHeaders().get("Last-Modified").size());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
+		assertThat((long) exchange.getResponse().getHeaders().get("Last-Modified").size()).isEqualTo((long) 1);
 		assertThat(exchange.getResponse().getHeaders().getFirst("Last-Modified")).isEqualTo(CURRENT_TIME);
 	}
 
@@ -115,8 +113,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(currentDate)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
-		assertEquals(currentDate.toEpochMilli(), exchange.getResponse().getHeaders().getLastModified());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(currentDate.toEpochMilli());
 	}
 
 	@Test
@@ -127,8 +125,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(currentDate)).isFalse();
 
-		assertNull(exchange.getResponse().getStatusCode());
-		assertEquals(currentDate.toEpochMilli(), exchange.getResponse().getHeaders().getLastModified());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(currentDate.toEpochMilli());
 	}
 
 	@Test
@@ -138,7 +136,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
 	}
 
@@ -149,7 +147,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
 	}
 
@@ -162,7 +160,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(currentETag)).isFalse();
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(currentETag);
 	}
 
@@ -174,7 +172,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(paddedEtag);
 	}
 
@@ -186,7 +184,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(currentETag)).isFalse();
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(String.format("\"%s\"", currentETag));
 	}
 
@@ -196,7 +194,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").ifNoneMatch("*"));
 		assertThat(exchange.checkNotModified(eTag)).isFalse();
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
 	}
 
@@ -209,9 +207,9 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(eTag, currentDate)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
-		assertEquals(time, exchange.getResponse().getHeaders().getLastModified());
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(time);
 	}
 
 	// SPR-14224
@@ -226,9 +224,9 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(eTag, currentDate)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
-		assertEquals(currentDate.toEpochMilli(), exchange.getResponse().getHeaders().getLastModified());
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(currentDate.toEpochMilli());
 	}
 
 	@Test
@@ -241,9 +239,9 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(currentETag, currentDate)).isFalse();
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(currentETag);
-		assertEquals(time, exchange.getResponse().getHeaders().getLastModified());
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(time);
 	}
 
 	@Test
@@ -254,7 +252,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(weakEtag)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(weakEtag);
 	}
 
@@ -266,7 +264,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
 	}
 
@@ -278,7 +276,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
 		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(eTag);
 	}
 
@@ -291,8 +289,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(Instant.ofEpochMilli(epochTime))).isTrue();
 
-		assertEquals(304, exchange.getResponse().getStatusCode().value());
-		assertEquals(epochTime, exchange.getResponse().getHeaders().getLastModified());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 304);
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(epochTime);
 	}
 
 	@Test
@@ -304,8 +302,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(Instant.ofEpochMilli(epochTime))).isFalse();
 
-		assertNull(exchange.getResponse().getStatusCode());
-		assertEquals(epochTime, exchange.getResponse().getHeaders().getLastModified());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(epochTime);
 	}
 
 	@Test
@@ -316,8 +314,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
 		assertThat(exchange.checkNotModified(oneMinuteAgo)).isFalse();
-		assertNull(exchange.getResponse().getStatusCode());
-		assertEquals(-1, exchange.getResponse().getHeaders().getLastModified());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo((long) -1);
 	}
 
 	@Test
@@ -328,8 +326,8 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
 		assertThat(exchange.checkNotModified(currentDate)).isTrue();
-		assertEquals(412, exchange.getResponse().getStatusCode().value());
-		assertEquals(-1, exchange.getResponse().getHeaders().getLastModified());
+		assertThat((long) exchange.getResponse().getStatusCode().value()).isEqualTo((long) 412);
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo((long) -1);
 	}
 
 }

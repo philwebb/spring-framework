@@ -27,7 +27,6 @@ import org.springframework.core.serializer.support.SerializingConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Gary Russell

@@ -26,9 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * A test fixture for {@link CompositeRequestCondition} tests.
@@ -70,9 +67,9 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition empty = new CompositeRequestCondition();
 		CompositeRequestCondition notEmpty = new CompositeRequestCondition(this.param1);
 
-		assertSame(empty, empty.combine(empty));
-		assertSame(notEmpty, notEmpty.combine(empty));
-		assertSame(notEmpty, empty.combine(notEmpty));
+		assertThat((Object) empty.combine(empty)).isSameAs(empty);
+		assertThat((Object) notEmpty.combine(empty)).isSameAs(notEmpty);
+		assertThat((Object) empty.combine(notEmpty)).isSameAs(notEmpty);
 	}
 
 	@Test
@@ -103,13 +100,13 @@ public class CompositeRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
 		CompositeRequestCondition cond = new CompositeRequestCondition(this.param1);
 
-		assertNull(cond.getMatchingCondition(request));
+		assertThat((Object) cond.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
 	public void matchEmpty() {
 		CompositeRequestCondition empty = new CompositeRequestCondition();
-		assertSame(empty, empty.getMatchingCondition(new MockHttpServletRequest()));
+		assertThat((Object) empty.getMatchingCondition(new MockHttpServletRequest())).isSameAs(empty);
 	}
 
 	@Test
@@ -119,8 +116,8 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition cond1 = new CompositeRequestCondition(this.param1);
 		CompositeRequestCondition cond3 = new CompositeRequestCondition(this.param3);
 
-		assertEquals(1, cond1.compareTo(cond3, request));
-		assertEquals(-1, cond3.compareTo(cond1, request));
+		assertThat((long) cond1.compareTo(cond3, request)).isEqualTo((long) 1);
+		assertThat((long) cond3.compareTo(cond1, request)).isEqualTo((long) -1);
 	}
 
 	@Test
@@ -130,9 +127,9 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition empty = new CompositeRequestCondition();
 		CompositeRequestCondition notEmpty = new CompositeRequestCondition(this.param1);
 
-		assertEquals(0, empty.compareTo(empty, request));
-		assertEquals(-1, notEmpty.compareTo(empty, request));
-		assertEquals(1, empty.compareTo(notEmpty, request));
+		assertThat((long) empty.compareTo(empty, request)).isEqualTo((long) 0);
+		assertThat((long) notEmpty.compareTo(empty, request)).isEqualTo((long) -1);
+		assertThat((long) empty.compareTo(notEmpty, request)).isEqualTo((long) 1);
 	}
 
 	@Test

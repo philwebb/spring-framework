@@ -44,9 +44,6 @@ import org.springframework.expression.spel.testresources.TestPerson;
 
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Tests the evaluation of real expressions in a real context.
@@ -70,14 +67,14 @@ public class EvaluationTests extends AbstractExpressionTests {
 		assertThat(o).isEqualTo("");
 		o = parser.parseExpression("list[3]").getValue(new StandardEvaluationContext(testClass));
 		assertThat(o).isEqualTo("");
-		assertEquals(4, testClass.list.size());
+		assertThat((long) testClass.list.size()).isEqualTo((long) 4);
 
 		assertThatExceptionOfType(EvaluationException.class).isThrownBy(() ->
 				parser.parseExpression("list2[3]").getValue(new StandardEvaluationContext(testClass)));
 
 		o = parser.parseExpression("foo[3]").getValue(new StandardEvaluationContext(testClass));
 		assertThat(o).isEqualTo("");
-		assertEquals(4, testClass.getFoo().size());
+		assertThat((long) testClass.getFoo().size()).isEqualTo((long) 4);
 	}
 
 	@Test
@@ -87,9 +84,9 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 
 		Object o = parser.parseExpression("map['a']").getValue(ctx);
-		assertNull(o);
+		assertThat(o).isNull();
 		o = parser.parseExpression("map").getValue(ctx);
-		assertNotNull(o);
+		assertThat(o).isNotNull();
 
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				parser.parseExpression("map2['a']").getValue(ctx));
@@ -106,7 +103,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		Object o = parser.parseExpression("wibble.bar").getValue(ctx);
 		assertThat(o).isEqualTo("hello");
 		o = parser.parseExpression("wibble").getValue(ctx);
-		assertNotNull(o);
+		assertThat(o).isNotNull();
 
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				parser.parseExpression("wibble2.bar").getValue(ctx));
@@ -520,16 +517,16 @@ public class EvaluationTests extends AbstractExpressionTests {
 	@Test
 	public void testAdvancedNumerics() {
 		int twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Integer.class);
-		assertEquals(24, twentyFour);
+		assertThat((long) twentyFour).isEqualTo((long) 24);
 		double one = parser.parseExpression("8.0 / 5e0 % 2").getValue(Double.class);
 		assertThat(one).isCloseTo(1.6d, within(0d));
 
 		int o = parser.parseExpression("8.0 / 5e0 % 2").getValue(Integer.class);
-		assertEquals(1, o);
+		assertThat((long) o).isEqualTo((long) 1);
 		int sixteen = parser.parseExpression("-2 ^ 4").getValue(Integer.class);
-		assertEquals(16, sixteen);
+		assertThat((long) sixteen).isEqualTo((long) 16);
 		int minusFortyFive = parser.parseExpression("1+2-3*8^2/2/2").getValue(Integer.class);
-		assertEquals(-45, minusFortyFive);
+		assertThat((long) minusFortyFive).isEqualTo((long) -45);
 	}
 
 	@Test
@@ -591,13 +588,13 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser();
 
 		Expression e = parser.parseExpression("null");
-		assertNull(e.getValue());
+		assertThat(e.getValue()).isNull();
 
 		e = parser.parseExpression("NULL");
-		assertNull(e.getValue());
+		assertThat(e.getValue()).isNull();
 
 		e = parser.parseExpression("NuLl");
-		assertNull(e.getValue());
+		assertThat(e.getValue()).isNull();
 	}
 
 	/**
@@ -635,7 +632,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 		Expression e =  parser.parseExpression("listOfStrings[++index3]='def'");
 		e.getValue(ctx);
-		assertEquals(2,instance.listOfStrings.size());
+		assertThat((long) instance.listOfStrings.size()).isEqualTo((long) 2);
 		assertThat(instance.listOfStrings.get(1)).isEqualTo("def");
 
 		// Check reference beyond end of collection
@@ -685,7 +682,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		StandardEvaluationContext ctx = new StandardEvaluationContext(i);
 		ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 		Expression e =  parser.parseExpression("#this++");
-		assertEquals(42,i.intValue());
+		assertThat((long) i.intValue()).isEqualTo((long) 42);
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				e.getValue(ctx, Integer.class))
 			.satisfies(ex -> assertThat(ex.getMessageCode()).isEqualTo(SpelMessage.NOT_ASSIGNABLE));
@@ -725,27 +722,27 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// long
 		e = parser.parseExpression("lll++");
-		assertEquals(66666L, helper.lll);
+		assertThat(helper.lll).isEqualTo(66666L);
 		long return_lll = e.getValue(ctx, Long.TYPE);
-		assertEquals(66666L, return_lll);
-		assertEquals(66667L, helper.lll);
+		assertThat(return_lll).isEqualTo(66666L);
+		assertThat(helper.lll).isEqualTo(66667L);
 
 		// int
 		e = parser.parseExpression("iii++");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		int return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(42, return_iii);
-		assertEquals(43, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 42);
+		assertThat((long) helper.iii).isEqualTo((long) 43);
 		return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(43, return_iii);
-		assertEquals(44, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 43);
+		assertThat((long) helper.iii).isEqualTo((long) 44);
 
 		// short
 		e = parser.parseExpression("sss++");
-		assertEquals(15, helper.sss);
+		assertThat((long) helper.sss).isEqualTo((long) 15);
 		short return_sss = e.getValue(ctx, Short.TYPE);
-		assertEquals(15, return_sss);
-		assertEquals(16, helper.sss);
+		assertThat((long) return_sss).isEqualTo((long) 15);
+		assertThat((long) helper.sss).isEqualTo((long) 16);
 	}
 
 	@Test
@@ -783,27 +780,27 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// long
 		e = parser.parseExpression("++lll");
-		assertEquals(66666L, helper.lll);
+		assertThat(helper.lll).isEqualTo(66666L);
 		long return_lll = e.getValue(ctx, Long.TYPE);
-		assertEquals(66667L, return_lll);
-		assertEquals(66667L, helper.lll);
+		assertThat(return_lll).isEqualTo(66667L);
+		assertThat(helper.lll).isEqualTo(66667L);
 
 		// int
 		e = parser.parseExpression("++iii");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		int return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(43, return_iii);
-		assertEquals(43, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 43);
+		assertThat((long) helper.iii).isEqualTo((long) 43);
 		return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(44, return_iii);
-		assertEquals(44, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 44);
+		assertThat((long) helper.iii).isEqualTo((long) 44);
 
 		// short
 		e = parser.parseExpression("++sss");
-		assertEquals(15, helper.sss);
+		assertThat((long) helper.sss).isEqualTo((long) 15);
 		int return_sss = (Integer) e.getValue(ctx);
-		assertEquals(16, return_sss);
-		assertEquals(16, helper.sss);
+		assertThat((long) return_sss).isEqualTo((long) 16);
+		assertThat((long) helper.sss).isEqualTo((long) 16);
 	}
 
 	@Test
@@ -844,7 +841,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		StandardEvaluationContext ctx = new StandardEvaluationContext(i);
 		ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 		Expression e =  parser.parseExpression("#this--");
-		assertEquals(42, i.intValue());
+		assertThat((long) i.intValue()).isEqualTo((long) 42);
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				e.getValue(ctx, Integer.class))
 			.satisfies(ex -> assertThat(ex.getMessageCode()).isEqualTo(SpelMessage.NOT_ASSIGNABLE));
@@ -884,27 +881,27 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// long
 		e = parser.parseExpression("lll--");
-		assertEquals(66666L, helper.lll);
+		assertThat(helper.lll).isEqualTo(66666L);
 		long return_lll = e.getValue(ctx, Long.TYPE);
-		assertEquals(66666L, return_lll);
-		assertEquals(66665L, helper.lll);
+		assertThat(return_lll).isEqualTo(66666L);
+		assertThat(helper.lll).isEqualTo(66665L);
 
 		// int
 		e = parser.parseExpression("iii--");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		int return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(42, return_iii);
-		assertEquals(41, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 42);
+		assertThat((long) helper.iii).isEqualTo((long) 41);
 		return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(41, return_iii);
-		assertEquals(40, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 41);
+		assertThat((long) helper.iii).isEqualTo((long) 40);
 
 		// short
 		e = parser.parseExpression("sss--");
-		assertEquals(15, helper.sss);
+		assertThat((long) helper.sss).isEqualTo((long) 15);
 		short return_sss = e.getValue(ctx, Short.TYPE);
-		assertEquals(15, return_sss);
-		assertEquals(14, helper.sss);
+		assertThat((long) return_sss).isEqualTo((long) 15);
+		assertThat((long) helper.sss).isEqualTo((long) 14);
 	}
 
 	@Test
@@ -941,27 +938,27 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// long
 		e = parser.parseExpression("--lll");
-		assertEquals(66666L, helper.lll);
+		assertThat(helper.lll).isEqualTo(66666L);
 		long return_lll = e.getValue(ctx, Long.TYPE);
-		assertEquals(66665L, return_lll);
-		assertEquals(66665L, helper.lll);
+		assertThat(return_lll).isEqualTo(66665L);
+		assertThat(helper.lll).isEqualTo(66665L);
 
 		// int
 		e = parser.parseExpression("--iii");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		int return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(41, return_iii);
-		assertEquals(41, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 41);
+		assertThat((long) helper.iii).isEqualTo((long) 41);
 		return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(40, return_iii);
-		assertEquals(40, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 40);
+		assertThat((long) helper.iii).isEqualTo((long) 40);
 
 		// short
 		e = parser.parseExpression("--sss");
-		assertEquals(15, helper.sss);
+		assertThat((long) helper.sss).isEqualTo((long) 15);
 		int return_sss = (Integer)e.getValue(ctx);
-		assertEquals(14, return_sss);
-		assertEquals(14, helper.sss);
+		assertThat((long) return_sss).isEqualTo((long) 14);
+		assertThat((long) helper.sss).isEqualTo((long) 14);
 	}
 
 	@Test
@@ -1009,20 +1006,20 @@ public class EvaluationTests extends AbstractExpressionTests {
 		// intArray[2] is 3
 		e = parser.parseExpression("intArray[#root.index1++]++");
 		e.getValue(ctx, Integer.class);
-		assertEquals(3, helper.index1);
-		assertEquals(4, helper.intArray[2]);
+		assertThat((long) helper.index1).isEqualTo((long) 3);
+		assertThat((long) helper.intArray[2]).isEqualTo((long) 4);
 
 		// index1 is 3 intArray[3] is 4
 		e =  parser.parseExpression("intArray[#root.index1++]--");
-		assertEquals(4, e.getValue(ctx, Integer.class).intValue());
-		assertEquals(4, helper.index1);
-		assertEquals(3, helper.intArray[3]);
+		assertThat((long) e.getValue(ctx, Integer.class).intValue()).isEqualTo((long) 4);
+		assertThat((long) helper.index1).isEqualTo((long) 4);
+		assertThat((long) helper.intArray[3]).isEqualTo((long) 3);
 
 		// index1 is 4, intArray[3] is 3
 		e =  parser.parseExpression("intArray[--#root.index1]++");
-		assertEquals(3, e.getValue(ctx, Integer.class).intValue());
-		assertEquals(3, helper.index1);
-		assertEquals(4, helper.intArray[3]);
+		assertThat((long) e.getValue(ctx, Integer.class).intValue()).isEqualTo((long) 3);
+		assertThat((long) helper.index1).isEqualTo((long) 3);
+		assertThat((long) helper.intArray[3]).isEqualTo((long) 4);
 	}
 
 
@@ -1181,49 +1178,49 @@ public class EvaluationTests extends AbstractExpressionTests {
 		// Assign
 		// iii=42
 		e = parser.parseExpression("iii=iii++");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		int return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(42, helper.iii);
-		assertEquals(42, return_iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
+		assertThat((long) return_iii).isEqualTo((long) 42);
 
 		// Identifier
 		e = parser.parseExpression("iii++");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(42, return_iii);
-		assertEquals(43, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 42);
+		assertThat((long) helper.iii).isEqualTo((long) 43);
 
 		e = parser.parseExpression("--iii");
-		assertEquals(43, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 43);
 		return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(42, return_iii);
-		assertEquals(42, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 42);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 
 		e = parser.parseExpression("iii=99");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		return_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(99, return_iii);
-		assertEquals(99, helper.iii);
+		assertThat((long) return_iii).isEqualTo((long) 99);
+		assertThat((long) helper.iii).isEqualTo((long) 99);
 
 		// CompoundExpression
 		// foo.iii == 99
 		e = parser.parseExpression("foo.iii++");
-		assertEquals(99, helper.foo.iii);
+		assertThat((long) helper.foo.iii).isEqualTo((long) 99);
 		int return_foo_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(99, return_foo_iii);
-		assertEquals(100, helper.foo.iii);
+		assertThat((long) return_foo_iii).isEqualTo((long) 99);
+		assertThat((long) helper.foo.iii).isEqualTo((long) 100);
 
 		e = parser.parseExpression("--foo.iii");
-		assertEquals(100, helper.foo.iii);
+		assertThat((long) helper.foo.iii).isEqualTo((long) 100);
 		return_foo_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(99, return_foo_iii);
-		assertEquals(99, helper.foo.iii);
+		assertThat((long) return_foo_iii).isEqualTo((long) 99);
+		assertThat((long) helper.foo.iii).isEqualTo((long) 99);
 
 		e = parser.parseExpression("foo.iii=999");
-		assertEquals(99, helper.foo.iii);
+		assertThat((long) helper.foo.iii).isEqualTo((long) 99);
 		return_foo_iii = e.getValue(ctx, Integer.TYPE);
-		assertEquals(999, return_foo_iii);
-		assertEquals(999, helper.foo.iii);
+		assertThat((long) return_foo_iii).isEqualTo((long) 999);
+		assertThat((long) helper.foo.iii).isEqualTo((long) 999);
 
 		// ConstructorReference
 		expectFailNotAssignable(parser, ctx, "(new String('abc'))++");
@@ -1272,22 +1269,22 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		ctx.setVariable("wobble", 3);
 		e = parser.parseExpression("#wobble++");
-		assertEquals(3, ((Integer) ctx.lookupVariable("wobble")).intValue());
+		assertThat((long) ((Integer) ctx.lookupVariable("wobble")).intValue()).isEqualTo((long) 3);
 		int r = e.getValue(ctx, Integer.TYPE);
-		assertEquals(3, r);
-		assertEquals(4, ((Integer) ctx.lookupVariable("wobble")).intValue());
+		assertThat((long) r).isEqualTo((long) 3);
+		assertThat((long) ((Integer) ctx.lookupVariable("wobble")).intValue()).isEqualTo((long) 4);
 
 		e = parser.parseExpression("--#wobble");
-		assertEquals(4, ((Integer) ctx.lookupVariable("wobble")).intValue());
+		assertThat((long) ((Integer) ctx.lookupVariable("wobble")).intValue()).isEqualTo((long) 4);
 		r = e.getValue(ctx, Integer.TYPE);
-		assertEquals(3, r);
-		assertEquals(3, ((Integer) ctx.lookupVariable("wobble")).intValue());
+		assertThat((long) r).isEqualTo((long) 3);
+		assertThat((long) ((Integer) ctx.lookupVariable("wobble")).intValue()).isEqualTo((long) 3);
 
 		e = parser.parseExpression("#wobble=34");
-		assertEquals(3, ((Integer) ctx.lookupVariable("wobble")).intValue());
+		assertThat((long) ((Integer) ctx.lookupVariable("wobble")).intValue()).isEqualTo((long) 3);
 		r = e.getValue(ctx, Integer.TYPE);
-		assertEquals(34, r);
-		assertEquals(34, ((Integer) ctx.lookupVariable("wobble")).intValue());
+		assertThat((long) r).isEqualTo((long) 34);
+		assertThat((long) ((Integer) ctx.lookupVariable("wobble")).intValue()).isEqualTo((long) 34);
 
 		// Projection
 		expectFailNotIncrementable(parser, ctx, "({1,2,3}.![#isEven(#this)])++");  // projection would be {false,true,false}
@@ -1313,22 +1310,22 @@ public class EvaluationTests extends AbstractExpressionTests {
 		// PropertyOrFieldReference
 		helper.iii = 42;
 		e = parser.parseExpression("iii++");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		r = e.getValue(ctx, Integer.TYPE);
-		assertEquals(42, r);
-		assertEquals(43, helper.iii);
+		assertThat((long) r).isEqualTo((long) 42);
+		assertThat((long) helper.iii).isEqualTo((long) 43);
 
 		e = parser.parseExpression("--iii");
-		assertEquals(43, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 43);
 		r = e.getValue(ctx, Integer.TYPE);
-		assertEquals(42, r);
-		assertEquals(42, helper.iii);
+		assertThat((long) r).isEqualTo((long) 42);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 
 		e = parser.parseExpression("iii=100");
-		assertEquals(42, helper.iii);
+		assertThat((long) helper.iii).isEqualTo((long) 42);
 		r = e.getValue(ctx, Integer.TYPE);
-		assertEquals(100, r);
-		assertEquals(100, helper.iii);
+		assertThat((long) r).isEqualTo((long) 100);
+		assertThat((long) helper.iii).isEqualTo((long) 100);
 	}
 
 	private void expectFailNotAssignable(ExpressionParser parser, EvaluationContext eContext, String expressionString) {

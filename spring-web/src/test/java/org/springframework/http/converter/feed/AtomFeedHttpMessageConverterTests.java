@@ -39,8 +39,6 @@ import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Arjen Poutsma
  */
@@ -76,7 +74,7 @@ public class AtomFeedHttpMessageConverterTests {
 		assertThat(result.getTitle()).isEqualTo("title");
 		assertThat(result.getSubtitle().getValue()).isEqualTo("subtitle");
 		List<?> entries = result.getEntries();
-		assertEquals(2, entries.size());
+		assertThat((long) entries.size()).isEqualTo((long) 2);
 
 		Entry entry1 = (Entry) entries.get(0);
 		assertThat(entry1.getId()).isEqualTo("id1");

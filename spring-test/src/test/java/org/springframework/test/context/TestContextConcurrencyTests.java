@@ -29,8 +29,6 @@ import static java.util.stream.Collectors.toCollection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Integration tests that verify proper concurrency support between a
  * {@link TestContextManager} and the {@link TestContext} it manages
@@ -79,7 +77,7 @@ public class TestContextConcurrencyTests {
 			});
 			assertThat(actualMethods).isEqualTo(expectedMethods);
 		});
-		assertEquals(0, tcm.getTestContext().attributeNames().length);
+		assertThat((long) tcm.getTestContext().attributeNames().length).isEqualTo((long) 0);
 	}
 
 

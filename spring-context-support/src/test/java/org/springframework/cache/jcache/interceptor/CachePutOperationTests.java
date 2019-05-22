@@ -24,8 +24,6 @@ import javax.cache.annotation.CachePut;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Stephane Nicoll
@@ -44,12 +42,12 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CachePutOperation operation = createSimpleOperation();
 
 		CacheInvocationParameter[] allParameters = operation.getAllParameters(2L, sampleInstance);
-		assertEquals(2, allParameters.length);
+		assertThat((long) allParameters.length).isEqualTo((long) 2);
 		assertCacheInvocationParameter(allParameters[0], Long.class, 2L, 0);
 		assertCacheInvocationParameter(allParameters[1], SampleObject.class, sampleInstance, 1);
 
 		CacheInvocationParameter valueParameter = operation.getValueParameter(2L, sampleInstance);
-		assertNotNull(valueParameter);
+		assertThat((Object) valueParameter).isNotNull();
 		assertCacheInvocationParameter(valueParameter, SampleObject.class, sampleInstance, 1);
 	}
 
@@ -85,7 +83,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 				SampleObject.class, "fullPutConfig", Long.class, SampleObject.class);
 		CachePutOperation operation = createDefaultOperation(methodDetails);
 		assertThat(operation.isEarlyPut()).isTrue();
-		assertNotNull(operation.getExceptionTypeFilter());
+		assertThat((Object) operation.getExceptionTypeFilter()).isNotNull();
 		assertThat(operation.getExceptionTypeFilter().match(IOException.class)).isTrue();
 		assertThat(operation.getExceptionTypeFilter().match(NullPointerException.class)).isFalse();
 	}

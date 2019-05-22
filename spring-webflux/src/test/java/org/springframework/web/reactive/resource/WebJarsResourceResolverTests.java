@@ -31,8 +31,6 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -89,7 +87,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain).block(TIMEOUT);
 
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 		verify(this.chain, never()).resolveUrlPath("foo/2.3/foo.txt", this.locations);
 	}
@@ -115,7 +113,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain).block(TIMEOUT);
 
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 		verify(this.chain, never()).resolveUrlPath(null, this.locations);
 	}
@@ -144,7 +142,7 @@ public class WebJarsResourceResolverTests {
 				.resolveResource(this.exchange, file, this.locations, this.chain)
 				.block(TIMEOUT);
 
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.chain, times(1)).resolveResource(this.exchange, file, this.locations);
 		verify(this.chain, never()).resolveResource(this.exchange, null, this.locations);
 	}

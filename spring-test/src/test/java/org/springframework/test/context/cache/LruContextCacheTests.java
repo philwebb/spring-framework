@@ -30,7 +30,6 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -72,8 +71,8 @@ public class LruContextCacheTests {
 	@Test
 	public void maxCacheSizeOne() {
 		DefaultContextCache cache = new DefaultContextCache(1);
-		assertEquals(0, cache.size());
-		assertEquals(1, cache.getMaxSize());
+		assertThat((long) cache.size()).isEqualTo((long) 0);
+		assertThat((long) cache.getMaxSize()).isEqualTo((long) 1);
 
 		cache.put(fooConfig, fooContext);
 		assertCacheContents(cache, "Foo");
@@ -91,8 +90,8 @@ public class LruContextCacheTests {
 	@Test
 	public void maxCacheSizeThree() {
 		DefaultContextCache cache = new DefaultContextCache(3);
-		assertEquals(0, cache.size());
-		assertEquals(3, cache.getMaxSize());
+		assertThat((long) cache.size()).isEqualTo((long) 0);
+		assertThat((long) cache.getMaxSize()).isEqualTo((long) 3);
 
 		cache.put(fooConfig, fooContext);
 		assertCacheContents(cache, "Foo");

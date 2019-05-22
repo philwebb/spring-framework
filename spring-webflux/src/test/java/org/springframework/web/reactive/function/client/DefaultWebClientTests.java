@@ -36,8 +36,6 @@ import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -214,19 +212,19 @@ public class DefaultWebClientTests {
 		// Now, verify what each client has..
 
 		WebClient.Builder builder1 = client1.mutate();
-		builder1.filters(filters -> assertEquals(1, filters.size()));
-		builder1.defaultHeaders(headers -> assertEquals(1, headers.size()));
-		builder1.defaultCookies(cookies -> assertEquals(1, cookies.size()));
+		builder1.filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 1));
+		builder1.defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 1));
+		builder1.defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 1));
 
 		WebClient.Builder builder2 = client2.mutate();
-		builder2.filters(filters -> assertEquals(2, filters.size()));
-		builder2.defaultHeaders(headers -> assertEquals(2, headers.size()));
-		builder2.defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		builder2.filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 2));
+		builder2.defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 2));
+		builder2.defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 2));
 
 		WebClient.Builder builder1a = client1a.mutate();
-		builder1a.filters(filters -> assertEquals(2, filters.size()));
-		builder1a.defaultHeaders(headers -> assertEquals(2, headers.size()));
-		builder1a.defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		builder1a.filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 2));
+		builder1a.defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 2));
+		builder1a.defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 2));
 	}
 
 	@Test
@@ -261,7 +259,7 @@ public class DefaultWebClientTests {
 				.attribute("foo", null)
 				.exchange().block(Duration.ofSeconds(10));
 
-		assertNull(actual.get("foo"));
+		assertThat(actual.get("foo")).isNull();
 
 		ClientRequest request = verifyAndGetRequest();
 		assertThat(request.attribute("foo").isPresent()).isFalse();

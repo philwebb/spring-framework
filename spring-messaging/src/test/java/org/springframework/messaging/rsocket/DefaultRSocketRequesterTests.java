@@ -46,8 +46,6 @@ import org.springframework.util.MimeTypeUtils;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link DefaultRSocketRequester}.
@@ -123,10 +121,10 @@ public class DefaultRSocketRequesterTests {
 
 		assertThat(this.rsocket.getSavedMethodName()).isEqualTo("requestChannel");
 		List<Payload> payloads = this.rsocket.getSavedPayloadFlux().collectList().block(Duration.ofSeconds(5));
-		assertNotNull(payloads);
+		assertThat((Object) payloads).isNotNull();
 
 		if (Arrays.equals(new String[] {""}, expectedValues)) {
-			assertEquals(1, payloads.size());
+			assertThat((long) payloads.size()).isEqualTo((long) 1);
 			assertThat(payloads.get(0).getMetadataUtf8()).isEqualTo("toA");
 			assertThat(payloads.get(0).getDataUtf8()).isEqualTo("");
 		}

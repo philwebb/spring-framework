@@ -56,11 +56,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
-
 /**
  * Unit tests for {@link GenericConversionService}.
  *
@@ -169,7 +164,7 @@ public class GenericConversionServiceTests {
 
 	@Test
 	public void convertNull() {
-		assertNull(conversionService.convert(null, Integer.class));
+		assertThat(conversionService.convert(null, Integer.class)).isNull();
 	}
 
 	@Test
@@ -235,7 +230,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(String.class, int.class)).isTrue();
 		Integer three = conversionService.convert("3", int.class);
-		assertEquals(3, three.intValue());
+		assertThat((long) three.intValue()).isEqualTo((long) 3);
 	}
 
 	@Test
@@ -252,7 +247,7 @@ public class GenericConversionServiceTests {
 		raw.add("one");
 		raw.add("two");
 		Object converted = conversionService.convert(raw, Iterable.class);
-		assertSame(raw, converted);
+		assertThat(converted).isSameAs(raw);
 	}
 
 	@Test
@@ -261,7 +256,7 @@ public class GenericConversionServiceTests {
 		raw.add("one");
 		raw.add("two");
 		Object converted = conversionService.convert(raw, Object.class);
-		assertSame(raw, converted);
+		assertThat(converted).isSameAs(raw);
 	}
 
 	@Test
@@ -269,7 +264,7 @@ public class GenericConversionServiceTests {
 		Map<Object, Object> raw = new HashMap<>();
 		raw.put("key", "value");
 		Object converted = conversionService.convert(raw, Object.class);
-		assertSame(raw, converted);
+		assertThat(converted).isSameAs(raw);
 	}
 
 	@Test
@@ -330,21 +325,21 @@ public class GenericConversionServiceTests {
 	public void testStringToString() {
 		String value = "myValue";
 		String result = conversionService.convert(value, String.class);
-		assertSame(value, result);
+		assertThat((Object) result).isSameAs(value);
 	}
 
 	@Test
 	public void testStringToObject() {
 		String value = "myValue";
 		Object result = conversionService.convert(value, Object.class);
-		assertSame(value, result);
+		assertThat(result).isSameAs(value);
 	}
 
 	@Test
 	public void testIgnoreCopyConstructor() {
 		WithCopyConstructor value = new WithCopyConstructor();
 		Object result = conversionService.convert(value, WithCopyConstructor.class);
-		assertSame(value, result);
+		assertThat(result).isSameAs(value);
 	}
 
 	@Test
@@ -403,7 +398,7 @@ public class GenericConversionServiceTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(list);
 		TypeDescriptor targetType = TypeDescriptor.valueOf(String[].class);
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertEquals(0, ((String[]) conversionService.convert(list, sourceType, targetType)).length);
+		assertThat((long) ((String[]) conversionService.convert(list, sourceType, targetType)).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -414,7 +409,7 @@ public class GenericConversionServiceTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(list);
 		TypeDescriptor targetType = TypeDescriptor.valueOf(Integer.class);
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertNull(conversionService.convert(list, sourceType, targetType));
+		assertThat(conversionService.convert(list, sourceType, targetType)).isNull();
 	}
 
 	@Test
@@ -447,7 +442,7 @@ public class GenericConversionServiceTests {
 		GenericConverter.ConvertiblePair pair = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		GenericConverter.ConvertiblePair pairEqual = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		assertThat(pairEqual).isEqualTo(pair);
-		assertEquals(pair.hashCode(), pairEqual.hashCode());
+		assertThat((long) pairEqual.hashCode()).isEqualTo((long) pair.hashCode());
 	}
 
 	@Test
@@ -534,7 +529,7 @@ public class GenericConversionServiceTests {
 		// SPR-9566
 		byte[] byteArray = new byte[] { 1, 2, 3 };
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
-		assertSame(byteArray, converted);
+		assertThat((Object) converted).isSameAs(byteArray);
 	}
 
 	@Test

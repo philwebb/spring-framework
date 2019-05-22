@@ -57,7 +57,6 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
@@ -294,7 +293,7 @@ public class ViewResolutionResultHandlerTests {
 		resultHandler.handleResult(exchange, handlerResult).block(Duration.ZERO);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertEquals(303, response.getStatusCode().value());
+		assertThat((long) response.getStatusCode().value()).isEqualTo((long) 303);
 		assertThat(response.getHeaders().getLocation().toString()).isEqualTo("/");
 	}
 

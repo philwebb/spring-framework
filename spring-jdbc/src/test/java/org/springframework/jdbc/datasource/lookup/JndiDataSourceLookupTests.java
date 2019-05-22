@@ -23,9 +23,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rick Evans
@@ -46,8 +43,8 @@ public class JndiDataSourceLookupTests {
 			}
 		};
 		DataSource dataSource = lookup.getDataSource(DATA_SOURCE_NAME);
-		assertNotNull("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is", dataSource);
-		assertSame(expectedDataSource, dataSource);
+		assertThat((Object) dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
+		assertThat((Object) dataSource).isSameAs(expectedDataSource);
 	}
 
 	@Test

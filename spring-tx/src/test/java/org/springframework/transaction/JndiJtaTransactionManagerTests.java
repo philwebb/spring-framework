@@ -31,8 +31,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -88,7 +86,7 @@ public class JndiJtaTransactionManagerTests {
 			assertThat(ptm.getTransactionManager()).isEqualTo(tm);
 		}
 		else {
-			assertNull(ptm.getTransactionManager());
+			assertThat((Object) ptm.getTransactionManager()).isNull();
 		}
 
 		if (defaultUt) {
@@ -184,7 +182,7 @@ public class JndiJtaTransactionManagerTests {
 		assertThat(ptm.getUserTransaction()).isEqualTo(ut);
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
-		assertEquals(JtaTransactionManager.SYNCHRONIZATION_ALWAYS, ptm.getTransactionSynchronization());
+		assertThat((long) ptm.getTransactionSynchronization()).isEqualTo((long) JtaTransactionManager.SYNCHRONIZATION_ALWAYS);
 		boolean condition1 = !TransactionSynchronizationManager.isSynchronizationActive();
 		assertThat(condition1).isTrue();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
@@ -224,7 +222,7 @@ public class JndiJtaTransactionManagerTests {
 	public void tearDown() {
 		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
-		assertNull(TransactionSynchronizationManager.getCurrentTransactionName());
+		assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isNull();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 	}

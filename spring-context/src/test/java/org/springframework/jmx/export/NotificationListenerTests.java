@@ -37,7 +37,6 @@ import org.springframework.jmx.support.ObjectNameManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -69,7 +68,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		// update the attribute
 		String attributeName = "Name";
 		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
-		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener not notified").isEqualTo((long) 1);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -95,7 +94,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		// update the attribute
 		String attributeName = "Name";
 		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
-		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener not notified").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -125,7 +124,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		server.setAttribute(ObjectNameManager.getInstance("spring:name=Test"), new Attribute(attributeName,
 				"Rob Harrop"));
 
-		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener not notified").isEqualTo((long) 1);
 		assertThat(listener.getLastHandback(attributeName)).as("Handback object not transmitted correctly").isEqualTo(handback);
 	}
 
@@ -152,7 +151,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		String attributeName = "Name";
 		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 
-		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener not notified").isEqualTo((long) 1);
 	}
 
 	@SuppressWarnings("serial")
@@ -194,8 +193,8 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		server.setAttribute(objectName, new Attribute(nameAttribute, "Rob Harrop"));
 		server.setAttribute(objectName, new Attribute(ageAttribute, new Integer(90)));
 
-		assertEquals("Listener not notified for Name", 1, listener.getCount(nameAttribute));
-		assertEquals("Listener incorrectly notified for Age", 0, listener.getCount(ageAttribute));
+		assertThat((long) listener.getCount(nameAttribute)).as("Listener not notified for Name").isEqualTo((long) 1);
+		assertThat((long) listener.getCount(ageAttribute)).as("Listener incorrectly notified for Age").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -232,7 +231,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		assertIsRegistered("Should have registered MBean", objectName);
 
 		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
-		assertEquals("Listener not notified", 1, listener.getCount("Age"));
+		assertThat((long) listener.getCount("Age")).as("Listener not notified").isEqualTo((long) 1);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -263,7 +262,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		assertIsRegistered("Should have registered MBean", objectName);
 
 		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
-		assertEquals("Listener not notified", 1, listener.getCount("Age"));
+		assertThat((long) listener.getCount("Age")).as("Listener not notified").isEqualTo((long) 1);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -295,7 +294,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		assertIsRegistered("Should have registered MBean", objectName);
 
 		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
-		assertEquals("Listener should have been notified exactly once", 1, listener.getCount("Age"));
+		assertThat((long) listener.getCount("Age")).as("Listener should have been notified exactly once").isEqualTo((long) 1);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -327,7 +326,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		assertIsRegistered("Should have registered MBean", objectName);
 
 		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
-		assertEquals("Listener should have been notified exactly once", 1, listener.getCount("Age"));
+		assertThat((long) listener.getCount("Age")).as("Listener should have been notified exactly once").isEqualTo((long) 1);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -368,10 +367,10 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		assertIsRegistered("Should have registered MBean", objectName2);
 
 		server.setAttribute(ObjectNameManager.getInstance(objectName1), new Attribute("Age", new Integer(77)));
-		assertEquals("Listener not notified for testBean1", 1, listener.getCount("Age"));
+		assertThat((long) listener.getCount("Age")).as("Listener not notified for testBean1").isEqualTo((long) 1);
 
 		server.setAttribute(ObjectNameManager.getInstance(objectName2), new Attribute("Age", new Integer(33)));
-		assertEquals("Listener not notified for testBean2", 2, listener.getCount("Age"));
+		assertThat((long) listener.getCount("Age")).as("Listener not notified for testBean2").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -398,13 +397,13 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		// update the attribute
 		String attributeName = "Name";
 		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
-		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener not notified").isEqualTo((long) 1);
 
 		registrar.destroy();
 
 		// try to update the attribute again
 		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
-		assertEquals("Listener notified after destruction", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener notified after destruction").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -435,13 +434,13 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		// update the attribute
 		String attributeName = "Name";
 		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
-		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener not notified").isEqualTo((long) 1);
 
 		registrar.destroy();
 
 		// try to update the attribute again
 		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
-		assertEquals("Listener notified after destruction", 1, listener.getCount(attributeName));
+		assertThat((long) listener.getCount(attributeName)).as("Listener notified after destruction").isEqualTo((long) 1);
 	}
 
 

@@ -49,8 +49,6 @@ import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -330,7 +328,7 @@ public class OpenEntityManagerInViewTests {
 		filter2.doFilter(request, response, filterChain3);
 		assertThat(TransactionSynchronizationManager.hasResource(factory)).isFalse();
 		assertThat(TransactionSynchronizationManager.hasResource(factory2)).isFalse();
-		assertNotNull(request.getAttribute("invoked"));
+		assertThat(request.getAttribute("invoked")).isNotNull();
 
 		verify(manager).close();
 		verify(manager2).close();
@@ -408,9 +406,9 @@ public class OpenEntityManagerInViewTests {
 		filter2.doFilter(this.request, this.response, filterChain3);
 		assertThat(TransactionSynchronizationManager.hasResource(factory)).isFalse();
 		assertThat(TransactionSynchronizationManager.hasResource(factory2)).isFalse();
-		assertEquals(1, count.get());
-		assertEquals(1, count2.get());
-		assertNotNull(request.getAttribute("invoked"));
+		assertThat((long) count.get()).isEqualTo((long) 1);
+		assertThat((long) count2.get()).isEqualTo((long) 1);
+		assertThat(request.getAttribute("invoked")).isNotNull();
 		verify(asyncWebRequest, times(2)).addCompletionHandler(any(Runnable.class));
 		verify(asyncWebRequest).addTimeoutHandler(any(Runnable.class));
 		verify(asyncWebRequest, times(2)).addCompletionHandler(any(Runnable.class));
@@ -426,8 +424,8 @@ public class OpenEntityManagerInViewTests {
 		filter.doFilter(this.request, this.response, filterChain3);
 		assertThat(TransactionSynchronizationManager.hasResource(factory)).isFalse();
 		assertThat(TransactionSynchronizationManager.hasResource(factory2)).isFalse();
-		assertEquals(2, count.get());
-		assertEquals(2, count2.get());
+		assertThat((long) count.get()).isEqualTo((long) 2);
+		assertThat((long) count2.get()).isEqualTo((long) 2);
 
 		verify(this.manager).close();
 		verify(manager2).close();

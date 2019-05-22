@@ -29,8 +29,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link TransformerUtils}.
@@ -45,10 +43,10 @@ public class TransformerUtilsTests {
 		Transformer transformer = new StubTransformer();
 		TransformerUtils.enableIndenting(transformer);
 		String indent = transformer.getOutputProperty(OutputKeys.INDENT);
-		assertNotNull(indent);
+		assertThat((Object) indent).isNotNull();
 		assertThat(indent).isEqualTo("yes");
 		String indentAmount = transformer.getOutputProperty("{http://xml.apache.org/xalan}indent-amount");
-		assertNotNull(indentAmount);
+		assertThat((Object) indentAmount).isNotNull();
 		assertThat(indentAmount).isEqualTo(String.valueOf(TransformerUtils.DEFAULT_INDENT_AMOUNT));
 	}
 
@@ -58,10 +56,10 @@ public class TransformerUtilsTests {
 		Transformer transformer = new StubTransformer();
 		TransformerUtils.enableIndenting(transformer, Integer.valueOf(indentAmountProperty));
 		String indent = transformer.getOutputProperty(OutputKeys.INDENT);
-		assertNotNull(indent);
+		assertThat((Object) indent).isNotNull();
 		assertThat(indent).isEqualTo("yes");
 		String indentAmount = transformer.getOutputProperty("{http://xml.apache.org/xalan}indent-amount");
-		assertNotNull(indentAmount);
+		assertThat((Object) indentAmount).isNotNull();
 		assertThat(indentAmount).isEqualTo(indentAmountProperty);
 	}
 
@@ -70,7 +68,7 @@ public class TransformerUtilsTests {
 		Transformer transformer = new StubTransformer();
 		TransformerUtils.disableIndenting(transformer);
 		String indent = transformer.getOutputProperty(OutputKeys.INDENT);
-		assertNotNull(indent);
+		assertThat((Object) indent).isNotNull();
 		assertThat(indent).isEqualTo("no");
 	}
 

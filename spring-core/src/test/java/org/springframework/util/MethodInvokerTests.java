@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Colin Sampaleanu
@@ -43,7 +42,7 @@ public class MethodInvokerTests {
 		mi.setTargetMethod("method1");
 		mi.prepare();
 		Integer i = (Integer) mi.invoke();
-		assertEquals(1, i.intValue());
+		assertThat((long) i.intValue()).isEqualTo((long) 1);
 
 		// defensive check: singleton, non-static should work with null array
 		tc1 = new TestClass1();
@@ -53,7 +52,7 @@ public class MethodInvokerTests {
 		mi.setArguments((Object[]) null);
 		mi.prepare();
 		i = (Integer) mi.invoke();
-		assertEquals(1, i.intValue());
+		assertThat((long) i.intValue()).isEqualTo((long) 1);
 
 		// sanity check: check that argument count matching works
 		mi = new MethodInvoker();

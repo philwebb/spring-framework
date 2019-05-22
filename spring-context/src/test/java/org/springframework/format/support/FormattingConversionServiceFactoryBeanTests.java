@@ -40,7 +40,6 @@ import org.springframework.format.Printer;
 import org.springframework.format.annotation.NumberFormat;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rossen Stoyanchev
@@ -91,7 +90,7 @@ public class FormattingConversionServiceFactoryBeanTests {
 		FormattingConversionService fcs = factory.getObject();
 
 		TestBean testBean = fcs.convert("5", TestBean.class);
-		assertEquals(5, testBean.getSpecialInt());
+		assertThat((long) testBean.getSpecialInt()).isEqualTo((long) 5);
 		assertThat(fcs.convert(testBean, String.class)).isEqualTo("5");
 
 		TypeDescriptor descriptor = new TypeDescriptor(TestBean.class.getDeclaredField("specialInt"));
@@ -111,7 +110,7 @@ public class FormattingConversionServiceFactoryBeanTests {
 		FormattingConversionService fcs = factory.getObject();
 
 		TestBean testBean = fcs.convert("5", TestBean.class);
-		assertEquals(5, testBean.getSpecialInt());
+		assertThat((long) testBean.getSpecialInt()).isEqualTo((long) 5);
 		assertThat(fcs.convert(testBean, String.class)).isEqualTo("5");
 	}
 

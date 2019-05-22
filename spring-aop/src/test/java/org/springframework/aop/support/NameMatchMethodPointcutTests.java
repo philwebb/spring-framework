@@ -28,7 +28,6 @@ import org.springframework.tests.sample.beans.SerializablePerson;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rod Johnson
@@ -69,11 +68,11 @@ public class NameMatchMethodPointcutTests {
 
 	@Test
 	public void testEmpty() throws Throwable {
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		proxied.getName();
 		proxied.setName("");
 		proxied.echo(null);
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 	}
 
 
@@ -81,29 +80,29 @@ public class NameMatchMethodPointcutTests {
 	public void testMatchOneMethod() throws Throwable {
 		pc.addMethodName("echo");
 		pc.addMethodName("set*");
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		proxied.getName();
 		proxied.getName();
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		proxied.echo(null);
-		assertEquals(1, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
 
 		proxied.setName("");
-		assertEquals(2, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 2);
 		proxied.setAge(25);
-		assertEquals(25, proxied.getAge());
-		assertEquals(3, nop.getCount());
+		assertThat((long) proxied.getAge()).isEqualTo((long) 25);
+		assertThat((long) nop.getCount()).isEqualTo((long) 3);
 	}
 
 	@Test
 	public void testSets() throws Throwable {
 		pc.setMappedNames("set*", "echo");
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		proxied.getName();
 		proxied.setName("");
-		assertEquals(1, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
 		proxied.echo(null);
-		assertEquals(2, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -113,9 +112,9 @@ public class NameMatchMethodPointcutTests {
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(proxied);
 		NopInterceptor nop2 = (NopInterceptor) ((Advised) p2).getAdvisors()[0].getAdvice();
 		p2.getName();
-		assertEquals(2, nop2.getCount());
+		assertThat((long) nop2.getCount()).isEqualTo((long) 2);
 		p2.echo(null);
-		assertEquals(3, nop2.getCount());
+		assertThat((long) nop2.getCount()).isEqualTo((long) 3);
 	}
 
 	@Test
@@ -126,7 +125,7 @@ public class NameMatchMethodPointcutTests {
 		String foo = "foo";
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertEquals(pc1.hashCode(), pc2.hashCode());
+		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 
 		pc1.setMappedName(foo);
 		assertThat(pc1.equals(pc2)).isFalse();
@@ -134,7 +133,7 @@ public class NameMatchMethodPointcutTests {
 
 		pc2.setMappedName(foo);
 		assertThat(pc2).isEqualTo(pc1);
-		assertEquals(pc1.hashCode(), pc2.hashCode());
+		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 	}
 
 }

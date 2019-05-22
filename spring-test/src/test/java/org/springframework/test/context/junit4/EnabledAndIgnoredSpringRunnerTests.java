@@ -27,7 +27,7 @@ import org.springframework.test.annotation.ProfileValueSource;
 import org.springframework.test.annotation.ProfileValueSourceConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.fail;
 
 /**
@@ -64,7 +64,7 @@ public class EnabledAndIgnoredSpringRunnerTests {
 
 	@AfterClass
 	public static void verifyNumTestsExecuted() {
-		assertEquals("Verifying the number of tests executed.", 3, numTestsExecuted);
+		assertThat((long) numTestsExecuted).as("Verifying the number of tests executed.").isEqualTo((long) 3);
 	}
 
 	@Test

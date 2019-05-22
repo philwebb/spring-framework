@@ -35,7 +35,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.sockjs.client.TestTransport.XhrTestTransport;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -125,12 +124,12 @@ public class SockJsClientTests {
 		this.sockJsClient.doHandshake(handler, headers, new URI(URL)).addCallback(this.connectCallback);
 
 		HttpHeaders httpHeaders = headersCaptor.getValue();
-		assertEquals(2, httpHeaders.size());
+		assertThat((long) httpHeaders.size()).isEqualTo((long) 2);
 		assertThat(httpHeaders.getFirst("foo")).isEqualTo("bar");
 		assertThat(httpHeaders.getFirst("auth")).isEqualTo("123");
 
 		httpHeaders = this.xhrTransport.getRequest().getHttpRequestHeaders();
-		assertEquals(2, httpHeaders.size());
+		assertThat((long) httpHeaders.size()).isEqualTo((long) 2);
 		assertThat(httpHeaders.getFirst("foo")).isEqualTo("bar");
 		assertThat(httpHeaders.getFirst("auth")).isEqualTo("123");
 	}
@@ -146,9 +145,9 @@ public class SockJsClientTests {
 		this.sockJsClient.setHttpHeaderNames("auth");
 		this.sockJsClient.doHandshake(handler, headers, new URI(URL)).addCallback(this.connectCallback);
 
-		assertEquals(1, headersCaptor.getValue().size());
+		assertThat((long) headersCaptor.getValue().size()).isEqualTo((long) 1);
 		assertThat(headersCaptor.getValue().getFirst("auth")).isEqualTo("123");
-		assertEquals(1, this.xhrTransport.getRequest().getHttpRequestHeaders().size());
+		assertThat((long) this.xhrTransport.getRequest().getHttpRequestHeaders().size()).isEqualTo((long) 1);
 		assertThat(this.xhrTransport.getRequest().getHttpRequestHeaders().getFirst("auth")).isEqualTo("123");
 	}
 

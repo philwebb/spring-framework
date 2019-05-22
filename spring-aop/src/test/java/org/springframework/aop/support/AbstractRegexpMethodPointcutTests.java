@@ -25,7 +25,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rod Johnson
@@ -57,7 +56,7 @@ public abstract class AbstractRegexpMethodPointcutTests {
 	protected void noPatternSuppliedTests(AbstractRegexpMethodPointcut rpc) throws Exception {
 		assertThat(rpc.matches(Object.class.getMethod("hashCode"), String.class)).isFalse();
 		assertThat(rpc.matches(Object.class.getMethod("wait"), Object.class)).isFalse();
-		assertEquals(0, rpc.getPatterns().length);
+		assertThat((long) rpc.getPatterns().length).isEqualTo((long) 0);
 	}
 
 	@Test

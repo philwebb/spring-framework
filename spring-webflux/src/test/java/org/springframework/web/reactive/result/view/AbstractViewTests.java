@@ -38,9 +38,6 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link AbstractView}.
@@ -76,13 +73,13 @@ public class AbstractViewTests {
 		assertThat(outMap.get("attr2")).isEqualTo(Arrays.asList(testBean1, testBean2));
 		assertThat(outMap.get("attr3")).isEqualTo(testBean2);
 		assertThat(outMap.get("attr4")).isEqualTo(Arrays.asList(testBean1, testBean2));
-		assertNull(outMap.get("attr5"));
+		assertThat(outMap.get("attr5")).isNull();
 
-		assertNotNull(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr1"));
-		assertNotNull(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr3"));
-		assertNull(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr2"));
-		assertNull(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr4"));
-		assertNull(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr5"));
+		assertThat(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr1")).isNotNull();
+		assertThat(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr3")).isNotNull();
+		assertThat(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr2")).isNull();
+		assertThat(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr4")).isNull();
+		assertThat(outMap.get(BindingResult.MODEL_KEY_PREFIX + "attr5")).isNull();
 	}
 
 	private static class TestView extends AbstractView {

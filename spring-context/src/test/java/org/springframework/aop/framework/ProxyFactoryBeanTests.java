@@ -67,10 +67,6 @@ import static org.assertj.core.api.Assertions.assertThatIOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
-
 /**
  * @since 13.03.2003
  * @author Rod Johnson
@@ -168,11 +164,11 @@ public class ProxyFactoryBeanTests {
 
 		// We have a counting before advice here
 		CountingBeforeAdvice cba = (CountingBeforeAdvice) bf.getBean("countingBeforeAdvice");
-		assertEquals(0, cba.getCalls());
+		assertThat((long) cba.getCalls()).isEqualTo((long) 0);
 
 		ITestBean tb = (ITestBean) bf.getBean("directTarget");
 		assertThat(tb.getName().equals("Adam")).isTrue();
-		assertEquals(1, cba.getCalls());
+		assertThat((long) cba.getCalls()).isEqualTo((long) 1);
 
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&directTarget");
 		assertThat(TestBean.class.isAssignableFrom(pfb.getObjectType())).as("Has correct object type").isTrue();
@@ -212,9 +208,9 @@ public class ProxyFactoryBeanTests {
 		//assertTrue("Singleton instances ==", test1 == test1_1);
 		assertThat(test1_1).as("Singleton instances ==").isEqualTo(test1);
 		test1.setAge(25);
-		assertEquals(test1.getAge(), test1_1.getAge());
+		assertThat((long) test1_1.getAge()).isEqualTo((long) test1.getAge());
 		test1.setAge(250);
-		assertEquals(test1.getAge(), test1_1.getAge());
+		assertThat((long) test1_1.getAge()).isEqualTo((long) test1.getAge());
 		Advised pc1 = (Advised) test1;
 		Advised pc2 = (Advised) test1_1;
 		assertThat(pc2.getAdvisors()).isEqualTo(pc1.getAdvisors());
@@ -222,11 +218,11 @@ public class ProxyFactoryBeanTests {
 		NopInterceptor di = new NopInterceptor();
 		pc1.addAdvice(1, di);
 		assertThat(pc2.getAdvisors()).isEqualTo(pc1.getAdvisors());
-		assertEquals("Now have one more advisor", oldLength + 1, pc2.getAdvisors().length);
-		assertEquals(di.getCount(), 0);
+		assertThat((long) pc2.getAdvisors().length).as("Now have one more advisor").isEqualTo((long) (oldLength + 1));
+		assertThat((long) 0).isEqualTo((long) di.getCount());
 		test1.setAge(5);
-		assertEquals(test1_1.getAge(), test1.getAge());
-		assertEquals(di.getCount(), 3);
+		assertThat((long) test1.getAge()).isEqualTo((long) test1_1.getAge());
+		assertThat((long) 3).isEqualTo((long) di.getCount());
 	}
 
 	@Test
@@ -253,22 +249,22 @@ public class ProxyFactoryBeanTests {
 
 		// Check it works without AOP
 		SideEffectBean raw = (SideEffectBean) bf.getBean("prototypeTarget");
-		assertEquals(INITIAL_COUNT, raw.getCount());
+		assertThat((long) raw.getCount()).isEqualTo((long) INITIAL_COUNT);
 		raw.doWork();
-		assertEquals(INITIAL_COUNT+1, raw.getCount());
+		assertThat((long) raw.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 		raw = (SideEffectBean) bf.getBean("prototypeTarget");
-		assertEquals(INITIAL_COUNT, raw.getCount());
+		assertThat((long) raw.getCount()).isEqualTo((long) INITIAL_COUNT);
 
 		// Now try with advised instances
 		SideEffectBean prototype2FirstInstance = (SideEffectBean) bf.getBean(beanName);
-		assertEquals(INITIAL_COUNT, prototype2FirstInstance.getCount());
+		assertThat((long) prototype2FirstInstance.getCount()).isEqualTo((long) INITIAL_COUNT);
 		prototype2FirstInstance.doWork();
-		assertEquals(INITIAL_COUNT + 1, prototype2FirstInstance.getCount());
+		assertThat((long) prototype2FirstInstance.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		SideEffectBean prototype2SecondInstance = (SideEffectBean) bf.getBean(beanName);
 		assertThat(prototype2FirstInstance == prototype2SecondInstance).as("Prototypes are not ==").isFalse();
-		assertEquals(INITIAL_COUNT, prototype2SecondInstance.getCount());
-		assertEquals(INITIAL_COUNT + 1, prototype2FirstInstance.getCount());
+		assertThat((long) prototype2SecondInstance.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat((long) prototype2FirstInstance.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		return prototype2FirstInstance;
 	}
@@ -299,7 +295,7 @@ public class ProxyFactoryBeanTests {
 		assertThat(ITestBean.class.isAssignableFrom(factory.getType("test1"))).as("Has correct object type").isTrue();
 		// Trigger lazy initialization.
 		config.getObject();
-		assertEquals("Have one advisors", 1, config.getAdvisors().length);
+		assertThat((long) config.getAdvisors().length).as("Have one advisors").isEqualTo((long) 1);
 		assertThat(ITestBean.class.isAssignableFrom(config.getObjectType())).as("Has correct object type").isTrue();
 		assertThat(ITestBean.class.isAssignableFrom(factory.getType("test1"))).as("Has correct object type").isTrue();
 
@@ -315,7 +311,7 @@ public class ProxyFactoryBeanTests {
 				throw ex;
 			}
 		});
-		assertEquals("Have correct advisor count", 2, config.getAdvisors().length);
+		assertThat((long) config.getAdvisors().length).as("Have correct advisor count").isEqualTo((long) 2);
 
 		ITestBean tb1 = (ITestBean) factory.getBean("test1");
 		assertThatExceptionOfType(Exception.class).isThrownBy(
@@ -333,9 +329,9 @@ public class ProxyFactoryBeanTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(INNER_BEAN_TARGET_CONTEXT, CLASS));
 		ITestBean itb = (ITestBean) bf.getBean("testBean");
 		assertThat(itb.getName()).isEqualTo("innerBeanTarget");
-		assertEquals("Only have proxy and interceptor: no target", 3, bf.getBeanDefinitionCount());
+		assertThat((long) bf.getBeanDefinitionCount()).as("Only have proxy and interceptor: no target").isEqualTo((long) 3);
 		DependsOnITestBean doit = (DependsOnITestBean) bf.getBean("autowireCheck");
-		assertSame(itb, doit.tb);
+		assertThat((Object) doit.tb).isSameAs(itb);
 	}
 
 	/**
@@ -358,7 +354,7 @@ public class ProxyFactoryBeanTests {
 		assertThat(config.getAdvisors().length == oldCount + 1).isTrue();
 
 		TimeStamped ts = (TimeStamped) factory.getBean("test2");
-		assertEquals(time, ts.getTimeStamp());
+		assertThat(ts.getTimeStamp()).isEqualTo(time);
 
 		// Can remove
 		config.removeAdvice(ti);
@@ -382,20 +378,20 @@ public class ProxyFactoryBeanTests {
 		assertThat(debugInterceptor.getCount() == 0).isTrue();
 		it = (ITestBean) factory.getBean("test2");
 		it.getSpouse();
-		assertEquals(1, debugInterceptor.getCount());
+		assertThat(debugInterceptor.getCount()).isEqualTo((long) 1);
 		config.removeAdvice(debugInterceptor);
 		it.getSpouse();
 
 		// Still invoked with old reference
-		assertEquals(2, debugInterceptor.getCount());
+		assertThat(debugInterceptor.getCount()).isEqualTo((long) 2);
 
 		// not invoked with new object
 		it = (ITestBean) factory.getBean("test2");
 		it.getSpouse();
-		assertEquals(2, debugInterceptor.getCount());
+		assertThat(debugInterceptor.getCount()).isEqualTo((long) 2);
 
 		// Our own timestamped reference should still work
-		assertEquals(time, ts.getTimeStamp());
+		assertThat(ts.getTimeStamp()).isEqualTo(time);
 	}
 
 	/**
@@ -409,10 +405,10 @@ public class ProxyFactoryBeanTests {
 		it.getAge();
 		NopInterceptor di = new NopInterceptor();
 		pc.addAdvice(0, di);
-		assertEquals(0, di.getCount());
+		assertThat((long) di.getCount()).isEqualTo((long) 0);
 		it.setAge(25);
-		assertEquals(25, it.getAge());
-		assertEquals(2, di.getCount());
+		assertThat((long) it.getAge()).isEqualTo((long) 25);
+		assertThat((long) di.getCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -426,7 +422,7 @@ public class ProxyFactoryBeanTests {
 		tb.getAge();
 		tb.setName("Tristan");
 		tb.toString();
-		assertEquals("Recorded wrong number of invocations", 2, PointcutForVoid.methodNames.size());
+		assertThat((long) PointcutForVoid.methodNames.size()).as("Recorded wrong number of invocations").isEqualTo((long) 2);
 		assertThat(PointcutForVoid.methodNames.get(0).equals("setAge")).isTrue();
 		assertThat(PointcutForVoid.methodNames.get(1).equals("setName")).isTrue();
 	}
@@ -437,20 +433,20 @@ public class ProxyFactoryBeanTests {
 		new XmlBeanDefinitionReader(f).loadBeanDefinitions(new ClassPathResource(THROWS_ADVICE_CONTEXT, CLASS));
 		MyThrowsHandler th = (MyThrowsHandler) f.getBean("throwsAdvice");
 		CountingBeforeAdvice cba = (CountingBeforeAdvice) f.getBean("countingBeforeAdvice");
-		assertEquals(0, cba.getCalls());
-		assertEquals(0, th.getCalls());
+		assertThat((long) cba.getCalls()).isEqualTo((long) 0);
+		assertThat((long) th.getCalls()).isEqualTo((long) 0);
 		IEcho echo = (IEcho) f.getBean("throwsAdvised");
 		int i = 12;
 		echo.setA(i);
-		assertEquals(i, echo.getA());
-		assertEquals(2, cba.getCalls());
-		assertEquals(0, th.getCalls());
+		assertThat((long) echo.getA()).isEqualTo((long) i);
+		assertThat((long) cba.getCalls()).isEqualTo((long) 2);
+		assertThat((long) th.getCalls()).isEqualTo((long) 0);
 		Exception expected = new Exception();
 		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
 				echo.echoException(1, expected))
 			.matches(expected::equals);
 		// No throws handler method: count should still be 0
-		assertEquals(0, th.getCalls());
+		assertThat((long) th.getCalls()).isEqualTo((long) 0);
 
 		// Handler knows how to handle this exception
 		FileNotFoundException expectedFileNotFound = new FileNotFoundException();
@@ -459,7 +455,7 @@ public class ProxyFactoryBeanTests {
 			.matches(expectedFileNotFound::equals);
 
 		// One match
-		assertEquals(1, th.getCalls("ioException"));
+		assertThat((long) th.getCalls("ioException")).isEqualTo((long) 1);
 	}
 
 	// These two fail the whole bean factory
@@ -512,7 +508,7 @@ public class ProxyFactoryBeanTests {
 		// Trigger lazy initialization.
 		pfb.getObject();
 		// 2 globals + 2 explicit
-		assertEquals("Have 2 globals and 2 explicit advisors", 3, pfb.getAdvisors().length);
+		assertThat((long) pfb.getAdvisors().length).as("Have 2 globals and 2 explicit advisors").isEqualTo((long) 3);
 
 		ApplicationListener<?> l = (ApplicationListener<?>) factory.getBean("validGlobals");
 		agi = (AddedGlobalInterface) l;
@@ -527,10 +523,10 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
 		Person p = (Person) bf.getBean("serializableSingleton");
-		assertSame("Should be a Singleton", p, bf.getBean("serializableSingleton"));
+		assertThat(bf.getBean("serializableSingleton")).as("Should be a Singleton").isSameAs(p);
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		assertThat(p2).isEqualTo(p);
-		assertNotSame(p, p2);
+		assertThat((Object) p2).isNotSameAs(p);
 		assertThat(p2.getName()).isEqualTo("serializableSingleton");
 
 		// Add unserializable advice
@@ -550,10 +546,10 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
 		Person p = (Person) bf.getBean("serializablePrototype");
-		assertNotSame("Should not be a Singleton", p, bf.getBean("serializablePrototype"));
+		assertThat(bf.getBean("serializablePrototype")).as("Should not be a Singleton").isNotSameAs(p);
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		assertThat(p2).isEqualTo(p);
-		assertNotSame(p, p2);
+		assertThat((Object) p2).isNotSameAs(p);
 		assertThat(p2.getName()).isEqualTo("serializablePrototype");
 	}
 
@@ -566,7 +562,7 @@ public class ProxyFactoryBeanTests {
 		ProxyFactoryBean pfb2 = (ProxyFactoryBean) SerializationTestUtils.serializeAndDeserialize(pfb);
 		Person p2 = (Person) pfb2.getObject();
 		assertThat(p2).isEqualTo(p);
-		assertNotSame(p, p2);
+		assertThat((Object) p2).isNotSameAs(p);
 		assertThat(p2.getName()).isEqualTo("serializableSingleton");
 	}
 
@@ -589,8 +585,8 @@ public class ProxyFactoryBeanTests {
 		bean1.setAge(3);
 		bean2.setAge(4);
 
-		assertEquals(3, bean1.getAge());
-		assertEquals(4, bean2.getAge());
+		assertThat((long) bean1.getAge()).isEqualTo((long) 3);
+		assertThat((long) bean2.getAge()).isEqualTo((long) 4);
 
 		((Lockable) bean1).lock();
 
@@ -611,7 +607,7 @@ public class ProxyFactoryBeanTests {
 		bean1.setAge(1);
 		bean2.setAge(2);
 
-		assertEquals(2, bean1.getAge());
+		assertThat((long) bean1.getAge()).isEqualTo((long) 2);
 
 		((Lockable) bean1).lock();
 

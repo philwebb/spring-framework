@@ -36,9 +36,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Arjen Poutsma
@@ -73,8 +70,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNotNull(mav);
-		assertEquals(status.value(), response.getStatus());
+		assertThat((Object) mav).isNotNull();
+		assertThat((long) response.getStatus()).isEqualTo((long) status.value());
 	}
 
 	@Test
@@ -88,7 +85,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 
 		assertThat(response.getHeader("foo")).isEqualTo("bar");
 	}
@@ -101,7 +98,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 
 		assertThat(mav.getModel().get("foo")).isEqualTo("bar");
 	}
@@ -114,7 +111,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 		assertThat(mav.getModel().get("string")).isEqualTo("bar");
 	}
 
@@ -126,7 +123,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 		assertThat(mav.getModel().get("foo")).isEqualTo("bar");
 	}
 
@@ -137,7 +134,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 		assertThat(mav.getModel().get("string")).isEqualTo("bar");
 	}
 
@@ -150,8 +147,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNotNull(mav);
-		assertEquals(1, response.getCookies().length);
+		assertThat((Object) mav).isNotNull();
+		assertThat((long) response.getCookies().length).isEqualTo((long) 1);
 		assertThat(response.getCookies()[0].getName()).isEqualTo("name");
 		assertThat(response.getCookies()[0].getValue()).isEqualTo("value");
 	}
@@ -168,8 +165,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNull(mav);
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), response.getStatus());
+		assertThat((Object) mav).isNull();
+		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 
@@ -187,8 +184,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertNull(mav);
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), response.getStatus());
+		assertThat((Object) mav).isNull();
+		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 

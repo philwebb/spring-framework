@@ -28,8 +28,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for {@link CacheProxyFactoryBean}.
@@ -44,7 +42,7 @@ public class CacheProxyFactoryBeanTests {
 		try (AnnotationConfigApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext(CacheProxyFactoryBeanConfiguration.class)) {
 			Greeter greeter = applicationContext.getBean("greeter", Greeter.class);
-			assertNotNull(greeter);
+			assertThat((Object) greeter).isNotNull();
 			assertThat(greeter.isCacheMiss()).isFalse();
 			assertThat(greeter.greet("John")).isEqualTo("Hello John!");
 			assertThat(greeter.isCacheMiss()).isTrue();

@@ -25,7 +25,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests lookup methods wrapped by a CGLIB proxy (see SPR-391).
@@ -69,7 +68,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 
 	private void assertInterceptorCount(int count) {
 		DebugInterceptor interceptor = getInterceptor();
-		assertEquals("Interceptor count is incorrect", count, interceptor.getCount());
+		assertThat(interceptor.getCount()).as("Interceptor count is incorrect").isEqualTo((long) count);
 	}
 
 	private void resetInterceptor() {

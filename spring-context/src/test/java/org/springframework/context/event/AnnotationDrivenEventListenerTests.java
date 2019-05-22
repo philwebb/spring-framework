@@ -68,9 +68,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Stephane Nicoll
  * @author Juergen Hoeller
@@ -142,12 +139,12 @@ public class AnnotationDrivenEventListenerTests {
 		ContextEventListener listener = this.context.getBean(ContextEventListener.class);
 
 		List<Object> events = this.eventCollector.getEvents(listener);
-		assertEquals("Wrong number of initial context events", 1, events.size());
+		assertThat((long) events.size()).as("Wrong number of initial context events").isEqualTo((long) 1);
 		assertThat(events.get(0).getClass()).isEqualTo(ContextRefreshedEvent.class);
 
 		this.context.stop();
 		List<Object> eventsAfterStop = this.eventCollector.getEvents(listener);
-		assertEquals("Wrong number of context events on shutdown", 2, eventsAfterStop.size());
+		assertThat((long) eventsAfterStop.size()).as("Wrong number of context events on shutdown").isEqualTo((long) 2);
 		assertThat(eventsAfterStop.get(1).getClass()).isEqualTo(ContextStoppedEvent.class);
 		this.eventCollector.assertTotalEventsCount(2);
 	}

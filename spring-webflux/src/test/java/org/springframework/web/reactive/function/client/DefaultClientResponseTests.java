@@ -48,8 +48,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.web.reactive.function.BodyExtractors.toMono;
@@ -88,7 +86,7 @@ public class DefaultClientResponseTests {
 		int status = 999;
 		given(mockResponse.getRawStatusCode()).willReturn(status);
 
-		assertEquals(status, defaultClientResponse.rawStatusCode());
+		assertThat((long) defaultClientResponse.rawStatusCode()).isEqualTo((long) status);
 	}
 
 	@Test
@@ -119,7 +117,7 @@ public class DefaultClientResponseTests {
 
 		given(mockResponse.getCookies()).willReturn(cookies);
 
-		assertSame(cookies, defaultClientResponse.cookies());
+		assertThat((Object) defaultClientResponse.cookies()).isSameAs(cookies);
 	}
 
 
@@ -224,7 +222,7 @@ public class DefaultClientResponseTests {
 		ResponseEntity<String> result = defaultClientResponse.toEntity(String.class).block();
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
+		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -250,7 +248,7 @@ public class DefaultClientResponseTests {
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThatIllegalArgumentException().isThrownBy(
 				result::getStatusCode);
-		assertEquals(999, result.getStatusCodeValue());
+		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) 999);
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -271,7 +269,7 @@ public class DefaultClientResponseTests {
 				}).block();
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
+		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -290,7 +288,7 @@ public class DefaultClientResponseTests {
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(String.class).block();
 		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
+		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -316,7 +314,7 @@ public class DefaultClientResponseTests {
 		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
 		assertThatIllegalArgumentException().isThrownBy(
 				result::getStatusCode);
-		assertEquals(999, result.getStatusCodeValue());
+		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) 999);
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -338,7 +336,7 @@ public class DefaultClientResponseTests {
 				}).block();
 		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
+		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 

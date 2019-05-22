@@ -36,9 +36,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test cases for {@link ObjectToStringHttpMessageConverter} class.
@@ -114,7 +111,7 @@ public class ObjectToStringHttpMessageConverterTests {
 		this.converter.setWriteAcceptCharset(true);
 		this.converter.write(new Date(), null, this.response);
 
-		assertNotNull(this.servletResponse.getHeader("Accept-Charset"));
+		assertThat((Object) this.servletResponse.getHeader("Accept-Charset")).isNotNull();
 	}
 
 	@Test
@@ -122,7 +119,7 @@ public class ObjectToStringHttpMessageConverterTests {
 		this.converter.setWriteAcceptCharset(false);
 		this.converter.write(new Date(), null, this.response);
 
-		assertNull(this.servletResponse.getHeader("Accept-Charset"));
+		assertThat((Object) this.servletResponse.getHeader("Accept-Charset")).isNull();
 	}
 
 	@Test
@@ -154,7 +151,7 @@ public class ObjectToStringHttpMessageConverterTests {
 
 		assertThat(this.servletResponse.getCharacterEncoding()).isEqualTo("ISO-8859-1");
 		assertThat(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE)).isTrue();
-		assertEquals(2, this.servletResponse.getContentLength());
+		assertThat((long) this.servletResponse.getContentLength()).isEqualTo((long) 2);
 		assertThat(this.servletResponse.getContentAsByteArray()).isEqualTo(new byte[] { '-', '8' });
 	}
 
@@ -165,7 +162,7 @@ public class ObjectToStringHttpMessageConverterTests {
 
 		assertThat(this.servletResponse.getCharacterEncoding()).isEqualTo("UTF-16");
 		assertThat(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE)).isTrue();
-		assertEquals(8, this.servletResponse.getContentLength());
+		assertThat((long) this.servletResponse.getContentLength()).isEqualTo((long) 8);
 		// First two bytes: byte order mark
 		assertThat(this.servletResponse.getContentAsByteArray()).isEqualTo(new byte[] { -2, -1, 0, '9', 0, '5', 0, '8' });
 	}

@@ -25,8 +25,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.SideEffectBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -64,9 +62,9 @@ public class ThreadLocalTargetSourceTests {
 	@Test
 	public void testUseDifferentManagedInstancesInSameThread() {
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertEquals(INITIAL_COUNT, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) INITIAL_COUNT);
 		apartment.doWork();
-		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		ITestBean test = (ITestBean) beanFactory.getBean("threadLocal2");
 		assertThat(test.getName()).isEqualTo("Rod");
@@ -76,12 +74,12 @@ public class ThreadLocalTargetSourceTests {
 	@Test
 	public void testReuseInSameThread() {
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertEquals(INITIAL_COUNT, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) INITIAL_COUNT);
 		apartment.doWork();
-		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 	}
 
 	/**
@@ -91,37 +89,37 @@ public class ThreadLocalTargetSourceTests {
 	public void testCanGetStatsViaMixin() {
 		ThreadLocalTargetSourceStats stats = (ThreadLocalTargetSourceStats) beanFactory.getBean("apartment");
 		// +1 because creating target for stats call counts
-		assertEquals(1, stats.getInvocationCount());
+		assertThat((long) stats.getInvocationCount()).isEqualTo((long) 1);
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
 		apartment.doWork();
 		// +1 again
-		assertEquals(3, stats.getInvocationCount());
+		assertThat((long) stats.getInvocationCount()).isEqualTo((long) 3);
 		// + 1 for states call!
-		assertEquals(3, stats.getHitCount());
+		assertThat((long) stats.getHitCount()).isEqualTo((long) 3);
 		apartment.doWork();
-		assertEquals(6, stats.getInvocationCount());
-		assertEquals(6, stats.getHitCount());
+		assertThat((long) stats.getInvocationCount()).isEqualTo((long) 6);
+		assertThat((long) stats.getHitCount()).isEqualTo((long) 6);
 		// Only one thread so only one object can have been bound
-		assertEquals(1, stats.getObjectCount());
+		assertThat((long) stats.getObjectCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testNewThreadHasOwnInstance() throws InterruptedException {
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertEquals(INITIAL_COUNT, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) INITIAL_COUNT);
 		apartment.doWork();
 		apartment.doWork();
 		apartment.doWork();
-		assertEquals(INITIAL_COUNT + 3, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 3));
 
 		class Runner implements Runnable {
 			public SideEffectBean mine;
 			@Override
 			public void run() {
 				this.mine = (SideEffectBean) beanFactory.getBean("apartment");
-				assertEquals(INITIAL_COUNT, mine.getCount());
+				assertThat((long) mine.getCount()).isEqualTo((long) INITIAL_COUNT);
 				mine.doWork();
-				assertEquals(INITIAL_COUNT + 1, mine.getCount());
+				assertThat((long) mine.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 			}
 		}
 		Runner r = new Runner();
@@ -129,17 +127,17 @@ public class ThreadLocalTargetSourceTests {
 		t.start();
 		t.join();
 
-		assertNotNull(r);
+		assertThat((Object) r).isNotNull();
 
 		// Check it didn't affect the other thread's copy
-		assertEquals(INITIAL_COUNT + 3, apartment.getCount());
+		assertThat((long) apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 3));
 
 		// When we use other thread's copy in this thread
 		// it should behave like ours
-		assertEquals(INITIAL_COUNT + 3, r.mine.getCount());
+		assertThat((long) r.mine.getCount()).isEqualTo((long) (INITIAL_COUNT + 3));
 
 		// Bound to two threads
-		assertEquals(2, ((ThreadLocalTargetSourceStats) apartment).getObjectCount());
+		assertThat((long) ((ThreadLocalTargetSourceStats) apartment).getObjectCount()).isEqualTo((long) 2);
 	}
 
 	/**

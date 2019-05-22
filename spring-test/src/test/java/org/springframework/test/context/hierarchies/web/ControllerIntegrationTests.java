@@ -34,9 +34,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Sam Brannen
@@ -88,20 +85,20 @@ public class ControllerIntegrationTests {
 		assertThat(bar).isEqualTo("bar");
 
 		ApplicationContext parent = wac.getParent();
-		assertNotNull(parent);
+		assertThat((Object) parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isTrue();
 		WebApplicationContext root = (WebApplicationContext) parent;
 		assertThat(root.getBeansOfType(String.class).containsKey("bar")).isFalse();
 
 		ServletContext childServletContext = wac.getServletContext();
-		assertNotNull(childServletContext);
+		assertThat((Object) childServletContext).isNotNull();
 		ServletContext rootServletContext = root.getServletContext();
-		assertNotNull(rootServletContext);
-		assertSame(childServletContext, rootServletContext);
+		assertThat((Object) rootServletContext).isNotNull();
+		assertThat((Object) rootServletContext).isSameAs(childServletContext);
 
-		assertSame(root, rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE));
-		assertSame(root, childServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE));
+		assertThat(rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);
+		assertThat(childServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);
 	}
 
 }

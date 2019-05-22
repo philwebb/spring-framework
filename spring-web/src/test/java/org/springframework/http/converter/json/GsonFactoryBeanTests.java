@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * {@link GsonFactoryBean} tests.

@@ -31,9 +31,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -88,7 +85,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.emptyMap());
 		Resource actual = this.resolver.resolveResourceInternal(null, file, this.locations, this.chain);
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 	}
 
@@ -100,7 +97,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(null, file, this.locations, this.chain);
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 		verify(this.versionStrategy, times(1)).extractVersion(file);
 	}
@@ -117,7 +114,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(null, versionFile, this.locations, this.chain);
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.versionStrategy, times(1)).removeVersion(versionFile, version);
 	}
 
@@ -135,7 +132,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(null, versionFile, this.locations, this.chain);
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.versionStrategy, times(1)).getResourceVersion(expected);
 	}
 

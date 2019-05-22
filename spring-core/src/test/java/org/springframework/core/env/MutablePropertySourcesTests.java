@@ -31,9 +31,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-
 /**
  * @author Chris Beams
  * @author Juergen Hoeller
@@ -107,7 +104,7 @@ public class MutablePropertySourcesTests {
 		assertThat(sources.size()).isEqualTo(6);
 		assertThat(sources.contains("a")).isFalse();
 
-		assertNull(sources.remove("a"));
+		assertThat((Object) sources.remove("a")).isNull();
 		assertThat(sources.size()).isEqualTo(6);
 
 		String bogusPS = "bogus";

@@ -61,8 +61,6 @@ import org.springframework.util.xml.StaxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.inOrder;
@@ -319,8 +317,8 @@ public class XStreamMarshallerTests {
 		boolean condition = o instanceof Flight;
 		assertThat(condition).as("Unmarshalled object is not Flights").isTrue();
 		Flight unflight = (Flight) o;
-		assertNotNull("Flight is null", unflight);
-		assertEquals("Number is invalid", 42L, unflight.getFlightNumber());
+		assertThat((Object) unflight).as("Flight is null").isNotNull();
+		assertThat(unflight.getFlightNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 
 	@Test
@@ -361,11 +359,11 @@ public class XStreamMarshallerTests {
 	private static void assertXpathNotExists(String xPathExpression, String inXMLString){
 		Source source = Input.fromString(inXMLString).build();
 		Iterable<Node> nodes = new JAXPXPathEngine().selectNodes(xPathExpression, source);
-		assertEquals("Should be zero matches for Xpath " + xPathExpression, 0, count(nodes));
+		assertThat((long) count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo((long) 0);
 	}
 
 	private static int count(Iterable<Node> nodes) {
-		assertNotNull(nodes);
+		assertThat((Object) nodes).isNotNull();
 		AtomicInteger count = new AtomicInteger();
 		nodes.forEach(n -> count.incrementAndGet());
 		return count.get();

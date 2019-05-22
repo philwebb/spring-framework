@@ -25,8 +25,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Tests for {@link MutablePropertyValues}.
  *
@@ -90,7 +88,7 @@ public class MutablePropertyValuesTests extends AbstractPropertyValuesTests {
 
 		pvs2.addPropertyValue(new PropertyValue("forname", "Gordon"));
 		changes = pvs2.changesSince(pvs);
-		assertEquals("1 change", 1, changes.getPropertyValues().length);
+		assertThat((long) changes.getPropertyValues().length).as("1 change").isEqualTo((long) 1);
 		PropertyValue fn = changes.getPropertyValue("forname");
 		assertThat(fn != null).as("change is forname").isTrue();
 		assertThat(fn.getValue().equals("Gordon")).as("new value is gordon").isTrue();

@@ -66,11 +66,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -149,7 +144,7 @@ public class DispatcherServletTests {
 		ComplexWebApplicationContext.TestApplicationListener listener =
 				(ComplexWebApplicationContext.TestApplicationListener) complexDispatcherServlet
 						.getWebApplicationContext().getBean("testListener");
-		assertEquals(1, listener.counter);
+		assertThat((long) listener.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -161,7 +156,7 @@ public class DispatcherServletTests {
 		ComplexWebApplicationContext.TestApplicationListener listener =
 				(ComplexWebApplicationContext.TestApplicationListener) complexDispatcherServlet
 						.getWebApplicationContext().getBean("testListener");
-		assertEquals(0, listener.counter);
+		assertThat((long) listener.counter).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -235,8 +230,8 @@ public class DispatcherServletTests {
 		MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
 		complexDispatcherServlet.service(multipartRequest, response);
 		multipartResolver.cleanupMultipart(multipartRequest);
-		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
-		assertNotNull(request.getAttribute("cleanedUp"));
+		assertThat(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)).isNull();
+		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
 	@Test
@@ -251,8 +246,8 @@ public class DispatcherServletTests {
 		MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
 		complexDispatcherServlet.service(new HttpServletRequestWrapper(multipartRequest), response);
 		multipartResolver.cleanupMultipart(multipartRequest);
-		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
-		assertNotNull(request.getAttribute("cleanedUp"));
+		assertThat(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)).isNull();
+		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
 	@Test
@@ -264,7 +259,7 @@ public class DispatcherServletTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
 		assertThat("failed0.jsp".equals(response.getForwardedUrl())).as("forwarded to failed").isTrue();
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		boolean condition = request.getAttribute(
 				SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE) instanceof MaxUploadSizeExceededException;
 		assertThat(condition).as("correct exception").isTrue();
@@ -295,7 +290,7 @@ public class DispatcherServletTests {
 		request.addParameter("fail", "yes");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat("failed1.jsp".equals(response.getForwardedUrl())).as("forwarded to failed").isTrue();
 	}
 
@@ -307,7 +302,7 @@ public class DispatcherServletTests {
 		request.addParameter("access", "yes");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).as("forwarded to failed").isEqualTo("failed2.jsp");
 		boolean condition = request.getAttribute("exception") instanceof IllegalAccessException;
 		assertThat(condition).as("Exception exposed").isTrue();
@@ -321,7 +316,7 @@ public class DispatcherServletTests {
 		request.addParameter("servlet", "yes");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).as("forwarded to failed").isEqualTo("failed3.jsp");
 		boolean condition = request.getAttribute("exception") instanceof ServletException;
 		assertThat(condition).as("Exception exposed").isTrue();
@@ -335,7 +330,7 @@ public class DispatcherServletTests {
 		request.addParameter("access", "yes");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(500, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 500);
 		assertThat(response.getForwardedUrl()).as("forwarded to failed").isEqualTo("failed1.jsp");
 		boolean condition = request.getAttribute("exception") instanceof IllegalAccessException;
 		assertThat(condition).as("Exception exposed").isTrue();
@@ -349,7 +344,7 @@ public class DispatcherServletTests {
 		request.addParameter("servlet", "yes");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(500, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 500);
 		assertThat(response.getForwardedUrl()).as("forwarded to failed").isEqualTo("failed1.jsp");
 		boolean condition = request.getAttribute("exception") instanceof ServletException;
 		assertThat(condition).as("Exception exposed").isTrue();
@@ -363,7 +358,7 @@ public class DispatcherServletTests {
 		request.addParameter("exception", "yes");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).as("forwarded to failed").isEqualTo("failed0.jsp");
 		assertThat(request.getAttribute("exception").getClass().equals(RuntimeException.class)).as("Exception exposed").isTrue();
 	}
@@ -376,7 +371,7 @@ public class DispatcherServletTests {
 		request.addParameter("locale", "en");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).as("forwarded to failed").isEqualTo("failed0.jsp");
 		assertThat(request.getAttribute("exception").getClass().equals(ServletException.class)).as("Exception exposed").isTrue();
 	}
@@ -401,7 +396,7 @@ public class DispatcherServletTests {
 		request.addParameter("theme", "mytheme");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).as("forwarded to failed").isEqualTo("failed0.jsp");
 		assertThat(request.getAttribute("exception").getClass().equals(ServletException.class)).as("Exception exposed").isTrue();
 	}
@@ -432,7 +427,7 @@ public class DispatcherServletTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "HEAD", "/head.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(5, response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) 5);
 
 		request = new MockHttpServletRequest(getServletContext(), "GET", "/head.do");
 		response = new MockHttpServletResponse();
@@ -445,7 +440,7 @@ public class DispatcherServletTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "HEAD", "/body.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(4, response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) 4);
 
 		request = new MockHttpServletRequest(getServletContext(), "GET", "/body.do");
 		response = new MockHttpServletResponse();
@@ -478,7 +473,7 @@ public class DispatcherServletTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", URL_KNOWN_ONLY_PARENT);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@Test
@@ -623,8 +618,8 @@ public class DispatcherServletTests {
 		assertThat(request.getAttribute("test1")).isEqualTo("value1");
 		assertThat(request.getAttribute("test2")).isEqualTo("value2");
 		assertThat(request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isEqualTo(wac);
-		assertNull(request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE));
-		assertNull(request.getAttribute("command"));
+		assertThat(request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isNull();
+		assertThat(request.getAttribute("command")).isNull();
 	}
 
 	@Test
@@ -644,7 +639,7 @@ public class DispatcherServletTests {
 
 		assertThat(request.getAttribute("test1")).isEqualTo("value1");
 		assertThat(request.getAttribute("test2")).isEqualTo("value2");
-		assertSame(wac, request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE));
+		assertThat(request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(wac);
 	}
 
 	@Test
@@ -665,7 +660,7 @@ public class DispatcherServletTests {
 
 		assertThat(request.getAttribute("test1")).isEqualTo("value1");
 		assertThat(request.getAttribute("test2")).isEqualTo("value2");
-		assertSame(wac, request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE));
+		assertThat(request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(wac);
 	}
 
 	@Test
@@ -679,7 +674,7 @@ public class DispatcherServletTests {
 		assertThat(myServlet.getServletConfig().getServletName()).isEqualTo("complex");
 		assertThat(myServlet.getServletConfig().getServletContext()).isEqualTo(getServletContext());
 		complexDispatcherServlet.destroy();
-		assertNull(myServlet.getServletConfig());
+		assertThat((Object) myServlet.getServletConfig()).isNull();
 	}
 
 	@Test
@@ -726,10 +721,10 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean.getServletConfig());
+		assertThat((Object) contextBean.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean.getServletConfig()).isSameAs(servlet.getServletConfig());
 		MultipartResolver multipartResolver = servlet.getMultipartResolver();
-		assertNotNull(multipartResolver);
+		assertThat((Object) multipartResolver).isNotNull();
 
 		servlet.refresh();
 
@@ -737,12 +732,12 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean2 =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean2.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean2.getServletConfig());
-		assertNotSame(contextBean, contextBean2);
-		assertNotSame(configBean, configBean2);
+		assertThat((Object) contextBean2.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean2.getServletConfig()).isSameAs(servlet.getServletConfig());
+		assertThat((Object) contextBean2).isNotSameAs(contextBean);
+		assertThat((Object) configBean2).isNotSameAs(configBean);
 		MultipartResolver multipartResolver2 = servlet.getMultipartResolver();
-		assertNotSame(multipartResolver, multipartResolver2);
+		assertThat((Object) multipartResolver2).isNotSameAs(multipartResolver);
 
 		servlet.destroy();
 	}
@@ -757,10 +752,10 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean.getServletConfig());
+		assertThat((Object) contextBean.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean.getServletConfig()).isSameAs(servlet.getServletConfig());
 		MultipartResolver multipartResolver = servlet.getMultipartResolver();
-		assertNotNull(multipartResolver);
+		assertThat((Object) multipartResolver).isNotNull();
 
 		((ConfigurableApplicationContext) servlet.getWebApplicationContext()).refresh();
 
@@ -768,8 +763,8 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean2 =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean2.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean2.getServletConfig());
+		assertThat((Object) contextBean2.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean2.getServletConfig()).isSameAs(servlet.getServletConfig());
 		assertThat(contextBean != contextBean2).isTrue();
 		assertThat(configBean != configBean2).isTrue();
 		MultipartResolver multipartResolver2 = servlet.getMultipartResolver();

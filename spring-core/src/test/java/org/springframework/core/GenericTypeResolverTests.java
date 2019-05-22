@@ -30,9 +30,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.core.GenericTypeResolver.getTypeVariableMap;
 import static org.springframework.core.GenericTypeResolver.resolveReturnTypeArgument;
 import static org.springframework.core.GenericTypeResolver.resolveType;
@@ -69,7 +66,7 @@ public class GenericTypeResolverTests {
 	@Test
 	public void nullIfNotResolvable() {
 		GenericClass<String> obj = new GenericClass<>();
-		assertNull(resolveTypeArgument(obj.getClass(), GenericClass.class));
+		assertThat((Object) resolveTypeArgument(obj.getClass(), GenericClass.class)).isNull();
 	}
 
 	@Test
@@ -144,13 +141,13 @@ public class GenericTypeResolverTests {
 	@Test  // SPR-11030
 	public void getGenericsCannotBeResolved() throws Exception {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(List.class, Iterable.class);
-		assertNull(resolved);
+		assertThat((Object) resolved).isNull();
 	}
 
 	@Test  // SPR-11052
 	public void getRawMapTypeCannotBeResolved() throws Exception {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(Map.class, Map.class);
-		assertNull(resolved);
+		assertThat((Object) resolved).isNull();
 	}
 
 	@Test  // SPR-11044
@@ -171,8 +168,8 @@ public class GenericTypeResolverTests {
 	@Test  // SPR-11763
 	public void resolveIncompleteTypeVariables() {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(IdFixingRepository.class, Repository.class);
-		assertNotNull(resolved);
-		assertEquals(2, resolved.length);
+		assertThat((Object) resolved).isNotNull();
+		assertThat((long) resolved.length).isEqualTo((long) 2);
 		assertThat(resolved[0]).isEqualTo(Object.class);
 		assertThat(resolved[1]).isEqualTo(Long.class);
 	}

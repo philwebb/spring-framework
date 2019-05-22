@@ -26,8 +26,6 @@ import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for meta-annotation attribute override support, overriding
@@ -53,13 +51,13 @@ public class ConfigClassesAndProfilesWithCustomDefaultsMetaConfigWithOverridesTe
 
 	@Test
 	public void verifyEmployee() {
-		assertNotNull("The employee should have been autowired.", this.employee);
+		assertThat((Object) this.employee).as("The employee should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).isEqualTo("John Smith");
 	}
 
 	@Test
 	public void verifyPet() {
-		assertNotNull("The pet should have been autowired.", this.pet);
+		assertThat((Object) this.pet).as("The pet should have been autowired.").isNotNull();
 		assertThat(this.pet.getName()).isEqualTo("Fido");
 	}
 

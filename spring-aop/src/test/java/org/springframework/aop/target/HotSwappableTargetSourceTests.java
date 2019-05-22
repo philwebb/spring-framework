@@ -33,7 +33,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -71,13 +70,13 @@ public class HotSwappableTargetSourceTests {
 	@Test
 	public void testBasicFunctionality() {
 		SideEffectBean proxied = (SideEffectBean) beanFactory.getBean("swappable");
-		assertEquals(INITIAL_COUNT, proxied.getCount());
+		assertThat((long) proxied.getCount()).isEqualTo((long) INITIAL_COUNT);
 		proxied.doWork();
-		assertEquals(INITIAL_COUNT + 1, proxied.getCount());
+		assertThat((long) proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		proxied = (SideEffectBean) beanFactory.getBean("swappable");
 		proxied.doWork();
-		assertEquals(INITIAL_COUNT + 2, proxied.getCount());
+		assertThat((long) proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 2));
 	}
 
 	@Test
@@ -86,9 +85,9 @@ public class HotSwappableTargetSourceTests {
 		SideEffectBean target2 = (SideEffectBean) beanFactory.getBean("target2");
 
 		SideEffectBean proxied = (SideEffectBean) beanFactory.getBean("swappable");
-		assertEquals(target1.getCount(), proxied.getCount());
+		assertThat((long) proxied.getCount()).isEqualTo((long) target1.getCount());
 		proxied.doWork();
-		assertEquals(INITIAL_COUNT + 1, proxied.getCount());
+		assertThat((long) proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		HotSwappableTargetSource swapper = (HotSwappableTargetSource) beanFactory.getBean("swapper");
 		Object old = swapper.swap(target2);
@@ -98,13 +97,13 @@ public class HotSwappableTargetSourceTests {
 		// in AdvisedSupport
 		//assertEquals(target2, ((Advised) proxied).getTarget());
 
-		assertEquals(20, proxied.getCount());
+		assertThat((long) proxied.getCount()).isEqualTo((long) 20);
 		proxied.doWork();
-		assertEquals(21, target2.getCount());
+		assertThat((long) target2.getCount()).isEqualTo((long) 21);
 
 		// Swap it back
 		swapper.swap(target1);
-		assertEquals(target1.getCount(), proxied.getCount());
+		assertThat((long) proxied.getCount()).isEqualTo((long) target1.getCount());
 	}
 
 	@Test

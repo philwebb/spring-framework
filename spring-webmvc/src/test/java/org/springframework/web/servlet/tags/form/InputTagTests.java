@@ -30,7 +30,6 @@ import org.springframework.web.servlet.tags.NestedPathTag;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -74,7 +73,7 @@ public class InputTagTests extends AbstractFormTagTests {
 	public void simpleBind() throws Exception {
 		this.tag.setPath("name");
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -103,7 +102,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		this.tag.setPath("name");
 		this.rob.setName(NAME);
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -121,7 +120,7 @@ public class InputTagTests extends AbstractFormTagTests {
 	public void complexBind() throws Exception {
 		this.tag.setPath("spouse.name");
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -198,7 +197,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		this.tag.setDynamicAttribute(null, dynamicAttribute1, dynamicAttribute1);
 		this.tag.setDynamicAttribute(null, dynamicAttribute2, dynamicAttribute2);
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -248,7 +247,7 @@ public class InputTagTests extends AbstractFormTagTests {
 
 		this.tag.setPath("name");
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -285,7 +284,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		errors.rejectValue("name", "too.short", "Too Short");
 		exposeBindingResult(errors);
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -314,7 +313,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		errors.getPropertyAccessor().registerCustomEditor(Float.class, new SimpleFloatEditor());
 		exposeBindingResult(errors);
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -332,7 +331,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		this.tag.setPath("name");
 		this.tag.setReadonly(true);
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -348,7 +347,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		this.tag.setPath("myFloat");
 		this.tag.setDynamicAttribute(null, "type", "number");
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);

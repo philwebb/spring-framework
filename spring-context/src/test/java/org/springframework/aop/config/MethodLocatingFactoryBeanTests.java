@@ -25,8 +25,6 @@ import org.springframework.beans.factory.BeanFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -104,7 +102,7 @@ public class MethodLocatingFactoryBeanTests {
 		factory.setMethodName("toString()");
 		factory.setBeanFactory(beanFactory);
 		Object result = factory.getObject();
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 		boolean condition = result instanceof Method;
 		assertThat(condition).isTrue();
 		Method method = (Method) result;

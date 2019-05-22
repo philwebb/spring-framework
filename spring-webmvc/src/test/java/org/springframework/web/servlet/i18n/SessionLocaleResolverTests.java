@@ -25,8 +25,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -90,7 +88,7 @@ public class SessionLocaleResolverTests {
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 		resolver.setLocale(request, response, null);
 		Locale locale = (Locale) request.getSession().getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
-		assertNull(locale);
+		assertThat((Object) locale).isNull();
 
 		HttpSession session = request.getSession();
 		request = new MockHttpServletRequest();

@@ -61,9 +61,6 @@ import org.springframework.http.codec.xml.Jaxb2XmlEncoder;
 import org.springframework.util.MimeTypeUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -81,7 +78,7 @@ public class ServerCodecConfigurerTests {
 	@Test
 	public void defaultReaders() {
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
-		assertEquals(13, readers.size());
+		assertThat((long) readers.size()).isEqualTo((long) 13);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteArrayDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteBufferDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(DataBufferDecoder.class);
@@ -100,7 +97,7 @@ public class ServerCodecConfigurerTests {
 	@Test
 	public void defaultWriters() {
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
-		assertEquals(11, writers.size());
+		assertThat((long) writers.size()).isEqualTo((long) 11);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteArrayEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteBufferEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(DataBufferEncoder.class);
@@ -119,12 +116,12 @@ public class ServerCodecConfigurerTests {
 		Jackson2JsonEncoder encoder = new Jackson2JsonEncoder();
 		this.configurer.defaultCodecs().jackson2JsonEncoder(encoder);
 
-		assertSame(encoder, this.configurer.getWriters().stream()
+		assertThat((Object) this.configurer.getWriters().stream()
 				.filter(writer -> ServerSentEventHttpMessageWriter.class.equals(writer.getClass()))
 				.map(writer -> (ServerSentEventHttpMessageWriter) writer)
 				.findFirst()
 				.map(ServerSentEventHttpMessageWriter::getEncoder)
-				.filter(e -> e == encoder).orElse(null));
+				.filter(e -> e == encoder).orElse(null)).isSameAs(encoder);
 	}
 
 
@@ -165,7 +162,7 @@ public class ServerCodecConfigurerTests {
 		HttpMessageWriter<?> writer = writers.get(this.index.getAndIncrement());
 		assertThat(writer.getClass()).isEqualTo(ServerSentEventHttpMessageWriter.class);
 		Encoder<?> encoder = ((ServerSentEventHttpMessageWriter) writer).getEncoder();
-		assertNotNull(encoder);
+		assertThat((Object) encoder).isNotNull();
 		assertThat(encoder.getClass()).isEqualTo(Jackson2JsonEncoder.class);
 	}
 

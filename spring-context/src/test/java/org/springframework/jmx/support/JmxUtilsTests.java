@@ -34,7 +34,6 @@ import org.springframework.jmx.export.TestDynamicMBean;
 import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop

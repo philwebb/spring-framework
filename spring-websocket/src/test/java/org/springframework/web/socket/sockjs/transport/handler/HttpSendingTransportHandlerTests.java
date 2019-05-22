@@ -31,7 +31,6 @@ import org.springframework.web.socket.sockjs.transport.session.StreamingSockJsSe
 import org.springframework.web.socket.sockjs.transport.session.StubSockJsServiceConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -112,7 +111,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertEquals(500, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 500);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("\"callback\" parameter required");
 
 		resetRequestAndResponse();

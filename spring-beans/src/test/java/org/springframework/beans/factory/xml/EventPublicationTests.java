@@ -34,7 +34,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.beans.CollectingReaderEventListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -79,12 +78,12 @@ public class EventPublicationTests {
 		ComponentDefinition componentDefinition1 = this.eventListener.getComponentDefinition("testBean");
 		boolean condition3 = componentDefinition1 instanceof BeanComponentDefinition;
 		assertThat(condition3).isTrue();
-		assertEquals(1, componentDefinition1.getBeanDefinitions().length);
+		assertThat((long) componentDefinition1.getBeanDefinitions().length).isEqualTo((long) 1);
 		BeanDefinition beanDefinition1 = componentDefinition1.getBeanDefinitions()[0];
 		assertThat(beanDefinition1.getConstructorArgumentValues().getGenericArgumentValue(String.class).getValue()).isEqualTo(new TypedStringValue("Rob Harrop"));
-		assertEquals(1, componentDefinition1.getBeanReferences().length);
+		assertThat((long) componentDefinition1.getBeanReferences().length).isEqualTo((long) 1);
 		assertThat(componentDefinition1.getBeanReferences()[0].getBeanName()).isEqualTo("testBean2");
-		assertEquals(1, componentDefinition1.getInnerBeanDefinitions().length);
+		assertThat((long) componentDefinition1.getInnerBeanDefinitions().length).isEqualTo((long) 1);
 		BeanDefinition innerBd1 = componentDefinition1.getInnerBeanDefinitions()[0];
 		assertThat(innerBd1.getConstructorArgumentValues().getGenericArgumentValue(String.class).getValue()).isEqualTo(new TypedStringValue("ACME"));
 		boolean condition2 = componentDefinition1.getSource() instanceof Element;
@@ -93,11 +92,11 @@ public class EventPublicationTests {
 		ComponentDefinition componentDefinition2 = this.eventListener.getComponentDefinition("testBean2");
 		boolean condition1 = componentDefinition2 instanceof BeanComponentDefinition;
 		assertThat(condition1).isTrue();
-		assertEquals(1, componentDefinition1.getBeanDefinitions().length);
+		assertThat((long) componentDefinition1.getBeanDefinitions().length).isEqualTo((long) 1);
 		BeanDefinition beanDefinition2 = componentDefinition2.getBeanDefinitions()[0];
 		assertThat(beanDefinition2.getPropertyValues().getPropertyValue("name").getValue()).isEqualTo(new TypedStringValue("Juergen Hoeller"));
-		assertEquals(0, componentDefinition2.getBeanReferences().length);
-		assertEquals(1, componentDefinition2.getInnerBeanDefinitions().length);
+		assertThat((long) componentDefinition2.getBeanReferences().length).isEqualTo((long) 0);
+		assertThat((long) componentDefinition2.getInnerBeanDefinitions().length).isEqualTo((long) 1);
 		BeanDefinition innerBd2 = componentDefinition2.getInnerBeanDefinitions()[0];
 		assertThat(innerBd2.getPropertyValues().getPropertyValue("name").getValue()).isEqualTo(new TypedStringValue("Eva Schallmeiner"));
 		boolean condition = componentDefinition2.getSource() instanceof Element;
@@ -107,7 +106,7 @@ public class EventPublicationTests {
 	@Test
 	public void aliasEventReceived() throws Exception {
 		List aliases = this.eventListener.getAliases("testBean");
-		assertEquals(2, aliases.size());
+		assertThat((long) aliases.size()).isEqualTo((long) 2);
 		AliasDefinition aliasDefinition1 = (AliasDefinition) aliases.get(0);
 		assertThat(aliasDefinition1.getAlias()).isEqualTo("testBeanAlias1");
 		boolean condition1 = aliasDefinition1.getSource() instanceof Element;
@@ -121,7 +120,7 @@ public class EventPublicationTests {
 	@Test
 	public void importEventReceived() throws Exception {
 		List imports = this.eventListener.getImports();
-		assertEquals(1, imports.size());
+		assertThat((long) imports.size()).isEqualTo((long) 1);
 		ImportDefinition importDefinition = (ImportDefinition) imports.get(0);
 		assertThat(importDefinition.getImportedResource()).isEqualTo("beanEventsImported.xml");
 		boolean condition = importDefinition.getSource() instanceof Element;

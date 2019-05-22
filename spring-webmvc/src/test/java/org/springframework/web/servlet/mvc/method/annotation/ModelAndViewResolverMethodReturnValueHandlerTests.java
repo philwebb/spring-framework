@@ -35,9 +35,6 @@ import org.springframework.web.servlet.mvc.annotation.ModelAndViewResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture with {@link ModelAndViewResolverMethodReturnValueHandler}.
@@ -73,7 +70,7 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 		handler.handleReturnValue(testBean, returnType, mavContainer, request);
 
 		assertThat(mavContainer.getViewName()).isEqualTo("viewName");
-		assertSame(testBean, mavContainer.getModel().get("modelAttrName"));
+		assertThat(mavContainer.getModel().get("modelAttrName")).isSameAs(testBean);
 		assertThat(mavContainer.isRequestHandled()).isFalse();
 	}
 
@@ -90,8 +87,8 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 		MethodParameter returnType = new MethodParameter(getClass().getDeclaredMethod("testBeanReturnValue"), -1);
 		handler.handleReturnValue(null, returnType, mavContainer, request);
 
-		assertNull(mavContainer.getView());
-		assertNull(mavContainer.getViewName());
+		assertThat(mavContainer.getView()).isNull();
+		assertThat((Object) mavContainer.getViewName()).isNull();
 		assertThat(mavContainer.getModel().isEmpty()).isTrue();
 	}
 

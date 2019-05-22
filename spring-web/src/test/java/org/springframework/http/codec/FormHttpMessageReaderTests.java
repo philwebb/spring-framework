@@ -37,8 +37,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Sebastien Deleuze
@@ -81,13 +79,13 @@ public class FormHttpMessageReaderTests extends AbstractLeakCheckingTestCase {
 		MockServerHttpRequest request = request(body);
 		MultiValueMap<String, String> result = this.reader.readMono(null, request, null).block();
 
-		assertEquals("Invalid result", 3, result.size());
+		assertThat((long) result.size()).as("Invalid result").isEqualTo((long) 3);
 		assertThat(result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 		List<String> values = result.get("name 2");
-		assertEquals("Invalid result", 2, values.size());
+		assertThat((long) values.size()).as("Invalid result").isEqualTo((long) 2);
 		assertThat(values.get(0)).as("Invalid result").isEqualTo("value 2+1");
 		assertThat(values.get(1)).as("Invalid result").isEqualTo("value 2+2");
-		assertNull("Invalid result", result.getFirst("name 3"));
+		assertThat((Object) result.getFirst("name 3")).as("Invalid result").isNull();
 	}
 
 	@Test
@@ -96,13 +94,13 @@ public class FormHttpMessageReaderTests extends AbstractLeakCheckingTestCase {
 		MockServerHttpRequest request = request(body);
 		MultiValueMap<String, String> result = this.reader.read(null, request, null).single().block();
 
-		assertEquals("Invalid result", 3, result.size());
+		assertThat((long) result.size()).as("Invalid result").isEqualTo((long) 3);
 		assertThat(result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 		List<String> values = result.get("name 2");
-		assertEquals("Invalid result", 2, values.size());
+		assertThat((long) values.size()).as("Invalid result").isEqualTo((long) 2);
 		assertThat(values.get(0)).as("Invalid result").isEqualTo("value 2+1");
 		assertThat(values.get(1)).as("Invalid result").isEqualTo("value 2+2");
-		assertNull("Invalid result", result.getFirst("name 3"));
+		assertThat((Object) result.getFirst("name 3")).as("Invalid result").isNull();
 	}
 
 	@Test

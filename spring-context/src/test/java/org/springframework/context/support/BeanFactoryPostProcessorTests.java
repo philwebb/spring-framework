@@ -37,7 +37,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests the interaction between {@link ApplicationContext} implementations and

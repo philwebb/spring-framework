@@ -26,8 +26,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer
@@ -94,11 +94,11 @@ public class GroovyAspectTests {
 		factory.addAdvisor(advisor);
 		TestService bean = (TestService) factory.getProxy();
 
-		assertEquals(0, logAdvice.getCountThrows());
+		assertThat((long) logAdvice.getCountThrows()).isEqualTo((long) 0);
 		assertThatExceptionOfType(TestException.class).isThrownBy(
 				bean::sayHello)
 			.withMessage(message);
-		assertEquals(1, logAdvice.getCountThrows());
+		assertThat((long) logAdvice.getCountThrows()).isEqualTo((long) 1);
 	}
 
 }

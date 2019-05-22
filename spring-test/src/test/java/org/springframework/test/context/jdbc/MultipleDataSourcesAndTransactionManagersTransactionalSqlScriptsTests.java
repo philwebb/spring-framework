@@ -37,7 +37,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Exact copy of {@link MultipleDataSourcesAndTransactionManagersSqlScriptsTests},

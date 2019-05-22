@@ -27,9 +27,6 @@ import org.springframework.jmx.export.assembler.AbstractMetadataAssemblerTests;
 import org.springframework.jmx.export.metadata.JmxAttributeSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rob Harrop
@@ -52,35 +49,35 @@ public class AnnotationMetadataAssemblerTests extends AbstractMetadataAssemblerT
 	public void testOperationFromInterface() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanOperationInfo op = inf.getOperation("fromInterface");
-		assertNotNull(op);
+		assertThat((Object) op).isNotNull();
 	}
 
 	@Test
 	public void testOperationOnGetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanOperationInfo op = inf.getOperation("getExpensiveToCalculate");
-		assertNotNull(op);
+		assertThat((Object) op).isNotNull();
 	}
 
 	@Test
 	public void testRegistrationOnInterface() throws Exception {
 		Object bean = getContext().getBean("testInterfaceBean");
 		ModelMBeanInfo inf = getAssembler().getMBeanInfo(bean, "bean:name=interfaceTestBean");
-		assertNotNull(inf);
+		assertThat((Object) inf).isNotNull();
 		assertThat(inf.getDescription()).isEqualTo("My Managed Bean");
 
 		ModelMBeanOperationInfo op = inf.getOperation("foo");
-		assertNotNull("foo operation not exposed", op);
+		assertThat((Object) op).as("foo operation not exposed").isNotNull();
 		assertThat(op.getDescription()).isEqualTo("invoke foo");
 
-		assertNull("doNotExpose operation should not be exposed", inf.getOperation("doNotExpose"));
+		assertThat((Object) inf.getOperation("doNotExpose")).as("doNotExpose operation should not be exposed").isNull();
 
 		ModelMBeanAttributeInfo attr = inf.getAttribute("Bar");
-		assertNotNull("bar attribute not exposed", attr);
+		assertThat((Object) attr).as("bar attribute not exposed").isNotNull();
 		assertThat(attr.getDescription()).isEqualTo("Bar description");
 
 		ModelMBeanAttributeInfo attr2 = inf.getAttribute("CacheEntries");
-		assertNotNull("cacheEntries attribute not exposed", attr2);
+		assertThat((Object) attr2).as("cacheEntries attribute not exposed").isNotNull();
 		assertThat(attr2.getDescriptor().getFieldValue("metricType")).as("Metric Type should be COUNTER").isEqualTo("COUNTER");
 	}
 

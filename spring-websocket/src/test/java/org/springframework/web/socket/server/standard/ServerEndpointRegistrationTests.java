@@ -28,8 +28,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test fixture for {@link ServerEndpointRegistration}.
@@ -50,7 +49,7 @@ public class ServerEndpointRegistrationTests {
 
 		EchoEndpoint endpoint = registration.getConfigurator().getEndpointInstance(EchoEndpoint.class);
 
-		assertNotNull(endpoint);
+		assertThat((Object) endpoint).isNotNull();
 	}
 
 	@Test
@@ -61,7 +60,7 @@ public class ServerEndpointRegistrationTests {
 
 		EchoEndpoint actual = registration.getConfigurator().getEndpointInstance(EchoEndpoint.class);
 
-		assertSame(endpoint, actual);
+		assertThat((Object) actual).isSameAs(endpoint);
 	}
 
 

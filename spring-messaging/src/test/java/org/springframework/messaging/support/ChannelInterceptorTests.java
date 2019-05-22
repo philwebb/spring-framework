@@ -30,9 +30,6 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -63,11 +60,11 @@ public class ChannelInterceptorTests {
 		this.channel.addInterceptor(interceptor);
 		this.channel.send(MessageBuilder.withPayload("test").build());
 
-		assertEquals(1, this.messageHandler.getMessages().size());
+		assertThat((long) this.messageHandler.getMessages().size()).isEqualTo((long) 1);
 		Message<?> result = this.messageHandler.getMessages().get(0);
 
-		assertNotNull(result);
-		assertSame(expected, result);
+		assertThat((Object) result).isNotNull();
+		assertThat((Object) result).isSameAs(expected);
 		assertThat(interceptor.wasAfterCompletionInvoked()).isTrue();
 	}
 
@@ -80,9 +77,9 @@ public class ChannelInterceptorTests {
 		Message<?> message = MessageBuilder.withPayload("test").build();
 		this.channel.send(message);
 
-		assertEquals(1, interceptor1.getCounter().get());
-		assertEquals(1, interceptor2.getCounter().get());
-		assertEquals(0, this.messageHandler.getMessages().size());
+		assertThat((long) interceptor1.getCounter().get()).isEqualTo((long) 1);
+		assertThat((long) interceptor2.getCounter().get()).isEqualTo((long) 1);
+		assertThat((long) this.messageHandler.getMessages().size()).isEqualTo((long) 0);
 		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
 		assertThat(interceptor2.wasAfterCompletionInvoked()).isFalse();
 	}
@@ -103,9 +100,9 @@ public class ChannelInterceptorTests {
 				completionInvoked.set(true);
 			}
 			private void assertInput(Message<?> message, MessageChannel channel, boolean sent) {
-				assertNotNull(message);
-				assertNotNull(channel);
-				assertSame(ChannelInterceptorTests.this.channel, channel);
+				assertThat((Object) message).isNotNull();
+				assertThat((Object) channel).isNotNull();
+				assertThat((Object) channel).isSameAs(ChannelInterceptorTests.this.channel);
 				assertThat(sent).isTrue();
 			}
 		});
@@ -136,9 +133,9 @@ public class ChannelInterceptorTests {
 				completionInvoked.set(true);
 			}
 			private void assertInput(Message<?> message, MessageChannel channel, boolean sent) {
-				assertNotNull(message);
-				assertNotNull(channel);
-				assertSame(testChannel, channel);
+				assertThat((Object) message).isNotNull();
+				assertThat((Object) channel).isNotNull();
+				assertThat((Object) channel).isSameAs(testChannel);
 				assertThat(sent).isFalse();
 			}
 		});
@@ -218,7 +215,7 @@ public class ChannelInterceptorTests {
 
 		@Override
 		public Message<?> preSend(Message<?> message, MessageChannel channel) {
-			assertNotNull(message);
+			assertThat((Object) message).isNotNull();
 			counter.incrementAndGet();
 			return message;
 		}

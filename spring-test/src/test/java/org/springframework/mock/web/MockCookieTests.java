@@ -20,8 +20,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link MockCookie}.
@@ -38,12 +36,12 @@ public class MockCookieTests {
 		MockCookie cookie = new MockCookie("SESSION", "123");
 
 		assertCookie(cookie, "SESSION", "123");
-		assertNull(cookie.getDomain());
-		assertEquals(-1, cookie.getMaxAge());
-		assertNull(cookie.getPath());
+		assertThat((Object) cookie.getDomain()).isNull();
+		assertThat((long) cookie.getMaxAge()).isEqualTo((long) -1);
+		assertThat((Object) cookie.getPath()).isNull();
 		assertThat(cookie.isHttpOnly()).isFalse();
 		assertThat(cookie.getSecure()).isFalse();
-		assertNull(cookie.getSameSite());
+		assertThat((Object) cookie.getSameSite()).isNull();
 	}
 
 	@Test
@@ -70,7 +68,7 @@ public class MockCookieTests {
 
 		assertCookie(cookie, "SESSION", "123");
 		assertThat(cookie.getDomain()).isEqualTo("example.com");
-		assertEquals(60, cookie.getMaxAge());
+		assertThat((long) cookie.getMaxAge()).isEqualTo((long) 60);
 		assertThat(cookie.getPath()).isEqualTo("/");
 		assertThat(cookie.getSecure()).isTrue();
 		assertThat(cookie.isHttpOnly()).isTrue();
@@ -112,7 +110,7 @@ public class MockCookieTests {
 
 		assertCookie(cookie, "SESSION", "123");
 		assertThat(cookie.getDomain()).isEqualTo("example.com");
-		assertEquals(60, cookie.getMaxAge());
+		assertThat((long) cookie.getMaxAge()).isEqualTo((long) 60);
 		assertThat(cookie.getPath()).isEqualTo("/");
 		assertThat(cookie.getSecure()).isTrue();
 		assertThat(cookie.isHttpOnly()).isTrue();

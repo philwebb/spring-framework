@@ -24,8 +24,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.tests.sample.beans.Employee;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests that verify support for configuration classes in
@@ -57,7 +55,7 @@ public class BeanOverridingDefaultConfigClassesInheritedTests extends DefaultCon
 	@Test
 	@Override
 	public void verifyEmployeeSetFromBaseContextConfig() {
-		assertNotNull("The employee should have been autowired.", this.employee);
+		assertThat((Object) this.employee).as("The employee should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).as("The employee bean should have been overridden.").isEqualTo("Yoda");
 	}
 

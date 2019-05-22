@@ -29,8 +29,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -64,19 +62,19 @@ public class WebSessionMethodArgumentResolverTests {
 
 		MethodParameter param = this.testMethod.arg(WebSession.class);
 		Object actual = this.resolver.resolveArgument(param, context, exchange).block();
-		assertSame(session, actual);
+		assertThat(actual).isSameAs(session);
 
 		param = this.testMethod.arg(Mono.class, WebSession.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(Mono.class.isAssignableFrom(actual.getClass())).isTrue();
-		assertSame(session, ((Mono<?>) actual).block());
+		assertThat(((Mono<?>) actual).block()).isSameAs(session);
 
 		param = this.testMethod.arg(Single.class, WebSession.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(Single.class.isAssignableFrom(actual.getClass())).isTrue();
-		assertSame(session, ((Single<?>) actual).blockingGet());
+		assertThat(((Single<?>) actual).blockingGet()).isSameAs(session);
 	}
 
 

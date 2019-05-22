@@ -27,9 +27,6 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.reactive.result.condition.ConsumesRequestCondition.ConsumeMediaTypeExpression;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.fail;
 
 /**
@@ -42,7 +39,7 @@ public class ConsumesRequestConditionTests {
 		MockServerWebExchange exchange = postExchange("text/plain");
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("text/plain");
 
-		assertNotNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -50,7 +47,7 @@ public class ConsumesRequestConditionTests {
 		MockServerWebExchange exchange = postExchange("text/plain");
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("!text/plain");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -64,7 +61,7 @@ public class ConsumesRequestConditionTests {
 		MockServerWebExchange exchange = postExchange("text/plain");
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("text/*");
 
-		assertNotNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -72,7 +69,7 @@ public class ConsumesRequestConditionTests {
 		MockServerWebExchange exchange = postExchange("text/plain");
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("text/plain", "application/xml");
 
-		assertNotNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -80,7 +77,7 @@ public class ConsumesRequestConditionTests {
 		MockServerWebExchange exchange = postExchange("application/xml");
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("text/plain");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -88,7 +85,7 @@ public class ConsumesRequestConditionTests {
 		MockServerWebExchange exchange = postExchange("01");
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("text/plain");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -96,7 +93,7 @@ public class ConsumesRequestConditionTests {
 		MockServerWebExchange exchange = postExchange("01");
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("!text/plain");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test // gh-22010
@@ -105,16 +102,16 @@ public class ConsumesRequestConditionTests {
 		condition.setBodyRequired(false);
 
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").build();
-		assertNotNull(condition.getMatchingCondition(MockServerWebExchange.from(request)));
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(request))).isNotNull();
 
 		request = MockServerHttpRequest.get("/").header(HttpHeaders.CONTENT_LENGTH, "0").build();
-		assertNotNull(condition.getMatchingCondition(MockServerWebExchange.from(request)));
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(request))).isNotNull();
 
 		request = MockServerHttpRequest.get("/").header(HttpHeaders.CONTENT_LENGTH, "21").build();
-		assertNull(condition.getMatchingCondition(MockServerWebExchange.from(request)));
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(request))).isNull();
 
 		request = MockServerHttpRequest.get("/").header(HttpHeaders.TRANSFER_ENCODING, "chunked").build();
-		assertNull(condition.getMatchingCondition(MockServerWebExchange.from(request)));
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(request))).isNull();
 	}
 
 	@Test
@@ -183,12 +180,12 @@ public class ConsumesRequestConditionTests {
 
 		condition = new ConsumesRequestCondition("application/xml");
 		result = condition.getMatchingCondition(exchange);
-		assertNull(result);
+		assertThat((Object) result).isNull();
 	}
 
 	private void assertConditions(ConsumesRequestCondition condition, String... expected) {
 		Collection<ConsumeMediaTypeExpression> expressions = condition.getContent();
-		assertEquals("Invalid amount of conditions", expressions.size(), expected.length);
+		assertThat((long) expected.length).as("Invalid amount of conditions").isEqualTo((long) expressions.size());
 		for (String s : expected) {
 			boolean found = false;
 			for (ConsumeMediaTypeExpression expr : expressions) {

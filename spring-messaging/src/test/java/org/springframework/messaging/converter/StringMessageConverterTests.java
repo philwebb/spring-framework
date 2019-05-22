@@ -29,8 +29,6 @@ import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for {@link org.springframework.messaging.converter.StringMessageConverter}.
@@ -80,7 +78,7 @@ public class StringMessageConverterTests {
 	@Test
 	public void fromMessageTargetClassNotSupported() {
 		Message<byte[]> message = MessageBuilder.withPayload("ABC".getBytes()).build();
-		assertNull(this.converter.fromMessage(message, Integer.class));
+		assertThat(this.converter.fromMessage(message, Integer.class)).isNull();
 	}
 
 	@Test

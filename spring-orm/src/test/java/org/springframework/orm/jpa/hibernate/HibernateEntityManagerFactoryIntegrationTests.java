@@ -30,7 +30,6 @@ import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.orm.jpa.EntityManagerProxy;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * Hibernate-specific JPA tests.
@@ -76,19 +75,19 @@ public class HibernateEntityManagerFactoryIntegrationTests extends AbstractConta
 		boolean condition1 = proxy instanceof org.hibernate.jpa.HibernateEntityManager;
 		assertThat(condition1).isFalse();
 		assertThat(proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class) != null).isTrue();
-		assertSame(em, proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class));
-		assertSame(em.getDelegate(), proxy.getDelegate());
+		assertThat(proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class)).isSameAs(em);
+		assertThat(proxy.getDelegate()).isSameAs(em.getDelegate());
 	}
 
 	@Test  // SPR-16956
 	public void testReadOnly() {
-		assertSame(FlushMode.AUTO, sharedEntityManager.unwrap(Session.class).getHibernateFlushMode());
+		assertThat((Object) sharedEntityManager.unwrap(Session.class).getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
 		assertThat(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly()).isFalse();
 		endTransaction();
 
 		this.transactionDefinition.setReadOnly(true);
 		startNewTransaction();
-		assertSame(FlushMode.MANUAL, sharedEntityManager.unwrap(Session.class).getHibernateFlushMode());
+		assertThat((Object) sharedEntityManager.unwrap(Session.class).getHibernateFlushMode()).isSameAs(FlushMode.MANUAL);
 		assertThat(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly()).isTrue();
 	}
 

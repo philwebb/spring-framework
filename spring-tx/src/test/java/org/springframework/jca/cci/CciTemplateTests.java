@@ -41,8 +41,6 @@ import org.springframework.jca.cci.core.RecordCreator;
 import org.springframework.jca.cci.core.RecordExtractor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -535,7 +533,7 @@ public class CciTemplateTests {
 
 		CciTemplate ct = new CciTemplate(connectionFactory);
 		Record tmpOutputRecord = ct.execute(interactionSpec, inputOutputRecord);
-		assertNull(tmpOutputRecord);
+		assertThat((Object) tmpOutputRecord).isNull();
 
 		verify(interaction).execute(interactionSpec, inputOutputRecord);
 		verify(interaction).close();

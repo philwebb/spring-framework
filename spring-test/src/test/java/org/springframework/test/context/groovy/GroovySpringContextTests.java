@@ -31,9 +31,6 @@ import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Integration tests for loading an {@code ApplicationContext} from a
@@ -101,15 +98,15 @@ public class GroovySpringContextTests implements BeanNameAware, InitializingBean
 
 	@Test
 	public void verifyAnnotationAutowiredFields() {
-		assertNull("The nonrequiredLong property should NOT have been autowired.", this.nonrequiredLong);
-		assertNotNull("The application context should have been autowired.", this.applicationContext);
-		assertNotNull("The pet field should have been autowired.", this.pet);
+		assertThat((Object) this.nonrequiredLong).as("The nonrequiredLong property should NOT have been autowired.").isNull();
+		assertThat((Object) this.applicationContext).as("The application context should have been autowired.").isNotNull();
+		assertThat((Object) this.pet).as("The pet field should have been autowired.").isNotNull();
 		assertThat(this.pet.getName()).isEqualTo("Dogbert");
 	}
 
 	@Test
 	public void verifyAnnotationAutowiredMethods() {
-		assertNotNull("The employee setter method should have been autowired.", this.employee);
+		assertThat((Object) this.employee).as("The employee setter method should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).isEqualTo("Dilbert");
 	}
 

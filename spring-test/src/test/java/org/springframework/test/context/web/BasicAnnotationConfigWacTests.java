@@ -24,8 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Sam Brannen
@@ -58,8 +56,8 @@ public class BasicAnnotationConfigWacTests extends AbstractBasicWacTests {
 
 	@Test
 	public void servletContextAwareBeanProcessed() {
-		assertNotNull(servletContextAwareBean);
-		assertNotNull(servletContextAwareBean.servletContext);
+		assertThat((Object) servletContextAwareBean).isNotNull();
+		assertThat((Object) servletContextAwareBean.servletContext).isNotNull();
 	}
 
 }

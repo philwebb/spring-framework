@@ -41,7 +41,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -138,9 +137,9 @@ public class JmsInvokerTests {
 		ITestBean proxy = (ITestBean) pfb.getObject();
 
 		assertThat(proxy.getName()).isEqualTo("myname");
-		assertEquals(99, proxy.getAge());
+		assertThat((long) proxy.getAge()).isEqualTo((long) 99);
 		proxy.setAge(50);
-		assertEquals(50, proxy.getAge());
+		assertThat((long) proxy.getAge()).isEqualTo((long) 50);
 		proxy.setStringArray(new String[] {"str1", "str2"});
 		assertThat(Arrays.equals(new String[] {"str1", "str2"}, proxy.getStringArray())).isTrue();
 		assertThatIllegalStateException().isThrownBy(() ->

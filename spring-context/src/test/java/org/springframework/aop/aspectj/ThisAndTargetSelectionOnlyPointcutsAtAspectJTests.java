@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Ramnivas Laddad
@@ -57,56 +57,56 @@ public class ThisAndTargetSelectionOnlyPointcutsAtAspectJTests {
 	@Test
 	public void thisAsClassDoesNotMatch() {
 		testBean.doIt();
-		assertEquals(0, counter.thisAsClassCounter);
+		assertThat((long) counter.thisAsClassCounter).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void thisAsInterfaceMatch() {
 		testBean.doIt();
-		assertEquals(1, counter.thisAsInterfaceCounter);
+		assertThat((long) counter.thisAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void targetAsClassDoesMatch() {
 		testBean.doIt();
-		assertEquals(1, counter.targetAsClassCounter);
+		assertThat((long) counter.targetAsClassCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void targetAsInterfaceMatch() {
 		testBean.doIt();
-		assertEquals(1, counter.targetAsInterfaceCounter);
+		assertThat((long) counter.targetAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void thisAsClassAndTargetAsClassCounterNotMatch() {
 		testBean.doIt();
-		assertEquals(0, counter.thisAsClassAndTargetAsClassCounter);
+		assertThat((long) counter.thisAsClassAndTargetAsClassCounter).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void thisAsInterfaceAndTargetAsInterfaceCounterMatch() {
 		testBean.doIt();
-		assertEquals(1, counter.thisAsInterfaceAndTargetAsInterfaceCounter);
+		assertThat((long) counter.thisAsInterfaceAndTargetAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void thisAsInterfaceAndTargetAsClassCounterMatch() {
 		testBean.doIt();
-		assertEquals(1, counter.thisAsInterfaceAndTargetAsInterfaceCounter);
+		assertThat((long) counter.thisAsInterfaceAndTargetAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 
 	@Test
 	public void atTargetClassAnnotationMatch() {
 		testAnnotatedClassBean.doIt();
-		assertEquals(1, counter.atTargetClassAnnotationCounter);
+		assertThat((long) counter.atTargetClassAnnotationCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void atAnnotationMethodAnnotationMatch() {
 		testAnnotatedMethodBean.doIt();
-		assertEquals(1, counter.atAnnotationMethodAnnotationCounter);
+		assertThat((long) counter.atAnnotationMethodAnnotationCounter).isEqualTo((long) 1);
 	}
 
 	public static interface TestInterface {

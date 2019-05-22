@@ -30,7 +30,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SocketUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller

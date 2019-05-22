@@ -57,9 +57,6 @@ import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Security test case. Checks whether the container uses its privileges for its
@@ -365,14 +362,14 @@ public class CallbacksSecurityTests {
 	public void testSpringDestroyBean() throws Exception {
 		beanFactory.getBean("spring-destroy");
 		beanFactory.destroySingletons();
-		assertNull(System.getProperty("security.destroy"));
+		assertThat((Object) System.getProperty("security.destroy")).isNull();
 	}
 
 	@Test
 	public void testCustomDestroyBean() throws Exception {
 		beanFactory.getBean("custom-destroy");
 		beanFactory.destroySingletons();
-		assertNull(System.getProperty("security.destroy"));
+		assertThat((Object) System.getProperty("security.destroy")).isNull();
 	}
 
 	@Test
@@ -384,8 +381,8 @@ public class CallbacksSecurityTests {
 
 	@Test
 	public void testCustomFactoryType() throws Exception {
-		assertNull(beanFactory.getType("spring-factory"));
-		assertNull(System.getProperty("factory.object.type"));
+		assertThat((Object) beanFactory.getType("spring-factory")).isNull();
+		assertThat((Object) System.getProperty("factory.object.type")).isNull();
 	}
 
 	@Test
@@ -458,7 +455,7 @@ public class CallbacksSecurityTests {
 						return lbf.getBean("test", NonPrivilegedBean.class);
 					}
 				}, null);
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 	}
 
 	@Test

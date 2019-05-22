@@ -25,9 +25,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockServletContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -41,16 +38,16 @@ public class RequestContextListenerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(context);
 		request.setAttribute("test", "value");
 
-		assertNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNull();
 		listener.requestInitialized(new ServletRequestEvent(context, request));
-		assertNotNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNotNull();
 		assertThat(RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST)).isEqualTo("value");
 		MockRunnable runnable = new MockRunnable();
 		RequestContextHolder.getRequestAttributes().registerDestructionCallback(
 				"test", runnable, RequestAttributes.SCOPE_REQUEST);
 
 		listener.requestDestroyed(new ServletRequestEvent(context, request));
-		assertNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNull();
 		assertThat(runnable.wasExecuted()).isTrue();
 	}
 
@@ -61,9 +58,9 @@ public class RequestContextListenerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(context);
 		request.setAttribute("test", "value");
 
-		assertNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNull();
 		listener.requestInitialized(new ServletRequestEvent(context, request));
-		assertNotNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNotNull();
 		assertThat(RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST)).isEqualTo("value");
 		MockRunnable runnable = new MockRunnable();
 		RequestContextHolder.getRequestAttributes().registerDestructionCallback(
@@ -71,7 +68,7 @@ public class RequestContextListenerTests {
 
 		request.clearAttributes();
 		listener.requestDestroyed(new ServletRequestEvent(context, request));
-		assertNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNull();
 		assertThat(runnable.wasExecuted()).isTrue();
 	}
 
@@ -82,9 +79,9 @@ public class RequestContextListenerTests {
 		final MockHttpServletRequest request = new MockHttpServletRequest(context);
 		request.setAttribute("test", "value");
 
-		assertNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNull();
 		listener.requestInitialized(new ServletRequestEvent(context, request));
-		assertNotNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNotNull();
 		assertThat(RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST)).isEqualTo("value");
 		MockRunnable runnable = new MockRunnable();
 		RequestContextHolder.getRequestAttributes().registerDestructionCallback(
@@ -104,13 +101,13 @@ public class RequestContextListenerTests {
 		catch (InterruptedException ex) {
 		}
 		// Still bound to original thread, but at least completed.
-		assertNotNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNotNull();
 		assertThat(runnable.wasExecuted()).isTrue();
 
 		// Check that a repeated execution in the same thread works and performs cleanup.
 		listener.requestInitialized(new ServletRequestEvent(context, request));
 		listener.requestDestroyed(new ServletRequestEvent(context, request));
-		assertNull(RequestContextHolder.getRequestAttributes());
+		assertThat((Object) RequestContextHolder.getRequestAttributes()).isNull();
 	}
 
 }

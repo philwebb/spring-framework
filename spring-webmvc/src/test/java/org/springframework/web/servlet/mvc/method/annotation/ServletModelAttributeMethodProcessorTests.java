@@ -37,9 +37,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for {@link ServletModelAttributeMethodProcessor} specific tests.
@@ -106,7 +103,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) processor.resolveArgument(
 				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertNotNull(testBean);
+		assertThat((Object) testBean).isNotNull();
 	}
 
 	@Test
@@ -141,7 +138,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) processor.resolveArgument(
 				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertNotNull(testBean);
+		assertThat((Object) testBean).isNotNull();
 	}
 
 	@Test
@@ -164,11 +161,11 @@ public class ServletModelAttributeMethodProcessorTests {
 		mavContainer.getModel().put("testBean2", null);
 		mavContainer.getModel().put("testBean3", null);
 
-		assertNull(processor.resolveArgument(
-				testBeanModelAttr, mavContainer, webRequest, binderFactory));
+		assertThat(processor.resolveArgument(
+				testBeanModelAttr, mavContainer, webRequest, binderFactory)).isNull();
 
-		assertNull(processor.resolveArgument(
-				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory));
+		assertThat(processor.resolveArgument(
+				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory)).isNull();
 
 		Optional<TestBean> testBean = (Optional<TestBean>) processor.resolveArgument(
 				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
@@ -184,11 +181,11 @@ public class ServletModelAttributeMethodProcessorTests {
 		mavContainer.getModel().put("testBean2", Optional.empty());
 		mavContainer.getModel().put("testBean3", Optional.empty());
 
-		assertNull(processor.resolveArgument(
-				testBeanModelAttr, mavContainer, webRequest, binderFactory));
+		assertThat(processor.resolveArgument(
+				testBeanModelAttr, mavContainer, webRequest, binderFactory)).isNull();
 
-		assertNull(processor.resolveArgument(
-				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory));
+		assertThat(processor.resolveArgument(
+				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory)).isNull();
 
 		Optional<TestBean> testBean =(Optional<TestBean>) processor.resolveArgument(
 				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);

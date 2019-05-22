@@ -24,7 +24,6 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -45,7 +44,7 @@ public class ScopedProxyAutowireTests {
 		assertThat(bf.containsSingleton("scoped")).isFalse();
 		TestBean autowired = (TestBean) bf.getBean("autowired");
 		TestBean unscoped = (TestBean) bf.getBean("unscoped");
-		assertSame(unscoped, autowired.getChild());
+		assertThat((Object) autowired.getChild()).isSameAs(unscoped);
 	}
 
 	@Test
@@ -59,7 +58,7 @@ public class ScopedProxyAutowireTests {
 		assertThat(bf.containsSingleton("scoped")).isFalse();
 		TestBean autowired = (TestBean) bf.getBean("autowired");
 		TestBean scoped = (TestBean) bf.getBean("scoped");
-		assertSame(scoped, autowired.getChild());
+		assertThat((Object) autowired.getChild()).isSameAs(scoped);
 	}
 
 

@@ -27,9 +27,6 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for
@@ -50,7 +47,7 @@ public class ParameterizableViewControllerTests {
 	@Test
 	public void defaultViewName() throws Exception {
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertNull(modelAndView.getViewName());
+		assertThat((Object) modelAndView.getViewName()).isNull();
 	}
 
 	@Test
@@ -66,15 +63,15 @@ public class ParameterizableViewControllerTests {
 		this.controller.setStatusCode(HttpStatus.NOT_FOUND);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 		assertThat(modelAndView.getViewName()).isEqualTo("view");
-		assertEquals(404, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 404);
 	}
 
 	@Test
 	public void viewNameAndStatus204() throws Exception {
 		this.controller.setStatusCode(HttpStatus.NO_CONTENT);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertNull(modelAndView);
-		assertEquals(204, this.response.getStatus());
+		assertThat((Object) modelAndView).isNull();
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 204);
 	}
 
 	@Test
@@ -84,7 +81,7 @@ public class ParameterizableViewControllerTests {
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/foo");
-		assertEquals("3xx status should be left to RedirectView to set", 200, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).as("3xx status should be left to RedirectView to set").isEqualTo((long) 200);
 		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}
 
@@ -95,7 +92,7 @@ public class ParameterizableViewControllerTests {
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/foo");
-		assertEquals("3xx status should be left to RedirectView to set", 200, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).as("3xx status should be left to RedirectView to set").isEqualTo((long) 200);
 		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}
 
@@ -104,7 +101,7 @@ public class ParameterizableViewControllerTests {
 		RedirectView view = new RedirectView("/foo");
 		this.controller.setView(view);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertSame(view, modelAndView.getView());
+		assertThat((Object) modelAndView.getView()).isSameAs(view);
 	}
 
 	@Test
@@ -112,8 +109,8 @@ public class ParameterizableViewControllerTests {
 		this.controller.setStatusCode(HttpStatus.NOT_FOUND);
 		this.controller.setStatusOnly(true);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertNull(modelAndView);
-		assertEquals(404, this.response.getStatus());
+		assertThat((Object) modelAndView).isNull();
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 404);
 	}
 
 }

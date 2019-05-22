@@ -25,7 +25,6 @@ import org.springframework.core.MethodParameter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -80,13 +79,13 @@ public class SynthesizingMethodParameterTests {
 
 	@Test
 	public void testHashCode() throws NoSuchMethodException {
-		assertEquals(stringParameter.hashCode(), stringParameter.hashCode());
-		assertEquals(longParameter.hashCode(), longParameter.hashCode());
-		assertEquals(intReturnType.hashCode(), intReturnType.hashCode());
+		assertThat((long) stringParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
+		assertThat((long) longParameter.hashCode()).isEqualTo((long) longParameter.hashCode());
+		assertThat((long) intReturnType.hashCode()).isEqualTo((long) intReturnType.hashCode());
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		SynthesizingMethodParameter methodParameter = new SynthesizingMethodParameter(method, 0);
-		assertEquals(stringParameter.hashCode(), methodParameter.hashCode());
+		assertThat((long) methodParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
 		assertThat(methodParameter.hashCode()).isNotEqualTo((long) longParameter.hashCode());
 	}
 

@@ -45,7 +45,6 @@ import org.springframework.util.ReflectionUtils;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.core.ResolvableType.forClass;
@@ -171,7 +170,7 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Mono.just("body"), forClass(String.class), TEXT_PLAIN, this.response, NO_HINTS).block();
 
-		assertEquals(4, this.response.getHeaders().getContentLength());
+		assertThat(this.response.getHeaders().getContentLength()).isEqualTo((long) 4);
 	}
 
 	@Test // gh-22952
@@ -191,7 +190,7 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Mono.empty(), forClass(String.class), TEXT_PLAIN, this.response, NO_HINTS).block();
 		StepVerifier.create(this.response.getBody()).expectComplete();
-		assertEquals(0, this.response.getHeaders().getContentLength());
+		assertThat(this.response.getHeaders().getContentLength()).isEqualTo((long) 0);
 	}
 
 	@Test  // gh-22936

@@ -22,7 +22,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Sam Brannen
@@ -40,7 +40,7 @@ public class SqlConfigInterfaceTests extends AbstractTransactionalJUnit4SpringCo
 	}
 
 	protected void assertNumUsers(int expected) {
-		assertEquals("Number of rows in the 'user' table.", expected, countRowsInTable("user"));
+		assertThat((long) countRowsInTable("user")).as("Number of rows in the 'user' table.").isEqualTo((long) expected);
 	}
 
 }

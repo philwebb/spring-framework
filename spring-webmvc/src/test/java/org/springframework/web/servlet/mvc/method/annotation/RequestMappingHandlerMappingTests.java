@@ -51,8 +51,6 @@ import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -151,7 +149,7 @@ public class RequestMappingHandlerMappingTests {
 		Method method = UserController.class.getMethod("getUser");
 		RequestMappingInfo info = this.handlerMapping.getMappingForMethod(method, UserController.class);
 
-		assertNotNull(info);
+		assertThat((Object) info).isNotNull();
 		assertThat(info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton("/api/user/{id}"));
 	}
 
@@ -223,14 +221,14 @@ public class RequestMappingHandlerMappingTests {
 		Method method = ClassUtils.getMethod(clazz, methodName, (Class<?>[]) null);
 		RequestMappingInfo info = this.handlerMapping.getMappingForMethod(method, clazz);
 
-		assertNotNull(info);
+		assertThat((Object) info).isNotNull();
 
 		Set<String> paths = info.getPatternsCondition().getPatterns();
-		assertEquals(1, paths.size());
+		assertThat((long) paths.size()).isEqualTo((long) 1);
 		assertThat(paths.iterator().next()).isEqualTo(path);
 
 		Set<RequestMethod> methods = info.getMethodsCondition().getMethods();
-		assertEquals(1, methods.size());
+		assertThat((long) methods.size()).isEqualTo((long) 1);
 		assertThat(methods.iterator().next()).isEqualTo(requestMethod);
 
 		return info;

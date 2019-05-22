@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.expression.spel.standard.SpelExpression;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * These are tests for language features that are not yet considered 'live'. Either missing implementation or

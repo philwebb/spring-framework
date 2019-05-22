@@ -34,7 +34,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests invocation of constructors.
@@ -157,20 +156,20 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 
 		// reflective constructor accessor is the only one by default
 		List<ConstructorResolver> constructorResolvers = ctx.getConstructorResolvers();
-		assertEquals(1, constructorResolvers.size());
+		assertThat((long) constructorResolvers.size()).isEqualTo((long) 1);
 
 		ConstructorResolver dummy = new DummyConstructorResolver();
 		ctx.addConstructorResolver(dummy);
-		assertEquals(2, ctx.getConstructorResolvers().size());
+		assertThat((long) ctx.getConstructorResolvers().size()).isEqualTo((long) 2);
 
 		List<ConstructorResolver> copy = new ArrayList<>();
 		copy.addAll(ctx.getConstructorResolvers());
 		assertThat(ctx.removeConstructorResolver(dummy)).isTrue();
 		assertThat(ctx.removeConstructorResolver(dummy)).isFalse();
-		assertEquals(1, ctx.getConstructorResolvers().size());
+		assertThat((long) ctx.getConstructorResolvers().size()).isEqualTo((long) 1);
 
 		ctx.setConstructorResolvers(copy);
-		assertEquals(2, ctx.getConstructorResolvers().size());
+		assertThat((long) ctx.getConstructorResolvers().size()).isEqualTo((long) 2);
 	}
 
 

@@ -56,10 +56,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -113,7 +109,7 @@ public class MappingJackson2JsonViewTests {
 
 		String jsonResult = response.getContentAsString();
 		assertThat(jsonResult.length() > 0).isTrue();
-		assertEquals(jsonResult.length(), response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) jsonResult.length());
 
 		validateResult();
 	}
@@ -142,7 +138,7 @@ public class MappingJackson2JsonViewTests {
 
 		view.render(model, request, response);
 
-		assertNull(response.getHeader("Cache-Control"));
+		assertThat((Object) response.getHeader("Cache-Control")).isNull();
 	}
 
 	@Test
@@ -162,7 +158,7 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		assertThat(response.getContentAsString().length() > 0).isTrue();
-		assertEquals(response.getContentAsString().length(), response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) response.getContentAsString().length());
 
 		validateResult();
 	}
@@ -263,7 +259,7 @@ public class MappingJackson2JsonViewTests {
 
 		Object actual = view.filterModel(model);
 
-		assertSame(bean, actual);
+		assertThat(actual).isSameAs(bean);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -281,8 +277,8 @@ public class MappingJackson2JsonViewTests {
 
 		boolean condition = actual instanceof Map;
 		assertThat(condition).isTrue();
-		assertSame(bean1, ((Map) actual).get("foo1"));
-		assertSame(bean2, ((Map) actual).get("foo2"));
+		assertThat(((Map) actual).get("foo1")).isSameAs(bean1);
+		assertThat(((Map) actual).get("foo2")).isSameAs(bean2);
 	}
 
 	@Test
@@ -298,7 +294,7 @@ public class MappingJackson2JsonViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertEquals(content.length(), response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) content.length());
 		assertThat(content.contains("foo")).isTrue();
 		assertThat(content.contains("boo")).isFalse();
 		assertThat(content.contains(JsonView.class.getName())).isFalse();
@@ -321,7 +317,7 @@ public class MappingJackson2JsonViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertEquals(content.length(), response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) content.length());
 		assertThat(content).contains("\"property1\":\"value\"");
 		assertThat(content).doesNotContain("\"property2\":\"value\"");
 		assertThat(content.contains(FilterProvider.class.getName())).isFalse();
@@ -336,7 +332,7 @@ public class MappingJackson2JsonViewTests {
 		}
 		Object jsResult =
 				jsContext.evaluateString(jsScope, "(" + json + ")", "JSON Stream", 1, null);
-		assertNotNull("Json Result did not eval as valid JavaScript", jsResult);
+		assertThat(jsResult).as("Json Result did not eval as valid JavaScript").isNotNull();
 		assertThat(response.getContentType()).isEqualTo("application/json");
 	}
 

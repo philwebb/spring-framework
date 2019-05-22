@@ -30,8 +30,6 @@ import org.springframework.protobuf.Msg;
 import org.springframework.protobuf.SecondMsg;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -62,13 +60,13 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 	@Test
 	public void extensionRegistryInitializerNull() {
 		ProtobufHttpMessageConverter converter = new ProtobufHttpMessageConverter((ExtensionRegistryInitializer)null);
-		assertNotNull(converter);
+		assertThat((Object) converter).isNotNull();
 	}
 
 	@Test
 	public void extensionRegistryInitializer() {
 		ProtobufHttpMessageConverter converter = new ProtobufHttpMessageConverter((ExtensionRegistry)null);
-		assertNotNull(converter);
+		assertThat((Object) converter).isNotNull();
 	}
 
 	@Test
@@ -132,7 +130,7 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		MediaType contentType = ProtobufHttpMessageConverter.PROTOBUF;
 		this.converter.write(this.testMsg, contentType, outputMessage);
-		assertEquals(-1, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo((long) -1);
 	}
 
 }

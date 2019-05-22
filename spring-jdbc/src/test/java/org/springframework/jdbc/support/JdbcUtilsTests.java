@@ -21,8 +21,6 @@ import java.sql.Types;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link JdbcUtils}.
@@ -46,7 +44,7 @@ public class JdbcUtilsTests {
 		assertThat(JdbcUtils.resolveTypeName(Types.VARCHAR)).isEqualTo("VARCHAR");
 		assertThat(JdbcUtils.resolveTypeName(Types.NUMERIC)).isEqualTo("NUMERIC");
 		assertThat(JdbcUtils.resolveTypeName(Types.INTEGER)).isEqualTo("INTEGER");
-		assertNull(JdbcUtils.resolveTypeName(JdbcUtils.TYPE_UNKNOWN));
+		assertThat((Object) JdbcUtils.resolveTypeName(JdbcUtils.TYPE_UNKNOWN)).isNull();
 	}
 
 	@Test

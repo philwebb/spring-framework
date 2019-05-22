@@ -23,7 +23,6 @@ import org.springframework.orm.jpa.AbstractContainerEntityManagerFactoryIntegrat
 import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 
 /**
  * EclipseLink-specific JPA tests.
@@ -43,7 +42,7 @@ public class EclipseLinkEntityManagerFactoryIntegrationTests extends AbstractCon
 		boolean condition = sharedEntityManager instanceof JpaEntityManager;
 		assertThat(condition).isTrue();
 		JpaEntityManager eclipselinkEntityManager = (JpaEntityManager) sharedEntityManager;
-		assertNotNull(eclipselinkEntityManager.getActiveSession());
+		assertThat((Object) eclipselinkEntityManager.getActiveSession()).isNotNull();
 	}
 
 }

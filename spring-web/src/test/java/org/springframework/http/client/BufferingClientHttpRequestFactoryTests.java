@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 public class BufferingClientHttpRequestFactoryTests extends AbstractHttpRequestFactoryTestCase {
 

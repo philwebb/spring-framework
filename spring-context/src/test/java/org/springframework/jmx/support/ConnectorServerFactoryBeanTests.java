@@ -33,8 +33,6 @@ import org.springframework.jmx.AbstractMBeanServerTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rob Harrop
@@ -89,7 +87,7 @@ public class ConnectorServerFactoryBeanTests extends AbstractMBeanServerTests {
 		try {
 			// Try to get the connector bean.
 			ObjectInstance instance = getServer().getObjectInstance(ObjectName.getInstance(OBJECT_NAME));
-			assertNotNull("ObjectInstance should not be null", instance);
+			assertThat((Object) instance).as("ObjectInstance should not be null").isNotNull();
 		}
 		finally {
 			bean.destroy();
@@ -115,11 +113,11 @@ public class ConnectorServerFactoryBeanTests extends AbstractMBeanServerTests {
 		JMXServiceURL serviceURL = new JMXServiceURL(ConnectorServerFactoryBean.DEFAULT_SERVICE_URL);
 		JMXConnector connector = JMXConnectorFactory.connect(serviceURL);
 
-		assertNotNull("Client Connector should not be null", connector);
+		assertThat((Object) connector).as("Client Connector should not be null").isNotNull();
 
 		// Get the MBean server connection.
 		MBeanServerConnection connection = connector.getMBeanServerConnection();
-		assertNotNull("MBeanServerConnection should not be null", connection);
+		assertThat((Object) connection).as("MBeanServerConnection should not be null").isNotNull();
 
 		// Test for MBean server equality.
 		assertThat(connection.getMBeanCount()).as("Registered MBean count should be the same").isEqualTo(hostedServer.getMBeanCount());

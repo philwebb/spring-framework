@@ -30,9 +30,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link org.springframework.http.RequestEntity}.
@@ -52,7 +49,7 @@ public class RequestEntityTests {
 				RequestEntity.method(HttpMethod.GET, url)
 						.header(headerName, headerValue).body(entity);
 
-		assertNotNull(requestEntity);
+		assertThat((Object) requestEntity).isNotNull();
 		assertThat(requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
 		assertThat(requestEntity.getHeaders().containsKey(headerName)).isTrue();
 		assertThat(requestEntity.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
@@ -87,11 +84,11 @@ public class RequestEntityTests {
 		RequestEntity<Void> requestEntity = RequestEntity.get(URI.create("https://example.com")).accept(
 				MediaType.IMAGE_GIF, MediaType.IMAGE_JPEG, MediaType.IMAGE_PNG).build();
 
-		assertNotNull(requestEntity);
+		assertThat((Object) requestEntity).isNotNull();
 		assertThat(requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
 		assertThat(requestEntity.getHeaders().containsKey("Accept")).isTrue();
 		assertThat(requestEntity.getHeaders().getFirst("Accept")).isEqualTo("image/gif, image/jpeg, image/png");
-		assertNull(requestEntity.getBody());
+		assertThat((Object) requestEntity.getBody()).isNull();
 	}
 
 	@Test
@@ -111,7 +108,7 @@ public class RequestEntityTests {
 				contentType(contentType).
 				build();
 
-		assertNotNull(responseEntity);
+		assertThat((Object) responseEntity).isNotNull();
 		assertThat(responseEntity.getMethod()).isEqualTo(HttpMethod.POST);
 		assertThat(responseEntity.getUrl()).isEqualTo(new URI("https://example.com"));
 		HttpHeaders responseHeaders = responseEntity.getHeaders();
@@ -123,7 +120,7 @@ public class RequestEntityTests {
 		assertThat(responseHeaders.getFirst("Content-Length")).isEqualTo(String.valueOf(contentLength));
 		assertThat(responseHeaders.getFirst("Content-Type")).isEqualTo(contentType.toString());
 
-		assertNull(responseEntity.getBody());
+		assertThat((Object) responseEntity.getBody()).isNull();
 	}
 
 	@Test

@@ -42,8 +42,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 
@@ -74,7 +72,7 @@ public class WebExchangeDataBinderTests {
 		formData.add("spouse.name", "test");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
 
-		assertNotNull(this.testBean.getSpouse());
+		assertThat((Object) this.testBean.getSpouse()).isNotNull();
 		assertThat(testBean.getSpouse().getName()).isEqualTo("test");
 	}
 
@@ -157,12 +155,12 @@ public class WebExchangeDataBinderTests {
 		formData.add("stringArray", "abc");
 		formData.add("stringArray", "123,def");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertEquals("Expected all three items to be bound", 3, this.testBean.getStringArray().length);
+		assertThat((long) this.testBean.getStringArray().length).as("Expected all three items to be bound").isEqualTo((long) 3);
 
 		formData.remove("stringArray");
 		formData.add("stringArray", "123,def");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertEquals("Expected only 1 item to be bound", 1, this.testBean.getStringArray().length);
+		assertThat((long) this.testBean.getStringArray().length).as("Expected only 1 item to be bound").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -172,7 +170,7 @@ public class WebExchangeDataBinderTests {
 		formData.add("spouse", "someValue");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
 
-		assertNotNull(this.testBean.getSpouse());
+		assertThat((Object) this.testBean.getSpouse()).isNotNull();
 		assertThat(this.testBean.getSpouse().getName()).isEqualTo("test");
 	}
 
@@ -182,7 +180,7 @@ public class WebExchangeDataBinderTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.post(url));
 		this.binder.bind(exchange).block(Duration.ofSeconds(5));
 
-		assertNotNull(this.testBean.getSpouse());
+		assertThat((Object) this.testBean.getSpouse()).isNotNull();
 		assertThat(this.testBean.getSpouse().getName()).isEqualTo("test");
 	}
 
@@ -207,7 +205,7 @@ public class WebExchangeDataBinderTests {
 		assertThat(bean.getSomeList()).isEqualTo(Arrays.asList("123", "abc"));
 		assertThat(bean.getSomeArray()).isEqualTo(new String[] {"dec", "456"});
 		assertThat(bean.getPart().filename()).isEqualTo("foo.txt");
-		assertEquals(2, bean.getSomePartList().size());
+		assertThat((long) bean.getSomePartList().size()).isEqualTo((long) 2);
 		assertThat(bean.getSomePartList().get(0).filename()).isEqualTo("foo.txt");
 		assertThat(bean.getSomePartList().get(1).filename()).isEqualTo("spring.png");
 	}

@@ -19,8 +19,6 @@ package org.springframework.web.servlet.tags;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link Param}.
@@ -45,8 +43,8 @@ public class ParamTests {
 
 	@Test
 	public void nullDefaults() {
-		assertNull(param.getName());
-		assertNull(param.getValue());
+		assertThat((Object) param.getName()).isNull();
+		assertThat((Object) param.getValue()).isNull();
 	}
 
 }

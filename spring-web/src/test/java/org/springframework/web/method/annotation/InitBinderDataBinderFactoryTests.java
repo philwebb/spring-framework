@@ -38,10 +38,6 @@ import org.springframework.web.method.support.InvocableHandlerMethod;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture with {@link InitBinderDataBinderFactory}.
@@ -64,7 +60,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinderFactory factory = createFactory("initBinder", WebDataBinder.class);
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, null);
 
-		assertNotNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNotNull();
 		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
@@ -76,7 +72,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinderFactory factory = createFactory("initBinder", WebDataBinder.class);
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, null);
 
-		assertSame(conversionService, dataBinder.getConversionService());
+		assertThat((Object) dataBinder.getConversionService()).isSameAs(conversionService);
 	}
 
 	@Test
@@ -84,7 +80,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinderFactory factory = createFactory("initBinderWithAttributeName", WebDataBinder.class);
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, "foo");
 
-		assertNotNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNotNull();
 		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
@@ -93,7 +89,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinderFactory factory = createFactory("initBinderWithAttributeName", WebDataBinder.class);
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, "invalidName");
 
-		assertNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNull();
 	}
 
 	@Test
@@ -101,7 +97,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinderFactory factory = createFactory("initBinderWithAttributeName", WebDataBinder.class);
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, null);
 
-		assertNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNull();
 	}
 
 	@Test
@@ -119,7 +115,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinderFactory factory = createFactory("initBinderTypeConversion", WebDataBinder.class, int.class);
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, "foo");
 
-		assertNotNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNotNull();
 		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
 	}
 

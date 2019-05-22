@@ -22,8 +22,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Stephane Nicoll
@@ -72,8 +70,8 @@ public class JmsListenerEndpointRegistrarTests {
 		this.registrar.setContainerFactory(this.containerFactory);
 		this.registrar.registerEndpoint(endpoint, null);
 		this.registrar.afterPropertiesSet();
-		assertNotNull("Container not created", this.registry.getListenerContainer("some id"));
-		assertEquals(1, this.registry.getListenerContainers().size());
+		assertThat((Object) this.registry.getListenerContainer("some id")).as("Container not created").isNotNull();
+		assertThat((long) this.registry.getListenerContainers().size()).isEqualTo((long) 1);
 		assertThat(this.registry.getListenerContainerIds().iterator().next()).isEqualTo("some id");
 	}
 
@@ -95,8 +93,8 @@ public class JmsListenerEndpointRegistrarTests {
 		this.registrar.setContainerFactory(this.containerFactory);
 		this.registrar.registerEndpoint(endpoint);
 		this.registrar.afterPropertiesSet();
-		assertNotNull("Container not created", this.registry.getListenerContainer("myEndpoint"));
-		assertEquals(1, this.registry.getListenerContainers().size());
+		assertThat((Object) this.registry.getListenerContainer("myEndpoint")).as("Container not created").isNotNull();
+		assertThat((long) this.registry.getListenerContainers().size()).isEqualTo((long) 1);
 		assertThat(this.registry.getListenerContainerIds().iterator().next()).isEqualTo("myEndpoint");
 	}
 

@@ -27,7 +27,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scripting.Messenger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * {@link StandardScriptFactory} (lang:std) tests for JavaScript.

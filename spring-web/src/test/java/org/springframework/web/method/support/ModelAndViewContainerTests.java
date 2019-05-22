@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for {@link ModelAndViewContainer}.
@@ -44,7 +43,7 @@ public class ModelAndViewContainerTests {
 	@Test
 	public void getModel() {
 		this.mavContainer.addAttribute("name", "value");
-		assertEquals(1, this.mavContainer.getModel().size());
+		assertThat((long) this.mavContainer.getModel().size()).isEqualTo((long) 1);
 		assertThat(this.mavContainer.getModel().get("name")).isEqualTo("value");
 	}
 
@@ -54,7 +53,7 @@ public class ModelAndViewContainerTests {
 		this.mavContainer.setRedirectModel(new ModelMap("name2", "value2"));
 		this.mavContainer.setRedirectModelScenario(true);
 
-		assertEquals(1, this.mavContainer.getModel().size());
+		assertThat((long) this.mavContainer.getModel().size()).isEqualTo((long) 1);
 		assertThat(this.mavContainer.getModel().get("name2")).isEqualTo("value2");
 	}
 
@@ -63,7 +62,7 @@ public class ModelAndViewContainerTests {
 		this.mavContainer.addAttribute("name", "value");
 		this.mavContainer.setRedirectModelScenario(true);
 
-		assertEquals(1, this.mavContainer.getModel().size());
+		assertThat((long) this.mavContainer.getModel().size()).isEqualTo((long) 1);
 		assertThat(this.mavContainer.getModel().get("name")).isEqualTo("value");
 	}
 
@@ -82,7 +81,7 @@ public class ModelAndViewContainerTests {
 		this.mavContainer.setRedirectModelScenario(true);
 		this.mavContainer.addAttribute("name", "value");
 
-		assertEquals(1, this.mavContainer.getModel().size());
+		assertThat((long) this.mavContainer.getModel().size()).isEqualTo((long) 1);
 		assertThat(this.mavContainer.getModel().get("name")).isEqualTo("value");
 	}
 

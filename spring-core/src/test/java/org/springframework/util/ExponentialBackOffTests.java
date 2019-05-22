@@ -23,7 +23,6 @@ import org.springframework.util.backoff.ExponentialBackOff;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  *
@@ -35,19 +34,19 @@ public class ExponentialBackOffTests {
 	public void defaultInstance() {
 		ExponentialBackOff backOff = new ExponentialBackOff();
 		BackOffExecution execution = backOff.start();
-		assertEquals(2000L, execution.nextBackOff());
-		assertEquals(3000L, execution.nextBackOff());
-		assertEquals(4500L, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(2000L);
+		assertThat(execution.nextBackOff()).isEqualTo(3000L);
+		assertThat(execution.nextBackOff()).isEqualTo(4500L);
 	}
 
 	@Test
 	public void simpleIncrease() {
 		ExponentialBackOff backOff = new ExponentialBackOff(100L, 2.0);
 		BackOffExecution execution = backOff.start();
-		assertEquals(100L, execution.nextBackOff());
-		assertEquals(200L, execution.nextBackOff());
-		assertEquals(400L, execution.nextBackOff());
-		assertEquals(800L, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(100L);
+		assertThat(execution.nextBackOff()).isEqualTo(200L);
+		assertThat(execution.nextBackOff()).isEqualTo(400L);
+		assertThat(execution.nextBackOff()).isEqualTo(800L);
 	}
 
 	@Test
@@ -56,10 +55,10 @@ public class ExponentialBackOffTests {
 		backOff.setMaxElapsedTime(300L);
 
 		BackOffExecution execution = backOff.start();
-		assertEquals(100L, execution.nextBackOff());
-		assertEquals(100L, execution.nextBackOff());
-		assertEquals(100L, execution.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(100L);
+		assertThat(execution.nextBackOff()).isEqualTo(100L);
+		assertThat(execution.nextBackOff()).isEqualTo(100L);
+		assertThat(execution.nextBackOff()).isEqualTo(BackOffExecution.STOP);
 	}
 
 	@Test
@@ -68,10 +67,11 @@ public class ExponentialBackOffTests {
 		backOff.setMaxInterval(4000L);
 
 		BackOffExecution execution = backOff.start();
-		assertEquals(2000L, execution.nextBackOff());
-		assertEquals(4000L, execution.nextBackOff());
-		assertEquals(4000L, execution.nextBackOff()); // max reached
-		assertEquals(4000L, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(2000L);
+		assertThat(execution.nextBackOff()).isEqualTo(4000L);
+		// max reached
+		assertThat(execution.nextBackOff()).isEqualTo(4000L);
+		assertThat(execution.nextBackOff()).isEqualTo(4000L);
 	}
 
 	@Test
@@ -80,9 +80,10 @@ public class ExponentialBackOffTests {
 		backOff.setMaxElapsedTime(4000L);
 
 		BackOffExecution execution = backOff.start();
-		assertEquals(2000L, execution.nextBackOff());
-		assertEquals(4000L, execution.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution.nextBackOff()); // > 4 sec wait in total
+		assertThat(execution.nextBackOff()).isEqualTo(2000L);
+		assertThat(execution.nextBackOff()).isEqualTo(4000L);
+		// > 4 sec wait in total
+		assertThat(execution.nextBackOff()).isEqualTo(BackOffExecution.STOP);
 	}
 
 	@Test
@@ -95,12 +96,12 @@ public class ExponentialBackOffTests {
 		BackOffExecution execution = backOff.start();
 		BackOffExecution execution2 = backOff.start();
 
-		assertEquals(2000L, execution.nextBackOff());
-		assertEquals(2000L, execution2.nextBackOff());
-		assertEquals(4000L, execution.nextBackOff());
-		assertEquals(4000L, execution2.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution2.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(2000L);
+		assertThat(execution2.nextBackOff()).isEqualTo(2000L);
+		assertThat(execution.nextBackOff()).isEqualTo(4000L);
+		assertThat(execution2.nextBackOff()).isEqualTo(4000L);
+		assertThat(execution.nextBackOff()).isEqualTo(BackOffExecution.STOP);
+		assertThat(execution2.nextBackOff()).isEqualTo(BackOffExecution.STOP);
 	}
 
 	@Test
@@ -116,8 +117,8 @@ public class ExponentialBackOffTests {
 		backOff.setMaxInterval(50L);
 
 		BackOffExecution execution = backOff.start();
-		assertEquals(50L, execution.nextBackOff());
-		assertEquals(50L, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(50L);
+		assertThat(execution.nextBackOff()).isEqualTo(50L);
 	}
 
 	@Test

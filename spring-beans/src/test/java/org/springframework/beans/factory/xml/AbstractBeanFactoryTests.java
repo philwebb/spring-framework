@@ -37,8 +37,6 @@ import org.springframework.tests.sample.beans.factory.DummyFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Subclasses must initialize the bean factory and any other variables they need.
@@ -241,7 +239,7 @@ public abstract class AbstractBeanFactoryTests {
 	 */
 	@Test
 	public void getFactoryItself() throws Exception {
-		assertNotNull(getBeanFactory().getBean("&singletonFactory"));
+		assertThat(getBeanFactory().getBean("&singletonFactory")).isNotNull();
 	}
 
 	/**
@@ -250,7 +248,7 @@ public abstract class AbstractBeanFactoryTests {
 	@Test
 	public void factoryIsInitialized() throws Exception {
 		TestBean tb = (TestBean) getBeanFactory().getBean("singletonFactory");
-		assertNotNull(tb);
+		assertThat((Object) tb).isNotNull();
 		DummyFactory factory = (DummyFactory) getBeanFactory().getBean("&singletonFactory");
 		assertThat(factory.wasInitialized()).as("Factory was initialized because it implemented InitializingBean").isTrue();
 	}

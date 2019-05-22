@@ -49,8 +49,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
@@ -216,7 +214,7 @@ public class RequestParamMethodArgumentResolverTests {
 		boolean condition = result instanceof MultipartFile[];
 		assertThat(condition).isTrue();
 		MultipartFile[] parts = (MultipartFile[]) result;
-		assertEquals(2, parts.length);
+		assertThat((long) parts.length).isEqualTo((long) 2);
 		assertThat(expected1).isEqualTo(parts[0]);
 		assertThat(expected2).isEqualTo(parts[1]);
 	}
@@ -276,7 +274,7 @@ public class RequestParamMethodArgumentResolverTests {
 		boolean condition = result instanceof Part[];
 		assertThat(condition).isTrue();
 		Part[] parts = (Part[]) result;
-		assertEquals(2, parts.length);
+		assertThat((long) parts.length).isEqualTo((long) 2);
 		assertThat(expected1).isEqualTo(parts[0]);
 		assertThat(expected2).isEqualTo(parts[1]);
 	}
@@ -398,7 +396,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		MethodParameter param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
 		Object arg = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertNull(arg);
+		assertThat(arg).isNull();
 	}
 
 	@Test
@@ -413,7 +411,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		MethodParameter param = this.testMethod.annot(requestParam().notRequired()).arg(String.class);
 		Object arg = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertNull(arg);
+		assertThat(arg).isNull();
 	}
 
 	@Test
@@ -431,7 +429,7 @@ public class RequestParamMethodArgumentResolverTests {
 	public void resolveSimpleTypeParamToNull() throws Exception {
 		MethodParameter param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
-		assertNull(result);
+		assertThat(result).isNull();
 	}
 
 	@Test  // SPR-10180

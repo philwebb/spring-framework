@@ -31,7 +31,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer
@@ -110,12 +109,12 @@ public class InitializeDatabaseIntegrationTests {
 		context = new ClassPathXmlApplicationContext("org/springframework/jdbc/config/jdbc-initialize-cache-config.xml");
 		assertCorrectSetup(context.getBean("dataSource", DataSource.class));
 		CacheData cache = context.getBean(CacheData.class);
-		assertEquals(1, cache.getCachedData().size());
+		assertThat((long) cache.getCachedData().size()).isEqualTo((long) 1);
 	}
 
 	private void assertCorrectSetup(DataSource dataSource) {
 		JdbcTemplate jt = new JdbcTemplate(dataSource);
-		assertEquals(1, jt.queryForObject("select count(*) from T_TEST", Integer.class).intValue());
+		assertThat((long) jt.queryForObject("select count(*) from T_TEST", Integer.class).intValue()).isEqualTo((long) 1);
 	}
 
 

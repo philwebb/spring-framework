@@ -33,11 +33,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rob Harrop
@@ -74,11 +69,11 @@ public class RequestScopeTests {
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 
 		String name = "requestScopedObject";
-		assertNull(request.getAttribute(name));
+		assertThat(request.getAttribute(name)).isNull();
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
 		assertThat(bean.getName()).isEqualTo("/path");
-		assertSame(bean, request.getAttribute(name));
-		assertSame(bean, this.beanFactory.getBean(name));
+		assertThat(request.getAttribute(name)).isSameAs(bean);
+		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
 	}
 
 	@Test
@@ -88,10 +83,10 @@ public class RequestScopeTests {
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 
 		String name = "requestScopedDisposableObject";
-		assertNull(request.getAttribute(name));
+		assertThat(request.getAttribute(name)).isNull();
 		DerivedTestBean bean = (DerivedTestBean) this.beanFactory.getBean(name);
-		assertSame(bean, request.getAttribute(name));
-		assertSame(bean, this.beanFactory.getBean(name));
+		assertThat(request.getAttribute(name)).isSameAs(bean);
+		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
 
 		requestAttributes.requestCompleted();
 		assertThat(bean.wasDestroyed()).isTrue();
@@ -104,11 +99,11 @@ public class RequestScopeTests {
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 
 		String name = "requestScopedFactoryBean";
-		assertNull(request.getAttribute(name));
+		assertThat(request.getAttribute(name)).isNull();
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
 		boolean condition = request.getAttribute(name) instanceof FactoryBean;
 		assertThat(condition).isTrue();
-		assertSame(bean, this.beanFactory.getBean(name));
+		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
 	}
 
 	@Test
@@ -118,7 +113,7 @@ public class RequestScopeTests {
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 
 		String name = "requestScopedObjectCircle1";
-		assertNull(request.getAttribute(name));
+		assertThat(request.getAttribute(name)).isNull();
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				this.beanFactory.getBean(name))
 			.matches(ex -> ex.contains(BeanCurrentlyInCreationException.class));
@@ -131,11 +126,11 @@ public class RequestScopeTests {
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 
 		String outerBeanName = "requestScopedOuterBean";
-		assertNull(request.getAttribute(outerBeanName));
+		assertThat(request.getAttribute(outerBeanName)).isNull();
 		TestBean outer1 = (TestBean) this.beanFactory.getBean(outerBeanName);
-		assertNotNull(request.getAttribute(outerBeanName));
+		assertThat(request.getAttribute(outerBeanName)).isNotNull();
 		TestBean inner1 = (TestBean) outer1.getSpouse();
-		assertSame(outer1, this.beanFactory.getBean(outerBeanName));
+		assertThat(this.beanFactory.getBean(outerBeanName)).isSameAs(outer1);
 		requestAttributes.requestCompleted();
 		assertThat(outer1.wasDestroyed()).isTrue();
 		assertThat(inner1.wasDestroyed()).isTrue();
@@ -143,8 +138,8 @@ public class RequestScopeTests {
 		requestAttributes = new ServletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		TestBean outer2 = (TestBean) this.beanFactory.getBean(outerBeanName);
-		assertNotSame(outer1, outer2);
-		assertNotSame(inner1, outer2.getSpouse());
+		assertThat((Object) outer2).isNotSameAs(outer1);
+		assertThat((Object) outer2.getSpouse()).isNotSameAs(inner1);
 	}
 
 	@Test
@@ -155,11 +150,11 @@ public class RequestScopeTests {
 
 		String outerBeanName = "singletonOuterBean";
 		TestBean outer1 = (TestBean) this.beanFactory.getBean(outerBeanName);
-		assertNull(request.getAttribute(outerBeanName));
+		assertThat(request.getAttribute(outerBeanName)).isNull();
 		TestBean inner1 = (TestBean) outer1.getSpouse();
 		TestBean outer2 = (TestBean) this.beanFactory.getBean(outerBeanName);
-		assertSame(outer1, outer2);
-		assertSame(inner1, outer2.getSpouse());
+		assertThat((Object) outer2).isSameAs(outer1);
+		assertThat((Object) outer2.getSpouse()).isSameAs(inner1);
 		requestAttributes.requestCompleted();
 		assertThat(inner1.wasDestroyed()).isTrue();
 		assertThat(outer1.wasDestroyed()).isFalse();

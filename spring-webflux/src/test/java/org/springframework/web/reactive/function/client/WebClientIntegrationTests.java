@@ -57,10 +57,6 @@ import org.springframework.http.codec.Pojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-
 /**
  * Integration tests using an {@link ExchangeFunction} through {@link WebClient}.
  *
@@ -119,7 +115,7 @@ public class WebClientIntegrationTests {
 				.consumeNextWith(
 						httpHeaders -> {
 							assertThat(httpHeaders.getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-							assertEquals(13L, httpHeaders.getContentLength());
+							assertThat(httpHeaders.getContentLength()).isEqualTo(13L);
 						})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
@@ -210,7 +206,7 @@ public class WebClientIntegrationTests {
 		StepVerifier.create(result)
 				.assertNext(valueContainer -> {
 					Foo foo = valueContainer.getContainerValue();
-					assertNotNull(foo);
+					assertThat((Object) foo).isNotNull();
 					assertThat(foo.getFooValue()).isEqualTo("bar");
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
@@ -237,7 +233,7 @@ public class WebClientIntegrationTests {
 				.consumeNextWith(entity -> {
 					assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 					assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
-					assertEquals(31, entity.getHeaders().getContentLength());
+					assertThat(entity.getHeaders().getContentLength()).isEqualTo((long) 31);
 					assertThat(entity.getBody()).isEqualTo(content);
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
@@ -264,7 +260,7 @@ public class WebClientIntegrationTests {
 				.consumeNextWith(entity -> {
 					assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 					assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
-					assertEquals(58, entity.getHeaders().getContentLength());
+					assertThat(entity.getHeaders().getContentLength()).isEqualTo((long) 58);
 					Pojo pojo1 = new Pojo("foo1", "bar1");
 					Pojo pojo2 = new Pojo("foo2", "bar2");
 					assertThat(entity.getBody()).isEqualTo(Arrays.asList(pojo1, pojo2));
@@ -423,8 +419,8 @@ public class WebClientIntegrationTests {
 			catch (IOException ex) {
 				throw new IllegalStateException(ex);
 			}
-			assertEquals(expected.length, actual.size());
-			assertEquals(hash(expected), hash(actual.toByteArray()));
+			assertThat((long) actual.size()).isEqualTo((long) expected.length);
+			assertThat(hash(actual.toByteArray())).isEqualTo(hash(expected));
 		});
 	}
 
@@ -512,7 +508,7 @@ public class WebClientIntegrationTests {
 					assertThat(condition).isTrue();
 					WebClientResponseException ex = (WebClientResponseException) throwable;
 					assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getRawStatusCode());
+					assertThat((long) ex.getRawStatusCode()).isEqualTo((long) HttpStatus.INTERNAL_SERVER_ERROR.value());
 					assertThat(ex.getStatusText()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
 					assertThat(ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 					assertThat(ex.getResponseBodyAsString()).isEqualTo(errorMessage);
@@ -520,7 +516,7 @@ public class WebClientIntegrationTests {
 					HttpRequest request = ex.getRequest();
 					assertThat(request.getMethod()).isEqualTo(HttpMethod.GET);
 					assertThat(request.getURI()).isEqualTo(URI.create(this.server.url(path).toString()));
-					assertNotNull(request.getHeaders());
+					assertThat((Object) request.getHeaders()).isNotNull();
 				})
 				.verify(Duration.ofSeconds(3));
 
@@ -534,7 +530,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldSupportUnknownStatusCode() {
 		int errorStatus = 555;
-		assertNull(HttpStatus.resolve(errorStatus));
+		assertThat((Object) HttpStatus.resolve(errorStatus)).isNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));
@@ -544,7 +540,7 @@ public class WebClientIntegrationTests {
 				.exchange();
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertEquals(555, response.rawStatusCode()))
+				.consumeNextWith(response -> assertThat((long) response.rawStatusCode()).isEqualTo((long) 555))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
@@ -558,7 +554,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldGetErrorSignalWhenRetrievingUnknownStatusCode() {
 		int errorStatus = 555;
-		assertNull(HttpStatus.resolve(errorStatus));
+		assertThat((Object) HttpStatus.resolve(errorStatus)).isNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));
@@ -574,7 +570,7 @@ public class WebClientIntegrationTests {
 					assertThat(condition).isTrue();
 					UnknownHttpStatusCodeException ex = (UnknownHttpStatusCodeException) throwable;
 					assertThat(ex.getMessage()).isEqualTo(("Unknown status code ["+errorStatus+"]"));
-					assertEquals(errorStatus, ex.getRawStatusCode());
+					assertThat((long) ex.getRawStatusCode()).isEqualTo((long) errorStatus);
 					assertThat(ex.getStatusText()).isEqualTo("");
 					assertThat(ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 					assertThat(ex.getResponseBodyAsString()).isEqualTo(errorMessage);
@@ -764,7 +760,7 @@ public class WebClientIntegrationTests {
 	}
 
 	private void expectRequestCount(int count) {
-		assertEquals(count, this.server.getRequestCount());
+		assertThat((long) this.server.getRequestCount()).isEqualTo((long) count);
 	}
 
 

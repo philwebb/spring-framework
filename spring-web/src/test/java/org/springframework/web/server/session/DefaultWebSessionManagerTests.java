@@ -35,9 +35,6 @@ import org.springframework.web.server.adapter.DefaultServerWebExchange;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -96,7 +93,7 @@ public class DefaultWebSessionManagerTests {
 		WebSession session = this.sessionManager.getSession(this.exchange).block();
 		this.exchange.getResponse().setComplete().block();
 
-		assertSame(this.createSession, session);
+		assertThat((Object) session).isSameAs(this.createSession);
 		assertThat(session.isStarted()).isFalse();
 		assertThat(session.isExpired()).isFalse();
 		verify(this.createSession, never()).save();
@@ -108,7 +105,7 @@ public class DefaultWebSessionManagerTests {
 
 		given(this.sessionIdResolver.resolveSessionIds(this.exchange)).willReturn(Collections.emptyList());
 		WebSession session = this.sessionManager.getSession(this.exchange).block();
-		assertSame(this.createSession, session);
+		assertThat((Object) session).isSameAs(this.createSession);
 		String sessionId = this.createSession.getId();
 
 		given(this.createSession.isStarted()).willReturn(true);
@@ -126,7 +123,7 @@ public class DefaultWebSessionManagerTests {
 		given(this.sessionIdResolver.resolveSessionIds(this.exchange)).willReturn(Collections.singletonList(sessionId));
 
 		WebSession actual = this.sessionManager.getSession(this.exchange).block();
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.getId()).isEqualTo(sessionId);
 	}
 
@@ -139,7 +136,7 @@ public class DefaultWebSessionManagerTests {
 		given(this.sessionIdResolver.resolveSessionIds(this.exchange)).willReturn(ids);
 		WebSession actual = this.sessionManager.getSession(this.exchange).block();
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.getId()).isEqualTo(this.updateSession.getId());
 	}
 }

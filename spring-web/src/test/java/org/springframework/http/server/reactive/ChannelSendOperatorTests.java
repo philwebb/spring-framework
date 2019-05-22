@@ -39,9 +39,6 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.LeakAwareDataBufferFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rossen Stoyanchev
@@ -64,8 +61,8 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Mono.<String>error(error).as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertNotNull(signal);
-		assertSame("Unexpected signal: " + signal, error, signal.getThrowable());
+		assertThat((Object) signal).isNotNull();
+		assertThat((Object) signal.getThrowable()).as("Unexpected signal: " + signal).isSameAs(error);
 	}
 
 	@Test
@@ -73,10 +70,10 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Flux.<String>empty().as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertNotNull(signal);
+		assertThat((Object) signal).isNotNull();
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
-		assertEquals(0, this.writer.items.size());
+		assertThat((long) this.writer.items.size()).isEqualTo((long) 0);
 		assertThat(this.writer.completed).isTrue();
 	}
 
@@ -85,10 +82,10 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Flux.just("one").as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertNotNull(signal);
+		assertThat((Object) signal).isNotNull();
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
-		assertEquals(1, this.writer.items.size());
+		assertThat((long) this.writer.items.size()).isEqualTo((long) 1);
 		assertThat(this.writer.items.get(0)).isEqualTo("one");
 		assertThat(this.writer.completed).isTrue();
 	}
@@ -100,10 +97,10 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Flux.fromIterable(items).as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertNotNull(signal);
+		assertThat((Object) signal).isNotNull();
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
-		assertEquals(3, this.writer.items.size());
+		assertThat((long) this.writer.items.size()).isEqualTo((long) 3);
 		assertThat(this.writer.items.get(0)).isEqualTo("one");
 		assertThat(this.writer.items.get(1)).isEqualTo("two");
 		assertThat(this.writer.items.get(2)).isEqualTo("three");
@@ -124,14 +121,14 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = publisher.as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertNotNull(signal);
-		assertSame("Unexpected signal: " + signal, error, signal.getThrowable());
+		assertThat((Object) signal).isNotNull();
+		assertThat((Object) signal.getThrowable()).as("Unexpected signal: " + signal).isSameAs(error);
 
-		assertEquals(3, this.writer.items.size());
+		assertThat((long) this.writer.items.size()).isEqualTo((long) 3);
 		assertThat(this.writer.items.get(0)).isEqualTo("1");
 		assertThat(this.writer.items.get(1)).isEqualTo("2");
 		assertThat(this.writer.items.get(2)).isEqualTo("3");
-		assertSame(error, this.writer.error);
+		assertThat((Object) this.writer.error).isSameAs(error);
 	}
 
 	@Test // gh-22720
@@ -185,7 +182,7 @@ public class ChannelSendOperatorTests {
 			writeSubscriber.signalDemand(1);  // Let cached signals ("foo" and error) be published..
 		}
 		catch (Throwable ex) {
-			assertNotNull(ex.getCause());
+			assertThat((Object) ex.getCause()).isNotNull();
 			assertThat(ex.getCause().getMessage()).isEqualTo("err");
 		}
 

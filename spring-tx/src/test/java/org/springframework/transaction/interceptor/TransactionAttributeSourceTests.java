@@ -24,9 +24,6 @@ import org.junit.Test;
 import org.springframework.transaction.TransactionDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for the various {@link TransactionAttributeSource} implementations.
@@ -44,12 +41,12 @@ public class TransactionAttributeSourceTests {
 	public void matchAlwaysTransactionAttributeSource() throws Exception {
 		MatchAlwaysTransactionAttributeSource tas = new MatchAlwaysTransactionAttributeSource();
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
-		assertNotNull(ta);
+		assertThat((Object) ta).isNotNull();
 		assertThat(TransactionDefinition.PROPAGATION_REQUIRED == ta.getPropagationBehavior()).isTrue();
 
 		tas.setTransactionAttribute(new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_SUPPORTS));
 		ta = tas.getTransactionAttribute(IOException.class.getMethod("getMessage"), IOException.class);
-		assertNotNull(ta);
+		assertThat((Object) ta).isNotNull();
 		assertThat(TransactionDefinition.PROPAGATION_SUPPORTS == ta.getPropagationBehavior()).isTrue();
 	}
 
@@ -60,8 +57,8 @@ public class TransactionAttributeSourceTests {
 		attributes.put("*ashCode", "PROPAGATION_REQUIRED");
 		tas.setProperties(attributes);
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
-		assertNotNull(ta);
-		assertEquals(TransactionDefinition.PROPAGATION_REQUIRED, ta.getPropagationBehavior());
+		assertThat((Object) ta).isNotNull();
+		assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_REQUIRED);
 	}
 
 	@Test
@@ -71,8 +68,8 @@ public class TransactionAttributeSourceTests {
 		attributes.put("hashCod*", "PROPAGATION_REQUIRED");
 		tas.setProperties(attributes);
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
-		assertNotNull(ta);
-		assertEquals(TransactionDefinition.PROPAGATION_REQUIRED, ta.getPropagationBehavior());
+		assertThat((Object) ta).isNotNull();
+		assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_REQUIRED);
 	}
 
 	@Test
@@ -83,8 +80,8 @@ public class TransactionAttributeSourceTests {
 		attributes.put("hashCode", "PROPAGATION_MANDATORY");
 		tas.setProperties(attributes);
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
-		assertNotNull(ta);
-		assertEquals(TransactionDefinition.PROPAGATION_MANDATORY, ta.getPropagationBehavior());
+		assertThat((Object) ta).isNotNull();
+		assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_MANDATORY);
 	}
 
 	@Test
@@ -94,7 +91,7 @@ public class TransactionAttributeSourceTests {
 		attributes.put("", "PROPAGATION_MANDATORY");
 		tas.setProperties(attributes);
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
-		assertNull(ta);
+		assertThat((Object) ta).isNull();
 	}
 
 }

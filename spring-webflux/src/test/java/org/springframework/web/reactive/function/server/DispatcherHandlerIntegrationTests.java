@@ -43,8 +43,6 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 import org.springframework.web.util.pattern.PathPattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
 import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -93,7 +91,7 @@ public class DispatcherHandlerIntegrationTests extends AbstractHttpHandlerIntegr
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		List<Person> body = result.getBody();
-		assertEquals(2, body.size());
+		assertThat((long) body.size()).isEqualTo((long) 2);
 		assertThat(body.get(0).getName()).isEqualTo("John");
 		assertThat(body.get(1).getName()).isEqualTo("Jane");
 	}
@@ -179,25 +177,25 @@ public class DispatcherHandlerIntegrationTests extends AbstractHttpHandlerIntegr
 
 			Map<String, String> pathVariables =
 					(Map<String, String>) request.attributes().get(RouterFunctions.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-			assertNotNull(pathVariables);
-			assertEquals(1, pathVariables.size());
+			assertThat((Object) pathVariables).isNotNull();
+			assertThat((long) pathVariables.size()).isEqualTo((long) 1);
 			assertThat(pathVariables.get("foo")).isEqualTo("bar");
 
 			pathVariables =
 					(Map<String, String>) request.attributes().get(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-			assertNotNull(pathVariables);
-			assertEquals(1, pathVariables.size());
+			assertThat((Object) pathVariables).isNotNull();
+			assertThat((long) pathVariables.size()).isEqualTo((long) 1);
 			assertThat(pathVariables.get("foo")).isEqualTo("bar");
 
 
 			PathPattern pattern =
 					(PathPattern) request.attributes().get(RouterFunctions.MATCHING_PATTERN_ATTRIBUTE);
-			assertNotNull(pattern);
+			assertThat((Object) pattern).isNotNull();
 			assertThat(pattern.getPatternString()).isEqualTo("/attributes/{foo}");
 
 			pattern = (PathPattern) request.attributes()
 					.get(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-			assertNotNull(pattern);
+			assertThat((Object) pattern).isNotNull();
 			assertThat(pattern.getPatternString()).isEqualTo("/attributes/{foo}");
 
 			return ServerResponse.ok().build();

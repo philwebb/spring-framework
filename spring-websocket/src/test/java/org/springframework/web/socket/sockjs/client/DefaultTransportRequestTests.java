@@ -35,7 +35,6 @@ import org.springframework.web.socket.sockjs.transport.TransportType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -77,7 +76,7 @@ public class DefaultTransportRequestTests {
 		request.connect(null, this.connectFuture);
 		WebSocketSession session = mock(WebSocketSession.class);
 		this.webSocketTransport.getConnectCallback().onSuccess(session);
-		assertSame(session, this.connectFuture.get());
+		assertThat((Object) this.connectFuture.get()).isSameAs(session);
 	}
 
 	@Test

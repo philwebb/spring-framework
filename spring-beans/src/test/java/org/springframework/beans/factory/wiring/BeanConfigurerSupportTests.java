@@ -25,8 +25,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -55,7 +53,7 @@ public class BeanConfigurerSupportTests {
 		configurer.setBeanFactory(new DefaultListableBeanFactory());
 		configurer.configureBean(beanInstance);
 		verify(resolver).resolveWiringInfo(beanInstance);
-		assertNull(beanInstance.getName());
+		assertThat((Object) beanInstance.getName()).isNull();
 	}
 
 	@Test
@@ -63,7 +61,7 @@ public class BeanConfigurerSupportTests {
 		TestBean beanInstance = new TestBean();
 		BeanConfigurerSupport configurer = new StubBeanConfigurerSupport();
 		configurer.configureBean(beanInstance);
-		assertNull(beanInstance.getName());
+		assertThat((Object) beanInstance.getName()).isNull();
 	}
 
 	@Test

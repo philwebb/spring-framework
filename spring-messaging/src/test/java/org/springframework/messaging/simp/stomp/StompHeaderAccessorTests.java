@@ -38,11 +38,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
-
 /**
  * Unit tests for {@link StompHeaderAccessor}.
  *
@@ -110,7 +105,7 @@ public class StompHeaderAccessorTests {
 
 		assertThat(headerAccessor.getCommand()).isEqualTo(StompCommand.STOMP);
 		assertThat(headerAccessor.getMessageType()).isEqualTo(SimpMessageType.CONNECT);
-		assertNotNull(headerAccessor.getHeader("stompCredentials"));
+		assertThat(headerAccessor.getHeader("stompCredentials")).isNotNull();
 		assertThat(headerAccessor.getLogin()).isEqualTo("joe");
 		assertThat(headerAccessor.getPasscode()).isEqualTo("joe123");
 		assertThat(headerAccessor.toString()).contains("passcode=[PROTECTED]");
@@ -128,7 +123,7 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertEquals(2, actual.size());
+		assertThat((long) actual.size()).isEqualTo((long) 2);
 		assertThat(actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0)).isEqualTo("s1");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
 	}
@@ -140,7 +135,7 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertEquals(1, actual.size());
+		assertThat((long) actual.size()).isEqualTo((long) 1);
 		assertThat(actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0)).isEqualTo("s1");
 	}
 
@@ -154,11 +149,11 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertEquals(actual.toString(), 4, actual.size());
+		assertThat((long) actual.size()).as(actual.toString()).isEqualTo((long) 4);
 		assertThat(actual.get(StompHeaderAccessor.STOMP_SUBSCRIPTION_HEADER).get(0)).isEqualTo("s1");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_CONTENT_TYPE_HEADER).get(0)).isEqualTo("application/json");
-		assertNotNull("message-id was not created", actual.get(StompHeaderAccessor.STOMP_MESSAGE_ID_HEADER).get(0));
+		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_MESSAGE_ID_HEADER).get(0)).as("message-id was not created").isNotNull();
 	}
 
 	@Test
@@ -198,11 +193,11 @@ public class StompHeaderAccessorTests {
 		headers.setNativeHeader("accountId", accountId.toLowerCase());
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
-		assertEquals(3, actual.size());
+		assertThat((long) actual.size()).isEqualTo((long) 3);
 
 		assertThat(actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0)).isEqualTo("s1");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
-		assertNotNull("abc123", actual.get("accountId").get(0));
+		assertThat((Object) actual.get("accountId").get(0)).as("abc123").isNotNull();
 	}
 
 	@Test
@@ -210,8 +205,8 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.SEND);
 		MessageHeaders headers = headerAccessor.getMessageHeaders();
 
-		assertNull(headers.getId());
-		assertNull(headers.getTimestamp());
+		assertThat((Object) headers.getId()).isNull();
+		assertThat((Object) headers.getTimestamp()).isNull();
 	}
 
 	@Test
@@ -223,8 +218,8 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.SEND);
 		headerInitializer.initHeaders(headerAccessor);
 
-		assertNotNull(headerAccessor.getMessageHeaders().getId());
-		assertNotNull(headerAccessor.getMessageHeaders().getTimestamp());
+		assertThat((Object) headerAccessor.getMessageHeaders().getId()).isNotNull();
+		assertThat((Object) headerAccessor.getMessageHeaders().getTimestamp()).isNotNull();
 	}
 
 	@Test
@@ -232,7 +227,7 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.CONNECT);
 		Message<byte[]> message = MessageBuilder.createMessage(new byte[0], headerAccessor.getMessageHeaders());
 
-		assertSame(headerAccessor, MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class));
+		assertThat(MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class)).isSameAs(headerAccessor);
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -48,7 +47,7 @@ public class JdbcDaoSupportTests {
 		dao.afterPropertiesSet();
 		assertThat(dao.getDataSource()).as("Correct DataSource").isEqualTo(ds);
 		assertThat(dao.getJdbcTemplate().getDataSource()).as("Correct JdbcTemplate").isEqualTo(ds);
-		assertEquals("initDao called", 1, test.size());
+		assertThat((long) test.size()).as("initDao called").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -64,7 +63,7 @@ public class JdbcDaoSupportTests {
 		dao.setJdbcTemplate(template);
 		dao.afterPropertiesSet();
 		assertThat(template).as("Correct JdbcTemplate").isEqualTo(dao.getJdbcTemplate());
-		assertEquals("initDao called", 1, test.size());
+		assertThat((long) test.size()).as("initDao called").isEqualTo((long) 1);
 	}
 
 }

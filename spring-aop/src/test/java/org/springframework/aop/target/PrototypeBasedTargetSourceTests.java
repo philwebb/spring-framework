@@ -27,7 +27,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests relating to the abstract {@link AbstractPrototypeBasedTargetSource}
@@ -59,7 +58,7 @@ public class PrototypeBasedTargetSourceTests {
 		boolean condition = serialized instanceof SingletonTargetSource;
 		assertThat(condition).as("Changed to SingletonTargetSource on deserialization").isTrue();
 		SingletonTargetSource sts = (SingletonTargetSource) serialized;
-		assertNotNull(sts.getTarget());
+		assertThat(sts.getTarget()).isNotNull();
 	}
 
 

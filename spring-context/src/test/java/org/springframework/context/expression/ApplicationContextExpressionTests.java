@@ -59,8 +59,6 @@ import org.springframework.util.SerializationTestUtils;
 import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -161,17 +159,17 @@ public class ApplicationContextExpressionTests {
 
 			TestBean tb1 = ac.getBean("tb1", TestBean.class);
 			assertThat(tb1.getName()).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertEquals(42, tb1.getAge());
+			assertThat((long) tb1.getAge()).isEqualTo((long) 42);
 
 			TestBean tb2 = ac.getBean("tb2", TestBean.class);
 			assertThat(tb2.getName()).isEqualTo("{ XXXmyNameYYY42ZZZ }");
-			assertEquals(42, tb2.getAge());
+			assertThat((long) tb2.getAge()).isEqualTo((long) 42);
 			assertThat(tb2.getCountry()).isEqualTo("123 UK");
 
 			ValueTestBean tb3 = ac.getBean("tb3", ValueTestBean.class);
 			assertThat(tb3.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertEquals(42, tb3.age);
-			assertEquals(42, tb3.ageFactory.getObject().intValue());
+			assertThat((long) tb3.age).isEqualTo((long) 42);
+			assertThat((long) tb3.ageFactory.getObject().intValue()).isEqualTo((long) 42);
 			assertThat(tb3.country).isEqualTo("123 UK");
 			assertThat(tb3.countryFactory.getObject()).isEqualTo("123 UK");
 			System.getProperties().put("country", "US");
@@ -183,28 +181,28 @@ public class ApplicationContextExpressionTests {
 			assertThat(tb3.optionalValue1.get()).isEqualTo("123");
 			assertThat(tb3.optionalValue2.get()).isEqualTo("123");
 			assertThat(tb3.optionalValue3.isPresent()).isFalse();
-			assertSame(tb0, tb3.tb);
+			assertThat((Object) tb3.tb).isSameAs(tb0);
 
 			tb3 = (ValueTestBean) SerializationTestUtils.serializeAndDeserialize(tb3);
 			assertThat(tb3.countryFactory.getObject()).isEqualTo("123 UK");
 
 			ConstructorValueTestBean tb4 = ac.getBean("tb4", ConstructorValueTestBean.class);
 			assertThat(tb4.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertEquals(42, tb4.age);
+			assertThat((long) tb4.age).isEqualTo((long) 42);
 			assertThat(tb4.country).isEqualTo("123 UK");
-			assertSame(tb0, tb4.tb);
+			assertThat((Object) tb4.tb).isSameAs(tb0);
 
 			MethodValueTestBean tb5 = ac.getBean("tb5", MethodValueTestBean.class);
 			assertThat(tb5.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertEquals(42, tb5.age);
+			assertThat((long) tb5.age).isEqualTo((long) 42);
 			assertThat(tb5.country).isEqualTo("123 UK");
-			assertSame(tb0, tb5.tb);
+			assertThat((Object) tb5.tb).isSameAs(tb0);
 
 			PropertyValueTestBean tb6 = ac.getBean("tb6", PropertyValueTestBean.class);
 			assertThat(tb6.name).isEqualTo("XXXmyNameYYY42ZZZ");
-			assertEquals(42, tb6.age);
+			assertThat((long) tb6.age).isEqualTo((long) 42);
 			assertThat(tb6.country).isEqualTo("123 UK");
-			assertSame(tb0, tb6.tb);
+			assertThat((Object) tb6.tb).isSameAs(tb0);
 		}
 		finally {
 			System.getProperties().remove("country");

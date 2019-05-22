@@ -32,9 +32,6 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -85,7 +82,7 @@ public class ScriptFactoryPostProcessorTests {
 
 	@Test
 	public void testDoesNothingWhenPostProcessingNonScriptFactoryTypeBeforeInstantiation() throws Exception {
-		assertNull(new ScriptFactoryPostProcessor().postProcessBeforeInstantiation(getClass(), "a.bean"));
+		assertThat(new ScriptFactoryPostProcessor().postProcessBeforeInstantiation(getClass(), "a.bean")).isNull();
 	}
 
 	@Test
@@ -229,7 +226,7 @@ public class ScriptFactoryPostProcessorTests {
 
 		Messenger messenger1 = (Messenger) ctx.getBean(BEAN_WITH_DEPENDENCY_NAME);
 		Messenger messenger2 = (Messenger) ctx.getBean(BEAN_WITH_DEPENDENCY_NAME);
-		assertNotSame(messenger1, messenger2);
+		assertThat((Object) messenger2).isNotSameAs(messenger1);
 	}
 
 	private static StaticScriptSource getScriptSource(GenericApplicationContext ctx) throws Exception {

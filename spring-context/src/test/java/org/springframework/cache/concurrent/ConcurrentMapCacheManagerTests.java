@@ -22,9 +22,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -39,38 +36,38 @@ public class ConcurrentMapCacheManagerTests {
 		boolean condition2 = cache1 instanceof ConcurrentMapCache;
 		assertThat(condition2).isTrue();
 		Cache cache1again = cm.getCache("c1");
-		assertSame(cache1again, cache1);
+		assertThat((Object) cache1).isSameAs(cache1again);
 		Cache cache2 = cm.getCache("c2");
 		boolean condition1 = cache2 instanceof ConcurrentMapCache;
 		assertThat(condition1).isTrue();
 		Cache cache2again = cm.getCache("c2");
-		assertSame(cache2again, cache2);
+		assertThat((Object) cache2).isSameAs(cache2again);
 		Cache cache3 = cm.getCache("c3");
 		boolean condition = cache3 instanceof ConcurrentMapCache;
 		assertThat(condition).isTrue();
 		Cache cache3again = cm.getCache("c3");
-		assertSame(cache3again, cache3);
+		assertThat((Object) cache3).isSameAs(cache3again);
 
 		cache1.put("key1", "value1");
 		assertThat(cache1.get("key1").get()).isEqualTo("value1");
 		cache1.put("key2", 2);
 		assertThat(cache1.get("key2").get()).isEqualTo(2);
 		cache1.put("key3", null);
-		assertNull(cache1.get("key3").get());
+		assertThat(cache1.get("key3").get()).isNull();
 		cache1.put("key3", null);
-		assertNull(cache1.get("key3").get());
+		assertThat(cache1.get("key3").get()).isNull();
 		cache1.evict("key3");
-		assertNull(cache1.get("key3"));
+		assertThat((Object) cache1.get("key3")).isNull();
 
 		assertThat(cache1.putIfAbsent("key1", "value1x").get()).isEqualTo("value1");
 		assertThat(cache1.get("key1").get()).isEqualTo("value1");
 		assertThat(cache1.putIfAbsent("key2", 2.1).get()).isEqualTo(2);
-		assertNull(cache1.putIfAbsent("key3", null));
-		assertNull(cache1.get("key3").get());
-		assertNull(cache1.putIfAbsent("key3", null).get());
-		assertNull(cache1.get("key3").get());
+		assertThat((Object) cache1.putIfAbsent("key3", null)).isNull();
+		assertThat(cache1.get("key3").get()).isNull();
+		assertThat(cache1.putIfAbsent("key3", null).get()).isNull();
+		assertThat(cache1.get("key3").get()).isNull();
 		cache1.evict("key3");
-		assertNull(cache1.get("key3"));
+		assertThat((Object) cache1.get("key3")).isNull();
 	}
 
 	@Test
@@ -80,23 +77,23 @@ public class ConcurrentMapCacheManagerTests {
 		boolean condition3 = cache1 instanceof ConcurrentMapCache;
 		assertThat(condition3).isTrue();
 		Cache cache1again = cm.getCache("c1");
-		assertSame(cache1again, cache1);
+		assertThat((Object) cache1).isSameAs(cache1again);
 		Cache cache2 = cm.getCache("c2");
 		boolean condition2 = cache2 instanceof ConcurrentMapCache;
 		assertThat(condition2).isTrue();
 		Cache cache2again = cm.getCache("c2");
-		assertSame(cache2again, cache2);
+		assertThat((Object) cache2).isSameAs(cache2again);
 		Cache cache3 = cm.getCache("c3");
-		assertNull(cache3);
+		assertThat((Object) cache3).isNull();
 
 		cache1.put("key1", "value1");
 		assertThat(cache1.get("key1").get()).isEqualTo("value1");
 		cache1.put("key2", 2);
 		assertThat(cache1.get("key2").get()).isEqualTo(2);
 		cache1.put("key3", null);
-		assertNull(cache1.get("key3").get());
+		assertThat(cache1.get("key3").get()).isNull();
 		cache1.evict("key3");
-		assertNull(cache1.get("key3"));
+		assertThat((Object) cache1.get("key3")).isNull();
 
 		cm.setAllowNullValues(false);
 		Cache cache1x = cm.getCache("c1");
@@ -108,7 +105,7 @@ public class ConcurrentMapCacheManagerTests {
 		assertThat(condition).isTrue();
 		assertThat(cache2x != cache2).isTrue();
 		Cache cache3x = cm.getCache("c3");
-		assertNull(cache3x);
+		assertThat((Object) cache3x).isNull();
 
 		cache1x.put("key1", "value1");
 		assertThat(cache1x.get("key1").get()).isEqualTo("value1");
@@ -119,9 +116,9 @@ public class ConcurrentMapCacheManagerTests {
 		Cache cache1y = cm.getCache("c1");
 
 		cache1y.put("key3", null);
-		assertNull(cache1y.get("key3").get());
+		assertThat(cache1y.get("key3").get()).isNull();
 		cache1y.evict("key3");
-		assertNull(cache1y.get("key3"));
+		assertThat((Object) cache1y.get("key3")).isNull();
 	}
 
 	@Test
@@ -140,7 +137,7 @@ public class ConcurrentMapCacheManagerTests {
 		boolean condition = cache1x instanceof ConcurrentMapCache;
 		assertThat(condition).isTrue();
 		assertThat(cache1x != cache1).isTrue();
-		assertNull(cache1x.get("key"));
+		assertThat((Object) cache1x.get("key")).isNull();
 	}
 
 }

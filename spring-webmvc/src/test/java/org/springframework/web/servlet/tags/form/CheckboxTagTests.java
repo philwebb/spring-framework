@@ -41,8 +41,6 @@ import org.springframework.validation.BindingResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rob Harrop
@@ -72,7 +70,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 	public void withSingleValueBooleanObjectChecked() throws Exception {
 		this.tag.setPath("someBoolean");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 
 		// wrap the output so it is valid XML
@@ -81,7 +79,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertEquals("Both tag and hidden element not rendered", 2, rootElement.elements().size());
+		assertThat((long) rootElement.elements().size()).as("Both tag and hidden element not rendered").isEqualTo((long) 2);
 		Element checkboxElement = (Element) rootElement.elements().get(0);
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
@@ -95,7 +93,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 	public void withIndexedBooleanObjectNotChecked() throws Exception {
 		this.tag.setPath("someMap[key]");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 
 		// wrap the output so it is valid XML
@@ -104,7 +102,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertEquals("Both tag and hidden element not rendered", 2, rootElement.elements().size());
+		assertThat((long) rootElement.elements().size()).as("Both tag and hidden element not rendered").isEqualTo((long) 2);
 		Element checkboxElement = (Element) rootElement.elements().get(0);
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
@@ -124,7 +122,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setDynamicAttribute(null, dynamicAttribute2, dynamicAttribute2);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 
 		// wrap the output so it is valid XML
@@ -133,7 +131,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertEquals("Both tag and hidden element not rendered", 2, rootElement.elements().size());
+		assertThat((long) rootElement.elements().size()).as("Both tag and hidden element not rendered").isEqualTo((long) 2);
 		Element checkboxElement = (Element) rootElement.elements().get(0);
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
@@ -148,7 +146,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 	public void withSingleValueBooleanChecked() throws Exception {
 		this.tag.setPath("jedi");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 
 		// wrap the output so it is valid XML
@@ -169,7 +167,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.bean.setSomeBoolean(Boolean.FALSE);
 		this.tag.setPath("someBoolean");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -182,7 +180,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("someBoolean");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 		assertThat(checkboxElement.attribute("value").getValue()).isEqualTo("true");
 	}
 
@@ -191,7 +189,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.bean.setJedi(false);
 		this.tag.setPath("jedi");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -204,7 +202,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("jedi");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 		assertThat(checkboxElement.attribute("value").getValue()).isEqualTo("true");
 	}
 
@@ -214,7 +212,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setPath("name");
 		this.tag.setValue("Rob Harrop");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -227,7 +225,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("name");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 		assertThat(checkboxElement.attribute("value").getValue()).isEqualTo("Rob Harrop");
 	}
 
@@ -237,7 +235,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setPath("name");
 		this.tag.setValue("Rob Harrop");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -264,7 +262,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -286,7 +284,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setPath("stringArray");
 		this.tag.setValue("foo");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -308,7 +306,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setPath("stringArray");
 		this.tag.setValue("abc");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -321,7 +319,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("stringArray");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 		assertThat(checkboxElement.attribute("value").getValue()).isEqualTo("abc");
 	}
 
@@ -335,8 +333,8 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
-		assertEquals(1, editor.count);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat((long) editor.count).isEqualTo((long) 1);
 
 		String output = getOutput();
 
@@ -363,8 +361,8 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
-		assertEquals(1, editor.count);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat((long) editor.count).isEqualTo((long) 1);
 
 		String output = getOutput();
 
@@ -386,7 +384,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setPath("someList");
 		this.tag.setValue("foo");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -409,7 +407,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue(getDate());
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -433,7 +431,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue(date);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -446,7 +444,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("date");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 		assertThat(checkboxElement.attribute("value").getValue()).isEqualTo(date.toString());
 	}
 
@@ -456,7 +454,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue("RED");
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -478,7 +476,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue("PURPLE");
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -491,7 +489,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("otherColours");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 	}
 
 	@Test
@@ -500,7 +498,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue("Spot");
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -522,7 +520,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue("Santa's Little Helper");
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -535,7 +533,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("pets");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 	}
 
 	@Test
@@ -544,7 +542,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue(new Pet("Rudiger"));
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -567,7 +565,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setValue(new Pet("Santa's Little Helper"));
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -581,7 +579,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("pets");
 		assertThat(checkboxElement.attribute("value").getValue()).isEqualTo("Santa's Little Helper");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 	}
 
 	@Test
@@ -595,7 +593,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -624,7 +622,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		this.tag.setPath("someBoolean");
 		this.tag.setDisabled(true);
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 
 		// wrap the output so it is valid XML
@@ -633,7 +631,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertEquals("Both tag and hidden element rendered incorrectly", 1, rootElement.elements().size());
+		assertThat((long) rootElement.elements().size()).as("Both tag and hidden element rendered incorrectly").isEqualTo((long) 1);
 		Element checkboxElement = (Element) rootElement.elements().get(0);
 		assertThat(checkboxElement.getName()).isEqualTo("input");
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("checkbox");

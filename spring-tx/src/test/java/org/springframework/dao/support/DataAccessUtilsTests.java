@@ -33,9 +33,6 @@ import org.springframework.dao.TypeMismatchDataAccessException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -47,7 +44,7 @@ public class DataAccessUtilsTests {
 	public void withEmptyCollection() {
 		Collection<String> col = new HashSet<>();
 
-		assertNull(DataAccessUtils.uniqueResult(col));
+		assertThat(DataAccessUtils.uniqueResult(col)).isNull();
 
 		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 				DataAccessUtils.requiredUniqueResult(col))
@@ -102,8 +99,8 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertEquals(5, DataAccessUtils.intResult(col));
-		assertEquals(5, DataAccessUtils.longResult(col));
+		assertThat((long) DataAccessUtils.intResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
 	}
 
 	@Test
@@ -117,8 +114,8 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertEquals(5, DataAccessUtils.intResult(col));
-		assertEquals(5, DataAccessUtils.longResult(col));
+		assertThat((long) DataAccessUtils.intResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
 	}
 
 	@Test
@@ -142,8 +139,8 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Long.valueOf(5L));
 		assertThat(DataAccessUtils.objectResult(col, Long.class)).isEqualTo(Long.valueOf(5L));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertEquals(5, DataAccessUtils.intResult(col));
-		assertEquals(5, DataAccessUtils.longResult(col));
+		assertThat((long) DataAccessUtils.intResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
 	}
 
 	@Test
@@ -184,7 +181,7 @@ public class DataAccessUtilsTests {
 	public void exceptionTranslationWithNoTranslation() {
 		MapPersistenceExceptionTranslator mpet = new MapPersistenceExceptionTranslator();
 		RuntimeException in = new RuntimeException();
-		assertSame(in, DataAccessUtils.translateIfNecessary(in, mpet));
+		assertThat((Object) DataAccessUtils.translateIfNecessary(in, mpet)).isSameAs(in);
 	}
 
 	@Test
@@ -193,7 +190,7 @@ public class DataAccessUtilsTests {
 		RuntimeException in = new RuntimeException("in");
 		InvalidDataAccessApiUsageException out = new InvalidDataAccessApiUsageException("out");
 		mpet.addTranslation(in, out);
-		assertSame(out, DataAccessUtils.translateIfNecessary(in, mpet));
+		assertThat((Object) DataAccessUtils.translateIfNecessary(in, mpet)).isSameAs(out);
 	}
 
 	private <E extends IncorrectResultSizeDataAccessException> Consumer<E> sizeRequirements(

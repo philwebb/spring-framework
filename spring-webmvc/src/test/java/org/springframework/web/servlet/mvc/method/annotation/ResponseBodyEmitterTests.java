@@ -26,9 +26,7 @@ import org.mockito.MockitoAnnotations;
 
 import org.springframework.http.MediaType;
 
-import static org.assertj.core.api.Assertions.assertThatIOException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertNotNull;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -169,7 +167,7 @@ public class ResponseBodyEmitterTests {
 		verify(this.handler).onTimeout(captor.capture());
 		verify(this.handler).onCompletion(any());
 
-		assertNotNull(captor.getValue());
+		assertThat((Object) captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}
@@ -185,7 +183,7 @@ public class ResponseBodyEmitterTests {
 		Runnable runnable = mock(Runnable.class);
 		this.emitter.onTimeout(runnable);
 
-		assertNotNull(captor.getValue());
+		assertThat((Object) captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}
@@ -200,7 +198,7 @@ public class ResponseBodyEmitterTests {
 		verify(this.handler).onTimeout(any());
 		verify(this.handler).onCompletion(captor.capture());
 
-		assertNotNull(captor.getValue());
+		assertThat((Object) captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}
@@ -216,7 +214,7 @@ public class ResponseBodyEmitterTests {
 		Runnable runnable = mock(Runnable.class);
 		this.emitter.onCompletion(runnable);
 
-		assertNotNull(captor.getValue());
+		assertThat((Object) captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}

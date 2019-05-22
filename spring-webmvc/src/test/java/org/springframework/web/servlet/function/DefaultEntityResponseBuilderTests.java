@@ -43,9 +43,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Arjen Poutsma
@@ -64,7 +61,7 @@ public class DefaultEntityResponseBuilderTests {
 	public void fromObject() {
 		String body = "foo";
 		EntityResponse<String> response = EntityResponse.fromObject(body).build();
-		assertSame(body, response.entity());
+		assertThat((Object) response.entity()).isSameAs(body);
 	}
 
 	@Test
@@ -74,7 +71,7 @@ public class DefaultEntityResponseBuilderTests {
 				new ParameterizedTypeReference<String>() {})
 				.build();
 
-		assertSame(body, response.entity());
+		assertThat((Object) response.entity()).isSameAs(body);
 	}
 
 	@Test
@@ -99,7 +96,7 @@ public class DefaultEntityResponseBuilderTests {
 	public void contentLength() {
 		String body = "foo";
 		EntityResponse<String> result = EntityResponse.fromObject(body).contentLength(42).build();
-		assertEquals(42, result.headers().getContentLength());
+		assertThat(result.headers().getContentLength()).isEqualTo((long) 42);
 	}
 
 	@Test
@@ -126,7 +123,7 @@ public class DefaultEntityResponseBuilderTests {
 		String body = "foo";
 		EntityResponse<String> result = EntityResponse.fromObject(body).lastModified(now).build();
 		long expected = now.toInstant().toEpochMilli() / 1000;
-		assertEquals(expected, result.headers().getLastModified() / 1000);
+		assertThat(result.headers().getLastModified() / 1000).isEqualTo(expected);
 	}
 
 	@Test
@@ -195,9 +192,9 @@ public class DefaultEntityResponseBuilderTests {
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 
 		ModelAndView mav = entityResponse.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), mockResponse.getStatus());
+		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 
@@ -216,9 +213,9 @@ public class DefaultEntityResponseBuilderTests {
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 
 		ModelAndView mav = entityResponse.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 
-		assertEquals(HttpStatus.NOT_MODIFIED.value(), mockResponse.getStatus());
+		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 }

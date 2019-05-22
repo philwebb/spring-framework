@@ -21,7 +21,6 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Scott Andrews
@@ -33,7 +32,7 @@ public class Spr7283Tests {
 	public void testListWithInconsistentElementType() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spr7283.xml", getClass());
 		List<?> list = ctx.getBean("list", List.class);
-		assertEquals(2, list.size());
+		assertThat((long) list.size()).isEqualTo((long) 2);
 		boolean condition1 = list.get(0) instanceof A;
 		assertThat(condition1).isTrue();
 		boolean condition = list.get(1) instanceof B;

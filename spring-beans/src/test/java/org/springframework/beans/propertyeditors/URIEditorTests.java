@@ -24,8 +24,6 @@ import org.junit.Test;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -108,7 +106,7 @@ public class URIEditorTests {
 	public void setAsTextWithNull() throws Exception {
 		PropertyEditor uriEditor = new URIEditor();
 		uriEditor.setAsText(null);
-		assertNull(uriEditor.getValue());
+		assertThat(uriEditor.getValue()).isNull();
 		assertThat(uriEditor.getAsText()).isEqualTo("");
 	}
 

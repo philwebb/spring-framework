@@ -27,8 +27,6 @@ import java.util.Map;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Martin Kersten
@@ -52,8 +50,8 @@ public class HtmlCharacterEntityReferencesTests {
 						HtmlCharacterEntityReferences.REFERENCE_END;
 				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should be mapped to a reference").isTrue();
 				assertThat(entityReferences.convertToReference((char) character)).as("The reference of unicode character " + character + " should be entity " + referenceName).isEqualTo(fullReference);
-				assertEquals("The entity reference [" + referenceName + "] should be mapped to unicode character " +
-						character, (char) character, entityReferences.convertToCharacter(referenceName));
+				assertThat((long) entityReferences.convertToCharacter(referenceName)).as("The entity reference [" + referenceName + "] should be mapped to unicode character " +
+								character).isEqualTo((long) (char) character);
 			}
 			else if (character == 39) {
 				assertThat(entityReferences.isMappedToReference((char) character)).isTrue();
@@ -61,18 +59,14 @@ public class HtmlCharacterEntityReferencesTests {
 			}
 			else {
 				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should not be mapped to a reference").isFalse();
-				assertNull("No entity reference of unicode character " + character + " should exist",
-						entityReferences.convertToReference((char) character));
+				assertThat((Object) entityReferences.convertToReference((char) character)).as("No entity reference of unicode character " + character + " should exist").isNull();
 			}
 		}
 
-		assertEquals("The registered entity count of entityReferences should match the number of entity references",
-				referenceCharactersMap.size() + 1, entityReferences.getSupportedReferenceCount());
-		assertEquals("The HTML 4.0 Standard defines 252+1 entity references so do entityReferences",
-				252 + 1, entityReferences.getSupportedReferenceCount());
+		assertThat((long) entityReferences.getSupportedReferenceCount()).as("The registered entity count of entityReferences should match the number of entity references").isEqualTo((long) (referenceCharactersMap.size() + 1));
+		assertThat((long) entityReferences.getSupportedReferenceCount()).as("The HTML 4.0 Standard defines 252+1 entity references so do entityReferences").isEqualTo((long) (252 + 1));
 
-		assertEquals("Invalid entity reference names should not be convertible",
-				(char) -1, entityReferences.convertToCharacter("invalid"));
+		assertThat((long) entityReferences.convertToCharacter("invalid")).as("Invalid entity reference names should not be convertible").isEqualTo((long) (char) -1);
 	}
 
 	// SPR-9293
@@ -85,8 +79,8 @@ public class HtmlCharacterEntityReferencesTests {
 		assertThat(entityReferences.convertToReference('&', utf8)).isEqualTo("&amp;");
 		assertThat(entityReferences.convertToReference('"', utf8)).isEqualTo("&quot;");
 		assertThat(entityReferences.convertToReference('\'', utf8)).isEqualTo("&#39;");
-		assertNull(entityReferences.convertToReference((char) 233, utf8));
-		assertNull(entityReferences.convertToReference((char) 934, utf8));
+		assertThat((Object) entityReferences.convertToReference((char) 233, utf8)).isNull();
+		assertThat((Object) entityReferences.convertToReference((char) 934, utf8)).isNull();
 	}
 
 	private Map<Integer, String> getReferenceCharacterMap() {

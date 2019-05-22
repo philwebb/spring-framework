@@ -32,7 +32,6 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -72,7 +71,7 @@ public class ModelMethodArgumentResolverTests {
 	private void testResolveArgument(MethodParameter parameter) {
 		BindingContext context = new BindingContext();
 		Object result = this.resolver.resolveArgument(parameter, context, this.exchange).block(Duration.ZERO);
-		assertSame(context.getModel(), result);
+		assertThat(result).isSameAs(context.getModel());
 	}
 
 

@@ -32,7 +32,6 @@ import org.springframework.web.servlet.support.SessionFlashMapManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 public class RedirectViewUriTemplateTests {
 

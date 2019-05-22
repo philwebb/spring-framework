@@ -38,8 +38,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests with {@code @RequestMapping} handler methods.
@@ -67,9 +65,9 @@ public class RequestMappingIntegrationTests extends AbstractRequestMappingIntegr
 		String url = "http://localhost:" + this.port + "/text";
 		HttpHeaders headers = getRestTemplate().headForHeaders(url);
 		String contentType = headers.getFirst("Content-Type");
-		assertNotNull(contentType);
+		assertThat((Object) contentType).isNotNull();
 		assertThat(contentType.toLowerCase()).isEqualTo("text/html;charset=utf-8");
-		assertEquals(3, headers.getContentLength());
+		assertThat(headers.getContentLength()).isEqualTo((long) 3);
 	}
 
 	@Test

@@ -44,8 +44,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Tests for collections in XML bean definitions.
@@ -241,28 +239,28 @@ public class XmlBeanCollectionTests {
 
 		// Check list
 		List l = (List) hasMap.getMap().get("list");
-		assertNotNull(l);
+		assertThat(l).isNotNull();
 		assertThat(l.size() == 4).isTrue();
 		assertThat(l.get(0).equals("zero")).isTrue();
 		assertThat(l.get(3) == null).isTrue();
 
 		// Check nested map in list
 		Map m = (Map) l.get(1);
-		assertNotNull(m);
+		assertThat(m).isNotNull();
 		assertThat(m.size() == 2).isTrue();
 		assertThat(m.get("fo").equals("bar")).isTrue();
 		assertThat(m.get("jen").equals(jenny)).as("Map element 'jenny' should be equal to jenny bean, not " + m.get("jen")).isTrue();
 
 		// Check nested list in list
 		l = (List) l.get(2);
-		assertNotNull(l);
+		assertThat(l).isNotNull();
 		assertThat(l.size() == 2).isTrue();
 		assertThat(l.get(0).equals(jenny)).isTrue();
 		assertThat(l.get(1).equals("ba")).isTrue();
 
 		// Check nested map
 		m = (Map) hasMap.getMap().get("map");
-		assertNotNull(m);
+		assertThat(m).isNotNull();
 		assertThat(m.size() == 2).isTrue();
 		assertThat(m.get("foo").equals("bar")).isTrue();
 		assertThat(m.get("jenny").equals(jenny)).as("Map element 'jenny' should be equal to jenny bean, not " + m.get("jenny")).isTrue();
@@ -358,12 +356,12 @@ public class XmlBeanCollectionTests {
 	@Test
 	public void testProps() throws Exception {
 		HasMap hasMap = (HasMap) this.beanFactory.getBean("props");
-		assertEquals(2, hasMap.getProps().size());
+		assertThat((long) hasMap.getProps().size()).isEqualTo((long) 2);
 		assertThat(hasMap.getProps().getProperty("foo")).isEqualTo("bar");
 		assertThat(hasMap.getProps().getProperty("2")).isEqualTo("TWO");
 
 		HasMap hasMap2 = (HasMap) this.beanFactory.getBean("propsViaMap");
-		assertEquals(2, hasMap2.getProps().size());
+		assertThat((long) hasMap2.getProps().size()).isEqualTo((long) 2);
 		assertThat(hasMap2.getProps().getProperty("foo")).isEqualTo("bar");
 		assertThat(hasMap2.getProps().getProperty("2")).isEqualTo("TWO");
 	}
@@ -434,7 +432,7 @@ public class XmlBeanCollectionTests {
 		boolean condition = sam.getObject() instanceof Map;
 		assertThat(condition).as("Didn't choose constructor with Map argument").isTrue();
 		Map map = (Map) sam.getObject();
-		assertEquals(3, map.size());
+		assertThat((long) map.size()).isEqualTo((long) 3);
 		assertThat(map.get("key1")).isEqualTo("val1");
 		assertThat(map.get("key2")).isEqualTo("val2");
 		assertThat(map.get("key3")).isEqualTo("val3");

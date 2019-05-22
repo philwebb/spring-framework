@@ -38,7 +38,6 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -103,7 +102,7 @@ public class ResourceHandlerFunctionTests {
 				.expectComplete()
 				.verify();
 		assertThat(mockResponse.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-		assertEquals(this.resource.contentLength(), mockResponse.getHeaders().getContentLength());
+		assertThat(mockResponse.getHeaders().getContentLength()).isEqualTo(this.resource.contentLength());
 	}
 
 	@Test
@@ -129,7 +128,7 @@ public class ResourceHandlerFunctionTests {
 		StepVerifier.create(mockResponse.getBody()).expectComplete().verify();
 
 		assertThat(mockResponse.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-		assertEquals(this.resource.contentLength(), mockResponse.getHeaders().getContentLength());
+		assertThat(mockResponse.getHeaders().getContentLength()).isEqualTo(this.resource.contentLength());
 	}
 
 	@Test

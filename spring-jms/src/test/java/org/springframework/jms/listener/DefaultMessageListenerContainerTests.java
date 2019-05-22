@@ -31,7 +31,6 @@ import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.BackOffExecution;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -183,7 +182,7 @@ public class DefaultMessageListenerContainerTests {
 
 		public void waitForCompletion() throws InterruptedException {
 			this.countDownLatch.await(2, TimeUnit.SECONDS);
-			assertEquals("callback was not invoked", 0, this.countDownLatch.getCount());
+			assertThat(this.countDownLatch.getCount()).as("callback was not invoked").isEqualTo((long) 0);
 		}
 	}
 

@@ -31,10 +31,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -67,16 +63,16 @@ public class FactoryBeanTests {
 		BeanFactoryPostProcessor ppc = (BeanFactoryPostProcessor) factory.getBean("propertyPlaceholderConfigurer");
 		ppc.postProcessBeanFactory(factory);
 
-		assertNull(factory.getType("betaFactory"));
+		assertThat((Object) factory.getType("betaFactory")).isNull();
 
 		Alpha alpha = (Alpha) factory.getBean("alpha");
 		Beta beta = (Beta) factory.getBean("beta");
 		Gamma gamma = (Gamma) factory.getBean("gamma");
 		Gamma gamma2 = (Gamma) factory.getBean("gammaFactory");
 
-		assertSame(beta, alpha.getBeta());
-		assertSame(gamma, beta.getGamma());
-		assertSame(gamma2, beta.getGamma());
+		assertThat((Object) alpha.getBeta()).isSameAs(beta);
+		assertThat((Object) beta.getGamma()).isSameAs(gamma);
+		assertThat((Object) beta.getGamma()).isSameAs(gamma2);
 		assertThat(beta.getName()).isEqualTo("yourName");
 	}
 
@@ -91,8 +87,8 @@ public class FactoryBeanTests {
 		Beta beta = (Beta) factory.getBean("beta");
 		Alpha alpha = (Alpha) factory.getBean("alpha");
 		Gamma gamma = (Gamma) factory.getBean("gamma");
-		assertSame(beta, alpha.getBeta());
-		assertSame(gamma, beta.getGamma());
+		assertThat((Object) alpha.getBeta()).isSameAs(beta);
+		assertThat((Object) beta.getGamma()).isSameAs(gamma);
 	}
 
 	@Test
@@ -118,12 +114,12 @@ public class FactoryBeanTests {
 		factory.addBeanPostProcessor(counter);
 
 		BeanImpl1 impl1 = factory.getBean(BeanImpl1.class);
-		assertNotNull(impl1);
-		assertNotNull(impl1.getImpl2());
-		assertNotNull(impl1.getImpl2());
-		assertSame(impl1, impl1.getImpl2().getImpl1());
-		assertEquals(1, counter.getCount("bean1"));
-		assertEquals(1, counter.getCount("bean2"));
+		assertThat((Object) impl1).isNotNull();
+		assertThat((Object) impl1.getImpl2()).isNotNull();
+		assertThat((Object) impl1.getImpl2()).isNotNull();
+		assertThat((Object) impl1.getImpl2().getImpl1()).isSameAs(impl1);
+		assertThat((long) counter.getCount("bean1")).isEqualTo((long) 1);
+		assertThat((long) counter.getCount("bean2")).isEqualTo((long) 1);
 	}
 
 

@@ -32,7 +32,6 @@ import org.springframework.test.context.web.WebMergedContextConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link BootstrapTestUtils} involving {@link MergedContextConfiguration}.

@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 import org.junit.Test;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit tests for the {@link OrderComparator} class.
@@ -36,65 +36,65 @@ public class OrderComparatorTests {
 
 	@Test
 	public void compareOrderedInstancesBefore() {
-		assertEquals(-1, this.comparator.compare(new StubOrdered(100), new StubOrdered(2000)));
+		assertThat((long) this.comparator.compare(new StubOrdered(100), new StubOrdered(2000))).isEqualTo((long) -1);
 	}
 
 	@Test
 	public void compareOrderedInstancesSame() {
-		assertEquals(0, this.comparator.compare(new StubOrdered(100), new StubOrdered(100)));
+		assertThat((long) this.comparator.compare(new StubOrdered(100), new StubOrdered(100))).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void compareOrderedInstancesAfter() {
-		assertEquals(1, this.comparator.compare(new StubOrdered(982300), new StubOrdered(100)));
+		assertThat((long) this.comparator.compare(new StubOrdered(982300), new StubOrdered(100))).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void compareOrderedInstancesNullFirst() {
-		assertEquals(1, this.comparator.compare(null, new StubOrdered(100)));
+		assertThat((long) this.comparator.compare(null, new StubOrdered(100))).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void compareOrderedInstancesNullLast() {
-		assertEquals(-1, this.comparator.compare(new StubOrdered(100), null));
+		assertThat((long) this.comparator.compare(new StubOrdered(100), null)).isEqualTo((long) -1);
 	}
 
 	@Test
 	public void compareOrderedInstancesDoubleNull() {
-		assertEquals(0, this.comparator.compare(null, null));
+		assertThat((long) this.comparator.compare(null, null)).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void compareTwoNonOrderedInstancesEndsUpAsSame() {
-		assertEquals(0, this.comparator.compare(new Object(), new Object()));
+		assertThat((long) this.comparator.compare(new Object(), new Object())).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void compareWithSimpleSourceProvider() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(5L, new StubOrdered(25)));
-		assertEquals(-1, customComparator.compare(new StubOrdered(10), 5L));
+		assertThat((long) customComparator.compare(new StubOrdered(10), 5L)).isEqualTo((long) -1);
 	}
 
 	@Test
 	public void compareWithSourceProviderArray() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(5L, new Object[] {new StubOrdered(10), new StubOrdered(-25)}));
-		assertEquals(-1, customComparator.compare(5L, new Object()));
+		assertThat((long) customComparator.compare(5L, new Object())).isEqualTo((long) -1);
 	}
 
 	@Test
 	public void compareWithSourceProviderArrayNoMatch() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(5L, new Object[]{new Object(), new Object()}));
-		assertEquals(0, customComparator.compare(new Object(), 5L));
+		assertThat((long) customComparator.compare(new Object(), 5L)).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void compareWithSourceProviderEmpty() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(50L, new Object()));
-		assertEquals(0, customComparator.compare(new Object(), 5L));
+		assertThat((long) customComparator.compare(new Object(), 5L)).isEqualTo((long) 0);
 	}
 
 

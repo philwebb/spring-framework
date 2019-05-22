@@ -31,8 +31,6 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test scenarios involving a mock server.
@@ -100,17 +98,17 @@ public class MockServerTests {
 		mutatedBuilder.defaultCookie("baz", "qux");
 		WebTestClient clientFromMutatedBuilder = mutatedBuilder.build();
 
-		client1.mutate().filters(filters -> assertEquals(1, filters.size()));
-		client1.mutate().defaultHeaders(headers -> assertEquals(1, headers.size()));
-		client1.mutate().defaultCookies(cookies -> assertEquals(1, cookies.size()));
+		client1.mutate().filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 1));
+		client1.mutate().defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 1));
+		client1.mutate().defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 1));
 
-		client2.mutate().filters(filters -> assertEquals(2, filters.size()));
-		client2.mutate().defaultHeaders(headers -> assertEquals(2, headers.size()));
-		client2.mutate().defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		client2.mutate().filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 2));
+		client2.mutate().defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 2));
+		client2.mutate().defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 2));
 
-		clientFromMutatedBuilder.mutate().filters(filters -> assertEquals(2, filters.size()));
-		clientFromMutatedBuilder.mutate().defaultHeaders(headers -> assertEquals(2, headers.size()));
-		clientFromMutatedBuilder.mutate().defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		clientFromMutatedBuilder.mutate().filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 2));
+		clientFromMutatedBuilder.mutate().defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 2));
+		clientFromMutatedBuilder.mutate().defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 2));
 	}
 
 	@Test // SPR-16124
@@ -156,7 +154,7 @@ public class MockServerTests {
 		// Get the raw content without consuming the response body flux..
 		byte[] bytes = result.getResponseBodyContent();
 
-		assertNotNull(bytes);
+		assertThat((Object) bytes).isNotNull();
 		assertThat(new String(bytes, UTF_8)).isEqualTo("body");
 	}
 

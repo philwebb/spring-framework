@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link MockHttpSession}.
@@ -136,7 +135,7 @@ public class MockHttpSessionTests {
 
 		session.setAttribute(bindingListenerName, bindingListener);
 
-		assertEquals(bindingListener.getCounter(), 1);
+		assertThat((long) 1).isEqualTo((long) bindingListener.getCounter());
 	}
 
 	@Test
@@ -147,7 +146,7 @@ public class MockHttpSessionTests {
 		session.setAttribute(bindingListenerName, bindingListener);
 		session.removeAttribute(bindingListenerName);
 
-		assertEquals(bindingListener.getCounter(), 0);
+		assertThat((long) 0).isEqualTo((long) bindingListener.getCounter());
 	}
 
 	@Test
@@ -158,7 +157,7 @@ public class MockHttpSessionTests {
 		session.setAttribute(bindingListenerName, bindingListener);
 		session.setAttribute(bindingListenerName, bindingListener);
 
-		assertEquals(bindingListener.getCounter(), 1);
+		assertThat((long) 1).isEqualTo((long) bindingListener.getCounter());
 	}
 
 	@Test
@@ -170,8 +169,8 @@ public class MockHttpSessionTests {
 		session.setAttribute(bindingListenerName, bindingListener1);
 		session.setAttribute(bindingListenerName, bindingListener2);
 
-		assertEquals(bindingListener1.getCounter(), 0);
-		assertEquals(bindingListener2.getCounter(), 1);
+		assertThat((long) 0).isEqualTo((long) bindingListener1.getCounter());
+		assertThat((long) 1).isEqualTo((long) bindingListener2.getCounter());
 	}
 
 	private static class CountingHttpSessionBindingListener

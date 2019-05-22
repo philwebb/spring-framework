@@ -29,9 +29,6 @@ import org.springframework.web.server.WebSession;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with {@link SessionAttributesHandler}.
@@ -76,15 +73,15 @@ public class SessionAttributesHandlerTests {
 
 		this.sessionAttributesHandler.cleanupAttributes(session);
 
-		assertNull(session.getAttributes().get("attr1"));
-		assertNull(session.getAttributes().get("attr2"));
-		assertNotNull(session.getAttributes().get("attr3"));
+		assertThat(session.getAttributes().get("attr1")).isNull();
+		assertThat(session.getAttributes().get("attr2")).isNull();
+		assertThat(session.getAttributes().get("attr3")).isNotNull();
 
 		// Resolve 'attr3' by type
 		this.sessionAttributesHandler.isHandlerSessionAttribute("attr3", TestBean.class);
 		this.sessionAttributesHandler.cleanupAttributes(session);
 
-		assertNull(session.getAttributes().get("attr3"));
+		assertThat(session.getAttributes().get("attr3")).isNull();
 	}
 
 	@Test

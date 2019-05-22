@@ -38,7 +38,6 @@ import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 
 /**
@@ -113,7 +112,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		this.handler.handleReturnValue(emitter, returnType, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertEquals(200, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
 		assertThat(this.response.getHeader("foo")).isEqualTo("bar");
 
 		assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
@@ -128,7 +127,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		this.handler.handleReturnValue(emitter, returnType, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isFalse();
-		assertEquals(204, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 204);
 	}
 
 	@Test

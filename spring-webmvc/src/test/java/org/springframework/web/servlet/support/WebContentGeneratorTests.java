@@ -22,8 +22,6 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link WebContentGenerator}.
@@ -69,7 +67,7 @@ public class WebContentGeneratorTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		generator.prepareResponse(response);
 
-		assertNull(response.getHeader("Vary"));
+		assertThat((Object) response.getHeader("Vary")).isNull();
 	}
 
 	@Test

@@ -35,8 +35,6 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link WebSocketConnectionManager}.
@@ -66,7 +64,7 @@ public class WebSocketConnectionManagerTests {
 		WebSocketHandlerDecorator loggingHandler = (WebSocketHandlerDecorator) client.webSocketHandler;
 		assertThat(loggingHandler.getClass()).isEqualTo(LoggingWebSocketHandlerDecorator.class);
 
-		assertSame(handler, loggingHandler.getDelegate());
+		assertThat((Object) loggingHandler.getDelegate()).isSameAs(handler);
 	}
 
 	@Test

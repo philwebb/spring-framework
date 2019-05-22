@@ -38,7 +38,6 @@ import org.springframework.transaction.NoTransactionException;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests for auto proxy creation by advisor recognition working in
@@ -95,9 +94,9 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 		BeanFactory bf = getBeanFactory();
 		ITestBean test = (ITestBean) bf.getBean("test");
 		MethodCounter counter = (MethodCounter) bf.getBean("countingAdvice");
-		assertEquals(0, counter.getCalls());
+		assertThat((long) counter.getCalls()).isEqualTo((long) 0);
 		test.getName();
-		assertEquals(1, counter.getCalls());
+		assertThat((long) counter.getCalls()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -107,16 +106,16 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 
 		CallCountingTransactionManager txMan = (CallCountingTransactionManager) bf.getBean(TXMANAGER_BEAN_NAME);
 		OrderedTxCheckAdvisor txc = (OrderedTxCheckAdvisor) bf.getBean("orderedBeforeTransaction");
-		assertEquals(0, txc.getCountingBeforeAdvice().getCalls());
+		assertThat((long) txc.getCountingBeforeAdvice().getCalls()).isEqualTo((long) 0);
 
-		assertEquals(0, txMan.commits);
-		assertEquals("Initial value was correct", 4, test.getAge());
+		assertThat((long) txMan.commits).isEqualTo((long) 0);
+		assertThat((long) test.getAge()).as("Initial value was correct").isEqualTo((long) 4);
 		int newAge = 5;
 		test.setAge(newAge);
-		assertEquals(1, txc.getCountingBeforeAdvice().getCalls());
+		assertThat((long) txc.getCountingBeforeAdvice().getCalls()).isEqualTo((long) 1);
 
-		assertEquals("New value set correctly", newAge, test.getAge());
-		assertEquals("Transaction counts match", 1, txMan.commits);
+		assertThat((long) test.getAge()).as("New value set correctly").isEqualTo((long) newAge);
+		assertThat((long) txMan.commits).as("Transaction counts match").isEqualTo((long) 1);
 	}
 
 	/**
@@ -129,15 +128,15 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 
 		CallCountingTransactionManager txMan = (CallCountingTransactionManager) bf.getBean(TXMANAGER_BEAN_NAME);
 		OrderedTxCheckAdvisor txc = (OrderedTxCheckAdvisor) bf.getBean("orderedBeforeTransaction");
-		assertEquals(0, txc.getCountingBeforeAdvice().getCalls());
+		assertThat((long) txc.getCountingBeforeAdvice().getCalls()).isEqualTo((long) 0);
 
-		assertEquals(0, txMan.commits);
+		assertThat((long) txMan.commits).isEqualTo((long) 0);
 		rb.echoException(null);
 		// Fires only on setters
-		assertEquals(0, txc.getCountingBeforeAdvice().getCalls());
-		assertEquals("Transaction counts match", 1, txMan.commits);
+		assertThat((long) txc.getCountingBeforeAdvice().getCalls()).isEqualTo((long) 0);
+		assertThat((long) txMan.commits).as("Transaction counts match").isEqualTo((long) 1);
 
-		assertEquals(0, txMan.rollbacks);
+		assertThat((long) txMan.rollbacks).isEqualTo((long) 0);
 		Exception ex = new Exception();
 		try {
 			rb.echoException(ex);
@@ -145,7 +144,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 		catch (Exception actual) {
 			assertThat(actual).isEqualTo(ex);
 		}
-		assertEquals("Transaction counts match", 1, txMan.rollbacks);
+		assertThat((long) txMan.rollbacks).as("Transaction counts match").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -155,7 +154,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 
 		CallCountingTransactionManager txMan = (CallCountingTransactionManager) bf.getBean(TXMANAGER_BEAN_NAME);
 
-		assertEquals(0, txMan.commits);
+		assertThat((long) txMan.commits).isEqualTo((long) 0);
 		// Should NOT roll back on ServletException
 		try {
 			rb.echoException(new ServletException());
@@ -163,7 +162,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 		catch (ServletException ex) {
 
 		}
-		assertEquals("Transaction counts match", 1, txMan.commits);
+		assertThat((long) txMan.commits).as("Transaction counts match").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -176,13 +175,13 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 		CallCountingTransactionManager txMan = (CallCountingTransactionManager) bf.getBean(TXMANAGER_BEAN_NAME);
 
 		Rollback rb = (Rollback) bf.getBean("rollback");
-		assertEquals(0, txMan.commits);
+		assertThat((long) txMan.commits).isEqualTo((long) 0);
 		rb.rollbackOnly(false);
-		assertEquals("Transaction counts match", 1, txMan.commits);
-		assertEquals(0, txMan.rollbacks);
+		assertThat((long) txMan.commits).as("Transaction counts match").isEqualTo((long) 1);
+		assertThat((long) txMan.rollbacks).isEqualTo((long) 0);
 		// Will cause rollback only
 		rb.rollbackOnly(true);
-		assertEquals(1, txMan.rollbacks);
+		assertThat((long) txMan.rollbacks).isEqualTo((long) 1);
 	}
 
 }

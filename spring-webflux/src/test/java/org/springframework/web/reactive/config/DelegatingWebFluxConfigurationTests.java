@@ -38,9 +38,6 @@ import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willAnswer;
@@ -106,11 +103,11 @@ public class DelegatingWebFluxConfigurationTests {
 		verify(webFluxConfigurer).addFormatters(formatterRegistry.capture());
 		verify(webFluxConfigurer).configureArgumentResolvers(any());
 
-		assertNotNull(initializer);
+		assertThat((Object) initializer).isNotNull();
 		boolean condition = initializer.getValidator() instanceof LocalValidatorFactoryBean;
 		assertThat(condition).isTrue();
-		assertSame(formatterRegistry.getValue(), initializer.getConversionService());
-		assertEquals(13, codecsConfigurer.getValue().getReaders().size());
+		assertThat((Object) initializer.getConversionService()).isSameAs(formatterRegistry.getValue());
+		assertThat((long) codecsConfigurer.getValue().getReaders().size()).isEqualTo((long) 13);
 	}
 
 	@Test

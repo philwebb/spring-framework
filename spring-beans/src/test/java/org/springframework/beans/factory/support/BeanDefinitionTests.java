@@ -22,7 +22,6 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -150,8 +149,8 @@ public class BeanDefinitionTests {
 
 		RootBeanDefinition mergedBd = new RootBeanDefinition(bd);
 		mergedBd.overrideFrom(childBd);
-		assertEquals(2, mergedBd.getConstructorArgumentValues().getArgumentCount());
-		assertEquals(2, mergedBd.getPropertyValues().size());
+		assertThat((long) mergedBd.getConstructorArgumentValues().getArgumentCount()).isEqualTo((long) 2);
+		assertThat((long) mergedBd.getPropertyValues().size()).isEqualTo((long) 2);
 		assertThat(mergedBd).isEqualTo(bd);
 
 		mergedBd.getConstructorArgumentValues().getArgumentValue(1, null).setValue(new Integer(9));

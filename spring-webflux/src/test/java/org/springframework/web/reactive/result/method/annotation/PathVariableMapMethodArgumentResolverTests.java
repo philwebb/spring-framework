@@ -36,7 +36,6 @@ import org.springframework.web.reactive.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link PathVariableMapMethodArgumentResolver}.

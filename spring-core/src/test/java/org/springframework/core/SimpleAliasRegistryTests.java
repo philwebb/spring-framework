@@ -19,7 +19,6 @@ package org.springframework.core;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -36,9 +35,9 @@ public class SimpleAliasRegistryTests {
 		assertThat(registry.hasAlias("test", "testAlias")).isTrue();
 		assertThat(registry.hasAlias("test", "testAlias2")).isTrue();
 		assertThat(registry.hasAlias("test", "testAlias3")).isTrue();
-		assertSame("test", registry.canonicalName("testAlias"));
-		assertSame("test", registry.canonicalName("testAlias2"));
-		assertSame("test", registry.canonicalName("testAlias3"));
+		assertThat((Object) registry.canonicalName("testAlias")).isSameAs("test");
+		assertThat((Object) registry.canonicalName("testAlias2")).isSameAs("test");
+		assertThat((Object) registry.canonicalName("testAlias3")).isSameAs("test");
 	}
 
 	@Test  // SPR-17191

@@ -40,7 +40,6 @@ import org.springframework.http.codec.xml.jaxb.XmlTypeWithName;
 import org.springframework.http.codec.xml.jaxb.XmlTypeWithNameAndNamespace;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Sebastien Deleuze
@@ -94,7 +93,7 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 
 		StepVerifier.create(result)
 				.consumeNextWith(events -> {
-					assertEquals(8, events.size());
+					assertThat((long) events.size()).isEqualTo((long) 8);
 					assertStartElement(events.get(0), "pojo");
 					assertStartElement(events.get(1), "foo");
 					assertCharacters(events.get(2), "foofoo");
@@ -117,7 +116,7 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 
 		StepVerifier.create(result)
 				.consumeNextWith(events -> {
-					assertEquals(8, events.size());
+					assertThat((long) events.size()).isEqualTo((long) 8);
 					assertStartElement(events.get(0), "pojo");
 					assertStartElement(events.get(1), "foo");
 					assertCharacters(events.get(2), "foo");
@@ -128,7 +127,7 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 					assertEndElement(events.get(7), "pojo");
 				})
 				.consumeNextWith(events -> {
-					assertEquals(8, events.size());
+					assertThat((long) events.size()).isEqualTo((long) 8);
 					assertStartElement(events.get(0), "pojo");
 					assertStartElement(events.get(1), "foo");
 					assertCharacters(events.get(2), "foofoo");

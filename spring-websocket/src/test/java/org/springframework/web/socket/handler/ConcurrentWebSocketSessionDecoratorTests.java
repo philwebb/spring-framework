@@ -32,7 +32,6 @@ import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorato
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link ConcurrentWebSocketSessionDecorator}.
@@ -53,11 +52,11 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		TextMessage textMessage = new TextMessage("payload");
 		decorator.sendMessage(textMessage);
 
-		assertEquals(1, session.getSentMessages().size());
+		assertThat((long) session.getSentMessages().size()).isEqualTo((long) 1);
 		assertThat(session.getSentMessages().get(0)).isEqualTo(textMessage);
 
-		assertEquals(0, decorator.getBufferSize());
-		assertEquals(0, decorator.getTimeSinceSendStarted());
+		assertThat((long) decorator.getBufferSize()).isEqualTo((long) 0);
+		assertThat(decorator.getTimeSinceSendStarted()).isEqualTo((long) 0);
 		assertThat(session.isOpen()).isTrue();
 	}
 
@@ -81,7 +80,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		}
 
 		assertThat(decorator.getTimeSinceSendStarted() > 0).isTrue();
-		assertEquals(5 * payload.getPayloadLength(), decorator.getBufferSize());
+		assertThat((long) decorator.getBufferSize()).isEqualTo((long) (5 * payload.getPayloadLength()));
 		assertThat(session.isOpen()).isTrue();
 	}
 
@@ -127,7 +126,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		TextMessage message = new TextMessage(sb.toString());
 		decorator.sendMessage(message);
 
-		assertEquals(1023, decorator.getBufferSize());
+		assertThat((long) decorator.getBufferSize()).isEqualTo((long) 1023);
 		assertThat(session.isOpen()).isTrue();
 
 		assertThatExceptionOfType(SessionLimitExceededException.class).isThrownBy(() ->
@@ -158,7 +157,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			decorator.sendMessage(message);
 		}
 
-		assertEquals(1023, decorator.getBufferSize());
+		assertThat((long) decorator.getBufferSize()).isEqualTo((long) 1023);
 		assertThat(session.isOpen()).isTrue();
 
 	}

@@ -27,8 +27,6 @@ import org.springframework.messaging.Message;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link BufferingStompDecoder}.
@@ -47,11 +45,11 @@ public class BufferingStompDecoderTests {
 		String chunk = "SEND\na:alpha\n\nMessage body\0";
 
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk));
-		assertEquals(1, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 1);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Message body");
 
-		assertEquals(0, stompDecoder.getBufferSize());
-		assertNull(stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 0);
+		assertThat((Object) stompDecoder.getExpectedContentLength()).isNull();
 	}
 
 	@Test
@@ -64,11 +62,11 @@ public class BufferingStompDecoderTests {
 		assertThat(messages).isEqualTo(Collections.<Message<byte[]>>emptyList());
 
 		messages = stompDecoder.decode(toByteBuffer(chunk2));
-		assertEquals(1, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 1);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Message body");
 
-		assertEquals(0, stompDecoder.getBufferSize());
-		assertNull(stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 0);
+		assertThat((Object) stompDecoder.getExpectedContentLength()).isNull();
 	}
 
 	@Test
@@ -77,12 +75,12 @@ public class BufferingStompDecoderTests {
 		String chunk = "SEND\na:alpha\n\nPayload1\0" + "SEND\na:alpha\n\nPayload2\0";
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk));
 
-		assertEquals(2, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 2);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 		assertThat(new String(messages.get(1).getPayload())).isEqualTo("Payload2");
 
-		assertEquals(0, stompDecoder.getBufferSize());
-		assertNull(stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 0);
+		assertThat((Object) stompDecoder.getExpectedContentLength()).isNull();
 	}
 
 	@Test
@@ -92,26 +90,26 @@ public class BufferingStompDecoderTests {
 		String chunk1 = "SEND\na:alpha\n\nPayload1\0SEND\ncontent-length:" + contentLength + "\n";
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk1));
 
-		assertEquals(1, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 1);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 
-		assertEquals(23, stompDecoder.getBufferSize());
-		assertEquals(contentLength, (int) stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 23);
+		assertThat((long) (int) stompDecoder.getExpectedContentLength()).isEqualTo((long) contentLength);
 
 		String chunk2 = "\nPayload2a";
 		messages = stompDecoder.decode(toByteBuffer(chunk2));
 
-		assertEquals(0, messages.size());
-		assertEquals(33, stompDecoder.getBufferSize());
-		assertEquals(contentLength, (int) stompDecoder.getExpectedContentLength());
+		assertThat((long) messages.size()).isEqualTo((long) 0);
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 33);
+		assertThat((long) (int) stompDecoder.getExpectedContentLength()).isEqualTo((long) contentLength);
 
 		String chunk3 = "-Payload2b\0";
 		messages = stompDecoder.decode(toByteBuffer(chunk3));
 
-		assertEquals(1, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 1);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload2a-Payload2b");
-		assertEquals(0, stompDecoder.getBufferSize());
-		assertNull(stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 0);
+		assertThat((Object) stompDecoder.getExpectedContentLength()).isNull();
 	}
 
 	@Test
@@ -120,26 +118,26 @@ public class BufferingStompDecoderTests {
 		String chunk1 = "SEND\na:alpha\n\nPayload1\0SEND\na:alpha\n";
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk1));
 
-		assertEquals(1, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 1);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 
-		assertEquals(13, stompDecoder.getBufferSize());
-		assertNull(stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 13);
+		assertThat((Object) stompDecoder.getExpectedContentLength()).isNull();
 
 		String chunk2 = "\nPayload2a";
 		messages = stompDecoder.decode(toByteBuffer(chunk2));
 
-		assertEquals(0, messages.size());
-		assertEquals(23, stompDecoder.getBufferSize());
-		assertNull(stompDecoder.getExpectedContentLength());
+		assertThat((long) messages.size()).isEqualTo((long) 0);
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 23);
+		assertThat((Object) stompDecoder.getExpectedContentLength()).isNull();
 
 		String chunk3 = "-Payload2b\0";
 		messages = stompDecoder.decode(toByteBuffer(chunk3));
 
-		assertEquals(1, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 1);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload2a-Payload2b");
-		assertEquals(0, stompDecoder.getBufferSize());
-		assertNull(stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 0);
+		assertThat((Object) stompDecoder.getExpectedContentLength()).isNull();
 	}
 
 	@Test
@@ -148,11 +146,11 @@ public class BufferingStompDecoderTests {
 		String chunk1 = "SEND\na:alpha\n\nPayload1\0SEND\ncontent-length:129\n";
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk1));
 
-		assertEquals("We should have gotten the 1st message", 1, messages.size());
+		assertThat((long) messages.size()).as("We should have gotten the 1st message").isEqualTo((long) 1);
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 
-		assertEquals(24, stompDecoder.getBufferSize());
-		assertEquals(129, (int) stompDecoder.getExpectedContentLength());
+		assertThat((long) stompDecoder.getBufferSize()).isEqualTo((long) 24);
+		assertThat((long) (int) stompDecoder.getExpectedContentLength()).isEqualTo((long) 129);
 
 		String chunk2 = "\nPayload2a";
 		assertThatExceptionOfType(StompConversionException.class).isThrownBy(() ->
@@ -173,7 +171,7 @@ public class BufferingStompDecoderTests {
 		String chunk = "MESSAG";
 
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk));
-		assertEquals(0, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 0);
 	}
 
 	// SPR-13416
@@ -184,7 +182,7 @@ public class BufferingStompDecoderTests {
 		String chunk = "SEND\na:long\\";
 
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk));
-		assertEquals(0, messages.size());
+		assertThat((long) messages.size()).isEqualTo((long) 0);
 	}
 
 	@Test

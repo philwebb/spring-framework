@@ -39,8 +39,6 @@ import org.springframework.web.server.ServerWebInputException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
 
@@ -143,7 +141,7 @@ public class RequestParamMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod
 				.annot(requestParam().notRequired())
 				.arg(Integer.class);
-		assertNull(resolve(param, MockServerWebExchange.from(MockServerHttpRequest.get("/?nullParam="))));
+		assertThat(resolve(param, MockServerWebExchange.from(MockServerHttpRequest.get("/?nullParam=")))).isNull();
 	}
 
 	@Test
@@ -171,7 +169,7 @@ public class RequestParamMethodArgumentResolverTests {
 	@Test  // SPR-8561
 	public void resolveSimpleTypeParamToNull() {
 		MethodParameter param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
-		assertNull(resolve(param, MockServerWebExchange.from(MockServerHttpRequest.get("/"))));
+		assertThat(resolve(param, MockServerWebExchange.from(MockServerHttpRequest.get("/")))).isNull();
 	}
 
 	@Test  // SPR-10180

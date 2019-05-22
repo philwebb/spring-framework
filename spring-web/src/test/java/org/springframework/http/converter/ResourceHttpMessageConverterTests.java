@@ -37,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.hamcrest.core.Is.is;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -108,7 +107,7 @@ public class ResourceHttpMessageConverterTests {
 		converter.write(body, null, outputMessage);
 
 		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(MediaType.IMAGE_JPEG);
-		assertEquals("Invalid content-length", body.getFile().length(), outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).as("Invalid content-length").isEqualTo(body.getFile().length());
 	}
 
 	@Test  // SPR-10848
@@ -129,7 +128,7 @@ public class ResourceHttpMessageConverterTests {
 		given(resource.getInputStream()).willThrow(FileNotFoundException.class);
 		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
-		assertEquals(0, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo((long) 0);
 	}
 
 	@Test  // SPR-12999
@@ -142,7 +141,7 @@ public class ResourceHttpMessageConverterTests {
 		willThrow(new NullPointerException()).given(inputStream).close();
 		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
-		assertEquals(0, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo((long) 0);
 	}
 
 	@Test  // SPR-13620
@@ -155,7 +154,7 @@ public class ResourceHttpMessageConverterTests {
 		given(in.read(any())).willThrow(NullPointerException.class);
 		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
-		assertEquals(0, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo((long) 0);
 	}
 
 }

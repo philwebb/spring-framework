@@ -32,7 +32,6 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -67,21 +66,21 @@ public class TxNamespaceHandlerTests {
 		CallCountingTransactionManager ptm = (CallCountingTransactionManager) context.getBean("transactionManager");
 
 		// try with transactional
-		assertEquals("Should not have any started transactions", 0, ptm.begun);
+		assertThat((long) ptm.begun).as("Should not have any started transactions").isEqualTo((long) 0);
 		testBean.getName();
 		assertThat(ptm.lastDefinition.isReadOnly()).isTrue();
-		assertEquals("Should have 1 started transaction", 1, ptm.begun);
-		assertEquals("Should have 1 committed transaction", 1, ptm.commits);
+		assertThat((long) ptm.begun).as("Should have 1 started transaction").isEqualTo((long) 1);
+		assertThat((long) ptm.commits).as("Should have 1 committed transaction").isEqualTo((long) 1);
 
 		// try with non-transaction
 		testBean.haveBirthday();
-		assertEquals("Should not have started another transaction", 1, ptm.begun);
+		assertThat((long) ptm.begun).as("Should not have started another transaction").isEqualTo((long) 1);
 
 		// try with exceptional
 		assertThatExceptionOfType(Throwable.class).isThrownBy(() ->
 				testBean.exceptional(new IllegalArgumentException("foo")));
-		assertEquals("Should have another started transaction", 2, ptm.begun);
-		assertEquals("Should have 1 rolled back transaction", 1, ptm.rollbacks);
+		assertThat((long) ptm.begun).as("Should have another started transaction").isEqualTo((long) 2);
+		assertThat((long) ptm.rollbacks).as("Should have 1 rolled back transaction").isEqualTo((long) 1);
 	}
 
 	@Test

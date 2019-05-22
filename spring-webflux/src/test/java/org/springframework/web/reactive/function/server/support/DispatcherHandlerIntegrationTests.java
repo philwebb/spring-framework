@@ -34,7 +34,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -61,7 +61,7 @@ public class DispatcherHandlerIntegrationTests extends AbstractHttpHandlerIntegr
 		ResponseEntity<String> result = this.restTemplate
 				.getForEntity("http://localhost:" + this.port + "/foo/bar", String.class);
 
-		assertEquals(200, result.getStatusCodeValue());
+		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) 200);
 	}
 
 

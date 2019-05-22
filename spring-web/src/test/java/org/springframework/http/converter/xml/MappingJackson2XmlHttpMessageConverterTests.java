@@ -32,7 +32,6 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * Jackson 2.x XML converter tests.
@@ -73,7 +72,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertEquals(42, result.getNumber());
+		assertThat((long) result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[]{"Foo", "Bar"});

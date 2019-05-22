@@ -39,8 +39,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link ServerWebExchangeMethodArgumentResolver}.
@@ -97,7 +95,7 @@ public class ServerWebExchangeMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(UriComponentsBuilder.class);
 		Object value = this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block();
 
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(value.getClass()).isEqualTo(UriComponentsBuilder.class);
 		assertThat(((UriComponentsBuilder) value).path("/next").toUriString()).isEqualTo("https://example.org:9999/next");
 	}

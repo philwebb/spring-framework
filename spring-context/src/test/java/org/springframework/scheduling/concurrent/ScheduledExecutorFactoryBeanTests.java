@@ -29,8 +29,6 @@ import org.springframework.tests.TestGroup;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
@@ -196,7 +194,7 @@ public class ScheduledExecutorFactoryBeanTests {
 		ScheduledExecutorFactoryBean factory = new ScheduledExecutorFactoryBean() {
 			@Override
 			protected ScheduledExecutorService createExecutor(int poolSize, ThreadFactory threadFactory, RejectedExecutionHandler rejectedExecutionHandler) {
-				assertNotNull("Bah; the setThreadFactory(..) method must use a default ThreadFactory if a null arg is passed in.");
+				assertThat((Object) "Bah; the setThreadFactory(..) method must use a default ThreadFactory if a null arg is passed in.").isNotNull();
 				return super.createExecutor(poolSize, threadFactory, rejectedExecutionHandler);
 			}
 		};
@@ -214,7 +212,7 @@ public class ScheduledExecutorFactoryBeanTests {
 		ScheduledExecutorFactoryBean factory = new ScheduledExecutorFactoryBean() {
 			@Override
 			protected ScheduledExecutorService createExecutor(int poolSize, ThreadFactory threadFactory, RejectedExecutionHandler rejectedExecutionHandler) {
-				assertNotNull("Bah; the setRejectedExecutionHandler(..) method must use a default RejectedExecutionHandler if a null arg is passed in.");
+				assertThat((Object) "Bah; the setRejectedExecutionHandler(..) method must use a default RejectedExecutionHandler if a null arg is passed in.").isNotNull();
 				return super.createExecutor(poolSize, threadFactory, rejectedExecutionHandler);
 			}
 		};

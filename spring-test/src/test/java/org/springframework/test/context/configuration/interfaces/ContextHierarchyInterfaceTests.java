@@ -24,9 +24,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Sam Brannen
@@ -50,9 +47,9 @@ public class ContextHierarchyInterfaceTests implements ContextHierarchyTestInter
 
 	@Test
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNotNull("parent ApplicationContext", context.getParent());
-		assertNull("grandparent ApplicationContext", context.getParent().getParent());
+		assertThat((Object) context).as("child ApplicationContext").isNotNull();
+		assertThat((Object) context.getParent()).as("parent ApplicationContext").isNotNull();
+		assertThat((Object) context.getParent().getParent()).as("grandparent ApplicationContext").isNull();
 		assertThat(foo).isEqualTo("foo");
 		assertThat(bar).isEqualTo("bar");
 		assertThat(baz).isEqualTo("baz-child");

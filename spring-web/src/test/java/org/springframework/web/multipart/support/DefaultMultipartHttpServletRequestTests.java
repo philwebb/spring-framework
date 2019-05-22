@@ -26,7 +26,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link DefaultMultipartHttpServletRequest}.
@@ -64,7 +63,7 @@ public class DefaultMultipartHttpServletRequestTests {
 
 		Map<String, String[]> map = createMultipartRequest().getParameterMap();
 
-		assertEquals(3, map.size());
+		assertThat((long) map.size()).isEqualTo((long) 3);
 		assertThat(map.get("key1")).isEqualTo(new String[] {"p1", "q1"});
 		assertThat(map.get("key2")).isEqualTo(new String[] {"p2"});
 		assertThat(map.get("key3")).isEqualTo(new String[] {"q3"});

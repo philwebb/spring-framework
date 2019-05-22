@@ -55,7 +55,6 @@ import org.springframework.util.MultiValueMap;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
@@ -186,7 +185,7 @@ public class ResolvableTypeTests {
 		assertThat(type2.getSource()).isSameAs(field2);
 
 		assertThat(type2).isEqualTo(type);
-		assertEquals(type.hashCode(), type2.hashCode());
+		assertThat((long) type2.hashCode()).isEqualTo((long) type.hashCode());
 	}
 
 	@Test

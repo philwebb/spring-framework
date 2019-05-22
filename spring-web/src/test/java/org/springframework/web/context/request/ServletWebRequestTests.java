@@ -33,9 +33,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.multipart.MultipartRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -64,18 +61,18 @@ public class ServletWebRequestTests {
 		servletRequest.addParameter("param2", "value2a");
 
 		assertThat(request.getParameter("param1")).isEqualTo("value1");
-		assertEquals(1, request.getParameterValues("param1").length);
+		assertThat((long) request.getParameterValues("param1").length).isEqualTo((long) 1);
 		assertThat(request.getParameterValues("param1")[0]).isEqualTo("value1");
 		assertThat(request.getParameter("param2")).isEqualTo("value2");
-		assertEquals(2, request.getParameterValues("param2").length);
+		assertThat((long) request.getParameterValues("param2").length).isEqualTo((long) 2);
 		assertThat(request.getParameterValues("param2")[0]).isEqualTo("value2");
 		assertThat(request.getParameterValues("param2")[1]).isEqualTo("value2a");
 
 		Map<String, String[]> paramMap = request.getParameterMap();
-		assertEquals(2, paramMap.size());
-		assertEquals(1, paramMap.get("param1").length);
+		assertThat((long) paramMap.size()).isEqualTo((long) 2);
+		assertThat((long) paramMap.get("param1").length).isEqualTo((long) 1);
 		assertThat(paramMap.get("param1")[0]).isEqualTo("value1");
-		assertEquals(2, paramMap.get("param2").length);
+		assertThat((long) paramMap.get("param2").length).isEqualTo((long) 2);
 		assertThat(paramMap.get("param2")[0]).isEqualTo("value2");
 		assertThat(paramMap.get("param2")[1]).isEqualTo("value2a");
 	}
@@ -89,16 +86,16 @@ public class ServletWebRequestTests {
 
 	@Test
 	public void nativeRequest() {
-		assertSame(servletRequest, request.getNativeRequest());
-		assertSame(servletRequest, request.getNativeRequest(ServletRequest.class));
-		assertSame(servletRequest, request.getNativeRequest(HttpServletRequest.class));
-		assertSame(servletRequest, request.getNativeRequest(MockHttpServletRequest.class));
-		assertNull(request.getNativeRequest(MultipartRequest.class));
-		assertSame(servletResponse, request.getNativeResponse());
-		assertSame(servletResponse, request.getNativeResponse(ServletResponse.class));
-		assertSame(servletResponse, request.getNativeResponse(HttpServletResponse.class));
-		assertSame(servletResponse, request.getNativeResponse(MockHttpServletResponse.class));
-		assertNull(request.getNativeResponse(MultipartRequest.class));
+		assertThat(request.getNativeRequest()).isSameAs(servletRequest);
+		assertThat(request.getNativeRequest(ServletRequest.class)).isSameAs(servletRequest);
+		assertThat(request.getNativeRequest(HttpServletRequest.class)).isSameAs(servletRequest);
+		assertThat(request.getNativeRequest(MockHttpServletRequest.class)).isSameAs(servletRequest);
+		assertThat(request.getNativeRequest(MultipartRequest.class)).isNull();
+		assertThat(request.getNativeResponse()).isSameAs(servletResponse);
+		assertThat(request.getNativeResponse(ServletResponse.class)).isSameAs(servletResponse);
+		assertThat(request.getNativeResponse(HttpServletResponse.class)).isSameAs(servletResponse);
+		assertThat(request.getNativeResponse(MockHttpServletResponse.class)).isSameAs(servletResponse);
+		assertThat(request.getNativeResponse(MultipartRequest.class)).isNull();
 	}
 
 	@Test
@@ -106,16 +103,16 @@ public class ServletWebRequestTests {
 		HttpServletRequest decoratedRequest = new HttpServletRequestWrapper(servletRequest);
 		HttpServletResponse decoratedResponse = new HttpServletResponseWrapper(servletResponse);
 		ServletWebRequest request = new ServletWebRequest(decoratedRequest, decoratedResponse);
-		assertSame(decoratedRequest, request.getNativeRequest());
-		assertSame(decoratedRequest, request.getNativeRequest(ServletRequest.class));
-		assertSame(decoratedRequest, request.getNativeRequest(HttpServletRequest.class));
-		assertSame(servletRequest, request.getNativeRequest(MockHttpServletRequest.class));
-		assertNull(request.getNativeRequest(MultipartRequest.class));
-		assertSame(decoratedResponse, request.getNativeResponse());
-		assertSame(decoratedResponse, request.getNativeResponse(ServletResponse.class));
-		assertSame(decoratedResponse, request.getNativeResponse(HttpServletResponse.class));
-		assertSame(servletResponse, request.getNativeResponse(MockHttpServletResponse.class));
-		assertNull(request.getNativeResponse(MultipartRequest.class));
+		assertThat(request.getNativeRequest()).isSameAs(decoratedRequest);
+		assertThat(request.getNativeRequest(ServletRequest.class)).isSameAs(decoratedRequest);
+		assertThat(request.getNativeRequest(HttpServletRequest.class)).isSameAs(decoratedRequest);
+		assertThat(request.getNativeRequest(MockHttpServletRequest.class)).isSameAs(servletRequest);
+		assertThat(request.getNativeRequest(MultipartRequest.class)).isNull();
+		assertThat(request.getNativeResponse()).isSameAs(decoratedResponse);
+		assertThat(request.getNativeResponse(ServletResponse.class)).isSameAs(decoratedResponse);
+		assertThat(request.getNativeResponse(HttpServletResponse.class)).isSameAs(decoratedResponse);
+		assertThat(request.getNativeResponse(MockHttpServletResponse.class)).isSameAs(servletResponse);
+		assertThat(request.getNativeResponse(MultipartRequest.class)).isNull();
 	}
 
 }

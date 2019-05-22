@@ -25,8 +25,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -48,8 +46,8 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invoke(new Handler(), method);
 
-		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
-		assertEquals(1, getStubResolver(1).getResolvedParameters().size());
+		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(value).isEqualTo("99-value");
 		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("intArg");
 		assertThat(getStubResolver(1).getResolvedParameters().get(0).getParameterName()).isEqualTo("stringArg");
@@ -62,8 +60,8 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invoke(new Handler(), method);
 
-		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
-		assertEquals(1, getStubResolver(1).getResolvedParameters().size());
+		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(value).isEqualTo("null-null");
 	}
 
@@ -80,7 +78,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invoke(new Handler(), method, 99, "value");
 
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(value.getClass()).isEqualTo(String.class);
 		assertThat(value).isEqualTo("99-value");
 	}

@@ -42,8 +42,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Mark Fisher
@@ -89,7 +87,7 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	public void testPrototype() {
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("prototype");
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		assertThat(context.isPrototype("prototype")).isTrue();
 		assertThat(context.isSingleton("prototype")).isFalse();
 	}

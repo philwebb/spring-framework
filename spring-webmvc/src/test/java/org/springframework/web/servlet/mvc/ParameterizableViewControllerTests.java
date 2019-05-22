@@ -27,8 +27,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with a ParameterizableViewController.
@@ -60,7 +58,7 @@ public class ParameterizableViewControllerTests {
 	@Test
 	public void handleRequestWithoutViewName() throws Exception {
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
-		assertNull(mav.getViewName());
+		assertThat((Object) mav.getViewName()).isNull();
 		assertThat(mav.getModel().isEmpty()).isTrue();
 	}
 
@@ -68,7 +66,7 @@ public class ParameterizableViewControllerTests {
 	public void handleRequestWithFlashAttributes() throws Exception {
 		this.request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, new ModelMap("name", "value"));
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
-		assertEquals(1, mav.getModel().size());
+		assertThat((long) mav.getModel().size()).isEqualTo((long) 1);
 		assertThat(mav.getModel().get("name")).isEqualTo("value");
 	}
 
@@ -78,7 +76,7 @@ public class ParameterizableViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = this.controller.handleRequest(this.request, response);
 
-		assertNull(mav);
+		assertThat((Object) mav).isNull();
 		assertThat(response.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 	}
 

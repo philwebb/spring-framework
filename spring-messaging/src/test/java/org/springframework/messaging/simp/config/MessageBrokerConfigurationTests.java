@@ -78,10 +78,6 @@ import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBea
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -100,7 +96,7 @@ public class MessageBrokerConfigurationTests {
 		TestChannel channel = context.getBean("clientInboundChannel", TestChannel.class);
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
-		assertEquals(3, handlers.size());
+		assertThat((long) handlers.size()).isEqualTo((long) 3);
 		assertThat(handlers.contains(context.getBean(SimpAnnotationMethodMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class))).isTrue();
@@ -113,7 +109,7 @@ public class MessageBrokerConfigurationTests {
 		TestChannel channel = context.getBean("clientInboundChannel", TestChannel.class);
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
-		assertEquals(3, handlers.size());
+		assertThat((long) handlers.size()).isEqualTo((long) 3);
 		assertThat(handlers.contains(context.getBean(SimpAnnotationMethodMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(StompBrokerRelayMessageHandler.class))).isTrue();
@@ -125,13 +121,13 @@ public class MessageBrokerConfigurationTests {
 
 		AbstractSubscribableChannel channel = context.getBean(
 				"clientInboundChannel", AbstractSubscribableChannel.class);
-		assertEquals(3, channel.getInterceptors().size());
+		assertThat((long) channel.getInterceptors().size()).isEqualTo((long) 3);
 
 		CustomThreadPoolTaskExecutor taskExecutor = context.getBean(
 				"clientInboundChannelExecutor", CustomThreadPoolTaskExecutor.class);
-		assertEquals(11, taskExecutor.getCorePoolSize());
-		assertEquals(12, taskExecutor.getMaxPoolSize());
-		assertEquals(13, taskExecutor.getKeepAliveSeconds());
+		assertThat((long) taskExecutor.getCorePoolSize()).isEqualTo((long) 11);
+		assertThat((long) taskExecutor.getMaxPoolSize()).isEqualTo((long) 12);
+		assertThat((long) taskExecutor.getKeepAliveSeconds()).isEqualTo((long) 13);
 	}
 
 	@Test
@@ -199,14 +195,14 @@ public class MessageBrokerConfigurationTests {
 		AbstractSubscribableChannel channel = context.getBean(
 				"clientOutboundChannel", AbstractSubscribableChannel.class);
 
-		assertEquals(4, channel.getInterceptors().size());
+		assertThat((long) channel.getInterceptors().size()).isEqualTo((long) 4);
 
 		ThreadPoolTaskExecutor taskExecutor = context.getBean(
 				"clientOutboundChannelExecutor", ThreadPoolTaskExecutor.class);
 
-		assertEquals(21, taskExecutor.getCorePoolSize());
-		assertEquals(22, taskExecutor.getMaxPoolSize());
-		assertEquals(23, taskExecutor.getKeepAliveSeconds());
+		assertThat((long) taskExecutor.getCorePoolSize()).isEqualTo((long) 21);
+		assertThat((long) taskExecutor.getMaxPoolSize()).isEqualTo((long) 22);
+		assertThat((long) taskExecutor.getKeepAliveSeconds()).isEqualTo((long) 23);
 
 		SimpleBrokerMessageHandler broker =
 				context.getBean("simpleBrokerMessageHandler", SimpleBrokerMessageHandler.class);
@@ -220,11 +216,11 @@ public class MessageBrokerConfigurationTests {
 		TestChannel channel = context.getBean("brokerChannel", TestChannel.class);
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
-		assertEquals(2, handlers.size());
+		assertThat((long) handlers.size()).isEqualTo((long) 2);
 		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class))).isTrue();
 
-		assertNull(channel.getExecutor());
+		assertThat((Object) channel.getExecutor()).isNull();
 	}
 
 	@Test
@@ -234,7 +230,7 @@ public class MessageBrokerConfigurationTests {
 		TestChannel channel = context.getBean("brokerChannel", TestChannel.class);
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
-		assertEquals(2, handlers.size());
+		assertThat((long) handlers.size()).isEqualTo((long) 2);
 		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(StompBrokerRelayMessageHandler.class))).isTrue();
 	}
@@ -270,14 +266,14 @@ public class MessageBrokerConfigurationTests {
 		AbstractSubscribableChannel channel = context.getBean(
 				"brokerChannel", AbstractSubscribableChannel.class);
 
-		assertEquals(4, channel.getInterceptors().size());
+		assertThat((long) channel.getInterceptors().size()).isEqualTo((long) 4);
 
 		ThreadPoolTaskExecutor taskExecutor = context.getBean(
 				"brokerChannelExecutor", ThreadPoolTaskExecutor.class);
 
-		assertEquals(31, taskExecutor.getCorePoolSize());
-		assertEquals(32, taskExecutor.getMaxPoolSize());
-		assertEquals(33, taskExecutor.getKeepAliveSeconds());
+		assertThat((long) taskExecutor.getCorePoolSize()).isEqualTo((long) 31);
+		assertThat((long) taskExecutor.getMaxPoolSize()).isEqualTo((long) 32);
+		assertThat((long) taskExecutor.getKeepAliveSeconds()).isEqualTo((long) 33);
 	}
 
 	@Test
@@ -301,17 +297,17 @@ public class MessageBrokerConfigurationTests {
 
 		String name = "clientInboundChannelExecutor";
 		ThreadPoolTaskExecutor executor = context.getBean(name, ThreadPoolTaskExecutor.class);
-		assertEquals(Runtime.getRuntime().availableProcessors() * 2, executor.getCorePoolSize());
+		assertThat((long) executor.getCorePoolSize()).isEqualTo((long) (Runtime.getRuntime().availableProcessors() * 2));
 		// No way to verify queue capacity
 
 		name = "clientOutboundChannelExecutor";
 		executor = context.getBean(name, ThreadPoolTaskExecutor.class);
-		assertEquals(Runtime.getRuntime().availableProcessors() * 2, executor.getCorePoolSize());
+		assertThat((long) executor.getCorePoolSize()).isEqualTo((long) (Runtime.getRuntime().availableProcessors() * 2));
 
 		name = "brokerChannelExecutor";
 		executor = context.getBean(name, ThreadPoolTaskExecutor.class);
-		assertEquals(0, executor.getCorePoolSize());
-		assertEquals(1, executor.getMaxPoolSize());
+		assertThat((long) executor.getCorePoolSize()).isEqualTo((long) 0);
+		assertThat((long) executor.getMaxPoolSize()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -360,11 +356,11 @@ public class MessageBrokerConfigurationTests {
 				context.getBean(SimpAnnotationMethodMessageHandler.class);
 
 		List<HandlerMethodArgumentResolver> customResolvers = handler.getCustomArgumentResolvers();
-		assertEquals(1, customResolvers.size());
+		assertThat((long) customResolvers.size()).isEqualTo((long) 1);
 		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(0))).isTrue();
 
 		List<HandlerMethodReturnValueHandler> customHandlers = handler.getCustomReturnValueHandlers();
-		assertEquals(1, customHandlers.size());
+		assertThat((long) customHandlers.size()).isEqualTo((long) 1);
 		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(0))).isTrue();
 	}
 
@@ -387,7 +383,7 @@ public class MessageBrokerConfigurationTests {
 			}
 		};
 
-		assertSame(validator, config.simpValidator());
+		assertThat((Object) config.simpValidator()).isSameAs(validator);
 	}
 
 	@Test
@@ -425,7 +421,7 @@ public class MessageBrokerConfigurationTests {
 		assertThat(pathMatcher.combine("a", "a")).isEqualTo("a.a");
 
 		DefaultUserDestinationResolver resolver = context.getBean(DefaultUserDestinationResolver.class);
-		assertNotNull(resolver);
+		assertThat((Object) resolver).isNotNull();
 		assertThat(resolver.isRemoveLeadingSlash()).isEqualTo(false);
 	}
 
@@ -435,7 +431,7 @@ public class MessageBrokerConfigurationTests {
 
 		SimpleBrokerMessageHandler broker = context.getBean(SimpleBrokerMessageHandler.class);
 		DefaultSubscriptionRegistry registry = (DefaultSubscriptionRegistry) broker.getSubscriptionRegistry();
-		assertEquals(8192, registry.getCacheLimit());
+		assertThat((long) registry.getCacheLimit()).isEqualTo((long) 8192);
 	}
 
 	@Test
@@ -445,7 +441,7 @@ public class MessageBrokerConfigurationTests {
 		SimpUserRegistry registry = context.getBean(SimpUserRegistry.class);
 		boolean condition = registry instanceof TestUserRegistry;
 		assertThat(condition).isTrue();
-		assertEquals(99, ((TestUserRegistry) registry).getOrder());
+		assertThat((long) ((TestUserRegistry) registry).getOrder()).isEqualTo((long) 99);
 	}
 
 	@Test
@@ -462,10 +458,10 @@ public class MessageBrokerConfigurationTests {
 		assertThat(handler2.getBroadcastDestination()).isEqualTo("/topic/simp-user-registry");
 
 		StompBrokerRelayMessageHandler relay = context.getBean(StompBrokerRelayMessageHandler.class);
-		assertNotNull(relay.getSystemSubscriptions());
-		assertEquals(2, relay.getSystemSubscriptions().size());
-		assertSame(handler1, relay.getSystemSubscriptions().get("/topic/unresolved-user-destination"));
-		assertSame(handler2, relay.getSystemSubscriptions().get("/topic/simp-user-registry"));
+		assertThat((Object) relay.getSystemSubscriptions()).isNotNull();
+		assertThat((long) relay.getSystemSubscriptions().size()).isEqualTo((long) 2);
+		assertThat((Object) relay.getSystemSubscriptions().get("/topic/unresolved-user-destination")).isSameAs(handler1);
+		assertThat((Object) relay.getSystemSubscriptions().get("/topic/simp-user-registry")).isSameAs(handler2);
 	}
 
 	@Test
@@ -473,11 +469,11 @@ public class MessageBrokerConfigurationTests {
 		ApplicationContext context = loadConfig(SimpleBrokerConfig.class);
 
 		SimpUserRegistry registry = context.getBean(SimpUserRegistry.class);
-		assertNotNull(registry);
+		assertThat((Object) registry).isNotNull();
 		assertThat(registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
 
 		UserDestinationMessageHandler handler = context.getBean(UserDestinationMessageHandler.class);
-		assertNull(handler.getBroadcastDestination());
+		assertThat((Object) handler.getBroadcastDestination()).isNull();
 
 		Object nullBean = context.getBean("userRegistryMessageHandler");
 		assertThat(nullBean.equals(null)).isTrue();
@@ -519,7 +515,7 @@ public class MessageBrokerConfigurationTests {
 		message = MessageBuilder.createMessage("123".getBytes(), headers.getMessageHeaders());
 		inChannel.send(message);
 
-		assertEquals(2, outChannel.messages.size());
+		assertThat((long) outChannel.messages.size()).isEqualTo((long) 2);
 		Message<?> outputMessage = outChannel.messages.remove(1);
 		headers = StompHeaderAccessor.wrap(outputMessage);
 
@@ -536,7 +532,7 @@ public class MessageBrokerConfigurationTests {
 		accessor.setSessionId("sess1");
 		template.convertAndSendToUser("sess1", "queue.q1", "456".getBytes(), accessor.getMessageHeaders());
 
-		assertEquals(1, outChannel.messages.size());
+		assertThat((long) outChannel.messages.size()).isEqualTo((long) 1);
 		outputMessage = outChannel.messages.remove(0);
 		headers = StompHeaderAccessor.wrap(outputMessage);
 

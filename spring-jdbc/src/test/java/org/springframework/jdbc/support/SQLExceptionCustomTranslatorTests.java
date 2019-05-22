@@ -27,8 +27,6 @@ import org.springframework.jdbc.BadSqlGrammarException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Unit tests for custom SQLException translation.
  *

@@ -38,7 +38,6 @@ import org.springframework.tests.sample.beans.CountingTestBean;
 import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests for auto proxy creation by advisor recognition.
@@ -93,20 +92,20 @@ public class AdvisorAutoProxyCreatorTests {
 		assertThat(lockable2.locked()).isFalse();
 		// equals 2 calls on shared nop, because it's first and sees calls
 		// against the Lockable interface introduced by the specific advisor
-		assertEquals(2, nop1.getCount());
-		assertEquals(0, nop2.getCount());
+		assertThat((long) nop1.getCount()).isEqualTo((long) 2);
+		assertThat((long) nop2.getCount()).isEqualTo((long) 0);
 		lockable1.lock();
 		assertThat(lockable1.locked()).isTrue();
 		assertThat(lockable2.locked()).isFalse();
-		assertEquals(5, nop1.getCount());
-		assertEquals(0, nop2.getCount());
+		assertThat((long) nop1.getCount()).isEqualTo((long) 5);
+		assertThat((long) nop2.getCount()).isEqualTo((long) 0);
 
 		PackageVisibleMethod packageVisibleMethod = (PackageVisibleMethod) bf.getBean("packageVisibleMethod");
-		assertEquals(5, nop1.getCount());
-		assertEquals(0, nop2.getCount());
+		assertThat((long) nop1.getCount()).isEqualTo((long) 5);
+		assertThat((long) nop2.getCount()).isEqualTo((long) 0);
 		packageVisibleMethod.doSomething();
-		assertEquals(6, nop1.getCount());
-		assertEquals(1, nop2.getCount());
+		assertThat((long) nop1.getCount()).isEqualTo((long) 6);
+		assertThat((long) nop2.getCount()).isEqualTo((long) 1);
 		boolean condition = packageVisibleMethod instanceof Lockable;
 		assertThat(condition).isTrue();
 		Lockable lockable3 = (Lockable) packageVisibleMethod;
@@ -141,7 +140,7 @@ public class AdvisorAutoProxyCreatorTests {
 		assertThat(test.getName()).isEqualTo("Rod");
 		// Check that references survived prototype creation
 		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
-		assertEquals("Only 2 CountingTestBeans instantiated", 2, CountingTestBean.count);
+		assertThat((long) CountingTestBean.count).as("Only 2 CountingTestBeans instantiated").isEqualTo((long) 2);
 		CountingTestBean.count = 0;
 	}
 
@@ -154,10 +153,10 @@ public class AdvisorAutoProxyCreatorTests {
 		Advised advised = (Advised) test;
 		boolean condition = advised.getTargetSource() instanceof LazyInitTargetSource;
 		assertThat(condition).isTrue();
-		assertEquals("No CountingTestBean instantiated yet", 0, CountingTestBean.count);
+		assertThat((long) CountingTestBean.count).as("No CountingTestBean instantiated yet").isEqualTo((long) 0);
 		assertThat(test.getName()).isEqualTo("Rod");
 		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
-		assertEquals("Only 1 CountingTestBean instantiated", 1, CountingTestBean.count);
+		assertThat((long) CountingTestBean.count).as("Only 1 CountingTestBean instantiated").isEqualTo((long) 1);
 		CountingTestBean.count = 0;
 	}
 
@@ -221,7 +220,7 @@ public class AdvisorAutoProxyCreatorTests {
 		testBean.setAge(23);
 		testBean.getAge();
 
-		assertEquals("Incorrect number of calls to proxy", 2, beforeAdvice.getCalls());
+		assertThat((long) beforeAdvice.getCalls()).as("Incorrect number of calls to proxy").isEqualTo((long) 2);
 	}
 
 }

@@ -31,10 +31,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for
@@ -71,7 +67,7 @@ public class CachingResourceResolverTests {
 		Resource expected = new ClassPathResource("test/bar.css", getClass());
 		Resource actual = this.chain.resolveResource(null, "bar.css", this.locations);
 
-		assertNotSame(expected, actual);
+		assertThat((Object) actual).isNotSameAs(expected);
 		assertThat(actual).isEqualTo(expected);
 	}
 
@@ -81,12 +77,12 @@ public class CachingResourceResolverTests {
 		this.cache.put(resourceKey("bar.css"), expected);
 		Resource actual = this.chain.resolveResource(null, "bar.css", this.locations);
 
-		assertSame(expected, actual);
+		assertThat((Object) actual).isSameAs(expected);
 	}
 
 	@Test
 	public void resolveResourceInternalNoMatch() {
-		assertNull(this.chain.resolveResource(null, "invalid.css", this.locations));
+		assertThat((Object) this.chain.resolveResource(null, "invalid.css", this.locations)).isNull();
 	}
 
 	@Test
@@ -108,7 +104,7 @@ public class CachingResourceResolverTests {
 
 	@Test
 	public void resolverUrlPathNoMatch() {
-		assertNull(this.chain.resolveUrlPath("invalid.css", this.locations));
+		assertThat((Object) this.chain.resolveUrlPath("invalid.css", this.locations)).isNull();
 	}
 
 	@Test
@@ -123,7 +119,7 @@ public class CachingResourceResolverTests {
 		Resource expected = this.chain.resolveResource(request, file, this.locations);
 
 		String cacheKey = resourceKey(file);
-		assertSame(expected, this.cache.get(cacheKey).get());
+		assertThat(this.cache.get(cacheKey).get()).isSameAs(expected);
 
 		// 2. Resolve with Accept-Encoding
 
@@ -132,7 +128,7 @@ public class CachingResourceResolverTests {
 		expected = this.chain.resolveResource(request, file, this.locations);
 
 		cacheKey = resourceKey(file + "+encoding=br,gzip");
-		assertSame(expected, this.cache.get(cacheKey).get());
+		assertThat(this.cache.get(cacheKey).get()).isSameAs(expected);
 
 		// 3. Resolve with Accept-Encoding but no matching codings
 
@@ -141,7 +137,7 @@ public class CachingResourceResolverTests {
 		expected = this.chain.resolveResource(request, file, this.locations);
 
 		cacheKey = resourceKey(file);
-		assertSame(expected, this.cache.get(cacheKey).get());
+		assertThat(this.cache.get(cacheKey).get()).isSameAs(expected);
 	}
 
 	@Test
@@ -164,11 +160,11 @@ public class CachingResourceResolverTests {
 		this.cache.put(resourceKey("bar.css+encoding=gzip"), gzipped);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "bar.css");
-		assertSame(resource, this.chain.resolveResource(request,"bar.css", this.locations));
+		assertThat((Object) this.chain.resolveResource(request, "bar.css", this.locations)).isSameAs(resource);
 
 		request = new MockHttpServletRequest("GET", "bar.css");
 		request.addHeader("Accept-Encoding", "gzip");
-		assertSame(gzipped, this.chain.resolveResource(request, "bar.css", this.locations));
+		assertThat((Object) this.chain.resolveResource(request, "bar.css", this.locations)).isSameAs(gzipped);
 	}
 
 	private static String resourceKey(String key) {

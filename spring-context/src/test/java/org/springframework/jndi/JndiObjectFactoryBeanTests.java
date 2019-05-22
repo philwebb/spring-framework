@@ -28,8 +28,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -212,9 +210,9 @@ public class JndiObjectFactoryBeanTests {
 		boolean condition = jof.getObject() instanceof ITestBean;
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
-		assertEquals(0, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 0);
 		proxy.setAge(99);
-		assertEquals(99, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 99);
 	}
 
 	@Test
@@ -249,11 +247,11 @@ public class JndiObjectFactoryBeanTests {
 		boolean condition = jof.getObject() instanceof ITestBean;
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
-		assertNull(tb.getName());
-		assertEquals(0, tb.getAge());
+		assertThat((Object) tb.getName()).isNull();
+		assertThat((long) tb.getAge()).isEqualTo((long) 0);
 		proxy.setAge(99);
 		assertThat(tb.getName()).isEqualTo("tb");
-		assertEquals(99, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 99);
 	}
 
 	@Test
@@ -279,11 +277,11 @@ public class JndiObjectFactoryBeanTests {
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertThat(tb.getName()).isEqualTo("tb");
-		assertEquals(1, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 1);
 		proxy.returnsThis();
-		assertEquals(2, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 2);
 		proxy.haveBirthday();
-		assertEquals(4, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 4);
 	}
 
 	@Test
@@ -309,15 +307,15 @@ public class JndiObjectFactoryBeanTests {
 		boolean condition = jof.getObject() instanceof ITestBean;
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
-		assertNull(tb.getName());
-		assertEquals(0, tb.getAge());
+		assertThat((Object) tb.getName()).isNull();
+		assertThat((long) tb.getAge()).isEqualTo((long) 0);
 		proxy.returnsThis();
 		assertThat(tb.getName()).isEqualTo("tb");
-		assertEquals(1, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 1);
 		proxy.returnsThis();
-		assertEquals(2, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 2);
 		proxy.haveBirthday();
-		assertEquals(4, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 4);
 	}
 
 	@Test
@@ -349,9 +347,9 @@ public class JndiObjectFactoryBeanTests {
 		boolean condition = jof.getObject() instanceof ITestBean;
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
-		assertEquals(0, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 0);
 		proxy.setAge(99);
-		assertEquals(99, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 99);
 	}
 
 	@Test
@@ -386,9 +384,9 @@ public class JndiObjectFactoryBeanTests {
 		boolean condition = jof.getObject() instanceof ITestBean;
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
-		assertEquals(0, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 0);
 		proxy.setAge(99);
-		assertEquals(99, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 99);
 		proxy.equals(proxy);
 		proxy.hashCode();
 		proxy.toString();

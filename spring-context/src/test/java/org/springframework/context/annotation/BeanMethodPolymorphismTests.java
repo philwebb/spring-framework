@@ -28,8 +28,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Tests regarding overloading and overriding of bean methods.
  * Related to SPR-6618.

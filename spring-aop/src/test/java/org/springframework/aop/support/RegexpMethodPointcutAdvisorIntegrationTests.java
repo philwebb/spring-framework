@@ -30,7 +30,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -50,16 +49,16 @@ public class RegexpMethodPointcutAdvisorIntegrationTests {
 		ITestBean advised = (ITestBean) bf.getBean("settersAdvised");
 		// Interceptor behind regexp advisor
 		NopInterceptor nop = (NopInterceptor) bf.getBean("nopInterceptor");
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		int newAge = 12;
 		// Not advised
 		advised.exceptional(null);
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		advised.setAge(newAge);
-		assertEquals(newAge, advised.getAge());
+		assertThat((long) advised.getAge()).isEqualTo((long) newAge);
 		// Only setter fired
-		assertEquals(1, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -70,20 +69,20 @@ public class RegexpMethodPointcutAdvisorIntegrationTests {
 		TestBean advised = (TestBean) bf.getBean("settersAndAbsquatulateAdvised");
 		// Interceptor behind regexp advisor
 		NopInterceptor nop = (NopInterceptor) bf.getBean("nopInterceptor");
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		int newAge = 12;
 		// Not advised
 		advised.exceptional(null);
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		// This is proxied
 		advised.absquatulate();
-		assertEquals(1, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
 		advised.setAge(newAge);
-		assertEquals(newAge, advised.getAge());
+		assertThat((long) advised.getAge()).isEqualTo((long) newAge);
 		// Only setter fired
-		assertEquals(2, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -94,31 +93,31 @@ public class RegexpMethodPointcutAdvisorIntegrationTests {
 		Person p = (Person) bf.getBean("serializableSettersAdvised");
 		// Interceptor behind regexp advisor
 		NopInterceptor nop = (NopInterceptor) bf.getBean("nopInterceptor");
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		int newAge = 12;
 		// Not advised
-		assertEquals(0, p.getAge());
-		assertEquals(0, nop.getCount());
+		assertThat((long) p.getAge()).isEqualTo((long) 0);
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		// This is proxied
 		p.setAge(newAge);
-		assertEquals(1, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
 		p.setAge(newAge);
-		assertEquals(newAge, p.getAge());
+		assertThat((long) p.getAge()).isEqualTo((long) newAge);
 		// Only setter fired
-		assertEquals(2, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 2);
 
 		// Serialize and continue...
 		p = (Person) SerializationTestUtils.serializeAndDeserialize(p);
-		assertEquals(newAge, p.getAge());
+		assertThat((long) p.getAge()).isEqualTo((long) newAge);
 		// Remembers count, but we need to get a new reference to nop...
 		nop = (SerializableNopInterceptor) ((Advised) p).getAdvisors()[0].getAdvice();
-		assertEquals(2, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 2);
 		assertThat(p.getName()).isEqualTo("serializableSettersAdvised");
 		p.setAge(newAge + 1);
-		assertEquals(3, nop.getCount());
-		assertEquals(newAge + 1, p.getAge());
+		assertThat((long) nop.getCount()).isEqualTo((long) 3);
+		assertThat((long) p.getAge()).isEqualTo((long) (newAge + 1));
 	}
 
 }

@@ -28,8 +28,6 @@ import org.springframework.test.context.support.GenericPropertiesContextLoader;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * <p>
@@ -69,10 +67,10 @@ public class PropertiesBasedSpringJUnit4ClassRunnerAppCtxTests {
 
 	@Test
 	public void verifyAnnotationAutowiredFields() {
-		assertNotNull("The cat field should have been autowired.", this.cat);
+		assertThat((Object) this.cat).as("The cat field should have been autowired.").isNotNull();
 		assertThat(this.cat.getName()).isEqualTo("Garfield");
 
-		assertNotNull("The testString field should have been autowired.", this.testString);
+		assertThat((Object) this.testString).as("The testString field should have been autowired.").isNotNull();
 		assertThat(this.testString).isEqualTo("Test String");
 	}
 

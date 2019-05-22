@@ -22,10 +22,6 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rob Harrop
@@ -45,8 +41,8 @@ public class RefreshableTargetSourceTests {
 		Thread.sleep(1);
 		Object b = ts.getTarget();
 
-		assertEquals("Should be one call to freshTarget to get initial target", 1, ts.getCallCount());
-		assertSame("Returned objects should be the same - no refresh should occur", a, b);
+		assertThat((long) ts.getCallCount()).as("Should be one call to freshTarget to get initial target").isEqualTo((long) 1);
+		assertThat(b).as("Returned objects should be the same - no refresh should occur").isSameAs(a);
 	}
 
 	/**
@@ -61,8 +57,8 @@ public class RefreshableTargetSourceTests {
 		Thread.sleep(100);
 		Object b = ts.getTarget();
 
-		assertEquals("Should have called freshTarget twice", 2, ts.getCallCount());
-		assertNotSame("Should be different objects", a, b);
+		assertThat((long) ts.getCallCount()).as("Should have called freshTarget twice").isEqualTo((long) 2);
+		assertThat(b).as("Should be different objects").isNotSameAs(a);
 	}
 
 	/**
@@ -76,8 +72,8 @@ public class RefreshableTargetSourceTests {
 		Object a = ts.getTarget();
 		Object b = ts.getTarget();
 
-		assertEquals("Refresh target should only be called once", 1, ts.getCallCount());
-		assertSame("Objects should be the same - refresh check delay not elapsed", a, b);
+		assertThat((long) ts.getCallCount()).as("Refresh target should only be called once").isEqualTo((long) 1);
+		assertThat(b).as("Objects should be the same - refresh check delay not elapsed").isSameAs(a);
 	}
 
 	@Test
@@ -99,7 +95,7 @@ public class RefreshableTargetSourceTests {
 		Thread.sleep(60);
 
 		Object d = ts.getTarget();
-		assertNotNull("D should not be null", d);
+		assertThat(d).as("D should not be null").isNotNull();
 		assertThat(a.equals(d)).as("A and D should not be equal").isFalse();
 
 		Object e = ts.getTarget();

@@ -36,9 +36,6 @@ import org.springframework.web.server.ServerWebExchange;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -98,7 +95,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, file, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 	}
 
@@ -113,7 +110,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, file, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 		verify(this.versionStrategy, times(1)).extractVersion(file);
 	}
@@ -133,7 +130,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, versionFile, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.versionStrategy, times(1)).removeVersion(versionFile, version);
 	}
 
@@ -154,7 +151,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, versionFile, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertNull(actual);
+		assertThat((Object) actual).isNull();
 		verify(this.versionStrategy, times(1)).getResourceVersion(expected);
 	}
 

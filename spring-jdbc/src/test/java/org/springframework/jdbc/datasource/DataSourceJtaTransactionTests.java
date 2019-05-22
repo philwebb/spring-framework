@@ -48,8 +48,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.atLeastOnce;
@@ -84,9 +82,9 @@ public class DataSourceJtaTransactionTests {
 	public void verifyTransactionSynchronizationManagerState() {
 		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
-		assertNull(TransactionSynchronizationManager.getCurrentTransactionName());
+		assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isNull();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
-		assertNull(TransactionSynchronizationManager.getCurrentTransactionIsolationLevel());
+		assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionIsolationLevel()).isNull();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 	}
 
@@ -383,8 +381,8 @@ public class DataSourceJtaTransactionTests {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 				assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
-				assertSame(connection1, DataSourceUtils.getConnection(dataSource));
-				assertSame(connection1, DataSourceUtils.getConnection(dataSource));
+				assertThat((Object) DataSourceUtils.getConnection(dataSource)).isSameAs(connection1);
+				assertThat((Object) DataSourceUtils.getConnection(dataSource)).isSameAs(connection1);
 
 				TransactionTemplate tt2 = new TransactionTemplate(ptm);
 				tt2.setPropagationBehavior(requiresNew ?
@@ -395,15 +393,15 @@ public class DataSourceJtaTransactionTests {
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 						assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 						assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-						assertSame(connection2, DataSourceUtils.getConnection(dataSource));
-						assertSame(connection2, DataSourceUtils.getConnection(dataSource));
+						assertThat((Object) DataSourceUtils.getConnection(dataSource)).isSameAs(connection2);
+						assertThat((Object) DataSourceUtils.getConnection(dataSource)).isSameAs(connection2);
 					}
 				});
 
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 				assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
-				assertSame(connection1, DataSourceUtils.getConnection(dataSource));
+				assertThat((Object) DataSourceUtils.getConnection(dataSource)).isSameAs(connection1);
 			}
 		});
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
@@ -652,7 +650,7 @@ public class DataSourceJtaTransactionTests {
 			protected void doInTransactionWithoutResult(TransactionStatus status) throws RuntimeException {
 				Connection c = DataSourceUtils.getConnection(dsToUse);
 				assertThat(TransactionSynchronizationManager.hasResource(dsToUse)).as("Has thread connection").isTrue();
-				assertSame(connection, c);
+				assertThat((Object) c).isSameAs(connection);
 				DataSourceUtils.releaseConnection(c, dsToUse);
 			}
 		});
@@ -664,7 +662,7 @@ public class DataSourceJtaTransactionTests {
 			protected void doInTransactionWithoutResult(TransactionStatus status) throws RuntimeException {
 				Connection c = DataSourceUtils.getConnection(dsToUse);
 				assertThat(TransactionSynchronizationManager.hasResource(dsToUse)).as("Has thread connection").isTrue();
-				assertSame(connection, c);
+				assertThat((Object) c).isSameAs(connection);
 				DataSourceUtils.releaseConnection(c, dsToUse);
 			}
 		});
@@ -723,7 +721,7 @@ given(		userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION, St
 			protected void doInTransactionWithoutResult(TransactionStatus status) throws RuntimeException {
 				Connection c = DataSourceUtils.getConnection(dsToUse);
 				assertThat(TransactionSynchronizationManager.hasResource(dsToUse)).as("Has thread connection").isTrue();
-				assertSame(connection1, c);
+				assertThat((Object) c).isSameAs(connection1);
 				DataSourceUtils.releaseConnection(c, dsToUse);
 			}
 		});
@@ -734,7 +732,7 @@ given(		userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION, St
 			protected void doInTransactionWithoutResult(TransactionStatus status) throws RuntimeException {
 				Connection c = DataSourceUtils.getConnection(dsToUse);
 				assertThat(TransactionSynchronizationManager.hasResource(dsToUse)).as("Has thread connection").isTrue();
-				assertSame(connection2, c);
+				assertThat((Object) c).isSameAs(connection2);
 				DataSourceUtils.releaseConnection(c, dsToUse);
 			}
 		});

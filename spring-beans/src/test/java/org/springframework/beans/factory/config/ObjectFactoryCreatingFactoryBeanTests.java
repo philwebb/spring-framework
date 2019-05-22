@@ -31,8 +31,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
@@ -122,7 +120,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		factory.afterPropertiesSet();
 		ObjectFactory<?> objectFactory = factory.getObject();
 		Object actualSingleton = objectFactory.getObject();
-		assertSame(expectedSingleton, actualSingleton);
+		assertThat(actualSingleton).isSameAs(expectedSingleton);
 	}
 
 	@Test

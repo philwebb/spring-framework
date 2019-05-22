@@ -70,9 +70,6 @@ import org.springframework.validation.annotation.Validated;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
@@ -153,8 +150,8 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		assertThat(this.testController.method).isEqualTo("optionalHeaders");
-		assertNull(this.testController.arguments.get("foo1"));
-		assertNull(this.testController.arguments.get("foo2"));
+		assertThat(this.testController.arguments.get("foo1")).isNull();
+		assertThat(this.testController.arguments.get("foo2")).isNull();
 	}
 
 	@Test
@@ -208,7 +205,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 
 		assertThat(this.testController.method).isEqualTo("handleExceptionWithHandlerMethodArg");
 		HandlerMethod handlerMethod = (HandlerMethod) this.testController.arguments.get("handlerMethod");
-		assertNotNull(handlerMethod);
+		assertThat((Object) handlerMethod).isNotNull();
 		assertThat(handlerMethod.getMethod().getName()).isEqualTo("illegalState");
 	}
 
@@ -220,7 +217,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 
 		assertThat(this.testController.method).isEqualTo("handleExceptionWithHandlerMethodArg");
 		HandlerMethod handlerMethod = (HandlerMethod) this.testController.arguments.get("handlerMethod");
-		assertNotNull(handlerMethod);
+		assertThat((Object) handlerMethod).isNotNull();
 		assertThat(handlerMethod.getMethod().getName()).isEqualTo("illegalStateCause");
 	}
 
@@ -232,7 +229,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 
 		assertThat(this.testController.method).isEqualTo("handleErrorWithHandlerMethodArg");
 		HandlerMethod handlerMethod = (HandlerMethod) this.testController.arguments.get("handlerMethod");
-		assertNotNull(handlerMethod);
+		assertThat((Object) handlerMethod).isNotNull();
 		assertThat(handlerMethod.getMethod().getName()).isEqualTo("errorAsThrowable");
 	}
 
@@ -286,7 +283,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		Message<?> message = createMessage("/app1/listenable-future/success");
 		this.messageHandler.handleMessage(message);
 
-		assertNotNull(controller.future);
+		assertThat((Object) controller.future).isNotNull();
 		controller.future.run();
 		verify(this.converter).toMessage(this.payloadCaptor.capture(), any(MessageHeaders.class));
 		assertThat(this.payloadCaptor.getValue()).isEqualTo("foo");
@@ -324,7 +321,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		Message<?> message = createMessage("/app1/completable-future");
 		this.messageHandler.handleMessage(message);
 
-		assertNotNull(controller.future);
+		assertThat((Object) controller.future).isNotNull();
 		controller.future.complete("foo");
 		verify(this.converter).toMessage(this.payloadCaptor.capture(), any(MessageHeaders.class));
 		assertThat(this.payloadCaptor.getValue()).isEqualTo("foo");
@@ -362,7 +359,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		Message<?> message = createMessage("/app1/mono");
 		this.messageHandler.handleMessage(message);
 
-		assertNotNull(controller.mono);
+		assertThat((Object) controller.mono).isNotNull();
 		controller.mono.onNext("foo");
 		verify(this.converter).toMessage(this.payloadCaptor.capture(), any(MessageHeaders.class));
 		assertThat(this.payloadCaptor.getValue()).isEqualTo("foo");
@@ -400,7 +397,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		Message<?> message = createMessage("/app1/flux");
 		this.messageHandler.handleMessage(message);
 
-		assertNotNull(controller.flux);
+		assertThat((Object) controller.flux).isNotNull();
 		controller.flux.onNext("foo");
 
 		verify(this.converter, never()).toMessage(any(), any(MessageHeaders.class));

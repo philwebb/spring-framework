@@ -23,8 +23,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link UrlBasedCorsConfigurationSource}.
@@ -37,7 +35,7 @@ public class UrlBasedCorsConfigurationSourceTests {
 	@Test
 	public void empty() {
 		MockHttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/bar/test.html");
-		assertNull(this.configSource.getCorsConfiguration(request));
+		assertThat((Object) this.configSource.getCorsConfiguration(request)).isNull();
 	}
 
 	@Test
@@ -46,7 +44,7 @@ public class UrlBasedCorsConfigurationSourceTests {
 		this.configSource.registerCorsConfiguration("/bar/**", config);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo/test.html");
-		assertNull(this.configSource.getCorsConfiguration(request));
+		assertThat((Object) this.configSource.getCorsConfiguration(request)).isNull();
 
 		request.setRequestURI("/bar/test.html");
 		assertThat(this.configSource.getCorsConfiguration(request)).isEqualTo(config);

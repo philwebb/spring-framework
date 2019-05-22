@@ -23,9 +23,6 @@ import org.junit.Test;
 import org.springframework.tests.sample.objects.TestObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNotSame;
 
 /**
  * @author Rob Harrop
@@ -57,10 +54,10 @@ public class AutoPopulatingListTests {
 		Object lastElement = null;
 		for (int x = 0; x < 10; x++) {
 			Object element = list.get(x);
-			assertNotNull("Element is null", list.get(x));
+			assertThat(list.get(x)).as("Element is null").isNotNull();
 			boolean condition = element instanceof TestObject;
 			assertThat(condition).as("Element is incorrect type").isTrue();
-			assertNotSame(lastElement, element);
+			assertThat(element).isNotSameAs(lastElement);
 			lastElement = element;
 		}
 
@@ -85,7 +82,7 @@ public class AutoPopulatingListTests {
 		for (int x = 0; x < list.size(); x++) {
 			Object element = list.get(x);
 			if (element instanceof TestObject) {
-				assertEquals(x, ((TestObject) element).getAge());
+				assertThat((long) ((TestObject) element).getAge()).isEqualTo((long) x);
 			}
 		}
 	}

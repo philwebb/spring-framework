@@ -28,8 +28,6 @@ import org.springframework.util.InvalidMimeTypeException;
 import org.springframework.util.MimeTypeUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for {@link org.springframework.messaging.converter.DefaultContentTypeResolver}.
@@ -86,7 +84,7 @@ public class DefaultContentTypeResolverTests {
 	public void resolveNoContentTypeHeader() {
 		MessageHeaders headers = new MessageHeaders(Collections.<String, Object>emptyMap());
 
-		assertNull(this.resolver.resolve(headers));
+		assertThat((Object) this.resolver.resolve(headers)).isNull();
 	}
 
 	@Test

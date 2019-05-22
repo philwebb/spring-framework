@@ -31,7 +31,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.env.MockEnvironment;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -156,7 +155,7 @@ public class ContextNamespaceHandlerTests {
 		Date date = (Date) applicationContext.getBean("date");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		assertEquals(42, calendar.get(Calendar.MINUTE));
+		assertThat((long) calendar.get(Calendar.MINUTE)).isEqualTo((long) 42);
 	}
 
 }

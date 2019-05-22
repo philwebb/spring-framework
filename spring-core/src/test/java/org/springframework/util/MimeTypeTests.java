@@ -29,9 +29,6 @@ import org.springframework.core.convert.support.DefaultConversionService;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link MimeType}.
@@ -290,12 +287,12 @@ public class MimeTypeTests {
 	public void parseMimeTypes() {
 		String s = "text/plain, text/html, text/x-dvi, text/x-c";
 		List<MimeType> mimeTypes = MimeTypeUtils.parseMimeTypes(s);
-		assertNotNull("No mime types returned", mimeTypes);
-		assertEquals("Invalid amount of mime types", 4, mimeTypes.size());
+		assertThat((Object) mimeTypes).as("No mime types returned").isNotNull();
+		assertThat((long) mimeTypes.size()).as("Invalid amount of mime types").isEqualTo((long) 4);
 
 		mimeTypes = MimeTypeUtils.parseMimeTypes(null);
-		assertNotNull("No mime types returned", mimeTypes);
-		assertEquals("Invalid amount of mime types", 0, mimeTypes.size());
+		assertThat((Object) mimeTypes).as("No mime types returned").isNotNull();
+		assertThat((long) mimeTypes.size()).as("Invalid amount of mime types").isEqualTo((long) 0);
 	}
 
 	@Test // SPR-17459
@@ -311,7 +308,7 @@ public class MimeTypeTests {
 	private void testWithQuotedParameters(String... mimeTypes) {
 		String s = String.join(",", mimeTypes);
 		List<MimeType> actual = MimeTypeUtils.parseMimeTypes(s);
-		assertEquals(mimeTypes.length, actual.size());
+		assertThat((long) actual.size()).isEqualTo((long) mimeTypes.length);
 		for (int i=0; i < mimeTypes.length; i++) {
 			assertThat(actual.get(i).toString()).isEqualTo(mimeTypes[i]);
 		}
@@ -325,9 +322,9 @@ public class MimeTypeTests {
 		MimeType audioBasicLevel = new MimeType("audio", "basic", singletonMap("level", "1"));
 
 		// equal
-		assertEquals("Invalid comparison result", 0, audioBasic.compareTo(audioBasic));
-		assertEquals("Invalid comparison result", 0, audio.compareTo(audio));
-		assertEquals("Invalid comparison result", 0, audioBasicLevel.compareTo(audioBasicLevel));
+		assertThat((long) audioBasic.compareTo(audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) audio.compareTo(audio)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) audioBasicLevel.compareTo(audioBasicLevel)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		assertThat(audioBasicLevel.compareTo(audio) > 0).as("Invalid comparison result").isTrue();
 
@@ -345,7 +342,7 @@ public class MimeTypeTests {
 			Collections.sort(result);
 
 			for (int j = 0; j < result.size(); j++) {
-				assertSame("Invalid media type at " + j + ", run " + i, expected.get(j), result.get(j));
+				assertThat((Object) result.get(j)).as("Invalid media type at " + j + ", run " + i).isSameAs(expected.get(j));
 			}
 		}
 	}
@@ -354,13 +351,13 @@ public class MimeTypeTests {
 	public void compareToCaseSensitivity() {
 		MimeType m1 = new MimeType("audio", "basic");
 		MimeType m2 = new MimeType("Audio", "Basic");
-		assertEquals("Invalid comparison result", 0, m1.compareTo(m2));
-		assertEquals("Invalid comparison result", 0, m2.compareTo(m1));
+		assertThat((long) m1.compareTo(m2)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) m2.compareTo(m1)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		m1 = new MimeType("audio", "basic", singletonMap("foo", "bar"));
 		m2 = new MimeType("audio", "basic", singletonMap("Foo", "bar"));
-		assertEquals("Invalid comparison result", 0, m1.compareTo(m2));
-		assertEquals("Invalid comparison result", 0, m2.compareTo(m1));
+		assertThat((long) m1.compareTo(m2)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) m2.compareTo(m1)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		m1 = new MimeType("audio", "basic", singletonMap("foo", "bar"));
 		m2 = new MimeType("audio", "basic", singletonMap("foo", "Bar"));
@@ -378,8 +375,8 @@ public class MimeTypeTests {
 		MimeType m2 = new MimeType("text", "plain", singletonMap("charset", "utf-8"));
 		assertThat(m2).isEqualTo(m1);
 		assertThat(m1).isEqualTo(m2);
-		assertEquals(0, m1.compareTo(m2));
-		assertEquals(0, m2.compareTo(m1));
+		assertThat((long) m1.compareTo(m2)).isEqualTo((long) 0);
+		assertThat((long) m2.compareTo(m1)).isEqualTo((long) 0);
 	}
 
 }

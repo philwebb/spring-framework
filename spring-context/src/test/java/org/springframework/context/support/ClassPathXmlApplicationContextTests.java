@@ -45,9 +45,6 @@ import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -197,7 +194,7 @@ public class ClassPathXmlApplicationContextTests {
 	public void testFactoryBeanAndApplicationListener() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(CONTEXT_WILDCARD);
 		ctx.getBeanFactory().registerSingleton("manualFBAAL", new FactoryBeanAndApplicationListener());
-		assertEquals(2, ctx.getBeansOfType(ApplicationListener.class).size());
+		assertThat((long) ctx.getBeansOfType(ApplicationListener.class).size()).isEqualTo((long) 2);
 		ctx.close();
 	}
 
@@ -220,7 +217,7 @@ public class ClassPathXmlApplicationContextTests {
 	public void testResourceArrayPropertyEditor() throws IOException {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(CONTEXT_WILDCARD);
 		Service service = (Service) ctx.getBean("service");
-		assertEquals(3, service.getResources().length);
+		assertThat((long) service.getResources().length).isEqualTo((long) 3);
 		List<Resource> resources = Arrays.asList(service.getResources());
 		assertThat(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_A).getFile()))).isTrue();
 		assertThat(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_B).getFile()))).isTrue();
@@ -258,15 +255,15 @@ public class ClassPathXmlApplicationContextTests {
 		Object someMs = child.getBean("someMessageSource");
 		Object yourMs = child.getBean("yourMessageSource");
 		Object myMs = child.getBean("myMessageSource");
-		assertSame(someMs, yourMs);
-		assertSame(someMs, myMs);
+		assertThat(yourMs).isSameAs(someMs);
+		assertThat(myMs).isSameAs(someMs);
 
 		String[] aliases = child.getAliases("someMessageSource");
-		assertEquals(2, aliases.length);
+		assertThat((long) aliases.length).isEqualTo((long) 2);
 		assertThat(aliases[0]).isEqualTo("myMessageSource");
 		assertThat(aliases[1]).isEqualTo("yourMessageSource");
 		aliases = child.getAliases("myMessageSource");
-		assertEquals(2, aliases.length);
+		assertThat((long) aliases.length).isEqualTo((long) 2);
 		assertThat(aliases[0]).isEqualTo("someMessageSource");
 		assertThat(aliases[1]).isEqualTo("yourMessageSource");
 
@@ -283,8 +280,8 @@ public class ClassPathXmlApplicationContextTests {
 				new String[] {ALIAS_THAT_OVERRIDES_PARENT_CONTEXT}, ctx);
 		Object myMs = child.getBean("myMessageSource");
 		Object someMs2 = child.getBean("someMessageSource");
-		assertSame(myMs, someMs2);
-		assertNotSame(someMs, someMs2);
+		assertThat(someMs2).isSameAs(myMs);
+		assertThat(someMs2).isNotSameAs(someMs);
 		assertOneMessageSourceOnly(child, myMs);
 	}
 
@@ -294,36 +291,36 @@ public class ClassPathXmlApplicationContextTests {
 				FQ_SIMPLE_CONTEXT, ALIAS_THAT_OVERRIDES_PARENT_CONTEXT);
 		Object myMs = ctx.getBean("myMessageSource");
 		Object someMs2 = ctx.getBean("someMessageSource");
-		assertSame(myMs, someMs2);
+		assertThat(someMs2).isSameAs(myMs);
 		assertOneMessageSourceOnly(ctx, myMs);
 	}
 
 	private void assertOneMessageSourceOnly(ClassPathXmlApplicationContext ctx, Object myMessageSource) {
 		String[] beanNamesForType = ctx.getBeanNamesForType(StaticMessageSource.class);
-		assertEquals(1, beanNamesForType.length);
+		assertThat((long) beanNamesForType.length).isEqualTo((long) 1);
 		assertThat(beanNamesForType[0]).isEqualTo("myMessageSource");
 		beanNamesForType = ctx.getBeanNamesForType(StaticMessageSource.class, true, true);
-		assertEquals(1, beanNamesForType.length);
+		assertThat((long) beanNamesForType.length).isEqualTo((long) 1);
 		assertThat(beanNamesForType[0]).isEqualTo("myMessageSource");
 		beanNamesForType = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(ctx, StaticMessageSource.class);
-		assertEquals(1, beanNamesForType.length);
+		assertThat((long) beanNamesForType.length).isEqualTo((long) 1);
 		assertThat(beanNamesForType[0]).isEqualTo("myMessageSource");
 		beanNamesForType = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(ctx, StaticMessageSource.class, true, true);
-		assertEquals(1, beanNamesForType.length);
+		assertThat((long) beanNamesForType.length).isEqualTo((long) 1);
 		assertThat(beanNamesForType[0]).isEqualTo("myMessageSource");
 
 		Map<?, StaticMessageSource> beansOfType = ctx.getBeansOfType(StaticMessageSource.class);
-		assertEquals(1, beansOfType.size());
-		assertSame(myMessageSource, beansOfType.values().iterator().next());
+		assertThat((long) beansOfType.size()).isEqualTo((long) 1);
+		assertThat((Object) beansOfType.values().iterator().next()).isSameAs(myMessageSource);
 		beansOfType = ctx.getBeansOfType(StaticMessageSource.class, true, true);
-		assertEquals(1, beansOfType.size());
-		assertSame(myMessageSource, beansOfType.values().iterator().next());
+		assertThat((long) beansOfType.size()).isEqualTo((long) 1);
+		assertThat((Object) beansOfType.values().iterator().next()).isSameAs(myMessageSource);
 		beansOfType = BeanFactoryUtils.beansOfTypeIncludingAncestors(ctx, StaticMessageSource.class);
-		assertEquals(1, beansOfType.size());
-		assertSame(myMessageSource, beansOfType.values().iterator().next());
+		assertThat((long) beansOfType.size()).isEqualTo((long) 1);
+		assertThat((Object) beansOfType.values().iterator().next()).isSameAs(myMessageSource);
 		beansOfType = BeanFactoryUtils.beansOfTypeIncludingAncestors(ctx, StaticMessageSource.class, true, true);
-		assertEquals(1, beansOfType.size());
-		assertSame(myMessageSource, beansOfType.values().iterator().next());
+		assertThat((long) beansOfType.size()).isEqualTo((long) 1);
+		assertThat((Object) beansOfType.values().iterator().next()).isSameAs(myMessageSource);
 	}
 
 	@Test

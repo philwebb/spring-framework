@@ -42,7 +42,6 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**

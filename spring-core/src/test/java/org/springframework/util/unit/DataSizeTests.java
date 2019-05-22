@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests for {@link DataSize}.
@@ -31,47 +30,47 @@ public class DataSizeTests {
 
 	@Test
 	public void ofBytesToBytes() {
-		assertEquals(1024, DataSize.ofBytes(1024).toBytes());
+		assertThat(DataSize.ofBytes(1024).toBytes()).isEqualTo((long) 1024);
 	}
 
 	@Test
 	public void ofBytesToKilobytes() {
-		assertEquals(1, DataSize.ofBytes(1024).toKilobytes());
+		assertThat(DataSize.ofBytes(1024).toKilobytes()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void ofKilobytesToKilobytes() {
-		assertEquals(1024, DataSize.ofKilobytes(1024).toKilobytes());
+		assertThat(DataSize.ofKilobytes(1024).toKilobytes()).isEqualTo((long) 1024);
 	}
 
 	@Test
 	public void ofKilobytesToMegabytes() {
-		assertEquals(1, DataSize.ofKilobytes(1024).toMegabytes());
+		assertThat(DataSize.ofKilobytes(1024).toMegabytes()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void ofMegabytesToMegabytes() {
-		assertEquals(1024, DataSize.ofMegabytes(1024).toMegabytes());
+		assertThat(DataSize.ofMegabytes(1024).toMegabytes()).isEqualTo((long) 1024);
 	}
 
 	@Test
 	public void ofMegabytesToGigabytes() {
-		assertEquals(2, DataSize.ofMegabytes(2048).toGigabytes());
+		assertThat(DataSize.ofMegabytes(2048).toGigabytes()).isEqualTo((long) 2);
 	}
 
 	@Test
 	public void ofGigabytesToGigabytes() {
-		assertEquals(4096, DataSize.ofGigabytes(4096).toGigabytes());
+		assertThat(DataSize.ofGigabytes(4096).toGigabytes()).isEqualTo((long) 4096);
 	}
 
 	@Test
 	public void ofGigabytesToTerabytes() {
-		assertEquals(4, DataSize.ofGigabytes(4096).toTerabytes());
+		assertThat(DataSize.ofGigabytes(4096).toTerabytes()).isEqualTo((long) 4);
 	}
 
 	@Test
 	public void ofTerabytesToGigabytes() {
-		assertEquals(1024, DataSize.ofTerabytes(1).toGigabytes());
+		assertThat(DataSize.ofTerabytes(1).toGigabytes()).isEqualTo((long) 1024);
 	}
 
 	@Test

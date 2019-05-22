@@ -32,7 +32,6 @@ import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for BufferedImageHttpMessageConverter.
@@ -68,8 +67,8 @@ public class BufferedImageHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 		inputMessage.getHeaders().setContentType(new MediaType("image", "jpeg"));
 		BufferedImage result = converter.read(BufferedImage.class, inputMessage);
-		assertEquals("Invalid height", 500, result.getHeight());
-		assertEquals("Invalid width", 750, result.getWidth());
+		assertThat((long) result.getHeight()).as("Invalid height").isEqualTo((long) 500);
+		assertThat((long) result.getWidth()).as("Invalid width").isEqualTo((long) 750);
 	}
 
 	@Test
@@ -82,8 +81,8 @@ public class BufferedImageHttpMessageConverterTests {
 		assertThat(outputMessage.getWrittenHeaders().getContentType()).as("Invalid content type").isEqualTo(contentType);
 		assertThat(outputMessage.getBodyAsBytes().length > 0).as("Invalid size").isTrue();
 		BufferedImage result = ImageIO.read(new ByteArrayInputStream(outputMessage.getBodyAsBytes()));
-		assertEquals("Invalid height", 500, result.getHeight());
-		assertEquals("Invalid width", 750, result.getWidth());
+		assertThat((long) result.getHeight()).as("Invalid height").isEqualTo((long) 500);
+		assertThat((long) result.getWidth()).as("Invalid width").isEqualTo((long) 750);
 	}
 
 	@Test
@@ -97,8 +96,8 @@ public class BufferedImageHttpMessageConverterTests {
 		assertThat(outputMessage.getWrittenHeaders().getContentType()).as("Invalid content type").isEqualTo(contentType);
 		assertThat(outputMessage.getBodyAsBytes().length > 0).as("Invalid size").isTrue();
 		BufferedImage result = ImageIO.read(new ByteArrayInputStream(outputMessage.getBodyAsBytes()));
-		assertEquals("Invalid height", 500, result.getHeight());
-		assertEquals("Invalid width", 750, result.getWidth());
+		assertThat((long) result.getHeight()).as("Invalid height").isEqualTo((long) 500);
+		assertThat((long) result.getWidth()).as("Invalid width").isEqualTo((long) 750);
 	}
 
 }

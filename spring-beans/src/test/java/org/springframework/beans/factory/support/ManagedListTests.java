@@ -20,10 +20,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author Rick Evans
@@ -42,7 +39,7 @@ public class ManagedListTests {
 		child.add("three");
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
-		assertEquals("merge() obviously did not work.", 3, mergedList.size());
+		assertThat((long) mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -50,7 +47,7 @@ public class ManagedListTests {
 		ManagedList child = new ManagedList();
 		child.add("one");
 		child.setMergeEnabled(true);
-		assertSame(child, child.merge(null));
+		assertThat(child.merge(null)).isSameAs(child);
 	}
 
 	@Test
@@ -77,7 +74,7 @@ public class ManagedListTests {
 		ManagedList child = new ManagedList();
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
-		assertEquals("merge() obviously did not work.", 2, mergedList.size());
+		assertThat((long) mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -90,7 +87,7 @@ public class ManagedListTests {
 		child.add("one");
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
-		assertEquals("merge() obviously did not work.", 3, mergedList.size());
+		assertThat((long) mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
 	}
 
 }

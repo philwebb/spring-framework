@@ -43,8 +43,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.ControllerAdviceBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.BDDMockito.given;
@@ -95,7 +93,7 @@ public class RequestResponseBodyAdviceChainTests {
 		given(requestAdvice.beforeBodyRead(eq(this.request), eq(this.paramType), eq(String.class),
 				eq(this.converterType))).willReturn(wrapped);
 
-		assertSame(wrapped, chain.beforeBodyRead(this.request, this.paramType, String.class, this.converterType));
+		assertThat((Object) chain.beforeBodyRead(this.request, this.paramType, String.class, this.converterType)).isSameAs(wrapped);
 
 		String modified = "body++";
 		given(requestAdvice.afterBodyRead(eq(this.body), eq(this.request), eq(this.paramType),

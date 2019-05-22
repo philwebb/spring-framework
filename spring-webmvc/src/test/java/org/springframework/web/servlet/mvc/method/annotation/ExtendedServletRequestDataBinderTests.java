@@ -29,7 +29,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.servlet.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for {@link ExtendedServletRequestDataBinder}.
@@ -57,7 +56,7 @@ public class ExtendedServletRequestDataBinderTests {
 		((ServletRequestDataBinder) binder).bind(request);
 
 		assertThat(target.getName()).isEqualTo("nameValue");
-		assertEquals(25, target.getAge());
+		assertThat((long) target.getAge()).isEqualTo((long) 25);
 	}
 
 	@Test
@@ -74,7 +73,7 @@ public class ExtendedServletRequestDataBinderTests {
 		((ServletRequestDataBinder) binder).bind(request);
 
 		assertThat(target.getName()).isEqualTo("nameValue");
-		assertEquals(35, target.getAge());
+		assertThat((long) target.getAge()).isEqualTo((long) 35);
 	}
 
 	@Test
@@ -84,7 +83,7 @@ public class ExtendedServletRequestDataBinderTests {
 		((ServletRequestDataBinder) binder).bind(request);
 
 		assertThat(target.getName()).isEqualTo(null);
-		assertEquals(0, target.getAge());
+		assertThat((long) target.getAge()).isEqualTo((long) 0);
 	}
 
 }

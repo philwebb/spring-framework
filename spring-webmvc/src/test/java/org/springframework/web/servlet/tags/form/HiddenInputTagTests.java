@@ -26,7 +26,6 @@ import org.springframework.validation.BeanPropertyBindingResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -53,7 +52,7 @@ public class HiddenInputTagTests extends AbstractFormTagTests {
 	public void render() throws Exception {
 		this.tag.setPath("name");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -73,7 +72,7 @@ public class HiddenInputTagTests extends AbstractFormTagTests {
 		errors.getPropertyAccessor().registerCustomEditor(Float.class, new SimpleFloatEditor());
 		exposeBindingResult(errors);
 
-		assertEquals(Tag.SKIP_BODY, this.tag.doStartTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 

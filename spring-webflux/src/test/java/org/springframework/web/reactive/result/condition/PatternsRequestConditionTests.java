@@ -28,9 +28,6 @@ import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -83,7 +80,7 @@ public class PatternsRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/foo"));
 		PatternsRequestCondition match = condition.getMatchingCondition(exchange);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 	}
 
 	@Test
@@ -92,7 +89,7 @@ public class PatternsRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/foo/bar"));
 		PatternsRequestCondition match = condition.getMatchingCondition(exchange);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 	}
 
 	@Test
@@ -112,13 +109,13 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition condition = createPatternsCondition("/foo");
 		PatternsRequestCondition match = condition.getMatchingCondition(exchange);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next().getPatternString()).as("Should match by default").isEqualTo("/foo");
 
 		condition = createPatternsCondition("/foo");
 		match = condition.getMatchingCondition(exchange);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next().getPatternString()).as("Trailing slash should be insensitive to useSuffixPatternMatch settings (SPR-6164, SPR-5636)").isEqualTo("/foo");
 
 		PathPatternParser parser = new PathPatternParser();
@@ -126,7 +123,7 @@ public class PatternsRequestConditionTests {
 		condition = new PatternsRequestCondition(parser.parse("/foo"));
 		match = condition.getMatchingCondition(MockServerWebExchange.from(get("/foo/")));
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test
@@ -135,20 +132,20 @@ public class PatternsRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/foo.html"));
 		PatternsRequestCondition match = condition.getMatchingCondition(exchange);
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test // gh-22543
 	public void matchWithEmptyPatterns() {
 		PatternsRequestCondition condition = new PatternsRequestCondition();
 		assertThat(condition).isEqualTo(new PatternsRequestCondition(this.parser.parse("")));
-		assertNotNull(condition.getMatchingCondition(MockServerWebExchange.from(get(""))));
-		assertNull(condition.getMatchingCondition(MockServerWebExchange.from(get("/anything"))));
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(get("")))).isNotNull();
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(get("/anything")))).isNull();
 
 		condition = condition.combine(new PatternsRequestCondition());
 		assertThat(condition).isEqualTo(new PatternsRequestCondition(this.parser.parse("")));
-		assertNotNull(condition.getMatchingCondition(MockServerWebExchange.from(get(""))));
-		assertNull(condition.getMatchingCondition(MockServerWebExchange.from(get("/anything"))));
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(get("")))).isNotNull();
+		assertThat((Object) condition.getMatchingCondition(MockServerWebExchange.from(get("/anything")))).isNull();
 	}
 
 	@Test
@@ -156,13 +153,13 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = createPatternsCondition("/foo*");
 		PatternsRequestCondition c2 = createPatternsCondition("/foo*");
 
-		assertEquals(0, c1.compareTo(c2, MockServerWebExchange.from(get("/foo"))));
+		assertThat((long) c1.compareTo(c2, MockServerWebExchange.from(get("/foo")))).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void equallyMatchingPatternsAreBothPresent() throws Exception {
 		PatternsRequestCondition c = createPatternsCondition("/a", "/b");
-		assertEquals(2, c.getPatterns().size());
+		assertThat((long) c.getPatterns().size()).isEqualTo((long) 2);
 		Iterator<PathPattern> itr = c.getPatterns().iterator();
 		assertThat(itr.next().getPatternString()).isEqualTo("/a");
 		assertThat(itr.next().getPatternString()).isEqualTo("/b");
@@ -175,12 +172,12 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = createPatternsCondition("/fo*");
 		PatternsRequestCondition c2 = createPatternsCondition("/foo");
 
-		assertEquals(1, c1.compareTo(c2, exchange));
+		assertThat((long) c1.compareTo(c2, exchange)).isEqualTo((long) 1);
 
 		c1 = createPatternsCondition("/fo*");
 		c2 = createPatternsCondition("/*oo");
 
-		assertEquals("Patterns are equally specific even if not the same", 0, c1.compareTo(c2, exchange));
+		assertThat((long) c1.compareTo(c2, exchange)).as("Patterns are equally specific even if not the same").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -193,8 +190,8 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition match1 = c1.getMatchingCondition(exchange);
 		PatternsRequestCondition match2 = c2.getMatchingCondition(exchange);
 
-		assertNotNull(match1);
-		assertEquals(1, match1.compareTo(match2, exchange));
+		assertThat((Object) match1).isNotNull();
+		assertThat((long) match1.compareTo(match2, exchange)).isEqualTo((long) 1);
 	}
 
 	private PatternsRequestCondition createPatternsCondition(String... patterns) {

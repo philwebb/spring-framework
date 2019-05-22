@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.web.cors.CorsConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture with a {@link CorsRegistry}.
@@ -45,7 +44,7 @@ public class CorsRegistryTests {
 	public void multipleMappings() {
 		this.registry.addMapping("/foo");
 		this.registry.addMapping("/bar");
-		assertEquals(2, this.registry.getCorsConfigurations().size());
+		assertThat((long) this.registry.getCorsConfigurations().size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -54,7 +53,7 @@ public class CorsRegistryTests {
 				.allowedMethods("DELETE").allowCredentials(false).allowedHeaders("header1", "header2")
 				.exposedHeaders("header3", "header4").maxAge(3600);
 		Map<String, CorsConfiguration> configs = this.registry.getCorsConfigurations();
-		assertEquals(1, configs.size());
+		assertThat((long) configs.size()).isEqualTo((long) 1);
 		CorsConfiguration config = configs.get("/foo");
 		assertThat(config.getAllowedOrigins()).isEqualTo(Arrays.asList("https://domain2.com", "https://domain2.com"));
 		assertThat(config.getAllowedMethods()).isEqualTo(Arrays.asList("DELETE"));

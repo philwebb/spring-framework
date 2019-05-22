@@ -40,9 +40,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Tests for {@link StandaloneMockMvcBuilder}
@@ -64,7 +61,7 @@ public class StandaloneMockMvcBuilderTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
 		HandlerExecutionChain chain = hm.getHandler(request);
 
-		assertNotNull(chain);
+		assertThat((Object) chain).isNotNull();
 		assertThat(((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("handleWithPlaceholders");
 	}
 
@@ -78,12 +75,12 @@ public class StandaloneMockMvcBuilderTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/persons");
 		HandlerExecutionChain chain = hm.getHandler(request);
-		assertNotNull(chain);
+		assertThat((Object) chain).isNotNull();
 		assertThat(((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("persons");
 
 		request = new MockHttpServletRequest("GET", "/persons.xml");
 		chain = hm.getHandler(request);
-		assertNull(chain);
+		assertThat((Object) chain).isNull();
 	}
 
 	@Test  // SPR-12553
@@ -129,7 +126,7 @@ public class StandaloneMockMvcBuilderTests {
 		builder.build();
 		SpringHandlerInstantiator instantiator = new SpringHandlerInstantiator(builder.wac.getAutowireCapableBeanFactory());
 		JsonSerializer serializer = instantiator.serializerInstance(null, null, UnknownSerializer.class);
-		assertNotNull(serializer);
+		assertThat(serializer).isNotNull();
 	}
 
 

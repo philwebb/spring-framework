@@ -24,8 +24,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Arjen Poutsma
@@ -40,7 +38,7 @@ public class RouterFunctionTests {
 		RouterFunction<ServerResponse> routerFunction2 = request -> Optional.of(handlerFunction);
 
 		RouterFunction<ServerResponse> result = routerFunction1.and(routerFunction2);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -58,7 +56,7 @@ public class RouterFunctionTests {
 		RouterFunction<ServerResponse> routerFunction2 = request -> Optional.of(handlerFunction);
 
 		RouterFunction<?> result = routerFunction1.andOther(routerFunction2);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -75,7 +73,7 @@ public class RouterFunctionTests {
 		RequestPredicate requestPredicate = request -> true;
 
 		RouterFunction<ServerResponse> result = routerFunction1.andRoute(requestPredicate, this::handlerMethod);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -101,7 +99,7 @@ public class RouterFunctionTests {
 				};
 
 		RouterFunction<EntityResponse<Integer>> result = routerFunction.filter(filterFunction);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -116,7 +114,7 @@ public class RouterFunctionTests {
 					}
 				});
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
-		assertEquals(42, (int)resultHandlerFunction.get().entity());
+		assertThat((long) (int) resultHandlerFunction.get().entity()).isEqualTo((long) 42);
 	}
 
 

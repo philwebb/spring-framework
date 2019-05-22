@@ -26,7 +26,6 @@ import org.springframework.jms.StubQueue;
 import org.springframework.jms.support.destination.DestinationResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -54,8 +53,8 @@ public class DefaultJmsActivationSpecFactoryTests {
 		StubActiveMQActivationSpec spec = (StubActiveMQActivationSpec) activationSpecFactory.createActivationSpec(
 				new StubActiveMQResourceAdapter(), activationSpecConfig);
 
-		assertEquals(5, spec.getMaxSessions());
-		assertEquals(3, spec.getMaxMessagesPerSessions());
+		assertThat((long) spec.getMaxSessions()).isEqualTo((long) 5);
+		assertThat((long) spec.getMaxMessagesPerSessions()).isEqualTo((long) 3);
 		assertThat(spec.isUseRAManagedTransaction()).isTrue();
 	}
 
@@ -73,8 +72,8 @@ public class DefaultJmsActivationSpecFactoryTests {
 				.createActivationSpec(new StubWebSphereResourceAdapterImpl(), activationSpecConfig);
 
 		assertThat(spec.getDestination()).isEqualTo(destination);
-		assertEquals(5, spec.getMaxConcurrency());
-		assertEquals(3, spec.getMaxBatchSize());
+		assertThat((long) spec.getMaxConcurrency()).isEqualTo((long) 5);
+		assertThat((long) spec.getMaxBatchSize()).isEqualTo((long) 3);
 	}
 
 

@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 
 /**

@@ -56,8 +56,6 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -246,8 +244,8 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		servletRequest.setMethod("GET");
 		servletRequest.setContent(new byte[0]);
 		given(stringMessageConverter.canRead(String.class, MediaType.APPLICATION_OCTET_STREAM)).willReturn(false);
-		assertNull(processor.resolveArgument(paramStringNotRequired, mavContainer,
-				webRequest, new ValidatingBinderFactory()));
+		assertThat(processor.resolveArgument(paramStringNotRequired, mavContainer,
+				webRequest, new ValidatingBinderFactory())).isNull();
 	}
 
 	@Test
@@ -265,8 +263,8 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		servletRequest.setContentType("text/plain");
 		servletRequest.setContent(new byte[0]);
 		given(stringMessageConverter.canRead(String.class, MediaType.TEXT_PLAIN)).willReturn(true);
-		assertNull(processor.resolveArgument(paramStringNotRequired, mavContainer,
-				webRequest, new ValidatingBinderFactory()));
+		assertThat(processor.resolveArgument(paramStringNotRequired, mavContainer,
+				webRequest, new ValidatingBinderFactory())).isNull();
 	}
 
 	@Test  // SPR-13417
@@ -274,8 +272,8 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		servletRequest.setContent(new byte[0]);
 		given(stringMessageConverter.canRead(String.class, MediaType.TEXT_PLAIN)).willReturn(true);
 		given(stringMessageConverter.canRead(String.class, MediaType.APPLICATION_OCTET_STREAM)).willReturn(false);
-		assertNull(processor.resolveArgument(paramStringNotRequired, mavContainer,
-				webRequest, new ValidatingBinderFactory()));
+		assertThat(processor.resolveArgument(paramStringNotRequired, mavContainer,
+				webRequest, new ValidatingBinderFactory())).isNull();
 	}
 
 	@Test
@@ -377,7 +375,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		then(resourceMessageConverter).should(times(1)).write(any(ByteArrayResource.class),
 				eq(MediaType.APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(200, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 200);
 	}
 
 	@Test  // SPR-9841
@@ -411,7 +409,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		then(resourceRegionMessageConverter).should(times(1)).write(
 				anyCollection(), eq(MediaType.APPLICATION_OCTET_STREAM),
 				argThat(outputMessage -> "bytes".equals(outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES))));
-		assertEquals(206, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 206);
 	}
 
 	@Test
@@ -426,7 +424,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		then(resourceRegionMessageConverter).should(never()).write(
 				anyCollection(), eq(MediaType.APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(416, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 416);
 	}
 
 

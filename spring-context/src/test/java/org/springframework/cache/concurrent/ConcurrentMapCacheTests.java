@@ -30,7 +30,6 @@ import org.springframework.core.serializer.support.SerializationDelegate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Costin Leau
@@ -91,7 +90,7 @@ public class ConcurrentMapCacheTests
 		serializeCache.put(key, content);
 		content.remove(0);
 		List<String> entry = (List<String>) serializeCache.get(key).get();
-		assertEquals(3, entry.size());
+		assertThat((long) entry.size()).isEqualTo((long) 3);
 		assertThat(entry.get(0)).isEqualTo("one");
 	}
 

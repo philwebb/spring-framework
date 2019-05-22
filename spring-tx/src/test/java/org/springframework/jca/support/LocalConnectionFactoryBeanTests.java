@@ -23,8 +23,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -52,7 +50,7 @@ public class LocalConnectionFactoryBeanTests {
 	@Test
 	public void testGetObjectTypeIsNullIfConnectionFactoryHasNotBeenConfigured() throws Exception {
 		LocalConnectionFactoryBean factory = new LocalConnectionFactoryBean();
-		assertNull(factory.getObjectType());
+		assertThat((Object) factory.getObjectType()).isNull();
 	}
 
 	@Test

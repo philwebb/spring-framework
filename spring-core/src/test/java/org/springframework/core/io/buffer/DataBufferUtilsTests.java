@@ -49,7 +49,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.support.DataBufferTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.isA;
@@ -156,7 +155,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 			byteBuffer.put("foo".getBytes(StandardCharsets.UTF_8));
 			byteBuffer.flip();
 			long pos = invocation.getArgument(1);
-			assertEquals(0, pos);
+			assertThat(pos).isEqualTo((long) 0);
 			DataBuffer dataBuffer = invocation.getArgument(2);
 			CompletionHandler<Integer, DataBuffer> completionHandler = invocation.getArgument(3);
 			completionHandler.completed(3, dataBuffer);
@@ -425,7 +424,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 			long pos = invocation.getArgument(1);
 			CompletionHandler<Integer, ByteBuffer> completionHandler = invocation.getArgument(3);
 
-			assertEquals(0, pos);
+			assertThat(pos).isEqualTo((long) 0);
 
 			int written = buffer.remaining();
 			buffer.position(buffer.limit());
@@ -678,7 +677,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 	private static void assertReleased(DataBuffer dataBuffer) {
 		if (dataBuffer instanceof NettyDataBuffer) {
 			ByteBuf byteBuf = ((NettyDataBuffer) dataBuffer).getNativeBuffer();
-			assertEquals(0, byteBuf.refCnt());
+			assertThat((long) byteBuf.refCnt()).isEqualTo((long) 0);
 		}
 	}
 
@@ -761,9 +760,9 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 		byte[] delims = "ooba".getBytes(StandardCharsets.UTF_8);
 		DataBufferUtils.Matcher matcher = DataBufferUtils.matcher(delims);
 		int result = matcher.match(foo);
-		assertEquals(-1, result);
+		assertThat((long) result).isEqualTo((long) -1);
 		result = matcher.match(bar);
-		assertEquals(1, result);
+		assertThat((long) result).isEqualTo((long) 1);
 
 
 		release(foo, bar);
@@ -776,13 +775,13 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 		byte[] delims = "oo".getBytes(StandardCharsets.UTF_8);
 		DataBufferUtils.Matcher matcher = DataBufferUtils.matcher(delims);
 		int result = matcher.match(foo);
-		assertEquals(2, result);
+		assertThat((long) result).isEqualTo((long) 2);
 		foo.readPosition(2);
 		result = matcher.match(foo);
-		assertEquals(3, result);
+		assertThat((long) result).isEqualTo((long) 3);
 		foo.readPosition(3);
 		result = matcher.match(foo);
-		assertEquals(-1, result);
+		assertThat((long) result).isEqualTo((long) -1);
 
 		release(foo);
 	}

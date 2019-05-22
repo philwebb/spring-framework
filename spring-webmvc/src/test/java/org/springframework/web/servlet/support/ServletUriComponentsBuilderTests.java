@@ -30,8 +30,6 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 import org.springframework.web.util.UriComponents;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for
@@ -217,7 +215,7 @@ public class ServletUriComponentsBuilderTests {
 	public void pathExtensionNone() {
 		this.request.setRequestURI("/rest/books/6");
 		ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromRequestUri(this.request);
-		assertNull(builder.removePathExtension());
+		assertThat((Object) builder.removePathExtension()).isNull();
 	}
 
 	// SPR-16668

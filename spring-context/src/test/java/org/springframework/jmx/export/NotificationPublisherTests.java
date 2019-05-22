@@ -41,8 +41,6 @@ import org.springframework.jmx.export.notification.NotificationPublisherAware;
 import org.springframework.jmx.support.ObjectNameManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for the Spring JMX {@link NotificationPublisher} functionality.
@@ -62,9 +60,9 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 				null);
 
 		MyNotificationPublisher publisher = (MyNotificationPublisher) ctx.getBean("publisher");
-		assertNotNull("NotificationPublisher should not be null", publisher.getNotificationPublisher());
+		assertThat((Object) publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -77,9 +75,9 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher2"), listener, null,
 				null);
 
-		assertNotNull("NotificationPublisher should not be null", publisher.getNotificationPublisher());
+		assertThat((Object) publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -91,7 +89,7 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 
 		MyNotificationPublisherMBean publisher = (MyNotificationPublisherMBean) ctx.getBean("publisherMBean");
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	/*
@@ -119,9 +117,9 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 				null);
 
 		MyNotificationPublisher publisher = (MyNotificationPublisher) ctx.getBean("publisher");
-		assertNotNull("NotificationPublisher should not be null", publisher.getNotificationPublisher());
+		assertThat((Object) publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	private static class CountingNotificationListener implements NotificationListener {

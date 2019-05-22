@@ -21,7 +21,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Brian Clozel
@@ -45,29 +44,29 @@ public class ResizableByteArrayOutputStreamTests {
 
 	@Test
 	public void resize() throws Exception {
-		assertEquals(INITIAL_CAPACITY, this.baos.capacity());
+		assertThat((long) this.baos.capacity()).isEqualTo((long) INITIAL_CAPACITY);
 		this.baos.write(helloBytes);
 		int size = 64;
 		this.baos.resize(size);
-		assertEquals(size, this.baos.capacity());
+		assertThat((long) this.baos.capacity()).isEqualTo((long) size);
 		assertByteArrayEqualsString(this.baos);
 	}
 
 	@Test
 	public void autoGrow() {
-		assertEquals(INITIAL_CAPACITY, this.baos.capacity());
+		assertThat((long) this.baos.capacity()).isEqualTo((long) INITIAL_CAPACITY);
 		for (int i = 0; i < 129; i++) {
 			this.baos.write(0);
 		}
-		assertEquals(256, this.baos.capacity());
+		assertThat((long) this.baos.capacity()).isEqualTo((long) 256);
 	}
 
 	@Test
 	public void grow() throws Exception {
-		assertEquals(INITIAL_CAPACITY, this.baos.capacity());
+		assertThat((long) this.baos.capacity()).isEqualTo((long) INITIAL_CAPACITY);
 		this.baos.write(helloBytes);
 		this.baos.grow(1000);
-		assertEquals(this.helloBytes.length + 1000, this.baos.capacity());
+		assertThat((long) this.baos.capacity()).isEqualTo((long) (this.helloBytes.length + 1000));
 		assertByteArrayEqualsString(this.baos);
 	}
 

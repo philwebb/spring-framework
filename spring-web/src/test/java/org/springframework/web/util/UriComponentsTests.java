@@ -32,9 +32,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-
-
-import static temp.XAssert.assertEquals;
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
 /**
@@ -150,13 +147,13 @@ public class UriComponentsTests {
 		UriComponents uri2 = fromUriString("https://example.com/bar").port(8080).build();
 		UriComponents uri3 = fromUriString("https://example.com/bar").port("{port}").build().expand(8080);
 		UriComponents uri4 = fromUriString("https://example.com/bar").port("808{digit}").build().expand(0);
-		assertEquals(8080, uri1.getPort());
+		assertThat((long) uri1.getPort()).isEqualTo((long) 8080);
 		assertThat(uri1.toUriString()).isEqualTo("https://example.com:8080/bar");
-		assertEquals(8080, uri2.getPort());
+		assertThat((long) uri2.getPort()).isEqualTo((long) 8080);
 		assertThat(uri2.toUriString()).isEqualTo("https://example.com:8080/bar");
-		assertEquals(8080, uri3.getPort());
+		assertThat((long) uri3.getPort()).isEqualTo((long) 8080);
 		assertThat(uri3.toUriString()).isEqualTo("https://example.com:8080/bar");
-		assertEquals(8080, uri4.getPort());
+		assertThat((long) uri4.getPort()).isEqualTo((long) 8080);
 		assertThat(uri4.toUriString()).isEqualTo("https://example.com:8080/bar");
 	}
 

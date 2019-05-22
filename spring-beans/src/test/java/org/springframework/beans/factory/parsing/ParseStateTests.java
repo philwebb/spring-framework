@@ -19,8 +19,6 @@ package org.springframework.beans.factory.parsing;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rob Harrop
@@ -37,7 +35,7 @@ public class ParseStateTests {
 		parseState.push(entry);
 		assertThat(parseState.peek()).as("Incorrect peek value.").isEqualTo(entry);
 		parseState.pop();
-		assertNull("Should get null on peek()", parseState.peek());
+		assertThat((Object) parseState.peek()).as("Should get null on peek()").isNull();
 	}
 
 	@Test

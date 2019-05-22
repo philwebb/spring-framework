@@ -34,7 +34,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rod Johnson
@@ -79,15 +78,15 @@ public class BeanNameAutoProxyCreatorTests {
 	public void testJdkIntroduction() {
 		ITestBean tb = (ITestBean) beanFactory.getBean("introductionUsingJdk");
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("introductionNopInterceptor");
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertEquals(age, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) age);
 		boolean condition = tb instanceof TimeStamped;
 		assertThat(condition).as("Introduction was made").isTrue();
-		assertEquals(0, ((TimeStamped) tb).getTimeStamp());
-		assertEquals(3, nop.getCount());
+		assertThat(((TimeStamped) tb).getTimeStamp()).isEqualTo((long) 0);
+		assertThat((long) nop.getCount()).isEqualTo((long) 3);
 		assertThat(tb.getName()).isEqualTo("introductionUsingJdk");
 
 		ITestBean tb2 = (ITestBean) beanFactory.getBean("second-introductionUsingJdk");
@@ -98,7 +97,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertThat(lockable1.locked()).isFalse();
 		assertThat(lockable2.locked()).isFalse();
 		tb.setAge(65);
-		assertEquals(65, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 65);
 		lockable1.lock();
 		assertThat(lockable1.locked()).isTrue();
 		// Shouldn't affect second
@@ -114,15 +113,15 @@ public class BeanNameAutoProxyCreatorTests {
 	public void testJdkIntroductionAppliesToCreatedObjectsNotFactoryBean() {
 		ITestBean tb = (ITestBean) beanFactory.getBean("factory-introductionUsingJdk");
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("introductionNopInterceptor");
-		assertEquals("NOP should not have done any work yet", 0, nop.getCount());
+		assertThat((long) nop.getCount()).as("NOP should not have done any work yet").isEqualTo((long) 0);
 		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertEquals(age, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) age);
 		boolean condition = tb instanceof TimeStamped;
 		assertThat(condition).as("Introduction was made").isTrue();
-		assertEquals(0, ((TimeStamped) tb).getTimeStamp());
-		assertEquals(3, nop.getCount());
+		assertThat(((TimeStamped) tb).getTimeStamp()).isEqualTo((long) 0);
+		assertThat((long) nop.getCount()).isEqualTo((long) 3);
 
 		ITestBean tb2 = (ITestBean) beanFactory.getBean("second-introductionUsingJdk");
 
@@ -132,7 +131,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertThat(lockable1.locked()).isFalse();
 		assertThat(lockable2.locked()).isFalse();
 		tb.setAge(65);
-		assertEquals(65, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 65);
 		lockable1.lock();
 		assertThat(lockable1.locked()).isTrue();
 		// Shouldn't affect second
@@ -167,12 +166,12 @@ public class BeanNameAutoProxyCreatorTests {
 
 	private void jdkAssertions(ITestBean tb, int nopInterceptorCount)  {
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("nopInterceptor");
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertEquals(age, tb.getAge());
-		assertEquals(2 * nopInterceptorCount, nop.getCount());
+		assertThat((long) tb.getAge()).isEqualTo((long) age);
+		assertThat((long) nop.getCount()).isEqualTo((long) (2 * nopInterceptorCount));
 	}
 
 	/**
@@ -181,14 +180,14 @@ public class BeanNameAutoProxyCreatorTests {
 	private void cglibAssertions(TestBean tb) {
 		CountingBeforeAdvice cba = (CountingBeforeAdvice) beanFactory.getBean("countingBeforeAdvice");
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("nopInterceptor");
-		assertEquals(0, cba.getCalls());
-		assertEquals(0, nop.getCount());
+		assertThat((long) cba.getCalls()).isEqualTo((long) 0);
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 		assertThat(AopUtils.isCglibProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertEquals(age, tb.getAge());
-		assertEquals(2, nop.getCount());
-		assertEquals(2, cba.getCalls());
+		assertThat((long) tb.getAge()).isEqualTo((long) age);
+		assertThat((long) nop.getCount()).isEqualTo((long) 2);
+		assertThat((long) cba.getCalls()).isEqualTo((long) 2);
 	}
 
 }

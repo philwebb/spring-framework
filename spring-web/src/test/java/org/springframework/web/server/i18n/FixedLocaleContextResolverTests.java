@@ -32,7 +32,6 @@ import static java.util.Locale.CANADA;
 import static java.util.Locale.FRANCE;
 import static java.util.Locale.US;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link FixedLocaleContextResolver}.

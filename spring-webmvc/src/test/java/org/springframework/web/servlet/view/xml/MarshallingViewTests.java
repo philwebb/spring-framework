@@ -34,7 +34,6 @@ import org.springframework.validation.BindingResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -90,7 +89,7 @@ public class MarshallingViewTests {
 
 		view.render(model, request, response);
 		assertThat(response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
-		assertEquals("Invalid content length", 0, response.getContentLength());
+		assertThat((long) response.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -109,7 +108,7 @@ public class MarshallingViewTests {
 
 		view.render(model, request, response);
 		assertThat(response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
-		assertEquals("Invalid content length", 0, response.getContentLength());
+		assertThat((long) response.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -126,7 +125,7 @@ public class MarshallingViewTests {
 		assertThatIllegalStateException().isThrownBy(() ->
 				view.render(model, request, response));
 
-		assertEquals("Invalid content length", 0, response.getContentLength());
+		assertThat((long) response.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -141,7 +140,7 @@ public class MarshallingViewTests {
 		assertThatIllegalStateException().isThrownBy(() ->
 				view.render(model, request, response));
 
-		assertEquals("Invalid content length", 0, response.getContentLength());
+		assertThat((long) response.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -175,7 +174,7 @@ public class MarshallingViewTests {
 
 		view.render(model, request, response);
 		assertThat(response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
-		assertEquals("Invalid content length", 0, response.getContentLength());
+		assertThat((long) response.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 		verify(marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
 	}
 
@@ -195,7 +194,7 @@ public class MarshallingViewTests {
 
 		view.render(model, request, response);
 		assertThat(response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
-		assertEquals("Invalid content length", 0, response.getContentLength());
+		assertThat((long) response.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 		verify(marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
 	}
 

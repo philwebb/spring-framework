@@ -24,8 +24,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 
@@ -100,7 +98,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.afterConnectionClosed(this.session, closeStatus);
 
-		assertNull(this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isNull();
 	}
 
 }

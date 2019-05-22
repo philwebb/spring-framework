@@ -40,7 +40,6 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests for view resolution with {@code @EnableWebMvc}.

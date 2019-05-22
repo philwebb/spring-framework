@@ -24,8 +24,6 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rob Harrop
@@ -47,7 +45,7 @@ public class XsltViewResolverTests {
 		viewResolver.setApplicationContext(ctx);
 
 		XsltView view = (XsltView) viewResolver.resolveViewName(viewName, Locale.ENGLISH);
-		assertNotNull("View should not be null", view);
+		assertThat((Object) view).as("View should not be null").isNotNull();
 		assertThat(view.getUrl()).as("Incorrect URL").isEqualTo((prefix + viewName + suffix));
 	}
 }

@@ -22,7 +22,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Colin Sampaleanu

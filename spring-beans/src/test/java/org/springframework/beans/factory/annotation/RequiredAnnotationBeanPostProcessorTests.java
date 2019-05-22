@@ -34,7 +34,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -93,7 +92,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		factory.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
 		factory.preInstantiateSingletons();
 		RequiredTestBean bean = (RequiredTestBean) factory.getBean("testBean");
-		assertEquals(24, bean.getAge());
+		assertThat((long) bean.getAge()).isEqualTo((long) 24);
 		assertThat(bean.getFavouriteColour()).isEqualTo("Blue");
 	}
 
@@ -147,7 +146,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		factory.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
 		factory.preInstantiateSingletons();
 		RequiredTestBean bean = (RequiredTestBean) factory.getBean("testBean");
-		assertEquals(24, bean.getAge());
+		assertThat((long) bean.getAge()).isEqualTo((long) 24);
 		assertThat(bean.getFavouriteColour()).isEqualTo("Blue");
 	}
 

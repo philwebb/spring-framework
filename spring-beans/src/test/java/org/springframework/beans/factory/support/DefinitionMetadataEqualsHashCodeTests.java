@@ -23,7 +23,6 @@ import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@code equals()} and {@code hashCode()} in bean definitions.
@@ -70,7 +69,7 @@ public class DefinitionMetadataEqualsHashCodeTests {
 		// considered equal.
 
 		assertThat(equal).as("Should be equal").isEqualTo(master);
-		assertEquals("Hash code for equal instances must match", master.hashCode(), equal.hashCode());
+		assertThat((long) equal.hashCode()).as("Hash code for equal instances must match").isEqualTo((long) master.hashCode());
 	}
 
 	@Test
@@ -124,13 +123,13 @@ public class DefinitionMetadataEqualsHashCodeTests {
 
 	private void assertEqualsAndHashCodeContracts(Object master, Object equal, Object notEqual, Object subclass) {
 		assertThat(equal).as("Should be equal").isEqualTo(master);
-		assertEquals("Hash code for equal instances should match", master.hashCode(), equal.hashCode());
+		assertThat((long) equal.hashCode()).as("Hash code for equal instances should match").isEqualTo((long) master.hashCode());
 
 		assertThat(notEqual).as("Should not be equal").isNotEqualTo(master);
 		assertThat(notEqual.hashCode()).as("Hash code for non-equal instances should not match").isNotEqualTo((long) master.hashCode());
 
 		assertThat(subclass).as("Subclass should be equal").isEqualTo(master);
-		assertEquals("Hash code for subclass should match", master.hashCode(), subclass.hashCode());
+		assertThat((long) subclass.hashCode()).as("Hash code for subclass should match").isEqualTo((long) master.hashCode());
 	}
 
 }

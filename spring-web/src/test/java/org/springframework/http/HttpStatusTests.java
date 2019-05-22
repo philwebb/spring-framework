@@ -23,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /** @author Arjen Poutsma */
 public class HttpStatusTests {
@@ -107,7 +106,7 @@ public class HttpStatusTests {
 		for (Map.Entry<Integer, String> entry : statusCodes.entrySet()) {
 			int value = entry.getKey();
 			HttpStatus status = HttpStatus.valueOf(value);
-			assertEquals("Invalid value", value, status.value());
+			assertThat((long) status.value()).as("Invalid value").isEqualTo((long) value);
 			assertThat(status.name()).as("Invalid name for [" + value + "]").isEqualTo(entry.getValue());
 		}
 	}

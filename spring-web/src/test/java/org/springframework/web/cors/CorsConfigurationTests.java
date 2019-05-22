@@ -26,8 +26,6 @@ import org.springframework.http.HttpMethod;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link CorsConfiguration}.
@@ -41,17 +39,17 @@ public class CorsConfigurationTests {
 	public void setNullValues() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowedOrigins(null);
-		assertNull(config.getAllowedOrigins());
+		assertThat((Object) config.getAllowedOrigins()).isNull();
 		config.setAllowedHeaders(null);
-		assertNull(config.getAllowedHeaders());
+		assertThat((Object) config.getAllowedHeaders()).isNull();
 		config.setAllowedMethods(null);
-		assertNull(config.getAllowedMethods());
+		assertThat((Object) config.getAllowedMethods()).isNull();
 		config.setExposedHeaders(null);
-		assertNull(config.getExposedHeaders());
+		assertThat((Object) config.getExposedHeaders()).isNull();
 		config.setAllowCredentials(null);
-		assertNull(config.getAllowCredentials());
+		assertThat((Object) config.getAllowCredentials()).isNull();
 		config.setMaxAge((Long) null);
-		assertNull(config.getMaxAge());
+		assertThat((Object) config.getMaxAge()).isNull();
 	}
 
 	@Test
@@ -229,14 +227,14 @@ public class CorsConfigurationTests {
 	@Test
 	public void checkOriginNotAllowed() {
 		CorsConfiguration config = new CorsConfiguration();
-		assertNull(config.checkOrigin(null));
-		assertNull(config.checkOrigin("https://domain.com"));
+		assertThat((Object) config.checkOrigin(null)).isNull();
+		assertThat((Object) config.checkOrigin("https://domain.com")).isNull();
 		config.addAllowedOrigin("*");
-		assertNull(config.checkOrigin(null));
+		assertThat((Object) config.checkOrigin(null)).isNull();
 		config.setAllowedOrigins(Arrays.asList("https://domain1.com"));
-		assertNull(config.checkOrigin("https://domain2.com"));
+		assertThat((Object) config.checkOrigin("https://domain2.com")).isNull();
 		config.setAllowedOrigins(new ArrayList<>());
-		assertNull(config.checkOrigin("https://domain.com"));
+		assertThat((Object) config.checkOrigin("https://domain.com")).isNull();
 	}
 
 	@Test
@@ -253,10 +251,10 @@ public class CorsConfigurationTests {
 	@Test
 	public void checkMethodNotAllowed() {
 		CorsConfiguration config = new CorsConfiguration();
-		assertNull(config.checkHttpMethod(null));
-		assertNull(config.checkHttpMethod(HttpMethod.DELETE));
+		assertThat((Object) config.checkHttpMethod(null)).isNull();
+		assertThat((Object) config.checkHttpMethod(HttpMethod.DELETE)).isNull();
 		config.setAllowedMethods(new ArrayList<>());
-		assertNull(config.checkHttpMethod(HttpMethod.POST));
+		assertThat((Object) config.checkHttpMethod(HttpMethod.POST)).isNull();
 	}
 
 	@Test
@@ -273,13 +271,13 @@ public class CorsConfigurationTests {
 	@Test
 	public void checkHeadersNotAllowed() {
 		CorsConfiguration config = new CorsConfiguration();
-		assertNull(config.checkHeaders(null));
-		assertNull(config.checkHeaders(Arrays.asList("header1")));
+		assertThat((Object) config.checkHeaders(null)).isNull();
+		assertThat((Object) config.checkHeaders(Arrays.asList("header1"))).isNull();
 		config.setAllowedHeaders(Collections.emptyList());
-		assertNull(config.checkHeaders(Arrays.asList("header1")));
+		assertThat((Object) config.checkHeaders(Arrays.asList("header1"))).isNull();
 		config.addAllowedHeader("header2");
 		config.addAllowedHeader("header3");
-		assertNull(config.checkHeaders(Arrays.asList("header1")));
+		assertThat((Object) config.checkHeaders(Arrays.asList("header1"))).isNull();
 	}
 
 	@Test  // SPR-15772

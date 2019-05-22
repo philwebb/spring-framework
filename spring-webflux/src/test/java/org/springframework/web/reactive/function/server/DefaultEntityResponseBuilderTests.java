@@ -48,9 +48,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Arjen Poutsma
@@ -61,14 +58,14 @@ public class DefaultEntityResponseBuilderTests {
 	public void fromObject() {
 		String body = "foo";
 		EntityResponse<String> response = EntityResponse.fromObject(body).build().block();
-		assertSame(body, response.entity());
+		assertThat((Object) response.entity()).isSameAs(body);
 	}
 
 	@Test
 	public void fromPublisherClass() {
 		Flux<String> body = Flux.just("foo", "bar");
 		EntityResponse<Flux<String>> response = EntityResponse.fromPublisher(body, String.class).build().block();
-		assertSame(body, response.entity());
+		assertThat((Object) response.entity()).isSameAs(body);
 	}
 
 	@Test
@@ -76,7 +73,7 @@ public class DefaultEntityResponseBuilderTests {
 		Flux<String> body = Flux.just("foo", "bar");
 		ParameterizedTypeReference<String> typeReference = new ParameterizedTypeReference<String>() {};
 		EntityResponse<Flux<String>> response = EntityResponse.fromPublisher(body, typeReference).build().block();
-		assertSame(body, response.entity());
+		assertThat((Object) response.entity()).isSameAs(body);
 	}
 
 	@Test
@@ -219,7 +216,7 @@ public class DefaultEntityResponseBuilderTests {
 				.expectComplete()
 				.verify();
 
-		assertNotNull(exchange.getResponse().getBody());
+		assertThat((Object) exchange.getResponse().getBody()).isNotNull();
 	}
 
 	@Test

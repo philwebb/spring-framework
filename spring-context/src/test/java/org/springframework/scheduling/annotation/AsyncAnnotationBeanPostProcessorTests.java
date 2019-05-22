@@ -44,7 +44,6 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNotSame;
 
 /**
  * @author Mark Fisher
@@ -72,7 +71,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		Thread mainThread = Thread.currentThread();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertNotSame(mainThread, asyncThread);
+		assertThat((Object) asyncThread).isNotSameAs(mainThread);
 		context.close();
 	}
 
@@ -91,7 +90,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		Thread mainThread = Thread.currentThread();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertNotSame(mainThread, asyncThread);
+		assertThat((Object) asyncThread).isNotSameAs(mainThread);
 		context.close();
 	}
 

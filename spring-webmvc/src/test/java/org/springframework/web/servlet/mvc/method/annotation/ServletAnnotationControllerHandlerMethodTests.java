@@ -153,10 +153,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rossen Stoyanchev
@@ -196,7 +192,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals("Invalid response status code", HttpServletResponse.SC_OK, response.getStatus());
+		assertThat((long) response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -206,7 +202,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals("Invalid response status code", HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertThat((long) response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_BAD_REQUEST);
 		assertThat(webAppContext.isSingleton(RequiredParamController.class.getSimpleName())).isTrue();
 	}
 
@@ -218,7 +214,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addParameter("id", "foo");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals("Invalid response status code", HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertThat((long) response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	@Test
@@ -309,7 +305,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath/1");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(404, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 404);
 	}
 
 	@Test
@@ -319,12 +315,12 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals("Invalid response status", HttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
+		assertThat((long) response.getStatus()).as("Invalid response status").isEqualTo((long) HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 		String allowHeader = response.getHeader("Allow");
-		assertNotNull("No Allow header", allowHeader);
+		assertThat((Object) allowHeader).as("No Allow header").isNotNull();
 		Set<String> allowedMethods = new HashSet<>();
 		allowedMethods.addAll(Arrays.asList(StringUtils.delimitedListToStringArray(allowHeader, ", ")));
-		assertEquals("Invalid amount of supported methods", 6, allowedMethods.size());
+		assertThat((long) allowedMethods.size()).as("Invalid amount of supported methods").isEqualTo((long) 6);
 		assertThat(allowedMethods.contains("PUT")).as("PUT not allowed").isTrue();
 		assertThat(allowedMethods.contains("DELETE")).as("DELETE not allowed").isTrue();
 		assertThat(allowedMethods.contains("HEAD")).as("HEAD not allowed").isTrue();
@@ -686,21 +682,21 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		HttpSession session = request.getSession();
 		getServlet().service(request, response);
 		assertThat(response.getContentAsString()).isEqualTo("myView");
-		assertSame(servletContext, request.getAttribute("servletContext"));
-		assertSame(servletConfig, request.getAttribute("servletConfig"));
-		assertSame(session.getId(), request.getAttribute("sessionId"));
-		assertSame(request.getRequestURI(), request.getAttribute("requestUri"));
-		assertSame(request.getLocale(), request.getAttribute("locale"));
+		assertThat(request.getAttribute("servletContext")).isSameAs(servletContext);
+		assertThat(request.getAttribute("servletConfig")).isSameAs(servletConfig);
+		assertThat(request.getAttribute("sessionId")).isSameAs(session.getId());
+		assertThat(request.getAttribute("requestUri")).isSameAs(request.getRequestURI());
+		assertThat(request.getAttribute("locale")).isSameAs(request.getLocale());
 
 		request = new MockHttpServletRequest(servletContext, "GET", "/myPath.do");
 		response = new MockHttpServletResponse();
 		session = request.getSession();
 		getServlet().service(request, response);
 		assertThat(response.getContentAsString()).isEqualTo("myView");
-		assertSame(servletContext, request.getAttribute("servletContext"));
-		assertSame(servletConfig, request.getAttribute("servletConfig"));
-		assertSame(session.getId(), request.getAttribute("sessionId"));
-		assertSame(request.getRequestURI(), request.getAttribute("requestUri"));
+		assertThat(request.getAttribute("servletContext")).isSameAs(servletContext);
+		assertThat(request.getAttribute("servletConfig")).isSameAs(servletConfig);
+		assertThat(request.getAttribute("sessionId")).isSameAs(session.getId());
+		assertThat(request.getAttribute("requestUri")).isSameAs(request.getRequestURI());
 
 		request = new MockHttpServletRequest(servletContext, "GET", "/myPath.do");
 		request.addParameter("view", "other");
@@ -724,8 +720,8 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MyParameterDispatchingController deserialized =
 			(MyParameterDispatchingController) SerializationTestUtils.serializeAndDeserialize(
 					webAppContext.getBean(MyParameterDispatchingController.class.getSimpleName()));
-		assertNotNull(deserialized.request);
-		assertNotNull(deserialized.session);
+		assertThat((Object) deserialized.request).isNotNull();
+		assertThat((Object) deserialized.session).isNotNull();
 	}
 
 	@Test
@@ -807,12 +803,12 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/bogus-unmapped");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(404, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 404);
 
 		request = new MockHttpServletRequest("GET", "");
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentAsString()).isEqualTo("get");
 	}
 
@@ -852,7 +848,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Accept", "text/*, */*");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentAsString()).isEqualTo(requestBody);
 	}
 
@@ -867,7 +863,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Accept", "text/*, */*");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentAsString()).isEqualTo(requestBody);
 	}
 
@@ -887,7 +883,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Accept", "application/pdf, application/msword");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(406, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 406);
 	}
 
 	@Test
@@ -918,8 +914,8 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Content-Type", "application/pdf");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(415, response.getStatus());
-		assertNotNull("No Accept response header set", response.getHeader("Accept"));
+		assertThat((long) response.getStatus()).isEqualTo((long) 415);
+		assertThat((Object) response.getHeader("Accept")).as("No Accept response header set").isNotNull();
 	}
 
 	@Test
@@ -932,7 +928,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Content-Type", "text/plain; charset=utf-8");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentAsString()).isEqualTo(requestBody);
 	}
 
@@ -950,7 +946,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Content-Type", "application/pdf");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals("Invalid response status code", HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+		assertThat((long) response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	@Test
@@ -965,7 +961,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("MyRequestHeader", "MyValue");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(201, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 201);
 		assertThat(response.getContentAsString()).isEqualTo(requestBody);
 		assertThat(response.getHeader("MyResponseHeader")).isEqualTo("MyValue");
 
@@ -973,7 +969,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 		assertThat(response.getHeader("MyResponseHeader")).isEqualTo("MyValue");
-		assertEquals(404, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 404);
 	}
 
 	@Test // SPR-16172
@@ -990,7 +986,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test-entity");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getHeader("Content-Type")).isEqualTo("application/xml");
 		assertThat(response.getContentAsString()).isEqualTo(("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
 						"<testEntity><name>Foo Bar</name></testEntity>"));
@@ -1025,7 +1021,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Accept", "text/*, */*");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 	}
 
 	@Test
@@ -1052,7 +1048,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Content-Type", "application/xml; charset=utf-8");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(400, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 400);
 	}
 
 
@@ -1076,7 +1072,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.setContentType("application/xml");
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(415, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 415);
 	}
 
 	@Test
@@ -1099,7 +1095,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.setContentType("application/xml");
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(415, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 415);
 	}
 
 	@Test
@@ -1151,7 +1147,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Accept", "application/msword");
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(406, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 406);
 	}
 
 	@Test
@@ -1201,14 +1197,14 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Accept", "application/msword");
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(406, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 406);
 
 		// SPR-16318
 		request = new MockHttpServletRequest("GET", "/something");
 		request.addHeader("Accept", "text/csv,application/problem+json");
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(500, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 500);
 		assertThat(response.getContentType()).isEqualTo("application/problem+json");
 		assertThat(response.getContentAsString()).isEqualTo("{\"reason\":\"error\"}");
 	}
@@ -1221,7 +1217,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 		assertThat(response.getContentAsString()).isEqualTo("something");
-		assertEquals(201, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 201);
 		assertThat(response.getErrorMessage()).isEqualTo("It's alive!");
 	}
 
@@ -1275,7 +1271,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/bug/EXISTING");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentAsString()).isEqualTo("Pattern");
 	}
 
@@ -1520,7 +1516,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/t1/m2");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertEquals(405, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 405);
 	}
 
 	@Test  // SPR-8536
@@ -1532,7 +1528,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).isEqualTo("home");
 
 		// Accept "*/*"
@@ -1541,7 +1537,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).isEqualTo("home");
 
 		// Accept "application/json"
@@ -1550,7 +1546,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getHeader("Content-Type")).isEqualTo("application/json;charset=ISO-8859-1");
 		assertThat(response.getContentAsString()).isEqualTo("homeJson");
 	}
@@ -1567,7 +1563,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		// POST -> bind error
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getForwardedUrl()).isEqualTo("messages/new");
 		assertThat(RequestContextUtils.getOutputFlashMap(request).isEmpty()).isTrue();
 
@@ -1578,7 +1574,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(302, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 302);
 		assertThat(response.getRedirectedUrl()).isEqualTo("/messages/1?name=value");
 		assertThat(RequestContextUtils.getOutputFlashMap(request).get("successMessage")).isEqualTo("yay!");
 
@@ -1589,7 +1585,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentAsString()).isEqualTo("Got: yay!");
 		assertThat(RequestContextUtils.getOutputFlashMap(request).isEmpty()).isTrue();
 	}
@@ -1604,7 +1600,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		getServlet().service(request, response);
 
-		assertEquals(302, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 302);
 		assertThat(response.getRedirectedUrl()).isEqualTo("/messages/1?name=value");
 		assertThat(RequestContextUtils.getOutputFlashMap(request).get("successMessage")).isEqualTo("yay!");
 
@@ -1615,7 +1611,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentAsString()).isEqualTo("Got: yay!");
 		assertThat(RequestContextUtils.getOutputFlashMap(request).isEmpty()).isTrue();
 	}
@@ -1657,10 +1653,10 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(new MockHttpServletRequest("POST", "/"), response);
 
-		assertEquals("Wrong status code", MockHttpServletResponse.SC_CREATED, response.getStatus());
-		assertEquals("Wrong number of headers", 1, response.getHeaderNames().size());
+		assertThat((long) response.getStatus()).as("Wrong status code").isEqualTo((long) MockHttpServletResponse.SC_CREATED);
+		assertThat((long) response.getHeaderNames().size()).as("Wrong number of headers").isEqualTo((long) 1);
 		assertThat(response.getHeader("location")).as("Wrong value for 'location' header").isEqualTo("/test/items/123");
-		assertEquals("Expected an empty content", 0, response.getContentLength());
+		assertThat((long) response.getContentLength()).as("Expected an empty content").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -1669,9 +1665,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(new MockHttpServletRequest("POST", "/empty"), response);
 
-		assertEquals("Wrong status code", MockHttpServletResponse.SC_CREATED, response.getStatus());
-		assertEquals("Wrong number of headers", 0, response.getHeaderNames().size());
-		assertEquals("Expected an empty content", 0, response.getContentLength());
+		assertThat((long) response.getStatus()).as("Wrong status code").isEqualTo((long) MockHttpServletResponse.SC_CREATED);
+		assertThat((long) response.getHeaderNames().size()).as("Wrong number of headers").isEqualTo((long) 0);
+		assertThat((long) response.getContentLength()).as("Expected an empty content").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -1691,7 +1687,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentType()).isEqualTo("text/html;charset=ISO-8859-1");
 		assertThat(response.getHeader("Content-Disposition")).isEqualTo("inline;filename=f.txt");
 		assertThat(response.getContentAsByteArray()).isEqualTo(content);
@@ -1714,9 +1710,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentType()).isEqualTo("text/html;charset=ISO-8859-1");
-		assertNull(response.getHeader("Content-Disposition"));
+		assertThat((Object) response.getHeader("Content-Disposition")).isNull();
 		assertThat(response.getContentAsByteArray()).isEqualTo(content);
 	}
 
@@ -1737,9 +1733,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentType()).isEqualTo("text/html;charset=ISO-8859-1");
-		assertNull(response.getHeader("Content-Disposition"));
+		assertThat((Object) response.getHeader("Content-Disposition")).isNull();
 		assertThat(response.getContentAsByteArray()).isEqualTo(content);
 	}
 
@@ -1760,9 +1756,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getContentType()).isEqualTo("text/css;charset=ISO-8859-1");
-		assertNull(response.getHeader("Content-Disposition"));
+		assertThat((Object) response.getHeader("Content-Disposition")).isNull();
 		assertThat(response.getContentAsByteArray()).isEqualTo(content);
 	}
 
@@ -1774,7 +1770,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(422, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 422);
 		assertThat(response.getForwardedUrl()).isEqualTo("view");
 	}
 
@@ -1786,7 +1782,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(422, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 422);
 		assertThat(response.getForwardedUrl()).isEqualTo("view");
 	}
 
@@ -1798,9 +1794,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getHeader("MyResponseHeader")).isEqualTo("MyValue");
-		assertEquals(4, response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) 4);
 		assertThat(response.getContentAsByteArray().length == 0).isTrue();
 
 		// Now repeat with GET
@@ -1808,9 +1804,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getHeader("MyResponseHeader")).isEqualTo("MyValue");
-		assertEquals(4, response.getContentLength());
+		assertThat((long) response.getContentLength()).isEqualTo((long) 4);
 		assertThat(response.getContentAsString()).isEqualTo("body");
 	}
 
@@ -1822,7 +1818,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getHeader("h1")).isEqualTo("v1");
 	}
 
@@ -1834,7 +1830,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
 
-		assertEquals(200, response.getStatus());
+		assertThat((long) response.getStatus()).isEqualTo((long) 200);
 		assertThat(response.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 		assertThat(response.getContentAsByteArray().length == 0).isTrue();
 	}
@@ -2126,14 +2122,14 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		public void initBinder(@RequestParam("param1") String p1,
 				@RequestParam(value="paramX", required=false) String px, int param2) {
 
-			assertNull(px);
+			assertThat((Object) px).isNull();
 		}
 
 		@ModelAttribute
 		public void modelAttribute(@RequestParam("param1") String p1,
 				@RequestParam(value="paramX", required=false) String px, int param2) {
 
-			assertNull(px);
+			assertThat((Object) px).isNull();
 		}
 	}
 
@@ -2166,7 +2162,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		public void initBinder(@RequestParam("param1") String p1,
 				@RequestParam(value="paramX", required=false) String px, int param2) {
 
-			assertNull(px);
+			assertThat((Object) px).isNull();
 		}
 
 		@Override
@@ -2174,7 +2170,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		public void modelAttribute(@RequestParam("param1") String p1,
 				@RequestParam(value="paramX", required=false) String px, int param2) {
 
-			assertNull(px);
+			assertThat((Object) px).isNull();
 		}
 	}
 
@@ -2327,7 +2323,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		@RequestMapping("/myPath.do")
 		public String myHandle(@ModelAttribute("myCommand") TestBean tb, BindingResult errors, ModelMap model) {
 			FieldError error = errors.getFieldError("age");
-			assertNotNull("Must have field error for age property", error);
+			assertThat((Object) error).as("Must have field error for age property").isNotNull();
 			assertThat(error.getRejectedValue()).isEqualTo("value2");
 			if (!model.containsKey("myKey")) {
 				model.addAttribute("myKey", "myValue");
@@ -2387,7 +2383,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 				BindingResult errors, ModelMap model) {
 
 			FieldError error = errors.getFieldError("age");
-			assertNotNull("Must have field error for age property", error);
+			assertThat((Object) error).as("Must have field error for age property").isNotNull();
 			assertThat(error.getRejectedValue()).isEqualTo("value2");
 			if (!model.containsKey("myKey")) {
 				model.addAttribute("myKey", "myValue");
@@ -2424,7 +2420,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 			tbReal.setName("myName");
 			boolean condition = model.get("ITestBean") instanceof DerivedTestBean;
 			assertThat(condition).isTrue();
-			assertNotNull(arg);
+			assertThat((Object) arg).isNotNull();
 			return super.myHandle(tbReal, errors, model);
 		}
 
@@ -2489,7 +2485,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 			vf.afterPropertiesSet();
 			binder.setValidator(vf);
 			assertThat(date).isEqualTo("2007-10-02");
-			assertEquals(1, date2.length);
+			assertThat((long) date2.length).isEqualTo((long) 1);
 			assertThat(date2[0]).isEqualTo("2007-10-02");
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			dateFormat.setLenient(false);
@@ -2655,9 +2651,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 				@ModelAttribute TestPrincipal modelPrinc,
 				OtherPrincipal requestPrinc,
 				Writer writer) throws IOException {
-			assertNull(testBean);
-			assertNotNull(modelPrinc);
-			assertNotNull(requestPrinc);
+			assertThat((Object) testBean).isNull();
+			assertThat((Object) modelPrinc).isNotNull();
+			assertThat((Object) requestPrinc).isNotNull();
 			assertThat(errors.hasErrors()).isFalse();
 			errors.reject("myCode");
 			writer.write("myView");
@@ -2698,7 +2694,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 						tb = (TestBean) model.get("myCommand");
 					}
 					if (tb.getName() != null && tb.getName().endsWith("myDefaultName")) {
-						assertEquals(107, tb.getDate().getYear());
+						assertThat((long) tb.getDate().getYear()).isEqualTo((long) 107);
 					}
 					Errors errors = (Errors) model.get(BindingResult.MODEL_KEY_PREFIX + "testBean");
 					if (errors == null) {
@@ -3430,7 +3426,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		@PostMapping("/foo")
 		public ResponseEntity<String> foo(HttpEntity<byte[]> requestEntity) throws Exception {
-			assertNotNull(requestEntity);
+			assertThat((Object) requestEntity).isNotNull();
 			assertThat(requestEntity.getHeaders().getFirst("MyRequestHeader")).isEqualTo("MyValue");
 
 			String body = new String(requestEntity.getBody(), "UTF-8");
@@ -3782,7 +3778,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		@RequestMapping("/bind")
 		public String handle(Optional<DataClass> optionalData, BindingResult result) {
 			if (result.hasErrors()) {
-				assertNotNull(optionalData);
+				assertThat((Object) optionalData).isNotNull();
 				assertThat(optionalData.isPresent()).isFalse();
 				return result.getFieldValue("param1") + "-" + result.getFieldValue("param2") + "-" +
 						result.getFieldValue("param3");
@@ -3815,11 +3811,11 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 			if (result.hasErrors()) {
 				return result.getFieldError().toString();
 			}
-			assertNotNull(data);
-			assertNotNull(data.date);
-			assertEquals(2010, data.date.getYear());
-			assertEquals(1, data.date.getMonthValue());
-			assertEquals(1, data.date.getDayOfMonth());
+			assertThat((Object) data).isNotNull();
+			assertThat((Object) data.date).isNotNull();
+			assertThat((long) data.date.getYear()).isEqualTo((long) 2010);
+			assertThat((long) data.date.getMonthValue()).isEqualTo((long) 1);
+			assertThat((long) data.date.getDayOfMonth()).isEqualTo((long) 1);
 			return result.getFieldValue("date").toString();
 		}
 	}

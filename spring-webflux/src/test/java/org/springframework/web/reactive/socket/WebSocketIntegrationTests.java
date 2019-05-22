@@ -39,8 +39,6 @@ import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Integration tests with server-side {@link WebSocketHandler}s.
  *

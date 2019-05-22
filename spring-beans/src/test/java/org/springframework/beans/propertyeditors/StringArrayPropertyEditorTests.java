@@ -19,9 +19,6 @@ package org.springframework.beans.propertyeditors;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rick Evans
@@ -34,7 +31,7 @@ public class StringArrayPropertyEditorTests {
 		StringArrayPropertyEditor editor = new StringArrayPropertyEditor();
 		editor.setAsText("0,1,2");
 		Object value = editor.getValue();
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition = value instanceof String[];
 		assertThat(condition).isTrue();
 		String[] array = (String[]) value;
@@ -63,7 +60,7 @@ public class StringArrayPropertyEditorTests {
 		Object value = editor.getValue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
-			assertEquals(3, array[i].length());
+			assertThat((long) array[i].length()).isEqualTo((long) 3);
 			assertThat(array[i].trim()).isEqualTo(("" + i));
 		}
 		assertThat(editor.getAsText()).isEqualTo("  0,1  , 2 ");
@@ -104,14 +101,14 @@ public class StringArrayPropertyEditorTests {
 		Object value = editor.getValue();
 		boolean condition = value instanceof String[];
 		assertThat(condition).isTrue();
-		assertEquals(0, ((String[]) value).length);
+		assertThat((long) ((String[]) value).length).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void withEmptyArrayAsNull() throws Exception {
 		StringArrayPropertyEditor editor = new StringArrayPropertyEditor(",", true);
 		editor.setAsText("");
-		assertNull(editor.getValue());
+		assertThat(editor.getValue()).isNull();
 	}
 
 }

@@ -26,7 +26,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -43,7 +42,7 @@ public class SimplePropertyNamespaceHandlerTests {
 		ITestBean rob = (TestBean) beanFactory.getBean("rob");
 		ITestBean sally = (TestBean) beanFactory.getBean("sally");
 		assertThat(rob.getName()).isEqualTo("Rob Harrop");
-		assertEquals(24, rob.getAge());
+		assertThat((long) rob.getAge()).isEqualTo((long) 24);
 		assertThat(sally).isEqualTo(rob.getSpouse());
 	}
 
@@ -55,7 +54,7 @@ public class SimplePropertyNamespaceHandlerTests {
 		TestBean sally = (TestBean) beanFactory.getBean("sally2");
 		ITestBean rob = sally.getSpouse();
 		assertThat(rob.getName()).isEqualTo("Rob Harrop");
-		assertEquals(24, rob.getAge());
+		assertThat((long) rob.getAge()).isEqualTo((long) 24);
 		assertThat(sally).isEqualTo(rob.getSpouse());
 	}
 

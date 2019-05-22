@@ -25,9 +25,6 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rossen Stoyanchev
@@ -80,7 +77,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition condition = new PatternsRequestCondition("/foo");
 		PatternsRequestCondition match = condition.getMatchingCondition(new MockHttpServletRequest("GET", "/foo"));
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 	}
 
 	@Test
@@ -88,7 +85,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition condition = new PatternsRequestCondition("/foo/*");
 		PatternsRequestCondition match = condition.getMatchingCondition(new MockHttpServletRequest("GET", "/foo/bar"));
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 	}
 
 	@Test
@@ -107,14 +104,14 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition condition = new PatternsRequestCondition("/{foo}");
 		PatternsRequestCondition match = condition.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next()).isEqualTo("/{foo}.*");
 
 		boolean useSuffixPatternMatch = false;
 		condition = new PatternsRequestCondition(new String[] {"/{foo}"}, null, null, useSuffixPatternMatch, false);
 		match = condition.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next()).isEqualTo("/{foo}");
 	}
 
@@ -127,13 +124,13 @@ public class PatternsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/jobs/my.job");
 		PatternsRequestCondition match = condition.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next()).isEqualTo("/jobs/{jobName}");
 
 		request = new MockHttpServletRequest("GET", "/jobs/my.job.json");
 		match = condition.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next()).isEqualTo("/jobs/{jobName}.json");
 	}
 
@@ -150,7 +147,7 @@ public class PatternsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/prefix/suffix.json");
 		PatternsRequestCondition match = combined.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 	}
 
 	@Test
@@ -160,19 +157,19 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition condition = new PatternsRequestCondition("/foo");
 		PatternsRequestCondition match = condition.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next()).as("Should match by default").isEqualTo("/foo/");
 
 		condition = new PatternsRequestCondition(new String[] {"/foo"}, null, null, false, true);
 		match = condition.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 		assertThat(match.getPatterns().iterator().next()).as("Trailing slash should be insensitive to useSuffixPatternMatch settings (SPR-6164, SPR-5636)").isEqualTo("/foo/");
 
 		condition = new PatternsRequestCondition(new String[] {"/foo"}, null, null, false, false);
 		match = condition.getMatchingCondition(request);
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test
@@ -180,20 +177,20 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition condition = new PatternsRequestCondition("/foo.jpg");
 		PatternsRequestCondition match = condition.getMatchingCondition(new MockHttpServletRequest("GET", "/foo.html"));
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test // gh-22543
 	public void matchWithEmptyPatterns() {
 		PatternsRequestCondition condition = new PatternsRequestCondition();
 		assertThat(condition).isEqualTo(new PatternsRequestCondition(""));
-		assertNotNull(condition.getMatchingCondition(new MockHttpServletRequest("GET", "")));
-		assertNull(condition.getMatchingCondition(new MockHttpServletRequest("GET", "/anything")));
+		assertThat((Object) condition.getMatchingCondition(new MockHttpServletRequest("GET", ""))).isNotNull();
+		assertThat((Object) condition.getMatchingCondition(new MockHttpServletRequest("GET", "/anything"))).isNull();
 
 		condition = condition.combine(new PatternsRequestCondition());
 		assertThat(condition).isEqualTo(new PatternsRequestCondition(""));
-		assertNotNull(condition.getMatchingCondition(new MockHttpServletRequest("GET", "")));
-		assertNull(condition.getMatchingCondition(new MockHttpServletRequest("GET", "/anything")));
+		assertThat((Object) condition.getMatchingCondition(new MockHttpServletRequest("GET", ""))).isNotNull();
+		assertThat((Object) condition.getMatchingCondition(new MockHttpServletRequest("GET", "/anything"))).isNull();
 	}
 
 	@Test
@@ -201,7 +198,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = new PatternsRequestCondition("/foo*");
 		PatternsRequestCondition c2 = new PatternsRequestCondition("/foo*");
 
-		assertEquals(0, c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo")));
+		assertThat((long) c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo"))).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -209,7 +206,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition c1 = new PatternsRequestCondition("/fo*");
 		PatternsRequestCondition c2 = new PatternsRequestCondition("/foo");
 
-		assertEquals(1, c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo")));
+		assertThat((long) c1.compareTo(c2, new MockHttpServletRequest("GET", "/foo"))).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -222,7 +219,7 @@ public class PatternsRequestConditionTests {
 		PatternsRequestCondition match1 = c1.getMatchingCondition(request);
 		PatternsRequestCondition match2 = c2.getMatchingCondition(request);
 
-		assertEquals(1, match1.compareTo(match2, request));
+		assertThat((long) match1.compareTo(match2, request)).isEqualTo((long) 1);
 	}
 
 }

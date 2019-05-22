@@ -37,7 +37,6 @@ import org.junit.Test;
 import org.springframework.jdbc.core.RowMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -96,11 +95,9 @@ public class NamedParameterQueryTests {
 		List<Map<String, Object>> li = template.queryForList(
 				"SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertEquals("All rows returned", 2, li.size());
-		assertEquals("First row is Integer", 11,
-				((Integer) li.get(0).get("age")).intValue());
-		assertEquals("Second row is Integer", 12,
-				((Integer) li.get(1).get("age")).intValue());
+		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 2);
+		assertThat((long) ((Integer) li.get(0).get("age")).intValue()).as("First row is Integer").isEqualTo((long) 11);
+		assertThat((long) ((Integer) li.get(1).get("age")).intValue()).as("Second row is Integer").isEqualTo((long) 12);
 
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
@@ -115,7 +112,7 @@ public class NamedParameterQueryTests {
 		List<Map<String, Object>> li = template.queryForList(
 				"SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertEquals("All rows returned", 0, li.size());
+		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 0);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -131,9 +128,8 @@ public class NamedParameterQueryTests {
 		List<Map<String, Object>> li = template.queryForList(
 				"SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertEquals("All rows returned", 1, li.size());
-		assertEquals("First row is Integer", 11,
-				((Integer) li.get(0).get("age")).intValue());
+		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 1);
+		assertThat((long) ((Integer) li.get(0).get("age")).intValue()).as("First row is Integer").isEqualTo((long) 11);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -150,8 +146,8 @@ public class NamedParameterQueryTests {
 		List<Integer> li = template.queryForList("SELECT AGE FROM CUSTMR WHERE ID < :id",
 				params, Integer.class);
 
-		assertEquals("All rows returned", 1, li.size());
-		assertEquals("First row is Integer", 11, li.get(0).intValue());
+		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 1);
+		assertThat((long) li.get(0).intValue()).as("First row is Integer").isEqualTo((long) 11);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -166,7 +162,7 @@ public class NamedParameterQueryTests {
 		params.addValue("id", 3);
 		Map<String, Object> map = template.queryForMap("SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertEquals("Row is Integer", 11, ((Integer) map.get("age")).intValue());
+		assertThat((long) ((Integer) map.get("age")).intValue()).as("Row is Integer").isEqualTo((long) 11);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -276,7 +272,7 @@ public class NamedParameterQueryTests {
 		params.addValue("id", 3);
 		int i = template.queryForObject("SELECT AGE FROM CUSTMR WHERE ID = :id", params, Integer.class).intValue();
 
-		assertEquals("Return of an int", 22, i);
+		assertThat((long) i).as("Return of an int").isEqualTo((long) 22);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -290,7 +286,7 @@ public class NamedParameterQueryTests {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(new ParameterBean(3));
 		long l = template.queryForObject("SELECT AGE FROM CUSTMR WHERE ID = :id", params, Long.class).longValue();
 
-		assertEquals("Return of a long", 87, l);
+		assertThat(l).as("Return of a long").isEqualTo((long) 87);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 3, Types.INTEGER);
 	}
@@ -304,7 +300,7 @@ public class NamedParameterQueryTests {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(new ParameterCollectionBean(3, 5));
 		long l = template.queryForObject("SELECT AGE FROM CUSTMR WHERE ID IN (:ids)", params, Long.class).longValue();
 
-		assertEquals("Return of a long", 87, l);
+		assertThat(l).as("Return of a long").isEqualTo((long) 87);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID IN (?, ?)");
 		verify(preparedStatement).setObject(1, 3);
 		verify(preparedStatement).setObject(2, 5);

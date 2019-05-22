@@ -35,10 +35,6 @@ import org.springframework.util.MimeTypeUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for
@@ -56,7 +52,7 @@ public class MessageConverterTests {
 		Message<String> message = MessageBuilder.withPayload("ABC").build();
 
 		assertThat(this.converter.fromMessage(message, String.class)).isEqualTo("success-from");
-		assertNull(this.converter.fromMessage(message, Integer.class));
+		assertThat(this.converter.fromMessage(message, Integer.class)).isNull();
 	}
 
 	@Test
@@ -72,7 +68,7 @@ public class MessageConverterTests {
 		Message<String> message = MessageBuilder.withPayload(
 				"ABC").setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON).build();
 
-		assertNull(this.converter.fromMessage(message, String.class));
+		assertThat(this.converter.fromMessage(message, String.class)).isNull();
 	}
 
 	@Test
@@ -118,8 +114,8 @@ public class MessageConverterTests {
 		MessageHeaders headers = new MessageHeaders(map);
 		Message<?> message = this.converter.toMessage("ABC", headers);
 
-		assertNotNull(message.getHeaders().getId());
-		assertNotNull(message.getHeaders().getTimestamp());
+		assertThat((Object) message.getHeaders().getId()).isNotNull();
+		assertThat((Object) message.getHeaders().getTimestamp()).isNotNull();
 		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MimeTypeUtils.TEXT_PLAIN);
 		assertThat(message.getHeaders().get("foo")).isEqualTo("bar");
 	}
@@ -134,9 +130,9 @@ public class MessageConverterTests {
 		MessageHeaders headers = accessor.getMessageHeaders();
 		Message<?> message = this.converter.toMessage("ABC", headers);
 
-		assertSame(headers, message.getHeaders());
-		assertNull(message.getHeaders().getId());
-		assertNull(message.getHeaders().getTimestamp());
+		assertThat((Object) message.getHeaders()).isSameAs(headers);
+		assertThat((Object) message.getHeaders().getId()).isNull();
+		assertThat((Object) message.getHeaders().getTimestamp()).isNull();
 		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MimeTypeUtils.TEXT_PLAIN);
 	}
 

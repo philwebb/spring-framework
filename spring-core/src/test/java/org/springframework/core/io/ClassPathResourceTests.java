@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests that serve as regression tests for the bugs described in SPR-6888
@@ -124,7 +123,7 @@ public class ClassPathResourceTests {
 	private void assertDescriptionContainsExpectedPath(ClassPathResource resource, String expectedPath) {
 		Matcher matcher = DESCRIPTION_PATTERN.matcher(resource.getDescription());
 		assertThat(matcher.matches()).isTrue();
-		assertEquals(1, matcher.groupCount());
+		assertThat((long) matcher.groupCount()).isEqualTo((long) 1);
 		String match = matcher.group(1);
 
 		assertThat(match).isEqualTo(expectedPath);

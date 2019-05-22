@@ -45,8 +45,6 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -113,7 +111,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		this.writer.write(result, null, MediaType.MULTIPART_FORM_DATA, this.response, hints).block(Duration.ofSeconds(5));
 
 		MultiValueMap<String, Part> requestParts = parse(hints);
-		assertEquals(7, requestParts.size());
+		assertThat((long) requestParts.size()).isEqualTo((long) 7);
 
 		Part part = requestParts.getFirst("name 1");
 		boolean condition4 = part instanceof FormFieldPart;
@@ -122,7 +120,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertThat(((FormFieldPart) part).value()).isEqualTo("value 1");
 
 		List<Part> parts2 = requestParts.get("name 2");
-		assertEquals(2, parts2.size());
+		assertThat((long) parts2.size()).isEqualTo((long) 2);
 		part = parts2.get(0);
 		boolean condition3 = part instanceof FormFieldPart;
 		assertThat(condition3).isTrue();
@@ -140,7 +138,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertThat(part.name()).isEqualTo("logo");
 		assertThat(((FilePart) part).filename()).isEqualTo("logo.jpg");
 		assertThat(part.headers().getContentType()).isEqualTo(MediaType.IMAGE_JPEG);
-		assertEquals(logo.getFile().length(), part.headers().getContentLength());
+		assertThat(part.headers().getContentLength()).isEqualTo(logo.getFile().length());
 
 		part = requestParts.getFirst("utf8");
 		boolean condition = part instanceof FilePart;
@@ -148,7 +146,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertThat(part.name()).isEqualTo("utf8");
 		assertThat(((FilePart) part).filename()).isEqualTo("Hall\u00F6le.jpg");
 		assertThat(part.headers().getContentType()).isEqualTo(MediaType.IMAGE_JPEG);
-		assertEquals(utf8.getFile().length(), part.headers().getContentLength());
+		assertThat(part.headers().getContentLength()).isEqualTo(utf8.getFile().length());
 
 		part = requestParts.getFirst("json");
 		assertThat(part.name()).isEqualTo("json");
@@ -189,7 +187,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		this.writer.write(result, null, MediaType.MULTIPART_FORM_DATA, this.response, hints).block();
 
 		MultiValueMap<String, Part> requestParts = parse(hints);
-		assertEquals(1, requestParts.size());
+		assertThat((long) requestParts.size()).isEqualTo((long) 1);
 
 		Part part = requestParts.getFirst("logo");
 		assertThat(part.name()).isEqualTo("logo");
@@ -197,7 +195,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertThat(condition).isTrue();
 		assertThat(((FilePart) part).filename()).isEqualTo("logo.jpg");
 		assertThat(part.headers().getContentType()).isEqualTo(MediaType.IMAGE_JPEG);
-		assertEquals(logo.getFile().length(), part.headers().getContentLength());
+		assertThat(part.headers().getContentLength()).isEqualTo(logo.getFile().length());
 	}
 
 	@Test // SPR-16402
@@ -240,24 +238,24 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 				this.response, hints).block();
 
 		MultiValueMap<String, Part> requestParts = parse(hints);
-		assertEquals(2, requestParts.size());
+		assertThat((long) requestParts.size()).isEqualTo((long) 2);
 
 		Part part = requestParts.getFirst("resource");
 		boolean condition1 = part instanceof FilePart;
 		assertThat(condition1).isTrue();
 		assertThat(((FilePart) part).filename()).isEqualTo("spring.jpg");
-		assertEquals(logo.getFile().length(), part.headers().getContentLength());
+		assertThat(part.headers().getContentLength()).isEqualTo(logo.getFile().length());
 
 		part = requestParts.getFirst("buffers");
 		boolean condition = part instanceof FilePart;
 		assertThat(condition).isTrue();
 		assertThat(((FilePart) part).filename()).isEqualTo("buffers.jpg");
-		assertEquals(logo.getFile().length(), part.headers().getContentLength());
+		assertThat(part.headers().getContentLength()).isEqualTo(logo.getFile().length());
 	}
 
 	private MultiValueMap<String, Part> parse(Map<String, Object> hints) {
 		MediaType contentType = this.response.getHeaders().getContentType();
-		assertNotNull("No boundary found", contentType.getParameter("boundary"));
+		assertThat((Object) contentType.getParameter("boundary")).as("No boundary found").isNotNull();
 
 		// see if Synchronoss NIO Multipart can read what we wrote
 		SynchronossPartHttpMessageReader synchronossReader = new SynchronossPartHttpMessageReader();
@@ -273,7 +271,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		MultiValueMap<String, Part> result = reader.readMono(elementType, request, hints)
 				.block(Duration.ofSeconds(5));
 
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 		return result;
 	}
 

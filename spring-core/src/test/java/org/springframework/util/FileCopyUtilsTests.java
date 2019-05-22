@@ -26,7 +26,6 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for the FileCopyUtils class.
@@ -42,7 +41,7 @@ public class FileCopyUtilsTests {
 		ByteArrayInputStream in = new ByteArrayInputStream(content);
 		ByteArrayOutputStream out = new ByteArrayOutputStream(content.length);
 		int count = FileCopyUtils.copy(in, out);
-		assertEquals(content.length, count);
+		assertThat((long) count).isEqualTo((long) content.length);
 		assertThat(Arrays.equals(content, out.toByteArray())).isTrue();
 	}
 
@@ -68,7 +67,7 @@ public class FileCopyUtilsTests {
 		StringReader in = new StringReader(content);
 		StringWriter out = new StringWriter();
 		int count = FileCopyUtils.copy(in, out);
-		assertEquals(content.length(), count);
+		assertThat((long) count).isEqualTo((long) content.length());
 		assertThat(out.toString()).isEqualTo(content);
 	}
 

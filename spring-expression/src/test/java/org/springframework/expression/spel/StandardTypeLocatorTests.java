@@ -24,7 +24,6 @@ import org.springframework.expression.spel.support.StandardTypeLocator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for type comparison
@@ -40,7 +39,7 @@ public class StandardTypeLocatorTests {
 		assertThat(locator.findType("java.lang.String")).isEqualTo(String.class);
 
 		List<String> prefixes = locator.getImportPrefixes();
-		assertEquals(1,prefixes.size());
+		assertThat((long) prefixes.size()).isEqualTo((long) 1);
 		assertThat(prefixes.contains("java.lang")).isTrue();
 		assertThat(prefixes.contains("java.util")).isFalse();
 

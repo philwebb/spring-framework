@@ -25,8 +25,6 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rick Evans
@@ -87,7 +85,7 @@ public class URLEditorTests {
 	public void testSetAsTextWithNull() throws Exception {
 		PropertyEditor urlEditor = new URLEditor();
 		urlEditor.setAsText(null);
-		assertNull(urlEditor.getValue());
+		assertThat(urlEditor.getValue()).isNull();
 		assertThat(urlEditor.getAsText()).isEqualTo("");
 	}
 

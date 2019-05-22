@@ -37,7 +37,6 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**

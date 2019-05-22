@@ -34,8 +34,6 @@ import org.springframework.validation.BindingResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rob Harrop
@@ -71,7 +69,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		this.tag.setDynamicAttribute(null, dynamicAttribute2, dynamicAttribute2);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -89,7 +87,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		this.tag.setPath("sex");
 		this.tag.setValue("M");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -105,7 +103,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		this.tag.setPath("myFloat");
 		this.tag.setValue(getFloat());
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -127,7 +125,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -144,7 +142,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		this.tag.setPath("myFloat");
 		this.tag.setValue(value);
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -160,7 +158,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		this.tag.setPath("sex");
 		this.tag.setValue("F");
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -177,7 +175,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		this.tag.setValue(new Pet("Rudiger"));
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -200,7 +198,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		this.tag.setValue(new Pet("Santa's Little Helper"));
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -214,7 +212,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		assertThat(checkboxElement.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(checkboxElement.attribute("name").getValue()).isEqualTo("pets");
 		assertThat(checkboxElement.attribute("value").getValue()).isEqualTo("Santa's Little Helper");
-		assertNull(checkboxElement.attribute("checked"));
+		assertThat((Object) checkboxElement.attribute("checked")).isNull();
 	}
 
 	@Test
@@ -228,7 +226,7 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertEquals(Tag.SKIP_BODY, result);
+		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 

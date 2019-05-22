@@ -33,8 +33,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rob Harrop
@@ -82,7 +80,7 @@ public class ScopedProxyTests {
 
 		ITestBean bean = (ITestBean) ctx.getBean("testBean");
 		assertThat(bean.getName()).isEqualTo("male");
-		assertEquals(99, bean.getAge());
+		assertThat((long) bean.getAge()).isEqualTo((long) 99);
 
 		assertThat(scope.getMap().containsKey("scopedTarget.testBean")).isTrue();
 		assertThat(scope.getMap().get("scopedTarget.testBean").getClass()).isEqualTo(TestBean.class);
@@ -97,7 +95,7 @@ public class ScopedProxyTests {
 		bf.registerScope("request", scope);
 
 		ITestBean bean = (ITestBean) bf.getBean("testBean");
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 		assertThat(AopUtils.isJdkDynamicProxy(bean)).isTrue();
 		boolean condition1 = bean instanceof ScopedObject;
 		assertThat(condition1).isTrue();
@@ -109,9 +107,9 @@ public class ScopedProxyTests {
 		assertThat(scope.getMap().get("testBeanTarget").getClass()).isEqualTo(TestBean.class);
 
 		ITestBean deserialized = (ITestBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertNotNull(deserialized);
+		assertThat((Object) deserialized).isNotNull();
 		assertThat(AopUtils.isJdkDynamicProxy(deserialized)).isTrue();
-		assertEquals(101, bean.getAge());
+		assertThat((long) bean.getAge()).isEqualTo((long) 101);
 		boolean condition = deserialized instanceof ScopedObject;
 		assertThat(condition).isTrue();
 		ScopedObject scopedDeserialized = (ScopedObject) deserialized;
@@ -140,7 +138,7 @@ public class ScopedProxyTests {
 		assertThat(scope.getMap().get("scopedTarget.scopedList").getClass()).isEqualTo(ArrayList.class);
 
 		ArrayList<?> deserialized = (ArrayList<?>) SerializationTestUtils.serializeAndDeserialize(tb.getFriends());
-		assertNotNull(deserialized);
+		assertThat((Object) deserialized).isNotNull();
 		assertThat(AopUtils.isCglibProxy(deserialized)).isTrue();
 		assertThat(deserialized.contains("myFriend")).isTrue();
 		boolean condition = deserialized instanceof ScopedObject;

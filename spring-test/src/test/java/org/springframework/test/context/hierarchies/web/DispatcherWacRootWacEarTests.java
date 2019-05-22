@@ -28,9 +28,6 @@ import org.springframework.test.context.ContextHierarchy;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Sam Brannen
@@ -69,25 +66,23 @@ public class DispatcherWacRootWacEarTests extends RootWacEarTests {
 	@Test
 	public void verifyDispatcherWacConfig() {
 		ApplicationContext parent = wac.getParent();
-		assertNotNull(parent);
+		assertThat((Object) parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isTrue();
 
 		ApplicationContext grandParent = parent.getParent();
-		assertNotNull(grandParent);
+		assertThat((Object) grandParent).isNotNull();
 		boolean condition1 = grandParent instanceof WebApplicationContext;
 		assertThat(condition1).isFalse();
 
 		ServletContext dispatcherServletContext = wac.getServletContext();
-		assertNotNull(dispatcherServletContext);
+		assertThat((Object) dispatcherServletContext).isNotNull();
 		ServletContext rootServletContext = ((WebApplicationContext) parent).getServletContext();
-		assertNotNull(rootServletContext);
-		assertSame(dispatcherServletContext, rootServletContext);
+		assertThat((Object) rootServletContext).isNotNull();
+		assertThat((Object) rootServletContext).isSameAs(dispatcherServletContext);
 
-		assertSame(parent,
-			rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE));
-		assertSame(parent,
-			dispatcherServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE));
+		assertThat(rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(parent);
+		assertThat(dispatcherServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(parent);
 
 		assertThat(ear).isEqualTo("ear");
 		assertThat(root).isEqualTo("root");

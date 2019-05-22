@@ -29,8 +29,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Sam Brannen
@@ -72,7 +70,7 @@ public class RootWacEarTests extends EarTests {
 	@Test
 	public void verifyRootWacConfig() {
 		ApplicationContext parent = wac.getParent();
-		assertNotNull(parent);
+		assertThat((Object) parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isFalse();
 		assertThat(ear).isEqualTo("ear");

@@ -43,9 +43,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -126,7 +123,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
-		assertEquals(DummyJob.count, taskExecutor.count);
+		assertThat((long) taskExecutor.count).isEqualTo((long) DummyJob.count);
 
 		bean.destroy();
 	}
@@ -167,7 +164,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertEquals(10, DummyJobBean.param);
+		assertThat((long) DummyJobBean.param).isEqualTo((long) 10);
 		assertThat(DummyJobBean.count > 0).isTrue();
 
 		bean.destroy();
@@ -203,7 +200,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertEquals(10, DummyJob.param);
+		assertThat((long) DummyJob.param).isEqualTo((long) 10);
 		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
 
 		bean.destroy();
@@ -240,7 +237,7 @@ public class QuartzSupportTests {
 		bean.afterPropertiesSet();
 
 		Thread.sleep(500);
-		assertEquals(0, DummyJob.param);
+		assertThat((long) DummyJob.param).isEqualTo((long) 0);
 		assertThat(DummyJob.count == 0).isTrue();
 
 		bean.destroy();
@@ -274,7 +271,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertEquals(10, DummyJobBean.param);
+		assertThat((long) DummyJobBean.param).isEqualTo((long) 10);
 		assertThat(DummyJobBean.count > 0).isTrue();
 
 		bean.destroy();
@@ -293,7 +290,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertEquals(10, DummyJob.param);
+		assertThat((long) DummyJob.param).isEqualTo((long) 10);
 		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
 
 		bean.destroy();
@@ -305,7 +302,7 @@ public class QuartzSupportTests {
 		try {
 			Scheduler scheduler1 = (Scheduler) ctx.getBean("scheduler1");
 			Scheduler scheduler2 = (Scheduler) ctx.getBean("scheduler2");
-			assertNotSame(scheduler1, scheduler2);
+			assertThat((Object) scheduler2).isNotSameAs(scheduler1);
 			assertThat(scheduler1.getSchedulerName()).isEqualTo("quartz1");
 			assertThat(scheduler2.getSchedulerName()).isEqualTo("quartz2");
 		}
@@ -320,7 +317,7 @@ public class QuartzSupportTests {
 		try {
 			Scheduler scheduler1 = (Scheduler) ctx.getBean("scheduler1");
 			Scheduler scheduler2 = (Scheduler) ctx.getBean("scheduler2");
-			assertNotSame(scheduler1, scheduler2);
+			assertThat((Object) scheduler2).isNotSameAs(scheduler1);
 			assertThat(scheduler1.getSchedulerName()).isEqualTo("quartz1");
 			assertThat(scheduler2.getSchedulerName()).isEqualTo("quartz2");
 		}
@@ -338,10 +335,10 @@ public class QuartzSupportTests {
 			QuartzTestBean exportService = (QuartzTestBean) ctx.getBean("exportService");
 			QuartzTestBean importService = (QuartzTestBean) ctx.getBean("importService");
 
-			assertEquals("doImport called exportService", 0, exportService.getImportCount());
-			assertEquals("doExport not called on exportService", 2, exportService.getExportCount());
-			assertEquals("doImport not called on importService", 2, importService.getImportCount());
-			assertEquals("doExport called on importService", 0, importService.getExportCount());
+			assertThat((long) exportService.getImportCount()).as("doImport called exportService").isEqualTo((long) 0);
+			assertThat((long) exportService.getExportCount()).as("doExport not called on exportService").isEqualTo((long) 2);
+			assertThat((long) importService.getImportCount()).as("doImport not called on importService").isEqualTo((long) 2);
+			assertThat((long) importService.getExportCount()).as("doExport called on importService").isEqualTo((long) 0);
 		}
 		finally {
 			ctx.close();
@@ -357,10 +354,10 @@ public class QuartzSupportTests {
 			QuartzTestBean exportService = (QuartzTestBean) ctx.getBean("exportService");
 			QuartzTestBean importService = (QuartzTestBean) ctx.getBean("importService");
 
-			assertEquals("doImport called exportService", 0, exportService.getImportCount());
-			assertEquals("doExport not called on exportService", 2, exportService.getExportCount());
-			assertEquals("doImport not called on importService", 2, importService.getImportCount());
-			assertEquals("doExport called on importService", 0, importService.getExportCount());
+			assertThat((long) exportService.getImportCount()).as("doImport called exportService").isEqualTo((long) 0);
+			assertThat((long) exportService.getExportCount()).as("doExport not called on exportService").isEqualTo((long) 2);
+			assertThat((long) importService.getImportCount()).as("doImport not called on importService").isEqualTo((long) 2);
+			assertThat((long) importService.getExportCount()).as("doExport called on importService").isEqualTo((long) 0);
 		}
 		finally {
 			ctx.close();
@@ -394,7 +391,7 @@ public class QuartzSupportTests {
 	@Test
 	public void schedulerRepositoryExposure() throws Exception {
 		ClassPathXmlApplicationContext ctx = context("schedulerRepositoryExposure.xml");
-		assertSame(SchedulerRepository.getInstance().lookup("myScheduler"), ctx.getBean("scheduler"));
+		assertThat(ctx.getBean("scheduler")).isSameAs(SchedulerRepository.getInstance().lookup("myScheduler"));
 		ctx.close();
 	}
 

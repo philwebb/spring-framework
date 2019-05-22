@@ -48,7 +48,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_COMPLETION;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_ROLLBACK;
@@ -376,14 +375,14 @@ public class TransactionalEventListenerTests {
 			}
 			for (String phase : phases) {
 				List<Object> eventsForPhase = getEvents(phase);
-				assertEquals("Expected no events for phase '" + phase + "' " +
-						"but got " + eventsForPhase + ":", 0, eventsForPhase.size());
+				assertThat((long) eventsForPhase.size()).as("Expected no events for phase '" + phase + "' " +
+								"but got " + eventsForPhase + ":").isEqualTo((long) 0);
 			}
 		}
 
 		public void assertEvents(String phase, Object... expected) {
 			List<Object> actual = getEvents(phase);
-			assertEquals("wrong number of events for phase '" + phase + "'", expected.length, actual.size());
+			assertThat((long) actual.size()).as("wrong number of events for phase '" + phase + "'").isEqualTo((long) expected.length);
 			for (int i = 0; i < expected.length; i++) {
 				assertThat(actual.get(i)).as("Wrong event for phase '" + phase + "' at index " + i).isEqualTo(expected[i]);
 			}
@@ -394,8 +393,8 @@ public class TransactionalEventListenerTests {
 			for (Map.Entry<String, List<Object>> entry : this.events.entrySet()) {
 				size += entry.getValue().size();
 			}
-			assertEquals("Wrong number of total events (" + this.events.size() + ") " +
-					"registered phase(s)", number, size);
+			assertThat((long) size).as("Wrong number of total events (" + this.events.size() + ") " +
+						"registered phase(s)").isEqualTo((long) number);
 		}
 	}
 

@@ -22,7 +22,6 @@ import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.ProxyFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -45,15 +44,15 @@ public class LazyCreationTargetSourceTests {
 		};
 
 		InitCountingBean proxy = (InitCountingBean) ProxyFactory.getProxy(targetSource);
-		assertEquals("Init count should be 0", 0, InitCountingBean.initCount);
+		assertThat((long) InitCountingBean.initCount).as("Init count should be 0").isEqualTo((long) 0);
 		assertThat(targetSource.getTargetClass()).as("Target class incorrect").isEqualTo(InitCountingBean.class);
-		assertEquals("Init count should still be 0 after getTargetClass()", 0, InitCountingBean.initCount);
+		assertThat((long) InitCountingBean.initCount).as("Init count should still be 0 after getTargetClass()").isEqualTo((long) 0);
 
 		proxy.doSomething();
-		assertEquals("Init count should now be 1", 1, InitCountingBean.initCount);
+		assertThat((long) InitCountingBean.initCount).as("Init count should now be 1").isEqualTo((long) 1);
 
 		proxy.doSomething();
-		assertEquals("Init count should still be 1", 1, InitCountingBean.initCount);
+		assertThat((long) InitCountingBean.initCount).as("Init count should still be 1").isEqualTo((long) 1);
 	}
 
 

@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rossen Stoyanchev
@@ -45,8 +44,8 @@ public class ButtonTagTests extends AbstractFormTagTests {
 
 	@Test
 	public void buttonTag() throws Exception {
-		assertEquals(Tag.EVAL_BODY_INCLUDE, this.tag.doStartTag());
-		assertEquals(Tag.EVAL_PAGE, this.tag.doEndTag());
+		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat((long) this.tag.doEndTag()).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertTagOpened(output);

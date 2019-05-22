@@ -35,7 +35,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for {@link ContentNegotiationManagerFactoryBean} tests.

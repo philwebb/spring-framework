@@ -26,9 +26,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Specific {@link BeanWrapperImpl} tests.
@@ -123,8 +120,8 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 			bw.setPropertyValue("names", "Alef");
 		}
 		catch (NotWritablePropertyException ex) {
-			assertNotNull("Possible matches not determined", ex.getPossibleMatches());
-			assertEquals("Invalid amount of alternatives", 1, ex.getPossibleMatches().length);
+			assertThat((Object) ex.getPossibleMatches()).as("Possible matches not determined").isNotNull();
+			assertThat((long) ex.getPossibleMatches().length).as("Invalid amount of alternatives").isEqualTo((long) 1);
 		}
 	}
 
@@ -136,8 +133,8 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 			bw.setPropertyValue("mystring", "Arjen");
 		}
 		catch (NotWritablePropertyException ex) {
-			assertNotNull("Possible matches not determined", ex.getPossibleMatches());
-			assertEquals("Invalid amount of alternatives", 3, ex.getPossibleMatches().length);
+			assertThat((Object) ex.getPossibleMatches()).as("Possible matches not determined").isNotNull();
+			assertThat((long) ex.getPossibleMatches().length).as("Invalid amount of alternatives").isEqualTo((long) 3);
 		}
 	}
 
@@ -174,17 +171,17 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		BeanWrapper accessor = createAccessor(target);
 
 		accessor.setPropertyValue("object", tb);
-		assertSame(tb, target.value);
-		assertSame(tb, target.getObject().get());
-		assertSame(tb, ((Optional<String>) accessor.getPropertyValue("object")).get());
+		assertThat((Object) target.value).isSameAs(tb);
+		assertThat((Object) target.getObject().get()).isSameAs(tb);
+		assertThat((Object) ((Optional<String>) accessor.getPropertyValue("object")).get()).isSameAs(tb);
 		assertThat(target.value.getName()).isEqualTo("x");
 		assertThat(target.getObject().get().getName()).isEqualTo("x");
 		assertThat(accessor.getPropertyValue("object.name")).isEqualTo("x");
 
 		accessor.setPropertyValue("object.name", "y");
-		assertSame(tb, target.value);
-		assertSame(tb, target.getObject().get());
-		assertSame(tb, ((Optional<String>) accessor.getPropertyValue("object")).get());
+		assertThat((Object) target.value).isSameAs(tb);
+		assertThat((Object) target.getObject().get()).isSameAs(tb);
+		assertThat((Object) ((Optional<String>) accessor.getPropertyValue("object")).get()).isSameAs(tb);
 		assertThat(target.value.getName()).isEqualTo("y");
 		assertThat(target.getObject().get().getName()).isEqualTo("y");
 		assertThat(accessor.getPropertyValue("object.name")).isEqualTo("y");

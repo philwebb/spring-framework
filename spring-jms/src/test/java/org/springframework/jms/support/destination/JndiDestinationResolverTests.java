@@ -26,9 +26,6 @@ import org.springframework.jms.StubTopic;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -50,8 +47,8 @@ public class JndiDestinationResolverTests {
 
 		JndiDestinationResolver resolver = new OneTimeLookupJndiDestinationResolver();
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
-		assertNotNull(destination);
-		assertSame(DESTINATION, destination);
+		assertThat((Object) destination).isNotNull();
+		assertThat((Object) destination).isSameAs(DESTINATION);
 	}
 
 	@Test
@@ -63,14 +60,14 @@ public class JndiDestinationResolverTests {
 				= new CountingCannedJndiDestinationResolver();
 		resolver.setCache(false);
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
-		assertNotNull(destination);
-		assertSame(DESTINATION, destination);
-		assertEquals(1, resolver.getCallCount());
+		assertThat((Object) destination).isNotNull();
+		assertThat((Object) destination).isSameAs(DESTINATION);
+		assertThat((long) resolver.getCallCount()).isEqualTo((long) 1);
 
 		destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
-		assertNotNull(destination);
-		assertSame(DESTINATION, destination);
-		assertEquals(2, resolver.getCallCount());
+		assertThat((Object) destination).isNotNull();
+		assertThat((Object) destination).isSameAs(DESTINATION);
+		assertThat((long) resolver.getCallCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -91,8 +88,8 @@ public class JndiDestinationResolverTests {
 		resolver.setDynamicDestinationResolver(dynamicResolver);
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
 
-		assertNotNull(destination);
-		assertSame(DESTINATION, destination);
+		assertThat((Object) destination).isNotNull();
+		assertThat((Object) destination).isSameAs(DESTINATION);
 	}
 
 	@Test

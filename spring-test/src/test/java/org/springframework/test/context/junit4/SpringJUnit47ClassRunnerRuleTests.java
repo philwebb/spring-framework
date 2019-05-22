@@ -24,7 +24,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.TestExecutionListeners;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Verifies support for JUnit 4.7 {@link Rule Rules} in conjunction with the

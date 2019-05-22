@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Mark Fisher
@@ -49,10 +48,10 @@ public class SimpleConfigTests {
 		assertThat(condition).isTrue();
 		assertThat(future.get()).isEqualTo("bar");
 
-		assertEquals(2, serviceInvocationCounter.getCount());
+		assertThat((long) serviceInvocationCounter.getCount()).isEqualTo((long) 2);
 
 		fooService.foo(1);
-		assertEquals(3, serviceInvocationCounter.getCount());
+		assertThat((long) serviceInvocationCounter.getCount()).isEqualTo((long) 3);
 	}
 
 	public String[] getConfigLocations() {

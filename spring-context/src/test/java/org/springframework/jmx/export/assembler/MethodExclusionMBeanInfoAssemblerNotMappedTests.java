@@ -24,7 +24,6 @@ import javax.management.modelmbean.ModelMBeanInfo;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Juergen Hoeller
@@ -47,7 +46,7 @@ public class MethodExclusionMBeanInfoAssemblerNotMappedTests extends AbstractJmx
 	public void testNickNameIsExposed() throws Exception {
 		ModelMBeanInfo inf = (ModelMBeanInfo) getMBeanInfo();
 		MBeanAttributeInfo attr = inf.getAttribute("NickName");
-		assertNotNull("Nick Name should not be null", attr);
+		assertThat((Object) attr).as("Nick Name should not be null").isNotNull();
 		assertThat(attr.isWritable()).as("Nick Name should be writable").isTrue();
 		assertThat(attr.isReadable()).as("Nick Name should be readable").isTrue();
 	}

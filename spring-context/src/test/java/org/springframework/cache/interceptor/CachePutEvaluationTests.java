@@ -36,9 +36,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * Tests corner case of using {@link Cacheable} and  {@link CachePut} on the
@@ -74,7 +71,7 @@ public class CachePutEvaluationTests {
 
 		Long first = this.service.getOrPut(key, true);
 		Long second = this.service.getOrPut(key, true);
-		assertSame(first, second);
+		assertThat((Object) second).isSameAs(first);
 
 		// This forces the method to be executed again
 		Long expected = first + 1;
@@ -82,7 +79,7 @@ public class CachePutEvaluationTests {
 		assertThat(third).isEqualTo(expected);
 
 		Long fourth = this.service.getOrPut(key, true);
-		assertSame(third, fourth);
+		assertThat((Object) fourth).isSameAs(third);
 	}
 
 	@Test
@@ -98,7 +95,7 @@ public class CachePutEvaluationTests {
 
 		// CachePut forced a method call
 		Long anotherValue = this.service.getAndPut(key);
-		assertNotSame(value, anotherValue);
+		assertThat((Object) anotherValue).isNotSameAs(value);
 		// NOTE: while you might expect the main key to have been updated, it hasn't. @Cacheable operations
 		// are only processed in case of a cache miss. This is why combining @Cacheable with @CachePut
 		// is a very bad idea. We could refine the condition now that we can figure out if we are going

@@ -41,7 +41,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -343,7 +342,7 @@ public class BeanWrapperGenericsTests {
 		Object obj = gb.getMapOfListOfInteger().get("testKey").get(0);
 		boolean condition = obj instanceof Integer;
 		assertThat(condition).isTrue();
-		assertEquals(1, ((Integer) obj).intValue());
+		assertThat((long) ((Integer) obj).intValue()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -360,7 +359,7 @@ public class BeanWrapperGenericsTests {
 		Object obj = gb.getListOfMapOfInteger().get(0).get("testKey");
 		boolean condition = obj instanceof Integer;
 		assertThat(condition).isTrue();
-		assertEquals(5, ((Integer) obj).intValue());
+		assertThat((long) ((Integer) obj).intValue()).isEqualTo((long) 5);
 	}
 
 	@Test
@@ -376,7 +375,7 @@ public class BeanWrapperGenericsTests {
 		Object obj = gb.getMapOfListOfListOfInteger().get("testKey").get(0).get(0);
 		boolean condition = obj instanceof Integer;
 		assertThat(condition).isTrue();
-		assertEquals(1, ((Integer) obj).intValue());
+		assertThat((long) ((Integer) obj).intValue()).isEqualTo((long) 1);
 	}
 
 	@Test

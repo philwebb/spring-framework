@@ -38,8 +38,6 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Arjen Poutsma
  * @author Andrzej Hołowko
@@ -72,12 +70,12 @@ public class ListBasedXMLEventReaderTests {
 
 		ListBasedXMLEventReader reader = new ListBasedXMLEventReader(events);
 
-		assertEquals(START_DOCUMENT, reader.nextEvent().getEventType());
-		assertEquals(START_ELEMENT, reader.nextEvent().getEventType());
-		assertEquals(START_ELEMENT, reader.nextEvent().getEventType());
+		assertThat((long) reader.nextEvent().getEventType()).isEqualTo((long) START_DOCUMENT);
+		assertThat((long) reader.nextEvent().getEventType()).isEqualTo((long) START_ELEMENT);
+		assertThat((long) reader.nextEvent().getEventType()).isEqualTo((long) START_ELEMENT);
 		assertThat(reader.getElementText()).isEqualTo("baz");
-		assertEquals(END_ELEMENT, reader.nextEvent().getEventType());
-		assertEquals(END_DOCUMENT, reader.nextEvent().getEventType());
+		assertThat((long) reader.nextEvent().getEventType()).isEqualTo((long) END_ELEMENT);
+		assertThat((long) reader.nextEvent().getEventType()).isEqualTo((long) END_DOCUMENT);
 	}
 
 	@Test
@@ -87,7 +85,7 @@ public class ListBasedXMLEventReaderTests {
 
 		ListBasedXMLEventReader reader = new ListBasedXMLEventReader(events);
 
-		assertEquals(START_DOCUMENT, reader.nextEvent().getEventType());
+		assertThat((long) reader.nextEvent().getEventType()).isEqualTo((long) START_DOCUMENT);
 
 		assertThatExceptionOfType(XMLStreamException.class).isThrownBy(
 				reader::getElementText)

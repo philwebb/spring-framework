@@ -31,7 +31,6 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.servlet.support.RequestContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -53,7 +52,7 @@ public class ThemeTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setCode("themetest");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
-		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
+		assertThat((long) tag.doEndTag()).as("Correct doEndTag return value").isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(message.toString()).isEqualTo("theme test message");
 	}
 

@@ -36,9 +36,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -94,7 +91,7 @@ public class ResourceBundleViewResolverTests {
 		assertThat(jv.getUrl()).as("debugView must have correct URL").isEqualTo("jsp/debug/debug.jsp");
 
 		Map<String, Object> m = jv.getStaticAttributes();
-		assertEquals("Must have 2 static attributes", 2, m.size());
+		assertThat((long) m.size()).as("Must have 2 static attributes").isEqualTo((long) 2);
 		assertThat(m.get("foo")).as("attribute foo").isEqualTo("bar");
 		assertThat(m.get("postcode")).as("attribute postcode").isEqualTo("SE10 9JY");
 
@@ -132,12 +129,12 @@ public class ResourceBundleViewResolverTests {
 
 		View v1 = rb.resolveViewName("debugView", Locale.ENGLISH);
 		View v2 = rb.resolveViewName("debugView", Locale.UK);
-		assertSame(v1, v2);
+		assertThat((Object) v2).isSameAs(v1);
 	}
 
 	@Test
 	public void noSuchViewEnglish() throws Exception {
-		assertNull(rb.resolveViewName("xxxxxxweorqiwuopeir", Locale.ENGLISH));
+		assertThat((Object) rb.resolveViewName("xxxxxxweorqiwuopeir", Locale.ENGLISH)).isNull();
 	}
 
 	@Test
@@ -146,7 +143,7 @@ public class ResourceBundleViewResolverTests {
 		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
 		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
 		assertThat(tv.getBeanName()).as("test has correct name").isEqualTo("test");
-		assertEquals("test should have been initialized once, not ", 1, tv.initCount);
+		assertThat((long) tv.initCount).as("test should have been initialized once, not ").isEqualTo((long) 1);
 	}
 
 	@Test

@@ -36,8 +36,6 @@ import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Arjen Poutsma
  */
@@ -75,7 +73,7 @@ public class RssChannelHttpMessageConverterTests {
 		assertThat(result.getDescription()).isEqualTo("description");
 
 		List<?> items = result.getItems();
-		assertEquals(2, items.size());
+		assertThat((long) items.size()).isEqualTo((long) 2);
 
 		Item item1 = (Item) items.get(0);
 		assertThat(item1.getTitle()).isEqualTo("title1");

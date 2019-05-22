@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for AspectJ pointcut expression matching when working with bridge methods.
@@ -62,13 +62,13 @@ public class GenericBridgeMethodMatchingTests {
 	@Test
 	public void testGenericDerivedInterfaceMethodThroughInterface() {
 		testBean.genericDerivedInterfaceMethod("");
-		assertEquals(1, counterAspect.count);
+		assertThat((long) counterAspect.count).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testGenericBaseInterfaceMethodThroughInterface() {
 		testBean.genericBaseInterfaceMethod("");
-		assertEquals(1, counterAspect.count);
+		assertThat((long) counterAspect.count).isEqualTo((long) 1);
 	}
 
 }

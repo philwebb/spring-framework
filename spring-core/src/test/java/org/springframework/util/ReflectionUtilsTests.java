@@ -37,10 +37,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-
 /**
  * @author Rob Harrop
  * @author Juergen Hoeller
@@ -52,19 +48,19 @@ public class ReflectionUtilsTests {
 	@Test
 	public void findField() {
 		Field field = ReflectionUtils.findField(TestObjectSubclassWithPublicField.class, "publicField", String.class);
-		assertNotNull(field);
+		assertThat((Object) field).isNotNull();
 		assertThat(field.getName()).isEqualTo("publicField");
 		assertThat(field.getType()).isEqualTo(String.class);
 		assertThat(Modifier.isPublic(field.getModifiers())).as("Field should be public.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "prot", String.class);
-		assertNotNull(field);
+		assertThat((Object) field).isNotNull();
 		assertThat(field.getName()).isEqualTo("prot");
 		assertThat(field.getType()).isEqualTo(String.class);
 		assertThat(Modifier.isProtected(field.getModifiers())).as("Field should be protected.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "name", String.class);
-		assertNotNull(field);
+		assertThat((Object) field).isNotNull();
 		assertThat(field.getName()).isEqualTo("name");
 		assertThat(field.getType()).isEqualTo(String.class);
 		assertThat(Modifier.isPrivate(field.getModifiers())).as("Field should be private.").isTrue();
@@ -78,11 +74,11 @@ public class ReflectionUtilsTests {
 		ReflectionUtils.makeAccessible(field);
 
 		ReflectionUtils.setField(field, testBean, "FooBar");
-		assertNotNull(testBean.getName());
+		assertThat((Object) testBean.getName()).isNotNull();
 		assertThat(testBean.getName()).isEqualTo("FooBar");
 
 		ReflectionUtils.setField(field, testBean, null);
-		assertNull(testBean.getName());
+		assertThat((Object) testBean.getName()).isNull();
 	}
 
 	@Test
@@ -159,7 +155,7 @@ public class ReflectionUtilsTests {
 		testValidCopy(src, dest);
 
 		// Check subclass fields were copied
-		assertEquals(src.magic, dest.magic);
+		assertThat((long) dest.magic).isEqualTo((long) src.magic);
 		assertThat(dest.prot).isEqualTo(src.prot);
 	}
 
@@ -170,7 +166,7 @@ public class ReflectionUtilsTests {
 		dest.magic = 11;
 		testValidCopy(src, dest);
 		// Should have left this one alone
-		assertEquals(11, dest.magic);
+		assertThat((long) dest.magic).isEqualTo((long) 11);
 	}
 
 	@Test
@@ -188,7 +184,7 @@ public class ReflectionUtilsTests {
 		assertThat(src.getAge() == dest.getAge()).isFalse();
 
 		ReflectionUtils.shallowCopyFieldState(src, dest);
-		assertEquals(src.getAge(), dest.getAge());
+		assertThat((long) dest.getAge()).isEqualTo((long) src.getAge());
 		assertThat(dest.getSpouse()).isEqualTo(src.getSpouse());
 	}
 
@@ -218,20 +214,20 @@ public class ReflectionUtilsTests {
 				++absquatulateCount;
 			}
 		}
-		assertEquals("Found 2 absquatulates", 2, absquatulateCount);
+		assertThat((long) absquatulateCount).as("Found 2 absquatulates").isEqualTo((long) 2);
 	}
 
 	@Test
 	public void findMethod() throws Exception {
-		assertNotNull(ReflectionUtils.findMethod(B.class, "bar", String.class));
-		assertNotNull(ReflectionUtils.findMethod(B.class, "foo", Integer.class));
-		assertNotNull(ReflectionUtils.findMethod(B.class, "getClass"));
+		assertThat((Object) ReflectionUtils.findMethod(B.class, "bar", String.class)).isNotNull();
+		assertThat((Object) ReflectionUtils.findMethod(B.class, "foo", Integer.class)).isNotNull();
+		assertThat((Object) ReflectionUtils.findMethod(B.class, "getClass")).isNotNull();
 	}
 
 	@Ignore("[SPR-8644] findMethod() does not currently support var-args")
 	@Test
 	public void findMethodWithVarArgs() throws Exception {
-		assertNotNull(ReflectionUtils.findMethod(B.class, "add", int.class, int.class, int.class));
+		assertThat((Object) ReflectionUtils.findMethod(B.class, "add", int.class, int.class, int.class)).isNotNull();
 	}
 
 	@Test

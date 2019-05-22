@@ -30,7 +30,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.annotation.Transactional;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests that verify the behavior requested in
@@ -76,28 +76,28 @@ public class LookUpTxMgrViaTransactionManagementConfigurerTests {
 
 	@Test
 	public void transactionalTest() {
-		assertEquals(1, txManager1.begun);
-		assertEquals(1, txManager1.inflight);
-		assertEquals(0, txManager1.commits);
-		assertEquals(0, txManager1.rollbacks);
+		assertThat((long) txManager1.begun).isEqualTo((long) 1);
+		assertThat((long) txManager1.inflight).isEqualTo((long) 1);
+		assertThat((long) txManager1.commits).isEqualTo((long) 0);
+		assertThat((long) txManager1.rollbacks).isEqualTo((long) 0);
 
-		assertEquals(0, txManager2.begun);
-		assertEquals(0, txManager2.inflight);
-		assertEquals(0, txManager2.commits);
-		assertEquals(0, txManager2.rollbacks);
+		assertThat((long) txManager2.begun).isEqualTo((long) 0);
+		assertThat((long) txManager2.inflight).isEqualTo((long) 0);
+		assertThat((long) txManager2.commits).isEqualTo((long) 0);
+		assertThat((long) txManager2.rollbacks).isEqualTo((long) 0);
 	}
 
 	@AfterTransaction
 	public void afterTransaction() {
-		assertEquals(1, txManager1.begun);
-		assertEquals(0, txManager1.inflight);
-		assertEquals(0, txManager1.commits);
-		assertEquals(1, txManager1.rollbacks);
+		assertThat((long) txManager1.begun).isEqualTo((long) 1);
+		assertThat((long) txManager1.inflight).isEqualTo((long) 0);
+		assertThat((long) txManager1.commits).isEqualTo((long) 0);
+		assertThat((long) txManager1.rollbacks).isEqualTo((long) 1);
 
-		assertEquals(0, txManager2.begun);
-		assertEquals(0, txManager2.inflight);
-		assertEquals(0, txManager2.commits);
-		assertEquals(0, txManager2.rollbacks);
+		assertThat((long) txManager2.begun).isEqualTo((long) 0);
+		assertThat((long) txManager2.inflight).isEqualTo((long) 0);
+		assertThat((long) txManager2.commits).isEqualTo((long) 0);
+		assertThat((long) txManager2.rollbacks).isEqualTo((long) 0);
 	}
 
 }

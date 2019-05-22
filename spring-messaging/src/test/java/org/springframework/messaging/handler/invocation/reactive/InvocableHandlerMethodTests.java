@@ -33,10 +33,6 @@ import org.springframework.messaging.handler.invocation.MethodArgumentResolution
 import org.springframework.messaging.handler.invocation.ResolvableMethod;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -59,8 +55,8 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invokeAndBlock(new Handler(), method);
 
-		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
-		assertEquals(1, getStubResolver(1).getResolvedParameters().size());
+		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(value).isEqualTo("99-value");
 		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("intArg");
 		assertThat(getStubResolver(1).getResolvedParameters().get(0).getParameterName()).isEqualTo("stringArg");
@@ -73,8 +69,8 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invokeAndBlock(new Handler(), method);
 
-		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
-		assertEquals(1, getStubResolver(1).getResolvedParameters().size());
+		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(value).isEqualTo("null-null");
 	}
 
@@ -91,7 +87,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invokeAndBlock(new Handler(), method, 99, "value");
 
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(value.getClass()).isEqualTo(String.class);
 		assertThat(value).isEqualTo("99-value");
 	}
@@ -135,7 +131,7 @@ public class InvocableHandlerMethodTests {
 
 		Throwable expected = new Throwable("error");
 		Mono<Object> result = invoke(new Handler(), method, expected);
-		StepVerifier.create(result).expectErrorSatisfies(actual -> assertSame(expected, actual)).verify();
+		StepVerifier.create(result).expectErrorSatisfies(actual -> assertThat((Object) actual).isSameAs(expected)).verify();
 	}
 
 	@Test
@@ -145,8 +141,8 @@ public class InvocableHandlerMethodTests {
 		Handler handler = new Handler();
 		Object value = invokeAndBlock(handler, method);
 
-		assertNull(value);
-		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
+		assertThat(value).isNull();
+		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(handler.getResult()).isEqualTo("5.25");
 		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("amount");
 	}
@@ -157,7 +153,7 @@ public class InvocableHandlerMethodTests {
 		Handler handler = new Handler();
 		Object value = invokeAndBlock(handler, method);
 
-		assertNull(value);
+		assertThat(value).isNull();
 		assertThat(handler.getResult()).isEqualTo("success");
 	}
 

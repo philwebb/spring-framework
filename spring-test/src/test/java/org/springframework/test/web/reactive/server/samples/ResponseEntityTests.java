@@ -44,7 +44,6 @@ import static java.time.Duration.ofMillis;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.startsWith;
-import static temp.XAssert.assertEquals;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 /**

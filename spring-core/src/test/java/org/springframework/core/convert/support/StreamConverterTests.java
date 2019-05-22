@@ -29,8 +29,6 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Tests for {@link StreamConverter}.
@@ -61,7 +59,7 @@ public class StreamConverterTests {
 		TypeDescriptor listOfStrings = new TypeDescriptor(Types.class.getField("listOfStrings"));
 		Object result = this.conversionService.convert(stream, listOfStrings);
 
-		assertNotNull("Converted object must not be null", result);
+		assertThat(result).as("Converted object must not be null").isNotNull();
 		boolean condition = result instanceof List;
 		assertThat(condition).as("Converted object must be a list").isTrue();
 		@SuppressWarnings("unchecked")
@@ -69,7 +67,7 @@ public class StreamConverterTests {
 		assertThat(content.get(0)).isEqualTo("1");
 		assertThat(content.get(1)).isEqualTo("2");
 		assertThat(content.get(2)).isEqualTo("3");
-		assertEquals("Wrong number of elements", 3, content.size());
+		assertThat((long) content.size()).as("Wrong number of elements").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -79,13 +77,13 @@ public class StreamConverterTests {
 		TypeDescriptor arrayOfLongs = new TypeDescriptor(Types.class.getField("arrayOfLongs"));
 		Object result = this.conversionService.convert(stream, arrayOfLongs);
 
-		assertNotNull("Converted object must not be null", result);
+		assertThat(result).as("Converted object must not be null").isNotNull();
 		assertThat(result.getClass().isArray()).as("Converted object must be an array").isTrue();
 		Long[] content = (Long[]) result;
 		assertThat(content[0]).isEqualTo(Long.valueOf(1L));
 		assertThat(content[1]).isEqualTo(Long.valueOf(2L));
 		assertThat(content[2]).isEqualTo(Long.valueOf(3L));
-		assertEquals("Wrong number of elements", 3, content.length);
+		assertThat((long) content.length).as("Wrong number of elements").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -94,7 +92,7 @@ public class StreamConverterTests {
 		TypeDescriptor listOfStrings = new TypeDescriptor(Types.class.getField("rawList"));
 		Object result = this.conversionService.convert(stream, listOfStrings);
 
-		assertNotNull("Converted object must not be null", result);
+		assertThat(result).as("Converted object must not be null").isNotNull();
 		boolean condition = result instanceof List;
 		assertThat(condition).as("Converted object must be a list").isTrue();
 		@SuppressWarnings("unchecked")
@@ -102,7 +100,7 @@ public class StreamConverterTests {
 		assertThat(content.get(0)).isEqualTo(1);
 		assertThat(content.get(1)).isEqualTo(2);
 		assertThat(content.get(2)).isEqualTo(3);
-		assertEquals("Wrong number of elements", 3, content.size());
+		assertThat((long) content.size()).as("Wrong number of elements").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -122,12 +120,12 @@ public class StreamConverterTests {
 		TypeDescriptor streamOfInteger = new TypeDescriptor(Types.class.getField("streamOfIntegers"));
 		Object result = this.conversionService.convert(stream, streamOfInteger);
 
-		assertNotNull("Converted object must not be null", result);
+		assertThat(result).as("Converted object must not be null").isNotNull();
 		boolean condition = result instanceof Stream;
 		assertThat(condition).as("Converted object must be a stream").isTrue();
 		@SuppressWarnings("unchecked")
 		Stream<Integer> content = (Stream<Integer>) result;
-		assertEquals(6, content.mapToInt(x -> x).sum());
+		assertThat((long) content.mapToInt(x -> x).sum()).isEqualTo((long) 6);
 	}
 
 	@Test
@@ -143,12 +141,12 @@ public class StreamConverterTests {
 		TypeDescriptor streamOfBoolean = new TypeDescriptor(Types.class.getField("streamOfBooleans"));
 		Object result = this.conversionService.convert(stream, streamOfBoolean);
 
-		assertNotNull("Converted object must not be null", result);
+		assertThat(result).as("Converted object must not be null").isNotNull();
 		boolean condition = result instanceof Stream;
 		assertThat(condition).as("Converted object must be a stream").isTrue();
 		@SuppressWarnings("unchecked")
 		Stream<Boolean> content = (Stream<Boolean>) result;
-		assertEquals(2, content.filter(x -> x).count());
+		assertThat(content.filter(x -> x).count()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -158,7 +156,7 @@ public class StreamConverterTests {
 		TypeDescriptor streamOfInteger = new TypeDescriptor(Types.class.getField("rawStream"));
 		Object result = this.conversionService.convert(stream, streamOfInteger);
 
-		assertNotNull("Converted object must not be null", result);
+		assertThat(result).as("Converted object must not be null").isNotNull();
 		boolean condition = result instanceof Stream;
 		assertThat(condition).as("Converted object must be a stream").isTrue();
 		@SuppressWarnings("unchecked")

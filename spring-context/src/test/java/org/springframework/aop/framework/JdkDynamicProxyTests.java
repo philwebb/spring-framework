@@ -30,8 +30,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rod Johnson
@@ -88,7 +86,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		AopProxy aop = createAopProxy(pc);
 
 		ITestBean tb = (ITestBean) aop.getProxy();
-		assertEquals("correct return value", age, tb.getAge());
+		assertThat((long) tb.getAge()).as("correct return value").isEqualTo((long) age);
 	}
 
 	@Test
@@ -127,8 +125,8 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		as.setTarget(bean);
 
 		Foo proxy = (Foo) createProxy(as);
-		assertSame("Target should be returned when return types are incompatible", bean, proxy.getBarThis());
-		assertSame("Proxy should be returned when return types are compatible", proxy, proxy.getFooThis());
+		assertThat((Object) proxy.getBarThis()).as("Target should be returned when return types are incompatible").isSameAs(bean);
+		assertThat((Object) proxy.getFooThis()).as("Proxy should be returned when return types are compatible").isSameAs(proxy);
 	}
 
 	@Test
@@ -139,7 +137,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		Named proxy = (Named) aopProxy.getProxy();
 		Named named = new Person();
 		assertThat(named).as("equals()").isEqualTo(proxy);
-		assertEquals("hashCode()", proxy.hashCode(), named.hashCode());
+		assertThat((long) named.hashCode()).as("hashCode()").isEqualTo((long) proxy.hashCode());
 	}
 
 	@Test  // SPR-13328

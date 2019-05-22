@@ -43,9 +43,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -111,7 +108,7 @@ public class ModelFactoryTests {
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
 		assertThat(this.mavContainer.containsAttribute("name")).isTrue();
-		assertNull(this.mavContainer.getModel().get("name"));
+		assertThat(this.mavContainer.getModel().get("name")).isNull();
 	}
 
 	@Test
@@ -134,7 +131,7 @@ public class ModelFactoryTests {
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
 		assertThat(this.mavContainer.containsAttribute("foo")).isTrue();
-		assertSame(foo, this.mavContainer.getModel().get("foo"));
+		assertThat(this.mavContainer.getModel().get("foo")).isSameAs(foo);
 		assertThat(this.mavContainer.isBindingDisabled("foo")).isTrue();
 	}
 
@@ -179,8 +176,8 @@ public class ModelFactoryTests {
 
 		assertThat(container.getModel().get(commandName)).isEqualTo(command);
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + commandName;
-		assertSame(dataBinder.getBindingResult(), container.getModel().get(bindingResultKey));
-		assertEquals(2, container.getModel().size());
+		assertThat(container.getModel().get(bindingResultKey)).isSameAs(dataBinder.getBindingResult());
+		assertThat((long) container.getModel().size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -220,7 +217,7 @@ public class ModelFactoryTests {
 		modelFactory.updateModel(this.webRequest, container);
 
 		assertThat(container.getModel().get(attributeName)).isEqualTo(attribute);
-		assertNull(this.attributeStore.retrieveAttribute(this.webRequest, attributeName));
+		assertThat(this.attributeStore.retrieveAttribute(this.webRequest, attributeName)).isNull();
 	}
 
 	@Test  // SPR-12542
@@ -243,7 +240,7 @@ public class ModelFactoryTests {
 		modelFactory.updateModel(this.webRequest, container);
 
 		assertThat(container.getModel().get(queryParamName)).isEqualTo(queryParam);
-		assertEquals(1, container.getModel().size());
+		assertThat((long) container.getModel().size()).isEqualTo((long) 1);
 		assertThat(this.attributeStore.retrieveAttribute(this.webRequest, attributeName)).isEqualTo(attribute);
 	}
 

@@ -28,9 +28,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -69,10 +66,10 @@ public class StandardServletAsyncWebRequestTests {
 		this.asyncRequest.startAsync();
 
 		MockAsyncContext context = (MockAsyncContext) this.request.getAsyncContext();
-		assertNotNull(context);
-		assertEquals("Timeout value not set", 44 * 1000, context.getTimeout());
-		assertEquals(1, context.getListeners().size());
-		assertSame(this.asyncRequest, context.getListeners().get(0));
+		assertThat((Object) context).isNotNull();
+		assertThat(context.getTimeout()).as("Timeout value not set").isEqualTo((long) (44 * 1000));
+		assertThat((long) context.getListeners().size()).isEqualTo((long) 1);
+		assertThat((Object) context.getListeners().get(0)).isSameAs(this.asyncRequest);
 	}
 
 	@Test
@@ -83,8 +80,8 @@ public class StandardServletAsyncWebRequestTests {
 		this.asyncRequest.startAsync();	// idempotent
 
 		MockAsyncContext context = (MockAsyncContext) this.request.getAsyncContext();
-		assertNotNull(context);
-		assertEquals(1, context.getListeners().size());
+		assertThat((Object) context).isNotNull();
+		assertThat((long) context.getListeners().size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -106,7 +103,7 @@ public class StandardServletAsyncWebRequestTests {
 	@Test
 	public void onTimeoutDefaultBehavior() throws Exception {
 		this.asyncRequest.onTimeout(new AsyncEvent(new MockAsyncContext(this.request, this.response)));
-		assertEquals(200, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
 	}
 
 	@Test

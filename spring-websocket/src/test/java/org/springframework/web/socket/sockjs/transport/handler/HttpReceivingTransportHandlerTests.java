@@ -27,8 +27,6 @@ import org.springframework.web.socket.sockjs.transport.session.StubSockJsService
 import org.springframework.web.socket.sockjs.transport.session.TestHttpSockJsSession;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -47,7 +45,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 		this.servletRequest.setContent("[\"x\"]".getBytes("UTF-8"));
 		handleRequest(new XhrReceivingTransportHandler());
 
-		assertEquals(204, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 204);
 	}
 
 	@Test
@@ -81,7 +79,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 		transportHandler.initialize(sockJsConfig);
 		assertThatExceptionOfType(SockJsMessageDeliveryException.class).isThrownBy(() ->
 				transportHandler.handleRequest(this.request, this.response, wsHandler, session));
-		assertNull(session.getCloseStatus());
+		assertThat((Object) session.getCloseStatus()).isNull();
 	}
 
 
@@ -104,7 +102,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 
 		new XhrReceivingTransportHandler().handleRequest(this.request, this.response, wsHandler, session);
 
-		assertEquals(500, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 500);
 		verifyNoMoreInteractions(wsHandler);
 	}
 

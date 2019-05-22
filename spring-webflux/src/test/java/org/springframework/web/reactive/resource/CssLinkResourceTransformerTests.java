@@ -33,8 +33,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.resource.EncodedResourceResolver.EncodedResource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -104,7 +102,7 @@ public class CssLinkResourceTransformerTests {
 		Resource expected = getResource("foo.css");
 
 		StepVerifier.create(this.transformerChain.transform(exchange, expected))
-				.consumeNextWith(resource -> assertSame(expected, resource))
+				.consumeNextWith(resource -> assertThat((Object) resource).isSameAs(expected))
 				.expectComplete().verify();
 	}
 

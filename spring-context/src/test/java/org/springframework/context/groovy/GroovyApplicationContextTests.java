@@ -23,8 +23,6 @@ import org.springframework.context.support.GenericGroovyApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Jeff Brown
@@ -38,7 +36,7 @@ public class GroovyApplicationContextTests {
 				"org/springframework/context/groovy/applicationContext.groovy");
 
 		Object framework = ctx.getBean("framework");
-		assertNotNull("could not find framework bean", framework);
+		assertThat(framework).as("could not find framework bean").isNotNull();
 		assertThat(framework).isEqualTo("Grails");
 	}
 
@@ -49,11 +47,11 @@ public class GroovyApplicationContextTests {
 				"org/springframework/context/groovy/applicationContext.groovy");
 
 		Object framework = ctx.getBean("framework");
-		assertNotNull("could not find framework bean", framework);
+		assertThat(framework).as("could not find framework bean").isNotNull();
 		assertThat(framework).isEqualTo("Grails");
 
 		Object company = ctx.getBean("company");
-		assertNotNull("could not find company bean", company);
+		assertThat(company).as("could not find company bean").isNotNull();
 		assertThat(company).isEqualTo("SpringSource");
 	}
 
@@ -64,11 +62,11 @@ public class GroovyApplicationContextTests {
 		ctx.refresh();
 
 		Object framework = ctx.getBean("framework");
-		assertNotNull("could not find framework bean", framework);
+		assertThat(framework).as("could not find framework bean").isNotNull();
 		assertThat(framework).isEqualTo("Grails");
 
 		Object company = ctx.getBean("company");
-		assertNotNull("could not find company bean", company);
+		assertThat(company).as("could not find company bean").isNotNull();
 		assertThat(company).isEqualTo("SpringSource");
 	}
 

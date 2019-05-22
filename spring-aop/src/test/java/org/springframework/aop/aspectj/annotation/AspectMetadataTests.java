@@ -25,9 +25,6 @@ import org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactoryT
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @since 2.0
@@ -46,7 +43,7 @@ public class AspectMetadataTests {
 	public void testSingletonAspect() {
 		AspectMetadata am = new AspectMetadata(ExceptionAspect.class,"someBean");
 		assertThat(am.isPerThisOrPerTarget()).isFalse();
-		assertSame(Pointcut.TRUE, am.getPerClausePointcut());
+		assertThat((Object) am.getPerClausePointcut()).isSameAs(Pointcut.TRUE);
 		assertThat(am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.SINGLETON);
 	}
 
@@ -54,7 +51,7 @@ public class AspectMetadataTests {
 	public void testPerTargetAspect() {
 		AspectMetadata am = new AspectMetadata(PerTargetAspect.class,"someBean");
 		assertThat(am.isPerThisOrPerTarget()).isTrue();
-		assertNotSame(Pointcut.TRUE, am.getPerClausePointcut());
+		assertThat((Object) am.getPerClausePointcut()).isNotSameAs(Pointcut.TRUE);
 		assertThat(am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.PERTARGET);
 	}
 
@@ -62,7 +59,7 @@ public class AspectMetadataTests {
 	public void testPerThisAspect() {
 		AspectMetadata am = new AspectMetadata(PerThisAspect.class,"someBean");
 		assertThat(am.isPerThisOrPerTarget()).isTrue();
-		assertNotSame(Pointcut.TRUE, am.getPerClausePointcut());
+		assertThat((Object) am.getPerClausePointcut()).isNotSameAs(Pointcut.TRUE);
 		assertThat(am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.PERTHIS);
 	}
 }

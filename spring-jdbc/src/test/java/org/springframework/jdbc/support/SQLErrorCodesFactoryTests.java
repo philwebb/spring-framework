@@ -30,8 +30,6 @@ import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -155,7 +153,7 @@ public class SQLErrorCodesFactoryTests {
 				}
 				else {
 					// Should have only one more lookup
-					assertEquals(2, lookups);
+					assertThat((long) lookups).isEqualTo((long) 2);
 					assertThat(path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH);
 					return null;
 				}
@@ -186,7 +184,7 @@ public class SQLErrorCodesFactoryTests {
 		// Should have loaded without error
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
 		assertThat(sf.getErrorCodes("XX").getBadSqlGrammarCodes().length == 0).isTrue();
-		assertEquals(2, sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length);
+		assertThat((long) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length).isEqualTo((long) 2);
 		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]).isEqualTo("1");
 		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]).isEqualTo("2");
 	}
@@ -207,7 +205,7 @@ public class SQLErrorCodesFactoryTests {
 		// Should have failed to load without error
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
 		assertThat(sf.getErrorCodes("XX").getBadSqlGrammarCodes().length == 0).isTrue();
-		assertEquals(0, sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length);
+		assertThat((long) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length).isEqualTo((long) 0);
 	}
 
 	/**
@@ -227,11 +225,11 @@ public class SQLErrorCodesFactoryTests {
 
 		// Should have loaded without error
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
-		assertEquals(1, sf.getErrorCodes("Oracle").getCustomTranslations().length);
+		assertThat((long) sf.getErrorCodes("Oracle").getCustomTranslations().length).isEqualTo((long) 1);
 		CustomSQLErrorCodesTranslation translation =
 				sf.getErrorCodes("Oracle").getCustomTranslations()[0];
 		assertThat(translation.getExceptionClass()).isEqualTo(CustomErrorCodeException.class);
-		assertEquals(1, translation.getErrorCodes().length);
+		assertThat((long) translation.getErrorCodes().length).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -259,8 +257,8 @@ public class SQLErrorCodesFactoryTests {
 
 	private void assertIsEmpty(SQLErrorCodes sec) {
 		// Codes should be empty
-		assertEquals(0, sec.getBadSqlGrammarCodes().length);
-		assertEquals(0, sec.getDataIntegrityViolationCodes().length);
+		assertThat((long) sec.getBadSqlGrammarCodes().length).isEqualTo((long) 0);
+		assertThat((long) sec.getDataIntegrityViolationCodes().length).isEqualTo((long) 0);
 	}
 
 	private SQLErrorCodes getErrorCodesFromDataSource(String productName, SQLErrorCodesFactory factory) throws Exception {
@@ -285,7 +283,7 @@ public class SQLErrorCodesFactoryTests {
 
 
 		SQLErrorCodes sec2 = secf.getErrorCodes(dataSource);
-		assertSame("Cached per DataSource", sec2, sec);
+		assertThat((Object) sec).as("Cached per DataSource").isSameAs(sec2);
 
 		verify(connection).close();
 		return sec;

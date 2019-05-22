@@ -26,8 +26,6 @@ import org.junit.Test;
 import org.springframework.messaging.simp.SimpMessageType;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -67,7 +65,7 @@ public class StompCommandTests {
 			if (simp == null) {
 				simp = SimpMessageType.OTHER;
 			}
-			assertSame(simp, stompCommand.getMessageType());
+			assertThat((Object) stompCommand.getMessageType()).isSameAs(simp);
 		}
 	}
 

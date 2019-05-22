@@ -28,8 +28,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Juergen Hoeller
@@ -152,7 +150,7 @@ public class UrlFilenameViewControllerTests {
 	public void settingPrefixToNullCausesEmptyStringToBeUsed() throws Exception {
 		UrlFilenameViewController ctrl = new UrlFilenameViewController();
 		ctrl.setPrefix(null);
-		assertNotNull("For setPrefix(..) with null, the empty string must be used instead.", ctrl.getPrefix());
+		assertThat((Object) ctrl.getPrefix()).as("For setPrefix(..) with null, the empty string must be used instead.").isNotNull();
 		assertThat(ctrl.getPrefix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
 	}
 
@@ -160,7 +158,7 @@ public class UrlFilenameViewControllerTests {
 	public void settingSuffixToNullCausesEmptyStringToBeUsed() throws Exception {
 		UrlFilenameViewController ctrl = new UrlFilenameViewController();
 		ctrl.setSuffix(null);
-		assertNotNull("For setPrefix(..) with null, the empty string must be used instead.", ctrl.getSuffix());
+		assertThat((Object) ctrl.getSuffix()).as("For setPrefix(..) with null, the empty string must be used instead.").isNotNull();
 		assertThat(ctrl.getSuffix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
 	}
 
@@ -186,7 +184,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertThat(mv.getViewName()).isEqualTo("index");
-		assertEquals(1, mv.getModel().size());
+		assertThat((long) mv.getModel().size()).isEqualTo((long) 1);
 		assertThat(mv.getModel().get("name")).isEqualTo("value");
 	}
 

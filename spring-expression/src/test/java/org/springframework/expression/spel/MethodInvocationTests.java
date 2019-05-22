@@ -41,8 +41,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Tests invocation of methods.
@@ -222,20 +220,20 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 
 		// reflective method accessor is the only one by default
 		List<MethodResolver> methodResolvers = ctx.getMethodResolvers();
-		assertEquals(1, methodResolvers.size());
+		assertThat((long) methodResolvers.size()).isEqualTo((long) 1);
 
 		MethodResolver dummy = new DummyMethodResolver();
 		ctx.addMethodResolver(dummy);
-		assertEquals(2, ctx.getMethodResolvers().size());
+		assertThat((long) ctx.getMethodResolvers().size()).isEqualTo((long) 2);
 
 		List<MethodResolver> copy = new ArrayList<>();
 		copy.addAll(ctx.getMethodResolvers());
 		assertThat(ctx.removeMethodResolver(dummy)).isTrue();
 		assertThat(ctx.removeMethodResolver(dummy)).isFalse();
-		assertEquals(1, ctx.getMethodResolvers().size());
+		assertThat((long) ctx.getMethodResolvers().size()).isEqualTo((long) 1);
 
 		ctx.setMethodResolvers(copy);
-		assertEquals(2, ctx.getMethodResolvers().size());
+		assertThat((long) ctx.getMethodResolvers().size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -290,7 +288,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		});
 		Expression expression = parser.parseExpression("@service.handleBytes(#root)");
 		byte[] outBytes = expression.getValue(context, byte[].class);
-		assertSame(bytes, outBytes);
+		assertThat((Object) outBytes).isSameAs(bytes);
 	}
 
 

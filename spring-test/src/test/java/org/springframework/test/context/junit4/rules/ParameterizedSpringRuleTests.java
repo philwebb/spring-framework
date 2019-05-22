@@ -35,8 +35,6 @@ import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration test which demonstrates how to use JUnit's {@link Parameterized}
@@ -87,7 +85,7 @@ public class ParameterizedSpringRuleTests {
 		invocationCount.incrementAndGet();
 
 		// Verifying dependency injection:
-		assertNotNull("The pet field should have been autowired.", this.pet);
+		assertThat((Object) this.pet).as("The pet field should have been autowired.").isNotNull();
 
 		// Verifying 'parameterized' support:
 		Employee employee = this.applicationContext.getBean(this.employeeBeanName, Employee.class);
@@ -96,8 +94,7 @@ public class ParameterizedSpringRuleTests {
 
 	@AfterClass
 	public static void verifyNumParameterizedRuns() {
-		assertEquals("Number of times the parameterized test method was executed.", employeeData().length,
-			invocationCount.get());
+		assertThat((long) invocationCount.get()).as("Number of times the parameterized test method was executed.").isEqualTo((long) employeeData().length);
 	}
 
 }

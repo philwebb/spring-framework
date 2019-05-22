@@ -23,8 +23,6 @@ import org.junit.Test;
 import org.springframework.web.context.request.async.DeferredResult.DeferredResultHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -83,7 +81,7 @@ public class DeferredResultTests {
 		result.setResultHandler(handler);
 
 		assertThat(result.hasResult()).isFalse();
-		assertNull(result.getResult());
+		assertThat(result.getResult()).isNull();
 
 		result.setResult("hello");
 

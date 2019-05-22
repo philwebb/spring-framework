@@ -23,7 +23,6 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelCompiler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.fail;
 
 /**

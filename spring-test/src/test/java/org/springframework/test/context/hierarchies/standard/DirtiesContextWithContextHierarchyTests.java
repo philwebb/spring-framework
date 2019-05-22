@@ -33,9 +33,6 @@ import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Integration tests that verify support for {@link DirtiesContext.HierarchyMode}
@@ -119,9 +116,9 @@ public class DirtiesContextWithContextHierarchyTests {
 
 	@Before
 	public void verifyContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNotNull("parent ApplicationContext", context.getParent());
-		assertNull("grandparent ApplicationContext", context.getParent().getParent());
+		assertThat((Object) context).as("child ApplicationContext").isNotNull();
+		assertThat((Object) context.getParent()).as("parent ApplicationContext").isNotNull();
+		assertThat((Object) context.getParent().getParent()).as("grandparent ApplicationContext").isNull();
 	}
 
 	@Test

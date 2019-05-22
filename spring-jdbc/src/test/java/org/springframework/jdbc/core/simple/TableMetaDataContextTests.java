@@ -33,7 +33,6 @@ import org.springframework.jdbc.core.metadata.TableMetaDataContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -106,7 +105,7 @@ public class TableMetaDataContextTests  {
 
 		List<Object> values = context.matchInParameterValuesWithInsertColumns(map);
 
-		assertEquals("wrong number of parameters: ", 4, values.size());
+		assertThat((long) values.size()).as("wrong number of parameters: ").isEqualTo((long) 4);
 		boolean condition3 = values.get(0) instanceof Number;
 		assertThat(condition3).as("id not wrapped with type info").isTrue();
 		boolean condition2 = values.get(1) instanceof String;
@@ -152,7 +151,7 @@ public class TableMetaDataContextTests  {
 		List<Object> values = context.matchInParameterValuesWithInsertColumns(map);
 		String insertString = context.createInsertString(keyCols);
 
-		assertEquals("wrong number of parameters: ", 0, values.size());
+		assertThat((long) values.size()).as("wrong number of parameters: ").isEqualTo((long) 0);
 		assertThat(insertString).as("empty insert not generated correctly").isEqualTo("INSERT INTO customers () VALUES()");
 		verify(metaDataResultSet, atLeastOnce()).next();
 		verify(columnsResultSet, atLeastOnce()).next();

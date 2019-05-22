@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -71,8 +70,7 @@ public class JamonPerformanceMonitorInterceptorTests {
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				interceptor.invokeUnderTrace(mi, log));
 
-		assertEquals("Monitors must exist for the method invocation and 2 exceptions",
-				3, MonitorFactory.getNumRows());
+		assertThat((long) MonitorFactory.getNumRows()).as("Monitors must exist for the method invocation and 2 exceptions").isEqualTo((long) 3);
 		assertThat(MonitorFactory.getReport().contains("toString")).as("The jamon report must contain the toString method that was invoked").isTrue();
 		assertThat(MonitorFactory.getReport().contains(MonitorFactory.EXCEPTIONS_LABEL)).as("The jamon report must contain the generic exception: " + MonitorFactory.EXCEPTIONS_LABEL).isTrue();
 		assertThat(MonitorFactory.getReport().contains("IllegalArgumentException")).as("The jamon report must contain the specific exception: IllegalArgumentException'").isTrue();

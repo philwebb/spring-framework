@@ -35,9 +35,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -101,7 +98,7 @@ public class ControllerTests {
 		StaticWebApplicationContext sac = new StaticWebApplicationContext();
 		sac.setServletContext(context);
 		sfc.setApplicationContext(sac);
-		assertNull(sfc.handleRequest(request, response));
+		assertThat((Object) sfc.handleRequest(request, response)).isNull();
 
 		if (include) {
 			verify(dispatcher).include(request, response);
@@ -124,13 +121,13 @@ public class ControllerTests {
 		swc.setInitParameters(props);
 
 		swc.afterPropertiesSet();
-		assertNotNull(TestServlet.config);
+		assertThat((Object) TestServlet.config).isNotNull();
 		assertThat(TestServlet.config.getServletName()).isEqualTo("action");
 		assertThat(TestServlet.config.getInitParameter("config")).isEqualTo("myValue");
-		assertNull(TestServlet.request);
+		assertThat((Object) TestServlet.request).isNull();
 		assertThat(TestServlet.destroyed).isFalse();
 
-		assertNull(swc.handleRequest(request, response));
+		assertThat((Object) swc.handleRequest(request, response)).isNull();
 		assertThat(TestServlet.request).isEqualTo(request);
 		assertThat(TestServlet.response).isEqualTo(response);
 		assertThat(TestServlet.destroyed).isFalse();
@@ -149,12 +146,12 @@ public class ControllerTests {
 		swc.setBeanName("action");
 
 		swc.afterPropertiesSet();
-		assertNotNull(TestServlet.config);
+		assertThat((Object) TestServlet.config).isNotNull();
 		assertThat(TestServlet.config.getServletName()).isEqualTo("action");
-		assertNull(TestServlet.request);
+		assertThat((Object) TestServlet.request).isNull();
 		assertThat(TestServlet.destroyed).isFalse();
 
-		assertNull(swc.handleRequest(request, response));
+		assertThat((Object) swc.handleRequest(request, response)).isNull();
 		assertThat(TestServlet.request).isEqualTo(request);
 		assertThat(TestServlet.response).isEqualTo(response);
 		assertThat(TestServlet.destroyed).isFalse();

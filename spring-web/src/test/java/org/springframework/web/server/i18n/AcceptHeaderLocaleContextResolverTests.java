@@ -37,8 +37,6 @@ import static java.util.Locale.KOREA;
 import static java.util.Locale.UK;
 import static java.util.Locale.US;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link AcceptHeaderLocaleContextResolver}.
@@ -98,7 +96,7 @@ public class AcceptHeaderLocaleContextResolverTests {
 	public void resolveMissingAcceptLanguageHeader() {
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
-		assertNull(this.resolver.resolveLocaleContext(exchange).getLocale());
+		assertThat((Object) this.resolver.resolveLocaleContext(exchange).getLocale()).isNull();
 	}
 
 	@Test
@@ -114,7 +112,7 @@ public class AcceptHeaderLocaleContextResolverTests {
 	public void resolveEmptyAcceptLanguageHeader() {
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").header(HttpHeaders.ACCEPT_LANGUAGE, "").build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
-		assertNull(this.resolver.resolveLocaleContext(exchange).getLocale());
+		assertThat((Object) this.resolver.resolveLocaleContext(exchange).getLocale()).isNull();
 	}
 
 	@Test
@@ -130,7 +128,7 @@ public class AcceptHeaderLocaleContextResolverTests {
 	public void resolveInvalidAcceptLanguageHeader() {
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").header(HttpHeaders.ACCEPT_LANGUAGE, "en_US").build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
-		assertNull(this.resolver.resolveLocaleContext(exchange).getLocale());
+		assertThat((Object) this.resolver.resolveLocaleContext(exchange).getLocale()).isNull();
 	}
 
 	@Test

@@ -50,10 +50,6 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-
 /**
  * Unit tests for {@link ResourceHandlerRegistry}.
  *
@@ -84,7 +80,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void noResourceHandlers() throws Exception {
 		this.registry = new ResourceHandlerRegistry(new GenericWebApplicationContext(), new MockServletContext());
-		assertNull(this.registry.getHandlerMapping());
+		assertThat((Object) this.registry.getHandlerMapping()).isNull();
 	}
 
 	@Test
@@ -101,10 +97,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void cachePeriod() {
-		assertEquals(-1, getHandler("/resources/**").getCacheSeconds());
+		assertThat((long) getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) -1);
 
 		this.registration.setCachePeriod(0);
-		assertEquals(0, getHandler("/resources/**").getCacheSeconds());
+		assertThat((long) getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -118,10 +114,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void order() {
-		assertEquals(Integer.MAX_VALUE -1, registry.getHandlerMapping().getOrder());
+		assertThat((long) registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
 
 		registry.setOrder(0);
-		assertEquals(0, registry.getHandlerMapping().getOrder());
+		assertThat((long) registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -233,12 +229,12 @@ public class ResourceHandlerRegistryTests {
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		UrlResource resource = (UrlResource) handler.getLocations().get(1);
 		assertThat(resource.getURL().toString()).isEqualTo("file:/tmp");
-		assertNotNull(handler.getUrlPathHelper());
+		assertThat((Object) handler.getUrlPathHelper()).isNotNull();
 
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
 		PathResourceResolver resolver = (PathResourceResolver) resolvers.get(resolvers.size()-1);
 		Map<Resource, Charset> locationCharsets = resolver.getLocationCharsets();
-		assertEquals(1, locationCharsets.size());
+		assertThat((long) locationCharsets.size()).isEqualTo((long) 1);
 		assertThat(locationCharsets.values().iterator().next()).isEqualTo(StandardCharsets.ISO_8859_1);
 	}
 

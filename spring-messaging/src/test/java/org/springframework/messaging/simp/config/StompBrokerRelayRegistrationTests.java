@@ -25,7 +25,6 @@ import org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler;
 import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for
@@ -58,8 +57,8 @@ public class StompBrokerRelayRegistrationTests {
 		assertThat(handler.getClientPasscode()).isEqualTo("clientpasscode");
 		assertThat(handler.getSystemLogin()).isEqualTo("syslogin");
 		assertThat(handler.getSystemPasscode()).isEqualTo("syspasscode");
-		assertEquals(123, handler.getSystemHeartbeatReceiveInterval());
-		assertEquals(456, handler.getSystemHeartbeatSendInterval());
+		assertThat(handler.getSystemHeartbeatReceiveInterval()).isEqualTo((long) 123);
+		assertThat(handler.getSystemHeartbeatSendInterval()).isEqualTo((long) 456);
 		assertThat(handler.getVirtualHost()).isEqualTo("example.org");
 	}
 

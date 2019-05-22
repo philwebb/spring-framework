@@ -30,9 +30,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-
 /**
  * Unit tests for {@link AnnotationAttributes}.
  *
@@ -102,12 +99,12 @@ public class AnnotationAttributesTests {
 		assertThat(attributes.getClassArray("classes")).isEqualTo(new Class<?>[] {Number.class});
 
 		AnnotationAttributes[] array = attributes.getAnnotationArray("nestedAttributes");
-		assertNotNull(array);
+		assertThat((Object) array).isNotNull();
 		assertThat(array.length).isEqualTo(1);
 		assertThat(array[0].getString("name")).isEqualTo("Dilbert");
 
 		Filter[] filters = attributes.getAnnotationArray("filters", Filter.class);
-		assertNotNull(filters);
+		assertThat((Object) filters).isNotNull();
 		assertThat(filters.length).isEqualTo(1);
 		assertThat(filters[0].pattern()).isEqualTo("foo");
 	}
@@ -124,8 +121,8 @@ public class AnnotationAttributesTests {
 		assertThat(retrievedFilter.pattern()).isEqualTo("foo");
 
 		Filter[] retrievedFilters = attributes.getAnnotationArray("filters", Filter.class);
-		assertNotNull(retrievedFilters);
-		assertEquals(2, retrievedFilters.length);
+		assertThat((Object) retrievedFilters).isNotNull();
+		assertThat((long) retrievedFilters.length).isEqualTo((long) 2);
 		assertThat(retrievedFilters[1].pattern()).isEqualTo("foo");
 	}
 

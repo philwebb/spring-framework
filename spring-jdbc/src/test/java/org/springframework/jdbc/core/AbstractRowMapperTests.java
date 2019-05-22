@@ -32,7 +32,6 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -50,28 +49,28 @@ public abstract class AbstractRowMapperTests {
 
 	protected void verifyPerson(Person bean) throws Exception {
 		assertThat(bean.getName()).isEqualTo("Bubba");
-		assertEquals(22L, bean.getAge());
+		assertThat(bean.getAge()).isEqualTo(22L);
 		assertThat(bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
 		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 	protected void verifyPerson(ConcretePerson bean) throws Exception {
 		assertThat(bean.getName()).isEqualTo("Bubba");
-		assertEquals(22L, bean.getAge());
+		assertThat(bean.getAge()).isEqualTo(22L);
 		assertThat(bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
 		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 	protected void verifyPerson(SpacePerson bean) {
 		assertThat(bean.getLastName()).isEqualTo("Bubba");
-		assertEquals(22L, bean.getAge());
+		assertThat(bean.getAge()).isEqualTo(22L);
 		assertThat(bean.getBirthDate()).isEqualTo(new Timestamp(1221222L).toLocalDateTime());
 		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 	protected void verifyPerson(DatePerson bean) {
 		assertThat(bean.getLastName()).isEqualTo("Bubba");
-		assertEquals(22L, bean.getAge());
+		assertThat(bean.getAge()).isEqualTo(22L);
 		assertThat(bean.getBirthDate()).isEqualTo(new java.sql.Date(1221222L).toLocalDate());
 		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}

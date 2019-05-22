@@ -37,8 +37,6 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link FilteringWebHandler}.
@@ -126,7 +124,7 @@ public class FilteringWebHandlerTests {
 				.block();
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-		assertNotNull(exceptionHandler.ex);
+		assertThat((Object) exceptionHandler.ex).isNotNull();
 		assertThat(exceptionHandler.ex.getMessage()).isEqualTo("boo");
 	}
 

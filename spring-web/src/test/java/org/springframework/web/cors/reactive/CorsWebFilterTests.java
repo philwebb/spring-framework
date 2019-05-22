@@ -32,8 +32,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.server.WebFilterChain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS;
@@ -69,8 +67,8 @@ public class CorsWebFilterTests {
 		WebFilterChain filterChain = filterExchange -> {
 			try {
 				HttpHeaders headers = filterExchange.getResponse().getHeaders();
-				assertNull(headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
-				assertNull(headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS));
+				assertThat((Object) headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN)).isNull();
+				assertThat((Object) headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS)).isNull();
 			}
 			catch (AssertionError ex) {
 				return Mono.error(ex);
@@ -90,8 +88,8 @@ public class CorsWebFilterTests {
 		WebFilterChain filterChain = filterExchange -> {
 			try {
 				HttpHeaders headers = filterExchange.getResponse().getHeaders();
-				assertNull(headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
-				assertNull(headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS));
+				assertThat((Object) headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN)).isNull();
+				assertThat((Object) headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS)).isNull();
 			}
 			catch (AssertionError ex) {
 				return Mono.error(ex);
@@ -141,7 +139,7 @@ public class CorsWebFilterTests {
 		WebFilterChain filterChain = filterExchange -> Mono.error(
 				new AssertionError("Invalid requests must not be forwarded to the filter chain"));
 		filter.filter(exchange, filterChain).block();
-		assertNull(exchange.getResponse().getHeaders().getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst(ACCESS_CONTROL_ALLOW_ORIGIN)).isNull();
 	}
 
 	@Test
@@ -164,7 +162,7 @@ public class CorsWebFilterTests {
 		assertThat(headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("https://domain2.com");
 		assertThat(headers.getFirst(ACCESS_CONTROL_ALLOW_HEADERS)).isEqualTo("header1, header2");
 		assertThat(headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS)).isEqualTo("header3, header4");
-		assertEquals(123L, Long.parseLong(headers.getFirst(ACCESS_CONTROL_MAX_AGE)));
+		assertThat(Long.parseLong(headers.getFirst(ACCESS_CONTROL_MAX_AGE))).isEqualTo(123L);
 	}
 
 	@Test
@@ -183,7 +181,7 @@ public class CorsWebFilterTests {
 
 		filter.filter(exchange, filterChain).block();
 
-		assertNull(exchange.getResponse().getHeaders().getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst(ACCESS_CONTROL_ALLOW_ORIGIN)).isNull();
 	}
 
 }

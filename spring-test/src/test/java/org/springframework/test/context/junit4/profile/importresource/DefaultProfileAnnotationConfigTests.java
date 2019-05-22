@@ -26,9 +26,6 @@ import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -47,13 +44,13 @@ public class DefaultProfileAnnotationConfigTests {
 
 	@Test
 	public void pet() {
-		assertNotNull(pet);
+		assertThat((Object) pet).isNotNull();
 		assertThat(pet.getName()).isEqualTo("Fido");
 	}
 
 	@Test
 	public void employee() {
-		assertNull("employee bean should not be created for the default profile", employee);
+		assertThat((Object) employee).as("employee bean should not be created for the default profile").isNull();
 	}
 
 }

@@ -57,8 +57,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.hamcrest.core.Is.is;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Kazuki Shimizu
@@ -85,7 +83,7 @@ public class SpringValidatorAdapterTests {
 	@Test
 	public void testUnwrap() {
 		Validator nativeValidator = validatorAdapter.unwrap(Validator.class);
-		assertSame(this.nativeValidator, nativeValidator);
+		assertThat((Object) nativeValidator).isSameAs(this.nativeValidator);
 	}
 
 	@Test  // SPR-13406
@@ -100,7 +98,7 @@ public class SpringValidatorAdapterTests {
 		assertThat(errors.getFieldErrorCount("password")).isEqualTo(1);
 		assertThat(errors.getFieldValue("password")).isEqualTo("pass");
 		FieldError error = errors.getFieldError("password");
-		assertNotNull(error);
+		assertThat((Object) error).isNotNull();
 		assertThat(messageSource.getMessage(error, Locale.ENGLISH)).isEqualTo("Size of Password is must be between 8 and 128");
 		assertThat(error.contains(ConstraintViolation.class)).isTrue();
 		assertThat(error.unwrap(ConstraintViolation.class).getPropertyPath().toString()).isEqualTo("password");
@@ -118,7 +116,7 @@ public class SpringValidatorAdapterTests {
 		assertThat(errors.getFieldErrorCount("password")).isEqualTo(1);
 		assertThat(errors.getFieldValue("password")).isEqualTo("password");
 		FieldError error = errors.getFieldError("password");
-		assertNotNull(error);
+		assertThat((Object) error).isNotNull();
 		assertThat(messageSource.getMessage(error, Locale.ENGLISH)).isEqualTo("Password must be same value as Password(Confirm)");
 		assertThat(error.contains(ConstraintViolation.class)).isTrue();
 		assertThat(error.unwrap(ConstraintViolation.class).getPropertyPath().toString()).isEqualTo("password");
@@ -138,8 +136,8 @@ public class SpringValidatorAdapterTests {
 		assertThat(errors.getFieldErrorCount("confirmEmail")).isEqualTo(1);
 		FieldError error1 = errors.getFieldError("email");
 		FieldError error2 = errors.getFieldError("confirmEmail");
-		assertNotNull(error1);
-		assertNotNull(error2);
+		assertThat((Object) error1).isNotNull();
+		assertThat((Object) error2).isNotNull();
 		assertThat(messageSource.getMessage(error1, Locale.ENGLISH)).isEqualTo("email must be same value as confirmEmail");
 		assertThat(messageSource.getMessage(error2, Locale.ENGLISH)).isEqualTo("Email required");
 		assertThat(error1.contains(ConstraintViolation.class)).isTrue();
@@ -164,8 +162,8 @@ public class SpringValidatorAdapterTests {
 		assertThat(errors.getFieldErrorCount("confirmEmail")).isEqualTo(1);
 		FieldError error1 = errors.getFieldError("email");
 		FieldError error2 = errors.getFieldError("confirmEmail");
-		assertNotNull(error1);
-		assertNotNull(error2);
+		assertThat((Object) error1).isNotNull();
+		assertThat((Object) error2).isNotNull();
 		assertThat(messageSource.getMessage(error1, Locale.ENGLISH)).isEqualTo("email must be same value as confirmEmail");
 		assertThat(messageSource.getMessage(error2, Locale.ENGLISH)).isEqualTo("Email required");
 		assertThat(error1.contains(ConstraintViolation.class)).isTrue();
@@ -186,7 +184,7 @@ public class SpringValidatorAdapterTests {
 		assertThat(errors.getFieldErrorCount("email")).isEqualTo(1);
 		assertThat(errors.getFieldValue("email")).isEqualTo("X");
 		FieldError error = errors.getFieldError("email");
-		assertNotNull(error);
+		assertThat((Object) error).isNotNull();
 		assertThat(messageSource.getMessage(error, Locale.ENGLISH)).contains("[\\w.'-]{1,}@[\\w.'-]{1,}");
 		assertThat(error.contains(ConstraintViolation.class)).isTrue();
 		assertThat(error.unwrap(ConstraintViolation.class).getPropertyPath().toString()).isEqualTo("email");

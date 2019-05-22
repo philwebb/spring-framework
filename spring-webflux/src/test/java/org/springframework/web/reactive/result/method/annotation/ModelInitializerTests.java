@@ -55,8 +55,6 @@ import org.springframework.web.server.WebSession;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -112,7 +110,7 @@ public class ModelInitializerTests {
 		this.modelInitializer.initModel(handlerMethod, context, this.exchange).block(Duration.ofMillis(5000));
 
 		Map<String, Object> model = context.getModel().asMap();
-		assertEquals(5, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 5);
 
 		Object value = model.get("bean");
 		assertThat(((TestBean) value).getName()).isEqualTo("Bean");
@@ -140,18 +138,18 @@ public class ModelInitializerTests {
 		this.modelInitializer.initModel(handlerMethod, context, this.exchange).block(Duration.ofMillis(5000));
 
 		WebSession session = this.exchange.getSession().block(Duration.ZERO);
-		assertNotNull(session);
-		assertEquals(0, session.getAttributes().size());
+		assertThat((Object) session).isNotNull();
+		assertThat((long) session.getAttributes().size()).isEqualTo((long) 0);
 
 		context.saveModel();
-		assertEquals(1, session.getAttributes().size());
+		assertThat((long) session.getAttributes().size()).isEqualTo((long) 1);
 		assertThat(((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Bean");
 	}
 
 	@Test
 	public void retrieveModelAttributeFromSession() {
 		WebSession session = this.exchange.getSession().block(Duration.ZERO);
-		assertNotNull(session);
+		assertThat((Object) session).isNotNull();
 
 		TestBean testBean = new TestBean("Session Bean");
 		session.getAttributes().put("bean", testBean);
@@ -164,7 +162,7 @@ public class ModelInitializerTests {
 		this.modelInitializer.initModel(handlerMethod, context, this.exchange).block(Duration.ofMillis(5000));
 
 		context.saveModel();
-		assertEquals(1, session.getAttributes().size());
+		assertThat((long) session.getAttributes().size()).isEqualTo((long) 1);
 		assertThat(((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Session Bean");
 	}
 
@@ -183,7 +181,7 @@ public class ModelInitializerTests {
 	@Test
 	public void clearModelAttributeFromSession() {
 		WebSession session = this.exchange.getSession().block(Duration.ZERO);
-		assertNotNull(session);
+		assertThat((Object) session).isNotNull();
 
 		TestBean testBean = new TestBean("Session Bean");
 		session.getAttributes().put("bean", testBean);
@@ -198,7 +196,7 @@ public class ModelInitializerTests {
 		context.getSessionStatus().setComplete();
 		context.saveModel();
 
-		assertEquals(0, session.getAttributes().size());
+		assertThat((long) session.getAttributes().size()).isEqualTo((long) 0);
 	}
 
 

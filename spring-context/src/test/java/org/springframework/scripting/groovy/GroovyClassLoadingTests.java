@@ -26,7 +26,6 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Mark Fisher

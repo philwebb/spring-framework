@@ -33,8 +33,6 @@ import org.springframework.scheduling.support.ScheduledMethodRunnable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Mark Fisher
  * @author Chris Beams
@@ -81,28 +79,28 @@ public class ScheduledTasksBeanDefinitionParserTests {
 	public void fixedRateTasks() {
 		List<IntervalTask> tasks = (List<IntervalTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("fixedRateTasks");
-		assertEquals(3, tasks.size());
-		assertEquals(1000L, tasks.get(0).getInterval());
-		assertEquals(2000L, tasks.get(1).getInterval());
-		assertEquals(4000L, tasks.get(2).getInterval());
-		assertEquals(500, tasks.get(2).getInitialDelay());
+		assertThat((long) tasks.size()).isEqualTo((long) 3);
+		assertThat(tasks.get(0).getInterval()).isEqualTo(1000L);
+		assertThat(tasks.get(1).getInterval()).isEqualTo(2000L);
+		assertThat(tasks.get(2).getInterval()).isEqualTo(4000L);
+		assertThat(tasks.get(2).getInitialDelay()).isEqualTo((long) 500);
 	}
 
 	@Test
 	public void fixedDelayTasks() {
 		List<IntervalTask> tasks = (List<IntervalTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("fixedDelayTasks");
-		assertEquals(2, tasks.size());
-		assertEquals(3000L, tasks.get(0).getInterval());
-		assertEquals(3500L, tasks.get(1).getInterval());
-		assertEquals(250, tasks.get(1).getInitialDelay());
+		assertThat((long) tasks.size()).isEqualTo((long) 2);
+		assertThat(tasks.get(0).getInterval()).isEqualTo(3000L);
+		assertThat(tasks.get(1).getInterval()).isEqualTo(3500L);
+		assertThat(tasks.get(1).getInitialDelay()).isEqualTo((long) 250);
 	}
 
 	@Test
 	public void cronTasks() {
 		List<CronTask> tasks = (List<CronTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("cronTasks");
-		assertEquals(1, tasks.size());
+		assertThat((long) tasks.size()).isEqualTo((long) 1);
 		assertThat(tasks.get(0).getExpression()).isEqualTo("*/4 * 9-17 * * MON-FRI");
 	}
 
@@ -110,7 +108,7 @@ public class ScheduledTasksBeanDefinitionParserTests {
 	public void triggerTasks() {
 		List<TriggerTask> tasks = (List<TriggerTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("triggerTasks");
-		assertEquals(1, tasks.size());
+		assertThat((long) tasks.size()).isEqualTo((long) 1);
 		assertThat(tasks.get(0).getTrigger()).isInstanceOf(TestTrigger.class);
 	}
 

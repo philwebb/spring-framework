@@ -33,7 +33,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
 /**
@@ -72,37 +72,33 @@ public class MethodLevelTransactionalSpringRunnerTests extends AbstractTransacti
 
 	@AfterClass
 	public static void verifyFinalTestData() {
-		assertEquals("Verifying the final number of rows in the person table after all tests.", 4,
-			countRowsInPersonTable(jdbcTemplate));
+		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo((long) 4);
 	}
 
 	@Before
 	public void verifyInitialTestData() {
 		clearPersonTable(jdbcTemplate);
-		assertEquals("Adding bob", 1, addPerson(jdbcTemplate, BOB));
-		assertEquals("Verifying the initial number of rows in the person table.", 1,
-			countRowsInPersonTable(jdbcTemplate));
+		assertThat((long) addPerson(jdbcTemplate, BOB)).as("Adding bob").isEqualTo((long) 1);
+		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the initial number of rows in the person table.").isEqualTo((long) 1);
 	}
 
 	@Test
 	@Transactional("transactionManager2")
 	public void modifyTestDataWithinTransaction() {
 		assertInTransaction(true);
-		assertEquals("Deleting bob", 1, deletePerson(jdbcTemplate, BOB));
-		assertEquals("Adding jane", 1, addPerson(jdbcTemplate, JANE));
-		assertEquals("Adding sue", 1, addPerson(jdbcTemplate, SUE));
-		assertEquals("Verifying the number of rows in the person table within a transaction.", 2,
-			countRowsInPersonTable(jdbcTemplate));
+		assertThat((long) deletePerson(jdbcTemplate, BOB)).as("Deleting bob").isEqualTo((long) 1);
+		assertThat((long) addPerson(jdbcTemplate, JANE)).as("Adding jane").isEqualTo((long) 1);
+		assertThat((long) addPerson(jdbcTemplate, SUE)).as("Adding sue").isEqualTo((long) 1);
+		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table within a transaction.").isEqualTo((long) 2);
 	}
 
 	@Test
 	public void modifyTestDataWithoutTransaction() {
 		assertInTransaction(false);
-		assertEquals("Adding luke", 1, addPerson(jdbcTemplate, LUKE));
-		assertEquals("Adding leia", 1, addPerson(jdbcTemplate, LEIA));
-		assertEquals("Adding yoda", 1, addPerson(jdbcTemplate, YODA));
-		assertEquals("Verifying the number of rows in the person table without a transaction.", 4,
-			countRowsInPersonTable(jdbcTemplate));
+		assertThat((long) addPerson(jdbcTemplate, LUKE)).as("Adding luke").isEqualTo((long) 1);
+		assertThat((long) addPerson(jdbcTemplate, LEIA)).as("Adding leia").isEqualTo((long) 1);
+		assertThat((long) addPerson(jdbcTemplate, YODA)).as("Adding yoda").isEqualTo((long) 1);
+		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table without a transaction.").isEqualTo((long) 4);
 	}
 
 }

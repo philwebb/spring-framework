@@ -52,7 +52,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.BDDMockito.given;
@@ -107,14 +106,14 @@ public class StoredProcedureTests {
 	private void testAddInvoice(final int amount, final int custid) throws Exception {
 		AddInvoice adder = new AddInvoice(dataSource);
 		int id = adder.execute(amount, custid);
-		assertEquals(4, id);
+		assertThat((long) id).isEqualTo((long) 4);
 	}
 
 	private void testAddInvoiceUsingObjectArray(final int amount, final int custid)
 			throws Exception {
 		AddInvoiceUsingObjectArray adder = new AddInvoiceUsingObjectArray(dataSource);
 		int id = adder.execute(amount, custid);
-		assertEquals(5, id);
+		assertThat((long) id).isEqualTo((long) 5);
 	}
 
 	@Test
@@ -195,8 +194,8 @@ public class StoredProcedureTests {
 		t.setExceptionTranslator(new SQLStateSQLExceptionTranslator());
 		StoredProcedureConfiguredViaJdbcTemplate sp = new StoredProcedureConfiguredViaJdbcTemplate(t);
 
-		assertEquals(5, sp.execute(11));
-		assertEquals(1, t.calls);
+		assertThat((long) sp.execute(11)).isEqualTo((long) 5);
+		assertThat((long) t.calls).isEqualTo((long) 1);
 
 		verify(callableStatement).setObject(1, 11, Types.INTEGER);
 		verify(callableStatement).registerOutParameter(2, Types.INTEGER);
@@ -215,7 +214,7 @@ public class StoredProcedureTests {
 		JdbcTemplate t = new JdbcTemplate();
 		t.setDataSource(dataSource);
 		StoredProcedureConfiguredViaJdbcTemplate sp = new StoredProcedureConfiguredViaJdbcTemplate(t);
-		assertEquals(4, sp.execute(1106));
+		assertThat((long) sp.execute(1106)).isEqualTo((long) 4);
 		verify(callableStatement).setObject(1, 1106, Types.INTEGER);
 		verify(callableStatement).registerOutParameter(2, Types.INTEGER);
 	}
@@ -270,7 +269,7 @@ public class StoredProcedureTests {
 				).willReturn(callableStatement);
 		StoredProcedureWithResultSet sproc = new StoredProcedureWithResultSet(dataSource);
 		sproc.execute();
-		assertEquals(2, sproc.getCount());
+		assertThat((long) sproc.getCount()).isEqualTo((long) 2);
 		verify(resultSet).close();
 	}
 
@@ -290,7 +289,7 @@ public class StoredProcedureTests {
 		StoredProcedureWithResultSetMapped sproc = new StoredProcedureWithResultSetMapped(dataSource);
 		Map<String, Object> res = sproc.execute();
 		List<String> rs = (List<String>) res.get("rs");
-		assertEquals(2, rs.size());
+		assertThat((long) rs.size()).isEqualTo((long) 2);
 		assertThat(rs.get(0)).isEqualTo("Foo");
 		assertThat(rs.get(1)).isEqualTo("Bar");
 		verify(resultSet).close();
@@ -325,15 +324,15 @@ public class StoredProcedureTests {
 		StoredProcedureWithResultSetMapped sproc = new StoredProcedureWithResultSetMapped(dataSource);
 		Map<String, Object> res = sproc.execute();
 
-		assertEquals("incorrect number of returns", 3, res.size());
+		assertThat((long) res.size()).as("incorrect number of returns").isEqualTo((long) 3);
 
 		List<String> rs1 = (List<String>) res.get("rs");
-		assertEquals(2, rs1.size());
+		assertThat((long) rs1.size()).isEqualTo((long) 2);
 		assertThat(rs1.get(0)).isEqualTo("Foo");
 		assertThat(rs1.get(1)).isEqualTo("Bar");
 
 		List<Object> rs2 = (List<Object>) res.get("#result-set-2");
-		assertEquals(1, rs2.size());
+		assertThat((long) rs2.size()).isEqualTo((long) 1);
 		Object o2 = rs2.get(0);
 		boolean condition = o2 instanceof Map;
 		assertThat(condition).as("wron type returned for result set 2").isTrue();
@@ -342,7 +341,7 @@ public class StoredProcedureTests {
 		assertThat(m2.get("eggs")).isEqualTo("Eggs");
 
 		Number n = (Number) res.get("#update-count-1");
-		assertEquals("wrong update count", 0, n.intValue());
+		assertThat((long) n.intValue()).as("wrong update count").isEqualTo((long) 0);
 		verify(resultSet1).close();
 		verify(resultSet2).close();
 	}
@@ -358,7 +357,7 @@ public class StoredProcedureTests {
 		StoredProcedureWithResultSetMapped sproc = new StoredProcedureWithResultSetMapped(
 				jdbcTemplate);
 		Map<String, Object> res = sproc.execute();
-		assertEquals("incorrect number of returns", 0, res.size());
+		assertThat((long) res.size()).as("incorrect number of returns").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -381,9 +380,9 @@ public class StoredProcedureTests {
 				jdbcTemplate);
 		Map<String, Object> res = sproc.execute();
 
-		assertEquals("incorrect number of returns", 1, res.size());
+		assertThat((long) res.size()).as("incorrect number of returns").isEqualTo((long) 1);
 		List<String> rs1 = (List<String>) res.get("rs");
-		assertEquals(2, rs1.size());
+		assertThat((long) rs1.size()).isEqualTo((long) 2);
 		assertThat(rs1.get(0)).isEqualTo("Foo");
 		assertThat(rs1.get(1)).isEqualTo("Bar");
 		verify(resultSet).close();

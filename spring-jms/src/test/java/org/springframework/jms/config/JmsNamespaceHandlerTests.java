@@ -49,10 +49,6 @@ import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.FixedBackOff;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -85,14 +81,14 @@ public class JmsNamespaceHandlerTests {
 	@Test
 	public void testBeansCreated() {
 		Map<String, ?> containers = context.getBeansOfType(DefaultMessageListenerContainer.class);
-		assertEquals("Context should contain 3 JMS listener containers", 3, containers.size());
+		assertThat((long) containers.size()).as("Context should contain 3 JMS listener containers").isEqualTo((long) 3);
 
 		containers = context.getBeansOfType(GenericMessageEndpointManager.class);
-		assertEquals("Context should contain 3 JCA endpoint containers", 3, containers.size());
+		assertThat((long) containers.size()).as("Context should contain 3 JCA endpoint containers").isEqualTo((long) 3);
 
 		Map<String, JmsListenerContainerFactory> containerFactories =
 				context.getBeansOfType(JmsListenerContainerFactory.class);
-		assertEquals("Context should contain 3 JmsListenerContainerFactory instances", 3, containerFactories.size());
+		assertThat((long) containerFactories.size()).as("Context should contain 3 JmsListenerContainerFactory instances").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -113,8 +109,8 @@ public class JmsNamespaceHandlerTests {
 			}
 		}
 
-		assertEquals("1 container should have the default connectionFactory", 1, defaultConnectionFactoryCount);
-		assertEquals("2 containers should have the explicit connectionFactory", 2, explicitConnectionFactoryCount);
+		assertThat((long) defaultConnectionFactoryCount).as("1 container should have the default connectionFactory").isEqualTo((long) 1);
+		assertThat((long) explicitConnectionFactoryCount).as("2 containers should have the explicit connectionFactory").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -142,7 +138,7 @@ public class JmsNamespaceHandlerTests {
 		Map<String, DefaultJmsListenerContainerFactory> containers =
 				context.getBeansOfType(DefaultJmsListenerContainerFactory.class);
 		DefaultJmsListenerContainerFactory factory = containers.get("testJmsFactory");
-		assertNotNull("No factory registered with testJmsFactory id", factory);
+		assertThat((Object) factory).as("No factory registered with testJmsFactory id").isNotNull();
 
 		DefaultMessageListenerContainer container =
 				factory.createListenerContainer(createDummyEndpoint());
@@ -151,12 +147,12 @@ public class JmsNamespaceHandlerTests {
 		assertThat(container.getMessageConverter()).as("explicit message converter not set").isEqualTo(context.getBean("testMessageConverter"));
 		assertThat(container.isPubSubDomain()).as("Wrong pub/sub").isEqualTo(true);
 		assertThat(container.isSubscriptionDurable()).as("Wrong durable flag").isEqualTo(true);
-		assertEquals("wrong cache", DefaultMessageListenerContainer.CACHE_CONNECTION, container.getCacheLevel());
-		assertEquals("wrong concurrency", 3, container.getConcurrentConsumers());
-		assertEquals("wrong concurrency", 5, container.getMaxConcurrentConsumers());
-		assertEquals("wrong prefetch", 50, container.getMaxMessagesPerTask());
-		assertEquals("Wrong phase", 99, container.getPhase());
-		assertSame(context.getBean("testBackOff"), new DirectFieldAccessor(container).getPropertyValue("backOff"));
+		assertThat((long) container.getCacheLevel()).as("wrong cache").isEqualTo((long) DefaultMessageListenerContainer.CACHE_CONNECTION);
+		assertThat((long) container.getConcurrentConsumers()).as("wrong concurrency").isEqualTo((long) 3);
+		assertThat((long) container.getMaxConcurrentConsumers()).as("wrong concurrency").isEqualTo((long) 5);
+		assertThat((long) container.getMaxMessagesPerTask()).as("wrong prefetch").isEqualTo((long) 50);
+		assertThat((long) container.getPhase()).as("Wrong phase").isEqualTo((long) 99);
+		assertThat(new DirectFieldAccessor(container).getPropertyValue("backOff")).isSameAs(context.getBean("testBackOff"));
 	}
 
 	@Test
@@ -164,16 +160,16 @@ public class JmsNamespaceHandlerTests {
 		Map<String, DefaultJcaListenerContainerFactory> containers =
 				context.getBeansOfType(DefaultJcaListenerContainerFactory.class);
 		DefaultJcaListenerContainerFactory factory = containers.get("testJcaFactory");
-		assertNotNull("No factory registered with testJcaFactory id", factory);
+		assertThat((Object) factory).as("No factory registered with testJcaFactory id").isNotNull();
 
 		JmsMessageEndpointManager container =
 				factory.createListenerContainer(createDummyEndpoint());
 		assertThat(container.getResourceAdapter()).as("explicit resource adapter not set").isEqualTo(context.getBean("testResourceAdapter"));
 		assertThat(container.getActivationSpecConfig().getMessageConverter()).as("explicit message converter not set").isEqualTo(context.getBean("testMessageConverter"));
 		assertThat(container.isPubSubDomain()).as("Wrong pub/sub").isEqualTo(true);
-		assertEquals("wrong concurrency", 5, container.getActivationSpecConfig().getMaxConcurrency());
-		assertEquals("Wrong prefetch", 50, container.getActivationSpecConfig().getPrefetchSize());
-		assertEquals("Wrong phase", 77, container.getPhase());
+		assertThat((long) container.getActivationSpecConfig().getMaxConcurrency()).as("wrong concurrency").isEqualTo((long) 5);
+		assertThat((long) container.getActivationSpecConfig().getPrefetchSize()).as("Wrong prefetch").isEqualTo((long) 50);
+		assertThat((long) container.getPhase()).as("Wrong phase").isEqualTo((long) 77);
 	}
 
 	@Test
@@ -182,9 +178,9 @@ public class JmsNamespaceHandlerTests {
 		TestBean testBean2 = context.getBean("testBean2", TestBean.class);
 		TestMessageListener testBean3 = context.getBean("testBean3", TestMessageListener.class);
 
-		assertNull(testBean1.getName());
-		assertNull(testBean2.getName());
-		assertNull(testBean3.message);
+		assertThat((Object) testBean1.getName()).isNull();
+		assertThat((Object) testBean2.getName()).isNull();
+		assertThat((Object) testBean3.message).isNull();
 
 		TextMessage message1 = mock(TextMessage.class);
 		given(message1.getText()).willReturn("Test1");
@@ -204,7 +200,7 @@ public class JmsNamespaceHandlerTests {
 
 		MessageListener listener3 = getListener(DefaultMessageListenerContainer.class.getName() + "#0");
 		listener3.onMessage(message3);
-		assertSame(message3, testBean3.message);
+		assertThat((Object) testBean3.message).isSameAs(message3);
 	}
 
 	@Test
@@ -214,9 +210,9 @@ public class JmsNamespaceHandlerTests {
 		BackOff backOff2 = getBackOff("listener2");
 		long recoveryInterval3 = getRecoveryInterval(DefaultMessageListenerContainer.class.getName() + "#0");
 
-		assertSame(testBackOff, backOff1);
-		assertSame(testBackOff, backOff2);
-		assertEquals(DefaultMessageListenerContainer.DEFAULT_RECOVERY_INTERVAL, recoveryInterval3);
+		assertThat((Object) backOff1).isSameAs(testBackOff);
+		assertThat((Object) backOff2).isSameAs(testBackOff);
+		assertThat(recoveryInterval3).isEqualTo(DefaultMessageListenerContainer.DEFAULT_RECOVERY_INTERVAL);
 	}
 
 	@Test
@@ -229,22 +225,20 @@ public class JmsNamespaceHandlerTests {
 		DefaultMessageListenerContainer listener2 = this.context
 				.getBean("listener2", DefaultMessageListenerContainer.class);
 
-		assertEquals("Wrong concurrency on listener using placeholder", 2, listener0.getConcurrentConsumers());
-		assertEquals("Wrong concurrency on listener using placeholder", 3, listener0.getMaxConcurrentConsumers());
-		assertEquals("Wrong concurrency on listener1", 3, listener1.getConcurrentConsumers());
-		assertEquals("Wrong max concurrency on listener1", 5, listener1.getMaxConcurrentConsumers());
-		assertEquals("Wrong custom concurrency on listener2", 5, listener2.getConcurrentConsumers());
-		assertEquals("Wrong custom max concurrency on listener2", 10, listener2.getMaxConcurrentConsumers());
+		assertThat((long) listener0.getConcurrentConsumers()).as("Wrong concurrency on listener using placeholder").isEqualTo((long) 2);
+		assertThat((long) listener0.getMaxConcurrentConsumers()).as("Wrong concurrency on listener using placeholder").isEqualTo((long) 3);
+		assertThat((long) listener1.getConcurrentConsumers()).as("Wrong concurrency on listener1").isEqualTo((long) 3);
+		assertThat((long) listener1.getMaxConcurrentConsumers()).as("Wrong max concurrency on listener1").isEqualTo((long) 5);
+		assertThat((long) listener2.getConcurrentConsumers()).as("Wrong custom concurrency on listener2").isEqualTo((long) 5);
+		assertThat((long) listener2.getMaxConcurrentConsumers()).as("Wrong custom max concurrency on listener2").isEqualTo((long) 10);
 
 		// JCA
 		JmsMessageEndpointManager listener3 = this.context
 				.getBean("listener3", JmsMessageEndpointManager.class);
 		JmsMessageEndpointManager listener4 = this.context
 				.getBean("listener4", JmsMessageEndpointManager.class);
-		assertEquals("Wrong concurrency on listener3", 5,
-				listener3.getActivationSpecConfig().getMaxConcurrency());
-		assertEquals("Wrong custom concurrency on listener4", 7,
-				listener4.getActivationSpecConfig().getMaxConcurrency());
+		assertThat((long) listener3.getActivationSpecConfig().getMaxConcurrency()).as("Wrong concurrency on listener3").isEqualTo((long) 5);
+		assertThat((long) listener4.getActivationSpecConfig().getMaxConcurrency()).as("Wrong custom concurrency on listener4").isEqualTo((long) 7);
 	}
 
 	@Test
@@ -276,9 +270,9 @@ public class JmsNamespaceHandlerTests {
 		ErrorHandler errorHandler1 = getErrorHandler("listener1");
 		ErrorHandler errorHandler2 = getErrorHandler("listener2");
 		ErrorHandler defaultErrorHandler = getErrorHandler(DefaultMessageListenerContainer.class.getName() + "#0");
-		assertSame(expected, errorHandler1);
-		assertSame(expected, errorHandler2);
-		assertNull(defaultErrorHandler);
+		assertThat((Object) errorHandler1).isSameAs(expected);
+		assertThat((Object) errorHandler2).isSameAs(expected);
+		assertThat((Object) defaultErrorHandler).isNull();
 	}
 
 	@Test
@@ -288,11 +282,11 @@ public class JmsNamespaceHandlerTests {
 		int phase3 = getPhase("listener3");
 		int phase4 = getPhase("listener4");
 		int defaultPhase = getPhase(DefaultMessageListenerContainer.class.getName() + "#0");
-		assertEquals(99, phase1);
-		assertEquals(99, phase2);
-		assertEquals(77, phase3);
-		assertEquals(77, phase4);
-		assertEquals(Integer.MAX_VALUE, defaultPhase);
+		assertThat((long) phase1).isEqualTo((long) 99);
+		assertThat((long) phase2).isEqualTo((long) 99);
+		assertThat((long) phase3).isEqualTo((long) 77);
+		assertThat((long) phase4).isEqualTo((long) 77);
+		assertThat((long) defaultPhase).isEqualTo((long) Integer.MAX_VALUE);
 	}
 
 	@Test
@@ -314,7 +308,7 @@ public class JmsNamespaceHandlerTests {
 		Iterator<ComponentDefinition> iterator = context.getRegisteredComponents();
 		while (iterator.hasNext()) {
 			ComponentDefinition compDef = iterator.next();
-			assertNotNull("CompositeComponentDefinition '" + compDef.getName() + "' has no source attachment", compDef.getSource());
+			assertThat(compDef.getSource()).as("CompositeComponentDefinition '" + compDef.getName() + "' has no source attachment").isNotNull();
 			validateComponentDefinition(compDef);
 		}
 	}
@@ -323,7 +317,7 @@ public class JmsNamespaceHandlerTests {
 	private void validateComponentDefinition(ComponentDefinition compDef) {
 		BeanDefinition[] beanDefs = compDef.getBeanDefinitions();
 		for (BeanDefinition beanDef : beanDefs) {
-			assertNotNull("BeanDefinition has no source attachment", beanDef.getSource());
+			assertThat(beanDef.getSource()).as("BeanDefinition has no source attachment").isNotNull();
 		}
 	}
 

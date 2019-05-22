@@ -23,9 +23,6 @@ import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * General cache-related test utilities.
@@ -55,7 +52,7 @@ public class CacheTestUtils {
 	 */
 	public static void assertCacheMiss(Object key, Cache... caches) {
 		for (Cache cache : caches) {
-			assertNull("No entry in " + cache + " should have been found with key " + key, cache.get(key));
+			assertThat((Object) cache.get(key)).as("No entry in " + cache + " should have been found with key " + key).isNull();
 		}
 	}
 
@@ -65,7 +62,7 @@ public class CacheTestUtils {
 	public static void assertCacheHit(Object key, Object value, Cache... caches) {
 		for (Cache cache : caches) {
 			Cache.ValueWrapper wrapper = cache.get(key);
-			assertNotNull("An entry in " + cache + " should have been found with key " + key, wrapper);
+			assertThat((Object) wrapper).as("An entry in " + cache + " should have been found with key " + key).isNotNull();
 			assertThat(wrapper.get()).as("Wrong value in " + cache + " for entry with key " + key).isEqualTo(value);
 		}
 	}

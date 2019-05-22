@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link StompClientSupport}.
@@ -61,7 +60,7 @@ public class StompClientSupportTests {
 	public void processConnectHeadersDefault() throws Exception {
 		StompHeaders connectHeaders = this.stompClient.processConnectHeaders(null);
 
-		assertNotNull(connectHeaders);
+		assertThat((Object) connectHeaders).isNotNull();
 		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {10000, 10000});
 	}
 
@@ -72,7 +71,7 @@ public class StompClientSupportTests {
 		connectHeaders.setHeartbeat(new long[] {15000, 15000});
 		connectHeaders = this.stompClient.processConnectHeaders(connectHeaders);
 
-		assertNotNull(connectHeaders);
+		assertThat((Object) connectHeaders).isNotNull();
 		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {15000, 15000});
 	}
 

@@ -51,8 +51,6 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test various scenarios for detecting method-level and method parameter annotations depending
@@ -135,7 +133,7 @@ public class HandlerMethodAnnotationDetectionTests {
 		request.addHeader("header2", dateB);
 
 		HandlerExecutionChain chain = handlerMapping.getHandler(request);
-		assertNotNull(chain);
+		assertThat((Object) chain).isNotNull();
 
 		ModelAndView mav = handlerAdapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 

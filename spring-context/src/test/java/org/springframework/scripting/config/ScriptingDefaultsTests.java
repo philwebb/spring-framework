@@ -27,7 +27,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Mark Fisher
@@ -52,7 +51,7 @@ public class ScriptingDefaultsTests {
 		Field field = AbstractRefreshableTargetSource.class.getDeclaredField("refreshCheckDelay");
 		field.setAccessible(true);
 		long delay = ((Long) field.get(targetSource)).longValue();
-		assertEquals(5000L, delay);
+		assertThat(delay).isEqualTo(5000L);
 	}
 
 	@Test

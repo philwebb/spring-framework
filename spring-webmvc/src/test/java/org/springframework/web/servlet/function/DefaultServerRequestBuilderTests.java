@@ -30,7 +30,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -59,13 +58,13 @@ public class DefaultServerRequestBuilderTests {
 				.build();
 
 		assertThat(result.method()).isEqualTo(HttpMethod.HEAD);
-		assertEquals(2, result.headers().asHttpHeaders().size());
+		assertThat((long) result.headers().asHttpHeaders().size()).isEqualTo((long) 2);
 		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("bar");
 		assertThat(result.headers().asHttpHeaders().getFirst("baz")).isEqualTo("qux");
-		assertEquals(2, result.cookies().size());
+		assertThat((long) result.cookies().size()).isEqualTo((long) 2);
 		assertThat(result.cookies().getFirst("foo").getValue()).isEqualTo("bar");
 		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("qux");
-		assertEquals(2, result.attributes().size());
+		assertThat((long) result.attributes().size()).isEqualTo((long) 2);
 		assertThat(result.attributes().get("foo")).isEqualTo("bar");
 		assertThat(result.attributes().get("baz")).isEqualTo("qux");
 

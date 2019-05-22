@@ -36,7 +36,6 @@ import org.springframework.web.reactive.BindingContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link ErrorsMethodArgumentResolver}.
@@ -80,7 +79,7 @@ public class ErrorsMethodArgumentResolverTests {
 		Object actual = this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
 				.block(Duration.ofMillis(5000));
 
-		assertSame(bindingResult, actual);
+		assertThat(actual).isSameAs(bindingResult);
 	}
 
 	private BindingResult createBindingResult(Foo target, String name) {
@@ -99,7 +98,7 @@ public class ErrorsMethodArgumentResolverTests {
 		Object actual = this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
 				.block(Duration.ofMillis(5000));
 
-		assertSame(bindingResult, actual);
+		assertThat(actual).isSameAs(bindingResult);
 	}
 
 	@Test

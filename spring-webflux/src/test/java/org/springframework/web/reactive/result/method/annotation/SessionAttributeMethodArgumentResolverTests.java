@@ -42,9 +42,6 @@ import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.server.WebSession;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -91,7 +88,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 		Foo foo = new Foo();
 		given(this.session.getAttribute("foo")).willReturn(foo);
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(foo, mono.block());
+		assertThat(mono.block()).isSameAs(foo);
 	}
 
 	@Test
@@ -100,19 +97,19 @@ public class SessionAttributeMethodArgumentResolverTests {
 		Foo foo = new Foo();
 		given(this.session.getAttribute("specialFoo")).willReturn(foo);
 		Mono<Object> mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(foo, mono.block());
+		assertThat(mono.block()).isSameAs(foo);
 	}
 
 	@Test
 	public void resolveNotRequired() {
 		MethodParameter param = initMethodParameter(2);
 		Mono<Object> mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertNull(mono.block());
+		assertThat(mono.block()).isNull();
 
 		Foo foo = new Foo();
 		given(this.session.getAttribute("foo")).willReturn(foo);
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
-		assertSame(foo, mono.block());
+		assertThat(mono.block()).isSameAs(foo);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -122,7 +119,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 		Optional<Object> actual = (Optional<Object>) this.resolver
 				.resolveArgument(param, new BindingContext(), this.exchange).block();
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.isPresent()).isFalse();
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
@@ -133,9 +130,9 @@ public class SessionAttributeMethodArgumentResolverTests {
 		given(this.session.getAttribute("foo")).willReturn(foo);
 		actual = (Optional<Object>) this.resolver.resolveArgument(param, bindingContext, this.exchange).block();
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.isPresent()).isTrue();
-		assertSame(foo, actual.get());
+		assertThat(actual.get()).isSameAs(foo);
 	}
 
 

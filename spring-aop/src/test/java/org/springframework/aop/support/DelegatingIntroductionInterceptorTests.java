@@ -38,8 +38,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -206,7 +204,7 @@ public class DelegatingIntroductionInterceptorTests {
 		}));
 
 		TimeStamped tsp = (TimeStamped) factory.getProxy();
-		assertEquals(0, tsp.getTimeStamp());
+		assertThat(tsp.getTimeStamp()).isEqualTo((long) 0);
 
 		assertThat(tsp.toString()).isEqualTo(raw.toString());
 	}
@@ -228,7 +226,7 @@ public class DelegatingIntroductionInterceptorTests {
 
 		assertThat(proxy.getCompany()).isEqualTo(company);
 		ITestBean introduction = (ITestBean) proxy;
-		assertSame("Introduced method returning delegate returns proxy", introduction, introduction.getSpouse());
+		assertThat((Object) introduction.getSpouse()).as("Introduced method returning delegate returns proxy").isSameAs(introduction);
 		assertThat(AopUtils.isAopProxy(introduction.getSpouse())).as("Introduced method returning delegate returns proxy").isTrue();
 	}
 
@@ -249,11 +247,11 @@ public class DelegatingIntroductionInterceptorTests {
 		Person p = (Person) factory.getProxy();
 
 		assertThat(p.getName()).isEqualTo(name);
-		assertEquals(time, ((TimeStamped) p).getTimeStamp());
+		assertThat(((TimeStamped) p).getTimeStamp()).isEqualTo(time);
 
 		Person p1 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		assertThat(p1.getName()).isEqualTo(name);
-		assertEquals(time, ((TimeStamped) p1).getTimeStamp());
+		assertThat(((TimeStamped) p1).getTimeStamp()).isEqualTo(time);
 	}
 
 	// Test when target implements the interface: should get interceptor by preference.

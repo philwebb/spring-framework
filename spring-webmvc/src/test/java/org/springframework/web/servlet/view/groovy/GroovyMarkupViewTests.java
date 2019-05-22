@@ -43,8 +43,6 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -88,7 +86,7 @@ public class GroovyMarkupViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(view);
 		TemplateEngine engine = (TemplateEngine) accessor.getPropertyValue("engine");
-		assertNotNull(engine);
+		assertThat((Object) engine).isNotNull();
 		assertThat(engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 
@@ -100,7 +98,7 @@ public class GroovyMarkupViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(view);
 		TemplateEngine engine = (TemplateEngine) accessor.getPropertyValue("engine");
-		assertNotNull(engine);
+		assertThat((Object) engine).isNotNull();
 		assertThat(engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 

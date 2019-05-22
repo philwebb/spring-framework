@@ -30,8 +30,6 @@ import org.springframework.dao.TypeMismatchDataAccessException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -82,7 +80,7 @@ public class SingleColumnRowMapperTests {
 
 		MyLocalDateTime actualMyLocalDateTime = rowMapper.mapRow(resultSet, 1);
 
-		assertNotNull(actualMyLocalDateTime);
+		assertThat((Object) actualMyLocalDateTime).isNotNull();
 		assertThat(actualMyLocalDateTime.value).isEqualTo(timestamp.toLocalDateTime());
 	}
 

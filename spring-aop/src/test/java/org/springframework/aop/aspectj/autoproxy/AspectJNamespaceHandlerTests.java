@@ -32,7 +32,6 @@ import org.springframework.beans.factory.xml.XmlReaderContext;
 import org.springframework.tests.beans.CollectingReaderEventListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -59,19 +58,19 @@ public class AspectJNamespaceHandlerTests {
 	@Test
 	public void testRegisterAutoProxyCreator() throws Exception {
 		AopNamespaceUtils.registerAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals("Incorrect number of definitions registered", 1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).as("Incorrect number of definitions registered").isEqualTo((long) 1);
 
 		AopNamespaceUtils.registerAspectJAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals("Incorrect number of definitions registered", 1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).as("Incorrect number of definitions registered").isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testRegisterAspectJAutoProxyCreator() throws Exception {
 		AopNamespaceUtils.registerAspectJAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals("Incorrect number of definitions registered", 1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).as("Incorrect number of definitions registered").isEqualTo((long) 1);
 
 		AopNamespaceUtils.registerAspectJAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals("Incorrect number of definitions registered", 1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).as("Incorrect number of definitions registered").isEqualTo((long) 1);
 
 		BeanDefinition definition = registry.getBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
 		assertThat(definition.getBeanClassName()).as("Incorrect APC class").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
@@ -80,10 +79,10 @@ public class AspectJNamespaceHandlerTests {
 	@Test
 	public void testRegisterAspectJAutoProxyCreatorWithExistingAutoProxyCreator() throws Exception {
 		AopNamespaceUtils.registerAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals(1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).isEqualTo((long) 1);
 
 		AopNamespaceUtils.registerAspectJAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals("Incorrect definition count", 1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).as("Incorrect definition count").isEqualTo((long) 1);
 
 		BeanDefinition definition = registry.getBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
 		assertThat(definition.getBeanClassName()).as("APC class not switched").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
@@ -92,10 +91,10 @@ public class AspectJNamespaceHandlerTests {
 	@Test
 	public void testRegisterAutoProxyCreatorWhenAspectJAutoProxyCreatorAlreadyExists() throws Exception {
 		AopNamespaceUtils.registerAspectJAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals(1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).isEqualTo((long) 1);
 
 		AopNamespaceUtils.registerAutoProxyCreatorIfNecessary(this.parserContext, null);
-		assertEquals("Incorrect definition count", 1, registry.getBeanDefinitionCount());
+		assertThat((long) registry.getBeanDefinitionCount()).as("Incorrect definition count").isEqualTo((long) 1);
 
 		BeanDefinition definition = registry.getBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
 		assertThat(definition.getBeanClassName()).as("Incorrect APC class").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());

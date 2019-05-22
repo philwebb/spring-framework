@@ -34,8 +34,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Tests for pooling invoker interceptor.
@@ -74,9 +72,9 @@ public class CommonsPool2TargetSourceTests {
 
 	private void testFunctionality(String name) {
 		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean(name);
-		assertEquals(INITIAL_COUNT, pooled.getCount());
+		assertThat((long) pooled.getCount()).isEqualTo((long) INITIAL_COUNT);
 		pooled.doWork();
-		assertEquals(INITIAL_COUNT + 1, pooled.getCount());
+		assertThat((long) pooled.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		pooled = (SideEffectBean) beanFactory.getBean(name);
 		// Just check that it works--we can't make assumptions
@@ -98,16 +96,16 @@ public class CommonsPool2TargetSourceTests {
 	@Test
 	public void testConfigMixin() {
 		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean("pooledWithMixin");
-		assertEquals(INITIAL_COUNT, pooled.getCount());
+		assertThat((long) pooled.getCount()).isEqualTo((long) INITIAL_COUNT);
 		PoolingConfig conf = (PoolingConfig) beanFactory.getBean("pooledWithMixin");
 		// TODO one invocation from setup
 		//assertEquals(1, conf.getInvocations());
 		pooled.doWork();
 		//	assertEquals("No objects active", 0, conf.getActive());
-		assertEquals("Correct target source", 25, conf.getMaxSize());
+		assertThat((long) conf.getMaxSize()).as("Correct target source").isEqualTo((long) 25);
 		//	assertTrue("Some free", conf.getFree() > 0);
 		//assertEquals(2, conf.getInvocations());
-		assertEquals(25, conf.getMaxSize());
+		assertThat((long) conf.getMaxSize()).isEqualTo((long) 25);
 	}
 
 	@Test
@@ -133,7 +131,7 @@ public class CommonsPool2TargetSourceTests {
 		boolean condition = ((Advised) serialized).getTargetSource() instanceof SingletonTargetSource;
 		assertThat(condition).isTrue();
 		serialized.setAge(25);
-		assertEquals(25, serialized.getAge());
+		assertThat((long) serialized.getAge()).isEqualTo((long) 25);
 	}
 
 	@Test
@@ -149,7 +147,7 @@ public class CommonsPool2TargetSourceTests {
 
 		for (int x = 0; x < maxSize; x++) {
 			Object instance = targetSource.getTarget();
-			assertNotNull(instance);
+			assertThat(instance).isNotNull();
 			pooledInstances[x] = instance;
 		}
 
@@ -177,7 +175,7 @@ public class CommonsPool2TargetSourceTests {
 
 		for (int x = 0; x < maxSize; x++) {
 			Object instance = targetSource.getTarget();
-			assertNotNull(instance);
+			assertThat(instance).isNotNull();
 			pooledInstances[x] = instance;
 		}
 

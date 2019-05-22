@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.springframework.core.NestedExceptionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 public class NestedServletExceptionTests {
 

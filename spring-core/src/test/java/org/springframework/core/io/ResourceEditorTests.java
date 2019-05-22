@@ -24,8 +24,6 @@ import org.springframework.core.env.StandardEnvironment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for the {@link ResourceEditor} class.
@@ -41,7 +39,7 @@ public class ResourceEditorTests {
 		PropertyEditor editor = new ResourceEditor();
 		editor.setAsText("classpath:org/springframework/core/io/ResourceEditorTests.class");
 		Resource resource = (Resource) editor.getValue();
-		assertNotNull(resource);
+		assertThat((Object) resource).isNotNull();
 		assertThat(resource.exists()).isTrue();
 	}
 

@@ -48,8 +48,6 @@ import org.springframework.web.servlet.theme.FixedThemeResolver;
 import org.springframework.web.servlet.view.DummyMacroRequestContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.fail;
 
 /**
@@ -285,7 +283,7 @@ public class FreeMarkerMacroTests {
 
 	private String getMacroOutput(String name) throws Exception {
 		String macro = fetchMacro(name);
-		assertNotNull(macro);
+		assertThat((Object) macro).isNotNull();
 
 		FileSystemResource resource = new FileSystemResource(System.getProperty("java.io.tmpdir") + "/tmp.ftl");
 		FileCopyUtils.copy("<#import \"spring.ftl\" as spring />\n" + macro, new FileWriter(resource.getPath()));

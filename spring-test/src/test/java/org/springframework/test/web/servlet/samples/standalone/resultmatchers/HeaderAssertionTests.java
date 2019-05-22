@@ -41,7 +41,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.fail;
 import static org.springframework.http.HttpHeaders.IF_MODIFIED_SINCE;
 import static org.springframework.http.HttpHeaders.LAST_MODIFIED;

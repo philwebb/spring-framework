@@ -31,9 +31,6 @@ import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-
 /**
  * Unit tests for {@link AppCacheManifestTransformer}.
  *

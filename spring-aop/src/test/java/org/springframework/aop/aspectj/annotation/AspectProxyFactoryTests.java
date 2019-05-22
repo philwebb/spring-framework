@@ -30,7 +30,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -53,7 +52,7 @@ public class AspectProxyFactoryTests {
 		AspectJProxyFactory proxyFactory = new AspectJProxyFactory(bean);
 		proxyFactory.addAspect(MultiplyReturnValue.class);
 		ITestBean proxy = proxyFactory.getProxy();
-		assertEquals("Multiplication did not occur", bean.getAge() * 2, proxy.getAge());
+		assertThat((long) proxy.getAge()).as("Multiplication did not occur").isEqualTo((long) (bean.getAge() * 2));
 	}
 
 	@Test
@@ -70,10 +69,10 @@ public class AspectProxyFactoryTests {
 		ITestBean proxy1 = pf1.getProxy();
 		ITestBean proxy2 = pf2.getProxy();
 
-		assertEquals(0, proxy1.getAge());
-		assertEquals(1, proxy1.getAge());
-		assertEquals(0, proxy2.getAge());
-		assertEquals(2, proxy1.getAge());
+		assertThat((long) proxy1.getAge()).isEqualTo((long) 0);
+		assertThat((long) proxy1.getAge()).isEqualTo((long) 1);
+		assertThat((long) proxy2.getAge()).isEqualTo((long) 0);
+		assertThat((long) proxy1.getAge()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -108,10 +107,10 @@ public class AspectProxyFactoryTests {
 		proxyFactory.addAspect(aspect);
 
 		ITestBean proxy = proxyFactory.getProxy();
-		assertEquals(target.getAge() * multiple, proxy.getAge());
+		assertThat((long) proxy.getAge()).isEqualTo((long) (target.getAge() * multiple));
 
 		ITestBean serializedProxy = (ITestBean) SerializationTestUtils.serializeAndDeserialize(proxy);
-		assertEquals(target.getAge() * multiple, serializedProxy.getAge());
+		assertThat((long) serializedProxy.getAge()).isEqualTo((long) (target.getAge() * multiple));
 	}
 
 	@Test

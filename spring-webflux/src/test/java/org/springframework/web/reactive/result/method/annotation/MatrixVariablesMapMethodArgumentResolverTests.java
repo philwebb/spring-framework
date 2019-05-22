@@ -36,8 +36,6 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.web.method.MvcAnnotationPredicates.matrixAttribute;
 
 /**
@@ -95,7 +93,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 				(Map<String, String>) this.resolver.resolveArgument(
 						param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
-		assertNotNull(map);
+		assertThat((Object) map).isNotNull();
 		assertThat(map.get("colors")).isEqualTo("red");
 
 		param = this.testMethod
@@ -127,7 +125,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> mapForPathVar = (Map<String, String>)
 				this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
-		assertNotNull(mapForPathVar);
+		assertThat((Object) mapForPathVar).isNotNull();
 		assertThat(mapForPathVar.get("colors")).isEqualTo(Arrays.asList("red", "purple"));
 
 		param = this.testMethod.annot(matrixAttribute().noName()).arg(Map.class, String.class, String.class);
@@ -136,7 +134,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> mapAll = (Map<String, String>)
 				this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
-		assertNotNull(mapAll);
+		assertThat((Object) mapAll).isNotNull();
 		assertThat(mapAll.get("colors")).isEqualTo("red");
 	}
 

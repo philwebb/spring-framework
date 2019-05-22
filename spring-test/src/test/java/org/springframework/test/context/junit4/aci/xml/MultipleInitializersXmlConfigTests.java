@@ -27,7 +27,6 @@ import org.springframework.test.context.junit4.aci.DevProfileInitializer;
 import org.springframework.test.context.junit4.aci.FooBarAliasInitializer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests that verify support for {@link ApplicationContextInitializer

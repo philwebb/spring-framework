@@ -31,7 +31,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Adrian Colyer
@@ -70,7 +69,7 @@ public class ArgumentBindingTests {
 		Method methodUsedForParameterTypeDiscovery =
 				getClass().getMethod("methodWithOneParam", String.class);
 		String[] pnames = discoverer.getParameterNames(methodUsedForParameterTypeDiscovery);
-		assertEquals("one parameter name", 1, pnames.length);
+		assertThat((long) pnames.length).as("one parameter name").isEqualTo((long) 1);
 		assertThat(pnames[0]).isEqualTo("formal");
 	}
 

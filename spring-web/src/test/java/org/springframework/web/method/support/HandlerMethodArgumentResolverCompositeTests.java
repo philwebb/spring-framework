@@ -25,7 +25,6 @@ import org.springframework.core.MethodParameter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture with {@link HandlerMethodArgumentResolverComposite}.

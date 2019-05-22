@@ -51,9 +51,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.NestedServletException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with {@link ExceptionHandlerExceptionResolver}.
@@ -101,7 +98,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		Object handler = null;
 		this.resolver.afterPropertiesSet();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handler, null);
-		assertNull("Exception can be resolved only if there is a HandlerMethod", mav);
+		assertThat((Object) mav).as("Exception can be resolved only if there is a HandlerMethod").isNull();
 	}
 
 	@Test
@@ -149,7 +146,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.afterPropertiesSet();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, npe);
 
-		assertNull("NPE should not have been handled", mav);
+		assertThat((Object) mav).as("NPE should not have been handled").isNull();
 	}
 
 	@Test
@@ -159,7 +156,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.afterPropertiesSet();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 		assertThat(mav.isEmpty()).isFalse();
 		assertThat(mav.getViewName()).isEqualTo("errorView");
 		assertThat(mav.getModel().get("detail")).isEqualTo("Bad argument");
@@ -172,7 +169,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.afterPropertiesSet();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("IllegalArgumentException");
 	}
@@ -184,7 +181,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.afterPropertiesSet();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("IllegalArgumentException");
 	}
@@ -196,8 +193,8 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.afterPropertiesSet();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull(mav);
-		assertEquals(1, mav.getModelMap().size());
+		assertThat((Object) mav).isNotNull();
+		assertThat((long) mav.getModelMap().size()).isEqualTo((long) 1);
 		assertThat(mav.getModelMap().get("exceptionClassName")).isEqualTo("IllegalArgumentException");
 	}
 
@@ -208,10 +205,10 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.afterPropertiesSet();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull(mav);
+		assertThat((Object) mav).isNotNull();
 		assertThat(mav.getViewName()).isEqualTo("redirect:/");
 		FlashMap flashMap = (FlashMap) this.request.getAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE);
-		assertNotNull("output FlashMap should exist", flashMap);
+		assertThat((Object) flashMap).as("output FlashMap should exist").isNotNull();
 		assertThat(flashMap.get("exceptionClassName")).isEqualTo("IllegalArgumentException");
 	}
 
@@ -225,7 +222,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		HandlerMethod handlerMethod = new HandlerMethod(new ResponseBodyController(), "handle");
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("AnotherTestExceptionResolver: IllegalAccessException");
 	}
@@ -240,7 +237,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		HandlerMethod handlerMethod = new HandlerMethod(new ResponseBodyController(), "handle");
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("TestExceptionResolver: IllegalStateException");
 	}
@@ -255,7 +252,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		HandlerMethod handlerMethod = new HandlerMethod(new ResponseBodyController(), "handle");
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("HandlerMethod: handle");
 	}
@@ -271,7 +268,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod,
 				new NestedServletException("Handler dispatch failed", err));
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo(err.toString());
 	}
@@ -287,7 +284,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		HandlerMethod handlerMethod = new HandlerMethod(new ResponseBodyController(), "handle");
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo(err.toString());
 	}
@@ -302,7 +299,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		HandlerMethod handlerMethod = new HandlerMethod(new ResponseBodyController(), "handle");
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("BasePackageTestExceptionResolver: IllegalStateException");
 	}
@@ -316,7 +313,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		IllegalStateException ex = new IllegalStateException();
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, null, ex);
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("DefaultTestExceptionResolver: IllegalStateException");
 	}
@@ -331,15 +328,15 @@ public class ExceptionHandlerExceptionResolverTests {
 		HandlerMethod handlerMethod = new HandlerMethod(new ProxyFactory(new ResponseBodyController()).getProxy(), "handle");
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
-		assertNotNull("Exception was not handled", mav);
+		assertThat((Object) mav).as("Exception was not handled").isNotNull();
 		assertThat(mav.isEmpty()).isTrue();
 		assertThat(this.response.getContentAsString()).isEqualTo("BasePackageTestExceptionResolver: IllegalStateException");
 	}
 
 
 	private void assertMethodProcessorCount(int resolverCount, int handlerCount) {
-		assertEquals(resolverCount, this.resolver.getArgumentResolvers().getResolvers().size());
-		assertEquals(handlerCount, this.resolver.getReturnValueHandlers().getHandlers().size());
+		assertThat((long) this.resolver.getArgumentResolvers().getResolvers().size()).isEqualTo((long) resolverCount);
+		assertThat((long) this.resolver.getReturnValueHandlers().getHandlers().size()).isEqualTo((long) handlerCount);
 	}
 
 

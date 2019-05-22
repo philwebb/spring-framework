@@ -25,7 +25,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -42,7 +41,7 @@ public class ResourceScriptSourceTests {
 
 		ResourceScriptSource scriptSource = new ResourceScriptSource(resource);
 		long lastModified = scriptSource.retrieveLastModifiedTime();
-		assertEquals(0, lastModified);
+		assertThat(lastModified).isEqualTo((long) 0);
 	}
 
 	@Test

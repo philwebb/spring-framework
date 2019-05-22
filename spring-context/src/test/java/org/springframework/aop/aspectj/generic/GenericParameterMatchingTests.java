@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests that poitncut matching is correct with generic method parameter.
@@ -57,19 +57,19 @@ public class GenericParameterMatchingTests {
 	@Test
 	public void testGenericInterfaceGenericArgExecution() {
 		testBean.save("");
-		assertEquals(1, counterAspect.genericInterfaceGenericArgExecutionCount);
+		assertThat((long) counterAspect.genericInterfaceGenericArgExecutionCount).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testGenericInterfaceGenericCollectionArgExecution() {
 		testBean.saveAll(null);
-		assertEquals(1, counterAspect.genericInterfaceGenericCollectionArgExecutionCount);
+		assertThat((long) counterAspect.genericInterfaceGenericCollectionArgExecutionCount).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testGenericInterfaceSubtypeGenericCollectionArgExecution() {
 		testBean.saveAll(null);
-		assertEquals(1, counterAspect.genericInterfaceSubtypeGenericCollectionArgExecutionCount);
+		assertThat((long) counterAspect.genericInterfaceSubtypeGenericCollectionArgExecutionCount).isEqualTo((long) 1);
 	}
 
 

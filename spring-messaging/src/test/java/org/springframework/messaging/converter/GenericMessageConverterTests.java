@@ -28,8 +28,6 @@ import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  *
@@ -49,7 +47,7 @@ public class GenericMessageConverterTests {
 	@Test
 	public void fromMessageNoConverter() {
 		Message<Integer> content = MessageBuilder.withPayload(1234).build();
-		assertNull("No converter from integer to locale", converter.fromMessage(content, Locale.class));
+		assertThat(converter.fromMessage(content, Locale.class)).as("No converter from integer to locale").isNull();
 	}
 
 	@Test

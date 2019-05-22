@@ -24,7 +24,6 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.servlet.ThemeResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Jean-Pierre Pawlak

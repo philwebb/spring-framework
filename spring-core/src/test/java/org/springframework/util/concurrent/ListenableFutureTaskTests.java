@@ -24,8 +24,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -56,9 +54,9 @@ public class ListenableFutureTaskTests {
 		});
 		task.run();
 
-		assertSame(s, task.get());
-		assertSame(s, task.completable().get());
-		task.completable().thenAccept(v -> assertSame(s, v));
+		assertThat((Object) task.get()).isSameAs(s);
+		assertThat((Object) task.completable().get()).isSameAs(s);
+		task.completable().thenAccept(v -> assertThat((Object) v).isSameAs(s));
 	}
 
 	@Test
@@ -102,9 +100,9 @@ public class ListenableFutureTaskTests {
 		verify(successCallback).onSuccess(s);
 		verifyZeroInteractions(failureCallback);
 
-		assertSame(s, task.get());
-		assertSame(s, task.completable().get());
-		task.completable().thenAccept(v -> assertSame(s, v));
+		assertThat((Object) task.get()).isSameAs(s);
+		assertThat((Object) task.completable().get()).isSameAs(s);
+		task.completable().thenAccept(v -> assertThat((Object) v).isSameAs(s));
 	}
 
 	@Test

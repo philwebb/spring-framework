@@ -24,8 +24,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Arjen Poutsma
@@ -36,7 +34,7 @@ public class HttpEntityTests {
 	public void noHeaders() {
 		String body = "foo";
 		HttpEntity<String> entity = new HttpEntity<>(body);
-		assertSame(body, entity.getBody());
+		assertThat((Object) entity.getBody()).isSameAs(body);
 		assertThat(entity.getHeaders().isEmpty()).isTrue();
 	}
 

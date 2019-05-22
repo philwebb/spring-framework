@@ -36,10 +36,6 @@ import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rick Evans
@@ -50,7 +46,7 @@ public class ModelMapTests {
 
 	@Test
 	public void testNoArgCtorYieldsEmptyModel() throws Exception {
-		assertEquals(0, new ModelMap().size());
+		assertThat((long) new ModelMap().size()).isEqualTo((long) 0);
 	}
 
 	/*
@@ -61,7 +57,7 @@ public class ModelMapTests {
 		ModelMap model = new ModelMap();
 		model.addAttribute("foo", null);
 		assertThat(model.containsKey("foo")).isTrue();
-		assertNull(model.get("foo"));
+		assertThat(model.get("foo")).isNull();
 	}
 
 	/*
@@ -71,33 +67,33 @@ public class ModelMapTests {
 	public void testAddNullObjectViaCtorWithExplicitKey() throws Exception {
 		ModelMap model = new ModelMap("foo", null);
 		assertThat(model.containsKey("foo")).isTrue();
-		assertNull(model.get("foo"));
+		assertThat(model.get("foo")).isNull();
 	}
 
 	@Test
 	public void testNamedObjectCtor() throws Exception {
 		ModelMap model = new ModelMap("foo", "bing");
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		String bing = (String) model.get("foo");
-		assertNotNull(bing);
+		assertThat((Object) bing).isNotNull();
 		assertThat(bing).isEqualTo("bing");
 	}
 
 	@Test
 	public void testUnnamedCtorScalar() throws Exception {
 		ModelMap model = new ModelMap("foo", "bing");
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		String bing = (String) model.get("foo");
-		assertNotNull(bing);
+		assertThat((Object) bing).isNotNull();
 		assertThat(bing).isEqualTo("bing");
 	}
 
 	@Test
 	public void testOneArgCtorWithScalar() throws Exception {
 		ModelMap model = new ModelMap("bing");
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		String string = (String) model.get("string");
-		assertNotNull(string);
+		assertThat((Object) string).isNotNull();
 		assertThat(string).isEqualTo("bing");
 	}
 
@@ -111,10 +107,10 @@ public class ModelMapTests {
 	@Test
 	public void testOneArgCtorWithCollection() throws Exception {
 		ModelMap model = new ModelMap(new String[]{"foo", "boing"});
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		String[] strings = (String[]) model.get("stringList");
-		assertNotNull(strings);
-		assertEquals(2, strings.length);
+		assertThat((Object) strings).isNotNull();
+		assertThat((long) strings.length).isEqualTo((long) 2);
 		assertThat(strings[0]).isEqualTo("foo");
 		assertThat(strings[1]).isEqualTo("boing");
 	}
@@ -123,7 +119,7 @@ public class ModelMapTests {
 	public void testOneArgCtorWithEmptyCollection() throws Exception {
 		ModelMap model = new ModelMap(new HashSet<>());
 		// must not add if collection is empty...
-		assertEquals(0, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -137,24 +133,24 @@ public class ModelMapTests {
 	@Test
 	public void testAddObjectWithEmptyArray() throws Exception {
 		ModelMap model = new ModelMap(new int[]{});
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		int[] ints = (int[]) model.get("intList");
-		assertNotNull(ints);
-		assertEquals(0, ints.length);
+		assertThat((Object) ints).isNotNull();
+		assertThat((long) ints.length).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testAddAllObjectsWithNullMap() throws Exception {
 		ModelMap model = new ModelMap();
 		model.addAllAttributes((Map<String, ?>) null);
-		assertEquals(0, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testAddAllObjectsWithNullCollection() throws Exception {
 		ModelMap model = new ModelMap();
 		model.addAllAttributes((Collection<Object>) null);
-		assertEquals(0, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -175,7 +171,7 @@ public class ModelMapTests {
 		map.put("two", "two-value");
 		ModelMap model = new ModelMap();
 		model.addAttribute(map);
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		String key = StringUtils.uncapitalize(ClassUtils.getShortName(map.getClass()));
 		assertThat(model.containsKey(key)).isTrue();
 	}
@@ -185,7 +181,7 @@ public class ModelMapTests {
 		ModelMap model = new ModelMap();
 		model.addAttribute("foo");
 		model.addAttribute("bar");
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		String bar = (String) model.get("string");
 		assertThat(bar).isEqualTo("bar");
 	}
@@ -198,7 +194,7 @@ public class ModelMapTests {
 		beans.add(new TestBean("three"));
 		ModelMap model = new ModelMap();
 		model.addAllAttributes(beans);
-		assertEquals(1, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -210,7 +206,7 @@ public class ModelMapTests {
 		ModelMap model = new ModelMap();
 		model.put("one", new TestBean("oneOld"));
 		model.mergeAttributes(beans);
-		assertEquals(3, model.size());
+		assertThat((long) model.size()).isEqualTo((long) 3);
 		assertThat(((TestBean) model.get("one")).getName()).isEqualTo("oneOld");
 	}
 
@@ -219,7 +215,7 @@ public class ModelMapTests {
 		ModelMap map = new ModelMap();
 		SomeInnerClass inner = new SomeInnerClass();
 		map.addAttribute(inner);
-		assertSame(inner, map.get("someInnerClass"));
+		assertThat(map.get("someInnerClass")).isSameAs(inner);
 	}
 
 	@Test
@@ -227,7 +223,7 @@ public class ModelMapTests {
 		ModelMap map = new ModelMap();
 		UKInnerClass inner = new UKInnerClass();
 		map.addAttribute(inner);
-		assertSame(inner, map.get("UKInnerClass"));
+		assertThat(map.get("UKInnerClass")).isSameAs(inner);
 	}
 
 	@Test
@@ -251,7 +247,7 @@ public class ModelMapTests {
 		factory.addInterface(Map.class);
 		Object proxy = factory.getProxy();
 		map.addAttribute(proxy);
-		assertSame(proxy, map.get("map"));
+		assertThat(map.get("map")).isSameAs(proxy);
 	}
 
 	@Test
@@ -266,7 +262,7 @@ public class ModelMapTests {
 		factory.addInterface(Map.class);
 		Object proxy = factory.getProxy();
 		map.addAttribute(proxy);
-		assertSame(proxy, map.get("map"));
+		assertThat(map.get("map")).isSameAs(proxy);
 	}
 
 	@Test
@@ -276,7 +272,7 @@ public class ModelMapTests {
 		ProxyFactory factory = new ProxyFactory(target);
 		Object proxy = factory.getProxy();
 		map.addAttribute(proxy);
-		assertSame(proxy, map.get("map"));
+		assertThat(map.get("map")).isSameAs(proxy);
 	}
 
 	@Test
@@ -292,7 +288,7 @@ public class ModelMapTests {
 					}
 				});
 		map.addAttribute(proxy);
-		assertSame(proxy, map.get("map"));
+		assertThat(map.get("map")).isSameAs(proxy);
 	}
 
 

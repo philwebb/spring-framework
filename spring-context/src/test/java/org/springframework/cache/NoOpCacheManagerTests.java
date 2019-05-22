@@ -23,10 +23,6 @@ import org.junit.Test;
 import org.springframework.cache.support.NoOpCacheManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Tests for {@link NoOpCacheManager}.
@@ -41,8 +37,8 @@ public class NoOpCacheManagerTests {
 	@Test
 	public void testGetCache() throws Exception {
 		Cache cache = this.manager.getCache("bucket");
-		assertNotNull(cache);
-		assertSame(cache, this.manager.getCache("bucket"));
+		assertThat((Object) cache).isNotNull();
+		assertThat((Object) this.manager.getCache("bucket")).isSameAs(cache);
 	}
 
 	@Test
@@ -52,9 +48,9 @@ public class NoOpCacheManagerTests {
 		assertThat(cache.getName()).isEqualTo(name);
 		Object key = new Object();
 		cache.put(key, new Object());
-		assertNull(cache.get(key));
-		assertNull(cache.get(key, Object.class));
-		assertSame(cache, cache.getNativeCache());
+		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key, Object.class)).isNull();
+		assertThat(cache.getNativeCache()).isSameAs(cache);
 	}
 
 	@Test
@@ -84,7 +80,7 @@ public class NoOpCacheManagerTests {
 			});
 		}
 		catch (Cache.ValueRetrievalException ex) {
-			assertNotNull(ex.getCause());
+			assertThat((Object) ex.getCause()).isNotNull();
 			assertThat(ex.getCause().getClass()).isEqualTo(UnsupportedOperationException.class);
 		}
 	}

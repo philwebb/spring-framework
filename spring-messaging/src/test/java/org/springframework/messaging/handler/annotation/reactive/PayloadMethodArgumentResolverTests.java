@@ -48,8 +48,6 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 
 /**
@@ -96,7 +94,7 @@ public class PayloadMethodArgumentResolverTests {
 	@Test
 	public void emptyBodyWhenNotRequired() {
 		MethodParameter param = this.testMethod.annotPresent(Payload.class).arg();
-		assertNull(resolveValue(param, Mono.empty(), null));
+		assertThat(this.<Object>resolveValue(param, Mono.empty(), null)).isNull();
 	}
 
 	@Test

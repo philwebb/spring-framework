@@ -22,7 +22,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -54,7 +53,7 @@ public class PropertiesBeanDefinitionReaderTests {
 		this.reader.loadBeanDefinitions(new ClassPathResource("multiConstructorArgs.properties", getClass()));
 		TestBean bean = (TestBean) this.beanFactory.getBean("testBean");
 		assertThat(bean.getName()).isEqualTo("Rob Harrop");
-		assertEquals(23, bean.getAge());
+		assertThat((long) bean.getAge()).isEqualTo((long) 23);
 	}
 
 }

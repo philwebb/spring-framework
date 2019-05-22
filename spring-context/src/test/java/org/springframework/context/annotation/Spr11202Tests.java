@@ -32,7 +32,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer

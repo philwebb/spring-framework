@@ -47,8 +47,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -169,7 +167,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.response(response)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertNull("Expected no result (i.e. fully handled)", result);
+		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
@@ -180,7 +178,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.responseMonoVoid(response)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertNull("Expected no result (i.e. fully handled)", result);
+		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
 	}
 
@@ -190,7 +188,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.exchange(exchange)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertNull("Expected no result (i.e. fully handled)", result);
+		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
@@ -200,7 +198,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.exchangeMonoVoid(exchange)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertNull("Expected no result (i.e. fully handled)", result);
+		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
 	}
 
@@ -212,7 +210,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.notModified(exchange)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertNull("Expected no result (i.e. fully handled)", result);
+		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
 	}
 
 

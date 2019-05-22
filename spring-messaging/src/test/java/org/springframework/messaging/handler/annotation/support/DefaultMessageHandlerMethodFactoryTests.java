@@ -48,8 +48,6 @@ import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Stephane Nicoll
@@ -203,7 +201,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 	private Method getListenerMethod(String methodName, Class<?>... parameterTypes) {
 		Method method = ReflectionUtils.findMethod(SampleBean.class, methodName, parameterTypes);
-		assertNotNull("no method found with name " + methodName + " and parameters " + Arrays.toString(parameterTypes));
+		assertThat((Object) ("no method found with name " + methodName + " and parameters " + Arrays.toString(parameterTypes))).isNotNull();
 		return method;
 	}
 

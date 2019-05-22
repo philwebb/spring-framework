@@ -36,7 +36,6 @@ import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests for the JSON Binding API, running against Apache Johnzon.
@@ -76,7 +75,7 @@ public class JsonbHttpMessageConverterTests {
 		MyBean result = (MyBean) this.converter.read(MyBean.class, inputMessage);
 
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertEquals(42, result.getNumber());
+		assertThat((long) result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
@@ -94,7 +93,7 @@ public class JsonbHttpMessageConverterTests {
 		HashMap<String, Object> result = (HashMap<String, Object>) this.converter.read(HashMap.class, inputMessage);
 		assertThat(result.get("string")).isEqualTo("Foo");
 		Number n = (Number) result.get("number");
-		assertEquals(42, n.longValue());
+		assertThat(n.longValue()).isEqualTo((long) 42);
 		n = (Number) result.get("fraction");
 		assertThat(n.doubleValue()).isCloseTo(42D, within(0D));
 
@@ -186,10 +185,10 @@ public class JsonbHttpMessageConverterTests {
 
 		Type genericType = beansList.getGenericType();
 		List<MyBean> results = (List<MyBean>) converter.read(genericType, MyBeanListHolder.class, inputMessage);
-		assertEquals(1, results.size());
+		assertThat((long) results.size()).isEqualTo((long) 1);
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertEquals(42, result.getNumber());
+		assertThat((long) result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
@@ -212,10 +211,10 @@ public class JsonbHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
-		assertEquals(1, results.size());
+		assertThat((long) results.size()).isEqualTo((long) 1);
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertEquals(42, result.getNumber());
+		assertThat((long) result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
@@ -239,10 +238,10 @@ public class JsonbHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
-		assertEquals(1, results.size());
+		assertThat((long) results.size()).isEqualTo((long) 1);
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertEquals(42, result.getNumber());
+		assertThat((long) result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});

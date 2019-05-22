@@ -31,8 +31,6 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
@@ -90,7 +88,7 @@ public class TilesViewTests {
 	@Test
 	public void alwaysIncludeDefaults() throws Exception {
 		view.render(new HashMap<>(), request, response);
-		assertNull(request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
+		assertThat(request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME)).isNull();
 	}
 
 	@Test

@@ -40,10 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-
 /**
  *
  * Integration tests with {@code @RequestMapping} handler methods and global
@@ -99,7 +95,7 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 	public void actualRequestWithoutCorsEnabled() throws Exception {
 		ResponseEntity<String> entity = performGet("/welcome", this.headers, String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
+		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isNull();
 		assertThat(entity.getBody()).isEqualTo("welcome");
 	}
 

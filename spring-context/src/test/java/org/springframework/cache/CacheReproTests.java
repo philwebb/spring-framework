@@ -43,10 +43,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -75,7 +71,7 @@ public class CacheReproTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Spr11249Config.class);
 		Spr11249Service bean = context.getBean(Spr11249Service.class);
 		Object result = bean.doSomething("op", 2, 3);
-		assertSame(result, bean.doSomething("op", 2, 3));
+		assertThat(bean.doSomething("op", 2, 3)).isSameAs(result);
 		context.close();
 	}
 
@@ -90,7 +86,7 @@ public class CacheReproTests {
 		verify(cache, times(1)).get(key);  // first call: cache miss
 
 		Object cachedResult = bean.getSimple("1");
-		assertSame(result, cachedResult);
+		assertThat(cachedResult).isSameAs(result);
 		verify(cache, times(2)).get(key);  // second call: cache hit
 
 		context.close();
@@ -107,7 +103,7 @@ public class CacheReproTests {
 		verify(cache, times(0)).get(key);  // no cache hit at all, caching disabled
 
 		Object cachedResult = bean.getNeverCache("1");
-		assertNotSame(result, cachedResult);
+		assertThat(cachedResult).isNotSameAs(result);
 		verify(cache, times(0)).get(key);  // caching disabled
 
 		context.close();
@@ -119,7 +115,7 @@ public class CacheReproTests {
 		MyCacheResolver cacheResolver = context.getBean(MyCacheResolver.class);
 		Spr13081Service bean = context.getBean(Spr13081Service.class);
 
-		assertNull(cacheResolver.getCache("foo").get("foo"));
+		assertThat((Object) cacheResolver.getCache("foo").get("foo")).isNull();
 		Object result = bean.getSimple("foo");  // cache name = id
 		assertThat(cacheResolver.getCache("foo").get("foo").get()).isEqualTo(result);
 	}
@@ -142,13 +138,13 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertSame(tb, bean.findById("tb1").get());
-		assertSame(tb, cache.get("tb1").get());
+		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(cache.get("tb1").get()).isSameAs(tb);
 
 		cache.clear();
 		TestBean tb2 = bean.findById("tb1").get();
-		assertNotSame(tb, tb2);
-		assertSame(tb2, cache.get("tb1").get());
+		assertThat((Object) tb2).isNotSameAs(tb);
+		assertThat(cache.get("tb1").get()).isSameAs(tb2);
 	}
 
 	@Test
@@ -159,13 +155,13 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertSame(tb, bean.findById("tb1").get());
-		assertSame(tb, cache.get("tb1").get());
+		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(cache.get("tb1").get()).isSameAs(tb);
 
 		cache.clear();
 		TestBean tb2 = bean.findById("tb1").get();
-		assertNotSame(tb, tb2);
-		assertSame(tb2, cache.get("tb1").get());
+		assertThat((Object) tb2).isNotSameAs(tb);
+		assertThat(cache.get("tb1").get()).isSameAs(tb2);
 	}
 
 	@Test
@@ -176,8 +172,8 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertSame(tb, bean.findById("tb1").get());
-		assertSame(tb, cache.get("tb1").get());
+		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(cache.get("tb1").get()).isSameAs(tb);
 	}
 
 	@Test
@@ -188,8 +184,8 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertSame(tb, bean.findById("tb1").get());
-		assertSame(tb, cache.get("tb1").get());
+		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(cache.get("tb1").get()).isSameAs(tb);
 	}
 
 

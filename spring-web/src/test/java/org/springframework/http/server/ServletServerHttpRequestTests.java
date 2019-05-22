@@ -32,9 +32,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Arjen Poutsma
@@ -121,10 +118,10 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setCharacterEncoding("UTF-8");
 
 		HttpHeaders headers = request.getHeaders();
-		assertNotNull("No HttpHeaders returned", headers);
+		assertThat((Object) headers).as("No HttpHeaders returned").isNotNull();
 		assertThat(headers.containsKey(headerName)).as("Invalid headers returned").isTrue();
 		List<String> headerValues = headers.get(headerName);
-		assertEquals("Invalid header values returned", 2, headerValues.size());
+		assertThat((long) headerValues.size()).as("Invalid header values returned").isEqualTo((long) 2);
 		assertThat(headerValues.contains(headerValue1)).as("Invalid header values returned").isTrue();
 		assertThat(headerValues.contains(headerValue2)).as("Invalid header values returned").isTrue();
 		assertThat(headers.getContentType()).as("Invalid Content-Type").isEqualTo(new MediaType("text", "plain", StandardCharsets.UTF_8));
@@ -141,13 +138,13 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setCharacterEncoding("");
 
 		HttpHeaders headers = request.getHeaders();
-		assertNotNull("No HttpHeaders returned", headers);
+		assertThat((Object) headers).as("No HttpHeaders returned").isNotNull();
 		assertThat(headers.containsKey(headerName)).as("Invalid headers returned").isTrue();
 		List<String> headerValues = headers.get(headerName);
-		assertEquals("Invalid header values returned", 2, headerValues.size());
+		assertThat((long) headerValues.size()).as("Invalid header values returned").isEqualTo((long) 2);
 		assertThat(headerValues.contains(headerValue1)).as("Invalid header values returned").isTrue();
 		assertThat(headerValues.contains(headerValue2)).as("Invalid header values returned").isTrue();
-		assertNull(headers.getContentType());
+		assertThat((Object) headers.getContentType()).isNull();
 	}
 
 	@Test

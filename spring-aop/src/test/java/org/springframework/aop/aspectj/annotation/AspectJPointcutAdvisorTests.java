@@ -27,8 +27,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rod Johnson
@@ -49,7 +47,7 @@ public class AspectJPointcutAdvisorTests {
 				new SingletonMetadataAwareAspectInstanceFactory(new AbstractAspectJAdvisorFactoryTests.ExceptionAspect(null), "someBean"),
 				1, "someBean");
 
-		assertSame(Pointcut.TRUE, ajpa.getAspectMetadata().getPerClausePointcut());
+		assertThat((Object) ajpa.getAspectMetadata().getPerClausePointcut()).isSameAs(Pointcut.TRUE);
 		assertThat(ajpa.isPerInstance()).isFalse();
 	}
 
@@ -63,7 +61,7 @@ public class AspectJPointcutAdvisorTests {
 				new SingletonMetadataAwareAspectInstanceFactory(new PerTargetAspect(), "someBean"),
 				1, "someBean");
 
-		assertNotSame(Pointcut.TRUE, ajpa.getAspectMetadata().getPerClausePointcut());
+		assertThat((Object) ajpa.getAspectMetadata().getPerClausePointcut()).isNotSameAs(Pointcut.TRUE);
 		boolean condition = ajpa.getAspectMetadata().getPerClausePointcut() instanceof AspectJExpressionPointcut;
 		assertThat(condition).isTrue();
 		assertThat(ajpa.isPerInstance()).isTrue();

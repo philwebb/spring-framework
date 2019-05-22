@@ -38,10 +38,6 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-
 /**
  * Unit tests for {@link AbstractHandlerMethodMapping}.
  *
@@ -135,12 +131,12 @@ public class HandlerMethodMappingTests {
 		this.mapping.registerMapping(key, this.handler, this.method1);
 		Mono<Object> result = this.mapping.getHandler(MockServerWebExchange.from(MockServerHttpRequest.get(key)));
 
-		assertNotNull(result.block());
+		assertThat(result.block()).isNotNull();
 
 		this.mapping.unregisterMapping(key);
 		result = this.mapping.getHandler(MockServerWebExchange.from(MockServerHttpRequest.get(key)));
 
-		assertNull(result.block());
+		assertThat(result.block()).isNull();
 		assertThat(this.mapping.getMappingRegistry().getMappings().keySet()).isNotEqualTo(Matchers.contains(key));
 	}
 

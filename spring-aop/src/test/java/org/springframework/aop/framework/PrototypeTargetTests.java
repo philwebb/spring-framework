@@ -24,7 +24,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.Resource;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -47,8 +47,8 @@ public class PrototypeTargetTests {
 			tb.doSomething();
 		}
 		TestInterceptor interceptor = (TestInterceptor) bf.getBean("testInterceptor");
-		assertEquals(10, TestBeanImpl.constructionCount);
-		assertEquals(10, interceptor.invocationCount);
+		assertThat((long) TestBeanImpl.constructionCount).isEqualTo((long) 10);
+		assertThat((long) interceptor.invocationCount).isEqualTo((long) 10);
 	}
 
 	@Test
@@ -61,8 +61,8 @@ public class PrototypeTargetTests {
 			tb.doSomething();
 		}
 		TestInterceptor interceptor = (TestInterceptor) bf.getBean("testInterceptor");
-		assertEquals(1, TestBeanImpl.constructionCount);
-		assertEquals(10, interceptor.invocationCount);
+		assertThat((long) TestBeanImpl.constructionCount).isEqualTo((long) 1);
+		assertThat((long) interceptor.invocationCount).isEqualTo((long) 10);
 	}
 
 

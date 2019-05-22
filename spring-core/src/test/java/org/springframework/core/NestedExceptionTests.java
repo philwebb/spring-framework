@@ -22,8 +22,6 @@ import java.io.PrintWriter;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rod Johnson
@@ -37,7 +35,7 @@ public class NestedExceptionTests {
 		String mesg = "mesg of mine";
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedRuntimeException nex = new NestedRuntimeException(mesg) {};
-		assertNull(nex.getCause());
+		assertThat((Object) nex.getCause()).isNull();
 		assertThat(mesg).isEqualTo(nex.getMessage());
 
 		// Check printStackTrace
@@ -75,7 +73,7 @@ public class NestedExceptionTests {
 		String mesg = "mesg of mine";
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedCheckedException nex = new NestedCheckedException(mesg) {};
-		assertNull(nex.getCause());
+		assertThat((Object) nex.getCause()).isNull();
 		assertThat(mesg).isEqualTo(nex.getMessage());
 
 		// Check printStackTrace

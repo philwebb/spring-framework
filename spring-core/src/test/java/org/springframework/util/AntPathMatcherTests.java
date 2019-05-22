@@ -27,8 +27,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link AntPathMatcher}.
@@ -448,53 +446,53 @@ public class AntPathMatcherTests {
 	public void patternComparator() {
 		Comparator<String> comparator = pathMatcher.getPatternComparator("/hotels/new");
 
-		assertEquals(0, comparator.compare(null, null));
-		assertEquals(1, comparator.compare(null, "/hotels/new"));
-		assertEquals(-1, comparator.compare("/hotels/new", null));
+		assertThat((long) comparator.compare(null, null)).isEqualTo((long) 0);
+		assertThat((long) comparator.compare(null, "/hotels/new")).isEqualTo((long) 1);
+		assertThat((long) comparator.compare("/hotels/new", null)).isEqualTo((long) -1);
 
-		assertEquals(0, comparator.compare("/hotels/new", "/hotels/new"));
+		assertThat((long) comparator.compare("/hotels/new", "/hotels/new")).isEqualTo((long) 0);
 
-		assertEquals(-1, comparator.compare("/hotels/new", "/hotels/*"));
-		assertEquals(1, comparator.compare("/hotels/*", "/hotels/new"));
-		assertEquals(0, comparator.compare("/hotels/*", "/hotels/*"));
+		assertThat((long) comparator.compare("/hotels/new", "/hotels/*")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/*", "/hotels/new")).isEqualTo((long) 1);
+		assertThat((long) comparator.compare("/hotels/*", "/hotels/*")).isEqualTo((long) 0);
 
-		assertEquals(-1, comparator.compare("/hotels/new", "/hotels/{hotel}"));
-		assertEquals(1, comparator.compare("/hotels/{hotel}", "/hotels/new"));
-		assertEquals(0, comparator.compare("/hotels/{hotel}", "/hotels/{hotel}"));
-		assertEquals(-1, comparator.compare("/hotels/{hotel}/booking", "/hotels/{hotel}/bookings/{booking}"));
-		assertEquals(1, comparator.compare("/hotels/{hotel}/bookings/{booking}", "/hotels/{hotel}/booking"));
+		assertThat((long) comparator.compare("/hotels/new", "/hotels/{hotel}")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/{hotel}", "/hotels/new")).isEqualTo((long) 1);
+		assertThat((long) comparator.compare("/hotels/{hotel}", "/hotels/{hotel}")).isEqualTo((long) 0);
+		assertThat((long) comparator.compare("/hotels/{hotel}/booking", "/hotels/{hotel}/bookings/{booking}")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/{hotel}/bookings/{booking}", "/hotels/{hotel}/booking")).isEqualTo((long) 1);
 
 		// SPR-10550
-		assertEquals(-1, comparator.compare("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}", "/**"));
-		assertEquals(1, comparator.compare("/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"));
-		assertEquals(0, comparator.compare("/**", "/**"));
+		assertThat((long) comparator.compare("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}", "/**")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")).isEqualTo((long) 1);
+		assertThat((long) comparator.compare("/**", "/**")).isEqualTo((long) 0);
 
-		assertEquals(-1, comparator.compare("/hotels/{hotel}", "/hotels/*"));
-		assertEquals(1, comparator.compare("/hotels/*", "/hotels/{hotel}"));
+		assertThat((long) comparator.compare("/hotels/{hotel}", "/hotels/*")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/*", "/hotels/{hotel}")).isEqualTo((long) 1);
 
-		assertEquals(-1, comparator.compare("/hotels/*", "/hotels/*/**"));
-		assertEquals(1, comparator.compare("/hotels/*/**", "/hotels/*"));
+		assertThat((long) comparator.compare("/hotels/*", "/hotels/*/**")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/*/**", "/hotels/*")).isEqualTo((long) 1);
 
-		assertEquals(-1, comparator.compare("/hotels/new", "/hotels/new.*"));
-		assertEquals(2, comparator.compare("/hotels/{hotel}", "/hotels/{hotel}.*"));
+		assertThat((long) comparator.compare("/hotels/new", "/hotels/new.*")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/{hotel}", "/hotels/{hotel}.*")).isEqualTo((long) 2);
 
 		// SPR-6741
-		assertEquals(-1, comparator.compare("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}", "/hotels/**"));
-		assertEquals(1, comparator.compare("/hotels/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"));
-		assertEquals(1, comparator.compare("/hotels/foo/bar/**", "/hotels/{hotel}"));
-		assertEquals(-1, comparator.compare("/hotels/{hotel}", "/hotels/foo/bar/**"));
-		assertEquals(2, comparator.compare("/hotels/**/bookings/**", "/hotels/**"));
-		assertEquals(-2, comparator.compare("/hotels/**", "/hotels/**/bookings/**"));
+		assertThat((long) comparator.compare("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}", "/hotels/**")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/**", "/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")).isEqualTo((long) 1);
+		assertThat((long) comparator.compare("/hotels/foo/bar/**", "/hotels/{hotel}")).isEqualTo((long) 1);
+		assertThat((long) comparator.compare("/hotels/{hotel}", "/hotels/foo/bar/**")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("/hotels/**/bookings/**", "/hotels/**")).isEqualTo((long) 2);
+		assertThat((long) comparator.compare("/hotels/**", "/hotels/**/bookings/**")).isEqualTo((long) -2);
 
 		// SPR-8683
-		assertEquals(1, comparator.compare("/**", "/hotels/{hotel}"));
+		assertThat((long) comparator.compare("/**", "/hotels/{hotel}")).isEqualTo((long) 1);
 
 		// longer is better
-		assertEquals(1, comparator.compare("/hotels", "/hotels2"));
+		assertThat((long) comparator.compare("/hotels", "/hotels2")).isEqualTo((long) 1);
 
 		// SPR-13139
-		assertEquals(-1, comparator.compare("*", "*/**"));
-		assertEquals(1, comparator.compare("*/**", "*"));
+		assertThat((long) comparator.compare("*", "*/**")).isEqualTo((long) -1);
+		assertThat((long) comparator.compare("*/**", "*")).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -506,14 +504,14 @@ public class AntPathMatcherTests {
 		paths.add("/hotels/new");
 		Collections.sort(paths, comparator);
 		assertThat(paths.get(0)).isEqualTo("/hotels/new");
-		assertNull(paths.get(1));
+		assertThat((Object) paths.get(1)).isNull();
 		paths.clear();
 
 		paths.add("/hotels/new");
 		paths.add(null);
 		Collections.sort(paths, comparator);
 		assertThat(paths.get(0)).isEqualTo("/hotels/new");
-		assertNull(paths.get(1));
+		assertThat((Object) paths.get(1)).isNull();
 		paths.clear();
 
 		paths.add("/hotels/*");
@@ -639,22 +637,22 @@ public class AntPathMatcherTests {
 	@Test
 	public void preventCreatingStringMatchersIfPathDoesNotStartsWithPatternPrefix() {
 		pathMatcher.setCachePatterns(true);
-		assertEquals(0, pathMatcher.stringMatcherCache.size());
+		assertThat((long) pathMatcher.stringMatcherCache.size()).isEqualTo((long) 0);
 
 		pathMatcher.match("test?", "test");
-		assertEquals(1, pathMatcher.stringMatcherCache.size());
+		assertThat((long) pathMatcher.stringMatcherCache.size()).isEqualTo((long) 1);
 
 		pathMatcher.match("test?", "best");
 		pathMatcher.match("test/*", "view/test.jpg");
 		pathMatcher.match("test/**/test.jpg", "view/test.jpg");
 		pathMatcher.match("test/{name}.jpg", "view/test.jpg");
-		assertEquals(1, pathMatcher.stringMatcherCache.size());
+		assertThat((long) pathMatcher.stringMatcherCache.size()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void creatingStringMatchersIfPatternPrefixCannotDetermineIfPathMatch() {
 		pathMatcher.setCachePatterns(true);
-		assertEquals(0, pathMatcher.stringMatcherCache.size());
+		assertThat((long) pathMatcher.stringMatcherCache.size()).isEqualTo((long) 0);
 
 		pathMatcher.match("test", "testian");
 		pathMatcher.match("test?", "testFf");
@@ -665,7 +663,7 @@ public class AntPathMatcherTests {
 		pathMatcher.match("/**/{name}.jpg", "/test/lorem.jpg");
 		pathMatcher.match("/*/dir/{name}.jpg", "/*/dir/lorem.jpg");
 
-		assertEquals(7, pathMatcher.stringMatcherCache.size());
+		assertThat((long) pathMatcher.stringMatcherCache.size()).isEqualTo((long) 7);
 	}
 
 	@Test

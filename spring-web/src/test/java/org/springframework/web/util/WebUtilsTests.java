@@ -35,8 +35,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -54,7 +52,7 @@ public class WebUtilsTests {
 		params.put("myKey3_myValue3.x", "xxx");
 		params.put("myKey4_myValue4.y", new String[] {"yyy"});
 
-		assertNull(WebUtils.findParameterValue(params, "myKey0"));
+		assertThat((Object) WebUtils.findParameterValue(params, "myKey0")).isNull();
 		assertThat(WebUtils.findParameterValue(params, "myKey1")).isEqualTo("myValue1");
 		assertThat(WebUtils.findParameterValue(params, "myKey2")).isEqualTo("myValue2");
 		assertThat(WebUtils.findParameterValue(params, "myKey3")).isEqualTo("myValue3");
@@ -66,28 +64,28 @@ public class WebUtilsTests {
 		MultiValueMap<String, String> variables;
 
 		variables = WebUtils.parseMatrixVariables(null);
-		assertEquals(0, variables.size());
+		assertThat((long) variables.size()).isEqualTo((long) 0);
 
 		variables = WebUtils.parseMatrixVariables("year");
-		assertEquals(1, variables.size());
+		assertThat((long) variables.size()).isEqualTo((long) 1);
 		assertThat(variables.getFirst("year")).isEqualTo("");
 
 		variables = WebUtils.parseMatrixVariables("year=2012");
-		assertEquals(1, variables.size());
+		assertThat((long) variables.size()).isEqualTo((long) 1);
 		assertThat(variables.getFirst("year")).isEqualTo("2012");
 
 		variables = WebUtils.parseMatrixVariables("year=2012;colors=red,blue,green");
-		assertEquals(2, variables.size());
+		assertThat((long) variables.size()).isEqualTo((long) 2);
 		assertThat(variables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 		assertThat(variables.getFirst("year")).isEqualTo("2012");
 
 		variables = WebUtils.parseMatrixVariables(";year=2012;colors=red,blue,green;");
-		assertEquals(2, variables.size());
+		assertThat((long) variables.size()).isEqualTo((long) 2);
 		assertThat(variables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 		assertThat(variables.getFirst("year")).isEqualTo("2012");
 
 		variables = WebUtils.parseMatrixVariables("colors=red;colors=blue;colors=green");
-		assertEquals(1, variables.size());
+		assertThat((long) variables.size()).isEqualTo((long) 1);
 		assertThat(variables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 	}
 

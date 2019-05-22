@@ -42,9 +42,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with {@link PathVariableMethodArgumentResolver}.
@@ -100,8 +97,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertNotNull(pathVars);
-		assertEquals(1, pathVars.size());
+		assertThat((Object) pathVars).isNotNull();
+		assertThat((long) pathVars.size()).isEqualTo((long) 1);
 		assertThat(pathVars.get("name")).isEqualTo("value");
 	}
 
@@ -116,8 +113,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertNotNull(pathVars);
-		assertEquals(1, pathVars.size());
+		assertThat((Object) pathVars).isNotNull();
+		assertThat((long) pathVars.size()).isEqualTo((long) 1);
 		assertThat(pathVars.get("name")).isEqualTo("value");
 	}
 
@@ -138,8 +135,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertNotNull(pathVars);
-		assertEquals(1, pathVars.size());
+		assertThat((Object) pathVars).isNotNull();
+		assertThat((long) pathVars.size()).isEqualTo((long) 1);
 		assertThat(pathVars.get("name")).isEqualTo(Optional.of("value"));
 	}
 
@@ -157,8 +154,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertNotNull(pathVars);
-		assertEquals(2, pathVars.size());
+		assertThat((Object) pathVars).isNotNull();
+		assertThat((long) pathVars.size()).isEqualTo((long) 2);
 		assertThat(pathVars.get("name")).isEqualTo("value");
 		assertThat(pathVars.get("oldName")).isEqualTo("oldValue");
 	}
@@ -171,7 +168,7 @@ public class PathVariableMethodArgumentResolverTests {
 
 	@Test
 	public void nullIfNotRequired() throws Exception {
-		assertNull(resolver.resolveArgument(paramNotRequired, mavContainer, webRequest, null));
+		assertThat(resolver.resolveArgument(paramNotRequired, mavContainer, webRequest, null)).isNull();
 	}
 
 	@Test

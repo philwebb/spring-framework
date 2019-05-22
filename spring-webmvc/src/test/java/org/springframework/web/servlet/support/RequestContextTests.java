@@ -30,7 +30,6 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer

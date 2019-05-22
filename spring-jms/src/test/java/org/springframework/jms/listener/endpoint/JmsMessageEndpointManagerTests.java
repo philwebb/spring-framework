@@ -22,9 +22,6 @@ import org.springframework.jms.support.QosSettings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Stephane Nicoll
@@ -69,10 +66,10 @@ public class JmsMessageEndpointManagerTests {
 		QosSettings settings = new QosSettings(1, 3, 5);
 		config.setReplyQosSettings(settings);
 		endpoint.setActivationSpecConfig(config);
-		assertNotNull(endpoint.getReplyQosSettings());
-		assertEquals(1, endpoint.getReplyQosSettings().getDeliveryMode());
-		assertEquals(3, endpoint.getReplyQosSettings().getPriority());
-		assertEquals(5, endpoint.getReplyQosSettings().getTimeToLive());
+		assertThat((Object) endpoint.getReplyQosSettings()).isNotNull();
+		assertThat((long) endpoint.getReplyQosSettings().getDeliveryMode()).isEqualTo((long) 1);
+		assertThat((long) endpoint.getReplyQosSettings().getPriority()).isEqualTo((long) 3);
+		assertThat(endpoint.getReplyQosSettings().getTimeToLive()).isEqualTo((long) 5);
 	}
 
 	@Test
@@ -102,12 +99,12 @@ public class JmsMessageEndpointManagerTests {
 	@Test
 	public void getMessageConverterNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
-		assertNull(endpoint.getMessageConverter());
+		assertThat((Object) endpoint.getMessageConverter()).isNull();
 	}
 
 	@Test
 	public void getDestinationResolverNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
-		assertNull(endpoint.getDestinationResolver());
+		assertThat((Object) endpoint.getDestinationResolver()).isNull();
 	}
 }

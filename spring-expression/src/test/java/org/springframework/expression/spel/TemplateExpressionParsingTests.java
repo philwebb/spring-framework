@@ -30,7 +30,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Andy Clement
@@ -167,7 +166,7 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		assertThat(ex.getClass()).isEqualTo(CompositeStringExpression.class);
 		CompositeStringExpression cse = (CompositeStringExpression)ex;
 		Expression[] exprs = cse.getExpressions();
-		assertEquals(3,exprs.length);
+		assertThat((long) exprs.length).isEqualTo((long) 3);
 		assertThat(exprs[1].getExpressionString()).isEqualTo("listOfNumbersUpToTen.$[#root.listOfNumbersUpToTen.$[#this%2==1]==3]");
 		s = ex.getValue(TestScenarioCreator.getTestEvaluationContext(),String.class);
 		assertThat(s).isEqualTo("hello  world");

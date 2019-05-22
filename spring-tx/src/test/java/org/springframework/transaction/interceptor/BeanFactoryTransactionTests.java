@@ -44,8 +44,6 @@ import org.springframework.transaction.TransactionStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
@@ -101,7 +99,7 @@ public class BeanFactoryTransactionTests {
 	public void testProxyFactory2Lazy() {
 		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory2Lazy");
 		assertThat(factory.containsSingleton("target")).isFalse();
-		assertEquals(666, testBean.getAge());
+		assertThat((long) testBean.getAge()).isEqualTo((long) 666);
 		assertThat(factory.containsSingleton("target")).isTrue();
 	}
 
@@ -119,7 +117,7 @@ public class BeanFactoryTransactionTests {
 
 		ini.setName(newName);
 		assertThat(ini.getName()).isEqualTo(newName);
-		assertEquals(2, ptm.commits);
+		assertThat((long) ptm.commits).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -138,8 +136,8 @@ public class BeanFactoryTransactionTests {
 		doTestGetsAreNotTransactional(testBean);
 		// Can't assert it's equal to 4 as the pointcut may be optimized and only invoked once
 		assertThat(0 < txnCounter.counter && txnCounter.counter <= 4).isTrue();
-		assertEquals(4, preCounter.counter);
-		assertEquals(4, postCounter.counter);
+		assertThat((long) preCounter.counter).isEqualTo((long) 4);
+		assertThat((long) postCounter.counter).isEqualTo((long) 4);
 	}
 
 	private void doTestGetsAreNotTransactional(final ITestBean testBean) {
@@ -188,7 +186,7 @@ public class BeanFactoryTransactionTests {
 	@Test
 	public void testGetBeansOfTypeWithAbstract() {
 		Map<String, ITestBean> beansOfType = factory.getBeansOfType(ITestBean.class, true, true);
-		assertNotNull(beansOfType);
+		assertThat((Object) beansOfType).isNotNull();
 	}
 
 	/**
@@ -213,22 +211,22 @@ public class BeanFactoryTransactionTests {
 		PlatformTransactionManagerFacade.delegate = txMan;
 
 		TestBean tb = (TestBean) factory.getBean("hotSwapped");
-		assertEquals(666, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) 666);
 		int newAge = 557;
 		tb.setAge(newAge);
-		assertEquals(newAge, tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) newAge);
 
 		TestBean target2 = new TestBean();
 		target2.setAge(65);
 		HotSwappableTargetSource ts = (HotSwappableTargetSource) factory.getBean("swapper");
 		ts.swap(target2);
-		assertEquals(target2.getAge(), tb.getAge());
+		assertThat((long) tb.getAge()).isEqualTo((long) target2.getAge());
 		tb.setAge(newAge);
-		assertEquals(newAge, target2.getAge());
+		assertThat((long) target2.getAge()).isEqualTo((long) newAge);
 
-		assertEquals(0, txMan.inflight);
-		assertEquals(2, txMan.commits);
-		assertEquals(0, txMan.rollbacks);
+		assertThat((long) txMan.inflight).isEqualTo((long) 0);
+		assertThat((long) txMan.commits).isEqualTo((long) 2);
+		assertThat((long) txMan.rollbacks).isEqualTo((long) 0);
 	}
 
 

@@ -40,8 +40,6 @@ import org.springframework.util.MultiValueMap;
 
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
@@ -86,7 +84,7 @@ public class SynchronossPartHttpMessageReaderTests {
 		ServerHttpRequest request = generateMultipartRequest();
 		ResolvableType elementType = forClassWithGenerics(MultiValueMap.class, String.class, Part.class);
 		MultiValueMap<String, Part> parts = this.reader.readMono(elementType, request, emptyMap()).block();
-		assertEquals(2, parts.size());
+		assertThat((long) parts.size()).isEqualTo((long) 2);
 
 		assertThat(parts.containsKey("fooPart")).isTrue();
 		Part part = parts.getFirst("fooPart");
@@ -95,7 +93,7 @@ public class SynchronossPartHttpMessageReaderTests {
 		assertThat(part.name()).isEqualTo("fooPart");
 		assertThat(((FilePart) part).filename()).isEqualTo("foo.txt");
 		DataBuffer buffer = DataBufferUtils.join(part.content()).block();
-		assertEquals(12, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 12);
 		byte[] byteContent = new byte[12];
 		buffer.read(byteContent);
 		assertThat(new String(byteContent)).isEqualTo("Lorem Ipsum.");
@@ -114,15 +112,15 @@ public class SynchronossPartHttpMessageReaderTests {
 		ResolvableType elementType = forClassWithGenerics(MultiValueMap.class, String.class, Part.class);
 		MultiValueMap<String, Part> parts = this.reader.readMono(elementType, request, emptyMap()).block();
 
-		assertNotNull(parts);
+		assertThat((Object) parts).isNotNull();
 		FilePart part = (FilePart) parts.getFirst("fooPart");
-		assertNotNull(part);
+		assertThat((Object) part).isNotNull();
 
 		File dest = new File(System.getProperty("java.io.tmpdir") + "/" + part.filename());
 		part.transferTo(dest).block(Duration.ofSeconds(5));
 
 		assertThat(dest.exists()).isTrue();
-		assertEquals(12, dest.length());
+		assertThat(dest.length()).isEqualTo((long) 12);
 		assertThat(dest.delete()).isTrue();
 	}
 

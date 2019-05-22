@@ -27,8 +27,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link ContentVersionStrategy}.
@@ -52,7 +50,7 @@ public class ContentBasedVersionStrategyTests {
 		String path = "font-awesome/css/font-awesome.min-" + hash + ".css";
 
 		assertThat(this.strategy.extractVersion(path)).isEqualTo(hash);
-		assertNull(this.strategy.extractVersion("foo/bar.css"));
+		assertThat((Object) this.strategy.extractVersion("foo/bar.css")).isNull();
 	}
 
 	@Test

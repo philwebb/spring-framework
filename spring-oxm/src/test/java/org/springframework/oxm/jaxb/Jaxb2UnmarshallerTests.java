@@ -38,8 +38,6 @@ import org.springframework.oxm.mime.MimeContainer;
 import org.springframework.util.xml.StaxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -65,16 +63,16 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 	@Override
 	protected void testFlights(Object o) {
 		Flights flights = (Flights) o;
-		assertNotNull("Flights is null", flights);
-		assertEquals("Invalid amount of flight elements", 1, flights.getFlight().size());
+		assertThat((Object) flights).as("Flights is null").isNotNull();
+		assertThat((long) flights.getFlight().size()).as("Invalid amount of flight elements").isEqualTo((long) 1);
 		testFlight(flights.getFlight().get(0));
 	}
 
 	@Override
 	protected void testFlight(Object o) {
 		FlightType flight = (FlightType) o;
-		assertNotNull("Flight is null", flight);
-		assertEquals("Number is invalid", 42L, flight.getNumber());
+		assertThat((Object) flight).as("Flight is null").isNotNull();
+		assertThat(flight.getNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 
 	@Test
@@ -105,9 +103,9 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 		boolean condition = result instanceof BinaryObject;
 		assertThat(condition).as("Result is not a BinaryObject").isTrue();
 		BinaryObject object = (BinaryObject) result;
-		assertNotNull("bytes property not set", object.getBytes());
+		assertThat((Object) object.getBytes()).as("bytes property not set").isNotNull();
 		assertThat(object.getBytes().length > 0).as("bytes property not set").isTrue();
-		assertNotNull("datahandler property not set", object.getSwaDataHandler());
+		assertThat((Object) object.getSwaDataHandler()).as("datahandler property not set").isNotNull();
 	}
 
 	@Test

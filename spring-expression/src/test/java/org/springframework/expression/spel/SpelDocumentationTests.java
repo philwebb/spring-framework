@@ -37,9 +37,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test the examples specified in the documentation.
@@ -162,20 +159,20 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		assertThat(avogadrosNumber).isCloseTo(6.0221415E+23, within((double) 0));
 
 		int maxValue = (Integer) parser.parseExpression("0x7FFFFFFF").getValue();  // evals to 2147483647
-		assertEquals(Integer.MAX_VALUE,maxValue);
+		assertThat((long) maxValue).isEqualTo((long) Integer.MAX_VALUE);
 
 		boolean trueValue = (Boolean) parser.parseExpression("true").getValue();
 		assertThat(trueValue).isTrue();
 
 		Object nullValue = parser.parseExpression("null").getValue();
-		assertNull(nullValue);
+		assertThat(nullValue).isNull();
 	}
 
 	@Test
 	public void testPropertyAccess() throws Exception {
 		EvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
 		int year = (Integer) parser.parseExpression("Birthdate.Year + 1900").getValue(context); // 1856
-		assertEquals(1856,year);
+		assertThat((long) year).isEqualTo((long) 1856);
 
 		String city = (String) parser.parseExpression("placeOfBirth.City").getValue(context);
 		assertThat(city).isEqualTo("SmilJan");
@@ -216,11 +213,11 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		societyContext.setRootObject(new IEEE());
 		// Officer's Dictionary
 		Inventor pupin = parser.parseExpression("officers['president']").getValue(societyContext, Inventor.class);
-		assertNotNull(pupin);
+		assertThat((Object) pupin).isNotNull();
 
 		// evaluates to "Idvor"
 		String city = parser.parseExpression("officers['president'].PlaceOfBirth.city").getValue(societyContext, String.class);
-		assertNotNull(city);
+		assertThat((Object) city).isNotNull();
 
 		// setting values
 		Inventor i = parser.parseExpression("officers['advisors'][0]").getValue(societyContext,Inventor.class);
@@ -325,42 +322,42 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	public void testNumericalOperators() throws Exception {
 		// Addition
 		int two = parser.parseExpression("1 + 1").getValue(Integer.class); // 2
-		assertEquals(2,two);
+		assertThat((long) two).isEqualTo((long) 2);
 
 		String testString = parser.parseExpression("'test' + ' ' + 'string'").getValue(String.class); // 'test string'
 		assertThat(testString).isEqualTo("test string");
 
 		// Subtraction
 		int four =  parser.parseExpression("1 - -3").getValue(Integer.class); // 4
-		assertEquals(4,four);
+		assertThat((long) four).isEqualTo((long) 4);
 
 		double d = parser.parseExpression("1000.00 - 1e4").getValue(Double.class); // -9000
 		assertThat(d).isCloseTo(-9000.0d, within((double) 0));
 
 		// Multiplication
 		int six =  parser.parseExpression("-2 * -3").getValue(Integer.class); // 6
-		assertEquals(6,six);
+		assertThat((long) six).isEqualTo((long) 6);
 
 		double twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Double.class); // 24.0
 		assertThat(twentyFour).isCloseTo(24.0d, within((double) 0));
 
 		// Division
 		int minusTwo =  parser.parseExpression("6 / -3").getValue(Integer.class); // -2
-		assertEquals(-2,minusTwo);
+		assertThat((long) minusTwo).isEqualTo((long) -2);
 
 		double one = parser.parseExpression("8.0 / 4e0 / 2").getValue(Double.class); // 1.0
 		assertThat(one).isCloseTo(1.0d, within((double) 0));
 
 		// Modulus
 		int three =  parser.parseExpression("7 % 4").getValue(Integer.class); // 3
-		assertEquals(3,three);
+		assertThat((long) three).isEqualTo((long) 3);
 
 		int oneInt = parser.parseExpression("8 / 5 % 2").getValue(Integer.class); // 1
-		assertEquals(1,oneInt);
+		assertThat((long) oneInt).isEqualTo((long) 1);
 
 		// Operator precedence
 		int minusTwentyOne = parser.parseExpression("1+2-3*8").getValue(Integer.class); // -21
-		assertEquals(-21,minusTwentyOne);
+		assertThat((long) minusTwentyOne).isEqualTo((long) -21);
 	}
 
 	// 7.5.5
@@ -478,7 +475,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
 		List<Inventor> list = (List<Inventor>) parser.parseExpression("Members2.?[nationality == 'Serbian']").getValue(societyContext);
-		assertEquals(1,list.size());
+		assertThat((long) list.size()).isEqualTo((long) 1);
 		assertThat(list.get(0).getName()).isEqualTo("Nikola Tesla");
 	}
 

@@ -27,7 +27,6 @@ import org.springframework.web.server.NotAcceptableStatusException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link HeaderContentTypeResolver}.
@@ -45,7 +44,7 @@ public class HeaderContentTypeResolverTests {
 		List<MediaType> mediaTypes = this.resolver.resolveMediaTypes(
 				MockServerWebExchange.from(MockServerHttpRequest.get("/").header("accept", header)));
 
-		assertEquals(4, mediaTypes.size());
+		assertThat((long) mediaTypes.size()).isEqualTo((long) 4);
 		assertThat(mediaTypes.get(0).toString()).isEqualTo("text/html");
 		assertThat(mediaTypes.get(1).toString()).isEqualTo("text/x-c");
 		assertThat(mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");

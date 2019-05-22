@@ -28,7 +28,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rod Johnson
@@ -138,7 +137,7 @@ public class ComposablePointcutTests {
 		ComposablePointcut pc2 = new ComposablePointcut();
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertEquals(pc1.hashCode(), pc2.hashCode());
+		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 
 		pc1.intersection(GETTER_METHOD_MATCHER);
 
@@ -148,13 +147,13 @@ public class ComposablePointcutTests {
 		pc2.intersection(GETTER_METHOD_MATCHER);
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertEquals(pc1.hashCode(), pc2.hashCode());
+		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 
 		pc1.union(GET_AGE_METHOD_MATCHER);
 		pc2.union(GET_AGE_METHOD_MATCHER);
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertEquals(pc1.hashCode(), pc2.hashCode());
+		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 	}
 
 }

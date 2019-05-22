@@ -62,8 +62,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -236,8 +234,8 @@ public class JmsTemplateTests {
 				}
 			});
 
-			assertSame(this.session, ConnectionFactoryUtils.getTransactionalSession(scf, null, false));
-			assertSame(this.session, ConnectionFactoryUtils.getTransactionalSession(scf, scf.createConnection(), false));
+			assertThat((Object) ConnectionFactoryUtils.getTransactionalSession(scf, null, false)).isSameAs(this.session);
+			assertThat((Object) ConnectionFactoryUtils.getTransactionalSession(scf, scf.createConnection(), false)).isSameAs(this.session);
 
 			TransactionAwareConnectionFactoryProxy tacf = new TransactionAwareConnectionFactoryProxy(scf);
 			Connection tac = tacf.createConnection();
@@ -247,7 +245,7 @@ public class JmsTemplateTests {
 			tac.close();
 
 			List<TransactionSynchronization> synchs = TransactionSynchronizationManager.getSynchronizations();
-			assertEquals(1, synchs.size());
+			assertThat((long) synchs.size()).isEqualTo((long) 1);
 			TransactionSynchronization synch = synchs.get(0);
 			synch.beforeCommit(false);
 			synch.beforeCompletion();
@@ -712,7 +710,7 @@ public class JmsTemplateTests {
 
 		// replyTO set on the request
 		verify(request).setJMSReplyTo(replyDestination);
-		assertSame("Reply message not received", reply, message);
+		assertThat((Object) message).as("Reply message not received").isSameAs(reply);
 		verify(this.connection).start();
 		verify(this.connection).close();
 		verify(localSession).close();

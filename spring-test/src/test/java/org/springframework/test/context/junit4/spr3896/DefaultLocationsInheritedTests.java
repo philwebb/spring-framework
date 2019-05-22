@@ -23,8 +23,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * JUnit 4 based integration test for verifying support for the
@@ -45,7 +43,7 @@ public class DefaultLocationsInheritedTests extends DefaultLocationsBaseTests {
 
 	@Test
 	public void verifyPetSetFromExtendedContextConfig() {
-		assertNotNull("The pet should have been autowired.", this.pet);
+		assertThat((Object) this.pet).as("The pet should have been autowired.").isNotNull();
 		assertThat(this.pet.getName()).isEqualTo("Fido");
 	}
 }

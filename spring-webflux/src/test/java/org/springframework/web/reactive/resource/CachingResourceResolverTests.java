@@ -32,10 +32,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -76,7 +72,7 @@ public class CachingResourceResolverTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(""));
 		Resource actual = this.chain.resolveResource(exchange, "bar.css", this.locations).block(TIMEOUT);
 
-		assertNotSame(expected, actual);
+		assertThat((Object) actual).isNotSameAs(expected);
 		assertThat(actual).isEqualTo(expected);
 	}
 
@@ -88,13 +84,13 @@ public class CachingResourceResolverTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(""));
 		Resource actual = this.chain.resolveResource(exchange, "bar.css", this.locations).block(TIMEOUT);
 
-		assertSame(expected, actual);
+		assertThat((Object) actual).isSameAs(expected);
 	}
 
 	@Test
 	public void resolveResourceInternalNoMatch() {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(""));
-		assertNull(this.chain.resolveResource(exchange, "invalid.css", this.locations).block(TIMEOUT));
+		assertThat((Object) this.chain.resolveResource(exchange, "invalid.css", this.locations).block(TIMEOUT)).isNull();
 	}
 
 	@Test
@@ -116,7 +112,7 @@ public class CachingResourceResolverTests {
 
 	@Test
 	public void resolverUrlPathNoMatch() {
-		assertNull(this.chain.resolveUrlPath("invalid.css", this.locations).block(TIMEOUT));
+		assertThat((Object) this.chain.resolveUrlPath("invalid.css", this.locations).block(TIMEOUT)).isNull();
 	}
 
 	@Test
@@ -131,7 +127,7 @@ public class CachingResourceResolverTests {
 		Resource expected = this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT);
 
 		String cacheKey = resourceKey(file);
-		assertSame(expected, this.cache.get(cacheKey).get());
+		assertThat(this.cache.get(cacheKey).get()).isSameAs(expected);
 
 
 		// 2. Resolve with Accept-Encoding
@@ -141,7 +137,7 @@ public class CachingResourceResolverTests {
 		expected = this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT);
 
 		cacheKey = resourceKey(file + "+encoding=br,gzip");
-		assertSame(expected, this.cache.get(cacheKey).get());
+		assertThat(this.cache.get(cacheKey).get()).isSameAs(expected);
 
 		// 3. Resolve with Accept-Encoding but no matching codings
 
@@ -149,7 +145,7 @@ public class CachingResourceResolverTests {
 		expected = this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT);
 
 		cacheKey = resourceKey(file);
-		assertSame(expected, this.cache.get(cacheKey).get());
+		assertThat(this.cache.get(cacheKey).get()).isSameAs(expected);
 	}
 
 	@Test
@@ -173,10 +169,10 @@ public class CachingResourceResolverTests {
 
 		String file = "bar.css";
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(file));
-		assertSame(resource, this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT));
+		assertThat((Object) this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT)).isSameAs(resource);
 
 		exchange = MockServerWebExchange.from(get(file).header("Accept-Encoding", "gzip"));
-		assertSame(gzipped, this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT));
+		assertThat((Object) this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT)).isSameAs(gzipped);
 	}
 
 	private static String resourceKey(String key) {

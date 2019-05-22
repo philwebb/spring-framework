@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
 /**
@@ -56,9 +56,8 @@ public class RollbackOverrideDefaultRollbackFalseTransactionalTests
 	@Override
 	public void verifyInitialTestData() {
 		originalNumRows = clearPersonTable(jdbcTemplate);
-		assertEquals("Adding bob", 1, addPerson(jdbcTemplate, BOB));
-		assertEquals("Verifying the initial number of rows in the person table.", 1,
-			countRowsInPersonTable(jdbcTemplate));
+		assertThat((long) addPerson(jdbcTemplate, BOB)).as("Adding bob").isEqualTo((long) 1);
+		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the initial number of rows in the person table.").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -66,17 +65,15 @@ public class RollbackOverrideDefaultRollbackFalseTransactionalTests
 	@Override
 	public void modifyTestDataWithinTransaction() {
 		assertInTransaction(true);
-		assertEquals("Deleting bob", 1, deletePerson(jdbcTemplate, BOB));
-		assertEquals("Adding jane", 1, addPerson(jdbcTemplate, JANE));
-		assertEquals("Adding sue", 1, addPerson(jdbcTemplate, SUE));
-		assertEquals("Verifying the number of rows in the person table within a transaction.", 2,
-			countRowsInPersonTable(jdbcTemplate));
+		assertThat((long) deletePerson(jdbcTemplate, BOB)).as("Deleting bob").isEqualTo((long) 1);
+		assertThat((long) addPerson(jdbcTemplate, JANE)).as("Adding jane").isEqualTo((long) 1);
+		assertThat((long) addPerson(jdbcTemplate, SUE)).as("Adding sue").isEqualTo((long) 1);
+		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table within a transaction.").isEqualTo((long) 2);
 	}
 
 	@AfterClass
 	public static void verifyFinalTestData() {
-		assertEquals("Verifying the final number of rows in the person table after all tests.", originalNumRows,
-			countRowsInPersonTable(jdbcTemplate));
+		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo((long) originalNumRows);
 	}
 
 }

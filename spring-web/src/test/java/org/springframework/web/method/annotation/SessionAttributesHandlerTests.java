@@ -32,9 +32,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with {@link SessionAttributesHandler}.
@@ -81,15 +78,15 @@ public class SessionAttributesHandlerTests {
 
 		sessionAttributesHandler.cleanupAttributes(request);
 
-		assertNull(sessionAttributeStore.retrieveAttribute(request, "attr1"));
-		assertNull(sessionAttributeStore.retrieveAttribute(request, "attr2"));
-		assertNotNull(sessionAttributeStore.retrieveAttribute(request, "attr3"));
+		assertThat(sessionAttributeStore.retrieveAttribute(request, "attr1")).isNull();
+		assertThat(sessionAttributeStore.retrieveAttribute(request, "attr2")).isNull();
+		assertThat(sessionAttributeStore.retrieveAttribute(request, "attr3")).isNotNull();
 
 		// Resolve 'attr3' by type
 		sessionAttributesHandler.isHandlerSessionAttribute("attr3", TestBean.class);
 		sessionAttributesHandler.cleanupAttributes(request);
 
-		assertNull(sessionAttributeStore.retrieveAttribute(request, "attr3"));
+		assertThat(sessionAttributeStore.retrieveAttribute(request, "attr3")).isNull();
 	}
 
 	@Test

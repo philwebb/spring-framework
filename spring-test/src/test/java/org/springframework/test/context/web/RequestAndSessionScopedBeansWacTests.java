@@ -28,9 +28,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Integration tests that verify support for request and session scoped beans
@@ -59,26 +56,26 @@ public class RequestAndSessionScopedBeansWacTests {
 		final String beanName = "requestScopedTestBean";
 		final String contextPath = "/path";
 
-		assertNull(request.getAttribute(beanName));
+		assertThat(request.getAttribute(beanName)).isNull();
 
 		request.setContextPath(contextPath);
 		TestBean testBean = wac.getBean(beanName, TestBean.class);
 
 		assertThat(testBean.getName()).isEqualTo(contextPath);
-		assertSame(testBean, request.getAttribute(beanName));
-		assertSame(testBean, wac.getBean(beanName, TestBean.class));
+		assertThat(request.getAttribute(beanName)).isSameAs(testBean);
+		assertThat(wac.getBean(beanName, TestBean.class)).isSameAs(testBean);
 	}
 
 	@Test
 	public void sessionScope() throws Exception {
 		final String beanName = "sessionScopedTestBean";
 
-		assertNull(session.getAttribute(beanName));
+		assertThat(session.getAttribute(beanName)).isNull();
 
 		TestBean testBean = wac.getBean(beanName, TestBean.class);
 
-		assertSame(testBean, session.getAttribute(beanName));
-		assertSame(testBean, wac.getBean(beanName, TestBean.class));
+		assertThat(session.getAttribute(beanName)).isSameAs(testBean);
+		assertThat(wac.getBean(beanName, TestBean.class)).isSameAs(testBean);
 	}
 
 }

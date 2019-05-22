@@ -36,8 +36,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -63,7 +61,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getRawStatusCode()).willReturn(HttpStatus.NO_CONTENT.value());
 
 		Object result = extractor.extractData(response);
-		assertNull(result);
+		assertThat(result).isNull();
 	}
 
 	@Test
@@ -73,7 +71,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getRawStatusCode()).willReturn(HttpStatus.NOT_MODIFIED.value());
 
 		Object result = extractor.extractData(response);
-		assertNull(result);
+		assertThat(result).isNull();
 	}
 
 	@Test
@@ -83,7 +81,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getRawStatusCode()).willReturn(HttpStatus.CONTINUE.value());
 
 		Object result = extractor.extractData(response);
-		assertNull(result);
+		assertThat(result).isNull();
 	}
 
 	@Test
@@ -96,7 +94,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getHeaders()).willReturn(responseHeaders);
 
 		Object result = extractor.extractData(response);
-		assertNull(result);
+		assertThat(result).isNull();
 	}
 
 	@Test
@@ -110,7 +108,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getBody()).willReturn(new ByteArrayInputStream("".getBytes()));
 
 		Object result = extractor.extractData(response);
-		assertNull(result);
+		assertThat(result).isNull();
 	}
 
 	@Test // gh-22265
@@ -124,7 +122,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getBody()).willReturn(null);
 
 		Object result = extractor.extractData(response);
-		assertNull(result);
+		assertThat(result).isNull();
 	}
 
 	@Test

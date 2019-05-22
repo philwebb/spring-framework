@@ -25,7 +25,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Stephane Nicoll

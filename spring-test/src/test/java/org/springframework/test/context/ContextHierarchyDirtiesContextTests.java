@@ -38,8 +38,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Integration tests that verify proper behavior of {@link DirtiesContext @DirtiesContext}
  * in conjunction with context hierarchies configured via {@link ContextHierarchy @ContextHierarchy}.

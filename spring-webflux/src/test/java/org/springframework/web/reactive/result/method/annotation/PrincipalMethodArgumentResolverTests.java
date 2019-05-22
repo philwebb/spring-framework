@@ -31,7 +31,6 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link PrincipalMethodArgumentResolver}.
@@ -63,17 +62,17 @@ public class PrincipalMethodArgumentResolverTests {
 
 		MethodParameter param = this.testMethod.arg(Principal.class);
 		Object actual = this.resolver.resolveArgument(param, context, exchange).block();
-		assertSame(user, actual);
+		assertThat(actual).isSameAs(user);
 
 		param = this.testMethod.arg(Mono.class, Principal.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
 		assertThat(Mono.class.isAssignableFrom(actual.getClass())).isTrue();
-		assertSame(user, ((Mono<?>) actual).block());
+		assertThat(((Mono<?>) actual).block()).isSameAs(user);
 
 		param = this.testMethod.arg(Single.class, Principal.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
 		assertThat(Single.class.isAssignableFrom(actual.getClass())).isTrue();
-		assertSame(user, ((Single<?>) actual).blockingGet());
+		assertThat(((Single<?>) actual).blockingGet()).isSameAs(user);
 	}
 
 

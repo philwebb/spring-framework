@@ -24,9 +24,6 @@ import org.springframework.cache.AbstractValueAdaptingCacheTests;
 import org.springframework.cache.Cache;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Ben Manes
@@ -71,11 +68,12 @@ public class CaffeineCacheTests extends AbstractValueAdaptingCacheTests<Caffeine
 		Object key = new Object();
 		Object value = null;
 
-		assertNull(cache.get(key));
-		assertNull(cache.putIfAbsent(key, value));
+		assertThat((Object) cache.get(key)).isNull();
+		assertThat((Object) cache.putIfAbsent(key, value)).isNull();
 		assertThat(cache.get(key).get()).isEqualTo(value);
 		Cache.ValueWrapper wrapper = cache.putIfAbsent(key, "anotherValue");
-		assertNotNull(wrapper); // A value is set but is 'null'
+		// A value is set but is 'null'
+		assertThat((Object) wrapper).isNotNull();
 		assertThat(wrapper.get()).isEqualTo(null);
 		// not changed
 		assertThat(cache.get(key).get()).isEqualTo(value);

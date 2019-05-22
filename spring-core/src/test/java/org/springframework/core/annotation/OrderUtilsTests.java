@@ -21,8 +21,6 @@ import javax.annotation.Priority;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Stephane Nicoll
@@ -50,14 +48,14 @@ public class OrderUtilsTests {
 
 	@Test
 	public void getDefaultOrder() {
-		assertEquals(33, OrderUtils.getOrder(NoOrder.class, 33));
-		assertEquals(33, OrderUtils.getOrder(NoOrder.class, 33));
+		assertThat((long) OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
+		assertThat((long) OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
 	}
 
 	@Test
 	public void getPriorityValueNoAnnotation() {
-		assertNull(OrderUtils.getPriority(SimpleOrder.class));
-		assertNull(OrderUtils.getPriority(SimpleOrder.class));
+		assertThat((Object) OrderUtils.getPriority(SimpleOrder.class)).isNull();
+		assertThat((Object) OrderUtils.getPriority(SimpleOrder.class)).isNull();
 	}
 
 	@Test

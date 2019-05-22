@@ -32,7 +32,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -69,17 +68,17 @@ public class AnnotationDrivenTests {
 		TransactionalService service = context.getBean("service", TransactionalService.class);
 		assertThat(AopUtils.isCglibProxy(service)).isTrue();
 		service.setSomething("someName");
-		assertEquals(1, tm1.commits);
-		assertEquals(0, tm2.commits);
+		assertThat((long) tm1.commits).isEqualTo((long) 1);
+		assertThat((long) tm2.commits).isEqualTo((long) 0);
 		service.doSomething();
-		assertEquals(1, tm1.commits);
-		assertEquals(1, tm2.commits);
+		assertThat((long) tm1.commits).isEqualTo((long) 1);
+		assertThat((long) tm2.commits).isEqualTo((long) 1);
 		service.setSomething("someName");
-		assertEquals(2, tm1.commits);
-		assertEquals(1, tm2.commits);
+		assertThat((long) tm1.commits).isEqualTo((long) 2);
+		assertThat((long) tm2.commits).isEqualTo((long) 1);
 		service.doSomething();
-		assertEquals(2, tm1.commits);
-		assertEquals(2, tm2.commits);
+		assertThat((long) tm1.commits).isEqualTo((long) 2);
+		assertThat((long) tm2.commits).isEqualTo((long) 2);
 	}
 
 	@Test

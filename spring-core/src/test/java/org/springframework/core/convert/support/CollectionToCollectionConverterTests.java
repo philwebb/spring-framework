@@ -42,8 +42,6 @@ import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Keith Donald
@@ -81,8 +79,8 @@ public class CollectionToCollectionConverterTests {
 		@SuppressWarnings("unchecked")
 		List<Integer> result = (List<Integer>) conversionService.convert(list, sourceType, targetType);
 		assertThat(list.equals(result)).isFalse();
-		assertEquals(9, result.get(0).intValue());
-		assertEquals(37, result.get(1).intValue());
+		assertThat((long) result.get(0).intValue()).isEqualTo((long) 9);
+		assertThat((long) result.get(1).intValue()).isEqualTo((long) 37);
 	}
 
 	@Test
@@ -117,7 +115,7 @@ public class CollectionToCollectionConverterTests {
 		list.add(Arrays.asList("37", "23"));
 		conversionService.addConverter(new CollectionToObjectConverter(conversionService));
 		assertThat(conversionService.canConvert(List.class, List.class)).isTrue();
-		assertSame(list, conversionService.convert(list, List.class));
+		assertThat(conversionService.convert(list, List.class)).isSameAs(list);
 	}
 
 	@Test
@@ -198,14 +196,14 @@ public class CollectionToCollectionConverterTests {
 				aSource, TypeDescriptor.forObject(aSource), TypeDescriptor.forObject(new ArrayList()));
 		boolean condition = myConverted instanceof ArrayList<?>;
 		assertThat(condition).isTrue();
-		assertEquals(aSource.size(), ((ArrayList<?>) myConverted).size());
+		assertThat((long) ((ArrayList<?>) myConverted).size()).isEqualTo((long) aSource.size());
 	}
 
 	@Test
 	public void listToCollectionNoCopyRequired() throws NoSuchFieldException {
 		List<?> input = new ArrayList<>(Arrays.asList("foo", "bar"));
-		assertSame(input, conversionService.convert(input, TypeDescriptor.forObject(input),
-				new TypeDescriptor(getClass().getField("wildcardCollection"))));
+		assertThat(conversionService.convert(input, TypeDescriptor.forObject(input),
+				new TypeDescriptor(getClass().getField("wildcardCollection")))).isSameAs(input);
 	}
 
 	@Test
@@ -215,7 +213,7 @@ public class CollectionToCollectionConverterTests {
 		resources.add(new FileSystemResource("test"));
 		resources.add(new TestResource());
 		TypeDescriptor sourceType = TypeDescriptor.forObject(resources);
-		assertSame(resources, conversionService.convert(resources, sourceType, new TypeDescriptor(getClass().getField("resources"))));
+		assertThat(conversionService.convert(resources, sourceType, new TypeDescriptor(getClass().getField("resources")))).isSameAs(resources);
 	}
 
 	@Test
@@ -226,7 +224,7 @@ public class CollectionToCollectionConverterTests {
 		resources.add(new FileSystemResource("test"));
 		resources.add(new TestResource());
 		TypeDescriptor sourceType = TypeDescriptor.forObject(resources);
-		assertSame(resources, conversionService.convert(resources, sourceType, new TypeDescriptor(getClass().getField("resources"))));
+		assertThat(conversionService.convert(resources, sourceType, new TypeDescriptor(getClass().getField("resources")))).isSameAs(resources);
 	}
 
 	@Test
@@ -235,7 +233,7 @@ public class CollectionToCollectionConverterTests {
 		resources.add(null);
 		resources.add(null);
 		TypeDescriptor sourceType = TypeDescriptor.forObject(resources);
-		assertSame(resources, conversionService.convert(resources, sourceType, new TypeDescriptor(getClass().getField("resources"))));
+		assertThat(conversionService.convert(resources, sourceType, new TypeDescriptor(getClass().getField("resources")))).isSameAs(resources);
 	}
 
 	@Test

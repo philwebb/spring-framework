@@ -21,8 +21,6 @@ import javax.servlet.jsp.PageContext;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for the {@code MockPageContext} class.
@@ -41,9 +39,9 @@ public class MockPageContextTests {
 	public void setAttributeWithNoScopeUsesPageScope() throws Exception {
 		ctx.setAttribute(key, value);
 		assertThat(ctx.getAttribute(key, PageContext.PAGE_SCOPE)).isEqualTo(value);
-		assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
+		assertThat(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE)).isNull();
+		assertThat(ctx.getAttribute(key, PageContext.REQUEST_SCOPE)).isNull();
+		assertThat(ctx.getAttribute(key, PageContext.SESSION_SCOPE)).isNull();
 	}
 
 	@Test
@@ -51,10 +49,10 @@ public class MockPageContextTests {
 		ctx.setAttribute(key, value, PageContext.APPLICATION_SCOPE);
 		ctx.removeAttribute(key);
 
-		assertNull(ctx.getAttribute(key, PageContext.PAGE_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
+		assertThat(ctx.getAttribute(key, PageContext.PAGE_SCOPE)).isNull();
+		assertThat(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE)).isNull();
+		assertThat(ctx.getAttribute(key, PageContext.REQUEST_SCOPE)).isNull();
+		assertThat(ctx.getAttribute(key, PageContext.SESSION_SCOPE)).isNull();
 	}
 
 }

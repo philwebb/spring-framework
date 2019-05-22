@@ -34,10 +34,6 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 
 /**
@@ -91,7 +87,7 @@ public class FlashMapManagerTests {
 		FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
 		assertThat(inputFlashMap).isEqualTo(flashMap);
-		assertEquals("Input FlashMap should have been removed", 0, this.flashMapManager.getFlashMaps().size());
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("Input FlashMap should have been removed").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -106,7 +102,7 @@ public class FlashMapManagerTests {
 		FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
 		assertThat(inputFlashMap).isEqualTo(flashMap);
-		assertEquals("Input FlashMap should have been removed", 0, this.flashMapManager.getFlashMaps().size());
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("Input FlashMap should have been removed").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -120,20 +116,20 @@ public class FlashMapManagerTests {
 		this.request.setQueryString("number=");
 		FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
-		assertNull(inputFlashMap);
-		assertEquals("FlashMap should not have been removed", 1, this.flashMapManager.getFlashMaps().size());
+		assertThat((Object) inputFlashMap).isNull();
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("FlashMap should not have been removed").isEqualTo((long) 1);
 
 		this.request.setQueryString("number=two");
 		inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
-		assertNull(inputFlashMap);
-		assertEquals("FlashMap should not have been removed", 1, this.flashMapManager.getFlashMaps().size());
+		assertThat((Object) inputFlashMap).isNull();
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("FlashMap should not have been removed").isEqualTo((long) 1);
 
 		this.request.setQueryString("number=one");
 		inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
 		assertThat(inputFlashMap).isEqualTo(flashMap);
-		assertEquals("Input FlashMap should have been removed", 0, this.flashMapManager.getFlashMaps().size());
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("Input FlashMap should have been removed").isEqualTo((long) 0);
 	}
 
 	// SPR-8798
@@ -150,14 +146,14 @@ public class FlashMapManagerTests {
 		this.request.setQueryString("id=1");
 		FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
-		assertNull(inputFlashMap);
-		assertEquals("FlashMap should not have been removed", 1, this.flashMapManager.getFlashMaps().size());
+		assertThat((Object) inputFlashMap).isNull();
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("FlashMap should not have been removed").isEqualTo((long) 1);
 
 		this.request.setQueryString("id=1&id=2");
 		inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
 		assertThat(inputFlashMap).isEqualTo(flashMap);
-		assertEquals("Input FlashMap should have been removed", 0, this.flashMapManager.getFlashMaps().size());
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("Input FlashMap should have been removed").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -179,7 +175,7 @@ public class FlashMapManagerTests {
 		FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
 		assertThat(inputFlashMap).isEqualTo(flashMapTwo);
-		assertEquals("Input FlashMap should have been removed", 2, this.flashMapManager.getFlashMaps().size());
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("Input FlashMap should have been removed").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -193,8 +189,7 @@ public class FlashMapManagerTests {
 		this.flashMapManager.setFlashMaps(flashMaps);
 		this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
-		assertEquals("Expired instances should be removed even if the saved FlashMap is empty",
-				0, this.flashMapManager.getFlashMaps().size());
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("Expired instances should be removed even if the saved FlashMap is empty").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -204,7 +199,7 @@ public class FlashMapManagerTests {
 		this.flashMapManager.saveOutputFlashMap(flashMap, this.request, this.response);
 		List<FlashMap> allMaps = this.flashMapManager.getFlashMaps();
 
-		assertNull(allMaps);
+		assertThat((Object) allMaps).isNull();
 	}
 
 	@Test
@@ -216,8 +211,8 @@ public class FlashMapManagerTests {
 		this.flashMapManager.saveOutputFlashMap(flashMap, this.request, this.response);
 		List<FlashMap> allMaps = this.flashMapManager.getFlashMaps();
 
-		assertNotNull(allMaps);
-		assertSame(flashMap, allMaps.get(0));
+		assertThat((Object) allMaps).isNotNull();
+		assertThat((Object) allMaps.get(0)).isSameAs(flashMap);
 		assertThat(flashMap.isExpired()).isTrue();
 	}
 
@@ -293,8 +288,8 @@ public class FlashMapManagerTests {
 		requestAfterRedirect.addParameter(":/?#[]@", "value");
 
 		flashMap = this.flashMapManager.retrieveAndUpdate(requestAfterRedirect, new MockHttpServletResponse());
-		assertNotNull(flashMap);
-		assertEquals(1, flashMap.size());
+		assertThat((Object) flashMap).isNotNull();
+		assertThat((long) flashMap.size()).isEqualTo((long) 1);
 		assertThat(flashMap.get("key")).isEqualTo("value");
 	}
 
@@ -318,8 +313,8 @@ public class FlashMapManagerTests {
 		requestAfterRedirect.addParameter("param", "1 2");
 
 		flashMap = this.flashMapManager.retrieveAndUpdate(requestAfterRedirect, new MockHttpServletResponse());
-		assertNotNull(flashMap);
-		assertEquals(1, flashMap.size());
+		assertThat((Object) flashMap).isNotNull();
+		assertThat((long) flashMap.size()).isEqualTo((long) 1);
 		assertThat(flashMap.get("key")).isEqualTo("value");
 	}
 
@@ -339,7 +334,7 @@ public class FlashMapManagerTests {
 		FlashMap inputFlashMap = this.flashMapManager.retrieveAndUpdate(this.request, this.response);
 
 		assertThat(inputFlashMap).isEqualTo(flashMap);
-		assertEquals("Input FlashMap should have been removed", 0, this.flashMapManager.getFlashMaps().size());
+		assertThat((long) this.flashMapManager.getFlashMaps().size()).as("Input FlashMap should have been removed").isEqualTo((long) 0);
 	}
 
 

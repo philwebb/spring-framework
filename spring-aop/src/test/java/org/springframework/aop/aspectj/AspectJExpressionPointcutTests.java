@@ -40,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -211,11 +210,11 @@ public class AspectJExpressionPointcutTests {
 		CallCountingInterceptor interceptor = new CallCountingInterceptor();
 		TestBean testBean = getAdvisedProxy(expression, interceptor);
 
-		assertEquals("Calls should be 0", 0, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Calls should be 0").isEqualTo((long) 0);
 		testBean.getAge();
-		assertEquals("Calls should be 1", 1, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
 		testBean.setAge(90);
-		assertEquals("Calls should still be 1", 1, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Calls should still be 1").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -224,12 +223,12 @@ public class AspectJExpressionPointcutTests {
 		CallCountingInterceptor interceptor = new CallCountingInterceptor();
 		TestBean testBean = getAdvisedProxy(expression, interceptor);
 
-		assertEquals("Calls should be 0", 0, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Calls should be 0").isEqualTo((long) 0);
 		testBean.setSomeNumber(new Double(30));
-		assertEquals("Calls should be 1", 1, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
 
 		testBean.setSomeNumber(new Integer(90));
-		assertEquals("Calls should be 1", 1, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
 	}
 
 	@Test

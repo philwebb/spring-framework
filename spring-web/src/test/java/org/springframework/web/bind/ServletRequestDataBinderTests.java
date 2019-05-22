@@ -30,8 +30,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rod Johnson
@@ -58,7 +56,7 @@ public class ServletRequestDataBinderTests {
 		request.addParameter("spouse.name", "test");
 		binder.bind(request);
 
-		assertNotNull(tb.getSpouse());
+		assertThat((Object) tb.getSpouse()).isNotNull();
 		assertThat(tb.getSpouse().getName()).isEqualTo("test");
 	}
 
@@ -158,12 +156,12 @@ public class ServletRequestDataBinderTests {
 		request.addParameter("stringArray", "abc");
 		request.addParameter("stringArray", "123,def");
 		binder.bind(request);
-		assertEquals("Expected all three items to be bound", 3, target.getStringArray().length);
+		assertThat((long) target.getStringArray().length).as("Expected all three items to be bound").isEqualTo((long) 3);
 
 		request.removeParameter("stringArray");
 		request.addParameter("stringArray", "123,def");
 		binder.bind(request);
-		assertEquals("Expected only 1 item to be bound", 1, target.getStringArray().length);
+		assertThat((long) target.getStringArray().length).as("Expected only 1 item to be bound").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -183,7 +181,7 @@ public class ServletRequestDataBinderTests {
 		request.addParameter("spouse", "someValue");
 		binder.bind(request);
 
-		assertNotNull(tb.getSpouse());
+		assertThat((Object) tb.getSpouse()).isNotNull();
 		assertThat(tb.getSpouse().getName()).isEqualTo("test");
 	}
 

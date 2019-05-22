@@ -21,8 +21,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link FixedVersionStrategy}.
@@ -54,7 +52,7 @@ public class FixedVersionStrategyTests {
 	@Test
 	public void extractVersion() {
 		assertThat(this.strategy.extractVersion(VERSION + "/" + PATH)).isEqualTo(VERSION);
-		assertNull(this.strategy.extractVersion(PATH));
+		assertThat((Object) this.strategy.extractVersion(PATH)).isNull();
 	}
 
 	@Test

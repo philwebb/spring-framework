@@ -28,7 +28,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for transactional support through {@link ReactiveTestTransactionManager}.
@@ -65,21 +64,21 @@ public class ReactiveTransactionSupportTests {
 		tm.getReactiveTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_SUPPORTS))
 				.subscriberContext(TransactionContextManager.createTransactionContext()).cast(GenericReactiveTransaction.class)
 				.as(StepVerifier::create).consumeNextWith(actual -> {
-					assertNotNull(actual.getTransaction());
+			assertThat(actual.getTransaction()).isNotNull();
 			assertThat(actual.isNewTransaction()).isFalse();
 		}).verifyComplete();
 
 		tm.getReactiveTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED))
 				.subscriberContext(TransactionContextManager.createTransactionContext()).cast(GenericReactiveTransaction.class)
 				.as(StepVerifier::create).consumeNextWith(actual -> {
-					assertNotNull(actual.getTransaction());
+			assertThat(actual.getTransaction()).isNotNull();
 			assertThat(actual.isNewTransaction()).isFalse();
 		}).verifyComplete();
 
 		tm.getReactiveTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_MANDATORY))
 				.subscriberContext(TransactionContextManager.createTransactionContext()).cast(GenericReactiveTransaction.class)
 				.as(StepVerifier::create).consumeNextWith(actual -> {
-					assertNotNull(actual.getTransaction());
+			assertThat(actual.getTransaction()).isNotNull();
 			assertThat(actual.isNewTransaction()).isFalse();
 		}).verifyComplete();
 	}

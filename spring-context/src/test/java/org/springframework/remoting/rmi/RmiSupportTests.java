@@ -40,7 +40,6 @@ import org.springframework.remoting.support.RemoteInvocation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -60,7 +59,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		proxy.setName("myName");
 		assertThat(RemoteBean.name).isEqualTo("myName");
-		assertEquals(1, factory.counter);
+		assertThat((long) factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -113,7 +112,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
-		assertEquals(1, factory.counter);
+		assertThat((long) factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -152,7 +151,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
-		assertEquals(2, factory.counter);
+		assertThat((long) factory.counter).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -168,7 +167,7 @@ public class RmiSupportTests {
 		assertThat(condition1).isFalse();
 		proxy.setName("myName");
 		assertThat(RemoteBean.name).isEqualTo("myName");
-		assertEquals(1, factory.counter);
+		assertThat((long) factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -187,7 +186,7 @@ public class RmiSupportTests {
 			.withCauseInstanceOf(NoSuchMethodException.class)
 			.withMessageContaining("setOtherName")
 			.withMessageContaining("IWrongBusinessBean");
-		assertEquals(1, factory.counter);
+		assertThat((long) factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -240,7 +239,7 @@ public class RmiSupportTests {
 		assertThat(condition1).isFalse();
 		assertThatExceptionOfType(springExceptionClass).isThrownBy(() ->
 				proxy.setName(rmiExceptionClass.getName()));
-		assertEquals(1, factory.counter);
+		assertThat((long) factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -382,7 +381,7 @@ public class RmiSupportTests {
 		// shouldn't go through to remote service
 		assertThat(proxy.toString().contains("RMI invoker")).isTrue();
 		assertThat(proxy.toString().contains(serviceUrl)).isTrue();
-		assertEquals(proxy.hashCode(), proxy.hashCode());
+		assertThat((long) proxy.hashCode()).isEqualTo((long) proxy.hashCode());
 		assertThat(proxy.equals(proxy)).isTrue();
 
 		// should go through

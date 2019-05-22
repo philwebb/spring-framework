@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Dmitriy Kopylenko
@@ -119,7 +118,7 @@ public class SimpleMailMessageTests {
 		SimpleMailMessage message2 = new SimpleMailMessage(message1);
 
 		assertThat(message2).isEqualTo(message1);
-		assertEquals(message1.hashCode(), message2.hashCode());
+		assertThat((long) message2.hashCode()).isEqualTo((long) message1.hashCode());
 	}
 
 	public final void testEqualsObject() {

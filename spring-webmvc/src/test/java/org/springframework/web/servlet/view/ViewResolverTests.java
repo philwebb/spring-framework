@@ -54,9 +54,6 @@ import org.springframework.web.servlet.theme.FixedThemeResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -146,7 +143,7 @@ public class ViewResolverTests {
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
 		assertThat(view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);
 		assertThat(((RedirectView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
-		assertSame("View not initialized as bean", wac, ((RedirectView) view).getApplicationContext());
+		assertThat((Object) ((RedirectView) view).getApplicationContext()).as("View not initialized as bean").isSameAs(wac);
 
 		view = vr.resolveViewName("forward:myUrl", Locale.getDefault());
 		assertThat(view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
@@ -249,8 +246,8 @@ public class ViewResolverTests {
 						assertThat(forwardRequest.getAttribute("rc") == null).as("Correct rc attribute").isTrue();
 						assertThat(forwardRequest.getAttribute("key1")).isEqualTo("value1");
 						assertThat(forwardRequest.getAttribute("key2")).isEqualTo(new Integer(2));
-						assertSame(wac.getBean("myBean"), forwardRequest.getAttribute("myBean"));
-						assertSame(wac.getBean("myBean2"), forwardRequest.getAttribute("myBean2"));
+						assertThat(forwardRequest.getAttribute("myBean")).isSameAs(wac.getBean("myBean"));
+						assertThat(forwardRequest.getAttribute("myBean2")).isSameAs(wac.getBean("myBean2"));
 					}
 				};
 			}
@@ -289,8 +286,8 @@ public class ViewResolverTests {
 						assertThat(forwardRequest.getAttribute("rc") == null).as("Correct rc attribute").isTrue();
 						assertThat(forwardRequest.getAttribute("key1")).isEqualTo("value1");
 						assertThat(forwardRequest.getAttribute("key2")).isEqualTo(new Integer(2));
-						assertNull(forwardRequest.getAttribute("myBean"));
-						assertSame(wac.getBean("myBean2"), forwardRequest.getAttribute("myBean2"));
+						assertThat(forwardRequest.getAttribute("myBean")).isNull();
+						assertThat(forwardRequest.getAttribute("myBean2")).isSameAs(wac.getBean("myBean2"));
 					}
 				};
 			}
@@ -495,7 +492,7 @@ public class ViewResolverTests {
 		viewResolver.resolveViewName("view", Locale.getDefault());
 		viewResolver.resolveViewName("view", Locale.getDefault());
 
-		assertEquals(2, count.intValue());
+		assertThat((long) count.intValue()).isEqualTo((long) 2);
 
 		viewResolver.setCacheUnresolved(true);
 
@@ -505,7 +502,7 @@ public class ViewResolverTests {
 		viewResolver.resolveViewName("view", Locale.getDefault());
 		viewResolver.resolveViewName("view", Locale.getDefault());
 
-		assertEquals(3, count.intValue());
+		assertThat((long) count.intValue()).isEqualTo((long) 3);
 	}
 
 

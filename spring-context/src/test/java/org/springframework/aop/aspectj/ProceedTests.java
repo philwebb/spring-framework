@@ -25,7 +25,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.Ordered;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test for SPR-3522. Arguments changed on a call to proceed should be
@@ -62,7 +61,7 @@ public class ProceedTests {
 	@Test
 	public void testGetArgsIsDefensive() {
 		this.testBean.setAge(5);
-		assertEquals("getArgs is defensive", 5, this.testBean.getAge());
+		assertThat((long) this.testBean.getAge()).as("getArgs is defensive").isEqualTo((long) 5);
 	}
 
 	@Test

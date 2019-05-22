@@ -54,8 +54,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestPart;
 
@@ -246,7 +244,7 @@ public class RequestPartMethodArgumentResolverTests {
 		Mono<Object> result = this.resolver.resolveArgument(param, new BindingContext(), exchange);
 		Object value = result.block(Duration.ofSeconds(5));
 
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(param.getParameterType().isAssignableFrom(value.getClass())).isTrue();
 		return (T) value;
 	}

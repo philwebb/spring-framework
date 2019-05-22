@@ -44,8 +44,6 @@ import org.springframework.web.reactive.result.view.freemarker.FreeMarkerConfigu
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * {@code @RequestMapping} integration tests with view resolution scenarios.
@@ -76,7 +74,7 @@ public class RequestMappingViewResolutionIntegrationTests extends AbstractReques
 		ResponseEntity<String> response = getRestTemplate().exchange(request, String.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
-		assertNull(response.getBody());
+		assertThat((Object) response.getBody()).isNull();
 	}
 
 	@Test  // SPR-15291

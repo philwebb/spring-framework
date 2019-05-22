@@ -27,8 +27,6 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertNotNull;
-
 /**
  * @author Chris Beams
  * @author Juergen Hoeller
@@ -43,7 +41,7 @@ public class AnnotationConfigWebApplicationContextTests {
 		ctx.refresh();
 
 		TestBean bean = ctx.getBean(TestBean.class);
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 	}
 
 	@Test
@@ -54,7 +52,7 @@ public class AnnotationConfigWebApplicationContextTests {
 		ctx.refresh();
 
 		TestBean bean = ctx.getBean(TestBean.class);
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 	}
 
 	@Test
@@ -65,7 +63,7 @@ public class AnnotationConfigWebApplicationContextTests {
 		ctx.refresh();
 
 		TestBean bean = ctx.getBean(TestBean.class);
-		assertNotNull(bean);
+		assertThat((Object) bean).isNotNull();
 	}
 
 	@Test

@@ -41,8 +41,6 @@ import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Juergen Hoeller
@@ -72,7 +70,7 @@ public class MethodValidationTests {
 	}
 
 	private void doTestProxyValidation(MyValidInterface proxy) {
-		assertNotNull(proxy.myValidMethod("value", 5));
+		assertThat(proxy.myValidMethod("value", 5)).isNotNull();
 		assertThatExceptionOfType(ValidationException.class).isThrownBy(() ->
 				proxy.myValidMethod("value", 15));
 		assertThatExceptionOfType(ValidationException.class).isThrownBy(() ->

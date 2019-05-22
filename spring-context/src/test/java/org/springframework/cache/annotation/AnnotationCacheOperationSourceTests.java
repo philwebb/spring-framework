@@ -38,10 +38,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
-
 /**
  * @author Costin Leau
  * @author Stephane Nicoll
@@ -236,8 +232,8 @@ public class AnnotationCacheOperationSourceTests {
 		// Valid as a CacheResolver might return the cache names to use with other info
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "noCacheNameSpecified");
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertNotNull("cache names set must not be null", cacheOperation.getCacheNames());
-		assertEquals("no cache names specified", 0, cacheOperation.getCacheNames().size());
+		assertThat((Object) cacheOperation.getCacheNames()).as("cache names set must not be null").isNotNull();
+		assertThat((long) cacheOperation.getCacheNames().size()).as("no cache names specified").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -264,7 +260,7 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void cacheAnnotationOverride() {
 		Collection<CacheOperation> ops = getOps(InterfaceCacheConfig.class, "interfaceCacheableOverride");
-		assertSame(1, ops.size());
+		assertThat((Object) ops.size()).isSameAs(1);
 		CacheOperation cacheOperation = ops.iterator().next();
 		boolean condition = cacheOperation instanceof CacheableOperation;
 		assertThat(condition).isTrue();
@@ -294,7 +290,7 @@ public class AnnotationCacheOperationSourceTests {
 
 	private Collection<CacheOperation> getOps(Class<?> target, String name, int expectedNumberOfOperations) {
 		Collection<CacheOperation> result = getOps(target, name);
-		assertEquals("Wrong number of operation(s) for '" + name + "'", expectedNumberOfOperations, result.size());
+		assertThat((long) result.size()).as("Wrong number of operation(s) for '" + name + "'").isEqualTo((long) expectedNumberOfOperations);
 		return result;
 	}
 
@@ -314,7 +310,7 @@ public class AnnotationCacheOperationSourceTests {
 		assertThat(actual.getKeyGenerator()).as("Wrong key manager").isEqualTo(keyGenerator);
 		assertThat(actual.getCacheManager()).as("Wrong cache manager").isEqualTo(cacheManager);
 		assertThat(actual.getCacheResolver()).as("Wrong cache resolver").isEqualTo(cacheResolver);
-		assertEquals("Wrong number of cache names", cacheNames.length, actual.getCacheNames().size());
+		assertThat((long) actual.getCacheNames().size()).as("Wrong number of cache names").isEqualTo((long) cacheNames.length);
 		Arrays.stream(cacheNames).forEach(cacheName -> assertThat(actual.getCacheNames().contains(cacheName)).as("Cache '" + cacheName + "' not found in " + actual.getCacheNames()).isTrue());
 	}
 

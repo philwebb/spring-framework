@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rob Harrop
@@ -117,7 +116,7 @@ public class InterfaceBasedMBeanInfoAssemblerMappedTests extends AbstractJmxAsse
 	}
 
 	private void assertNickName(MBeanAttributeInfo attr) {
-		assertNotNull("Nick Name should not be null", attr);
+		assertThat((Object) attr).as("Nick Name should not be null").isNotNull();
 		assertThat(attr.isWritable()).as("Nick Name should be writable").isTrue();
 		assertThat(attr.isReadable()).as("Nick Name should be readable").isTrue();
 	}

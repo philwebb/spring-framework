@@ -26,7 +26,6 @@ import org.springframework.tests.TestGroup;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -153,17 +152,17 @@ public class PagedListHolderTests {
 		assertThat(holder.getPageList().get(1) == tb3).as("Correct page list contents").isTrue();
 
 		holder.nextPage();
-		assertEquals(1, holder.getPage());
+		assertThat((long) holder.getPage()).isEqualTo((long) 1);
 		holder.previousPage();
-		assertEquals(0, holder.getPage());
+		assertThat((long) holder.getPage()).isEqualTo((long) 0);
 		holder.nextPage();
-		assertEquals(1, holder.getPage());
+		assertThat((long) holder.getPage()).isEqualTo((long) 1);
 		holder.nextPage();
-		assertEquals(1, holder.getPage());
+		assertThat((long) holder.getPage()).isEqualTo((long) 1);
 		holder.previousPage();
-		assertEquals(0, holder.getPage());
+		assertThat((long) holder.getPage()).isEqualTo((long) 0);
 		holder.previousPage();
-		assertEquals(0, holder.getPage());
+		assertThat((long) holder.getPage()).isEqualTo((long) 0);
 	}
 
 

@@ -33,8 +33,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rossen Stoyanchev
@@ -51,7 +49,7 @@ public class ServerHttpResponseTests {
 		assertThat(response.headersWritten).isTrue();
 		assertThat(response.cookiesWritten).isTrue();
 
-		assertEquals(3, response.body.size());
+		assertThat((long) response.body.size()).isEqualTo((long) 3);
 		assertThat(new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("a");
 		assertThat(new String(response.body.get(1).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("b");
 		assertThat(new String(response.body.get(2).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("c");
@@ -67,7 +65,7 @@ public class ServerHttpResponseTests {
 		assertThat(response.headersWritten).isTrue();
 		assertThat(response.cookiesWritten).isTrue();
 
-		assertEquals(1, response.body.size());
+		assertThat((long) response.body.size()).isEqualTo((long) 1);
 		assertThat(new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("foo");
 	}
 
@@ -106,9 +104,9 @@ public class ServerHttpResponseTests {
 		assertThat(response.statusCodeWritten).isTrue();
 		assertThat(response.headersWritten).isTrue();
 		assertThat(response.cookiesWritten).isTrue();
-		assertSame(cookie, response.getCookies().getFirst("ID"));
+		assertThat((Object) response.getCookies().getFirst("ID")).isSameAs(cookie);
 
-		assertEquals(3, response.body.size());
+		assertThat((long) response.body.size()).isEqualTo((long) 3);
 		assertThat(new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("a");
 		assertThat(new String(response.body.get(1).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("b");
 		assertThat(new String(response.body.get(2).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("c");
@@ -128,7 +126,7 @@ public class ServerHttpResponseTests {
 		assertThat(response.headersWritten).isTrue();
 		assertThat(response.cookiesWritten).isTrue();
 		assertThat(response.body.isEmpty()).isTrue();
-		assertSame(cookie, response.getCookies().getFirst("ID"));
+		assertThat((Object) response.getCookies().getFirst("ID")).isSameAs(cookie);
 	}
 
 

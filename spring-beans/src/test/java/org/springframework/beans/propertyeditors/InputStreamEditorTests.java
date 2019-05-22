@@ -24,8 +24,6 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for the {@link InputStreamEditor} class.
@@ -50,7 +48,7 @@ public class InputStreamEditorTests {
 			InputStreamEditor editor = new InputStreamEditor();
 			editor.setAsText(resource);
 			Object value = editor.getValue();
-			assertNotNull(value);
+			assertThat(value).isNotNull();
 			boolean condition = value instanceof InputStream;
 			assertThat(condition).isTrue();
 			stream = (InputStream) value;
@@ -72,12 +70,12 @@ public class InputStreamEditorTests {
 
 	@Test
 	public void testGetAsTextReturnsNullByDefault() throws Exception {
-		assertNull(new InputStreamEditor().getAsText());
+		assertThat((Object) new InputStreamEditor().getAsText()).isNull();
 		String resource = "classpath:" + ClassUtils.classPackageAsResourcePath(getClass()) +
 				"/" + ClassUtils.getShortName(getClass()) + ".class";
 		InputStreamEditor editor = new InputStreamEditor();
 		editor.setAsText(resource);
-		assertNull(editor.getAsText());
+		assertThat((Object) editor.getAsText()).isNull();
 	}
 
 }

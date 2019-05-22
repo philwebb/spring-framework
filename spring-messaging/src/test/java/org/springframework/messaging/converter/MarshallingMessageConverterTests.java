@@ -32,8 +32,6 @@ import org.springframework.tests.XmlContent;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;
@@ -63,7 +61,7 @@ public class MarshallingMessageConverterTests {
 		Message<?> message = MessageBuilder.withPayload(payload.getBytes(StandardCharsets.UTF_8)).build();
 		MyBean actual = (MyBean) this.converter.fromMessage(message, MyBean.class);
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.getName()).isEqualTo("Foo");
 	}
 
@@ -89,7 +87,7 @@ public class MarshallingMessageConverterTests {
 		payload.setName("Foo");
 
 		Message<?> message = this.converter.toMessage(payload, null);
-		assertNotNull(message);
+		assertThat((Object) message).isNotNull();
 		String actual = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
 
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));

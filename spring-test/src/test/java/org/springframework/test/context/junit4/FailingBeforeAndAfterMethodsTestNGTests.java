@@ -35,7 +35,7 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.util.ClassUtils;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests which verify that '<i>before</i>' and '<i>after</i>'
@@ -104,11 +104,10 @@ public class FailingBeforeAndAfterMethodsTestNGTests {
 
 		String name = this.clazz.getSimpleName();
 
-		assertEquals("tests started for [" + name + "] ==> ", this.expectedTestStartCount, listener.testStartCount);
-		assertEquals("successful tests for [" + name + "] ==> ", this.expectedTestSuccessCount, listener.testSuccessCount);
-		assertEquals("failed tests for [" + name + "] ==> ", this.expectedFailureCount, listener.testFailureCount);
-		assertEquals("failed configurations for [" + name + "] ==> ",
-				this.expectedFailedConfigurationsCount, listener.failedConfigurationsCount);
+		assertThat((long) listener.testStartCount).as("tests started for [" + name + "] ==> ").isEqualTo((long) this.expectedTestStartCount);
+		assertThat((long) listener.testSuccessCount).as("successful tests for [" + name + "] ==> ").isEqualTo((long) this.expectedTestSuccessCount);
+		assertThat((long) listener.testFailureCount).as("failed tests for [" + name + "] ==> ").isEqualTo((long) this.expectedFailureCount);
+		assertThat((long) listener.failedConfigurationsCount).as("failed configurations for [" + name + "] ==> ").isEqualTo((long) this.expectedFailedConfigurationsCount);
 	}
 
 

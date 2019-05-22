@@ -40,8 +40,6 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -87,8 +85,8 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 				context.getBean("jmsListenerContainerFactory", JmsListenerContainerTestFactory.class);
 		JmsListenerContainerTestFactory simpleFactory =
 				context.getBean("simpleFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(1, defaultFactory.getListenerContainers().size());
-		assertEquals(1, simpleFactory.getListenerContainers().size());
+		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 1);
+		assertThat((long) simpleFactory.getListenerContainers().size()).isEqualTo((long) 1);
 	}
 
 	/**
@@ -99,7 +97,7 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 	public void testFullConfiguration(ApplicationContext context) {
 		JmsListenerContainerTestFactory simpleFactory =
 				context.getBean("simpleFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(1, simpleFactory.getListenerContainers().size());
+		assertThat((long) simpleFactory.getListenerContainers().size()).isEqualTo((long) 1);
 		MethodJmsListenerEndpoint endpoint = (MethodJmsListenerEndpoint)
 				simpleFactory.getListenerContainers().get(0).getEndpoint();
 		assertThat(endpoint.getId()).isEqualTo("listener1");
@@ -124,22 +122,18 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 				context.getBean("jmsListenerContainerFactory", JmsListenerContainerTestFactory.class);
 		JmsListenerContainerTestFactory customFactory =
 				context.getBean("customFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(1, defaultFactory.getListenerContainers().size());
-		assertEquals(1, customFactory.getListenerContainers().size());
+		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 1);
+		assertThat((long) customFactory.getListenerContainers().size()).isEqualTo((long) 1);
 		JmsListenerEndpoint endpoint = defaultFactory.getListenerContainers().get(0).getEndpoint();
 		assertThat(endpoint.getClass()).as("Wrong endpoint type").isEqualTo(SimpleJmsListenerEndpoint.class);
 		assertThat(((SimpleJmsListenerEndpoint) endpoint).getMessageListener()).as("Wrong listener set in custom endpoint").isEqualTo(context.getBean("simpleMessageListener"));
 
 		JmsListenerEndpointRegistry customRegistry =
 				context.getBean("customRegistry", JmsListenerEndpointRegistry.class);
-		assertEquals("Wrong number of containers in the registry", 2,
-				customRegistry.getListenerContainerIds().size());
-		assertEquals("Wrong number of containers in the registry", 2,
-				customRegistry.getListenerContainers().size());
-		assertNotNull("Container with custom id on the annotation should be found",
-				customRegistry.getListenerContainer("listenerId"));
-		assertNotNull("Container created with custom id should be found",
-				customRegistry.getListenerContainer("myCustomEndpointId"));
+		assertThat((long) customRegistry.getListenerContainerIds().size()).as("Wrong number of containers in the registry").isEqualTo((long) 2);
+		assertThat((long) customRegistry.getListenerContainers().size()).as("Wrong number of containers in the registry").isEqualTo((long) 2);
+		assertThat((Object) customRegistry.getListenerContainer("listenerId")).as("Container with custom id on the annotation should be found").isNotNull();
+		assertThat((Object) customRegistry.getListenerContainer("myCustomEndpointId")).as("Container created with custom id should be found").isNotNull();
 	}
 
 	/**
@@ -150,7 +144,7 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 	public void testExplicitContainerFactoryConfiguration(ApplicationContext context) {
 		JmsListenerContainerTestFactory defaultFactory =
 				context.getBean("simpleFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(1, defaultFactory.getListenerContainers().size());
+		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 1);
 	}
 
 	/**
@@ -160,7 +154,7 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 	public void testDefaultContainerFactoryConfiguration(ApplicationContext context) {
 		JmsListenerContainerTestFactory defaultFactory =
 				context.getBean("jmsListenerContainerFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(1, defaultFactory.getListenerContainers().size());
+		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 1);
 	}
 
 	/**
@@ -172,7 +166,7 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 	public void testJmsHandlerMethodFactoryConfiguration(ApplicationContext context) throws JMSException {
 		JmsListenerContainerTestFactory simpleFactory =
 				context.getBean("defaultFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(1, simpleFactory.getListenerContainers().size());
+		assertThat((long) simpleFactory.getListenerContainers().size()).isEqualTo((long) 1);
 		MethodJmsListenerEndpoint endpoint = (MethodJmsListenerEndpoint)
 				simpleFactory.getListenerContainers().get(0).getEndpoint();
 
@@ -189,7 +183,7 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 	public void testJmsListenerRepeatable(ApplicationContext context) {
 		JmsListenerContainerTestFactory simpleFactory =
 				context.getBean("jmsListenerContainerFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(2, simpleFactory.getListenerContainers().size());
+		assertThat((long) simpleFactory.getListenerContainers().size()).isEqualTo((long) 2);
 
 		MethodJmsListenerEndpoint first = (MethodJmsListenerEndpoint)
 				simpleFactory.getListenerContainer("first").getEndpoint();

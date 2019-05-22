@@ -32,8 +32,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.resource.EncodedResourceResolver.EncodedResource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link CssLinkResourceTransformer}.
@@ -102,7 +100,7 @@ public class CssLinkResourceTransformerTests {
 		this.request = new MockHttpServletRequest("GET", "/static/foo.css");
 		Resource expected = getResource("foo.css");
 		Resource actual = this.transformerChain.transform(this.request, expected);
-		assertSame(expected, actual);
+		assertThat((Object) actual).isSameAs(expected);
 	}
 
 	@Test
@@ -135,7 +133,7 @@ public class CssLinkResourceTransformerTests {
 		Resource expected = getResource("images/image.png");
 		Resource actual = this.transformerChain.transform(this.request, expected);
 
-		assertSame(expected, actual);
+		assertThat((Object) actual).isSameAs(expected);
 	}
 
 	@Test
@@ -148,7 +146,7 @@ public class CssLinkResourceTransformerTests {
 		EncodedResource gzipped = new EncodedResource(original, "gzip", ".gz");
 		Resource actual = this.transformerChain.transform(this.request, gzipped);
 
-		assertSame(gzipped, actual);
+		assertThat((Object) actual).isSameAs(gzipped);
 	}
 
 	@Test // https://github.com/spring-projects/spring-framework/issues/22602

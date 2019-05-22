@@ -43,9 +43,6 @@ import org.springframework.util.PathMatcher;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-
 /**
  * Test fixture for
  * {@link org.springframework.messaging.handler.invocation.AbstractMethodMessageHandler}.
@@ -87,7 +84,7 @@ public class MethodMessageHandlerTests {
 
 		Map<String, HandlerMethod> handlerMethods = this.messageHandler.getHandlerMethods();
 
-		assertNotNull(handlerMethods);
+		assertThat((Object) handlerMethods).isNotNull();
 		assertThat(handlerMethods).hasSize(3);
 	}
 
@@ -122,7 +119,7 @@ public class MethodMessageHandlerTests {
 		this.messageHandler.handleMessage(toDestination("/test/handlerArgumentResolver"));
 
 		assertThat(this.testController.method).isEqualTo("handlerArgumentResolver");
-		assertNotNull(this.testController.arguments.get("message"));
+		assertThat(this.testController.arguments.get("message")).isNotNull();
 	}
 
 	@Test
@@ -131,7 +128,7 @@ public class MethodMessageHandlerTests {
 		this.messageHandler.handleMessage(toDestination("/test/handlerThrowsExc"));
 
 		assertThat(this.testController.method).isEqualTo("illegalStateException");
-		assertNotNull(this.testController.arguments.get("exception"));
+		assertThat(this.testController.arguments.get("exception")).isNotNull();
 	}
 
 	private Message<?> toDestination(String destination) {

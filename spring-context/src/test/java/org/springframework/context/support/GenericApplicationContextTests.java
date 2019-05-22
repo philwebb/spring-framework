@@ -25,9 +25,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -42,8 +39,8 @@ public class GenericApplicationContextTests {
 		ac.refresh();
 
 		assertThat(ac.getBean("testBean")).isEqualTo("");
-		assertSame(ac.getBean("testBean"), ac.getBean(String.class));
-		assertSame(ac.getBean("testBean"), ac.getBean(CharSequence.class));
+		assertThat(ac.getBean(String.class)).isSameAs(ac.getBean("testBean"));
+		assertThat(ac.getBean(CharSequence.class)).isSameAs(ac.getBean("testBean"));
 
 		assertThatExceptionOfType(NoUniqueBeanDefinitionException.class).isThrownBy(() ->
 				ac.getBean(Object.class));
@@ -55,9 +52,9 @@ public class GenericApplicationContextTests {
 		ac.registerBeanDefinition("testBean", new RootBeanDefinition(String.class, ac::toString));
 		ac.refresh();
 
-		assertSame(ac.getBean("testBean"), ac.getBean("testBean"));
-		assertSame(ac.getBean("testBean"), ac.getBean(String.class));
-		assertSame(ac.getBean("testBean"), ac.getBean(CharSequence.class));
+		assertThat(ac.getBean("testBean")).isSameAs(ac.getBean("testBean"));
+		assertThat(ac.getBean(String.class)).isSameAs(ac.getBean("testBean"));
+		assertThat(ac.getBean(CharSequence.class)).isSameAs(ac.getBean("testBean"));
 		assertThat(ac.getBean("testBean")).isEqualTo(ac.toString());
 	}
 
@@ -68,7 +65,7 @@ public class GenericApplicationContextTests {
 				new RootBeanDefinition(String.class, RootBeanDefinition.SCOPE_PROTOTYPE, ac::toString));
 		ac.refresh();
 
-		assertNotSame(ac.getBean("testBean"), ac.getBean("testBean"));
+		assertThat(ac.getBean("testBean")).isNotSameAs(ac.getBean("testBean"));
 		assertThat(ac.getBean(String.class)).isEqualTo(ac.getBean("testBean"));
 		assertThat(ac.getBean(CharSequence.class)).isEqualTo(ac.getBean("testBean"));
 		assertThat(ac.getBean("testBean")).isEqualTo(ac.toString());
@@ -80,9 +77,8 @@ public class GenericApplicationContextTests {
 		ac.registerBeanDefinition("testBean", new RootBeanDefinition(String.class));
 		ac.refresh();
 
-		assertSame(ac.getBean("testBean"), ac.getBean(String.class));
-		assertSame(ac.getAutowireCapableBeanFactory().getBean("testBean"),
-				ac.getAutowireCapableBeanFactory().getBean(String.class));
+		assertThat(ac.getBean(String.class)).isSameAs(ac.getBean("testBean"));
+		assertThat(ac.getAutowireCapableBeanFactory().getBean(String.class)).isSameAs(ac.getAutowireCapableBeanFactory().getBean("testBean"));
 
 		ac.close();
 
@@ -103,9 +99,9 @@ public class GenericApplicationContextTests {
 		context.registerBean(BeanC.class);
 		context.refresh();
 
-		assertSame(context.getBean(BeanB.class), context.getBean(BeanA.class).b);
-		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
-		assertSame(context, context.getBean(BeanB.class).applicationContext);
+		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
+		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
+		assertThat((Object) context.getBean(BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -116,9 +112,9 @@ public class GenericApplicationContextTests {
 		context.registerBean("c", BeanC.class);
 		context.refresh();
 
-		assertSame(context.getBean("b"), context.getBean("a", BeanA.class).b);
-		assertSame(context.getBean("c"), context.getBean("a", BeanA.class).c);
-		assertSame(context, context.getBean("b", BeanB.class).applicationContext);
+		assertThat((Object) context.getBean("a", BeanA.class).b).isSameAs(context.getBean("b"));
+		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
+		assertThat((Object) context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -131,9 +127,9 @@ public class GenericApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton(BeanA.class.getName())).isTrue();
-		assertSame(context.getBean(BeanB.class), context.getBean(BeanA.class).b);
-		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
-		assertSame(context, context.getBean(BeanB.class).applicationContext);
+		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
+		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
+		assertThat((Object) context.getBean(BeanB.class).applicationContext).isSameAs(context);
 
 		assertThat(context.getDefaultListableBeanFactory().getDependentBeans(BeanB.class.getName())).isEqualTo(new String[] {BeanA.class.getName()});
 		assertThat(context.getDefaultListableBeanFactory().getDependentBeans(BeanC.class.getName())).isEqualTo(new String[] {BeanA.class.getName()});
@@ -150,9 +146,9 @@ public class GenericApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton(BeanA.class.getName())).isFalse();
-		assertSame(context.getBean(BeanB.class), context.getBean(BeanA.class).b);
-		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
-		assertSame(context, context.getBean(BeanB.class).applicationContext);
+		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
+		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
+		assertThat((Object) context.getBean(BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -165,9 +161,9 @@ public class GenericApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton("a")).isTrue();
-		assertSame(context.getBean("b", BeanB.class), context.getBean(BeanA.class).b);
-		assertSame(context.getBean("c"), context.getBean("a", BeanA.class).c);
-		assertSame(context, context.getBean("b", BeanB.class).applicationContext);
+		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
+		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
+		assertThat((Object) context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -181,9 +177,9 @@ public class GenericApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton("a")).isFalse();
-		assertSame(context.getBean("b", BeanB.class), context.getBean(BeanA.class).b);
-		assertSame(context.getBean("c"), context.getBean("a", BeanA.class).c);
-		assertSame(context, context.getBean("b", BeanB.class).applicationContext);
+		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
+		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
+		assertThat((Object) context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -198,8 +194,8 @@ public class GenericApplicationContextTests {
 		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanB.class), "b")).isTrue();
 		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanC.class), "c")).isTrue();
 		assertThat(context.getBeansOfType(BeanA.class).isEmpty()).isTrue();
-		assertSame(context.getBean(BeanB.class), context.getBeansOfType(BeanB.class).values().iterator().next());
-		assertSame(context.getBean(BeanC.class), context.getBeansOfType(BeanC.class).values().iterator().next());
+		assertThat((Object) context.getBeansOfType(BeanB.class).values().iterator().next()).isSameAs(context.getBean(BeanB.class));
+		assertThat((Object) context.getBeansOfType(BeanC.class).values().iterator().next()).isSameAs(context.getBean(BeanC.class));
 	}
 
 

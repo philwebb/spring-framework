@@ -89,9 +89,6 @@ import org.springframework.web.util.UrlPathHelper;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSION;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Integration tests for {@link WebMvcConfigurationSupport} (imported via
@@ -108,18 +105,18 @@ public class WebMvcConfigurationSupportTests {
 	public void requestMappingHandlerMapping() throws Exception {
 		ApplicationContext context = initContext(WebConfig.class, ScopedController.class, ScopedProxyController.class);
 		RequestMappingHandlerMapping handlerMapping = context.getBean(RequestMappingHandlerMapping.class);
-		assertEquals(0, handlerMapping.getOrder());
+		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) 0);
 
 		HandlerExecutionChain chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/"));
-		assertNotNull(chain);
-		assertNotNull(chain.getInterceptors());
+		assertThat((Object) chain).isNotNull();
+		assertThat((Object) chain.getInterceptors()).isNotNull();
 		assertThat(chain.getInterceptors()[0].getClass()).isEqualTo(ConversionServiceExposingInterceptor.class);
 
 		chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/scoped"));
-		assertNotNull("HandlerExecutionChain for '/scoped' mapping should not be null.", chain);
+		assertThat((Object) chain).as("HandlerExecutionChain for '/scoped' mapping should not be null.").isNotNull();
 
 		chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/scopedProxy"));
-		assertNotNull("HandlerExecutionChain for '/scopedProxy' mapping should not be null.", chain);
+		assertThat((Object) chain).as("HandlerExecutionChain for '/scopedProxy' mapping should not be null.").isNotNull();
 	}
 
 	@Test
@@ -145,14 +142,14 @@ public class WebMvcConfigurationSupportTests {
 	public void beanNameHandlerMapping() throws Exception {
 		ApplicationContext context = initContext(WebConfig.class);
 		BeanNameUrlHandlerMapping handlerMapping = context.getBean(BeanNameUrlHandlerMapping.class);
-		assertEquals(2, handlerMapping.getOrder());
+		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) 2);
 
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/testController");
 		HandlerExecutionChain chain = handlerMapping.getHandler(request);
 
-		assertNotNull(chain);
-		assertNotNull(chain.getInterceptors());
-		assertEquals(3, chain.getInterceptors().length);
+		assertThat((Object) chain).isNotNull();
+		assertThat((Object) chain.getInterceptors()).isNotNull();
+		assertThat((long) chain.getInterceptors().length).isEqualTo((long) 3);
 		assertThat(chain.getInterceptors()[1].getClass()).isEqualTo(ConversionServiceExposingInterceptor.class);
 		assertThat(chain.getInterceptors()[2].getClass()).isEqualTo(ResourceUrlProviderExposingInterceptor.class);
 	}
@@ -162,7 +159,7 @@ public class WebMvcConfigurationSupportTests {
 		ApplicationContext context = initContext(WebConfig.class);
 		RequestMappingHandlerAdapter adapter = context.getBean(RequestMappingHandlerAdapter.class);
 		List<HttpMessageConverter<?>> converters = adapter.getMessageConverters();
-		assertEquals(12, converters.size());
+		assertThat((long) converters.size()).isEqualTo((long) 12);
 		converters.stream()
 				.filter(converter -> converter instanceof AbstractJackson2HttpMessageConverter)
 				.forEach(converter -> {
@@ -177,22 +174,22 @@ public class WebMvcConfigurationSupportTests {
 
 		ConfigurableWebBindingInitializer initializer =
 				(ConfigurableWebBindingInitializer) adapter.getWebBindingInitializer();
-		assertNotNull(initializer);
+		assertThat((Object) initializer).isNotNull();
 
 		ConversionService conversionService = initializer.getConversionService();
-		assertNotNull(conversionService);
+		assertThat((Object) conversionService).isNotNull();
 		boolean condition1 = conversionService instanceof FormattingConversionService;
 		assertThat(condition1).isTrue();
 
 		Validator validator = initializer.getValidator();
-		assertNotNull(validator);
+		assertThat((Object) validator).isNotNull();
 		boolean condition = validator instanceof LocalValidatorFactoryBean;
 		assertThat(condition).isTrue();
 
 		DirectFieldAccessor fieldAccessor = new DirectFieldAccessor(adapter);
 		@SuppressWarnings("unchecked")
 		List<Object> bodyAdvice = (List<Object>) fieldAccessor.getPropertyValue("requestResponseBodyAdvice");
-		assertEquals(2, bodyAdvice.size());
+		assertThat((long) bodyAdvice.size()).isEqualTo((long) 2);
 		assertThat(bodyAdvice.get(0).getClass()).isEqualTo(JsonViewRequestBodyAdvice.class);
 		assertThat(bodyAdvice.get(1).getClass()).isEqualTo(JsonViewResponseBodyAdvice.class);
 	}
@@ -204,7 +201,7 @@ public class WebMvcConfigurationSupportTests {
 				MvcUriComponentsBuilder.MVC_URI_COMPONENTS_CONTRIBUTOR_BEAN_NAME,
 				CompositeUriComponentsContributor.class);
 
-		assertNotNull(uriComponentsContributor);
+		assertThat((Object) uriComponentsContributor).isNotNull();
 	}
 
 	@Test
@@ -214,7 +211,7 @@ public class WebMvcConfigurationSupportTests {
 		HandlerExceptionResolverComposite compositeResolver =
 				context.getBean("handlerExceptionResolver", HandlerExceptionResolverComposite.class);
 
-		assertEquals(0, compositeResolver.getOrder());
+		assertThat((long) compositeResolver.getOrder()).isEqualTo((long) 0);
 		List<HandlerExceptionResolver> expectedResolvers = compositeResolver.getExceptionResolvers();
 
 		assertThat(expectedResolvers.get(0).getClass()).isEqualTo(ExceptionHandlerExceptionResolver.class);
@@ -222,11 +219,11 @@ public class WebMvcConfigurationSupportTests {
 		assertThat(expectedResolvers.get(2).getClass()).isEqualTo(DefaultHandlerExceptionResolver.class);
 
 		ExceptionHandlerExceptionResolver eher = (ExceptionHandlerExceptionResolver) expectedResolvers.get(0);
-		assertNotNull(eher.getApplicationContext());
+		assertThat((Object) eher.getApplicationContext()).isNotNull();
 
 		DirectFieldAccessor fieldAccessor = new DirectFieldAccessor(eher);
 		List<Object> interceptors = (List<Object>) fieldAccessor.getPropertyValue("responseBodyAdvice");
-		assertEquals(1, interceptors.size());
+		assertThat((long) interceptors.size()).isEqualTo((long) 1);
 		assertThat(interceptors.get(0).getClass()).isEqualTo(JsonViewResponseBodyAdvice.class);
 
 		LocaleContextHolder.setLocale(Locale.ENGLISH);
@@ -248,22 +245,22 @@ public class WebMvcConfigurationSupportTests {
 		RequestMappingHandlerAdapter adapter = context.getBean(RequestMappingHandlerAdapter.class);
 		HandlerExceptionResolverComposite composite = context.getBean(HandlerExceptionResolverComposite.class);
 
-		assertNotNull(adapter);
-		assertEquals(1, adapter.getCustomArgumentResolvers().size());
+		assertThat((Object) adapter).isNotNull();
+		assertThat((long) adapter.getCustomArgumentResolvers().size()).isEqualTo((long) 1);
 		assertThat(adapter.getCustomArgumentResolvers().get(0).getClass()).isEqualTo(TestArgumentResolver.class);
-		assertEquals(1, adapter.getCustomReturnValueHandlers().size());
+		assertThat((long) adapter.getCustomReturnValueHandlers().size()).isEqualTo((long) 1);
 		assertThat(adapter.getCustomReturnValueHandlers().get(0).getClass()).isEqualTo(TestReturnValueHandler.class);
 
-		assertNotNull(composite);
-		assertEquals(3, composite.getExceptionResolvers().size());
+		assertThat((Object) composite).isNotNull();
+		assertThat((long) composite.getExceptionResolvers().size()).isEqualTo((long) 3);
 		assertThat(composite.getExceptionResolvers().get(0).getClass()).isEqualTo(ExceptionHandlerExceptionResolver.class);
 
 		ExceptionHandlerExceptionResolver resolver =
 				(ExceptionHandlerExceptionResolver) composite.getExceptionResolvers().get(0);
 
-		assertEquals(1, resolver.getCustomArgumentResolvers().size());
+		assertThat((long) resolver.getCustomArgumentResolvers().size()).isEqualTo((long) 1);
 		assertThat(resolver.getCustomArgumentResolvers().get(0).getClass()).isEqualTo(TestArgumentResolver.class);
-		assertEquals(1, resolver.getCustomReturnValueHandlers().size());
+		assertThat((long) resolver.getCustomReturnValueHandlers().size()).isEqualTo((long) 1);
 		assertThat(resolver.getCustomReturnValueHandlers().get(0).getClass()).isEqualTo(TestReturnValueHandler.class);
 	}
 
@@ -273,10 +270,10 @@ public class WebMvcConfigurationSupportTests {
 		ApplicationContext context = initContext(WebConfig.class);
 		ViewResolverComposite resolver = context.getBean("mvcViewResolver", ViewResolverComposite.class);
 
-		assertNotNull(resolver);
-		assertEquals(1, resolver.getViewResolvers().size());
+		assertThat((Object) resolver).isNotNull();
+		assertThat((long) resolver.getViewResolvers().size()).isEqualTo((long) 1);
 		assertThat(resolver.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
-		assertEquals(Ordered.LOWEST_PRECEDENCE, resolver.getOrder());
+		assertThat((long) resolver.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
 	}
 
 	@Test
@@ -284,10 +281,10 @@ public class WebMvcConfigurationSupportTests {
 		ApplicationContext context = initContext(WebConfig.class, ViewResolverConfig.class);
 		ViewResolverComposite resolver = context.getBean("mvcViewResolver", ViewResolverComposite.class);
 
-		assertNotNull(resolver);
-		assertEquals(0, resolver.getViewResolvers().size());
-		assertEquals(Ordered.LOWEST_PRECEDENCE, resolver.getOrder());
-		assertNull(resolver.resolveViewName("anyViewName", Locale.ENGLISH));
+		assertThat((Object) resolver).isNotNull();
+		assertThat((long) resolver.getViewResolvers().size()).isEqualTo((long) 0);
+		assertThat((long) resolver.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
+		assertThat((Object) resolver.resolveViewName("anyViewName", Locale.ENGLISH)).isNull();
 	}
 
 	@Test
@@ -295,10 +292,10 @@ public class WebMvcConfigurationSupportTests {
 		ApplicationContext context = initContext(CustomViewResolverOrderConfig.class);
 		ViewResolverComposite resolver = context.getBean("mvcViewResolver", ViewResolverComposite.class);
 
-		assertNotNull(resolver);
-		assertEquals(1, resolver.getViewResolvers().size());
+		assertThat((Object) resolver).isNotNull();
+		assertThat((long) resolver.getViewResolvers().size()).isEqualTo((long) 1);
 		assertThat(resolver.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
-		assertEquals(123, resolver.getOrder());
+		assertThat((long) resolver.getOrder()).isEqualTo((long) 123);
 	}
 
 	@Test
@@ -307,8 +304,8 @@ public class WebMvcConfigurationSupportTests {
 		UrlPathHelper urlPathHelper = context.getBean(UrlPathHelper.class);
 		PathMatcher pathMatcher = context.getBean(PathMatcher.class);
 
-		assertNotNull(urlPathHelper);
-		assertNotNull(pathMatcher);
+		assertThat((Object) urlPathHelper).isNotNull();
+		assertThat((Object) pathMatcher).isNotNull();
 		assertThat(pathMatcher.getClass()).isEqualTo(AntPathMatcher.class);
 	}
 

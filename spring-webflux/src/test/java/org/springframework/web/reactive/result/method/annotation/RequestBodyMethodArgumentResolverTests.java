@@ -47,9 +47,6 @@ import org.springframework.web.server.ServerWebInputException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestBody;
 
 /**
@@ -106,7 +103,7 @@ public class RequestBodyMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestBody().notRequired()).arg(String.class);
 		String body = resolveValueWithEmptyBody(param);
 
-		assertNull(body);
+		assertThat((Object) body).isNull();
 	}
 
 	@Test // SPR-15758
@@ -114,7 +111,7 @@ public class RequestBodyMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestBody().notRequired()).arg(Map.class);
 		String body = resolveValueWithEmptyBody(param);
 
-		assertNull(body);
+		assertThat((Object) body).isNull();
 	}
 
 	@Test
@@ -205,15 +202,15 @@ public class RequestBodyMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestBody()).arg(CompletableFuture.class, String.class);
 		CompletableFuture<String> future = resolveValueWithEmptyBody(param);
 		future.whenComplete((text, ex) -> {
-			assertNull(text);
-			assertNotNull(ex);
+			assertThat((Object) text).isNull();
+			assertThat((Object) ex).isNotNull();
 		});
 
 		param = this.testMethod.annot(requestBody().notRequired()).arg(CompletableFuture.class, String.class);
 		future = resolveValueWithEmptyBody(param);
 		future.whenComplete((text, ex) -> {
-			assertNotNull(text);
-			assertNull(ex);
+			assertThat((Object) text).isNotNull();
+			assertThat((Object) ex).isNull();
 		});
 	}
 
@@ -223,7 +220,7 @@ public class RequestBodyMethodArgumentResolverTests {
 		Mono<Object> result = this.resolver.readBody(param, true, new BindingContext(), exchange);
 		Object value = result.block(Duration.ofSeconds(5));
 
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(param.getParameterType().isAssignableFrom(value.getClass())).as("Unexpected return value type: " + value).isTrue();
 
 		//no inspection unchecked

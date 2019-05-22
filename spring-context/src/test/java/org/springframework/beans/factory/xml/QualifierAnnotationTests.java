@@ -37,8 +37,6 @@ import org.springframework.context.support.StaticApplicationContext;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.util.ClassUtils.convertClassNameToResourcePath;
 
 /**
@@ -210,8 +208,8 @@ public class QualifierAnnotationTests {
 
 		MultiQualifierClient testBean = (MultiQualifierClient) context.getBean("testBean");
 
-		assertNotNull( testBean.factoryTheta);
-		assertNotNull( testBean.implTheta);
+		assertThat((Object) testBean.factoryTheta).isNotNull();
+		assertThat((Object) testBean.implTheta).isNotNull();
 	}
 
 	@Test

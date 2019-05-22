@@ -22,9 +22,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for SimpMessageTypeMessageCondition.
@@ -54,7 +51,7 @@ public class SimpMessageTypeMessageConditionTests {
 		SimpMessageTypeMessageCondition condition = condition(SimpMessageType.MESSAGE);
 		SimpMessageTypeMessageCondition actual = condition.getMatchingCondition(message);
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
 	}
 
@@ -63,14 +60,14 @@ public class SimpMessageTypeMessageConditionTests {
 		Message<?> message = message(null);
 		SimpMessageTypeMessageCondition condition = condition(SimpMessageType.MESSAGE);
 
-		assertNull(condition.getMatchingCondition(message));
+		assertThat((Object) condition.getMatchingCondition(message)).isNull();
 	}
 
 	@Test
 	public void compareTo() {
 		Message<byte[]> message = message(null);
-		assertEquals(0, condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.MESSAGE), message));
-		assertEquals(0, condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.SUBSCRIBE), message));
+		assertThat((long) condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.MESSAGE), message)).isEqualTo((long) 0);
+		assertThat((long) condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.SUBSCRIBE), message)).isEqualTo((long) 0);
 	}
 
 	private Message<byte[]> message(SimpMessageType messageType) {

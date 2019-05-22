@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Tests with error status codes or error conditions.
@@ -71,7 +69,7 @@ public class ErrorTests {
 				.expectBody().isEmpty();
 
 		byte[] content = result.getRequestBodyContent();
-		assertNotNull(content);
+		assertThat((Object) content).isNotNull();
 		assertThat(new String(content, StandardCharsets.UTF_8)).isEqualTo("{\"name\":\"Dan\"}");
 	}
 

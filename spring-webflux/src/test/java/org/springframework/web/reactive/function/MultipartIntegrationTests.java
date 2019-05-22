@@ -38,7 +38,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -101,7 +100,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 					.flatMap(map -> {
 						Map<String, Part> parts = map.toSingleValueMap();
 						try {
-							assertEquals(2, parts.size());
+							assertThat((long) parts.size()).isEqualTo((long) 2);
 							assertThat(((FilePart) parts.get("fooPart")).filename()).isEqualTo("foo.txt");
 							assertThat(((FormFieldPart) parts.get("barPart")).value()).isEqualTo("bar");
 						}
@@ -116,7 +115,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 			return request.body(BodyExtractors.toParts()).collectList()
 					.flatMap(parts -> {
 						try {
-							assertEquals(2, parts.size());
+							assertThat((long) parts.size()).isEqualTo((long) 2);
 							assertThat(((FilePart) parts.get(0)).filename()).isEqualTo("foo.txt");
 							assertThat(((FormFieldPart) parts.get(1)).value()).isEqualTo("bar");
 						}

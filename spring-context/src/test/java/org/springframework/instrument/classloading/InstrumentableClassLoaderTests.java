@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import org.springframework.util.ClassUtils;
 
-import static temp.XAssert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Costin Leau
@@ -33,7 +33,7 @@ public class InstrumentableClassLoaderTests {
 	public void testDefaultLoadTimeWeaver() {
 		ClassLoader loader = new SimpleInstrumentableClassLoader(ClassUtils.getDefaultClassLoader());
 		ReflectiveLoadTimeWeaver handler = new ReflectiveLoadTimeWeaver(loader);
-		assertSame(loader, handler.getInstrumentableClassLoader());
+		assertThat((Object) handler.getInstrumentableClassLoader()).isSameAs(loader);
 	}
 
 }

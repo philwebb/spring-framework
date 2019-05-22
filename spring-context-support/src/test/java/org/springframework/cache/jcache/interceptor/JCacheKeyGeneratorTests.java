@@ -39,8 +39,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll
@@ -67,7 +65,7 @@ public class JCacheKeyGeneratorTests {
 		this.keyGenerator.expect(1L);
 		Object first = this.simpleService.get(1L);
 		Object second = this.simpleService.get(1L);
-		assertSame(first, second);
+		assertThat(second).isSameAs(first);
 
 		Object key = new SimpleKey(1L);
 		assertThat(cache.get(key).get()).isEqualTo(first);
@@ -78,7 +76,7 @@ public class JCacheKeyGeneratorTests {
 		this.keyGenerator.expect(1L, "foo", "bar");
 		Object first = this.simpleService.get(1L, "foo", "bar");
 		Object second = this.simpleService.get(1L, "foo", "bar");
-		assertSame(first, second);
+		assertThat(second).isSameAs(first);
 
 		Object key = new SimpleKey(1L, "foo", "bar");
 		assertThat(cache.get(key).get()).isEqualTo(first);
@@ -89,7 +87,7 @@ public class JCacheKeyGeneratorTests {
 		this.keyGenerator.expect(1L);
 		Object first = this.simpleService.getFiltered(1L, "foo", "bar");
 		Object second = this.simpleService.getFiltered(1L, "foo", "bar");
-		assertSame(first, second);
+		assertThat(second).isSameAs(first);
 
 		Object key = new SimpleKey(1L);
 		assertThat(cache.get(key).get()).isEqualTo(first);

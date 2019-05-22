@@ -28,8 +28,6 @@ import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link DelegatingSmartContextLoader}.
@@ -56,7 +54,7 @@ public class DelegatingSmartContextLoaderTests {
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				XmlTestCase.class, EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, true, null, true, ContextLoader.class);
 		loader.processContextConfiguration(configAttributes);
-		assertEquals(1, configAttributes.getLocations().length);
+		assertThat((long) configAttributes.getLocations().length).isEqualTo((long) 1);
 		assertEmpty(configAttributes.getClasses());
 	}
 
@@ -65,7 +63,7 @@ public class DelegatingSmartContextLoaderTests {
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				ConfigClassTestCase.class, EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, true, null, true, ContextLoader.class);
 		loader.processContextConfiguration(configAttributes);
-		assertEquals(1, configAttributes.getClasses().length);
+		assertThat((long) configAttributes.getClasses().length).isEqualTo((long) 1);
 		assertEmpty(configAttributes.getLocations());
 	}
 
@@ -134,7 +132,7 @@ public class DelegatingSmartContextLoaderTests {
 			throws Exception {
 
 		ApplicationContext applicationContext = loader.loadContext(mergedConfig);
-		assertNotNull(applicationContext);
+		assertThat((Object) applicationContext).isNotNull();
 		assertThat(applicationContext.getBean(String.class)).isEqualTo("foo");
 		boolean condition = applicationContext instanceof ConfigurableApplicationContext;
 		assertThat(condition).isTrue();

@@ -62,10 +62,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link ResponseEntityExceptionHandler}.
@@ -224,9 +220,9 @@ public class ResponseEntityExceptionHandlerTests {
 		resolver.afterPropertiesSet();
 
 		ServletRequestBindingException ex = new ServletRequestBindingException("message");
-		assertNotNull(resolver.resolveException(this.servletRequest, this.servletResponse, null, ex));
+		assertThat((Object) resolver.resolveException(this.servletRequest, this.servletResponse, null, ex)).isNotNull();
 
-		assertEquals(400, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 400);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("error content");
 		assertThat(this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}
@@ -242,7 +238,7 @@ public class ResponseEntityExceptionHandlerTests {
 		resolver.afterPropertiesSet();
 
 		IllegalStateException ex = new IllegalStateException(new ServletRequestBindingException("message"));
-		assertNull(resolver.resolveException(this.servletRequest, this.servletResponse, null, ex));
+		assertThat((Object) resolver.resolveException(this.servletRequest, this.servletResponse, null, ex)).isNull();
 	}
 
 	@Test
@@ -256,7 +252,7 @@ public class ResponseEntityExceptionHandlerTests {
 		servlet.init(new MockServletConfig());
 		servlet.service(this.servletRequest, this.servletResponse);
 
-		assertEquals(400, this.servletResponse.getStatus());
+		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 400);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("error content");
 		assertThat(this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}
@@ -288,12 +284,12 @@ public class ResponseEntityExceptionHandlerTests {
 
 			// SPR-9653
 			if (HttpStatus.INTERNAL_SERVER_ERROR.equals(responseEntity.getStatusCode())) {
-				assertSame(ex, this.servletRequest.getAttribute("javax.servlet.error.exception"));
+				assertThat(this.servletRequest.getAttribute("javax.servlet.error.exception")).isSameAs(ex);
 			}
 
 			this.defaultExceptionResolver.resolveException(this.servletRequest, this.servletResponse, null, ex);
 
-			assertEquals(this.servletResponse.getStatus(), responseEntity.getStatusCode().value());
+			assertThat((long) responseEntity.getStatusCode().value()).isEqualTo((long) this.servletResponse.getStatus());
 
 			return responseEntity;
 		}

@@ -37,8 +37,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -62,7 +60,7 @@ public class EntityManagerFactoryUtilsTests {
 		EntityManagerFactory factory = mock(EntityManagerFactory.class);
 
 		// no tx active
-		assertNull(EntityManagerFactoryUtils.doGetTransactionalEntityManager(factory, null));
+		assertThat((Object) EntityManagerFactoryUtils.doGetTransactionalEntityManager(factory, null)).isNull();
 		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 	}
 
@@ -76,8 +74,8 @@ public class EntityManagerFactoryUtilsTests {
 			given(factory.createEntityManager()).willReturn(manager);
 
 			// no tx active
-			assertSame(manager, EntityManagerFactoryUtils.doGetTransactionalEntityManager(factory, null));
-			assertSame(manager, ((EntityManagerHolder)TransactionSynchronizationManager.unbindResource(factory)).getEntityManager());
+			assertThat((Object) EntityManagerFactoryUtils.doGetTransactionalEntityManager(factory, null)).isSameAs(manager);
+			assertThat((Object) ((EntityManagerHolder) TransactionSynchronizationManager.unbindResource(factory)).getEntityManager()).isSameAs(manager);
 		}
 		finally {
 			TransactionSynchronizationManager.clearSynchronization();
@@ -90,7 +88,7 @@ public class EntityManagerFactoryUtilsTests {
 	public void testTranslatesIllegalStateException() {
 		IllegalStateException ise = new IllegalStateException();
 		DataAccessException dex = EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ise);
-		assertSame(ise, dex.getCause());
+		assertThat((Object) dex.getCause()).isSameAs(ise);
 		boolean condition = dex instanceof InvalidDataAccessApiUsageException;
 		assertThat(condition).isTrue();
 	}
@@ -99,7 +97,7 @@ public class EntityManagerFactoryUtilsTests {
 	public void testTranslatesIllegalArgumentException() {
 		IllegalArgumentException iae = new IllegalArgumentException();
 		DataAccessException dex = EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(iae);
-		assertSame(iae, dex.getCause());
+		assertThat((Object) dex.getCause()).isSameAs(iae);
 		boolean condition = dex instanceof InvalidDataAccessApiUsageException;
 		assertThat(condition).isTrue();
 	}
@@ -110,9 +108,7 @@ public class EntityManagerFactoryUtilsTests {
 	@Test
 	public void testDoesNotTranslateUnfamiliarException() {
 		UnsupportedOperationException userRuntimeException = new UnsupportedOperationException();
-		assertNull(
-				"Exception should not be wrapped",
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(userRuntimeException));
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(userRuntimeException)).as("Exception should not be wrapped").isNull();
 	}
 
 	/*
@@ -123,33 +119,26 @@ public class EntityManagerFactoryUtilsTests {
 	@SuppressWarnings("serial")
 	public void testConvertJpaPersistenceException() {
 		EntityNotFoundException entityNotFound = new EntityNotFoundException();
-		assertSame(JpaObjectRetrievalFailureException.class,
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(entityNotFound).getClass());
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(entityNotFound).getClass()).isSameAs(JpaObjectRetrievalFailureException.class);
 
 		NoResultException noResult = new NoResultException();
-		assertSame(EmptyResultDataAccessException.class,
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(noResult).getClass());
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(noResult).getClass()).isSameAs(EmptyResultDataAccessException.class);
 
 		NonUniqueResultException nonUniqueResult = new NonUniqueResultException();
-		assertSame(IncorrectResultSizeDataAccessException.class,
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(nonUniqueResult).getClass());
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(nonUniqueResult).getClass()).isSameAs(IncorrectResultSizeDataAccessException.class);
 
 		OptimisticLockException optimisticLock = new OptimisticLockException();
-		assertSame(JpaOptimisticLockingFailureException.class,
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(optimisticLock).getClass());
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(optimisticLock).getClass()).isSameAs(JpaOptimisticLockingFailureException.class);
 
 		EntityExistsException entityExists = new EntityExistsException("foo");
-		assertSame(DataIntegrityViolationException.class,
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(entityExists).getClass());
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(entityExists).getClass()).isSameAs(DataIntegrityViolationException.class);
 
 		TransactionRequiredException transactionRequired = new TransactionRequiredException("foo");
-		assertSame(InvalidDataAccessApiUsageException.class,
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(transactionRequired).getClass());
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(transactionRequired).getClass()).isSameAs(InvalidDataAccessApiUsageException.class);
 
 		PersistenceException unknown = new PersistenceException() {
 		};
-		assertSame(JpaSystemException.class,
-				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(unknown).getClass());
+		assertThat((Object) EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(unknown).getClass()).isSameAs(JpaSystemException.class);
 	}
 
 }

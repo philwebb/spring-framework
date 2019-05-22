@@ -58,9 +58,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -176,7 +173,7 @@ public class RequestPartMethodArgumentResolverTests {
 	@Test
 	public void resolveMultipartFile() throws Exception {
 		Object actual = resolver.resolveArgument(paramMultipartFile, null, webRequest, null);
-		assertSame(multipartFile1, actual);
+		assertThat(actual).isSameAs(multipartFile1);
 	}
 
 	@Test
@@ -190,11 +187,11 @@ public class RequestPartMethodArgumentResolverTests {
 	@Test
 	public void resolveMultipartFileArray() throws Exception {
 		Object actual = resolver.resolveArgument(paramMultipartFileArray, null, webRequest, null);
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		boolean condition = actual instanceof MultipartFile[];
 		assertThat(condition).isTrue();
 		MultipartFile[] parts = (MultipartFile[]) actual;
-		assertEquals(2, parts.length);
+		assertThat((long) parts.length).isEqualTo((long) 2);
 		assertThat(multipartFile1).isEqualTo(parts[0]);
 		assertThat(multipartFile2).isEqualTo(parts[1]);
 	}
@@ -264,7 +261,7 @@ public class RequestPartMethodArgumentResolverTests {
 		boolean condition = result instanceof Part[];
 		assertThat(condition).isTrue();
 		Part[] parts = (Part[]) result;
-		assertEquals(2, parts.length);
+		assertThat((long) parts.length).isEqualTo((long) 2);
 		assertThat(part1).isEqualTo(parts[0]);
 		assertThat(part2).isEqualTo(parts[1]);
 	}
@@ -324,7 +321,7 @@ public class RequestPartMethodArgumentResolverTests {
 	public void isMultipartRequestPut() throws Exception {
 		this.multipartRequest.setMethod("PUT");
 		Object actualValue = resolver.resolveArgument(paramMultipartFile, null, webRequest, null);
-		assertSame(multipartFile1, actualValue);
+		assertThat(actualValue).isSameAs(multipartFile1);
 	}
 
 	@Test

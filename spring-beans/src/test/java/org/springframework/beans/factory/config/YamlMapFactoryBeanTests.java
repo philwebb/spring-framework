@@ -29,7 +29,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests for {@link YamlMapFactoryBean}.
@@ -46,7 +45,7 @@ public class YamlMapFactoryBeanTests {
 	public void testSetIgnoreResourceNotFound() {
 		this.factory.setResolutionMethod(YamlMapFactoryBean.ResolutionMethod.OVERRIDE_AND_IGNORE);
 		this.factory.setResources(new FileSystemResource("non-exsitent-file.yml"));
-		assertEquals(0, this.factory.getObject().size());
+		assertThat((long) this.factory.getObject().size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -60,7 +59,7 @@ public class YamlMapFactoryBeanTests {
 	@Test
 	public void testGetObject() {
 		this.factory.setResources(new ByteArrayResource("foo: bar".getBytes()));
-		assertEquals(1, this.factory.getObject().size());
+		assertThat((long) this.factory.getObject().size()).isEqualTo((long) 1);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -69,8 +68,8 @@ public class YamlMapFactoryBeanTests {
 		this.factory.setResources(new ByteArrayResource("foo:\n  bar: spam".getBytes()),
 				new ByteArrayResource("foo:\n  spam: bar".getBytes()));
 
-		assertEquals(1, this.factory.getObject().size());
-		assertEquals(2, ((Map<String, Object>) this.factory.getObject().get("foo")).size());
+		assertThat((long) this.factory.getObject().size()).isEqualTo((long) 1);
+		assertThat((long) ((Map<String, Object>) this.factory.getObject().get("foo")).size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -87,7 +86,7 @@ public class YamlMapFactoryBeanTests {
 			}
 		}, new ByteArrayResource("foo:\n  spam: bar".getBytes()));
 
-		assertEquals(1, this.factory.getObject().size());
+		assertThat((long) this.factory.getObject().size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -95,7 +94,7 @@ public class YamlMapFactoryBeanTests {
 		this.factory.setResources(new ByteArrayResource("foo:\n  ? key1.key2\n  : value".getBytes()));
 		Map<String, Object> map = this.factory.getObject();
 
-		assertEquals(1, map.size());
+		assertThat((long) map.size()).isEqualTo((long) 1);
 		assertThat(map.containsKey("foo")).isTrue();
 		Object object = map.get("foo");
 		boolean condition = object instanceof LinkedHashMap;
@@ -111,14 +110,14 @@ public class YamlMapFactoryBeanTests {
 		this.factory.setResources(new ByteArrayResource("foo:\n  ? key1.key2\n  : 3".getBytes()));
 		Map<String, Object> map = this.factory.getObject();
 
-		assertEquals(1, map.size());
+		assertThat((long) map.size()).isEqualTo((long) 1);
 		assertThat(map.containsKey("foo")).isTrue();
 		Object object = map.get("foo");
 		boolean condition = object instanceof LinkedHashMap;
 		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> sub = (Map<String, Object>) object;
-		assertEquals(1, sub.size());
+		assertThat((long) sub.size()).isEqualTo((long) 1);
 		assertThat(sub.get("key1.key2")).isEqualTo(Integer.valueOf(3));
 	}
 

@@ -28,8 +28,6 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.tests.sample.beans.Employee;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests that verify support for configuration classes in
@@ -65,7 +63,7 @@ public class DefaultConfigClassesBaseTests {
 
 	@Test
 	public void verifyEmployeeSetFromBaseContextConfig() {
-		assertNotNull("The employee field should have been autowired.", this.employee);
+		assertThat((Object) this.employee).as("The employee field should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).isEqualTo("John Smith");
 	}
 

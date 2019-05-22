@@ -35,9 +35,6 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -87,7 +84,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		TestTask task = new TestTask(1);
 		Future<?> future = executor.submit(task);
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
-		assertNull(result);
+		assertThat(result).isNull();
 		assertThreadNamePrefix(task);
 	}
 
@@ -124,7 +121,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(future::isDone);
-		assertNull(outcome);
+		assertThat(outcome).isNull();
 		assertThreadNamePrefix(task);
 	}
 
@@ -139,7 +136,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> future.isDone() && outcome != null);
-		assertSame(RuntimeException.class, outcome.getClass());
+		assertThat((Object) outcome.getClass()).isSameAs(RuntimeException.class);
 	}
 
 	@Test
@@ -211,7 +208,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> future.isDone() && outcome != null);
-		assertSame(RuntimeException.class, outcome.getClass());
+		assertThat((Object) outcome.getClass()).isSameAs(RuntimeException.class);
 	}
 
 	@Test
@@ -242,7 +239,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		catch (InterruptedException ex) {
 			throw new IllegalStateException(ex);
 		}
-		assertEquals("latch did not count down,", 0, latch.getCount());
+		assertThat(latch.getCount()).as("latch did not count down,").isEqualTo((long) 0);
 	}
 
 

@@ -55,8 +55,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.web.method.ResolvableMethod.on;
 
@@ -314,7 +312,7 @@ public class ReactiveTypeHandlerTests {
 			ResolvableType elementType, Runnable produceTask, Object expected) throws Exception {
 
 		ResponseBodyEmitter emitter = handleValue(returnValue, asyncType, elementType);
-		assertNull(emitter);
+		assertThat((Object) emitter).isNull();
 
 		assertThat(this.servletRequest.isAsyncStarted()).isTrue();
 		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult()).isFalse();

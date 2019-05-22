@@ -26,8 +26,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -173,7 +171,7 @@ public class TransactionSupportTests {
 			}
 		});
 
-		assertSame(template, ptm.getDefinition());
+		assertThat((Object) ptm.getDefinition()).isSameAs(template);
 		assertThat(ptm.getStatus().isRollbackOnly()).isFalse();
 	}
 

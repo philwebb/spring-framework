@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Mark Fisher
@@ -43,17 +42,17 @@ public class SimpleScanTests {
 		FooService fooService = (FooService) ctx.getBean("fooServiceImpl");
 		ServiceInvocationCounter serviceInvocationCounter = (ServiceInvocationCounter) ctx.getBean("serviceInvocationCounter");
 
-		assertEquals(0, serviceInvocationCounter.getCount());
+		assertThat((long) serviceInvocationCounter.getCount()).isEqualTo((long) 0);
 
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertEquals(1, serviceInvocationCounter.getCount());
+		assertThat((long) serviceInvocationCounter.getCount()).isEqualTo((long) 1);
 
 		String value = fooService.foo(1);
 		assertThat(value).isEqualTo("bar");
-		assertEquals(2, serviceInvocationCounter.getCount());
+		assertThat((long) serviceInvocationCounter.getCount()).isEqualTo((long) 2);
 
 		fooService.foo(1);
-		assertEquals(3, serviceInvocationCounter.getCount());
+		assertThat((long) serviceInvocationCounter.getCount()).isEqualTo((long) 3);
 	}
 
 }

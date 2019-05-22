@@ -35,7 +35,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -127,7 +126,7 @@ public class BaseViewTests {
 
 		checkContainsAll(pathVars, tv.model);
 
-		assertEquals(3, tv.model.size());
+		assertThat((long) tv.model.size()).isEqualTo((long) 3);
 		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
@@ -155,7 +154,7 @@ public class BaseViewTests {
 		// Check it contains all
 		checkContainsAll(model, tv.model);
 
-		assertEquals(3, tv.model.size());
+		assertThat((long) tv.model.size()).isEqualTo((long) 3);
 		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
@@ -183,7 +182,7 @@ public class BaseViewTests {
 		tv.render(model, request, response);
 
 		checkContainsAll(model, tv.model);
-		assertEquals(3, tv.model.size());
+		assertThat((long) tv.model.size()).isEqualTo((long) 3);
 		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
@@ -192,7 +191,7 @@ public class BaseViewTests {
 	public void ignoresNullAttributes() {
 		AbstractView v = new ConcreteView();
 		v.setAttributes(null);
-		assertEquals(0, v.getStaticAttributes().size());
+		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 0);
 	}
 
 	/**
@@ -202,14 +201,14 @@ public class BaseViewTests {
 	public void attributeCSVParsingIgnoresNull() {
 		AbstractView v = new ConcreteView();
 		v.setAttributesCSV(null);
-		assertEquals(0, v.getStaticAttributes().size());
+		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void attributeCSVParsingIgnoresEmptyString() {
 		AbstractView v = new ConcreteView();
 		v.setAttributesCSV("");
-		assertEquals(0, v.getStaticAttributes().size());
+		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 0);
 	}
 
 	/**
@@ -260,7 +259,7 @@ public class BaseViewTests {
 	public void attributeCSVParsingIgnoresTrailingComma() {
 		AbstractView v = new ConcreteView();
 		v.setAttributesCSV("foo=[de],");
-		assertEquals(1, v.getStaticAttributes().size());
+		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 1);
 	}
 
 	/**

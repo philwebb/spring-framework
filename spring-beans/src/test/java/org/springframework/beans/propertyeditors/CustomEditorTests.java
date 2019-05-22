@@ -50,9 +50,6 @@ import org.springframework.tests.sample.beans.NumberTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for the various PropertyEditors in Spring.
@@ -105,7 +102,7 @@ public class CustomEditorTests {
 		ITestBean spouse = tb.getSpouse();
 
 		bw.setPropertyValues(pvs);
-		assertSame("Should have remained same object", spouse, tb.getSpouse());
+		assertThat((Object) tb.getSpouse()).as("Should have remained same object").isSameAs(spouse);
 	}
 
 	@Test
@@ -264,7 +261,7 @@ public class CustomEditorTests {
 		assertThat(condition).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "");
-		assertNull("Correct bool2 value", tb.getBool2());
+		assertThat((Object) tb.getBool2()).as("Correct bool2 value").isNull();
 	}
 
 	@Test
@@ -503,16 +500,16 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(cb);
 
 		bw.setPropertyValue("myChar", new Character('c'));
-		assertEquals('c', cb.getMyChar());
+		assertThat((long) cb.getMyChar()).isEqualTo((long) 'c');
 
 		bw.setPropertyValue("myChar", "c");
-		assertEquals('c', cb.getMyChar());
+		assertThat((long) cb.getMyChar()).isEqualTo((long) 'c');
 
 		bw.setPropertyValue("myChar", "\u0041");
-		assertEquals('A', cb.getMyChar());
+		assertThat((long) cb.getMyChar()).isEqualTo((long) 'A');
 
 		bw.setPropertyValue("myChar", "\\u0022");
-		assertEquals('"', cb.getMyChar());
+		assertThat((long) cb.getMyChar()).isEqualTo((long) '"');
 
 		CharacterEditor editor = new CharacterEditor(false);
 		editor.setAsText("M");
@@ -538,7 +535,7 @@ public class CustomEditorTests {
 		assertThat(cb.getMyCharacter()).isEqualTo(new Character(' '));
 
 		bw.setPropertyValue("myCharacter", "");
-		assertNull(cb.getMyCharacter());
+		assertThat((Object) cb.getMyCharacter()).isNull();
 	}
 
 	@Test
@@ -1357,12 +1354,12 @@ public class CustomEditorTests {
 		bw.registerCustomEditor(Hashtable.class, new CustomMapEditor(Hashtable.class));
 
 		bw.setPropertyValue("vector", new String[] {"a", "b"});
-		assertEquals(2, tb.getVector().size());
+		assertThat((long) tb.getVector().size()).isEqualTo((long) 2);
 		assertThat(tb.getVector().get(0)).isEqualTo("a");
 		assertThat(tb.getVector().get(1)).isEqualTo("b");
 
 		bw.setPropertyValue("hashtable", Collections.singletonMap("foo", "bar"));
-		assertEquals(1, tb.getHashtable().size());
+		assertThat((long) tb.getHashtable().size()).isEqualTo((long) 1);
 		assertThat(tb.getHashtable().get("foo")).isEqualTo("bar");
 	}
 
@@ -1393,7 +1390,7 @@ public class CustomEditorTests {
 			}
 		});
 		bw.setPropertyValue("array", new String[] {"a", "b"});
-		assertEquals(2, tb.getArray().length);
+		assertThat((long) tb.getArray().length).isEqualTo((long) 2);
 		assertThat(tb.getArray()[0].getName()).isEqualTo("a");
 		assertThat(tb.getArray()[1].getName()).isEqualTo("b");
 	}
@@ -1417,7 +1414,7 @@ public class CustomEditorTests {
 		ClassArrayEditor classArrayEditor = new ClassArrayEditor();
 		classArrayEditor.setAsText("java.lang.String,java.util.HashMap");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
-		assertEquals(2, classes.length);
+		assertThat((long) classes.length).isEqualTo((long) 2);
 		assertThat(classes[0]).isEqualTo(String.class);
 		assertThat(classes[1]).isEqualTo(HashMap.class);
 		assertThat(classArrayEditor.getAsText()).isEqualTo("java.lang.String,java.util.HashMap");
@@ -1430,7 +1427,7 @@ public class CustomEditorTests {
 		ClassArrayEditor classArrayEditor = new ClassArrayEditor();
 		classArrayEditor.setAsText("java.lang.String[],java.util.Map[],int[],float[][][]");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
-		assertEquals(4, classes.length);
+		assertThat((long) classes.length).isEqualTo((long) 4);
 		assertThat(classes[0]).isEqualTo(String[].class);
 		assertThat(classes[1]).isEqualTo(Map[].class);
 		assertThat(classes[2]).isEqualTo(int[].class);
@@ -1444,7 +1441,7 @@ public class CustomEditorTests {
 	public void testClassArrayEditorSetAsTextWithNull() throws Exception {
 		ClassArrayEditor editor = new ClassArrayEditor();
 		editor.setAsText(null);
-		assertNull(editor.getValue());
+		assertThat(editor.getValue()).isNull();
 		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
@@ -1452,7 +1449,7 @@ public class CustomEditorTests {
 	public void testClassArrayEditorSetAsTextWithEmptyString() throws Exception {
 		ClassArrayEditor editor = new ClassArrayEditor();
 		editor.setAsText("");
-		assertNull(editor.getValue());
+		assertThat(editor.getValue()).isNull();
 		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
@@ -1460,7 +1457,7 @@ public class CustomEditorTests {
 	public void testClassArrayEditorSetAsTextWithWhitespaceString() throws Exception {
 		ClassArrayEditor editor = new ClassArrayEditor();
 		editor.setAsText("\n");
-		assertNull(editor.getValue());
+		assertThat(editor.getValue()).isNull();
 		assertThat(editor.getAsText()).isEqualTo("");
 	}
 

@@ -42,8 +42,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Tests demonstrating use of @EnableTransactionManagement @Configuration classes.
  *
@@ -128,7 +126,7 @@ public class EnableTransactionManagementTests {
 	public void transactionalEventListenerRegisteredProperly() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(EnableTxConfig.class);
 		assertThat(ctx.containsBean(TransactionManagementConfigUtils.TRANSACTIONAL_EVENT_LISTENER_FACTORY_BEAN_NAME)).isTrue();
-		assertEquals(1, ctx.getBeansOfType(TransactionalEventListenerFactory.class).size());
+		assertThat((long) ctx.getBeansOfType(TransactionalEventListenerFactory.class).size()).isEqualTo((long) 1);
 		ctx.close();
 	}
 

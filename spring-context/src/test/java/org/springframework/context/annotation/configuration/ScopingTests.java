@@ -41,9 +41,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * Tests that scopes are properly supported by using a custom Scope implementations
@@ -103,33 +100,33 @@ public class ScopingTests {
 		Object bean1 = ctx.getBean(beanName);
 		Object bean2 = ctx.getBean(beanName);
 
-		assertSame(message, bean1, bean2);
+		assertThat(bean2).as(message).isSameAs(bean1);
 
 		Object bean3 = ctx.getBean(beanName);
 
-		assertSame(message, bean1, bean3);
+		assertThat(bean3).as(message).isSameAs(bean1);
 
 		// make the scope create a new object
 		customScope.createNewScope = true;
 
 		Object newBean1 = ctx.getBean(beanName);
-		assertNotSame(message, bean1, newBean1);
+		assertThat(newBean1).as(message).isNotSameAs(bean1);
 
 		Object sameBean1 = ctx.getBean(beanName);
 
-		assertSame(message, newBean1, sameBean1);
+		assertThat(sameBean1).as(message).isSameAs(newBean1);
 
 		// make the scope create a new object
 		customScope.createNewScope = true;
 
 		Object newBean2 = ctx.getBean(beanName);
-		assertNotSame(message, newBean1, newBean2);
+		assertThat(newBean2).as(message).isNotSameAs(newBean1);
 
 		// make the scope create a new object .. again
 		customScope.createNewScope = true;
 
 		Object newBean3 = ctx.getBean(beanName);
-		assertNotSame(message, newBean2, newBean3);
+		assertThat(newBean3).as(message).isNotSameAs(newBean2);
 	}
 
 	@Test
@@ -137,16 +134,16 @@ public class ScopingTests {
 		Object beanAInScope = ctx.getBean("scopedClass");
 		Object beanBInScope = ctx.getBean("scopedInterface");
 
-		assertNotSame(beanAInScope, beanBInScope);
+		assertThat(beanBInScope).isNotSameAs(beanAInScope);
 
 		customScope.createNewScope = true;
 
 		Object newBeanAInScope = ctx.getBean("scopedClass");
 		Object newBeanBInScope = ctx.getBean("scopedInterface");
 
-		assertNotSame(newBeanAInScope, newBeanBInScope);
-		assertNotSame(newBeanAInScope, beanAInScope);
-		assertNotSame(newBeanBInScope, beanBInScope);
+		assertThat(newBeanBInScope).isNotSameAs(newBeanAInScope);
+		assertThat(beanAInScope).isNotSameAs(newBeanAInScope);
+		assertThat(beanBInScope).isNotSameAs(newBeanBInScope);
 	}
 
 	@Test
@@ -177,7 +174,7 @@ public class ScopingTests {
 		ITestBean spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
 		assertThat(spouseFromBF.getName()).isEqualTo(spouse.getName());
 		// the scope proxy has kicked in
-		assertNotSame(spouse, spouseFromBF);
+		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
 
 		// create a new bean
 		customScope.createNewScope = true;
@@ -185,12 +182,12 @@ public class ScopingTests {
 		// get the bean again from the BF
 		spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
 		// make sure the name has been updated
-		assertSame(spouse.getName(), spouseFromBF.getName());
-		assertNotSame(spouse, spouseFromBF);
+		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
+		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
 
 		// get the bean again
 		spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
-		assertSame(spouse.getName(), spouseFromBF.getName());
+		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
 	}
 
 	@Test
@@ -210,7 +207,7 @@ public class ScopingTests {
 		TestBean spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
 		assertThat(spouseFromBF.getName()).isEqualTo(spouse.getName());
 		// the scope proxy has kicked in
-		assertNotSame(spouse, spouseFromBF);
+		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
 
 		// create a new bean
 		customScope.createNewScope = true;
@@ -219,12 +216,12 @@ public class ScopingTests {
 		// get the bean again from the BF
 		spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
 		// make sure the name has been updated
-		assertSame(spouse.getName(), spouseFromBF.getName());
-		assertNotSame(spouse, spouseFromBF);
+		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
+		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
 
 		// get the bean again
 		spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
-		assertSame(spouse.getName(), spouseFromBF.getName());
+		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
 	}
 
 

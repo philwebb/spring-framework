@@ -49,8 +49,6 @@ import org.springframework.util.SimpleRouteMatcher;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Unit tests for {@link AbstractMethodMessageHandler}.
  * @author Rossen Stoyanchev
@@ -69,7 +67,7 @@ public class MethodMessageHandlerTests {
 		TestMethodMessageHandler messageHandler = initMethodMessageHandler(TestController.class);
 		Map<String, HandlerMethod> mappings = messageHandler.getHandlerMethods();
 
-		assertEquals(5, mappings.keySet().size());
+		assertThat((long) mappings.keySet().size()).isEqualTo((long) 5);
 		assertThat(mappings).containsOnlyKeys(
 				"/handleMessage", "/handleMessageWithArgument", "/handleMessageWithError",
 				"/handleMessageMatch1", "/handleMessageMatch2");

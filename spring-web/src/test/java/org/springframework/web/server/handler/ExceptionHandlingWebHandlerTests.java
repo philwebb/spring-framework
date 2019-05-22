@@ -31,8 +31,6 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link ExceptionHandlingWebHandler}.
@@ -67,7 +65,7 @@ public class ExceptionHandlingWebHandlerTests {
 	public void unresolvedException() throws Exception {
 		Mono<Void> mono = createWebHandler(new UnresolvedExceptionHandler()).handle(this.exchange);
 		StepVerifier.create(mono).expectErrorMessage("boo").verify();
-		assertNull(this.exchange.getResponse().getStatusCode());
+		assertThat((Object) this.exchange.getResponse().getStatusCode()).isNull();
 	}
 
 	@Test

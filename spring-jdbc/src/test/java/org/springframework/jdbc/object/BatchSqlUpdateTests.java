@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.springframework.jdbc.core.SqlParameter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -76,33 +75,33 @@ public class BatchSqlUpdateTests {
 		update.update(ids[1]);
 
 		if (flushThroughBatchSize) {
-			assertEquals(0, update.getQueueCount());
-			assertEquals(2, update.getRowsAffected().length);
+			assertThat((long) update.getQueueCount()).isEqualTo((long) 0);
+			assertThat((long) update.getRowsAffected().length).isEqualTo((long) 2);
 		}
 		else {
-			assertEquals(2, update.getQueueCount());
-			assertEquals(0, update.getRowsAffected().length);
+			assertThat((long) update.getQueueCount()).isEqualTo((long) 2);
+			assertThat((long) update.getRowsAffected().length).isEqualTo((long) 0);
 		}
 
 		int[] actualRowsAffected = update.flush();
-		assertEquals(0, update.getQueueCount());
+		assertThat((long) update.getQueueCount()).isEqualTo((long) 0);
 
 		if (flushThroughBatchSize) {
 			assertThat(actualRowsAffected.length == 0).as("flush did not execute updates").isTrue();
 		}
 		else {
 			assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-			assertEquals(rowsAffected[0], actualRowsAffected[0]);
-			assertEquals(rowsAffected[1], actualRowsAffected[1]);
+			assertThat((long) actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
+			assertThat((long) actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
 		}
 
 		actualRowsAffected = update.getRowsAffected();
 		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-		assertEquals(rowsAffected[0], actualRowsAffected[0]);
-		assertEquals(rowsAffected[1], actualRowsAffected[1]);
+		assertThat((long) actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
+		assertThat((long) actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
 
 		update.reset();
-		assertEquals(0, update.getRowsAffected().length);
+		assertThat((long) update.getRowsAffected().length).isEqualTo((long) 0);
 
 		verify(preparedStatement).setObject(1, ids[0], Types.INTEGER);
 		verify(preparedStatement).setObject(1, ids[1], Types.INTEGER);

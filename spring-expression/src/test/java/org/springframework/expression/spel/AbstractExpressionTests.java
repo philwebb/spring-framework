@@ -27,8 +27,6 @@ import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Common superclass for expression tests.
@@ -70,7 +68,7 @@ public abstract class AbstractExpressionTests {
 			if (expectedValue == null) {
 				return;  // no point doing other checks
 			}
-			assertNull("Expression returned null value, but expected '" + expectedValue + "'", expectedValue);
+			assertThat(expectedValue).as("Expression returned null value, but expected '" + expectedValue + "'").isNull();
 		}
 
 		Class<?> resultType = value.getClass();
@@ -97,7 +95,7 @@ public abstract class AbstractExpressionTests {
 			if (expectedValue == null) {
 				return;  // no point doing other checks
 			}
-			assertNull("Expression returned null value, but expected '" + expectedValue + "'", expectedValue);
+			assertThat(expectedValue).as("Expression returned null value, but expected '" + expectedValue + "'").isNull();
 		}
 
 		Class<?> resultType = value.getClass();
@@ -127,7 +125,7 @@ public abstract class AbstractExpressionTests {
 			if (expectedValue == null) {
 				return;  // no point doing other checks
 			}
-			assertNull("Expression returned null value, but expected '" + expectedValue + "'", expectedValue);
+			assertThat(expectedValue).as("Expression returned null value, but expected '" + expectedValue + "'").isNull();
 		}
 		Class<? extends Object> resultType = value.getClass();
 		if (expectedValue instanceof String) {

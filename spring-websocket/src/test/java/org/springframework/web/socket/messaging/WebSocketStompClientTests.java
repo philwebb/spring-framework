@@ -48,8 +48,6 @@ import org.springframework.web.socket.client.WebSocketClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
@@ -139,7 +137,7 @@ public class WebSocketStompClientTests {
 		ArgumentCaptor<Message> captor = ArgumentCaptor.forClass(Message.class);
 		verify(this.stompSession).handleMessage(captor.capture());
 		Message<byte[]> message = captor.getValue();
-		assertNotNull(message);
+		assertThat((Object) message).isNotNull();
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		StompHeaders headers = StompHeaders.readOnlyStompHeaders(accessor.toNativeHeaderMap());
@@ -164,7 +162,7 @@ public class WebSocketStompClientTests {
 		ArgumentCaptor<Message> captor = ArgumentCaptor.forClass(Message.class);
 		verify(this.stompSession).handleMessage(captor.capture());
 		Message<byte[]> message = captor.getValue();
-		assertNotNull(message);
+		assertThat((Object) message).isNotNull();
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		StompHeaders headers = StompHeaders.readOnlyStompHeaders(accessor.toNativeHeaderMap());
@@ -182,7 +180,7 @@ public class WebSocketStompClientTests {
 		ArgumentCaptor<Message> captor = ArgumentCaptor.forClass(Message.class);
 		verify(this.stompSession).handleMessage(captor.capture());
 		Message<byte[]> message = captor.getValue();
-		assertNotNull(message);
+		assertThat((Object) message).isNotNull();
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		StompHeaders headers = StompHeaders.readOnlyStompHeaders(accessor.toNativeHeaderMap());
@@ -208,7 +206,7 @@ public class WebSocketStompClientTests {
 		ArgumentCaptor<TextMessage> textMessageCaptor = ArgumentCaptor.forClass(TextMessage.class);
 		verify(this.webSocketSession).sendMessage(textMessageCaptor.capture());
 		TextMessage textMessage = textMessageCaptor.getValue();
-		assertNotNull(textMessage);
+		assertThat((Object) textMessage).isNotNull();
 		assertThat(textMessage.getPayload()).isEqualTo("SEND\ndestination:/topic/foo\ncontent-length:7\n\npayload\0");
 	}
 
@@ -224,7 +222,7 @@ public class WebSocketStompClientTests {
 		ArgumentCaptor<BinaryMessage> binaryMessageCaptor = ArgumentCaptor.forClass(BinaryMessage.class);
 		verify(this.webSocketSession).sendMessage(binaryMessageCaptor.capture());
 		BinaryMessage binaryMessage = binaryMessageCaptor.getValue();
-		assertNotNull(binaryMessage);
+		assertThat((Object) binaryMessage).isNotNull();
 		assertThat(new String(binaryMessage.getPayload().array(), StandardCharsets.UTF_8)).isEqualTo("SEND\ndestination:/b\ncontent-type:application/octet-stream\ncontent-length:7\n\npayload\0");
 	}
 
@@ -316,7 +314,7 @@ public class WebSocketStompClientTests {
 		verifyNoMoreInteractions(this.stompSession);
 
 		WebSocketHandler webSocketHandler = this.webSocketHandlerCaptor.getValue();
-		assertNotNull(webSocketHandler);
+		assertThat((Object) webSocketHandler).isNotNull();
 		return webSocketHandler;
 	}
 
@@ -339,7 +337,7 @@ public class WebSocketStompClientTests {
 		}
 
 		Runnable inactivityTask = inactivityTaskCaptor.getValue();
-		assertNotNull(inactivityTask);
+		assertThat((Object) inactivityTask).isNotNull();
 		inactivityTask.run();
 
 		if (sleepTime > 0) {

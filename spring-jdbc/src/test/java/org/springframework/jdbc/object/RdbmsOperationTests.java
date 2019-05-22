@@ -32,7 +32,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Trevor Cook
@@ -134,8 +133,8 @@ public class RdbmsOperationTests {
 		operation.setMaxRows(20);
 		JdbcTemplate jt = operation.getJdbcTemplate();
 		assertThat(jt.getDataSource()).isEqualTo(ds);
-		assertEquals(10, jt.getFetchSize());
-		assertEquals(20, jt.getMaxRows());
+		assertThat((long) jt.getFetchSize()).isEqualTo((long) 10);
+		assertThat((long) jt.getMaxRows()).isEqualTo((long) 20);
 	}
 
 	@Test
@@ -157,7 +156,7 @@ public class RdbmsOperationTests {
 				new SqlParameter("two", Types.NUMERIC)});
 		operation.afterPropertiesSet();
 		operation.validateParameters(new Object[] { 1, "2" });
-		assertEquals(2, operation.getDeclaredParameters().size());
+		assertThat((long) operation.getDeclaredParameters().size()).isEqualTo((long) 2);
 	}
 
 

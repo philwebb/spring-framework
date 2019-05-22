@@ -38,10 +38,6 @@ import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * SpringJUnit4ClassRunnerAppCtxTests serves as a <em>proof of concept</em>
@@ -173,8 +169,7 @@ public class SpringJUnit4ClassRunnerAppCtxTests implements ApplicationContextAwa
 
 	@Test
 	public void verifyApplicationContextSet() {
-		assertNotNull("The application context should have been set due to ApplicationContextAware semantics.",
-				this.applicationContext);
+		assertThat((Object) this.applicationContext).as("The application context should have been set due to ApplicationContextAware semantics.").isNotNull();
 	}
 
 	@Test
@@ -184,36 +179,36 @@ public class SpringJUnit4ClassRunnerAppCtxTests implements ApplicationContextAwa
 
 	@Test
 	public void verifyAnnotationAutowiredAndInjectedFields() {
-		assertNull("The nonrequiredLong field should NOT have been autowired.", this.nonrequiredLong);
+		assertThat((Object) this.nonrequiredLong).as("The nonrequiredLong field should NOT have been autowired.").isNull();
 		assertThat(this.quux).as("The quux field should have been autowired via @Autowired and @Qualifier.").isEqualTo("Quux");
 		assertThat(this.namedQuux).as("The namedFoo field should have been injected via @Inject and @Named.").isEqualTo("Quux");
-		assertSame("@Autowired/@Qualifier and @Inject/@Named quux should be the same object.", this.quux, this.namedQuux);
+		assertThat((Object) this.namedQuux).as("@Autowired/@Qualifier and @Inject/@Named quux should be the same object.").isSameAs(this.quux);
 
-		assertNotNull("The pet field should have been autowired.", this.autowiredPet);
-		assertNotNull("The pet field should have been injected.", this.injectedPet);
+		assertThat((Object) this.autowiredPet).as("The pet field should have been autowired.").isNotNull();
+		assertThat((Object) this.injectedPet).as("The pet field should have been injected.").isNotNull();
 		assertThat(this.autowiredPet.getName()).isEqualTo("Fido");
 		assertThat(this.injectedPet.getName()).isEqualTo("Fido");
-		assertSame("@Autowired and @Inject pet should be the same object.", this.autowiredPet, this.injectedPet);
+		assertThat((Object) this.injectedPet).as("@Autowired and @Inject pet should be the same object.").isSameAs(this.autowiredPet);
 	}
 
 	@Test
 	public void verifyAnnotationAutowiredMethods() {
-		assertNotNull("The employee setter method should have been autowired.", this.employee);
+		assertThat((Object) this.employee).as("The employee setter method should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).isEqualTo("John Smith");
 	}
 
 	@Test
 	public void verifyAutowiredAtValueFields() {
-		assertNotNull("Literal @Value field should have been autowired", this.literalFieldValue);
-		assertNotNull("SpEL @Value field should have been autowired.", this.spelFieldValue);
+		assertThat((Object) this.literalFieldValue).as("Literal @Value field should have been autowired").isNotNull();
+		assertThat((Object) this.spelFieldValue).as("SpEL @Value field should have been autowired.").isNotNull();
 		assertThat(this.literalFieldValue).isEqualTo("enigma");
 		assertThat(this.spelFieldValue).isEqualTo(Boolean.TRUE);
 	}
 
 	@Test
 	public void verifyAutowiredAtValueMethods() {
-		assertNotNull("Literal @Value method parameter should have been autowired.", this.literalParameterValue);
-		assertNotNull("SpEL @Value method parameter should have been autowired.", this.spelParameterValue);
+		assertThat((Object) this.literalParameterValue).as("Literal @Value method parameter should have been autowired.").isNotNull();
+		assertThat((Object) this.spelParameterValue).as("SpEL @Value method parameter should have been autowired.").isNotNull();
 		assertThat(this.literalParameterValue).isEqualTo("enigma");
 		assertThat(this.spelParameterValue).isEqualTo(Boolean.TRUE);
 	}

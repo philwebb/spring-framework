@@ -32,9 +32,6 @@ import org.springframework.util.FileCopyUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -83,7 +80,7 @@ public class AppCacheManifestTransformerTests {
 		Resource expected = getResource("foo.css");
 		Resource actual = this.transformer.transform(exchange, expected, this.chain).block(TIMEOUT);
 
-		assertSame(expected, actual);
+		assertThat((Object) actual).isSameAs(expected);
 	}
 
 	@Test
@@ -101,7 +98,7 @@ public class AppCacheManifestTransformerTests {
 		Resource resource = getResource("test.appcache");
 		Resource actual = this.transformer.transform(exchange, resource, this.chain).block(TIMEOUT);
 
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		byte[] bytes = FileCopyUtils.copyToByteArray(actual.getInputStream());
 		String content = new String(bytes, "UTF-8");
 

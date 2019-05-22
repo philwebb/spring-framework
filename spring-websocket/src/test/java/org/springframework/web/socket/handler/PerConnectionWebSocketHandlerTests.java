@@ -23,7 +23,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test fixture for {@link PerConnectionWebSocketHandler}.
@@ -47,13 +47,13 @@ public class PerConnectionWebSocketHandlerTests {
 		WebSocketSession session = new TestWebSocketSession();
 		handler.afterConnectionEstablished(session);
 
-		assertEquals(1, EchoHandler.initCount);
-		assertEquals(0, EchoHandler.destroyCount);
+		assertThat((long) EchoHandler.initCount).isEqualTo((long) 1);
+		assertThat((long) EchoHandler.destroyCount).isEqualTo((long) 0);
 
 		handler.afterConnectionClosed(session, CloseStatus.NORMAL);
 
-		assertEquals(1, EchoHandler.initCount);
-		assertEquals(1, EchoHandler.destroyCount);
+		assertThat((long) EchoHandler.initCount).isEqualTo((long) 1);
+		assertThat((long) EchoHandler.destroyCount).isEqualTo((long) 1);
 	}
 
 

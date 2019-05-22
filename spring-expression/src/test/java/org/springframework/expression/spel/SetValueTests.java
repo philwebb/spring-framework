@@ -29,8 +29,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Tests set value expressions.
@@ -197,7 +195,7 @@ public class SetValueTests extends AbstractExpressionTests {
 	public void testSetGenericMapElementRequiresCoercion() throws Exception {
 		StandardEvaluationContext eContext = TestScenarioCreator.getTestEvaluationContext();
 		Expression e = parse("mapOfStringToBoolean[42]");
-		assertNull(e.getValue(eContext));
+		assertThat(e.getValue(eContext)).isNull();
 
 		// Key should be coerced to string representation of 42
 		e.setValue(eContext, "true");

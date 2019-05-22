@@ -42,8 +42,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Integration tests with {@code @CrossOrigin} and {@code @RequestMapping}
@@ -88,7 +86,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	public void actualGetRequestWithoutAnnotation() throws Exception {
 		ResponseEntity<String> entity = performGet("/no", this.headers, String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
+		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isNull();
 		assertThat(entity.getBody()).isEqualTo("no");
 	}
 
@@ -96,7 +94,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	public void actualPostRequestWithoutAnnotation() throws Exception {
 		ResponseEntity<String> entity = performPost("/no", this.headers, null, String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
+		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isNull();
 		assertThat(entity.getBody()).isEqualTo("no-post");
 	}
 
@@ -115,7 +113,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		ResponseEntity<Void> entity = performOptions("/default", this.headers, Void.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
-		assertEquals(1800, entity.getHeaders().getAccessControlMaxAge());
+		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo((long) 1800);
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
 	}
 
@@ -124,7 +122,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		HttpHeaders headers = new HttpHeaders();
 		ResponseEntity<String> entity = performGet("/default", headers, String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
+		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isNull();
 		assertThat(entity.getBody()).isEqualTo("default");
 	}
 
@@ -134,7 +132,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
-		assertEquals(-1, entity.getHeaders().getAccessControlMaxAge());
+		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo((long) -1);
 		assertThat(entity.getBody()).isEqualTo("customized");
 	}
 
@@ -150,7 +148,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		assertThat(entity.getHeaders().getAccessControlAllowHeaders().toArray()).isEqualTo(new String[] {"header1", "header2"});
 		assertThat(entity.getHeaders().getAccessControlExposeHeaders().toArray()).isEqualTo(new String[] {"header3", "header4"});
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
-		assertEquals(123, entity.getHeaders().getAccessControlMaxAge());
+		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo((long) 123);
 	}
 
 	@Test

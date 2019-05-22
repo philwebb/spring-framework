@@ -39,9 +39,6 @@ import org.springframework.web.server.WebSession;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Integration tests for with a server-side session.
@@ -72,15 +69,15 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String id = extractSessionId(response.getHeaders());
-		assertNotNull(id);
-		assertEquals(1, this.handler.getSessionRequestCount());
+		assertThat((Object) id).isNotNull();
+		assertThat((long) this.handler.getSessionRequestCount()).isEqualTo((long) 1);
 
 		request = RequestEntity.get(createUri()).header("Cookie", "SESSION=" + id).build();
 		response = this.restTemplate.exchange(request, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(response.getHeaders().get("Set-Cookie"));
-		assertEquals(2, this.handler.getSessionRequestCount());
+		assertThat((Object) response.getHeaders().get("Set-Cookie")).isNull();
+		assertThat((long) this.handler.getSessionRequestCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -92,21 +89,21 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String id = extractSessionId(response.getHeaders());
-		assertNotNull(id);
-		assertEquals(1, this.handler.getSessionRequestCount());
+		assertThat((Object) id).isNotNull();
+		assertThat((long) this.handler.getSessionRequestCount()).isEqualTo((long) 1);
 
 		// Second request: same session
 		request = RequestEntity.get(createUri()).header("Cookie", "SESSION=" + id).build();
 		response = this.restTemplate.exchange(request, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(response.getHeaders().get("Set-Cookie"));
-		assertEquals(2, this.handler.getSessionRequestCount());
+		assertThat((Object) response.getHeaders().get("Set-Cookie")).isNull();
+		assertThat((long) this.handler.getSessionRequestCount()).isEqualTo((long) 2);
 
 		// Now fast-forward by 31 minutes
 		InMemoryWebSessionStore store = (InMemoryWebSessionStore) this.sessionManager.getSessionStore();
 		WebSession session = store.retrieveSession(id).block();
-		assertNotNull(session);
+		assertThat((Object) session).isNotNull();
 		store.setClock(Clock.offset(store.getClock(), Duration.ofMinutes(31)));
 
 		// Third request: expired session, new session created
@@ -115,8 +112,8 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		id = extractSessionId(response.getHeaders());
-		assertNotNull("Expected new session id", id);
-		assertEquals(1, this.handler.getSessionRequestCount());
+		assertThat((Object) id).as("Expected new session id").isNotNull();
+		assertThat((long) this.handler.getSessionRequestCount()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -128,7 +125,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String id = extractSessionId(response.getHeaders());
-		assertNotNull(id);
+		assertThat((Object) id).isNotNull();
 
 		// Now fast-forward by 31 minutes
 		InMemoryWebSessionStore store = (InMemoryWebSessionStore) this.sessionManager.getSessionStore();
@@ -141,7 +138,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String value = response.getHeaders().getFirst("Set-Cookie");
-		assertNotNull(value);
+		assertThat((Object) value).isNotNull();
 		assertThat(value.contains("Max-Age=0")).as("Actual value: " + value).isTrue();
 	}
 
@@ -154,8 +151,8 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String oldId = extractSessionId(response.getHeaders());
-		assertNotNull(oldId);
-		assertEquals(1, this.handler.getSessionRequestCount());
+		assertThat((Object) oldId).isNotNull();
+		assertThat((long) this.handler.getSessionRequestCount()).isEqualTo((long) 1);
 
 		// Second request: session id changes
 		URI uri = new URI("http://localhost:" + this.port + "/?changeId");
@@ -164,9 +161,9 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String newId = extractSessionId(response.getHeaders());
-		assertNotNull("Expected new session id", newId);
+		assertThat((Object) newId).as("Expected new session id").isNotNull();
 		assertThat(newId).isNotEqualTo(oldId);
-		assertEquals(2, this.handler.getSessionRequestCount());
+		assertThat((long) this.handler.getSessionRequestCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -178,7 +175,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String id = extractSessionId(response.getHeaders());
-		assertNotNull(id);
+		assertThat((Object) id).isNotNull();
 
 		// Second request: invalidates session
 		URI uri = new URI("http://localhost:" + this.port + "/?invalidate");
@@ -187,14 +184,14 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String value = response.getHeaders().getFirst("Set-Cookie");
-		assertNotNull(value);
+		assertThat((Object) value).isNotNull();
 		assertThat(value.contains("Max-Age=0")).as("Actual value: " + value).isTrue();
 	}
 
 	private String extractSessionId(HttpHeaders headers) {
 		List<String> headerValues = headers.get("Set-Cookie");
-		assertNotNull(headerValues);
-		assertEquals(1, headerValues.size());
+		assertThat((Object) headerValues).isNotNull();
+		assertThat((long) headerValues.size()).isEqualTo((long) 1);
 
 		for (String s : headerValues.get(0).split(";")){
 			if (s.startsWith("SESSION=")) {

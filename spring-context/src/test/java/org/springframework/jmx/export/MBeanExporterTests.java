@@ -58,8 +58,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for the {@link MBeanExporter} class.
@@ -153,11 +151,11 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			ctx.getBean("exporter");
 			MBeanServer server = ctx.getBean("server", MBeanServer.class);
 			ObjectInstance instance = server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=true"));
-			assertNotNull(instance);
+			assertThat((Object) instance).isNotNull();
 			instance = server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean2=true"));
-			assertNotNull(instance);
+			assertThat((Object) instance).isNotNull();
 			instance = server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean3=true"));
-			assertNotNull(instance);
+			assertThat((Object) instance).isNotNull();
 		}
 		finally {
 			ctx.close();
@@ -171,7 +169,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			ctx.getBean("exporter");
 			MBeanServer server = ctx.getBean("server", MBeanServer.class);
 			ObjectInstance instance = server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=true"));
-			assertNotNull(instance);
+			assertThat((Object) instance).isNotNull();
 
 			assertThatExceptionOfType(InstanceNotFoundException.class).isThrownBy(() ->
 					server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=false")));
@@ -189,12 +187,12 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			MBeanServer server = ctx.getBean("server", MBeanServer.class);
 
 			ObjectName oname = ObjectNameManager.getInstance("spring:mbean=true");
-			assertNotNull(server.getObjectInstance(oname));
+			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
 			String name = (String) server.getAttribute(oname, "Name");
 			assertThat(name).as("Invalid name returned").isEqualTo("Rob Harrop");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=another");
-			assertNotNull(server.getObjectInstance(oname));
+			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
 			name = (String) server.getAttribute(oname, "Name");
 			assertThat(name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
 		}
@@ -272,7 +270,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		start(exporter);
 
 		ObjectInstance instance = server.getObjectInstance(objectName);
-		assertNotNull(instance);
+		assertThat((Object) instance).isNotNull();
 	}
 
 	@Test
@@ -301,9 +299,9 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		start(exporter);
 
 		ObjectInstance instance = server.getObjectInstance(objectName);
-		assertNotNull(instance);
+		assertThat((Object) instance).isNotNull();
 		ObjectInstance instance2 = server.getObjectInstance(new ObjectName(objectName2));
-		assertNotNull(instance2);
+		assertThat((Object) instance2).isNotNull();
 
 		// should still be the first bean with name Rob Harrop
 		assertThat(server.getAttribute(objectName, "Name")).isEqualTo("Rob Harrop");
@@ -332,7 +330,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		start(exporter);
 
 		ObjectInstance instance = server.getObjectInstance(objectName);
-		assertNotNull(instance);
+		assertThat((Object) instance).isNotNull();
 
 		// should still be the new bean with name Sally Greenwood
 		assertThat(server.getAttribute(objectName, "Name")).isEqualTo("Sally Greenwood");
@@ -541,8 +539,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		this.server.unregisterMBean(new ObjectName(OBJECT_NAME));
 		exporter.destroy();
-		assertEquals("Listener should not have been invoked (MBean previously unregistered by external agent)", 0,
-				listener.getUnregistered().size());
+		assertThat((long) listener.getUnregistered().size()).as("Listener should not have been invoked (MBean previously unregistered by external agent)").isEqualTo((long) 0);
 	}
 
 	@Test  // SPR-3302
@@ -684,8 +681,8 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 	private void assertListener(MockMBeanExporterListener listener) throws MalformedObjectNameException {
 		ObjectName desired = ObjectNameManager.getInstance(OBJECT_NAME);
-		assertEquals("Incorrect number of registrations", 1, listener.getRegistered().size());
-		assertEquals("Incorrect number of unregistrations", 1, listener.getUnregistered().size());
+		assertThat((long) listener.getRegistered().size()).as("Incorrect number of registrations").isEqualTo((long) 1);
+		assertThat((long) listener.getUnregistered().size()).as("Incorrect number of unregistrations").isEqualTo((long) 1);
 		assertThat(listener.getRegistered().get(0)).as("Incorrect ObjectName in register").isEqualTo(desired);
 		assertThat(listener.getUnregistered().get(0)).as("Incorrect ObjectName in unregister").isEqualTo(desired);
 	}

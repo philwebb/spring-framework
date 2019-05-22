@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.springframework.tests.sample.objects.TestObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
 
 public class PrioritizedParameterNameDiscovererTests {
 
@@ -64,8 +63,8 @@ public class PrioritizedParameterNameDiscovererTests {
 	@Test
 	public void noParametersDiscoverers() {
 		ParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
-		assertNull(pnd.getParameterNames(anyMethod));
-		assertNull(pnd.getParameterNames((Constructor<?>) null));
+		assertThat((Object) pnd.getParameterNames(anyMethod)).isNull();
+		assertThat((Object) pnd.getParameterNames((Constructor<?>) null)).isNull();
 	}
 
 	@Test

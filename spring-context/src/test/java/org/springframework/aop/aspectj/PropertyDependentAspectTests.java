@@ -27,7 +27,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Check that an aspect that depends on another bean, where the referenced bean
@@ -71,8 +70,8 @@ public class PropertyDependentAspectTests {
 
 		counter.increment();
 		JoinPointMonitorAspect callCountingAspect = (JoinPointMonitorAspect)context.getBean("monitoringAspect");
-		assertEquals("Advise didn't get executed", 1, callCountingAspect.beforeExecutions);
-		assertEquals("Advise didn't get executed", 1, callCountingAspect.aroundExecutions);
+		assertThat((long) callCountingAspect.beforeExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
+		assertThat((long) callCountingAspect.aroundExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
 	}
 
 	private void checkAtAspectJAspect(String appContextFile) {
@@ -83,8 +82,8 @@ public class PropertyDependentAspectTests {
 
 		counter.increment();
 		JoinPointMonitorAtAspectJAspect callCountingAspect = (JoinPointMonitorAtAspectJAspect)context.getBean("monitoringAspect");
-		assertEquals("Advise didn't get executed", 1, callCountingAspect.beforeExecutions);
-		assertEquals("Advise didn't get executed", 1, callCountingAspect.aroundExecutions);
+		assertThat((long) callCountingAspect.beforeExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
+		assertThat((long) callCountingAspect.aroundExecutions).as("Advise didn't get executed").isEqualTo((long) 1);
 	}
 
 }

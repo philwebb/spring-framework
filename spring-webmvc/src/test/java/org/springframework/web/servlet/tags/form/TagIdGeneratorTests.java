@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockPageContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop

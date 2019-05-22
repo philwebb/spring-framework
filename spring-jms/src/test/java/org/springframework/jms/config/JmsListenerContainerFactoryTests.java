@@ -42,9 +42,6 @@ import org.springframework.util.backoff.FixedBackOff;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -93,10 +90,10 @@ public class JmsListenerContainerFactoryTests {
 		DefaultMessageListenerContainer container = factory.createListenerContainer(endpoint);
 
 		assertDefaultJmsConfig(container);
-		assertEquals(DefaultMessageListenerContainer.CACHE_CONSUMER, container.getCacheLevel());
-		assertEquals(3, container.getConcurrentConsumers());
-		assertEquals(10, container.getMaxConcurrentConsumers());
-		assertEquals(5, container.getMaxMessagesPerTask());
+		assertThat((long) container.getCacheLevel()).isEqualTo((long) DefaultMessageListenerContainer.CACHE_CONSUMER);
+		assertThat((long) container.getConcurrentConsumers()).isEqualTo((long) 3);
+		assertThat((long) container.getMaxConcurrentConsumers()).isEqualTo((long) 10);
+		assertThat((long) container.getMaxMessagesPerTask()).isEqualTo((long) 5);
 
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 		assertThat(container.getDestinationName()).isEqualTo("myQueue");
@@ -115,7 +112,7 @@ public class JmsListenerContainerFactoryTests {
 		JmsMessageEndpointManager container = factory.createListenerContainer(endpoint);
 
 		assertDefaultJcaConfig(container);
-		assertEquals(10, container.getActivationSpecConfig().getMaxConcurrency());
+		assertThat((long) container.getActivationSpecConfig().getMaxConcurrency()).isEqualTo((long) 10);
 		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 		assertThat(container.getActivationSpecConfig().getDestinationName()).isEqualTo("myQueue");
 	}
@@ -145,7 +142,7 @@ public class JmsListenerContainerFactoryTests {
 		endpoint.setDestination("myQueue");
 		DefaultMessageListenerContainer container = factory.createListenerContainer(endpoint);
 
-		assertSame(backOff, new DirectFieldAccessor(container).getPropertyValue("backOff"));
+		assertThat(new DirectFieldAccessor(container).getPropertyValue("backOff")).isSameAs(backOff);
 	}
 
 	@Test
@@ -159,8 +156,8 @@ public class JmsListenerContainerFactoryTests {
 		endpoint.setDestination("myQueue");
 		endpoint.setConcurrency("4-6");
 		DefaultMessageListenerContainer container = factory.createListenerContainer(endpoint);
-		assertEquals(4, container.getConcurrentConsumers());
-		assertEquals(6, container.getMaxConcurrentConsumers());
+		assertThat((long) container.getConcurrentConsumers()).isEqualTo((long) 4);
+		assertThat((long) container.getMaxConcurrentConsumers()).isEqualTo((long) 6);
 	}
 
 
@@ -183,7 +180,7 @@ public class JmsListenerContainerFactoryTests {
 		assertThat(container.getDestinationResolver()).isEqualTo(this.destinationResolver);
 		assertThat(container.getMessageConverter()).isEqualTo(this.messageConverter);
 		assertThat(container.isSessionTransacted()).isEqualTo(true);
-		assertEquals(Session.DUPS_OK_ACKNOWLEDGE, container.getSessionAcknowledgeMode());
+		assertThat((long) container.getSessionAcknowledgeMode()).isEqualTo((long) Session.DUPS_OK_ACKNOWLEDGE);
 		assertThat(container.isPubSubDomain()).isEqualTo(true);
 		assertThat(container.isReplyPubSubDomain()).isEqualTo(true);
 		assertThat(container.getReplyQosSettings()).isEqualTo(new QosSettings(1, 7, 5000));
@@ -207,8 +204,8 @@ public class JmsListenerContainerFactoryTests {
 		assertThat(container.getMessageConverter()).isEqualTo(this.messageConverter);
 		assertThat(container.getDestinationResolver()).isEqualTo(this.destinationResolver);
 		JmsActivationSpecConfig config = container.getActivationSpecConfig();
-		assertNotNull(config);
-		assertEquals(Session.DUPS_OK_ACKNOWLEDGE, config.getAcknowledgeMode());
+		assertThat((Object) config).isNotNull();
+		assertThat((long) config.getAcknowledgeMode()).isEqualTo((long) Session.DUPS_OK_ACKNOWLEDGE);
 		assertThat(config.isPubSubDomain()).isEqualTo(true);
 		assertThat(container.getReplyQosSettings()).isEqualTo(new QosSettings(1, 7, 5000));
 		assertThat(config.isSubscriptionDurable()).isEqualTo(true);

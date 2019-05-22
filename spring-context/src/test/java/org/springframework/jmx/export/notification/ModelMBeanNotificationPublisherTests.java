@@ -29,8 +29,6 @@ import org.springframework.jmx.export.SpringModelMBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rick Evans
@@ -72,9 +70,9 @@ public class ModelMBeanNotificationPublisherTests {
 		NotificationPublisher publisher = new ModelMBeanNotificationPublisher(mbean, objectName, mbean);
 		publisher.sendNotification(notification);
 
-		assertNotNull(mbean.getActualNotification());
-		assertSame("The exact same Notification is not being passed through from the publisher to the mbean.", notification, mbean.getActualNotification());
-		assertSame("The 'source' property of the Notification is not being set to the ObjectName of the associated MBean.", objectName, mbean.getActualNotification().getSource());
+		assertThat((Object) mbean.getActualNotification()).isNotNull();
+		assertThat((Object) mbean.getActualNotification()).as("The exact same Notification is not being passed through from the publisher to the mbean.").isSameAs(notification);
+		assertThat(mbean.getActualNotification().getSource()).as("The 'source' property of the Notification is not being set to the ObjectName of the associated MBean.").isSameAs(objectName);
 	}
 
 	public void testSendAttributeChangeNotification() throws Exception {
@@ -85,11 +83,11 @@ public class ModelMBeanNotificationPublisherTests {
 		NotificationPublisher publisher = new ModelMBeanNotificationPublisher(mbean, objectName, mbean);
 		publisher.sendNotification(notification);
 
-		assertNotNull(mbean.getActualNotification());
+		assertThat((Object) mbean.getActualNotification()).isNotNull();
 		boolean condition = mbean.getActualNotification() instanceof AttributeChangeNotification;
 		assertThat(condition).isTrue();
-		assertSame("The exact same Notification is not being passed through from the publisher to the mbean.", notification, mbean.getActualNotification());
-		assertSame("The 'source' property of the Notification is not being set to the ObjectName of the associated MBean.", objectName, mbean.getActualNotification().getSource());
+		assertThat((Object) mbean.getActualNotification()).as("The exact same Notification is not being passed through from the publisher to the mbean.").isSameAs(notification);
+		assertThat(mbean.getActualNotification().getSource()).as("The 'source' property of the Notification is not being set to the ObjectName of the associated MBean.").isSameAs(objectName);
 	}
 
 	public void testSendAttributeChangeNotificationWhereSourceIsNotTheManagedResource() throws Exception {
@@ -100,11 +98,11 @@ public class ModelMBeanNotificationPublisherTests {
 		NotificationPublisher publisher = new ModelMBeanNotificationPublisher(mbean, objectName, mbean);
 		publisher.sendNotification(notification);
 
-		assertNotNull(mbean.getActualNotification());
+		assertThat((Object) mbean.getActualNotification()).isNotNull();
 		boolean condition = mbean.getActualNotification() instanceof AttributeChangeNotification;
 		assertThat(condition).isTrue();
-		assertSame("The exact same Notification is not being passed through from the publisher to the mbean.", notification, mbean.getActualNotification());
-		assertSame("The 'source' property of the Notification is *wrongly* being set to the ObjectName of the associated MBean.", this, mbean.getActualNotification().getSource());
+		assertThat((Object) mbean.getActualNotification()).as("The exact same Notification is not being passed through from the publisher to the mbean.").isSameAs(notification);
+		assertThat(mbean.getActualNotification().getSource()).as("The 'source' property of the Notification is *wrongly* being set to the ObjectName of the associated MBean.").isSameAs(this);
 	}
 
 	private static ObjectName createObjectName() throws MalformedObjectNameException {

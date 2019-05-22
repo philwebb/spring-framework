@@ -29,7 +29,7 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.mock.web.test.MockServletContext;
 
-import static temp.XAssert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test fixture for {@link TilesConfigurer}.
@@ -53,7 +53,7 @@ public class TilesConfigurerTests {
 		BasicTilesContainer container = (BasicTilesContainer) TilesAccess.getContainer(tilesContext);
 		Request requestContext = new ServletRequest(container.getApplicationContext(),
 				new MockHttpServletRequest(), new MockHttpServletResponse());
-		assertNotNull(container.getDefinitionsFactory().getDefinition("test", requestContext));
+		assertThat((Object) container.getDefinitionsFactory().getDefinition("test", requestContext)).isNotNull();
 
 		tc.destroy();
 	}

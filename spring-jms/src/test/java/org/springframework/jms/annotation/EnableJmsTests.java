@@ -47,8 +47,6 @@ import org.springframework.stereotype.Component;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Stephane Nicoll
@@ -161,13 +159,13 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 			EnableJmsDefaultContainerFactoryConfig.class, ComposedJmsListenersBean.class)) {
 			JmsListenerContainerTestFactory simpleFactory = context.getBean("jmsListenerContainerFactory",
 				JmsListenerContainerTestFactory.class);
-			assertEquals(2, simpleFactory.getListenerContainers().size());
+			assertThat((long) simpleFactory.getListenerContainers().size()).isEqualTo((long) 2);
 
 			MethodJmsListenerEndpoint first = (MethodJmsListenerEndpoint) simpleFactory.getListenerContainer(
 				"first").getEndpoint();
 			assertThat(first.getId()).isEqualTo("first");
 			assertThat(first.getDestination()).isEqualTo("orderQueue");
-			assertNull(first.getConcurrency());
+			assertThat((Object) first.getConcurrency()).isNull();
 
 			MethodJmsListenerEndpoint second = (MethodJmsListenerEndpoint) simpleFactory.getListenerContainer(
 				"second").getEndpoint();
@@ -192,10 +190,10 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 				EnableJmsDefaultContainerFactoryConfig.class, LazyBean.class);
 		JmsListenerContainerTestFactory defaultFactory =
 				context.getBean("jmsListenerContainerFactory", JmsListenerContainerTestFactory.class);
-		assertEquals(0, defaultFactory.getListenerContainers().size());
+		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 0);
 
 		context.getBean(LazyBean.class);  // trigger lazy resolution
-		assertEquals(1, defaultFactory.getListenerContainers().size());
+		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 1);
 		MessageListenerTestContainer container = defaultFactory.getListenerContainers().get(0);
 		assertThat(container.isStarted()).as("Should have been started " + container).isTrue();
 		context.close();  // close and stop the listeners

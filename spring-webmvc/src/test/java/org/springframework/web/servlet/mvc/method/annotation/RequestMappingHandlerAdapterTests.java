@@ -59,7 +59,6 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link RequestMappingHandlerAdapter}.
@@ -256,7 +255,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
-		assertEquals(200, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
 		assertThat(this.response.getContentAsString()).isEqualTo("{\"status\":400,\"message\":\"body\"}");
 	}
 
@@ -266,9 +265,9 @@ public class RequestMappingHandlerAdapterTests {
 	}
 
 	private void assertMethodProcessorCount(int resolverCount, int initBinderResolverCount, int handlerCount) {
-		assertEquals(resolverCount, this.handlerAdapter.getArgumentResolvers().size());
-		assertEquals(initBinderResolverCount, this.handlerAdapter.getInitBinderArgumentResolvers().size());
-		assertEquals(handlerCount, this.handlerAdapter.getReturnValueHandlers().size());
+		assertThat((long) this.handlerAdapter.getArgumentResolvers().size()).isEqualTo((long) resolverCount);
+		assertThat((long) this.handlerAdapter.getInitBinderArgumentResolvers().size()).isEqualTo((long) initBinderResolverCount);
+		assertThat((long) this.handlerAdapter.getReturnValueHandlers().size()).isEqualTo((long) handlerCount);
 	}
 
 

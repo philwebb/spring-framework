@@ -25,7 +25,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test utility to collect and assert events.
@@ -59,7 +58,7 @@ public class EventCollector {
 	 */
 	public void assertNoEventReceived(String listenerId) {
 		List<Object> events = this.content.getOrDefault(listenerId, Collections.emptyList());
-		assertEquals("Expected no events but got " + events, 0, events.size());
+		assertThat((long) events.size()).as("Expected no events but got " + events).isEqualTo((long) 0);
 	}
 
 	/**
@@ -75,7 +74,7 @@ public class EventCollector {
 	 */
 	public void assertEvent(String listenerId, Object... events) {
 		List<Object> actual = this.content.getOrDefault(listenerId, Collections.emptyList());
-		assertEquals("Wrong number of events", events.length, actual.size());
+		assertThat((long) actual.size()).as("Wrong number of events").isEqualTo((long) events.length);
 		for (int i = 0; i < events.length; i++) {
 			assertThat(actual.get(i)).as("Wrong event at index " + i).isEqualTo(events[i]);
 		}
@@ -99,8 +98,8 @@ public class EventCollector {
 		for (Map.Entry<String, List<Object>> entry : this.content.entrySet()) {
 			actual += entry.getValue().size();
 		}
-		assertEquals("Wrong number of total events (" + this.content.size() +
-				") registered listener(s)", number, actual);
+		assertThat((long) actual).as("Wrong number of total events (" + this.content.size() +
+				") registered listener(s)").isEqualTo((long) number);
 	}
 
 	/**

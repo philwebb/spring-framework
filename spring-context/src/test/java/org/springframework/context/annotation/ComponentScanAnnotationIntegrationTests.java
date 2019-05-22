@@ -68,7 +68,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertNotNull;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
@@ -319,10 +318,10 @@ public class ComponentScanAnnotationIntegrationTests {
 		@Override
 		public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) {
 			((ConfigurableEnvironment) this.environment).addActiveProfile("the-filter-ran");
-			assertNotNull(this.beanFactory);
-			assertNotNull(this.classLoader);
-			assertNotNull(this.resourceLoader);
-			assertNotNull(this.environment);
+			assertThat((Object) this.beanFactory).isNotNull();
+			assertThat((Object) this.classLoader).isNotNull();
+			assertThat((Object) this.resourceLoader).isNotNull();
+			assertThat((Object) this.environment).isNotNull();
 			return false;
 		}
 

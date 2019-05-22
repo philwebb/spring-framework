@@ -26,8 +26,6 @@ import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration test class that verifies proper detection of a default
@@ -54,10 +52,10 @@ public class DefaultScriptDetectionGroovySpringContextTests {
 
 	@Test
 	public final void verifyAnnotationAutowiredFields() {
-		assertNotNull("The employee field should have been autowired.", this.employee);
+		assertThat((Object) this.employee).as("The employee field should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).isEqualTo("Dilbert");
 
-		assertNotNull("The pet field should have been autowired.", this.pet);
+		assertThat((Object) this.pet).as("The pet field should have been autowired.").isNotNull();
 		assertThat(this.pet.getName()).isEqualTo("Dogbert");
 
 		assertThat(this.foo).as("The foo field should have been autowired.").isEqualTo("Foo");

@@ -47,9 +47,6 @@ import org.springframework.web.servlet.support.SessionFlashMapManager;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for building a {@link MockHttpServletRequest} with
@@ -87,7 +84,7 @@ public class MockHttpServletRequestBuilderTests {
 		assertThat(request.getScheme()).isEqualTo("https");
 		assertThat(request.getQueryString()).isEqualTo("foo=bar");
 		assertThat(request.getServerName()).isEqualTo("java.sun.com");
-		assertEquals(8080, request.getServerPort());
+		assertThat((long) request.getServerPort()).isEqualTo((long) 8080);
 		assertThat(request.getRequestURI()).isEqualTo("/javase/6/docs/api/java/util/BitSet.html");
 		assertThat(request.getRequestURL().toString()).isEqualTo("https://java.sun.com:8080/javase/6/docs/api/java/util/BitSet.html");
 	}
@@ -151,7 +148,7 @@ public class MockHttpServletRequestBuilderTests {
 
 		assertThat(request.getContextPath()).isEqualTo("/travel");
 		assertThat(request.getServletPath()).isEqualTo("/hotels/42");
-		assertNull(request.getPathInfo());
+		assertThat((Object) request.getPathInfo()).isNull();
 	}
 
 	@Test
@@ -163,7 +160,7 @@ public class MockHttpServletRequestBuilderTests {
 
 		assertThat(request.getContextPath()).isEqualTo("");
 		assertThat(request.getServletPath()).isEqualTo("/index.html");
-		assertNull(request.getPathInfo());
+		assertThat((Object) request.getPathInfo()).isNull();
 	}
 
 	@Test // SPR-16453
@@ -292,7 +289,7 @@ public class MockHttpServletRequestBuilderTests {
 		List<String> accept = Collections.list(request.getHeaders("Accept"));
 		List<MediaType> result = MediaType.parseMediaTypes(accept.get(0));
 
-		assertEquals(1, accept.size());
+		assertThat((long) accept.size()).isEqualTo((long) 1);
 		assertThat(result.get(0).toString()).isEqualTo("text/html");
 		assertThat(result.get(1).toString()).isEqualTo("application/xml");
 	}
@@ -306,7 +303,7 @@ public class MockHttpServletRequestBuilderTests {
 		List<String> contentTypes = Collections.list(request.getHeaders("Content-Type"));
 
 		assertThat(contentType).isEqualTo("text/html");
-		assertEquals(1, contentTypes.size());
+		assertThat((long) contentTypes.size()).isEqualTo((long) 1);
 		assertThat(contentTypes.get(0)).isEqualTo("text/html");
 	}
 
@@ -319,7 +316,7 @@ public class MockHttpServletRequestBuilderTests {
 		List<String> contentTypes = Collections.list(request.getHeaders("Content-Type"));
 
 		assertThat(contentType).isEqualTo("text/html");
-		assertEquals(1, contentTypes.size());
+		assertThat((long) contentTypes.size()).isEqualTo((long) 1);
 		assertThat(contentTypes.get(0)).isEqualTo("text/html");
 	}
 
@@ -358,7 +355,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		List<String> headers = Collections.list(request.getHeaders("foo"));
 
-		assertEquals(2, headers.size());
+		assertThat((long) headers.size()).isEqualTo((long) 2);
 		assertThat(headers.get(0)).isEqualTo("bar");
 		assertThat(headers.get(1)).isEqualTo("baz");
 	}
@@ -373,7 +370,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		List<String> headers = Collections.list(request.getHeaders("foo"));
 
-		assertEquals(2, headers.size());
+		assertThat((long) headers.size()).isEqualTo((long) 2);
 		assertThat(headers.get(0)).isEqualTo("bar");
 		assertThat(headers.get(1)).isEqualTo("baz");
 		assertThat(request.getHeader("Content-Type")).isEqualTo(MediaType.APPLICATION_JSON.toString());
@@ -388,7 +385,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		Cookie[] cookies = request.getCookies();
 
-		assertEquals(2, cookies.length);
+		assertThat((long) cookies.length).isEqualTo((long) 2);
 		assertThat(cookies[0].getName()).isEqualTo("foo");
 		assertThat(cookies[0].getValue()).isEqualTo("bar");
 		assertThat(cookies[1].getName()).isEqualTo("baz");
@@ -398,7 +395,7 @@ public class MockHttpServletRequestBuilderTests {
 	@Test
 	public void noCookies() {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
-		assertNull(request.getCookies());
+		assertThat((Object) request.getCookies()).isNull();
 	}
 
 	@Test
@@ -468,7 +465,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
 		FlashMap flashMap = new SessionFlashMapManager().retrieveAndUpdate(request, null);
-		assertNotNull(flashMap);
+		assertThat((Object) flashMap).isNotNull();
 		assertThat(flashMap.get("foo")).isEqualTo("bar");
 	}
 

@@ -34,9 +34,6 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.socket.CloseStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for
@@ -57,11 +54,11 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(event);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertNotNull(simpUser);
+		assertThat((Object) simpUser).isNotNull();
 
-		assertEquals(1, registry.getUserCount());
-		assertEquals(1, simpUser.getSessions().size());
-		assertNotNull(simpUser.getSession("123"));
+		assertThat((long) registry.getUserCount()).isEqualTo((long) 1);
+		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 1);
+		assertThat((Object) simpUser.getSession("123")).isNotNull();
 	}
 
 	@Test
@@ -82,13 +79,13 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(event);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertNotNull(simpUser);
+		assertThat((Object) simpUser).isNotNull();
 
-		assertEquals(1, registry.getUserCount());
-		assertEquals(3, simpUser.getSessions().size());
-		assertNotNull(simpUser.getSession("123"));
-		assertNotNull(simpUser.getSession("456"));
-		assertNotNull(simpUser.getSession("789"));
+		assertThat((long) registry.getUserCount()).isEqualTo((long) 1);
+		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 3);
+		assertThat((Object) simpUser.getSession("123")).isNotNull();
+		assertThat((Object) simpUser.getSession("456")).isNotNull();
+		assertThat((Object) simpUser.getSession("789")).isNotNull();
 	}
 
 	@Test
@@ -109,8 +106,8 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(connectedEvent);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertNotNull(simpUser);
-		assertEquals(3, simpUser.getSessions().size());
+		assertThat((Object) simpUser).isNotNull();
+		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 3);
 
 		CloseStatus status = CloseStatus.GOING_AWAY;
 		message = createMessage(SimpMessageType.DISCONNECT, "456");
@@ -121,8 +118,8 @@ public class DefaultSimpUserRegistryTests {
 		disconnectEvent = new SessionDisconnectEvent(this, message, "789", status, user);
 		registry.onApplicationEvent(disconnectEvent);
 
-		assertEquals(1, simpUser.getSessions().size());
-		assertNotNull(simpUser.getSession("123"));
+		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 1);
+		assertThat((Object) simpUser.getSession("123")).isNotNull();
 	}
 
 	@Test
@@ -153,7 +150,7 @@ public class DefaultSimpUserRegistryTests {
 			}
 		});
 
-		assertEquals(2, matches.size());
+		assertThat((long) matches.size()).isEqualTo((long) 2);
 
 		Iterator<SimpSubscription> iterator = matches.iterator();
 		Set<String> sessionIds = new HashSet<>(2);
@@ -172,7 +169,7 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(event);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertNull(simpUser.getSession(null));
+		assertThat((Object) simpUser.getSession(null)).isNull();
 	}
 
 

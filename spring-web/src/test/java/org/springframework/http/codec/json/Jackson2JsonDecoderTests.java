@@ -49,8 +49,6 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
@@ -149,8 +147,8 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 				.consumeNextWith(o -> {
 					JacksonViewBean b = (JacksonViewBean) o;
 					assertThat(b.getWithView1()).isEqualTo("with");
-					assertNull(b.getWithView2());
-					assertNull(b.getWithoutView());
+					assertThat((Object) b.getWithView2()).isNull();
+					assertThat((Object) b.getWithoutView()).isNull();
 				}), null, hints);
 	}
 
@@ -165,8 +163,8 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 				.consumeNextWith(o -> {
 					JacksonViewBean b = (JacksonViewBean) o;
 					assertThat(b.getWithoutView()).isEqualTo("without");
-					assertNull(b.getWithView1());
-					assertNull(b.getWithView2());
+					assertThat((Object) b.getWithView1()).isNull();
+					assertThat((Object) b.getWithView2()).isNull();
 				})
 				.verifyComplete(), null, hints);
 	}
@@ -201,7 +199,7 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 		Mono<DataBuffer> input = stringBuffer("{\"test\": 1}");
 
 		testDecode(input, TestObject.class, step -> step
-				.consumeNextWith(o -> assertEquals(1, o.getTest()))
+				.consumeNextWith(o -> assertThat((long) o.getTest()).isEqualTo((long) 1))
 				.verifyComplete()
 		);
 	}

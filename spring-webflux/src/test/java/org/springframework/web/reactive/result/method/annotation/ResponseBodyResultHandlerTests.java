@@ -42,7 +42,6 @@ import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.springframework.web.method.ResolvableMethod.on;
 
 /**
@@ -117,7 +116,7 @@ public class ResponseBodyResultHandlerTests {
 
 	@Test
 	public void defaultOrder() {
-		assertEquals(100, this.resultHandler.getOrder());
+		assertThat((long) this.resultHandler.getOrder()).isEqualTo((long) 100);
 	}
 
 

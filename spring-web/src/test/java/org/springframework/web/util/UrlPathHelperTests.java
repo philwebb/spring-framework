@@ -24,8 +24,6 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link UrlPathHelper}.
@@ -442,7 +440,7 @@ public class UrlPathHelperTests {
 	public void getOriginatingQueryStringIsNull() {
 		request.setQueryString("forward=true");
 		request.setAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE, "/path");
-		assertNull(this.helper.getOriginatingQueryString(request));
+		assertThat((Object) this.helper.getOriginatingQueryString(request)).isNull();
 	}
 
 }

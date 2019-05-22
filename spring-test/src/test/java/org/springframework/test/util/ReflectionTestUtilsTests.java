@@ -29,9 +29,6 @@ import org.springframework.test.util.subpackage.PersonEntity;
 import org.springframework.test.util.subpackage.StaticFields;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 import static org.springframework.test.util.ReflectionTestUtils.invokeGetterMethod;
 import static org.springframework.test.util.ReflectionTestUtils.invokeMethod;
@@ -150,9 +147,9 @@ public class ReflectionTestUtilsTests {
 		assertThat(getField(person, "favoriteNumber")).isEqualTo(PI);
 
 		// Get directly
-		assertEquals("ID (private field in a superclass)", 99, person.getId());
+		assertThat(person.getId()).as("ID (private field in a superclass)").isEqualTo((long) 99);
 		assertThat(person.getName()).as("name (protected field)").isEqualTo("Tom");
-		assertEquals("age (private field)", 42, person.getAge());
+		assertThat((long) person.getAge()).as("age (private field)").isEqualTo((long) 42);
 		assertThat(person.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
 		assertThat(person.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
@@ -162,9 +159,9 @@ public class ReflectionTestUtilsTests {
 		assertSetFieldAndGetFieldBehavior(proxy);
 
 		// Get directly from Target
-		assertEquals("ID (private field in a superclass)", 99, target.getId());
+		assertThat(target.getId()).as("ID (private field in a superclass)").isEqualTo((long) 99);
 		assertThat(target.getName()).as("name (protected field)").isEqualTo("Tom");
-		assertEquals("age (private field)", 42, target.getAge());
+		assertThat((long) target.getAge()).as("age (private field)").isEqualTo((long) 42);
 		assertThat(target.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
 		assertThat(target.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
 		assertThat(target.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
@@ -176,18 +173,18 @@ public class ReflectionTestUtilsTests {
 		setField(person, "name", "Tom");
 		setField(person, "eyeColor", "blue", String.class);
 		setField(person, "favoriteNumber", PI, Number.class);
-		assertNotNull(person.getName());
-		assertNotNull(person.getEyeColor());
-		assertNotNull(person.getFavoriteNumber());
+		assertThat((Object) person.getName()).isNotNull();
+		assertThat((Object) person.getEyeColor()).isNotNull();
+		assertThat((Object) person.getFavoriteNumber()).isNotNull();
 
 		// Set to null
 		setField(person, "name", null, String.class);
 		setField(person, "eyeColor", null, String.class);
 		setField(person, "favoriteNumber", null, Number.class);
 
-		assertNull("name (protected field)", person.getName());
-		assertNull("eye color (package private field)", person.getEyeColor());
-		assertNull("'favorite number' (package field)", person.getFavoriteNumber());
+		assertThat((Object) person.getName()).as("name (protected field)").isNull();
+		assertThat((Object) person.getEyeColor()).as("eye color (package private field)").isNull();
+		assertThat((Object) person.getFavoriteNumber()).as("'favorite number' (package field)").isNull();
 	}
 
 	@Test
@@ -258,9 +255,9 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "setLikesPets", Boolean.FALSE, boolean.class);
 		invokeSetterMethod(person, "setFavoriteNumber", Integer.valueOf(42), Number.class);
 
-		assertEquals("ID (protected method in a superclass)", 1, person.getId());
+		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo((long) 1);
 		assertThat(person.getName()).as("name (private method)").isEqualTo("Jerry");
-		assertEquals("age (protected method)", 33, person.getAge());
+		assertThat((long) person.getAge()).as("age (protected method)").isEqualTo((long) 33);
 		assertThat(person.getEyeColor()).as("eye color (package private method)").isEqualTo("green");
 		assertThat(person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(false);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(Integer.valueOf(42));
@@ -282,9 +279,9 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "likesPets", Boolean.TRUE);
 		invokeSetterMethod(person, "favoriteNumber", PI, Number.class);
 
-		assertEquals("ID (protected method in a superclass)", 99, person.getId());
+		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo((long) 99);
 		assertThat(person.getName()).as("name (private method)").isEqualTo("Tom");
-		assertEquals("age (protected method)", 42, person.getAge());
+		assertThat((long) person.getAge()).as("age (protected method)").isEqualTo((long) 42);
 		assertThat(person.getEyeColor()).as("eye color (package private method)").isEqualTo("blue");
 		assertThat(person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(true);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(PI);
@@ -303,9 +300,9 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "eyeColor", null, String.class);
 		invokeSetterMethod(person, "favoriteNumber", null, Number.class);
 
-		assertNull("name (private method)", person.getName());
-		assertNull("eye color (package private method)", person.getEyeColor());
-		assertNull("'favorite number' (protected method for a Number)", person.getFavoriteNumber());
+		assertThat((Object) person.getName()).as("name (private method)").isNull();
+		assertThat((Object) person.getEyeColor()).as("eye color (package private method)").isNull();
+		assertThat((Object) person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isNull();
 	}
 
 	@Test
@@ -330,7 +327,7 @@ public class ReflectionTestUtilsTests {
 	public void invokeMethodWithAutoboxingAndUnboxing() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer difference = invokeMethod(component, "subtract", 5, 2);
-		assertEquals("subtract(5, 2)", 3, difference.intValue());
+		assertThat((long) difference.intValue()).as("subtract(5, 2)").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -338,20 +335,20 @@ public class ReflectionTestUtilsTests {
 	public void invokeMethodWithPrimitiveVarArgs() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer sum = invokeMethod(component, "add", 1, 2, 3, 4);
-		assertEquals("add(1,2,3,4)", 10, sum.intValue());
+		assertThat((long) sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
 	}
 
 	@Test
 	public void invokeMethodWithPrimitiveVarArgsAsSingleArgument() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer sum = invokeMethod(component, "add", new int[] { 1, 2, 3, 4 });
-		assertEquals("add(1,2,3,4)", 10, sum.intValue());
+		assertThat((long) sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
 	}
 
 	@Test
 	public void invokeMethodSimulatingLifecycleEvents() {
-		assertNull("number", component.getNumber());
-		assertNull("text", component.getText());
+		assertThat((Object) component.getNumber()).as("number").isNull();
+		assertThat((Object) component.getText()).as("text").isNull();
 
 		// Simulate autowiring a configuration method
 		invokeMethod(component, "configure", Integer.valueOf(42), "enigma");
@@ -364,8 +361,8 @@ public class ReflectionTestUtilsTests {
 
 		// Simulate @PreDestroy life-cycle event
 		invokeMethod(component, "destroy");
-		assertNull("number", component.getNumber());
-		assertNull("text", component.getText());
+		assertThat((Object) component.getNumber()).as("number").isNull();
+		assertThat((Object) component.getText()).as("text").isNull();
 	}
 
 	@Test
@@ -399,7 +396,7 @@ public class ReflectionTestUtilsTests {
 	@Test // SPR-14363
 	public void getFieldOnLegacyEntityWithSideEffectsInToString() {
 		Object collaborator = getField(entity, "collaborator");
-		assertNotNull(collaborator);
+		assertThat(collaborator).isNotNull();
 	}
 
 	@Test // SPR-9571 and SPR-14363
@@ -419,7 +416,7 @@ public class ReflectionTestUtilsTests {
 	@Test // SPR-14363
 	public void invokeGetterMethodOnLegacyEntityWithSideEffectsInToString() {
 		Object collaborator = invokeGetterMethod(entity, "collaborator");
-		assertNotNull(collaborator);
+		assertThat(collaborator).isNotNull();
 	}
 
 	@Test // SPR-14363

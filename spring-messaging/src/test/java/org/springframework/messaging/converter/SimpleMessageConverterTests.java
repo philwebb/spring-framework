@@ -25,8 +25,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for
@@ -58,7 +56,7 @@ public class SimpleMessageConverterTests {
 		Message<?> message = this.converter.toMessage("payload", headers);
 
 		assertThat(message.getPayload()).isEqualTo("payload");
-		assertSame(headers, message.getHeaders());
+		assertThat((Object) message.getHeaders()).isSameAs(headers);
 		assertThat(message.getHeaders().get("foo")).isEqualTo("bar");
 	}
 }

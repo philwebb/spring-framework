@@ -48,9 +48,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with {@link HttpEntityMethodProcessor} delegating to
@@ -107,7 +104,7 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<SimpleBean> result = (HttpEntity<SimpleBean>) processor.resolveArgument(
 				paramSimpleBean, mavContainer, webRequest, binderFactory);
 
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 		assertThat(result.getBody().getName()).isEqualTo("Jad");
 	}
 
@@ -123,8 +120,8 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<?> result = (HttpEntity<?>) processor.resolveArgument(this.paramSimpleBean,
 				this.mavContainer, this.webRequest, this.binderFactory);
 
-		assertNotNull(result);
-		assertNull(result.getBody());
+		assertThat((Object) result).isNotNull();
+		assertThat(result.getBody()).isNull();
 	}
 
 	@Test
@@ -141,7 +138,7 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<List<SimpleBean>> result = (HttpEntity<List<SimpleBean>>) processor.resolveArgument(
 				paramList, mavContainer, webRequest, binderFactory);
 
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 		assertThat(result.getBody().get(0).getName()).isEqualTo("Jad");
 		assertThat(result.getBody().get(1).getName()).isEqualTo("Robert");
 	}
@@ -164,7 +161,7 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<SimpleBean> result = (HttpEntity<SimpleBean>)
 				processor.resolveArgument(methodParam, mavContainer, webRequest, binderFactory);
 
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 		assertThat(result.getBody().getName()).isEqualTo("Jad");
 	}
 

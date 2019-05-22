@@ -43,10 +43,6 @@ import org.springframework.web.servlet.tags.form.TagWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -456,7 +452,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setPath("tb");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
-		assertNull(tag.getProperty());
+		assertThat((Object) tag.getProperty()).isNull();
 
 		// test property set (tb.name)
 		tag.release();
@@ -621,8 +617,8 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertNull(status.getExpression());
-		assertNull(status.getValue());
+		assertThat((Object) status.getExpression()).isNull();
+		assertThat(status.getValue()).isNull();
 	}
 
 	@Test
@@ -679,8 +675,8 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.doStartTag();
 		int returnValue = tag.doEndTag();
-		assertEquals(Tag.EVAL_PAGE, returnValue);
-		assertNull(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat((long) returnValue).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isNull();
 	}
 
 	@Test
@@ -700,7 +696,7 @@ public class BindTagTests extends AbstractTagTests {
 		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.");
 
 		tag.doEndTag();
-		assertNull(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isNull();
 	}
 
 	@Test
@@ -711,7 +707,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		int returnValue = tag.doStartTag();
 
-		assertEquals(Tag.EVAL_BODY_INCLUDE, returnValue);
+		assertThat((long) returnValue).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
 		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.");
 	}
 
@@ -782,7 +778,7 @@ public class BindTagTests extends AbstractTagTests {
 		bindTag2.doEndTag();
 
 		BindStatus status3 = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertSame("Status matches previous status", status, status3);
+		assertThat((Object) status3).as("Status matches previous status").isSameAs(status);
 		assertThat(status.getPath()).isEqualTo("tb.name");
 		assertThat(status.getDisplayValue()).as("Correct field value").isEqualTo("");
 
@@ -837,7 +833,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.setVar("theDate");
 		transform.doStartTag();
 
-		assertNotNull(pc.getAttribute("theDate"));
+		assertThat(pc.getAttribute("theDate")).isNotNull();
 		assertThat(df.format(tb.getDate())).isEqualTo(pc.getAttribute("theDate"));
 
 		// try another time, this time using Strings
@@ -853,7 +849,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.setVar("theString");
 		transform.doStartTag();
 
-		assertNotNull(pc.getAttribute("theString"));
+		assertThat(pc.getAttribute("theString")).isNotNull();
 		assertThat(pc.getAttribute("theString")).isEqualTo("name");
 	}
 
@@ -882,7 +878,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.setHtmlEscape(true);
 		transform.doStartTag();
 
-		assertNotNull(pc.getAttribute("theString"));
+		assertThat(pc.getAttribute("theString")).isNotNull();
 		assertThat(pc.getAttribute("theString")).isEqualTo("na&lt;me");
 	}
 
@@ -941,7 +937,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.setVar("theString2");
 		transform.doStartTag();
 
-		assertNull(pc.getAttribute("theString2"));
+		assertThat(pc.getAttribute("theString2")).isNull();
 	}
 
 	@Test
@@ -972,7 +968,7 @@ public class BindTagTests extends AbstractTagTests {
 
 		transform.release();
 
-		assertNotNull(pc.getAttribute("theDate"));
+		assertThat(pc.getAttribute("theDate")).isNotNull();
 		assertThat(pc.getAttribute("theDate")).isEqualTo(df.format(tb.getDate()));
 
 		// try another time, this time using Strings
@@ -991,7 +987,7 @@ public class BindTagTests extends AbstractTagTests {
 
 		transform.release();
 
-		assertNotNull(pc.getAttribute("theString"));
+		assertThat(pc.getAttribute("theString")).isNotNull();
 		assertThat(pc.getAttribute("theString")).isEqualTo("name");
 	}
 

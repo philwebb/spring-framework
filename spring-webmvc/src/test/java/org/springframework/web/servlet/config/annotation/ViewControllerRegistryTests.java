@@ -31,9 +31,6 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with a {@link ViewControllerRegistry}.
@@ -59,7 +56,7 @@ public class ViewControllerRegistryTests {
 
 	@Test
 	public void noViewControllers() {
-		assertNull(this.registry.buildHandlerMapping());
+		assertThat((Object) this.registry.buildHandlerMapping()).isNull();
 	}
 
 	@Test
@@ -68,9 +65,9 @@ public class ViewControllerRegistryTests {
 		ParameterizableViewController controller = getController("/path");
 
 		assertThat(controller.getViewName()).isEqualTo("viewName");
-		assertNull(controller.getStatusCode());
+		assertThat((Object) controller.getStatusCode()).isNull();
 		assertThat(controller.isStatusOnly()).isFalse();
-		assertNotNull(controller.getApplicationContext());
+		assertThat((Object) controller.getApplicationContext()).isNotNull();
 	}
 
 	@Test
@@ -78,10 +75,10 @@ public class ViewControllerRegistryTests {
 		this.registry.addViewController("/path");
 		ParameterizableViewController controller = getController("/path");
 
-		assertNull(controller.getViewName());
-		assertNull(controller.getStatusCode());
+		assertThat((Object) controller.getViewName()).isNull();
+		assertThat((Object) controller.getStatusCode()).isNull();
 		assertThat(controller.isStatusOnly()).isFalse();
-		assertNotNull(controller.getApplicationContext());
+		assertThat((Object) controller.getApplicationContext()).isNotNull();
 	}
 
 	@Test
@@ -92,9 +89,9 @@ public class ViewControllerRegistryTests {
 		this.request.setContextPath("/context");
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
-		assertEquals(302, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 302);
 		assertThat(this.response.getRedirectedUrl()).isEqualTo("/context/redirectTo");
-		assertNotNull(redirectView.getApplicationContext());
+		assertThat((Object) redirectView.getApplicationContext()).isNotNull();
 	}
 
 	@Test
@@ -109,9 +106,9 @@ public class ViewControllerRegistryTests {
 		this.request.setContextPath("/context");
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
-		assertEquals(308, this.response.getStatus());
+		assertThat((long) this.response.getStatus()).isEqualTo((long) 308);
 		assertThat(response.getRedirectedUrl()).isEqualTo("/redirectTo?a=b");
-		assertNotNull(redirectView.getApplicationContext());
+		assertThat((Object) redirectView.getApplicationContext()).isNotNull();
 	}
 
 	@Test
@@ -119,35 +116,35 @@ public class ViewControllerRegistryTests {
 		this.registry.addStatusController("/path", HttpStatus.NOT_FOUND);
 		ParameterizableViewController controller = getController("/path");
 
-		assertNull(controller.getViewName());
+		assertThat((Object) controller.getViewName()).isNull();
 		assertThat(controller.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(controller.isStatusOnly()).isTrue();
-		assertNotNull(controller.getApplicationContext());
+		assertThat((Object) controller.getApplicationContext()).isNotNull();
 	}
 
 	@Test
 	public void order() {
 		this.registry.addViewController("/path");
 		SimpleUrlHandlerMapping handlerMapping = this.registry.buildHandlerMapping();
-		assertEquals(1, handlerMapping.getOrder());
+		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) 1);
 
 		this.registry.setOrder(2);
 		handlerMapping = this.registry.buildHandlerMapping();
-		assertEquals(2, handlerMapping.getOrder());
+		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) 2);
 	}
 
 
 	private ParameterizableViewController getController(String path) {
 		Map<String, ?> urlMap = this.registry.buildHandlerMapping().getUrlMap();
 		ParameterizableViewController controller = (ParameterizableViewController) urlMap.get(path);
-		assertNotNull(controller);
+		assertThat((Object) controller).isNotNull();
 		return controller;
 	}
 
 	private RedirectView getRedirectView(String path) {
 		ParameterizableViewController controller = getController(path);
-		assertNull(controller.getViewName());
-		assertNotNull(controller.getView());
+		assertThat((Object) controller.getViewName()).isNull();
+		assertThat((Object) controller.getView()).isNotNull();
 		assertThat(controller.getView().getClass()).isEqualTo(RedirectView.class);
 		return (RedirectView) controller.getView();
 	}

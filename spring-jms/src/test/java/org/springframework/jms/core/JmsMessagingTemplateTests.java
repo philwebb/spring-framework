@@ -49,10 +49,6 @@ import org.springframework.messaging.converter.GenericMessageConverter;
 import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -86,7 +82,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void validateJmsTemplate() {
-		assertSame(this.jmsTemplate, this.messagingTemplate.getJmsTemplate());
+		assertThat((Object) this.messagingTemplate.getJmsTemplate()).isSameAs(this.jmsTemplate);
 	}
 
 	@Test
@@ -124,10 +120,10 @@ public class JmsMessagingTemplateTests {
 	private void assertPayloadConverter(JmsMessagingTemplate messagingTemplate,
 			MessageConverter messageConverter) {
 		MessageConverter jmsMessageConverter = messagingTemplate.getJmsMessageConverter();
-		assertNotNull(jmsMessageConverter);
+		assertThat((Object) jmsMessageConverter).isNotNull();
 		assertThat(jmsMessageConverter.getClass()).isEqualTo(MessagingMessageConverter.class);
-		assertSame(messageConverter, new DirectFieldAccessor(jmsMessageConverter)
-				.getPropertyValue("payloadConverter"));
+		assertThat(new DirectFieldAccessor(jmsMessageConverter)
+				.getPropertyValue("payloadConverter")).isSameAs(messageConverter);
 	}
 
 	@Test
@@ -394,7 +390,7 @@ public class JmsMessagingTemplateTests {
 	public void receiveAndConvertNoInput() {
 		given(this.jmsTemplate.receive("myQueue")).willReturn(null);
 
-		assertNull(this.messagingTemplate.receiveAndConvert("myQueue", String.class));
+		assertThat(this.messagingTemplate.receiveAndConvert("myQueue", String.class)).isNull();
 	}
 
 	@Test
@@ -642,7 +638,7 @@ public class JmsMessagingTemplateTests {
 	}
 
 	private void assertTextMessage(Message<?> message) {
-		assertNotNull("message should not be null", message);
+		assertThat((Object) message).as("message should not be null").isNotNull();
 		assertThat(message.getPayload()).as("Wrong payload").isEqualTo("Hello");
 		assertThat(message.getHeaders().get("foo")).as("Invalid foo property").isEqualTo("bar");
 	}

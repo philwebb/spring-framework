@@ -29,9 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
 import static org.springframework.web.servlet.mvc.method.RequestMappingInfo.paths;
@@ -50,12 +47,12 @@ public class RequestMappingInfoTests {
 
 		// gh-22543
 		assertThat(info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(""));
-		assertEquals(0, info.getMethodsCondition().getMethods().size());
+		assertThat((long) info.getMethodsCondition().getMethods().size()).isEqualTo((long) 0);
 		assertThat(info.getConsumesCondition().isEmpty()).isEqualTo(true);
 		assertThat(info.getProducesCondition().isEmpty()).isEqualTo(true);
-		assertNotNull(info.getParamsCondition());
-		assertNotNull(info.getHeadersCondition());
-		assertNull(info.getCustomCondition());
+		assertThat((Object) info.getParamsCondition()).isNotNull();
+		assertThat((Object) info.getHeadersCondition()).isNotNull();
+		assertThat((Object) info.getCustomCondition()).isNull();
 	}
 
 	@Test
@@ -81,12 +78,12 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths("/foo").params("foo=bar").build();
 		RequestMappingInfo match = info.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 
 		info = paths("/foo").params("foo!=bar").build();
 		match = info.getMatchingCondition(request);
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test
@@ -97,12 +94,12 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths("/foo").headers("foo=bar").build();
 		RequestMappingInfo match = info.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 
 		info = paths("/foo").headers("foo!=bar").build();
 		match = info.getMatchingCondition(request);
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test
@@ -113,12 +110,12 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths("/foo").consumes("text/plain").build();
 		RequestMappingInfo match = info.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 
 		info = paths("/foo").consumes("application/xml").build();
 		match = info.getMatchingCondition(request);
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test
@@ -129,12 +126,12 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths("/foo").produces("text/plain").build();
 		RequestMappingInfo match = info.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 
 		info = paths("/foo").produces("application/xml").build();
 		match = info.getMatchingCondition(request);
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test
@@ -145,12 +142,12 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths("/foo").params("foo=bar").build();
 		RequestMappingInfo match = info.getMatchingCondition(request);
 
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 
 		info = paths("/foo").params("foo!=bar").params("foo!=bar").build();
 		match = info.getMatchingCondition(request);
 
-		assertNull(match);
+		assertThat((Object) match).isNull();
 	}
 
 	@Test
@@ -205,7 +202,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info2).isEqualTo(info1);
-		assertEquals(info1.hashCode(), info2.hashCode());
+		assertThat((long) info2.hashCode()).isEqualTo((long) info1.hashCode());
 
 		info2 = paths("/foo", "/NOOOOOO").methods(GET)
 				.params("foo=bar", "customFoo=customBar").headers("foo=bar")
@@ -272,11 +269,11 @@ public class RequestMappingInfoTests {
 
 		RequestMappingInfo info = paths("/foo").methods(RequestMethod.POST).build();
 		RequestMappingInfo match = info.getMatchingCondition(request);
-		assertNotNull(match);
+		assertThat((Object) match).isNotNull();
 
 		info = paths("/foo").methods(RequestMethod.OPTIONS).build();
 		match = info.getMatchingCondition(request);
-		assertNull("Pre-flight should match the ACCESS_CONTROL_REQUEST_METHOD", match);
+		assertThat((Object) match).as("Pre-flight should match the ACCESS_CONTROL_REQUEST_METHOD").isNull();
 	}
 
 }

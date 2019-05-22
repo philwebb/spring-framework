@@ -31,8 +31,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Arjen Poutsma
@@ -61,7 +59,7 @@ public class DefaultClientResponseBuilderTests {
 		assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_GATEWAY);
 		HttpHeaders responseHeaders = response.headers().asHttpHeaders();
 		assertThat(responseHeaders.getFirst("foo")).isEqualTo("bar");
-		assertNotNull("qux", response.cookies().getFirst("baz"));
+		assertThat((Object) response.cookies().getFirst("baz")).as("qux").isNotNull();
 		assertThat(response.cookies().getFirst("baz").getValue()).isEqualTo("qux");
 
 		StepVerifier.create(response.bodyToFlux(String.class))
@@ -92,9 +90,9 @@ public class DefaultClientResponseBuilderTests {
 				.build();
 
 		assertThat(result.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-		assertEquals(1, result.headers().asHttpHeaders().size());
+		assertThat((long) result.headers().asHttpHeaders().size()).isEqualTo((long) 1);
 		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
-		assertEquals(1, result.cookies().size());
+		assertThat((long) result.cookies().size()).isEqualTo((long) 1);
 		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
 
 		StepVerifier.create(result.bodyToFlux(String.class))

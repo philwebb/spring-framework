@@ -35,10 +35,6 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Rossen Stoyanchev
  */
@@ -63,18 +59,18 @@ public class CookieIntegrationTests extends AbstractHttpHandlerIntegrationTests 
 				RequestEntity.get(url).header("Cookie", header).build(), Void.class);
 
 		Map<String, List<HttpCookie>> requestCookies = this.cookieHandler.requestCookies;
-		assertEquals(2, requestCookies.size());
+		assertThat((long) requestCookies.size()).isEqualTo((long) 2);
 
 		List<HttpCookie> list = requestCookies.get("SID");
-		assertEquals(1, list.size());
+		assertThat((long) list.size()).isEqualTo((long) 1);
 		assertThat(list.iterator().next().getValue()).isEqualTo("31d4d96e407aad42");
 
 		list = requestCookies.get("lang");
-		assertEquals(1, list.size());
+		assertThat((long) list.size()).isEqualTo((long) 1);
 		assertThat(list.iterator().next().getValue()).isEqualTo("en-US");
 
 		List<String> headerValues = response.getHeaders().get("Set-Cookie");
-		assertEquals(2, headerValues.size());
+		assertThat((long) headerValues.size()).isEqualTo((long) 2);
 
 		List<String> cookie0 = splitCookie(headerValues.get(0));
 		assertThat(cookie0.remove("SID=31d4d96e407aad42")).as("SID").isTrue();

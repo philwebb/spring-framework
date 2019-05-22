@@ -50,8 +50,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.junit.Assume.assumeTrue;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
@@ -164,15 +162,15 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 					assertThat(event.id()).isEqualTo("0");
 					assertThat(event.data()).isEqualTo(new Person("foo 0"));
 					assertThat(event.comment()).isEqualTo("bar 0");
-					assertNull(event.event());
-					assertNull(event.retry());
+					assertThat((Object) event.event()).isNull();
+					assertThat((Object) event.retry()).isNull();
 				})
 				.consumeNextWith( event -> {
 					assertThat(event.id()).isEqualTo("1");
 					assertThat(event.data()).isEqualTo(new Person("foo 1"));
 					assertThat(event.comment()).isEqualTo("bar 1");
-					assertNull(event.event());
-					assertNull(event.retry());
+					assertThat((Object) event.event()).isNull();
+					assertThat((Object) event.retry()).isNull();
 				})
 				.thenCancel()
 				.verify(Duration.ofSeconds(5L));

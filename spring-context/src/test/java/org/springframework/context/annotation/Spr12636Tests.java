@@ -30,7 +30,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll
@@ -51,8 +50,8 @@ public class Spr12636Tests {
 		this.context = new AnnotationConfigApplicationContext(
 				UserServiceTwo.class, UserServiceOne.class, UserServiceCollector.class);
 		UserServiceCollector bean = this.context.getBean(UserServiceCollector.class);
-		assertSame(context.getBean("serviceOne", UserService.class), bean.userServices.get(0));
-		assertSame(context.getBean("serviceTwo", UserService.class), bean.userServices.get(1));
+		assertThat((Object) bean.userServices.get(0)).isSameAs(context.getBean("serviceOne", UserService.class));
+		assertThat((Object) bean.userServices.get(1)).isSameAs(context.getBean("serviceTwo", UserService.class));
 
 	}
 
@@ -68,8 +67,8 @@ public class Spr12636Tests {
 		assertThat(AopUtils.isAopProxy(serviceTwo)).isTrue();
 
 		UserServiceCollector bean = this.context.getBean(UserServiceCollector.class);
-		assertSame(serviceOne, bean.userServices.get(0));
-		assertSame(serviceTwo, bean.userServices.get(1));
+		assertThat((Object) bean.userServices.get(0)).isSameAs(serviceOne);
+		assertThat((Object) bean.userServices.get(1)).isSameAs(serviceTwo);
 	}
 
 	@Configuration

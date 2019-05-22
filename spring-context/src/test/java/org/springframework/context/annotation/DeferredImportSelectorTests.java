@@ -22,7 +22,6 @@ import org.springframework.context.annotation.DeferredImportSelector.Group;
 import org.springframework.core.type.AnnotationMetadata;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**

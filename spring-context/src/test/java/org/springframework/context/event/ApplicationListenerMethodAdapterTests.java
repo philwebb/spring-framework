@@ -32,7 +32,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -164,7 +163,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "handleGenericString", GenericTestEvent.class);
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertEquals(0, adapter.getOrder());
+		assertThat((long) adapter.getOrder()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -172,7 +171,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "handleRaw", ApplicationEvent.class);
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertEquals(42, adapter.getOrder());
+		assertThat((long) adapter.getOrder()).isEqualTo((long) 42);
 	}
 
 	@Test

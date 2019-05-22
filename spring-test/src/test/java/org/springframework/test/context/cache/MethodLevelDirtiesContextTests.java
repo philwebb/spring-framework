@@ -35,8 +35,6 @@ import org.springframework.test.context.support.DirtiesContextBeforeModesTestExe
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.test.annotation.DirtiesContext.MethodMode.BEFORE_METHOD;
 
 /**
@@ -101,13 +99,13 @@ public class MethodLevelDirtiesContextTests {
 	}
 
 	private void performAssertions(int expectedContextCreationCount) throws Exception {
-		assertNotNull("context must not be null", this.context);
+		assertThat((Object) this.context).as("context must not be null").isNotNull();
 		assertThat(this.context.isActive()).as("context must be active").isTrue();
 
-		assertNotNull("count must not be null", this.count);
-		assertEquals("count: ", expectedContextCreationCount, this.count.intValue());
+		assertThat((Object) this.count).as("count must not be null").isNotNull();
+		assertThat((long) this.count.intValue()).as("count: ").isEqualTo((long) expectedContextCreationCount);
 
-		assertEquals("context creation count: ", expectedContextCreationCount, contextCount.get());
+		assertThat((long) contextCount.get()).as("context creation count: ").isEqualTo((long) expectedContextCreationCount);
 	}
 
 }

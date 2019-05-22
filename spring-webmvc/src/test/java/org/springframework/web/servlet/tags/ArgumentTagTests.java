@@ -28,8 +28,6 @@ import org.springframework.mock.web.test.MockBodyContent;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link ArgumentTag}
@@ -57,7 +55,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertEquals(Tag.EVAL_PAGE, action);
+		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value1");
 	}
 
@@ -65,8 +63,8 @@ public class ArgumentTagTests extends AbstractTagTests {
 	public void argumentWithImplicitNullValue() throws JspException {
 		int action = tag.doEndTag();
 
-		assertEquals(Tag.EVAL_PAGE, action);
-		assertNull(parent.getArgument());
+		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(parent.getArgument()).isNull();
 	}
 
 	@Test
@@ -75,8 +73,8 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertEquals(Tag.EVAL_PAGE, action);
-		assertNull(parent.getArgument());
+		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(parent.getArgument()).isNull();
 	}
 
 	@Test
@@ -86,7 +84,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertEquals(Tag.EVAL_PAGE, action);
+		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value2");
 	}
 
@@ -96,7 +94,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertEquals(Tag.EVAL_PAGE, action);
+		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value3");
 
 		tag.release();
@@ -109,7 +107,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		action = tag.doEndTag();
 
-		assertEquals(Tag.EVAL_PAGE, action);
+		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value4");
 	}
 

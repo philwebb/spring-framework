@@ -34,8 +34,6 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test for {@link AbstractRequestLoggingFilter} and subclasses.
@@ -58,11 +56,11 @@ public class RequestLoggingFilterTests {
 		FilterChain filterChain = new NoOpFilterChain();
 		filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.beforeRequestMessage);
+		assertThat((Object) filter.beforeRequestMessage).isNotNull();
 		assertThat(filter.beforeRequestMessage.contains("uri=/hotel")).isTrue();
 		assertThat(filter.beforeRequestMessage.contains("booking=42")).isFalse();
 
-		assertNotNull(filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isNotNull();
 		assertThat(filter.afterRequestMessage.contains("uri=/hotel")).isTrue();
 		assertThat(filter.afterRequestMessage.contains("booking=42")).isFalse();
 	}
@@ -79,10 +77,10 @@ public class RequestLoggingFilterTests {
 		FilterChain filterChain = new NoOpFilterChain();
 		filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.beforeRequestMessage);
+		assertThat((Object) filter.beforeRequestMessage).isNotNull();
 		assertThat(filter.beforeRequestMessage.contains("[uri=/hotels?booking=42]")).isTrue();
 
-		assertNotNull(filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isNotNull();
 		assertThat(filter.afterRequestMessage.contains("[uri=/hotels?booking=42]")).isTrue();
 	}
 
@@ -96,10 +94,10 @@ public class RequestLoggingFilterTests {
 		FilterChain filterChain = new NoOpFilterChain();
 		filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.beforeRequestMessage);
+		assertThat((Object) filter.beforeRequestMessage).isNotNull();
 		assertThat(filter.beforeRequestMessage.contains("[uri=/hotels]")).isTrue();
 
-		assertNotNull(filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isNotNull();
 		assertThat(filter.afterRequestMessage.contains("[uri=/hotels]")).isTrue();
 	}
 
@@ -115,10 +113,10 @@ public class RequestLoggingFilterTests {
 		filter.setHeaderPredicate(name -> !name.equalsIgnoreCase("token"));
 		filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.beforeRequestMessage);
+		assertThat((Object) filter.beforeRequestMessage).isNotNull();
 		assertThat(filter.beforeRequestMessage).isEqualTo("Before request [uri=/hotels;headers=[Content-Type:\"application/json\", token:\"masked\"]]");
 
-		assertNotNull(filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isNotNull();
 		assertThat(filter.afterRequestMessage).isEqualTo("After request [uri=/hotels;headers=[Content-Type:\"application/json\", token:\"masked\"]]");
 	}
 
@@ -140,7 +138,7 @@ public class RequestLoggingFilterTests {
 
 		filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isNotNull();
 		assertThat(filter.afterRequestMessage.contains("Hello World")).isTrue();
 	}
 
@@ -162,7 +160,7 @@ public class RequestLoggingFilterTests {
 
 		filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isNotNull();
 		assertThat(filter.afterRequestMessage.contains(requestBody)).isTrue();
 	}
 
@@ -188,7 +186,7 @@ public class RequestLoggingFilterTests {
 
 		filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isNotNull();
 		assertThat(filter.afterRequestMessage.contains("Hel")).isTrue();
 		assertThat(filter.afterRequestMessage.contains("Hello World")).isFalse();
 	}

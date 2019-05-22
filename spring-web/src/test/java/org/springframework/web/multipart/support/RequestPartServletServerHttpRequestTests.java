@@ -33,8 +33,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rossen Stoyanchev
@@ -74,7 +72,7 @@ public class RequestPartServletServerHttpRequestTests {
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(this.mockRequest, "part");
 
 		HttpHeaders headers = request.getHeaders();
-		assertNotNull(headers);
+		assertThat((Object) headers).isNotNull();
 		assertThat(headers.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 

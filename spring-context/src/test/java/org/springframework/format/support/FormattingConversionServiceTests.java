@@ -57,8 +57,6 @@ import org.springframework.format.number.NumberStyleFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Keith Donald
@@ -251,20 +249,20 @@ public class FormattingConversionServiceTests {
 	@Test
 	public void parseNull() throws ParseException {
 		formattingService.addFormatterForFieldType(Number.class, new NumberStyleFormatter());
-		assertNull(formattingService
-				.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class)));
+		assertThat(formattingService
+				.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class))).isNull();
 	}
 
 	@Test
 	public void parseEmptyString() throws ParseException {
 		formattingService.addFormatterForFieldType(Number.class, new NumberStyleFormatter());
-		assertNull(formattingService.convert("", TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class)));
+		assertThat(formattingService.convert("", TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class))).isNull();
 	}
 
 	@Test
 	public void parseBlankString() throws ParseException {
 		formattingService.addFormatterForFieldType(Number.class, new NumberStyleFormatter());
-		assertNull(formattingService.convert("     ", TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class)));
+		assertThat(formattingService.convert("     ", TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class))).isNull();
 	}
 
 	@Test
@@ -289,13 +287,13 @@ public class FormattingConversionServiceTests {
 
 	@Test
 	public void parseNullDefault() throws ParseException {
-		assertNull(formattingService
-				.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class)));
+		assertThat(formattingService
+				.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class))).isNull();
 	}
 
 	@Test
 	public void parseEmptyStringDefault() throws ParseException {
-		assertNull(formattingService.convert("", TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class)));
+		assertThat(formattingService.convert("", TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class))).isNull();
 	}
 
 	@Test
@@ -349,14 +347,14 @@ public class FormattingConversionServiceTests {
 	@Test
 	public void introspectedFormatter() throws ParseException {
 		formattingService.addFormatter(new NumberStyleFormatter());
-		assertNull(formattingService.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class)));
+		assertThat(formattingService.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class))).isNull();
 	}
 
 	@Test
 	public void proxiedFormatter() throws ParseException {
 		Formatter<?> formatter = new NumberStyleFormatter();
 		formattingService.addFormatter((Formatter<?>) new ProxyFactory(formatter).getProxy());
-		assertNull(formattingService.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class)));
+		assertThat(formattingService.convert(null, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class))).isNull();
 	}
 
 	@Test

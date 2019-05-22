@@ -36,8 +36,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -50,13 +48,13 @@ public class ServerHttpRequestTests {
 	@Test
 	public void queryParamsNone() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path").getQueryParams();
-		assertEquals(0, params.size());
+		assertThat((long) params.size()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void queryParams() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=A&b=B").getQueryParams();
-		assertEquals(2, params.size());
+		assertThat((long) params.size()).isEqualTo((long) 2);
 		assertThat(params.get("a")).isEqualTo(Collections.singletonList("A"));
 		assertThat(params.get("b")).isEqualTo(Collections.singletonList("B"));
 	}
@@ -64,28 +62,28 @@ public class ServerHttpRequestTests {
 	@Test
 	public void queryParamsWithMultipleValues() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=1&a=2").getQueryParams();
-		assertEquals(1, params.size());
+		assertThat((long) params.size()).isEqualTo((long) 1);
 		assertThat(params.get("a")).isEqualTo(Arrays.asList("1", "2"));
 	}
 
 	@Test  // SPR-15140
 	public void queryParamsWithEncodedValue() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=%20%2B+%C3%A0").getQueryParams();
-		assertEquals(1, params.size());
+		assertThat((long) params.size()).isEqualTo((long) 1);
 		assertThat(params.get("a")).isEqualTo(Collections.singletonList(" + \u00e0"));
 	}
 
 	@Test
 	public void queryParamsWithEmptyValue() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=").getQueryParams();
-		assertEquals(1, params.size());
+		assertThat((long) params.size()).isEqualTo((long) 1);
 		assertThat(params.get("a")).isEqualTo(Collections.singletonList(""));
 	}
 
 	@Test
 	public void queryParamsWithNoValue() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a").getQueryParams();
-		assertEquals(1, params.size());
+		assertThat((long) params.size()).isEqualTo((long) 1);
 		assertThat(params.get("a")).isEqualTo(Collections.singletonList(null));
 	}
 
@@ -94,7 +92,7 @@ public class ServerHttpRequestTests {
 
 		SslInfo sslInfo = mock(SslInfo.class);
 		ServerHttpRequest request = createHttpRequest("/").mutate().sslInfo(sslInfo).build();
-		assertSame(sslInfo, request.getSslInfo());
+		assertThat((Object) request.getSslInfo()).isSameAs(sslInfo);
 
 		request = createHttpRequest("/").mutate().method(HttpMethod.DELETE).build();
 		assertThat(request.getMethod()).isEqualTo(HttpMethod.DELETE);

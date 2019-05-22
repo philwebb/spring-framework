@@ -36,9 +36,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link MockHttpServletRequest}.
@@ -72,11 +69,11 @@ public class MockHttpServletRequestTests {
 	public void setContentAndGetInputStream() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
-		assertEquals(bytes.length, request.getContentLength());
+		assertThat((long) request.getContentLength()).isEqualTo((long) bytes.length);
 		assertThat(StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
 
 		request.setContent(bytes);
-		assertEquals(bytes.length, request.getContentLength());
+		assertThat((long) request.getContentLength()).isEqualTo((long) bytes.length);
 		assertThat(StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
 	}
 
@@ -84,11 +81,11 @@ public class MockHttpServletRequestTests {
 	public void setContentAndGetReader() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
-		assertEquals(bytes.length, request.getContentLength());
+		assertThat((long) request.getContentLength()).isEqualTo((long) bytes.length);
 		assertThat(FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
 
 		request.setContent(bytes);
-		assertEquals(bytes.length, request.getContentLength());
+		assertThat((long) request.getContentLength()).isEqualTo((long) bytes.length);
 		assertThat(FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
 	}
 
@@ -96,7 +93,7 @@ public class MockHttpServletRequestTests {
 	public void setContentAndGetContentAsByteArray() {
 		byte[] bytes = "request body".getBytes();
 		request.setContent(bytes);
-		assertEquals(bytes.length, request.getContentLength());
+		assertThat((long) request.getContentLength()).isEqualTo((long) bytes.length);
 		assertThat(request.getContentAsByteArray()).isEqualTo(bytes);
 	}
 
@@ -113,29 +110,29 @@ public class MockHttpServletRequestTests {
 		byte[] bytes = palindrome.getBytes("UTF-16");
 		request.setCharacterEncoding("UTF-16");
 		request.setContent(bytes);
-		assertEquals(bytes.length, request.getContentLength());
+		assertThat((long) request.getContentLength()).isEqualTo((long) bytes.length);
 		assertThat(request.getContentAsString()).isEqualTo(palindrome);
 	}
 
 	@Test
 	public void noContent() throws IOException {
-		assertEquals(-1, request.getContentLength());
-		assertEquals(-1, request.getInputStream().read());
-		assertNull(request.getContentAsByteArray());
+		assertThat((long) request.getContentLength()).isEqualTo((long) -1);
+		assertThat((long) request.getInputStream().read()).isEqualTo((long) -1);
+		assertThat((Object) request.getContentAsByteArray()).isNull();
 	}
 
 	@Test  // SPR-16505
 	public void getReaderTwice() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
-		assertSame(request.getReader(), request.getReader());
+		assertThat((Object) request.getReader()).isSameAs(request.getReader());
 	}
 
 	@Test  // SPR-16505
 	public void getInputStreamTwice() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
-		assertSame(request.getInputStream(), request.getInputStream());
+		assertThat((Object) request.getInputStream()).isSameAs(request.getInputStream());
 	}
 
 	@Test  // SPR-16499
@@ -160,7 +157,7 @@ public class MockHttpServletRequestTests {
 		request.setContentType(contentType);
 		assertThat(request.getContentType()).isEqualTo(contentType);
 		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
-		assertNull(request.getCharacterEncoding());
+		assertThat((Object) request.getCharacterEncoding()).isNull();
 	}
 
 	@Test
@@ -178,7 +175,7 @@ public class MockHttpServletRequestTests {
 		request.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
 		assertThat(request.getContentType()).isEqualTo(contentType);
 		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
-		assertNull(request.getCharacterEncoding());
+		assertThat((Object) request.getCharacterEncoding()).isNull();
 	}
 
 	@Test
@@ -234,11 +231,11 @@ public class MockHttpServletRequestTests {
 		params.put("key3", new String[] { "value3A", "value3B" });
 		request.setParameters(params);
 		String[] values1 = request.getParameterValues("key1");
-		assertEquals(1, values1.length);
+		assertThat((long) values1.length).isEqualTo((long) 1);
 		assertThat(request.getParameter("key1")).isEqualTo("newValue1");
 		assertThat(request.getParameter("key2")).isEqualTo("value2");
 		String[] values3 = request.getParameterValues("key3");
-		assertEquals(2, values3.length);
+		assertThat((long) values3.length).isEqualTo((long) 2);
 		assertThat(values3[0]).isEqualTo("value3A");
 		assertThat(values3[1]).isEqualTo("value3B");
 	}
@@ -252,12 +249,12 @@ public class MockHttpServletRequestTests {
 		params.put("key3", new String[] { "value3A", "value3B" });
 		request.addParameters(params);
 		String[] values1 = request.getParameterValues("key1");
-		assertEquals(2, values1.length);
+		assertThat((long) values1.length).isEqualTo((long) 2);
 		assertThat(values1[0]).isEqualTo("value1");
 		assertThat(values1[1]).isEqualTo("newValue1");
 		assertThat(request.getParameter("key2")).isEqualTo("value2");
 		String[] values3 = request.getParameterValues("key3");
-		assertEquals(2, values3.length);
+		assertThat((long) values3.length).isEqualTo((long) 2);
 		assertThat(values3[0]).isEqualTo("value3A");
 		assertThat(values3[1]).isEqualTo("value3B");
 	}
@@ -269,9 +266,9 @@ public class MockHttpServletRequestTests {
 		params.put("key2", "value2");
 		params.put("key3", new String[] { "value3A", "value3B" });
 		request.addParameters(params);
-		assertEquals(3, request.getParameterMap().size());
+		assertThat((long) request.getParameterMap().size()).isEqualTo((long) 3);
 		request.removeAllParameters();
-		assertEquals(0, request.getParameterMap().size());
+		assertThat((long) request.getParameterMap().size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -283,7 +280,7 @@ public class MockHttpServletRequestTests {
 		Cookie[] cookies = request.getCookies();
 		List<String> cookieHeaders = Collections.list(request.getHeaders("Cookie"));
 
-		assertEquals(2, cookies.length);
+		assertThat((long) cookies.length).isEqualTo((long) 2);
 		assertThat(cookies[0].getName()).isEqualTo("foo");
 		assertThat(cookies[0].getValue()).isEqualTo("bar");
 		assertThat(cookies[1].getName()).isEqualTo("baz");
@@ -293,7 +290,7 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void noCookies() {
-		assertNull(request.getCookies());
+		assertThat((Object) request.getCookies()).isNull();
 	}
 
 	@Test
@@ -397,20 +394,20 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void getServerPortWithDefaultPort() {
-		assertEquals(80, request.getServerPort());
+		assertThat((long) request.getServerPort()).isEqualTo((long) 80);
 	}
 
 	@Test
 	public void getServerPortWithCustomPort() {
 		request.setServerPort(8080);
-		assertEquals(8080, request.getServerPort());
+		assertThat((long) request.getServerPort()).isEqualTo((long) 8080);
 	}
 
 	@Test
 	public void getServerPortViaHostHeaderAsIpv6AddressWithoutPort() {
 		String testServer = "[2001:db8:0:1]";
 		request.addHeader(HOST, testServer);
-		assertEquals(80, request.getServerPort());
+		assertThat((long) request.getServerPort()).isEqualTo((long) 80);
 	}
 
 	@Test
@@ -418,14 +415,14 @@ public class MockHttpServletRequestTests {
 		String testServer = "[2001:db8:0:1]";
 		int testPort = 9999;
 		request.addHeader(HOST, testServer + ":" + testPort);
-		assertEquals(testPort, request.getServerPort());
+		assertThat((long) request.getServerPort()).isEqualTo((long) testPort);
 	}
 
 	@Test
 	public void getServerPortViaHostHeaderWithoutPort() {
 		String testServer = "test.server";
 		request.addHeader(HOST, testServer);
-		assertEquals(80, request.getServerPort());
+		assertThat((long) request.getServerPort()).isEqualTo((long) 80);
 	}
 
 	@Test
@@ -433,7 +430,7 @@ public class MockHttpServletRequestTests {
 		String testServer = "test.server";
 		int testPort = 9999;
 		request.addHeader(HOST, testServer + ":" + testPort);
-		assertEquals(testPort, request.getServerPort());
+		assertThat((long) request.getServerPort()).isEqualTo((long) testPort);
 	}
 
 	@Test
@@ -528,32 +525,32 @@ public class MockHttpServletRequestTests {
 	public void httpHeaderDate() {
 		Date date = new Date();
 		request.addHeader(HttpHeaders.IF_MODIFIED_SINCE, date);
-		assertEquals(date.getTime(), request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE));
+		assertThat(request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)).isEqualTo(date.getTime());
 	}
 
 	@Test
 	public void httpHeaderTimestamp() {
 		long timestamp = new Date().getTime();
 		request.addHeader(HttpHeaders.IF_MODIFIED_SINCE, timestamp);
-		assertEquals(timestamp, request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE));
+		assertThat(request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)).isEqualTo(timestamp);
 	}
 
 	@Test
 	public void httpHeaderRfcFormattedDate() {
 		request.addHeader(HttpHeaders.IF_MODIFIED_SINCE, "Tue, 21 Jul 2015 10:00:00 GMT");
-		assertEquals(1437472800000L, request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE));
+		assertThat(request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)).isEqualTo(1437472800000L);
 	}
 
 	@Test
 	public void httpHeaderFirstVariantFormattedDate() {
 		request.addHeader(HttpHeaders.IF_MODIFIED_SINCE, "Tue, 21-Jul-15 10:00:00 GMT");
-		assertEquals(1437472800000L, request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE));
+		assertThat(request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)).isEqualTo(1437472800000L);
 	}
 
 	@Test
 	public void httpHeaderSecondVariantFormattedDate() {
 		request.addHeader(HttpHeaders.IF_MODIFIED_SINCE, "Tue Jul 21 10:00:00 2015");
-		assertEquals(1437472800000L, request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE));
+		assertThat(request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)).isEqualTo(1437472800000L);
 	}
 
 	@Test

@@ -25,8 +25,6 @@ import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Dave Syer
@@ -39,7 +37,7 @@ public class ResourceArrayPropertyEditorTests {
 		PropertyEditor editor = new ResourceArrayPropertyEditor();
 		editor.setAsText("classpath:org/springframework/core/io/support/ResourceArrayPropertyEditor.class");
 		Resource[] resources = (Resource[]) editor.getValue();
-		assertNotNull(resources);
+		assertThat((Object) resources).isNotNull();
 		assertThat(resources[0].exists()).isTrue();
 	}
 
@@ -52,7 +50,7 @@ public class ResourceArrayPropertyEditorTests {
 		PropertyEditor editor = new ResourceArrayPropertyEditor();
 		editor.setAsText("classpath*:org/springframework/core/io/support/Resource*Editor.class");
 		Resource[] resources = (Resource[]) editor.getValue();
-		assertNotNull(resources);
+		assertThat((Object) resources).isNotNull();
 		assertThat(resources[0].exists()).isTrue();
 	}
 

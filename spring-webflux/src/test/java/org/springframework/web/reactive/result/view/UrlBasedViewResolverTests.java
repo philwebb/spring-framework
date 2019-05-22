@@ -31,9 +31,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link UrlBasedViewResolver}.
@@ -61,10 +58,10 @@ public class UrlBasedViewResolverTests {
 		this.resolver.setViewNames("my*");
 
 		Mono<View> mono = this.resolver.resolveViewName("my-view", Locale.US);
-		assertNotNull(mono.block());
+		assertThat((Object) mono.block()).isNotNull();
 
 		mono = this.resolver.resolveViewName("not-my-view", Locale.US);
-		assertNull(mono.block());
+		assertThat((Object) mono.block()).isNull();
 	}
 
 	@Test

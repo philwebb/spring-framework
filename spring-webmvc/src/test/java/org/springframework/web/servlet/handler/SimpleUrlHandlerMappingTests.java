@@ -34,9 +34,6 @@ import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rod Johnson
@@ -86,8 +83,8 @@ public class SimpleUrlHandlerMappingTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo%0a%0dbar/baz");
 
 		HandlerExecutionChain hec = handlerMapping.getHandler(request);
-		assertNotNull(hec);
-		assertSame(controller, hec.getHandler());
+		assertThat((Object) hec).isNotNull();
+		assertThat(hec.getHandler()).isSameAs(controller);
 	}
 
 	@SuppressWarnings("resource")

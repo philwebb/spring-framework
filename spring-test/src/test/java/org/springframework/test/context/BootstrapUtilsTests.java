@@ -27,8 +27,6 @@ import org.springframework.test.context.web.WebTestContextBootstrapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.context.BootstrapUtils.resolveTestContextBootstrapper;
 
@@ -103,7 +101,7 @@ public class BootstrapUtilsTests {
 	private void assertBootstrapper(Class<?> testClass, Class<?> expectedBootstrapper) {
 		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(testClass, delegate);
 		TestContextBootstrapper bootstrapper = resolveTestContextBootstrapper(bootstrapContext);
-		assertNotNull(bootstrapper);
+		assertThat((Object) bootstrapper).isNotNull();
 		assertThat(bootstrapper.getClass()).isEqualTo(expectedBootstrapper);
 	}
 

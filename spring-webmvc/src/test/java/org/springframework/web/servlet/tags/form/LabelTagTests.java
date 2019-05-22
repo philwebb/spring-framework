@@ -26,7 +26,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.servlet.tags.NestedPathTag;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -68,8 +67,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertEquals(Tag.EVAL_BODY_INCLUDE, startResult);
-		assertEquals(Tag.EVAL_PAGE, endResult);
+		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		// we are using a nested path (see extendPageContext(..)), so...
@@ -94,8 +93,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertEquals(Tag.EVAL_BODY_INCLUDE, startResult);
-		assertEquals(Tag.EVAL_PAGE, endResult);
+		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		// we are using a nested path (see extendPageContext(..)), so...
@@ -116,8 +115,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertEquals(Tag.EVAL_BODY_INCLUDE, startResult);
-		assertEquals(Tag.EVAL_PAGE, endResult);
+		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		// we are using a nested path (see extendPageContext(..)), so...
@@ -137,8 +136,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertEquals(Tag.EVAL_BODY_INCLUDE, startResult);
-		assertEquals(Tag.EVAL_PAGE, endResult);
+		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertContainsAttribute(output, "for", "myElement");

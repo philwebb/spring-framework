@@ -28,9 +28,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Integration test that verifies meta-annotation support for {@link WebAppConfiguration}
@@ -61,15 +58,15 @@ public class MetaAnnotationConfigWacTests {
 
 	@Test
 	public void basicWacFeatures() throws Exception {
-		assertNotNull("ServletContext should be set in the WAC.", wac.getServletContext());
+		assertThat((Object) wac.getServletContext()).as("ServletContext should be set in the WAC.").isNotNull();
 
-		assertNotNull("ServletContext should have been autowired from the WAC.", mockServletContext);
+		assertThat((Object) mockServletContext).as("ServletContext should have been autowired from the WAC.").isNotNull();
 
 		Object rootWac = mockServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-		assertNotNull("Root WAC must be stored in the ServletContext as: "
-				+ WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootWac);
-		assertSame("test WAC and Root WAC in ServletContext must be the same object.", wac, rootWac);
-		assertSame("ServletContext instances must be the same object.", mockServletContext, wac.getServletContext());
+		assertThat(rootWac).as("Root WAC must be stored in the ServletContext as: "
+				+ WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE).isNotNull();
+		assertThat(rootWac).as("test WAC and Root WAC in ServletContext must be the same object.").isSameAs(wac);
+		assertThat((Object) wac.getServletContext()).as("ServletContext instances must be the same object.").isSameAs(mockServletContext);
 
 		assertThat(mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
 	}

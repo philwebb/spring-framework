@@ -28,7 +28,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.config.TaskManagementConfigUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll
@@ -60,7 +59,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	public void asyncPostProcessorExecutorReference() {
 		Object executor = context.getBean("testExecutor");
 		Object aspect = context.getBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME);
-		assertSame(executor, ((Supplier) new DirectFieldAccessor(aspect).getPropertyValue("defaultExecutor")).get());
+		assertThat(((Supplier) new DirectFieldAccessor(aspect).getPropertyValue("defaultExecutor")).get()).isSameAs(executor);
 	}
 
 	@Test
@@ -68,7 +67,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	public void asyncPostProcessorExceptionHandlerReference() {
 		Object exceptionHandler = context.getBean("testExceptionHandler");
 		Object aspect = context.getBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME);
-		assertSame(exceptionHandler, ((Supplier) new DirectFieldAccessor(aspect).getPropertyValue("exceptionHandler")).get());
+		assertThat(((Supplier) new DirectFieldAccessor(aspect).getPropertyValue("exceptionHandler")).get()).isSameAs(exceptionHandler);
 	}
 
 }

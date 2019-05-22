@@ -24,9 +24,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.servlet.mvc.condition.HeadersRequestCondition.HeaderExpression;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Arjen Poutsma
@@ -49,7 +46,7 @@ public class HeadersRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("Accept", "");
 
-		assertNotNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -59,7 +56,7 @@ public class HeadersRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("bar", "");
 
-		assertNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -68,7 +65,7 @@ public class HeadersRequestConditionTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 
-		assertNotNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -78,7 +75,7 @@ public class HeadersRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("foo", "bar");
 
-		assertNotNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -88,7 +85,7 @@ public class HeadersRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("foo", "bazz");
 
-		assertNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -98,7 +95,7 @@ public class HeadersRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("foo", "bar");
 
-		assertNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -107,7 +104,7 @@ public class HeadersRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("foo", "baz");
 
-		assertNotNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -116,7 +113,7 @@ public class HeadersRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("foo", "bar");
 
-		assertNull(condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -154,8 +151,7 @@ public class HeadersRequestConditionTests {
 		HeadersRequestCondition condition1 = new HeadersRequestCondition("foo!=a");
 		HeadersRequestCondition condition2 = new HeadersRequestCondition("foo");
 
-		assertEquals("Negated match should not count as more specific",
-				0, condition1.compareTo(condition2, request));
+		assertThat((long) condition1.compareTo(condition2, request)).as("Negated match should not count as more specific").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -165,7 +161,7 @@ public class HeadersRequestConditionTests {
 
 		HeadersRequestCondition result = condition1.combine(condition2);
 		Collection<HeaderExpression> conditions = result.getContent();
-		assertEquals(2, conditions.size());
+		assertThat((long) conditions.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -181,7 +177,7 @@ public class HeadersRequestConditionTests {
 		condition = new HeadersRequestCondition("bar");
 
 		result = condition.getMatchingCondition(request);
-		assertNull(result);
+		assertThat((Object) result).isNull();
 	}
 
 

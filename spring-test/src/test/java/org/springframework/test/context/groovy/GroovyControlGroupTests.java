@@ -24,8 +24,6 @@ import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Simple integration test to verify the expected functionality of
@@ -54,11 +52,11 @@ public class GroovyControlGroupTests {
 		assertThat(bar).isEqualTo("Bar");
 
 		Pet pet = ctx.getBean(Pet.class);
-		assertNotNull("pet", pet);
+		assertThat((Object) pet).as("pet").isNotNull();
 		assertThat(pet.getName()).isEqualTo("Dogbert");
 
 		Employee employee = ctx.getBean(Employee.class);
-		assertNotNull("employee", employee);
+		assertThat((Object) employee).as("employee").isNotNull();
 		assertThat(employee.getName()).isEqualTo("Dilbert");
 		assertThat(employee.getCompany()).isEqualTo("???");
 	}

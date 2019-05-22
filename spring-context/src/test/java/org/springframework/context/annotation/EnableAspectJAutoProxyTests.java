@@ -35,9 +35,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-
 /**
  * @author Juergen Hoeller
  * @author Chris Beams
@@ -72,17 +69,17 @@ public class EnableAspectJAutoProxyTests {
 		FooService fooService = ctx.getBean(FooService.class);
 		ServiceInvocationCounter counter = ctx.getBean(ServiceInvocationCounter.class);
 
-		assertEquals(0, counter.getCount());
+		assertThat((long) counter.getCount()).isEqualTo((long) 0);
 
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertEquals(1, counter.getCount());
+		assertThat((long) counter.getCount()).isEqualTo((long) 1);
 
 		String value = fooService.foo(1);
 		assertThat(value).isEqualTo("bar");
-		assertEquals(2, counter.getCount());
+		assertThat((long) counter.getCount()).isEqualTo((long) 2);
 
 		fooService.foo(1);
-		assertEquals(3, counter.getCount());
+		assertThat((long) counter.getCount()).isEqualTo((long) 3);
 	}
 
 	@Test
@@ -131,7 +128,7 @@ public class EnableAspectJAutoProxyTests {
 			return new FooServiceImpl() {
 				@Override
 				public String foo(int id) {
-					assertNotNull(AopContext.currentProxy());
+					assertThat(AopContext.currentProxy()).isNotNull();
 					return super.foo(id);
 				}
 				@Override

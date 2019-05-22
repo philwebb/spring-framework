@@ -36,10 +36,6 @@ import org.springframework.util.MultiValueMap;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
-
 /**
  * @author Keith Donald
  * @author Phil Webb
@@ -89,7 +85,7 @@ public class MapToMapConverterTests {
 		map.put("2", "37");
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertSame(map, conversionService.convert(map, Map.class));
+		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test
@@ -174,7 +170,7 @@ public class MapToMapConverterTests {
 		map.put("2", Arrays.asList("37", "23"));
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertSame(map, conversionService.convert(map, Map.class));
+		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test
@@ -186,7 +182,7 @@ public class MapToMapConverterTests {
 		conversionService.addConverter(new CollectionToObjectConverter(conversionService));
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertSame(map, conversionService.convert(map, Map.class));
+		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test
@@ -196,7 +192,7 @@ public class MapToMapConverterTests {
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("emptyMapTarget"));
 
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertSame(map, conversionService.convert(map, sourceType, targetType));
+		assertThat(conversionService.convert(map, sourceType, targetType)).isSameAs(map);
 	}
 
 	@Test
@@ -204,7 +200,7 @@ public class MapToMapConverterTests {
 		Map<String, String> map = new HashMap<>();
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertSame(map, conversionService.convert(map, Map.class));
+		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test

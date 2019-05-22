@@ -63,10 +63,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-
 /**
  * Abstract tests for AspectJAdvisorFactory.
  * See subclasses for tests of concrete factories.
@@ -108,7 +104,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		TestBean itb = (TestBean) createProxy(target,
 				getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(new PerTargetAspect(), "someBean")),
 				TestBean.class);
-		assertEquals("Around advice must NOT apply", realAge, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must NOT apply").isEqualTo((long) realAge);
 
 		Advised advised = (Advised) itb;
 		ReflectiveAspectJAdvisorFactory.SyntheticInstantiationAdvisor sia =
@@ -121,15 +117,15 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		// Check that the perclause pointcut is valid
 		assertThat(maaif.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
-		assertNotSame(imapa.getDeclaredPointcut(), imapa.getPointcut());
+		assertThat((Object) imapa.getPointcut()).isNotSameAs(imapa.getDeclaredPointcut());
 
 		// Hit the method in the per clause to instantiate the aspect
 		itb.getSpouse();
 
 		assertThat(maaif.isMaterialized()).isTrue();
 
-		assertEquals("Around advice must apply", 0, itb.getAge());
-		assertEquals("Around advice must apply", 1, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 0);
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -151,13 +147,13 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		Collections.sort(advisors, new OrderComparator());
 
 		TestBean itb = (TestBean) createProxy(target, advisors, TestBean.class);
-		assertEquals("Around advice must NOT apply", realAge, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must NOT apply").isEqualTo((long) realAge);
 
 		// Hit the method in the per clause to instantiate the aspect
 		itb.getSpouse();
 
-		assertEquals("Around advice must apply", 0, itb.getAge());
-		assertEquals("Around advice must apply", 1, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 0);
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -177,13 +173,13 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		Collections.sort(advisors, new OrderComparator());
 
 		TestBean itb = (TestBean) createProxy(target, advisors, TestBean.class);
-		assertEquals("Around advice must NOT apply", realAge, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must NOT apply").isEqualTo((long) realAge);
 
 		// Hit the method in the per clause to instantiate the aspect
 		itb.getSpouse();
 
-		assertEquals("Around advice must apply", 0, itb.getAge());
-		assertEquals("Around advice must apply", 1, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 0);
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -194,11 +190,11 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		TestBean itb = (TestBean) createProxy(target,
 				getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(new PerThisAspect(), "someBean")),
 				TestBean.class);
-		assertEquals("Around advice must NOT apply", realAge, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must NOT apply").isEqualTo((long) realAge);
 
 		Advised advised = (Advised) itb;
 		// Will be ExposeInvocationInterceptor, synthetic instantiation advisor, 2 method advisors
-		assertEquals(4, advised.getAdvisors().length);
+		assertThat((long) advised.getAdvisors().length).isEqualTo((long) 4);
 		ReflectiveAspectJAdvisorFactory.SyntheticInstantiationAdvisor sia =
 				(ReflectiveAspectJAdvisorFactory.SyntheticInstantiationAdvisor) advised.getAdvisors()[1];
 		assertThat(sia.getPointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
@@ -209,7 +205,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		// Check that the perclause pointcut is valid
 		assertThat(maaif.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
-		assertNotSame(imapa.getDeclaredPointcut(), imapa.getPointcut());
+		assertThat((Object) imapa.getPointcut()).isNotSameAs(imapa.getDeclaredPointcut());
 
 		// Hit the method in the per clause to instantiate the aspect
 		itb.getSpouse();
@@ -218,8 +214,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		assertThat(imapa.getDeclaredPointcut().getMethodMatcher().matches(TestBean.class.getMethod("getAge"), null)).isTrue();
 
-		assertEquals("Around advice must apply", 0, itb.getAge());
-		assertEquals("Around advice must apply", 1, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 0);
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -229,12 +225,12 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		target.setAge(realAge);
 		PerTypeWithinAspectInstanceFactory aif = new PerTypeWithinAspectInstanceFactory();
 		TestBean itb = (TestBean) createProxy(target, getFixture().getAdvisors(aif), TestBean.class);
-		assertEquals("No method calls", 0, aif.getInstantiationCount());
-		assertEquals("Around advice must now apply", 0, itb.getAge());
+		assertThat((long) aif.getInstantiationCount()).as("No method calls").isEqualTo((long) 0);
+		assertThat((long) itb.getAge()).as("Around advice must now apply").isEqualTo((long) 0);
 
 		Advised advised = (Advised) itb;
 		// Will be ExposeInvocationInterceptor, synthetic instantiation advisor, 2 method advisors
-		assertEquals(4, advised.getAdvisors().length);
+		assertThat((long) advised.getAdvisors().length).isEqualTo((long) 4);
 		ReflectiveAspectJAdvisorFactory.SyntheticInstantiationAdvisor sia =
 				(ReflectiveAspectJAdvisorFactory.SyntheticInstantiationAdvisor) advised.getAdvisors()[1];
 		assertThat(sia.getPointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
@@ -245,7 +241,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		// Check that the perclause pointcut is valid
 		assertThat(maaif.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
-		assertNotSame(imapa.getDeclaredPointcut(), imapa.getPointcut());
+		assertThat((Object) imapa.getPointcut()).isNotSameAs(imapa.getDeclaredPointcut());
 
 		// Hit the method in the per clause to instantiate the aspect
 		itb.getSpouse();
@@ -254,13 +250,13 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		assertThat(imapa.getDeclaredPointcut().getMethodMatcher().matches(TestBean.class.getMethod("getAge"), null)).isTrue();
 
-		assertEquals("Around advice must still apply", 1, itb.getAge());
-		assertEquals("Around advice must still apply", 2, itb.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must still apply").isEqualTo((long) 1);
+		assertThat((long) itb.getAge()).as("Around advice must still apply").isEqualTo((long) 2);
 
 		TestBean itb2 = (TestBean) createProxy(target, getFixture().getAdvisors(aif), TestBean.class);
-		assertEquals(1, aif.getInstantiationCount());
-		assertEquals("Around advice be independent for second instance", 0, itb2.getAge());
-		assertEquals(2, aif.getInstantiationCount());
+		assertThat((long) aif.getInstantiationCount()).isEqualTo((long) 1);
+		assertThat((long) itb2.getAge()).as("Around advice be independent for second instance").isEqualTo((long) 0);
+		assertThat((long) aif.getInstantiationCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -286,8 +282,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 						new NamedPointcutAspectFromLibraryWithBinding(), "someBean")),
 				ITestBean.class);
 		itb.setAge(10);
-		assertEquals("Around advice must apply", 20, itb.getAge());
-		assertEquals(20,target.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 20);
+		assertThat((long) target.getAge()).isEqualTo((long) 20);
 	}
 
 	private void testNamedPointcuts(Object aspectInstance) {
@@ -297,8 +293,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		ITestBean itb = (ITestBean) createProxy(target,
 				getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(aspectInstance, "someBean")),
 				ITestBean.class);
-		assertEquals("Around advice must apply", -1, itb.getAge());
-		assertEquals(realAge, target.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) -1);
+		assertThat((long) target.getAge()).isEqualTo((long) realAge);
 	}
 
 	@Test
@@ -309,8 +305,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 						new SingletonMetadataAwareAspectInstanceFactory(new BindingAspectWithSingleArg(), "someBean")),
 				ITestBean.class);
 		itb.setAge(10);
-		assertEquals("Around advice must apply", 20, itb.getAge());
-		assertEquals(20,target.getAge());
+		assertThat((long) itb.getAge()).as("Around advice must apply").isEqualTo((long) 20);
+		assertThat((long) target.getAge()).isEqualTo((long) 20);
 	}
 
 	@Test
@@ -371,8 +367,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 				getFixture().getAdvisors(
 						new SingletonMetadataAwareAspectInstanceFactory(new MakeLockable(), "someBean")),
 				CannotBeUnlocked.class).isEmpty()).isTrue();
-		assertEquals(2, AopUtils.findAdvisorsThatCanApply(getFixture().getAdvisors(
-				new SingletonMetadataAwareAspectInstanceFactory(new MakeLockable(),"someBean")), NotLockable.class).size());
+		assertThat((long) AopUtils.findAdvisorsThatCanApply(getFixture().getAdvisors(
+				new SingletonMetadataAwareAspectInstanceFactory(new MakeLockable(), "someBean")), NotLockable.class).size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -463,7 +459,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		UnsupportedOperationException expectedException = new UnsupportedOperationException();
 		List<Advisor> advisors = getFixture().getAdvisors(
 				new SingletonMetadataAwareAspectInstanceFactory(new ExceptionAspect(expectedException), "someBean"));
-		assertEquals("One advice method was found", 1, advisors.size());
+		assertThat((long) advisors.size()).as("One advice method was found").isEqualTo((long) 1);
 		ITestBean itb = (ITestBean) createProxy(target, advisors, ITestBean.class);
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
 				itb::getAge);
@@ -477,7 +473,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		RemoteException expectedException = new RemoteException();
 		List<Advisor> advisors = getFixture().getAdvisors(
 				new SingletonMetadataAwareAspectInstanceFactory(new ExceptionAspect(expectedException), "someBean"));
-		assertEquals("One advice method was found", 1, advisors.size());
+		assertThat((long) advisors.size()).as("One advice method was found").isEqualTo((long) 1);
 		ITestBean itb = (ITestBean) createProxy(target, advisors, ITestBean.class);
 		assertThatExceptionOfType(UndeclaredThrowableException.class).isThrownBy(
 				itb::getAge).withCause(expectedException);
@@ -506,13 +502,13 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		TwoAdviceAspect twoAdviceAspect = new TwoAdviceAspect();
 		List<Advisor> advisors = getFixture().getAdvisors(
 				new SingletonMetadataAwareAspectInstanceFactory(twoAdviceAspect, "someBean"));
-		assertEquals("Two advice methods found", 2, advisors.size());
+		assertThat((long) advisors.size()).as("Two advice methods found").isEqualTo((long) 2);
 		ITestBean itb = (ITestBean) createProxy(target, advisors, ITestBean.class);
 		itb.setName("");
-		assertEquals(0, itb.getAge());
+		assertThat((long) itb.getAge()).isEqualTo((long) 0);
 		int newAge = 32;
 		itb.setAge(newAge);
-		assertEquals(1, itb.getAge());
+		assertThat((long) itb.getAge()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -522,15 +518,15 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		List<Advisor> advisors = getFixture().getAdvisors(
 				new SingletonMetadataAwareAspectInstanceFactory(afterReturningAspect, "someBean"));
 		Echo echo = (Echo) createProxy(target, advisors, Echo.class);
-		assertEquals(0, afterReturningAspect.successCount);
+		assertThat((long) afterReturningAspect.successCount).isEqualTo((long) 0);
 		assertThat(echo.echo("")).isEqualTo("");
-		assertEquals(1, afterReturningAspect.successCount);
-		assertEquals(0, afterReturningAspect.failureCount);
+		assertThat((long) afterReturningAspect.successCount).isEqualTo((long) 1);
+		assertThat((long) afterReturningAspect.failureCount).isEqualTo((long) 0);
 		assertThatExceptionOfType(FileNotFoundException.class).isThrownBy(() ->
 			echo.echo(new FileNotFoundException()));
-		assertEquals(1, afterReturningAspect.successCount);
-		assertEquals(1, afterReturningAspect.failureCount);
-		assertEquals(afterReturningAspect.failureCount + afterReturningAspect.successCount, afterReturningAspect.afterCount);
+		assertThat((long) afterReturningAspect.successCount).isEqualTo((long) 1);
+		assertThat((long) afterReturningAspect.failureCount).isEqualTo((long) 1);
+		assertThat((long) afterReturningAspect.afterCount).isEqualTo((long) (afterReturningAspect.failureCount + afterReturningAspect.successCount));
 	}
 
 	@Test

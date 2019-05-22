@@ -25,8 +25,6 @@ import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link DefaultRenderingBuilder}.
@@ -41,8 +39,8 @@ public class DefaultRenderingBuilderTests {
 
 		assertThat(rendering.view()).isEqualTo("abc");
 		assertThat(rendering.modelAttributes()).isEqualTo(Collections.emptyMap());
-		assertNull(rendering.status());
-		assertEquals(0, rendering.headers().size());
+		assertThat((Object) rendering.status()).isNull();
+		assertThat((long) rendering.headers().size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -97,7 +95,7 @@ public class DefaultRenderingBuilderTests {
 	public void header() throws Exception {
 		Rendering rendering = Rendering.view("foo").header("foo", "bar").build();
 
-		assertEquals(1, rendering.headers().size());
+		assertThat((long) rendering.headers().size()).isEqualTo((long) 1);
 		assertThat(rendering.headers().get("foo")).isEqualTo(Collections.singletonList("bar"));
 	}
 

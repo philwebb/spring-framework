@@ -38,8 +38,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.web.reactive.function.UnsupportedMediaTypeException;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * WebClient integration tests focusing on data buffer management.
@@ -105,7 +104,7 @@ public class WebClientDataBufferAllocatingTests extends AbstractDataBufferAlloca
 				.bodyToMono(Void.class);
 
 		StepVerifier.create(mono).expectComplete().verify(Duration.ofSeconds(3));
-		assertEquals(1, this.server.getRequestCount());
+		assertThat((long) this.server.getRequestCount()).isEqualTo((long) 1);
 	}
 
 	@Test // SPR-17482
@@ -121,7 +120,7 @@ public class WebClientDataBufferAllocatingTests extends AbstractDataBufferAlloca
 				.bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {});
 
 		StepVerifier.create(mono).expectError(UnsupportedMediaTypeException.class).verify(Duration.ofSeconds(3));
-		assertEquals(1, this.server.getRequestCount());
+		assertThat((long) this.server.getRequestCount()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -164,8 +163,8 @@ public class WebClientDataBufferAllocatingTests extends AbstractDataBufferAlloca
 				.onStatus(status -> status.equals(errorStatus), exceptionFunction)
 				.bodyToMono(String.class);
 
-		StepVerifier.create(mono).expectErrorSatisfies(actual -> assertSame(expected, actual)).verify(DELAY);
-		assertEquals(1, this.server.getRequestCount());
+		StepVerifier.create(mono).expectErrorSatisfies(actual -> assertThat((Object) actual).isSameAs(expected)).verify(DELAY);
+		assertThat((long) this.server.getRequestCount()).isEqualTo((long) 1);
 	}
 
 }

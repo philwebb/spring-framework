@@ -48,9 +48,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -90,13 +87,13 @@ public class FormHttpMessageConverterTests {
 				new MediaType("application", "x-www-form-urlencoded", StandardCharsets.ISO_8859_1));
 		MultiValueMap<String, String> result = this.converter.read(null, inputMessage);
 
-		assertEquals("Invalid result", 3, result.size());
+		assertThat((long) result.size()).as("Invalid result").isEqualTo((long) 3);
 		assertThat(result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 		List<String> values = result.get("name 2");
-		assertEquals("Invalid result", 2, values.size());
+		assertThat((long) values.size()).as("Invalid result").isEqualTo((long) 2);
 		assertThat(values.get(0)).as("Invalid result").isEqualTo("value 2+1");
 		assertThat(values.get(1)).as("Invalid result").isEqualTo("value 2+2");
-		assertNull("Invalid result", result.getFirst("name 3"));
+		assertThat((Object) result.getFirst("name 3")).as("Invalid result").isNull();
 	}
 
 	@Test
@@ -111,8 +108,7 @@ public class FormHttpMessageConverterTests {
 
 		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8)).as("Invalid result").isEqualTo("name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3");
 		assertThat(outputMessage.getHeaders().getContentType().toString()).as("Invalid content-type").isEqualTo("application/x-www-form-urlencoded;charset=UTF-8");
-		assertEquals("Invalid content-length", outputMessage.getBodyAsBytes().length,
-				outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).as("Invalid content-length").isEqualTo((long) outputMessage.getBodyAsBytes().length);
 	}
 
 	@Test
@@ -153,7 +149,7 @@ public class FormHttpMessageConverterTests {
 		FileUpload fileUpload = new FileUpload(fileItemFactory);
 		RequestContext requestContext = new MockHttpOutputMessageRequestContext(outputMessage);
 		List<FileItem> items = fileUpload.parseRequest(requestContext);
-		assertEquals(6, items.size());
+		assertThat((long) items.size()).isEqualTo((long) 6);
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();
 		assertThat(item.getFieldName()).isEqualTo("name 1");
@@ -174,14 +170,14 @@ public class FormHttpMessageConverterTests {
 		assertThat(item.getFieldName()).isEqualTo("logo");
 		assertThat(item.getName()).isEqualTo("logo.jpg");
 		assertThat(item.getContentType()).isEqualTo("image/jpeg");
-		assertEquals(logo.getFile().length(), item.getSize());
+		assertThat(item.getSize()).isEqualTo(logo.getFile().length());
 
 		item = items.get(4);
 		assertThat(item.isFormField()).isFalse();
 		assertThat(item.getFieldName()).isEqualTo("utf8");
 		assertThat(item.getName()).isEqualTo("Hall\u00F6le.jpg");
 		assertThat(item.getContentType()).isEqualTo("image/jpeg");
-		assertEquals(logo.getFile().length(), item.getSize());
+		assertThat(item.getSize()).isEqualTo(logo.getFile().length());
 
 		item = items.get(5);
 		assertThat(item.getFieldName()).isEqualTo("xml");
@@ -209,14 +205,14 @@ public class FormHttpMessageConverterTests {
 		this.converter.write(parts, new MediaType("multipart", "form-data", StandardCharsets.UTF_8), outputMessage);
 
 		final MediaType contentType = outputMessage.getHeaders().getContentType();
-		assertNotNull("No boundary found", contentType.getParameter("boundary"));
+		assertThat((Object) contentType.getParameter("boundary")).as("No boundary found").isNotNull();
 
 		// see if Commons FileUpload can read what we wrote
 		FileItemFactory fileItemFactory = new DiskFileItemFactory();
 		FileUpload fileUpload = new FileUpload(fileItemFactory);
 		RequestContext requestContext = new MockHttpOutputMessageRequestContext(outputMessage);
 		List<FileItem> items = fileUpload.parseRequest(requestContext);
-		assertEquals(2, items.size());
+		assertThat((long) items.size()).isEqualTo((long) 2);
 
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();

@@ -30,8 +30,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.ResolvableMethod;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link InvocableHandlerMethod}.
@@ -58,8 +56,8 @@ public class InvocableHandlerMethodTests {
 
 		Object value = getInvocable(Integer.class, String.class).invokeForRequest(request, null);
 
-		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
-		assertEquals(1, getStubResolver(1).getResolvedParameters().size());
+		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(value).isEqualTo("99-value");
 		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("intArg");
 		assertThat(getStubResolver(1).getResolvedParameters().get(0).getParameterName()).isEqualTo("stringArg");
@@ -72,8 +70,8 @@ public class InvocableHandlerMethodTests {
 
 		Object returnValue = getInvocable(Integer.class, String.class).invokeForRequest(request, null);
 
-		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
-		assertEquals(1, getStubResolver(1).getResolvedParameters().size());
+		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(returnValue).isEqualTo("null-null");
 	}
 
@@ -88,7 +86,7 @@ public class InvocableHandlerMethodTests {
 	public void resolveProvidedArg() throws Exception {
 		Object value = getInvocable(Integer.class, String.class).invokeForRequest(request, null, 99, "value");
 
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(value.getClass()).isEqualTo(String.class);
 		assertThat(value).isEqualTo("99-value");
 	}

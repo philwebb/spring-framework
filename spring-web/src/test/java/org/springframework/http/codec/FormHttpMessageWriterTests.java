@@ -36,7 +36,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Sebastien Deleuze
@@ -91,7 +90,7 @@ public class FormHttpMessageWriterTests extends AbstractLeakCheckingTestCase {
 				.verify();
 		HttpHeaders headers = response.getHeaders();
 		assertThat(headers.getContentType().toString()).isEqualTo("application/x-www-form-urlencoded;charset=UTF-8");
-		assertEquals(expected.length(), headers.getContentLength());
+		assertThat(headers.getContentLength()).isEqualTo((long) expected.length());
 	}
 
 	private Consumer<DataBuffer> stringConsumer(String expected) {

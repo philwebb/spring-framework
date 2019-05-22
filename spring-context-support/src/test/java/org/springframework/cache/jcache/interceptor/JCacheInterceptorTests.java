@@ -31,8 +31,6 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Stephane Nicoll
@@ -89,7 +87,7 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 
 		CacheOperationInvoker invoker = new DummyInvoker(0L);
 		Object execute = interceptor.execute(invoker, service, method, new Object[] {"myId"});
-		assertNotNull("result cannot be null.", execute);
+		assertThat(execute).as("result cannot be null.").isNotNull();
 		assertThat(execute.getClass()).as("Wrong result type").isEqualTo(Long.class);
 		assertThat(execute).as("Wrong result").isEqualTo(0L);
 	}

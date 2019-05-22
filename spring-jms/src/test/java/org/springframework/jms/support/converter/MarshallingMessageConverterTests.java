@@ -29,7 +29,6 @@ import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;

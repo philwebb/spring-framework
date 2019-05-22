@@ -30,8 +30,6 @@ import org.springframework.util.SocketUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rob Harrop
@@ -63,7 +61,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 
 			try {
 				MBeanServerConnection connection = bean.getObject();
-				assertNotNull("Connection should not be null", connection);
+				assertThat((Object) connection).as("Connection should not be null").isNotNull();
 
 				// perform simple MBean count test
 				assertThat(connection.getMBeanCount()).as("MBean count should be the same").isEqualTo(getServer().getMBeanCount());

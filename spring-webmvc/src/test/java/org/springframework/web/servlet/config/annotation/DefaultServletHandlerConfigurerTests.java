@@ -29,9 +29,6 @@ import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture with a {@link DefaultServletHandlerConfigurer}.
@@ -57,7 +54,7 @@ public class DefaultServletHandlerConfigurerTests {
 
 	@Test
 	public void notEnabled() {
-		assertNull(configurer.buildHandlerMapping());
+		assertThat((Object) configurer.buildHandlerMapping()).isNull();
 	}
 
 	@Test
@@ -66,8 +63,8 @@ public class DefaultServletHandlerConfigurerTests {
 		SimpleUrlHandlerMapping handlerMapping = configurer.buildHandlerMapping();
 		DefaultServletHttpRequestHandler handler = (DefaultServletHttpRequestHandler) handlerMapping.getUrlMap().get("/**");
 
-		assertNotNull(handler);
-		assertEquals(Integer.MAX_VALUE, handlerMapping.getOrder());
+		assertThat((Object) handler).isNotNull();
+		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
 
 		handler.handleRequest(new MockHttpServletRequest(), response);
 
@@ -82,8 +79,8 @@ public class DefaultServletHandlerConfigurerTests {
 		SimpleUrlHandlerMapping handlerMapping = configurer.buildHandlerMapping();
 		DefaultServletHttpRequestHandler handler = (DefaultServletHttpRequestHandler) handlerMapping.getUrlMap().get("/**");
 
-		assertNotNull(handler);
-		assertEquals(Integer.MAX_VALUE, handlerMapping.getOrder());
+		assertThat((Object) handler).isNotNull();
+		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
 
 		handler.handleRequest(new MockHttpServletRequest(), response);
 

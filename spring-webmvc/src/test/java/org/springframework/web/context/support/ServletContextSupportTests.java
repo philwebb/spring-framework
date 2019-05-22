@@ -33,8 +33,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Tests for various ServletContext-related support classes.
@@ -126,7 +124,7 @@ public class ServletContextSupportTests {
 		exporter.setServletContext(sc);
 
 		assertThat(sc.getAttribute("attr1")).isEqualTo("value1");
-		assertSame(tb, sc.getAttribute("attr2"));
+		assertThat(sc.getAttribute("attr2")).isSameAs(tb);
 	}
 
 	@Test
@@ -161,7 +159,7 @@ public class ServletContextSupportTests {
 		for (Resource resource : found) {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
-		assertEquals(2, foundPaths.size());
+		assertThat((long) foundPaths.size()).isEqualTo((long) 2);
 		assertThat(foundPaths.contains("/WEB-INF/context1.xml")).isTrue();
 		assertThat(foundPaths.contains("/WEB-INF/context2.xml")).isTrue();
 	}
@@ -194,7 +192,7 @@ public class ServletContextSupportTests {
 		for (Resource resource : found) {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
-		assertEquals(2, foundPaths.size());
+		assertThat((long) foundPaths.size()).isEqualTo((long) 2);
 		assertThat(foundPaths.contains("/WEB-INF/mydir1/context1.xml")).isTrue();
 		assertThat(foundPaths.contains("/WEB-INF/mydir2/context2.xml")).isTrue();
 	}
@@ -234,7 +232,7 @@ public class ServletContextSupportTests {
 		for (Resource resource : found) {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
-		assertEquals(3, foundPaths.size());
+		assertThat((long) foundPaths.size()).isEqualTo((long) 3);
 		assertThat(foundPaths.contains("/WEB-INF/mydir1/context1.xml")).isTrue();
 		assertThat(foundPaths.contains("/WEB-INF/mydir2/context2.xml")).isTrue();
 		assertThat(foundPaths.contains("/WEB-INF/mydir2/mydir3/context3.xml")).isTrue();
@@ -263,7 +261,7 @@ public class ServletContextSupportTests {
 		for (Resource resource : found) {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
-		assertEquals(2, foundPaths.size());
+		assertThat((long) foundPaths.size()).isEqualTo((long) 2);
 		assertThat(foundPaths.contains("/WEB-INF/context1.xml")).isTrue();
 		assertThat(foundPaths.contains("/WEB-INF/context2.xml")).isTrue();
 	}

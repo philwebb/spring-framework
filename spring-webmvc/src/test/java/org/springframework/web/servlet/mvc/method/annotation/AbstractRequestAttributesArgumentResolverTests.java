@@ -43,10 +43,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -101,7 +97,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 
 		Foo foo = new Foo();
 		this.webRequest.setAttribute("foo", foo, getScope());
-		assertSame(foo, testResolveArgument(param));
+		assertThat(testResolveArgument(param)).isSameAs(foo);
 	}
 
 	@Test
@@ -109,17 +105,17 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 		MethodParameter param = initMethodParameter(1);
 		Foo foo = new Foo();
 		this.webRequest.setAttribute("specialFoo", foo, getScope());
-		assertSame(foo, testResolveArgument(param));
+		assertThat(testResolveArgument(param)).isSameAs(foo);
 	}
 
 	@Test
 	public void resolveNotRequired() throws Exception {
 		MethodParameter param = initMethodParameter(2);
-		assertNull(testResolveArgument(param));
+		assertThat(testResolveArgument(param)).isNull();
 
 		Foo foo = new Foo();
 		this.webRequest.setAttribute("foo", foo, getScope());
-		assertSame(foo, testResolveArgument(param));
+		assertThat(testResolveArgument(param)).isSameAs(foo);
 	}
 
 	@Test
@@ -131,7 +127,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 
 		MethodParameter param = initMethodParameter(3);
 		Object actual = testResolveArgument(param, factory);
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(actual.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional<?>) actual).isPresent()).isFalse();
 
@@ -139,10 +135,10 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 		this.webRequest.setAttribute("foo", foo, getScope());
 
 		actual = testResolveArgument(param, factory);
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(actual.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional<?>) actual).isPresent()).isTrue();
-		assertSame(foo, ((Optional<?>) actual).get());
+		assertThat(((Optional<?>) actual).get()).isSameAs(foo);
 	}
 
 	private Object testResolveArgument(MethodParameter param) throws Exception {

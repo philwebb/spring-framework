@@ -50,9 +50,6 @@ import org.springframework.web.reactive.resource.WebJarsResourceResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-
 /**
  * Unit tests for {@link ResourceHandlerRegistry}.
  *
@@ -76,7 +73,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void noResourceHandlers() throws Exception {
 		this.registry = new ResourceHandlerRegistry(new GenericApplicationContext());
-		assertNull(this.registry.getHandlerMapping());
+		assertThat((Object) this.registry.getHandlerMapping()).isNull();
 	}
 
 	@Test
@@ -105,10 +102,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void order() {
-		assertEquals(Integer.MAX_VALUE -1, this.registry.getHandlerMapping().getOrder());
+		assertThat((long) this.registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
 
 		this.registry.setOrder(0);
-		assertEquals(0, this.registry.getHandlerMapping().getOrder());
+		assertThat((long) this.registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
 	}
 
 	@Test

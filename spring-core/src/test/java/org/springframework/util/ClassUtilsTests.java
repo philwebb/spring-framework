@@ -38,9 +38,6 @@ import org.springframework.tests.sample.objects.ITestObject;
 import org.springframework.tests.sample.objects.TestObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Colin Sampaleanu
@@ -244,23 +241,21 @@ public class ClassUtilsTests {
 	@Test
 	public void testGetMethodIfAvailable() {
 		Method method = ClassUtils.getMethodIfAvailable(Collection.class, "size");
-		assertNotNull(method);
+		assertThat((Object) method).isNotNull();
 		assertThat(method.getName()).isEqualTo("size");
 
 		method = ClassUtils.getMethodIfAvailable(Collection.class, "remove", Object.class);
-		assertNotNull(method);
+		assertThat((Object) method).isNotNull();
 		assertThat(method.getName()).isEqualTo("remove");
 
-		assertNull(ClassUtils.getMethodIfAvailable(Collection.class, "remove"));
-		assertNull(ClassUtils.getMethodIfAvailable(Collection.class, "someOtherMethod"));
+		assertThat((Object) ClassUtils.getMethodIfAvailable(Collection.class, "remove")).isNull();
+		assertThat((Object) ClassUtils.getMethodIfAvailable(Collection.class, "someOtherMethod")).isNull();
 	}
 
 	@Test
 	public void testGetMethodCountForName() {
-		assertEquals("Verifying number of overloaded 'print' methods for OverloadedMethodsClass.", 2,
-				ClassUtils.getMethodCountForName(OverloadedMethodsClass.class, "print"));
-		assertEquals("Verifying number of overloaded 'print' methods for SubOverloadedMethodsClass.", 4,
-				ClassUtils.getMethodCountForName(SubOverloadedMethodsClass.class, "print"));
+		assertThat((long) ClassUtils.getMethodCountForName(OverloadedMethodsClass.class, "print")).as("Verifying number of overloaded 'print' methods for OverloadedMethodsClass.").isEqualTo((long) 2);
+		assertThat((long) ClassUtils.getMethodCountForName(SubOverloadedMethodsClass.class, "print")).as("Verifying number of overloaded 'print' methods for SubOverloadedMethodsClass.").isEqualTo((long) 4);
 	}
 
 	@Test
@@ -328,7 +323,7 @@ public class ClassUtilsTests {
 	public void testGetAllInterfaces() {
 		DerivedTestObject testBean = new DerivedTestObject();
 		List<Class<?>> ifcs = Arrays.asList(ClassUtils.getAllInterfaces(testBean));
-		assertEquals("Correct number of interfaces", 4, ifcs.size());
+		assertThat((long) ifcs.size()).as("Correct number of interfaces").isEqualTo((long) 4);
 		assertThat(ifcs.contains(Serializable.class)).as("Contains Serializable").isTrue();
 		assertThat(ifcs.contains(ITestObject.class)).as("Contains ITestBean").isTrue();
 		assertThat(ifcs.contains(ITestInterface.class)).as("Contains IOther").isTrue();
@@ -365,8 +360,8 @@ public class ClassUtilsTests {
 
 		assertThat(ClassUtils.determineCommonAncestor(Integer.class, Float.class)).isEqualTo(Number.class);
 		assertThat(ClassUtils.determineCommonAncestor(Float.class, Integer.class)).isEqualTo(Number.class);
-		assertNull(ClassUtils.determineCommonAncestor(Integer.class, String.class));
-		assertNull(ClassUtils.determineCommonAncestor(String.class, Integer.class));
+		assertThat((Object) ClassUtils.determineCommonAncestor(Integer.class, String.class)).isNull();
+		assertThat((Object) ClassUtils.determineCommonAncestor(String.class, Integer.class)).isNull();
 
 		assertThat(ClassUtils.determineCommonAncestor(List.class, Collection.class)).isEqualTo(Collection.class);
 		assertThat(ClassUtils.determineCommonAncestor(Collection.class, List.class)).isEqualTo(Collection.class);
@@ -374,15 +369,15 @@ public class ClassUtilsTests {
 		assertThat(ClassUtils.determineCommonAncestor(null, List.class)).isEqualTo(List.class);
 		assertThat(ClassUtils.determineCommonAncestor(List.class, List.class)).isEqualTo(List.class);
 
-		assertNull(ClassUtils.determineCommonAncestor(List.class, Set.class));
-		assertNull(ClassUtils.determineCommonAncestor(Set.class, List.class));
-		assertNull(ClassUtils.determineCommonAncestor(List.class, Runnable.class));
-		assertNull(ClassUtils.determineCommonAncestor(Runnable.class, List.class));
+		assertThat((Object) ClassUtils.determineCommonAncestor(List.class, Set.class)).isNull();
+		assertThat((Object) ClassUtils.determineCommonAncestor(Set.class, List.class)).isNull();
+		assertThat((Object) ClassUtils.determineCommonAncestor(List.class, Runnable.class)).isNull();
+		assertThat((Object) ClassUtils.determineCommonAncestor(Runnable.class, List.class)).isNull();
 
 		assertThat(ClassUtils.determineCommonAncestor(List.class, ArrayList.class)).isEqualTo(List.class);
 		assertThat(ClassUtils.determineCommonAncestor(ArrayList.class, List.class)).isEqualTo(List.class);
-		assertNull(ClassUtils.determineCommonAncestor(List.class, String.class));
-		assertNull(ClassUtils.determineCommonAncestor(String.class, List.class));
+		assertThat((Object) ClassUtils.determineCommonAncestor(List.class, String.class)).isNull();
+		assertThat((Object) ClassUtils.determineCommonAncestor(String.class, List.class)).isNull();
 	}
 
 

@@ -22,8 +22,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Rod Johnson
@@ -38,11 +37,11 @@ public class AspectJAutoProxyCreatorAndLazyInitTargetSourceTests {
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 
 		ITestBean adrian = (ITestBean) ctx.getBean("adrian");
-		assertEquals(0, LazyTestBean.instantiations);
-		assertNotNull(adrian);
+		assertThat((long) LazyTestBean.instantiations).isEqualTo((long) 0);
+		assertThat((Object) adrian).isNotNull();
 		adrian.getAge();
-		assertEquals(68, adrian.getAge());
-		assertEquals(1, LazyTestBean.instantiations);
+		assertThat((long) adrian.getAge()).isEqualTo((long) 68);
+		assertThat((long) LazyTestBean.instantiations).isEqualTo((long) 1);
 	}
 
 }

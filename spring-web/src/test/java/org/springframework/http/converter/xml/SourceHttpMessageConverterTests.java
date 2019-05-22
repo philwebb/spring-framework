@@ -50,8 +50,6 @@ import org.springframework.util.FileCopyUtils;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
@@ -294,8 +292,7 @@ public class SourceHttpMessageConverterTests {
 		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
 				.isSimilarTo("<root>Hello World</root>");
 		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
-		assertEquals("Invalid content-length", outputMessage.getBodyAsBytes().length,
-				outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).as("Invalid content-length").isEqualTo((long) outputMessage.getBodyAsBytes().length);
 	}
 
 	@Test

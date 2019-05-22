@@ -30,7 +30,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -54,7 +53,7 @@ public class ServletServerHttpResponseTests {
 	@Test
 	public void setStatusCode() throws Exception {
 		response.setStatusCode(HttpStatus.NOT_FOUND);
-		assertEquals("Invalid status code", 404, mockResponse.getStatus());
+		assertThat((long) mockResponse.getStatus()).as("Invalid status code").isEqualTo((long) 404);
 	}
 
 	@Test

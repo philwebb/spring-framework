@@ -31,9 +31,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Arjen Poutsma
@@ -67,10 +65,9 @@ public class RandomHandlerIntegrationTests extends AbstractHttpHandlerIntegratio
 		RequestEntity<byte[]> request = RequestEntity.post(new URI("http://localhost:" + port)).body(body);
 		ResponseEntity<byte[]> response = restTemplate.exchange(request, byte[].class);
 
-		assertNotNull(response.getBody());
-		assertEquals(RESPONSE_SIZE,
-				response.getHeaders().getContentLength());
-		assertEquals(RESPONSE_SIZE, response.getBody().length);
+		assertThat((Object) response.getBody()).isNotNull();
+		assertThat(response.getHeaders().getContentLength()).isEqualTo((long) RESPONSE_SIZE);
+		assertThat((long) response.getBody().length).isEqualTo((long) RESPONSE_SIZE);
 	}
 
 
@@ -90,8 +87,8 @@ public class RandomHandlerIntegrationTests extends AbstractHttpHandlerIntegratio
 					reduce(0, (integer, dataBuffer) -> integer +
 							dataBuffer.readableByteCount()).
 					doOnSuccessOrError((size, throwable) -> {
-						assertNull(throwable);
-						assertEquals(REQUEST_SIZE, (long) size);
+						assertThat((Object) throwable).isNull();
+						assertThat((long) size).isEqualTo((long) REQUEST_SIZE);
 					});
 
 			response.getHeaders().setContentLength(RESPONSE_SIZE);

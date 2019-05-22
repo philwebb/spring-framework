@@ -22,8 +22,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Test fixture for {@link WebSocketExtension}
  * @author Brian Clozel
@@ -37,7 +35,7 @@ public class WebSocketExtensionTests {
 		WebSocketExtension extension = extensions.get(0);
 
 		assertThat(extension.getName()).isEqualTo("x-test-extension");
-		assertEquals(2, extension.getParameters().size());
+		assertThat((long) extension.getParameters().size()).isEqualTo((long) 2);
 		assertThat(extension.getParameters().get("foo")).isEqualTo("bar");
 		assertThat(extension.getParameters().get("bar")).isEqualTo("baz");
 	}

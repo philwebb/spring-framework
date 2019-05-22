@@ -30,8 +30,6 @@ import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.orm.jpa.domain.Person;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Hibernate-specific JPA tests with native SessionFactory setup and getCurrentSession interaction.
@@ -68,9 +66,9 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 		insertPerson(firstName);
 
 		List<Person> people = sharedEntityManager.createQuery("select p from Person as p").getResultList();
-		assertEquals(1, people.size());
+		assertThat((long) people.size()).isEqualTo((long) 1);
 		assertThat(people.get(0).getFirstName()).isEqualTo(firstName);
-		assertSame(applicationContext, people.get(0).postLoaded);
+		assertThat((Object) people.get(0).postLoaded).isSameAs(applicationContext);
 	}
 
 	@Test
@@ -81,20 +79,20 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 
 		Query q = sessionFactory.getCurrentSession().createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
-		assertEquals(1, people.size());
+		assertThat((long) people.size()).isEqualTo((long) 1);
 		assertThat(people.get(0).getFirstName()).isEqualTo(firstName);
-		assertSame(applicationContext, people.get(0).postLoaded);
+		assertThat((Object) people.get(0).postLoaded).isSameAs(applicationContext);
 	}
 
 	@Test  // SPR-16956
 	public void testReadOnly() {
-		assertSame(FlushMode.AUTO, sessionFactory.getCurrentSession().getHibernateFlushMode());
+		assertThat((Object) sessionFactory.getCurrentSession().getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
 		assertThat(sessionFactory.getCurrentSession().isDefaultReadOnly()).isFalse();
 		endTransaction();
 
 		this.transactionDefinition.setReadOnly(true);
 		startNewTransaction();
-		assertSame(FlushMode.MANUAL, sessionFactory.getCurrentSession().getHibernateFlushMode());
+		assertThat((Object) sessionFactory.getCurrentSession().getHibernateFlushMode()).isSameAs(FlushMode.MANUAL);
 		assertThat(sessionFactory.getCurrentSession().isDefaultReadOnly()).isTrue();
 	}
 

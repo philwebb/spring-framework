@@ -51,8 +51,6 @@ import org.springframework.util.SocketUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for {@link StompBrokerRelayMessageHandler} running against ActiveMQ.
@@ -263,7 +261,7 @@ public class StompBrokerRelayMessageHandlerIntegrationTests {
 
 		public void expectBrokerAvailabilityEvent(boolean isBrokerAvailable) throws InterruptedException {
 			BrokerAvailabilityEvent event = this.eventQueue.poll(20000, TimeUnit.MILLISECONDS);
-			assertNotNull("Times out waiting for BrokerAvailabilityEvent[" + isBrokerAvailable + "]", event);
+			assertThat((Object) event).as("Times out waiting for BrokerAvailabilityEvent[" + isBrokerAvailable + "]").isNotNull();
 			assertThat(event.isBrokerAvailable()).isEqualTo(isBrokerAvailable);
 		}
 	}
@@ -286,9 +284,9 @@ public class StompBrokerRelayMessageHandlerIntegrationTests {
 					new ArrayList<>(Arrays.<MessageExchange>asList(messageExchanges));
 			while (expectedMessages.size() > 0) {
 				Message<?> message = this.queue.poll(10000, TimeUnit.MILLISECONDS);
-				assertNotNull("Timed out waiting for messages, expected [" + expectedMessages + "]", message);
+				assertThat((Object) message).as("Timed out waiting for messages, expected [" + expectedMessages + "]").isNotNull();
 				MessageExchange match = findMatch(expectedMessages, message);
-				assertNotNull("Unexpected message=" + message + ", expected [" + expectedMessages + "]", match);
+				assertThat((Object) match).as("Unexpected message=" + message + ", expected [" + expectedMessages + "]").isNotNull();
 				expectedMessages.remove(match);
 			}
 		}

@@ -24,9 +24,6 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -50,7 +47,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("Accept", ""));
 		HeadersRequestCondition condition = new HeadersRequestCondition("accept");
 
-		assertNotNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -58,7 +55,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("bar", ""));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -66,7 +63,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("!accept");
 
-		assertNotNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -74,7 +71,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bar"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo=bar");
 
-		assertNotNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -82,7 +79,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bazz"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo=bar");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -90,7 +87,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bar"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo=Bar");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -98,7 +95,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "baz"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo!=bar");
 
-		assertNotNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -106,7 +103,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bar"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo!=bar");
 
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -141,8 +138,7 @@ public class HeadersRequestConditionTests {
 		HeadersRequestCondition condition1 = new HeadersRequestCondition("foo!=a");
 		HeadersRequestCondition condition2 = new HeadersRequestCondition("foo");
 
-		assertEquals("Negated match should not count as more specific",
-				0, condition1.compareTo(condition2, exchange));
+		assertThat((long) condition1.compareTo(condition2, exchange)).as("Negated match should not count as more specific").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -152,7 +148,7 @@ public class HeadersRequestConditionTests {
 
 		HeadersRequestCondition result = condition1.combine(condition2);
 		Collection<?> conditions = result.getContent();
-		assertEquals(2, conditions.size());
+		assertThat((long) conditions.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -166,7 +162,7 @@ public class HeadersRequestConditionTests {
 		condition = new HeadersRequestCondition("bar");
 
 		result = condition.getMatchingCondition(exchange);
-		assertNull(result);
+		assertThat((Object) result).isNull();
 	}
 
 }

@@ -33,7 +33,6 @@ import org.springframework.web.socket.WebSocketSession;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -71,7 +70,7 @@ public class XhrTransportTests {
 		transport.sendMessageResponseToReturn = new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		URI url = new URI("https://example.com");
 		transport.executeSendRequest(url, requestHeaders, new TextMessage("payload"));
-		assertEquals(2, transport.actualSendRequestHeaders.size());
+		assertThat((long) transport.actualSendRequestHeaders.size()).isEqualTo((long) 2);
 		assertThat(transport.actualSendRequestHeaders.getFirst("foo")).isEqualTo("bar");
 		assertThat(transport.actualSendRequestHeaders.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
@@ -107,7 +106,7 @@ public class XhrTransportTests {
 		verify(request).getHttpRequestHeaders();
 		verifyNoMoreInteractions(request);
 
-		assertEquals(1, transport.actualHandshakeHeaders.size());
+		assertThat((long) transport.actualHandshakeHeaders.size()).isEqualTo((long) 1);
 		assertThat(transport.actualHandshakeHeaders.getOrigin()).isEqualTo("foo");
 
 		assertThat(transport.actualSession.isDisconnected()).isFalse();

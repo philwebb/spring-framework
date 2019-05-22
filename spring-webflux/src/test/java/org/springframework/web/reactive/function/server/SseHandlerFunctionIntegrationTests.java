@@ -30,8 +30,6 @@ import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 import static org.springframework.web.reactive.function.BodyInserters.fromServerSentEvents;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -102,15 +100,15 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 					assertThat(event.id()).isEqualTo("0");
 					assertThat(event.data()).isEqualTo("foo");
 					assertThat(event.comment()).isEqualTo("bar");
-					assertNull(event.event());
-					assertNull(event.retry());
+					assertThat((Object) event.event()).isNull();
+					assertThat((Object) event.retry()).isNull();
 				})
 				.consumeNextWith( event -> {
 					assertThat(event.id()).isEqualTo("1");
 					assertThat(event.data()).isEqualTo("foo");
 					assertThat(event.comment()).isEqualTo("bar");
-					assertNull(event.event());
-					assertNull(event.retry());
+					assertThat((Object) event.event()).isNull();
+					assertThat((Object) event.retry()).isNull();
 				})
 				.expectComplete()
 				.verify(Duration.ofSeconds(5L));

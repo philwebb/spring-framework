@@ -26,7 +26,6 @@ import org.springframework.tests.sample.beans.GenericBean;
 import org.springframework.web.servlet.support.BindStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -71,9 +70,9 @@ public class OptionTagEnumTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue("VALUE_1");
 
 		int result = this.tag.doStartTag();
-		assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
+		assertThat((long) result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertEquals(Tag.EVAL_PAGE, result);
+		assertThat((long) result).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getWriter().toString();
 

@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Ramnivas Laddad
@@ -66,43 +66,43 @@ public class ThisAndTargetSelectionOnlyPointcutsTests {
 	@Test
 	public void testThisAsClassDoesNotMatch() {
 		testBean.doIt();
-		assertEquals(0, thisAsClassCounter.getCount());
+		assertThat((long) thisAsClassCounter.getCount()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testThisAsInterfaceMatch() {
 		testBean.doIt();
-		assertEquals(1, thisAsInterfaceCounter.getCount());
+		assertThat((long) thisAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testTargetAsClassDoesMatch() {
 		testBean.doIt();
-		assertEquals(1, targetAsClassCounter.getCount());
+		assertThat((long) targetAsClassCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testTargetAsInterfaceMatch() {
 		testBean.doIt();
-		assertEquals(1, targetAsInterfaceCounter.getCount());
+		assertThat((long) targetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testThisAsClassAndTargetAsClassCounterNotMatch() {
 		testBean.doIt();
-		assertEquals(0, thisAsClassAndTargetAsClassCounter.getCount());
+		assertThat((long) thisAsClassAndTargetAsClassCounter.getCount()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testThisAsInterfaceAndTargetAsInterfaceCounterMatch() {
 		testBean.doIt();
-		assertEquals(1, thisAsInterfaceAndTargetAsInterfaceCounter.getCount());
+		assertThat((long) thisAsInterfaceAndTargetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testThisAsInterfaceAndTargetAsClassCounterMatch() {
 		testBean.doIt();
-		assertEquals(1, thisAsInterfaceAndTargetAsInterfaceCounter.getCount());
+		assertThat((long) thisAsInterfaceAndTargetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 }

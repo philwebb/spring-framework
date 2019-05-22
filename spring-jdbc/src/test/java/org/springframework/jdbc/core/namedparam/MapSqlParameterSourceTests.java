@@ -25,7 +25,6 @@ import org.springframework.jdbc.support.JdbcUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rick Evans
@@ -49,10 +48,10 @@ public class MapSqlParameterSourceTests {
 	@Test
 	public void sqlParameterValueRegistersSqlType() {
 		MapSqlParameterSource msps = new MapSqlParameterSource("FOO", new SqlParameterValue(Types.NUMERIC, "Foo"));
-		assertEquals("Correct SQL Type not registered", 2, msps.getSqlType("FOO"));
+		assertThat((long) msps.getSqlType("FOO")).as("Correct SQL Type not registered").isEqualTo((long) 2);
 		MapSqlParameterSource msps2 = new MapSqlParameterSource();
 		msps2.addValues(msps.getValues());
-		assertEquals("Correct SQL Type not registered", 2, msps2.getSqlType("FOO"));
+		assertThat((long) msps2.getSqlType("FOO")).as("Correct SQL Type not registered").isEqualTo((long) 2);
 	}
 
 	@Test

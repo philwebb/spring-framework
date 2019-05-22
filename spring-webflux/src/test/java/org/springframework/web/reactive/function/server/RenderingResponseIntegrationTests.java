@@ -38,7 +38,6 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.springframework.web.reactive.function.server.HandlerFilterFunction.ofResponseProcessor;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -80,7 +79,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
-		assertEquals(2, body.size());
+		assertThat((long) body.size()).isEqualTo((long) 2);
 		assertThat(body.get("name")).isEqualTo("foo");
 		assertThat(body.get("bar")).isEqualTo("baz");
 	}
@@ -92,7 +91,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
-		assertEquals(3, body.size());
+		assertThat((long) body.size()).isEqualTo((long) 3);
 		assertThat(body.get("name")).isEqualTo("foo");
 		assertThat(body.get("bar")).isEqualTo("baz");
 		assertThat(body.get("qux")).isEqualTo("quux");

@@ -28,9 +28,6 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll
@@ -49,7 +46,7 @@ public class TransactionAwareCacheDecoratorTests {
 	public void getTargetCache() {
 		Cache target = new ConcurrentMapCache("testCache");
 		TransactionAwareCacheDecorator cache = new TransactionAwareCacheDecorator(target);
-		assertSame(target, cache.getTargetCache());
+		assertThat((Object) cache.getTargetCache()).isSameAs(target);
 	}
 
 	@Test
@@ -65,7 +62,7 @@ public class TransactionAwareCacheDecoratorTests {
 		assertThat(cache.get(key, String.class)).isEqualTo("123");
 
 		cache.clear();
-		assertNull(target.get(key));
+		assertThat((Object) target.get(key)).isNull();
 	}
 
 	@Test
@@ -88,7 +85,7 @@ public class TransactionAwareCacheDecoratorTests {
 
 		Object key = new Object();
 		cache.put(key, "123");
-		assertNull(target.get(key));
+		assertThat((Object) target.get(key)).isNull();
 		this.txManager.commit(status);
 
 		assertThat(target.get(key, String.class)).isEqualTo("123");
@@ -100,7 +97,7 @@ public class TransactionAwareCacheDecoratorTests {
 		Cache cache = new TransactionAwareCacheDecorator(target);
 
 		Object key = new Object();
-		assertNull(cache.putIfAbsent(key, "123"));
+		assertThat((Object) cache.putIfAbsent(key, "123")).isNull();
 		assertThat(target.get(key, String.class)).isEqualTo("123");
 		assertThat(cache.putIfAbsent(key, "456").get()).isEqualTo("123");
 		// unchanged
@@ -115,7 +112,7 @@ public class TransactionAwareCacheDecoratorTests {
 		cache.put(key, "123");
 
 		cache.evict(key);
-		assertNull(target.get(key));
+		assertThat((Object) target.get(key)).isNull();
 	}
 
 	@Test
@@ -132,7 +129,7 @@ public class TransactionAwareCacheDecoratorTests {
 		assertThat(target.get(key, String.class)).isEqualTo("123");
 		this.txManager.commit(status);
 
-		assertNull(target.get(key));
+		assertThat((Object) target.get(key)).isNull();
 	}
 
 	@Test
@@ -143,7 +140,7 @@ public class TransactionAwareCacheDecoratorTests {
 		cache.put(key, "123");
 
 		cache.clear();
-		assertNull(target.get(key));
+		assertThat((Object) target.get(key)).isNull();
 	}
 
 	@Test
@@ -160,6 +157,6 @@ public class TransactionAwareCacheDecoratorTests {
 		assertThat(target.get(key, String.class)).isEqualTo("123");
 		this.txManager.commit(status);
 
-		assertNull(target.get(key));
+		assertThat((Object) target.get(key)).isNull();
 	}
 }

@@ -19,8 +19,6 @@ package org.springframework.web.socket.sockjs.frame;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link org.springframework.web.socket.sockjs.frame.SockJsFrame}.
@@ -37,7 +35,7 @@ public class SockJsFrameTests {
 
 		assertThat(frame.getContent()).isEqualTo("o");
 		assertThat(frame.getType()).isEqualTo(SockJsFrameType.OPEN);
-		assertNull(frame.getFrameData());
+		assertThat((Object) frame.getFrameData()).isNull();
 	}
 
 	@Test
@@ -46,7 +44,7 @@ public class SockJsFrameTests {
 
 		assertThat(frame.getContent()).isEqualTo("h");
 		assertThat(frame.getType()).isEqualTo(SockJsFrameType.HEARTBEAT);
-		assertNull(frame.getFrameData());
+		assertThat((Object) frame.getFrameData()).isNull();
 	}
 
 	@Test

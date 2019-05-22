@@ -29,9 +29,6 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rod Johnson
@@ -55,19 +52,19 @@ public class RequestAndSessionScopedBeanTests {
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 		TestBean target = (TestBean) wac.getBean(targetBeanName);
 		assertThat(target.getName()).isEqualTo("abc");
-		assertSame(target, request.getAttribute(targetBeanName));
+		assertThat(request.getAttribute(targetBeanName)).isSameAs(target);
 
 		TestBean target2 = (TestBean) wac.getBean(targetBeanName);
 		assertThat(target2.getName()).isEqualTo("abc");
-		assertSame(target2, target);
-		assertSame(target2, request.getAttribute(targetBeanName));
+		assertThat((Object) target).isSameAs(target2);
+		assertThat(request.getAttribute(targetBeanName)).isSameAs(target2);
 
 		request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 		TestBean target3 = (TestBean) wac.getBean(targetBeanName);
 		assertThat(target3.getName()).isEqualTo("abc");
-		assertSame(target3, request.getAttribute(targetBeanName));
-		assertNotSame(target3, target);
+		assertThat(request.getAttribute(targetBeanName)).isSameAs(target3);
+		assertThat((Object) target).isNotSameAs(target3);
 
 		RequestContextHolder.setRequestAttributes(null);
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
@@ -90,7 +87,7 @@ public class RequestAndSessionScopedBeanTests {
 
 		TestBean target = (TestBean) wac.getBean(targetBeanName);
 		assertThat(target.getName()).isEqualTo("abc");
-		assertSame(target, request.getSession().getAttribute(targetBeanName));
+		assertThat(request.getSession().getAttribute(targetBeanName)).isSameAs(target);
 
 		RequestContextHolder.setRequestAttributes(null);
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->

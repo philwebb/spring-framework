@@ -33,7 +33,6 @@ import org.springframework.scheduling.TriggerContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer
@@ -227,12 +226,12 @@ public class CronTriggerTests {
 		TriggerContext context1 = getTriggerContext(date);
 		Object actual1 = date = trigger.nextExecutionTime(context1);
 		assertThat(actual1).isEqualTo(calendar.getTime());
-		assertEquals(2, calendar.get(Calendar.DAY_OF_MONTH));
+		assertThat((long) calendar.get(Calendar.DAY_OF_MONTH)).isEqualTo((long) 2);
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		TriggerContext context2 = getTriggerContext(date);
 		Object actual = date = trigger.nextExecutionTime(context2);
 		assertThat(actual).isEqualTo(calendar.getTime());
-		assertEquals(3, calendar.get(Calendar.DAY_OF_MONTH));
+		assertThat((long) calendar.get(Calendar.DAY_OF_MONTH)).isEqualTo((long) 3);
 	}
 
 	@Test
@@ -399,7 +398,7 @@ public class CronTriggerTests {
 		calendar.set(Calendar.SECOND, 0);
 		TriggerContext context = getTriggerContext(date);
 		assertThat(trigger.nextExecutionTime(context)).isEqualTo(calendar.getTime());
-		assertEquals(Calendar.TUESDAY, calendar.get(Calendar.DAY_OF_WEEK));
+		assertThat((long) calendar.get(Calendar.DAY_OF_WEEK)).isEqualTo((long) Calendar.TUESDAY);
 	}
 
 	@Test
@@ -413,7 +412,7 @@ public class CronTriggerTests {
 		calendar.set(Calendar.SECOND, 0);
 		TriggerContext context = getTriggerContext(date);
 		assertThat(trigger.nextExecutionTime(context)).isEqualTo(calendar.getTime());
-		assertEquals(Calendar.TUESDAY, calendar.get(Calendar.DAY_OF_WEEK));
+		assertThat((long) calendar.get(Calendar.DAY_OF_WEEK)).isEqualTo((long) Calendar.TUESDAY);
 	}
 
 	@Test

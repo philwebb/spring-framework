@@ -23,8 +23,6 @@ import java.util.Properties;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test the conversion of Strings to {@link java.util.Properties} objects,
@@ -141,7 +139,7 @@ public class PropertiesEditorTests {
 		PropertiesEditor pe= new PropertiesEditor();
 		pe.setAsText(null);
 		Properties p = (Properties) pe.getValue();
-		assertEquals(0, p.size());
+		assertThat((long) p.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -161,11 +159,11 @@ public class PropertiesEditorTests {
 		PropertiesEditor pe = new PropertiesEditor();
 		pe.setValue(map);
 		Object value = pe.getValue();
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		boolean condition = value instanceof Properties;
 		assertThat(condition).isTrue();
 		Properties props = (Properties) value;
-		assertEquals(3, props.size());
+		assertThat((long) props.size()).isEqualTo((long) 3);
 		assertThat(props.getProperty("one")).isEqualTo("1");
 		assertThat(props.getProperty("two")).isEqualTo("2");
 		assertThat(props.getProperty("three")).isEqualTo("3");

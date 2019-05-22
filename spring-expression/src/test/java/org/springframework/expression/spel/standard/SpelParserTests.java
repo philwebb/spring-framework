@@ -31,9 +31,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Andy Clement
@@ -45,8 +42,8 @@ public class SpelParserTests {
 	public void theMostBasic() {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		SpelExpression expr = parser.parseRaw("2");
-		assertNotNull(expr);
-		assertNotNull(expr.getAST());
+		assertThat((Object) expr).isNotNull();
+		assertThat((Object) expr.getAST()).isNotNull();
 		assertThat(expr.getValue()).isEqualTo(2);
 		assertThat(expr.getValueType()).isEqualTo(Integer.class);
 		assertThat(expr.getAST().getValue(null)).isEqualTo(2);
@@ -61,11 +58,11 @@ public class SpelParserTests {
 		c = parser.parseRaw("12").getValueType(ctx);
 		assertThat(c).isEqualTo(Integer.class);
 		c = parser.parseRaw("null").getValueType();
-		assertNull(c);
+		assertThat((Object) c).isNull();
 		c = parser.parseRaw("null").getValueType(ctx);
-		assertNull(c);
+		assertThat((Object) c).isNull();
 		Object o = parser.parseRaw("null").getValue(ctx, Integer.class);
-		assertNull(o);
+		assertThat(o).isNull();
 	}
 
 	@Test
@@ -85,8 +82,8 @@ public class SpelParserTests {
 	public void arithmeticPlus1() {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		SpelExpression expr = parser.parseRaw("2+2");
-		assertNotNull(expr);
-		assertNotNull(expr.getAST());
+		assertThat((Object) expr).isNotNull();
+		assertThat((Object) expr.getAST()).isNotNull();
 		assertThat(expr.getValue()).isEqualTo(4);
 	}
 
@@ -101,8 +98,8 @@ public class SpelParserTests {
 	public void arithmeticMultiply1() {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		SpelExpression expr = parser.parseRaw("2*3");
-		assertNotNull(expr);
-		assertNotNull(expr.getAST());
+		assertThat((Object) expr).isNotNull();
+		assertThat((Object) expr.getAST()).isNotNull();
 		// printAst(expr.getAST(),0);
 		assertThat(expr.getValue()).isEqualTo(6);
 	}
@@ -271,24 +268,24 @@ public class SpelParserTests {
 		SpelNode rightOrOperand = operatorOr.getRightOperand();
 
 		// check position for final 'false'
-		assertEquals(17, rightOrOperand.getStartPosition());
-		assertEquals(22, rightOrOperand.getEndPosition());
+		assertThat((long) rightOrOperand.getStartPosition()).isEqualTo((long) 17);
+		assertThat((long) rightOrOperand.getEndPosition()).isEqualTo((long) 22);
 
 		// check position for first 'true'
-		assertEquals(0, operatorAnd.getLeftOperand().getStartPosition());
-		assertEquals(4, operatorAnd.getLeftOperand().getEndPosition());
+		assertThat((long) operatorAnd.getLeftOperand().getStartPosition()).isEqualTo((long) 0);
+		assertThat((long) operatorAnd.getLeftOperand().getEndPosition()).isEqualTo((long) 4);
 
 		// check position for second 'true'
-		assertEquals(9, operatorAnd.getRightOperand().getStartPosition());
-		assertEquals(13, operatorAnd.getRightOperand().getEndPosition());
+		assertThat((long) operatorAnd.getRightOperand().getStartPosition()).isEqualTo((long) 9);
+		assertThat((long) operatorAnd.getRightOperand().getEndPosition()).isEqualTo((long) 13);
 
 		// check position for OperatorAnd
-		assertEquals(5, operatorAnd.getStartPosition());
-		assertEquals(8, operatorAnd.getEndPosition());
+		assertThat((long) operatorAnd.getStartPosition()).isEqualTo((long) 5);
+		assertThat((long) operatorAnd.getEndPosition()).isEqualTo((long) 8);
 
 		// check position for OperatorOr
-		assertEquals(14, operatorOr.getStartPosition());
-		assertEquals(16, operatorOr.getEndPosition());
+		assertThat((long) operatorOr.getStartPosition()).isEqualTo((long) 14);
+		assertThat((long) operatorOr.getEndPosition()).isEqualTo((long) 16);
 	}
 
 	@Test
@@ -310,14 +307,14 @@ public class SpelParserTests {
 	public void token() {
 		Token token = new Token(TokenKind.NOT, 0, 3);
 		assertThat(token.kind).isEqualTo(TokenKind.NOT);
-		assertEquals(0, token.startPos);
-		assertEquals(3, token.endPos);
+		assertThat((long) token.startPos).isEqualTo((long) 0);
+		assertThat((long) token.endPos).isEqualTo((long) 3);
 		assertThat(token.toString()).isEqualTo("[NOT(!)](0,3)");
 
 		token = new Token(TokenKind.LITERAL_STRING, "abc".toCharArray(), 0, 3);
 		assertThat(token.kind).isEqualTo(TokenKind.LITERAL_STRING);
-		assertEquals(0, token.startPos);
-		assertEquals(3, token.endPos);
+		assertThat((long) token.startPos).isEqualTo((long) 0);
+		assertThat((long) token.endPos).isEqualTo((long) 3);
 		assertThat(token.toString()).isEqualTo("[LITERAL_STRING:abc](0,3)");
 	}
 

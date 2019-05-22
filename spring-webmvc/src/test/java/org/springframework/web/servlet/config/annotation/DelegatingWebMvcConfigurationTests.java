@@ -46,9 +46,6 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -111,14 +108,14 @@ public class DelegatingWebMvcConfigurationTests {
 		verify(webMvcConfigurer).addReturnValueHandlers(handlers.capture());
 		verify(webMvcConfigurer).configureAsyncSupport(asyncConfigurer.capture());
 
-		assertNotNull(initializer);
-		assertSame(conversionService.getValue(), initializer.getConversionService());
+		assertThat((Object) initializer).isNotNull();
+		assertThat((Object) initializer.getConversionService()).isSameAs(conversionService.getValue());
 		boolean condition = initializer.getValidator() instanceof LocalValidatorFactoryBean;
 		assertThat(condition).isTrue();
-		assertEquals(0, resolvers.getValue().size());
-		assertEquals(0, handlers.getValue().size());
+		assertThat((long) resolvers.getValue().size()).isEqualTo((long) 0);
+		assertThat((long) handlers.getValue().size()).isEqualTo((long) 0);
 		assertThat(adapter.getMessageConverters()).isEqualTo(converters.getValue());
-		assertNotNull(asyncConfigurer);
+		assertThat((Object) asyncConfigurer).isNotNull();
 	}
 
 	@Test
@@ -143,9 +140,9 @@ public class DelegatingWebMvcConfigurationTests {
 		RequestMappingHandlerAdapter adapter = delegatingConfig.requestMappingHandlerAdapter(
 				this.delegatingConfig.mvcContentNegotiationManager(), this.delegatingConfig.mvcConversionService(),
 				this.delegatingConfig.mvcValidator());
-		assertEquals("Only one custom converter should be registered", 2, adapter.getMessageConverters().size());
-		assertSame(customConverter, adapter.getMessageConverters().get(0));
-		assertSame(stringConverter, adapter.getMessageConverters().get(1));
+		assertThat((long) adapter.getMessageConverters().size()).as("Only one custom converter should be registered").isEqualTo((long) 2);
+		assertThat((Object) adapter.getMessageConverters().get(0)).isSameAs(customConverter);
+		assertThat((Object) adapter.getMessageConverters().get(1)).isSameAs(stringConverter);
 	}
 
 	@Test
@@ -177,7 +174,7 @@ public class DelegatingWebMvcConfigurationTests {
 		verify(webMvcConfigurer).configureContentNegotiation(contentNegotiationConfigurer.capture());
 		verify(webMvcConfigurer).configureHandlerExceptionResolvers(exceptionResolvers.capture());
 
-		assertEquals(3, exceptionResolvers.getValue().size());
+		assertThat((long) exceptionResolvers.getValue().size()).isEqualTo((long) 3);
 		boolean condition2 = exceptionResolvers.getValue().get(0) instanceof ExceptionHandlerExceptionResolver;
 		assertThat(condition2).isTrue();
 		boolean condition1 = exceptionResolvers.getValue().get(1) instanceof ResponseStatusExceptionResolver;
@@ -201,7 +198,7 @@ public class DelegatingWebMvcConfigurationTests {
 		HandlerExceptionResolverComposite composite =
 				(HandlerExceptionResolverComposite) delegatingConfig
 						.handlerExceptionResolver(delegatingConfig.mvcContentNegotiationManager());
-		assertEquals("Only one custom converter is expected", 1, composite.getExceptionResolvers().size());
+		assertThat((long) composite.getExceptionResolvers().size()).as("Only one custom converter is expected").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -224,7 +221,7 @@ public class DelegatingWebMvcConfigurationTests {
 		RequestMappingHandlerMapping handlerMapping = delegatingConfig.requestMappingHandlerMapping(
 				delegatingConfig.mvcContentNegotiationManager(), delegatingConfig.mvcConversionService(),
 				delegatingConfig.mvcResourceUrlProvider());
-		assertNotNull(handlerMapping);
+		assertThat((Object) handlerMapping).isNotNull();
 		assertThat(handlerMapping.useRegisteredSuffixPatternMatch()).as("PathMatchConfigurer should configure RegisteredSuffixPatternMatch").isEqualTo(true);
 		assertThat(handlerMapping.useSuffixPatternMatch()).as("PathMatchConfigurer should configure SuffixPatternMatch").isEqualTo(true);
 		assertThat(handlerMapping.useTrailingSlashMatch()).as("PathMatchConfigurer should configure TrailingSlashMatch").isEqualTo(false);

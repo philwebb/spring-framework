@@ -25,9 +25,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -55,14 +52,14 @@ public class PropertyPathFactoryBeanTests {
 		boolean condition = result1 instanceof TestBean;
 		assertThat(condition).isTrue();
 		assertThat(result1 == result2).isTrue();
-		assertEquals(99, ((TestBean) result1).getAge());
+		assertThat((long) ((TestBean) result1).getAge()).isEqualTo((long) 99);
 	}
 
 	@Test
 	public void testPropertyPathFactoryBeanWithPrototypeResult() {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
-		assertNull(xbf.getType("tb.spouse"));
+		assertThat((Object) xbf.getType("tb.spouse")).isNull();
 		assertThat(xbf.getType("propertyPath3")).isEqualTo(TestBean.class);
 		Object result1 = xbf.getBean("tb.spouse");
 		Object result2 = xbf.getBean("propertyPath3");
@@ -73,9 +70,9 @@ public class PropertyPathFactoryBeanTests {
 		assertThat(condition1).isTrue();
 		boolean condition = result3 instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertEquals(11, ((TestBean) result1).getAge());
-		assertEquals(11, ((TestBean) result2).getAge());
-		assertEquals(11, ((TestBean) result3).getAge());
+		assertThat((long) ((TestBean) result1).getAge()).isEqualTo((long) 11);
+		assertThat((long) ((TestBean) result2).getAge()).isEqualTo((long) 11);
+		assertThat((long) ((TestBean) result3).getAge()).isEqualTo((long) 11);
 		assertThat(result1 != result2).isTrue();
 		assertThat(result1 != result3).isTrue();
 		assertThat(result2 != result3).isTrue();
@@ -85,7 +82,7 @@ public class PropertyPathFactoryBeanTests {
 	public void testPropertyPathFactoryBeanWithNullResult() {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
-		assertNull(xbf.getType("tb.spouse.spouse"));
+		assertThat((Object) xbf.getType("tb.spouse.spouse")).isNull();
 		assertThat(xbf.getBean("tb.spouse.spouse").toString()).isEqualTo("null");
 	}
 
@@ -95,24 +92,24 @@ public class PropertyPathFactoryBeanTests {
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
 		TestBean spouse = (TestBean) xbf.getBean("otb.spouse");
 		TestBean tbWithInner = (TestBean) xbf.getBean("tbWithInner");
-		assertSame(spouse, tbWithInner.getSpouse());
+		assertThat((Object) tbWithInner.getSpouse()).isSameAs(spouse);
 		boolean condition = !tbWithInner.getFriends().isEmpty();
 		assertThat(condition).isTrue();
-		assertSame(spouse, tbWithInner.getFriends().iterator().next());
+		assertThat(tbWithInner.getFriends().iterator().next()).isSameAs(spouse);
 	}
 
 	@Test
 	public void testPropertyPathFactoryBeanAsNullReference() {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
-		assertNull(xbf.getBean("tbWithNullReference", TestBean.class).getSpouse());
+		assertThat((Object) xbf.getBean("tbWithNullReference", TestBean.class).getSpouse()).isNull();
 	}
 
 	@Test
 	public void testPropertyPathFactoryBeanAsInnerNull() {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
-		assertNull(xbf.getBean("tbWithInnerNull", TestBean.class).getSpouse());
+		assertThat((Object) xbf.getBean("tbWithInnerNull", TestBean.class).getSpouse()).isNull();
 	}
 
 }

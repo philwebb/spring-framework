@@ -34,7 +34,6 @@ import org.springframework.web.socket.WebSocketHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for {@link OriginHandshakeInterceptor}.
@@ -68,7 +67,7 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		List<String> allowed = Collections.singletonList("https://mydomain2.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(allowed);
 		assertThat(interceptor.beforeHandshake(request, response, wsHandler, attributes)).isFalse();
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertThat((long) HttpStatus.FORBIDDEN.value()).isEqualTo((long) servletResponse.getStatus());
 	}
 
 	@Test
@@ -90,7 +89,7 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		List<String> allowed = Arrays.asList("https://mydomain1.com", "https://mydomain2.com", "http://mydomain3.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(allowed);
 		assertThat(interceptor.beforeHandshake(request, response, wsHandler, attributes)).isFalse();
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertThat((long) HttpStatus.FORBIDDEN.value()).isEqualTo((long) servletResponse.getStatus());
 	}
 
 	@Test
@@ -103,7 +102,7 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		allowedOrigins.add("https://mydomain1.com");
 		interceptor.setAllowedOrigins(allowedOrigins);
 		assertThat(interceptor.beforeHandshake(request, response, wsHandler, attributes)).isFalse();
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertThat((long) HttpStatus.FORBIDDEN.value()).isEqualTo((long) servletResponse.getStatus());
 	}
 
 	@Test
@@ -147,7 +146,7 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.setServerName("mydomain2.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(Collections.emptyList());
 		assertThat(interceptor.beforeHandshake(request, response, wsHandler, attributes)).isFalse();
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertThat((long) HttpStatus.FORBIDDEN.value()).isEqualTo((long) servletResponse.getStatus());
 	}
 
 }

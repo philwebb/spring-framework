@@ -28,7 +28,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for HeaderContentNegotiationStrategy tests.
@@ -50,7 +49,7 @@ public class HeaderContentNegotiationStrategyTests {
 		this.servletRequest.addHeader("Accept", "text/plain; q=0.5, text/html, text/x-dvi; q=0.8, text/x-c");
 		List<MediaType> mediaTypes = this.strategy.resolveMediaTypes(this.webRequest);
 
-		assertEquals(4, mediaTypes.size());
+		assertThat((long) mediaTypes.size()).isEqualTo((long) 4);
 		assertThat(mediaTypes.get(0).toString()).isEqualTo("text/html");
 		assertThat(mediaTypes.get(1).toString()).isEqualTo("text/x-c");
 		assertThat(mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");
@@ -63,7 +62,7 @@ public class HeaderContentNegotiationStrategyTests {
 		this.servletRequest.addHeader("Accept", "text/x-dvi; q=0.8, text/x-c");
 		List<MediaType> mediaTypes = this.strategy.resolveMediaTypes(this.webRequest);
 
-		assertEquals(4, mediaTypes.size());
+		assertThat((long) mediaTypes.size()).isEqualTo((long) 4);
 		assertThat(mediaTypes.get(0).toString()).isEqualTo("text/html");
 		assertThat(mediaTypes.get(1).toString()).isEqualTo("text/x-c");
 		assertThat(mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");

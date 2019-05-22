@@ -29,8 +29,6 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for {@link AnnotationExceptionHandlerMethodResolver} tests.
@@ -79,8 +77,8 @@ public class AnnotationExceptionHandlerMethodResolverTests {
 	@Test
 	public void resolveMethodNoMatch() {
 		Exception exception = new Exception();
-		assertNull("1st lookup", this.resolver.resolveMethod(exception));
-		assertNull("2nd lookup from cache", this.resolver.resolveMethod(exception));
+		assertThat((Object) this.resolver.resolveMethod(exception)).as("1st lookup").isNull();
+		assertThat((Object) this.resolver.resolveMethod(exception)).as("2nd lookup from cache").isNull();
 	}
 
 	@Test

@@ -26,8 +26,6 @@ import org.springframework.test.context.support.GenericPropertiesContextLoader;
 import org.springframework.tests.sample.beans.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests which verify that the same custom {@link ContextLoader} can
@@ -53,10 +51,10 @@ public class ContextConfigurationWithPropertiesExtendingPropertiesTests extends
 
 	@Test
 	public void verifyExtendedAnnotationAutowiredFields() {
-		assertNotNull("The dog field should have been autowired.", this.dog);
+		assertThat((Object) this.dog).as("The dog field should have been autowired.").isNotNull();
 		assertThat(this.dog.getName()).isEqualTo("Fido");
 
-		assertNotNull("The testString2 field should have been autowired.", this.testString2);
+		assertThat((Object) this.testString2).as("The testString2 field should have been autowired.").isNotNull();
 		assertThat(this.testString2).isEqualTo("Test String #2");
 	}
 

@@ -27,7 +27,6 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -144,8 +143,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 			}
 		};
 		tag.setPageContext(pc);
-		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
-		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
+		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).isEqualTo("test text");
 	}
 
@@ -165,8 +164,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		};
 		tag.setPageContext(pc);
 		tag.setHtmlEscape(true);
-		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
-		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
+		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).isEqualTo("test &amp; text");
 	}
 
@@ -186,8 +185,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		};
 		tag.setPageContext(pc);
 		tag.setJavaScriptEscape(true);
-		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
-		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
+		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).as("Correct content").isEqualTo("\\' test & text \\\\");
 	}
 
@@ -208,8 +207,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setHtmlEscape(true);
 		tag.setJavaScriptEscape(true);
-		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
-		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
+		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).as("Correct content").isEqualTo("&#39; test &amp; text \\\\");
 	}
 

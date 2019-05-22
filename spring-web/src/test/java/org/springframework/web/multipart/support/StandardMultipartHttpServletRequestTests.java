@@ -32,9 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-
 /**
  * Unit tests for {@link StandardMultipartHttpServletRequest}.
  *
@@ -48,7 +45,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart("file", disposition, "");
 
 		MultipartFile multipartFile = request.getFile("file");
-		assertNotNull(multipartFile);
+		assertThat((Object) multipartFile).isNotNull();
 		assertThat(multipartFile.getOriginalFilename()).isEqualTo("myFile.txt");
 	}
 
@@ -58,7 +55,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart("file", disposition, "");
 
 		MultipartFile multipartFile = request.getFile("file");
-		assertNotNull(multipartFile);
+		assertThat((Object) multipartFile).isNotNull();
 		assertThat(multipartFile.getOriginalFilename()).isEqualTo("foo-ä-€.html");
 	}
 
@@ -68,7 +65,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart("file", disposition, "");
 
 		MultipartFile multipartFile = request.getFile("file");
-		assertNotNull(multipartFile);
+		assertThat((Object) multipartFile).isNotNull();
 		assertThat(multipartFile.getOriginalFilename()).isEqualTo("Declaração.pdf");
 	}
 
@@ -79,7 +76,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart(name, disposition, "myBody");
 		MultipartFile multipartFile = request.getFile(name);
 
-		assertNotNull(multipartFile);
+		assertThat((Object) multipartFile).isNotNull();
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
 		map.add(name, multipartFile.getResource());

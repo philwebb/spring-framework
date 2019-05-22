@@ -41,8 +41,6 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.fail;
 
 /**
@@ -106,7 +104,7 @@ public class InterceptorRegistryTests {
 		this.registry.addWebRequestInterceptor(this.webInterceptor1);
 		List<HandlerInterceptor> interceptors = getInterceptorsForPath(null);
 
-		assertEquals(1, interceptors.size());
+		assertThat((long) interceptors.size()).isEqualTo((long) 1);
 		verifyWebInterceptor(interceptors.get(0), this.webInterceptor1);
 	}
 
@@ -116,7 +114,7 @@ public class InterceptorRegistryTests {
 		this.registry.addWebRequestInterceptor(this.webInterceptor2);
 		List<HandlerInterceptor> interceptors = getInterceptorsForPath(null);
 
-		assertEquals(2, interceptors.size());
+		assertThat((long) interceptors.size()).isEqualTo((long) 2);
 		verifyWebInterceptor(interceptors.get(0), this.webInterceptor1);
 		verifyWebInterceptor(interceptors.get(1), this.webInterceptor2);
 	}
@@ -127,7 +125,7 @@ public class InterceptorRegistryTests {
 		this.registry.addInterceptor(interceptor1).addPathPatterns("/path1/**").pathMatcher(pathMatcher);
 
 		MappedInterceptor mappedInterceptor = (MappedInterceptor) this.registry.getInterceptors().get(0);
-		assertSame(pathMatcher, mappedInterceptor.getPathMatcher());
+		assertThat((Object) mappedInterceptor.getPathMatcher()).isSameAs(pathMatcher);
 	}
 
 	@Test
@@ -136,11 +134,11 @@ public class InterceptorRegistryTests {
 		this.registry.addWebRequestInterceptor(this.webInterceptor2).addPathPatterns("/path2");
 
 		List<HandlerInterceptor> interceptors = getInterceptorsForPath("/path1");
-		assertEquals(1, interceptors.size());
+		assertThat((long) interceptors.size()).isEqualTo((long) 1);
 		verifyWebInterceptor(interceptors.get(0), this.webInterceptor1);
 
 		interceptors = getInterceptorsForPath("/path2");
-		assertEquals(1, interceptors.size());
+		assertThat((long) interceptors.size()).isEqualTo((long) 1);
 		verifyWebInterceptor(interceptors.get(0), this.webInterceptor2);
 	}
 
@@ -160,10 +158,10 @@ public class InterceptorRegistryTests {
 		this.registry.addInterceptor(this.interceptor2).order(Ordered.HIGHEST_PRECEDENCE);
 
 		List<Object> interceptors = this.registry.getInterceptors();
-		assertEquals(2, interceptors.size());
+		assertThat((long) interceptors.size()).isEqualTo((long) 2);
 
-		assertSame(this.interceptor2, interceptors.get(0));
-		assertSame(this.interceptor1, interceptors.get(1));
+		assertThat(interceptors.get(0)).isSameAs(this.interceptor2);
+		assertThat(interceptors.get(1)).isSameAs(this.interceptor1);
 	}
 
 	@Test
@@ -172,10 +170,10 @@ public class InterceptorRegistryTests {
 		this.registry.addInterceptor(this.interceptor2).order(0);
 
 		List<Object> interceptors = this.registry.getInterceptors();
-		assertEquals(2, interceptors.size());
+		assertThat((long) interceptors.size()).isEqualTo((long) 2);
 
-		assertSame(this.interceptor1, interceptors.get(0));
-		assertSame(this.interceptor2, interceptors.get(1));
+		assertThat(interceptors.get(0)).isSameAs(this.interceptor1);
+		assertThat(interceptors.get(1)).isSameAs(this.interceptor2);
 	}
 
 

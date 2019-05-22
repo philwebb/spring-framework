@@ -23,7 +23,6 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link MonoToListenableFutureAdapter}.

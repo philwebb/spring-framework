@@ -31,8 +31,6 @@ import org.springframework.core.io.ClassPathResource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -100,7 +98,7 @@ public class EhCacheSupportTests {
 			cacheManagerFb2.setAcceptExisting(true);
 			cacheManagerFb2.afterPropertiesSet();
 			CacheManager cm2 = cacheManagerFb2.getObject();
-			assertSame(cm, cm2);
+			assertThat((Object) cm2).isSameAs(cm);
 			cacheManagerFb2.destroy();
 		}
 		finally {
@@ -157,14 +155,14 @@ public class EhCacheSupportTests {
 			cacheFb.afterPropertiesSet();
 			cache = (Cache) cacheFb.getObject();
 			Class<? extends Ehcache> objectType2 = cacheFb.getObjectType();
-			assertSame(objectType, objectType2);
+			assertThat((Object) objectType2).isSameAs(objectType);
 			CacheConfiguration config = cache.getCacheConfiguration();
 			assertThat(cache.getName()).isEqualTo("myCache1");
 			if (useCacheManagerFb){
-				assertEquals("myCache1.maxElements", 300, config.getMaxEntriesLocalHeap());
+				assertThat(config.getMaxEntriesLocalHeap()).as("myCache1.maxElements").isEqualTo((long) 300);
 			}
 			else {
-				assertEquals("myCache1.maxElements", 10000, config.getMaxEntriesLocalHeap());
+				assertThat(config.getMaxEntriesLocalHeap()).as("myCache1.maxElements").isEqualTo((long) 10000);
 			}
 
 			// Cache region is not defined. Should create one with default properties.

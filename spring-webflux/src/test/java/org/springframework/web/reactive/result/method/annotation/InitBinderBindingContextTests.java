@@ -39,10 +39,6 @@ import org.springframework.web.reactive.result.method.SyncInvocableHandlerMethod
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link InitBinderBindingContext}.
@@ -62,7 +58,7 @@ public class InitBinderBindingContextTests {
 		BindingContext context = createBindingContext("initBinder", WebDataBinder.class);
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, null);
 
-		assertNotNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNotNull();
 		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
@@ -75,7 +71,7 @@ public class InitBinderBindingContextTests {
 		BindingContext context = createBindingContext("initBinder", WebDataBinder.class);
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, null);
 
-		assertSame(conversionService, dataBinder.getConversionService());
+		assertThat((Object) dataBinder.getConversionService()).isSameAs(conversionService);
 	}
 
 	@Test
@@ -84,7 +80,7 @@ public class InitBinderBindingContextTests {
 		BindingContext context = createBindingContext("initBinderWithAttributeName", WebDataBinder.class);
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, "foo");
 
-		assertNotNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNotNull();
 		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
@@ -94,7 +90,7 @@ public class InitBinderBindingContextTests {
 		BindingContext context = createBindingContext("initBinderWithAttributeName", WebDataBinder.class);
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, "invalidName");
 
-		assertNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNull();
 	}
 
 	@Test
@@ -103,7 +99,7 @@ public class InitBinderBindingContextTests {
 		BindingContext context = createBindingContext("initBinderWithAttributeName", WebDataBinder.class);
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, null);
 
-		assertNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNull();
 	}
 
 	@Test
@@ -124,7 +120,7 @@ public class InitBinderBindingContextTests {
 		BindingContext context = createBindingContext("initBinderTypeConversion", WebDataBinder.class, int.class);
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, "foo");
 
-		assertNotNull(dataBinder.getDisallowedFields());
+		assertThat((Object) dataBinder.getDisallowedFields()).isNotNull();
 		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
 	}
 

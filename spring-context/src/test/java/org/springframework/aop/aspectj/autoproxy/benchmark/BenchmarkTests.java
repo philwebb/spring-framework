@@ -37,7 +37,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests for AspectJ auto proxying. Includes mixing with Spring AOP
@@ -109,7 +108,7 @@ public class BenchmarkTests {
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
-		assertEquals(68, adrian.getAge());
+		assertThat((long) adrian.getAge()).isEqualTo((long) 68);
 
 		for (int i = 0; i < howmany; i++) {
 			adrian.getAge();

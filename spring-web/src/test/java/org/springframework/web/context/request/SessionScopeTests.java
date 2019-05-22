@@ -36,10 +36,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rob Harrop
@@ -81,17 +77,17 @@ public class SessionScopeTests {
 
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		String name = "sessionScopedObject";
-		assertNull(session.getAttribute(name));
+		assertThat(session.getAttribute(name)).isNull();
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
-		assertEquals(1, count.intValue());
+		assertThat((long) count.intValue()).isEqualTo((long) 1);
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertSame(bean, this.beanFactory.getBean(name));
-		assertEquals(1, count.intValue());
+		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
+		assertThat((long) count.intValue()).isEqualTo((long) 1);
 
 		// should re-propagate updated attribute
 		requestAttributes.requestCompleted();
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertEquals(2, count.intValue());
+		assertThat((long) count.intValue()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -110,14 +106,14 @@ public class SessionScopeTests {
 
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		String name = "sessionScopedObject";
-		assertNull(session.getAttribute(name));
+		assertThat(session.getAttribute(name)).isNull();
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
-		assertEquals(1, count.intValue());
+		assertThat((long) count.intValue()).isEqualTo((long) 1);
 
 		// should re-propagate updated attribute
 		requestAttributes.requestCompleted();
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertEquals(2, count.intValue());
+		assertThat((long) count.intValue()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -129,10 +125,10 @@ public class SessionScopeTests {
 
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		String name = "sessionScopedDisposableObject";
-		assertNull(session.getAttribute(name));
+		assertThat(session.getAttribute(name)).isNull();
 		DerivedTestBean bean = (DerivedTestBean) this.beanFactory.getBean(name);
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertSame(bean, this.beanFactory.getBean(name));
+		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
 
 		requestAttributes.requestCompleted();
 		session.invalidate();
@@ -166,10 +162,10 @@ public class SessionScopeTests {
 
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		String name = "sessionScopedDisposableObject";
-		assertNull(session.getAttribute(name));
+		assertThat(session.getAttribute(name)).isNull();
 		DerivedTestBean bean = (DerivedTestBean) this.beanFactory.getBean(name);
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertSame(bean, this.beanFactory.getBean(name));
+		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
 
 		requestAttributes.requestCompleted();
 		serializedState = session.serializeState();
@@ -185,20 +181,20 @@ public class SessionScopeTests {
 
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		name = "sessionScopedDisposableObject";
-		assertNotNull(session.getAttribute(name));
+		assertThat(session.getAttribute(name)).isNotNull();
 		bean = (DerivedTestBean) this.beanFactory.getBean(name);
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertSame(bean, this.beanFactory.getBean(name));
+		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
 
 		requestAttributes.requestCompleted();
 		session.invalidate();
 		assertThat(bean.wasDestroyed()).isTrue();
 
 		if (beanNameReset) {
-			assertNull(bean.getBeanName());
+			assertThat((Object) bean.getBeanName()).isNull();
 		}
 		else {
-			assertNotNull(bean.getBeanName());
+			assertThat((Object) bean.getBeanName()).isNotNull();
 		}
 	}
 

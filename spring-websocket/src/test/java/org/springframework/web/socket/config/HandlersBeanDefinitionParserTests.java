@@ -61,9 +61,6 @@ import org.springframework.web.socket.sockjs.transport.handler.XhrReceivingTrans
 import org.springframework.web.socket.sockjs.transport.handler.XhrStreamingTransportHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for HandlersBeanDefinitionParser.
@@ -82,7 +79,7 @@ public class HandlersBeanDefinitionParserTests {
 		loadBeanDefinitions("websocket-config-handlers.xml");
 
 		Map<String, HandlerMapping> handlersMap = this.appContext.getBeansOfType(HandlerMapping.class);
-		assertNotNull(handlersMap);
+		assertThat((Object) handlersMap).isNotNull();
 		assertThat(handlersMap).hasSize(2);
 
 		for (HandlerMapping hm : handlersMap.values()) {
@@ -93,10 +90,10 @@ public class HandlersBeanDefinitionParserTests {
 			if (shm.getUrlMap().keySet().contains("/foo")) {
 				assertThat(shm.getUrlMap()).containsOnlyKeys("/foo", "/bar");
 				WebSocketHttpRequestHandler handler = (WebSocketHttpRequestHandler) shm.getUrlMap().get("/foo");
-				assertNotNull(handler);
+				assertThat((Object) handler).isNotNull();
 				unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), FooWebSocketHandler.class);
 				HandshakeHandler handshakeHandler = handler.getHandshakeHandler();
-				assertNotNull(handshakeHandler);
+				assertThat((Object) handshakeHandler).isNotNull();
 				boolean condition1 = handshakeHandler instanceof DefaultHandshakeHandler;
 				assertThat(condition1).isTrue();
 				assertThat(handler.getHandshakeInterceptors().isEmpty()).isFalse();
@@ -106,10 +103,10 @@ public class HandlersBeanDefinitionParserTests {
 			else {
 				assertThat(shm.getUrlMap()).containsOnlyKeys("/test");
 				WebSocketHttpRequestHandler handler = (WebSocketHttpRequestHandler) shm.getUrlMap().get("/test");
-				assertNotNull(handler);
+				assertThat((Object) handler).isNotNull();
 				unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), TestWebSocketHandler.class);
 				HandshakeHandler handshakeHandler = handler.getHandshakeHandler();
-				assertNotNull(handshakeHandler);
+				assertThat((Object) handshakeHandler).isNotNull();
 				boolean condition1 = handshakeHandler instanceof DefaultHandshakeHandler;
 				assertThat(condition1).isTrue();
 				assertThat(handler.getHandshakeInterceptors().isEmpty()).isFalse();
@@ -125,18 +122,18 @@ public class HandlersBeanDefinitionParserTests {
 		loadBeanDefinitions("websocket-config-handlers-attributes.xml");
 
 		HandlerMapping handlerMapping = this.appContext.getBean(HandlerMapping.class);
-		assertNotNull(handlerMapping);
+		assertThat((Object) handlerMapping).isNotNull();
 		boolean condition2 = handlerMapping instanceof SimpleUrlHandlerMapping;
 		assertThat(condition2).isTrue();
 
 		SimpleUrlHandlerMapping urlHandlerMapping = (SimpleUrlHandlerMapping) handlerMapping;
-		assertEquals(2, urlHandlerMapping.getOrder());
+		assertThat((long) urlHandlerMapping.getOrder()).isEqualTo((long) 2);
 
 		WebSocketHttpRequestHandler handler = (WebSocketHttpRequestHandler) urlHandlerMapping.getUrlMap().get("/foo");
-		assertNotNull(handler);
+		assertThat((Object) handler).isNotNull();
 		unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), FooWebSocketHandler.class);
 		HandshakeHandler handshakeHandler = handler.getHandshakeHandler();
-		assertNotNull(handshakeHandler);
+		assertThat((Object) handshakeHandler).isNotNull();
 		boolean condition1 = handshakeHandler instanceof TestHandshakeHandler;
 		assertThat(condition1).isTrue();
 		List<HandshakeInterceptor> interceptors = handler.getHandshakeInterceptors();
@@ -144,10 +141,10 @@ public class HandlersBeanDefinitionParserTests {
 				.containsExactlyInAnyOrder(FooTestInterceptor.class, BarTestInterceptor.class, OriginHandshakeInterceptor.class);
 
 		handler = (WebSocketHttpRequestHandler) urlHandlerMapping.getUrlMap().get("/test");
-		assertNotNull(handler);
+		assertThat((Object) handler).isNotNull();
 		unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), TestWebSocketHandler.class);
 		handshakeHandler = handler.getHandshakeHandler();
-		assertNotNull(handshakeHandler);
+		assertThat((Object) handshakeHandler).isNotNull();
 		boolean condition = handshakeHandler instanceof TestHandshakeHandler;
 		assertThat(condition).isTrue();
 		interceptors = handler.getHandshakeInterceptors();
@@ -161,20 +158,20 @@ public class HandlersBeanDefinitionParserTests {
 		loadBeanDefinitions("websocket-config-handlers-sockjs.xml");
 
 		SimpleUrlHandlerMapping handlerMapping = this.appContext.getBean(SimpleUrlHandlerMapping.class);
-		assertNotNull(handlerMapping);
+		assertThat((Object) handlerMapping).isNotNull();
 
 		SockJsHttpRequestHandler testHandler = (SockJsHttpRequestHandler) handlerMapping.getUrlMap().get("/test/**");
-		assertNotNull(testHandler);
+		assertThat((Object) testHandler).isNotNull();
 		unwrapAndCheckDecoratedHandlerType(testHandler.getWebSocketHandler(), TestWebSocketHandler.class);
 		SockJsService testSockJsService = testHandler.getSockJsService();
 
 		SockJsHttpRequestHandler fooHandler = (SockJsHttpRequestHandler) handlerMapping.getUrlMap().get("/foo/**");
-		assertNotNull(fooHandler);
+		assertThat((Object) fooHandler).isNotNull();
 		unwrapAndCheckDecoratedHandlerType(fooHandler.getWebSocketHandler(), FooWebSocketHandler.class);
 		SockJsService sockJsService = fooHandler.getSockJsService();
-		assertNotNull(sockJsService);
+		assertThat((Object) sockJsService).isNotNull();
 
-		assertSame(testSockJsService, sockJsService);
+		assertThat((Object) sockJsService).isSameAs(testSockJsService);
 
 		assertThat(sockJsService).isInstanceOf(DefaultSockJsService.class);
 		DefaultSockJsService defaultSockJsService = (DefaultSockJsService) sockJsService;
@@ -205,14 +202,14 @@ public class HandlersBeanDefinitionParserTests {
 		loadBeanDefinitions("websocket-config-handlers-sockjs-attributes.xml");
 
 		SimpleUrlHandlerMapping handlerMapping = appContext.getBean(SimpleUrlHandlerMapping.class);
-		assertNotNull(handlerMapping);
+		assertThat((Object) handlerMapping).isNotNull();
 
 		SockJsHttpRequestHandler handler = (SockJsHttpRequestHandler) handlerMapping.getUrlMap().get("/test/**");
-		assertNotNull(handler);
+		assertThat((Object) handler).isNotNull();
 		unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), TestWebSocketHandler.class);
 
 		SockJsService sockJsService = handler.getSockJsService();
-		assertNotNull(sockJsService);
+		assertThat((Object) sockJsService).isNotNull();
 		assertThat(sockJsService).isInstanceOf(TransportHandlingSockJsService.class);
 		TransportHandlingSockJsService transportService = (TransportHandlingSockJsService) sockJsService;
 		assertThat(transportService.getTaskScheduler()).isInstanceOf(TestTaskScheduler.class);
@@ -222,10 +219,10 @@ public class HandlersBeanDefinitionParserTests {
 		assertThat(transportService.getName()).isEqualTo("testSockJsService");
 		assertThat(transportService.isWebSocketEnabled()).isFalse();
 		assertThat(transportService.isSessionCookieNeeded()).isFalse();
-		assertEquals(2048, transportService.getStreamBytesLimit());
-		assertEquals(256, transportService.getDisconnectDelay());
-		assertEquals(1024, transportService.getHttpMessageCacheSize());
-		assertEquals(20, transportService.getHeartbeatTime());
+		assertThat((long) transportService.getStreamBytesLimit()).isEqualTo((long) 2048);
+		assertThat(transportService.getDisconnectDelay()).isEqualTo((long) 256);
+		assertThat((long) transportService.getHttpMessageCacheSize()).isEqualTo((long) 1024);
+		assertThat(transportService.getHeartbeatTime()).isEqualTo((long) 20);
 		assertThat(transportService.getSockJsClientLibraryUrl()).isEqualTo("/js/sockjs.min.js");
 		assertThat(transportService.getMessageCodec().getClass()).isEqualTo(TestMessageCodec.class);
 

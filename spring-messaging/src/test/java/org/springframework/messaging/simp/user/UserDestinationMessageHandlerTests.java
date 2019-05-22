@@ -34,8 +34,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -145,7 +143,7 @@ public class UserDestinationMessageHandlerTests {
 
 		ArgumentCaptor<Message> captor = ArgumentCaptor.forClass(Message.class);
 		Mockito.verify(this.brokerChannel).send(captor.capture());
-		assertNotNull(captor.getValue());
+		assertThat(captor.getValue()).isNotNull();
 		SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(captor.getValue());
 		assertThat(headers.getDestination()).isEqualTo("/queue/foo-user123");
 		assertThat(headers.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/queue/foo");

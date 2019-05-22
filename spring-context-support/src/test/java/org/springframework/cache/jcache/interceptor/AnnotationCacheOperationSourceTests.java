@@ -39,10 +39,6 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -69,7 +65,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 	public void cache() {
 		CacheResultOperation op = getDefaultCacheOperation(CacheResultOperation.class, String.class);
 		assertDefaults(op);
-		assertNull("Exception caching not enabled so resolver should not be set", op.getExceptionCacheResolver());
+		assertThat((Object) op.getExceptionCacheResolver()).as("Exception caching not enabled so resolver should not be set").isNull();
 	}
 
 	@Test
@@ -100,7 +96,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 
 	@Test
 	public void noAnnotation() {
-		assertNull(getCacheOperation(AnnotatedJCacheableService.class, name.getMethodName()));
+		assertThat((Object) getCacheOperation(AnnotatedJCacheableService.class, name.getMethodName())).isNull();
 	}
 
 	@Test
@@ -150,7 +146,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 		CacheResultOperation operation =
 				getCacheOperation(CacheResultOperation.class, CustomService.class, name.getMethodName(), Long.class);
 		assertThat(operation.getCacheResolver()).isEqualTo(defaultCacheResolver);
-		assertNull(operation.getExceptionCacheResolver());
+		assertThat((Object) operation.getExceptionCacheResolver()).isNull();
 		assertCacheKeyGenerator(operation.getKeyGenerator(), TestableCacheKeyGenerator.class);
 	}
 
@@ -161,9 +157,10 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 		CacheResultOperation operation =
 				getCacheOperation(CacheResultOperation.class, CustomService.class, name.getMethodName(), Long.class);
 		assertThat(operation.getCacheResolver()).isEqualTo(defaultCacheResolver);
-		assertNull(operation.getExceptionCacheResolver());
+		assertThat((Object) operation.getExceptionCacheResolver()).isNull();
 		KeyGeneratorAdapter adapter = (KeyGeneratorAdapter) operation.getKeyGenerator();
-		assertSame(bean, adapter.getTarget()); // take bean from context
+		// take bean from context
+		assertThat(adapter.getTarget()).isSameAs(bean);
 	}
 
 	@Test
@@ -198,7 +195,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 			Class<T> operationType, Class<?> targetType, String methodName, Class<?>... parameterTypes) {
 
 		JCacheOperation<?> result = getCacheOperation(targetType, methodName, parameterTypes);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 		assertThat(result.getClass()).isEqualTo(operationType);
 		return operationType.cast(result);
 	}
@@ -213,7 +210,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 			Class<? extends javax.cache.annotation.CacheResolver> expectedTargetType) {
 
 		if (expectedTargetType == null) {
-			assertNull(actual);
+			assertThat((Object) actual).isNull();
 		}
 		else {
 			assertThat(actual.getClass()).as("Wrong cache resolver implementation").isEqualTo(CacheResolverAdapter.class);

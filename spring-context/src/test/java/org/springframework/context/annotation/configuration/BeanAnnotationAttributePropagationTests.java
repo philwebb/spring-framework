@@ -31,7 +31,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests proving that the various attributes available via the {@link Bean}
@@ -53,8 +52,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean(autowire=Autowire.BY_TYPE) Object foo() { return null; }
 		}
 
-		assertEquals("autowire mode was not propagated",
-				AbstractBeanDefinition.AUTOWIRE_BY_TYPE, beanDef(Config.class).getAutowireMode());
+		assertThat((long) beanDef(Config.class).getAutowireMode()).as("autowire mode was not propagated").isEqualTo((long) AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 	}
 
 	@Test

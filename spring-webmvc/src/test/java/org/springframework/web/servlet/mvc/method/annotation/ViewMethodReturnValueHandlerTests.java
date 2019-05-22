@@ -32,7 +32,6 @@ import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture with {@link ViewMethodReturnValueHandler}.
@@ -66,7 +65,7 @@ public class ViewMethodReturnValueHandlerTests {
 		InternalResourceView view = new InternalResourceView("testView");
 		this.handler.handleReturnValue(view, createReturnValueParam("view"), this.mavContainer, this.webRequest);
 
-		assertSame(view, this.mavContainer.getView());
+		assertThat(this.mavContainer.getView()).isSameAs(view);
 	}
 
 	@Test
@@ -77,8 +76,8 @@ public class ViewMethodReturnValueHandlerTests {
 		MethodParameter param = createReturnValueParam("view");
 		this.handler.handleReturnValue(redirectView, param, this.mavContainer, this.webRequest);
 
-		assertSame(redirectView, this.mavContainer.getView());
-		assertSame("Should have switched to the RedirectModel", redirectModel, this.mavContainer.getModel());
+		assertThat(this.mavContainer.getView()).isSameAs(redirectView);
+		assertThat((Object) this.mavContainer.getModel()).as("Should have switched to the RedirectModel").isSameAs(redirectModel);
 	}
 
 	private MethodParameter createReturnValueParam(String methodName) throws Exception {

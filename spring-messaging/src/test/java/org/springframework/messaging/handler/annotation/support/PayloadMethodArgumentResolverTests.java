@@ -39,8 +39,6 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for {@link PayloadMethodArgumentResolver}.
@@ -125,10 +123,10 @@ public class PayloadMethodArgumentResolverTests {
 	@Test
 	public void resolveNotRequired() throws Exception {
 		Message<?> emptyByteArrayMessage = MessageBuilder.withPayload(new byte[0]).build();
-		assertNull(this.resolver.resolveArgument(this.paramAnnotatedNotRequired, emptyByteArrayMessage));
+		assertThat(this.resolver.resolveArgument(this.paramAnnotatedNotRequired, emptyByteArrayMessage)).isNull();
 
 		Message<?> emptyStringMessage = MessageBuilder.withPayload("").build();
-		assertNull(this.resolver.resolveArgument(this.paramAnnotatedNotRequired, emptyStringMessage));
+		assertThat(this.resolver.resolveArgument(this.paramAnnotatedNotRequired, emptyStringMessage)).isNull();
 
 		Message<?> notEmptyMessage = MessageBuilder.withPayload("ABC".getBytes()).build();
 		assertThat(this.resolver.resolveArgument(this.paramAnnotatedNotRequired, notEmptyMessage)).isEqualTo("ABC");

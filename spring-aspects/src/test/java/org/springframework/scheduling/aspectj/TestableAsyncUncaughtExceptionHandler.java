@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * A {@link AsyncUncaughtExceptionHandler} implementation used for testing purposes.
@@ -62,7 +60,7 @@ class TestableAsyncUncaughtExceptionHandler
 	}
 
 	public void assertCalledWith(Method expectedMethod, Class<? extends Throwable> expectedExceptionType) {
-		assertNotNull("Handler not called", descriptor);
+		assertThat((Object) descriptor).as("Handler not called").isNotNull();
 		assertThat(descriptor.ex.getClass()).as("Wrong exception type").isEqualTo(expectedExceptionType);
 		assertThat(descriptor.method).as("Wrong method").isEqualTo(expectedMethod);
 	}

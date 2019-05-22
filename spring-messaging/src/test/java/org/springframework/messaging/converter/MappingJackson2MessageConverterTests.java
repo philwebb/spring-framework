@@ -35,10 +35,6 @@ import org.springframework.util.MimeType;
 
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link MappingJackson2MessageConverter}.
@@ -90,7 +86,7 @@ public class MappingJackson2MessageConverterTests {
 		MyBean actual = (MyBean) converter.fromMessage(message, MyBean.class);
 
 		assertThat(actual.getString()).isEqualTo("Foo");
-		assertEquals(42, actual.getNumber());
+		assertThat((long) actual.getNumber()).isEqualTo((long) 42);
 		assertThat(actual.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
@@ -121,7 +117,7 @@ public class MappingJackson2MessageConverterTests {
 		MyBean myBean = new MyBean();
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
 		Message<?> message = MessageBuilder.withPayload(myBean).build();
-		assertSame(myBean, converter.fromMessage(message, MyBean.class));
+		assertThat(converter.fromMessage(message, MyBean.class)).isSameAs(myBean);
 	}
 
 	@Test
@@ -152,7 +148,7 @@ public class MappingJackson2MessageConverterTests {
 		MethodParameter param = new MethodParameter(method, 0);
 		Object actual = converter.fromMessage(message, List.class, param);
 
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(actual).isEqualTo(Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L));
 	}
 
@@ -241,9 +237,9 @@ public class MappingJackson2MessageConverterTests {
 		method = getClass().getDeclaredMethod("jsonViewPayload", JacksonViewBean.class);
 		MethodParameter param = new MethodParameter(method, 0);
 		JacksonViewBean back = (JacksonViewBean) converter.fromMessage(message, JacksonViewBean.class, param);
-		assertNull(back.getWithView1());
+		assertThat((Object) back.getWithView1()).isNull();
 		assertThat(back.getWithView2()).isEqualTo("with");
-		assertNull(back.getWithoutView());
+		assertThat((Object) back.getWithoutView()).isNull();
 	}
 
 

@@ -37,8 +37,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-
 /**
  * Unit tests for various {@link Resource} implementations.
  *
@@ -106,7 +104,7 @@ public class ResourceTests {
 		HashSet<Resource> resources = new HashSet<>();
 		resources.add(resource);
 		resources.add(resource2);
-		assertEquals(1, resources.size());
+		assertThat((long) resources.size()).isEqualTo((long) 1);
 	}
 
 	@Test

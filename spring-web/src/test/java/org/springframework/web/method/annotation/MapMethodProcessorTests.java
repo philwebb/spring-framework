@@ -32,8 +32,6 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture with
@@ -77,8 +75,7 @@ public class MapMethodProcessorTests {
 	@Test
 	public void resolveArgumentValue() throws Exception {
 		MethodParameter param = this.resolvable.annotNotPresent().arg(Map.class, String.class, Object.class);
-		assertSame(this.mavContainer.getModel(),
-				this.processor.resolveArgument(param, this.mavContainer, this.webRequest, null));
+		assertThat(this.processor.resolveArgument(param, this.mavContainer, this.webRequest, null)).isSameAs(this.mavContainer.getModel());
 	}
 
 	@Test

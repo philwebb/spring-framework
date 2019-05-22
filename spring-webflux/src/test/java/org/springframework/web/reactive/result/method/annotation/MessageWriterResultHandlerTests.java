@@ -54,8 +54,6 @@ import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.core.io.buffer.support.DataBufferTestUtils.dumpString;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.method.ResolvableMethod.on;
@@ -133,7 +131,7 @@ public class MessageWriterResultHandlerTests {
 	private void testVoid(Object body, MethodParameter returnType) {
 		this.resultHandler.writeBody(body, returnType, this.exchange).block(Duration.ofSeconds(5));
 
-		assertNull(this.exchange.getResponse().getHeaders().get("Content-Type"));
+		assertThat((Object) this.exchange.getResponse().getHeaders().get("Content-Type")).isNull();
 		StepVerifier.create(this.exchange.getResponse().getBody())
 				.expectErrorMatches(ex -> ex.getMessage().startsWith("No content was written")).verify();
 	}

@@ -30,15 +30,13 @@ import org.springframework.expression.TypeLocator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 public class StandardComponentsTests {
 
 	@Test
 	public void testStandardEvaluationContext() {
 		StandardEvaluationContext context = new StandardEvaluationContext();
-		assertNotNull(context.getTypeComparator());
+		assertThat((Object) context.getTypeComparator()).isNotNull();
 
 		TypeComparator tc = new StandardTypeComparator();
 		context.setTypeComparator(tc);
@@ -61,13 +59,13 @@ public class StandardComponentsTests {
 	public void testStandardTypeLocator() {
 		StandardTypeLocator tl = new StandardTypeLocator();
 		List<String> prefixes = tl.getImportPrefixes();
-		assertEquals(1, prefixes.size());
+		assertThat((long) prefixes.size()).isEqualTo((long) 1);
 		tl.registerImport("java.util");
 		prefixes = tl.getImportPrefixes();
-		assertEquals(2, prefixes.size());
+		assertThat((long) prefixes.size()).isEqualTo((long) 2);
 		tl.removeImport("java.util");
 		prefixes = tl.getImportPrefixes();
-		assertEquals(1, prefixes.size());
+		assertThat((long) prefixes.size()).isEqualTo((long) 1);
 	}
 
 	@Test

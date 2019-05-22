@@ -30,9 +30,6 @@ import org.springframework.jdbc.UncategorizedSQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rick Evans
@@ -89,10 +86,10 @@ public class SQLStateSQLExceptionTranslatorTests {
 		SQLException ex = new SQLException(REASON, sqlState);
 		SQLExceptionTranslator translator = new SQLStateSQLExceptionTranslator();
 		DataAccessException dax = translator.translate(TASK, SQL, ex);
-		assertNotNull("Translation must *never* result in a null DataAccessException being returned.", dax);
+		assertThat((Object) dax).as("Translation must *never* result in a null DataAccessException being returned.").isNotNull();
 		assertThat(dax.getClass()).as("Wrong DataAccessException type returned as the result of the translation").isEqualTo(dataAccessExceptionType);
-		assertNotNull("The original SQLException must be preserved in the translated DataAccessException", dax.getCause());
-		assertSame("The exact same original SQLException must be preserved in the translated DataAccessException", ex, dax.getCause());
+		assertThat((Object) dax.getCause()).as("The original SQLException must be preserved in the translated DataAccessException").isNotNull();
+		assertThat((Object) dax.getCause()).as("The exact same original SQLException must be preserved in the translated DataAccessException").isSameAs(ex);
 	}
 
 }

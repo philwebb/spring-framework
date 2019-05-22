@@ -30,7 +30,6 @@ import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * If this test case fails, uncomment diagnostics in the
@@ -69,14 +68,14 @@ public class PathMatchingResourcePatternResolverTests {
 	public void singleResourceOnFileSystem() throws IOException {
 		Resource[] resources =
 				resolver.getResources("org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.class");
-		assertEquals(1, resources.length);
+		assertThat((long) resources.length).isEqualTo((long) 1);
 		assertProtocolAndFilenames(resources, "file", "PathMatchingResourcePatternResolverTests.class");
 	}
 
 	@Test
 	public void singleResourceInJar() throws IOException {
 		Resource[] resources = resolver.getResources("org/reactivestreams/Publisher.class");
-		assertEquals(1, resources.length);
+		assertThat((long) resources.length).isEqualTo((long) 1);
 		assertProtocolAndFilenames(resources, "jar", "Publisher.class");
 	}
 
@@ -144,7 +143,7 @@ public class PathMatchingResourcePatternResolverTests {
 //			System.out.println(resources[i]);
 //		}
 
-		assertEquals("Correct number of files found", filenames.length, resources.length);
+		assertThat((long) resources.length).as("Correct number of files found").isEqualTo((long) filenames.length);
 		for (Resource resource : resources) {
 			String actualProtocol = resource.getURL().getProtocol();
 			assertThat(actualProtocol).isEqualTo(protocol);

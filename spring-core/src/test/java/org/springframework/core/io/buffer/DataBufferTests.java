@@ -26,7 +26,6 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -37,39 +36,39 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 	public void byteCountsAndPositions() {
 		DataBuffer buffer = createDataBuffer(2);
 
-		assertEquals(0, buffer.readPosition());
-		assertEquals(0, buffer.writePosition());
-		assertEquals(0, buffer.readableByteCount());
-		assertEquals(2, buffer.writableByteCount());
-		assertEquals(2, buffer.capacity());
+		assertThat((long) buffer.readPosition()).isEqualTo((long) 0);
+		assertThat((long) buffer.writePosition()).isEqualTo((long) 0);
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 0);
+		assertThat((long) buffer.writableByteCount()).isEqualTo((long) 2);
+		assertThat((long) buffer.capacity()).isEqualTo((long) 2);
 
 		buffer.write((byte) 'a');
-		assertEquals(0, buffer.readPosition());
-		assertEquals(1, buffer.writePosition());
-		assertEquals(1, buffer.readableByteCount());
-		assertEquals(1, buffer.writableByteCount());
-		assertEquals(2, buffer.capacity());
+		assertThat((long) buffer.readPosition()).isEqualTo((long) 0);
+		assertThat((long) buffer.writePosition()).isEqualTo((long) 1);
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 1);
+		assertThat((long) buffer.writableByteCount()).isEqualTo((long) 1);
+		assertThat((long) buffer.capacity()).isEqualTo((long) 2);
 
 		buffer.write((byte) 'b');
-		assertEquals(0, buffer.readPosition());
-		assertEquals(2, buffer.writePosition());
-		assertEquals(2, buffer.readableByteCount());
-		assertEquals(0, buffer.writableByteCount());
-		assertEquals(2, buffer.capacity());
+		assertThat((long) buffer.readPosition()).isEqualTo((long) 0);
+		assertThat((long) buffer.writePosition()).isEqualTo((long) 2);
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 2);
+		assertThat((long) buffer.writableByteCount()).isEqualTo((long) 0);
+		assertThat((long) buffer.capacity()).isEqualTo((long) 2);
 
 		buffer.read();
-		assertEquals(1, buffer.readPosition());
-		assertEquals(2, buffer.writePosition());
-		assertEquals(1, buffer.readableByteCount());
-		assertEquals(0, buffer.writableByteCount());
-		assertEquals(2, buffer.capacity());
+		assertThat((long) buffer.readPosition()).isEqualTo((long) 1);
+		assertThat((long) buffer.writePosition()).isEqualTo((long) 2);
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 1);
+		assertThat((long) buffer.writableByteCount()).isEqualTo((long) 0);
+		assertThat((long) buffer.capacity()).isEqualTo((long) 2);
 
 		buffer.read();
-		assertEquals(2, buffer.readPosition());
-		assertEquals(2, buffer.writePosition());
-		assertEquals(0, buffer.readableByteCount());
-		assertEquals(0, buffer.writableByteCount());
-		assertEquals(2, buffer.capacity());
+		assertThat((long) buffer.readPosition()).isEqualTo((long) 2);
+		assertThat((long) buffer.writePosition()).isEqualTo((long) 2);
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 0);
+		assertThat((long) buffer.writableByteCount()).isEqualTo((long) 0);
+		assertThat((long) buffer.capacity()).isEqualTo((long) 2);
 
 		release(buffer);
 	}
@@ -130,7 +129,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.write(new byte[]{'a', 'b', 'c'});
 
 		int ch = buffer.read();
-		assertEquals('a', ch);
+		assertThat((long) ch).isEqualTo((long) 'a');
 
 		buffer.write((byte) 'd');
 		buffer.write((byte) 'e');
@@ -172,7 +171,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		DataBuffer buffer = createDataBuffer(1);
 		buffer.write("", StandardCharsets.UTF_8);
 
-		assertEquals(0, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 0);
 
 		release(buffer);
 	}
@@ -218,13 +217,13 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 
 		DataBuffer buffer = createDataBuffer(1);
 		buffer.write("abc", StandardCharsets.UTF_8);
-		assertEquals(3, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 3);
 
 		buffer.write("def", StandardCharsets.UTF_8);
-		assertEquals(6, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 6);
 
 		buffer.write("ghi", StandardCharsets.UTF_8);
-		assertEquals(9, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 9);
 
 		byte[] result = new byte[9];
 		buffer.read(result);
@@ -242,26 +241,26 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 
 		InputStream inputStream = buffer.asInputStream();
 
-		assertEquals(4, inputStream.available());
+		assertThat((long) inputStream.available()).isEqualTo((long) 4);
 
 		int result = inputStream.read();
-		assertEquals('b', result);
-		assertEquals(3, inputStream.available());
+		assertThat((long) result).isEqualTo((long) 'b');
+		assertThat((long) inputStream.available()).isEqualTo((long) 3);
 
 		byte[] bytes = new byte[2];
 		int len = inputStream.read(bytes);
-		assertEquals(2, len);
+		assertThat((long) len).isEqualTo((long) 2);
 		assertThat(bytes).isEqualTo(new byte[]{'c', 'd'});
-		assertEquals(1, inputStream.available());
+		assertThat((long) inputStream.available()).isEqualTo((long) 1);
 
 		Arrays.fill(bytes, (byte) 0);
 		len = inputStream.read(bytes);
-		assertEquals(1, len);
+		assertThat((long) len).isEqualTo((long) 1);
 		assertThat(bytes).isEqualTo(new byte[]{'e', (byte) 0});
-		assertEquals(0, inputStream.available());
+		assertThat((long) inputStream.available()).isEqualTo((long) 0);
 
-		assertEquals(-1, inputStream.read());
-		assertEquals(-1, inputStream.read(bytes));
+		assertThat((long) inputStream.read()).isEqualTo((long) -1);
+		assertThat((long) inputStream.read(bytes)).isEqualTo((long) -1);
 
 		release(buffer);
 	}
@@ -277,7 +276,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		try {
 			byte[] result = new byte[3];
 			int len = inputStream.read(result);
-			assertEquals(3, len);
+			assertThat((long) len).isEqualTo((long) 3);
 			assertThat(result).isEqualTo(bytes);
 		}
 		finally {
@@ -310,7 +309,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 	public void expand() {
 		DataBuffer buffer = createDataBuffer(1);
 		buffer.write((byte) 'a');
-		assertEquals(1, buffer.capacity());
+		assertThat((long) buffer.capacity()).isEqualTo((long) 1);
 		buffer.write((byte) 'b');
 
 		assertThat(buffer.capacity() > 1).isTrue();
@@ -321,10 +320,10 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 	@Test
 	public void increaseCapacity() {
 		DataBuffer buffer = createDataBuffer(1);
-		assertEquals(1, buffer.capacity());
+		assertThat((long) buffer.capacity()).isEqualTo((long) 1);
 
 		buffer.capacity(2);
-		assertEquals(2, buffer.capacity());
+		assertThat((long) buffer.capacity()).isEqualTo((long) 2);
 
 		release(buffer);
 	}
@@ -334,7 +333,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		DataBuffer buffer = createDataBuffer(2);
 		buffer.writePosition(2);
 		buffer.capacity(1);
-		assertEquals(1, buffer.capacity());
+		assertThat((long) buffer.capacity()).isEqualTo((long) 1);
 
 		release(buffer);
 	}
@@ -345,7 +344,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.writePosition(2);
 		buffer.readPosition(2);
 		buffer.capacity(1);
-		assertEquals(1, buffer.capacity());
+		assertThat((long) buffer.capacity()).isEqualTo((long) 1);
 
 		release(buffer);
 	}
@@ -376,7 +375,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer1.write(buffer2, buffer3);
 		buffer1.write((byte) 'd'); // make sure the write index is correctly set
 
-		assertEquals(4, buffer1.readableByteCount());
+		assertThat((long) buffer1.readableByteCount()).isEqualTo((long) 4);
 		byte[] result = new byte[4];
 		buffer1.read(result);
 
@@ -401,7 +400,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer1.write(buffer2, buffer3);
 		buffer1.write((byte) 'd'); // make sure the write index is correctly set
 
-		assertEquals(4, buffer1.readableByteCount());
+		assertThat((long) buffer1.readableByteCount()).isEqualTo((long) 4);
 		byte[] result = new byte[4];
 		buffer1.read(result);
 
@@ -417,10 +416,10 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.read(); // skip a
 
 		ByteBuffer result = buffer.asByteBuffer();
-		assertEquals(2, result.capacity());
+		assertThat((long) result.capacity()).isEqualTo((long) 2);
 
 		buffer.write((byte) 'd');
-		assertEquals(2, result.remaining());
+		assertThat((long) result.remaining()).isEqualTo((long) 2);
 
 		byte[] resultBytes = new byte[2];
 		result.get(resultBytes);
@@ -435,10 +434,10 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.write(new byte[]{'a', 'b'});
 
 		ByteBuffer result = buffer.asByteBuffer(1, 2);
-		assertEquals(2, result.capacity());
+		assertThat((long) result.capacity()).isEqualTo((long) 2);
 
 		buffer.write((byte) 'c');
-		assertEquals(2, result.remaining());
+		assertThat((long) result.remaining()).isEqualTo((long) 2);
 
 		byte[] resultBytes = new byte[2];
 		result.get(resultBytes);
@@ -454,9 +453,9 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 
 		dataBuffer.write((byte) 'a');
 
-		assertEquals(1, byteBuffer.limit());
+		assertThat((long) byteBuffer.limit()).isEqualTo((long) 1);
 		byte b = byteBuffer.get();
-		assertEquals('a', b);
+		assertThat((long) b).isEqualTo((long) 'a');
 
 		release(dataBuffer);
 	}
@@ -470,7 +469,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		dataBuffer.writePosition(1);
 
 		byte b = dataBuffer.read();
-		assertEquals('a', b);
+		assertThat((long) b).isEqualTo((long) 'a');
 
 		release(dataBuffer);
 	}
@@ -480,7 +479,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		DataBuffer buffer = createDataBuffer(1);
 
 		ByteBuffer result = buffer.asByteBuffer();
-		assertEquals(0, result.capacity());
+		assertThat((long) result.capacity()).isEqualTo((long) 0);
 
 		release(buffer);
 	}
@@ -491,16 +490,16 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.write(new byte[]{'a', 'b', 'c'});
 
 		int result = buffer.indexOf(b -> b == 'c', 0);
-		assertEquals(2, result);
+		assertThat((long) result).isEqualTo((long) 2);
 
 		result = buffer.indexOf(b -> b == 'c', Integer.MIN_VALUE);
-		assertEquals(2, result);
+		assertThat((long) result).isEqualTo((long) 2);
 
 		result = buffer.indexOf(b -> b == 'c', Integer.MAX_VALUE);
-		assertEquals(-1, result);
+		assertThat((long) result).isEqualTo((long) -1);
 
 		result = buffer.indexOf(b -> b == 'z', 0);
-		assertEquals(-1, result);
+		assertThat((long) result).isEqualTo((long) -1);
 
 		release(buffer);
 	}
@@ -511,25 +510,25 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.write(new byte[]{'a', 'b', 'c'});
 
 		int result = buffer.lastIndexOf(b -> b == 'b', 2);
-		assertEquals(1, result);
+		assertThat((long) result).isEqualTo((long) 1);
 
 		result = buffer.lastIndexOf(b -> b == 'c', 2);
-		assertEquals(2, result);
+		assertThat((long) result).isEqualTo((long) 2);
 
 		result = buffer.lastIndexOf(b -> b == 'b', Integer.MAX_VALUE);
-		assertEquals(1, result);
+		assertThat((long) result).isEqualTo((long) 1);
 
 		result = buffer.lastIndexOf(b -> b == 'c', Integer.MAX_VALUE);
-		assertEquals(2, result);
+		assertThat((long) result).isEqualTo((long) 2);
 
 		result = buffer.lastIndexOf(b -> b == 'b', Integer.MIN_VALUE);
-		assertEquals(-1, result);
+		assertThat((long) result).isEqualTo((long) -1);
 
 		result = buffer.lastIndexOf(b -> b == 'c', Integer.MIN_VALUE);
-		assertEquals(-1, result);
+		assertThat((long) result).isEqualTo((long) -1);
 
 		result = buffer.lastIndexOf(b -> b == 'z', 0);
-		assertEquals(-1, result);
+		assertThat((long) result).isEqualTo((long) -1);
 
 		release(buffer);
 	}
@@ -540,18 +539,18 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.write(new byte[]{'a', 'b'});
 
 		DataBuffer slice = buffer.slice(1, 2);
-		assertEquals(2, slice.readableByteCount());
+		assertThat((long) slice.readableByteCount()).isEqualTo((long) 2);
 		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
 				slice.write((byte) 0));
 		buffer.write((byte) 'c');
 
-		assertEquals(3, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 3);
 		byte[] result = new byte[3];
 		buffer.read(result);
 
 		assertThat(result).isEqualTo(new byte[]{'a', 'b', 'c'});
 
-		assertEquals(2, slice.readableByteCount());
+		assertThat((long) slice.readableByteCount()).isEqualTo((long) 2);
 		result = new byte[2];
 		slice.read(result);
 
@@ -567,18 +566,18 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.write(new byte[]{'a', 'b'});
 
 		DataBuffer slice = buffer.retainedSlice(1, 2);
-		assertEquals(2, slice.readableByteCount());
+		assertThat((long) slice.readableByteCount()).isEqualTo((long) 2);
 		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
 				slice.write((byte) 0));
 		buffer.write((byte) 'c');
 
-		assertEquals(3, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 3);
 		byte[] result = new byte[3];
 		buffer.read(result);
 
 		assertThat(result).isEqualTo(new byte[]{'a', 'b', 'c'});
 
-		assertEquals(2, slice.readableByteCount());
+		assertThat((long) slice.readableByteCount()).isEqualTo((long) 2);
 		result = new byte[2];
 		slice.read(result);
 
@@ -597,7 +596,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.writePosition(3);
 		buffer.write(slice);
 
-		assertEquals(6, buffer.readableByteCount());
+		assertThat((long) buffer.readableByteCount()).isEqualTo((long) 6);
 		byte[] result = new byte[6];
 		buffer.read(result);
 
@@ -610,7 +609,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 	public void join() {
 		DataBuffer composite = this.bufferFactory.join(Arrays.asList(stringBuffer("a"),
 				stringBuffer("b"), stringBuffer("c")));
-		assertEquals(3, composite.readableByteCount());
+		assertThat((long) composite.readableByteCount()).isEqualTo((long) 3);
 		byte[] bytes = new byte[3];
 		composite.read(bytes);
 
@@ -623,9 +622,9 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 	public void getByte() {
 		DataBuffer buffer = stringBuffer("abc");
 
-		assertEquals('a', buffer.getByte(0));
-		assertEquals('b', buffer.getByte(1));
-		assertEquals('c', buffer.getByte(2));
+		assertThat((long) buffer.getByte(0)).isEqualTo((long) 'a');
+		assertThat((long) buffer.getByte(1)).isEqualTo((long) 'b');
+		assertThat((long) buffer.getByte(2)).isEqualTo((long) 'c');
 		assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() ->
 				buffer.getByte(-1));
 

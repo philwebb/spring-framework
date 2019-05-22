@@ -19,8 +19,6 @@ package org.springframework.core.log;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -32,42 +30,42 @@ public class LogSupportTests {
 	public void testLogMessageWithSupplier() {
 		LogMessage msg = LogMessage.of(() -> new StringBuilder("a").append(" b"));
 		assertThat(msg.toString()).isEqualTo("a b");
-		assertSame(msg.toString(), msg.toString());
+		assertThat((Object) msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat1() {
 		LogMessage msg = LogMessage.format("a %s", "b");
 		assertThat(msg.toString()).isEqualTo("a b");
-		assertSame(msg.toString(), msg.toString());
+		assertThat((Object) msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat2() {
 		LogMessage msg = LogMessage.format("a %s %s", "b", "c");
 		assertThat(msg.toString()).isEqualTo("a b c");
-		assertSame(msg.toString(), msg.toString());
+		assertThat((Object) msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat3() {
 		LogMessage msg = LogMessage.format("a %s %s %s", "b", "c", "d");
 		assertThat(msg.toString()).isEqualTo("a b c d");
-		assertSame(msg.toString(), msg.toString());
+		assertThat((Object) msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat4() {
 		LogMessage msg = LogMessage.format("a %s %s %s %s", "b", "c", "d", "e");
 		assertThat(msg.toString()).isEqualTo("a b c d e");
-		assertSame(msg.toString(), msg.toString());
+		assertThat((Object) msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormatX() {
 		LogMessage msg = LogMessage.format("a %s %s %s %s %s", "b", "c", "d", "e", "f");
 		assertThat(msg.toString()).isEqualTo("a b c d e f");
-		assertSame(msg.toString(), msg.toString());
+		assertThat((Object) msg.toString()).isSameAs(msg.toString());
 	}
 
 }

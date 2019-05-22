@@ -22,8 +22,6 @@ import java.util.Set;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rod Johnson
@@ -37,11 +35,11 @@ public class ConstantsTests {
 	public void constants() {
 		Constants c = new Constants(A.class);
 		assertThat(c.getClassName()).isEqualTo(A.class.getName());
-		assertEquals(9, c.getSize());
+		assertThat((long) c.getSize()).isEqualTo((long) 9);
 
-		assertEquals(A.DOG, c.asNumber("DOG").intValue());
-		assertEquals(A.DOG, c.asNumber("dog").intValue());
-		assertEquals(A.CAT, c.asNumber("cat").intValue());
+		assertThat((long) c.asNumber("DOG").intValue()).isEqualTo((long) A.DOG);
+		assertThat((long) c.asNumber("dog").intValue()).isEqualTo((long) A.DOG);
+		assertThat((long) c.asNumber("cat").intValue()).isEqualTo((long) A.CAT);
 
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->
 				c.asNumber("bogus"));
@@ -56,17 +54,17 @@ public class ConstantsTests {
 		Constants c = new Constants(A.class);
 
 		Set<?> names = c.getNames("");
-		assertEquals(c.getSize(), names.size());
+		assertThat((long) names.size()).isEqualTo((long) c.getSize());
 		assertThat(names.contains("DOG")).isTrue();
 		assertThat(names.contains("CAT")).isTrue();
 		assertThat(names.contains("S1")).isTrue();
 
 		names = c.getNames("D");
-		assertEquals(1, names.size());
+		assertThat((long) names.size()).isEqualTo((long) 1);
 		assertThat(names.contains("DOG")).isTrue();
 
 		names = c.getNames("d");
-		assertEquals(1, names.size());
+		assertThat((long) names.size()).isEqualTo((long) 1);
 		assertThat(names.contains("DOG")).isTrue();
 	}
 
@@ -75,22 +73,22 @@ public class ConstantsTests {
 		Constants c = new Constants(A.class);
 
 		Set<?> values = c.getValues("");
-		assertEquals(7, values.size());
+		assertThat((long) values.size()).isEqualTo((long) 7);
 		assertThat(values.contains(Integer.valueOf(0))).isTrue();
 		assertThat(values.contains(Integer.valueOf(66))).isTrue();
 		assertThat(values.contains("")).isTrue();
 
 		values = c.getValues("D");
-		assertEquals(1, values.size());
+		assertThat((long) values.size()).isEqualTo((long) 1);
 		assertThat(values.contains(Integer.valueOf(0))).isTrue();
 
 		values = c.getValues("prefix");
-		assertEquals(2, values.size());
+		assertThat((long) values.size()).isEqualTo((long) 2);
 		assertThat(values.contains(Integer.valueOf(1))).isTrue();
 		assertThat(values.contains(Integer.valueOf(2))).isTrue();
 
 		values = c.getValuesForProperty("myProperty");
-		assertEquals(2, values.size());
+		assertThat((long) values.size()).isEqualTo((long) 2);
 		assertThat(values.contains(Integer.valueOf(1))).isTrue();
 		assertThat(values.contains(Integer.valueOf(2))).isTrue();
 	}
@@ -103,22 +101,22 @@ public class ConstantsTests {
 			Constants c = new Constants(A.class);
 
 			Set<?> values = c.getValues("");
-			assertEquals(7, values.size());
+			assertThat((long) values.size()).isEqualTo((long) 7);
 			assertThat(values.contains(Integer.valueOf(0))).isTrue();
 			assertThat(values.contains(Integer.valueOf(66))).isTrue();
 			assertThat(values.contains("")).isTrue();
 
 			values = c.getValues("D");
-			assertEquals(1, values.size());
+			assertThat((long) values.size()).isEqualTo((long) 1);
 			assertThat(values.contains(Integer.valueOf(0))).isTrue();
 
 			values = c.getValues("prefix");
-			assertEquals(2, values.size());
+			assertThat((long) values.size()).isEqualTo((long) 2);
 			assertThat(values.contains(Integer.valueOf(1))).isTrue();
 			assertThat(values.contains(Integer.valueOf(2))).isTrue();
 
 			values = c.getValuesForProperty("myProperty");
-			assertEquals(2, values.size());
+			assertThat((long) values.size()).isEqualTo((long) 2);
 			assertThat(values.contains(Integer.valueOf(1))).isTrue();
 			assertThat(values.contains(Integer.valueOf(2))).isTrue();
 		}
@@ -132,12 +130,12 @@ public class ConstantsTests {
 		Constants c = new Constants(A.class);
 
 		Set<?> names = c.getNamesForSuffix("_PROPERTY");
-		assertEquals(2, names.size());
+		assertThat((long) names.size()).isEqualTo((long) 2);
 		assertThat(names.contains("NO_PROPERTY")).isTrue();
 		assertThat(names.contains("YES_PROPERTY")).isTrue();
 
 		Set<?> values = c.getValuesForSuffix("_PROPERTY");
-		assertEquals(2, values.size());
+		assertThat((long) values.size()).isEqualTo((long) 2);
 		assertThat(values.contains(Integer.valueOf(3))).isTrue();
 		assertThat(values.contains(Integer.valueOf(4))).isTrue();
 	}
@@ -194,30 +192,30 @@ public class ConstantsTests {
 	public void getValuesWithNullPrefix() throws Exception {
 		Constants c = new Constants(A.class);
 		Set<?> values = c.getValues(null);
-		assertEquals("Must have returned *all* public static final values", 7, values.size());
+		assertThat((long) values.size()).as("Must have returned *all* public static final values").isEqualTo((long) 7);
 	}
 
 	@Test
 	public void getValuesWithEmptyStringPrefix() throws Exception {
 		Constants c = new Constants(A.class);
 		Set<Object> values = c.getValues("");
-		assertEquals("Must have returned *all* public static final values", 7, values.size());
+		assertThat((long) values.size()).as("Must have returned *all* public static final values").isEqualTo((long) 7);
 	}
 
 	@Test
 	public void getValuesWithWhitespacedStringPrefix() throws Exception {
 		Constants c = new Constants(A.class);
 		Set<?> values = c.getValues(" ");
-		assertEquals("Must have returned *all* public static final values", 7, values.size());
+		assertThat((long) values.size()).as("Must have returned *all* public static final values").isEqualTo((long) 7);
 	}
 
 	@Test
 	public void withClassThatExposesNoConstants() throws Exception {
 		Constants c = new Constants(NoConstants.class);
-		assertEquals(0, c.getSize());
+		assertThat((long) c.getSize()).isEqualTo((long) 0);
 		final Set<?> values = c.getValues("");
-		assertNotNull(values);
-		assertEquals(0, values.size());
+		assertThat((Object) values).isNotNull();
+		assertThat((long) values.size()).isEqualTo((long) 0);
 	}
 
 	@Test

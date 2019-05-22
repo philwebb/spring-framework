@@ -25,8 +25,6 @@ import org.springframework.context.Lifecycle;
 import org.springframework.context.support.StaticApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Mark Fisher
@@ -43,11 +41,11 @@ public class LifecycleEventTests {
 		LifecycleTestBean lifecycleBean = (LifecycleTestBean) context.getBean("lifecycle");
 		LifecycleListener listener = (LifecycleListener) context.getBean("listener");
 		assertThat(lifecycleBean.isRunning()).isFalse();
-		assertEquals(0, listener.getStartedCount());
+		assertThat((long) listener.getStartedCount()).isEqualTo((long) 0);
 		context.start();
 		assertThat(lifecycleBean.isRunning()).isTrue();
-		assertEquals(1, listener.getStartedCount());
-		assertSame(context, listener.getApplicationContext());
+		assertThat((long) listener.getStartedCount()).isEqualTo((long) 1);
+		assertThat((Object) listener.getApplicationContext()).isSameAs(context);
 	}
 
 	@Test
@@ -61,11 +59,11 @@ public class LifecycleEventTests {
 		assertThat(lifecycleBean.isRunning()).isFalse();
 		context.start();
 		assertThat(lifecycleBean.isRunning()).isTrue();
-		assertEquals(0, listener.getStoppedCount());
+		assertThat((long) listener.getStoppedCount()).isEqualTo((long) 0);
 		context.stop();
 		assertThat(lifecycleBean.isRunning()).isFalse();
-		assertEquals(1, listener.getStoppedCount());
-		assertSame(context, listener.getApplicationContext());
+		assertThat((long) listener.getStoppedCount()).isEqualTo((long) 1);
+		assertThat((Object) listener.getApplicationContext()).isSameAs(context);
 	}
 
 

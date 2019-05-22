@@ -44,9 +44,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Arjen Poutsma
@@ -86,7 +83,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(servletRequestParameter)).as("ServletRequest not supported").isTrue();
 
 		Object result = resolver.resolveArgument(servletRequestParameter, mavContainer, webRequest, null);
-		assertSame("Invalid result", servletRequest, result);
+		assertThat(result).as("Invalid result").isSameAs(servletRequest);
 		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
@@ -99,7 +96,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(sessionParameter)).as("Session not supported").isTrue();
 
 		Object result = resolver.resolveArgument(sessionParameter, mavContainer, webRequest, null);
-		assertSame("Invalid result", session, result);
+		assertThat(result).as("Invalid result").isSameAs(session);
 		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
@@ -112,7 +109,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(principalParameter)).as("Principal not supported").isTrue();
 
 		Object result = resolver.resolveArgument(principalParameter, null, webRequest, null);
-		assertSame("Invalid result", principal, result);
+		assertThat(result).as("Invalid result").isSameAs(principal);
 	}
 
 	@Test
@@ -121,7 +118,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(principalParameter)).as("Principal not supported").isTrue();
 
 		Object result = resolver.resolveArgument(principalParameter, null, webRequest, null);
-		assertNull("Invalid result", result);
+		assertThat(result).as("Invalid result").isNull();
 	}
 
 	@Test
@@ -133,7 +130,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(localeParameter)).as("Locale not supported").isTrue();
 
 		Object result = resolver.resolveArgument(localeParameter, null, webRequest, null);
-		assertSame("Invalid result", locale, result);
+		assertThat(result).as("Invalid result").isSameAs(locale);
 	}
 
 	@Test
@@ -146,7 +143,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(localeParameter)).as("Locale not supported").isTrue();
 
 		Object result = resolver.resolveArgument(localeParameter, null, webRequest, null);
-		assertSame("Invalid result", locale, result);
+		assertThat(result).as("Invalid result").isSameAs(locale);
 	}
 
 	@Test
@@ -199,7 +196,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(inputStreamParameter)).as("InputStream not supported").isTrue();
 
 		Object result = resolver.resolveArgument(inputStreamParameter, null, webRequest, null);
-		assertSame("Invalid result", webRequest.getRequest().getInputStream(), result);
+		assertThat(result).as("Invalid result").isSameAs(webRequest.getRequest().getInputStream());
 	}
 
 	@Test
@@ -208,7 +205,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(readerParameter)).as("Reader not supported").isTrue();
 
 		Object result = resolver.resolveArgument(readerParameter, null, webRequest, null);
-		assertSame("Invalid result", webRequest.getRequest().getReader(), result);
+		assertThat(result).as("Invalid result").isSameAs(webRequest.getRequest().getReader());
 	}
 
 	@Test
@@ -217,7 +214,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(webRequestParameter)).as("WebRequest not supported").isTrue();
 
 		Object result = resolver.resolveArgument(webRequestParameter, null, webRequest, null);
-		assertSame("Invalid result", webRequest, result);
+		assertThat(result).as("Invalid result").isSameAs(webRequest);
 	}
 
 	@Test
@@ -226,7 +223,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(httpMethodParameter)).as("HttpMethod not supported").isTrue();
 
 		Object result = resolver.resolveArgument(httpMethodParameter, null, webRequest, null);
-		assertSame("Invalid result", HttpMethod.valueOf(webRequest.getRequest().getMethod()), result);
+		assertThat(result).as("Invalid result").isSameAs(HttpMethod.valueOf(webRequest.getRequest().getMethod()));
 	}
 
 	@Test
@@ -244,7 +241,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(pushBuilderParameter)).as("PushBuilder not supported").isTrue();
 
 		Object result = resolver.resolveArgument(pushBuilderParameter, null, webRequest, null);
-		assertSame("Invalid result", pushBuilder, result);
+		assertThat(result).as("Invalid result").isSameAs(pushBuilder);
 	}
 
 

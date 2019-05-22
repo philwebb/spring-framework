@@ -27,8 +27,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rob Harrop
@@ -53,8 +51,8 @@ public class AtAspectJAfterThrowingTests {
 			//
 		}
 
-		assertEquals(1, aspect.handled);
-		assertNotNull(aspect.lastException);
+		assertThat((long) aspect.handled).isEqualTo((long) 1);
+		assertThat((Object) aspect.lastException).isNotNull();
 	}
 }
 

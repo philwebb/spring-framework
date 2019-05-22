@@ -37,9 +37,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Integration tests for {@code @EnableCaching} and its related
@@ -59,13 +56,13 @@ public class EnableCachingTests extends AbstractCacheAnnotationTests {
 	@Test
 	public void testKeyStrategy() {
 		CacheInterceptor ci = this.ctx.getBean(CacheInterceptor.class);
-		assertSame(this.ctx.getBean("keyGenerator", KeyGenerator.class), ci.getKeyGenerator());
+		assertThat((Object) ci.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator", KeyGenerator.class));
 	}
 
 	@Test
 	public void testCacheErrorHandler() {
 		CacheInterceptor ci = this.ctx.getBean(CacheInterceptor.class);
-		assertSame(this.ctx.getBean("errorHandler", CacheErrorHandler.class), ci.getErrorHandler());
+		assertThat((Object) ci.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
 	}
 
 	@Test
@@ -125,9 +122,9 @@ public class EnableCachingTests extends AbstractCacheAnnotationTests {
 	public void emptyConfigSupport() {
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(EmptyConfigSupportConfig.class);
 		CacheInterceptor ci = context.getBean(CacheInterceptor.class);
-		assertNotNull(ci.getCacheResolver());
+		assertThat((Object) ci.getCacheResolver()).isNotNull();
 		assertThat(ci.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
-		assertSame(context.getBean(CacheManager.class), ((SimpleCacheResolver)ci.getCacheResolver()).getCacheManager());
+		assertThat((Object) ((SimpleCacheResolver) ci.getCacheResolver()).getCacheManager()).isSameAs(context.getBean(CacheManager.class));
 		context.close();
 	}
 
@@ -135,8 +132,8 @@ public class EnableCachingTests extends AbstractCacheAnnotationTests {
 	public void bothSetOnlyResolverIsUsed() {
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(FullCachingConfig.class);
 		CacheInterceptor ci = context.getBean(CacheInterceptor.class);
-		assertSame(context.getBean("cacheResolver"), ci.getCacheResolver());
-		assertSame(context.getBean("keyGenerator"), ci.getKeyGenerator());
+		assertThat((Object) ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
+		assertThat((Object) ci.getKeyGenerator()).isSameAs(context.getBean("keyGenerator"));
 		context.close();
 	}
 

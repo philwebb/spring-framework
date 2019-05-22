@@ -30,7 +30,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for aop namespace.
@@ -73,18 +72,18 @@ public class AopNamespaceHandlerTests {
 
 		ITestBean bean = getTestBean();
 
-		assertEquals("Incorrect initial getAge count", 0, getAgeCounter.getCalls("getAge"));
-		assertEquals("Incorrect initial getName count", 0, getNameCounter.getCalls("getName"));
+		assertThat((long) getAgeCounter.getCalls("getAge")).as("Incorrect initial getAge count").isEqualTo((long) 0);
+		assertThat((long) getNameCounter.getCalls("getName")).as("Incorrect initial getName count").isEqualTo((long) 0);
 
 		bean.getAge();
 
-		assertEquals("Incorrect getAge count on getAge counter", 1, getAgeCounter.getCalls("getAge"));
-		assertEquals("Incorrect getAge count on getName counter", 0, getNameCounter.getCalls("getAge"));
+		assertThat((long) getAgeCounter.getCalls("getAge")).as("Incorrect getAge count on getAge counter").isEqualTo((long) 1);
+		assertThat((long) getNameCounter.getCalls("getAge")).as("Incorrect getAge count on getName counter").isEqualTo((long) 0);
 
 		bean.getName();
 
-		assertEquals("Incorrect getName count on getName counter", 1, getNameCounter.getCalls("getName"));
-		assertEquals("Incorrect getName count on getAge counter", 0, getAgeCounter.getCalls("getName"));
+		assertThat((long) getNameCounter.getCalls("getName")).as("Incorrect getName count on getName counter").isEqualTo((long) 1);
+		assertThat((long) getAgeCounter.getCalls("getName")).as("Incorrect getName count on getAge counter").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -93,18 +92,18 @@ public class AopNamespaceHandlerTests {
 
 		CountingAspectJAdvice advice = (CountingAspectJAdvice) this.context.getBean("countingAdvice");
 
-		assertEquals("Incorrect before count", 0, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 0, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 0);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 0);
 
 		bean.setName("Sally");
 
-		assertEquals("Incorrect before count", 1, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 1, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 1);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 1);
 
 		bean.getName();
 
-		assertEquals("Incorrect before count", 1, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 1, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 1);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -113,18 +112,18 @@ public class AopNamespaceHandlerTests {
 
 		CountingAspectJAdvice advice = (CountingAspectJAdvice) this.context.getBean("countingAdvice");
 
-		assertEquals("Incorrect before count", 0, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 0, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 0);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 0);
 
 		bean.setName("Sally");
 
-		assertEquals("Incorrect before count", 1, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 1, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 1);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 1);
 
 		bean.getName();
 
-		assertEquals("Incorrect before count", 1, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 1, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 1);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -133,18 +132,18 @@ public class AopNamespaceHandlerTests {
 
 		CountingAspectJAdvice advice = (CountingAspectJAdvice) this.context.getBean("countingAdvice");
 
-		assertEquals("Incorrect before count", 0, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 0, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 0);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 0);
 
 		bean.setName("Sally");
 
-		assertEquals("Incorrect before count", 1, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 1, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 1);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 1);
 
 		bean.getName();
 
-		assertEquals("Incorrect before count", 1, advice.getBeforeCount());
-		assertEquals("Incorrect after count", 1, advice.getAfterCount());
+		assertThat((long) advice.getBeforeCount()).as("Incorrect before count").isEqualTo((long) 1);
+		assertThat((long) advice.getAfterCount()).as("Incorrect after count").isEqualTo((long) 1);
 	}
 
 }

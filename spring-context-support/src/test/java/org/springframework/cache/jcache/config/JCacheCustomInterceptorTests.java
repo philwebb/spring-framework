@@ -40,7 +40,6 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Stephane Nicoll
@@ -72,7 +71,7 @@ public class JCacheCustomInterceptorTests {
 	@Test
 	public void onlyOneInterceptorIsAvailable() {
 		Map<String, JCacheInterceptor> interceptors = ctx.getBeansOfType(JCacheInterceptor.class);
-		assertEquals("Only one interceptor should be defined", 1, interceptors.size());
+		assertThat((long) interceptors.size()).as("Only one interceptor should be defined").isEqualTo((long) 1);
 		JCacheInterceptor interceptor = interceptors.values().iterator().next();
 		assertThat(interceptor.getClass()).as("Custom interceptor not defined").isEqualTo(TestCacheInterceptor.class);
 	}

@@ -43,9 +43,6 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -122,7 +119,7 @@ public class ScriptTemplateViewTests {
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		this.view.setApplicationContext(this.wac);
 		assertThat(accessor.getPropertyValue("engineName")).isEqualTo("nashorn");
-		assertNotNull(accessor.getPropertyValue("engine"));
+		assertThat(accessor.getPropertyValue("engine")).isNotNull();
 		assertThat(accessor.getPropertyValue("renderObject")).isEqualTo("Template");
 		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
 		assertThat(accessor.getPropertyValue("contentType")).isEqualTo(MediaType.TEXT_HTML_VALUE);
@@ -137,10 +134,10 @@ public class ScriptTemplateViewTests {
 		this.view.setRenderFunction("render");
 		this.view.setApplicationContext(this.wac);
 		engine = this.view.getEngine();
-		assertNotNull(engine);
+		assertThat((Object) engine).isNotNull();
 		assertThat(engine.get("key")).isEqualTo("value");
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
-		assertNull(accessor.getPropertyValue("renderObject"));
+		assertThat(accessor.getPropertyValue("renderObject")).isNull();
 		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
 		assertThat(accessor.getPropertyValue("charset")).isEqualTo(StandardCharsets.UTF_8);
 	}
@@ -157,7 +154,7 @@ public class ScriptTemplateViewTests {
 		for (int i = 0; i < iterations; i++) {
 			results.add(executor.submit(() -> view.getEngine() != null));
 		}
-		assertEquals(iterations, results.size());
+		assertThat((long) results.size()).isEqualTo((long) iterations);
 		for (int i = 0; i < iterations; i++) {
 			assertThat((boolean) results.get(i).get()).isTrue();
 		}

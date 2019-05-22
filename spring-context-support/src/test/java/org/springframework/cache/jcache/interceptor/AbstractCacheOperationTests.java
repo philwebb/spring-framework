@@ -29,8 +29,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * @author Stephane Nicoll
@@ -46,18 +44,17 @@ public abstract class AbstractCacheOperationTests<O extends JCacheOperation<?>> 
 	public void simple() {
 		O operation = createSimpleOperation();
 		assertThat(operation.getCacheName()).as("Wrong cache name").isEqualTo("simpleCache");
-		assertEquals("Unexpected number of annotation on " + operation.getMethod(),
-				1, operation.getAnnotations().size());
+		assertThat((long) operation.getAnnotations().size()).as("Unexpected number of annotation on " + operation.getMethod()).isEqualTo((long) 1);
 		assertThat(operation.getAnnotations().iterator().next()).as("Wrong method annotation").isEqualTo(operation.getCacheAnnotation());
 
-		assertNotNull("cache resolver should be set", operation.getCacheResolver());
+		assertThat((Object) operation.getCacheResolver()).as("cache resolver should be set").isNotNull();
 	}
 
 	protected void assertCacheInvocationParameter(CacheInvocationParameter actual, Class<?> targetType,
 			Object value, int position) {
 		assertThat(actual.getRawType()).as("wrong parameter type for " + actual).isEqualTo(targetType);
 		assertThat(actual.getValue()).as("wrong parameter value for " + actual).isEqualTo(value);
-		assertEquals("wrong parameter position for " + actual, position, actual.getParameterPosition());
+		assertThat((long) actual.getParameterPosition()).as("wrong parameter position for " + actual).isEqualTo((long) position);
 	}
 
 	protected <A extends Annotation> CacheMethodDetails<A> create(Class<A> annotationType,

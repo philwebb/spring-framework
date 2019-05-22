@@ -28,9 +28,6 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -66,9 +63,9 @@ public class SimpleScopeTests {
 		beanFactory.registerScope("myScope", scope);
 
 		String[] scopeNames = beanFactory.getRegisteredScopeNames();
-		assertEquals(1, scopeNames.length);
+		assertThat((long) scopeNames.length).isEqualTo((long) 1);
 		assertThat(scopeNames[0]).isEqualTo("myScope");
-		assertSame(scope, beanFactory.getRegisteredScope("myScope"));
+		assertThat((Object) beanFactory.getRegisteredScope("myScope")).isSameAs(scope);
 
 		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(
 				qualifiedResource(SimpleScopeTests.class, "context.xml"));
@@ -79,9 +76,9 @@ public class SimpleScopeTests {
 	public void testCanGetScopedObject() {
 		TestBean tb1 = (TestBean) beanFactory.getBean("usesScope");
 		TestBean tb2 = (TestBean) beanFactory.getBean("usesScope");
-		assertNotSame(tb1, tb2);
+		assertThat((Object) tb2).isNotSameAs(tb1);
 		TestBean tb3 = (TestBean) beanFactory.getBean("usesScope");
-		assertSame(tb3, tb1);
+		assertThat((Object) tb1).isSameAs(tb3);
 	}
 
 }

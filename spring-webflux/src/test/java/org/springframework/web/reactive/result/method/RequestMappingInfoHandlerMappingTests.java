@@ -61,10 +61,6 @@ import org.springframework.web.util.pattern.PathPattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.method;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.post;
@@ -215,8 +211,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		exchange = MockServerWebExchange.from(get("/content").accept(MediaType.APPLICATION_JSON));
 		this.handlerMapping.getHandler(exchange).block();
 
-		assertNull("Negated expression shouldn't be listed as producible type",
-				exchange.getAttributes().get(name));
+		assertThat(exchange.getAttributes().get(name)).as("Negated expression shouldn't be listed as producible type").isNull();
 	}
 
 	@Test
@@ -230,7 +225,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		String name = HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE;
 		Map<String, String> uriVariables = (Map<String, String>) exchange.getAttributes().get(name);
 
-		assertNotNull(uriVariables);
+		assertThat((Object) uriVariables).isNotNull();
 		assertThat(uriVariables.get("path1")).isEqualTo("1");
 		assertThat(uriVariables.get("path2")).isEqualTo("2");
 	}
@@ -247,7 +242,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		@SuppressWarnings("unchecked")
 		Map<String, String> uriVariables = (Map<String, String>) exchange.getAttributes().get(name);
 
-		assertNotNull(uriVariables);
+		assertThat((Object) uriVariables).isNotNull();
 		assertThat(uriVariables.get("group")).isEqualTo("group");
 		assertThat(uriVariables.get("identifier")).isEqualTo("a/b");
 	}
@@ -262,7 +257,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		assertThat(bestMatch.getPatternString()).isEqualTo("/{path1}/2");
 
 		HandlerMethod mapped = (HandlerMethod) exchange.getAttributes().get(BEST_MATCHING_HANDLER_ATTRIBUTE);
-		assertSame(handlerMethod, mapped);
+		assertThat((Object) mapped).isSameAs(handlerMethod);
 	}
 
 	@Test // gh-22543
@@ -284,7 +279,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		matrixVariables = getMatrixVariables(exchange, "cars");
 		uriVariables = getUriTemplateVariables(exchange);
 
-		assertNotNull(matrixVariables);
+		assertThat((Object) matrixVariables).isNotNull();
 		assertThat(matrixVariables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 		assertThat(matrixVariables.getFirst("year")).isEqualTo("2012");
 		assertThat(uriVariables.get("cars")).isEqualTo("cars");
@@ -300,8 +295,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		// "/foo/{ids}" and URL "/foo/id=1;id=2;id=3" where the whole path
 		// segment is a sequence of name-value pairs.
 
-		assertNotNull(matrixVariables);
-		assertEquals(1, matrixVariables.size());
+		assertThat((Object) matrixVariables).isNotNull();
+		assertThat((long) matrixVariables.size()).isEqualTo((long) 1);
 		assertThat(matrixVariables.getFirst("b")).isEqualTo("c");
 		assertThat(uriVariables.get("foo")).isEqualTo("a=42");
 	}
@@ -315,7 +310,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		MultiValueMap<String, String> matrixVariables = getMatrixVariables(exchange, "cars");
 		Map<String, String> uriVariables = getUriTemplateVariables(exchange);
 
-		assertNotNull(matrixVariables);
+		assertThat((Object) matrixVariables).isNotNull();
 		assertThat(matrixVariables.get("mvar")).isEqualTo(Collections.singletonList("a/b"));
 		assertThat(uriVariables.get("cars")).isEqualTo("cars");
 	}
@@ -348,10 +343,10 @@ public class RequestMappingInfoHandlerMappingTests {
 		Mono<HandlerResult> mono = invocable.invoke(exchange, bindingContext);
 
 		HandlerResult result = mono.block();
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		Object value = result.getReturnValue();
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertThat(value.getClass()).isEqualTo(HttpHeaders.class);
 		assertThat(((HttpHeaders) value).getAllow()).isEqualTo(allowedMethods);
 	}

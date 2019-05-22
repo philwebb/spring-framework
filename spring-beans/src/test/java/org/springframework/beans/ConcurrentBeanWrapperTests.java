@@ -29,7 +29,6 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Guillaume Poirier

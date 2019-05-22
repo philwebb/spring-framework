@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.springframework.jndi.JndiTemplate;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

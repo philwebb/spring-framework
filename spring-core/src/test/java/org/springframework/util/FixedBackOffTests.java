@@ -22,7 +22,6 @@ import org.springframework.util.backoff.BackOffExecution;
 import org.springframework.util.backoff.FixedBackOff;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Stephane Nicoll
@@ -34,7 +33,7 @@ public class FixedBackOffTests {
 		FixedBackOff backOff = new FixedBackOff();
 		BackOffExecution execution = backOff.start();
 		for (int i = 0; i < 100; i++) {
-			assertEquals(FixedBackOff.DEFAULT_INTERVAL, execution.nextBackOff());
+			assertThat(execution.nextBackOff()).isEqualTo(FixedBackOff.DEFAULT_INTERVAL);
 		}
 	}
 
@@ -42,16 +41,16 @@ public class FixedBackOffTests {
 	public void noAttemptAtAll() {
 		FixedBackOff backOff = new FixedBackOff(100L, 0L);
 		BackOffExecution execution = backOff.start();
-		assertEquals(BackOffExecution.STOP, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(BackOffExecution.STOP);
 	}
 
 	@Test
 	public void maxAttemptsReached() {
 		FixedBackOff backOff = new FixedBackOff(200L, 2);
 		BackOffExecution execution = backOff.start();
-		assertEquals(200L, execution.nextBackOff());
-		assertEquals(200L, execution.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(200L);
+		assertThat(execution.nextBackOff()).isEqualTo(200L);
+		assertThat(execution.nextBackOff()).isEqualTo(BackOffExecution.STOP);
 	}
 
 	@Test
@@ -60,23 +59,23 @@ public class FixedBackOffTests {
 		BackOffExecution execution = backOff.start();
 		BackOffExecution execution2 = backOff.start();
 
-		assertEquals(100L, execution.nextBackOff());
-		assertEquals(100L, execution2.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution2.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(100L);
+		assertThat(execution2.nextBackOff()).isEqualTo(100L);
+		assertThat(execution.nextBackOff()).isEqualTo(BackOffExecution.STOP);
+		assertThat(execution2.nextBackOff()).isEqualTo(BackOffExecution.STOP);
 	}
 
 	@Test
 	public void liveUpdate() {
 		FixedBackOff backOff = new FixedBackOff(100L, 1);
 		BackOffExecution execution = backOff.start();
-		assertEquals(100L, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(100L);
 
 		backOff.setInterval(200L);
 		backOff.setMaxAttempts(2);
 
-		assertEquals(200L, execution.nextBackOff());
-		assertEquals(BackOffExecution.STOP, execution.nextBackOff());
+		assertThat(execution.nextBackOff()).isEqualTo(200L);
+		assertThat(execution.nextBackOff()).isEqualTo(BackOffExecution.STOP);
 	}
 
 	@Test

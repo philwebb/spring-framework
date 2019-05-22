@@ -29,8 +29,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test fixture with {@link UriComponentsBuilderMethodArgumentResolver}.
@@ -79,7 +77,7 @@ public class UriComponentsBuilderMethodArgumentResolverTests {
 
 		Object actual = this.resolver.resolveArgument(this.builderParam, new ModelAndViewContainer(), this.webRequest, null);
 
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(actual.getClass()).isEqualTo(ServletUriComponentsBuilder.class);
 		assertThat(((ServletUriComponentsBuilder) actual).build().toUriString()).isEqualTo("http://localhost/myapp/main");
 	}

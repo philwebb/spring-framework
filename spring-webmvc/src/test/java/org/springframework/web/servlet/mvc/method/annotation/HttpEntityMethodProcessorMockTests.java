@@ -60,7 +60,6 @@ import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -525,7 +524,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		then(resourceMessageConverter).should(times(1)).write(
 				any(ByteArrayResource.class), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(200, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 200);
 	}
 
 	@Test
@@ -542,7 +541,7 @@ public class HttpEntityMethodProcessorMockTests {
 		then(resourceRegionMessageConverter).should(times(1)).write(
 				anyCollection(), eq(APPLICATION_OCTET_STREAM),
 				argThat(outputMessage -> "bytes".equals(outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES))));
-		assertEquals(206, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 206);
 	}
 
 	@Test
@@ -558,7 +557,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		then(resourceRegionMessageConverter).should(never()).write(
 				anyCollection(), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(416, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 416);
 	}
 
 	@Test //SPR-16754
@@ -574,7 +573,7 @@ public class HttpEntityMethodProcessorMockTests {
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityResource, mavContainer, webRequest);
 		then(resourceMessageConverter).should(times(1)).write(
 				any(InputStreamResource.class), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(200, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 200);
 		assertThat(servletResponse.getHeader(HttpHeaders.ACCEPT_RANGES)).isNull();
 	}
 
@@ -591,7 +590,7 @@ public class HttpEntityMethodProcessorMockTests {
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityResource, mavContainer, webRequest);
 
 		then(resourceRegionMessageConverter).should(never()).write(anyCollection(), any(), any());
-		assertEquals(206, servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) 206);
 	}
 
 	@Test  //SPR-14767
@@ -689,21 +688,21 @@ public class HttpEntityMethodProcessorMockTests {
 	private void assertConditionalResponse(HttpStatus status, String body, String etag, long lastModified)
 			throws IOException {
 
-		assertEquals(status.value(), servletResponse.getStatus());
+		assertThat((long) servletResponse.getStatus()).isEqualTo((long) status.value());
 		assertThat(mavContainer.isRequestHandled()).isTrue();
 		if (body != null) {
 			assertResponseBody(body);
 		}
 		else {
-			assertEquals(0, servletResponse.getContentAsByteArray().length);
+			assertThat((long) servletResponse.getContentAsByteArray().length).isEqualTo((long) 0);
 		}
 		if (etag != null) {
-			assertEquals(1, servletResponse.getHeaderValues(HttpHeaders.ETAG).size());
+			assertThat((long) servletResponse.getHeaderValues(HttpHeaders.ETAG).size()).isEqualTo((long) 1);
 			assertThat(servletResponse.getHeader(HttpHeaders.ETAG)).isEqualTo(etag);
 		}
 		if (lastModified != -1) {
-			assertEquals(1, servletResponse.getHeaderValues(HttpHeaders.LAST_MODIFIED).size());
-			assertEquals(lastModified / 1000, servletResponse.getDateHeader(HttpHeaders.LAST_MODIFIED) / 1000);
+			assertThat((long) servletResponse.getHeaderValues(HttpHeaders.LAST_MODIFIED).size()).isEqualTo((long) 1);
+			assertThat(servletResponse.getDateHeader(HttpHeaders.LAST_MODIFIED) / 1000).isEqualTo(lastModified / 1000);
 		}
 	}
 

@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Rob Harrop
@@ -49,11 +49,11 @@ public class AspectJExpressionPointcutAdvisorTests {
 
 	@Test
 	public void testPointcutting() {
-		assertEquals("Count should be 0", 0, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Count should be 0").isEqualTo((long) 0);
 		testBean.getSpouses();
-		assertEquals("Count should be 1", 1, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Count should be 1").isEqualTo((long) 1);
 		testBean.getSpouse();
-		assertEquals("Count should be 1", 1, interceptor.getCount());
+		assertThat((long) interceptor.getCount()).as("Count should be 1").isEqualTo((long) 1);
 	}
 
 }

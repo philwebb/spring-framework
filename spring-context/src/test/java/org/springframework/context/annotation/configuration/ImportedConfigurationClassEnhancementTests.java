@@ -30,8 +30,6 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertSame;
-
 /**
  * Unit tests cornering the bug exposed in SPR-6779.
  *
@@ -82,7 +80,7 @@ public class ImportedConfigurationClassEnhancementTests {
 	public void importingNonConfigurationClassCausesBeanDefinitionParsingException() {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigThatImportsNonConfigClass.class);
 		ConfigThatImportsNonConfigClass config = ctx.getBean(ConfigThatImportsNonConfigClass.class);
-		assertSame(ctx.getBean(TestBean.class), config.testBean);
+		assertThat((Object) config.testBean).isSameAs(ctx.getBean(TestBean.class));
 	}
 
 

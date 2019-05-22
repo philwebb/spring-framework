@@ -22,8 +22,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for the {@link ResourceBundleEditor} class.
@@ -43,7 +41,7 @@ public class ResourceBundleEditorTests {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME);
 		Object value = editor.getValue();
-		assertNotNull("Returned ResourceBundle was null (must not be for valid setAsText(..) call).", value);
+		assertThat(value).as("Returned ResourceBundle was null (must not be for valid setAsText(..) call).").isNotNull();
 		boolean condition = value instanceof ResourceBundle;
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
@@ -56,7 +54,7 @@ public class ResourceBundleEditorTests {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "_");
 		Object value = editor.getValue();
-		assertNotNull("Returned ResourceBundle was null (must not be for valid setAsText(..) call).", value);
+		assertThat(value).as("Returned ResourceBundle was null (must not be for valid setAsText(..) call).").isNotNull();
 		boolean condition = value instanceof ResourceBundle;
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
@@ -69,7 +67,7 @@ public class ResourceBundleEditorTests {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "Lang" + "_en");
 		Object value = editor.getValue();
-		assertNotNull("Returned ResourceBundle was null (must not be for valid setAsText(..) call).", value);
+		assertThat(value).as("Returned ResourceBundle was null (must not be for valid setAsText(..) call).").isNotNull();
 		boolean condition = value instanceof ResourceBundle;
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
@@ -82,7 +80,7 @@ public class ResourceBundleEditorTests {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "LangCountry" + "_en_GB");
 		Object value = editor.getValue();
-		assertNotNull("Returned ResourceBundle was null (must not be for valid setAsText(..) call).", value);
+		assertThat(value).as("Returned ResourceBundle was null (must not be for valid setAsText(..) call).").isNotNull();
 		boolean condition = value instanceof ResourceBundle;
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
@@ -95,7 +93,7 @@ public class ResourceBundleEditorTests {
 		ResourceBundleEditor editor = new ResourceBundleEditor();
 		editor.setAsText(BASE_NAME + "LangCountryDialect" + "_en_GB_GLASGOW");
 		Object value = editor.getValue();
-		assertNotNull("Returned ResourceBundle was null (must not be for valid setAsText(..) call).", value);
+		assertThat(value).as("Returned ResourceBundle was null (must not be for valid setAsText(..) call).").isNotNull();
 		boolean condition = value instanceof ResourceBundle;
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;

@@ -33,8 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -45,8 +43,8 @@ public class MockMultipartHttpServletRequestTests {
 	public void mockMultipartHttpServletRequestWithByteArray() throws IOException {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
 		assertThat(request.getFileNames().hasNext()).isFalse();
-		assertNull(request.getFile("file1"));
-		assertNull(request.getFile("file2"));
+		assertThat((Object) request.getFile("file1")).isNull();
+		assertThat((Object) request.getFile("file2")).isNull();
 		assertThat(request.getFileMap().isEmpty()).isTrue();
 
 		request.addFile(new MockMultipartFile("file1", "myContent1".getBytes()));
@@ -69,20 +67,20 @@ public class MockMultipartHttpServletRequestTests {
 		while (fileIter.hasNext()) {
 			fileNames.add(fileIter.next());
 		}
-		assertEquals(2, fileNames.size());
+		assertThat((long) fileNames.size()).isEqualTo((long) 2);
 		assertThat(fileNames.contains("file1")).isTrue();
 		assertThat(fileNames.contains("file2")).isTrue();
 		MultipartFile file1 = request.getFile("file1");
 		MultipartFile file2 = request.getFile("file2");
 		Map<String, MultipartFile> fileMap = request.getFileMap();
 		List<String> fileMapKeys = new LinkedList<>(fileMap.keySet());
-		assertEquals(2, fileMapKeys.size());
+		assertThat((long) fileMapKeys.size()).isEqualTo((long) 2);
 		assertThat(fileMap.get("file1")).isEqualTo(file1);
 		assertThat(fileMap.get("file2")).isEqualTo(file2);
 
 		assertThat(file1.getName()).isEqualTo("file1");
 		assertThat(file1.getOriginalFilename()).isEqualTo("");
-		assertNull(file1.getContentType());
+		assertThat((Object) file1.getContentType()).isNull();
 		assertThat(ObjectUtils.nullSafeEquals("myContent1".getBytes(), file1.getBytes())).isTrue();
 		assertThat(ObjectUtils.nullSafeEquals("myContent1".getBytes(),
 			FileCopyUtils.copyToByteArray(file1.getInputStream()))).isTrue();

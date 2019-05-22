@@ -28,9 +28,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Arjen Poutsma
@@ -60,7 +57,7 @@ public class MediaTypeTests {
 	@Test
 	public void getDefaultQualityValue() {
 		MediaType mediaType = new MediaType("text", "plain");
-		assertEquals("Invalid quality value", 1, mediaType.getQualityValue(), 0D);
+		assertThat(mediaType.getQualityValue()).as("Invalid quality value").isCloseTo((double) 1, within(0D));
 	}
 
 	@Test
@@ -69,7 +66,7 @@ public class MediaTypeTests {
 		MediaType mediaType = MediaType.parseMediaType(s);
 		assertThat(mediaType.getType()).as("Invalid type").isEqualTo("audio");
 		assertThat(mediaType.getSubtype()).as("Invalid subtype").isEqualTo("*");
-		assertEquals("Invalid quality factor", 0.2D, mediaType.getQualityValue(), 0D);
+		assertThat(mediaType.getQualityValue()).as("Invalid quality factor").isCloseTo(0.2D, within(0D));
 	}
 
 	@Test
@@ -144,19 +141,19 @@ public class MediaTypeTests {
 		MediaType mediaType = MediaType.parseMediaType(s);
 		assertThat(mediaType.getType()).as("Invalid type").isEqualTo("*");
 		assertThat(mediaType.getSubtype()).as("Invalid subtype").isEqualTo("*");
-		assertEquals("Invalid quality factor", 0.2D, mediaType.getQualityValue(), 0D);
+		assertThat(mediaType.getQualityValue()).as("Invalid quality factor").isCloseTo(0.2D, within(0D));
 	}
 
 	@Test
 	public void parseMediaTypes() throws Exception {
 		String s = "text/plain; q=0.5, text/html, text/x-dvi; q=0.8, text/x-c";
 		List<MediaType> mediaTypes = MediaType.parseMediaTypes(s);
-		assertNotNull("No media types returned", mediaTypes);
-		assertEquals("Invalid amount of media types", 4, mediaTypes.size());
+		assertThat((Object) mediaTypes).as("No media types returned").isNotNull();
+		assertThat((long) mediaTypes.size()).as("Invalid amount of media types").isEqualTo((long) 4);
 
 		mediaTypes = MediaType.parseMediaTypes("");
-		assertNotNull("No media types returned", mediaTypes);
-		assertEquals("Invalid amount of media types", 0, mediaTypes.size());
+		assertThat((Object) mediaTypes).as("No media types returned").isNotNull();
+		assertThat((long) mediaTypes.size()).as("Invalid amount of media types").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -168,9 +165,9 @@ public class MediaTypeTests {
 		MediaType audioBasic07 = new MediaType("audio", "basic", 0.7);
 
 		// equal
-		assertEquals("Invalid comparison result", 0, audioBasic.compareTo(audioBasic));
-		assertEquals("Invalid comparison result", 0, audio.compareTo(audio));
-		assertEquals("Invalid comparison result", 0, audioBasicLevel.compareTo(audioBasicLevel));
+		assertThat((long) audioBasic.compareTo(audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) audio.compareTo(audio)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) audioBasicLevel.compareTo(audioBasicLevel)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		assertThat(audioBasicLevel.compareTo(audio) > 0).as("Invalid comparison result").isTrue();
 
@@ -189,7 +186,7 @@ public class MediaTypeTests {
 			Collections.sort(result);
 
 			for (int j = 0; j < result.size(); j++) {
-				assertSame("Invalid media type at " + j + ", run " + i, expected.get(j), result.get(j));
+				assertThat((Object) result.get(j)).as("Invalid media type at " + j + ", run " + i).isSameAs(expected.get(j));
 			}
 		}
 	}
@@ -200,27 +197,27 @@ public class MediaTypeTests {
 		MediaType m2 = MediaType.parseMediaType("text/html; charset=iso-8859-1; q=0.7");
 
 		assertThat(m2).as("Media types not equal").isEqualTo(m1);
-		assertEquals("compareTo() not consistent with equals", 0, m1.compareTo(m2));
-		assertEquals("compareTo() not consistent with equals", 0, m2.compareTo(m1));
+		assertThat((long) m1.compareTo(m2)).as("compareTo() not consistent with equals").isEqualTo((long) 0);
+		assertThat((long) m2.compareTo(m1)).as("compareTo() not consistent with equals").isEqualTo((long) 0);
 
 		m1 = MediaType.parseMediaType("text/html; q=0.7; charset=iso-8859-1");
 		m2 = MediaType.parseMediaType("text/html; Q=0.7; charset=iso-8859-1");
 		assertThat(m2).as("Media types not equal").isEqualTo(m1);
-		assertEquals("compareTo() not consistent with equals", 0, m1.compareTo(m2));
-		assertEquals("compareTo() not consistent with equals", 0, m2.compareTo(m1));
+		assertThat((long) m1.compareTo(m2)).as("compareTo() not consistent with equals").isEqualTo((long) 0);
+		assertThat((long) m2.compareTo(m1)).as("compareTo() not consistent with equals").isEqualTo((long) 0);
 	}
 
 	@Test
 	public void compareToCaseSensitivity() {
 		MediaType m1 = new MediaType("audio", "basic");
 		MediaType m2 = new MediaType("Audio", "Basic");
-		assertEquals("Invalid comparison result", 0, m1.compareTo(m2));
-		assertEquals("Invalid comparison result", 0, m2.compareTo(m1));
+		assertThat((long) m1.compareTo(m2)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) m2.compareTo(m1)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		m1 = new MediaType("audio", "basic", Collections.singletonMap("foo", "bar"));
 		m2 = new MediaType("audio", "basic", Collections.singletonMap("Foo", "bar"));
-		assertEquals("Invalid comparison result", 0, m1.compareTo(m2));
-		assertEquals("Invalid comparison result", 0, m2.compareTo(m1));
+		assertThat((long) m1.compareTo(m2)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) m2.compareTo(m1)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		m1 = new MediaType("audio", "basic", Collections.singletonMap("foo", "bar"));
 		m2 = new MediaType("audio", "basic", Collections.singletonMap("foo", "Bar"));
@@ -245,11 +242,11 @@ public class MediaTypeTests {
 		Comparator<MediaType> comp = MediaType.SPECIFICITY_COMPARATOR;
 
 		// equal
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic,audioBasic));
-		assertEquals("Invalid comparison result", 0, comp.compare(audio, audio));
-		assertEquals("Invalid comparison result", 0, comp.compare(audio07, audio07));
-		assertEquals("Invalid comparison result", 0, comp.compare(audio03, audio03));
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasicLevel, audioBasicLevel));
+		assertThat((long) comp.compare(audioBasic, audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audio, audio)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audio07, audio07)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audio03, audio03)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audioBasicLevel, audioBasicLevel)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		// specific to unspecific
 		assertThat(comp.compare(audioBasic, audio) < 0).as("Invalid comparison result").isTrue();
@@ -276,12 +273,12 @@ public class MediaTypeTests {
 		assertThat(comp.compare(audioBasicLevel, audioBasic) < 0).as("Invalid comparison result").isTrue();
 
 		// different types
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic, textHtml));
-		assertEquals("Invalid comparison result", 0, comp.compare(textHtml, audioBasic));
+		assertThat((long) comp.compare(audioBasic, textHtml)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(textHtml, audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		// different subtypes
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic, audioWave));
-		assertEquals("Invalid comparison result", 0, comp.compare(audioWave, audioBasic));
+		assertThat((long) comp.compare(audioBasic, audioWave)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audioWave, audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -309,7 +306,7 @@ public class MediaTypeTests {
 			MediaType.sortBySpecificity(result);
 
 			for (int j = 0; j < result.size(); j++) {
-				assertSame("Invalid media type at " + j, expected.get(j), result.get(j));
+				assertThat((Object) result.get(j)).as("Invalid media type at " + j).isSameAs(expected.get(j));
 			}
 		}
 	}
@@ -329,7 +326,7 @@ public class MediaTypeTests {
 		MediaType.sortBySpecificity(result);
 
 		for (int i = 0; i < result.size(); i++) {
-			assertSame("Invalid media type at " + i, expected.get(i), result.get(i));
+			assertThat((Object) result.get(i)).as("Invalid media type at " + i).isSameAs(expected.get(i));
 		}
 
 	}
@@ -349,11 +346,11 @@ public class MediaTypeTests {
 		Comparator<MediaType> comp = MediaType.QUALITY_VALUE_COMPARATOR;
 
 		// equal
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic,audioBasic));
-		assertEquals("Invalid comparison result", 0, comp.compare(audio, audio));
-		assertEquals("Invalid comparison result", 0, comp.compare(audio07, audio07));
-		assertEquals("Invalid comparison result", 0, comp.compare(audio03, audio03));
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasicLevel, audioBasicLevel));
+		assertThat((long) comp.compare(audioBasic, audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audio, audio)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audio07, audio07)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audio03, audio03)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audioBasicLevel, audioBasicLevel)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		// specific to unspecific
 		assertThat(comp.compare(audioBasic, audio) < 0).as("Invalid comparison result").isTrue();
@@ -380,12 +377,12 @@ public class MediaTypeTests {
 		assertThat(comp.compare(audioBasicLevel, audioBasic) < 0).as("Invalid comparison result").isTrue();
 
 		// different types
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic, textHtml));
-		assertEquals("Invalid comparison result", 0, comp.compare(textHtml, audioBasic));
+		assertThat((long) comp.compare(audioBasic, textHtml)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(textHtml, audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
 
 		// different subtypes
-		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic, audioWave));
-		assertEquals("Invalid comparison result", 0, comp.compare(audioWave, audioBasic));
+		assertThat((long) comp.compare(audioBasic, audioWave)).as("Invalid comparison result").isEqualTo((long) 0);
+		assertThat((long) comp.compare(audioWave, audioBasic)).as("Invalid comparison result").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -413,7 +410,7 @@ public class MediaTypeTests {
 			MediaType.sortByQualityValue(result);
 
 			for (int j = 0; j < result.size(); j++) {
-				assertSame("Invalid media type at " + j, expected.get(j), result.get(j));
+				assertThat((Object) result.get(j)).as("Invalid media type at " + j).isSameAs(expected.get(j));
 			}
 		}
 	}
@@ -433,7 +430,7 @@ public class MediaTypeTests {
 		MediaType.sortBySpecificity(result);
 
 		for (int i = 0; i < result.size(); i++) {
-			assertSame("Invalid media type at " + i, expected.get(i), result.get(i));
+			assertThat((Object) result.get(i)).as("Invalid media type at " + i).isSameAs(expected.get(i));
 		}
 	}
 

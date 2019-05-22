@@ -24,7 +24,6 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * JUnit 4 based unit test for {@link TestContextManager}, which verifies proper
@@ -54,7 +53,7 @@ public class TestContextManagerTests {
 	@Test
 	public void listenerExecutionOrder() throws Exception {
 		// @formatter:off
-		assertEquals("Registered TestExecutionListeners", 3, this.testContextManager.getTestExecutionListeners().size());
+		assertThat((long) this.testContextManager.getTestExecutionListeners().size()).as("Registered TestExecutionListeners").isEqualTo((long) 3);
 
 		this.testContextManager.beforeTestMethod(this, this.testMethod);
 		assertExecutionOrder("beforeTestMethod",

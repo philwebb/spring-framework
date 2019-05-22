@@ -44,9 +44,6 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link ModelAttributeMethodArgumentResolver}.
@@ -155,7 +152,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 			return (Foo) value;
 		});
 
-		assertSame(foo, this.bindContext.getModel().asMap().get("foo"));
+		assertThat(this.bindContext.getModel().asMap().get("foo")).isSameAs(foo);
 	}
 
 	@Test
@@ -170,7 +167,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 			return (Foo) value;
 		});
 
-		assertSame(foo, this.bindContext.getModel().asMap().get("foo"));
+		assertThat(this.bindContext.getModel().asMap().get("foo")).isSameAs(foo);
 	}
 
 	@Test
@@ -185,7 +182,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 			return (Foo) value;
 		});
 
-		assertSame(foo, this.bindContext.getModel().asMap().get("foo"));
+		assertThat(this.bindContext.getModel().asMap().get("foo")).isSameAs(foo);
 	}
 
 	@Test
@@ -216,14 +213,14 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		Foo foo = valueExtractor.apply(value);
 		assertThat(foo.getName()).isEqualTo("Robert");
-		assertEquals(25, foo.getAge());
+		assertThat((long) foo.getAge()).isEqualTo((long) 25);
 
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + modelKey;
 
 		Map<String, Object> map = bindContext.getModel().asMap();
-		assertEquals(map.toString(), 2, map.size());
-		assertSame(foo, map.get(modelKey));
-		assertNotNull(map.get(bindingResultKey));
+		assertThat((long) map.size()).as(map.toString()).isEqualTo((long) 2);
+		assertThat(map.get(modelKey)).isSameAs(foo);
+		assertThat(map.get(bindingResultKey)).isNotNull();
 		boolean condition = map.get(bindingResultKey) instanceof BindingResult;
 		assertThat(condition).isTrue();
 	}
@@ -243,7 +240,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 		testValidationError(parameter,
 				resolvedArgumentMono -> {
 					Object value = resolvedArgumentMono.block(Duration.ofSeconds(5));
-					assertNotNull(value);
+					assertThat(value).isNotNull();
 					boolean condition = value instanceof Mono;
 					assertThat(condition).isTrue();
 					return (Mono<?>) value;
@@ -258,7 +255,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 		testValidationError(parameter,
 				resolvedArgumentMono -> {
 					Object value = resolvedArgumentMono.block(Duration.ofSeconds(5));
-					assertNotNull(value);
+					assertThat(value).isNotNull();
 					boolean condition = value instanceof Single;
 					assertThat(condition).isTrue();
 					return Mono.from(RxReactiveStreams.toPublisher((Single<?>) value));
@@ -277,7 +274,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 					boolean condition = ex instanceof WebExchangeBindException;
 					assertThat(condition).isTrue();
 					WebExchangeBindException bindException = (WebExchangeBindException) ex;
-					assertEquals(1, bindException.getErrorCount());
+					assertThat((long) bindException.getErrorCount()).isEqualTo((long) 1);
 					assertThat(bindException.hasFieldErrors("age")).isTrue();
 				})
 				.verify();
@@ -295,16 +292,16 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		Bar bar = (Bar) value;
 		assertThat(bar.getName()).isEqualTo("Robert");
-		assertEquals(25, bar.getAge());
-		assertEquals(1, bar.getCount());
+		assertThat((long) bar.getAge()).isEqualTo((long) 25);
+		assertThat((long) bar.getCount()).isEqualTo((long) 1);
 
 		String key = "bar";
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + key;
 
 		Map<String, Object> map = bindContext.getModel().asMap();
-		assertEquals(map.toString(), 2, map.size());
-		assertSame(bar, map.get(key));
-		assertNotNull(map.get(bindingResultKey));
+		assertThat((long) map.size()).as(map.toString()).isEqualTo((long) 2);
+		assertThat(map.get(key)).isSameAs(bar);
+		assertThat(map.get(bindingResultKey)).isNotNull();
 		boolean condition = map.get(bindingResultKey) instanceof BindingResult;
 		assertThat(condition).isTrue();
 	}

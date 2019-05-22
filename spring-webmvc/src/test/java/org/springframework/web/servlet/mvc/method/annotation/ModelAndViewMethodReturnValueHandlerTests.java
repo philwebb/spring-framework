@@ -31,9 +31,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.RedirectView;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture with {@link ModelAndViewMethodReturnValueHandler}.
@@ -101,8 +98,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 
 		assertThat(mavContainer.getView().getClass()).isEqualTo(RedirectView.class);
 		assertThat(mavContainer.getModel().get("attrName")).isEqualTo("attrValue");
-		assertSame("RedirectAttributes should be used if controller redirects", redirectAttributes,
-				mavContainer.getModel());
+		assertThat((Object) mavContainer.getModel()).as("RedirectAttributes should be used if controller redirects").isSameAs(redirectAttributes);
 	}
 
 	@Test
@@ -116,7 +112,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelMap model = mavContainer.getModel();
 		assertThat(mavContainer.getViewName()).isEqualTo("redirect:viewName");
 		assertThat(model.get("attrName")).isEqualTo("attrValue");
-		assertSame(redirectAttributes, model);
+		assertThat((Object) model).isSameAs(redirectAttributes);
 	}
 
 	@Test
@@ -131,7 +127,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelMap model = mavContainer.getModel();
 		assertThat(mavContainer.getViewName()).isEqualTo("myRedirect:viewName");
 		assertThat(model.get("attrName")).isEqualTo("attrValue");
-		assertSame(redirectAttributes, model);
+		assertThat((Object) model).isSameAs(redirectAttributes);
 	}
 
 	@Test
@@ -145,7 +141,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelMap model = mavContainer.getModel();
 		assertThat(mavContainer.getView()).isEqualTo(null);
 		assertThat(mavContainer.getModel().isEmpty()).isTrue();
-		assertNotSame("RedirectAttributes should not be used if controller doesn't redirect", redirectAttributes, model);
+		assertThat((Object) model).as("RedirectAttributes should not be used if controller doesn't redirect").isNotSameAs(redirectAttributes);
 	}
 
 	@Test  // SPR-14045
@@ -157,8 +153,8 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		handler.handleReturnValue(mav, returnParamModelAndView, mavContainer, webRequest);
 
 		ModelMap model = mavContainer.getModel();
-		assertSame(redirectView, mavContainer.getView());
-		assertEquals(1, model.size());
+		assertThat(mavContainer.getView()).isSameAs(redirectView);
+		assertThat((long) model.size()).isEqualTo((long) 1);
 		assertThat(model.get("name")).isEqualTo("value");
 	}
 

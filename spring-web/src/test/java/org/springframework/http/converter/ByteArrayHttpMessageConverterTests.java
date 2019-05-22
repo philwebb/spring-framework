@@ -26,7 +26,6 @@ import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /** @author Arjen Poutsma */
 public class ByteArrayHttpMessageConverterTests {
@@ -65,7 +64,7 @@ public class ByteArrayHttpMessageConverterTests {
 		converter.write(body, null, outputMessage);
 		assertThat(outputMessage.getBodyAsBytes()).as("Invalid result").isEqualTo(body);
 		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "octet-stream"));
-		assertEquals("Invalid content-length", 2, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).as("Invalid content-length").isEqualTo((long) 2);
 	}
 
 }

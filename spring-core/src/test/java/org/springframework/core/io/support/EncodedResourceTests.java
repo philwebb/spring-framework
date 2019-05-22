@@ -24,7 +24,6 @@ import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link EncodedResource}.

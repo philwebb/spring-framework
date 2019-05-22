@@ -29,9 +29,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Arjen Poutsma
@@ -81,13 +78,13 @@ public class MethodParameterTests {
 
 	@Test
 	public void testHashCode() throws NoSuchMethodException {
-		assertEquals(stringParameter.hashCode(), stringParameter.hashCode());
-		assertEquals(longParameter.hashCode(), longParameter.hashCode());
-		assertEquals(intReturnType.hashCode(), intReturnType.hashCode());
+		assertThat((long) stringParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
+		assertThat((long) longParameter.hashCode()).isEqualTo((long) longParameter.hashCode());
+		assertThat((long) intReturnType.hashCode()).isEqualTo((long) intReturnType.hashCode());
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new MethodParameter(method, 0);
-		assertEquals(stringParameter.hashCode(), methodParameter.hashCode());
+		assertThat((long) methodParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
 		assertThat(methodParameter.hashCode()).isNotEqualTo((long) longParameter.hashCode());
 	}
 
@@ -115,7 +112,7 @@ public class MethodParameterTests {
 		Constructor<?> constructor = NestedClass.class.getDeclaredConstructor(String.class);
 		MethodParameter methodParameter = MethodParameter.forExecutable(constructor, 0);
 		assertThat(methodParameter.getParameterType()).isEqualTo(String.class);
-		assertNotNull("Failed to find @Param annotation", methodParameter.getParameterAnnotation(Param.class));
+		assertThat(methodParameter.getParameterAnnotation(Param.class)).as("Failed to find @Param annotation").isNotNull();
 	}
 
 	@Test  // SPR-16652
@@ -124,15 +121,15 @@ public class MethodParameterTests {
 
 		MethodParameter methodParameter = MethodParameter.forExecutable(constructor, 0);
 		assertThat(methodParameter.getParameterType()).isEqualTo(getClass());
-		assertNull(methodParameter.getParameterAnnotation(Param.class));
+		assertThat(methodParameter.getParameterAnnotation(Param.class)).isNull();
 
 		methodParameter = MethodParameter.forExecutable(constructor, 1);
 		assertThat(methodParameter.getParameterType()).isEqualTo(String.class);
-		assertNotNull("Failed to find @Param annotation", methodParameter.getParameterAnnotation(Param.class));
+		assertThat(methodParameter.getParameterAnnotation(Param.class)).as("Failed to find @Param annotation").isNotNull();
 
 		methodParameter = MethodParameter.forExecutable(constructor, 2);
 		assertThat(methodParameter.getParameterType()).isEqualTo(Callable.class);
-		assertNull(methodParameter.getParameterAnnotation(Param.class));
+		assertThat(methodParameter.getParameterAnnotation(Param.class)).isNull();
 	}
 
 	@Test  // SPR-16734

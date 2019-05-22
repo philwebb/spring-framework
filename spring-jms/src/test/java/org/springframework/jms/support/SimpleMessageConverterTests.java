@@ -37,8 +37,6 @@ import org.springframework.jms.support.converter.SimpleMessageConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -87,7 +85,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(content, session);
-		assertEquals(content.length, ((byte[]) converter.fromMessage(msg)).length);
+		assertThat((long) ((byte[]) converter.fromMessage(msg)).length).isEqualTo((long) content.length);
 
 		verify(message).writeBytes(content);
 	}
@@ -149,7 +147,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(message, session);
-		assertSame(message, msg);
+		assertThat((Object) msg).isSameAs(message);
 	}
 
 	@Test
@@ -158,7 +156,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Object msg = converter.fromMessage(message);
-		assertSame(message, msg);
+		assertThat(msg).isSameAs(message);
 	}
 
 	@Test

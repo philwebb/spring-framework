@@ -25,7 +25,6 @@ import org.springframework.scheduling.TriggerContext;
 import org.springframework.util.NumberUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Mark Fisher

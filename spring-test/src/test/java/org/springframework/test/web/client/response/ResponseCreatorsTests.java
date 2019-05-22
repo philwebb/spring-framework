@@ -26,8 +26,6 @@ import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.util.StreamUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Tests for the {@link MockRestResponseCreators} static factory methods.
@@ -42,7 +40,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
-		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
+		assertThat((long) StreamUtils.copyToByteArray(response.getBody()).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -61,7 +59,7 @@ public class ResponseCreatorsTests {
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertNull(response.getHeaders().getContentType());
+		assertThat((Object) response.getHeaders().getContentType()).isNull();
 		assertThat(StreamUtils.copyToByteArray(response.getBody())).isEqualTo("foo".getBytes());
 	}
 
@@ -73,7 +71,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 		assertThat(response.getHeaders().getLocation()).isEqualTo(location);
-		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
+		assertThat((long) StreamUtils.copyToByteArray(response.getBody()).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -83,7 +81,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
-		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
+		assertThat((long) StreamUtils.copyToByteArray(response.getBody()).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -93,7 +91,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
-		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
+		assertThat((long) StreamUtils.copyToByteArray(response.getBody()).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -103,7 +101,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
-		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
+		assertThat((long) StreamUtils.copyToByteArray(response.getBody()).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -113,7 +111,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
-		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
+		assertThat((long) StreamUtils.copyToByteArray(response.getBody()).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -123,7 +121,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
-		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
+		assertThat((long) StreamUtils.copyToByteArray(response.getBody()).length).isEqualTo((long) 0);
 	}
 
 }

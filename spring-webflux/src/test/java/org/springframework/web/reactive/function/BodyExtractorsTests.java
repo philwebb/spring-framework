@@ -65,8 +65,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.springframework.http.codec.json.Jackson2CodecSupport.JSON_VIEW_HINT;
 
 /**
@@ -176,7 +174,7 @@ public class BodyExtractorsTests {
 		StepVerifier.create(result)
 				.consumeNextWith(user -> {
 					assertThat(user.getUsername()).isEqualTo("foo");
-					assertNull(user.getPassword());
+					assertThat((Object) user.getPassword()).isNull();
 				})
 				.expectComplete()
 				.verify();
@@ -267,11 +265,11 @@ public class BodyExtractorsTests {
 		StepVerifier.create(result)
 				.consumeNextWith(user -> {
 					assertThat(user.getUsername()).isEqualTo("foo");
-					assertNull(user.getPassword());
+					assertThat((Object) user.getPassword()).isNull();
 				})
 				.consumeNextWith(user -> {
 					assertThat(user.getUsername()).isEqualTo("bar");
-					assertNull(user.getPassword());
+					assertThat((Object) user.getPassword()).isNull();
 				})
 				.expectComplete()
 				.verify();
@@ -328,13 +326,13 @@ public class BodyExtractorsTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(form -> {
-					assertEquals("Invalid result", 3, form.size());
+					assertThat((long) form.size()).as("Invalid result").isEqualTo((long) 3);
 					assertThat(form.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 					List<String> values = form.get("name 2");
-					assertEquals("Invalid result", 2, values.size());
+					assertThat((long) values.size()).as("Invalid result").isEqualTo((long) 2);
 					assertThat(values.get(0)).as("Invalid result").isEqualTo("value 2+1");
 					assertThat(values.get(1)).as("Invalid result").isEqualTo("value 2+2");
-					assertNull("Invalid result", form.getFirst("name 3"));
+					assertThat((Object) form.getFirst("name 3")).as("Invalid result").isNull();
 				})
 				.expectComplete()
 				.verify();

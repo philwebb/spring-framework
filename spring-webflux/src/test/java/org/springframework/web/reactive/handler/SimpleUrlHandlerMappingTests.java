@@ -32,10 +32,6 @@ import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.web.reactive.HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE;
 
 /**
@@ -107,15 +103,15 @@ public class SimpleUrlHandlerMappingTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(request);
 		Object actual = handlerMapping.getHandler(exchange).block();
 		if (bean != null) {
-			assertNotNull(actual);
-			assertSame(bean, actual);
+			assertThat(actual).isNotNull();
+			assertThat(actual).isSameAs(bean);
 			//noinspection OptionalGetWithoutIsPresent
 			PathContainer path = exchange.getAttribute(PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-			assertNotNull(path);
+			assertThat((Object) path).isNotNull();
 			assertThat(path.value()).isEqualTo(pathWithinMapping);
 		}
 		else {
-			assertNull(actual);
+			assertThat(actual).isNull();
 		}
 	}
 

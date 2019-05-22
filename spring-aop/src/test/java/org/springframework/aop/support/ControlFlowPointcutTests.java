@@ -25,7 +25,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rod Johnson
@@ -44,17 +43,17 @@ public class ControlFlowPointcutTests {
 		pf.addAdvisor(new DefaultPointcutAdvisor(cflow, nop));
 
 		// Not advised, not under One
-		assertEquals(target.getAge(), proxied.getAge());
-		assertEquals(0, nop.getCount());
+		assertThat((long) proxied.getAge()).isEqualTo((long) target.getAge());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		// Will be advised
-		assertEquals(target.getAge(), new One().getAge(proxied));
-		assertEquals(1, nop.getCount());
+		assertThat((long) new One().getAge(proxied)).isEqualTo((long) target.getAge());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
 
 		// Won't be advised
-		assertEquals(target.getAge(), new One().nomatch(proxied));
-		assertEquals(1, nop.getCount());
-		assertEquals(3, cflow.getEvaluations());
+		assertThat((long) new One().nomatch(proxied)).isEqualTo((long) target.getAge());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
+		assertThat((long) cflow.getEvaluations()).isEqualTo((long) 3);
 	}
 
 	/**
@@ -77,18 +76,18 @@ public class ControlFlowPointcutTests {
 
 		// Not advised, not under One
 		target.setAge(16);
-		assertEquals(0, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		// Not advised; under One but not a setter
-		assertEquals(16, new One().getAge(proxied));
-		assertEquals(0, nop.getCount());
+		assertThat((long) new One().getAge(proxied)).isEqualTo((long) 16);
+		assertThat((long) nop.getCount()).isEqualTo((long) 0);
 
 		// Won't be advised
 		new One().set(proxied);
-		assertEquals(1, nop.getCount());
+		assertThat((long) nop.getCount()).isEqualTo((long) 1);
 
 		// We saved most evaluations
-		assertEquals(1, cflow.getEvaluations());
+		assertThat((long) cflow.getEvaluations()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -96,8 +95,8 @@ public class ControlFlowPointcutTests {
 		assertThat(new ControlFlowPointcut(One.class)).isEqualTo(new ControlFlowPointcut(One.class));
 		assertThat(new ControlFlowPointcut(One.class, "getAge")).isEqualTo(new ControlFlowPointcut(One.class, "getAge"));
 		assertThat(new ControlFlowPointcut(One.class, "getAge").equals(new ControlFlowPointcut(One.class))).isFalse();
-		assertEquals(new ControlFlowPointcut(One.class).hashCode(), new ControlFlowPointcut(One.class).hashCode());
-		assertEquals(new ControlFlowPointcut(One.class, "getAge").hashCode(), new ControlFlowPointcut(One.class, "getAge").hashCode());
+		assertThat((long) new ControlFlowPointcut(One.class).hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class).hashCode());
+		assertThat((long) new ControlFlowPointcut(One.class, "getAge").hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class, "getAge").hashCode());
 		assertThat(new ControlFlowPointcut(One.class, "getAge").hashCode() == new ControlFlowPointcut(One.class).hashCode()).isFalse();
 	}
 

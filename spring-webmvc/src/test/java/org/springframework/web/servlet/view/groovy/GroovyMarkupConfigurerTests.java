@@ -32,9 +32,6 @@ import org.springframework.context.support.StaticApplicationContext;
 import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-
 /**
  * Unit tests for
  * {@link org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer}.
@@ -65,12 +62,12 @@ public class GroovyMarkupConfigurerTests {
 		this.configurer.afterPropertiesSet();
 
 		TemplateEngine engine = this.configurer.getTemplateEngine();
-		assertNotNull(engine);
+		assertThat((Object) engine).isNotNull();
 		assertThat(engine.getClass()).isEqualTo(MarkupTemplateEngine.class);
 
 		MarkupTemplateEngine markupEngine = (MarkupTemplateEngine) engine;
 		TemplateConfiguration configuration = markupEngine.getTemplateConfiguration();
-		assertNotNull(configuration);
+		assertThat((Object) configuration).isNotNull();
 		assertThat(configuration.getClass()).isEqualTo(GroovyMarkupConfigurer.class);
 	}
 
@@ -81,7 +78,7 @@ public class GroovyMarkupConfigurerTests {
 		this.configurer.afterPropertiesSet();
 
 		TemplateEngine engine = this.configurer.getTemplateEngine();
-		assertNotNull(engine);
+		assertThat((Object) engine).isNotNull();
 		assertThat(engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 
@@ -92,12 +89,12 @@ public class GroovyMarkupConfigurerTests {
 		this.configurer.afterPropertiesSet();
 
 		TemplateEngine engine = this.configurer.getTemplateEngine();
-		assertNotNull(engine);
+		assertThat((Object) engine).isNotNull();
 		assertThat(engine.getClass()).isEqualTo(MarkupTemplateEngine.class);
 
 		MarkupTemplateEngine markupEngine = (MarkupTemplateEngine) engine;
 		TemplateConfiguration configuration = markupEngine.getTemplateConfiguration();
-		assertNotNull(configuration);
+		assertThat((Object) configuration).isNotNull();
 		assertThat(configuration.isCacheTemplates()).isFalse();
 	}
 
@@ -108,7 +105,7 @@ public class GroovyMarkupConfigurerTests {
 		this.configurer.setApplicationContext(this.applicationContext);
 
 		ClassLoader classLoader = this.configurer.createTemplateClassLoader();
-		assertNotNull(classLoader);
+		assertThat((Object) classLoader).isNotNull();
 		URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
 		assertThat(urlClassLoader.getURLs()).hasSize(1);
 		assertThat(urlClassLoader.getURLs()[0].toString())
@@ -116,7 +113,7 @@ public class GroovyMarkupConfigurerTests {
 
 		this.configurer.setResourceLoaderPath(RESOURCE_LOADER_PATH + ",classpath:org/springframework/web/servlet/view/");
 		classLoader = this.configurer.createTemplateClassLoader();
-		assertNotNull(classLoader);
+		assertThat((Object) classLoader).isNotNull();
 		urlClassLoader = (URLClassLoader) classLoader;
 		assertThat(urlClassLoader.getURLs()).hasSize(2);
 		assertThat(urlClassLoader.getURLs()[0].toString())
@@ -135,14 +132,14 @@ public class GroovyMarkupConfigurerTests {
 	@Test
 	public void resolveSampleTemplate() throws Exception {
 		URL url = this.configurer.resolveTemplate(getClass().getClassLoader(), TEMPLATE_PREFIX + "test.tpl");
-		assertNotNull(url);
+		assertThat((Object) url).isNotNull();
 	}
 
 	@Test
 	public void resolveI18nFullLocale() throws Exception {
 		LocaleContextHolder.setLocale(Locale.GERMANY);
 		URL url = this.configurer.resolveTemplate(getClass().getClassLoader(), TEMPLATE_PREFIX + "i18n.tpl");
-		assertNotNull(url);
+		assertThat((Object) url).isNotNull();
 		assertThat(url.getPath()).contains("i18n_de_DE.tpl");
 	}
 
@@ -150,7 +147,7 @@ public class GroovyMarkupConfigurerTests {
 	public void resolveI18nPartialLocale() throws Exception {
 		LocaleContextHolder.setLocale(Locale.FRANCE);
 		URL url = this.configurer.resolveTemplate(getClass().getClassLoader(), TEMPLATE_PREFIX + "i18n.tpl");
-		assertNotNull(url);
+		assertThat((Object) url).isNotNull();
 		assertThat(url.getPath()).contains("i18n_fr.tpl");
 	}
 
@@ -158,7 +155,7 @@ public class GroovyMarkupConfigurerTests {
 	public void resolveI18nDefaultLocale() throws Exception {
 		LocaleContextHolder.setLocale(Locale.US);
 		URL url = this.configurer.resolveTemplate(getClass().getClassLoader(), TEMPLATE_PREFIX + "i18n.tpl");
-		assertNotNull(url);
+		assertThat((Object) url).isNotNull();
 		assertThat(url.getPath()).contains("i18n.tpl");
 	}
 

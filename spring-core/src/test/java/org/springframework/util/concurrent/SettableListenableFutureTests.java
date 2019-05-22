@@ -28,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertNull;
 import static temp.XAssert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -223,7 +222,7 @@ public class SettableListenableFutureTests {
 	@Test
 	public void nullIsAcceptedAsValueToSet() throws ExecutionException, InterruptedException {
 		settableListenableFuture.set(null);
-		assertNull(settableListenableFuture.get());
+		assertThat((Object) settableListenableFuture.get()).isNull();
 		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}

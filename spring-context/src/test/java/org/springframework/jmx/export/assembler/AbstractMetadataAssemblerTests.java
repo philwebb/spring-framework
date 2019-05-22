@@ -36,9 +36,6 @@ import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.tests.aop.interceptor.NopInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rob Harrop
@@ -95,7 +92,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	public void testWithOnlySetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute("NickName");
-		assertNotNull("Attribute should not be null", attr);
+		assertThat((Object) attr).as("Attribute should not be null").isNotNull();
 	}
 
 	/**
@@ -105,7 +102,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	public void testWithOnlyGetter() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = info.getAttribute("Superman");
-		assertNotNull("Attribute should not be null", attr);
+		assertThat((Object) attr).as("Attribute should not be null").isNotNull();
 	}
 
 	@Test
@@ -148,7 +145,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanOperationInfo oper = info.getOperation("add");
 		MBeanParameterInfo[] params = oper.getSignature();
 
-		assertEquals("Invalid number of params", 2, params.length);
+		assertThat((long) params.length).as("Invalid number of params").isEqualTo((long) 2);
 		assertThat(params[0].getName()).as("Incorrect name for x param").isEqualTo("x");
 		assertThat(params[0].getType()).as("Incorrect type for x param").isEqualTo(int.class.getName());
 
@@ -178,8 +175,8 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		start(exporter);
 
 		MBeanInfo inf = getServer().getMBeanInfo(ObjectNameManager.getInstance(objectName));
-		assertEquals("Incorrect number of operations", getExpectedOperationCount(), inf.getOperations().length);
-		assertEquals("Incorrect number of attributes", getExpectedAttributeCount(), inf.getAttributes().length);
+		assertThat((long) inf.getOperations().length).as("Incorrect number of operations").isEqualTo((long) getExpectedOperationCount());
+		assertThat((long) inf.getAttributes().length).as("Incorrect number of attributes").isEqualTo((long) getExpectedAttributeCount());
 
 		assertThat(assembler.includeBean(proxy.getClass(), "some bean name")).as("Not included in autodetection").isTrue();
 	}
@@ -210,13 +207,13 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	public void testMetricDescriptorDefaults() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		Descriptor desc = info.getAttribute(CACHE_ENTRIES_METRIC).getDescriptor();
-		assertNull("Currency Time Limit should not be populated", desc.getFieldValue("currencyTimeLimit"));
-		assertNull("Persist Policy should not be populated", desc.getFieldValue("persistPolicy"));
-		assertNull("Persist Period should not be populated", desc.getFieldValue("persistPeriod"));
-		assertNull("Unit should not be populated", desc.getFieldValue("units"));
+		assertThat(desc.getFieldValue("currencyTimeLimit")).as("Currency Time Limit should not be populated").isNull();
+		assertThat(desc.getFieldValue("persistPolicy")).as("Persist Policy should not be populated").isNull();
+		assertThat(desc.getFieldValue("persistPeriod")).as("Persist Period should not be populated").isNull();
+		assertThat(desc.getFieldValue("units")).as("Unit should not be populated").isNull();
 		assertThat(desc.getFieldValue("displayName")).as("Display Name should be populated by default via JMX").isEqualTo(CACHE_ENTRIES_METRIC);
 		assertThat(desc.getFieldValue("metricType")).as("Metric Type should be GAUGE").isEqualTo("GAUGE");
-		assertNull("Metric Category should not be populated", desc.getFieldValue("metricCategory"));
+		assertThat(desc.getFieldValue("metricCategory")).as("Metric Category should not be populated").isNull();
 	}
 
 	@Override

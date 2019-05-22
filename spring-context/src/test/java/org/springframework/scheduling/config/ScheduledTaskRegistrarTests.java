@@ -22,7 +22,6 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -51,7 +50,7 @@ public class ScheduledTaskRegistrarTests {
 		List<TriggerTask> triggerTaskList = Collections.singletonList(mockTriggerTask);
 		this.taskRegistrar.setTriggerTasksList(triggerTaskList);
 		List<TriggerTask> retrievedList = this.taskRegistrar.getTriggerTaskList();
-		assertEquals(1, retrievedList.size());
+		assertThat((long) retrievedList.size()).isEqualTo((long) 1);
 		assertThat(retrievedList.get(0)).isEqualTo(mockTriggerTask);
 	}
 
@@ -61,7 +60,7 @@ public class ScheduledTaskRegistrarTests {
 		List<CronTask> cronTaskList = Collections.singletonList(mockCronTask);
 		this.taskRegistrar.setCronTasksList(cronTaskList);
 		List<CronTask> retrievedList = this.taskRegistrar.getCronTaskList();
-		assertEquals(1, retrievedList.size());
+		assertThat((long) retrievedList.size()).isEqualTo((long) 1);
 		assertThat(retrievedList.get(0)).isEqualTo(mockCronTask);
 	}
 
@@ -71,7 +70,7 @@ public class ScheduledTaskRegistrarTests {
 		List<IntervalTask> fixedRateTaskList = Collections.singletonList(mockFixedRateTask);
 		this.taskRegistrar.setFixedRateTasksList(fixedRateTaskList);
 		List<IntervalTask> retrievedList = this.taskRegistrar.getFixedRateTaskList();
-		assertEquals(1, retrievedList.size());
+		assertThat((long) retrievedList.size()).isEqualTo((long) 1);
 		assertThat(retrievedList.get(0)).isEqualTo(mockFixedRateTask);
 	}
 
@@ -81,7 +80,7 @@ public class ScheduledTaskRegistrarTests {
 		List<IntervalTask> fixedDelayTaskList = Collections.singletonList(mockFixedDelayTask);
 		this.taskRegistrar.setFixedDelayTasksList(fixedDelayTaskList);
 		List<IntervalTask> retrievedList = this.taskRegistrar.getFixedDelayTaskList();
-		assertEquals(1, retrievedList.size());
+		assertThat((long) retrievedList.size()).isEqualTo((long) 1);
 		assertThat(retrievedList.get(0)).isEqualTo(mockFixedDelayTask);
 	}
 

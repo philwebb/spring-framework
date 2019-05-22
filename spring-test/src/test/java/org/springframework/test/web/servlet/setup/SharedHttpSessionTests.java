@@ -26,9 +26,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
@@ -50,17 +47,17 @@ public class SharedHttpSessionTests {
 
 		MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		HttpSession session = result.getRequest().getSession(false);
-		assertNotNull(session);
+		assertThat((Object) session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(1);
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertNotNull(session);
+		assertThat((Object) session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(2);
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertNotNull(session);
+		assertThat((Object) session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(3);
 	}
 
@@ -74,17 +71,17 @@ public class SharedHttpSessionTests {
 
 		MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		HttpSession session = result.getRequest().getSession(false);
-		assertNull(session);
+		assertThat((Object) session).isNull();
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertNull(session);
+		assertThat((Object) session).isNull();
 
 		url = "/session";
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertNotNull(session);
+		assertThat((Object) session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(1);
 	}
 

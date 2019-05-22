@@ -30,7 +30,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static org.springframework.web.reactive.function.server.RequestPredicates.HEAD;
 
 /**
@@ -175,20 +174,20 @@ public class RouterFunctionBuilderTests {
 				.GET("/bar", request -> Mono.error(new IllegalStateException()))
 				.before(request -> {
 					int count = filterCount.getAndIncrement();
-					assertEquals(0, count);
+					assertThat((long) count).isEqualTo((long) 0);
 					return request;
 				})
 				.after((request, response) -> {
 					int count = filterCount.getAndIncrement();
-					assertEquals(3, count);
+					assertThat((long) count).isEqualTo((long) 3);
 					return response;
 				})
 				.filter((request, next) -> {
 					int count = filterCount.getAndIncrement();
-					assertEquals(1, count);
+					assertThat((long) count).isEqualTo((long) 1);
 					Mono<ServerResponse> responseMono = next.handle(request);
 					count = filterCount.getAndIncrement();
-					assertEquals(2, count);
+					assertThat((long) count).isEqualTo((long) 2);
 					return responseMono;
 				})
 				.onError(IllegalStateException.class, (e, request) -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).build())
@@ -204,8 +203,7 @@ public class RouterFunctionBuilderTests {
 
 
 		StepVerifier.create(fooResponseMono)
-				.consumeNextWith(serverResponse ->
-					assertEquals(4, filterCount.get())
+				.consumeNextWith(serverResponse -> assertThat((long) filterCount.get()).isEqualTo((long) 4)
 				)
 				.verifyComplete();
 

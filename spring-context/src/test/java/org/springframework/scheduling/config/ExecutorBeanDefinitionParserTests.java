@@ -33,7 +33,6 @@ import org.springframework.util.CustomizableThreadCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Mark Fisher
@@ -54,10 +53,10 @@ public class ExecutorBeanDefinitionParserTests {
 	@Test
 	public void defaultExecutor() throws Exception {
 		ThreadPoolTaskExecutor executor = this.context.getBean("default", ThreadPoolTaskExecutor.class);
-		assertEquals(1, getCorePoolSize(executor));
-		assertEquals(Integer.MAX_VALUE, getMaxPoolSize(executor));
-		assertEquals(Integer.MAX_VALUE, getQueueCapacity(executor));
-		assertEquals(60, getKeepAliveSeconds(executor));
+		assertThat((long) getCorePoolSize(executor)).isEqualTo((long) 1);
+		assertThat((long) getMaxPoolSize(executor)).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat((long) getQueueCapacity(executor)).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat((long) getKeepAliveSeconds(executor)).isEqualTo((long) 60);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
 
 		FutureTask<String> task = new FutureTask<>(new Callable<String>() {
@@ -73,8 +72,8 @@ public class ExecutorBeanDefinitionParserTests {
 	@Test
 	public void singleSize() {
 		Object executor = this.context.getBean("singleSize");
-		assertEquals(42, getCorePoolSize(executor));
-		assertEquals(42, getMaxPoolSize(executor));
+		assertThat((long) getCorePoolSize(executor)).isEqualTo((long) 42);
+		assertThat((long) getMaxPoolSize(executor)).isEqualTo((long) 42);
 	}
 
 	@Test
@@ -86,45 +85,45 @@ public class ExecutorBeanDefinitionParserTests {
 	@Test
 	public void rangeWithBoundedQueue() {
 		Object executor = this.context.getBean("rangeWithBoundedQueue");
-		assertEquals(7, getCorePoolSize(executor));
-		assertEquals(42, getMaxPoolSize(executor));
-		assertEquals(11, getQueueCapacity(executor));
+		assertThat((long) getCorePoolSize(executor)).isEqualTo((long) 7);
+		assertThat((long) getMaxPoolSize(executor)).isEqualTo((long) 42);
+		assertThat((long) getQueueCapacity(executor)).isEqualTo((long) 11);
 	}
 
 	@Test
 	public void rangeWithUnboundedQueue() {
 		Object executor = this.context.getBean("rangeWithUnboundedQueue");
-		assertEquals(9, getCorePoolSize(executor));
-		assertEquals(9, getMaxPoolSize(executor));
-		assertEquals(37, getKeepAliveSeconds(executor));
+		assertThat((long) getCorePoolSize(executor)).isEqualTo((long) 9);
+		assertThat((long) getMaxPoolSize(executor)).isEqualTo((long) 9);
+		assertThat((long) getKeepAliveSeconds(executor)).isEqualTo((long) 37);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(true);
-		assertEquals(Integer.MAX_VALUE, getQueueCapacity(executor));
+		assertThat((long) getQueueCapacity(executor)).isEqualTo((long) Integer.MAX_VALUE);
 	}
 
 	@Test
 	public void propertyPlaceholderWithSingleSize() {
 		Object executor = this.context.getBean("propertyPlaceholderWithSingleSize");
-		assertEquals(123, getCorePoolSize(executor));
-		assertEquals(123, getMaxPoolSize(executor));
-		assertEquals(60, getKeepAliveSeconds(executor));
+		assertThat((long) getCorePoolSize(executor)).isEqualTo((long) 123);
+		assertThat((long) getMaxPoolSize(executor)).isEqualTo((long) 123);
+		assertThat((long) getKeepAliveSeconds(executor)).isEqualTo((long) 60);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
-		assertEquals(Integer.MAX_VALUE, getQueueCapacity(executor));
+		assertThat((long) getQueueCapacity(executor)).isEqualTo((long) Integer.MAX_VALUE);
 	}
 
 	@Test
 	public void propertyPlaceholderWithRange() {
 		Object executor = this.context.getBean("propertyPlaceholderWithRange");
-		assertEquals(5, getCorePoolSize(executor));
-		assertEquals(25, getMaxPoolSize(executor));
+		assertThat((long) getCorePoolSize(executor)).isEqualTo((long) 5);
+		assertThat((long) getMaxPoolSize(executor)).isEqualTo((long) 25);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
-		assertEquals(10, getQueueCapacity(executor));
+		assertThat((long) getQueueCapacity(executor)).isEqualTo((long) 10);
 	}
 
 	@Test
 	public void propertyPlaceholderWithRangeAndCoreThreadTimeout() {
 		Object executor = this.context.getBean("propertyPlaceholderWithRangeAndCoreThreadTimeout");
-		assertEquals(99, getCorePoolSize(executor));
-		assertEquals(99, getMaxPoolSize(executor));
+		assertThat((long) getCorePoolSize(executor)).isEqualTo((long) 99);
+		assertThat((long) getMaxPoolSize(executor)).isEqualTo((long) 99);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(true);
 	}
 

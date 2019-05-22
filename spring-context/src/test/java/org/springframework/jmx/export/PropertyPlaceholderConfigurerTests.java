@@ -24,7 +24,6 @@ import org.springframework.jmx.AbstractJmxTests;
 import org.springframework.jmx.IJmxTestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop
@@ -42,7 +41,7 @@ public class PropertyPlaceholderConfigurerTests extends AbstractJmxTests {
 		IJmxTestBean bean = (IJmxTestBean) getContext().getBean("testBean");
 
 		assertThat(bean.getName()).as("Name is incorrect").isEqualTo("Rob Harrop");
-		assertEquals("Age is incorrect", 100, bean.getAge());
+		assertThat((long) bean.getAge()).as("Age is incorrect").isEqualTo((long) 100);
 	}
 
 	@Test
@@ -52,7 +51,7 @@ public class PropertyPlaceholderConfigurerTests extends AbstractJmxTests {
 		Integer age = (Integer) getServer().getAttribute(oname, "Age");
 
 		assertThat(name).as("Name is incorrect in JMX").isEqualTo("Rob Harrop");
-		assertEquals("Age is incorrect in JMX", 100, age.intValue());
+		assertThat((long) age.intValue()).as("Age is incorrect in JMX").isEqualTo((long) 100);
 	}
 
 }

@@ -33,9 +33,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Rod Johnson
@@ -65,8 +62,7 @@ public class RequestContextFilterTests {
 			public void doFilter(ServletRequest req, ServletResponse resp) throws IOException, ServletException {
 				++invocations;
 				if (invocations == 1) {
-					assertSame("myValue",
-							RequestContextHolder.currentRequestAttributes().getAttribute("myAttr", RequestAttributes.SCOPE_REQUEST));
+					assertThat(RequestContextHolder.currentRequestAttributes().getAttribute("myAttr", RequestAttributes.SCOPE_REQUEST)).isSameAs("myValue");
 					if (sex != null) {
 						throw sex;
 					}
@@ -88,13 +84,13 @@ public class RequestContextFilterTests {
 			assertThat(sex).isNull();
 		}
 		catch (ServletException ex) {
-			assertNotNull(sex);
+			assertThat((Object) sex).isNotNull();
 		}
 
 		assertThatIllegalStateException().isThrownBy(
 				RequestContextHolder::currentRequestAttributes);
 
-		assertEquals(1, fc.invocations);
+		assertThat((long) fc.invocations).isEqualTo((long) 1);
 	}
 
 }

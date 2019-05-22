@@ -23,7 +23,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for the {@link TagUtils} class.
@@ -40,15 +39,14 @@ public class TagUtilsTests {
 		assertThat(TagUtils.SCOPE_SESSION).isEqualTo("session");
 		assertThat(TagUtils.SCOPE_REQUEST).isEqualTo("request");
 
-		assertEquals(PageContext.PAGE_SCOPE, TagUtils.getScope("page"));
-		assertEquals(PageContext.REQUEST_SCOPE, TagUtils.getScope("request"));
-		assertEquals(PageContext.SESSION_SCOPE, TagUtils.getScope("session"));
-		assertEquals(PageContext.APPLICATION_SCOPE, TagUtils.getScope("application"));
+		assertThat((long) TagUtils.getScope("page")).isEqualTo((long) PageContext.PAGE_SCOPE);
+		assertThat((long) TagUtils.getScope("request")).isEqualTo((long) PageContext.REQUEST_SCOPE);
+		assertThat((long) TagUtils.getScope("session")).isEqualTo((long) PageContext.SESSION_SCOPE);
+		assertThat((long) TagUtils.getScope("application")).isEqualTo((long) PageContext.APPLICATION_SCOPE);
 
 		// non-existent scope
-		assertEquals("TagUtils.getScope(..) with a non-existent scope argument must " +
-				"just return the default scope (PageContext.PAGE_SCOPE).", PageContext.PAGE_SCOPE,
-				TagUtils.getScope("bla"));
+		assertThat((long) TagUtils.getScope("bla")).as("TagUtils.getScope(..) with a non-existent scope argument must " +
+				"just return the default scope (PageContext.PAGE_SCOPE).").isEqualTo((long) PageContext.PAGE_SCOPE);
 	}
 
 	@Test

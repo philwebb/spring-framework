@@ -60,10 +60,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Miscellaneous system tests covering {@link Bean} naming, aliases, scoping and
@@ -93,7 +89,7 @@ public class ConfigurationClassProcessingTests {
 		ac.registerBeanDefinition("config", new RootBeanDefinition(testClass));
 		ac.refresh();
 
-		assertSame(testBeanSupplier.get(), ac.getBean(beanName));
+		assertThat(ac.getBean(beanName)).isSameAs(testBeanSupplier.get());
 
 		// method name should not be registered
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
@@ -116,8 +112,8 @@ public class ConfigurationClassProcessingTests {
 		TestBean testBean = testBeanSupplier.get();
 		BeanFactory factory = initBeanFactory(testClass);
 
-		assertSame(testBean, factory.getBean(beanName));
-		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach(alias -> assertSame(testBean, alias));
+		assertThat(factory.getBean(beanName)).isSameAs(testBean);
+		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach(alias -> assertThat(alias).isSameAs(testBean));
 
 		// method name should not be registered
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
@@ -130,7 +126,7 @@ public class ConfigurationClassProcessingTests {
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(ac);
 		ac.registerBeanDefinition("config", new RootBeanDefinition(ConfigWithBeanWithProviderImplementation.class));
 		ac.refresh();
-		assertSame(ac.getBean("customName"), ConfigWithBeanWithProviderImplementation.testBean);
+		assertThat((Object) ConfigWithBeanWithProviderImplementation.testBean).isSameAs(ac.getBean("customName"));
 	}
 
 	@Test  // SPR-11830
@@ -139,7 +135,7 @@ public class ConfigurationClassProcessingTests {
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(ac);
 		ac.registerBeanDefinition("config", new RootBeanDefinition(ConfigWithSetWithProviderImplementation.class));
 		ac.refresh();
-		assertSame(ac.getBean("customName"), ConfigWithSetWithProviderImplementation.set);
+		assertThat((Object) ConfigWithSetWithProviderImplementation.set).isSameAs(ac.getBean("customName"));
 	}
 
 	@Test
@@ -177,15 +173,15 @@ public class ConfigurationClassProcessingTests {
 		assertThat(condition).isTrue();
 
 		String[] beanNames = factory.getBeanNamesForType(FactoryBean.class);
-		assertEquals(1, beanNames.length);
+		assertThat((long) beanNames.length).isEqualTo((long) 1);
 		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = factory.getBeanNamesForType(BeanClassLoaderAware.class);
-		assertEquals(1, beanNames.length);
+		assertThat((long) beanNames.length).isEqualTo((long) 1);
 		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = factory.getBeanNamesForType(ListFactoryBean.class);
-		assertEquals(1, beanNames.length);
+		assertThat((long) beanNames.length).isEqualTo((long) 1);
 		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = factory.getBeanNamesForType(List.class);
@@ -200,8 +196,8 @@ public class ConfigurationClassProcessingTests {
 		ITestBean bar = factory.getBean("bar", ITestBean.class);
 		ITestBean baz = factory.getBean("baz", ITestBean.class);
 
-		assertSame(foo.getSpouse(), bar);
-		assertNotSame(bar.getSpouse(), baz);
+		assertThat((Object) bar).isSameAs(foo.getSpouse());
+		assertThat((Object) baz).isNotSameAs(bar.getSpouse());
 	}
 
 	@Test
@@ -210,7 +206,7 @@ public class ConfigurationClassProcessingTests {
 
 		TestBean foo = factory.getBean("foo", TestBean.class);
 		assertThat(factory.getBean("bar").equals(null)).isTrue();
-		assertNull(foo.getSpouse());
+		assertThat((Object) foo.getSpouse()).isNull();
 	}
 
 	@Test
@@ -273,7 +269,7 @@ public class ConfigurationClassProcessingTests {
 		ctx.register(ConfigWithFunctionalRegistration.class);
 		ctx.refresh();
 
-		assertSame(ctx.getBean("spouse"), ctx.getBean(TestBean.class).getSpouse());
+		assertThat((Object) ctx.getBean(TestBean.class).getSpouse()).isSameAs(ctx.getBean("spouse"));
 		assertThat(ctx.getBean(NestedTestBean.class).getCompany()).isEqualTo("functional");
 	}
 

@@ -30,8 +30,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture with {@link org.springframework.web.method.annotation.ModelMethodProcessor}.
@@ -74,7 +72,7 @@ public class ModelMethodProcessorTests {
 
 	@Test
 	public void resolveArgumentValue() throws Exception {
-		assertSame(mavContainer.getModel(), processor.resolveArgument(paramModel, mavContainer, webRequest, null));
+		assertThat(processor.resolveArgument(paramModel, mavContainer, webRequest, null)).isSameAs(mavContainer.getModel());
 	}
 
 	@Test

@@ -28,7 +28,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -62,7 +61,7 @@ public class MethodMatchersTests {
 
 	@Test
 	public void testMethodMatcherTrueSerializable() throws Exception {
-		assertSame(SerializationTestUtils.serializeAndDeserialize(MethodMatcher.TRUE), MethodMatcher.TRUE);
+		assertThat((Object) MethodMatcher.TRUE).isSameAs(SerializationTestUtils.serializeAndDeserialize(MethodMatcher.TRUE));
 	}
 
 	@Test

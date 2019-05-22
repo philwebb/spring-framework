@@ -32,8 +32,6 @@ import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller
@@ -52,8 +50,8 @@ public class HttpRequestHandlerTests {
 		wac.getBeanFactory().registerSingleton("myHandler", new HttpRequestHandler() {
 			@Override
 			public void handleRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-				assertSame(request, req);
-				assertSame(response, res);
+				assertThat((Object) req).isSameAs(request);
+				assertThat((Object) res).isSameAs(response);
 				String exception = request.getParameter("exception");
 				if ("ServletException".equals(exception)) {
 					throw new ServletException("test");

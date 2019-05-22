@@ -36,9 +36,6 @@ import org.springframework.expression.spel.support.ReflectionHelper.ArgumentsMat
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Tests for reflection helper code.
@@ -91,7 +88,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		assertThat(tv3).isNotEqualTo(tv2);
 		assertThat(tv1).isNotEqualTo(tv3);
 		assertThat(tv2).isNotEqualTo(tv3);
-		assertEquals(tv1.hashCode(), tv2.hashCode());
+		assertThat((long) tv2.hashCode()).isEqualTo((long) tv1.hashCode());
 		assertThat(tv3.hashCode()).isNotEqualTo((long) tv1.hashCode());
 		assertThat(tv3.hashCode()).isNotEqualTo((long) tv2.hashCode());
 	}
@@ -256,11 +253,11 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		Object[] newArray = ReflectionHelper.setupArgumentsForVarargsInvocation(
 				new Class<?>[] {String[].class}, "a", "b", "c");
 
-		assertEquals(1, newArray.length);
+		assertThat((long) newArray.length).isEqualTo((long) 1);
 		Object firstParam = newArray[0];
 		assertThat(firstParam.getClass().getComponentType()).isEqualTo(String.class);
 		Object[] firstParamArray = (Object[]) firstParam;
-		assertEquals(3,firstParamArray.length);
+		assertThat((long) firstParamArray.length).isEqualTo((long) 3);
 		assertThat(firstParamArray[0]).isEqualTo("a");
 		assertThat(firstParamArray[1]).isEqualTo("b");
 		assertThat(firstParamArray[2]).isEqualTo("c");
@@ -376,10 +373,10 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 	private void checkMatch(Class<?>[] inputTypes, Class<?>[] expectedTypes, StandardTypeConverter typeConverter, ArgumentsMatchKind expectedMatchKind) {
 		ReflectionHelper.ArgumentsMatchInfo matchInfo = ReflectionHelper.compareArguments(getTypeDescriptors(expectedTypes), getTypeDescriptors(inputTypes), typeConverter);
 		if (expectedMatchKind == null) {
-			assertNull("Did not expect them to match in any way", matchInfo);
+			assertThat((Object) matchInfo).as("Did not expect them to match in any way").isNull();
 		}
 		else {
-			assertNotNull("Should not be a null match", matchInfo);
+			assertThat((Object) matchInfo).as("Should not be a null match").isNotNull();
 		}
 
 		if (expectedMatchKind == ArgumentsMatchKind.EXACT) {
@@ -399,10 +396,10 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 	private void checkMatch2(Class<?>[] inputTypes, Class<?>[] expectedTypes, StandardTypeConverter typeConverter, ArgumentsMatchKind expectedMatchKind) {
 		ReflectionHelper.ArgumentsMatchInfo matchInfo = ReflectionHelper.compareArgumentsVarargs(getTypeDescriptors(expectedTypes), getTypeDescriptors(inputTypes), typeConverter);
 		if (expectedMatchKind == null) {
-			assertNull("Did not expect them to match in any way: " + matchInfo, matchInfo);
+			assertThat((Object) matchInfo).as("Did not expect them to match in any way: " + matchInfo).isNull();
 		}
 		else {
-			assertNotNull("Should not be a null match", matchInfo);
+			assertThat((Object) matchInfo).as("Should not be a null match").isNotNull();
 		}
 
 		if (expectedMatchKind == ArgumentsMatchKind.EXACT) {
@@ -417,7 +414,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 	}
 
 	private void checkArguments(Object[] args, Object... expected) {
-		assertEquals(expected.length,args.length);
+		assertThat((long) args.length).isEqualTo((long) expected.length);
 		for (int i = 0; i < expected.length; i++) {
 			checkArgument(expected[i],args[i]);
 		}

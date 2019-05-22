@@ -24,8 +24,6 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -46,7 +44,7 @@ public class RouterFunctionsTests {
 
 		RouterFunction<ServerResponse>
 				result = RouterFunctions.route(requestPredicate, handlerFunction);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
@@ -63,7 +61,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.test(request)).willReturn(false);
 
 		RouterFunction<ServerResponse> result = RouterFunctions.route(requestPredicate, handlerFunction);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isFalse();
@@ -80,7 +78,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.nest(request)).willReturn(Optional.of(request));
 
 		RouterFunction<ServerResponse> result = RouterFunctions.nest(requestPredicate, routerFunction);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
@@ -98,7 +96,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.nest(request)).willReturn(Optional.empty());
 
 		RouterFunction<ServerResponse> result = RouterFunctions.nest(requestPredicate, routerFunction);
-		assertNotNull(result);
+		assertThat((Object) result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isFalse();

@@ -30,9 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
@@ -69,7 +66,7 @@ public class RequestMethodsRequestConditionTests {
 		for (RequestMethod method : RequestMethod.values()) {
 			if (method != OPTIONS) {
 				ServerWebExchange exchange = getExchange(method.name());
-				assertNotNull(condition.getMatchingCondition(exchange));
+				assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
 			}
 		}
 		testNoMatch(condition, OPTIONS);
@@ -79,8 +76,8 @@ public class RequestMethodsRequestConditionTests {
 	@Ignore
 	public void getMatchingConditionWithCustomMethod() throws Exception {
 		ServerWebExchange exchange = getExchange("PROPFIND");
-		assertNotNull(new RequestMethodsRequestCondition().getMatchingCondition(exchange));
-		assertNull(new RequestMethodsRequestCondition(GET, POST).getMatchingCondition(exchange));
+		assertThat((Object) new RequestMethodsRequestCondition().getMatchingCondition(exchange)).isNotNull();
+		assertThat((Object) new RequestMethodsRequestCondition(GET, POST).getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -90,9 +87,9 @@ public class RequestMethodsRequestConditionTests {
 		exchange.getRequest().getHeaders().add("Origin", "https://example.com");
 		exchange.getRequest().getHeaders().add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "PUT");
 
-		assertNotNull(new RequestMethodsRequestCondition().getMatchingCondition(exchange));
-		assertNotNull(new RequestMethodsRequestCondition(PUT).getMatchingCondition(exchange));
-		assertNull(new RequestMethodsRequestCondition(DELETE).getMatchingCondition(exchange));
+		assertThat((Object) new RequestMethodsRequestCondition().getMatchingCondition(exchange)).isNotNull();
+		assertThat((Object) new RequestMethodsRequestCondition(PUT).getMatchingCondition(exchange)).isNotNull();
+		assertThat((Object) new RequestMethodsRequestCondition(DELETE).getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -113,7 +110,7 @@ public class RequestMethodsRequestConditionTests {
 		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = c1.compareTo(c1, exchange);
-		assertEquals("Invalid comparison result ", 0, result);
+		assertThat((long) result).as("Invalid comparison result ").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -122,20 +119,20 @@ public class RequestMethodsRequestConditionTests {
 		RequestMethodsRequestCondition condition2 = new RequestMethodsRequestCondition(POST);
 
 		RequestMethodsRequestCondition result = condition1.combine(condition2);
-		assertEquals(2, result.getContent().size());
+		assertThat((long) result.getContent().size()).isEqualTo((long) 2);
 	}
 
 
 	private void testMatch(RequestMethodsRequestCondition condition, RequestMethod method) throws Exception {
 		ServerWebExchange exchange = getExchange(method.name());
 		RequestMethodsRequestCondition actual = condition.getMatchingCondition(exchange);
-		assertNotNull(actual);
+		assertThat((Object) actual).isNotNull();
 		assertThat(actual.getContent()).isEqualTo(Collections.singleton(method));
 	}
 
 	private void testNoMatch(RequestMethodsRequestCondition condition, RequestMethod method) throws Exception {
 		ServerWebExchange exchange = getExchange(method.name());
-		assertNull(condition.getMatchingCondition(exchange));
+		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	private ServerWebExchange getExchange(String method) throws URISyntaxException {

@@ -39,7 +39,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -108,7 +107,7 @@ public class JpaTransactionManagerTests {
 				return l;
 			}
 		});
-		assertSame(l, result);
+		assertThat(result).isSameAs(l);
 
 		boolean condition1 = !TransactionSynchronizationManager.hasResource(factory);
 		assertThat(condition1).isTrue();
@@ -143,7 +142,7 @@ public class JpaTransactionManagerTests {
 					return l;
 				}
 			});
-			assertSame(l, result);
+			assertThat(result).isSameAs(l);
 		}
 		catch (TransactionSystemException tse) {
 			// expected
@@ -404,7 +403,7 @@ public class JpaTransactionManagerTests {
 				});
 			}
 		});
-		assertSame(l, result);
+		assertThat(result).isSameAs(l);
 
 		boolean condition1 = !TransactionSynchronizationManager.hasResource(factory);
 		assertThat(condition1).isTrue();
@@ -448,7 +447,7 @@ public class JpaTransactionManagerTests {
 					});
 				}
 			});
-			assertSame(l, result);
+			assertThat(result).isSameAs(l);
 		}
 		finally {
 			TransactionSynchronizationManager.unbindResource(factory);
@@ -494,7 +493,7 @@ public class JpaTransactionManagerTests {
 				});
 			}
 		});
-		assertSame(l, result);
+		assertThat(result).isSameAs(l);
 
 		boolean condition1 = !TransactionSynchronizationManager.hasResource(factory);
 		assertThat(condition1).isTrue();
@@ -539,7 +538,7 @@ public class JpaTransactionManagerTests {
 				});
 			}
 		});
-		assertSame(l, result);
+		assertThat(result).isSameAs(l);
 
 		boolean condition1 = !TransactionSynchronizationManager.hasResource(factory);
 		assertThat(condition1).isTrue();
@@ -628,7 +627,7 @@ public class JpaTransactionManagerTests {
 				return l;
 			}
 		});
-		assertSame(l, result);
+		assertThat(result).isSameAs(l);
 
 		boolean condition1 = !TransactionSynchronizationManager.hasResource(factory);
 		assertThat(condition1).isTrue();
@@ -696,7 +695,7 @@ public class JpaTransactionManagerTests {
 					return l;
 				}
 			});
-			assertSame(l, result);
+			assertThat(result).isSameAs(l);
 
 			assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 			boolean condition = !TransactionSynchronizationManager.isSynchronizationActive();
@@ -771,7 +770,7 @@ public class JpaTransactionManagerTests {
 					return l;
 				}
 			});
-			assertSame(l, result);
+			assertThat(result).isSameAs(l);
 
 			assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 			boolean condition = !TransactionSynchronizationManager.isSynchronizationActive();

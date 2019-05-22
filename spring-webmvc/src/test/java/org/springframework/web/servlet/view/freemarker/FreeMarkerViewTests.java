@@ -45,8 +45,6 @@ import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -165,7 +163,7 @@ public class FreeMarkerViewTests {
 		assertThat(((FreeMarkerView) view).getUrl()).as("Correct URL").isEqualTo("prefix_test_suffix");
 
 		view = vr.resolveViewName("non-existing", Locale.CANADA);
-		assertNull(view);
+		assertThat((Object) view).isNull();
 
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
 		assertThat(view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);

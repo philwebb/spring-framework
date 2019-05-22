@@ -33,7 +33,6 @@ import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for {@link HeadersMethodArgumentResolver} tests.

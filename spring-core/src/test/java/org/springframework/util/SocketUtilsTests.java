@@ -25,7 +25,6 @@ import javax.net.ServerSocketFactory;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
 import static org.springframework.util.SocketUtils.PORT_RANGE_MAX;
 import static org.springframework.util.SocketUtils.PORT_RANGE_MIN;
 
@@ -69,7 +68,7 @@ public class SocketUtilsTests {
 	public void findAvailableTcpPortWithMinPortEqualToMaxPort() {
 		int minMaxPort = SocketUtils.findAvailableTcpPort();
 		int port = SocketUtils.findAvailableTcpPort(minMaxPort, minMaxPort);
-		assertEquals(minMaxPort, port);
+		assertThat((long) port).isEqualTo((long) minMaxPort);
 	}
 
 	@Test
@@ -233,7 +232,7 @@ public class SocketUtilsTests {
 	}
 
 	private void assertAvailablePorts(SortedSet<Integer> ports, int numRequested, int minPort, int maxPort) {
-		assertEquals("number of ports requested", numRequested, ports.size());
+		assertThat((long) ports.size()).as("number of ports requested").isEqualTo((long) numRequested);
 		for (int port : ports) {
 			assertPortInRange(port, minPort, maxPort);
 		}

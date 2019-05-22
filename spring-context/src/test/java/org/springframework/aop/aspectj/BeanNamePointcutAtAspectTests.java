@@ -27,7 +27,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test for correct application of the bean() PCD for &#64;AspectJ-based aspects.
@@ -64,7 +63,7 @@ public class BeanNamePointcutAtAspectTests {
 		// Call two methods to test for SPR-3953-like condition
 		testBean1.setAge(20);
 		testBean1.setName("");
-		assertEquals(2, counterAspect.count);
+		assertThat((long) counterAspect.count).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -73,7 +72,7 @@ public class BeanNamePointcutAtAspectTests {
 		assertThat(condition).as("Didn't expect a proxy").isFalse();
 
 		testBean3.setAge(20);
-		assertEquals(0, counterAspect.count);
+		assertThat((long) counterAspect.count).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -91,7 +90,7 @@ public class BeanNamePointcutAtAspectTests {
 		boolean condition = proxyTestBean instanceof Advised;
 		assertThat(condition).as("Expected a proxy").isTrue();
 		proxyTestBean.setAge(20);
-		assertEquals("Programmatically created proxy shouldn't match bean()", 0, myCounterAspect.count);
+		assertThat((long) myCounterAspect.count).as("Programmatically created proxy shouldn't match bean()").isEqualTo((long) 0);
 	}
 
 }

@@ -28,8 +28,6 @@ import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  *
@@ -72,7 +70,7 @@ public class JmsMessageHeaderAccessorTests {
 		assertThat(headerAccessor.getTimestamp()).isCloseTo((double) 4567L, within(0.0));
 
 		// Making sure replyChannel is not mixed with replyTo
-		assertNull(headerAccessor.getReplyChannel());
+		assertThat(headerAccessor.getReplyChannel()).isNull();
 
 	}
 }

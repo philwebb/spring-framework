@@ -28,8 +28,6 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -51,10 +49,10 @@ public class BeanInfoTests {
 		assertThat(value).as("value not converted").isEqualTo(bean.getValue());
 
 		bw.setPropertyValue("value", null);
-		assertNull("value not null", bean.getValue());
+		assertThat((Object) bean.getValue()).as("value not null").isNull();
 
 		bw.setPropertyValue("value", "");
-		assertNull("value not converted to null", bean.getValue());
+		assertThat((Object) bean.getValue()).as("value not converted to null").isNull();
 	}
 
 

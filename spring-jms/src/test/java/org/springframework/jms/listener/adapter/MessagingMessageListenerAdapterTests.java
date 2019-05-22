@@ -48,8 +48,6 @@ import org.springframework.util.ReflectionUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -89,7 +87,7 @@ public class MessagingMessageListenerAdapterTests {
 		javax.jms.Message replyMessage = listener.buildMessage(session, result);
 
 		verify(session).createTextMessage("Response");
-		assertNotNull("reply should never be null", replyMessage);
+		assertThat((Object) replyMessage).as("reply should never be null").isNotNull();
 		assertThat(((TextMessage) replyMessage).getText()).isEqualTo("Response");
 		assertThat(replyMessage.getStringProperty("foo")).as("custom header not copied").isEqualTo("bar");
 		assertThat(replyMessage.getJMSType()).as("type header not copied").isEqualTo("msg_type");
@@ -154,7 +152,7 @@ public class MessagingMessageListenerAdapterTests {
 		listener.setMessageConverter(messageConverter);
 		listener.onMessage(jmsMessage, session);
 		verify(messageConverter, times(1)).fromMessage(jmsMessage);
-		assertEquals(1, sample.simples.size());
+		assertThat((long) sample.simples.size()).isEqualTo((long) 1);
 		assertThat(sample.simples.get(0).getPayload()).isEqualTo("FooBar");
 	}
 
@@ -170,7 +168,7 @@ public class MessagingMessageListenerAdapterTests {
 		javax.jms.Message replyMessage = listener.buildMessage(session, result);
 
 		verify(messageConverter, times(1)).toMessage("Response", session);
-		assertNotNull("reply should never be null", replyMessage);
+		assertThat((Object) replyMessage).as("reply should never be null").isNotNull();
 		assertThat(((TextMessage) replyMessage).getText()).isEqualTo("Response");
 	}
 

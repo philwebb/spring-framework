@@ -31,7 +31,6 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -63,9 +62,9 @@ public class DefaultServerRequestBuilderTests {
 				.build();
 
 		assertThat(result.method()).isEqualTo(HttpMethod.HEAD);
-		assertEquals(1, result.headers().asHttpHeaders().size());
+		assertThat((long) result.headers().asHttpHeaders().size()).isEqualTo((long) 1);
 		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
-		assertEquals(1, result.cookies().size());
+		assertThat((long) result.cookies().size()).isEqualTo((long) 1);
 		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
 
 		StepVerifier.create(result.bodyToFlux(String.class))

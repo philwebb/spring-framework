@@ -44,9 +44,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll
@@ -72,14 +69,14 @@ public class AspectJEnableCachingIsolatedTests {
 	public void testKeyStrategy() {
 		load(EnableCachingConfig.class);
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertSame(this.ctx.getBean("keyGenerator", KeyGenerator.class), aspect.getKeyGenerator());
+		assertThat((Object) aspect.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator", KeyGenerator.class));
 	}
 
 	@Test
 	public void testCacheErrorHandler() {
 		load(EnableCachingConfig.class);
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertSame(this.ctx.getBean("errorHandler", CacheErrorHandler.class), aspect.getErrorHandler());
+		assertThat((Object) aspect.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
 	}
 
 
@@ -133,10 +130,9 @@ public class AspectJEnableCachingIsolatedTests {
 	public void emptyConfigSupport() {
 		load(EmptyConfigSupportConfig.class);
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertNotNull(aspect.getCacheResolver());
+		assertThat((Object) aspect.getCacheResolver()).isNotNull();
 		assertThat(aspect.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
-		assertSame(this.ctx.getBean(CacheManager.class),
-				((SimpleCacheResolver) aspect.getCacheResolver()).getCacheManager());
+		assertThat((Object) ((SimpleCacheResolver) aspect.getCacheResolver()).getCacheManager()).isSameAs(this.ctx.getBean(CacheManager.class));
 	}
 
 	@Test
@@ -144,8 +140,8 @@ public class AspectJEnableCachingIsolatedTests {
 		load(FullCachingConfig.class);
 
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertSame(this.ctx.getBean("cacheResolver"), aspect.getCacheResolver());
-		assertSame(this.ctx.getBean("keyGenerator"), aspect.getKeyGenerator());
+		assertThat((Object) aspect.getCacheResolver()).isSameAs(this.ctx.getBean("cacheResolver"));
+		assertThat((Object) aspect.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator"));
 	}
 
 

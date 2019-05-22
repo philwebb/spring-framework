@@ -31,10 +31,6 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.orm.jpa.domain.Person;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Integration tests using in-memory database for container-managed JPA
@@ -56,17 +52,17 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 
 	@Test
 	public void testExceptionTranslationWithDialectFoundOnEntityManagerFactoryBean() throws Exception {
-		assertNotNull("Dialect must have been set", entityManagerFactoryBean.getJpaDialect());
+		assertThat((Object) entityManagerFactoryBean.getJpaDialect()).as("Dialect must have been set").isNotNull();
 		doTestExceptionTranslationWithDialectFound(entityManagerFactoryBean);
 	}
 
 	protected void doTestExceptionTranslationWithDialectFound(PersistenceExceptionTranslator pet) throws Exception {
 		RuntimeException in1 = new RuntimeException("in1");
 		PersistenceException in2 = new PersistenceException();
-		assertNull("No translation here", pet.translateExceptionIfPossible(in1));
+		assertThat((Object) pet.translateExceptionIfPossible(in1)).as("No translation here").isNull();
 		DataAccessException dex = pet.translateExceptionIfPossible(in2);
-		assertNotNull(dex);
-		assertSame(in2, dex.getCause());
+		assertThat((Object) dex).isNotNull();
+		assertThat((Object) dex.getCause()).isSameAs(in2);
 	}
 
 	@Test
@@ -114,7 +110,7 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 	}
 
 	protected void doInstantiateAndSave(EntityManager em) {
-		assertEquals("Should be no people from previous transactions", 0, countRowsInTable(em, "person"));
+		assertThat((long) countRowsInTable(em, "person")).as("Should be no people from previous transactions").isEqualTo((long) 0);
 		Person p = new Person();
 
 		p.setFirstName("Tony");
@@ -122,7 +118,7 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 		em.persist(p);
 
 		em.flush();
-		assertEquals("1 row must have been inserted", 1, countRowsInTable(em, "person"));
+		assertThat((long) countRowsInTable(em, "person")).as("1 row must have been inserted").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -141,7 +137,7 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 		doInstantiateAndSave(em);
 		setComplete();
 		endTransaction();	// Should rollback
-		assertEquals("Tx must have committed back", 1, countRowsInTable(em, "person"));
+		assertThat((long) countRowsInTable(em, "person")).as("Tx must have committed back").isEqualTo((long) 1);
 
 		// Now clean up the database
 		deleteFromTables("person");
@@ -152,7 +148,7 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 		EntityManager em = createContainerManagedEntityManager();
 		doInstantiateAndSave(em);
 		endTransaction();	// Should rollback
-		assertEquals("Tx must have been rolled back", 0, countRowsInTable(em, "person"));
+		assertThat((long) countRowsInTable(em, "person")).as("Tx must have been rolled back").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -161,7 +157,7 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 		doInstantiateAndSave(em);
 		setComplete();
 		endTransaction();	// Should rollback
-		assertEquals("Tx must have committed back", 1, countRowsInTable(em, "person"));
+		assertThat((long) countRowsInTable(em, "person")).as("Tx must have committed back").isEqualTo((long) 1);
 
 		// Now clean up the database
 		deleteFromTables("person");

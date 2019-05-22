@@ -39,9 +39,6 @@ import org.springframework.test.context.TestContextBootstrapper;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Abstract base class for tests involving {@link ContextLoaderUtils},
@@ -94,20 +91,20 @@ abstract class AbstractContextConfigurationUtilsTests {
 			Set<Class<? extends ApplicationContextInitializer<?>>> expectedInitializerClasses,
 			Class<? extends ContextLoader> expectedContextLoaderClass) {
 
-		assertNotNull(mergedConfig);
+		assertThat((Object) mergedConfig).isNotNull();
 		assertThat(mergedConfig.getTestClass()).isEqualTo(expectedTestClass);
-		assertNotNull(mergedConfig.getLocations());
+		assertThat((Object) mergedConfig.getLocations()).isNotNull();
 		assertThat(mergedConfig.getLocations()).isEqualTo(expectedLocations);
-		assertNotNull(mergedConfig.getClasses());
+		assertThat((Object) mergedConfig.getClasses()).isNotNull();
 		assertThat(mergedConfig.getClasses()).isEqualTo(expectedClasses);
-		assertNotNull(mergedConfig.getActiveProfiles());
+		assertThat((Object) mergedConfig.getActiveProfiles()).isNotNull();
 		if (expectedContextLoaderClass == null) {
-			assertNull(mergedConfig.getContextLoader());
+			assertThat((Object) mergedConfig.getContextLoader()).isNull();
 		}
 		else {
 			assertThat(mergedConfig.getContextLoader().getClass()).isEqualTo(expectedContextLoaderClass);
 		}
-		assertNotNull(mergedConfig.getContextInitializerClasses());
+		assertThat((Object) mergedConfig.getContextInitializerClasses()).isNotNull();
 		assertThat(mergedConfig.getContextInitializerClasses()).isEqualTo(expectedInitializerClasses);
 	}
 

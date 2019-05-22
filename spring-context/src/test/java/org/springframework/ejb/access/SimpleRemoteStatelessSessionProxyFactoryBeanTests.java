@@ -31,7 +31,6 @@ import org.springframework.remoting.RemoteAccessException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -88,7 +87,7 @@ public class SimpleRemoteStatelessSessionProxyFactoryBeanTests extends SimpleRem
 
 		MyBusinessMethods mbm = (MyBusinessMethods) fb.getObject();
 		assertThat(Proxy.isProxyClass(mbm.getClass())).isTrue();
-		assertEquals("Returns expected value", value, mbm.getValue());
+		assertThat((long) mbm.getValue()).as("Returns expected value").isEqualTo((long) value);
 		verify(myEjb).remove();
 	}
 
@@ -120,7 +119,7 @@ public class SimpleRemoteStatelessSessionProxyFactoryBeanTests extends SimpleRem
 
 		MyBusinessMethods mbm = (MyBusinessMethods) fb.getObject();
 		assertThat(Proxy.isProxyClass(mbm.getClass())).isTrue();
-		assertEquals("Returns expected value", value, mbm.getValue());
+		assertThat((long) mbm.getValue()).as("Returns expected value").isEqualTo((long) value);
 	}
 
 	@Override

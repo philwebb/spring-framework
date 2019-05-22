@@ -31,8 +31,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Test fixture for {@link ExceptionHandlerMethodResolver} tests.
@@ -75,8 +73,8 @@ public class ExceptionHandlerMethodResolverTests {
 	public void resolveMethodNoMatch() {
 		ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(ExceptionController.class);
 		Exception exception = new Exception();
-		assertNull("1st lookup", resolver.resolveMethod(exception));
-		assertNull("2nd lookup from cache", resolver.resolveMethod(exception));
+		assertThat((Object) resolver.resolveMethod(exception)).as("1st lookup").isNull();
+		assertThat((Object) resolver.resolveMethod(exception)).as("2nd lookup from cache").isNull();
 	}
 
 	@Test

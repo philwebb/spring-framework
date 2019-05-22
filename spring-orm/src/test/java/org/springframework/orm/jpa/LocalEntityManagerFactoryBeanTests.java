@@ -27,8 +27,6 @@ import org.junit.After;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -74,7 +72,7 @@ public class LocalEntityManagerFactoryBeanTests extends AbstractEntityManagerFac
 		}
 		lemfb.afterPropertiesSet();
 
-		assertSame(entityManagerName, actualName);
+		assertThat((Object) actualName).isSameAs(entityManagerName);
 		if (props != null) {
 			assertThat(actualProps).isEqualTo(props);
 		}
