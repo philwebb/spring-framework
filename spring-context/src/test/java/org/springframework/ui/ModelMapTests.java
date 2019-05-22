@@ -235,7 +235,7 @@ public class ModelMapTests {
 		factory.setProxyTargetClass(true);
 		map.addAttribute(factory.getProxy());
 		assertThat(map.containsKey("someInnerClass")).isTrue();
-		assertThat(map.get("someInnerClass")).isEqualTo(val);
+		assertThat(val).isEqualTo(map.get("someInnerClass"));
 	}
 
 	@Test

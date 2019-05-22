@@ -122,7 +122,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 				.arg(MultiValueMap.class, String.class, String.class);
 
 		@SuppressWarnings("unchecked")
-		Map<String, String> mapForPathVar = (Map<String, String>)
+		Map<String, ?> mapForPathVar = (Map<String, ?>)
 				this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
 		assertThat(mapForPathVar).isNotNull();

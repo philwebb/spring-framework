@@ -38,35 +38,44 @@ public class HtmlCharacterEntityReferencesTests {
 
 	@Test
 	public void testSupportsAllCharacterEntityReferencesDefinedByHtml() {
-		HtmlCharacterEntityReferences entityReferences = new HtmlCharacterEntityReferences();
-		Map<Integer, String> referenceCharactersMap = getReferenceCharacterMap();
-
+		HtmlCharacterEntityReferences references = new HtmlCharacterEntityReferences();
+		Map<Integer, String> charactersMap = getReferenceCharacterMap();
 		for (int character = 0; character < 10000; character++) {
-			String referenceName = referenceCharactersMap.get(character);
+			String referenceName = charactersMap.get(character);
 			if (referenceName != null) {
-				String fullReference =
-						HtmlCharacterEntityReferences.REFERENCE_START +
-						referenceName +
-						HtmlCharacterEntityReferences.REFERENCE_END;
-				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should be mapped to a reference").isTrue();
-				assertThat(entityReferences.convertToReference((char) character)).as("The reference of unicode character " + character + " should be entity " + referenceName).isEqualTo(fullReference);
-				assertThat(entityReferences.convertToCharacter(referenceName)).as("The entity reference [" + referenceName + "] should be mapped to unicode character " +
-								character).isEqualTo((long) (char) character);
+				String fullReference = HtmlCharacterEntityReferences.REFERENCE_START + referenceName + HtmlCharacterEntityReferences.REFERENCE_END;
+				assertThat(references.isMappedToReference((char) character))
+						.as("The unicode character " + character + " should be mapped to a reference")
+						.isTrue();
+				assertThat(references.convertToReference((char) character))
+						.as("The reference of unicode character " + character + " should be entity " + referenceName)
+						.isEqualTo(fullReference);
+				assertThat(references.convertToCharacter(referenceName))
+						.as("The entity reference [" + referenceName + "] should be mapped to unicode character " + character)
+						.isEqualTo((char) character);
 			}
 			else if (character == 39) {
-				assertThat(entityReferences.isMappedToReference((char) character)).isTrue();
-				assertThat(entityReferences.convertToReference((char) character)).isEqualTo("&#39;");
+				assertThat(references.isMappedToReference((char) character)).isTrue();
+				assertThat(references.convertToReference((char) character)).isEqualTo("&#39;");
 			}
 			else {
-				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should not be mapped to a reference").isFalse();
-				assertThat(entityReferences.convertToReference((char) character)).as("No entity reference of unicode character " + character + " should exist").isNull();
+				assertThat(references.isMappedToReference((char) character))
+						.as("The unicode character " + character + " should not be mapped to a reference")
+						.isFalse();
+				assertThat(references.convertToReference((char) character))
+						.as("No entity reference of unicode character " + character + " should exist")
+						.isNull();
 			}
 		}
-
-		assertThat(entityReferences.getSupportedReferenceCount()).as("The registered entity count of entityReferences should match the number of entity references").isEqualTo((long) (referenceCharactersMap.size() + 1));
-		assertThat(entityReferences.getSupportedReferenceCount()).as("The HTML 4.0 Standard defines 252+1 entity references so do entityReferences").isEqualTo((long) (252 + 1));
-
-		assertThat(entityReferences.convertToCharacter("invalid")).as("Invalid entity reference names should not be convertible").isEqualTo((long) (char) -1);
+		assertThat(references.getSupportedReferenceCount())
+				.as("The registered entity count of entityReferences should match the number of entity references")
+				.isEqualTo(charactersMap.size() + 1);
+		assertThat(references.getSupportedReferenceCount()).as(
+				"The HTML 4.0 Standard defines 252+1 entity references so do entityReferences")
+				.isEqualTo(252 + 1);
+		assertThat((int) references.convertToCharacter("invalid"))
+				.as("Invalid entity reference names should not be convertible")
+				.isEqualTo((char) -1);
 	}
 
 	// SPR-9293

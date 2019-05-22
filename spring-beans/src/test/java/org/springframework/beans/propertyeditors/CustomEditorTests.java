@@ -461,13 +461,13 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(tb);
 		bw.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class, nf, true));
 		bw.setPropertyValue("bigDecimal", "1000");
-		assertThat(tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.0f, within((double) 0f));
+		assertThat(tb.getBigDecimal().floatValue()).isCloseTo(1000.0f, within(0f));
 
 		bw.setPropertyValue("bigDecimal", "1000,5");
-		assertThat(tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
+		assertThat(tb.getBigDecimal().floatValue()).isCloseTo(1000.5f, within(0f));
 
 		bw.setPropertyValue("bigDecimal", "1 000,5");
-		assertThat(tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
+		assertThat(tb.getBigDecimal().floatValue()).isCloseTo(1000.5f, within(0f));
 
 	}
 
@@ -500,16 +500,16 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(cb);
 
 		bw.setPropertyValue("myChar", new Character('c'));
-		assertThat(cb.getMyChar()).isEqualTo((long) 'c');
+		assertThat(cb.getMyChar()).isEqualTo('c');
 
 		bw.setPropertyValue("myChar", "c");
-		assertThat(cb.getMyChar()).isEqualTo((long) 'c');
+		assertThat(cb.getMyChar()).isEqualTo('c');
 
 		bw.setPropertyValue("myChar", "\u0041");
-		assertThat(cb.getMyChar()).isEqualTo((long) 'A');
+		assertThat(cb.getMyChar()).isEqualTo('A');
 
 		bw.setPropertyValue("myChar", "\\u0022");
-		assertThat(cb.getMyChar()).isEqualTo((long) '"');
+		assertThat(cb.getMyChar()).isEqualTo('"');
 
 		CharacterEditor editor = new CharacterEditor(false);
 		editor.setAsText("M");

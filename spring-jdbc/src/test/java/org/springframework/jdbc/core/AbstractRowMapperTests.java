@@ -23,6 +23,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.springframework.jdbc.core.test.ConcretePerson;
 import org.springframework.jdbc.core.test.DatePerson;
@@ -50,14 +51,14 @@ public abstract class AbstractRowMapperTests {
 	protected void verifyPerson(Person bean) throws Exception {
 		assertThat(bean.getName()).isEqualTo("Bubba");
 		assertThat(bean.getAge()).isEqualTo(22L);
-		assertThat(bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
+		assertThat(bean.getBirth_date()).usingComparator(Date::compareTo).isEqualTo(new java.util.Date(1221222L));
 		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 	protected void verifyPerson(ConcretePerson bean) throws Exception {
 		assertThat(bean.getName()).isEqualTo("Bubba");
 		assertThat(bean.getAge()).isEqualTo(22L);
-		assertThat(bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
+		assertThat(bean.getBirth_date()).usingComparator(Date::compareTo).isEqualTo(new java.util.Date(1221222L));
 		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 

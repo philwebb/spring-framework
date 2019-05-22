@@ -18,6 +18,7 @@ package org.springframework.web.reactive.result.method.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -96,6 +97,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void resolveMultiValueMapArgument() {
 		String name = "foo";
 		String value1 = "bar";
@@ -110,9 +112,8 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		Mono<Object> mono = resolver.resolveArgument(paramMultiValueMap, null, exchange);
 		Object result = mono.block();
 
-		boolean condition = result instanceof MultiValueMap;
-		assertThat(condition).isTrue();
-		assertThat(result).as("Invalid result").isEqualTo(expected);
+		assertThat(result).isInstanceOf(MultiValueMap.class);
+		assertThat((MultiValueMap<String, String>) result).containsExactlyEntriesOf(expected);
 	}
 
 	@Test

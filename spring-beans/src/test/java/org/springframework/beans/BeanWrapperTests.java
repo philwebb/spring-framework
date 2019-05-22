@@ -173,7 +173,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("object", tb);
 		assertThat(target.value).isSameAs(tb);
 		assertThat(target.getObject().get()).isSameAs(tb);
-		assertThat(((Optional<String>) accessor.getPropertyValue("object")).get()).isSameAs(tb);
+		assertThat(((Optional<TestBean>) accessor.getPropertyValue("object")).get()).isSameAs(tb);
 		assertThat(target.value.getName()).isEqualTo("x");
 		assertThat(target.getObject().get().getName()).isEqualTo("x");
 		assertThat(accessor.getPropertyValue("object.name")).isEqualTo("x");
@@ -181,7 +181,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("object.name", "y");
 		assertThat(target.value).isSameAs(tb);
 		assertThat(target.getObject().get()).isSameAs(tb);
-		assertThat(((Optional<String>) accessor.getPropertyValue("object")).get()).isSameAs(tb);
+		assertThat(((Optional<TestBean>) accessor.getPropertyValue("object")).get()).isSameAs(tb);
 		assertThat(target.value.getName()).isEqualTo("y");
 		assertThat(target.getObject().get().getName()).isEqualTo("y");
 		assertThat(accessor.getPropertyValue("object.name")).isEqualTo("y");

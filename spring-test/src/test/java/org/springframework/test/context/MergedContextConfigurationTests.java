@@ -240,8 +240,8 @@ public class MergedContextConfigurationTests {
 	public void equalsBasics() {
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(null, null, null, null, null);
 		assertThat(mergedConfig).isEqualTo(mergedConfig);
-		assertThat(null).isNotEqualTo(mergedConfig);
-		assertThat(1).isNotEqualTo(mergedConfig);
+		assertThat(mergedConfig).isNotEqualTo(null);
+		assertThat(mergedConfig).isNotEqualTo(1);
 	}
 
 	@Test

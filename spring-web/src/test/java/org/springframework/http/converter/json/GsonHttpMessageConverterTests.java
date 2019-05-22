@@ -76,7 +76,7 @@ public class GsonHttpMessageConverterTests {
 
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
@@ -189,7 +189,7 @@ public class GsonHttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
@@ -216,7 +216,7 @@ public class GsonHttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
@@ -243,7 +243,7 @@ public class GsonHttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();

@@ -129,7 +129,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		buffer.write(new byte[]{'a', 'b', 'c'});
 
 		int ch = buffer.read();
-		assertThat(ch).isEqualTo((long) 'a');
+		assertThat(ch).isEqualTo((byte) 'a');
 
 		buffer.write((byte) 'd');
 		buffer.write((byte) 'e');
@@ -244,7 +244,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		assertThat(inputStream.available()).isEqualTo(4);
 
 		int result = inputStream.read();
-		assertThat(result).isEqualTo((long) 'b');
+		assertThat(result).isEqualTo((byte) 'b');
 		assertThat(inputStream.available()).isEqualTo(3);
 
 		byte[] bytes = new byte[2];
@@ -455,7 +455,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 
 		assertThat(byteBuffer.limit()).isEqualTo(1);
 		byte b = byteBuffer.get();
-		assertThat(b).isEqualTo((long) 'a');
+		assertThat(b).isEqualTo((byte) 'a');
 
 		release(dataBuffer);
 	}
@@ -469,7 +469,7 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		dataBuffer.writePosition(1);
 
 		byte b = dataBuffer.read();
-		assertThat(b).isEqualTo((long) 'a');
+		assertThat(b).isEqualTo((byte) 'a');
 
 		release(dataBuffer);
 	}
@@ -622,9 +622,9 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 	public void getByte() {
 		DataBuffer buffer = stringBuffer("abc");
 
-		assertThat(buffer.getByte(0)).isEqualTo((long) 'a');
-		assertThat(buffer.getByte(1)).isEqualTo((long) 'b');
-		assertThat(buffer.getByte(2)).isEqualTo((long) 'c');
+		assertThat(buffer.getByte(0)).isEqualTo((byte) 'a');
+		assertThat(buffer.getByte(1)).isEqualTo((byte) 'b');
+		assertThat(buffer.getByte(2)).isEqualTo((byte) 'c');
 		assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() ->
 				buffer.getByte(-1));
 

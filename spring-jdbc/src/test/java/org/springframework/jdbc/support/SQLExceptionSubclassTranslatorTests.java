@@ -71,7 +71,7 @@ public class SQLExceptionSubclassTranslatorTests {
 		SQLException badSqlEx2 = SQLExceptionSubclassFactory.newSQLSyntaxErrorException("", "", 0);
 		BadSqlGrammarException bsgex2 = (BadSqlGrammarException) sext.translate("task", "SQL2", badSqlEx2);
 		assertThat(bsgex2.getSql()).isEqualTo("SQL2");
-		assertThat(bsgex2.getSQLException()).isEqualTo(badSqlEx2);
+		assertThat((Object) bsgex2.getSQLException()).isEqualTo(badSqlEx2);
 
 		SQLException tranRollbackEx = SQLExceptionSubclassFactory.newSQLTransactionRollbackException("", "", 0);
 		ConcurrencyFailureException cfex = (ConcurrencyFailureException) sext.translate("task", "SQL", tranRollbackEx);
@@ -94,14 +94,14 @@ public class SQLExceptionSubclassTranslatorTests {
 		SQLException sexEct = new SQLException("", "", 1);
 		BadSqlGrammarException bsgEct = (BadSqlGrammarException) sext.translate("task", "SQL-ECT", sexEct);
 		assertThat(bsgEct.getSql()).isEqualTo("SQL-ECT");
-		assertThat(bsgEct.getSQLException()).isEqualTo(sexEct);
+		assertThat((Object) bsgEct.getSQLException()).isEqualTo(sexEct);
 
 		// Test fallback. We assume that no database will ever return this error code,
 		// but 07xxx will be bad grammar picked up by the fallback SQLState translator
 		SQLException sexFbt = new SQLException("", "07xxx", 666666666);
 		BadSqlGrammarException bsgFbt = (BadSqlGrammarException) sext.translate("task", "SQL-FBT", sexFbt);
 		assertThat(bsgFbt.getSql()).isEqualTo("SQL-FBT");
-		assertThat(bsgFbt.getSQLException()).isEqualTo(sexFbt);
+		assertThat((Object) bsgFbt.getSQLException()).isEqualTo(sexFbt);
 		// and 08xxx will be data resource failure (non-transient) picked up by the fallback SQLState translator
 		SQLException sexFbt2 = new SQLException("", "08xxx", 666666666);
 		DataAccessResourceFailureException darfFbt = (DataAccessResourceFailureException) sext.translate("task", "SQL-FBT2", sexFbt2);

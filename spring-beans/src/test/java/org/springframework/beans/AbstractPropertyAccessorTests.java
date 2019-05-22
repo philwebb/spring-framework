@@ -501,7 +501,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Object bwAge = accessor.getPropertyValue("age");
 		boolean condition = bwAge instanceof Integer;
 		assertThat(condition).as("Age is an integer").isTrue();
-		assertThat(bwAge == newAge).as("Bean wrapper must pick up changes").isTrue();
+		assertThat(bwAge).as("Bean wrapper must pick up changes").isEqualTo(newAge);
 	}
 
 	@Test
@@ -676,21 +676,21 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("myPrimitiveDouble", doubleValue);
 		accessor.setPropertyValue("myDouble", doubleValue);
 
-		assertThat(target.getMyPrimitiveByte()).isEqualTo((long) Byte.MAX_VALUE);
-		assertThat(target.getMyByte().byteValue()).isEqualTo((long) Byte.MAX_VALUE);
+		assertThat(target.getMyPrimitiveByte()).isEqualTo(Byte.MAX_VALUE);
+		assertThat(target.getMyByte().byteValue()).isEqualTo(Byte.MAX_VALUE);
 
-		assertThat(target.getMyPrimitiveShort()).isEqualTo((long) Short.MAX_VALUE);
-		assertThat(target.getMyShort().shortValue()).isEqualTo((long) Short.MAX_VALUE);
+		assertThat(target.getMyPrimitiveShort()).isEqualTo(Short.MAX_VALUE);
+		assertThat(target.getMyShort().shortValue()).isEqualTo(Short.MAX_VALUE);
 
-		assertThat(target.getMyPrimitiveInt()).isEqualTo((long) Integer.MAX_VALUE);
-		assertThat(target.getMyInteger().intValue()).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(target.getMyPrimitiveInt()).isEqualTo(Integer.MAX_VALUE);
+		assertThat(target.getMyInteger().intValue()).isEqualTo(Integer.MAX_VALUE);
 
 		assertThat(target.getMyPrimitiveLong()).isEqualTo(Long.MAX_VALUE);
 		assertThat(target.getMyLong().longValue()).isEqualTo(Long.MAX_VALUE);
 
-		assertThat(target.getMyPrimitiveFloat()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
+		assertThat(target.getMyPrimitiveFloat()).isCloseTo(Float.MAX_VALUE, within(0.001f));
 
-		assertThat(target.getMyFloat().floatValue()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
+		assertThat(target.getMyFloat().floatValue()).isCloseTo(Float.MAX_VALUE, within(0.001f));
 
 		assertThat(target.getMyPrimitiveDouble()).isCloseTo(Double.MAX_VALUE, within(0.001));
 

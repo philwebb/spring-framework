@@ -128,7 +128,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 				.arg(MultiValueMap.class, String.class, String.class);
 
 		@SuppressWarnings("unchecked")
-		Map<String, String> mapForPathVar = (Map<String, String>) this.resolver.resolveArgument(
+		Map<String, ?> mapForPathVar = (Map<String, ?>) this.resolver.resolveArgument(
 				param, this.mavContainer, this.webRequest, null);
 
 		assertThat(mapForPathVar.get("colors")).isEqualTo(Arrays.asList("red", "purple"));

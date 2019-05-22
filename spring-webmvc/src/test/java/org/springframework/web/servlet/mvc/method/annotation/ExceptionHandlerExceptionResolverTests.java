@@ -208,7 +208,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		assertThat(mav).isNotNull();
 		assertThat(mav.getViewName()).isEqualTo("redirect:/");
 		FlashMap flashMap = (FlashMap) this.request.getAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE);
-		assertThat(flashMap).as("output FlashMap should exist").isNotNull();
+		assertThat((Object) flashMap).as("output FlashMap should exist").isNotNull();
 		assertThat(flashMap.get("exceptionClassName")).isEqualTo("IllegalArgumentException");
 	}
 

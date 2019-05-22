@@ -93,7 +93,7 @@ public class CollectionUtilsTests {
 		CollectionUtils.mergePropertiesIntoMap(props, map);
 		assertThat(map.get("prop1")).isEqualTo("value1");
 		assertThat(map.get("prop2")).isEqualTo("value2");
-		assertThat(map.get("prop3")).isEqualTo(Integer.valueOf(3));
+		assertThat((Object) map.get("prop3")).isEqualTo(Integer.valueOf(3));
 		assertThat(map.get("prop4")).isEqualTo("value4");
 	}
 

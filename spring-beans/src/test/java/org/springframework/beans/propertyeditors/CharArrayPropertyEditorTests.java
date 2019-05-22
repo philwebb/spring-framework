@@ -37,12 +37,10 @@ public class CharArrayPropertyEditorTests {
 		charEditor.setAsText(text);
 
 		Object value = charEditor.getValue();
-		assertThat(value).isNotNull();
-		boolean condition = value instanceof char[];
-		assertThat(condition).isTrue();
+		assertThat(value).isNotNull().isInstanceOf(char[].class);
 		char[] chars = (char[]) value;
 		for (int i = 0; i < text.length(); ++i) {
-			assertThat(chars[i]).as("char[] differs at index '" + i + "'").isEqualTo((long) text.charAt(i));
+			assertThat(chars[i]).as("char[] differs at index '" + i + "'").isEqualTo(text.charAt(i));
 		}
 		assertThat(charEditor.getAsText()).isEqualTo(text);
 	}

@@ -123,7 +123,7 @@ public class FreeMarkerMacroTests {
 		FreeMarkerView fv = new FreeMarkerView() {
 			@Override
 			protected void processTemplate(Template template, SimpleHash model, HttpServletResponse response) {
-				fail();
+				throw new AssertionError();
 			}
 		};
 		fv.setUrl(TEMPLATE_FILE);

@@ -465,7 +465,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
 		FlashMap flashMap = new SessionFlashMapManager().retrieveAndUpdate(request, null);
-		assertThat(flashMap).isNotNull();
+		assertThat((Object) flashMap).isNotNull();
 		assertThat(flashMap.get("foo")).isEqualTo("bar");
 	}
 

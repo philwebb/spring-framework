@@ -63,12 +63,12 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 		SQLException badSqlEx = new SQLException("", "", 1);
 		BadSqlGrammarException bsgex = (BadSqlGrammarException) sext.translate("task", "SQL", badSqlEx);
 		assertThat(bsgex.getSql()).isEqualTo("SQL");
-		assertThat(bsgex.getSQLException()).isEqualTo(badSqlEx);
+		assertThat((Object) bsgex.getSQLException()).isEqualTo(badSqlEx);
 
 		SQLException invResEx = new SQLException("", "", 4);
 		InvalidResultSetAccessException irsex = (InvalidResultSetAccessException) sext.translate("task", "SQL", invResEx);
 		assertThat(irsex.getSql()).isEqualTo("SQL");
-		assertThat(irsex.getSQLException()).isEqualTo(invResEx);
+		assertThat((Object) irsex.getSQLException()).isEqualTo(invResEx);
 
 		checkTranslation(sext, 5, DataAccessResourceFailureException.class);
 		checkTranslation(sext, 6, DataIntegrityViolationException.class);
@@ -86,7 +86,7 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 		SQLException sex = new SQLException("", "07xxx", 666666666);
 		BadSqlGrammarException bsgex2 = (BadSqlGrammarException) sext.translate("task", "SQL2", sex);
 		assertThat(bsgex2.getSql()).isEqualTo("SQL2");
-		assertThat(bsgex2.getSQLException()).isEqualTo(sex);
+		assertThat((Object) bsgex2.getSQLException()).isEqualTo(sex);
 	}
 
 	private void checkTranslation(SQLExceptionTranslator sext, int errorCode, Class<?> exClass) {
@@ -105,7 +105,7 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 		batchUpdateEx.setNextException(badSqlEx);
 		BadSqlGrammarException bsgex = (BadSqlGrammarException) sext.translate("task", "SQL", batchUpdateEx);
 		assertThat(bsgex.getSql()).isEqualTo("SQL");
-		assertThat(bsgex.getSQLException()).isEqualTo(badSqlEx);
+		assertThat((Object) bsgex.getSQLException()).isEqualTo(badSqlEx);
 	}
 
 	@Test

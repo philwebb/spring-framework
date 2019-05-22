@@ -136,8 +136,8 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		JdkDynamicAopProxy aopProxy = new JdkDynamicAopProxy(as);
 		Named proxy = (Named) aopProxy.getProxy();
 		Named named = new Person();
-		assertThat(named).as("equals()").isEqualTo(proxy);
-		assertThat(named.hashCode()).as("hashCode()").isEqualTo((long) proxy.hashCode());
+		assertThat(proxy).isEqualTo(named);
+		assertThat(named.hashCode()).isEqualTo(proxy.hashCode());
 	}
 
 	@Test  // SPR-13328

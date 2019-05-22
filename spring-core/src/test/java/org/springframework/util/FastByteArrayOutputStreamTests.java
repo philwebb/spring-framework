@@ -128,10 +128,10 @@ public class FastByteArrayOutputStreamTests {
 	public void getInputStreamRead() throws Exception {
 		this.os.write(this.helloBytes);
 		InputStream inputStream = this.os.getInputStream();
-		assertThat(this.helloBytes[0]).isEqualTo((long) inputStream.read());
-		assertThat(this.helloBytes[1]).isEqualTo((long) inputStream.read());
-		assertThat(this.helloBytes[2]).isEqualTo((long) inputStream.read());
-		assertThat(this.helloBytes[3]).isEqualTo((long) inputStream.read());
+		assertThat(this.helloBytes[0]).isEqualTo((byte) inputStream.read());
+		assertThat(this.helloBytes[1]).isEqualTo((byte) inputStream.read());
+		assertThat(this.helloBytes[2]).isEqualTo((byte) inputStream.read());
+		assertThat(this.helloBytes[3]).isEqualTo((byte) inputStream.read());
 	}
 
 	@Test
@@ -162,9 +162,9 @@ public class FastByteArrayOutputStreamTests {
 		int bytesRead = inputStream.read(actual);
 		assertThat(bytesRead).isEqualTo((long) this.helloBytes.length);
 		for (int i = 0; i < bytesRead; i++) {
-			assertThat(actual[i]).isEqualTo((long) this.helloBytes[i]);
+			assertThat(actual[i]).isEqualTo(this.helloBytes[i]);
 		}
-		assertThat(actual[this.helloBytes.length]).isEqualTo(0);
+		assertThat(actual[this.helloBytes.length]).isEqualTo((byte) 0);
 		assertThat(inputStream.available()).isEqualTo(0);
 	}
 
@@ -172,9 +172,9 @@ public class FastByteArrayOutputStreamTests {
 	public void getInputStreamSkip() throws Exception {
 		this.os.write(this.helloBytes);
 		InputStream inputStream = this.os.getInputStream();
-		assertThat(this.helloBytes[0]).isEqualTo((long) inputStream.read());
+		assertThat(this.helloBytes[0]).isEqualTo((byte) inputStream.read());
 		assertThat(inputStream.skip(1)).isEqualTo(1);
-		assertThat(this.helloBytes[2]).isEqualTo((long) inputStream.read());
+		assertThat(this.helloBytes[2]).isEqualTo((byte) inputStream.read());
 		assertThat(inputStream.available()).isEqualTo((long) (this.helloBytes.length - 3));
 	}
 

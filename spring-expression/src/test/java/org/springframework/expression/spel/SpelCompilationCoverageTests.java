@@ -507,9 +507,9 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		float resultI = expression.getValue(new TestClass1(), Float.TYPE);
 		assertCanCompile(expression);
 		float resultC = expression.getValue(new TestClass1(), Float.TYPE);
-		assertThat(resultI).isCloseTo((double) 3.4f, within((double) 0.1f));
+		assertThat(resultI).isCloseTo(3.4f, within(0.1f));
 
-		assertThat(resultC).isCloseTo((double) 3.4f, within((double) 0.1f));
+		assertThat(resultC).isCloseTo(3.4f, within(0.1f));
 
 		assertThat(expression.getValue()).isEqualTo(3.4f);
 	}
@@ -4091,10 +4091,10 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 	public void methodReference_simpleInstanceMethodOneArgReturnPrimitive2() throws Exception {
 		expression = parser.parseExpression("charAt(2)");
 		char resultI = expression.getValue("abc", Character.TYPE);
-		assertThat(resultI).isEqualTo((long) 'c');
+		assertThat(resultI).isEqualTo('c');
 		assertCanCompile(expression);
 		char resultC = expression.getValue("abc", Character.TYPE);
-		assertThat(resultC).isEqualTo((long) 'c');
+		assertThat(resultC).isEqualTo('c');
 	}
 
 	@Test

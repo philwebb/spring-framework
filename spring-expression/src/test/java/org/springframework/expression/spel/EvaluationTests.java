@@ -713,12 +713,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("fff++");
-		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(3.0f, within(0f));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat(return_fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(return_fff).isCloseTo(3.0f, within(0f));
 
-		assertThat(helper.fff).isCloseTo((double) 4.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(4.0f, within(0f));
 
 		// long
 		e = parser.parseExpression("lll++");
@@ -739,10 +739,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("sss++");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		short return_sss = e.getValue(ctx, Short.TYPE);
-		assertThat(return_sss).isEqualTo(15);
-		assertThat(helper.sss).isEqualTo(16);
+		assertThat(return_sss).isEqualTo((short) 15);
+		assertThat(helper.sss).isEqualTo((short) 16);
 	}
 
 	@Test
@@ -771,12 +771,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("++fff");
-		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(3.0f, within(0f));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat(return_fff).isCloseTo((double) 4.0f, within(0d));
+		assertThat(return_fff).isCloseTo(4.0f, within(0f));
 
-		assertThat(helper.fff).isCloseTo((double) 4.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(4.0f, within(0f));
 
 		// long
 		e = parser.parseExpression("++lll");
@@ -797,10 +797,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("++sss");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		int return_sss = (Integer) e.getValue(ctx);
-		assertThat(return_sss).isEqualTo(16);
-		assertThat(helper.sss).isEqualTo(16);
+		assertThat(return_sss).isEqualTo((short) 16);
+		assertThat(helper.sss).isEqualTo((short) 16);
 	}
 
 	@Test
@@ -872,12 +872,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("fff--");
-		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(3.0f, within(0f));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat(return_fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(return_fff).isCloseTo(3.0f, within(0f));
 
-		assertThat(helper.fff).isCloseTo((double) 2.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(2.0f, within(0f));
 
 		// long
 		e = parser.parseExpression("lll--");
@@ -898,10 +898,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("sss--");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		short return_sss = e.getValue(ctx, Short.TYPE);
-		assertThat(return_sss).isEqualTo(15);
-		assertThat(helper.sss).isEqualTo(14);
+		assertThat(return_sss).isEqualTo((short) 15);
+		assertThat(helper.sss).isEqualTo((short) 14);
 	}
 
 	@Test
@@ -929,12 +929,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("--fff");
-		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(3.0f, within(0f));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat(return_fff).isCloseTo((double) 2.0f, within(0d));
+		assertThat(return_fff).isCloseTo(2.0f, within(0f));
 
-		assertThat(helper.fff).isCloseTo((double) 2.0f, within(0d));
+		assertThat(helper.fff).isCloseTo(2.0f, within(0f));
 
 		// long
 		e = parser.parseExpression("--lll");
@@ -955,10 +955,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("--sss");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		int return_sss = (Integer)e.getValue(ctx);
 		assertThat(return_sss).isEqualTo(14);
-		assertThat(helper.sss).isEqualTo(14);
+		assertThat(helper.sss).isEqualTo((short) 14);
 	}
 
 	@Test
