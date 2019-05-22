@@ -27,6 +27,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
@@ -66,7 +67,7 @@ public class SimpleScopeTests {
 
 		String[] scopeNames = beanFactory.getRegisteredScopeNames();
 		assertEquals(1, scopeNames.length);
-		assertEquals("myScope", scopeNames[0]);
+		assertThat((Object) scopeNames[0]).isEqualTo("myScope");
 		assertSame(scope, beanFactory.getRegisteredScope("myScope"));
 
 		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(

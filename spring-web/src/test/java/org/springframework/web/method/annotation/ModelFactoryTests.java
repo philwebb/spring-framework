@@ -83,7 +83,7 @@ public class ModelFactoryTests {
 		HandlerMethod handlerMethod = createHandlerMethod("handle");
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
-		assertEquals(Boolean.TRUE, this.mavContainer.getModel().get("modelAttr"));
+		assertThat(this.mavContainer.getModel().get("modelAttr")).isEqualTo(Boolean.TRUE);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class ModelFactoryTests {
 		HandlerMethod handlerMethod = createHandlerMethod("handle");
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
-		assertEquals(Boolean.TRUE, this.mavContainer.getModel().get("name"));
+		assertThat(this.mavContainer.getModel().get("name")).isEqualTo(Boolean.TRUE);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class ModelFactoryTests {
 		HandlerMethod handlerMethod = createHandlerMethod("handle");
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
-		assertEquals(Boolean.TRUE, this.mavContainer.getModel().get("boolean"));
+		assertThat(this.mavContainer.getModel().get("boolean")).isEqualTo(Boolean.TRUE);
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class ModelFactoryTests {
 		HandlerMethod handlerMethod = createHandlerMethod("handle");
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
-		assertEquals("sessionAttrValue", this.mavContainer.getModel().get("sessionAttr"));
+		assertThat(this.mavContainer.getModel().get("sessionAttr")).isEqualTo("sessionAttrValue");
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class ModelFactoryTests {
 		this.attributeStore.storeAttribute(this.webRequest, "sessionAttr", "sessionAttrValue");
 
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
-		assertEquals("sessionAttrValue", this.mavContainer.getModel().get("sessionAttr"));
+		assertThat(this.mavContainer.getModel().get("sessionAttr")).isEqualTo("sessionAttrValue");
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class ModelFactoryTests {
 		ModelFactory modelFactory = new ModelFactory(null, binderFactory, this.attributeHandler);
 		modelFactory.updateModel(this.webRequest, container);
 
-		assertEquals(command, container.getModel().get(commandName));
+		assertThat(container.getModel().get(commandName)).isEqualTo(command);
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + commandName;
 		assertSame(dataBinder.getBindingResult(), container.getModel().get(bindingResultKey));
 		assertEquals(2, container.getModel().size());
@@ -197,8 +197,8 @@ public class ModelFactoryTests {
 		ModelFactory modelFactory = new ModelFactory(null, binderFactory, this.attributeHandler);
 		modelFactory.updateModel(this.webRequest, container);
 
-		assertEquals(attribute, container.getModel().get(attributeName));
-		assertEquals(attribute, this.attributeStore.retrieveAttribute(this.webRequest, attributeName));
+		assertThat(container.getModel().get(attributeName)).isEqualTo(attribute);
+		assertThat(this.attributeStore.retrieveAttribute(this.webRequest, attributeName)).isEqualTo(attribute);
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class ModelFactoryTests {
 		ModelFactory modelFactory = new ModelFactory(null, binderFactory, this.attributeHandler);
 		modelFactory.updateModel(this.webRequest, container);
 
-		assertEquals(attribute, container.getModel().get(attributeName));
+		assertThat(container.getModel().get(attributeName)).isEqualTo(attribute);
 		assertNull(this.attributeStore.retrieveAttribute(this.webRequest, attributeName));
 	}
 
@@ -242,9 +242,9 @@ public class ModelFactoryTests {
 		ModelFactory modelFactory = new ModelFactory(null, binderFactory, this.attributeHandler);
 		modelFactory.updateModel(this.webRequest, container);
 
-		assertEquals(queryParam, container.getModel().get(queryParamName));
+		assertThat(container.getModel().get(queryParamName)).isEqualTo(queryParam);
 		assertEquals(1, container.getModel().size());
-		assertEquals(attribute, this.attributeStore.retrieveAttribute(this.webRequest, attributeName));
+		assertThat(this.attributeStore.retrieveAttribute(this.webRequest, attributeName)).isEqualTo(attribute);
 	}
 
 

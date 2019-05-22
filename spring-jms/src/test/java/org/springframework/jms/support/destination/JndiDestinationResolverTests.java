@@ -120,7 +120,7 @@ public class JndiDestinationResolverTests {
 		@Override
 		protected <T> T lookup(String jndiName, Class<T> requiredType) throws NamingException {
 			assertThat(called).as("delegating to lookup(..) not cache").isFalse();
-			assertEquals(DESTINATION_NAME, jndiName);
+			assertThat((Object) jndiName).isEqualTo(DESTINATION_NAME);
 			called = true;
 			return requiredType.cast(DESTINATION);
 		}

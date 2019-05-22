@@ -28,6 +28,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
@@ -84,7 +85,7 @@ public class CorsUrlHandlerMappingTests {
 
 		assertNotNull(actual);
 		assertSame(this.corsController, actual);
-		assertEquals("*", exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("*");
 	}
 
 	@Test
@@ -95,7 +96,7 @@ public class CorsUrlHandlerMappingTests {
 
 		assertNotNull(actual);
 		assertNotSame(this.corsController, actual);
-		assertEquals("*", exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("*");
 	}
 
 	@Test
@@ -110,7 +111,7 @@ public class CorsUrlHandlerMappingTests {
 
 		assertNotNull(actual);
 		assertSame(this.welcomeController, actual);
-		assertEquals("*", exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("*");
 	}
 
 	@Test
@@ -125,7 +126,7 @@ public class CorsUrlHandlerMappingTests {
 
 		assertNotNull(actual);
 		assertNotSame(this.welcomeController, actual);
-		assertEquals("*", exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("*");
 	}
 
 	@Test
@@ -138,10 +139,10 @@ public class CorsUrlHandlerMappingTests {
 
 		assertNotNull(actual);
 		assertSame(this.welcomeController, actual);
-		assertEquals("https://domain2.com", exchange.getResponse().getHeaders()
-				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
-		assertEquals("true", exchange.getResponse().getHeaders()
-				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS));
+		assertThat((Object) exchange.getResponse().getHeaders()
+				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("https://domain2.com");
+		assertThat((Object) exchange.getResponse().getHeaders()
+				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)).isEqualTo("true");
 	}
 
 	@Test
@@ -154,10 +155,10 @@ public class CorsUrlHandlerMappingTests {
 
 		assertNotNull(actual);
 		assertNotSame(this.welcomeController, actual);
-		assertEquals("https://domain2.com", exchange.getResponse().getHeaders()
-				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
-		assertEquals("true", exchange.getResponse().getHeaders()
-				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS));
+		assertThat((Object) exchange.getResponse().getHeaders()
+				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("https://domain2.com");
+		assertThat((Object) exchange.getResponse().getHeaders()
+				.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)).isEqualTo("true");
 	}
 
 

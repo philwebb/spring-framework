@@ -52,7 +52,7 @@ public class PathResourceResolverTests {
 		List<Resource> locations = singletonList(location);
 		Resource actual = this.resolver.resolveResource(null, path, locations, null).block(TIMEOUT);
 
-		assertEquals(location.createRelative(path), actual);
+		assertThat((Object) actual).isEqualTo(location.createRelative(path));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class PathResourceResolverTests {
 		Resource actual = this.resolver.resolveResource(null, path, locations, null).block(TIMEOUT);
 
 		assertNotNull(actual);
-		assertEquals("foo foo.txt", actual.getFile().getName());
+		assertThat((Object) actual.getFile().getName()).isEqualTo("foo foo.txt");
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class PathResourceResolverTests {
 		String actual = this.resolver.resolveUrlPath("../testalternatepath/bar.css",
 				singletonList(location), null).block(TIMEOUT);
 
-		assertEquals("../testalternatepath/bar.css", actual);
+		assertThat((Object) actual).isEqualTo("../testalternatepath/bar.css");
 	}
 
 	@Test // SPR-12624

@@ -342,7 +342,7 @@ public class CciTemplateTests {
 
 		CciTemplate ct = new CciTemplate(connectionFactory);
 		ct.setOutputRecordCreator(creator);
-		assertEquals(obj, ct.execute(interactionSpec, generator, extractor));
+		assertThat(ct.execute(interactionSpec, generator, extractor)).isEqualTo(obj);
 
 		verify(interaction).close();
 		verify(connection).close();

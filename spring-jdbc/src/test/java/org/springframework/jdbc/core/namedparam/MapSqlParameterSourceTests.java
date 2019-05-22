@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.support.JdbcUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 
@@ -57,19 +58,19 @@ public class MapSqlParameterSourceTests {
 	@Test
 	public void toStringShowsParameterDetails() {
 		MapSqlParameterSource source = new MapSqlParameterSource("FOO", new SqlParameterValue(Types.NUMERIC, "Foo"));
-		assertEquals("MapSqlParameterSource {FOO=Foo (type:NUMERIC)}", source.toString());
+		assertThat((Object) source.toString()).isEqualTo("MapSqlParameterSource {FOO=Foo (type:NUMERIC)}");
 	}
 
 	@Test
 	public void toStringShowsCustomSqlType() {
 		MapSqlParameterSource source = new MapSqlParameterSource("FOO", new SqlParameterValue(Integer.MAX_VALUE, "Foo"));
-		assertEquals("MapSqlParameterSource {FOO=Foo (type:" + Integer.MAX_VALUE + ")}", source.toString());
+		assertThat((Object) source.toString()).isEqualTo(("MapSqlParameterSource {FOO=Foo (type:" + Integer.MAX_VALUE + ")}"));
 	}
 
 	@Test
 	public void toStringDoesNotShowTypeUnknown() {
 		MapSqlParameterSource source = new MapSqlParameterSource("FOO", new SqlParameterValue(JdbcUtils.TYPE_UNKNOWN, "Foo"));
-		assertEquals("MapSqlParameterSource {FOO=Foo}", source.toString());
+		assertThat((Object) source.toString()).isEqualTo("MapSqlParameterSource {FOO=Foo}");
 	}
 
 }

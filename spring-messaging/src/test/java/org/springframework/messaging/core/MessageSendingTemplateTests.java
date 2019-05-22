@@ -36,8 +36,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
@@ -70,7 +69,7 @@ public class MessageSendingTemplateTests {
 		this.template.setDefaultDestination("home");
 		this.template.send(message);
 
-		assertEquals("home", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("home");
 		assertSame(message, this.template.message);
 	}
 
@@ -79,7 +78,7 @@ public class MessageSendingTemplateTests {
 		Message<?> message = new GenericMessage<Object>("payload");
 		this.template.send("somewhere", message);
 
-		assertEquals("somewhere", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("somewhere");
 		assertSame(message, this.template.message);
 	}
 
@@ -94,10 +93,10 @@ public class MessageSendingTemplateTests {
 	public void convertAndSend() {
 		this.template.convertAndSend("somewhere", "payload", headers, this.postProcessor);
 
-		assertEquals("somewhere", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("somewhere");
 		assertNotNull(this.template.message);
-		assertEquals("value", this.template.message.getHeaders().get("key"));
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getHeaders().get("key")).isEqualTo("value");
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 
 		assertNotNull(this.postProcessor.getMessage());
 		assertSame(this.template.message, this.postProcessor.getMessage());
@@ -108,30 +107,30 @@ public class MessageSendingTemplateTests {
 		this.template.setDefaultDestination("home");
 		this.template.convertAndSend("payload");
 
-		assertEquals("home", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("home");
 		assertNotNull(this.template.message);
 		assertEquals("expected 'id' and 'timestamp' headers only", 2, this.template.message.getHeaders().size());
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 	}
 
 	@Test
 	public void convertAndSendPayloadToDestination() {
 		this.template.convertAndSend("somewhere", "payload");
 
-		assertEquals("somewhere", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("somewhere");
 		assertNotNull(this.template.message);
 		assertEquals("expected 'id' and 'timestamp' headers only", 2, this.template.message.getHeaders().size());
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 	}
 
 	@Test
 	public void convertAndSendPayloadAndHeadersToDestination() {
 		this.template.convertAndSend("somewhere", "payload", headers);
 
-		assertEquals("somewhere", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("somewhere");
 		assertNotNull(this.template.message);
-		assertEquals("value", this.template.message.getHeaders().get("key"));
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getHeaders().get("key")).isEqualTo("value");
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 	}
 
 	@Test
@@ -146,8 +145,8 @@ public class MessageSendingTemplateTests {
 
 		MessageHeaders actual = this.template.message.getHeaders();
 		assertSame(messageHeaders, actual);
-		assertEquals(new MimeType("text", "plain", StandardCharsets.UTF_8), actual.get(MessageHeaders.CONTENT_TYPE));
-		assertEquals("bar", actual.get("foo"));
+		assertThat(actual.get(MessageHeaders.CONTENT_TYPE)).isEqualTo(new MimeType("text", "plain", StandardCharsets.UTF_8));
+		assertThat(actual.get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -155,10 +154,10 @@ public class MessageSendingTemplateTests {
 		this.template.setDefaultDestination("home");
 		this.template.convertAndSend((Object) "payload", this.postProcessor);
 
-		assertEquals("home", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("home");
 		assertNotNull(this.template.message);
 		assertEquals("expected 'id' and 'timestamp' headers only", 2, this.template.message.getHeaders().size());
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 
 		assertNotNull(this.postProcessor.getMessage());
 		assertSame(this.template.message, this.postProcessor.getMessage());
@@ -168,10 +167,10 @@ public class MessageSendingTemplateTests {
 	public void convertAndSendPayloadWithPostProcessorToDestination() {
 		this.template.convertAndSend("somewhere", "payload", this.postProcessor);
 
-		assertEquals("somewhere", this.template.destination);
+		assertThat((Object) this.template.destination).isEqualTo("somewhere");
 		assertNotNull(this.template.message);
 		assertEquals("expected 'id' and 'timestamp' headers only", 2, this.template.message.getHeaders().size());
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 
 		assertNotNull(this.postProcessor.getMessage());
 		assertSame(this.template.message, this.postProcessor.getMessage());

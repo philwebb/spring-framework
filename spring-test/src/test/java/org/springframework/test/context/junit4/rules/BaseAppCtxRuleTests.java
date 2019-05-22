@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -55,7 +56,7 @@ public class BaseAppCtxRuleTests {
 
 	@Test
 	public void foo() {
-		assertEquals("foo", foo);
+		assertThat((Object) foo).isEqualTo("foo");
 	}
 
 

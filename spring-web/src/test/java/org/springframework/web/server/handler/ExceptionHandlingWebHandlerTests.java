@@ -30,6 +30,7 @@ import org.springframework.web.server.WebExceptionHandler;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -48,7 +49,7 @@ public class ExceptionHandlingWebHandlerTests {
 	@Test
 	public void handleErrorSignal() throws Exception {
 		createWebHandler(new BadRequestExceptionHandler()).handle(this.exchange).block();
-		assertEquals(HttpStatus.BAD_REQUEST, this.exchange.getResponse().getStatusCode());
+		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
@@ -59,7 +60,7 @@ public class ExceptionHandlingWebHandlerTests {
 				new BadRequestExceptionHandler(),
 				new UnresolvedExceptionHandler()).handle(this.exchange).block();
 
-		assertEquals(HttpStatus.BAD_REQUEST, this.exchange.getResponse().getStatusCode());
+		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
@@ -77,13 +78,13 @@ public class ExceptionHandlingWebHandlerTests {
 		new HttpWebHandlerAdapter(createWebHandler(new UnresolvedExceptionHandler()))
 				.handle(this.exchange.getRequest(), this.exchange.getResponse()).block();
 
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, this.exchange.getResponse().getStatusCode());
+		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test
 	public void thrownExceptionBecomesErrorSignal() throws Exception {
 		createWebHandler(new BadRequestExceptionHandler()).handle(this.exchange).block();
-		assertEquals(HttpStatus.BAD_REQUEST, this.exchange.getResponse().getStatusCode());
+		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	private WebHandler createWebHandler(WebExceptionHandler... handlers) {

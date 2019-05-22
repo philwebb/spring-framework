@@ -42,11 +42,11 @@ public class StandardComponentsTests {
 
 		TypeComparator tc = new StandardTypeComparator();
 		context.setTypeComparator(tc);
-		assertEquals(tc, context.getTypeComparator());
+		assertThat((Object) context.getTypeComparator()).isEqualTo(tc);
 
 		TypeLocator tl = new StandardTypeLocator();
 		context.setTypeLocator(tl);
-		assertEquals(tl, context.getTypeLocator());
+		assertThat((Object) context.getTypeLocator()).isEqualTo(tl);
 	}
 
 	@Test

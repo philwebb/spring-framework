@@ -109,7 +109,7 @@ public class WebAsyncManagerTests {
 		this.asyncManager.startCallableProcessing(task);
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
-		assertEquals(concurrentResult, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(concurrentResult);
 
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, task);
@@ -131,7 +131,7 @@ public class WebAsyncManagerTests {
 		this.asyncManager.startCallableProcessing(task);
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
-		assertEquals(concurrentResult, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(concurrentResult);
 
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, task);
@@ -174,7 +174,7 @@ public class WebAsyncManagerTests {
 		this.asyncManager.startCallableProcessing(task);
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
-		assertEquals(exception, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(exception);
 
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, task);
@@ -194,7 +194,7 @@ public class WebAsyncManagerTests {
 		this.asyncManager.startCallableProcessing(task);
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
-		assertEquals(exception, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(exception);
 
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, task);
@@ -216,7 +216,7 @@ public class WebAsyncManagerTests {
 		this.asyncManager.startCallableProcessing(task);
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
-		assertEquals(exception, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(exception);
 
 		verifyDefaultAsyncScenario();
 		verify(interceptor1).beforeConcurrentHandling(this.asyncWebRequest, task);
@@ -264,7 +264,7 @@ public class WebAsyncManagerTests {
 
 		deferredResult.setResult(concurrentResult);
 
-		assertEquals(concurrentResult, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(concurrentResult);
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, deferredResult);
 		verify(interceptor).preProcess(this.asyncWebRequest, deferredResult);
@@ -309,7 +309,7 @@ public class WebAsyncManagerTests {
 
 		deferredResult.setResult(25);
 
-		assertEquals(exception, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(exception);
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, deferredResult);
 	}
@@ -329,7 +329,7 @@ public class WebAsyncManagerTests {
 
 		deferredResult.setResult(25);
 
-		assertEquals(exception, this.asyncManager.getConcurrentResult());
+		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(exception);
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, deferredResult);
 		verify(interceptor).preProcess(this.asyncWebRequest, deferredResult);

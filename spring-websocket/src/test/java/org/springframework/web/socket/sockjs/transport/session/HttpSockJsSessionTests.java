@@ -83,7 +83,7 @@ public class HttpSockJsSessionTests extends AbstractSockJsSessionTests<TestAbstr
 
 		this.session.handleInitialRequest(this.request, this.response, this.frameFormat);
 
-		assertEquals("hhh\no", this.servletResponse.getContentAsString());
+		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("hhh\no");
 		assertThat(this.servletRequest.isAsyncStarted()).isTrue();
 
 		verify(this.webSocketHandler).afterConnectionEstablished(this.session);
@@ -98,7 +98,7 @@ public class HttpSockJsSessionTests extends AbstractSockJsSessionTests<TestAbstr
 		assertThat(this.servletRequest.isAsyncStarted()).isTrue();
 		assertThat(this.session.wasHeartbeatScheduled()).isTrue();
 		assertThat(this.session.wasCacheFlushed()).isTrue();
-		assertEquals("hhh\n", this.servletResponse.getContentAsString());
+		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("hhh\n");
 
 		verifyNoMoreInteractions(this.webSocketHandler);
 	}

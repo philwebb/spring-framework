@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import org.springframework.jms.core.JmsTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -44,8 +45,8 @@ public class JmsGatewaySupportTests {
 		};
 		gateway.setConnectionFactory(mockConnectionFactory);
 		gateway.afterPropertiesSet();
-		assertEquals("Correct ConnectionFactory", mockConnectionFactory, gateway.getConnectionFactory());
-		assertEquals("Correct JmsTemplate", mockConnectionFactory, gateway.getJmsTemplate().getConnectionFactory());
+		assertThat((Object) gateway.getConnectionFactory()).as("Correct ConnectionFactory").isEqualTo(mockConnectionFactory);
+		assertThat((Object) gateway.getJmsTemplate().getConnectionFactory()).as("Correct JmsTemplate").isEqualTo(mockConnectionFactory);
 		assertEquals("initGateway called", 1, test.size());
 	}
 
@@ -61,7 +62,7 @@ public class JmsGatewaySupportTests {
 		};
 		gateway.setJmsTemplate(template);
 		gateway.afterPropertiesSet();
-		assertEquals("Correct JmsTemplate", template, gateway.getJmsTemplate());
+		assertThat((Object) gateway.getJmsTemplate()).as("Correct JmsTemplate").isEqualTo(template);
 		assertEquals("initGateway called", 1, test.size());
 	}
 

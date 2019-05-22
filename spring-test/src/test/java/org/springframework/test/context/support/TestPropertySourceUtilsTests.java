@@ -30,9 +30,7 @@ import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -169,7 +167,7 @@ public class TestPropertySourceUtilsTests {
 
 		addPropertiesFilesToEnvironment(environment, resourceLoader, FOO_LOCATIONS);
 		assertEquals(1, propertySources.size());
-		assertEquals("value", environment.getProperty("key"));
+		assertThat((Object) environment.getProperty("key")).isEqualTo("value");
 	}
 
 	@Test

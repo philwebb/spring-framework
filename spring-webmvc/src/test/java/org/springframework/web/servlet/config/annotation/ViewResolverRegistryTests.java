@@ -107,7 +107,7 @@ public class ViewResolverRegistryTests {
 	public void beanName() {
 		this.registry.beanName();
 		assertEquals(1, this.registry.getViewResolvers().size());
-		assertEquals(BeanNameViewResolver.class, registry.getViewResolvers().get(0).getClass());
+		assertThat((Object) registry.getViewResolvers().get(0).getClass()).isEqualTo(BeanNameViewResolver.class);
 	}
 
 	@Test
@@ -130,8 +130,8 @@ public class ViewResolverRegistryTests {
 		this.registry.jsp().viewNames("view3", "view4");
 		assertNotNull(this.registry.getViewResolvers());
 		assertEquals(2, this.registry.getViewResolvers().size());
-		assertEquals(InternalResourceViewResolver.class, this.registry.getViewResolvers().get(0).getClass());
-		assertEquals(InternalResourceViewResolver.class, this.registry.getViewResolvers().get(1).getClass());
+		assertThat((Object) this.registry.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
+		assertThat((Object) this.registry.getViewResolvers().get(1).getClass()).isEqualTo(InternalResourceViewResolver.class);
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class ViewResolverRegistryTests {
 		MappingJackson2JsonView view = new MappingJackson2JsonView();
 		this.registry.enableContentNegotiation(view);
 		ContentNegotiatingViewResolver resolver = checkAndGetResolver(ContentNegotiatingViewResolver.class);
-		assertEquals(Arrays.asList(view), resolver.getDefaultViews());
+		assertThat((Object) resolver.getDefaultViews()).isEqualTo(Arrays.asList(view));
 		assertEquals(Ordered.HIGHEST_PRECEDENCE, this.registry.getOrder());
 	}
 
@@ -197,13 +197,13 @@ public class ViewResolverRegistryTests {
 		this.registry.enableContentNegotiation(view1);
 
 		ContentNegotiatingViewResolver resolver1 = checkAndGetResolver(ContentNegotiatingViewResolver.class);
-		assertEquals(Arrays.asList(view1), resolver1.getDefaultViews());
+		assertThat((Object) resolver1.getDefaultViews()).isEqualTo(Arrays.asList(view1));
 
 		MarshallingView view2 = new MarshallingView();
 		this.registry.enableContentNegotiation(view2);
 
 		ContentNegotiatingViewResolver resolver2 = checkAndGetResolver(ContentNegotiatingViewResolver.class);
-		assertEquals(Arrays.asList(view1, view2), resolver2.getDefaultViews());
+		assertThat((Object) resolver2.getDefaultViews()).isEqualTo(Arrays.asList(view1, view2));
 		assertSame(resolver1, resolver2);
 	}
 
@@ -212,7 +212,7 @@ public class ViewResolverRegistryTests {
 	private <T extends ViewResolver> T checkAndGetResolver(Class<T> resolverType) {
 		assertNotNull(this.registry.getViewResolvers());
 		assertEquals(1, this.registry.getViewResolvers().size());
-		assertEquals(resolverType, this.registry.getViewResolvers().get(0).getClass());
+		assertThat((Object) this.registry.getViewResolvers().get(0).getClass()).isEqualTo(resolverType);
 		return (T) registry.getViewResolvers().get(0);
 	}
 
@@ -221,7 +221,7 @@ public class ViewResolverRegistryTests {
 		for (int i = 0; i < nameValuePairs.length ; i++, i++) {
 			Object expected = nameValuePairs[i + 1];
 			Object actual = accessor.getPropertyValue((String) nameValuePairs[i]);
-			assertEquals(expected, actual);
+			assertThat(actual).isEqualTo(expected);
 		}
 	}
 

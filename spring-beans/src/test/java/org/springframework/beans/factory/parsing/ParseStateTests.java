@@ -18,6 +18,7 @@ package org.springframework.beans.factory.parsing;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -34,7 +35,7 @@ public class ParseStateTests {
 
 		ParseState parseState = new ParseState();
 		parseState.push(entry);
-		assertEquals("Incorrect peek value.", entry, parseState.peek());
+		assertThat((Object) parseState.peek()).as("Incorrect peek value.").isEqualTo(entry);
 		parseState.pop();
 		assertNull("Should get null on peek()", parseState.peek());
 	}
@@ -47,16 +48,16 @@ public class ParseStateTests {
 
 		ParseState parseState = new ParseState();
 		parseState.push(one);
-		assertEquals(one, parseState.peek());
+		assertThat((Object) parseState.peek()).isEqualTo(one);
 		parseState.push(two);
-		assertEquals(two, parseState.peek());
+		assertThat((Object) parseState.peek()).isEqualTo(two);
 		parseState.push(three);
-		assertEquals(three, parseState.peek());
+		assertThat((Object) parseState.peek()).isEqualTo(three);
 
 		parseState.pop();
-		assertEquals(two, parseState.peek());
+		assertThat((Object) parseState.peek()).isEqualTo(two);
 		parseState.pop();
-		assertEquals(one, parseState.peek());
+		assertThat((Object) parseState.peek()).isEqualTo(one);
 	}
 
 	@Test
@@ -68,7 +69,7 @@ public class ParseStateTests {
 
 		ParseState snapshot = original.snapshot();
 		original.push(new MockEntry());
-		assertEquals("Snapshot should not have been modified.", entry, snapshot.peek());
+		assertThat((Object) snapshot.peek()).as("Snapshot should not have been modified.").isEqualTo(entry);
 	}
 
 

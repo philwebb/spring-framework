@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.tests.sample.beans.Employee;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -40,7 +41,7 @@ public class ContextConfigurationInterfaceTests implements ContextConfigurationT
 	@Test
 	public void profileFromTestInterface() {
 		assertNotNull(employee);
-		assertEquals("Dilbert", employee.getName());
+		assertThat((Object) employee.getName()).isEqualTo("Dilbert");
 	}
 
 }

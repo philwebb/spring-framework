@@ -90,10 +90,10 @@ public class MessagingMessageListenerAdapterTests {
 
 		verify(session).createTextMessage("Response");
 		assertNotNull("reply should never be null", replyMessage);
-		assertEquals("Response", ((TextMessage) replyMessage).getText());
-		assertEquals("custom header not copied", "bar", replyMessage.getStringProperty("foo"));
-		assertEquals("type header not copied", "msg_type", replyMessage.getJMSType());
-		assertEquals("replyTo header not copied", replyTo, replyMessage.getJMSReplyTo());
+		assertThat((Object) ((TextMessage) replyMessage).getText()).isEqualTo("Response");
+		assertThat((Object) replyMessage.getStringProperty("foo")).as("custom header not copied").isEqualTo("bar");
+		assertThat((Object) replyMessage.getJMSType()).as("type header not copied").isEqualTo("msg_type");
+		assertThat((Object) replyMessage.getJMSReplyTo()).as("replyTo header not copied").isEqualTo(replyTo);
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class MessagingMessageListenerAdapterTests {
 		listener.setMessageConverter(messageConverter);
 		Message<?> message = listener.toMessagingMessage(jmsMessage);
 		verify(messageConverter, never()).fromMessage(jmsMessage);
-		assertEquals("FooBar", message.getPayload());
+		assertThat(message.getPayload()).isEqualTo("FooBar");
 		verify(messageConverter, times(1)).fromMessage(jmsMessage);
 	}
 
@@ -155,7 +155,7 @@ public class MessagingMessageListenerAdapterTests {
 		listener.onMessage(jmsMessage, session);
 		verify(messageConverter, times(1)).fromMessage(jmsMessage);
 		assertEquals(1, sample.simples.size());
-		assertEquals("FooBar", sample.simples.get(0).getPayload());
+		assertThat((Object) sample.simples.get(0).getPayload()).isEqualTo("FooBar");
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class MessagingMessageListenerAdapterTests {
 
 		verify(messageConverter, times(1)).toMessage("Response", session);
 		assertNotNull("reply should never be null", replyMessage);
-		assertEquals("Response", ((TextMessage) replyMessage).getText());
+		assertThat((Object) ((TextMessage) replyMessage).getText()).isEqualTo("Response");
 	}
 
 	@Test

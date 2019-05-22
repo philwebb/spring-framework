@@ -83,7 +83,7 @@ public class TilesViewTests {
 		Map<String, Object> model = new HashMap<>();
 		model.put("modelAttribute", "modelValue");
 		view.render(model, request, response);
-		assertEquals("modelValue", request.getAttribute("modelAttribute"));
+		assertThat(request.getAttribute("modelAttribute")).isEqualTo("modelValue");
 		verify(renderer).render(eq(VIEW_PATH), isA(Request.class));
 	}
 

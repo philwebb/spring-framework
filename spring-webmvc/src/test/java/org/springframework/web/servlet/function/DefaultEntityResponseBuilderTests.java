@@ -83,7 +83,7 @@ public class DefaultEntityResponseBuilderTests {
 		EntityResponse<String> result =
 				EntityResponse.fromObject(body).status(HttpStatus.CREATED).build();
 
-		assertEquals(HttpStatus.CREATED, result.statusCode());
+		assertThat((Object) result.statusCode()).isEqualTo(HttpStatus.CREATED);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class DefaultEntityResponseBuilderTests {
 		EntityResponse<String> result =
 				EntityResponse.fromObject(body).allow(HttpMethod.GET).build();
 		Set<HttpMethod> expected = EnumSet.of(HttpMethod.GET);
-		assertEquals(expected, result.headers().getAllow());
+		assertThat((Object) result.headers().getAllow()).isEqualTo(expected);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class DefaultEntityResponseBuilderTests {
 				result =
 				EntityResponse.fromObject(body).contentType(MediaType.APPLICATION_JSON).build();
 
-		assertEquals(MediaType.APPLICATION_JSON, result.headers().getContentType());
+		assertThat((Object) result.headers().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class DefaultEntityResponseBuilderTests {
 		String body = "foo";
 		EntityResponse<String> result = EntityResponse.fromObject(body).eTag("foo").build();
 
-		assertEquals("\"foo\"", result.headers().getETag());
+		assertThat((Object) result.headers().getETag()).isEqualTo("\"foo\"");
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class DefaultEntityResponseBuilderTests {
 		String body = "foo";
 		EntityResponse<String> result =
 				EntityResponse.fromObject(body).cacheControl(CacheControl.noCache()).build();
-		assertEquals("no-cache", result.headers().getCacheControl());
+		assertThat((Object) result.headers().getCacheControl()).isEqualTo("no-cache");
 	}
 
 	@Test
@@ -142,14 +142,14 @@ public class DefaultEntityResponseBuilderTests {
 		String body = "foo";
 		EntityResponse<String> result = EntityResponse.fromObject(body).varyBy("foo").build();
 		List<String> expected = Collections.singletonList("foo");
-		assertEquals(expected, result.headers().getVary());
+		assertThat((Object) result.headers().getVary()).isEqualTo(expected);
 	}
 
 	@Test
 	public void header() {
 		String body = "foo";
 		EntityResponse<String> result = EntityResponse.fromObject(body).header("foo", "bar").build();
-		assertEquals("bar", result.headers().getFirst("foo"));
+		assertThat((Object) result.headers().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class DefaultEntityResponseBuilderTests {
 		EntityResponse<String> result = EntityResponse.fromObject(body)
 				.headers(h -> h.addAll(headers))
 				.build();
-		assertEquals(headers, result.headers());
+		assertThat((Object) result.headers()).isEqualTo(headers);
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class DefaultEntityResponseBuilderTests {
 		EntityResponse<String> result =
 				EntityResponse.fromObject("foo").cookies(cookies -> cookies.addAll(newCookies))
 						.build();
-		assertEquals(newCookies, result.cookies());
+		assertThat((Object) result.cookies()).isEqualTo(newCookies);
 	}
 
 	@Test

@@ -128,7 +128,7 @@ public class BodyInsertersTests {
 		StepVerifier.create(response.getBody())
 				.consumeNextWith(buf -> {
 					String actual = DataBufferTestUtils.dumpString(buf, UTF_8);
-					assertEquals("foo", actual);
+					assertThat((Object) actual).isEqualTo("foo");
 				})
 				.expectComplete()
 				.verify();
@@ -174,7 +174,7 @@ public class BodyInsertersTests {
 		StepVerifier.create(response.getBody())
 				.consumeNextWith(buf -> {
 					String actual = DataBufferTestUtils.dumpString(buf, UTF_8);
-					assertEquals("foo", actual);
+					assertThat((Object) actual).isEqualTo("foo");
 				})
 				.expectComplete()
 				.verify();

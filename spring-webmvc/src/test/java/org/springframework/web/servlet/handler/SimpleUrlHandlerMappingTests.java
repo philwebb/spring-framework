@@ -105,19 +105,19 @@ public class SimpleUrlHandlerMappingTests {
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/welcome.html");
 		HandlerExecutionChain hec = getHandler(hm, req);
 		assertThat(hec != null && hec.getHandler() == bean).as("Handler is correct bean").isTrue();
-		assertEquals("/welcome.html", req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE));
-		assertEquals(bean, req.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE));
+		assertThat(req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isEqualTo("/welcome.html");
+		assertThat(req.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE)).isEqualTo(bean);
 
 		req = new MockHttpServletRequest("GET", "/welcome.x");
 		hec = getHandler(hm, req);
 		assertThat(hec != null && hec.getHandler() == otherBean).as("Handler is correct bean").isTrue();
-		assertEquals("welcome.x", req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE));
-		assertEquals(otherBean, req.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE));
+		assertThat(req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isEqualTo("welcome.x");
+		assertThat(req.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE)).isEqualTo(otherBean);
 
 		req = new MockHttpServletRequest("GET", "/welcome/");
 		hec = getHandler(hm, req);
 		assertThat(hec != null && hec.getHandler() == otherBean).as("Handler is correct bean").isTrue();
-		assertEquals("welcome", req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE));
+		assertThat(req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isEqualTo("welcome");
 
 		req = new MockHttpServletRequest("GET", "/");
 		req.setServletPath("/welcome.html");
@@ -155,12 +155,12 @@ public class SimpleUrlHandlerMappingTests {
 		req = new MockHttpServletRequest("GET", "/");
 		hec = getHandler(hm, req);
 		assertThat(hec != null && hec.getHandler() == bean).as("Handler is correct bean").isTrue();
-		assertEquals("/", req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE));
+		assertThat(req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isEqualTo("/");
 
 		req = new MockHttpServletRequest("GET", "/somePath");
 		hec = getHandler(hm, req);
 		assertThat(hec != null && hec.getHandler() == defaultBean).as("Handler is correct bean").isTrue();
-		assertEquals("/somePath", req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE));
+		assertThat(req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isEqualTo("/somePath");
 	}
 
 	private HandlerExecutionChain getHandler(HandlerMapping hm, MockHttpServletRequest req) throws Exception {

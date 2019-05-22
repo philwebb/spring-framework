@@ -26,6 +26,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -67,13 +68,12 @@ public class ApplicationListenerMethodTransactionalAdapterTests {
 		assertNotNull("Method must not be null", method);
 		TransactionalEventListener annotation =
 				AnnotatedElementUtils.findMergedAnnotation(method, TransactionalEventListener.class);
-		assertEquals("Wrong phase for '" + method + "'", expected, annotation.phase());
+		assertThat((Object) annotation.phase()).as("Wrong phase for '" + method + "'").isEqualTo(expected);
 	}
 
 	private void supportsEventType(boolean match, Method method, ResolvableType eventType) {
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertEquals("Wrong match for event '" + eventType + "' on " + method,
-				match, adapter.supportsEventType(eventType));
+		assertThat((Object) adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + method).isEqualTo(match);
 	}
 
 	private ApplicationListenerMethodTransactionalAdapter createTestInstance(Method m) {

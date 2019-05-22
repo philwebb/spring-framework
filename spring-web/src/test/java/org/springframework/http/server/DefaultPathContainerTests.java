@@ -26,6 +26,7 @@ import org.springframework.http.server.PathContainer.PathSegment;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -86,9 +87,9 @@ public class DefaultPathContainerTests {
 		assertEquals(1, container.elements().size());
 		PathSegment segment = (PathSegment) container.elements().get(0);
 
-		assertEquals("value: '" + rawValue + "'", rawValue, segment.value());
-		assertEquals("valueToMatch: '" + rawValue + "'", valueToMatch, segment.valueToMatch());
-		assertEquals("params: '" + rawValue + "'", params, segment.parameters());
+		assertThat((Object) segment.value()).as("value: '" + rawValue + "'").isEqualTo(rawValue);
+		assertThat((Object) segment.valueToMatch()).as("valueToMatch: '" + rawValue + "'").isEqualTo(valueToMatch);
+		assertThat((Object) segment.parameters()).as("params: '" + rawValue + "'").isEqualTo(params);
 	}
 
 	@Test
@@ -116,9 +117,9 @@ public class DefaultPathContainerTests {
 
 		PathContainer path = PathContainer.parsePath(input);
 
-		assertEquals("value: '" + input + "'", value, path.value());
-		assertEquals("elements: " + input, expectedElements, path.elements().stream()
-				.map(PathContainer.Element::value).collect(Collectors.toList()));
+		assertThat((Object) path.value()).as("value: '" + input + "'").isEqualTo(value);
+		assertThat(path.elements().stream()
+				.map(PathContainer.Element::value).collect(Collectors.toList())).as("elements: " + input).isEqualTo(expectedElements);
 	}
 
 	@Test
@@ -126,16 +127,16 @@ public class DefaultPathContainerTests {
 		// basic
 		PathContainer path = PathContainer.parsePath("/a/b/c");
 		assertSame(path, path.subPath(0));
-		assertEquals("/b/c", path.subPath(2).value());
-		assertEquals("/c", path.subPath(4).value());
+		assertThat((Object) path.subPath(2).value()).isEqualTo("/b/c");
+		assertThat((Object) path.subPath(4).value()).isEqualTo("/c");
 
 		// root path
 		path = PathContainer.parsePath("/");
-		assertEquals("/", path.subPath(0).value());
+		assertThat((Object) path.subPath(0).value()).isEqualTo("/");
 
 		// trailing slash
 		path = PathContainer.parsePath("/a/b/");
-		assertEquals("/b/", path.subPath(2).value());
+		assertThat((Object) path.subPath(2).value()).isEqualTo("/b/");
 	}
 
 }

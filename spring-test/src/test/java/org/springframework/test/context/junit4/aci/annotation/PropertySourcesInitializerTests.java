@@ -30,6 +30,7 @@ import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -67,7 +68,7 @@ public class PropertySourcesInitializerTests {
 
 	@Test
 	public void customPropertySourceConfiguredViaContextInitializer() {
-		assertEquals("foo", enigma);
+		assertThat((Object) enigma).isEqualTo("foo");
 	}
 
 

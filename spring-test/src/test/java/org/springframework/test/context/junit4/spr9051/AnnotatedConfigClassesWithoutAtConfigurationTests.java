@@ -98,6 +98,6 @@ public class AnnotatedConfigClassesWithoutAtConfigurationTests {
 		Set<String> names = new HashSet<>();
 		names.add(enigma.toString());
 		names.add(lifecycleBean.getName());
-		assertEquals(names, new HashSet<>(Arrays.asList("enigma #1", "enigma #2")));
+		assertThat(new HashSet<>(Arrays.asList("enigma #1", "enigma #2"))).isEqualTo(names);
 	}
 }

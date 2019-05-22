@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -58,7 +59,7 @@ public class MetaHierarchyLevelTwoTests extends MetaHierarchyLevelOneTests {
 
 	@Test
 	public void bar() {
-		assertEquals("Prod Bar", bar);
+		assertThat((Object) bar).isEqualTo("Prod Bar");
 	}
 
 	@Test

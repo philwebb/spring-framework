@@ -28,6 +28,7 @@ import org.springframework.jms.StubTextMessage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -65,7 +66,7 @@ public class MessagingMessageConverterTests {
 
 		this.converter.setPayloadConverter(new TestMessageConverter());
 		Message<?> msg = (Message<?>) this.converter.fromMessage(jmsMsg);
-		assertEquals(1224L, msg.getPayload());
+		assertThat(msg.getPayload()).isEqualTo(1224L);
 	}
 
 

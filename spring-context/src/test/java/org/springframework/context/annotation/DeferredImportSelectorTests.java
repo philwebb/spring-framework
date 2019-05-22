@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.context.annotation.DeferredImportSelector.Group;
 import org.springframework.core.type.AnnotationMetadata;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
 import static org.mockito.Mockito.mock;
@@ -36,14 +37,13 @@ public class DeferredImportSelectorTests {
 	public void entryEqualsSameInstance() {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
 		Group.Entry entry = new Group.Entry(metadata, "com.example.Test");
-		assertEquals(entry, entry);
+		assertThat((Object) entry).isEqualTo(entry);
 	}
 
 	@Test
 	public void entryEqualsSameMetadataAndClassName() {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
-		assertEquals(new Group.Entry(metadata, "com.example.Test"),
-				new Group.Entry(metadata, "com.example.Test"));
+		assertThat((Object) new Group.Entry(metadata, "com.example.Test")).isEqualTo(new Group.Entry(metadata, "com.example.Test"));
 	}
 
 	@Test

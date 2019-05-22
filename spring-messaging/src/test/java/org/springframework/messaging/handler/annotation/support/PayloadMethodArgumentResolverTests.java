@@ -103,7 +103,7 @@ public class PayloadMethodArgumentResolverTests {
 		Message<?> message = MessageBuilder.withPayload("ABC".getBytes()).build();
 		Object actual = this.resolver.resolveArgument(paramAnnotated, message);
 
-		assertEquals("ABC", actual);
+		assertThat(actual).isEqualTo("ABC");
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class PayloadMethodArgumentResolverTests {
 		assertNull(this.resolver.resolveArgument(this.paramAnnotatedNotRequired, emptyStringMessage));
 
 		Message<?> notEmptyMessage = MessageBuilder.withPayload("ABC".getBytes()).build();
-		assertEquals("ABC", this.resolver.resolveArgument(this.paramAnnotatedNotRequired, notEmptyMessage));
+		assertThat(this.resolver.resolveArgument(this.paramAnnotatedNotRequired, notEmptyMessage)).isEqualTo("ABC");
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class PayloadMethodArgumentResolverTests {
 	@Test
 	public void resolveNonAnnotatedParameter() throws Exception {
 		Message<?> notEmptyMessage = MessageBuilder.withPayload("ABC".getBytes()).build();
-		assertEquals("ABC", this.resolver.resolveArgument(this.paramNotAnnotated, notEmptyMessage));
+		assertThat(this.resolver.resolveArgument(this.paramNotAnnotated, notEmptyMessage)).isEqualTo("ABC");
 
 		Message<?> emptyStringMessage = MessageBuilder.withPayload("").build();
 		assertThatExceptionOfType(MethodArgumentNotValidException.class).isThrownBy(() ->
@@ -189,8 +189,7 @@ public class PayloadMethodArgumentResolverTests {
 		// See testValidator()
 		Message<?> message = MessageBuilder.withPayload("invalidValue".getBytes()).build();
 
-		assertThatExceptionOfType(MethodArgumentNotValidException.class).isThrownBy(() ->
-				assertEquals("invalidValue", this.resolver.resolveArgument(this.paramValidatedNotAnnotated, message)))
+		assertThatExceptionOfType(MethodArgumentNotValidException.class).isThrownBy(() -> assertThat(this.resolver.resolveArgument(this.paramValidatedNotAnnotated, message)).isEqualTo("invalidValue"))
 			.withMessageContaining("invalid value");
 	}
 

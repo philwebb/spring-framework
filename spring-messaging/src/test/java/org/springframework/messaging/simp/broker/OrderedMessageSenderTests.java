@@ -33,6 +33,7 @@ import org.springframework.messaging.support.ExecutorSubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -112,7 +113,7 @@ public class OrderedMessageSenderTests {
 		}
 
 		latch.await(10, TimeUnit.SECONDS);
-		assertEquals("Done", result.get());
+		assertThat(result.get()).isEqualTo("Done");
 	}
 
 }

@@ -49,10 +49,11 @@ public class RequestMappingInfoTests {
 	public void createEmpty() {
 		RequestMappingInfo info = paths().build();
 
-		assertEquals(Collections.singleton(""), info.getPatternsCondition().getPatterns()); // gh-22543
+		// gh-22543
+		assertThat((Object) info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(""));
 		assertEquals(0, info.getMethodsCondition().getMethods().size());
-		assertEquals(true, info.getConsumesCondition().isEmpty());
-		assertEquals(true, info.getProducesCondition().isEmpty());
+		assertThat((Object) info.getConsumesCondition().isEmpty()).isEqualTo(true);
+		assertThat((Object) info.getProducesCondition().isEmpty()).isEqualTo(true);
 		assertNotNull(info.getParamsCondition());
 		assertNotNull(info.getHeadersCondition());
 		assertNull(info.getCustomCondition());
@@ -65,12 +66,12 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths("/foo*", "/bar").build();
 		RequestMappingInfo expected = paths("/foo*").build();
 
-		assertEquals(expected, info.getMatchingCondition(request));
+		assertThat((Object) info.getMatchingCondition(request)).isEqualTo(expected);
 
 		info = paths("/**", "/foo*", "/foo").build();
 		expected = paths("/foo", "/foo*", "/**").build();
 
-		assertEquals(expected, info.getMatchingCondition(request));
+		assertThat((Object) info.getMatchingCondition(request)).isEqualTo(expected);
 	}
 
 	@Test
@@ -166,9 +167,9 @@ public class RequestMappingInfoTests {
 		Collections.shuffle(list);
 		Collections.sort(list, comparator);
 
-		assertEquals(oneMethodOneParam, list.get(0));
-		assertEquals(oneMethod, list.get(1));
-		assertEquals(noMethods, list.get(2));
+		assertThat((Object) list.get(0)).isEqualTo(oneMethodOneParam);
+		assertThat((Object) list.get(1)).isEqualTo(oneMethod);
+		assertThat((Object) list.get(2)).isEqualTo(noMethods);
 	}
 
 	@Test // SPR-14383
@@ -187,9 +188,9 @@ public class RequestMappingInfoTests {
 		Collections.shuffle(list);
 		Collections.sort(list, comparator);
 
-		assertEquals(headMethod, list.get(0));
-		assertEquals(getMethod, list.get(1));
-		assertEquals(noMethods, list.get(2));
+		assertThat((Object) list.get(0)).isEqualTo(headMethod);
+		assertThat((Object) list.get(1)).isEqualTo(getMethod);
+		assertThat((Object) list.get(2)).isEqualTo(noMethods);
 	}
 
 	@Test
@@ -204,7 +205,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/plain").produces("text/plain")
 				.build();
 
-		assertEquals(info1, info2);
+		assertThat((Object) info2).isEqualTo(info1);
 		assertEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo", "/NOOOOOO").methods(GET)

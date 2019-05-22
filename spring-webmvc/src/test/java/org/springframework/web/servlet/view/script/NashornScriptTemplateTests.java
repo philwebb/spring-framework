@@ -31,6 +31,7 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -60,16 +61,14 @@ public class NashornScriptTemplateTests {
 		model.put("body", "This is the body");
 		String url = "org/springframework/web/servlet/view/script/nashorn/template.html";
 		MockHttpServletResponse response = render(url, model, ScriptTemplatingConfiguration.class);
-		assertEquals("<html><head><title>Layout example</title></head><body><p>This is the body</p></body></html>",
-				response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<html><head><title>Layout example</title></head><body><p>This is the body</p></body></html>");
 	}
 
 	@Test  // SPR-13453
 	public void renderTemplateWithUrl() throws Exception {
 		String url = "org/springframework/web/servlet/view/script/nashorn/template.html";
 		MockHttpServletResponse response = render(url, null, ScriptTemplatingWithUrlConfiguration.class);
-		assertEquals("<html><head><title>Check url parameter</title></head><body><p>" + url + "</p></body></html>",
-				response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo(("<html><head><title>Check url parameter</title></head><body><p>" + url + "</p></body></html>"));
 	}
 
 	private MockHttpServletResponse render(String viewUrl, Map<String, Object> model,

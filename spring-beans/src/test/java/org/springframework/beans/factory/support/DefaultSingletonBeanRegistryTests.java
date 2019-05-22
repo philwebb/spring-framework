@@ -55,8 +55,8 @@ public class DefaultSingletonBeanRegistryTests {
 		assertEquals(2, beanRegistry.getSingletonCount());
 		String[] names = beanRegistry.getSingletonNames();
 		assertEquals(2, names.length);
-		assertEquals("tb", names[0]);
-		assertEquals("tb2", names[1]);
+		assertThat((Object) names[0]).isEqualTo("tb");
+		assertThat((Object) names[1]).isEqualTo("tb2");
 
 		beanRegistry.destroySingletons();
 		assertEquals(0, beanRegistry.getSingletonCount());
@@ -76,7 +76,7 @@ public class DefaultSingletonBeanRegistryTests {
 		assertEquals(1, beanRegistry.getSingletonCount());
 		String[] names = beanRegistry.getSingletonNames();
 		assertEquals(1, names.length);
-		assertEquals("tb", names[0]);
+		assertThat((Object) names[0]).isEqualTo("tb");
 		assertThat(tb.wasDestroyed()).isFalse();
 
 		beanRegistry.destroySingletons();

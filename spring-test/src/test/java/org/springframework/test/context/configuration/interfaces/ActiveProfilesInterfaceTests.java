@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.tests.sample.beans.Employee;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -43,7 +44,7 @@ public class ActiveProfilesInterfaceTests implements ActiveProfilesTestInterface
 	@Test
 	public void profileFromTestInterface() {
 		assertNotNull(employee);
-		assertEquals("dev", employee.getName());
+		assertThat((Object) employee.getName()).isEqualTo("dev");
 	}
 
 

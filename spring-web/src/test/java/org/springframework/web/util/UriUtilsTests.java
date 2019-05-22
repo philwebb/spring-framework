@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 
@@ -36,78 +37,77 @@ public class UriUtilsTests {
 
 	@Test
 	public void encodeScheme() {
-		assertEquals("Invalid encoded result", "foobar+-.", UriUtils.encodeScheme("foobar+-.", CHARSET));
-		assertEquals("Invalid encoded result", "foo%20bar", UriUtils.encodeScheme("foo bar", CHARSET));
+		assertThat((Object) UriUtils.encodeScheme("foobar+-.", CHARSET)).as("Invalid encoded result").isEqualTo("foobar+-.");
+		assertThat((Object) UriUtils.encodeScheme("foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("foo%20bar");
 	}
 
 	@Test
 	public void encodeUserInfo() {
-		assertEquals("Invalid encoded result", "foobar:", UriUtils.encodeUserInfo("foobar:", CHARSET));
-		assertEquals("Invalid encoded result", "foo%20bar", UriUtils.encodeUserInfo("foo bar", CHARSET));
+		assertThat((Object) UriUtils.encodeUserInfo("foobar:", CHARSET)).as("Invalid encoded result").isEqualTo("foobar:");
+		assertThat((Object) UriUtils.encodeUserInfo("foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("foo%20bar");
 	}
 
 	@Test
 	public void encodeHost() {
-		assertEquals("Invalid encoded result", "foobar", UriUtils.encodeHost("foobar", CHARSET));
-		assertEquals("Invalid encoded result", "foo%20bar", UriUtils.encodeHost("foo bar", CHARSET));
+		assertThat((Object) UriUtils.encodeHost("foobar", CHARSET)).as("Invalid encoded result").isEqualTo("foobar");
+		assertThat((Object) UriUtils.encodeHost("foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("foo%20bar");
 	}
 
 	@Test
 	public void encodePort() {
-		assertEquals("Invalid encoded result", "80", UriUtils.encodePort("80", CHARSET));
+		assertThat((Object) UriUtils.encodePort("80", CHARSET)).as("Invalid encoded result").isEqualTo("80");
 	}
 
 	@Test
 	public void encodePath() {
-		assertEquals("Invalid encoded result", "/foo/bar", UriUtils.encodePath("/foo/bar", CHARSET));
-		assertEquals("Invalid encoded result", "/foo%20bar", UriUtils.encodePath("/foo bar", CHARSET));
-		assertEquals("Invalid encoded result", "/Z%C3%BCrich", UriUtils.encodePath("/Z\u00fcrich", CHARSET));
+		assertThat((Object) UriUtils.encodePath("/foo/bar", CHARSET)).as("Invalid encoded result").isEqualTo("/foo/bar");
+		assertThat((Object) UriUtils.encodePath("/foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("/foo%20bar");
+		assertThat((Object) UriUtils.encodePath("/Z\u00fcrich", CHARSET)).as("Invalid encoded result").isEqualTo("/Z%C3%BCrich");
 	}
 
 	@Test
 	public void encodePathSegment() {
-		assertEquals("Invalid encoded result", "foobar", UriUtils.encodePathSegment("foobar", CHARSET));
-		assertEquals("Invalid encoded result", "%2Ffoo%2Fbar", UriUtils.encodePathSegment("/foo/bar", CHARSET));
+		assertThat((Object) UriUtils.encodePathSegment("foobar", CHARSET)).as("Invalid encoded result").isEqualTo("foobar");
+		assertThat((Object) UriUtils.encodePathSegment("/foo/bar", CHARSET)).as("Invalid encoded result").isEqualTo("%2Ffoo%2Fbar");
 	}
 
 	@Test
 	public void encodeQuery() {
-		assertEquals("Invalid encoded result", "foobar", UriUtils.encodeQuery("foobar", CHARSET));
-		assertEquals("Invalid encoded result", "foo%20bar", UriUtils.encodeQuery("foo bar", CHARSET));
-		assertEquals("Invalid encoded result", "foobar/+", UriUtils.encodeQuery("foobar/+", CHARSET));
-		assertEquals("Invalid encoded result", "T%C5%8Dky%C5%8D", UriUtils.encodeQuery("T\u014dky\u014d", CHARSET));
+		assertThat((Object) UriUtils.encodeQuery("foobar", CHARSET)).as("Invalid encoded result").isEqualTo("foobar");
+		assertThat((Object) UriUtils.encodeQuery("foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("foo%20bar");
+		assertThat((Object) UriUtils.encodeQuery("foobar/+", CHARSET)).as("Invalid encoded result").isEqualTo("foobar/+");
+		assertThat((Object) UriUtils.encodeQuery("T\u014dky\u014d", CHARSET)).as("Invalid encoded result").isEqualTo("T%C5%8Dky%C5%8D");
 	}
 
 	@Test
 	public void encodeQueryParam() {
-		assertEquals("Invalid encoded result", "foobar", UriUtils.encodeQueryParam("foobar", CHARSET));
-		assertEquals("Invalid encoded result", "foo%20bar", UriUtils.encodeQueryParam("foo bar", CHARSET));
-		assertEquals("Invalid encoded result", "foo%26bar", UriUtils.encodeQueryParam("foo&bar", CHARSET));
+		assertThat((Object) UriUtils.encodeQueryParam("foobar", CHARSET)).as("Invalid encoded result").isEqualTo("foobar");
+		assertThat((Object) UriUtils.encodeQueryParam("foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("foo%20bar");
+		assertThat((Object) UriUtils.encodeQueryParam("foo&bar", CHARSET)).as("Invalid encoded result").isEqualTo("foo%26bar");
 	}
 
 	@Test
 	public void encodeFragment() {
-		assertEquals("Invalid encoded result", "foobar", UriUtils.encodeFragment("foobar", CHARSET));
-		assertEquals("Invalid encoded result", "foo%20bar", UriUtils.encodeFragment("foo bar", CHARSET));
-		assertEquals("Invalid encoded result", "foobar/", UriUtils.encodeFragment("foobar/", CHARSET));
+		assertThat((Object) UriUtils.encodeFragment("foobar", CHARSET)).as("Invalid encoded result").isEqualTo("foobar");
+		assertThat((Object) UriUtils.encodeFragment("foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("foo%20bar");
+		assertThat((Object) UriUtils.encodeFragment("foobar/", CHARSET)).as("Invalid encoded result").isEqualTo("foobar/");
 	}
 
 	@Test
 	public void encode() {
-		assertEquals("Invalid encoded result", "foo", UriUtils.encode("foo", CHARSET));
-		assertEquals("Invalid encoded result", "https%3A%2F%2Fexample.com%2Ffoo%20bar",
-				UriUtils.encode("https://example.com/foo bar", CHARSET));
+		assertThat((Object) UriUtils.encode("foo", CHARSET)).as("Invalid encoded result").isEqualTo("foo");
+		assertThat((Object) UriUtils.encode("https://example.com/foo bar", CHARSET)).as("Invalid encoded result").isEqualTo("https%3A%2F%2Fexample.com%2Ffoo%20bar");
 	}
 
 	@Test
 	public void decode() {
-		assertEquals("Invalid encoded URI", "", UriUtils.decode("", CHARSET));
-		assertEquals("Invalid encoded URI", "foobar", UriUtils.decode("foobar", CHARSET));
-		assertEquals("Invalid encoded URI", "foo bar", UriUtils.decode("foo%20bar", CHARSET));
-		assertEquals("Invalid encoded URI", "foo+bar", UriUtils.decode("foo%2bbar", CHARSET));
-		assertEquals("Invalid encoded result", "T\u014dky\u014d", UriUtils.decode("T%C5%8Dky%C5%8D", CHARSET));
-		assertEquals("Invalid encoded result", "/Z\u00fcrich", UriUtils.decode("/Z%C3%BCrich", CHARSET));
-		assertEquals("Invalid encoded result", "T\u014dky\u014d", UriUtils.decode("T\u014dky\u014d", CHARSET));
+		assertThat((Object) UriUtils.decode("", CHARSET)).as("Invalid encoded URI").isEqualTo("");
+		assertThat((Object) UriUtils.decode("foobar", CHARSET)).as("Invalid encoded URI").isEqualTo("foobar");
+		assertThat((Object) UriUtils.decode("foo%20bar", CHARSET)).as("Invalid encoded URI").isEqualTo("foo bar");
+		assertThat((Object) UriUtils.decode("foo%2bbar", CHARSET)).as("Invalid encoded URI").isEqualTo("foo+bar");
+		assertThat((Object) UriUtils.decode("T%C5%8Dky%C5%8D", CHARSET)).as("Invalid encoded result").isEqualTo("T\u014dky\u014d");
+		assertThat((Object) UriUtils.decode("/Z%C3%BCrich", CHARSET)).as("Invalid encoded result").isEqualTo("/Z\u00fcrich");
+		assertThat((Object) UriUtils.decode("T\u014dky\u014d", CHARSET)).as("Invalid encoded result").isEqualTo("T\u014dky\u014d");
 	}
 
 	@Test
@@ -118,22 +118,22 @@ public class UriUtilsTests {
 
 	@Test
 	public void extractFileExtension() {
-		assertEquals("html", UriUtils.extractFileExtension("index.html"));
-		assertEquals("html", UriUtils.extractFileExtension("/index.html"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html#/a"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html#/path/a"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html#/path/a.do"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html#aaa?bbb"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html#aaa.xml?bbb"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html?param=a"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html?param=/path/a"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html?param=/path/a.do"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html?param=/path/a#/path/a"));
-		assertEquals("html", UriUtils.extractFileExtension("/products/view.html?param=/path/a.do#/path/a.do"));
-		assertEquals("html", UriUtils.extractFileExtension("/products;q=11/view.html?param=/path/a.do"));
-		assertEquals("html", UriUtils.extractFileExtension("/products;q=11/view.html;r=22?param=/path/a.do"));
-		assertEquals("html", UriUtils.extractFileExtension("/products;q=11/view.html;r=22;s=33?param=/path/a.do"));
+		assertThat((Object) UriUtils.extractFileExtension("index.html")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/index.html")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html#/a")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html#/path/a")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html#/path/a.do")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html#aaa?bbb")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html#aaa.xml?bbb")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html?param=a")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html?param=/path/a")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html?param=/path/a.do")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html?param=/path/a#/path/a")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products/view.html?param=/path/a.do#/path/a.do")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products;q=11/view.html?param=/path/a.do")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products;q=11/view.html;r=22?param=/path/a.do")).isEqualTo("html");
+		assertThat((Object) UriUtils.extractFileExtension("/products;q=11/view.html;r=22;s=33?param=/path/a.do")).isEqualTo("html");
 	}
 
 }

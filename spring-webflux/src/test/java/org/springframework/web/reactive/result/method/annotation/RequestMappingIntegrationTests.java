@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -68,7 +69,7 @@ public class RequestMappingIntegrationTests extends AbstractRequestMappingIntegr
 		HttpHeaders headers = getRestTemplate().headForHeaders(url);
 		String contentType = headers.getFirst("Content-Type");
 		assertNotNull(contentType);
-		assertEquals("text/html;charset=utf-8", contentType.toLowerCase());
+		assertThat((Object) contentType.toLowerCase()).isEqualTo("text/html;charset=utf-8");
 		assertEquals(3, headers.getContentLength());
 	}
 
@@ -83,7 +84,7 @@ public class RequestMappingIntegrationTests extends AbstractRequestMappingIntegr
 				.header("Forwarded", "host=84.198.58.199;proto=https")
 				.build();
 		ResponseEntity<String> entity = getRestTemplate().exchange(request, String.class);
-		assertEquals("https://84.198.58.199/uri", entity.getBody());
+		assertThat((Object) entity.getBody()).isEqualTo("https://84.198.58.199/uri");
 	}
 
 	@Test

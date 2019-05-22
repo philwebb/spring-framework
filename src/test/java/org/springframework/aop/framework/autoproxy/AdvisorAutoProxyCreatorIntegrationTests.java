@@ -69,7 +69,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 	@Test
 	public void testDefaultExclusionPrefix() throws Exception {
 		DefaultAdvisorAutoProxyCreator aapc = (DefaultAdvisorAutoProxyCreator) getBeanFactory().getBean(ADVISOR_APC_BEAN_NAME);
-		assertEquals(ADVISOR_APC_BEAN_NAME + DefaultAdvisorAutoProxyCreator.SEPARATOR, aapc.getAdvisorBeanNamePrefix());
+		assertThat((Object) aapc.getAdvisorBeanNamePrefix()).isEqualTo((ADVISOR_APC_BEAN_NAME + DefaultAdvisorAutoProxyCreator.SEPARATOR));
 		assertThat(aapc.isUsePrefix()).isFalse();
 	}
 
@@ -143,7 +143,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 			rb.echoException(ex);
 		}
 		catch (Exception actual) {
-			assertEquals(ex, actual);
+			assertThat((Object) actual).isEqualTo(ex);
 		}
 		assertEquals("Transaction counts match", 1, txMan.rollbacks);
 	}

@@ -51,14 +51,13 @@ public class HtmlCharacterEntityReferencesTests {
 						referenceName +
 						HtmlCharacterEntityReferences.REFERENCE_END;
 				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should be mapped to a reference").isTrue();
-				assertEquals("The reference of unicode character " + character + " should be entity " + referenceName,
-						fullReference, entityReferences.convertToReference((char) character));
+				assertThat((Object) entityReferences.convertToReference((char) character)).as("The reference of unicode character " + character + " should be entity " + referenceName).isEqualTo(fullReference);
 				assertEquals("The entity reference [" + referenceName + "] should be mapped to unicode character " +
 						character, (char) character, entityReferences.convertToCharacter(referenceName));
 			}
 			else if (character == 39) {
 				assertThat(entityReferences.isMappedToReference((char) character)).isTrue();
-				assertEquals("&#39;", entityReferences.convertToReference((char) character));
+				assertThat((Object) entityReferences.convertToReference((char) character)).isEqualTo("&#39;");
 			}
 			else {
 				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should not be mapped to a reference").isFalse();
@@ -81,11 +80,11 @@ public class HtmlCharacterEntityReferencesTests {
 	public void testConvertToReferenceUTF8() {
 		HtmlCharacterEntityReferences entityReferences = new HtmlCharacterEntityReferences();
 		String utf8 = "UTF-8";
-		assertEquals("&lt;", entityReferences.convertToReference('<', utf8));
-		assertEquals("&gt;", entityReferences.convertToReference('>', utf8));
-		assertEquals("&amp;", entityReferences.convertToReference('&', utf8));
-		assertEquals("&quot;", entityReferences.convertToReference('"', utf8));
-		assertEquals("&#39;", entityReferences.convertToReference('\'', utf8));
+		assertThat((Object) entityReferences.convertToReference('<', utf8)).isEqualTo("&lt;");
+		assertThat((Object) entityReferences.convertToReference('>', utf8)).isEqualTo("&gt;");
+		assertThat((Object) entityReferences.convertToReference('&', utf8)).isEqualTo("&amp;");
+		assertThat((Object) entityReferences.convertToReference('"', utf8)).isEqualTo("&quot;");
+		assertThat((Object) entityReferences.convertToReference('\'', utf8)).isEqualTo("&#39;");
 		assertNull(entityReferences.convertToReference((char) 233, utf8));
 		assertNull(entityReferences.convertToReference((char) 934, utf8));
 	}

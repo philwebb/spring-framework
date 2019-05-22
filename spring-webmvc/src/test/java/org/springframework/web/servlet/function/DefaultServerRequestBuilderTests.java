@@ -29,6 +29,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -57,19 +58,19 @@ public class DefaultServerRequestBuilderTests {
 				.body("baz")
 				.build();
 
-		assertEquals(HttpMethod.HEAD, result.method());
+		assertThat((Object) result.method()).isEqualTo(HttpMethod.HEAD);
 		assertEquals(2, result.headers().asHttpHeaders().size());
-		assertEquals("bar", result.headers().asHttpHeaders().getFirst("foo"));
-		assertEquals("qux", result.headers().asHttpHeaders().getFirst("baz"));
+		assertThat((Object) result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("bar");
+		assertThat((Object) result.headers().asHttpHeaders().getFirst("baz")).isEqualTo("qux");
 		assertEquals(2, result.cookies().size());
-		assertEquals("bar", result.cookies().getFirst("foo").getValue());
-		assertEquals("qux", result.cookies().getFirst("baz").getValue());
+		assertThat((Object) result.cookies().getFirst("foo").getValue()).isEqualTo("bar");
+		assertThat((Object) result.cookies().getFirst("baz").getValue()).isEqualTo("qux");
 		assertEquals(2, result.attributes().size());
-		assertEquals("bar", result.attributes().get("foo"));
-		assertEquals("qux", result.attributes().get("baz"));
+		assertThat(result.attributes().get("foo")).isEqualTo("bar");
+		assertThat(result.attributes().get("baz")).isEqualTo("qux");
 
 		String body = result.body(String.class);
-		assertEquals("baz", body);
+		assertThat((Object) body).isEqualTo("baz");
 	}
 
 }

@@ -133,7 +133,7 @@ public class TestContextConcurrencyTests {
 
 		@Override
 		public void afterTestMethod(TestContext testContext) throws Exception {
-			assertEquals(this.methodName.get(), testContext.getAttribute("method"));
+			assertThat(testContext.getAttribute("method")).isEqualTo(this.methodName.get());
 		}
 
 	}

@@ -86,8 +86,8 @@ public class QuartzSupportTests {
 			schedulerFactoryBean.afterPropertiesSet();
 			schedulerFactoryBean.start();
 			Scheduler returnedScheduler = schedulerFactoryBean.getObject();
-			assertEquals(tb, returnedScheduler.getContext().get("testBean"));
-			assertEquals(ac, returnedScheduler.getContext().get("appCtx"));
+			assertThat(returnedScheduler.getContext().get("testBean")).isEqualTo(tb);
+			assertThat(returnedScheduler.getContext().get("appCtx")).isEqualTo(ac);
 		}
 		finally {
 			schedulerFactoryBean.destroy();
@@ -306,8 +306,8 @@ public class QuartzSupportTests {
 			Scheduler scheduler1 = (Scheduler) ctx.getBean("scheduler1");
 			Scheduler scheduler2 = (Scheduler) ctx.getBean("scheduler2");
 			assertNotSame(scheduler1, scheduler2);
-			assertEquals("quartz1", scheduler1.getSchedulerName());
-			assertEquals("quartz2", scheduler2.getSchedulerName());
+			assertThat((Object) scheduler1.getSchedulerName()).isEqualTo("quartz1");
+			assertThat((Object) scheduler2.getSchedulerName()).isEqualTo("quartz2");
 		}
 		finally {
 			ctx.close();
@@ -321,8 +321,8 @@ public class QuartzSupportTests {
 			Scheduler scheduler1 = (Scheduler) ctx.getBean("scheduler1");
 			Scheduler scheduler2 = (Scheduler) ctx.getBean("scheduler2");
 			assertNotSame(scheduler1, scheduler2);
-			assertEquals("quartz1", scheduler1.getSchedulerName());
-			assertEquals("quartz2", scheduler2.getSchedulerName());
+			assertThat((Object) scheduler1.getSchedulerName()).isEqualTo("quartz1");
+			assertThat((Object) scheduler2.getSchedulerName()).isEqualTo("quartz2");
 		}
 		finally {
 			ctx.close();

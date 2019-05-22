@@ -34,6 +34,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -90,8 +91,7 @@ public class ParameterizedSpringRuleTests {
 
 		// Verifying 'parameterized' support:
 		Employee employee = this.applicationContext.getBean(this.employeeBeanName, Employee.class);
-		assertEquals("Name of the employee configured as bean [" + this.employeeBeanName + "].", this.employeeName,
-			employee.getName());
+		assertThat((Object) employee.getName()).as("Name of the employee configured as bean [" + this.employeeBeanName + "].").isEqualTo(this.employeeName);
 	}
 
 	@AfterClass

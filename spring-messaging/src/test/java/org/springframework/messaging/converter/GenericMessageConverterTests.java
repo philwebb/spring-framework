@@ -26,6 +26,7 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
@@ -42,7 +43,7 @@ public class GenericMessageConverterTests {
 	@Test
 	public void fromMessageWithConversion() {
 		Message<String> content = MessageBuilder.withPayload("33").build();
-		assertEquals(33, converter.fromMessage(content, Integer.class));
+		assertThat(converter.fromMessage(content, Integer.class)).isEqualTo(33);
 	}
 
 	@Test

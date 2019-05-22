@@ -209,7 +209,7 @@ public class AspectJAutoProxyCreatorTests {
 		mrv.invocations = 0;
 
 		assertThat(AopUtils.isAopProxy(shouldBeWeaved)).as("Autoproxying must apply from @AspectJ aspect").isTrue();
-		assertEquals("Adrian", shouldBeWeaved.getName());
+		assertThat((Object) shouldBeWeaved.getName()).isEqualTo("Adrian");
 		assertEquals(0, mrv.invocations);
 		assertEquals(34 * mrv.getMultiple(), shouldBeWeaved.getAge());
 		assertEquals("Spring advisor must be invoked", 2, tba.count);

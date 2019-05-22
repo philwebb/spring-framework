@@ -155,7 +155,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(timeZoneParameter)).as("TimeZone not supported").isTrue();
 
 		Object result = resolver.resolveArgument(timeZoneParameter, null, webRequest, null);
-		assertEquals("Invalid result", TimeZone.getDefault(), result);
+		assertThat(result).as("Invalid result").isEqualTo(TimeZone.getDefault());
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(timeZoneParameter)).as("TimeZone not supported").isTrue();
 
 		Object result = resolver.resolveArgument(timeZoneParameter, null, webRequest, null);
-		assertEquals("Invalid result", timeZone, result);
+		assertThat(result).as("Invalid result").isEqualTo(timeZone);
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(zoneIdParameter)).as("ZoneId not supported").isTrue();
 
 		Object result = resolver.resolveArgument(zoneIdParameter, null, webRequest, null);
-		assertEquals("Invalid result", ZoneId.systemDefault(), result);
+		assertThat(result).as("Invalid result").isEqualTo(ZoneId.systemDefault());
 	}
 
 	@Test
@@ -190,7 +190,7 @@ public class ServletRequestMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(zoneIdParameter)).as("ZoneId not supported").isTrue();
 
 		Object result = resolver.resolveArgument(zoneIdParameter, null, webRequest, null);
-		assertEquals("Invalid result", timeZone.toZoneId(), result);
+		assertThat(result).as("Invalid result").isEqualTo(timeZone.toZoneId());
 	}
 
 	@Test

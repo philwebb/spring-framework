@@ -26,6 +26,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -56,7 +57,7 @@ public class ParameterizableViewControllerTests {
 	public void viewName() throws Exception {
 		this.controller.setViewName("view");
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertEquals("view", modelAndView.getViewName());
+		assertThat((Object) modelAndView.getViewName()).isEqualTo("view");
 	}
 
 	@Test
@@ -64,7 +65,7 @@ public class ParameterizableViewControllerTests {
 		this.controller.setViewName("view");
 		this.controller.setStatusCode(HttpStatus.NOT_FOUND);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertEquals("view", modelAndView.getViewName());
+		assertThat((Object) modelAndView.getViewName()).isEqualTo("view");
 		assertEquals(404, this.response.getStatus());
 	}
 
@@ -82,9 +83,9 @@ public class ParameterizableViewControllerTests {
 		this.controller.setViewName("/foo");
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
-		assertEquals("redirect:/foo", modelAndView.getViewName());
+		assertThat((Object) modelAndView.getViewName()).isEqualTo("redirect:/foo");
 		assertEquals("3xx status should be left to RedirectView to set", 200, this.response.getStatus());
-		assertEquals(HttpStatus.PERMANENT_REDIRECT, this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE));
+		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}
 
 	@Test
@@ -93,9 +94,9 @@ public class ParameterizableViewControllerTests {
 		this.controller.setViewName("redirect:/foo");
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
-		assertEquals("redirect:/foo", modelAndView.getViewName());
+		assertThat((Object) modelAndView.getViewName()).isEqualTo("redirect:/foo");
 		assertEquals("3xx status should be left to RedirectView to set", 200, this.response.getStatus());
-		assertEquals(HttpStatus.PERMANENT_REDIRECT, this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE));
+		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}
 
 	@Test

@@ -28,6 +28,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -61,7 +62,7 @@ public class SystemPropertyOverridePropertiesFileTestPropertySourceTests {
 
 	@Test
 	public void verifyPropertiesAreAvailableInEnvironment() {
-		assertEquals("enigma", env.getProperty(KEY));
+		assertThat((Object) env.getProperty(KEY)).isEqualTo("enigma");
 	}
 
 

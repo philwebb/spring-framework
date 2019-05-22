@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import org.springframework.oxm.AbstractUnmarshallerTests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.junit.Assume.assumeTrue;
@@ -90,7 +91,7 @@ public class JibxUnmarshallerTests extends AbstractUnmarshallerTests<JibxMarshal
 		testFlights(flights);
 
 		FlightType flight = ((Flights)flights).getFlight(0);
-		assertEquals("Airline is invalid", "Air Libert\u00e9", flight.getAirline());
+		assertThat((Object) flight.getAirline()).as("Airline is invalid").isEqualTo("Air Libert\u00e9");
 	}
 
 }

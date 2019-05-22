@@ -23,6 +23,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
@@ -78,7 +79,7 @@ public class BeanConfigurerSupportTests {
 		configurer.setBeanFactory(factory);
 		configurer.afterPropertiesSet();
 		configurer.configureBean(beanInstance);
-		assertEquals("Bean is evidently not being configured (for some reason)", "Harriet Wheeler", beanInstance.getName());
+		assertThat((Object) beanInstance.getName()).as("Bean is evidently not being configured (for some reason)").isEqualTo("Harriet Wheeler");
 	}
 
 	@Test
@@ -98,7 +99,7 @@ public class BeanConfigurerSupportTests {
 		configurer.setBeanFactory(factory);
 		configurer.setBeanWiringInfoResolver(resolver);
 		configurer.configureBean(beanInstance);
-		assertEquals("Bean is evidently not being configured (for some reason)", "David Gavurin", beanInstance.getSpouse().getName());
+		assertThat((Object) beanInstance.getSpouse().getName()).as("Bean is evidently not being configured (for some reason)").isEqualTo("David Gavurin");
 	}
 
 	@Test
@@ -118,7 +119,7 @@ public class BeanConfigurerSupportTests {
 		configurer.setBeanFactory(factory);
 		configurer.setBeanWiringInfoResolver(resolver);
 		configurer.configureBean(beanInstance);
-		assertEquals("Bean is evidently not being configured (for some reason)", "David Gavurin", beanInstance.getSpouse().getName());
+		assertThat((Object) beanInstance.getSpouse().getName()).as("Bean is evidently not being configured (for some reason)").isEqualTo("David Gavurin");
 	}
 
 

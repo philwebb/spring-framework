@@ -19,6 +19,7 @@ import java.net.URI;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -55,8 +56,9 @@ public class DefaultRequestPathTests {
 		URI uri = URI.create("http://localhost:8080" + fullPath);
 		RequestPath requestPath = RequestPath.parse(uri, contextPath);
 
-		assertEquals(contextPath.equals("/") ? "" : contextPath, requestPath.contextPath().value());
-		assertEquals(pathWithinApplication, requestPath.pathWithinApplication().value());
+		Object expected = contextPath.equals("/") ? "" : contextPath;
+		assertThat((Object) requestPath.contextPath().value()).isEqualTo(expected);
+		assertThat((Object) requestPath.pathWithinApplication().value()).isEqualTo(pathWithinApplication);
 	}
 
 	@Test
@@ -65,13 +67,13 @@ public class DefaultRequestPathTests {
 		URI uri = URI.create("http://localhost:8080/aA/bB/cC");
 		RequestPath requestPath = RequestPath.parse(uri, null);
 
-		assertEquals("", requestPath.contextPath().value());
-		assertEquals("/aA/bB/cC", requestPath.pathWithinApplication().value());
+		assertThat((Object) requestPath.contextPath().value()).isEqualTo("");
+		assertThat((Object) requestPath.pathWithinApplication().value()).isEqualTo("/aA/bB/cC");
 
 		requestPath = requestPath.modifyContextPath("/aA");
 
-		assertEquals("/aA", requestPath.contextPath().value());
-		assertEquals("/bB/cC", requestPath.pathWithinApplication().value());
+		assertThat((Object) requestPath.contextPath().value()).isEqualTo("/aA");
+		assertThat((Object) requestPath.pathWithinApplication().value()).isEqualTo("/bB/cC");
 	}
 
 }

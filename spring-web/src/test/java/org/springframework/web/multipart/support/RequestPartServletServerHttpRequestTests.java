@@ -32,6 +32,7 @@ import org.springframework.mock.web.test.MockMultipartHttpServletRequest;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -50,7 +51,7 @@ public class RequestPartServletServerHttpRequestTests {
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(this.mockRequest, "part");
 		this.mockRequest.setMethod("POST");
 
-		assertEquals(HttpMethod.POST, request.getMethod());
+		assertThat((Object) request.getMethod()).isEqualTo(HttpMethod.POST);
 	}
 
 	@Test
@@ -64,7 +65,7 @@ public class RequestPartServletServerHttpRequestTests {
 		this.mockRequest.setServerPort(uri.getPort());
 		this.mockRequest.setRequestURI(uri.getPath());
 		this.mockRequest.setQueryString(uri.getQuery());
-		assertEquals(uri, request.getURI());
+		assertThat((Object) request.getURI()).isEqualTo(uri);
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public class RequestPartServletServerHttpRequestTests {
 
 		HttpHeaders headers = request.getHeaders();
 		assertNotNull(headers);
-		assertEquals(MediaType.APPLICATION_JSON, headers.getContentType());
+		assertThat((Object) headers.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test

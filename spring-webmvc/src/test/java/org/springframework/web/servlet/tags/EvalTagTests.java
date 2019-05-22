@@ -35,6 +35,7 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.mock.web.test.MockPageContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -66,7 +67,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("foo", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertThat((Object) ((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("foo");
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertThat((Object) ((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("");
 	}
 
 	@Test
@@ -87,8 +88,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals(formatter.print(new BigDecimal(".25"), Locale.getDefault()),
-				((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertThat((Object) ((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo(formatter.print(new BigDecimal(".25"), Locale.getDefault()));
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("&lt;p&gt;", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertThat((Object) ((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("&lt;p&gt;");
 	}
 
 	@Test
@@ -110,8 +110,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("function foo() { alert(\\\"hi\\\") }",
-				((MockHttpServletResponse)context.getResponse()).getContentAsString());
+		assertThat((Object) ((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("function foo() { alert(\\\"hi\\\") }");
 	}
 
 	@Test
@@ -122,7 +121,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals(new BigDecimal(".25"), context.getAttribute("foo"));
+		assertThat(context.getAttribute("foo")).isEqualTo(new BigDecimal(".25"));
 	}
 
 	@Test  // SPR-6923
@@ -133,7 +132,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("not the bean object", context.getAttribute("foo"));
+		assertThat(context.getAttribute("foo")).isEqualTo("not the bean object");
 	}
 
 	@Test
@@ -147,7 +146,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("not the bean object", context.getAttribute("foo"));
+		assertThat(context.getAttribute("foo")).isEqualTo("not the bean object");
 	}
 
 	@Test
@@ -163,7 +162,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value.foo", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertThat((Object) ((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("value.foo");
 	}
 
 	@Test
@@ -173,7 +172,7 @@ public class EvalTagTests extends AbstractTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
 		action = tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertThat((Object) ((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("value");
 	}
 
 

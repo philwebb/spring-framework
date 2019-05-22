@@ -29,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -56,7 +57,7 @@ public class RequestContextTests {
 	public void testGetContextUrl() throws Exception {
 		request.setContextPath("foo/");
 		RequestContext context = new RequestContext(request, response, servletContext, model);
-		assertEquals("foo/bar", context.getContextUrl("bar"));
+		assertThat((Object) context.getContextUrl("bar")).isEqualTo("foo/bar");
 	}
 
 	@Test
@@ -66,7 +67,7 @@ public class RequestContextTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar");
 		map.put("spam", "bucket");
-		assertEquals("foo/bar?spam=bucket", context.getContextUrl("{foo}?spam={spam}", map));
+		assertThat((Object) context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("foo/bar?spam=bucket");
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class RequestContextTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar baz");
 		map.put("spam", "&bucket=");
-		assertEquals("foo/bar%20baz?spam=%26bucket%3D", context.getContextUrl("{foo}?spam={spam}", map));
+		assertThat((Object) context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("foo/bar%20baz?spam=%26bucket%3D");
 	}
 
 	@Test
@@ -85,12 +86,12 @@ public class RequestContextTests {
 		request.setServletPath("/servlet");
 		RequestContext context = new RequestContext(request, response, servletContext, model);
 
-		assertEquals("/app/servlet", context.getPathToServlet());
+		assertThat((Object) context.getPathToServlet()).isEqualTo("/app/servlet");
 
 		request.setAttribute(WebUtils.FORWARD_CONTEXT_PATH_ATTRIBUTE, "/origApp");
 		request.setAttribute(WebUtils.FORWARD_SERVLET_PATH_ATTRIBUTE, "/origServlet");
 
-		assertEquals("/origApp/origServlet", context.getPathToServlet());
+		assertThat((Object) context.getPathToServlet()).isEqualTo("/origApp/origServlet");
 	}
 
 }

@@ -213,8 +213,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(String.class);
 		HttpEntity<String> httpEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
-		assertEquals("line1", httpEntity.getBody());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
+		assertThat((Object) httpEntity.getBody()).isEqualTo("line1");
 	}
 
 	@Test
@@ -223,8 +223,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(Mono.class, String.class);
 		HttpEntity<Mono<String>> httpEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
-		assertEquals("line1", httpEntity.getBody().block());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
+		assertThat((Object) httpEntity.getBody().block()).isEqualTo("line1");
 	}
 
 	@Test
@@ -233,8 +233,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(Single.class, String.class);
 		HttpEntity<Single<String>> httpEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
-		assertEquals("line1", httpEntity.getBody().toBlocking().value());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
+		assertThat((Object) httpEntity.getBody().toBlocking().value()).isEqualTo("line1");
 	}
 
 	@Test
@@ -243,8 +243,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(io.reactivex.Single.class, String.class);
 		HttpEntity<io.reactivex.Single<String>> httpEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
-		assertEquals("line1", httpEntity.getBody().blockingGet());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
+		assertThat((Object) httpEntity.getBody().blockingGet()).isEqualTo("line1");
 	}
 
 	@Test
@@ -253,8 +253,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(Maybe.class, String.class);
 		HttpEntity<Maybe<String>> httpEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
-		assertEquals("line1", httpEntity.getBody().blockingGet());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
+		assertThat((Object) httpEntity.getBody().blockingGet()).isEqualTo("line1");
 	}
 
 	@Test
@@ -263,8 +263,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(CompletableFuture.class, String.class);
 		HttpEntity<CompletableFuture<String>> httpEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
-		assertEquals("line1", httpEntity.getBody().get());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
+		assertThat((Object) httpEntity.getBody().get()).isEqualTo("line1");
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = httpEntityType(Flux.class, String.class);
 		HttpEntity<Flux<String>> httpEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
 		StepVerifier.create(httpEntity.getBody())
 				.expectNext("line1")
 				.expectNext("line2")
@@ -288,10 +288,10 @@ public class HttpEntityMethodArgumentResolverTests {
 		ResolvableType type = forClassWithGenerics(RequestEntity.class, String.class);
 		RequestEntity<String> requestEntity = resolveValue(exchange, type);
 
-		assertEquals(exchange.getRequest().getMethod(), requestEntity.getMethod());
-		assertEquals(exchange.getRequest().getURI(), requestEntity.getUrl());
-		assertEquals(exchange.getRequest().getHeaders(), requestEntity.getHeaders());
-		assertEquals("line1", requestEntity.getBody());
+		assertThat((Object) requestEntity.getMethod()).isEqualTo(exchange.getRequest().getMethod());
+		assertThat((Object) requestEntity.getUrl()).isEqualTo(exchange.getRequest().getURI());
+		assertThat((Object) requestEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
+		assertThat((Object) requestEntity.getBody()).isEqualTo("line1");
 	}
 
 
@@ -325,7 +325,7 @@ public class HttpEntityMethodArgumentResolverTests {
 		Mono<Object> result = this.resolver.resolveArgument(param, new BindingContext(), exchange);
 		HttpEntity<String> httpEntity = (HttpEntity<String>) result.block(Duration.ofSeconds(5));
 
-		assertEquals(exchange.getRequest().getHeaders(), httpEntity.getHeaders());
+		assertThat((Object) httpEntity.getHeaders()).isEqualTo(exchange.getRequest().getHeaders());
 		return (HttpEntity<T>) httpEntity;
 	}
 

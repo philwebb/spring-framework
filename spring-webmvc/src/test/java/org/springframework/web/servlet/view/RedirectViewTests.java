@@ -93,7 +93,7 @@ public class RedirectViewTests {
 		rv.setHttp10Compatible(false);
 		rv.render(new HashMap<>(), request, response);
 		assertEquals(303, response.getStatus());
-		assertEquals("https://url.somewhere.com", response.getHeader("Location"));
+		assertThat((Object) response.getHeader("Location")).isEqualTo("https://url.somewhere.com");
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class RedirectViewTests {
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 		rv.render(new HashMap<>(), request, response);
 		assertEquals(301, response.getStatus());
-		assertEquals("https://url.somewhere.com", response.getHeader("Location"));
+		assertThat((Object) response.getHeader("Location")).isEqualTo("https://url.somewhere.com");
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class RedirectViewTests {
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
 		rv.render(new HashMap<>(), request, response);
 		assertEquals(301, response.getStatus());
-		assertEquals("https://url.somewhere.com", response.getHeader("Location"));
+		assertThat((Object) response.getHeader("Location")).isEqualTo("https://url.somewhere.com");
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class RedirectViewTests {
 		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.CREATED);
 		rv.render(new HashMap<>(), request, response);
 		assertEquals(201, response.getStatus());
-		assertEquals("https://url.somewhere.com", response.getHeader("Location"));
+		assertThat((Object) response.getHeader("Location")).isEqualTo("https://url.somewhere.com");
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class RedirectViewTests {
 		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.CREATED);
 		rv.render(new HashMap<>(), request, response);
 		assertEquals(201, response.getStatus());
-		assertEquals("https://url.somewhere.com", response.getHeader("Location"));
+		assertThat((Object) response.getHeader("Location")).isEqualTo("https://url.somewhere.com");
 	}
 
 	@Test
@@ -150,10 +150,10 @@ public class RedirectViewTests {
 		ModelMap model = new ModelMap("id", "1");
 		rv.render(model, request, response);
 		assertEquals(303, response.getStatus());
-		assertEquals("https://url.somewhere.com/path?id=1", response.getHeader("Location"));
+		assertThat((Object) response.getHeader("Location")).isEqualTo("https://url.somewhere.com/path?id=1");
 
-		assertEquals("/path", flashMap.getTargetRequestPath());
-		assertEquals(model, flashMap.getTargetRequestParams().toSingleValueMap());
+		assertThat((Object) flashMap.getTargetRequestPath()).isEqualTo("/path");
+		assertThat((Object) flashMap.getTargetRequestParams().toSingleValueMap()).isEqualTo(model);
 	}
 
 	@Test
@@ -264,7 +264,7 @@ public class RedirectViewTests {
 		rv.setExposeModelAttributes(false);
 		rv.render(model, request, response);
 
-		assertEquals(url, this.response.getRedirectedUrl());
+		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo(url);
 	}
 
 	@Test
@@ -368,7 +368,7 @@ public class RedirectViewTests {
 		request.setQueryString("a=b&c=d");
 		rv.render(new HashMap<>(), request, response);
 		assertEquals(302, response.getStatus());
-		assertEquals("https://url.somewhere.com?foo=bar&a=b&c=d#bazz", response.getHeader("Location"));
+		assertThat((Object) response.getHeader("Location")).isEqualTo("https://url.somewhere.com?foo=bar&a=b&c=d#bazz");
 	}
 
 	private void doTest(Map<String, ?> map, String url, boolean contextRelative, String expectedUrl)
@@ -378,7 +378,7 @@ public class RedirectViewTests {
 		rv.render(map, request, response);
 
 		assertThat(rv.queryPropertiesCalled).as("queryProperties() should have been called.").isTrue();
-		assertEquals(expectedUrl, this.response.getRedirectedUrl());
+		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo(expectedUrl);
 	}
 
 

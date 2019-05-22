@@ -23,6 +23,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.willThrow;
@@ -60,7 +61,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.afterConnectionEstablished(this.session);
 
-		assertEquals(CloseStatus.SERVER_ERROR, this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
 	}
 
 	@Test
@@ -73,7 +74,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.handleMessage(this.session, message);
 
-		assertEquals(CloseStatus.SERVER_ERROR, this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
 	}
 
 	@Test
@@ -86,7 +87,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.handleTransportError(this.session, exception);
 
-		assertEquals(CloseStatus.SERVER_ERROR, this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
 	}
 
 	@Test

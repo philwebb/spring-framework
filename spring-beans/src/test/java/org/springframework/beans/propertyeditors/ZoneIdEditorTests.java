@@ -20,6 +20,7 @@ import java.time.ZoneId;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -36,9 +37,9 @@ public class ZoneIdEditorTests {
 
 		ZoneId zoneId = (ZoneId) editor.getValue();
 		assertNotNull("The zone ID should not be null.", zoneId);
-		assertEquals("The zone ID is not correct.", ZoneId.of("America/Chicago"), zoneId);
+		assertThat((Object) zoneId).as("The zone ID is not correct.").isEqualTo(ZoneId.of("America/Chicago"));
 
-		assertEquals("The text version is not correct.", "America/Chicago", editor.getAsText());
+		assertThat((Object) editor.getAsText()).as("The text version is not correct.").isEqualTo("America/Chicago");
 	}
 
 	@Test
@@ -47,20 +48,20 @@ public class ZoneIdEditorTests {
 
 		ZoneId zoneId = (ZoneId) editor.getValue();
 		assertNotNull("The zone ID should not be null.", zoneId);
-		assertEquals("The zone ID is not correct.", ZoneId.of("America/Los_Angeles"), zoneId);
+		assertThat((Object) zoneId).as("The zone ID is not correct.").isEqualTo(ZoneId.of("America/Los_Angeles"));
 
-		assertEquals("The text version is not correct.", "America/Los_Angeles", editor.getAsText());
+		assertThat((Object) editor.getAsText()).as("The text version is not correct.").isEqualTo("America/Los_Angeles");
 	}
 
 	@Test
 	public void getNullAsText() {
-		assertEquals("The returned value is not correct.", "", editor.getAsText());
+		assertThat((Object) editor.getAsText()).as("The returned value is not correct.").isEqualTo("");
 	}
 
 	@Test
 	public void getValueAsText() {
 		editor.setValue(ZoneId.of("America/New_York"));
-		assertEquals("The text version is not correct.", "America/New_York", editor.getAsText());
+		assertThat((Object) editor.getAsText()).as("The text version is not correct.").isEqualTo("America/New_York");
 	}
 
 }

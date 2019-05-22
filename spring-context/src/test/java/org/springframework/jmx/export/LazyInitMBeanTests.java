@@ -42,7 +42,7 @@ public class LazyInitMBeanTests {
 			MBeanServer server = (MBeanServer) ctx.getBean("server");
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean2");
 			String name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "foo", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("foo");
 		}
 		finally {
 			ctx.close();

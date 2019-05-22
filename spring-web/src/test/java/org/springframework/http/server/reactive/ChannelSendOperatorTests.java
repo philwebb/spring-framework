@@ -89,7 +89,7 @@ public class ChannelSendOperatorTests {
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
 		assertEquals(1, this.writer.items.size());
-		assertEquals("one", this.writer.items.get(0));
+		assertThat((Object) this.writer.items.get(0)).isEqualTo("one");
 		assertThat(this.writer.completed).isTrue();
 	}
 
@@ -104,9 +104,9 @@ public class ChannelSendOperatorTests {
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
 		assertEquals(3, this.writer.items.size());
-		assertEquals("one", this.writer.items.get(0));
-		assertEquals("two", this.writer.items.get(1));
-		assertEquals("three", this.writer.items.get(2));
+		assertThat((Object) this.writer.items.get(0)).isEqualTo("one");
+		assertThat((Object) this.writer.items.get(1)).isEqualTo("two");
+		assertThat((Object) this.writer.items.get(2)).isEqualTo("three");
 		assertThat(this.writer.completed).isTrue();
 	}
 
@@ -128,9 +128,9 @@ public class ChannelSendOperatorTests {
 		assertSame("Unexpected signal: " + signal, error, signal.getThrowable());
 
 		assertEquals(3, this.writer.items.size());
-		assertEquals("1", this.writer.items.get(0));
-		assertEquals("2", this.writer.items.get(1));
-		assertEquals("3", this.writer.items.get(2));
+		assertThat((Object) this.writer.items.get(0)).isEqualTo("1");
+		assertThat((Object) this.writer.items.get(1)).isEqualTo("2");
+		assertThat((Object) this.writer.items.get(2)).isEqualTo("3");
 		assertSame(error, this.writer.error);
 	}
 
@@ -186,7 +186,7 @@ public class ChannelSendOperatorTests {
 		}
 		catch (Throwable ex) {
 			assertNotNull(ex.getCause());
-			assertEquals("err", ex.getCause().getMessage());
+			assertThat((Object) ex.getCause().getMessage()).isEqualTo("err");
 		}
 
 		bufferFactory.checkForLeaks();

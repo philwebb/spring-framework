@@ -73,8 +73,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean(initMethod="start") Object foo() { return null; }
 		}
 
-		assertEquals("init method name was not propagated",
-				"start", beanDef(Config.class).getInitMethodName());
+		assertThat((Object) beanDef(Config.class).getInitMethodName()).as("init method name was not propagated").isEqualTo("start");
 	}
 
 	@Test
@@ -83,8 +82,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean(destroyMethod="destroy") Object foo() { return null; }
 		}
 
-		assertEquals("destroy method name was not propagated",
-				"destroy", beanDef(Config.class).getDestroyMethodName());
+		assertThat((Object) beanDef(Config.class).getDestroyMethodName()).as("destroy method name was not propagated").isEqualTo("destroy");
 	}
 
 	@Test

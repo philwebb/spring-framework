@@ -43,17 +43,17 @@ public class ThemeResolverTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		// check original theme
 		String themeName = themeResolver.resolveThemeName(request);
-		assertEquals(themeName, defaultName);
+		assertThat((Object) defaultName).isEqualTo(themeName);
 		// set new theme name
 		try {
 			themeResolver.setThemeName(request, response, TEST_THEME_NAME);
 			assertThat(shouldSet).as("able to set theme name").isTrue();
 			// check new theme namelocale
 			themeName = themeResolver.resolveThemeName(request);
-			assertEquals(TEST_THEME_NAME, themeName);
+			assertThat((Object) themeName).isEqualTo(TEST_THEME_NAME);
 			themeResolver.setThemeName(request, response, null);
 			themeName = themeResolver.resolveThemeName(request);
-			assertEquals(themeName, defaultName);
+			assertThat((Object) defaultName).isEqualTo(themeName);
 		}
 		catch (UnsupportedOperationException ex) {
 			assertThat(shouldSet).as("able to set theme name").isFalse();

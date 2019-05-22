@@ -23,6 +23,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -47,7 +48,7 @@ public class InvalidHttpMethodIntegrationTests extends AbstractRouterFunctionInt
 				.build();
 
 		try (Response response = client.newCall(request).execute()) {
-			assertEquals("BAR", response.body().string());
+			assertThat((Object) response.body().string()).isEqualTo("BAR");
 		}
 	}
 

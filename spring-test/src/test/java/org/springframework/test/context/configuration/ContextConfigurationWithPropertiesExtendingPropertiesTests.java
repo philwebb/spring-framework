@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.PropertiesBasedSpringJUnit4ClassR
 import org.springframework.test.context.support.GenericPropertiesContextLoader;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -53,10 +54,10 @@ public class ContextConfigurationWithPropertiesExtendingPropertiesTests extends
 	@Test
 	public void verifyExtendedAnnotationAutowiredFields() {
 		assertNotNull("The dog field should have been autowired.", this.dog);
-		assertEquals("Fido", this.dog.getName());
+		assertThat((Object) this.dog.getName()).isEqualTo("Fido");
 
 		assertNotNull("The testString2 field should have been autowired.", this.testString2);
-		assertEquals("Test String #2", this.testString2);
+		assertThat((Object) this.testString2).isEqualTo("Test String #2");
 	}
 
 }

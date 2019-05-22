@@ -30,9 +30,9 @@ public class MediaTypeFactoryTests {
 
 	@Test
 	public void getMediaType() {
-		assertEquals(MediaType.APPLICATION_XML, MediaTypeFactory.getMediaType("file.xml").get());
-		assertEquals(MediaType.parseMediaType("application/javascript"), MediaTypeFactory.getMediaType("file.js").get());
-		assertEquals(MediaType.parseMediaType("text/css"), MediaTypeFactory.getMediaType("file.css").get());
+		assertThat((Object) MediaTypeFactory.getMediaType("file.xml").get()).isEqualTo(MediaType.APPLICATION_XML);
+		assertThat((Object) MediaTypeFactory.getMediaType("file.js").get()).isEqualTo(MediaType.parseMediaType("application/javascript"));
+		assertThat((Object) MediaTypeFactory.getMediaType("file.css").get()).isEqualTo(MediaType.parseMediaType("text/css"));
 		assertThat(MediaTypeFactory.getMediaType("file.foobar").isPresent()).isFalse();
 	}
 

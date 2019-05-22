@@ -114,8 +114,8 @@ public class InterceptingClientHttpRequestFactoryTests {
 			public ClientHttpResponse execute() throws IOException {
 				List<String> headerValues = getHeaders().get(headerName);
 				assertEquals(2, headerValues.size());
-				assertEquals(headerValue, headerValues.get(0));
-				assertEquals(otherValue, headerValues.get(1));
+				assertThat((Object) headerValues.get(0)).isEqualTo(headerValue);
+				assertThat((Object) headerValues.get(1)).isEqualTo(otherValue);
 				return super.execute();
 			}
 		};
@@ -149,7 +149,7 @@ public class InterceptingClientHttpRequestFactoryTests {
 		requestFactoryMock = new RequestFactoryMock() {
 			@Override
 			public ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) throws IOException {
-				assertEquals(changedUri, uri);
+				assertThat((Object) uri).isEqualTo(changedUri);
 				return super.createRequest(uri, httpMethod);
 			}
 		};
@@ -182,7 +182,7 @@ public class InterceptingClientHttpRequestFactoryTests {
 		requestFactoryMock = new RequestFactoryMock() {
 			@Override
 			public ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) throws IOException {
-				assertEquals(changedMethod, httpMethod);
+				assertThat((Object) httpMethod).isEqualTo(changedMethod);
 				return super.createRequest(uri, httpMethod);
 			}
 		};

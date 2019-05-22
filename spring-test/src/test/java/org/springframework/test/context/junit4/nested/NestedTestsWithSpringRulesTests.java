@@ -28,6 +28,7 @@ import org.springframework.test.context.junit4.nested.NestedTestsWithSpringRules
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -50,7 +51,7 @@ public class NestedTestsWithSpringRulesTests extends SpringRuleConfigurer {
 
 	@Test
 	public void topLevelTest() {
-		assertEquals("foo", foo);
+		assertThat((Object) foo).isEqualTo("foo");
 	}
 
 
@@ -70,7 +71,7 @@ public class NestedTestsWithSpringRulesTests extends SpringRuleConfigurer {
 			// assertEquals("foo", foo);
 
 			assertNull("@Autowired field in enclosing instance should be null.", foo);
-			assertEquals("bar", bar);
+			assertThat((Object) bar).isEqualTo("bar");
 		}
 	}
 

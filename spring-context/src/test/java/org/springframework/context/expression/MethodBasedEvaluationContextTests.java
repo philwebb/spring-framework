@@ -24,6 +24,7 @@ import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
@@ -45,13 +46,13 @@ public class MethodBasedEvaluationContextTests {
 		Method method = ReflectionUtils.findMethod(SampleMethods.class, "hello", String.class, Boolean.class);
 		MethodBasedEvaluationContext context = createEvaluationContext(method, "test", true);
 
-		assertEquals("test", context.lookupVariable("a0"));
-		assertEquals("test", context.lookupVariable("p0"));
-		assertEquals("test", context.lookupVariable("foo"));
+		assertThat(context.lookupVariable("a0")).isEqualTo("test");
+		assertThat(context.lookupVariable("p0")).isEqualTo("test");
+		assertThat(context.lookupVariable("foo")).isEqualTo("test");
 
-		assertEquals(true, context.lookupVariable("a1"));
-		assertEquals(true, context.lookupVariable("p1"));
-		assertEquals(true, context.lookupVariable("flag"));
+		assertThat(context.lookupVariable("a1")).isEqualTo(true);
+		assertThat(context.lookupVariable("p1")).isEqualTo(true);
+		assertThat(context.lookupVariable("flag")).isEqualTo(true);
 
 		assertNull(context.lookupVariable("a2"));
 		assertNull(context.lookupVariable("p2"));
@@ -108,9 +109,9 @@ public class MethodBasedEvaluationContextTests {
 		assertNull(context.lookupVariable("p0"));
 		assertNull(context.lookupVariable("flag"));
 
-		assertEquals("hello", context.lookupVariable("a1"));
-		assertEquals("hello", context.lookupVariable("p1"));
-		assertEquals("hello", context.lookupVariable("vararg"));
+		assertThat(context.lookupVariable("a1")).isEqualTo("hello");
+		assertThat(context.lookupVariable("p1")).isEqualTo("hello");
+		assertThat(context.lookupVariable("vararg")).isEqualTo("hello");
 	}
 
 	@Test

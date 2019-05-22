@@ -46,6 +46,7 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.support.SessionFlashMapManager;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -75,7 +76,7 @@ public class MockHttpServletRequestBuilderTests {
 	public void method() {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("GET", request.getMethod());
+		assertThat((Object) request.getMethod()).isEqualTo("GET");
 	}
 
 	@Test
@@ -84,13 +85,12 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder = new MockHttpServletRequestBuilder(HttpMethod.GET, uri);
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("https", request.getScheme());
-		assertEquals("foo=bar", request.getQueryString());
-		assertEquals("java.sun.com", request.getServerName());
+		assertThat((Object) request.getScheme()).isEqualTo("https");
+		assertThat((Object) request.getQueryString()).isEqualTo("foo=bar");
+		assertThat((Object) request.getServerName()).isEqualTo("java.sun.com");
 		assertEquals(8080, request.getServerPort());
-		assertEquals("/javase/6/docs/api/java/util/BitSet.html", request.getRequestURI());
-		assertEquals("https://java.sun.com:8080/javase/6/docs/api/java/util/BitSet.html",
-				request.getRequestURL().toString());
+		assertThat((Object) request.getRequestURI()).isEqualTo("/javase/6/docs/api/java/util/BitSet.html");
+		assertThat((Object) request.getRequestURL().toString()).isEqualTo("https://java.sun.com:8080/javase/6/docs/api/java/util/BitSet.html");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder = new MockHttpServletRequestBuilder(HttpMethod.GET, "/foo bar");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("/foo%20bar", request.getRequestURI());
+		assertThat((Object) request.getRequestURI()).isEqualTo("/foo%20bar");
 	}
 
 	@Test  // SPR-13435
@@ -106,7 +106,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder = new MockHttpServletRequestBuilder(HttpMethod.GET, new URI("/test//currentlyValid/0"));
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("/test//currentlyValid/0", request.getRequestURI());
+		assertThat((Object) request.getRequestURI()).isEqualTo("/test//currentlyValid/0");
 	}
 
 	@Test
@@ -114,9 +114,9 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder = new MockHttpServletRequestBuilder(HttpMethod.GET, "/foo");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("", request.getContextPath());
-		assertEquals("", request.getServletPath());
-		assertEquals("/foo", request.getPathInfo());
+		assertThat((Object) request.getContextPath()).isEqualTo("");
+		assertThat((Object) request.getServletPath()).isEqualTo("");
+		assertThat((Object) request.getPathInfo()).isEqualTo("/foo");
 	}
 
 	@Test
@@ -125,9 +125,9 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder.contextPath("/travel");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("/travel", request.getContextPath());
-		assertEquals("", request.getServletPath());
-		assertEquals("/hotels/42", request.getPathInfo());
+		assertThat((Object) request.getContextPath()).isEqualTo("/travel");
+		assertThat((Object) request.getServletPath()).isEqualTo("");
+		assertThat((Object) request.getPathInfo()).isEqualTo("/hotels/42");
 	}
 
 	@Test
@@ -138,9 +138,9 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("/travel", request.getContextPath());
-		assertEquals("/main", request.getServletPath());
-		assertEquals("/hotels/42", request.getPathInfo());
+		assertThat((Object) request.getContextPath()).isEqualTo("/travel");
+		assertThat((Object) request.getServletPath()).isEqualTo("/main");
+		assertThat((Object) request.getPathInfo()).isEqualTo("/hotels/42");
 	}
 
 	@Test
@@ -150,8 +150,8 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder.servletPath("/hotels/42");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("/travel", request.getContextPath());
-		assertEquals("/hotels/42", request.getServletPath());
+		assertThat((Object) request.getContextPath()).isEqualTo("/travel");
+		assertThat((Object) request.getServletPath()).isEqualTo("/hotels/42");
 		assertNull(request.getPathInfo());
 	}
 
@@ -162,8 +162,8 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder.pathInfo(null);
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("", request.getContextPath());
-		assertEquals("/index.html", request.getServletPath());
+		assertThat((Object) request.getContextPath()).isEqualTo("");
+		assertThat((Object) request.getServletPath()).isEqualTo("/index.html");
 		assertNull(request.getPathInfo());
 	}
 
@@ -172,7 +172,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder = new MockHttpServletRequestBuilder(HttpMethod.GET, "/travel/hotels 42");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("/travel/hotels 42", request.getPathInfo());
+		assertThat((Object) request.getPathInfo()).isEqualTo("/travel/hotels 42");
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class MockHttpServletRequestBuilderTests {
 			this.builder.buildRequest(this.servletContext);
 		}
 		catch (IllegalArgumentException ex) {
-			assertEquals(message, ex.getMessage());
+			assertThat((Object) ex.getMessage()).isEqualTo(message);
 		}
 	}
 
@@ -202,7 +202,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder = new MockHttpServletRequestBuilder(HttpMethod.GET, "/foo#bar");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("/foo", request.getRequestURI());
+		assertThat((Object) request.getRequestURI()).isEqualTo("/foo");
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class MockHttpServletRequestBuilderTests {
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
 		assertArrayEquals(new String[] {"bar", "baz"}, parameterMap.get("foo"));
-		assertEquals("foo=bar&foo=baz", request.getQueryString());
+		assertThat((Object) request.getQueryString()).isEqualTo("foo=bar&foo=baz");
 	}
 
 	@Test
@@ -232,9 +232,9 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("foo%5B0%5D=bar&foo%5B1%5D=baz", request.getQueryString());
-		assertEquals("bar", request.getParameter("foo[0]"));
-		assertEquals("baz", request.getParameter("foo[1]"));
+		assertThat((Object) request.getQueryString()).isEqualTo("foo%5B0%5D=bar&foo%5B1%5D=baz");
+		assertThat((Object) request.getParameter("foo[0]")).isEqualTo("bar");
+		assertThat((Object) request.getParameter("foo[1]")).isEqualTo("baz");
 	}
 
 	@Test
@@ -243,8 +243,8 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("foo=bar%3Dbaz", request.getQueryString());
-		assertEquals("bar=baz", request.getParameter("foo"));
+		assertThat((Object) request.getQueryString()).isEqualTo("foo=bar%3Dbaz");
+		assertThat((Object) request.getParameter("foo")).isEqualTo("bar=baz");
 	}
 
 	@Test  // SPR-11043
@@ -255,7 +255,7 @@ public class MockHttpServletRequestBuilderTests {
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
 		assertArrayEquals(new String[] {null}, parameterMap.get("foo"));
-		assertEquals("foo", request.getQueryString());
+		assertThat((Object) request.getQueryString()).isEqualTo("foo");
 	}
 
 	@Test  // SPR-13801
@@ -294,8 +294,8 @@ public class MockHttpServletRequestBuilderTests {
 		List<MediaType> result = MediaType.parseMediaTypes(accept.get(0));
 
 		assertEquals(1, accept.size());
-		assertEquals("text/html", result.get(0).toString());
-		assertEquals("application/xml", result.get(1).toString());
+		assertThat((Object) result.get(0).toString()).isEqualTo("text/html");
+		assertThat((Object) result.get(1).toString()).isEqualTo("application/xml");
 	}
 
 	@Test
@@ -306,9 +306,9 @@ public class MockHttpServletRequestBuilderTests {
 		String contentType = request.getContentType();
 		List<String> contentTypes = Collections.list(request.getHeaders("Content-Type"));
 
-		assertEquals("text/html", contentType);
+		assertThat((Object) contentType).isEqualTo("text/html");
 		assertEquals(1, contentTypes.size());
-		assertEquals("text/html", contentTypes.get(0));
+		assertThat((Object) contentTypes.get(0)).isEqualTo("text/html");
 	}
 
 	@Test
@@ -319,9 +319,9 @@ public class MockHttpServletRequestBuilderTests {
 		String contentType = request.getContentType();
 		List<String> contentTypes = Collections.list(request.getHeaders("Content-Type"));
 
-		assertEquals("text/html", contentType);
+		assertThat((Object) contentType).isEqualTo("text/html");
 		assertEquals(1, contentTypes.size());
-		assertEquals("text/html", contentTypes.get(0));
+		assertThat((Object) contentTypes.get(0)).isEqualTo("text/html");
 	}
 
 	@Test  // SPR-11308
@@ -330,7 +330,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		String contentType = request.getContentType();
 
-		assertEquals("text/html", contentType);
+		assertThat((Object) contentType).isEqualTo("text/html");
 	}
 
 	@Test  // SPR-11308
@@ -338,7 +338,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder.header("Content-Type", MediaType.TEXT_HTML_VALUE, MediaType.ALL_VALUE);
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("text/html", request.getContentType());
+		assertThat((Object) request.getContentType()).isEqualTo("text/html");
 	}
 
 	@Test
@@ -360,8 +360,8 @@ public class MockHttpServletRequestBuilderTests {
 		List<String> headers = Collections.list(request.getHeaders("foo"));
 
 		assertEquals(2, headers.size());
-		assertEquals("bar", headers.get(0));
-		assertEquals("baz", headers.get(1));
+		assertThat((Object) headers.get(0)).isEqualTo("bar");
+		assertThat((Object) headers.get(1)).isEqualTo("baz");
 	}
 
 	@Test
@@ -375,9 +375,9 @@ public class MockHttpServletRequestBuilderTests {
 		List<String> headers = Collections.list(request.getHeaders("foo"));
 
 		assertEquals(2, headers.size());
-		assertEquals("bar", headers.get(0));
-		assertEquals("baz", headers.get(1));
-		assertEquals(MediaType.APPLICATION_JSON.toString(), request.getHeader("Content-Type"));
+		assertThat((Object) headers.get(0)).isEqualTo("bar");
+		assertThat((Object) headers.get(1)).isEqualTo("baz");
+		assertThat((Object) request.getHeader("Content-Type")).isEqualTo(MediaType.APPLICATION_JSON.toString());
 	}
 
 	@Test
@@ -390,10 +390,10 @@ public class MockHttpServletRequestBuilderTests {
 		Cookie[] cookies = request.getCookies();
 
 		assertEquals(2, cookies.length);
-		assertEquals("foo", cookies[0].getName());
-		assertEquals("bar", cookies[0].getValue());
-		assertEquals("baz", cookies[1].getName());
-		assertEquals("qux", cookies[1].getValue());
+		assertThat((Object) cookies[0].getName()).isEqualTo("foo");
+		assertThat((Object) cookies[0].getValue()).isEqualTo("bar");
+		assertThat((Object) cookies[1].getName()).isEqualTo("baz");
+		assertThat((Object) cookies[1].getValue()).isEqualTo("qux");
 	}
 
 	@Test
@@ -409,7 +409,7 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals(locale, request.getLocale());
+		assertThat((Object) request.getLocale()).isEqualTo(locale);
 	}
 
 	@Test
@@ -419,7 +419,7 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals(encoding, request.getCharacterEncoding());
+		assertThat((Object) request.getCharacterEncoding()).isEqualTo(encoding);
 	}
 
 	@Test
@@ -427,7 +427,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder.requestAttr("foo", "bar");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("bar", request.getAttribute("foo"));
+		assertThat(request.getAttribute("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -435,7 +435,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder.sessionAttr("foo", "bar");
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("bar", request.getSession().getAttribute("foo"));
+		assertThat(request.getSession().getAttribute("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -446,7 +446,7 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals("bar", request.getSession().getAttribute("foo"));
+		assertThat(request.getSession().getAttribute("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -458,9 +458,9 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals(session, request.getSession());
-		assertEquals("bar", request.getSession().getAttribute("foo"));
-		assertEquals("qux", request.getSession().getAttribute("baz"));
+		assertThat((Object) request.getSession()).isEqualTo(session);
+		assertThat(request.getSession().getAttribute("foo")).isEqualTo("bar");
+		assertThat(request.getSession().getAttribute("baz")).isEqualTo("qux");
 	}
 
 	@Test
@@ -470,7 +470,7 @@ public class MockHttpServletRequestBuilderTests {
 
 		FlashMap flashMap = new SessionFlashMapManager().retrieveAndUpdate(request, null);
 		assertNotNull(flashMap);
-		assertEquals("bar", flashMap.get("foo"));
+		assertThat(flashMap.get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -479,7 +479,7 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder.principal(user);
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals(user, request.getUserPrincipal());
+		assertThat((Object) request.getUserPrincipal()).isEqualTo(user);
 	}
 
 	@Test  // SPR-12945
@@ -497,7 +497,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = builder.buildRequest(servletContext);
 		request = builder.postProcessRequest(request);
 
-		assertEquals(EXPECTED, request.getAttribute(ATTR));
+		assertThat(request.getAttribute(ATTR)).isEqualTo(EXPECTED);
 	}
 
 	@Test  // SPR-13719
@@ -507,8 +507,8 @@ public class MockHttpServletRequestBuilderTests {
 		this.builder = new MockHttpServletRequestBuilder(httpMethod, url);
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertEquals(httpMethod, request.getMethod());
-		assertEquals("/foo/42", request.getPathInfo());
+		assertThat((Object) request.getMethod()).isEqualTo(httpMethod);
+		assertThat((Object) request.getPathInfo()).isEqualTo("/foo/42");
 	}
 
 

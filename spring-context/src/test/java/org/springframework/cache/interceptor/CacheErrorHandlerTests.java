@@ -36,6 +36,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
@@ -90,7 +91,7 @@ public class CacheErrorHandlerTests {
 		Object counter2 = this.simpleService.get(0L);
 		Object counter3 = this.simpleService.get(0L);
 		assertNotSame(counter, counter2);
-		assertEquals(counter2, counter3);
+		assertThat(counter3).isEqualTo(counter2);
 	}
 
 	@Test

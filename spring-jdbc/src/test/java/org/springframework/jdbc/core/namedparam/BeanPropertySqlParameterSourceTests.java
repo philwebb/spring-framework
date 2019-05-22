@@ -54,8 +54,8 @@ public class BeanPropertySqlParameterSourceTests {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
 		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("name")).isTrue();
 		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("age")).isTrue();
-		assertEquals("tb", source.getValue("name"));
-		assertEquals(99, source.getValue("age"));
+		assertThat(source.getValue("name")).isEqualTo("tb");
+		assertThat(source.getValue("age")).isEqualTo(99);
 		assertEquals(Types.VARCHAR, source.getSqlType("name"));
 		assertEquals(Types.INTEGER, source.getSqlType("age"));
 	}
@@ -64,8 +64,8 @@ public class BeanPropertySqlParameterSourceTests {
 	public void successfulPropertyAccessWithOverriddenSqlType() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
 		source.registerSqlType("age", Types.NUMERIC);
-		assertEquals("tb", source.getValue("name"));
-		assertEquals(99, source.getValue("age"));
+		assertThat(source.getValue("name")).isEqualTo("tb");
+		assertThat(source.getValue("age")).isEqualTo(99);
 		assertEquals(Types.VARCHAR, source.getSqlType("name"));
 		assertEquals(Types.NUMERIC, source.getSqlType("age"));
 	}

@@ -128,7 +128,7 @@ public class BaseViewTests {
 		checkContainsAll(pathVars, tv.model);
 
 		assertEquals(3, tv.model.size());
-		assertEquals("else", tv.model.get("something"));
+		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
 
@@ -156,7 +156,7 @@ public class BaseViewTests {
 		checkContainsAll(model, tv.model);
 
 		assertEquals(3, tv.model.size());
-		assertEquals("else", tv.model.get("something"));
+		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
 
@@ -184,7 +184,7 @@ public class BaseViewTests {
 
 		checkContainsAll(model, tv.model);
 		assertEquals(3, tv.model.size());
-		assertEquals("else", tv.model.get("something"));
+		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
 
@@ -268,8 +268,8 @@ public class BaseViewTests {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void checkContainsAll(Map expected, Map<String, Object> actual) {
-		expected.forEach((k, v) -> assertEquals("Values for model key '" + k
-				+ "' must match", expected.get(k), actual.get(k)));
+		expected.forEach((k, v) -> assertThat(actual.get(k)).as("Values for model key '" + k
+						+ "' must match").isEqualTo(expected.get(k)));
 	}
 
 

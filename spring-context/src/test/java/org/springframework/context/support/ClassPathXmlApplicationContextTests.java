@@ -206,13 +206,13 @@ public class ClassPathXmlApplicationContextTests {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(CONTEXT_WILDCARD);
 		MessageSource messageSource = (MessageSource) ctx.getBean("messageSource");
 		Service service1 = (Service) ctx.getBean("service");
-		assertEquals(ctx, service1.getMessageSource());
+		assertThat((Object) service1.getMessageSource()).isEqualTo(ctx);
 		Service service2 = (Service) ctx.getBean("service2");
-		assertEquals(ctx, service2.getMessageSource());
+		assertThat((Object) service2.getMessageSource()).isEqualTo(ctx);
 		AutowiredService autowiredService1 = (AutowiredService) ctx.getBean("autowiredService");
-		assertEquals(messageSource, autowiredService1.getMessageSource());
+		assertThat((Object) autowiredService1.getMessageSource()).isEqualTo(messageSource);
 		AutowiredService autowiredService2 = (AutowiredService) ctx.getBean("autowiredService2");
-		assertEquals(messageSource, autowiredService2.getMessageSource());
+		assertThat((Object) autowiredService2.getMessageSource()).isEqualTo(messageSource);
 		ctx.close();
 	}
 
@@ -251,9 +251,9 @@ public class ClassPathXmlApplicationContextTests {
 		assertThat(child.isSingleton("someMessageSource")).isTrue();
 		assertThat(child.isSingleton("yourMessageSource")).isTrue();
 		assertThat(child.isSingleton("myMessageSource")).isTrue();
-		assertEquals(StaticMessageSource.class, child.getType("someMessageSource"));
-		assertEquals(StaticMessageSource.class, child.getType("yourMessageSource"));
-		assertEquals(StaticMessageSource.class, child.getType("myMessageSource"));
+		assertThat((Object) child.getType("someMessageSource")).isEqualTo(StaticMessageSource.class);
+		assertThat((Object) child.getType("yourMessageSource")).isEqualTo(StaticMessageSource.class);
+		assertThat((Object) child.getType("myMessageSource")).isEqualTo(StaticMessageSource.class);
 
 		Object someMs = child.getBean("someMessageSource");
 		Object yourMs = child.getBean("yourMessageSource");
@@ -263,12 +263,12 @@ public class ClassPathXmlApplicationContextTests {
 
 		String[] aliases = child.getAliases("someMessageSource");
 		assertEquals(2, aliases.length);
-		assertEquals("myMessageSource", aliases[0]);
-		assertEquals("yourMessageSource", aliases[1]);
+		assertThat((Object) aliases[0]).isEqualTo("myMessageSource");
+		assertThat((Object) aliases[1]).isEqualTo("yourMessageSource");
 		aliases = child.getAliases("myMessageSource");
 		assertEquals(2, aliases.length);
-		assertEquals("someMessageSource", aliases[0]);
-		assertEquals("yourMessageSource", aliases[1]);
+		assertThat((Object) aliases[0]).isEqualTo("someMessageSource");
+		assertThat((Object) aliases[1]).isEqualTo("yourMessageSource");
 
 		child.close();
 		ctx.close();
@@ -301,16 +301,16 @@ public class ClassPathXmlApplicationContextTests {
 	private void assertOneMessageSourceOnly(ClassPathXmlApplicationContext ctx, Object myMessageSource) {
 		String[] beanNamesForType = ctx.getBeanNamesForType(StaticMessageSource.class);
 		assertEquals(1, beanNamesForType.length);
-		assertEquals("myMessageSource", beanNamesForType[0]);
+		assertThat((Object) beanNamesForType[0]).isEqualTo("myMessageSource");
 		beanNamesForType = ctx.getBeanNamesForType(StaticMessageSource.class, true, true);
 		assertEquals(1, beanNamesForType.length);
-		assertEquals("myMessageSource", beanNamesForType[0]);
+		assertThat((Object) beanNamesForType[0]).isEqualTo("myMessageSource");
 		beanNamesForType = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(ctx, StaticMessageSource.class);
 		assertEquals(1, beanNamesForType.length);
-		assertEquals("myMessageSource", beanNamesForType[0]);
+		assertThat((Object) beanNamesForType[0]).isEqualTo("myMessageSource");
 		beanNamesForType = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(ctx, StaticMessageSource.class, true, true);
 		assertEquals(1, beanNamesForType.length);
-		assertEquals("myMessageSource", beanNamesForType[0]);
+		assertThat((Object) beanNamesForType[0]).isEqualTo("myMessageSource");
 
 		Map<?, StaticMessageSource> beansOfType = ctx.getBeansOfType(StaticMessageSource.class);
 		assertEquals(1, beansOfType.size());
@@ -343,16 +343,16 @@ public class ClassPathXmlApplicationContextTests {
 		assertThat(condition).isTrue();
 		StringWriter writer = new StringWriter();
 		FileCopyUtils.copy(new InputStreamReader(resource1.getResource().getInputStream()), writer);
-		assertEquals("contexttest", writer.toString());
+		assertThat((Object) writer.toString()).isEqualTo("contexttest");
 		writer = new StringWriter();
 		FileCopyUtils.copy(new InputStreamReader(resource1.getInputStream()), writer);
-		assertEquals("test", writer.toString());
+		assertThat((Object) writer.toString()).isEqualTo("test");
 		writer = new StringWriter();
 		FileCopyUtils.copy(new InputStreamReader(resource2.getResource().getInputStream()), writer);
-		assertEquals("contexttest", writer.toString());
+		assertThat((Object) writer.toString()).isEqualTo("contexttest");
 		writer = new StringWriter();
 		FileCopyUtils.copy(new InputStreamReader(resource2.getInputStream()), writer);
-		assertEquals("test", writer.toString());
+		assertThat((Object) writer.toString()).isEqualTo("test");
 		ctx.close();
 	}
 
@@ -379,8 +379,8 @@ public class ClassPathXmlApplicationContextTests {
 		reader.loadBeanDefinitions(new ClassPathResource(CONTEXT_C, getClass()));
 		reader.loadBeanDefinitions(new ClassPathResource(CONTEXT_A, getClass()));
 		ctx.refresh();
-		assertEquals(ObjectUtils.identityToString(ctx), ctx.getId());
-		assertEquals(ObjectUtils.identityToString(ctx), ctx.getDisplayName());
+		assertThat((Object) ctx.getId()).isEqualTo(ObjectUtils.identityToString(ctx));
+		assertThat((Object) ctx.getDisplayName()).isEqualTo(ObjectUtils.identityToString(ctx));
 		assertThat(ctx.containsBean("service")).isTrue();
 		assertThat(ctx.containsBean("logicOne")).isTrue();
 		assertThat(ctx.containsBean("logicTwo")).isTrue();
@@ -397,8 +397,8 @@ public class ClassPathXmlApplicationContextTests {
 		reader.loadBeanDefinitions(new ClassPathResource(CONTEXT_C, getClass()));
 		reader.loadBeanDefinitions(new ClassPathResource(CONTEXT_A, getClass()));
 		ctx.refresh();
-		assertEquals("testContext", ctx.getId());
-		assertEquals("Test Context", ctx.getDisplayName());
+		assertThat((Object) ctx.getId()).isEqualTo("testContext");
+		assertThat((Object) ctx.getDisplayName()).isEqualTo("Test Context");
 		assertThat(ctx.containsBean("service")).isTrue();
 		assertThat(ctx.containsBean("logicOne")).isTrue();
 		assertThat(ctx.containsBean("logicTwo")).isTrue();

@@ -49,7 +49,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests
 		boolean condition = entityManagerFactory instanceof EntityManagerFactoryInfo;
 		assertThat(condition).as("Must have introduced config interface").isTrue();
 		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
-		assertEquals("Person", emfi.getPersistenceUnitName());
+		assertThat((Object) emfi.getPersistenceUnitName()).isEqualTo("Person");
 		assertNotNull("PersistenceUnitInfo must be available", emfi.getPersistenceUnitInfo());
 		assertNotNull("Raw EntityManagerFactory must be available", emfi.getNativeEntityManagerFactory());
 	}
@@ -150,7 +150,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests
 		List<Person> people = q.getResultList();
 
 		assertEquals(1, people.size());
-		assertEquals(firstName, people.get(0).getFirstName());
+		assertThat((Object) people.get(0).getFirstName()).isEqualTo(firstName);
 	}
 
 	protected void insertPerson(String firstName) {

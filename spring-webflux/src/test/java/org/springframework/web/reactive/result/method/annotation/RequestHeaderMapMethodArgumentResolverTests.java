@@ -93,7 +93,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 		boolean condition = result instanceof Map;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 		boolean condition = result instanceof MultiValueMap;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 		boolean condition = result instanceof HttpHeaders;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 

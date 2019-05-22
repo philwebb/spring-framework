@@ -35,6 +35,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.junit4.aci.annotation.InitializerConfiguredViaMetaAnnotationTests.ComposedContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -68,8 +69,8 @@ public class InitializerConfiguredViaMetaAnnotationTests {
 	@Test
 	public void beansFromInitializerAndComposedAnnotation() {
 		assertEquals(2, strings.size());
-		assertEquals("foo", foo);
-		assertEquals("bar", bar);
+		assertThat((Object) foo).isEqualTo("foo");
+		assertThat((Object) bar).isEqualTo("bar");
 	}
 
 

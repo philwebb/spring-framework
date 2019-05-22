@@ -69,18 +69,18 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(2, mappings.size());
 
 		Mapping m1 = mappings.get(0);
-		assertEquals(handler, m1.webSocketHandler);
-		assertEquals("/foo", m1.path);
+		assertThat((Object) m1.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) m1.path).isEqualTo("/foo");
 		assertNotNull(m1.interceptors);
 		assertEquals(1, m1.interceptors.length);
-		assertEquals(OriginHandshakeInterceptor.class, m1.interceptors[0].getClass());
+		assertThat((Object) m1.interceptors[0].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 
 		Mapping m2 = mappings.get(1);
-		assertEquals(handler, m2.webSocketHandler);
-		assertEquals("/bar", m2.path);
+		assertThat((Object) m2.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) m2.path).isEqualTo("/bar");
 		assertNotNull(m2.interceptors);
 		assertEquals(1, m2.interceptors.length);
-		assertEquals(OriginHandshakeInterceptor.class, m2.interceptors[0].getClass());
+		assertThat((Object) m2.interceptors[0].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
 
 	@Test
@@ -94,12 +94,12 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(1, mappings.size());
 
 		Mapping mapping = mappings.get(0);
-		assertEquals(handler, mapping.webSocketHandler);
-		assertEquals("/foo", mapping.path);
+		assertThat((Object) mapping.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) mapping.path).isEqualTo("/foo");
 		assertNotNull(mapping.interceptors);
 		assertEquals(2, mapping.interceptors.length);
-		assertEquals(interceptor, mapping.interceptors[0]);
-		assertEquals(OriginHandshakeInterceptor.class, mapping.interceptors[1].getClass());
+		assertThat((Object) mapping.interceptors[0]).isEqualTo(interceptor);
+		assertThat((Object) mapping.interceptors[1].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
 
 	@Test
@@ -113,12 +113,12 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(1, mappings.size());
 
 		Mapping mapping = mappings.get(0);
-		assertEquals(handler, mapping.webSocketHandler);
-		assertEquals("/foo", mapping.path);
+		assertThat((Object) mapping.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) mapping.path).isEqualTo("/foo");
 		assertNotNull(mapping.interceptors);
 		assertEquals(2, mapping.interceptors.length);
-		assertEquals(interceptor, mapping.interceptors[0]);
-		assertEquals(OriginHandshakeInterceptor.class, mapping.interceptors[1].getClass());
+		assertThat((Object) mapping.interceptors[0]).isEqualTo(interceptor);
+		assertThat((Object) mapping.interceptors[1].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
 
 	@Test
@@ -132,12 +132,12 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(1, mappings.size());
 
 		Mapping mapping = mappings.get(0);
-		assertEquals(handler, mapping.webSocketHandler);
-		assertEquals("/foo", mapping.path);
+		assertThat((Object) mapping.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) mapping.path).isEqualTo("/foo");
 		assertNotNull(mapping.interceptors);
 		assertEquals(2, mapping.interceptors.length);
-		assertEquals(interceptor, mapping.interceptors[0]);
-		assertEquals(OriginHandshakeInterceptor.class, mapping.interceptors[1].getClass());
+		assertThat((Object) mapping.interceptors[0]).isEqualTo(interceptor);
+		assertThat((Object) mapping.interceptors[1].getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
 
 	@Test
@@ -156,13 +156,13 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(1, mappings.size());
 
 		Mapping mapping = mappings.get(0);
-		assertEquals(handler, mapping.webSocketHandler);
-		assertEquals("/foo/**", mapping.path);
+		assertThat((Object) mapping.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) mapping.path).isEqualTo("/foo/**");
 		assertNotNull(mapping.sockJsService);
 		assertThat(mapping.sockJsService.getAllowedOrigins().contains("https://mydomain1.com")).isTrue();
 		List<HandshakeInterceptor> interceptors = mapping.sockJsService.getHandshakeInterceptors();
-		assertEquals(interceptor, interceptors.get(0));
-		assertEquals(OriginHandshakeInterceptor.class, interceptors.get(1).getClass());
+		assertThat((Object) interceptors.get(0)).isEqualTo(interceptor);
+		assertThat((Object) interceptors.get(1).getClass()).isEqualTo(OriginHandshakeInterceptor.class);
 	}
 
 	@Test
@@ -176,8 +176,8 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(1, mappings.size());
 
 		Mapping mapping = mappings.get(0);
-		assertEquals(handler, mapping.webSocketHandler);
-		assertEquals("/foo", mapping.path);
+		assertThat((Object) mapping.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) mapping.path).isEqualTo("/foo");
 		assertSame(handshakeHandler, mapping.handshakeHandler);
 	}
 
@@ -193,8 +193,8 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(1, mappings.size());
 
 		Mapping mapping = mappings.get(0);
-		assertEquals(handler, mapping.webSocketHandler);
-		assertEquals("/foo/**", mapping.path);
+		assertThat((Object) mapping.webSocketHandler).isEqualTo(handler);
+		assertThat((Object) mapping.path).isEqualTo("/foo/**");
 		assertNotNull(mapping.sockJsService);
 
 		WebSocketTransportHandler transportHandler =

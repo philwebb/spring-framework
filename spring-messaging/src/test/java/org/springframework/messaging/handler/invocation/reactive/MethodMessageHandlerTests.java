@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;

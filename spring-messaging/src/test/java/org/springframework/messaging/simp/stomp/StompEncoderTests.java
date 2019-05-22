@@ -40,7 +40,7 @@ public class StompEncoderTests {
 		StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.DISCONNECT);
 		Message<byte[]> frame = MessageBuilder.createMessage(new byte[0], headers.getMessageHeaders());
 
-		assertEquals("DISCONNECT\n\n\0", new String(encoder.encode(frame)));
+		assertThat((Object) new String(encoder.encode(frame))).isEqualTo("DISCONNECT\n\n\0");
 	}
 
 	@Test
@@ -61,8 +61,7 @@ public class StompEncoderTests {
 		headers.addNativeHeader("a:\r\n\\b",  "alpha:bravo\r\n\\");
 		Message<byte[]> frame = MessageBuilder.createMessage(new byte[0], headers.getMessageHeaders());
 
-		assertEquals("DISCONNECT\na\\c\\r\\n\\\\b:alpha\\cbravo\\r\\n\\\\\n\n\0",
-				new String(encoder.encode(frame)));
+		assertThat((Object) new String(encoder.encode(frame))).isEqualTo("DISCONNECT\na\\c\\r\\n\\\\b:alpha\\cbravo\\r\\n\\\\\n\n\0");
 	}
 
 	@Test
@@ -72,8 +71,7 @@ public class StompEncoderTests {
 		Message<byte[]> frame = MessageBuilder.createMessage(
 				"Message body".getBytes(), headers.getMessageHeaders());
 
-		assertEquals("SEND\na:alpha\ncontent-length:12\n\nMessage body\0",
-				new String(encoder.encode(frame)));
+		assertThat((Object) new String(encoder.encode(frame))).isEqualTo("SEND\na:alpha\ncontent-length:12\n\nMessage body\0");
 	}
 
 	@Test
@@ -83,8 +81,7 @@ public class StompEncoderTests {
 		Message<byte[]> frame = MessageBuilder.createMessage(
 				"Message body".getBytes(), headers.getMessageHeaders());
 
-		assertEquals("SEND\ncontent-length:12\n\nMessage body\0",
-				new String(encoder.encode(frame)));
+		assertThat((Object) new String(encoder.encode(frame))).isEqualTo("SEND\ncontent-length:12\n\nMessage body\0");
 	}
 
 }

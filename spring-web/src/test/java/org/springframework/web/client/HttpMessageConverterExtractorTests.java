@@ -34,6 +34,7 @@ import org.springframework.http.converter.GenericHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
@@ -142,7 +143,7 @@ public class HttpMessageConverterExtractorTests {
 		given(converter.read(eq(String.class), any(HttpInputMessage.class))).willReturn(expected);
 
 		Object result = extractor.extractData(response);
-		assertEquals(expected, result);
+		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
@@ -179,7 +180,7 @@ public class HttpMessageConverterExtractorTests {
 		given(converter.read(eq(type), eq(null), any(HttpInputMessage.class))).willReturn(expected);
 
 		Object result = extractor.extractData(response);
-		assertEquals(expected, result);
+		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test  // SPR-13592

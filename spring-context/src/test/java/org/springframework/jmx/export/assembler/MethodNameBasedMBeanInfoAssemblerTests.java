@@ -71,7 +71,7 @@ public class MethodNameBasedMBeanInfoAssemblerTests extends AbstractJmxAssembler
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 
 		MBeanOperationInfo operationSetAge = info.getOperation("setName");
-		assertEquals("name", operationSetAge.getSignature()[0].getName());
+		assertThat((Object) operationSetAge.getSignature()[0].getName()).isEqualTo("name");
 	}
 
 	@Override

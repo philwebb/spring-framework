@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import org.springframework.messaging.simp.SimpMessageType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -73,28 +74,28 @@ public class StompCommandTests {
 	@Test
 	public void requiresDestination() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertEquals(destinationRequired.contains(stompCommand), stompCommand.requiresDestination());
+			assertThat((Object) stompCommand.requiresDestination()).isEqualTo(destinationRequired.contains(stompCommand));
 		}
 	}
 
 	@Test
 	public void requiresSubscriptionId() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertEquals(subscriptionIdRequired.contains(stompCommand), stompCommand.requiresSubscriptionId());
+			assertThat((Object) stompCommand.requiresSubscriptionId()).isEqualTo(subscriptionIdRequired.contains(stompCommand));
 		}
 	}
 
 	@Test
 	public void requiresContentLength() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertEquals(contentLengthRequired.contains(stompCommand), stompCommand.requiresContentLength());
+			assertThat((Object) stompCommand.requiresContentLength()).isEqualTo(contentLengthRequired.contains(stompCommand));
 		}
 	}
 
 	@Test
 	public void isBodyAllowed() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertEquals(bodyAllowed.contains(stompCommand), stompCommand.isBodyAllowed());
+			assertThat((Object) stompCommand.isBodyAllowed()).isEqualTo(bodyAllowed.contains(stompCommand));
 		}
 	}
 

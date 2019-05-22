@@ -92,11 +92,11 @@ public class ScriptTemplateViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		this.view.setApplicationContext(this.context);
-		assertEquals(engine, accessor.getPropertyValue("engine"));
-		assertEquals("Template", accessor.getPropertyValue("renderObject"));
-		assertEquals("render", accessor.getPropertyValue("renderFunction"));
-		assertEquals(StandardCharsets.ISO_8859_1, accessor.getPropertyValue("defaultCharset"));
-		assertEquals(true, accessor.getPropertyValue("sharedEngine"));
+		assertThat(accessor.getPropertyValue("engine")).isEqualTo(engine);
+		assertThat(accessor.getPropertyValue("renderObject")).isEqualTo("Template");
+		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
+		assertThat(accessor.getPropertyValue("defaultCharset")).isEqualTo(StandardCharsets.ISO_8859_1);
+		assertThat(accessor.getPropertyValue("sharedEngine")).isEqualTo(true);
 	}
 
 	@Test
@@ -107,11 +107,11 @@ public class ScriptTemplateViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		this.view.setApplicationContext(this.context);
-		assertEquals("nashorn", accessor.getPropertyValue("engineName"));
+		assertThat(accessor.getPropertyValue("engineName")).isEqualTo("nashorn");
 		assertNotNull(accessor.getPropertyValue("engine"));
-		assertEquals("Template", accessor.getPropertyValue("renderObject"));
-		assertEquals("render", accessor.getPropertyValue("renderFunction"));
-		assertEquals(StandardCharsets.UTF_8, accessor.getPropertyValue("defaultCharset"));
+		assertThat(accessor.getPropertyValue("renderObject")).isEqualTo("Template");
+		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
+		assertThat(accessor.getPropertyValue("defaultCharset")).isEqualTo(StandardCharsets.UTF_8);
 	}
 
 	@Test
@@ -123,11 +123,11 @@ public class ScriptTemplateViewTests {
 		this.view.setApplicationContext(this.context);
 		engine = this.view.getEngine();
 		assertNotNull(engine);
-		assertEquals("value", engine.get("key"));
+		assertThat(engine.get("key")).isEqualTo("value");
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		assertNull(accessor.getPropertyValue("renderObject"));
-		assertEquals("render", accessor.getPropertyValue("renderFunction"));
-		assertEquals(StandardCharsets.UTF_8, accessor.getPropertyValue("defaultCharset"));
+		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
+		assertThat(accessor.getPropertyValue("defaultCharset")).isEqualTo(StandardCharsets.UTF_8);
 	}
 
 	@Test

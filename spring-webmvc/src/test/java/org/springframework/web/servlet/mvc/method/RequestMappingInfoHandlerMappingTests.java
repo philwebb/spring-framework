@@ -105,7 +105,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		RequestMappingInfo info = RequestMappingInfo.paths(patterns).build();
 		Set<String> actual = this.handlerMapping.getMappingPathPatterns(info);
 
-		assertEquals(new HashSet<>(Arrays.asList(patterns)), actual);
+		assertThat((Object) actual).isEqualTo(new HashSet<>(Arrays.asList(patterns)));
 	}
 
 	@Test
@@ -113,14 +113,14 @@ public class RequestMappingInfoHandlerMappingTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
 		HandlerMethod handlerMethod = getHandler(request);
 
-		assertEquals(this.fooMethod.getMethod(), handlerMethod.getMethod());
+		assertThat((Object) handlerMethod.getMethod()).isEqualTo(this.fooMethod.getMethod());
 	}
 
 	@Test
 	public void getHandlerGlobMatch() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/bar");
 		HandlerMethod handlerMethod = getHandler(request);
-		assertEquals(this.barMethod.getMethod(), handlerMethod.getMethod());
+		assertThat((Object) handlerMethod.getMethod()).isEqualTo(this.barMethod.getMethod());
 	}
 
 	@Test
@@ -128,12 +128,12 @@ public class RequestMappingInfoHandlerMappingTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "");
 		HandlerMethod handlerMethod = getHandler(request);
 
-		assertEquals(this.emptyMethod.getMethod(), handlerMethod.getMethod());
+		assertThat((Object) handlerMethod.getMethod()).isEqualTo(this.emptyMethod.getMethod());
 
 		request = new MockHttpServletRequest("GET", "/");
 		handlerMethod = getHandler(request);
 
-		assertEquals(this.emptyMethod.getMethod(), handlerMethod.getMethod());
+		assertThat((Object) handlerMethod.getMethod()).isEqualTo(this.emptyMethod.getMethod());
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		request.setParameter("p", "anything");
 		HandlerMethod handlerMethod = getHandler(request);
 
-		assertEquals(this.fooParamMethod.getMethod(), handlerMethod.getMethod());
+		assertThat((Object) handlerMethod.getMethod()).isEqualTo(this.fooParamMethod.getMethod());
 	}
 
 	@Test
@@ -209,7 +209,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		this.handlerMapping.getHandler(request);
 
 		String name = HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE;
-		assertEquals(Collections.singleton(MediaType.APPLICATION_XML), request.getAttribute(name));
+		assertThat(request.getAttribute(name)).isEqualTo(Collections.singleton(MediaType.APPLICATION_XML));
 
 		request = new MockHttpServletRequest("GET", "/content");
 		request.addHeader("Accept", "application/json");
@@ -250,8 +250,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		Map<String, String> uriVariables = (Map<String, String>) request.getAttribute(name);
 
 		assertNotNull(uriVariables);
-		assertEquals("1", uriVariables.get("path1"));
-		assertEquals("2", uriVariables.get("path2"));
+		assertThat((Object) uriVariables.get("path1")).isEqualTo("1");
+		assertThat((Object) uriVariables.get("path2")).isEqualTo("2");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -271,8 +271,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		Map<String, String> uriVariables = (Map<String, String>) request.getAttribute(name);
 
 		assertNotNull(uriVariables);
-		assertEquals("group", uriVariables.get("group"));
-		assertEquals("a/b", uriVariables.get("identifier"));
+		assertThat((Object) uriVariables.get("group")).isEqualTo("group");
+		assertThat((Object) uriVariables.get("identifier")).isEqualTo("a/b");
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/1/2");
 		this.handlerMapping.handleMatch(key, "/1/2", request);
 
-		assertEquals("/{path1}/2", request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE));
+		assertThat(request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE)).isEqualTo("/{path1}/2");
 	}
 
 	@Test // gh-22543
@@ -289,7 +289,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		String path = "";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", path);
 		this.handlerMapping.handleMatch(RequestMappingInfo.paths().build(), path, request);
-		assertEquals(path, request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE));
+		assertThat(request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE)).isEqualTo(path);
 	}
 
 	@Test
@@ -306,9 +306,9 @@ public class RequestMappingInfoHandlerMappingTests {
 		uriVariables = getUriTemplateVariables(request);
 
 		assertNotNull(matrixVariables);
-		assertEquals(Arrays.asList("red", "blue", "green"), matrixVariables.get("colors"));
-		assertEquals("2012", matrixVariables.getFirst("year"));
-		assertEquals("cars", uriVariables.get("cars"));
+		assertThat((Object) matrixVariables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
+		assertThat((Object) matrixVariables.getFirst("year")).isEqualTo("2012");
+		assertThat((Object) uriVariables.get("cars")).isEqualTo("cars");
 
 		// URI var with regex for path variable, and URI var for matrix params..
 		request = new MockHttpServletRequest();
@@ -318,10 +318,10 @@ public class RequestMappingInfoHandlerMappingTests {
 		uriVariables = getUriTemplateVariables(request);
 
 		assertNotNull(matrixVariables);
-		assertEquals(Arrays.asList("red", "blue", "green"), matrixVariables.get("colors"));
-		assertEquals("2012", matrixVariables.getFirst("year"));
-		assertEquals("cars", uriVariables.get("cars"));
-		assertEquals(";colors=red,blue,green;year=2012", uriVariables.get("params"));
+		assertThat((Object) matrixVariables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
+		assertThat((Object) matrixVariables.getFirst("year")).isEqualTo("2012");
+		assertThat((Object) uriVariables.get("cars")).isEqualTo("cars");
+		assertThat((Object) uriVariables.get("params")).isEqualTo(";colors=red,blue,green;year=2012");
 
 		// URI var with regex for path variable, and (empty) URI var for matrix params..
 		request = new MockHttpServletRequest();
@@ -331,8 +331,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		uriVariables = getUriTemplateVariables(request);
 
 		assertNull(matrixVariables);
-		assertEquals("cars", uriVariables.get("cars"));
-		assertEquals("", uriVariables.get("params"));
+		assertThat((Object) uriVariables.get("cars")).isEqualTo("cars");
+		assertThat((Object) uriVariables.get("params")).isEqualTo("");
 
 		// SPR-11897
 		request = new MockHttpServletRequest();
@@ -343,9 +343,9 @@ public class RequestMappingInfoHandlerMappingTests {
 
 		assertNotNull(matrixVariables);
 		assertEquals(2, matrixVariables.size());
-		assertEquals("42", matrixVariables.getFirst("a"));
-		assertEquals("c", matrixVariables.getFirst("b"));
-		assertEquals("a=42", uriVariables.get("foo"));
+		assertThat((Object) matrixVariables.getFirst("a")).isEqualTo("42");
+		assertThat((Object) matrixVariables.getFirst("b")).isEqualTo("c");
+		assertThat((Object) uriVariables.get("foo")).isEqualTo("a=42");
 	}
 
 	@Test // SPR-10140, SPR-16867
@@ -366,8 +366,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		Map<String, String> uriVariables = getUriTemplateVariables(request);
 
 		assertNotNull(matrixVariables);
-		assertEquals(Collections.singletonList("a/b"), matrixVariables.get("mvar"));
-		assertEquals("cars", uriVariables.get("cars"));
+		assertThat((Object) matrixVariables.get("mvar")).isEqualTo(Collections.singletonList("a/b"));
+		assertThat((Object) uriVariables.get("cars")).isEqualTo("cars");
 	}
 
 
@@ -394,8 +394,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		Object result = new InvocableHandlerMethod(handlerMethod).invokeForRequest(webRequest, mavContainer);
 
 		assertNotNull(result);
-		assertEquals(HttpHeaders.class, result.getClass());
-		assertEquals(allowHeader, ((HttpHeaders) result).getFirst("Allow"));
+		assertThat((Object) result.getClass()).isEqualTo(HttpHeaders.class);
+		assertThat((Object) ((HttpHeaders) result).getFirst("Allow")).isEqualTo(allowHeader);
 	}
 
 	private void testHttpMediaTypeNotAcceptableException(String url) throws Exception {

@@ -29,6 +29,7 @@ import org.springframework.cache.interceptor.NamedCacheResolver;
 import org.springframework.cache.jcache.AbstractJCacheTests;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -89,8 +90,8 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 		CacheOperationInvoker invoker = new DummyInvoker(0L);
 		Object execute = interceptor.execute(invoker, service, method, new Object[] {"myId"});
 		assertNotNull("result cannot be null.", execute);
-		assertEquals("Wrong result type", Long.class, execute.getClass());
-		assertEquals("Wrong result", 0L, execute);
+		assertThat((Object) execute.getClass()).as("Wrong result type").isEqualTo(Long.class);
+		assertThat(execute).as("Wrong result").isEqualTo(0L);
 	}
 
 	protected JCacheOperationSource createOperationSource(CacheManager cacheManager,

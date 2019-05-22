@@ -54,7 +54,7 @@ public class ImportResourceTests {
 		assertThat(ctx.containsBean("javaDeclaredBean")).as("did not contain java-declared bean").isTrue();
 		assertThat(ctx.containsBean("xmlDeclaredBean")).as("did not contain xml-declared bean").isTrue();
 		TestBean tb = ctx.getBean("javaDeclaredBean", TestBean.class);
-		assertEquals("myName", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("myName");
 		ctx.close();
 	}
 
@@ -87,7 +87,7 @@ public class ImportResourceTests {
 		assertThat(ctx.containsBean("javaDeclaredBean")).as("did not contain java-declared bean").isTrue();
 		assertThat(ctx.containsBean("xmlDeclaredBean")).as("did not contain xml-declared bean").isTrue();
 		TestBean tb = ctx.getBean("javaDeclaredBean", TestBean.class);
-		assertEquals("myName", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("myName");
 		ctx.close();
 	}
 

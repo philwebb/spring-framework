@@ -38,6 +38,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.broker.BrokerAvailabilityEvent;
 import org.springframework.scheduling.TaskScheduler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -128,7 +129,7 @@ public class UserRegistryMessageHandlerTests {
 		Message<?> message = captor.getValue();
 		assertNotNull(message);
 		MessageHeaders headers = message.getHeaders();
-		assertEquals("/topic/simp-user-registry", SimpMessageHeaderAccessor.getDestination(headers));
+		assertThat((Object) SimpMessageHeaderAccessor.getDestination(headers)).isEqualTo("/topic/simp-user-registry");
 
 		MultiServerUserRegistry remoteRegistry = new MultiServerUserRegistry(mock(SimpUserRegistry.class));
 		remoteRegistry.addRemoteRegistryDto(message, this.converter, 20000);

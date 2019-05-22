@@ -69,8 +69,8 @@ public class MultipleComposedAnnotationsOnSingleAnnotatedElementTests {
 		Iterator<Cacheable> iterator = cacheables.iterator();
 		Cacheable cacheable1 = iterator.next();
 		Cacheable cacheable2 = iterator.next();
-		assertEquals("noninheritedCache1", cacheable1.value());
-		assertEquals("noninheritedCache2", cacheable2.value());
+		assertThat((Object) cacheable1.value()).isEqualTo("noninheritedCache1");
+		assertThat((Object) cacheable2.value()).isEqualTo("noninheritedCache2");
 	}
 
 	@Test
@@ -134,8 +134,8 @@ public class MultipleComposedAnnotationsOnSingleAnnotatedElementTests {
 		Iterator<Cacheable> iterator = cacheables.iterator();
 		Cacheable cacheable1 = iterator.next();
 		Cacheable cacheable2 = iterator.next();
-		assertEquals("noninheritedCache1", cacheable1.value());
-		assertEquals("noninheritedCache2", cacheable2.value());
+		assertThat((Object) cacheable1.value()).isEqualTo("noninheritedCache1");
+		assertThat((Object) cacheable2.value()).isEqualTo("noninheritedCache2");
 	}
 
 	@Test
@@ -148,8 +148,8 @@ public class MultipleComposedAnnotationsOnSingleAnnotatedElementTests {
 		Iterator<Cacheable> iterator = cacheables.iterator();
 		Cacheable cacheable1 = iterator.next();
 		Cacheable cacheable2 = iterator.next();
-		assertEquals("noninheritedCache1", cacheable1.value());
-		assertEquals("noninheritedCache2", cacheable2.value());
+		assertThat((Object) cacheable1.value()).isEqualTo("noninheritedCache1");
+		assertThat((Object) cacheable2.value()).isEqualTo("noninheritedCache2");
 	}
 
 	@Test
@@ -220,10 +220,10 @@ public class MultipleComposedAnnotationsOnSingleAnnotatedElementTests {
 		Iterator<Cacheable> iterator = cacheables.iterator();
 		Cacheable fooCacheable = iterator.next();
 		Cacheable barCacheable = iterator.next();
-		assertEquals("fooKey", fooCacheable.key());
-		assertEquals("fooCache", fooCacheable.value());
-		assertEquals("barKey", barCacheable.key());
-		assertEquals("barCache", barCacheable.value());
+		assertThat((Object) fooCacheable.key()).isEqualTo("fooKey");
+		assertThat((Object) fooCacheable.value()).isEqualTo("fooCache");
+		assertThat((Object) barCacheable.key()).isEqualTo("barKey");
+		assertThat((Object) barCacheable.value()).isEqualTo("barCache");
 	}
 
 	private void assertFindAllMergedAnnotationsBehavior(AnnotatedElement element) {
@@ -236,10 +236,10 @@ public class MultipleComposedAnnotationsOnSingleAnnotatedElementTests {
 		Iterator<Cacheable> iterator = cacheables.iterator();
 		Cacheable fooCacheable = iterator.next();
 		Cacheable barCacheable = iterator.next();
-		assertEquals("fooKey", fooCacheable.key());
-		assertEquals("fooCache", fooCacheable.value());
-		assertEquals("barKey", barCacheable.key());
-		assertEquals("barCache", barCacheable.value());
+		assertThat((Object) fooCacheable.key()).isEqualTo("fooKey");
+		assertThat((Object) fooCacheable.value()).isEqualTo("fooCache");
+		assertThat((Object) barCacheable.key()).isEqualTo("barKey");
+		assertThat((Object) barCacheable.value()).isEqualTo("barCache");
 	}
 
 

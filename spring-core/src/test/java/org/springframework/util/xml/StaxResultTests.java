@@ -36,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma
@@ -63,7 +62,7 @@ public class StaxResultTests {
 		Reader reader = new StringReader(XML);
 		Source source = new StreamSource(reader);
 		StaxResult result = new StaxResult(streamWriter);
-		assertEquals("Invalid streamWriter returned", streamWriter, result.getXMLStreamWriter());
+		assertThat((Object) result.getXMLStreamWriter()).as("Invalid streamWriter returned").isEqualTo(streamWriter);
 		assertNull("EventWriter returned", result.getXMLEventWriter());
 		transformer.transform(source, result);
 		assertThat(XmlContent.from(stringWriter)).as("Invalid result").isSimilarTo(XML);
@@ -76,7 +75,7 @@ public class StaxResultTests {
 		Reader reader = new StringReader(XML);
 		Source source = new StreamSource(reader);
 		StaxResult result = new StaxResult(eventWriter);
-		assertEquals("Invalid eventWriter returned", eventWriter, result.getXMLEventWriter());
+		assertThat((Object) result.getXMLEventWriter()).as("Invalid eventWriter returned").isEqualTo(eventWriter);
 		assertNull("StreamWriter returned", result.getXMLStreamWriter());
 		transformer.transform(source, result);
 		assertThat(XmlContent.from(stringWriter)).as("Invalid result").isSimilarTo(XML);

@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import org.springframework.expression.spel.standard.SpelExpression;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -79,7 +80,7 @@ public class InProgressTests extends AbstractExpressionTests {
 	@Test
 	public void testProjection06() throws Exception {
 		SpelExpression expr = (SpelExpression) parser.parseExpression("'abc'.![true]");
-		assertEquals("'abc'.![true]", expr.toStringAST());
+		assertThat((Object) expr.toStringAST()).isEqualTo("'abc'.![true]");
 	}
 
 	// SELECTION
@@ -142,11 +143,11 @@ public class InProgressTests extends AbstractExpressionTests {
 	@Test
 	public void testSelectionAST() throws Exception {
 		SpelExpression expr = (SpelExpression) parser.parseExpression("'abc'.^[true]");
-		assertEquals("'abc'.^[true]", expr.toStringAST());
+		assertThat((Object) expr.toStringAST()).isEqualTo("'abc'.^[true]");
 		expr = (SpelExpression) parser.parseExpression("'abc'.?[true]");
-		assertEquals("'abc'.?[true]", expr.toStringAST());
+		assertThat((Object) expr.toStringAST()).isEqualTo("'abc'.?[true]");
 		expr = (SpelExpression) parser.parseExpression("'abc'.$[true]");
-		assertEquals("'abc'.$[true]", expr.toStringAST());
+		assertThat((Object) expr.toStringAST()).isEqualTo("'abc'.$[true]");
 	}
 
 	// Constructor invocation

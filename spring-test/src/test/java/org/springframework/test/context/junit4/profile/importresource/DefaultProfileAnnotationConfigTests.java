@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -47,7 +48,7 @@ public class DefaultProfileAnnotationConfigTests {
 	@Test
 	public void pet() {
 		assertNotNull(pet);
-		assertEquals("Fido", pet.getName());
+		assertThat((Object) pet.getName()).isEqualTo("Fido");
 	}
 
 	@Test

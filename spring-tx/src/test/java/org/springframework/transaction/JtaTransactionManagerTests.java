@@ -80,7 +80,7 @@ public class JtaTransactionManagerTests {
 				// something transactional
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 				TransactionSynchronizationManager.registerSynchronization(synch);
-				assertEquals("txName", TransactionSynchronizationManager.getCurrentTransactionName());
+				assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isEqualTo("txName");
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			}
 		});
@@ -168,7 +168,7 @@ public class JtaTransactionManagerTests {
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 				TransactionSynchronizationManager.registerSynchronization(synch);
-				assertEquals("txName", TransactionSynchronizationManager.getCurrentTransactionName());
+				assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isEqualTo("txName");
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 				status.setRollbackOnly();
 			}
@@ -587,7 +587,7 @@ public class JtaTransactionManagerTests {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
-				assertEquals("txName", TransactionSynchronizationManager.getCurrentTransactionName());
+				assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isEqualTo("txName");
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 				TransactionTemplate tt2 = new TransactionTemplate(ptm);
@@ -598,13 +598,13 @@ public class JtaTransactionManagerTests {
 					@Override
 					protected void doInTransactionWithoutResult(TransactionStatus status) {
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
-						assertEquals("txName2", TransactionSynchronizationManager.getCurrentTransactionName());
+						assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isEqualTo("txName2");
 						assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isTrue();
 					}
 				});
 
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
-				assertEquals("txName", TransactionSynchronizationManager.getCurrentTransactionName());
+				assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isEqualTo("txName");
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			}
 		});

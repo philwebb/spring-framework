@@ -26,6 +26,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -50,7 +51,7 @@ public class ContentBasedVersionStrategyTests {
 		String hash = "7fbe76cdac6093784895bb4989203e5a";
 		String path = "font-awesome/css/font-awesome.min-" + hash + ".css";
 
-		assertEquals(hash, this.strategy.extractVersion(path));
+		assertThat((Object) this.strategy.extractVersion(path)).isEqualTo(hash);
 		assertNull(this.strategy.extractVersion("foo/bar.css"));
 	}
 
@@ -59,8 +60,7 @@ public class ContentBasedVersionStrategyTests {
 		String hash = "7fbe76cdac6093784895bb4989203e5a";
 		String path = "font-awesome/css/font-awesome.min%s%s.css";
 
-		assertEquals(String.format(path, "", ""),
-				this.strategy.removeVersion(String.format(path, "-", hash), hash));
+		assertThat((Object) this.strategy.removeVersion(String.format(path, "-", hash), hash)).isEqualTo(String.format(path, "", ""));
 	}
 
 	@Test
@@ -68,12 +68,12 @@ public class ContentBasedVersionStrategyTests {
 		Resource expected = new ClassPathResource("test/bar.css", getClass());
 		String hash = DigestUtils.md5DigestAsHex(FileCopyUtils.copyToByteArray(expected.getInputStream()));
 
-		assertEquals(hash, this.strategy.getResourceVersion(expected).block());
+		assertThat((Object) this.strategy.getResourceVersion(expected).block()).isEqualTo(hash);
 	}
 
 	@Test
 	public void addVersionToUrl() {
-		assertEquals("test/bar-123.css", this.strategy.addVersion("test/bar.css", "123"));
+		assertThat((Object) this.strategy.addVersion("test/bar.css", "123")).isEqualTo("test/bar-123.css");
 	}
 
 }

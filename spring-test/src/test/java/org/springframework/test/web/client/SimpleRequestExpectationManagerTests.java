@@ -26,6 +26,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static org.springframework.http.HttpMethod.GET;
@@ -55,8 +56,8 @@ public class SimpleRequestExpectationManagerTests {
 			this.manager.validateRequest(createRequest(GET, "/foo"));
 		}
 		catch (AssertionError error) {
-			assertEquals("No further requests expected: HTTP GET /foo\n" +
-					"0 request(s) executed.\n", error.getMessage());
+			assertThat((Object) error.getMessage()).isEqualTo(("No further requests expected: HTTP GET /foo\n" +
+						"0 request(s) executed.\n"));
 		}
 	}
 

@@ -37,7 +37,7 @@ public class ResourceTests {
 		MockServletContext sc = new MockServletContext();
 		Resource resource = new ServletContextResource(sc, "org/springframework/core/io/Resource.class");
 		doTestResource(resource);
-		assertEquals(resource, new ServletContextResource(sc, "org/springframework/core/../core/io/./Resource.class"));
+		assertThat((Object) new ServletContextResource(sc, "org/springframework/core/../core/io/./Resource.class")).isEqualTo(resource);
 	}
 
 	@Test
@@ -45,20 +45,20 @@ public class ResourceTests {
 		MockServletContext sc = new MockServletContext();
 		Resource resource = new ServletContextResource(sc, "dir/");
 		Resource relative = resource.createRelative("subdir");
-		assertEquals(new ServletContextResource(sc, "dir/subdir"), relative);
+		assertThat((Object) relative).isEqualTo(new ServletContextResource(sc, "dir/subdir"));
 	}
 
 	private void doTestResource(Resource resource) throws IOException {
-		assertEquals("Resource.class", resource.getFilename());
+		assertThat((Object) resource.getFilename()).isEqualTo("Resource.class");
 		assertThat(resource.getURL().getFile().endsWith("Resource.class")).isTrue();
 
 		Resource relative1 = resource.createRelative("ClassPathResource.class");
-		assertEquals("ClassPathResource.class", relative1.getFilename());
+		assertThat((Object) relative1.getFilename()).isEqualTo("ClassPathResource.class");
 		assertThat(relative1.getURL().getFile().endsWith("ClassPathResource.class")).isTrue();
 		assertThat(relative1.exists()).isTrue();
 
 		Resource relative2 = resource.createRelative("support/ResourcePatternResolver.class");
-		assertEquals("ResourcePatternResolver.class", relative2.getFilename());
+		assertThat((Object) relative2.getFilename()).isEqualTo("ResourcePatternResolver.class");
 		assertThat(relative2.getURL().getFile().endsWith("ResourcePatternResolver.class")).isTrue();
 		assertThat(relative2.exists()).isTrue();
 	}

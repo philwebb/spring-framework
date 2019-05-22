@@ -72,7 +72,7 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 
 		handler.handleReturnValue(testBean, returnType, mavContainer, request);
 
-		assertEquals("viewName", mavContainer.getViewName());
+		assertThat((Object) mavContainer.getViewName()).isEqualTo("viewName");
 		assertSame(testBean, mavContainer.getModel().get("modelAttrName"));
 		assertThat(mavContainer.isRequestHandled()).isFalse();
 	}

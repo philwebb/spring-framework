@@ -44,6 +44,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -84,7 +85,7 @@ public class JCacheJavaConfigTests extends AbstractJCacheAnnotationTests {
 
 		DefaultJCacheOperationSource cos = context.getBean(DefaultJCacheOperationSource.class);
 		assertNotNull(cos.getCacheResolver());
-		assertEquals(SimpleCacheResolver.class, cos.getCacheResolver().getClass());
+		assertThat((Object) cos.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
 		assertSame(context.getBean(CacheManager.class),
 				((SimpleCacheResolver) cos.getCacheResolver()).getCacheManager());
 		assertNull(cos.getExceptionCacheResolver());

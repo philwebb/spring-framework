@@ -63,7 +63,7 @@ public class ResourceArrayPropertyEditorTests {
 		try {
 			editor.setAsText("${test.prop}-${bar}");
 			Resource[] resources = (Resource[]) editor.getValue();
-			assertEquals("foo-${bar}", resources[0].getFilename());
+			assertThat((Object) resources[0].getFilename()).isEqualTo("foo-${bar}");
 		}
 		finally {
 			System.getProperties().remove("test.prop");

@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 
@@ -36,7 +37,7 @@ public class PropertyPlaceholderHelperTests {
 		Properties props = new Properties();
 		props.setProperty("foo", "bar");
 
-		assertEquals("foo=bar", this.helper.replacePlaceholders(text, props));
+		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
 	}
 
 	@Test
@@ -46,7 +47,7 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("foo", "bar");
 		props.setProperty("bar", "baz");
 
-		assertEquals("foo=bar,bar=baz", this.helper.replacePlaceholders(text, props));
+		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar,bar=baz");
 	}
 
 	@Test
@@ -56,7 +57,7 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("bar", "${baz}");
 		props.setProperty("baz", "bar");
 
-		assertEquals("foo=bar", this.helper.replacePlaceholders(text, props));
+		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
 	}
 
 	@Test
@@ -66,7 +67,7 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("bar", "bar");
 		props.setProperty("inner", "ar");
 
-		assertEquals("foo=bar", this.helper.replacePlaceholders(text, props));
+		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
 
 		text = "${top}";
 		props = new Properties();
@@ -75,25 +76,23 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("differentiator", "first");
 		props.setProperty("first.grandchild", "actualValue");
 
-		assertEquals("actualValue+actualValue", this.helper.replacePlaceholders(text, props));
+		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("actualValue+actualValue");
 	}
 
 	@Test
 	public void testWithResolver() {
 		String text = "foo=${foo}";
 
-		assertEquals("foo=bar",
-				this.helper.replacePlaceholders(text, new PropertyPlaceholderHelper.PlaceholderResolver() {
-					@Override
-					public String resolvePlaceholder(String placeholderName) {
-						if ("foo".equals(placeholderName)) {
-							return "bar";
-						}
-						else {
-							return null;
-						}
-					}
-				}));
+		assertThat((Object) this.helper.replacePlaceholders(text, new PropertyPlaceholderHelper.PlaceholderResolver() {
+			@Override
+			public String resolvePlaceholder(String placeholderName) {
+				if ("foo".equals(placeholderName)) {
+					return "bar";
+				} else {
+					return null;
+				}
+			}
+		})).isEqualTo("foo=bar");
 	}
 
 	@Test
@@ -102,7 +101,7 @@ public class PropertyPlaceholderHelperTests {
 		Properties props = new Properties();
 		props.setProperty("foo", "bar");
 
-		assertEquals("foo=bar,bar=${bar}", this.helper.replacePlaceholders(text, props));
+		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar,bar=${bar}");
 	}
 
 	@Test

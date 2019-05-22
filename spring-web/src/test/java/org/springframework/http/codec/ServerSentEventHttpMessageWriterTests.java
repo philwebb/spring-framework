@@ -126,12 +126,12 @@ public class ServerSentEventHttpMessageWriterTests extends AbstractDataBufferAll
 		MediaType mediaType = new MediaType("text", "event-stream", charset);
 		testWrite(source, mediaType, outputMessage, String.class);
 
-		assertEquals(mediaType, outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).isEqualTo(mediaType);
 		StepVerifier.create(outputMessage.getBody())
 				.consumeNextWith(dataBuffer -> {
 					String value = DataBufferTestUtils.dumpString(dataBuffer, charset);
 					DataBufferUtils.release(dataBuffer);
-					assertEquals("data:\u00A3\n\n", value);
+					assertThat((Object) value).isEqualTo("data:\u00A3\n\n");
 				})
 				.expectComplete()
 				.verify();
@@ -175,12 +175,12 @@ public class ServerSentEventHttpMessageWriterTests extends AbstractDataBufferAll
 		MediaType mediaType = new MediaType("text", "event-stream", charset);
 		testWrite(source, mediaType, outputMessage, Pojo.class);
 
-		assertEquals(mediaType, outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).isEqualTo(mediaType);
 		StepVerifier.create(outputMessage.getBody())
 				.consumeNextWith(dataBuffer -> {
 					String value = DataBufferTestUtils.dumpString(dataBuffer, charset);
 					DataBufferUtils.release(dataBuffer);
-					assertEquals("data:{\"foo\":\"foo\uD834\uDD1E\",\"bar\":\"bar\uD834\uDD1E\"}\n\n", value);
+					assertThat((Object) value).isEqualTo("data:{\"foo\":\"foo\uD834\uDD1E\",\"bar\":\"bar\uD834\uDD1E\"}\n\n");
 				})
 				.expectComplete()
 				.verify();

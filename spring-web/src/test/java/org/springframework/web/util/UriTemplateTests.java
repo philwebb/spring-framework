@@ -40,14 +40,14 @@ public class UriTemplateTests {
 	public void getVariableNames() throws Exception {
 		UriTemplate template = new UriTemplate("/hotels/{hotel}/bookings/{booking}");
 		List<String> variableNames = template.getVariableNames();
-		assertEquals("Invalid variable names", Arrays.asList("hotel", "booking"), variableNames);
+		assertThat((Object) variableNames).as("Invalid variable names").isEqualTo(Arrays.asList("hotel", "booking"));
 	}
 
 	@Test
 	public void expandVarArgs() throws Exception {
 		UriTemplate template = new UriTemplate("/hotels/{hotel}/bookings/{booking}");
 		URI result = template.expand("1", "42");
-		assertEquals("Invalid expanded template", new URI("/hotels/1/bookings/42"), result);
+		assertThat((Object) result).as("Invalid expanded template").isEqualTo(new URI("/hotels/1/bookings/42"));
 	}
 
 	// SPR-9712
@@ -56,7 +56,7 @@ public class UriTemplateTests {
 	public void expandVarArgsWithArrayValue() throws Exception {
 		UriTemplate template = new UriTemplate("/sum?numbers={numbers}");
 		URI result = template.expand(new int[] {1, 2, 3});
-		assertEquals(new URI("/sum?numbers=1,2,3"), result);
+		assertThat((Object) result).isEqualTo(new URI("/sum?numbers=1,2,3"));
 	}
 
 	@Test
@@ -73,15 +73,15 @@ public class UriTemplateTests {
 		uriVariables.put("hotel", "1");
 		UriTemplate template = new UriTemplate("/hotels/{hotel}/bookings/{booking}");
 		URI result = template.expand(uriVariables);
-		assertEquals("Invalid expanded template", new URI("/hotels/1/bookings/42"), result);
+		assertThat((Object) result).as("Invalid expanded template").isEqualTo(new URI("/hotels/1/bookings/42"));
 	}
 
 	@Test
 	public void expandMapDuplicateVariables() throws Exception {
 		UriTemplate template = new UriTemplate("/order/{c}/{c}/{c}");
-		assertEquals(Arrays.asList("c", "c", "c"), template.getVariableNames());
+		assertThat((Object) template.getVariableNames()).isEqualTo(Arrays.asList("c", "c", "c"));
 		URI result = template.expand(Collections.singletonMap("c", "cheeseburger"));
-		assertEquals(new URI("/order/cheeseburger/cheeseburger/cheeseburger"), result);
+		assertThat((Object) result).isEqualTo(new URI("/order/cheeseburger/cheeseburger/cheeseburger"));
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class UriTemplateTests {
 		uriVariables.put("hotel", 1);
 		UriTemplate template = new UriTemplate("/hotels/{hotel}/bookings/{booking}");
 		URI result = template.expand(uriVariables);
-		assertEquals("Invalid expanded template", new URI("/hotels/1/bookings/42"), result);
+		assertThat((Object) result).as("Invalid expanded template").isEqualTo(new URI("/hotels/1/bookings/42"));
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class UriTemplateTests {
 		Map<String, String> uriVariables = Collections.singletonMap("hotel", "Z\u00fcrich");
 		UriTemplate template = new UriTemplate("/hotel list/{hotel}");
 		URI result = template.expand(uriVariables);
-		assertEquals("Invalid expanded template", new URI("/hotel%20list/Z%C3%BCrich"), result);
+		assertThat((Object) result).as("Invalid expanded template").isEqualTo(new URI("/hotel%20list/Z%C3%BCrich"));
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class UriTemplateTests {
 	public void expandEncoded() throws Exception {
 		UriTemplate template = new UriTemplate("/hotel list/{hotel}");
 		URI result = template.expand("Z\u00fcrich");
-		assertEquals("Invalid expanded template", new URI("/hotel%20list/Z%C3%BCrich"), result);
+		assertThat((Object) result).as("Invalid expanded template").isEqualTo(new URI("/hotel%20list/Z%C3%BCrich"));
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class UriTemplateTests {
 
 		UriTemplate template = new UriTemplate("/hotels/{hotel}/bookings/{booking}");
 		Map<String, String> result = template.match("/hotels/1/bookings/42");
-		assertEquals("Invalid match", expected, result);
+		assertThat((Object) result).as("Invalid match").isEqualTo(expected);
 	}
 
 	@Test
@@ -154,14 +154,14 @@ public class UriTemplateTests {
 
 		UriTemplate template = new UriTemplate("/hotels/{hotel:\\d}/bookings/{booking:\\d+}");
 		Map<String, String> result = template.match("/hotels/1/bookings/42");
-		assertEquals("Invalid match", expected, result);
+		assertThat((Object) result).as("Invalid match").isEqualTo(expected);
 	}
 
 	@Test // SPR-13627
 	public void matchCustomRegexWithNestedCurlyBraces() throws Exception {
 		UriTemplate template = new UriTemplate("/site.{domain:co.[a-z]{2}}");
 		Map<String, String> result = template.match("/site.co.eu");
-		assertEquals("Invalid match", Collections.singletonMap("domain", "co.eu"), result);
+		assertThat((Object) result).as("Invalid match").isEqualTo(Collections.singletonMap("domain", "co.eu"));
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class UriTemplateTests {
 		UriTemplate template = new UriTemplate("/order/{c}/{c}/{c}");
 		Map<String, String> result = template.match("/order/cheeseburger/cheeseburger/cheeseburger");
 		Map<String, String> expected = Collections.singletonMap("c", "cheeseburger");
-		assertEquals("Invalid match", expected, result);
+		assertThat((Object) result).as("Invalid match").isEqualTo(expected);
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class UriTemplateTests {
 		Map<String, String> expected = new HashMap<>(2);
 		expected.put("foo", "12");
 		expected.put("bar", "34");
-		assertEquals("Invalid match", expected, result);
+		assertThat((Object) result).as("Invalid match").isEqualTo(expected);
 	}
 
 	@Test // SPR-16169
@@ -213,14 +213,14 @@ public class UriTemplateTests {
 	public void expandWithDollar() {
 		UriTemplate template = new UriTemplate("/{a}");
 		URI uri = template.expand("$replacement");
-		assertEquals("/$replacement", uri.toString());
+		assertThat((Object) uri.toString()).isEqualTo("/$replacement");
 	}
 
 	@Test
 	public void expandWithAtSign() {
 		UriTemplate template = new UriTemplate("http://localhost/query={query}");
 		URI uri = template.expand("foo@bar");
-		assertEquals("http://localhost/query=foo@bar", uri.toString());
+		assertThat((Object) uri.toString()).isEqualTo("http://localhost/query=foo@bar");
 	}
 
 }

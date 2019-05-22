@@ -28,8 +28,7 @@ import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.jms.listener.endpoint.JmsActivationSpecConfig;
 import org.springframework.jms.listener.endpoint.JmsMessageEndpointManager;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -50,12 +49,12 @@ public class JmsListenerEndpointTests {
 		endpoint.setMessageListener(messageListener);
 
 		endpoint.setupListenerContainer(container);
-		assertEquals("myQueue", container.getDestinationName());
-		assertEquals("foo = 'bar'", container.getMessageSelector());
-		assertEquals("mySubscription", container.getSubscriptionName());
+		assertThat((Object) container.getDestinationName()).isEqualTo("myQueue");
+		assertThat((Object) container.getMessageSelector()).isEqualTo("foo = 'bar'");
+		assertThat((Object) container.getSubscriptionName()).isEqualTo("mySubscription");
 		assertEquals(5, container.getConcurrentConsumers());
 		assertEquals(10, container.getMaxConcurrentConsumers());
-		assertEquals(messageListener, container.getMessageListener());
+		assertThat(container.getMessageListener()).isEqualTo(messageListener);
 	}
 
 	@Test
@@ -71,11 +70,11 @@ public class JmsListenerEndpointTests {
 
 		endpoint.setupListenerContainer(container);
 		JmsActivationSpecConfig config = container.getActivationSpecConfig();
-		assertEquals("myQueue", config.getDestinationName());
-		assertEquals("foo = 'bar'", config.getMessageSelector());
-		assertEquals("mySubscription", config.getSubscriptionName());
+		assertThat((Object) config.getDestinationName()).isEqualTo("myQueue");
+		assertThat((Object) config.getMessageSelector()).isEqualTo("foo = 'bar'");
+		assertThat((Object) config.getSubscriptionName()).isEqualTo("mySubscription");
 		assertEquals(10, config.getMaxConcurrency());
-		assertEquals(messageListener, container.getMessageListener());
+		assertThat((Object) container.getMessageListener()).isEqualTo(messageListener);
 	}
 
 	@Test
@@ -87,7 +86,7 @@ public class JmsListenerEndpointTests {
 		endpoint.setMessageListener(messageListener);
 
 		endpoint.setupListenerContainer(container);
-		assertEquals(10, new DirectFieldAccessor(container).getPropertyValue("concurrentConsumers"));
+		assertThat(new DirectFieldAccessor(container).getPropertyValue("concurrentConsumers")).isEqualTo(10);
 	}
 
 	@Test

@@ -30,6 +30,7 @@ import org.springframework.jmx.JmxTestBean;
 import org.springframework.jmx.export.naming.ObjectNamingStrategy;
 import org.springframework.jmx.support.ObjectNameManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -51,7 +52,7 @@ public class MBeanExporterOperationsTests extends AbstractMBeanServerTests {
 		exporter.registerManagedResource(bean, objectName);
 
 		String name = (String) getServer().getAttribute(objectName, "Name");
-		assertEquals("Incorrect name on MBean", name, bean.getName());
+		assertThat((Object) bean.getName()).as("Incorrect name on MBean").isEqualTo(name);
 	}
 
 	@Test
@@ -65,7 +66,7 @@ public class MBeanExporterOperationsTests extends AbstractMBeanServerTests {
 		exporter.registerManagedResource(bean, objectName);
 
 		MBeanInfo infoFromServer = getServer().getMBeanInfo(objectName);
-		assertEquals(info, infoFromServer);
+		assertThat((Object) infoFromServer).isEqualTo(info);
 	}
 
 	@Test
@@ -120,7 +121,7 @@ public class MBeanExporterOperationsTests extends AbstractMBeanServerTests {
 	}
 
 	private void assertObjectNameMatchesTemplate(ObjectName objectNameTemplate, ObjectName registeredName) {
-		assertEquals("Domain is incorrect", objectNameTemplate.getDomain(), registeredName.getDomain());
+		assertThat((Object) registeredName.getDomain()).as("Domain is incorrect").isEqualTo(objectNameTemplate.getDomain());
 	}
 
 }

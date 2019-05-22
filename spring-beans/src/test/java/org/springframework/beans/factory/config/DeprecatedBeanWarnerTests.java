@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -43,8 +44,8 @@ public class DeprecatedBeanWarnerTests {
 
 		DeprecatedBeanWarner warner = new MyDeprecatedBeanWarner();
 		warner.postProcessBeanFactory(beanFactory);
-		assertEquals(beanName, this.beanName);
-		assertEquals(def, this.beanDefinition);
+		assertThat((Object) this.beanName).isEqualTo(beanName);
+		assertThat((Object) this.beanDefinition).isEqualTo(def);
 	}
 
 

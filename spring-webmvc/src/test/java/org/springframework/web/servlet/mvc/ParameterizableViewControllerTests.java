@@ -53,7 +53,7 @@ public class ParameterizableViewControllerTests {
 		String viewName = "testView";
 		this.controller.setViewName(viewName);
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
-		assertEquals(viewName, mav.getViewName());
+		assertThat((Object) mav.getViewName()).isEqualTo(viewName);
 		assertThat(mav.getModel().isEmpty()).isTrue();
 	}
 
@@ -69,7 +69,7 @@ public class ParameterizableViewControllerTests {
 		this.request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, new ModelMap("name", "value"));
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
 		assertEquals(1, mav.getModel().size());
-		assertEquals("value", mav.getModel().get("name"));
+		assertThat(mav.getModel().get("name")).isEqualTo("value");
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class ParameterizableViewControllerTests {
 		ModelAndView mav = this.controller.handleRequest(this.request, response);
 
 		assertNull(mav);
-		assertEquals("GET,HEAD,OPTIONS", response.getHeader("Allow"));
+		assertThat((Object) response.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 	}
 
 }

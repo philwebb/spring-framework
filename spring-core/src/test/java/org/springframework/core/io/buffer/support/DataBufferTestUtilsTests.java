@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.springframework.core.io.buffer.AbstractDataBufferAllocatingTestCase;
 import org.springframework.core.io.buffer.DataBuffer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
@@ -52,7 +53,7 @@ public class DataBufferTestUtilsTests extends AbstractDataBufferAllocatingTestCa
 
 		String result = DataBufferTestUtils.dumpString(buffer, StandardCharsets.UTF_8);
 
-		assertEquals(source, result);
+		assertThat((Object) result).isEqualTo(source);
 
 		release(buffer);
 	}

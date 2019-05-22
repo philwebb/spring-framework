@@ -32,6 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -99,19 +100,19 @@ public class DirtiesContextWithContextHierarchyTests {
 	}
 
 	private void assertCleanParentContext() {
-		assertEquals("foo", foo.toString());
+		assertThat((Object) foo.toString()).isEqualTo("foo");
 	}
 
 	private void assertCleanChildContext() {
-		assertEquals("baz-child", baz.toString());
+		assertThat((Object) baz.toString()).isEqualTo("baz-child");
 	}
 
 	private void assertDirtyParentContext() {
-		assertEquals("oof", foo.toString());
+		assertThat((Object) foo.toString()).isEqualTo("oof");
 	}
 
 	private void assertDirtyChildContext() {
-		assertEquals("dlihc-zab", baz.toString());
+		assertThat((Object) baz.toString()).isEqualTo("dlihc-zab");
 	}
 
 	// -------------------------------------------------------------------------

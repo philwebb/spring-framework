@@ -42,8 +42,8 @@ public class SimpleMailMessageTests {
 		message.setTo("you@mail.org");
 
 		SimpleMailMessage messageCopy = new SimpleMailMessage(message);
-		assertEquals("me@mail.org", messageCopy.getFrom());
-		assertEquals("you@mail.org", messageCopy.getTo()[0]);
+		assertThat((Object) messageCopy.getFrom()).isEqualTo("me@mail.org");
+		assertThat((Object) messageCopy.getTo()[0]).isEqualTo("you@mail.org");
 
 		message.setReplyTo("reply@mail.org");
 		message.setCc(new String[]{"he@mail.org", "she@mail.org"});
@@ -53,32 +53,32 @@ public class SimpleMailMessageTests {
 		message.setSubject("my subject");
 		message.setText("my text");
 
-		assertEquals("me@mail.org", message.getFrom());
-		assertEquals("reply@mail.org", message.getReplyTo());
-		assertEquals("you@mail.org", message.getTo()[0]);
+		assertThat((Object) message.getFrom()).isEqualTo("me@mail.org");
+		assertThat((Object) message.getReplyTo()).isEqualTo("reply@mail.org");
+		assertThat((Object) message.getTo()[0]).isEqualTo("you@mail.org");
 		List<String> ccs = Arrays.asList(message.getCc());
 		assertThat(ccs.contains("he@mail.org")).isTrue();
 		assertThat(ccs.contains("she@mail.org")).isTrue();
 		List<String> bccs = Arrays.asList(message.getBcc());
 		assertThat(bccs.contains("us@mail.org")).isTrue();
 		assertThat(bccs.contains("them@mail.org")).isTrue();
-		assertEquals(sentDate, message.getSentDate());
-		assertEquals("my subject", message.getSubject());
-		assertEquals("my text", message.getText());
+		assertThat((Object) message.getSentDate()).isEqualTo(sentDate);
+		assertThat((Object) message.getSubject()).isEqualTo("my subject");
+		assertThat((Object) message.getText()).isEqualTo("my text");
 
 		messageCopy = new SimpleMailMessage(message);
-		assertEquals("me@mail.org", messageCopy.getFrom());
-		assertEquals("reply@mail.org", messageCopy.getReplyTo());
-		assertEquals("you@mail.org", messageCopy.getTo()[0]);
+		assertThat((Object) messageCopy.getFrom()).isEqualTo("me@mail.org");
+		assertThat((Object) messageCopy.getReplyTo()).isEqualTo("reply@mail.org");
+		assertThat((Object) messageCopy.getTo()[0]).isEqualTo("you@mail.org");
 		ccs = Arrays.asList(messageCopy.getCc());
 		assertThat(ccs.contains("he@mail.org")).isTrue();
 		assertThat(ccs.contains("she@mail.org")).isTrue();
 		bccs = Arrays.asList(message.getBcc());
 		assertThat(bccs.contains("us@mail.org")).isTrue();
 		assertThat(bccs.contains("them@mail.org")).isTrue();
-		assertEquals(sentDate, messageCopy.getSentDate());
-		assertEquals("my subject", messageCopy.getSubject());
-		assertEquals("my text", messageCopy.getText());
+		assertThat((Object) messageCopy.getSentDate()).isEqualTo(sentDate);
+		assertThat((Object) messageCopy.getSubject()).isEqualTo("my subject");
+		assertThat((Object) messageCopy.getText()).isEqualTo("my text");
 	}
 
 	@Test
@@ -95,9 +95,9 @@ public class SimpleMailMessageTests {
 		original.getCc()[0] = "mmm@mmm.org";
 		original.getBcc()[0] = "mmm@mmm.org";
 
-		assertEquals("fiona@mail.org", copy.getTo()[0]);
-		assertEquals("he@mail.org", copy.getCc()[0]);
-		assertEquals("us@mail.org", copy.getBcc()[0]);
+		assertThat((Object) copy.getTo()[0]).isEqualTo("fiona@mail.org");
+		assertThat((Object) copy.getCc()[0]).isEqualTo("he@mail.org");
+		assertThat((Object) copy.getBcc()[0]).isEqualTo("us@mail.org");
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class SimpleMailMessageTests {
 		// Copy the message
 		SimpleMailMessage message2 = new SimpleMailMessage(message1);
 
-		assertEquals(message1, message2);
+		assertThat((Object) message2).isEqualTo(message1);
 		assertEquals(message1.hashCode(), message2.hashCode());
 	}
 

@@ -20,6 +20,7 @@ import javax.annotation.Priority;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -31,20 +32,20 @@ public class OrderUtilsTests {
 
 	@Test
 	public void getSimpleOrder() {
-		assertEquals(Integer.valueOf(50), OrderUtils.getOrder(SimpleOrder.class, null));
-		assertEquals(Integer.valueOf(50), OrderUtils.getOrder(SimpleOrder.class, null));
+		assertThat((Object) OrderUtils.getOrder(SimpleOrder.class, null)).isEqualTo(Integer.valueOf(50));
+		assertThat((Object) OrderUtils.getOrder(SimpleOrder.class, null)).isEqualTo(Integer.valueOf(50));
 	}
 
 	@Test
 	public void getPriorityOrder() {
-		assertEquals(Integer.valueOf(55), OrderUtils.getOrder(SimplePriority.class, null));
-		assertEquals(Integer.valueOf(55), OrderUtils.getOrder(SimplePriority.class, null));
+		assertThat((Object) OrderUtils.getOrder(SimplePriority.class, null)).isEqualTo(Integer.valueOf(55));
+		assertThat((Object) OrderUtils.getOrder(SimplePriority.class, null)).isEqualTo(Integer.valueOf(55));
 	}
 
 	@Test
 	public void getOrderWithBoth() {
-		assertEquals(Integer.valueOf(50), OrderUtils.getOrder(OrderAndPriority.class, null));
-		assertEquals(Integer.valueOf(50), OrderUtils.getOrder(OrderAndPriority.class, null));
+		assertThat((Object) OrderUtils.getOrder(OrderAndPriority.class, null)).isEqualTo(Integer.valueOf(50));
+		assertThat((Object) OrderUtils.getOrder(OrderAndPriority.class, null)).isEqualTo(Integer.valueOf(50));
 	}
 
 	@Test
@@ -61,8 +62,8 @@ public class OrderUtilsTests {
 
 	@Test
 	public void getPriorityValue() {
-		assertEquals(Integer.valueOf(55), OrderUtils.getPriority(OrderAndPriority.class));
-		assertEquals(Integer.valueOf(55), OrderUtils.getPriority(OrderAndPriority.class));
+		assertThat((Object) OrderUtils.getPriority(OrderAndPriority.class)).isEqualTo(Integer.valueOf(55));
+		assertThat((Object) OrderUtils.getPriority(OrderAndPriority.class)).isEqualTo(Integer.valueOf(55));
 	}
 
 

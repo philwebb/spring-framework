@@ -35,6 +35,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static org.springframework.test.context.TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS;
@@ -182,8 +183,7 @@ public class TestExecutionListenersTests {
 
 	private void assertRegisteredListeners(Class<?> testClass, List<Class<?>> expected) {
 		TestContextManager testContextManager = new TestContextManager(testClass);
-		assertEquals("TELs registered for " + testClass.getSimpleName(), names(expected),
-				names(classes(testContextManager)));
+		assertThat((Object) names(classes(testContextManager))).as("TELs registered for " + testClass.getSimpleName()).isEqualTo(names(expected));
 	}
 
 	private void assertNumRegisteredListeners(Class<?> testClass, int expected) {

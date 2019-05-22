@@ -139,7 +139,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 
 
 	private void assertThreadNamePrefix(TestTask task) {
-		assertEquals(THREAD_NAME_PREFIX, task.lastThread.getName().substring(0, THREAD_NAME_PREFIX.length()));
+		assertThat((Object) task.lastThread.getName().substring(0, THREAD_NAME_PREFIX.length())).isEqualTo(THREAD_NAME_PREFIX);
 	}
 
 	private void await(TestTask task) {

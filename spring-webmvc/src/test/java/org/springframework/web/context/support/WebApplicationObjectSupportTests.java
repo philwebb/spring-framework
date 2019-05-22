@@ -25,6 +25,7 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 
@@ -45,8 +46,8 @@ public class WebApplicationObjectSupportTests {
 		wac.registerBeanDefinition("test", new RootBeanDefinition(TestWebApplicationObject.class));
 		wac.refresh();
 		WebApplicationObjectSupport wao = (WebApplicationObjectSupport) wac.getBean("test");
-		assertEquals(wao.getServletContext(), wac.getServletContext());
-		assertEquals(wao.getTempDir(), tempDir);
+		assertThat((Object) wac.getServletContext()).isEqualTo(wao.getServletContext());
+		assertThat((Object) tempDir).isEqualTo(wao.getTempDir());
 	}
 
 	@Test

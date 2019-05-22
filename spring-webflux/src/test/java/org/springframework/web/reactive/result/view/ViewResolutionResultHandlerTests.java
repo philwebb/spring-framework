@@ -56,6 +56,7 @@ import org.springframework.web.server.NotAcceptableStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -114,7 +115,7 @@ public class ViewResolutionResultHandlerTests {
 	private void testSupports(MethodParameter returnType, boolean supports) {
 		ViewResolutionResultHandler resultHandler = resultHandler(mock(ViewResolver.class));
 		HandlerResult handlerResult = new HandlerResult(new Object(), null, returnType, this.bindingContext);
-		assertEquals(supports, resultHandler.supports(handlerResult));
+		assertThat((Object) resultHandler.supports(handlerResult)).isEqualTo(supports);
 	}
 
 	@Test
@@ -125,7 +126,7 @@ public class ViewResolutionResultHandlerTests {
 		resolver2.setOrder(1);
 		List<ViewResolver> resolvers = resultHandler(resolver1, resolver2).getViewResolvers();
 
-		assertEquals(Arrays.asList(resolver2, resolver1), resolvers);
+		assertThat((Object) resolvers).isEqualTo(Arrays.asList(resolver2, resolver1));
 	}
 
 	@Test
@@ -188,8 +189,8 @@ public class ViewResolutionResultHandlerTests {
 		returnValue = Rendering.view("account").modelAttribute("a", "a1").status(status).header("h", "h1").build();
 		String expected = "account: {a=a1, id=123}";
 		ServerWebExchange exchange = testHandle("/path", returnType, returnValue, expected, resolver);
-		assertEquals(status, exchange.getResponse().getStatusCode());
-		assertEquals("h1", exchange.getResponse().getHeaders().getFirst("h"));
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(status);
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst("h")).isEqualTo("h1");
 	}
 
 	@Test
@@ -255,7 +256,7 @@ public class ViewResolutionResultHandlerTests {
 				.handleResult(exchange, handlerResult)
 				.block(Duration.ofSeconds(5));
 
-		assertEquals(APPLICATION_JSON, exchange.getResponse().getHeaders().getContentType());
+		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
 		assertResponseBody(exchange, "jsonView: {" +
 				"org.springframework.validation.BindingResult.testBean=" +
 				"org.springframework.validation.BeanPropertyBindingResult: 0 errors, " +
@@ -294,7 +295,7 @@ public class ViewResolutionResultHandlerTests {
 
 		MockServerHttpResponse response = exchange.getResponse();
 		assertEquals(303, response.getStatusCode().value());
-		assertEquals("/", response.getHeaders().getLocation().toString());
+		assertThat((Object) response.getHeaders().getLocation().toString()).isEqualTo("/");
 	}
 
 
@@ -325,7 +326,7 @@ public class ViewResolutionResultHandlerTests {
 
 	private void assertResponseBody(MockServerWebExchange exchange, String responseBody) {
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals(responseBody, DataBufferTestUtils.dumpString(buf, UTF_8)))
+				.consumeNextWith(buf -> assertThat((Object) DataBufferTestUtils.dumpString(buf, UTF_8)).isEqualTo(responseBody))
 				.expectComplete()
 				.verify();
 	}

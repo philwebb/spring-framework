@@ -41,7 +41,7 @@ public class ExposeBeanNameAdvisorsTests {
 
 		@Override
 		public int getAge() {
-			assertEquals(beanName, ExposeBeanNameAdvisors.getBeanName());
+			assertThat((Object) ExposeBeanNameAdvisors.getBeanName()).isEqualTo(beanName);
 			return super.getAge();
 		}
 	}
@@ -76,7 +76,7 @@ public class ExposeBeanNameAdvisorsTests {
 		proxy.getAge();
 
 		NamedBean nb = (NamedBean) proxy;
-		assertEquals("Name returned correctly", beanName, nb.getBeanName());
+		assertThat((Object) nb.getBeanName()).as("Name returned correctly").isEqualTo(beanName);
 	}
 
 }

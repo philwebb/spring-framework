@@ -21,6 +21,7 @@ import java.text.ParseException;
 import org.junit.Test;
 import org.quartz.CronTrigger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -35,7 +36,7 @@ public class CronTriggerFactoryBeanTests {
 		factory.setCronExpression("0 15 10 ? * *");
 		factory.afterPropertiesSet();
 		CronTrigger trigger = factory.getObject();
-		assertEquals("0 15 10 ? * *", trigger.getCronExpression());
+		assertThat((Object) trigger.getCronExpression()).isEqualTo("0 15 10 ? * *");
 	}
 
 }

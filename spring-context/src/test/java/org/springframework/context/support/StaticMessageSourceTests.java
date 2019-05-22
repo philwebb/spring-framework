@@ -227,7 +227,7 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 		MessageSourceResolvable resolvable = new DefaultMessageSourceResolvable(
 				new String[] {"with.param"}, new Object[] {new DefaultMessageSourceResolvable("param")});
 
-		assertEquals("put value here", source.getMessage(resolvable, Locale.ENGLISH));
+		assertThat((Object) source.getMessage(resolvable, Locale.ENGLISH)).isEqualTo("put value here");
 	}
 
 	@Test
@@ -242,7 +242,7 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 		MessageSourceResolvable resolvable = new DefaultMessageSourceResolvable(
 				new String[] {"with.param"}, new Object[] {new DefaultMessageSourceResolvable("param")});
 
-		assertEquals("put value here", source.getMessage(resolvable, Locale.ENGLISH));
+		assertThat((Object) source.getMessage(resolvable, Locale.ENGLISH)).isEqualTo("put value here");
 	}
 
 }

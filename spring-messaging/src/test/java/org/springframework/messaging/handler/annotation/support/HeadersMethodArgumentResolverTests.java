@@ -72,7 +72,7 @@ public class HeadersMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> headers = (Map<String, Object>) resolved;
-		assertEquals("bar", headers.get("foo"));
+		assertThat(headers.get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class HeadersMethodArgumentResolverTests {
 		boolean condition = resolved instanceof MessageHeaders;
 		assertThat(condition).isTrue();
 		MessageHeaders headers = (MessageHeaders) resolved;
-		assertEquals("bar", headers.get("foo"));
+		assertThat(headers.get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class HeadersMethodArgumentResolverTests {
 		boolean condition = resolved instanceof MessageHeaderAccessor;
 		assertThat(condition).isTrue();
 		MessageHeaderAccessor headers = (MessageHeaderAccessor) resolved;
-		assertEquals("bar", headers.getHeader("foo"));
+		assertThat(headers.getHeader("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class HeadersMethodArgumentResolverTests {
 		boolean condition = resolved instanceof TestMessageHeaderAccessor;
 		assertThat(condition).isTrue();
 		TestMessageHeaderAccessor headers = (TestMessageHeaderAccessor) resolved;
-		assertEquals("bar", headers.getHeader("foo"));
+		assertThat(headers.getHeader("foo")).isEqualTo("bar");
 	}
 
 

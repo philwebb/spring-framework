@@ -30,6 +30,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.BackOffExecution;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -51,11 +52,11 @@ public class DefaultMessageListenerContainerTests {
 		DefaultMessageListenerContainer container = createContainer(createFailingContainerFactory());
 		container.setBackOff(backOff);
 		container.start();
-		assertEquals(true, container.isRunning());
+		assertThat((Object) container.isRunning()).isEqualTo(true);
 
 		container.refreshConnectionUntilSuccessful();
 
-		assertEquals(false, container.isRunning());
+		assertThat((Object) container.isRunning()).isEqualTo(false);
 		verify(backOff).start();
 		verify(execution).nextBackOff();
 	}
@@ -72,7 +73,7 @@ public class DefaultMessageListenerContainerTests {
 		container.start();
 		container.refreshConnectionUntilSuccessful();
 
-		assertEquals(false, container.isRunning());
+		assertThat((Object) container.isRunning()).isEqualTo(false);
 		verify(backOff).start();
 		verify(execution, times(2)).nextBackOff();
 	}
@@ -89,7 +90,7 @@ public class DefaultMessageListenerContainerTests {
 		container.start();
 		container.refreshConnectionUntilSuccessful();
 
-		assertEquals(true, container.isRunning());
+		assertThat((Object) container.isRunning()).isEqualTo(true);
 		verify(backOff).start();
 		verify(execution, times(1)).nextBackOff();  // only on attempt as the second one lead to a recovery
 	}

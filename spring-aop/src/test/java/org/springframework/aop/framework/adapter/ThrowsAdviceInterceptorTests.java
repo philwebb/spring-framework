@@ -28,8 +28,7 @@ import org.junit.Test;
 import org.springframework.aop.ThrowsAdvice;
 import org.springframework.tests.aop.advice.MethodCounter;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -54,7 +53,7 @@ public class ThrowsAdviceInterceptorTests {
 		Object ret = new Object();
 		MethodInvocation mi = mock(MethodInvocation.class);
 		given(mi.proceed()).willReturn(ret);
-		assertEquals(ret, ti.invoke(mi));
+		assertThat(ti.invoke(mi)).isEqualTo(ret);
 		assertEquals(0, th.getCalls());
 	}
 

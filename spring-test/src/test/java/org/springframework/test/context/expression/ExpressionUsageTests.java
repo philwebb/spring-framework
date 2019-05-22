@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -52,18 +53,18 @@ public class ExpressionUsageTests {
 	@Test
 	public void testSpr5906() throws Exception {
 		// verify the property values have been evaluated as expressions
-		assertEquals("Dave", props.getProperty("user.name"));
-		assertEquals("Andy", props.getProperty("username"));
+		assertThat((Object) props.getProperty("user.name")).isEqualTo("Dave");
+		assertThat((Object) props.getProperty("username")).isEqualTo("Andy");
 
 		// verify the property keys have been evaluated as expressions
-		assertEquals("exists", props.getProperty("Dave"));
-		assertEquals("exists also", props.getProperty("Andy"));
+		assertThat((Object) props.getProperty("Dave")).isEqualTo("exists");
+		assertThat((Object) props.getProperty("Andy")).isEqualTo("exists also");
 	}
 
 	@Test
 	public void testSpr5847() throws Exception {
-		assertEquals("Andy", andy2.getName());
-		assertEquals("Andy", andy.getName());
+		assertThat((Object) andy2.getName()).isEqualTo("Andy");
+		assertThat((Object) andy.getName()).isEqualTo("Andy");
 	}
 
 

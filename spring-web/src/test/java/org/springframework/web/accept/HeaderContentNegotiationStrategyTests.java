@@ -26,6 +26,7 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -50,10 +51,10 @@ public class HeaderContentNegotiationStrategyTests {
 		List<MediaType> mediaTypes = this.strategy.resolveMediaTypes(this.webRequest);
 
 		assertEquals(4, mediaTypes.size());
-		assertEquals("text/html", mediaTypes.get(0).toString());
-		assertEquals("text/x-c", mediaTypes.get(1).toString());
-		assertEquals("text/x-dvi;q=0.8", mediaTypes.get(2).toString());
-		assertEquals("text/plain;q=0.5", mediaTypes.get(3).toString());
+		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("text/html");
+		assertThat((Object) mediaTypes.get(1).toString()).isEqualTo("text/x-c");
+		assertThat((Object) mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");
+		assertThat((Object) mediaTypes.get(3).toString()).isEqualTo("text/plain;q=0.5");
 	}
 
 	@Test  // SPR-14506
@@ -63,10 +64,10 @@ public class HeaderContentNegotiationStrategyTests {
 		List<MediaType> mediaTypes = this.strategy.resolveMediaTypes(this.webRequest);
 
 		assertEquals(4, mediaTypes.size());
-		assertEquals("text/html", mediaTypes.get(0).toString());
-		assertEquals("text/x-c", mediaTypes.get(1).toString());
-		assertEquals("text/x-dvi;q=0.8", mediaTypes.get(2).toString());
-		assertEquals("text/plain;q=0.5", mediaTypes.get(3).toString());
+		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("text/html");
+		assertThat((Object) mediaTypes.get(1).toString()).isEqualTo("text/x-c");
+		assertThat((Object) mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");
+		assertThat((Object) mediaTypes.get(3).toString()).isEqualTo("text/plain;q=0.5");
 	}
 
 	@Test

@@ -105,12 +105,12 @@ public class ScriptTemplateViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		this.view.setApplicationContext(this.wac);
-		assertEquals(engine, accessor.getPropertyValue("engine"));
-		assertEquals("Template", accessor.getPropertyValue("renderObject"));
-		assertEquals("render", accessor.getPropertyValue("renderFunction"));
-		assertEquals(MediaType.TEXT_PLAIN_VALUE, accessor.getPropertyValue("contentType"));
-		assertEquals(StandardCharsets.ISO_8859_1, accessor.getPropertyValue("charset"));
-		assertEquals(true, accessor.getPropertyValue("sharedEngine"));
+		assertThat(accessor.getPropertyValue("engine")).isEqualTo(engine);
+		assertThat(accessor.getPropertyValue("renderObject")).isEqualTo("Template");
+		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
+		assertThat(accessor.getPropertyValue("contentType")).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(accessor.getPropertyValue("charset")).isEqualTo(StandardCharsets.ISO_8859_1);
+		assertThat(accessor.getPropertyValue("sharedEngine")).isEqualTo(true);
 	}
 
 	@Test
@@ -121,12 +121,12 @@ public class ScriptTemplateViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		this.view.setApplicationContext(this.wac);
-		assertEquals("nashorn", accessor.getPropertyValue("engineName"));
+		assertThat(accessor.getPropertyValue("engineName")).isEqualTo("nashorn");
 		assertNotNull(accessor.getPropertyValue("engine"));
-		assertEquals("Template", accessor.getPropertyValue("renderObject"));
-		assertEquals("render", accessor.getPropertyValue("renderFunction"));
-		assertEquals(MediaType.TEXT_HTML_VALUE, accessor.getPropertyValue("contentType"));
-		assertEquals(StandardCharsets.UTF_8, accessor.getPropertyValue("charset"));
+		assertThat(accessor.getPropertyValue("renderObject")).isEqualTo("Template");
+		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
+		assertThat(accessor.getPropertyValue("contentType")).isEqualTo(MediaType.TEXT_HTML_VALUE);
+		assertThat(accessor.getPropertyValue("charset")).isEqualTo(StandardCharsets.UTF_8);
 	}
 
 	@Test
@@ -138,11 +138,11 @@ public class ScriptTemplateViewTests {
 		this.view.setApplicationContext(this.wac);
 		engine = this.view.getEngine();
 		assertNotNull(engine);
-		assertEquals("value", engine.get("key"));
+		assertThat(engine.get("key")).isEqualTo("value");
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		assertNull(accessor.getPropertyValue("renderObject"));
-		assertEquals("render", accessor.getPropertyValue("renderFunction"));
-		assertEquals(StandardCharsets.UTF_8, accessor.getPropertyValue("charset"));
+		assertThat(accessor.getPropertyValue("renderFunction")).isEqualTo("render");
+		assertThat(accessor.getPropertyValue("charset")).isEqualTo(StandardCharsets.UTF_8);
 	}
 
 	@Test
@@ -214,19 +214,19 @@ public class ScriptTemplateViewTests {
 		this.view.setApplicationContext(this.wac);
 		this.view.setUrl("org/springframework/web/servlet/view/script/empty.txt");
 		this.view.render(model, request, response);
-		assertEquals("foo", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("foo");
 
 		response = new MockHttpServletResponse();
 		this.view.setResourceLoaderPath("classpath:org/springframework/web/servlet/view/script/");
 		this.view.setUrl("empty.txt");
 		this.view.render(model, request, response);
-		assertEquals("foo", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("foo");
 
 		response = new MockHttpServletResponse();
 		this.view.setResourceLoaderPath("classpath:org/springframework/web/servlet/view/script");
 		this.view.setUrl("empty.txt");
 		this.view.render(model, request, response);
-		assertEquals("foo", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("foo");
 	}
 
 	@Test // SPR-13379
@@ -245,20 +245,20 @@ public class ScriptTemplateViewTests {
 		this.view.setApplicationContext(this.wac);
 
 		this.view.render(model, request, response);
-		assertEquals(MediaType.TEXT_HTML_VALUE + ";charset=" +
-				StandardCharsets.UTF_8, response.getHeader(HttpHeaders.CONTENT_TYPE));
+		assertThat((Object) response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_HTML_VALUE + ";charset=" +
+				StandardCharsets.UTF_8));
 
 		response = new MockHttpServletResponse();
 		this.view.setContentType(MediaType.TEXT_PLAIN_VALUE);
 		this.view.render(model, request, response);
-		assertEquals(MediaType.TEXT_PLAIN_VALUE + ";charset=" +
-				StandardCharsets.UTF_8, response.getHeader(HttpHeaders.CONTENT_TYPE));
+		assertThat((Object) response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_PLAIN_VALUE + ";charset=" +
+				StandardCharsets.UTF_8));
 
 		response = new MockHttpServletResponse();
 		this.view.setCharset(StandardCharsets.ISO_8859_1);
 		this.view.render(model, request, response);
-		assertEquals(MediaType.TEXT_PLAIN_VALUE + ";charset=" +
-				StandardCharsets.ISO_8859_1, response.getHeader(HttpHeaders.CONTENT_TYPE));
+		assertThat((Object) response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_PLAIN_VALUE + ";charset=" +
+				StandardCharsets.ISO_8859_1));
 
 	}
 

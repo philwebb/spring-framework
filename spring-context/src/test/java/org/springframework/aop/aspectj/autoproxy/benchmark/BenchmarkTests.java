@@ -130,7 +130,7 @@ public class BenchmarkTests {
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		Advised a = (Advised) adrian;
 		assertThat(a.getAdvisors().length >= 3).isTrue();
-		assertEquals("adrian", adrian.getName());
+		assertThat((Object) adrian.getName()).isEqualTo("adrian");
 
 		for (int i = 0; i < howmany; i++) {
 			adrian.getName();

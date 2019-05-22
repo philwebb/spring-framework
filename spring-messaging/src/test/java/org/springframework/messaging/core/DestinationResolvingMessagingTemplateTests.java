@@ -28,6 +28,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.ExecutorSubscribableChannel;
 import org.springframework.messaging.support.GenericMessage;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -97,8 +98,8 @@ public class DestinationResolvingMessagingTemplateTests {
 
 		assertSame(this.myChannel, this.template.messageChannel);
 		assertNotNull(this.template.message);
-		assertEquals("value", this.template.message.getHeaders().get("key"));
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getHeaders().get("key")).isEqualTo("value");
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 	}
 
 	@Test
@@ -107,7 +108,7 @@ public class DestinationResolvingMessagingTemplateTests {
 
 		assertSame(this.myChannel, this.template.messageChannel);
 		assertNotNull(this.template.message);
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 
 		assertNotNull(this.postProcessor.getMessage());
 		assertSame(this.postProcessor.getMessage(), this.template.message);
@@ -119,8 +120,8 @@ public class DestinationResolvingMessagingTemplateTests {
 
 		assertSame(this.myChannel, this.template.messageChannel);
 		assertNotNull(this.template.message);
-		assertEquals("value", this.template.message.getHeaders().get("key"));
-		assertEquals("payload", this.template.message.getPayload());
+		assertThat(this.template.message.getHeaders().get("key")).isEqualTo("value");
+		assertThat(this.template.message.getPayload()).isEqualTo("payload");
 
 		assertNotNull(this.postProcessor.getMessage());
 		assertSame(this.postProcessor.getMessage(), this.template.message);
@@ -142,7 +143,7 @@ public class DestinationResolvingMessagingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		String payload = this.template.receiveAndConvert("myChannel", String.class);
 
-		assertEquals("payload", payload);
+		assertThat((Object) payload).isEqualTo("payload");
 		assertSame(this.myChannel, this.template.messageChannel);
 	}
 
@@ -153,7 +154,7 @@ public class DestinationResolvingMessagingTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		Message<?> actual = this.template.sendAndReceive("myChannel", requestMessage);
 
-		assertEquals(requestMessage, this.template.message);
+		assertThat((Object) this.template.message).isEqualTo(requestMessage);
 		assertSame(responseMessage, actual);
 		assertSame(this.myChannel, this.template.messageChannel);
 	}
@@ -164,7 +165,7 @@ public class DestinationResolvingMessagingTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String actual = this.template.convertSendAndReceive("myChannel", "request", String.class);
 
-		assertEquals("request", this.template.message.getPayload());
+		assertThat(this.template.message.getPayload()).isEqualTo("request");
 		assertSame("response", actual);
 		assertSame(this.myChannel, this.template.messageChannel);
 	}
@@ -175,8 +176,8 @@ public class DestinationResolvingMessagingTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String actual = this.template.convertSendAndReceive("myChannel", "request", this.headers, String.class);
 
-		assertEquals("value", this.template.message.getHeaders().get("key"));
-		assertEquals("request", this.template.message.getPayload());
+		assertThat(this.template.message.getHeaders().get("key")).isEqualTo("value");
+		assertThat(this.template.message.getPayload()).isEqualTo("request");
 		assertSame("response", actual);
 		assertSame(this.myChannel, this.template.messageChannel);
 	}
@@ -187,7 +188,7 @@ public class DestinationResolvingMessagingTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String actual = this.template.convertSendAndReceive("myChannel", "request", String.class, this.postProcessor);
 
-		assertEquals("request", this.template.message.getPayload());
+		assertThat(this.template.message.getPayload()).isEqualTo("request");
 		assertSame("request", this.postProcessor.getMessage().getPayload());
 		assertSame("response", actual);
 		assertSame(this.myChannel, this.template.messageChannel);
@@ -200,8 +201,8 @@ public class DestinationResolvingMessagingTemplateTests {
 		String actual = this.template.convertSendAndReceive("myChannel", "request", this.headers,
 				String.class, this.postProcessor);
 
-		assertEquals("value", this.template.message.getHeaders().get("key"));
-		assertEquals("request", this.template.message.getPayload());
+		assertThat(this.template.message.getHeaders().get("key")).isEqualTo("value");
+		assertThat(this.template.message.getPayload()).isEqualTo("request");
 		assertSame("request", this.postProcessor.getMessage().getPayload());
 		assertSame("response", actual);
 		assertSame(this.myChannel, this.template.messageChannel);

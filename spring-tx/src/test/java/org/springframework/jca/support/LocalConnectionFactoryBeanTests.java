@@ -63,7 +63,7 @@ public class LocalConnectionFactoryBeanTests {
 		LocalConnectionFactoryBean factory = new LocalConnectionFactoryBean();
 		factory.setManagedConnectionFactory(managedConnectionFactory);
 		factory.afterPropertiesSet();
-		assertEquals(CONNECTION_FACTORY, factory.getObject());
+		assertThat(factory.getObject()).isEqualTo(CONNECTION_FACTORY);
 	}
 
 	@Test

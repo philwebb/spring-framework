@@ -30,6 +30,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -55,7 +56,7 @@ public class FactoryBeanTests {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(factory).loadBeanDefinitions(RETURNS_NULL_CONTEXT);
 
-		assertEquals("null", factory.getBean("factoryBean").toString());
+		assertThat((Object) factory.getBean("factoryBean").toString()).isEqualTo("null");
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class FactoryBeanTests {
 		assertSame(beta, alpha.getBeta());
 		assertSame(gamma, beta.getGamma());
 		assertSame(gamma2, beta.getGamma());
-		assertEquals("yourName", beta.getName());
+		assertThat((Object) beta.getName()).isEqualTo("yourName");
 	}
 
 	@Test

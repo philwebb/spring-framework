@@ -58,12 +58,12 @@ public class WebSphereUowTransactionManagerTests {
 		ptm.afterPropertiesSet();
 
 		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertEquals(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION, manager.getUOWType());
 		assertThat(manager.getJoined()).isFalse();
@@ -86,12 +86,12 @@ public class WebSphereUowTransactionManagerTests {
 		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
 		TransactionStatus ts = ptm.getTransaction(definition);
 		ptm.commit(ts);
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertEquals(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION, manager.getUOWType());
 		assertThat(manager.getJoined()).isFalse();
@@ -182,7 +182,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				if (synchMode == WebSphereUowTransactionManager.SYNCHRONIZATION_ALWAYS) {
@@ -197,7 +197,7 @@ public class WebSphereUowTransactionManagerTests {
 				}
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
@@ -275,7 +275,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				if (synchMode != WebSphereUowTransactionManager.SYNCHRONIZATION_NEVER) {
@@ -290,7 +290,7 @@ public class WebSphereUowTransactionManagerTests {
 				}
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
@@ -314,7 +314,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
@@ -322,7 +322,7 @@ public class WebSphereUowTransactionManagerTests {
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isTrue();
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
@@ -414,7 +414,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
@@ -423,7 +423,7 @@ public class WebSphereUowTransactionManagerTests {
 				status.setRollbackOnly();
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
@@ -446,7 +446,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
@@ -454,7 +454,7 @@ public class WebSphereUowTransactionManagerTests {
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
@@ -527,24 +527,24 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
-				assertEquals("result2", ptm.execute(definition2, new TransactionCallback<String>() {
+				assertThat(ptm.execute(definition2, new TransactionCallback<String>() {
 					@Override
-					public String doInTransaction(TransactionStatus status) {
+					public String doInTransaction(TransactionStatus status1) {
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 						assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
 						assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 						return "result2";
 					}
-				}));
+				})).isEqualTo("result2");
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
@@ -578,25 +578,24 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
-				assertEquals("result2", ptm.execute(definition2, new TransactionCallback<String>() {
+				assertThat(ptm.execute(definition2, new TransactionCallback<String>() {
 					@Override
-					public String doInTransaction(TransactionStatus status) {
+					public String doInTransaction(TransactionStatus status1) {
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
-						assertEquals(propagationBehavior == TransactionDefinition.PROPAGATION_REQUIRES_NEW,
-								TransactionSynchronizationManager.isActualTransactionActive());
+						assertThat((Object) TransactionSynchronizationManager.isActualTransactionActive()).isEqualTo((propagationBehavior == TransactionDefinition.PROPAGATION_REQUIRES_NEW));
 						assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isTrue();
 						return "result2";
 					}
-				}));
+				})).isEqualTo("result2");
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
@@ -626,24 +625,24 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
-		assertEquals("result", ptm.execute(definition, new TransactionCallback<String>() {
+		assertThat(ptm.execute(definition, new TransactionCallback<String>() {
 			@Override
 			public String doInTransaction(TransactionStatus status) {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
 				assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
-				assertEquals("result2", ptm.execute(definition2, new TransactionCallback<String>() {
+				assertThat(ptm.execute(definition2, new TransactionCallback<String>() {
 					@Override
-					public String doInTransaction(TransactionStatus status) {
+					public String doInTransaction(TransactionStatus status1) {
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 						assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 						assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isTrue();
 						return "result2";
 					}
-				}));
+				})).isEqualTo("result2");
 				return "result";
 			}
-		}));
+		})).isEqualTo("result");
 
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();

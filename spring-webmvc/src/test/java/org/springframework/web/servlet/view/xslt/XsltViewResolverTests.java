@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -47,6 +48,6 @@ public class XsltViewResolverTests {
 
 		XsltView view = (XsltView) viewResolver.resolveViewName(viewName, Locale.ENGLISH);
 		assertNotNull("View should not be null", view);
-		assertEquals("Incorrect URL", prefix + viewName + suffix, view.getUrl());
+		assertThat((Object) view.getUrl()).as("Incorrect URL").isEqualTo((prefix + viewName + suffix));
 	}
 }

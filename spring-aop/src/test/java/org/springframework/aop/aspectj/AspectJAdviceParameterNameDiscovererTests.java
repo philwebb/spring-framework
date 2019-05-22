@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import org.springframework.aop.aspectj.AspectJAdviceParameterNameDiscoverer.AmbiguousBindingException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -255,9 +256,8 @@ public class AspectJAdviceParameterNameDiscovererTests {
 
 		for (int i = 0; i < discoveredNames.length; i++) {
 			assertNotNull("Parameter names must never be null", discoveredNames[i]);
-			assertEquals("Expecting parameter " + i + " to be named '" +
-					parameterNames[i] + "' but was '" + discoveredNames[i] + "'",
-					parameterNames[i], discoveredNames[i]);
+			assertThat((Object) discoveredNames[i]).as("Expecting parameter " + i + " to be named '" +
+						parameterNames[i] + "' but was '" + discoveredNames[i] + "'").isEqualTo(parameterNames[i]);
 		}
 	}
 

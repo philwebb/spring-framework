@@ -131,7 +131,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		this.handler.handleReturnValue(emitter, type, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertEquals("", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("");
 
 		SimpleBean bean = new SimpleBean();
 		bean.setId(1L);
@@ -148,9 +148,9 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		bean.setName("Jason");
 		emitter.send(bean);
 
-		assertEquals("{\"id\":1,\"name\":\"Joe\"}\n" +
+		assertThat((Object) this.response.getContentAsString()).isEqualTo(("{\"id\":1,\"name\":\"Joe\"}\n" +
 						"{\"id\":2,\"name\":\"John\"}\n" +
-						"{\"id\":3,\"name\":\"Jason\"}", this.response.getContentAsString());
+						"{\"id\":3,\"name\":\"Jason\"}"));
 
 		MockAsyncContext asyncContext = (MockAsyncContext) this.request.getAsyncContext();
 		assertNull(asyncContext.getDispatchedPath());
@@ -217,14 +217,14 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		emitter.send(SseEmitter.event().
 				comment("a test").name("update").id("1").reconnectTime(5000L).data(bean1).data(bean2));
 
-		assertEquals("text/event-stream;charset=UTF-8", this.response.getContentType());
-		assertEquals(":a test\n" +
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/event-stream;charset=UTF-8");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo((":a test\n" +
 						"event:update\n" +
 						"id:1\n" +
 						"retry:5000\n" +
 						"data:{\"id\":1,\"name\":\"Joe\"}\n" +
 						"data:{\"id\":2,\"name\":\"John\"}\n" +
-						"\n", this.response.getContentAsString());
+						"\n"));
 	}
 
 	@Test
@@ -244,8 +244,8 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		processor.onNext("baz");
 		processor.onComplete();
 
-		assertEquals("text/event-stream;charset=UTF-8", this.response.getContentType());
-		assertEquals("data:foo\n\ndata:bar\n\ndata:baz\n\n", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/event-stream;charset=UTF-8");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("data:foo\n\ndata:bar\n\ndata:baz\n\n");
 	}
 
 	@Test // gh-21972
@@ -278,8 +278,8 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
 		assertEquals(200, this.response.getStatus());
-		assertEquals("text/event-stream;charset=UTF-8", this.response.getContentType());
-		assertEquals("bar", this.response.getHeader("foo"));
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/event-stream;charset=UTF-8");
+		assertThat((Object) this.response.getHeader("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -290,7 +290,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 
 		assertThat(this.request.isAsyncStarted()).isFalse();
 		assertEquals(204, this.response.getStatus());
-		assertEquals(Collections.singletonList("bar"), this.response.getHeaders("foo"));
+		assertThat((Object) this.response.getHeaders("foo")).isEqualTo(Collections.singletonList("bar"));
 	}
 
 	@Test
@@ -310,8 +310,8 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		processor.onNext("baz");
 		processor.onComplete();
 
-		assertEquals("text/plain", this.response.getContentType());
-		assertEquals("foobarbaz", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/plain");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("foobarbaz");
 	}
 
 	@Test // SPR-17076
@@ -325,7 +325,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
 		assertEquals(200, this.response.getStatus());
-		assertEquals("bar", this.response.getHeader("x-foo"));
+		assertThat((Object) this.response.getHeader("x-foo")).isEqualTo("bar");
 		assertThat(this.response.isCommitted()).isFalse();
 	}
 

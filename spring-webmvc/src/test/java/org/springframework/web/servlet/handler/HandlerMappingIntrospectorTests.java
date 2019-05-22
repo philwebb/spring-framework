@@ -39,6 +39,7 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -64,7 +65,7 @@ public class HandlerMappingIntrospectorTests {
 		List<?> expected = Arrays.asList(cxt.getBean("hmA"), cxt.getBean("hmB"), cxt.getBean("hmC"));
 		List<HandlerMapping> actual = getIntrospector(cxt).getHandlerMappings();
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -81,7 +82,7 @@ public class HandlerMappingIntrospectorTests {
 		List<?> expected = Arrays.asList(cxt.getBean("hmC"), cxt.getBean("hmB"), cxt.getBean("hmA"));
 		List<HandlerMapping> actual = getIntrospector(cxt).getHandlerMappings();
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	public void defaultHandlerMappings() throws Exception {
@@ -90,8 +91,8 @@ public class HandlerMappingIntrospectorTests {
 
 		List<HandlerMapping> actual = getIntrospector(cxt).getHandlerMappings();
 		assertEquals(2, actual.size());
-		assertEquals(BeanNameUrlHandlerMapping.class, actual.get(0).getClass());
-		assertEquals(RequestMappingHandlerMapping.class, actual.get(1).getClass());
+		assertThat((Object) actual.get(0).getClass()).isEqualTo(BeanNameUrlHandlerMapping.class);
+		assertThat((Object) actual.get(1).getClass()).isEqualTo(RequestMappingHandlerMapping.class);
 	}
 
 	@Test
@@ -106,7 +107,7 @@ public class HandlerMappingIntrospectorTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/path");
 		MatchableHandlerMapping hm = getIntrospector(cxt).getMatchableHandlerMapping(request);
 
-		assertEquals(cxt.getBean("hm"), hm);
+		assertThat((Object) hm).isEqualTo(cxt.getBean("hm"));
 		assertNull("Attributes changes not ignored", request.getAttribute(BEST_MATCHING_PATTERN_ATTRIBUTE));
 	}
 
@@ -135,8 +136,8 @@ public class HandlerMappingIntrospectorTests {
 		CorsConfiguration corsConfig = getIntrospector(cxt).getCorsConfiguration(request);
 
 		assertNotNull(corsConfig);
-		assertEquals(Collections.singletonList("http://localhost:9000"), corsConfig.getAllowedOrigins());
-		assertEquals(Collections.singletonList("POST"), corsConfig.getAllowedMethods());
+		assertThat((Object) corsConfig.getAllowedOrigins()).isEqualTo(Collections.singletonList("http://localhost:9000"));
+		assertThat((Object) corsConfig.getAllowedMethods()).isEqualTo(Collections.singletonList("POST"));
 	}
 
 	@Test
@@ -150,8 +151,8 @@ public class HandlerMappingIntrospectorTests {
 		CorsConfiguration corsConfig = getIntrospector(cxt).getCorsConfiguration(request);
 
 		assertNotNull(corsConfig);
-		assertEquals(Collections.singletonList("http://localhost:9000"), corsConfig.getAllowedOrigins());
-		assertEquals(Collections.singletonList("POST"), corsConfig.getAllowedMethods());
+		assertThat((Object) corsConfig.getAllowedOrigins()).isEqualTo(Collections.singletonList("http://localhost:9000"));
+		assertThat((Object) corsConfig.getAllowedMethods()).isEqualTo(Collections.singletonList("POST"));
 	}
 
 	private HandlerMappingIntrospector getIntrospector(WebApplicationContext cxt) {

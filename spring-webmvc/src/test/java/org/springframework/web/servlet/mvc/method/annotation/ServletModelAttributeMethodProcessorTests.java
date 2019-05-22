@@ -94,7 +94,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		TestBean testBean = (TestBean) processor.resolveArgument(
 				testBeanModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertEquals("Patty", testBean.getName());
+		assertThat((Object) testBean.getName()).isEqualTo("Patty");
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		Optional<TestBean> testBean = (Optional<TestBean>) processor.resolveArgument(
 				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertEquals("Patty", testBean.get().getName());
+		assertThat((Object) testBean.get().getName()).isEqualTo("Patty");
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		TestBean testBean = (TestBean) processor.resolveArgument(
 				testBeanModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertEquals("Patty", testBean.getName());
+		assertThat((Object) testBean.getName()).isEqualTo("Patty");
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		Optional<TestBean> testBean = (Optional<TestBean>) processor.resolveArgument(
 				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertEquals("Patty", testBean.get().getName());
+		assertThat((Object) testBean.get().getName()).isEqualTo("Patty");
 	}
 
 	@Test

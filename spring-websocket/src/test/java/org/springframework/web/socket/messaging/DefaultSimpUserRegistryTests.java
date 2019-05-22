@@ -33,6 +33,7 @@ import org.springframework.messaging.simp.user.SimpUser;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.socket.CloseStatus;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -158,7 +159,7 @@ public class DefaultSimpUserRegistryTests {
 		Set<String> sessionIds = new HashSet<>(2);
 		sessionIds.add(iterator.next().getId());
 		sessionIds.add(iterator.next().getId());
-		assertEquals(new HashSet<>(Arrays.asList("sub1", "sub2")), sessionIds);
+		assertThat((Object) sessionIds).isEqualTo(new HashSet<>(Arrays.asList("sub1", "sub2")));
 	}
 
 	@Test

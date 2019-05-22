@@ -35,42 +35,42 @@ public class Spr15275Tests {
 	@Test
 	public void testWithFactoryBean() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithFactoryBean.class);
-		assertEquals("x", context.getBean(Bar.class).foo.toString());
+		assertThat((Object) context.getBean(Bar.class).foo.toString()).isEqualTo("x");
 		assertSame(context.getBean(FooInterface.class), context.getBean(Bar.class).foo);
 	}
 
 	@Test
 	public void testWithAbstractFactoryBean() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithAbstractFactoryBean.class);
-		assertEquals("x", context.getBean(Bar.class).foo.toString());
+		assertThat((Object) context.getBean(Bar.class).foo.toString()).isEqualTo("x");
 		assertSame(context.getBean(FooInterface.class), context.getBean(Bar.class).foo);
 	}
 
 	@Test
 	public void testWithAbstractFactoryBeanForInterface() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithAbstractFactoryBeanForInterface.class);
-		assertEquals("x", context.getBean(Bar.class).foo.toString());
+		assertThat((Object) context.getBean(Bar.class).foo.toString()).isEqualTo("x");
 		assertSame(context.getBean(FooInterface.class), context.getBean(Bar.class).foo);
 	}
 
 	@Test
 	public void testWithAbstractFactoryBeanAsReturnType() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithAbstractFactoryBeanAsReturnType.class);
-		assertEquals("x", context.getBean(Bar.class).foo.toString());
+		assertThat((Object) context.getBean(Bar.class).foo.toString()).isEqualTo("x");
 		assertSame(context.getBean(FooInterface.class), context.getBean(Bar.class).foo);
 	}
 
 	@Test
 	public void testWithFinalFactoryBean() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithFinalFactoryBean.class);
-		assertEquals("x", context.getBean(Bar.class).foo.toString());
+		assertThat((Object) context.getBean(Bar.class).foo.toString()).isEqualTo("x");
 		assertSame(context.getBean(FooInterface.class), context.getBean(Bar.class).foo);
 	}
 
 	@Test
 	public void testWithFinalFactoryBeanAsReturnType() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithFinalFactoryBeanAsReturnType.class);
-		assertEquals("x", context.getBean(Bar.class).foo.toString());
+		assertThat((Object) context.getBean(Bar.class).foo.toString()).isEqualTo("x");
 		// not same due to fallback to raw FinalFactoryBean instance with repeated getObject() invocations
 		assertNotSame(context.getBean(FooInterface.class), context.getBean(Bar.class).foo);
 	}

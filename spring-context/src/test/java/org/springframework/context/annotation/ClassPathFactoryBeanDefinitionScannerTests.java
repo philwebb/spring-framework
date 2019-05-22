@@ -60,21 +60,21 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		assertThat(fmc.getClass().getName().contains(ClassUtils.CGLIB_CLASS_SEPARATOR)).isFalse();
 
 		TestBean tb = (TestBean) context.getBean("publicInstance"); //2
-		assertEquals("publicInstance", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("publicInstance");
 		TestBean tb2 = (TestBean) context.getBean("publicInstance"); //2
-		assertEquals("publicInstance", tb2.getName());
+		assertThat((Object) tb2.getName()).isEqualTo("publicInstance");
 		assertSame(tb2, tb);
 
 		tb = (TestBean) context.getBean("protectedInstance"); //3
-		assertEquals("protectedInstance", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("protectedInstance");
 		assertSame(tb, context.getBean("protectedInstance"));
-		assertEquals("0", tb.getCountry());
+		assertThat((Object) tb.getCountry()).isEqualTo("0");
 		tb2 = context.getBean("protectedInstance", TestBean.class); //3
-		assertEquals("protectedInstance", tb2.getName());
+		assertThat((Object) tb2.getName()).isEqualTo("protectedInstance");
 		assertSame(tb2, tb);
 
 		tb = context.getBean("privateInstance", TestBean.class); //4
-		assertEquals("privateInstance", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("privateInstance");
 		assertEquals(1, tb.getAge());
 		tb2 = context.getBean("privateInstance", TestBean.class); //4
 		assertEquals(2, tb2.getAge());

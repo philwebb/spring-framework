@@ -66,13 +66,13 @@ public class RequestScopedProxyTests {
 
 		try {
 			assertNull(request.getAttribute("scopedTarget." + name));
-			assertEquals("scoped", bean.getName());
+			assertThat((Object) bean.getName()).isEqualTo("scoped");
 			assertNotNull(request.getAttribute("scopedTarget." + name));
 			TestBean target = (TestBean) request.getAttribute("scopedTarget." + name);
-			assertEquals(TestBean.class, target.getClass());
-			assertEquals("scoped", target.getName());
+			assertThat((Object) target.getClass()).isEqualTo(TestBean.class);
+			assertThat((Object) target.getName()).isEqualTo("scoped");
 			assertSame(bean, this.beanFactory.getBean(name));
-			assertEquals(bean.toString(), target.toString());
+			assertThat((Object) target.toString()).isEqualTo(bean.toString());
 		}
 		finally {
 			RequestContextHolder.setRequestAttributes(null);
@@ -91,13 +91,13 @@ public class RequestScopedProxyTests {
 
 		try {
 			assertNull(request.getAttribute("scopedTarget." + name));
-			assertEquals("scoped", bean.getName());
+			assertThat((Object) bean.getName()).isEqualTo("scoped");
 			assertNotNull(request.getAttribute("scopedTarget." + name));
 			TestBean target = (TestBean) request.getAttribute("scopedTarget." + name);
-			assertEquals(TestBean.class, target.getClass());
-			assertEquals("scoped", target.getName());
+			assertThat((Object) target.getClass()).isEqualTo(TestBean.class);
+			assertThat((Object) target.getName()).isEqualTo("scoped");
 			assertSame(bean, this.beanFactory.getBean(name));
-			assertEquals(bean.toString(), target.toString());
+			assertThat((Object) target.toString()).isEqualTo(bean.toString());
 		}
 		finally {
 			RequestContextHolder.setRequestAttributes(null);
@@ -116,10 +116,10 @@ public class RequestScopedProxyTests {
 
 		try {
 			assertNull(request.getAttribute("scopedTarget." + name));
-			assertEquals("scoped", bean.getName());
+			assertThat((Object) bean.getName()).isEqualTo("scoped");
 			assertNotNull(request.getAttribute("scopedTarget." + name));
-			assertEquals(DerivedTestBean.class, request.getAttribute("scopedTarget." + name).getClass());
-			assertEquals("scoped", ((TestBean) request.getAttribute("scopedTarget." + name)).getName());
+			assertThat((Object) request.getAttribute("scopedTarget." + name).getClass()).isEqualTo(DerivedTestBean.class);
+			assertThat((Object) ((TestBean) request.getAttribute("scopedTarget." + name)).getName()).isEqualTo("scoped");
 			assertSame(bean, this.beanFactory.getBean(name));
 
 			requestAttributes.requestCompleted();
@@ -142,9 +142,9 @@ public class RequestScopedProxyTests {
 
 		try {
 			assertNull(request.getAttribute("scopedTarget." + name));
-			assertEquals(DummyFactory.SINGLETON_NAME, bean.getName());
+			assertThat((Object) bean.getName()).isEqualTo(DummyFactory.SINGLETON_NAME);
 			assertNotNull(request.getAttribute("scopedTarget." + name));
-			assertEquals(DummyFactory.class, request.getAttribute("scopedTarget." + name).getClass());
+			assertThat((Object) request.getAttribute("scopedTarget." + name).getClass()).isEqualTo(DummyFactory.class);
 			assertSame(bean, this.beanFactory.getBean(name));
 		}
 		finally {
@@ -166,10 +166,10 @@ public class RequestScopedProxyTests {
 
 		try {
 			assertNull(request.getAttribute("scopedTarget." + name));
-			assertEquals("scoped", bean.getSpouse().getName());
+			assertThat((Object) bean.getSpouse().getName()).isEqualTo("scoped");
 			assertNotNull(request.getAttribute("scopedTarget." + name));
-			assertEquals(TestBean.class, request.getAttribute("scopedTarget." + name).getClass());
-			assertEquals("scoped", ((TestBean) request.getAttribute("scopedTarget." + name)).getName());
+			assertThat((Object) request.getAttribute("scopedTarget." + name).getClass()).isEqualTo(TestBean.class);
+			assertThat((Object) ((TestBean) request.getAttribute("scopedTarget." + name)).getName()).isEqualTo("scoped");
 		}
 		finally {
 			RequestContextHolder.setRequestAttributes(null);
@@ -193,10 +193,10 @@ public class RequestScopedProxyTests {
 
 		try {
 			assertNull(request.getAttribute("scopedTarget." + name));
-			assertEquals("scoped", bean.getSpouse().getName());
+			assertThat((Object) bean.getSpouse().getName()).isEqualTo("scoped");
 			assertNotNull(request.getAttribute("scopedTarget." + name));
-			assertEquals(TestBean.class, request.getAttribute("scopedTarget." + name).getClass());
-			assertEquals("scoped", ((TestBean) request.getAttribute("scopedTarget." + name)).getName());
+			assertThat((Object) request.getAttribute("scopedTarget." + name).getClass()).isEqualTo(TestBean.class);
+			assertThat((Object) ((TestBean) request.getAttribute("scopedTarget." + name)).getName()).isEqualTo("scoped");
 		}
 		finally {
 			RequestContextHolder.setRequestAttributes(null);

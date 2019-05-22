@@ -30,6 +30,7 @@ import javax.jms.TopicSession;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -285,7 +286,7 @@ public class SingleConnectionFactoryTests {
 		SingleConnectionFactory scf = new SingleConnectionFactory(cf);
 		scf.setExceptionListener(listener);
 		Connection con1 = scf.createConnection();
-		assertEquals(listener, con1.getExceptionListener());
+		assertThat((Object) con1.getExceptionListener()).isEqualTo(listener);
 		con1.start();
 		con1.stop();
 		con1.close();

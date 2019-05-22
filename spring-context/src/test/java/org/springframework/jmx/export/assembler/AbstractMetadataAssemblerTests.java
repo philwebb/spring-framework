@@ -53,24 +53,21 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	@Test
 	public void testDescription() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
-		assertEquals("The descriptions are not the same", "My Managed Bean",
-				info.getDescription());
+		assertThat((Object) info.getDescription()).as("The descriptions are not the same").isEqualTo("My Managed Bean");
 	}
 
 	@Test
 	public void testAttributeDescriptionOnSetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute(AGE_ATTRIBUTE);
-		assertEquals("The description for the age attribute is incorrect",
-				"The Age Attribute", attr.getDescription());
+		assertThat((Object) attr.getDescription()).as("The description for the age attribute is incorrect").isEqualTo("The Age Attribute");
 	}
 
 	@Test
 	public void testAttributeDescriptionOnGetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute(NAME_ATTRIBUTE);
-		assertEquals("The description for the name attribute is incorrect",
-				"The Name Attribute", attr.getDescription());
+		assertThat((Object) attr.getDescription()).as("The description for the name attribute is incorrect").isEqualTo("The Name Attribute");
 	}
 
 	/**
@@ -116,13 +113,13 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		Descriptor desc = info.getMBeanDescriptor();
 
-		assertEquals("Logging should be set to true", "true", desc.getFieldValue("log"));
-		assertEquals("Log file should be jmx.log", "jmx.log", desc.getFieldValue("logFile"));
-		assertEquals("Currency Time Limit should be 15", "15", desc.getFieldValue("currencyTimeLimit"));
-		assertEquals("Persist Policy should be OnUpdate", "OnUpdate", desc.getFieldValue("persistPolicy"));
-		assertEquals("Persist Period should be 200", "200", desc.getFieldValue("persistPeriod"));
-		assertEquals("Persist Location should be foo", "./foo", desc.getFieldValue("persistLocation"));
-		assertEquals("Persist Name should be bar", "bar.jmx", desc.getFieldValue("persistName"));
+		assertThat(desc.getFieldValue("log")).as("Logging should be set to true").isEqualTo("true");
+		assertThat(desc.getFieldValue("logFile")).as("Log file should be jmx.log").isEqualTo("jmx.log");
+		assertThat(desc.getFieldValue("currencyTimeLimit")).as("Currency Time Limit should be 15").isEqualTo("15");
+		assertThat(desc.getFieldValue("persistPolicy")).as("Persist Policy should be OnUpdate").isEqualTo("OnUpdate");
+		assertThat(desc.getFieldValue("persistPeriod")).as("Persist Period should be 200").isEqualTo("200");
+		assertThat(desc.getFieldValue("persistLocation")).as("Persist Location should be foo").isEqualTo("./foo");
+		assertThat(desc.getFieldValue("persistName")).as("Persist Name should be bar").isEqualTo("bar.jmx");
 	}
 
 	@Test
@@ -130,10 +127,10 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		Descriptor desc = info.getAttribute(NAME_ATTRIBUTE).getDescriptor();
 
-		assertEquals("Default value should be foo", "foo", desc.getFieldValue("default"));
-		assertEquals("Currency Time Limit should be 20", "20", desc.getFieldValue("currencyTimeLimit"));
-		assertEquals("Persist Policy should be OnUpdate", "OnUpdate", desc.getFieldValue("persistPolicy"));
-		assertEquals("Persist Period should be 300", "300", desc.getFieldValue("persistPeriod"));
+		assertThat(desc.getFieldValue("default")).as("Default value should be foo").isEqualTo("foo");
+		assertThat(desc.getFieldValue("currencyTimeLimit")).as("Currency Time Limit should be 20").isEqualTo("20");
+		assertThat(desc.getFieldValue("persistPolicy")).as("Persist Policy should be OnUpdate").isEqualTo("OnUpdate");
+		assertThat(desc.getFieldValue("persistPeriod")).as("Persist Period should be 300").isEqualTo("300");
 	}
 
 	@Test
@@ -141,8 +138,8 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		Descriptor desc = info.getOperation("myOperation").getDescriptor();
 
-		assertEquals("Currency Time Limit should be 30", "30", desc.getFieldValue("currencyTimeLimit"));
-		assertEquals("Role should be \"operation\"", "operation", desc.getFieldValue("role"));
+		assertThat(desc.getFieldValue("currencyTimeLimit")).as("Currency Time Limit should be 30").isEqualTo("30");
+		assertThat(desc.getFieldValue("role")).as("Role should be \"operation\"").isEqualTo("operation");
 	}
 
 	@Test
@@ -152,11 +149,11 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		MBeanParameterInfo[] params = oper.getSignature();
 
 		assertEquals("Invalid number of params", 2, params.length);
-		assertEquals("Incorrect name for x param", "x", params[0].getName());
-		assertEquals("Incorrect type for x param", int.class.getName(), params[0].getType());
+		assertThat((Object) params[0].getName()).as("Incorrect name for x param").isEqualTo("x");
+		assertThat((Object) params[0].getType()).as("Incorrect type for x param").isEqualTo(int.class.getName());
 
-		assertEquals("Incorrect name for y param", "y", params[1].getName());
-		assertEquals("Incorrect type for y param", int.class.getName(), params[1].getType());
+		assertThat((Object) params[1].getName()).as("Incorrect name for y param").isEqualTo("y");
+		assertThat((Object) params[1].getType()).as("Incorrect type for y param").isEqualTo(int.class.getName());
 	}
 
 	@Test
@@ -192,23 +189,21 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo metric = inf.getAttribute(QUEUE_SIZE_METRIC);
 		ModelMBeanOperationInfo operation = inf.getOperation("getQueueSize");
-		assertEquals("The description for the queue size metric is incorrect",
-				"The QueueSize metric", metric.getDescription());
-		assertEquals("The description for the getter operation of the queue size metric is incorrect",
-				"The QueueSize metric", operation.getDescription());
+		assertThat((Object) metric.getDescription()).as("The description for the queue size metric is incorrect").isEqualTo("The QueueSize metric");
+		assertThat((Object) operation.getDescription()).as("The description for the getter operation of the queue size metric is incorrect").isEqualTo("The QueueSize metric");
 	}
 
 	@Test
 	public void testMetricDescriptor() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		Descriptor desc = info.getAttribute(QUEUE_SIZE_METRIC).getDescriptor();
-		assertEquals("Currency Time Limit should be 20", "20", desc.getFieldValue("currencyTimeLimit"));
-		assertEquals("Persist Policy should be OnUpdate", "OnUpdate", desc.getFieldValue("persistPolicy"));
-		assertEquals("Persist Period should be 300", "300", desc.getFieldValue("persistPeriod"));
-		assertEquals("Unit should be messages", "messages",desc.getFieldValue("units"));
-		assertEquals("Display Name should be Queue Size", "Queue Size",desc.getFieldValue("displayName"));
-		assertEquals("Metric Type should be COUNTER", "COUNTER",desc.getFieldValue("metricType"));
-		assertEquals("Metric Category should be utilization", "utilization",desc.getFieldValue("metricCategory"));
+		assertThat(desc.getFieldValue("currencyTimeLimit")).as("Currency Time Limit should be 20").isEqualTo("20");
+		assertThat(desc.getFieldValue("persistPolicy")).as("Persist Policy should be OnUpdate").isEqualTo("OnUpdate");
+		assertThat(desc.getFieldValue("persistPeriod")).as("Persist Period should be 300").isEqualTo("300");
+		assertThat(desc.getFieldValue("units")).as("Unit should be messages").isEqualTo("messages");
+		assertThat(desc.getFieldValue("displayName")).as("Display Name should be Queue Size").isEqualTo("Queue Size");
+		assertThat(desc.getFieldValue("metricType")).as("Metric Type should be COUNTER").isEqualTo("COUNTER");
+		assertThat(desc.getFieldValue("metricCategory")).as("Metric Category should be utilization").isEqualTo("utilization");
 	}
 
 	@Test
@@ -219,8 +214,8 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		assertNull("Persist Policy should not be populated", desc.getFieldValue("persistPolicy"));
 		assertNull("Persist Period should not be populated", desc.getFieldValue("persistPeriod"));
 		assertNull("Unit should not be populated", desc.getFieldValue("units"));
-		assertEquals("Display Name should be populated by default via JMX", CACHE_ENTRIES_METRIC,desc.getFieldValue("displayName"));
-		assertEquals("Metric Type should be GAUGE", "GAUGE",desc.getFieldValue("metricType"));
+		assertThat(desc.getFieldValue("displayName")).as("Display Name should be populated by default via JMX").isEqualTo(CACHE_ENTRIES_METRIC);
+		assertThat(desc.getFieldValue("metricType")).as("Metric Type should be GAUGE").isEqualTo("GAUGE");
 		assertNull("Metric Category should not be populated", desc.getFieldValue("metricCategory"));
 	}
 

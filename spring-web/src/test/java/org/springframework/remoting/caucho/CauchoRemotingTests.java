@@ -97,8 +97,8 @@ public class CauchoRemotingTests {
 		assertThat(condition).isTrue();
 		ITestBean bean = (ITestBean) factory.getObject();
 
-		assertEquals("test", proxyFactory.user);
-		assertEquals("bean", proxyFactory.password);
+		assertThat((Object) proxyFactory.user).isEqualTo("test");
+		assertThat((Object) proxyFactory.password).isEqualTo("bean");
 		assertThat(proxyFactory.overloadEnabled).isTrue();
 
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
@@ -127,9 +127,9 @@ public class CauchoRemotingTests {
 			//client.setHessian2(true);
 			client.prepare();
 			ITestBean proxy = ProxyFactory.getProxy(ITestBean.class, client);
-			assertEquals("tb", proxy.getName());
+			assertThat((Object) proxy.getName()).isEqualTo("tb");
 			proxy.setName("test");
-			assertEquals("test", proxy.getName());
+			assertThat((Object) proxy.getName()).isEqualTo("test");
 		}
 		finally {
 			server.stop(Integer.MAX_VALUE);

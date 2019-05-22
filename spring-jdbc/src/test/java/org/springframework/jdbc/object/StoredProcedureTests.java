@@ -291,8 +291,8 @@ public class StoredProcedureTests {
 		Map<String, Object> res = sproc.execute();
 		List<String> rs = (List<String>) res.get("rs");
 		assertEquals(2, rs.size());
-		assertEquals("Foo", rs.get(0));
-		assertEquals("Bar", rs.get(1));
+		assertThat((Object) rs.get(0)).isEqualTo("Foo");
+		assertThat((Object) rs.get(1)).isEqualTo("Bar");
 		verify(resultSet).close();
 	}
 
@@ -329,8 +329,8 @@ public class StoredProcedureTests {
 
 		List<String> rs1 = (List<String>) res.get("rs");
 		assertEquals(2, rs1.size());
-		assertEquals("Foo", rs1.get(0));
-		assertEquals("Bar", rs1.get(1));
+		assertThat((Object) rs1.get(0)).isEqualTo("Foo");
+		assertThat((Object) rs1.get(1)).isEqualTo("Bar");
 
 		List<Object> rs2 = (List<Object>) res.get("#result-set-2");
 		assertEquals(1, rs2.size());
@@ -338,8 +338,8 @@ public class StoredProcedureTests {
 		boolean condition = o2 instanceof Map;
 		assertThat(condition).as("wron type returned for result set 2").isTrue();
 		Map<String, String> m2 = (Map<String, String>) o2;
-		assertEquals("Spam", m2.get("spam"));
-		assertEquals("Eggs", m2.get("eggs"));
+		assertThat((Object) m2.get("spam")).isEqualTo("Spam");
+		assertThat((Object) m2.get("eggs")).isEqualTo("Eggs");
 
 		Number n = (Number) res.get("#update-count-1");
 		assertEquals("wrong update count", 0, n.intValue());
@@ -384,8 +384,8 @@ public class StoredProcedureTests {
 		assertEquals("incorrect number of returns", 1, res.size());
 		List<String> rs1 = (List<String>) res.get("rs");
 		assertEquals(2, rs1.size());
-		assertEquals("Foo", rs1.get(0));
-		assertEquals("Bar", rs1.get(1));
+		assertThat((Object) rs1.get(0)).isEqualTo("Foo");
+		assertThat((Object) rs1.get(1)).isEqualTo("Bar");
 		verify(resultSet).close();
 	}
 
@@ -399,7 +399,7 @@ public class StoredProcedureTests {
 
 		ParameterMapperStoredProcedure pmsp = new ParameterMapperStoredProcedure(dataSource);
 		Map<String, Object> out = pmsp.executeTest();
-		assertEquals("OK", out.get("out"));
+		assertThat(out.get("out")).isEqualTo("OK");
 
 		verify(callableStatement).setString(eq(1), startsWith("Mock for Connection"));
 		verify(callableStatement).registerOutParameter(2, Types.VARCHAR);
@@ -416,7 +416,7 @@ public class StoredProcedureTests {
 
 		SqlTypeValueStoredProcedure stvsp = new SqlTypeValueStoredProcedure(dataSource);
 		Map<String, Object> out = stvsp.executeTest(testVal);
-		assertEquals("OK", out.get("out"));
+		assertThat(out.get("out")).isEqualTo("OK");
 		verify(callableStatement).setObject(1, testVal, Types.ARRAY);
 		verify(callableStatement).registerOutParameter(2, Types.VARCHAR);
 	}
@@ -430,7 +430,7 @@ public class StoredProcedureTests {
 				).willReturn(callableStatement);
 		NumericWithScaleStoredProcedure nwssp = new NumericWithScaleStoredProcedure(dataSource);
 		Map<String, Object> out = nwssp.executeTest();
-		assertEquals(new BigDecimal("12345.6789"), out.get("out"));
+		assertThat(out.get("out")).isEqualTo(new BigDecimal("12345.6789"));
 		verify(callableStatement).registerOutParameter(1, Types.DECIMAL, 4);
 	}
 

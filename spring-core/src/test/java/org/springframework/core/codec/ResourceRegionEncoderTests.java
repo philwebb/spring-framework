@@ -194,7 +194,7 @@ public class ResourceRegionEncoderTests  {
 		return dataBuffer -> {
 			String value = DataBufferTestUtils.dumpString(dataBuffer, UTF_8);
 			DataBufferUtils.release(dataBuffer);
-			assertEquals(expected, value);
+			assertThat((Object) value).isEqualTo(expected);
 		};
 	}
 

@@ -28,6 +28,7 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -71,8 +72,8 @@ public class DefaultServletHandlerConfigurerTests {
 		handler.handleRequest(new MockHttpServletRequest(), response);
 
 		String expected = "default";
-		assertEquals("The ServletContext was not called with the default servlet name", expected, servletContext.url);
-		assertEquals("The request was not forwarded", expected, response.getForwardedUrl());
+		assertThat((Object) servletContext.url).as("The ServletContext was not called with the default servlet name").isEqualTo(expected);
+		assertThat((Object) response.getForwardedUrl()).as("The request was not forwarded").isEqualTo(expected);
 	}
 
 	@Test
@@ -87,8 +88,8 @@ public class DefaultServletHandlerConfigurerTests {
 		handler.handleRequest(new MockHttpServletRequest(), response);
 
 		String expected = "defaultServlet";
-		assertEquals("The ServletContext was not called with the default servlet name", expected, servletContext.url);
-		assertEquals("The request was not forwarded", expected, response.getForwardedUrl());
+		assertThat((Object) servletContext.url).as("The ServletContext was not called with the default servlet name").isEqualTo(expected);
+		assertThat((Object) response.getForwardedUrl()).as("The request was not forwarded").isEqualTo(expected);
 	}
 
 

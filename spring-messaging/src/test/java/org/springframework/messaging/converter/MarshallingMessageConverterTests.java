@@ -38,7 +38,6 @@ import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;
 import static org.xmlunit.diff.DifferenceEvaluators.downgradeDifferencesToEqual;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma
@@ -65,7 +64,7 @@ public class MarshallingMessageConverterTests {
 		MyBean actual = (MyBean) this.converter.fromMessage(message, MyBean.class);
 
 		assertNotNull(actual);
-		assertEquals("Foo", actual.getName());
+		assertThat((Object) actual.getName()).isEqualTo("Foo");
 	}
 
 	@Test

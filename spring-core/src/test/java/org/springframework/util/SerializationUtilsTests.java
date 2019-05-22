@@ -20,8 +20,7 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -40,7 +39,7 @@ public class SerializationUtilsTests {
 
 	@Test
 	public void serializeCycleSunnyDay() throws Exception {
-		assertEquals("foo", SerializationUtils.deserialize(SerializationUtils.serialize("foo")));
+		assertThat(SerializationUtils.deserialize(SerializationUtils.serialize("foo"))).isEqualTo("foo");
 	}
 
 	@Test

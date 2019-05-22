@@ -105,7 +105,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertEquals(UnsupportedOperationException.class, result.get().getClass());
+		assertThat((Object) result.get().getClass()).isEqualTo(UnsupportedOperationException.class);
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertEquals(IOException.class, result.get().getClass());
+		assertThat((Object) result.get().getClass()).isEqualTo(IOException.class);
 	}
 
 
@@ -215,7 +215,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertEquals(value, result.get());
+		assertThat(result.get()).isEqualTo(value);
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertEquals(value, result.get());
+		assertThat(result.get()).isEqualTo(value);
 	}
 
 	@Test
@@ -262,7 +262,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertEquals(value, result.get());
+		assertThat(result.get()).isEqualTo(value);
 	}
 
 	@Test
@@ -279,7 +279,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertEquals(value, result.get());
+		assertThat(result.get()).isEqualTo(value);
 	}
 
 	@Test
@@ -295,7 +295,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		// This will be cached anyway as the earlyPut has updated the cache before
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertEquals(value, result.get());
+		assertThat(result.get()).isEqualTo(value);
 	}
 
 	@Test
@@ -340,7 +340,7 @@ public abstract class AbstractJCacheAnnotationTests {
 				service.removeWithException(keyItem, false));
 		Cache.ValueWrapper wrapper = cache.get(key);
 		assertNotNull(wrapper);
-		assertEquals(value, wrapper.get());
+		assertThat(wrapper.get()).isEqualTo(value);
 	}
 
 	@Test

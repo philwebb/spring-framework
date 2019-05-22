@@ -40,6 +40,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,7 +72,7 @@ public class MockMvcClientHttpRequestFactoryTests {
 	public void test() throws Exception {
 		RestTemplate template = new RestTemplate(new MockMvcClientHttpRequestFactory(this.mockMvc));
 		String result = template.getForObject("/foo", String.class);
-		assertEquals("bar", result);
+		assertThat((Object) result).isEqualTo("bar");
 	}
 
 	@Test
@@ -80,7 +81,7 @@ public class MockMvcClientHttpRequestFactoryTests {
 		org.springframework.web.client.AsyncRestTemplate template = new org.springframework.web.client.AsyncRestTemplate(
 				new MockMvcClientHttpRequestFactory(this.mockMvc));
 		ListenableFuture<ResponseEntity<String>> entity = template.getForEntity("/foo", String.class);
-		assertEquals("bar", entity.get().getBody());
+		assertThat((Object) entity.get().getBody()).isEqualTo("bar");
 	}
 
 

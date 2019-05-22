@@ -201,7 +201,7 @@ public class ArrayConstructorTests extends AbstractExpressionTests {
 			throw new IllegalStateException("Not supported " + o.getClass());
 		}
 		s.append(']');
-		assertEquals(expectedToString, s.toString());
+		assertThat((Object) s.toString()).isEqualTo(expectedToString);
 		return s.toString();
 	}
 

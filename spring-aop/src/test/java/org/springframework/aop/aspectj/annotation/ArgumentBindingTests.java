@@ -30,8 +30,7 @@ import org.springframework.aop.aspectj.AspectJAdviceParameterNameDiscoverer;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -72,7 +71,7 @@ public class ArgumentBindingTests {
 				getClass().getMethod("methodWithOneParam", String.class);
 		String[] pnames = discoverer.getParameterNames(methodUsedForParameterTypeDiscovery);
 		assertEquals("one parameter name", 1, pnames.length);
-		assertEquals("formal", pnames[0]);
+		assertThat((Object) pnames[0]).isEqualTo("formal");
 	}
 
 

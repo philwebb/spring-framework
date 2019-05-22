@@ -35,7 +35,6 @@ import org.springframework.tests.XmlContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma
@@ -55,7 +54,7 @@ public class RssFeedViewTests {
 		model.put("1", "This is entry 1");
 
 		view.render(model, request, response);
-		assertEquals("Invalid content-type", "application/rss+xml", response.getContentType());
+		assertThat((Object) response.getContentType()).as("Invalid content-type").isEqualTo("application/rss+xml");
 		String expected = "<rss version=\"2.0\">" +
 				"<channel><title>Test Feed</title>" +
 				"<link>https://example.com</link>" +

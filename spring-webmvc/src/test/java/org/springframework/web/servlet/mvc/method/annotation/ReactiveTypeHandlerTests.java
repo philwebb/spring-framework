@@ -194,7 +194,8 @@ public class ReactiveTypeHandlerTests {
 
 	private void testSseResponse(boolean expectSseEmitter) throws Exception {
 		ResponseBodyEmitter emitter = handleValue(Flux.empty(), Flux.class, forClass(String.class));
-		assertEquals(expectSseEmitter, emitter instanceof SseEmitter);
+		Object actual = emitter instanceof SseEmitter;
+		assertThat(actual).isEqualTo(expectSseEmitter);
 		resetRequest();
 	}
 
@@ -213,7 +214,7 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext("baz");
 		processor.onComplete();
 
-		assertEquals("data:foo\n\ndata:bar\n\ndata:baz\n\n", emitterHandler.getValuesAsText());
+		assertThat((Object) emitterHandler.getValuesAsText()).isEqualTo("data:foo\n\ndata:bar\n\ndata:baz\n\n");
 	}
 
 	@Test
@@ -232,8 +233,7 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext(ServerSentEvent.builder("baz").id("3").build());
 		processor.onComplete();
 
-		assertEquals("id:1\ndata:foo\n\nid:2\ndata:bar\n\nid:3\ndata:baz\n\n",
-				emitterHandler.getValuesAsText());
+		assertThat((Object) emitterHandler.getValuesAsText()).isEqualTo("id:1\ndata:foo\n\nid:2\ndata:bar\n\nid:3\ndata:baz\n\n");
 	}
 
 	@Test
@@ -257,8 +257,8 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext(bar2);
 		processor.onComplete();
 
-		assertEquals("application/stream+json", message.getHeaders().getContentType().toString());
-		assertEquals(Arrays.asList(bar1, "\n", bar2, "\n"), emitterHandler.getValues());
+		assertThat((Object) message.getHeaders().getContentType().toString()).isEqualTo("application/stream+json");
+		assertThat((Object) emitterHandler.getValues()).isEqualTo(Arrays.asList(bar1, "\n", bar2, "\n"));
 	}
 
 	@Test
@@ -275,7 +275,7 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext("the lazy dog");
 		processor.onComplete();
 
-		assertEquals("The quick brown fox jumps over the lazy dog", emitterHandler.getValuesAsText());
+		assertThat((Object) emitterHandler.getValuesAsText()).isEqualTo("The quick brown fox jumps over the lazy dog");
 	}
 
 	@Test
@@ -305,7 +305,7 @@ public class ReactiveTypeHandlerTests {
 		ServletServerHttpResponse message = new ServletServerHttpResponse(this.servletResponse);
 		ResponseBodyEmitter emitter = handleValue(Flux.empty(), Flux.class, forClass(String.class));
 		emitter.extendResponse(message);
-		assertEquals(expected, message.getHeaders().getContentType().toString());
+		assertThat((Object) message.getHeaders().getContentType().toString()).isEqualTo(expected);
 		resetRequest();
 	}
 
@@ -322,7 +322,7 @@ public class ReactiveTypeHandlerTests {
 		produceTask.run();
 
 		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult()).isTrue();
-		assertEquals(expected, WebAsyncUtils.getAsyncManager(this.webRequest).getConcurrentResult());
+		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).getConcurrentResult()).isEqualTo(expected);
 
 		resetRequest();
 	}

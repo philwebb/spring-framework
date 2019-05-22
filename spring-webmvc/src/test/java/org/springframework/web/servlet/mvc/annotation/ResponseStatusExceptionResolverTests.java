@@ -93,7 +93,7 @@ public class ResponseStatusExceptionResolverTests {
 
 			StatusCodeAndReasonMessageException ex = new StatusCodeAndReasonMessageException();
 			exceptionResolver.resolveException(request, response, null, ex);
-			assertEquals("Invalid status reason", "Gone reason message", response.getErrorMessage());
+			assertThat((Object) response.getErrorMessage()).as("Invalid status reason").isEqualTo("Gone reason message");
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -134,7 +134,7 @@ public class ResponseStatusExceptionResolverTests {
 	private void assertResolved(ModelAndView mav, int status, String reason) {
 		assertThat(mav != null && mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
 		assertEquals(status, response.getStatus());
-		assertEquals(reason, response.getErrorMessage());
+		assertThat((Object) response.getErrorMessage()).isEqualTo(reason);
 		assertThat(response.isCommitted()).isTrue();
 	}
 

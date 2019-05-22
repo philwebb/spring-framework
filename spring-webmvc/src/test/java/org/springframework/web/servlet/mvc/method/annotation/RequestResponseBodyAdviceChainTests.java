@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.ControllerAdviceBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
@@ -100,8 +101,8 @@ public class RequestResponseBodyAdviceChainTests {
 		given(requestAdvice.afterBodyRead(eq(this.body), eq(this.request), eq(this.paramType),
 				eq(String.class), eq(this.converterType))).willReturn(modified);
 
-		assertEquals(modified, chain.afterBodyRead(this.body, this.request, this.paramType,
-				String.class, this.converterType));
+		assertThat(chain.afterBodyRead(this.body, this.request, this.paramType,
+				String.class, this.converterType)).isEqualTo(modified);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -120,7 +121,7 @@ public class RequestResponseBodyAdviceChainTests {
 		String actual = (String) chain.beforeBodyWrite(this.body, this.returnType, this.contentType,
 				this.converterType, this.request, this.response);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -131,7 +132,7 @@ public class RequestResponseBodyAdviceChainTests {
 		String actual = (String) chain.beforeBodyWrite(this.body, this.returnType, this.contentType,
 				this.converterType, this.request, this.response);
 
-		assertEquals("body-MyControllerAdvice", actual);
+		assertThat((Object) actual).isEqualTo("body-MyControllerAdvice");
 	}
 
 	@Test
@@ -142,7 +143,7 @@ public class RequestResponseBodyAdviceChainTests {
 		String actual = (String) chain.beforeBodyWrite(this.body, this.returnType, this.contentType,
 				this.converterType, this.request, this.response);
 
-		assertEquals(this.body, actual);
+		assertThat((Object) actual).isEqualTo(this.body);
 	}
 
 

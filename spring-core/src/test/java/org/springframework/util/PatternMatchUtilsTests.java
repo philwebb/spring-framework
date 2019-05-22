@@ -18,6 +18,7 @@ package org.springframework.util;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -28,8 +29,8 @@ public class PatternMatchUtilsTests {
 
 	@Test
 	public void testTrivial() {
-		assertEquals(false, PatternMatchUtils.simpleMatch((String) null, ""));
-		assertEquals(false, PatternMatchUtils.simpleMatch("1", null));
+		assertThat((Object) PatternMatchUtils.simpleMatch((String) null, "")).isEqualTo(false);
+		assertThat((Object) PatternMatchUtils.simpleMatch("1", null)).isEqualTo(false);
 		doTest("*", "123", true);
 		doTest("123", "123", true);
 	}
@@ -100,7 +101,7 @@ public class PatternMatchUtilsTests {
 	}
 
 	private void doTest(String pattern, String str, boolean shouldMatch) {
-		assertEquals(shouldMatch, PatternMatchUtils.simpleMatch(pattern, str));
+		assertThat((Object) PatternMatchUtils.simpleMatch(pattern, str)).isEqualTo(shouldMatch);
 	}
 
 }

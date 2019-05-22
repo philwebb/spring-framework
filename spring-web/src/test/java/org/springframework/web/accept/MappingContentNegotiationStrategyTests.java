@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -43,7 +44,7 @@ public class MappingContentNegotiationStrategyTests {
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
 		assertEquals(1, mediaTypes.size());
-		assertEquals("application/json", mediaTypes.get(0).toString());
+		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("application/json");
 	}
 
 	@Test
@@ -53,7 +54,7 @@ public class MappingContentNegotiationStrategyTests {
 
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
-		assertEquals(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST, mediaTypes);
+		assertThat((Object) mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test
@@ -63,7 +64,7 @@ public class MappingContentNegotiationStrategyTests {
 
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
-		assertEquals(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST, mediaTypes);
+		assertThat((Object) mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test
@@ -74,7 +75,7 @@ public class MappingContentNegotiationStrategyTests {
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
 		assertEquals(1, mediaTypes.size());
-		assertEquals("application/xml", mediaTypes.get(0).toString());
+		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("application/xml");
 	}
 
 

@@ -87,7 +87,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramMap, new BindingContext(), this.exchange);
 		Object result = mono.block();
 
-		assertEquals(uriTemplateVars, result);
+		assertThat(result).isEqualTo(uriTemplateVars);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramMap, new BindingContext(), this.exchange);
 		Object result = mono.block();
 
-		assertEquals(Collections.emptyMap(), result);
+		assertThat(result).isEqualTo(Collections.emptyMap());
 	}
 
 

@@ -104,23 +104,23 @@ public class GroovySpringContextTests implements BeanNameAware, InitializingBean
 		assertNull("The nonrequiredLong property should NOT have been autowired.", this.nonrequiredLong);
 		assertNotNull("The application context should have been autowired.", this.applicationContext);
 		assertNotNull("The pet field should have been autowired.", this.pet);
-		assertEquals("Dogbert", this.pet.getName());
+		assertThat((Object) this.pet.getName()).isEqualTo("Dogbert");
 	}
 
 	@Test
 	public void verifyAnnotationAutowiredMethods() {
 		assertNotNull("The employee setter method should have been autowired.", this.employee);
-		assertEquals("Dilbert", this.employee.getName());
+		assertThat((Object) this.employee.getName()).isEqualTo("Dilbert");
 	}
 
 	@Test
 	public void verifyResourceAnnotationWiredFields() {
-		assertEquals("The foo field should have been wired via @Resource.", "Foo", this.foo);
+		assertThat((Object) this.foo).as("The foo field should have been wired via @Resource.").isEqualTo("Foo");
 	}
 
 	@Test
 	public void verifyResourceAnnotationWiredMethods() {
-		assertEquals("The bar method should have been wired via @Resource.", "Bar", this.bar);
+		assertThat((Object) this.bar).as("The bar method should have been wired via @Resource.").isEqualTo("Bar");
 	}
 
 }

@@ -96,9 +96,8 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		final ExposedInvocationTestBean expectedTarget = new ExposedInvocationTestBean() {
 			@Override
 			protected void assertions(MethodInvocation invocation) {
-				assertEquals(this, invocation.getThis());
-				assertEquals("Invocation should be on ITestBean: " + invocation.getMethod(),
-						ITestBean.class, invocation.getMethod().getDeclaringClass());
+				assertThat(invocation.getThis()).isEqualTo(this);
+				assertThat((Object) invocation.getMethod().getDeclaringClass()).as("Invocation should be on ITestBean: " + invocation.getMethod()).isEqualTo(ITestBean.class);
 			}
 		};
 
@@ -108,7 +107,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 			@Override
 			public Object invoke(MethodInvocation invocation) throws Throwable {
 				// Assert that target matches BEFORE invocation returns
-				assertEquals("Target is correct", expectedTarget, invocation.getThis());
+				assertThat(invocation.getThis()).as("Target is correct").isEqualTo(expectedTarget);
 				return super.invoke(invocation);
 			}
 		};
@@ -139,7 +138,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		JdkDynamicAopProxy aopProxy = new JdkDynamicAopProxy(as);
 		Named proxy = (Named) aopProxy.getProxy();
 		Named named = new Person();
-		assertEquals("equals()", proxy, named);
+		assertThat((Object) named).as("equals()").isEqualTo(proxy);
 		assertEquals("hashCode()", proxy.hashCode(), named.hashCode());
 	}
 

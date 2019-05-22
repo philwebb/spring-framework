@@ -99,7 +99,7 @@ public class ComponentScanParserTests {
 		ClassPathXmlApplicationContext context = loadContext("componentScanWithAutowiredQualifierTests.xml");
 		AutowiredQualifierFooService fooService = (AutowiredQualifierFooService) context.getBean("fooService");
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertEquals("bar", fooService.foo(123));
+		assertThat((Object) fooService.foo(123)).isEqualTo("bar");
 		context.close();
 	}
 

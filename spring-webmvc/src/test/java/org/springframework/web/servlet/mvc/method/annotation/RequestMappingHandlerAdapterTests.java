@@ -125,7 +125,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod(handler, "handle"));
-		assertEquals("no-store", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("no-store");
 	}
 
 	@Test
@@ -203,8 +203,8 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
-		assertEquals("lAttr1", mav.getModel().get("attr1"));
-		assertEquals("gAttr2", mav.getModel().get("attr2"));
+		assertThat(mav.getModel().get("attr1")).isEqualTo("lAttr1");
+		assertThat(mav.getModel().get("attr2")).isEqualTo("gAttr2");
 	}
 
 	@Test
@@ -219,8 +219,8 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
-		assertEquals("lAttr1", mav.getModel().get("attr1"));
-		assertEquals("gAttr2", mav.getModel().get("attr2"));
+		assertThat(mav.getModel().get("attr1")).isEqualTo("lAttr1");
+		assertThat(mav.getModel().get("attr2")).isEqualTo("gAttr2");
 	}
 
 	@Test
@@ -233,9 +233,9 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
-		assertEquals("lAttr1", mav.getModel().get("attr1"));
-		assertEquals("gAttr2", mav.getModel().get("attr2"));
-		assertEquals(null,mav.getModel().get("attr3"));
+		assertThat(mav.getModel().get("attr1")).isEqualTo("lAttr1");
+		assertThat(mav.getModel().get("attr2")).isEqualTo("gAttr2");
+		assertThat(mav.getModel().get("attr3")).isEqualTo(null);
 	}
 
 	// SPR-10859
@@ -257,7 +257,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
 		assertEquals(200, this.response.getStatus());
-		assertEquals("{\"status\":400,\"message\":\"body\"}", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("{\"status\":400,\"message\":\"body\"}");
 	}
 
 	private HandlerMethod handlerMethod(Object handler, String methodName, Class<?>... paramTypes) throws Exception {

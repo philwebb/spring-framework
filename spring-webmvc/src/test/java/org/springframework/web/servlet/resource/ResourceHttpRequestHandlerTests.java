@@ -92,14 +92,14 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "foo.css");
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("text/css", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/css");
 		assertEquals(17, this.response.getContentLength());
-		assertEquals("max-age=3600", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("max-age=3600");
 		assertThat(this.response.containsHeader("Last-Modified")).isTrue();
 		assertEquals(resourceLastModified("test/foo.css") / 1000, this.response.getDateHeader("Last-Modified") / 1000);
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
-		assertEquals("h1 { color:red; }", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("h1 { color:red; }");
 	}
 
 	@Test
@@ -109,12 +109,12 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(200, this.response.getStatus());
-		assertEquals("text/css", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/css");
 		assertEquals(17, this.response.getContentLength());
-		assertEquals("max-age=3600", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("max-age=3600");
 		assertThat(this.response.containsHeader("Last-Modified")).isTrue();
 		assertEquals(resourceLastModified("test/foo.css") / 1000, this.response.getDateHeader("Last-Modified") / 1000);
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 		assertEquals(0, this.response.getContentAsByteArray().length);
 	}
@@ -126,7 +126,7 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(200, this.response.getStatus());
-		assertEquals("GET,HEAD,OPTIONS", this.response.getHeader("Allow"));
+		assertThat((Object) this.response.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 	}
 
 	@Test
@@ -135,10 +135,10 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.setCacheSeconds(0);
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("no-store", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("no-store");
 		assertThat(this.response.containsHeader("Last-Modified")).isTrue();
 		assertEquals(resourceLastModified("test/foo.css") / 1000, this.response.getDateHeader("Last-Modified") / 1000);
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -152,8 +152,8 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "versionString/foo.css");
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("\"versionString\"", this.response.getHeader("ETag"));
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("ETag")).isEqualTo("\"versionString\"");
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -167,11 +167,11 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.setAlwaysMustRevalidate(true);
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("max-age=3600, must-revalidate", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("max-age=3600, must-revalidate");
 		assertThat(this.response.getDateHeader("Expires") >= System.currentTimeMillis() - 1000 + (3600 * 1000)).isTrue();
 		assertThat(this.response.containsHeader("Last-Modified")).isTrue();
 		assertEquals(resourceLastModified("test/foo.css") / 1000, this.response.getDateHeader("Last-Modified") / 1000);
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -185,13 +185,13 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.setUseCacheControlHeader(true);
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("no-cache", this.response.getHeader("Pragma"));
+		assertThat((Object) this.response.getHeader("Pragma")).isEqualTo("no-cache");
 		assertThat(this.response.getHeaderValues("Cache-Control")).hasSize(1);
-		assertEquals("no-cache", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("no-cache");
 		assertThat(this.response.getDateHeader("Expires") <= System.currentTimeMillis()).isTrue();
 		assertThat(this.response.containsHeader("Last-Modified")).isTrue();
 		assertEquals(resourceLastModified("test/foo.css") / 1000, this.response.getDateHeader("Last-Modified") / 1000);
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -200,11 +200,11 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "foo.html");
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("text/html", this.response.getContentType());
-		assertEquals("max-age=3600", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/html");
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("max-age=3600");
 		assertThat(this.response.containsHeader("Last-Modified")).isTrue();
 		assertEquals(resourceLastModified("test/foo.html") / 1000, this.response.getDateHeader("Last-Modified") / 1000);
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -213,15 +213,15 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "baz.css");
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("text/css", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/css");
 		assertEquals(17, this.response.getContentLength());
-		assertEquals("max-age=3600", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("max-age=3600");
 		assertThat(this.response.containsHeader("Last-Modified")).isTrue();
 		assertEquals(resourceLastModified("testalternatepath/baz.css") / 1000,
 				this.response.getDateHeader("Last-Modified") / 1000);
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
-		assertEquals("h1 { color:red; }", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("h1 { color:red; }");
 	}
 
 	@Test
@@ -229,8 +229,8 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "js/foo.js");
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("text/javascript", this.response.getContentType());
-		assertEquals("function foo() { console.log(\"hello world\"); }", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/javascript");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("function foo() { console.log(\"hello world\"); }");
 	}
 
 	@Test
@@ -238,8 +238,8 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "js/baz.js");
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("text/javascript", this.response.getContentType());
-		assertEquals("function foo() { console.log(\"hello world\"); }", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/javascript");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("function foo() { console.log(\"hello world\"); }");
 	}
 
 	@Test  // SPR-13658
@@ -259,8 +259,8 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "foo.bar");
 		handler.handleRequest(this.request, this.response);
 
-		assertEquals("foo/bar", this.response.getContentType());
-		assertEquals("h1 { color:red; }", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentType()).isEqualTo("foo/bar");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("h1 { color:red; }");
 	}
 
 	@Test  // SPR-14577
@@ -281,7 +281,7 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "foo.html");
 		handler.handleRequest(this.request, this.response);
 
-		assertEquals("text/html", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/html");
 	}
 
 	@Test  // SPR-14368
@@ -306,8 +306,8 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, "foo.css");
 		handler.handleRequest(this.request, this.response);
 
-		assertEquals("foo/bar", this.response.getContentType());
-		assertEquals("h1 { color:red; }", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentType()).isEqualTo("foo/bar");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("h1 { color:red; }");
 	}
 
 	@Test
@@ -413,33 +413,33 @@ public class ResourceHttpRequestHandlerTests {
 		assertSame("foo/bar", this.handler.processPath("foo/bar"));
 
 		// leading whitespace control characters (00-1F)
-		assertEquals("/foo/bar", this.handler.processPath("  /foo/bar"));
-		assertEquals("/foo/bar", this.handler.processPath((char) 1 + "/foo/bar"));
-		assertEquals("/foo/bar", this.handler.processPath((char) 31 + "/foo/bar"));
-		assertEquals("foo/bar", this.handler.processPath("  foo/bar"));
-		assertEquals("foo/bar", this.handler.processPath((char) 31 + "foo/bar"));
+		assertThat((Object) this.handler.processPath("  /foo/bar")).isEqualTo("/foo/bar");
+		assertThat((Object) this.handler.processPath((char) 1 + "/foo/bar")).isEqualTo("/foo/bar");
+		assertThat((Object) this.handler.processPath((char) 31 + "/foo/bar")).isEqualTo("/foo/bar");
+		assertThat((Object) this.handler.processPath("  foo/bar")).isEqualTo("foo/bar");
+		assertThat((Object) this.handler.processPath((char) 31 + "foo/bar")).isEqualTo("foo/bar");
 
 		// leading control character 0x7F (DEL)
-		assertEquals("/foo/bar", this.handler.processPath((char) 127 + "/foo/bar"));
-		assertEquals("/foo/bar", this.handler.processPath((char) 127 + "/foo/bar"));
+		assertThat((Object) this.handler.processPath((char) 127 + "/foo/bar")).isEqualTo("/foo/bar");
+		assertThat((Object) this.handler.processPath((char) 127 + "/foo/bar")).isEqualTo("/foo/bar");
 
 		// leading control and '/' characters
-		assertEquals("/foo/bar", this.handler.processPath("  /  foo/bar"));
-		assertEquals("/foo/bar", this.handler.processPath("  /  /  foo/bar"));
-		assertEquals("/foo/bar", this.handler.processPath("  // /// ////  foo/bar"));
-		assertEquals("/foo/bar", this.handler.processPath((char) 1 + " / " + (char) 127 + " // foo/bar"));
+		assertThat((Object) this.handler.processPath("  /  foo/bar")).isEqualTo("/foo/bar");
+		assertThat((Object) this.handler.processPath("  /  /  foo/bar")).isEqualTo("/foo/bar");
+		assertThat((Object) this.handler.processPath("  // /// ////  foo/bar")).isEqualTo("/foo/bar");
+		assertThat((Object) this.handler.processPath((char) 1 + " / " + (char) 127 + " // foo/bar")).isEqualTo("/foo/bar");
 
 		// root or empty path
-		assertEquals("", this.handler.processPath("   "));
-		assertEquals("/", this.handler.processPath("/"));
-		assertEquals("/", this.handler.processPath("///"));
-		assertEquals("/", this.handler.processPath("/ /   / "));
-		assertEquals("/", this.handler.processPath("\\/ \\/   \\/ "));
+		assertThat((Object) this.handler.processPath("   ")).isEqualTo("");
+		assertThat((Object) this.handler.processPath("/")).isEqualTo("/");
+		assertThat((Object) this.handler.processPath("///")).isEqualTo("/");
+		assertThat((Object) this.handler.processPath("/ /   / ")).isEqualTo("/");
+		assertThat((Object) this.handler.processPath("\\/ \\/   \\/ ")).isEqualTo("/");
 
 		// duplicate slash or backslash
-		assertEquals("/foo/ /bar/baz/", this.handler.processPath("//foo/ /bar//baz//"));
-		assertEquals("/foo/ /bar/baz/", this.handler.processPath("\\\\foo\\ \\bar\\\\baz\\\\"));
-		assertEquals("foo/bar", this.handler.processPath("foo\\\\/\\////bar"));
+		assertThat((Object) this.handler.processPath("//foo/ /bar//baz//")).isEqualTo("/foo/ /bar/baz/");
+		assertThat((Object) this.handler.processPath("\\\\foo\\ \\bar\\\\baz\\\\")).isEqualTo("/foo/ /bar/baz/");
+		assertThat((Object) this.handler.processPath("foo\\\\/\\////bar")).isEqualTo("foo/bar");
 
 	}
 
@@ -449,9 +449,9 @@ public class ResourceHttpRequestHandlerTests {
 		Resource[] locations = resolver.getAllowedLocations();
 
 		assertEquals(3, locations.length);
-		assertEquals("test/", ((ClassPathResource) locations[0]).getPath());
-		assertEquals("testalternatepath/", ((ClassPathResource) locations[1]).getPath());
-		assertEquals("META-INF/resources/webjars/", ((ClassPathResource) locations[2]).getPath());
+		assertThat((Object) ((ClassPathResource) locations[0]).getPath()).isEqualTo("test/");
+		assertThat((Object) ((ClassPathResource) locations[1]).getPath()).isEqualTo("testalternatepath/");
+		assertThat((Object) ((ClassPathResource) locations[2]).getPath()).isEqualTo("META-INF/resources/webjars/");
 	}
 
 	@Test
@@ -470,7 +470,7 @@ public class ResourceHttpRequestHandlerTests {
 
 		Resource[] locations = pathResolver.getAllowedLocations();
 		assertEquals(1, locations.length);
-		assertEquals("test/", ((ClassPathResource) locations[0]).getPath());
+		assertThat((Object) ((ClassPathResource) locations[0]).getPath()).isEqualTo("test/");
 	}
 
 	@Test
@@ -487,7 +487,7 @@ public class ResourceHttpRequestHandlerTests {
 		this.request.addHeader("If-Modified-Since", resourceLastModified("test/foo.css") / 1000 * 1000 - 1);
 		this.handler.handleRequest(this.request, this.response);
 		assertEquals(HttpServletResponse.SC_OK, this.response.getStatus());
-		assertEquals("h1 { color:red; }", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("h1 { color:red; }");
 	}
 
 	@Test
@@ -548,11 +548,11 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(206, this.response.getStatus());
-		assertEquals("text/plain", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/plain");
 		assertEquals(2, this.response.getContentLength());
-		assertEquals("bytes 0-1/10", this.response.getHeader("Content-Range"));
-		assertEquals("So", this.response.getContentAsString());
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Content-Range")).isEqualTo("bytes 0-1/10");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("So");
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -563,11 +563,11 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(206, this.response.getStatus());
-		assertEquals("text/plain", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/plain");
 		assertEquals(1, this.response.getContentLength());
-		assertEquals("bytes 9-9/10", this.response.getHeader("Content-Range"));
-		assertEquals(".", this.response.getContentAsString());
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Content-Range")).isEqualTo("bytes 9-9/10");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo(".");
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -578,11 +578,11 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(206, this.response.getStatus());
-		assertEquals("text/plain", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/plain");
 		assertEquals(1, this.response.getContentLength());
-		assertEquals("bytes 9-9/10", this.response.getHeader("Content-Range"));
-		assertEquals(".", this.response.getContentAsString());
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Content-Range")).isEqualTo("bytes 9-9/10");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo(".");
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -593,11 +593,11 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(206, this.response.getStatus());
-		assertEquals("text/plain", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/plain");
 		assertEquals(1, this.response.getContentLength());
-		assertEquals("bytes 9-9/10", this.response.getHeader("Content-Range"));
-		assertEquals(".", this.response.getContentAsString());
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Content-Range")).isEqualTo("bytes 9-9/10");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo(".");
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -608,11 +608,11 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(206, this.response.getStatus());
-		assertEquals("text/plain", this.response.getContentType());
+		assertThat((Object) this.response.getContentType()).isEqualTo("text/plain");
 		assertEquals(10, this.response.getContentLength());
-		assertEquals("bytes 0-9/10", this.response.getHeader("Content-Range"));
-		assertEquals("Some text.", this.response.getContentAsString());
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Content-Range")).isEqualTo("bytes 0-9/10");
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("Some text.");
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -623,8 +623,8 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals(416, this.response.getStatus());
-		assertEquals("bytes */10", this.response.getHeader("Content-Range"));
-		assertEquals("bytes", this.response.getHeader("Accept-Ranges"));
+		assertThat((Object) this.response.getHeader("Content-Range")).isEqualTo("bytes */10");
+		assertThat((Object) this.response.getHeader("Accept-Ranges")).isEqualTo("bytes");
 		assertEquals(1, this.response.getHeaders("Accept-Ranges").size());
 	}
 
@@ -642,20 +642,20 @@ public class ResourceHttpRequestHandlerTests {
 		String content = this.response.getContentAsString();
 		String[] ranges = StringUtils.tokenizeToStringArray(content, "\r\n", false, true);
 
-		assertEquals(boundary, ranges[0]);
-		assertEquals("Content-Type: text/plain", ranges[1]);
-		assertEquals("Content-Range: bytes 0-1/10", ranges[2]);
-		assertEquals("So", ranges[3]);
+		assertThat((Object) ranges[0]).isEqualTo(boundary);
+		assertThat((Object) ranges[1]).isEqualTo("Content-Type: text/plain");
+		assertThat((Object) ranges[2]).isEqualTo("Content-Range: bytes 0-1/10");
+		assertThat((Object) ranges[3]).isEqualTo("So");
 
-		assertEquals(boundary, ranges[4]);
-		assertEquals("Content-Type: text/plain", ranges[5]);
-		assertEquals("Content-Range: bytes 4-5/10", ranges[6]);
-		assertEquals(" t", ranges[7]);
+		assertThat((Object) ranges[4]).isEqualTo(boundary);
+		assertThat((Object) ranges[5]).isEqualTo("Content-Type: text/plain");
+		assertThat((Object) ranges[6]).isEqualTo("Content-Range: bytes 4-5/10");
+		assertThat((Object) ranges[7]).isEqualTo(" t");
 
-		assertEquals(boundary, ranges[8]);
-		assertEquals("Content-Type: text/plain", ranges[9]);
-		assertEquals("Content-Range: bytes 8-9/10", ranges[10]);
-		assertEquals("t.", ranges[11]);
+		assertThat((Object) ranges[8]).isEqualTo(boundary);
+		assertThat((Object) ranges[9]).isEqualTo("Content-Type: text/plain");
+		assertThat((Object) ranges[10]).isEqualTo("Content-Range: bytes 8-9/10");
+		assertThat((Object) ranges[11]).isEqualTo("t.");
 	}
 
 	@Test  // SPR-14005
@@ -665,7 +665,7 @@ public class ResourceHttpRequestHandlerTests {
 
 		this.handler.handleRequest(this.request, this.response);
 
-		assertEquals("max-age=3600", this.response.getHeader("Cache-Control"));
+		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("max-age=3600");
 	}
 
 

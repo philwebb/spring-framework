@@ -146,7 +146,7 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
 		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
-		assertEquals("test text", result.toString());
+		assertThat((Object) result.toString()).isEqualTo("test text");
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		tag.setHtmlEscape(true);
 		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
 		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
-		assertEquals("test &amp; text", result.toString());
+		assertThat((Object) result.toString()).isEqualTo("test &amp; text");
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		tag.setJavaScriptEscape(true);
 		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
 		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
-		assertEquals("Correct content", "\\' test & text \\\\", result.toString());
+		assertThat((Object) result.toString()).as("Correct content").isEqualTo("\\' test & text \\\\");
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		tag.setJavaScriptEscape(true);
 		assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
 		assertEquals(Tag.SKIP_BODY, tag.doAfterBody());
-		assertEquals("Correct content", "&#39; test &amp; text \\\\", result.toString());
+		assertThat((Object) result.toString()).as("Correct content").isEqualTo("&#39; test &amp; text \\\\");
 	}
 
 }

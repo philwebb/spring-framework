@@ -90,9 +90,9 @@ public class ContentCachingRequestWrapperTests {
 		ContentCachingRequestWrapper wrapper = new ContentCachingRequestWrapper(this.request);
 		// getting request parameters will consume the request body
 		assertThat(wrapper.getParameterMap().isEmpty()).isFalse();
-		assertEquals("first=value&second=foo&second=bar", new String(wrapper.getContentAsByteArray()));
+		assertThat((Object) new String(wrapper.getContentAsByteArray())).isEqualTo("first=value&second=foo&second=bar");
 		// SPR-12810 : inputstream body should be consumed
-		assertEquals("", new String(FileCopyUtils.copyToByteArray(wrapper.getInputStream())));
+		assertThat((Object) new String(FileCopyUtils.copyToByteArray(wrapper.getInputStream()))).isEqualTo("");
 	}
 
 	@Test  // SPR-12810

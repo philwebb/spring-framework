@@ -118,7 +118,7 @@ public class ResponseEntityExceptionHandlerTests {
 		Exception ex = new HttpRequestMethodNotSupportedException("GET", supported);
 
 		ResponseEntity<Object> responseEntity = testException(ex);
-		assertEquals(EnumSet.of(HttpMethod.POST, HttpMethod.DELETE), responseEntity.getHeaders().getAllow());
+		assertThat((Object) responseEntity.getHeaders().getAllow()).isEqualTo(EnumSet.of(HttpMethod.POST, HttpMethod.DELETE));
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class ResponseEntityExceptionHandlerTests {
 		Exception ex = new HttpMediaTypeNotSupportedException(MediaType.APPLICATION_JSON, acceptable);
 
 		ResponseEntity<Object> responseEntity = testException(ex);
-		assertEquals(acceptable, responseEntity.getHeaders().getAccept());
+		assertThat((Object) responseEntity.getHeaders().getAccept()).isEqualTo(acceptable);
 	}
 
 	@Test
@@ -227,8 +227,8 @@ public class ResponseEntityExceptionHandlerTests {
 		assertNotNull(resolver.resolveException(this.servletRequest, this.servletResponse, null, ex));
 
 		assertEquals(400, this.servletResponse.getStatus());
-		assertEquals("error content", this.servletResponse.getContentAsString());
-		assertEquals("someHeaderValue", this.servletResponse.getHeader("someHeader"));
+		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("error content");
+		assertThat((Object) this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}
 
 	@Test
@@ -257,8 +257,8 @@ public class ResponseEntityExceptionHandlerTests {
 		servlet.service(this.servletRequest, this.servletResponse);
 
 		assertEquals(400, this.servletResponse.getStatus());
-		assertEquals("error content", this.servletResponse.getContentAsString());
-		assertEquals("someHeaderValue", this.servletResponse.getHeader("someHeader"));
+		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("error content");
+		assertThat((Object) this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}
 
 	@Test

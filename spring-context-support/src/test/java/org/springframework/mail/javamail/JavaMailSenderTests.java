@@ -75,33 +75,33 @@ public class JavaMailSenderTests {
 		simpleMessage.setText("my text");
 		sender.send(simpleMessage);
 
-		assertEquals("host", sender.transport.getConnectedHost());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
 		assertEquals(30, sender.transport.getConnectedPort());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 
 		assertEquals(1, sender.transport.getSentMessages().size());
 		MimeMessage sentMessage = sender.transport.getSentMessage(0);
 		List<Address> froms = Arrays.asList(sentMessage.getFrom());
 		assertEquals(1, froms.size());
-		assertEquals("me@mail.org", ((InternetAddress) froms.get(0)).getAddress());
+		assertThat((Object) ((InternetAddress) froms.get(0)).getAddress()).isEqualTo("me@mail.org");
 		List<Address> replyTos = Arrays.asList(sentMessage.getReplyTo());
-		assertEquals("reply@mail.org", ((InternetAddress) replyTos.get(0)).getAddress());
+		assertThat((Object) ((InternetAddress) replyTos.get(0)).getAddress()).isEqualTo("reply@mail.org");
 		List<Address> tos = Arrays.asList(sentMessage.getRecipients(Message.RecipientType.TO));
 		assertEquals(1, tos.size());
-		assertEquals("you@mail.org", ((InternetAddress) tos.get(0)).getAddress());
+		assertThat((Object) ((InternetAddress) tos.get(0)).getAddress()).isEqualTo("you@mail.org");
 		List<Address> ccs = Arrays.asList(sentMessage.getRecipients(Message.RecipientType.CC));
 		assertEquals(2, ccs.size());
-		assertEquals("he@mail.org", ((InternetAddress) ccs.get(0)).getAddress());
-		assertEquals("she@mail.org", ((InternetAddress) ccs.get(1)).getAddress());
+		assertThat((Object) ((InternetAddress) ccs.get(0)).getAddress()).isEqualTo("he@mail.org");
+		assertThat((Object) ((InternetAddress) ccs.get(1)).getAddress()).isEqualTo("she@mail.org");
 		List<Address> bccs = Arrays.asList(sentMessage.getRecipients(Message.RecipientType.BCC));
 		assertEquals(2, bccs.size());
-		assertEquals("us@mail.org", ((InternetAddress) bccs.get(0)).getAddress());
-		assertEquals("them@mail.org", ((InternetAddress) bccs.get(1)).getAddress());
+		assertThat((Object) ((InternetAddress) bccs.get(0)).getAddress()).isEqualTo("us@mail.org");
+		assertThat((Object) ((InternetAddress) bccs.get(1)).getAddress()).isEqualTo("them@mail.org");
 		assertEquals(sentDate.getTime(), sentMessage.getSentDate().getTime());
-		assertEquals("my subject", sentMessage.getSubject());
-		assertEquals("my text", sentMessage.getContent());
+		assertThat((Object) sentMessage.getSubject()).isEqualTo("my subject");
+		assertThat(sentMessage.getContent()).isEqualTo("my text");
 	}
 
 	@Test
@@ -117,20 +117,20 @@ public class JavaMailSenderTests {
 		simpleMessage2.setTo("she@mail.org");
 		sender.send(simpleMessage1, simpleMessage2);
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 
 		assertEquals(2, sender.transport.getSentMessages().size());
 		MimeMessage sentMessage1 = sender.transport.getSentMessage(0);
 		List<Address> tos1 = Arrays.asList(sentMessage1.getRecipients(Message.RecipientType.TO));
 		assertEquals(1, tos1.size());
-		assertEquals("he@mail.org", ((InternetAddress) tos1.get(0)).getAddress());
+		assertThat((Object) ((InternetAddress) tos1.get(0)).getAddress()).isEqualTo("he@mail.org");
 		MimeMessage sentMessage2 = sender.transport.getSentMessage(1);
 		List<Address> tos2 = Arrays.asList(sentMessage2.getRecipients(Message.RecipientType.TO));
 		assertEquals(1, tos2.size());
-		assertEquals("she@mail.org", ((InternetAddress) tos2.get(0)).getAddress());
+		assertThat((Object) ((InternetAddress) tos2.get(0)).getAddress()).isEqualTo("she@mail.org");
 	}
 
 	@Test
@@ -144,12 +144,12 @@ public class JavaMailSenderTests {
 		mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress("you@mail.org"));
 		sender.send(mimeMessage);
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(1, sender.transport.getSentMessages().size());
-		assertEquals(mimeMessage, sender.transport.getSentMessage(0));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(mimeMessage);
 	}
 
 	@Test
@@ -165,13 +165,13 @@ public class JavaMailSenderTests {
 		mimeMessage2.setRecipient(Message.RecipientType.TO, new InternetAddress("she@mail.org"));
 		sender.send(mimeMessage1, mimeMessage2);
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(2, sender.transport.getSentMessages().size());
-		assertEquals(mimeMessage1, sender.transport.getSentMessage(0));
-		assertEquals(mimeMessage2, sender.transport.getSentMessage(1));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(mimeMessage1);
+		assertThat((Object) sender.transport.getSentMessage(1)).isEqualTo(mimeMessage2);
 	}
 
 	@Test
@@ -192,12 +192,12 @@ public class JavaMailSenderTests {
 		};
 		sender.send(preparator);
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(1, sender.transport.getSentMessages().size());
-		assertEquals(messages.get(0), sender.transport.getSentMessage(0));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(messages.get(0));
 	}
 
 	@Test
@@ -225,13 +225,13 @@ public class JavaMailSenderTests {
 		};
 		sender.send(preparator1, preparator2);
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(2, sender.transport.getSentMessages().size());
-		assertEquals(messages.get(0), sender.transport.getSentMessage(0));
-		assertEquals(messages.get(1), sender.transport.getSentMessage(1));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(messages.get(0));
+		assertThat((Object) sender.transport.getSentMessage(1)).isEqualTo(messages.get(1));
 	}
 
 	@Test
@@ -249,12 +249,12 @@ public class JavaMailSenderTests {
 		message.setTo("you@mail.org");
 		sender.send(message.getMimeMessage());
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(1, sender.transport.getSentMessages().size());
-		assertEquals(message.getMimeMessage(), sender.transport.getSentMessage(0));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(message.getMimeMessage());
 	}
 
 	@Test
@@ -265,20 +265,20 @@ public class JavaMailSenderTests {
 		sender.setPassword("password");
 
 		MimeMessageHelper message = new MimeMessageHelper(sender.createMimeMessage(), "UTF-8");
-		assertEquals("UTF-8", message.getEncoding());
+		assertThat((Object) message.getEncoding()).isEqualTo("UTF-8");
 		FileTypeMap fileTypeMap = new ConfigurableMimeFileTypeMap();
 		message.setFileTypeMap(fileTypeMap);
-		assertEquals(fileTypeMap, message.getFileTypeMap());
+		assertThat((Object) message.getFileTypeMap()).isEqualTo(fileTypeMap);
 
 		message.setTo("you@mail.org");
 		sender.send(message.getMimeMessage());
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(1, sender.transport.getSentMessages().size());
-		assertEquals(message.getMimeMessage(), sender.transport.getSentMessage(0));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(message.getMimeMessage());
 	}
 
 	@Test
@@ -292,18 +292,18 @@ public class JavaMailSenderTests {
 		FileTypeMap fileTypeMap = new ConfigurableMimeFileTypeMap();
 		sender.setDefaultFileTypeMap(fileTypeMap);
 		MimeMessageHelper message = new MimeMessageHelper(sender.createMimeMessage());
-		assertEquals("UTF-8", message.getEncoding());
-		assertEquals(fileTypeMap, message.getFileTypeMap());
+		assertThat((Object) message.getEncoding()).isEqualTo("UTF-8");
+		assertThat((Object) message.getFileTypeMap()).isEqualTo(fileTypeMap);
 
 		message.setTo("you@mail.org");
 		sender.send(message.getMimeMessage());
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(1, sender.transport.getSentMessages().size());
-		assertEquals(message.getMimeMessage(), sender.transport.getSentMessage(0));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(message.getMimeMessage());
 	}
 
 	@Test
@@ -346,7 +346,7 @@ public class JavaMailSenderTests {
 		MockJavaMailSender sender = new MockJavaMailSender() {
 			@Override
 			protected Transport getTransport(Session sess) throws NoSuchProviderException {
-				assertEquals(session, sess);
+				assertThat((Object) sess).isEqualTo(session);
 				return super.getTransport(sess);
 			}
 		};
@@ -361,12 +361,12 @@ public class JavaMailSenderTests {
 		mimeMessage.setSentDate(new GregorianCalendar(2005, 3, 1).getTime());
 		sender.send(mimeMessage);
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(1, sender.transport.getSentMessages().size());
-		assertEquals(mimeMessage, sender.transport.getSentMessage(0));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(mimeMessage);
 	}
 
 	@Test
@@ -376,7 +376,7 @@ public class JavaMailSenderTests {
 		MockJavaMailSender sender = new MockJavaMailSender() {
 			@Override
 			protected Transport getTransport(Session sess) throws NoSuchProviderException {
-				assertEquals("bogusValue", sess.getProperty("bogusKey"));
+				assertThat((Object) sess.getProperty("bogusKey")).isEqualTo("bogusValue");
 				return super.getTransport(sess);
 			}
 		};
@@ -389,12 +389,12 @@ public class JavaMailSenderTests {
 		mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress("you@mail.org"));
 		sender.send(mimeMessage);
 
-		assertEquals("host", sender.transport.getConnectedHost());
-		assertEquals("username", sender.transport.getConnectedUsername());
-		assertEquals("password", sender.transport.getConnectedPassword());
+		assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+		assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+		assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 		assertThat(sender.transport.isCloseCalled()).isTrue();
 		assertEquals(1, sender.transport.getSentMessages().size());
-		assertEquals(mimeMessage, sender.transport.getSentMessage(0));
+		assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(mimeMessage);
 	}
 
 	@Test
@@ -439,18 +439,18 @@ public class JavaMailSenderTests {
 		}
 		catch (MailSendException ex) {
 			ex.printStackTrace();
-			assertEquals("host", sender.transport.getConnectedHost());
-			assertEquals("username", sender.transport.getConnectedUsername());
-			assertEquals("password", sender.transport.getConnectedPassword());
+			assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+			assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+			assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 			assertThat(sender.transport.isCloseCalled()).isTrue();
 			assertEquals(1, sender.transport.getSentMessages().size());
-			assertEquals(new InternetAddress("she@mail.org"), sender.transport.getSentMessage(0).getAllRecipients()[0]);
+			assertThat((Object) sender.transport.getSentMessage(0).getAllRecipients()[0]).isEqualTo(new InternetAddress("she@mail.org"));
 			assertEquals(1, ex.getFailedMessages().size());
-			assertEquals(simpleMessage1, ex.getFailedMessages().keySet().iterator().next());
+			assertThat(ex.getFailedMessages().keySet().iterator().next()).isEqualTo(simpleMessage1);
 			Object subEx = ex.getFailedMessages().values().iterator().next();
 			boolean condition = subEx instanceof MessagingException;
 			assertThat(condition).isTrue();
-			assertEquals("failed", ((MessagingException) subEx).getMessage());
+			assertThat((Object) ((MessagingException) subEx).getMessage()).isEqualTo("failed");
 		}
 	}
 
@@ -472,18 +472,18 @@ public class JavaMailSenderTests {
 		}
 		catch (MailSendException ex) {
 			ex.printStackTrace();
-			assertEquals("host", sender.transport.getConnectedHost());
-			assertEquals("username", sender.transport.getConnectedUsername());
-			assertEquals("password", sender.transport.getConnectedPassword());
+			assertThat((Object) sender.transport.getConnectedHost()).isEqualTo("host");
+			assertThat((Object) sender.transport.getConnectedUsername()).isEqualTo("username");
+			assertThat((Object) sender.transport.getConnectedPassword()).isEqualTo("password");
 			assertThat(sender.transport.isCloseCalled()).isTrue();
 			assertEquals(1, sender.transport.getSentMessages().size());
-			assertEquals(mimeMessage2, sender.transport.getSentMessage(0));
+			assertThat((Object) sender.transport.getSentMessage(0)).isEqualTo(mimeMessage2);
 			assertEquals(1, ex.getFailedMessages().size());
-			assertEquals(mimeMessage1, ex.getFailedMessages().keySet().iterator().next());
+			assertThat(ex.getFailedMessages().keySet().iterator().next()).isEqualTo(mimeMessage1);
 			Object subEx = ex.getFailedMessages().values().iterator().next();
 			boolean condition = subEx instanceof MessagingException;
 			assertThat(condition).isTrue();
-			assertEquals("failed", ((MessagingException) subEx).getMessage());
+			assertThat((Object) ((MessagingException) subEx).getMessage()).isEqualTo("failed");
 		}
 	}
 
@@ -589,7 +589,7 @@ public class JavaMailSenderTests {
 				throw new MessagingException("No sentDate specified");
 			}
 			if (message.getSubject() != null && message.getSubject().contains("custom")) {
-				assertEquals(new GregorianCalendar(2005, 3, 1).getTime(), message.getSentDate());
+				assertThat((Object) message.getSentDate()).isEqualTo(new GregorianCalendar(2005, 3, 1).getTime());
 			}
 			this.sentMessages.add(message);
 		}

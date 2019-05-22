@@ -187,10 +187,10 @@ public class SharedEntityManagerCreatorTests {
 		spq.registerStoredProcedureParameter(1, Number.class, ParameterMode.IN);
 		spq.registerStoredProcedureParameter(2, Object.class, ParameterMode.INOUT);
 		spq.execute();
-		assertEquals("y", spq.getOutputParameterValue(0));
+		assertThat(spq.getOutputParameterValue(0)).isEqualTo("y");
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				spq.getOutputParameterValue(1));
-		assertEquals("z", spq.getOutputParameterValue(2));
+		assertThat(spq.getOutputParameterValue(2)).isEqualTo("z");
 
 		verify(query).registerStoredProcedureParameter(0, String.class, ParameterMode.OUT);
 		verify(query).registerStoredProcedureParameter(1, Number.class, ParameterMode.IN);
@@ -218,10 +218,10 @@ public class SharedEntityManagerCreatorTests {
 		spq.registerStoredProcedureParameter("b", Number.class, ParameterMode.IN);
 		spq.registerStoredProcedureParameter("c", Object.class, ParameterMode.INOUT);
 		spq.execute();
-		assertEquals("y", spq.getOutputParameterValue("a"));
+		assertThat(spq.getOutputParameterValue("a")).isEqualTo("y");
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				spq.getOutputParameterValue("b"));
-		assertEquals("z", spq.getOutputParameterValue("c"));
+		assertThat(spq.getOutputParameterValue("c")).isEqualTo("z");
 
 		verify(query).registerStoredProcedureParameter("a", String.class, ParameterMode.OUT);
 		verify(query).registerStoredProcedureParameter("b", Number.class, ParameterMode.IN);

@@ -35,6 +35,7 @@ import org.springframework.web.reactive.function.BodyExtractor;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.ServerRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
@@ -93,7 +94,7 @@ public class ServerRequestWrapperTests {
 		String value = "bar";
 		given(mockRequest.attribute(name)).willReturn(Optional.of(value));
 
-		assertEquals(Optional.of(value), wrapper.attribute(name));
+		assertThat((Object) wrapper.attribute(name)).isEqualTo(Optional.of(value));
 	}
 
 	@Test
@@ -102,7 +103,7 @@ public class ServerRequestWrapperTests {
 		String value = "bar";
 		given(mockRequest.queryParam(name)).willReturn(Optional.of(value));
 
-		assertEquals(Optional.of(value), wrapper.queryParam(name));
+		assertThat((Object) wrapper.queryParam(name)).isEqualTo(Optional.of(value));
 	}
 
 	@Test
@@ -120,7 +121,7 @@ public class ServerRequestWrapperTests {
 		String value = "bar";
 		given(mockRequest.pathVariable(name)).willReturn(value);
 
-		assertEquals(value, wrapper.pathVariable(name));
+		assertThat((Object) wrapper.pathVariable(name)).isEqualTo(value);
 	}
 
 	@Test

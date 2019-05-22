@@ -91,7 +91,7 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 		MimeType textJavascript = new MimeType("text", "javascript", StandardCharsets.UTF_8);
 		Jackson2JsonDecoder decoder = new Jackson2JsonDecoder(new ObjectMapper(), textJavascript);
 
-		assertEquals(Collections.singletonList(textJavascript), decoder.getDecodableMimeTypes());
+		assertThat((Object) decoder.getDecodableMimeTypes()).isEqualTo(Collections.singletonList(textJavascript));
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 		testDecode(input, elementType, step -> step
 				.consumeNextWith(o -> {
 					JacksonViewBean b = (JacksonViewBean) o;
-					assertEquals("with", b.getWithView1());
+					assertThat((Object) b.getWithView1()).isEqualTo("with");
 					assertNull(b.getWithView2());
 					assertNull(b.getWithoutView());
 				}), null, hints);
@@ -164,7 +164,7 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 		testDecode(input, elementType, step -> step
 				.consumeNextWith(o -> {
 					JacksonViewBean b = (JacksonViewBean) o;
-					assertEquals("without", b.getWithoutView());
+					assertThat((Object) b.getWithoutView()).isEqualTo("without");
 					assertNull(b.getWithView1());
 					assertNull(b.getWithView2());
 				})

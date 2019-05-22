@@ -22,6 +22,7 @@ import org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver;
 import org.springframework.beans.factory.xml.NamespaceHandler;
 import org.springframework.beans.factory.xml.UtilNamespaceHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -39,7 +40,7 @@ public class DefaultNamespaceHandlerResolverTests {
 		DefaultNamespaceHandlerResolver resolver = new DefaultNamespaceHandlerResolver(getClass().getClassLoader());
 		NamespaceHandler handler = resolver.resolve("http://www.springframework.org/schema/util");
 		assertNotNull("Handler should not be null.", handler);
-		assertEquals("Incorrect handler loaded", UtilNamespaceHandler.class, handler.getClass());
+		assertThat((Object) handler.getClass()).as("Incorrect handler loaded").isEqualTo(UtilNamespaceHandler.class);
 	}
 
 	@Test
@@ -47,7 +48,7 @@ public class DefaultNamespaceHandlerResolverTests {
 		DefaultNamespaceHandlerResolver resolver = new DefaultNamespaceHandlerResolver();
 		NamespaceHandler handler = resolver.resolve("http://www.springframework.org/schema/util");
 		assertNotNull("Handler should not be null.", handler);
-		assertEquals("Incorrect handler loaded", UtilNamespaceHandler.class, handler.getClass());
+		assertThat((Object) handler.getClass()).as("Incorrect handler loaded").isEqualTo(UtilNamespaceHandler.class);
 	}
 
 	@Test

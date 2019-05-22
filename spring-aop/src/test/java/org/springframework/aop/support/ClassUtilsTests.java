@@ -21,6 +21,7 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -39,6 +40,6 @@ public class ClassUtilsTests {
 		pf.setProxyTargetClass(true);
 		TestBean proxy = (TestBean) pf.getProxy();
 		String className = ClassUtils.getShortName(proxy.getClass());
-		assertEquals("Class name did not match", "TestBean", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("TestBean");
 	}
 }

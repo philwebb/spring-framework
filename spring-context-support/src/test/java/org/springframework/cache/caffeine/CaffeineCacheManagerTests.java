@@ -59,9 +59,9 @@ public class CaffeineCacheManagerTests {
 		assertSame(cache3again, cache3);
 
 		cache1.put("key1", "value1");
-		assertEquals("value1", cache1.get("key1").get());
+		assertThat(cache1.get("key1").get()).isEqualTo("value1");
 		cache1.put("key2", 2);
-		assertEquals(2, cache1.get("key2").get());
+		assertThat(cache1.get("key2").get()).isEqualTo(2);
 		cache1.put("key3", null);
 		assertNull(cache1.get("key3").get());
 		cache1.evict("key3");
@@ -85,9 +85,9 @@ public class CaffeineCacheManagerTests {
 		assertNull(cache3);
 
 		cache1.put("key1", "value1");
-		assertEquals("value1", cache1.get("key1").get());
+		assertThat(cache1.get("key1").get()).isEqualTo("value1");
 		cache1.put("key2", 2);
-		assertEquals(2, cache1.get("key2").get());
+		assertThat(cache1.get("key2").get()).isEqualTo(2);
 		cache1.put("key3", null);
 		assertNull(cache1.get("key3").get());
 		cache1.evict("key3");
@@ -106,9 +106,9 @@ public class CaffeineCacheManagerTests {
 		assertNull(cache3x);
 
 		cache1x.put("key1", "value1");
-		assertEquals("value1", cache1x.get("key1").get());
+		assertThat(cache1x.get("key1").get()).isEqualTo("value1");
 		cache1x.put("key2", 2);
-		assertEquals(2, cache1x.get("key2").get());
+		assertThat(cache1x.get("key2").get()).isEqualTo(2);
 
 		cm.setAllowNullValues(true);
 		Cache cache1y = cm.getCache("c1");
@@ -192,7 +192,7 @@ public class CaffeineCacheManagerTests {
 		Cache cache1 = cm.getCache("c1");
 		Cache.ValueWrapper value = cache1.get("ping");
 		assertNotNull(value);
-		assertEquals("pong", value.get());
+		assertThat(value.get()).isEqualTo("pong");
 
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				assertNull(cache1.get("foo")))

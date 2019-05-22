@@ -301,7 +301,7 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 			boolean condition = !TransactionSynchronizationManager.isSynchronizationActive();
 			assertThat(condition).as("Synchronization not active").isTrue();
-			assertEquals("Correct exception thrown", ex, ex2);
+			assertThat((Object) ex2).as("Correct exception thrown").isEqualTo(ex);
 		}
 		finally {
 			TransactionSynchronizationManager.unbindResource(ds);
@@ -1039,10 +1039,10 @@ public class DataSourceTransactionManagerTests  {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				// something transactional
-				assertEquals(con, DataSourceUtils.getConnection(ds));
+				assertThat((Object) DataSourceUtils.getConnection(ds)).isEqualTo(con);
 				TransactionAwareDataSourceProxy dsProxy = new TransactionAwareDataSourceProxy(ds);
 				try {
-					assertEquals(con, ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection());
+					assertThat((Object) ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection()).isEqualTo(con);
 					// should be ignored
 					dsProxy.getConnection().close();
 				}
@@ -1074,10 +1074,10 @@ public class DataSourceTransactionManagerTests  {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				// something transactional
-				assertEquals(con, DataSourceUtils.getConnection(ds));
+				assertThat((Object) DataSourceUtils.getConnection(ds)).isEqualTo(con);
 				final TransactionAwareDataSourceProxy dsProxy = new TransactionAwareDataSourceProxy(ds);
 				try {
-					assertEquals(con, ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection());
+					assertThat((Object) ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection()).isEqualTo(con);
 					// should be ignored
 					dsProxy.getConnection().close();
 				}
@@ -1089,9 +1089,9 @@ public class DataSourceTransactionManagerTests  {
 					@Override
 					protected void doInTransactionWithoutResult(TransactionStatus status) {
 						// something transactional
-						assertEquals(con, DataSourceUtils.getConnection(ds));
+						assertThat((Object) DataSourceUtils.getConnection(ds)).isEqualTo(con);
 						try {
-							assertEquals(con, ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection());
+							assertThat((Object) ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection()).isEqualTo(con);
 							// should be ignored
 							dsProxy.getConnection().close();
 						}
@@ -1102,7 +1102,7 @@ public class DataSourceTransactionManagerTests  {
 				});
 
 				try {
-					assertEquals(con, ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection());
+					assertThat((Object) ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection()).isEqualTo(con);
 					// should be ignored
 					dsProxy.getConnection().close();
 				}
@@ -1134,11 +1134,11 @@ public class DataSourceTransactionManagerTests  {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				// something transactional
-				assertEquals(con, DataSourceUtils.getConnection(ds));
+				assertThat((Object) DataSourceUtils.getConnection(ds)).isEqualTo(con);
 				final TransactionAwareDataSourceProxy dsProxy = new TransactionAwareDataSourceProxy(ds);
 				dsProxy.setReobtainTransactionalConnections(true);
 				try {
-					assertEquals(con, ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection());
+					assertThat((Object) ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection()).isEqualTo(con);
 					// should be ignored
 					dsProxy.getConnection().close();
 				}
@@ -1150,9 +1150,9 @@ public class DataSourceTransactionManagerTests  {
 					@Override
 					protected void doInTransactionWithoutResult(TransactionStatus status) {
 						// something transactional
-						assertEquals(con, DataSourceUtils.getConnection(ds));
+						assertThat((Object) DataSourceUtils.getConnection(ds)).isEqualTo(con);
 						try {
-							assertEquals(con, ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection());
+							assertThat((Object) ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection()).isEqualTo(con);
 							// should be ignored
 							dsProxy.getConnection().close();
 						}
@@ -1163,7 +1163,7 @@ public class DataSourceTransactionManagerTests  {
 				});
 
 				try {
-					assertEquals(con, ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection());
+					assertThat((Object) ((ConnectionProxy) dsProxy.getConnection()).getTargetConnection()).isEqualTo(con);
 					// should be ignored
 					dsProxy.getConnection().close();
 				}

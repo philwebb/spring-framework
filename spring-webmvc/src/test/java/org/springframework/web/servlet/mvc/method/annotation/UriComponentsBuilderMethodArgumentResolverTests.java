@@ -80,8 +80,8 @@ public class UriComponentsBuilderMethodArgumentResolverTests {
 		Object actual = this.resolver.resolveArgument(this.builderParam, new ModelAndViewContainer(), this.webRequest, null);
 
 		assertNotNull(actual);
-		assertEquals(ServletUriComponentsBuilder.class, actual.getClass());
-		assertEquals("http://localhost/myapp/main", ((ServletUriComponentsBuilder) actual).build().toUriString());
+		assertThat((Object) actual.getClass()).isEqualTo(ServletUriComponentsBuilder.class);
+		assertThat((Object) ((ServletUriComponentsBuilder) actual).build().toUriString()).isEqualTo("http://localhost/myapp/main");
 	}
 
 

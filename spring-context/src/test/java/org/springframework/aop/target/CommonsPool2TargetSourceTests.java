@@ -200,7 +200,7 @@ public class CommonsPool2TargetSourceTests {
 	public void testSetWhenExhaustedAction() {
 		CommonsPool2TargetSource targetSource = new CommonsPool2TargetSource();
 		targetSource.setBlockWhenExhausted(true);
-		assertEquals(true, targetSource.isBlockWhenExhausted());
+		assertThat((Object) targetSource.isBlockWhenExhausted()).isEqualTo(true);
 	}
 
 	@Test
@@ -215,7 +215,7 @@ public class CommonsPool2TargetSourceTests {
 		assertThat(condition1).isTrue();
 		boolean condition = second instanceof SerializablePerson;
 		assertThat(condition).isTrue();
-		assertEquals(first, second);
+		assertThat(second).isEqualTo(first);
 
 		targetSource.releaseTarget(first);
 		targetSource.releaseTarget(second);

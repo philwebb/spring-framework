@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.test.context.ContextConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -31,7 +32,7 @@ public class BasicXmlWacTests extends AbstractBasicWacTests {
 
 	@Test
 	public void fooBarAutowired() {
-		assertEquals("bar", foo);
+		assertThat((Object) foo).isEqualTo("bar");
 	}
 
 }

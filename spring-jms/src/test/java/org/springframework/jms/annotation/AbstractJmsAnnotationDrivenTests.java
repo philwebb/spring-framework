@@ -39,6 +39,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -101,16 +102,16 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 		assertEquals(1, simpleFactory.getListenerContainers().size());
 		MethodJmsListenerEndpoint endpoint = (MethodJmsListenerEndpoint)
 				simpleFactory.getListenerContainers().get(0).getEndpoint();
-		assertEquals("listener1", endpoint.getId());
-		assertEquals("queueIn", endpoint.getDestination());
-		assertEquals("mySelector", endpoint.getSelector());
-		assertEquals("mySubscription", endpoint.getSubscription());
-		assertEquals("1-10", endpoint.getConcurrency());
+		assertThat((Object) endpoint.getId()).isEqualTo("listener1");
+		assertThat((Object) endpoint.getDestination()).isEqualTo("queueIn");
+		assertThat((Object) endpoint.getSelector()).isEqualTo("mySelector");
+		assertThat((Object) endpoint.getSubscription()).isEqualTo("mySubscription");
+		assertThat((Object) endpoint.getConcurrency()).isEqualTo("1-10");
 
 		Method m = ReflectionUtils.findMethod(endpoint.getClass(), "getDefaultResponseDestination");
 		ReflectionUtils.makeAccessible(m);
 		Object destination = ReflectionUtils.invokeMethod(m, endpoint);
-		assertEquals("queueOut", destination);
+		assertThat(destination).isEqualTo("queueOut");
 	}
 
 	/**
@@ -126,9 +127,8 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 		assertEquals(1, defaultFactory.getListenerContainers().size());
 		assertEquals(1, customFactory.getListenerContainers().size());
 		JmsListenerEndpoint endpoint = defaultFactory.getListenerContainers().get(0).getEndpoint();
-		assertEquals("Wrong endpoint type", SimpleJmsListenerEndpoint.class, endpoint.getClass());
-		assertEquals("Wrong listener set in custom endpoint", context.getBean("simpleMessageListener"),
-				((SimpleJmsListenerEndpoint) endpoint).getMessageListener());
+		assertThat((Object) endpoint.getClass()).as("Wrong endpoint type").isEqualTo(SimpleJmsListenerEndpoint.class);
+		assertThat((Object) ((SimpleJmsListenerEndpoint) endpoint).getMessageListener()).as("Wrong listener set in custom endpoint").isEqualTo(context.getBean("simpleMessageListener"));
 
 		JmsListenerEndpointRegistry customRegistry =
 				context.getBean("customRegistry", JmsListenerEndpointRegistry.class);
@@ -193,15 +193,15 @@ public abstract class AbstractJmsAnnotationDrivenTests {
 
 		MethodJmsListenerEndpoint first = (MethodJmsListenerEndpoint)
 				simpleFactory.getListenerContainer("first").getEndpoint();
-		assertEquals("first", first.getId());
-		assertEquals("myQueue", first.getDestination());
-		assertEquals(null, first.getConcurrency());
+		assertThat((Object) first.getId()).isEqualTo("first");
+		assertThat((Object) first.getDestination()).isEqualTo("myQueue");
+		assertThat((Object) first.getConcurrency()).isEqualTo(null);
 
 		MethodJmsListenerEndpoint second = (MethodJmsListenerEndpoint)
 				simpleFactory.getListenerContainer("second").getEndpoint();
-		assertEquals("second", second.getId());
-		assertEquals("anotherQueue", second.getDestination());
-		assertEquals("2-10", second.getConcurrency());
+		assertThat((Object) second.getId()).isEqualTo("second");
+		assertThat((Object) second.getDestination()).isEqualTo("anotherQueue");
+		assertThat((Object) second.getConcurrency()).isEqualTo("2-10");
 	}
 
 

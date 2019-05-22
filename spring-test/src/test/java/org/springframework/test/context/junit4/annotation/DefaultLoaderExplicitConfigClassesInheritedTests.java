@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DelegatingSmartContextLoader;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -47,7 +48,7 @@ public class DefaultLoaderExplicitConfigClassesInheritedTests extends DefaultLoa
 	@Test
 	public void verifyPetSetFromExtendedContextConfig() {
 		assertNotNull("The pet should have been autowired.", this.pet);
-		assertEquals("Fido", this.pet.getName());
+		assertThat((Object) this.pet.getName()).isEqualTo("Fido");
 	}
 
 }

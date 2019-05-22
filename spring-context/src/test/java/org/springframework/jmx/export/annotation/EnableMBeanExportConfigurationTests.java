@@ -39,6 +39,7 @@ import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.mock.env.MockEnvironment;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -148,7 +149,7 @@ public class EnableMBeanExportConfigurationTests {
 		ObjectName oname = ObjectNameManager.getInstance(objectName);
 		assertNotNull(server.getObjectInstance(oname));
 		String name = (String) server.getAttribute(oname, "Name");
-		assertEquals("Invalid name returned", expected, name);
+		assertThat((Object) name).as("Invalid name returned").isEqualTo(expected);
 	}
 
 

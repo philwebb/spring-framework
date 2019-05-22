@@ -54,7 +54,7 @@ public class ThemeTagTests extends AbstractTagTests {
 		tag.setCode("themetest");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("theme test message", message.toString());
+		assertThat((Object) message.toString()).isEqualTo("theme test message");
 	}
 
 	@Test
@@ -62,18 +62,16 @@ public class ThemeTagTests extends AbstractTagTests {
 	public void requestContext() throws ServletException {
 		PageContext pc = createPageContext();
 		RequestContext rc = new RequestContext((HttpServletRequest) pc.getRequest());
-		assertEquals("theme test message", rc.getThemeMessage("themetest"));
-		assertEquals("theme test message", rc.getThemeMessage("themetest", (String[]) null));
-		assertEquals("theme test message", rc.getThemeMessage("themetest", "default"));
-		assertEquals("theme test message", rc.getThemeMessage("themetest", (Object[]) null, "default"));
-		assertEquals("theme test message arg1",
-				rc.getThemeMessage("themetestArgs", new String[] {"arg1"}));
-		assertEquals("theme test message arg1",
-				rc.getThemeMessage("themetestArgs", Arrays.asList(new String[] {"arg1"})));
-		assertEquals("default", rc.getThemeMessage("themetesta", "default"));
-		assertEquals("default", rc.getThemeMessage("themetesta", (List) null, "default"));
+		assertThat((Object) rc.getThemeMessage("themetest")).isEqualTo("theme test message");
+		assertThat((Object) rc.getThemeMessage("themetest", (String[]) null)).isEqualTo("theme test message");
+		assertThat((Object) rc.getThemeMessage("themetest", "default")).isEqualTo("theme test message");
+		assertThat((Object) rc.getThemeMessage("themetest", (Object[]) null, "default")).isEqualTo("theme test message");
+		assertThat((Object) rc.getThemeMessage("themetestArgs", new String[]{"arg1"})).isEqualTo("theme test message arg1");
+		assertThat((Object) rc.getThemeMessage("themetestArgs", Arrays.asList(new String[]{"arg1"}))).isEqualTo("theme test message arg1");
+		assertThat((Object) rc.getThemeMessage("themetesta", "default")).isEqualTo("default");
+		assertThat((Object) rc.getThemeMessage("themetesta", (List) null, "default")).isEqualTo("default");
 		MessageSourceResolvable resolvable = new DefaultMessageSourceResolvable(new String[] {"themetest"});
-		assertEquals("theme test message", rc.getThemeMessage(resolvable));
+		assertThat((Object) rc.getThemeMessage(resolvable)).isEqualTo("theme test message");
 	}
 
 }

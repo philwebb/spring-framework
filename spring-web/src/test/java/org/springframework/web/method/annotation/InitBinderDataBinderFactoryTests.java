@@ -36,6 +36,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
 import org.springframework.web.method.support.InvocableHandlerMethod;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -64,7 +65,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, null);
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertEquals("id", dataBinder.getDisallowedFields()[0]);
+		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -84,7 +85,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertEquals("id", dataBinder.getDisallowedFields()[0]);
+		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -119,7 +120,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertEquals("requestParam-22", dataBinder.getDisallowedFields()[0]);
+		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
 	}
 
 	private WebDataBinderFactory createFactory(String methodName, Class<?>... parameterTypes)

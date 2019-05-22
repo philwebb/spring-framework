@@ -196,7 +196,7 @@ public abstract class AbstractSockJsIntegrationTests {
 
 		for (Map.Entry<String, HttpHeaders> entry : this.testFilter.requests.entrySet()) {
 			HttpHeaders httpHeaders = entry.getValue();
-			assertEquals("No auth header for: " + entry.getKey(), "123", httpHeaders.getFirst("auth"));
+			assertThat((Object) httpHeaders.getFirst("auth")).as("No auth header for: " + entry.getKey()).isEqualTo("123");
 		}
 	}
 
@@ -245,7 +245,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		TestClientHandler handler = new TestClientHandler();
 		initSockJsClient(createWebSocketTransport(), createXhrTransport());
 		WebSocketSession session = this.sockJsClient.doHandshake(handler, this.baseUrl + "/echo").get();
-		assertEquals("Fallback didn't occur", XhrClientSockJsSession.class, session.getClass());
+		assertThat((Object) session.getClass()).as("Fallback didn't occur").isEqualTo(XhrClientSockJsSession.class);
 		TextMessage message = new TextMessage("message1");
 		session.sendMessage(message);
 		handler.awaitMessage(message, 5000);
@@ -259,7 +259,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		initSockJsClient(createXhrTransport());
 		this.sockJsClient.setConnectTimeoutScheduler(this.wac.getBean(ThreadPoolTaskScheduler.class));
 		WebSocketSession clientSession = sockJsClient.doHandshake(clientHandler, this.baseUrl + "/echo").get();
-		assertEquals("Fallback didn't occur", XhrClientSockJsSession.class, clientSession.getClass());
+		assertThat((Object) clientSession.getClass()).as("Fallback didn't occur").isEqualTo(XhrClientSockJsSession.class);
 		TextMessage message = new TextMessage("message1");
 		clientSession.sendMessage(message);
 		clientHandler.awaitMessage(message, 5000);
@@ -372,7 +372,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		public void awaitMessage(TextMessage expected, long timeToWait) throws InterruptedException {
 			TextMessage actual = this.receivedMessages.poll(timeToWait, TimeUnit.MILLISECONDS);
 			if (actual != null) {
-				assertEquals(expected, actual);
+				assertThat((Object) actual).isEqualTo(expected);
 			}
 			else if (this.transportError != null) {
 				throw new AssertionError("Transport error", this.transportError);

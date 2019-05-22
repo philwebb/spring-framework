@@ -69,54 +69,54 @@ public class ClassUtilsTests {
 
 	@Test
 	public void testForName() throws ClassNotFoundException {
-		assertEquals(String.class, ClassUtils.forName("java.lang.String", classLoader));
-		assertEquals(String[].class, ClassUtils.forName("java.lang.String[]", classLoader));
-		assertEquals(String[].class, ClassUtils.forName(String[].class.getName(), classLoader));
-		assertEquals(String[][].class, ClassUtils.forName(String[][].class.getName(), classLoader));
-		assertEquals(String[][][].class, ClassUtils.forName(String[][][].class.getName(), classLoader));
-		assertEquals(TestObject.class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject", classLoader));
-		assertEquals(TestObject[].class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[]", classLoader));
-		assertEquals(TestObject[].class, ClassUtils.forName(TestObject[].class.getName(), classLoader));
-		assertEquals(TestObject[][].class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[][]", classLoader));
-		assertEquals(TestObject[][].class, ClassUtils.forName(TestObject[][].class.getName(), classLoader));
-		assertEquals(short[][][].class, ClassUtils.forName("[[[S", classLoader));
+		assertThat((Object) ClassUtils.forName("java.lang.String", classLoader)).isEqualTo(String.class);
+		assertThat((Object) ClassUtils.forName("java.lang.String[]", classLoader)).isEqualTo(String[].class);
+		assertThat((Object) ClassUtils.forName(String[].class.getName(), classLoader)).isEqualTo(String[].class);
+		assertThat((Object) ClassUtils.forName(String[][].class.getName(), classLoader)).isEqualTo(String[][].class);
+		assertThat((Object) ClassUtils.forName(String[][][].class.getName(), classLoader)).isEqualTo(String[][][].class);
+		assertThat((Object) ClassUtils.forName("org.springframework.tests.sample.objects.TestObject", classLoader)).isEqualTo(TestObject.class);
+		assertThat((Object) ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[]", classLoader)).isEqualTo(TestObject[].class);
+		assertThat((Object) ClassUtils.forName(TestObject[].class.getName(), classLoader)).isEqualTo(TestObject[].class);
+		assertThat((Object) ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[][]", classLoader)).isEqualTo(TestObject[][].class);
+		assertThat((Object) ClassUtils.forName(TestObject[][].class.getName(), classLoader)).isEqualTo(TestObject[][].class);
+		assertThat((Object) ClassUtils.forName("[[[S", classLoader)).isEqualTo(short[][][].class);
 	}
 
 	@Test
 	public void testForNameWithPrimitiveClasses() throws ClassNotFoundException {
-		assertEquals(boolean.class, ClassUtils.forName("boolean", classLoader));
-		assertEquals(byte.class, ClassUtils.forName("byte", classLoader));
-		assertEquals(char.class, ClassUtils.forName("char", classLoader));
-		assertEquals(short.class, ClassUtils.forName("short", classLoader));
-		assertEquals(int.class, ClassUtils.forName("int", classLoader));
-		assertEquals(long.class, ClassUtils.forName("long", classLoader));
-		assertEquals(float.class, ClassUtils.forName("float", classLoader));
-		assertEquals(double.class, ClassUtils.forName("double", classLoader));
-		assertEquals(void.class, ClassUtils.forName("void", classLoader));
+		assertThat((Object) ClassUtils.forName("boolean", classLoader)).isEqualTo(boolean.class);
+		assertThat((Object) ClassUtils.forName("byte", classLoader)).isEqualTo(byte.class);
+		assertThat((Object) ClassUtils.forName("char", classLoader)).isEqualTo(char.class);
+		assertThat((Object) ClassUtils.forName("short", classLoader)).isEqualTo(short.class);
+		assertThat((Object) ClassUtils.forName("int", classLoader)).isEqualTo(int.class);
+		assertThat((Object) ClassUtils.forName("long", classLoader)).isEqualTo(long.class);
+		assertThat((Object) ClassUtils.forName("float", classLoader)).isEqualTo(float.class);
+		assertThat((Object) ClassUtils.forName("double", classLoader)).isEqualTo(double.class);
+		assertThat((Object) ClassUtils.forName("void", classLoader)).isEqualTo(void.class);
 	}
 
 	@Test
 	public void testForNameWithPrimitiveArrays() throws ClassNotFoundException {
-		assertEquals(boolean[].class, ClassUtils.forName("boolean[]", classLoader));
-		assertEquals(byte[].class, ClassUtils.forName("byte[]", classLoader));
-		assertEquals(char[].class, ClassUtils.forName("char[]", classLoader));
-		assertEquals(short[].class, ClassUtils.forName("short[]", classLoader));
-		assertEquals(int[].class, ClassUtils.forName("int[]", classLoader));
-		assertEquals(long[].class, ClassUtils.forName("long[]", classLoader));
-		assertEquals(float[].class, ClassUtils.forName("float[]", classLoader));
-		assertEquals(double[].class, ClassUtils.forName("double[]", classLoader));
+		assertThat((Object) ClassUtils.forName("boolean[]", classLoader)).isEqualTo(boolean[].class);
+		assertThat((Object) ClassUtils.forName("byte[]", classLoader)).isEqualTo(byte[].class);
+		assertThat((Object) ClassUtils.forName("char[]", classLoader)).isEqualTo(char[].class);
+		assertThat((Object) ClassUtils.forName("short[]", classLoader)).isEqualTo(short[].class);
+		assertThat((Object) ClassUtils.forName("int[]", classLoader)).isEqualTo(int[].class);
+		assertThat((Object) ClassUtils.forName("long[]", classLoader)).isEqualTo(long[].class);
+		assertThat((Object) ClassUtils.forName("float[]", classLoader)).isEqualTo(float[].class);
+		assertThat((Object) ClassUtils.forName("double[]", classLoader)).isEqualTo(double[].class);
 	}
 
 	@Test
 	public void testForNameWithPrimitiveArraysInternalName() throws ClassNotFoundException {
-		assertEquals(boolean[].class, ClassUtils.forName(boolean[].class.getName(), classLoader));
-		assertEquals(byte[].class, ClassUtils.forName(byte[].class.getName(), classLoader));
-		assertEquals(char[].class, ClassUtils.forName(char[].class.getName(), classLoader));
-		assertEquals(short[].class, ClassUtils.forName(short[].class.getName(), classLoader));
-		assertEquals(int[].class, ClassUtils.forName(int[].class.getName(), classLoader));
-		assertEquals(long[].class, ClassUtils.forName(long[].class.getName(), classLoader));
-		assertEquals(float[].class, ClassUtils.forName(float[].class.getName(), classLoader));
-		assertEquals(double[].class, ClassUtils.forName(double[].class.getName(), classLoader));
+		assertThat((Object) ClassUtils.forName(boolean[].class.getName(), classLoader)).isEqualTo(boolean[].class);
+		assertThat((Object) ClassUtils.forName(byte[].class.getName(), classLoader)).isEqualTo(byte[].class);
+		assertThat((Object) ClassUtils.forName(char[].class.getName(), classLoader)).isEqualTo(char[].class);
+		assertThat((Object) ClassUtils.forName(short[].class.getName(), classLoader)).isEqualTo(short[].class);
+		assertThat((Object) ClassUtils.forName(int[].class.getName(), classLoader)).isEqualTo(int[].class);
+		assertThat((Object) ClassUtils.forName(long[].class.getName(), classLoader)).isEqualTo(long[].class);
+		assertThat((Object) ClassUtils.forName(float[].class.getName(), classLoader)).isEqualTo(float[].class);
+		assertThat((Object) ClassUtils.forName(double[].class.getName(), classLoader)).isEqualTo(double[].class);
 	}
 
 	@Test
@@ -152,85 +152,85 @@ public class ClassUtilsTests {
 	@Test
 	public void testGetShortName() {
 		String className = ClassUtils.getShortName(getClass());
-		assertEquals("Class name did not match", "ClassUtilsTests", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("ClassUtilsTests");
 	}
 
 	@Test
 	public void testGetShortNameForObjectArrayClass() {
 		String className = ClassUtils.getShortName(Object[].class);
-		assertEquals("Class name did not match", "Object[]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("Object[]");
 	}
 
 	@Test
 	public void testGetShortNameForMultiDimensionalObjectArrayClass() {
 		String className = ClassUtils.getShortName(Object[][].class);
-		assertEquals("Class name did not match", "Object[][]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("Object[][]");
 	}
 
 	@Test
 	public void testGetShortNameForPrimitiveArrayClass() {
 		String className = ClassUtils.getShortName(byte[].class);
-		assertEquals("Class name did not match", "byte[]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("byte[]");
 	}
 
 	@Test
 	public void testGetShortNameForMultiDimensionalPrimitiveArrayClass() {
 		String className = ClassUtils.getShortName(byte[][][].class);
-		assertEquals("Class name did not match", "byte[][][]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("byte[][][]");
 	}
 
 	@Test
 	public void testGetShortNameForInnerClass() {
 		String className = ClassUtils.getShortName(InnerClass.class);
-		assertEquals("Class name did not match", "ClassUtilsTests.InnerClass", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("ClassUtilsTests.InnerClass");
 	}
 
 	@Test
 	public void testGetShortNameAsProperty() {
 		String shortName = ClassUtils.getShortNameAsProperty(this.getClass());
-		assertEquals("Class name did not match", "classUtilsTests", shortName);
+		assertThat((Object) shortName).as("Class name did not match").isEqualTo("classUtilsTests");
 	}
 
 	@Test
 	public void testGetClassFileName() {
-		assertEquals("String.class", ClassUtils.getClassFileName(String.class));
-		assertEquals("ClassUtilsTests.class", ClassUtils.getClassFileName(getClass()));
+		assertThat((Object) ClassUtils.getClassFileName(String.class)).isEqualTo("String.class");
+		assertThat((Object) ClassUtils.getClassFileName(getClass())).isEqualTo("ClassUtilsTests.class");
 	}
 
 	@Test
 	public void testGetPackageName() {
-		assertEquals("java.lang", ClassUtils.getPackageName(String.class));
-		assertEquals(getClass().getPackage().getName(), ClassUtils.getPackageName(getClass()));
+		assertThat((Object) ClassUtils.getPackageName(String.class)).isEqualTo("java.lang");
+		assertThat((Object) ClassUtils.getPackageName(getClass())).isEqualTo(getClass().getPackage().getName());
 	}
 
 	@Test
 	public void testGetQualifiedName() {
 		String className = ClassUtils.getQualifiedName(getClass());
-		assertEquals("Class name did not match", "org.springframework.util.ClassUtilsTests", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("org.springframework.util.ClassUtilsTests");
 	}
 
 	@Test
 	public void testGetQualifiedNameForObjectArrayClass() {
 		String className = ClassUtils.getQualifiedName(Object[].class);
-		assertEquals("Class name did not match", "java.lang.Object[]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("java.lang.Object[]");
 	}
 
 	@Test
 	public void testGetQualifiedNameForMultiDimensionalObjectArrayClass() {
 		String className = ClassUtils.getQualifiedName(Object[][].class);
-		assertEquals("Class name did not match", "java.lang.Object[][]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("java.lang.Object[][]");
 	}
 
 	@Test
 	public void testGetQualifiedNameForPrimitiveArrayClass() {
 		String className = ClassUtils.getQualifiedName(byte[].class);
-		assertEquals("Class name did not match", "byte[]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("byte[]");
 	}
 
 	@Test
 	public void testGetQualifiedNameForMultiDimensionalPrimitiveArrayClass() {
 		String className = ClassUtils.getQualifiedName(byte[][].class);
-		assertEquals("Class name did not match", "byte[][]", className);
+		assertThat((Object) className).as("Class name did not match").isEqualTo("byte[][]");
 	}
 
 	@Test
@@ -245,11 +245,11 @@ public class ClassUtilsTests {
 	public void testGetMethodIfAvailable() {
 		Method method = ClassUtils.getMethodIfAvailable(Collection.class, "size");
 		assertNotNull(method);
-		assertEquals("size", method.getName());
+		assertThat((Object) method.getName()).isEqualTo("size");
 
 		method = ClassUtils.getMethodIfAvailable(Collection.class, "remove", Object.class);
 		assertNotNull(method);
-		assertEquals("remove", method.getName());
+		assertThat((Object) method.getName()).isEqualTo("remove");
 
 		assertNull(ClassUtils.getMethodIfAvailable(Collection.class, "remove"));
 		assertNull(ClassUtils.getMethodIfAvailable(Collection.class, "someOtherMethod"));
@@ -312,17 +312,16 @@ public class ClassUtilsTests {
 	@Test
 	public void testClassPackageAsResourcePath() {
 		String result = ClassUtils.classPackageAsResourcePath(Proxy.class);
-		assertEquals("java/lang/reflect", result);
+		assertThat((Object) result).isEqualTo("java/lang/reflect");
 	}
 
 	@Test
 	public void testAddResourcePathToPackagePath() {
 		String result = "java/lang/reflect/xyzabc.xml";
-		assertEquals(result, ClassUtils.addResourcePathToPackagePath(Proxy.class, "xyzabc.xml"));
-		assertEquals(result, ClassUtils.addResourcePathToPackagePath(Proxy.class, "/xyzabc.xml"));
+		assertThat((Object) ClassUtils.addResourcePathToPackagePath(Proxy.class, "xyzabc.xml")).isEqualTo(result);
+		assertThat((Object) ClassUtils.addResourcePathToPackagePath(Proxy.class, "/xyzabc.xml")).isEqualTo(result);
 
-		assertEquals("java/lang/reflect/a/b/c/d.xml",
-				ClassUtils.addResourcePathToPackagePath(Proxy.class, "a/b/c/d.xml"));
+		assertThat((Object) ClassUtils.addResourcePathToPackagePath(Proxy.class, "a/b/c/d.xml")).isEqualTo("java/lang/reflect/a/b/c/d.xml");
 	}
 
 	@Test
@@ -340,48 +339,48 @@ public class ClassUtilsTests {
 		List<Class<?>> ifcs = new LinkedList<>();
 		ifcs.add(Serializable.class);
 		ifcs.add(Runnable.class);
-		assertEquals("[interface java.io.Serializable, interface java.lang.Runnable]", ifcs.toString());
-		assertEquals("[java.io.Serializable, java.lang.Runnable]", ClassUtils.classNamesToString(ifcs));
+		assertThat((Object) ifcs.toString()).isEqualTo("[interface java.io.Serializable, interface java.lang.Runnable]");
+		assertThat((Object) ClassUtils.classNamesToString(ifcs)).isEqualTo("[java.io.Serializable, java.lang.Runnable]");
 
 		List<Class<?>> classes = new LinkedList<>();
 		classes.add(LinkedList.class);
 		classes.add(Integer.class);
-		assertEquals("[class java.util.LinkedList, class java.lang.Integer]", classes.toString());
-		assertEquals("[java.util.LinkedList, java.lang.Integer]", ClassUtils.classNamesToString(classes));
+		assertThat((Object) classes.toString()).isEqualTo("[class java.util.LinkedList, class java.lang.Integer]");
+		assertThat((Object) ClassUtils.classNamesToString(classes)).isEqualTo("[java.util.LinkedList, java.lang.Integer]");
 
-		assertEquals("[interface java.util.List]", Collections.singletonList(List.class).toString());
-		assertEquals("[java.util.List]", ClassUtils.classNamesToString(List.class));
+		assertThat((Object) Collections.singletonList(List.class).toString()).isEqualTo("[interface java.util.List]");
+		assertThat((Object) ClassUtils.classNamesToString(List.class)).isEqualTo("[java.util.List]");
 
-		assertEquals("[]", Collections.EMPTY_LIST.toString());
-		assertEquals("[]", ClassUtils.classNamesToString(Collections.emptyList()));
+		assertThat((Object) Collections.EMPTY_LIST.toString()).isEqualTo("[]");
+		assertThat((Object) ClassUtils.classNamesToString(Collections.emptyList())).isEqualTo("[]");
 	}
 
 	@Test
 	public void testDetermineCommonAncestor() {
-		assertEquals(Number.class, ClassUtils.determineCommonAncestor(Integer.class, Number.class));
-		assertEquals(Number.class, ClassUtils.determineCommonAncestor(Number.class, Integer.class));
-		assertEquals(Number.class, ClassUtils.determineCommonAncestor(Number.class, null));
-		assertEquals(Integer.class, ClassUtils.determineCommonAncestor(null, Integer.class));
-		assertEquals(Integer.class, ClassUtils.determineCommonAncestor(Integer.class, Integer.class));
+		assertThat((Object) ClassUtils.determineCommonAncestor(Integer.class, Number.class)).isEqualTo(Number.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(Number.class, Integer.class)).isEqualTo(Number.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(Number.class, null)).isEqualTo(Number.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(null, Integer.class)).isEqualTo(Integer.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(Integer.class, Integer.class)).isEqualTo(Integer.class);
 
-		assertEquals(Number.class, ClassUtils.determineCommonAncestor(Integer.class, Float.class));
-		assertEquals(Number.class, ClassUtils.determineCommonAncestor(Float.class, Integer.class));
+		assertThat((Object) ClassUtils.determineCommonAncestor(Integer.class, Float.class)).isEqualTo(Number.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(Float.class, Integer.class)).isEqualTo(Number.class);
 		assertNull(ClassUtils.determineCommonAncestor(Integer.class, String.class));
 		assertNull(ClassUtils.determineCommonAncestor(String.class, Integer.class));
 
-		assertEquals(Collection.class, ClassUtils.determineCommonAncestor(List.class, Collection.class));
-		assertEquals(Collection.class, ClassUtils.determineCommonAncestor(Collection.class, List.class));
-		assertEquals(Collection.class, ClassUtils.determineCommonAncestor(Collection.class, null));
-		assertEquals(List.class, ClassUtils.determineCommonAncestor(null, List.class));
-		assertEquals(List.class, ClassUtils.determineCommonAncestor(List.class, List.class));
+		assertThat((Object) ClassUtils.determineCommonAncestor(List.class, Collection.class)).isEqualTo(Collection.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(Collection.class, List.class)).isEqualTo(Collection.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(Collection.class, null)).isEqualTo(Collection.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(null, List.class)).isEqualTo(List.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(List.class, List.class)).isEqualTo(List.class);
 
 		assertNull(ClassUtils.determineCommonAncestor(List.class, Set.class));
 		assertNull(ClassUtils.determineCommonAncestor(Set.class, List.class));
 		assertNull(ClassUtils.determineCommonAncestor(List.class, Runnable.class));
 		assertNull(ClassUtils.determineCommonAncestor(Runnable.class, List.class));
 
-		assertEquals(List.class, ClassUtils.determineCommonAncestor(List.class, ArrayList.class));
-		assertEquals(List.class, ClassUtils.determineCommonAncestor(ArrayList.class, List.class));
+		assertThat((Object) ClassUtils.determineCommonAncestor(List.class, ArrayList.class)).isEqualTo(List.class);
+		assertThat((Object) ClassUtils.determineCommonAncestor(ArrayList.class, List.class)).isEqualTo(List.class);
 		assertNull(ClassUtils.determineCommonAncestor(List.class, String.class));
 		assertNull(ClassUtils.determineCommonAncestor(String.class, List.class));
 	}

@@ -161,8 +161,8 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull(mav);
 		assertThat(mav.isEmpty()).isFalse();
-		assertEquals("errorView", mav.getViewName());
-		assertEquals("Bad argument", mav.getModel().get("detail"));
+		assertThat((Object) mav.getViewName()).isEqualTo("errorView");
+		assertThat(mav.getModel().get("detail")).isEqualTo("Bad argument");
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull(mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("IllegalArgumentException", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("IllegalArgumentException");
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull(mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("IllegalArgumentException", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("IllegalArgumentException");
 	}
 
 	@Test  // SPR-13546
@@ -198,7 +198,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull(mav);
 		assertEquals(1, mav.getModelMap().size());
-		assertEquals("IllegalArgumentException", mav.getModelMap().get("exceptionClassName"));
+		assertThat(mav.getModelMap().get("exceptionClassName")).isEqualTo("IllegalArgumentException");
 	}
 
 	@Test  // SPR-14651
@@ -209,10 +209,10 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull(mav);
-		assertEquals("redirect:/", mav.getViewName());
+		assertThat((Object) mav.getViewName()).isEqualTo("redirect:/");
 		FlashMap flashMap = (FlashMap) this.request.getAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE);
 		assertNotNull("output FlashMap should exist", flashMap);
-		assertEquals("IllegalArgumentException", flashMap.get("exceptionClassName"));
+		assertThat(flashMap.get("exceptionClassName")).isEqualTo("IllegalArgumentException");
 	}
 
 	@Test
@@ -227,7 +227,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("AnotherTestExceptionResolver: IllegalAccessException", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("AnotherTestExceptionResolver: IllegalAccessException");
 	}
 
 	@Test
@@ -242,7 +242,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("TestExceptionResolver: IllegalStateException", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("TestExceptionResolver: IllegalStateException");
 	}
 
 	@Test  // SPR-12605
@@ -257,7 +257,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("HandlerMethod: handle", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("HandlerMethod: handle");
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals(err.toString(), this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo(err.toString());
 	}
 
 	@Test
@@ -289,7 +289,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals(err.toString(), this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo(err.toString());
 	}
 
 	@Test
@@ -304,7 +304,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("BasePackageTestExceptionResolver: IllegalStateException", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("BasePackageTestExceptionResolver: IllegalStateException");
 	}
 
 	@Test
@@ -318,7 +318,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("DefaultTestExceptionResolver: IllegalStateException", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("DefaultTestExceptionResolver: IllegalStateException");
 	}
 
 	@Test  // SPR-16496
@@ -333,7 +333,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		assertNotNull("Exception was not handled", mav);
 		assertThat(mav.isEmpty()).isTrue();
-		assertEquals("BasePackageTestExceptionResolver: IllegalStateException", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("BasePackageTestExceptionResolver: IllegalStateException");
 	}
 
 

@@ -26,6 +26,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -43,7 +44,7 @@ public class CachedExpressionEvaluatorTests {
 		Method method = ReflectionUtils.findMethod(getClass(), "toString");
 		Expression expression = expressionEvaluator.getTestExpression("true", method, getClass());
 		hasParsedExpression("true");
-		assertEquals(true, expression.getValue());
+		assertThat(expression.getValue()).isEqualTo(true);
 		assertEquals("Expression should be in cache", 1, expressionEvaluator.testCache.size());
 	}
 

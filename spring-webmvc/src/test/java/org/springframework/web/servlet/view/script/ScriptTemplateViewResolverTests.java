@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.beans.DirectFieldAccessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -32,10 +33,10 @@ public class ScriptTemplateViewResolverTests {
 	@Test
 	public void viewClass() throws Exception {
 		ScriptTemplateViewResolver resolver = new ScriptTemplateViewResolver();
-		assertEquals(ScriptTemplateView.class, resolver.requiredViewClass());
+		assertThat((Object) resolver.requiredViewClass()).isEqualTo(ScriptTemplateView.class);
 		DirectFieldAccessor viewAccessor = new DirectFieldAccessor(resolver);
 		Class<?> viewClass = (Class<?>) viewAccessor.getPropertyValue("viewClass");
-		assertEquals(ScriptTemplateView.class, viewClass);
+		assertThat((Object) viewClass).isEqualTo(ScriptTemplateView.class);
 	}
 
 }

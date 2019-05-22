@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -46,8 +47,7 @@ public class MockServerHttpResponseTests {
 
 		response.applyCookies();
 
-		assertEquals(Arrays.asList("foo1=bar1", "foo1=bar2", "foo2=baz1", "foo2=baz2"),
-				response.getHeaders().get(HttpHeaders.SET_COOKIE));
+		assertThat((Object) response.getHeaders().get(HttpHeaders.SET_COOKIE)).isEqualTo(Arrays.asList("foo1=bar1", "foo1=bar2", "foo2=baz1", "foo2=baz2"));
 	}
 
 }

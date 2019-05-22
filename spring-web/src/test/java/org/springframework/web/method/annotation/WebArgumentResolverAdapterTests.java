@@ -107,7 +107,7 @@ public class WebArgumentResolverAdapterTests {
 		given(adaptee.resolveArgument(parameter, webRequest)).willReturn(expected);
 
 		Object result = adapter.resolveArgument(parameter, null, webRequest, null);
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test

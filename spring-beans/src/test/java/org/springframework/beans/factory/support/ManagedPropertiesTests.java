@@ -20,8 +20,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -89,7 +88,7 @@ public class ManagedPropertiesTests {
 		Map mergedMap = (Map) child.merge(parent);
 		// child value for 'one' must override parent value...
 		assertEquals("merge() obviously did not work.", 2, mergedMap.size());
-		assertEquals("Parent value not being overridden during merge().", "fork", mergedMap.get("one"));
+		assertThat(mergedMap.get("one")).as("Parent value not being overridden during merge().").isEqualTo("fork");
 	}
 
 }

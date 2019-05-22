@@ -108,7 +108,7 @@ public class HttpStatusTests {
 			int value = entry.getKey();
 			HttpStatus status = HttpStatus.valueOf(value);
 			assertEquals("Invalid value", value, status.value());
-			assertEquals("Invalid name for [" + value + "]", entry.getValue(), status.name());
+			assertThat((Object) status.name()).as("Invalid name for [" + value + "]").isEqualTo(entry.getValue());
 		}
 	}
 
@@ -121,7 +121,7 @@ public class HttpStatusTests {
 				continue;
 			}
 			assertThat(statusCodes.containsKey(value)).as("Map has no value for [" + value + "]").isTrue();
-			assertEquals("Invalid name for [" + value + "]", statusCodes.get(value), status.name());
+			assertThat((Object) status.name()).as("Invalid name for [" + value + "]").isEqualTo(statusCodes.get(value));
 		}
 	}
 }

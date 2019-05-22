@@ -92,7 +92,7 @@ public class AppCacheManifestTransformerTests {
 		Resource expected = getResource("error.appcache");
 		Resource actual = this.transformer.transform(exchange, expected, this.chain).block(TIMEOUT);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	@Test

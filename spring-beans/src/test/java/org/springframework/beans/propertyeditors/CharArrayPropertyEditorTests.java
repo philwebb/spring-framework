@@ -46,15 +46,15 @@ public class CharArrayPropertyEditorTests {
 		for (int i = 0; i < text.length(); ++i) {
 			assertEquals("char[] differs at index '" + i + "'", text.charAt(i), chars[i]);
 		}
-		assertEquals(text, charEditor.getAsText());
+		assertThat((Object) charEditor.getAsText()).isEqualTo(text);
 	}
 
 	@Test
 	public void getAsTextReturnsEmptyStringIfValueIsNull() throws Exception {
-		assertEquals("", charEditor.getAsText());
+		assertThat((Object) charEditor.getAsText()).isEqualTo("");
 
 		charEditor.setAsText(null);
-		assertEquals("", charEditor.getAsText());
+		assertThat((Object) charEditor.getAsText()).isEqualTo("");
 	}
 
 }

@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import org.springframework.core.convert.TypeDescriptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -32,13 +33,13 @@ public class FormatHelperTests {
 	@Test
 	public void formatMethodWithSingleArgumentForMessage() {
 		String message = FormatHelper.formatMethodForMessage("foo", Arrays.asList(TypeDescriptor.forObject("a string")));
-		assertEquals("foo(java.lang.String)", message);
+		assertThat((Object) message).isEqualTo("foo(java.lang.String)");
 	}
 
 	@Test
 	public void formatMethodWithMultipleArgumentsForMessage() {
 		String message = FormatHelper.formatMethodForMessage("foo", Arrays.asList(TypeDescriptor.forObject("a string"), TypeDescriptor.forObject(Integer.valueOf(5))));
-		assertEquals("foo(java.lang.String,java.lang.Integer)", message);
+		assertThat((Object) message).isEqualTo("foo(java.lang.String,java.lang.Integer)");
 	}
 
 }

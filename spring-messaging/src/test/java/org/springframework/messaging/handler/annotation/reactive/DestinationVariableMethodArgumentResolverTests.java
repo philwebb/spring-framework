@@ -65,10 +65,10 @@ public class DestinationVariableMethodArgumentResolverTests {
 			DestinationVariableMethodArgumentResolver.DESTINATION_TEMPLATE_VARIABLES_HEADER, vars).build();
 
 		Object result = resolveArgument(this.resolvable.annot(destinationVar().noValue()).arg(), message);
-		assertEquals("bar", result);
+		assertThat(result).isEqualTo("bar");
 
 		result = resolveArgument(this.resolvable.annot(destinationVar("name")).arg(), message);
-		assertEquals("value", result);
+		assertThat(result).isEqualTo("value");
 	}
 
 	@Test

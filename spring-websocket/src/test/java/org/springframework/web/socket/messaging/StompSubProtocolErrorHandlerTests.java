@@ -25,6 +25,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -52,8 +53,8 @@ public class StompSubProtocolErrorHandlerTests {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
 		assertNotNull(accessor);
-		assertEquals(StompCommand.ERROR, accessor.getCommand());
-		assertEquals(ex.getMessage(), accessor.getMessage());
+		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.ERROR);
+		assertThat((Object) accessor.getMessage()).isEqualTo(ex.getMessage());
 		assertArrayEquals(new byte[0], actual.getPayload());
 	}
 
@@ -69,7 +70,7 @@ public class StompSubProtocolErrorHandlerTests {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
 		assertNotNull(accessor);
-		assertEquals(receiptId, accessor.getReceiptId());
+		assertThat((Object) accessor.getReceiptId()).isEqualTo(receiptId);
 	}
 
 

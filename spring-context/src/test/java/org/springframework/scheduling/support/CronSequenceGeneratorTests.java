@@ -33,20 +33,17 @@ public class CronSequenceGeneratorTests {
 
 	@Test
 	public void at50Seconds() {
-		assertEquals(new Date(2012, 6, 2, 1, 0),
-				new CronSequenceGenerator("*/15 * 1-4 * * *").next(new Date(2012, 6, 1, 9, 53, 50)));
+		assertThat((Object) new CronSequenceGenerator("*/15 * 1-4 * * *").next(new Date(2012, 6, 1, 9, 53, 50))).isEqualTo(new Date(2012, 6, 2, 1, 0));
 	}
 
 	@Test
 	public void at0Seconds() {
-		assertEquals(new Date(2012, 6, 2, 1, 0),
-				new CronSequenceGenerator("*/15 * 1-4 * * *").next(new Date(2012, 6, 1, 9, 53)));
+		assertThat((Object) new CronSequenceGenerator("*/15 * 1-4 * * *").next(new Date(2012, 6, 1, 9, 53))).isEqualTo(new Date(2012, 6, 2, 1, 0));
 	}
 
 	@Test
 	public void at0Minutes() {
-		assertEquals(new Date(2012, 6, 2, 1, 0),
-				new CronSequenceGenerator("0 */2 1-4 * * *").next(new Date(2012, 6, 1, 9, 0)));
+		assertThat((Object) new CronSequenceGenerator("0 */2 1-4 * * *").next(new Date(2012, 6, 1, 9, 0))).isEqualTo(new Date(2012, 6, 2, 1, 0));
 	}
 
 	@Test

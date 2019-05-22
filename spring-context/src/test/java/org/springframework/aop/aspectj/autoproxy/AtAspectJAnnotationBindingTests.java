@@ -26,6 +26,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -48,14 +49,14 @@ public class AtAspectJAnnotationBindingTests {
 
 	@Test
 	public void testAnnotationBindingInAroundAdvice() {
-		assertEquals("this value doThis", testBean.doThis());
-		assertEquals("that value doThat", testBean.doThat());
+		assertThat((Object) testBean.doThis()).isEqualTo("this value doThis");
+		assertThat((Object) testBean.doThat()).isEqualTo("that value doThat");
 		assertEquals(2, testBean.doArray().length);
 	}
 
 	@Test
 	public void testNoMatchingWithoutAnnotationPresent() {
-		assertEquals("doTheOther", testBean.doTheOther());
+		assertThat((Object) testBean.doTheOther()).isEqualTo("doTheOther");
 	}
 
 	@Test

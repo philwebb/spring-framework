@@ -32,6 +32,7 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.multipart.MultipartRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -62,28 +63,28 @@ public class ServletWebRequestTests {
 		servletRequest.addParameter("param2", "value2");
 		servletRequest.addParameter("param2", "value2a");
 
-		assertEquals("value1", request.getParameter("param1"));
+		assertThat((Object) request.getParameter("param1")).isEqualTo("value1");
 		assertEquals(1, request.getParameterValues("param1").length);
-		assertEquals("value1", request.getParameterValues("param1")[0]);
-		assertEquals("value2", request.getParameter("param2"));
+		assertThat((Object) request.getParameterValues("param1")[0]).isEqualTo("value1");
+		assertThat((Object) request.getParameter("param2")).isEqualTo("value2");
 		assertEquals(2, request.getParameterValues("param2").length);
-		assertEquals("value2", request.getParameterValues("param2")[0]);
-		assertEquals("value2a", request.getParameterValues("param2")[1]);
+		assertThat((Object) request.getParameterValues("param2")[0]).isEqualTo("value2");
+		assertThat((Object) request.getParameterValues("param2")[1]).isEqualTo("value2a");
 
 		Map<String, String[]> paramMap = request.getParameterMap();
 		assertEquals(2, paramMap.size());
 		assertEquals(1, paramMap.get("param1").length);
-		assertEquals("value1", paramMap.get("param1")[0]);
+		assertThat((Object) paramMap.get("param1")[0]).isEqualTo("value1");
 		assertEquals(2, paramMap.get("param2").length);
-		assertEquals("value2", paramMap.get("param2")[0]);
-		assertEquals("value2a", paramMap.get("param2")[1]);
+		assertThat((Object) paramMap.get("param2")[0]).isEqualTo("value2");
+		assertThat((Object) paramMap.get("param2")[1]).isEqualTo("value2a");
 	}
 
 	@Test
 	public void locale() {
 		servletRequest.addPreferredLocale(Locale.UK);
 
-		assertEquals(Locale.UK, request.getLocale());
+		assertThat((Object) request.getLocale()).isEqualTo(Locale.UK);
 	}
 
 	@Test

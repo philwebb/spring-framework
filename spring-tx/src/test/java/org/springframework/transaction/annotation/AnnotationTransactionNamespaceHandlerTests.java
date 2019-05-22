@@ -99,8 +99,8 @@ public class AnnotationTransactionNamespaceHandlerTests {
 	@Test
 	public void mBeanExportAlsoWorks() throws Exception {
 		MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-		assertEquals("done",
-				server.invoke(ObjectName.getInstance("test:type=TestBean"), "doSomething", new Object[0], new String[0]));
+		Object actual = server.invoke(ObjectName.getInstance("test:type=TestBean"), "doSomething", new Object[0], new String[0]);
+		assertThat(actual).isEqualTo("done");
 	}
 
 	@Test

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
@@ -84,7 +83,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, file, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 		verify(this.versionStrategy, never()).extractVersion(file);
 	}
@@ -178,10 +177,10 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(exchange, versionFile, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertEquals(expected.getFilename(), actual.getFilename());
+		assertThat((Object) actual.getFilename()).isEqualTo(expected.getFilename());
 		verify(this.versionStrategy, times(1)).getResourceVersion(expected);
 		assertThat(actual).isInstanceOf(HttpResource.class);
-		assertEquals("\"" + version + "\"", ((HttpResource)actual).getResponseHeaders().getETag());
+		assertThat((Object) ((HttpResource) actual).getResponseHeaders().getETag()).isEqualTo(("\"" + version + "\""));
 	}
 
 	@Test
@@ -193,10 +192,10 @@ public class VersionResourceResolverTests {
 		strategies.put("/**/*.js", jsStrategy);
 		this.resolver.setStrategyMap(strategies);
 
-		assertEquals(catchAllStrategy, this.resolver.getStrategyForPath("foo.css"));
-		assertEquals(catchAllStrategy, this.resolver.getStrategyForPath("foo-js.css"));
-		assertEquals(jsStrategy, this.resolver.getStrategyForPath("foo.js"));
-		assertEquals(jsStrategy, this.resolver.getStrategyForPath("bar/foo.js"));
+		assertThat((Object) this.resolver.getStrategyForPath("foo.css")).isEqualTo(catchAllStrategy);
+		assertThat((Object) this.resolver.getStrategyForPath("foo-js.css")).isEqualTo(catchAllStrategy);
+		assertThat((Object) this.resolver.getStrategyForPath("foo.js")).isEqualTo(jsStrategy);
+		assertThat((Object) this.resolver.getStrategyForPath("bar/foo.js")).isEqualTo(jsStrategy);
 	}
 
 	@Test // SPR-13883

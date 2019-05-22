@@ -136,11 +136,11 @@ public class SubscriptionMethodReturnValueHandlerTests {
 
 		assertNull("SimpMessageHeaderAccessor should have disabled id", headerAccessor.getId());
 		assertNull("SimpMessageHeaderAccessor should have disabled timestamp", headerAccessor.getTimestamp());
-		assertEquals(sessionId, headerAccessor.getSessionId());
-		assertEquals(subscriptionId, headerAccessor.getSubscriptionId());
-		assertEquals(destination, headerAccessor.getDestination());
-		assertEquals(MIME_TYPE, headerAccessor.getContentType());
-		assertEquals(this.subscribeEventReturnType, headerAccessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER));
+		assertThat((Object) headerAccessor.getSessionId()).isEqualTo(sessionId);
+		assertThat((Object) headerAccessor.getSubscriptionId()).isEqualTo(subscriptionId);
+		assertThat((Object) headerAccessor.getDestination()).isEqualTo(destination);
+		assertThat((Object) headerAccessor.getContentType()).isEqualTo(MIME_TYPE);
+		assertThat(headerAccessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER)).isEqualTo(this.subscribeEventReturnType);
 	}
 
 	@Test
@@ -164,9 +164,9 @@ public class SubscriptionMethodReturnValueHandlerTests {
 
 		assertNotNull(headerAccessor);
 		assertThat(headerAccessor.isMutable()).isTrue();
-		assertEquals(sessionId, headerAccessor.getSessionId());
-		assertEquals(subscriptionId, headerAccessor.getSubscriptionId());
-		assertEquals(this.subscribeEventReturnType, headerAccessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER));
+		assertThat((Object) headerAccessor.getSessionId()).isEqualTo(sessionId);
+		assertThat((Object) headerAccessor.getSubscriptionId()).isEqualTo(subscriptionId);
+		assertThat(headerAccessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER)).isEqualTo(this.subscribeEventReturnType);
 	}
 
 	@Test
@@ -184,7 +184,7 @@ public class SubscriptionMethodReturnValueHandlerTests {
 		Message<?> message = this.messageCaptor.getValue();
 		assertNotNull(message);
 
-		assertEquals("{\"withView1\":\"with\"}", new String((byte[]) message.getPayload(), StandardCharsets.UTF_8));
+		assertThat((Object) new String((byte[]) message.getPayload(), StandardCharsets.UTF_8)).isEqualTo("{\"withView1\":\"with\"}");
 	}
 
 

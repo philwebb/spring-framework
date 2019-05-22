@@ -35,6 +35,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.SimpleMessageConverter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
@@ -64,7 +65,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(content, session);
-		assertEquals(content, converter.fromMessage(msg));
+		assertThat(converter.fromMessage(msg)).isEqualTo(content);
 	}
 
 	@Test
@@ -108,7 +109,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(content, session);
-		assertEquals(content, converter.fromMessage(msg));
+		assertThat(converter.fromMessage(msg)).isEqualTo(content);
 
 		verify(message).setObject("key1", "value1");
 		verify(message).setObject("key2", "value2");
@@ -126,7 +127,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(content, session);
-		assertEquals(content, converter.fromMessage(msg));
+		assertThat(converter.fromMessage(msg)).isEqualTo(content);
 	}
 
 	@Test

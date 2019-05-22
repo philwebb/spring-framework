@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -100,7 +99,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerPathMatchFoo"));
 
-		assertEquals("pathMatchWildcard", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("pathMatchWildcard");
 	}
 
 	@Test
@@ -114,7 +113,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/bestmatch/bar/path"));
 
-		assertEquals("bestMatch", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("bestMatch");
 	}
 
 	@Test
@@ -122,7 +121,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerArgumentResolver"));
 
-		assertEquals("handlerArgumentResolver", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("handlerArgumentResolver");
 		assertNotNull(this.testController.arguments.get("message"));
 	}
 
@@ -131,7 +130,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerThrowsExc"));
 
-		assertEquals("illegalStateException", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("illegalStateException");
 		assertNotNull(this.testController.arguments.get("exception"));
 	}
 

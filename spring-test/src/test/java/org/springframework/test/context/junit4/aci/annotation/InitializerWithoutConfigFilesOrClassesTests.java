@@ -27,6 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.aci.annotation.InitializerWithoutConfigFilesOrClassesTests.EntireAppInitializer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -47,7 +48,7 @@ public class InitializerWithoutConfigFilesOrClassesTests {
 
 	@Test
 	public void foo() {
-		assertEquals("foo", foo);
+		assertThat((Object) foo).isEqualTo("foo");
 	}
 
 

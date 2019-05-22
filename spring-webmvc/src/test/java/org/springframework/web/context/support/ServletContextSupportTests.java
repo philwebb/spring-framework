@@ -59,7 +59,7 @@ public class ServletContextSupportTests {
 		wac.refresh();
 
 		Object value = wac.getBean("importedAttr");
-		assertEquals("myValue", value);
+		assertThat(value).isEqualTo("myValue");
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class ServletContextSupportTests {
 		wac.refresh();
 
 		Object value = wac.getBean("importedParam");
-		assertEquals("myValue", value);
+		assertThat(value).isEqualTo("myValue");
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class ServletContextSupportTests {
 		exporter.setAttributes(attributes);
 		exporter.setServletContext(sc);
 
-		assertEquals("value1", sc.getAttribute("attr1"));
+		assertThat(sc.getAttribute("attr1")).isEqualTo("value1");
 		assertSame(tb, sc.getAttribute("attr2"));
 	}
 

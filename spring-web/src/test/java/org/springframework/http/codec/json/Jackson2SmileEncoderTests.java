@@ -65,7 +65,7 @@ public class Jackson2SmileEncoderTests extends AbstractEncoderTestCase<Jackson2S
 			try {
 				Pojo actual = this.mapper.reader().forType(Pojo.class)
 						.readValue(DataBufferTestUtils.dumpBytes(dataBuffer));
-				assertEquals(expected, actual);
+				assertThat((Object) actual).isEqualTo(expected);
 				release(dataBuffer);
 			}
 			catch (IOException ex) {
@@ -142,7 +142,7 @@ public class Jackson2SmileEncoderTests extends AbstractEncoderTestCase<Jackson2S
 			try {
 				Object actual = this.mapper.reader().forType(expectedType)
 						.readValue(dataBuffer.asInputStream());
-				assertEquals(expected, actual);
+				assertThat(actual).isEqualTo(expected);
 			}
 			catch (IOException e) {
 				throw new UncheckedIOException(e);

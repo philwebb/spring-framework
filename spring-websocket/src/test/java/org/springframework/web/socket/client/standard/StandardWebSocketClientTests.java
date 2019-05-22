@@ -35,6 +35,7 @@ import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -99,7 +100,7 @@ public class StandardWebSocketClientTests {
 		WebSocketSession session = this.wsClient.doHandshake(this.wsHandler, this.headers, uri).get();
 
 		assertNotNull(session.getRemoteAddress());
-		assertEquals("localhost", session.getRemoteAddress().getHostName());
+		assertThat((Object) session.getRemoteAddress().getHostName()).isEqualTo("localhost");
 		assertEquals(443, session.getLocalAddress().getPort());
 	}
 
@@ -114,7 +115,7 @@ public class StandardWebSocketClientTests {
 		WebSocketSession session = this.wsClient.doHandshake(this.wsHandler, this.headers, uri).get();
 
 		assertEquals(1, session.getHandshakeHeaders().size());
-		assertEquals("bar", session.getHandshakeHeaders().getFirst("foo"));
+		assertThat((Object) session.getHandshakeHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -130,7 +131,7 @@ public class StandardWebSocketClientTests {
 		verify(this.wsContainer).connectToServer(any(Endpoint.class), captor.capture(), any(URI.class));
 		ClientEndpointConfig endpointConfig = captor.getValue();
 
-		assertEquals(protocols, endpointConfig.getPreferredSubprotocols());
+		assertThat((Object) endpointConfig.getPreferredSubprotocols()).isEqualTo(protocols);
 	}
 
 	@Test
@@ -146,7 +147,7 @@ public class StandardWebSocketClientTests {
 		verify(this.wsContainer).connectToServer(any(Endpoint.class), captor.capture(), any(URI.class));
 		ClientEndpointConfig endpointConfig = captor.getValue();
 
-		assertEquals(userProperties, endpointConfig.getUserProperties());
+		assertThat((Object) endpointConfig.getUserProperties()).isEqualTo(userProperties);
 	}
 
 	@Test

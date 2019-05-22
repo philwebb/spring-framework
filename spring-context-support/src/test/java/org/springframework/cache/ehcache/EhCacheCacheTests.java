@@ -29,6 +29,7 @@ import org.springframework.cache.AbstractCacheTests;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -84,7 +85,7 @@ public class EhCacheCacheTests extends AbstractCacheTests<EhCacheCache> {
 		brancusi.setTimeToLive(3);
 		nativeCache.put(brancusi);
 
-		assertEquals(value, cache.get(key).get());
+		assertThat(cache.get(key).get()).isEqualTo(value);
 		// wait for the entry to expire
 		Thread.sleep(5 * 1000);
 		assertNull(cache.get(key));

@@ -149,21 +149,21 @@ public class BeanFactoryUtilsTests {
 
 		Map<String, ?> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(lbf, ITestBean.class, true, true);
 		assertEquals(4, beans.size());
-		assertEquals(t1, beans.get("t1"));
-		assertEquals(t2, beans.get("t2"));
-		assertEquals(t3.getObject(), beans.get("t3"));
+		assertThat(beans.get("t1")).isEqualTo(t1);
+		assertThat(beans.get("t2")).isEqualTo(t2);
+		assertThat(beans.get("t3")).isEqualTo(t3.getObject());
 		boolean condition = beans.get("t4") instanceof TestBean;
 		assertThat(condition).isTrue();
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(lbf, DummyFactory.class, true, true);
 		assertEquals(2, beans.size());
-		assertEquals(t3, beans.get("&t3"));
-		assertEquals(t4, beans.get("&t4"));
+		assertThat(beans.get("&t3")).isEqualTo(t3);
+		assertThat(beans.get("&t4")).isEqualTo(t4);
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(lbf, FactoryBean.class, true, true);
 		assertEquals(2, beans.size());
-		assertEquals(t3, beans.get("&t3"));
-		assertEquals(t4, beans.get("&t4"));
+		assertThat(beans.get("&t3")).isEqualTo(t3);
+		assertThat(beans.get("&t4")).isEqualTo(t4);
 	}
 
 	@Test
@@ -184,11 +184,11 @@ public class BeanFactoryUtilsTests {
 		Map<String, ?> beans =
 				BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, ITestBean.class, true, false);
 		assertEquals(6, beans.size());
-		assertEquals(test3, beans.get("test3"));
-		assertEquals(test, beans.get("test"));
-		assertEquals(t1, beans.get("t1"));
-		assertEquals(t2, beans.get("t2"));
-		assertEquals(t3.getObject(), beans.get("t3"));
+		assertThat(beans.get("test3")).isEqualTo(test3);
+		assertThat(beans.get("test")).isEqualTo(test);
+		assertThat(beans.get("t1")).isEqualTo(t1);
+		assertThat(beans.get("t2")).isEqualTo(t2);
+		assertThat(beans.get("t3")).isEqualTo(t3.getObject());
 		boolean condition2 = beans.get("t4") instanceof TestBean;
 		assertThat(condition2).isTrue();
 		// t3 and t4 are found here as of Spring 2.0, since they are pre-registered
@@ -198,38 +198,38 @@ public class BeanFactoryUtilsTests {
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, ITestBean.class, false, true);
 		Object testFactory1 = this.listableBeanFactory.getBean("testFactory1");
 		assertEquals(5, beans.size());
-		assertEquals(test, beans.get("test"));
-		assertEquals(testFactory1, beans.get("testFactory1"));
-		assertEquals(t1, beans.get("t1"));
-		assertEquals(t2, beans.get("t2"));
-		assertEquals(t3.getObject(), beans.get("t3"));
+		assertThat(beans.get("test")).isEqualTo(test);
+		assertThat(beans.get("testFactory1")).isEqualTo(testFactory1);
+		assertThat(beans.get("t1")).isEqualTo(t1);
+		assertThat(beans.get("t2")).isEqualTo(t2);
+		assertThat(beans.get("t3")).isEqualTo(t3.getObject());
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, ITestBean.class, true, true);
 		assertEquals(8, beans.size());
-		assertEquals(test3, beans.get("test3"));
-		assertEquals(test, beans.get("test"));
-		assertEquals(testFactory1, beans.get("testFactory1"));
+		assertThat(beans.get("test3")).isEqualTo(test3);
+		assertThat(beans.get("test")).isEqualTo(test);
+		assertThat(beans.get("testFactory1")).isEqualTo(testFactory1);
 		boolean condition1 = beans.get("testFactory2") instanceof TestBean;
 		assertThat(condition1).isTrue();
-		assertEquals(t1, beans.get("t1"));
-		assertEquals(t2, beans.get("t2"));
-		assertEquals(t3.getObject(), beans.get("t3"));
+		assertThat(beans.get("t1")).isEqualTo(t1);
+		assertThat(beans.get("t2")).isEqualTo(t2);
+		assertThat(beans.get("t3")).isEqualTo(t3.getObject());
 		boolean condition = beans.get("t4") instanceof TestBean;
 		assertThat(condition).isTrue();
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, DummyFactory.class, true, true);
 		assertEquals(4, beans.size());
-		assertEquals(this.listableBeanFactory.getBean("&testFactory1"), beans.get("&testFactory1"));
-		assertEquals(this.listableBeanFactory.getBean("&testFactory2"), beans.get("&testFactory2"));
-		assertEquals(t3, beans.get("&t3"));
-		assertEquals(t4, beans.get("&t4"));
+		assertThat(beans.get("&testFactory1")).isEqualTo(this.listableBeanFactory.getBean("&testFactory1"));
+		assertThat(beans.get("&testFactory2")).isEqualTo(this.listableBeanFactory.getBean("&testFactory2"));
+		assertThat(beans.get("&t3")).isEqualTo(t3);
+		assertThat(beans.get("&t4")).isEqualTo(t4);
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, FactoryBean.class, true, true);
 		assertEquals(4, beans.size());
-		assertEquals(this.listableBeanFactory.getBean("&testFactory1"), beans.get("&testFactory1"));
-		assertEquals(this.listableBeanFactory.getBean("&testFactory2"), beans.get("&testFactory2"));
-		assertEquals(t3, beans.get("&t3"));
-		assertEquals(t4, beans.get("&t4"));
+		assertThat(beans.get("&testFactory1")).isEqualTo(this.listableBeanFactory.getBean("&testFactory1"));
+		assertThat(beans.get("&testFactory2")).isEqualTo(this.listableBeanFactory.getBean("&testFactory2"));
+		assertThat(beans.get("&t3")).isEqualTo(t3);
+		assertThat(beans.get("&t4")).isEqualTo(t4);
 	}
 
 	@Test
@@ -240,36 +240,36 @@ public class BeanFactoryUtilsTests {
 		Map<String, ?> beans =
 				BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, ITestBean.class, true, false);
 		assertEquals(2, beans.size());
-		assertEquals(test3, beans.get("test3"));
-		assertEquals(test, beans.get("test"));
+		assertThat(beans.get("test3")).isEqualTo(test3);
+		assertThat(beans.get("test")).isEqualTo(test);
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, ITestBean.class, false, false);
 		assertEquals(1, beans.size());
-		assertEquals(test, beans.get("test"));
+		assertThat(beans.get("test")).isEqualTo(test);
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, ITestBean.class, false, true);
 		Object testFactory1 = this.listableBeanFactory.getBean("testFactory1");
 		assertEquals(2, beans.size());
-		assertEquals(test, beans.get("test"));
-		assertEquals(testFactory1, beans.get("testFactory1"));
+		assertThat(beans.get("test")).isEqualTo(test);
+		assertThat(beans.get("testFactory1")).isEqualTo(testFactory1);
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, ITestBean.class, true, true);
 		assertEquals(4, beans.size());
-		assertEquals(test3, beans.get("test3"));
-		assertEquals(test, beans.get("test"));
-		assertEquals(testFactory1, beans.get("testFactory1"));
+		assertThat(beans.get("test3")).isEqualTo(test3);
+		assertThat(beans.get("test")).isEqualTo(test);
+		assertThat(beans.get("testFactory1")).isEqualTo(testFactory1);
 		boolean condition = beans.get("testFactory2") instanceof TestBean;
 		assertThat(condition).isTrue();
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, DummyFactory.class, true, true);
 		assertEquals(2, beans.size());
-		assertEquals(this.listableBeanFactory.getBean("&testFactory1"), beans.get("&testFactory1"));
-		assertEquals(this.listableBeanFactory.getBean("&testFactory2"), beans.get("&testFactory2"));
+		assertThat(beans.get("&testFactory1")).isEqualTo(this.listableBeanFactory.getBean("&testFactory1"));
+		assertThat(beans.get("&testFactory2")).isEqualTo(this.listableBeanFactory.getBean("&testFactory2"));
 
 		beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(this.listableBeanFactory, FactoryBean.class, true, true);
 		assertEquals(2, beans.size());
-		assertEquals(this.listableBeanFactory.getBean("&testFactory1"), beans.get("&testFactory1"));
-		assertEquals(this.listableBeanFactory.getBean("&testFactory2"), beans.get("&testFactory2"));
+		assertThat(beans.get("&testFactory1")).isEqualTo(this.listableBeanFactory.getBean("&testFactory1"));
+		assertThat(beans.get("&testFactory2")).isEqualTo(this.listableBeanFactory.getBean("&testFactory2"));
 	}
 
 	@Test

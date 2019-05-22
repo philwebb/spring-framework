@@ -131,18 +131,18 @@ public class DefaultMultipartMessageReaderTests extends AbstractDataBufferAlloca
 	private static void testBrowserFormField(Part part, String name, String value) {
 		boolean condition = part instanceof FormFieldPart;
 		assertThat(condition).isTrue();
-		assertEquals(name, part.name());
+		assertThat((Object) part.name()).isEqualTo(name);
 		FormFieldPart formField = (FormFieldPart) part;
-		assertEquals(value, formField.value());
+		assertThat((Object) formField.value()).isEqualTo(value);
 	}
 
 	private static void testBrowserFile(Part part, String name, String filename, String contents) {
 		try {
 			boolean condition = part instanceof FilePart;
 			assertThat(condition).isTrue();
-			assertEquals(name, part.name());
+			assertThat((Object) part.name()).isEqualTo(name);
 			FilePart file = (FilePart) part;
-			assertEquals(filename, file.filename());
+			assertThat((Object) file.filename()).isEqualTo(filename);
 
 			Path tempFile = Files.createTempFile("DefaultMultipartMessageReaderTests", null);
 
@@ -172,7 +172,7 @@ public class DefaultMultipartMessageReaderTests extends AbstractDataBufferAlloca
 	private static void verifyContents(Path tempFile, String contents) {
 		try {
 			String result = String.join("", Files.readAllLines(tempFile));
-			assertEquals(contents, result);
+			assertThat((Object) result).isEqualTo(contents);
 		}
 		catch (IOException ex) {
 			throw new AssertionError(ex);

@@ -28,6 +28,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -72,8 +73,7 @@ public class ServletTestExecutionListenerTestNGIntegrationTests extends Abstract
 	}
 
 	private void assertInjectedServletRequestEqualsRequestInRequestContextHolder() {
-		assertEquals("Injected ServletRequest must be stored in the RequestContextHolder", servletRequest,
-			((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+		assertThat((Object) ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()).as("Injected ServletRequest must be stored in the RequestContextHolder").isEqualTo(servletRequest);
 	}
 
 }

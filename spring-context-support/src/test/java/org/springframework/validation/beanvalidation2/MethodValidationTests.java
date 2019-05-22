@@ -42,6 +42,7 @@ import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.validation.beanvalidation.MethodValidationInterceptor;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -88,7 +89,7 @@ public class MethodValidationTests {
 				proxy.myValidAsyncMethod("value", 15));
 		assertThatExceptionOfType(ValidationException.class).isThrownBy(() ->
 				proxy.myValidAsyncMethod(null, 5));
-		assertEquals("myValue", proxy.myGenericMethod("myValue"));
+		assertThat((Object) proxy.myGenericMethod("myValue")).isEqualTo("myValue");
 		assertThatExceptionOfType(ValidationException.class).isThrownBy(() ->
 				proxy.myGenericMethod(null));
 	}

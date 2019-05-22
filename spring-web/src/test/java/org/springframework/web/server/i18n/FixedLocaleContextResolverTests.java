@@ -31,6 +31,7 @@ import org.springframework.web.server.ServerWebExchange;
 import static java.util.Locale.CANADA;
 import static java.util.Locale.FRANCE;
 import static java.util.Locale.US;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -48,15 +49,15 @@ public class FixedLocaleContextResolverTests {
 	@Test
 	public void resolveDefaultLocale() {
 		FixedLocaleContextResolver resolver = new FixedLocaleContextResolver();
-		assertEquals(US, resolver.resolveLocaleContext(exchange()).getLocale());
-		assertEquals(US, resolver.resolveLocaleContext(exchange(CANADA)).getLocale());
+		assertThat((Object) resolver.resolveLocaleContext(exchange()).getLocale()).isEqualTo(US);
+		assertThat((Object) resolver.resolveLocaleContext(exchange(CANADA)).getLocale()).isEqualTo(US);
 	}
 
 	@Test
 	public void resolveCustomizedLocale() {
 		FixedLocaleContextResolver resolver = new FixedLocaleContextResolver(FRANCE);
-		assertEquals(FRANCE, resolver.resolveLocaleContext(exchange()).getLocale());
-		assertEquals(FRANCE, resolver.resolveLocaleContext(exchange(CANADA)).getLocale());
+		assertThat((Object) resolver.resolveLocaleContext(exchange()).getLocale()).isEqualTo(FRANCE);
+		assertThat((Object) resolver.resolveLocaleContext(exchange(CANADA)).getLocale()).isEqualTo(FRANCE);
 	}
 
 	@Test
@@ -64,8 +65,8 @@ public class FixedLocaleContextResolverTests {
 		TimeZone timeZone = TimeZone.getTimeZone(ZoneId.of("UTC"));
 		FixedLocaleContextResolver resolver = new FixedLocaleContextResolver(FRANCE, timeZone);
 		TimeZoneAwareLocaleContext context = (TimeZoneAwareLocaleContext) resolver.resolveLocaleContext(exchange());
-		assertEquals(FRANCE, context.getLocale());
-		assertEquals(timeZone, context.getTimeZone());
+		assertThat((Object) context.getLocale()).isEqualTo(FRANCE);
+		assertThat((Object) context.getTimeZone()).isEqualTo(timeZone);
 	}
 
 	private ServerWebExchange exchange(Locale... locales) {

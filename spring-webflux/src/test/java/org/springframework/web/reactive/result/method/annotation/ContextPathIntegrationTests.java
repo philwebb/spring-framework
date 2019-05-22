@@ -32,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -67,11 +68,11 @@ public class ContextPathIntegrationTests {
 
 			String url = "http://localhost:" + server.getPort() + "/webApp1/test";
 			actual = restTemplate.getForObject(url, String.class);
-			assertEquals("Tested in /webApp1", actual);
+			assertThat((Object) actual).isEqualTo("Tested in /webApp1");
 
 			url = "http://localhost:" + server.getPort() + "/webApp2/test";
 			actual = restTemplate.getForObject(url, String.class);
-			assertEquals("Tested in /webApp2", actual);
+			assertThat((Object) actual).isEqualTo("Tested in /webApp2");
 		}
 		finally {
 			server.stop();
@@ -101,7 +102,7 @@ public class ContextPathIntegrationTests {
 
 			String url = "http://localhost:" + server.getPort() + "/app/api/test";
 			actual = restTemplate.getForObject(url, String.class);
-			assertEquals("Tested in /app/api", actual);
+			assertThat((Object) actual).isEqualTo("Tested in /app/api");
 		}
 		finally {
 			server.stop();

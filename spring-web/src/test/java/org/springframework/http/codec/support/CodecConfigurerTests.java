@@ -76,16 +76,16 @@ public class CodecConfigurerTests {
 	public void defaultReaders() {
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
 		assertEquals(11, readers.size());
-		assertEquals(ByteArrayDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(ByteBufferDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(DataBufferDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(ResourceHttpMessageReader.class, readers.get(this.index.getAndIncrement()).getClass());
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(ByteArrayDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(ByteBufferDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(DataBufferDecoder.class);
+		assertThat((Object) readers.get(this.index.getAndIncrement()).getClass()).isEqualTo(ResourceHttpMessageReader.class);
 		assertStringDecoder(getNextDecoder(readers), true);
-		assertEquals(ProtobufDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(FormHttpMessageReader.class, readers.get(this.index.getAndIncrement()).getClass());
-		assertEquals(Jackson2JsonDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(Jackson2SmileDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(Jaxb2XmlDecoder.class, getNextDecoder(readers).getClass());
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(ProtobufDecoder.class);
+		assertThat((Object) readers.get(this.index.getAndIncrement()).getClass()).isEqualTo(FormHttpMessageReader.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(Jackson2JsonDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(Jackson2SmileDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(Jaxb2XmlDecoder.class);
 		assertStringDecoder(getNextDecoder(readers), false);
 	}
 
@@ -93,15 +93,15 @@ public class CodecConfigurerTests {
 	public void defaultWriters() {
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
 		assertEquals(10, writers.size());
-		assertEquals(ByteArrayEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ByteBufferEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(DataBufferEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ResourceHttpMessageWriter.class, writers.get(index.getAndIncrement()).getClass());
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(ByteArrayEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(ByteBufferEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(DataBufferEncoder.class);
+		assertThat((Object) writers.get(index.getAndIncrement()).getClass()).isEqualTo(ResourceHttpMessageWriter.class);
 		assertStringEncoder(getNextEncoder(writers), true);
-		assertEquals(ProtobufHttpMessageWriter.class, writers.get(index.getAndIncrement()).getClass());
-		assertEquals(Jackson2JsonEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(Jackson2SmileEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(Jaxb2XmlEncoder.class, getNextEncoder(writers).getClass());
+		assertThat((Object) writers.get(index.getAndIncrement()).getClass()).isEqualTo(ProtobufHttpMessageWriter.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(Jackson2JsonEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(Jackson2SmileEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(Jaxb2XmlEncoder.class);
 		assertStringEncoder(getNextEncoder(writers), false);
 	}
 
@@ -130,19 +130,19 @@ public class CodecConfigurerTests {
 		assertEquals(15, readers.size());
 		assertSame(customDecoder1, getNextDecoder(readers));
 		assertSame(customReader1, readers.get(this.index.getAndIncrement()));
-		assertEquals(ByteArrayDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(ByteBufferDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(DataBufferDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(ResourceHttpMessageReader.class, readers.get(this.index.getAndIncrement()).getClass());
-		assertEquals(StringDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(ProtobufDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(FormHttpMessageReader.class, readers.get(this.index.getAndIncrement()).getClass());
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(ByteArrayDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(ByteBufferDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(DataBufferDecoder.class);
+		assertThat((Object) readers.get(this.index.getAndIncrement()).getClass()).isEqualTo(ResourceHttpMessageReader.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(StringDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(ProtobufDecoder.class);
+		assertThat((Object) readers.get(this.index.getAndIncrement()).getClass()).isEqualTo(FormHttpMessageReader.class);
 		assertSame(customDecoder2, getNextDecoder(readers));
 		assertSame(customReader2, readers.get(this.index.getAndIncrement()));
-		assertEquals(Jackson2JsonDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(Jackson2SmileDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(Jaxb2XmlDecoder.class, getNextDecoder(readers).getClass());
-		assertEquals(StringDecoder.class, getNextDecoder(readers).getClass());
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(Jackson2JsonDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(Jackson2SmileDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(Jaxb2XmlDecoder.class);
+		assertThat((Object) getNextDecoder(readers).getClass()).isEqualTo(StringDecoder.class);
 	}
 
 	@Test
@@ -170,18 +170,18 @@ public class CodecConfigurerTests {
 		assertEquals(14, writers.size());
 		assertSame(customEncoder1, getNextEncoder(writers));
 		assertSame(customWriter1, writers.get(this.index.getAndIncrement()));
-		assertEquals(ByteArrayEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ByteBufferEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(DataBufferEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ResourceHttpMessageWriter.class, writers.get(index.getAndIncrement()).getClass());
-		assertEquals(CharSequenceEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ProtobufHttpMessageWriter.class, writers.get(index.getAndIncrement()).getClass());
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(ByteArrayEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(ByteBufferEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(DataBufferEncoder.class);
+		assertThat((Object) writers.get(index.getAndIncrement()).getClass()).isEqualTo(ResourceHttpMessageWriter.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(CharSequenceEncoder.class);
+		assertThat((Object) writers.get(index.getAndIncrement()).getClass()).isEqualTo(ProtobufHttpMessageWriter.class);
 		assertSame(customEncoder2, getNextEncoder(writers));
 		assertSame(customWriter2, writers.get(this.index.getAndIncrement()));
-		assertEquals(Jackson2JsonEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(Jackson2SmileEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(Jaxb2XmlEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(CharSequenceEncoder.class, getNextEncoder(writers).getClass());
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(Jackson2JsonEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(Jackson2SmileEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(Jaxb2XmlEncoder.class);
+		assertThat((Object) getNextEncoder(writers).getClass()).isEqualTo(CharSequenceEncoder.class);
 	}
 
 	@Test
@@ -272,26 +272,28 @@ public class CodecConfigurerTests {
 
 	private Decoder<?> getNextDecoder(List<HttpMessageReader<?>> readers) {
 		HttpMessageReader<?> reader = readers.get(this.index.getAndIncrement());
-		assertEquals(DecoderHttpMessageReader.class, reader.getClass());
+		assertThat((Object) reader.getClass()).isEqualTo(DecoderHttpMessageReader.class);
 		return ((DecoderHttpMessageReader<?>) reader).getDecoder();
 	}
 
 	private Encoder<?> getNextEncoder(List<HttpMessageWriter<?>> writers) {
 		HttpMessageWriter<?> writer = writers.get(this.index.getAndIncrement());
-		assertEquals(EncoderHttpMessageWriter.class, writer.getClass());
+		assertThat((Object) writer.getClass()).isEqualTo(EncoderHttpMessageWriter.class);
 		return ((EncoderHttpMessageWriter<?>) writer).getEncoder();
 	}
 
 	private void assertStringDecoder(Decoder<?> decoder, boolean textOnly) {
-		assertEquals(StringDecoder.class, decoder.getClass());
+		assertThat((Object) decoder.getClass()).isEqualTo(StringDecoder.class);
 		assertThat(decoder.canDecode(ResolvableType.forClass(String.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
-		assertEquals(!textOnly, decoder.canDecode(ResolvableType.forClass(String.class), MediaType.TEXT_EVENT_STREAM));
+		Object expected = !textOnly;
+		assertThat((Object) decoder.canDecode(ResolvableType.forClass(String.class), MediaType.TEXT_EVENT_STREAM)).isEqualTo(expected);
 	}
 
 	private void assertStringEncoder(Encoder<?> encoder, boolean textOnly) {
-		assertEquals(CharSequenceEncoder.class, encoder.getClass());
+		assertThat((Object) encoder.getClass()).isEqualTo(CharSequenceEncoder.class);
 		assertThat(encoder.canEncode(ResolvableType.forClass(String.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
-		assertEquals(!textOnly, encoder.canEncode(ResolvableType.forClass(String.class), MediaType.TEXT_EVENT_STREAM));
+		Object expected = !textOnly;
+		assertThat((Object) encoder.canEncode(ResolvableType.forClass(String.class), MediaType.TEXT_EVENT_STREAM)).isEqualTo(expected);
 	}
 
 	private void assertDecoderInstance(Decoder<?> decoder) {

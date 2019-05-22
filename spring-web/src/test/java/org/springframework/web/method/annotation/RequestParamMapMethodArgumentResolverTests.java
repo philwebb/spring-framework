@@ -85,7 +85,7 @@ public class RequestParamMapMethodArgumentResolverTests {
 
 		boolean condition = result instanceof Map;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class RequestParamMapMethodArgumentResolverTests {
 
 		boolean condition = result instanceof MultiValueMap;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -124,8 +124,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		Map<String, MultipartFile> resultMap = (Map<String, MultipartFile>) result;
 		assertEquals(2, resultMap.size());
-		assertEquals(expected1, resultMap.get("mfile"));
-		assertEquals(expected2, resultMap.get("other"));
+		assertThat((Object) resultMap.get("mfile")).isEqualTo(expected1);
+		assertThat((Object) resultMap.get("other")).isEqualTo(expected2);
 	}
 
 	@Test
@@ -148,10 +148,10 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MultiValueMap<String, MultipartFile> resultMap = (MultiValueMap<String, MultipartFile>) result;
 		assertEquals(2, resultMap.size());
 		assertEquals(2, resultMap.get("mfilelist").size());
-		assertEquals(expected1, resultMap.get("mfilelist").get(0));
-		assertEquals(expected2, resultMap.get("mfilelist").get(1));
+		assertThat((Object) resultMap.get("mfilelist").get(0)).isEqualTo(expected1);
+		assertThat((Object) resultMap.get("mfilelist").get(1)).isEqualTo(expected2);
 		assertEquals(1, resultMap.get("other").size());
-		assertEquals(expected3, resultMap.get("other").get(0));
+		assertThat((Object) resultMap.get("other").get(0)).isEqualTo(expected3);
 	}
 
 	@Test
@@ -172,8 +172,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		Map<String, Part> resultMap = (Map<String, Part>) result;
 		assertEquals(2, resultMap.size());
-		assertEquals(expected1, resultMap.get("mfile"));
-		assertEquals(expected2, resultMap.get("other"));
+		assertThat((Object) resultMap.get("mfile")).isEqualTo(expected1);
+		assertThat((Object) resultMap.get("other")).isEqualTo(expected2);
 	}
 
 	@Test
@@ -197,10 +197,10 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MultiValueMap<String, Part> resultMap = (MultiValueMap<String, Part>) result;
 		assertEquals(2, resultMap.size());
 		assertEquals(2, resultMap.get("mfilelist").size());
-		assertEquals(expected1, resultMap.get("mfilelist").get(0));
-		assertEquals(expected2, resultMap.get("mfilelist").get(1));
+		assertThat((Object) resultMap.get("mfilelist").get(0)).isEqualTo(expected1);
+		assertThat((Object) resultMap.get("mfilelist").get(1)).isEqualTo(expected2);
 		assertEquals(1, resultMap.get("other").size());
-		assertEquals(expected3, resultMap.get("other").get(0));
+		assertThat((Object) resultMap.get("other").get(0)).isEqualTo(expected3);
 	}
 
 

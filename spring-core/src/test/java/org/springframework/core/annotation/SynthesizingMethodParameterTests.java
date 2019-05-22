@@ -54,9 +54,9 @@ public class SynthesizingMethodParameterTests {
 
 	@Test
 	public void testEquals() throws NoSuchMethodException {
-		assertEquals(stringParameter, stringParameter);
-		assertEquals(longParameter, longParameter);
-		assertEquals(intReturnType, intReturnType);
+		assertThat((Object) stringParameter).isEqualTo(stringParameter);
+		assertThat((Object) longParameter).isEqualTo(longParameter);
+		assertThat((Object) intReturnType).isEqualTo(intReturnType);
 
 		assertThat(stringParameter.equals(longParameter)).isFalse();
 		assertThat(stringParameter.equals(intReturnType)).isFalse();
@@ -67,14 +67,14 @@ public class SynthesizingMethodParameterTests {
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new SynthesizingMethodParameter(method, 0);
-		assertEquals(stringParameter, methodParameter);
-		assertEquals(methodParameter, stringParameter);
+		assertThat((Object) methodParameter).isEqualTo(stringParameter);
+		assertThat((Object) stringParameter).isEqualTo(methodParameter);
 		assertNotEquals(longParameter, methodParameter);
 		assertNotEquals(methodParameter, longParameter);
 
 		methodParameter = new MethodParameter(method, 0);
-		assertEquals(stringParameter, methodParameter);
-		assertEquals(methodParameter, stringParameter);
+		assertThat((Object) methodParameter).isEqualTo(stringParameter);
+		assertThat((Object) stringParameter).isEqualTo(methodParameter);
 		assertNotEquals(longParameter, methodParameter);
 		assertNotEquals(methodParameter, longParameter);
 	}
@@ -93,11 +93,11 @@ public class SynthesizingMethodParameterTests {
 
 	@Test
 	public void testFactoryMethods() {
-		assertEquals(stringParameter, SynthesizingMethodParameter.forExecutable(method, 0));
-		assertEquals(longParameter, SynthesizingMethodParameter.forExecutable(method, 1));
+		assertThat((Object) SynthesizingMethodParameter.forExecutable(method, 0)).isEqualTo(stringParameter);
+		assertThat((Object) SynthesizingMethodParameter.forExecutable(method, 1)).isEqualTo(longParameter);
 
-		assertEquals(stringParameter, SynthesizingMethodParameter.forParameter(method.getParameters()[0]));
-		assertEquals(longParameter, SynthesizingMethodParameter.forParameter(method.getParameters()[1]));
+		assertThat((Object) SynthesizingMethodParameter.forParameter(method.getParameters()[0])).isEqualTo(stringParameter);
+		assertThat((Object) SynthesizingMethodParameter.forParameter(method.getParameters()[1])).isEqualTo(longParameter);
 	}
 
 	@Test

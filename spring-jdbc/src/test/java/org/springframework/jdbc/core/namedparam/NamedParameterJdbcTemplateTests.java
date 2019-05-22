@@ -139,12 +139,12 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("priceId", 1);
 		Object result = namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertThat((Object) ps).isEqualTo(preparedStatement);
 					ps.executeUpdate();
 					return "result";
 				});
 
-		assertEquals("result", result);
+		assertThat(result).isEqualTo("result");
 		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1);
 		verify(preparedStatement).setObject(2, 1);
@@ -163,12 +163,12 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("id", 1);
 		Object result = namedParameterTemplate.execute(UPDATE_ARRAY_PARAMETERS, params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertThat((Object) ps).isEqualTo(preparedStatement);
 					ps.executeUpdate();
 					return "result";
 				});
 
-		assertEquals("result", result);
+		assertThat(result).isEqualTo("result");
 		verify(connection).prepareStatement(UPDATE_ARRAY_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1);
 		verify(preparedStatement).setObject(2, 2);
@@ -186,12 +186,12 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
 		Object result = namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertThat((Object) ps).isEqualTo(preparedStatement);
 					ps.executeUpdate();
 					return "result";
 				});
 
-		assertEquals("result", result);
+		assertThat(result).isEqualTo("result");
 		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
 		verify(preparedStatement).setObject(2, 1, Types.INTEGER);
@@ -205,12 +205,12 @@ public class NamedParameterJdbcTemplateTests {
 
 		Object result = namedParameterTemplate.execute(SELECT_NO_PARAMETERS,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertThat((Object) ps).isEqualTo(preparedStatement);
 					ps.executeQuery();
 					return "result";
 				});
 
-		assertEquals("result", result);
+		assertThat(result).isEqualTo("result");
 		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
 		verify(preparedStatement).close();
 		verify(connection).close();

@@ -60,7 +60,7 @@ public class HttpStatusCodeExceptionTests {
 	public void emptyStatusText() {
 		HttpStatusCodeException ex = new HttpClientErrorException(HttpStatus.NOT_FOUND, "");
 
-		assertEquals("404 Not Found", ex.getMessage());
+		assertThat((Object) ex.getMessage()).isEqualTo("404 Not Found");
 	}
 
 }

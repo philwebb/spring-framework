@@ -37,6 +37,7 @@ import org.springframework.mock.http.client.reactive.test.MockClientHttpRequest;
 import org.springframework.web.reactive.function.BodyInserter;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
@@ -60,22 +61,22 @@ public class DefaultClientRequestBuilderTests {
 				.headers(httpHeaders -> httpHeaders.set("foo", "baar"))
 				.cookies(cookies -> cookies.set("baz", "quux"))
 		.build();
-		assertEquals(new URI("https://example.com"), result.url());
-		assertEquals(GET, result.method());
+		assertThat((Object) result.url()).isEqualTo(new URI("https://example.com"));
+		assertThat((Object) result.method()).isEqualTo(GET);
 		assertEquals(1, result.headers().size());
-		assertEquals("baar", result.headers().getFirst("foo"));
+		assertThat((Object) result.headers().getFirst("foo")).isEqualTo("baar");
 		assertEquals(1, result.cookies().size());
-		assertEquals("quux", result.cookies().getFirst("baz"));
+		assertThat((Object) result.cookies().getFirst("baz")).isEqualTo("quux");
 	}
 
 	@Test
 	public void method() throws URISyntaxException {
 		URI url = new URI("https://example.com");
 		ClientRequest.Builder builder = ClientRequest.create(DELETE, url);
-		assertEquals(DELETE, builder.build().method());
+		assertThat((Object) builder.build().method()).isEqualTo(DELETE);
 
 		builder.method(OPTIONS);
-		assertEquals(OPTIONS, builder.build().method());
+		assertThat((Object) builder.build().method()).isEqualTo(OPTIONS);
 	}
 
 	@Test
@@ -83,17 +84,17 @@ public class DefaultClientRequestBuilderTests {
 		URI url1 = new URI("https://example.com/foo");
 		URI url2 = new URI("https://example.com/bar");
 		ClientRequest.Builder builder = ClientRequest.create(DELETE, url1);
-		assertEquals(url1, builder.build().url());
+		assertThat((Object) builder.build().url()).isEqualTo(url1);
 
 		builder.url(url2);
-		assertEquals(url2, builder.build().url());
+		assertThat((Object) builder.build().url()).isEqualTo(url2);
 	}
 
 	@Test
 	public void cookie() {
 		ClientRequest result = ClientRequest.create(GET, URI.create("https://example.com"))
 				.cookie("foo", "bar").build();
-		assertEquals("bar", result.cookies().getFirst("foo"));
+		assertThat((Object) result.cookies().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -108,8 +109,8 @@ public class DefaultClientRequestBuilderTests {
 
 		result.writeTo(request, strategies).block();
 
-		assertEquals("MyValue", request.getHeaders().getFirst("MyKey"));
-		assertEquals("bar", request.getCookies().getFirst("foo").getValue());
+		assertThat((Object) request.getHeaders().getFirst("MyKey")).isEqualTo("MyValue");
+		assertThat((Object) request.getCookies().getFirst("foo").getValue()).isEqualTo("bar");
 		StepVerifier.create(request.getBody()).expectComplete().verify();
 	}
 

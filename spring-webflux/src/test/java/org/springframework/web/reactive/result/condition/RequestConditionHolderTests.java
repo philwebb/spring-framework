@@ -22,6 +22,7 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -44,7 +45,7 @@ public class RequestConditionHolderTests {
 		RequestConditionHolder params2 = new RequestConditionHolder(new ParamsRequestCondition("name2"));
 		RequestConditionHolder expected = new RequestConditionHolder(new ParamsRequestCondition("name1", "name2"));
 
-		assertEquals(expected, params1.combine(params2));
+		assertThat((Object) params1.combine(params2)).isEqualTo(expected);
 	}
 
 	@Test
@@ -73,7 +74,7 @@ public class RequestConditionHolderTests {
 
 		RequestConditionHolder holder = custom.getMatchingCondition(this.exchange);
 		assertNotNull(holder);
-		assertEquals(expected,  holder.getCondition());
+		assertThat((Object) holder.getCondition()).isEqualTo(expected);
 	}
 
 	@Test

@@ -69,7 +69,7 @@ public class FileCopyUtilsTests {
 		StringWriter out = new StringWriter();
 		int count = FileCopyUtils.copy(in, out);
 		assertEquals(content.length(), count);
-		assertEquals(content, out.toString());
+		assertThat((Object) out.toString()).isEqualTo(content);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class FileCopyUtilsTests {
 		String content = "content";
 		StringWriter out = new StringWriter();
 		FileCopyUtils.copy(content, out);
-		assertEquals(content, out.toString());
+		assertThat((Object) out.toString()).isEqualTo(content);
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class FileCopyUtilsTests {
 		String content = "content";
 		StringReader in = new StringReader(content);
 		String result = FileCopyUtils.copyToString(in);
-		assertEquals(content, result);
+		assertThat((Object) result).isEqualTo(content);
 	}
 
 }

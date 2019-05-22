@@ -80,8 +80,8 @@ public class MockServletContextTests {
 
 	@Test
 	public void getMimeType() {
-		assertEquals("text/html", sc.getMimeType("test.html"));
-		assertEquals("image/gif", sc.getMimeType("test.gif"));
+		assertThat((Object) sc.getMimeType("test.html")).isEqualTo("text/html");
+		assertThat((Object) sc.getMimeType("test.gif")).isEqualTo("image/gif");
 		assertNull(sc.getMimeType("test.foobar"));
 	}
 
@@ -92,7 +92,7 @@ public class MockServletContextTests {
 	@Test
 	public void getMimeTypeWithCustomConfiguredType() {
 		sc.addMimeType("enigma", new MediaType("text", "enigma"));
-		assertEquals("text/enigma", sc.getMimeType("filename.enigma"));
+		assertThat((Object) sc.getMimeType("filename.enigma")).isEqualTo("text/enigma");
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class MockServletContextTests {
 		assertNotNull(namedDispatcher);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		namedDispatcher.forward(new MockHttpServletRequest(sc), response);
-		assertEquals(url, response.getForwardedUrl());
+		assertThat((Object) response.getForwardedUrl()).isEqualTo(url);
 
 		sc.unregisterNamedDispatcher(name);
 		assertNull(sc.getNamedDispatcher(name));
@@ -137,7 +137,7 @@ public class MockServletContextTests {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		namedDispatcher.forward(new MockHttpServletRequest(sc), response);
-		assertEquals(name, response.getForwardedUrl());
+		assertThat((Object) response.getForwardedUrl()).isEqualTo(name);
 	}
 
 	@Test
@@ -147,14 +147,14 @@ public class MockServletContextTests {
 		assertNotNull(sc.getNamedDispatcher(originalDefault));
 
 		sc.setDefaultServletName(newDefault);
-		assertEquals(newDefault, sc.getDefaultServletName());
+		assertThat((Object) sc.getDefaultServletName()).isEqualTo(newDefault);
 		assertNull(sc.getNamedDispatcher(originalDefault));
 
 		RequestDispatcher namedDispatcher = sc.getNamedDispatcher(newDefault);
 		assertNotNull(namedDispatcher);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		namedDispatcher.forward(new MockHttpServletRequest(sc), response);
-		assertEquals(newDefault, response.getForwardedUrl());
+		assertThat((Object) response.getForwardedUrl()).isEqualTo(newDefault);
 	}
 
 	/**

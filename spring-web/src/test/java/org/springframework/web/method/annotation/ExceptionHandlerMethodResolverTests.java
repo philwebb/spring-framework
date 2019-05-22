@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
@@ -44,30 +45,30 @@ public class ExceptionHandlerMethodResolverTests {
 	public void resolveMethodFromAnnotation() {
 		ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(ExceptionController.class);
 		IOException exception = new IOException();
-		assertEquals("handleIOException", resolver.resolveMethod(exception).getName());
+		assertThat((Object) resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
 	}
 
 	@Test
 	public void resolveMethodFromArgument() {
 		ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(ExceptionController.class);
 		IllegalArgumentException exception = new IllegalArgumentException();
-		assertEquals("handleIllegalArgumentException", resolver.resolveMethod(exception).getName());
+		assertThat((Object) resolver.resolveMethod(exception).getName()).isEqualTo("handleIllegalArgumentException");
 	}
 
 	@Test
 	public void resolveMethodExceptionSubType() {
 		ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(ExceptionController.class);
 		IOException ioException = new FileNotFoundException();
-		assertEquals("handleIOException", resolver.resolveMethod(ioException).getName());
+		assertThat((Object) resolver.resolveMethod(ioException).getName()).isEqualTo("handleIOException");
 		SocketException bindException = new BindException();
-		assertEquals("handleSocketException", resolver.resolveMethod(bindException).getName());
+		assertThat((Object) resolver.resolveMethod(bindException).getName()).isEqualTo("handleSocketException");
 	}
 
 	@Test
 	public void resolveMethodBestMatch() {
 		ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(ExceptionController.class);
 		SocketException exception = new SocketException();
-		assertEquals("handleSocketException", resolver.resolveMethod(exception).getName());
+		assertThat((Object) resolver.resolveMethod(exception).getName()).isEqualTo("handleSocketException");
 	}
 
 	@Test
@@ -82,7 +83,7 @@ public class ExceptionHandlerMethodResolverTests {
 	public void resolveMethodInherited() {
 		ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(InheritedController.class);
 		IOException exception = new IOException();
-		assertEquals("handleIOException", resolver.resolveMethod(exception).getName());
+		assertThat((Object) resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
 	}
 
 	@Test

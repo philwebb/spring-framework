@@ -26,6 +26,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -40,7 +41,7 @@ public class ThreadPoolExecutorFactoryBeanTests {
 
 		FutureTask<String> task = new FutureTask<>(() -> "foo");
 		executor.execute(task);
-		assertEquals("foo", task.get());
+		assertThat((Object) task.get()).isEqualTo("foo");
 		context.close();
 	}
 

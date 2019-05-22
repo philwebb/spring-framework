@@ -214,7 +214,7 @@ public class MethodInvokingFactoryBeanTests {
 		mcfb.setTargetMethod("supertypes2");
 		mcfb.setArguments(new ArrayList<>(), new ArrayList<Object>(), "hello", "bogus");
 		mcfb.afterPropertiesSet();
-		assertEquals("hello", mcfb.getObject());
+		assertThat(mcfb.getObject()).isEqualTo("hello");
 
 		mcfb = new MethodInvokingFactoryBean();
 		mcfb.setTargetClass(TestClass1.class);

@@ -28,6 +28,7 @@ import org.springframework.web.socket.messaging.StompSubProtocolHandler;
 import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 import org.springframework.web.socket.sockjs.transport.session.WebSocketServerSockJsSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -50,7 +51,7 @@ public class SockJsWebSocketHandlerTests {
 		WebSocketServerSockJsSession session = new WebSocketServerSockJsSession("1", service, handler, null);
 		SockJsWebSocketHandler sockJsHandler = new SockJsWebSocketHandler(service, handler, session);
 
-		assertEquals(stompHandler.getSupportedProtocols(), sockJsHandler.getSubProtocols());
+		assertThat((Object) sockJsHandler.getSubProtocols()).isEqualTo(stompHandler.getSupportedProtocols());
 	}
 
 	@Test
@@ -61,7 +62,7 @@ public class SockJsWebSocketHandlerTests {
 		WebSocketServerSockJsSession session = new WebSocketServerSockJsSession("1", service, handler, null);
 		SockJsWebSocketHandler sockJsHandler = new SockJsWebSocketHandler(service, handler, session);
 
-		assertEquals(Collections.emptyList(), sockJsHandler.getSubProtocols());
+		assertThat((Object) sockJsHandler.getSubProtocols()).isEqualTo(Collections.emptyList());
 	}
 
 }

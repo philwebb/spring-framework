@@ -33,6 +33,7 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -69,7 +70,7 @@ public class DispatcherHandlerTests {
 
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
 		dispatcherHandler.handle(exchange).block(Duration.ofSeconds(0));
-		assertEquals("1", exchange.getResponse().getBodyAsString().block(Duration.ofSeconds(5)));
+		assertThat((Object) exchange.getResponse().getBodyAsString().block(Duration.ofSeconds(5))).isEqualTo("1");
 	}
 
 

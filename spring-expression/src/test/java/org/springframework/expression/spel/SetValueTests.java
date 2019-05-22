@@ -187,7 +187,7 @@ public class SetValueTests extends AbstractExpressionTests {
 		StandardEvaluationContext eContext = TestScenarioCreator.getTestEvaluationContext();
 		Expression e = parse("publicName='Andy'");
 		assertThat(e.isWritable(eContext)).isFalse();
-		assertEquals("Andy",e.getValue(eContext));
+		assertThat(e.getValue(eContext)).isEqualTo("Andy");
 	}
 
 	/*
@@ -205,18 +205,18 @@ public class SetValueTests extends AbstractExpressionTests {
 		// All keys should be strings
 		Set<?> ks = parse("mapOfStringToBoolean.keySet()").getValue(eContext, Set.class);
 		for (Object o: ks) {
-			assertEquals(String.class,o.getClass());
+			assertThat((Object) o.getClass()).isEqualTo(String.class);
 		}
 
 		// All values should be booleans
 		Collection<?> vs = parse("mapOfStringToBoolean.values()").getValue(eContext, Collection.class);
 		for (Object o: vs) {
-			assertEquals(Boolean.class, o.getClass());
+			assertThat((Object) o.getClass()).isEqualTo(Boolean.class);
 		}
 
 		// One final test check coercion on the key for a map lookup
 		Object o = e.getValue(eContext);
-		assertEquals(Boolean.TRUE,o);
+		assertThat(o).isEqualTo(Boolean.TRUE);
 	}
 
 
@@ -248,7 +248,7 @@ public class SetValueTests extends AbstractExpressionTests {
 			StandardEvaluationContext lContext = TestScenarioCreator.getTestEvaluationContext();
 			assertThat(e.isWritable(lContext)).as("Expression is not writeable but should be").isTrue();
 			e.setValue(lContext, value);
-			assertEquals("Retrieved value was not equal to set value", value, e.getValue(lContext,value.getClass()));
+			assertThat(e.getValue(lContext,value.getClass())).as("Retrieved value was not equal to set value").isEqualTo(value);
 		}
 		catch (EvaluationException | ParseException ex) {
 			throw new AssertionError("Unexpected Exception: " + ex.getMessage(), ex);

@@ -327,7 +327,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		String d = "d";
 		StringBuffer e = new StringBuffer("stringbuf");
 		String expectedResult = a + b+ c + d + e;
-		assertEquals(expectedResult, mva.mungeArgs(a, b, c, d, e));
+		assertThat((Object) mva.mungeArgs(a, b, c, d, e)).isEqualTo(expectedResult);
 	}
 
 	/**
@@ -523,7 +523,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 				new SingletonMetadataAwareAspectInstanceFactory(afterReturningAspect, "someBean"));
 		Echo echo = (Echo) createProxy(target, advisors, Echo.class);
 		assertEquals(0, afterReturningAspect.successCount);
-		assertEquals("", echo.echo(""));
+		assertThat(echo.echo("")).isEqualTo("");
 		assertEquals(1, afterReturningAspect.successCount);
 		assertEquals(0, afterReturningAspect.failureCount);
 		assertThatExceptionOfType(FileNotFoundException.class).isThrownBy(() ->
@@ -744,7 +744,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		@Around(value="execution(String mungeArgs(..)) && args(a, b, c, d, e)", argNames="b,c,d,e,a")
 		public String reverseAdvice(ProceedingJoinPoint pjp, int b, int c, String d, StringBuffer e, String a) throws Throwable {
-			assertEquals(a + b+ c+ d+ e, pjp.proceed());
+			assertThat(pjp.proceed()).isEqualTo((a + b+ c+ d+ e));
 			return a + b + c + d + e;
 		}
 	}

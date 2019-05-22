@@ -73,9 +73,9 @@ public class ServletServerHttpResponseTests {
 		List<String> headerValues = mockResponse.getHeaders(headerName);
 		assertThat(headerValues.contains(headerValue1)).as("Header not set").isTrue();
 		assertThat(headerValues.contains(headerValue2)).as("Header not set").isTrue();
-		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", mockResponse.getHeader("Content-Type"));
-		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", mockResponse.getContentType());
-		assertEquals("Invalid Content-Type", "UTF-8", mockResponse.getCharacterEncoding());
+		assertThat((Object) mockResponse.getHeader("Content-Type")).as("Invalid Content-Type").isEqualTo("text/plain;charset=UTF-8");
+		assertThat((Object) mockResponse.getContentType()).as("Invalid Content-Type").isEqualTo("text/plain;charset=UTF-8");
+		assertThat((Object) mockResponse.getCharacterEncoding()).as("Invalid Content-Type").isEqualTo("UTF-8");
 	}
 
 	@Test
@@ -86,11 +86,11 @@ public class ServletServerHttpResponseTests {
 		this.mockResponse.addHeader(headerName, headerValue);
 		this.response = new ServletServerHttpResponse(this.mockResponse);
 
-		assertEquals(headerValue, this.response.getHeaders().getFirst(headerName));
-		assertEquals(Collections.singletonList(headerValue), this.response.getHeaders().get(headerName));
+		assertThat((Object) this.response.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
+		assertThat((Object) this.response.getHeaders().get(headerName)).isEqualTo(Collections.singletonList(headerValue));
 		assertThat(this.response.getHeaders().containsKey(headerName)).isTrue();
-		assertEquals(headerValue, this.response.getHeaders().getFirst(headerName));
-		assertEquals(headerValue, this.response.getHeaders().getAccessControlAllowOrigin());
+		assertThat((Object) this.response.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
+		assertThat((Object) this.response.getHeaders().getAccessControlAllowOrigin()).isEqualTo(headerValue);
 	}
 
 	@Test

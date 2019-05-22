@@ -59,7 +59,7 @@ public class RmiSupportTests {
 		assertThat(condition).isTrue();
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		proxy.setName("myName");
-		assertEquals("myName", RemoteBean.name);
+		assertThat((Object) RemoteBean.name).isEqualTo("myName");
 		assertEquals(1, factory.counter);
 	}
 
@@ -167,7 +167,7 @@ public class RmiSupportTests {
 		boolean condition1 = proxy instanceof IRemoteBean;
 		assertThat(condition1).isFalse();
 		proxy.setName("myName");
-		assertEquals("myName", RemoteBean.name);
+		assertThat((Object) RemoteBean.name).isEqualTo("myName");
 		assertEquals(1, factory.counter);
 	}
 
@@ -337,23 +337,23 @@ public class RmiSupportTests {
 
 		RemoteInvocation inv = new RemoteInvocation(mi);
 
-		assertEquals("setName", inv.getMethodName());
-		assertEquals("bla", inv.getArguments()[0]);
-		assertEquals(String.class, inv.getParameterTypes()[0]);
+		assertThat((Object) inv.getMethodName()).isEqualTo("setName");
+		assertThat(inv.getArguments()[0]).isEqualTo("bla");
+		assertThat((Object) inv.getParameterTypes()[0]).isEqualTo(String.class);
 
 		// this is a bit BS, but we need to test it
 		inv = new RemoteInvocation();
 		inv.setArguments(new Object[] { "bla" });
-		assertEquals("bla", inv.getArguments()[0]);
+		assertThat(inv.getArguments()[0]).isEqualTo("bla");
 		inv.setMethodName("setName");
-		assertEquals("setName", inv.getMethodName());
+		assertThat((Object) inv.getMethodName()).isEqualTo("setName");
 		inv.setParameterTypes(new Class<?>[] {String.class});
-		assertEquals(String.class, inv.getParameterTypes()[0]);
+		assertThat((Object) inv.getParameterTypes()[0]).isEqualTo(String.class);
 
 		inv = new RemoteInvocation("setName", new Class<?>[] {String.class}, new Object[] {"bla"});
-		assertEquals("bla", inv.getArguments()[0]);
-		assertEquals("setName", inv.getMethodName());
-		assertEquals(String.class, inv.getParameterTypes()[0]);
+		assertThat(inv.getArguments()[0]).isEqualTo("bla");
+		assertThat((Object) inv.getMethodName()).isEqualTo("setName");
+		assertThat((Object) inv.getParameterTypes()[0]).isEqualTo(String.class);
 	}
 
 	@Test

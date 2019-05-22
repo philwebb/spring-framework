@@ -23,6 +23,7 @@ import org.springframework.context.support.GenericGroovyApplicationContext;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -47,19 +48,19 @@ public class GroovyControlGroupTests {
 		ApplicationContext ctx = new GenericGroovyApplicationContext(getClass(), "context.groovy");
 
 		String foo = ctx.getBean("foo", String.class);
-		assertEquals("Foo", foo);
+		assertThat((Object) foo).isEqualTo("Foo");
 
 		String bar = ctx.getBean("bar", String.class);
-		assertEquals("Bar", bar);
+		assertThat((Object) bar).isEqualTo("Bar");
 
 		Pet pet = ctx.getBean(Pet.class);
 		assertNotNull("pet", pet);
-		assertEquals("Dogbert", pet.getName());
+		assertThat((Object) pet.getName()).isEqualTo("Dogbert");
 
 		Employee employee = ctx.getBean(Employee.class);
 		assertNotNull("employee", employee);
-		assertEquals("Dilbert", employee.getName());
-		assertEquals("???", employee.getCompany());
+		assertThat((Object) employee.getName()).isEqualTo("Dilbert");
+		assertThat((Object) employee.getCompany()).isEqualTo("???");
 	}
 
 }

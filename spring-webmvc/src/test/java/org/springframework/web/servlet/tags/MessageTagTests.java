@@ -60,7 +60,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setMessage(new DefaultMessageSourceResolvable("test"));
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test message", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test message");
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setCode("test");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test message", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test message");
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setArguments("arg1");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test arg1 message {1}", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test arg1 message {1}");
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setArguments("arg1,arg2");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test arg1 message arg2", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test arg1 message arg2");
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setArgumentSeparator(";");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test arg1,1 message arg2,2", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test arg1,1 message arg2,2");
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setArguments(new Object[] {"arg1", 5});
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test arg1 message 5", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test arg1 message 5");
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setArguments(5);
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test 5 message {1}", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test 5 message {1}");
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setArguments(5);
 		tag.addArgument(7);
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test 5 message 7", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test 5 message 7");
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class MessageTagTests extends AbstractTagTests {
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		tag.addArgument(7);
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test 7 message {1}", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test 7 message {1}");
 	}
 
 	@Test
@@ -224,7 +224,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.addArgument("arg1");
 		tag.addArgument(6);
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test arg1 message 6", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test arg1 message 6");
 	}
 
 	@Test
@@ -242,7 +242,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setText("testtext");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test message", (message.toString()));
+		assertThat((Object) (message.toString())).as("Correct message").isEqualTo("test message");
 	}
 
 	@Test
@@ -280,7 +280,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setHtmlEscape(true);
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test &lt;&amp;&gt; é", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("test &lt;&amp;&gt; é");
 	}
 
 	@Test
@@ -298,7 +298,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setJavaScriptEscape(true);
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "\\' test & text \\\\", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("\\' test & text \\\\");
 	}
 
 	@Test
@@ -317,7 +317,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setJavaScriptEscape(true);
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "&#39; test &amp; text \\\\", message.toString());
+		assertThat((Object) message.toString()).as("Correct message").isEqualTo("&#39; test &amp; text \\\\");
 	}
 
 	@Test
@@ -330,7 +330,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setScope("page");
 		tag.doStartTag();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("text & text", pc.getAttribute("testvar"));
+		assertThat(pc.getAttribute("testvar")).isEqualTo("text & text");
 		tag.release();
 
 		tag = new MessageTag();
@@ -339,7 +339,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setVar("testvar2");
 		tag.doStartTag();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test message", pc.getAttribute("testvar2"));
+		assertThat(pc.getAttribute("testvar2")).as("Correct message").isEqualTo("test message");
 		tag.release();
 	}
 
@@ -352,7 +352,7 @@ public class MessageTagTests extends AbstractTagTests {
 		tag.setVar("testvar");
 		tag.doStartTag();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("text & text", pc.getAttribute("testvar"));
+		assertThat(pc.getAttribute("testvar")).isEqualTo("text & text");
 		tag.release();
 
 		// try to reuse
@@ -362,7 +362,7 @@ public class MessageTagTests extends AbstractTagTests {
 
 		tag.doStartTag();
 		assertEquals("Correct doEndTag return value", Tag.EVAL_PAGE, tag.doEndTag());
-		assertEquals("Correct message", "test message", pc.getAttribute("testvar"));
+		assertThat(pc.getAttribute("testvar")).as("Correct message").isEqualTo("test message");
 	}
 
 	@Test
@@ -385,18 +385,16 @@ public class MessageTagTests extends AbstractTagTests {
 	public void requestContext() throws ServletException {
 		PageContext pc = createPageContext();
 		RequestContext rc = new RequestContext((HttpServletRequest) pc.getRequest(), pc.getServletContext());
-		assertEquals("test message", rc.getMessage("test"));
-		assertEquals("test message", rc.getMessage("test", (Object[]) null));
-		assertEquals("test message", rc.getMessage("test", "default"));
-		assertEquals("test message", rc.getMessage("test", (Object[]) null, "default"));
-		assertEquals("test arg1 message arg2",
-				rc.getMessage("testArgs", new String[] {"arg1", "arg2"}, "default"));
-		assertEquals("test arg1 message arg2",
-				rc.getMessage("testArgs", Arrays.asList(new String[] {"arg1", "arg2"}), "default"));
-		assertEquals("default", rc.getMessage("testa", "default"));
-		assertEquals("default", rc.getMessage("testa", (List) null, "default"));
+		assertThat((Object) rc.getMessage("test")).isEqualTo("test message");
+		assertThat((Object) rc.getMessage("test", (Object[]) null)).isEqualTo("test message");
+		assertThat((Object) rc.getMessage("test", "default")).isEqualTo("test message");
+		assertThat((Object) rc.getMessage("test", (Object[]) null, "default")).isEqualTo("test message");
+		assertThat((Object) rc.getMessage("testArgs", new String[]{"arg1", "arg2"}, "default")).isEqualTo("test arg1 message arg2");
+		assertThat((Object) rc.getMessage("testArgs", Arrays.asList(new String[]{"arg1", "arg2"}), "default")).isEqualTo("test arg1 message arg2");
+		assertThat((Object) rc.getMessage("testa", "default")).isEqualTo("default");
+		assertThat((Object) rc.getMessage("testa", (List) null, "default")).isEqualTo("default");
 		MessageSourceResolvable resolvable = new DefaultMessageSourceResolvable(new String[] {"test"});
-		assertEquals("test message", rc.getMessage(resolvable));
+		assertThat((Object) rc.getMessage(resolvable)).isEqualTo("test message");
 	}
 
 }

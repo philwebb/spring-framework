@@ -33,6 +33,7 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.mock.web.test.MockServletContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -57,7 +58,7 @@ public class CompositeFilterTests {
 		filterProxy.doFilter(request, response, null);
 
 		assertNotNull(targetFilter.filterConfig);
-		assertEquals(Boolean.TRUE, request.getAttribute("called"));
+		assertThat(request.getAttribute("called")).isEqualTo(Boolean.TRUE);
 
 		filterProxy.destroy();
 		assertNull(targetFilter.filterConfig);

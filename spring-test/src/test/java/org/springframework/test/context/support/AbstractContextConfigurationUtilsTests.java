@@ -38,6 +38,7 @@ import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.TestContextBootstrapper;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -71,11 +72,11 @@ abstract class AbstractContextConfigurationUtilsTests {
 			String[] expectedLocations, Class<?>[] expectedClasses,
 			Class<? extends ContextLoader> expectedContextLoaderClass, boolean expectedInheritLocations) {
 
-		assertEquals("declaring class", expectedDeclaringClass, attributes.getDeclaringClass());
+		assertThat((Object) attributes.getDeclaringClass()).as("declaring class").isEqualTo(expectedDeclaringClass);
 		assertArrayEquals("locations", expectedLocations, attributes.getLocations());
 		assertArrayEquals("classes", expectedClasses, attributes.getClasses());
-		assertEquals("inherit locations", expectedInheritLocations, attributes.isInheritLocations());
-		assertEquals("context loader", expectedContextLoaderClass, attributes.getContextLoaderClass());
+		assertThat((Object) attributes.isInheritLocations()).as("inherit locations").isEqualTo(expectedInheritLocations);
+		assertThat((Object) attributes.getContextLoaderClass()).as("context loader").isEqualTo(expectedContextLoaderClass);
 	}
 
 	void assertMergedConfig(MergedContextConfiguration mergedConfig, Class<?> expectedTestClass,
@@ -95,7 +96,7 @@ abstract class AbstractContextConfigurationUtilsTests {
 			Class<? extends ContextLoader> expectedContextLoaderClass) {
 
 		assertNotNull(mergedConfig);
-		assertEquals(expectedTestClass, mergedConfig.getTestClass());
+		assertThat((Object) mergedConfig.getTestClass()).isEqualTo(expectedTestClass);
 		assertNotNull(mergedConfig.getLocations());
 		assertArrayEquals(expectedLocations, mergedConfig.getLocations());
 		assertNotNull(mergedConfig.getClasses());
@@ -105,10 +106,10 @@ abstract class AbstractContextConfigurationUtilsTests {
 			assertNull(mergedConfig.getContextLoader());
 		}
 		else {
-			assertEquals(expectedContextLoaderClass, mergedConfig.getContextLoader().getClass());
+			assertThat((Object) mergedConfig.getContextLoader().getClass()).isEqualTo(expectedContextLoaderClass);
 		}
 		assertNotNull(mergedConfig.getContextInitializerClasses());
-		assertEquals(expectedInitializerClasses, mergedConfig.getContextInitializerClasses());
+		assertThat((Object) mergedConfig.getContextInitializerClasses()).isEqualTo(expectedInitializerClasses);
 	}
 
 	@SafeVarargs

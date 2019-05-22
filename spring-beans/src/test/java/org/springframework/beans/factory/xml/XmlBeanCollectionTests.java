@@ -143,7 +143,7 @@ public class XmlBeanCollectionTests {
 		assertThat(friends[0] != jen).as("Jen not same instance").isTrue();
 		assertThat(friends[1].toString().equals(dave.toString())).isTrue();
 		assertThat(friends[1] != dave).as("Dave not same instance").isTrue();
-		assertEquals("Jen", dave.getSpouse().getName());
+		assertThat((Object) dave.getSpouse().getName()).isEqualTo("Jen");
 
 		TestBean rod2 = (TestBean) this.beanFactory.getBean("pRod");
 		Object[] friends2 = rod2.getFriends().toArray();
@@ -283,9 +283,9 @@ public class XmlBeanCollectionTests {
 		assertThat(hasMap.getSet().contains(jenny)).isTrue();
 		assertThat(hasMap.getSet().contains(null)).isTrue();
 		Iterator it = hasMap.getSet().iterator();
-		assertEquals("bar", it.next());
-		assertEquals(jenny, it.next());
-		assertEquals(null, it.next());
+		assertThat(it.next()).isEqualTo("bar");
+		assertThat(it.next()).isEqualTo(jenny);
+		assertThat(it.next()).isEqualTo(null);
 	}
 
 	@Test
@@ -311,7 +311,7 @@ public class XmlBeanCollectionTests {
 	public void testEmptyProps() throws Exception {
 		HasMap hasMap = (HasMap) this.beanFactory.getBean("emptyProps");
 		assertThat(hasMap.getProps().size() == 0).isTrue();
-		assertEquals(hasMap.getProps().getClass(), Properties.class);
+		assertThat((Object) Properties.class).isEqualTo(hasMap.getProps().getClass());
 	}
 
 	@Test
@@ -359,13 +359,13 @@ public class XmlBeanCollectionTests {
 	public void testProps() throws Exception {
 		HasMap hasMap = (HasMap) this.beanFactory.getBean("props");
 		assertEquals(2, hasMap.getProps().size());
-		assertEquals("bar", hasMap.getProps().getProperty("foo"));
-		assertEquals("TWO", hasMap.getProps().getProperty("2"));
+		assertThat((Object) hasMap.getProps().getProperty("foo")).isEqualTo("bar");
+		assertThat((Object) hasMap.getProps().getProperty("2")).isEqualTo("TWO");
 
 		HasMap hasMap2 = (HasMap) this.beanFactory.getBean("propsViaMap");
 		assertEquals(2, hasMap2.getProps().size());
-		assertEquals("bar", hasMap2.getProps().getProperty("foo"));
-		assertEquals("TWO", hasMap2.getProps().getProperty("2"));
+		assertThat((Object) hasMap2.getProps().getProperty("foo")).isEqualTo("bar");
+		assertThat((Object) hasMap2.getProps().getProperty("2")).isEqualTo("TWO");
 	}
 
 	@Test
@@ -374,8 +374,8 @@ public class XmlBeanCollectionTests {
 		boolean condition = list instanceof LinkedList;
 		assertThat(condition).isTrue();
 		assertThat(list.size() == 2).isTrue();
-		assertEquals("bar", list.get(0));
-		assertEquals("jenny", list.get(1));
+		assertThat(list.get(0)).isEqualTo("bar");
+		assertThat(list.get(1)).isEqualTo("jenny");
 	}
 
 	@Test
@@ -384,8 +384,8 @@ public class XmlBeanCollectionTests {
 		boolean condition = list instanceof LinkedList;
 		assertThat(condition).isTrue();
 		assertThat(list.size() == 2).isTrue();
-		assertEquals("bar", list.get(0));
-		assertEquals("jenny", list.get(1));
+		assertThat(list.get(0)).isEqualTo("bar");
+		assertThat(list.get(1)).isEqualTo("jenny");
 	}
 
 	@Test
@@ -414,8 +414,8 @@ public class XmlBeanCollectionTests {
 		boolean condition = map instanceof TreeMap;
 		assertThat(condition).isTrue();
 		assertThat(map.size() == 2).isTrue();
-		assertEquals("bar", map.get("foo"));
-		assertEquals("jenny", map.get("jen"));
+		assertThat(map.get("foo")).isEqualTo("bar");
+		assertThat(map.get("jen")).isEqualTo("jenny");
 	}
 
 	@Test
@@ -424,8 +424,8 @@ public class XmlBeanCollectionTests {
 		boolean condition = map instanceof TreeMap;
 		assertThat(condition).isTrue();
 		assertThat(map.size() == 2).isTrue();
-		assertEquals("bar", map.get("foo"));
-		assertEquals("jenny", map.get("jen"));
+		assertThat(map.get("foo")).isEqualTo("bar");
+		assertThat(map.get("jen")).isEqualTo("jenny");
 	}
 
 	@Test
@@ -435,9 +435,9 @@ public class XmlBeanCollectionTests {
 		assertThat(condition).as("Didn't choose constructor with Map argument").isTrue();
 		Map map = (Map) sam.getObject();
 		assertEquals(3, map.size());
-		assertEquals("val1", map.get("key1"));
-		assertEquals("val2", map.get("key2"));
-		assertEquals("val3", map.get("key3"));
+		assertThat(map.get("key1")).isEqualTo("val1");
+		assertThat(map.get("key2")).isEqualTo("val2");
+		assertThat(map.get("key3")).isEqualTo("val3");
 	}
 
 	@Test

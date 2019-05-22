@@ -129,7 +129,7 @@ public class CrossOriginTests {
 		assertNull(config.getAllowCredentials());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedHeaders().toArray());
 		assertThat(CollectionUtils.isEmpty(config.getExposedHeaders())).isTrue();
-		assertEquals(new Long(1800), config.getMaxAge());
+		assertThat((Object) config.getMaxAge()).isEqualTo(new Long(1800));
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class CrossOriginTests {
 		assertArrayEquals(new String[] {"https://site1.com", "https://site2.com"}, config.getAllowedOrigins().toArray());
 		assertArrayEquals(new String[] {"header1", "header2"}, config.getAllowedHeaders().toArray());
 		assertArrayEquals(new String[] {"header3", "header4"}, config.getExposedHeaders().toArray());
-		assertEquals(new Long(123), config.getMaxAge());
+		assertThat((Object) config.getMaxAge()).isEqualTo(new Long(123));
 		assertThat((boolean) config.getAllowCredentials()).isFalse();
 	}
 
@@ -154,7 +154,7 @@ public class CrossOriginTests {
 		HandlerExecutionChain chain = this.handlerMapping.getHandler(request);
 		CorsConfiguration config = getCorsConfiguration(chain, false);
 		assertNotNull(config);
-		assertEquals(Arrays.asList("https://example.com"), config.getAllowedOrigins());
+		assertThat((Object) config.getAllowedOrigins()).isEqualTo(Arrays.asList("https://example.com"));
 		assertNull(config.getAllowCredentials());
 	}
 
@@ -165,7 +165,7 @@ public class CrossOriginTests {
 		HandlerExecutionChain chain = this.handlerMapping.getHandler(request);
 		CorsConfiguration config = getCorsConfiguration(chain, false);
 		assertNotNull(config);
-		assertEquals(Arrays.asList("https://example.com"), config.getAllowedOrigins());
+		assertThat((Object) config.getAllowedOrigins()).isEqualTo(Arrays.asList("https://example.com"));
 		assertNull(config.getAllowCredentials());
 	}
 
@@ -246,7 +246,7 @@ public class CrossOriginTests {
 		assertNull(config.getAllowCredentials());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedHeaders().toArray());
 		assertThat(CollectionUtils.isEmpty(config.getExposedHeaders())).isTrue();
-		assertEquals(new Long(1800), config.getMaxAge());
+		assertThat((Object) config.getMaxAge()).isEqualTo(new Long(1800));
 	}
 
 	@Test

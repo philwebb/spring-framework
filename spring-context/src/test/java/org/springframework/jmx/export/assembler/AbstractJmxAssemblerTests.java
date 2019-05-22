@@ -34,6 +34,7 @@ import org.springframework.jmx.AbstractJmxTests;
 import org.springframework.jmx.IJmxTestBean;
 import org.springframework.jmx.support.ObjectNameManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -123,7 +124,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		ObjectName objectName = ObjectNameManager.getInstance(getObjectName());
 		getServer().setAttribute(objectName, new Attribute(NAME_ATTRIBUTE, "Rob Harrop"));
 		IJmxTestBean bean = (IJmxTestBean) getContext().getBean("testBean");
-		assertEquals("Rob Harrop", bean.getName());
+		assertThat((Object) bean.getName()).isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -131,7 +132,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		ObjectName objectName = ObjectNameManager.getInstance(getObjectName());
 		getBean().setName("John Smith");
 		Object val = getServer().getAttribute(objectName, NAME_ATTRIBUTE);
-		assertEquals("Incorrect result", "John Smith", val);
+		assertThat(val).as("Incorrect result").isEqualTo("John Smith");
 	}
 
 	@Test
@@ -139,7 +140,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		ObjectName objectName = ObjectNameManager.getInstance(getObjectName());
 		Object result = getServer().invoke(objectName, "add",
 				new Object[] {new Integer(20), new Integer(30)}, new String[] {"int", "int"});
-	assertEquals("Incorrect result", new Integer(50), result);
+		assertThat(result).as("Incorrect result").isEqualTo(new Integer(50));
 	}
 
 	@Test
@@ -152,10 +153,8 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 				desc.getFieldValue("getMethod"));
 		assertNotNull("setMethod field should not be null",
 				desc.getFieldValue("setMethod"));
-		assertEquals("getMethod field has incorrect value", "getName",
-				desc.getFieldValue("getMethod"));
-		assertEquals("setMethod field has incorrect value", "setName",
-				desc.getFieldValue("setMethod"));
+		assertThat(desc.getFieldValue("getMethod")).as("getMethod field has incorrect value").isEqualTo("getName");
+		assertThat(desc.getFieldValue("setMethod")).as("setMethod field has incorrect value").isEqualTo("setName");
 	}
 
 	@Test
@@ -164,17 +163,13 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 
 		ModelMBeanOperationInfo get = info.getOperation("getName");
 		assertNotNull("get operation should not be null", get);
-		assertEquals("get operation should have visibility of four",
-				get.getDescriptor().getFieldValue("visibility"),
-				new Integer(4));
-		assertEquals("get operation should have role \"getter\"", "getter", get.getDescriptor().getFieldValue("role"));
+		assertThat((Object) new Integer(4)).as("get operation should have visibility of four").isEqualTo(get.getDescriptor().getFieldValue("visibility"));
+		assertThat(get.getDescriptor().getFieldValue("role")).as("get operation should have role \"getter\"").isEqualTo("getter");
 
 		ModelMBeanOperationInfo set = info.getOperation("setName");
 		assertNotNull("set operation should not be null", set);
-		assertEquals("set operation should have visibility of four",
-				set.getDescriptor().getFieldValue("visibility"),
-				new Integer(4));
-		assertEquals("set operation should have role \"setter\"", "setter", set.getDescriptor().getFieldValue("role"));
+		assertThat((Object) new Integer(4)).as("set operation should have visibility of four").isEqualTo(set.getDescriptor().getFieldValue("visibility"));
+		assertThat(set.getDescriptor().getFieldValue("role")).as("set operation should have role \"setter\"").isEqualTo("setter");
 	}
 
 	@Test
@@ -182,13 +177,13 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		ModelMBeanInfo info = (ModelMBeanInfo) getMBeanInfo();
 		MBeanNotificationInfo[] notifications = info.getNotifications();
 		assertEquals("Incorrect number of notifications", 1, notifications.length);
-		assertEquals("Incorrect notification name", "My Notification", notifications[0].getName());
+		assertThat((Object) notifications[0].getName()).as("Incorrect notification name").isEqualTo("My Notification");
 
 		String[] notifTypes = notifications[0].getNotifTypes();
 
 		assertEquals("Incorrect number of notification types", 2, notifTypes.length);
-		assertEquals("Notification type.foo not found", "type.foo", notifTypes[0]);
-		assertEquals("Notification type.bar not found", "type.bar", notifTypes[1]);
+		assertThat((Object) notifTypes[0]).as("Notification type.foo not found").isEqualTo("type.foo");
+		assertThat((Object) notifTypes[1]).as("Notification type.bar not found").isEqualTo("type.bar");
 	}
 
 	protected ModelMBeanInfo getMBeanInfoFromAssembler() throws Exception {

@@ -26,6 +26,7 @@ import org.springframework.jms.StubTextMessage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -57,15 +58,15 @@ public class JmsMessageHeaderAccessorTests {
 		Map<String, Object> mappedHeaders = new SimpleJmsHeaderMapper().toHeaders(jmsMessage);
 		Message<String> message = MessageBuilder.withPayload("test").copyHeaders(mappedHeaders).build();
 		JmsMessageHeaderAccessor headerAccessor = JmsMessageHeaderAccessor.wrap(message);
-		assertEquals("correlation-1234", headerAccessor.getCorrelationId());
-		assertEquals(destination, headerAccessor.getDestination());
-		assertEquals(Integer.valueOf(1), headerAccessor.getDeliveryMode());
+		assertThat((Object) headerAccessor.getCorrelationId()).isEqualTo("correlation-1234");
+		assertThat((Object) headerAccessor.getDestination()).isEqualTo(destination);
+		assertThat((Object) headerAccessor.getDeliveryMode()).isEqualTo(Integer.valueOf(1));
 		assertEquals(1234L, headerAccessor.getExpiration(), 0.0);
-		assertEquals("abcd-1234", headerAccessor.getMessageId());
-		assertEquals(Integer.valueOf(9), headerAccessor.getPriority());
-		assertEquals(replyTo, headerAccessor.getReplyTo());
-		assertEquals(true, headerAccessor.getRedelivered());
-		assertEquals("type", headerAccessor.getType());
+		assertThat((Object) headerAccessor.getMessageId()).isEqualTo("abcd-1234");
+		assertThat((Object) headerAccessor.getPriority()).isEqualTo(Integer.valueOf(9));
+		assertThat((Object) headerAccessor.getReplyTo()).isEqualTo(replyTo);
+		assertThat((Object) headerAccessor.getRedelivered()).isEqualTo(true);
+		assertThat((Object) headerAccessor.getType()).isEqualTo("type");
 		assertEquals(4567L, headerAccessor.getTimestamp(), 0.0);
 
 		// Making sure replyChannel is not mixed with replyTo

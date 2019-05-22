@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -50,17 +51,17 @@ public class SharedHttpSessionTests {
 		MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		HttpSession session = result.getRequest().getSession(false);
 		assertNotNull(session);
-		assertEquals(1, session.getAttribute("counter"));
+		assertThat(session.getAttribute("counter")).isEqualTo(1);
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
 		assertNotNull(session);
-		assertEquals(2, session.getAttribute("counter"));
+		assertThat(session.getAttribute("counter")).isEqualTo(2);
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
 		assertNotNull(session);
-		assertEquals(3, session.getAttribute("counter"));
+		assertThat(session.getAttribute("counter")).isEqualTo(3);
 	}
 
 	@Test
@@ -84,7 +85,7 @@ public class SharedHttpSessionTests {
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
 		assertNotNull(session);
-		assertEquals(1, session.getAttribute("counter"));
+		assertThat(session.getAttribute("counter")).isEqualTo(1);
 	}
 
 

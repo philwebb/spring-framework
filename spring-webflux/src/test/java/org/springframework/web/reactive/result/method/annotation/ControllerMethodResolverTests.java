@@ -47,6 +47,7 @@ import org.springframework.web.reactive.result.method.SyncInvocableHandlerMethod
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -90,36 +91,36 @@ public class ControllerMethodResolverTests {
 		List<HandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
 		AtomicInteger index = new AtomicInteger(-1);
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestParamMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestBodyMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestPartMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ModelAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(CookieValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ExpressionValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(SessionAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestBodyMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestPartMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelAttributeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CookieValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ExpressionValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(SessionAttributeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestAttributeMethodArgumentResolver.class);
 
-		assertEquals(ContinuationHandlerMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(HttpEntityMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ModelMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ErrorsMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ServerWebExchangeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PrincipalMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(SessionStatusMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(WebSessionMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ContinuationHandlerMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(HttpEntityMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ErrorsMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ServerWebExchangeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PrincipalMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(SessionStatusMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(WebSessionMethodArgumentResolver.class);
 
-		assertEquals(CustomArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(CustomSyncArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CustomArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CustomSyncArgumentResolver.class);
 
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ModelAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelAttributeMethodArgumentResolver.class);
 	}
 
 	@Test
@@ -131,32 +132,32 @@ public class ControllerMethodResolverTests {
 		List<HandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
 		AtomicInteger index = new AtomicInteger(-1);
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestParamMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ModelAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(CookieValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ExpressionValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(SessionAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelAttributeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CookieValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ExpressionValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(SessionAttributeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestAttributeMethodArgumentResolver.class);
 
-		assertEquals(ContinuationHandlerMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ModelMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ErrorsMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ServerWebExchangeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PrincipalMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(WebSessionMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ContinuationHandlerMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ErrorsMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ServerWebExchangeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PrincipalMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(WebSessionMethodArgumentResolver.class);
 
-		assertEquals(CustomArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(CustomSyncArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CustomArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CustomSyncArgumentResolver.class);
 
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ModelAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelAttributeMethodArgumentResolver.class);
 	}
 
 	@Test
@@ -169,24 +170,24 @@ public class ControllerMethodResolverTests {
 		List<SyncHandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
 		AtomicInteger index = new AtomicInteger(-1);
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestParamMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(CookieValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ExpressionValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CookieValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ExpressionValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestAttributeMethodArgumentResolver.class);
 
-		assertEquals(ModelMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ServerWebExchangeMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ServerWebExchangeMethodArgumentResolver.class);
 
-		assertEquals(CustomSyncArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CustomSyncArgumentResolver.class);
 
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
 	}
 
 	@Test
@@ -195,33 +196,33 @@ public class ControllerMethodResolverTests {
 				new ResponseStatusException(HttpStatus.BAD_REQUEST, "reason"), this.handlerMethod);
 
 		assertNotNull("No match", invocable);
-		assertEquals(TestController.class, invocable.getBeanType());
+		assertThat((Object) invocable.getBeanType()).isEqualTo(TestController.class);
 		List<HandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
 		AtomicInteger index = new AtomicInteger(-1);
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestParamMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PathVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(MatrixVariableMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestHeaderMapMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(CookieValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ExpressionValueMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(SessionAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(RequestAttributeMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PathVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(MatrixVariableMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestHeaderMapMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CookieValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ExpressionValueMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(SessionAttributeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestAttributeMethodArgumentResolver.class);
 
-		assertEquals(ContinuationHandlerMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ModelMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(ServerWebExchangeMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(PrincipalMethodArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(WebSessionMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ContinuationHandlerMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ModelMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(ServerWebExchangeMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(PrincipalMethodArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(WebSessionMethodArgumentResolver.class);
 
-		assertEquals(CustomArgumentResolver.class, next(resolvers, index).getClass());
-		assertEquals(CustomSyncArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CustomArgumentResolver.class);
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(CustomSyncArgumentResolver.class);
 
-		assertEquals(RequestParamMethodArgumentResolver.class, next(resolvers, index).getClass());
+		assertThat((Object) next(resolvers, index).getClass()).isEqualTo(RequestParamMethodArgumentResolver.class);
 	}
 
 	@Test
@@ -230,7 +231,7 @@ public class ControllerMethodResolverTests {
 				new IllegalStateException("reason"), this.handlerMethod);
 
 		assertNotNull(invocable);
-		assertEquals(TestControllerAdvice.class, invocable.getBeanType());
+		assertThat((Object) invocable.getBeanType()).isEqualTo(TestControllerAdvice.class);
 	}
 
 

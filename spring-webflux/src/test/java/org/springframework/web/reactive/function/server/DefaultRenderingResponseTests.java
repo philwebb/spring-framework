@@ -45,6 +45,7 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.reactive.result.view.ViewResolverSupport;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -173,7 +174,7 @@ public class DefaultRenderingResponseTests {
 		StepVerifier.create(result.flatMap(response -> response.writeTo(exchange, context)))
 				.verifyComplete();
 
-		assertEquals(ViewResolverSupport.DEFAULT_CONTENT_TYPE, exchange.getResponse().getHeaders().getContentType());
+		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(ViewResolverSupport.DEFAULT_CONTENT_TYPE);
 	}
 
 
@@ -204,7 +205,7 @@ public class DefaultRenderingResponseTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertEquals(HttpStatus.NOT_MODIFIED, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();
@@ -229,7 +230,7 @@ public class DefaultRenderingResponseTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertEquals(HttpStatus.NOT_MODIFIED, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();

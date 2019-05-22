@@ -109,7 +109,7 @@ public class AopProxyUtilsTests {
 		Object proxy = pf.getProxy();
 		Class<?>[] userInterfaces = AopProxyUtils.proxiedUserInterfaces(proxy);
 		assertEquals(1, userInterfaces.length);
-		assertEquals(ITestBean.class, userInterfaces[0]);
+		assertThat((Object) userInterfaces[0]).isEqualTo(ITestBean.class);
 	}
 
 	@Test
@@ -121,8 +121,8 @@ public class AopProxyUtilsTests {
 		Object proxy = pf.getProxy();
 		Class<?>[] userInterfaces = AopProxyUtils.proxiedUserInterfaces(proxy);
 		assertEquals(2, userInterfaces.length);
-		assertEquals(ITestBean.class, userInterfaces[0]);
-		assertEquals(Comparable.class, userInterfaces[1]);
+		assertThat((Object) userInterfaces[0]).isEqualTo(ITestBean.class);
+		assertThat((Object) userInterfaces[1]).isEqualTo(Comparable.class);
 	}
 
 	@Test

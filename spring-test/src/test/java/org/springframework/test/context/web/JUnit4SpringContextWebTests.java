@@ -34,6 +34,7 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
@@ -107,14 +108,13 @@ public class JUnit4SpringContextWebTests extends AbstractJUnit4SpringContextTest
 		assertSame("ServletContext instances must be the same object.", mockServletContext, wac.getServletContext());
 		assertSame("ServletContext in the WAC and in the mock request", mockServletContext, request.getServletContext());
 
-		assertEquals("Getting real path for ServletContext resource.",
-			new File("src/main/webapp/index.jsp").getCanonicalPath(), mockServletContext.getRealPath("index.jsp"));
+		assertThat((Object) mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
 
 	}
 
 	@Test
 	public void fooEnigmaAutowired() {
-		assertEquals("enigma", foo);
+		assertThat((Object) foo).isEqualTo("enigma");
 	}
 
 }

@@ -274,9 +274,9 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		containerEmfb.setPersistenceXmlLocation(persistenceXml);
 		containerEmfb.afterPropertiesSet();
 
-		assertEquals(entityManagerName, actualPui.getPersistenceUnitName());
+		assertThat((Object) actualPui.getPersistenceUnitName()).isEqualTo(entityManagerName);
 		if (props != null) {
-			assertEquals(props, actualProps);
+			assertThat(actualProps).isEqualTo(props);
 		}
 		//checkInvariants(containerEmfb);
 

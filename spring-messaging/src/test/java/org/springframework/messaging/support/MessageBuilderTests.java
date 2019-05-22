@@ -42,7 +42,7 @@ public class MessageBuilderTests {
 	@Test
 	public void testSimpleMessageCreation() {
 		Message<String> message = MessageBuilder.withPayload("foo").build();
-		assertEquals("foo", message.getPayload());
+		assertThat((Object) message.getPayload()).isEqualTo("foo");
 	}
 
 	@Test
@@ -51,8 +51,8 @@ public class MessageBuilderTests {
 				.setHeader("foo", "bar")
 				.setHeader("count", 123)
 				.build();
-		assertEquals("bar", message.getHeaders().get("foo", String.class));
-		assertEquals(new Integer(123), message.getHeaders().get("count", Integer.class));
+		assertThat(message.getHeaders().get("foo", String.class)).isEqualTo("bar");
+		assertThat(message.getHeaders().get("count", Integer.class)).isEqualTo(new Integer(123));
 	}
 
 	@Test
@@ -66,12 +66,12 @@ public class MessageBuilderTests {
 				.setHeader("foo", "42")
 				.setHeaderIfAbsent("bar", "99")
 				.build();
-		assertEquals("test1", message1.getPayload());
-		assertEquals("test2", message2.getPayload());
-		assertEquals("1", message1.getHeaders().get("foo"));
-		assertEquals("42", message2.getHeaders().get("foo"));
-		assertEquals("2", message1.getHeaders().get("bar"));
-		assertEquals("2", message2.getHeaders().get("bar"));
+		assertThat((Object) message1.getPayload()).isEqualTo("test1");
+		assertThat((Object) message2.getPayload()).isEqualTo("test2");
+		assertThat(message1.getHeaders().get("foo")).isEqualTo("1");
+		assertThat(message2.getHeaders().get("foo")).isEqualTo("42");
+		assertThat(message1.getHeaders().get("bar")).isEqualTo("2");
+		assertThat(message2.getHeaders().get("bar")).isEqualTo("2");
 	}
 
 	@Test
@@ -96,8 +96,8 @@ public class MessageBuilderTests {
 				.setHeader("foo", 123)
 				.copyHeadersIfAbsent(message1.getHeaders())
 				.build();
-		assertEquals("test2", message2.getPayload());
-		assertEquals(123, message2.getHeaders().get("foo"));
+		assertThat((Object) message2.getPayload()).isEqualTo("test2");
+		assertThat(message2.getHeaders().get("foo")).isEqualTo(123);
 	}
 
 	@Test
@@ -105,8 +105,8 @@ public class MessageBuilderTests {
 		Message<String> message1 = MessageBuilder.withPayload("test")
 				.setHeader("foo", "bar").build();
 		Message<String> message2 = MessageBuilder.fromMessage(message1).build();
-		assertEquals("test", message2.getPayload());
-		assertEquals("bar", message2.getHeaders().get("foo"));
+		assertThat((Object) message2.getPayload()).isEqualTo("test");
+		assertThat(message2.getHeaders().get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class MessageBuilderTests {
 		Message<String> message1 = MessageBuilder.withPayload("test")
 				.setHeader("foo", "bar").build();
 		Message<String> message2 = MessageBuilder.fromMessage(message1).setHeader("another", 1).build();
-		assertEquals("bar", message2.getHeaders().get("foo"));
+		assertThat(message2.getHeaders().get("foo")).isEqualTo("bar");
 		assertNotSame(message1.getHeaders().getId(), message2.getHeaders().getId());
 	}
 
@@ -142,21 +142,21 @@ public class MessageBuilderTests {
 	public void testNotModifiedSameMessage() throws Exception {
 		Message<?> original = MessageBuilder.withPayload("foo").build();
 		Message<?> result = MessageBuilder.fromMessage(original).build();
-		assertEquals(original, result);
+		assertThat((Object) result).isEqualTo(original);
 	}
 
 	@Test
 	public void testContainsHeaderNotModifiedSameMessage() throws Exception {
 		Message<?> original = MessageBuilder.withPayload("foo").setHeader("bar", 42).build();
 		Message<?> result = MessageBuilder.fromMessage(original).build();
-		assertEquals(original, result);
+		assertThat((Object) result).isEqualTo(original);
 	}
 
 	@Test
 	public void testSameHeaderValueAddedNotModifiedSameMessage() throws Exception {
 		Message<?> original = MessageBuilder.withPayload("foo").setHeader("bar", 42).build();
 		Message<?> result = MessageBuilder.fromMessage(original).setHeader("bar", 42).build();
-		assertEquals(original, result);
+		assertThat((Object) result).isEqualTo(original);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class MessageBuilderTests {
 		newHeaders.put("b", "xyz");
 		newHeaders.put("c", current);
 		Message<?> result = MessageBuilder.fromMessage(original).copyHeaders(newHeaders).build();
-		assertEquals(original, result);
+		assertThat((Object) result).isEqualTo(original);
 	}
 
 	@Test
@@ -182,7 +182,7 @@ public class MessageBuilderTests {
 		Message<?> message = MessageBuilder.createMessage("payload", headers);
 		accessor.setHeader("foo", "bar");
 
-		assertEquals("bar", headers.get("foo"));
+		assertThat(headers.get("foo")).isEqualTo("bar");
 		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
 	}
 
@@ -227,8 +227,8 @@ public class MessageBuilderTests {
 		headerAccessor.setHeader("foo", "bar3");
 		Message<?> message3 = messageBuilder.build();
 
-		assertEquals("bar1", message1.getHeaders().get("foo"));
-		assertEquals("bar2", message2.getHeaders().get("foo"));
-		assertEquals("bar3", message3.getHeaders().get("foo"));
+		assertThat(message1.getHeaders().get("foo")).isEqualTo("bar1");
+		assertThat(message2.getHeaders().get("foo")).isEqualTo("bar2");
+		assertThat(message3.getHeaders().get("foo")).isEqualTo("bar3");
 	}
 }

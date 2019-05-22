@@ -220,7 +220,7 @@ public class SampleTests {
 			ClientHttpResponse response = execution.execute(request, body);
 			byte[] expected = FileCopyUtils.copyToByteArray(this.resource.getInputStream());
 			byte[] actual = FileCopyUtils.copyToByteArray(response.getBody());
-			assertEquals(new String(expected), new String(actual));
+			assertThat((Object) new String(actual)).isEqualTo(new String(expected));
 			return response;
 		}
 	}

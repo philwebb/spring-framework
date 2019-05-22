@@ -111,7 +111,7 @@ public class FreeMarkerViewTests {
 		view.render(model, null, this.exchange).block(Duration.ofMillis(5000));
 
 		StepVerifier.create(this.exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals("<html><body>hi FreeMarker</body></html>", asString(buf)))
+				.consumeNextWith(buf -> assertThat((Object) asString(buf)).isEqualTo("<html><body>hi FreeMarker</body></html>"))
 				.expectComplete()
 				.verify();
 	}

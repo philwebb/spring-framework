@@ -75,8 +75,8 @@ public class RootWacEarTests extends EarTests {
 		assertNotNull(parent);
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isFalse();
-		assertEquals("ear", ear);
-		assertEquals("root", root);
+		assertThat((Object) ear).isEqualTo("ear");
+		assertThat((Object) root).isEqualTo("root");
 	}
 
 }

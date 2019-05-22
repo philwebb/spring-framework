@@ -39,8 +39,7 @@ import org.springframework.format.Parser;
 import org.springframework.format.Printer;
 import org.springframework.format.annotation.NumberFormat;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -59,9 +58,9 @@ public class FormattingConversionServiceFactoryBeanTests {
 		LocaleContextHolder.setLocale(Locale.GERMAN);
 		try {
 			Object value = fcs.convert("15,00", TypeDescriptor.valueOf(String.class), descriptor);
-			assertEquals(15.0, value);
+			assertThat(value).isEqualTo(15.0);
 			value = fcs.convert(15.0, descriptor, TypeDescriptor.valueOf(String.class));
-			assertEquals("15", value);
+			assertThat(value).isEqualTo("15");
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -93,13 +92,13 @@ public class FormattingConversionServiceFactoryBeanTests {
 
 		TestBean testBean = fcs.convert("5", TestBean.class);
 		assertEquals(5, testBean.getSpecialInt());
-		assertEquals("5", fcs.convert(testBean, String.class));
+		assertThat(fcs.convert(testBean, String.class)).isEqualTo("5");
 
 		TypeDescriptor descriptor = new TypeDescriptor(TestBean.class.getDeclaredField("specialInt"));
 		Object value = fcs.convert(":5", TypeDescriptor.valueOf(String.class), descriptor);
-		assertEquals(5, value);
+		assertThat(value).isEqualTo(5);
 		value = fcs.convert(5, descriptor, TypeDescriptor.valueOf(String.class));
-		assertEquals(":5", value);
+		assertThat(value).isEqualTo(":5");
 	}
 
 	@Test
@@ -113,7 +112,7 @@ public class FormattingConversionServiceFactoryBeanTests {
 
 		TestBean testBean = fcs.convert("5", TestBean.class);
 		assertEquals(5, testBean.getSpecialInt());
-		assertEquals("5", fcs.convert(testBean, String.class));
+		assertThat(fcs.convert(testBean, String.class)).isEqualTo("5");
 	}
 
 	@Test
@@ -187,8 +186,8 @@ public class FormattingConversionServiceFactoryBeanTests {
 
 		@Override
 		public Printer<?> getPrinter(SpecialInt annotation, Class<?> fieldType) {
-			assertEquals("aliased", annotation.value());
-			assertEquals("aliased", annotation.alias());
+			assertThat((Object) annotation.value()).isEqualTo("aliased");
+			assertThat((Object) annotation.alias()).isEqualTo("aliased");
 			return new Printer<Integer>() {
 				@Override
 				public String print(Integer object, Locale locale) {
@@ -199,8 +198,8 @@ public class FormattingConversionServiceFactoryBeanTests {
 
 		@Override
 		public Parser<?> getParser(SpecialInt annotation, Class<?> fieldType) {
-			assertEquals("aliased", annotation.value());
-			assertEquals("aliased", annotation.alias());
+			assertThat((Object) annotation.value()).isEqualTo("aliased");
+			assertThat((Object) annotation.alias()).isEqualTo("aliased");
 			return new Parser<Integer>() {
 				@Override
 				public Integer parse(String text, Locale locale) throws ParseException {

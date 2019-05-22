@@ -29,14 +29,6 @@ import static org.assertj.core.api.Assertions.within;
  */
 public class XAssert {
 
-	public static void assertEquals(String message, Object expected, Object actual) {
-		assertThat(actual).as(message).isEqualTo(expected);
-	}
-
-	public static void assertEquals(Object expected, Object actual) {
-		assertThat(actual).isEqualTo(expected);
-	}
-
 	public static void assertNotEquals(String message, Object unexpected, Object actual) {
 		assertThat(actual).as(message).isNotEqualTo(unexpected);
 	}

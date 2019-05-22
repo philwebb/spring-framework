@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -38,7 +39,7 @@ public class SessionLocaleResolverTests {
 		request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.GERMAN);
 
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
-		assertEquals(Locale.GERMAN, resolver.resolveLocale(request));
+		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 	}
 
 	@Test
@@ -48,14 +49,14 @@ public class SessionLocaleResolverTests {
 
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 		resolver.setLocale(request, response, Locale.GERMAN);
-		assertEquals(Locale.GERMAN, resolver.resolveLocale(request));
+		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 
 		HttpSession session = request.getSession();
 		request = new MockHttpServletRequest();
 		request.setSession(session);
 		resolver = new SessionLocaleResolver();
 
-		assertEquals(Locale.GERMAN, resolver.resolveLocale(request));
+		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 	}
 
 	@Test
@@ -65,7 +66,7 @@ public class SessionLocaleResolverTests {
 
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 
-		assertEquals(request.getLocale(), resolver.resolveLocale(request));
+		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(request.getLocale());
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class SessionLocaleResolverTests {
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 		resolver.setDefaultLocale(Locale.GERMAN);
 
-		assertEquals(Locale.GERMAN, resolver.resolveLocale(request));
+		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 	}
 
 	@Test
@@ -96,7 +97,7 @@ public class SessionLocaleResolverTests {
 		request.addPreferredLocale(Locale.TAIWAN);
 		request.setSession(session);
 		resolver = new SessionLocaleResolver();
-		assertEquals(Locale.TAIWAN, resolver.resolveLocale(request));
+		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.TAIWAN);
 	}
 
 }

@@ -58,7 +58,7 @@ public class ExecutorBeanDefinitionParserTests {
 		assertEquals(Integer.MAX_VALUE, getMaxPoolSize(executor));
 		assertEquals(Integer.MAX_VALUE, getQueueCapacity(executor));
 		assertEquals(60, getKeepAliveSeconds(executor));
-		assertEquals(false, getAllowCoreThreadTimeOut(executor));
+		assertThat((Object) getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
 
 		FutureTask<String> task = new FutureTask<>(new Callable<String>() {
 			@Override
@@ -67,7 +67,7 @@ public class ExecutorBeanDefinitionParserTests {
 			}
 		});
 		executor.execute(task);
-		assertEquals("foo", task.get());
+		assertThat((Object) task.get()).isEqualTo("foo");
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class ExecutorBeanDefinitionParserTests {
 		assertEquals(9, getCorePoolSize(executor));
 		assertEquals(9, getMaxPoolSize(executor));
 		assertEquals(37, getKeepAliveSeconds(executor));
-		assertEquals(true, getAllowCoreThreadTimeOut(executor));
+		assertThat((Object) getAllowCoreThreadTimeOut(executor)).isEqualTo(true);
 		assertEquals(Integer.MAX_VALUE, getQueueCapacity(executor));
 	}
 
@@ -107,7 +107,7 @@ public class ExecutorBeanDefinitionParserTests {
 		assertEquals(123, getCorePoolSize(executor));
 		assertEquals(123, getMaxPoolSize(executor));
 		assertEquals(60, getKeepAliveSeconds(executor));
-		assertEquals(false, getAllowCoreThreadTimeOut(executor));
+		assertThat((Object) getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
 		assertEquals(Integer.MAX_VALUE, getQueueCapacity(executor));
 	}
 
@@ -116,7 +116,7 @@ public class ExecutorBeanDefinitionParserTests {
 		Object executor = this.context.getBean("propertyPlaceholderWithRange");
 		assertEquals(5, getCorePoolSize(executor));
 		assertEquals(25, getMaxPoolSize(executor));
-		assertEquals(false, getAllowCoreThreadTimeOut(executor));
+		assertThat((Object) getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
 		assertEquals(10, getQueueCapacity(executor));
 	}
 
@@ -125,7 +125,7 @@ public class ExecutorBeanDefinitionParserTests {
 		Object executor = this.context.getBean("propertyPlaceholderWithRangeAndCoreThreadTimeout");
 		assertEquals(99, getCorePoolSize(executor));
 		assertEquals(99, getMaxPoolSize(executor));
-		assertEquals(true, getAllowCoreThreadTimeOut(executor));
+		assertThat((Object) getAllowCoreThreadTimeOut(executor)).isEqualTo(true);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class ExecutorBeanDefinitionParserTests {
 	@Test
 	public void threadNamePrefix() {
 		CustomizableThreadCreator executor = this.context.getBean("default", CustomizableThreadCreator.class);
-		assertEquals("default-", executor.getThreadNamePrefix());
+		assertThat((Object) executor.getThreadNamePrefix()).isEqualTo("default-");
 	}
 
 	@Test

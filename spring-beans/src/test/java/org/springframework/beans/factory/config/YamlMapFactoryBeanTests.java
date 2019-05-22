@@ -103,7 +103,7 @@ public class YamlMapFactoryBeanTests {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> sub = (Map<String, Object>) object;
 		assertThat(sub.containsKey("key1.key2")).isTrue();
-		assertEquals("value", sub.get("key1.key2"));
+		assertThat(sub.get("key1.key2")).isEqualTo("value");
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class YamlMapFactoryBeanTests {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> sub = (Map<String, Object>) object;
 		assertEquals(1, sub.size());
-		assertEquals(Integer.valueOf(3), sub.get("key1.key2"));
+		assertThat(sub.get("key1.key2")).isEqualTo(Integer.valueOf(3));
 	}
 
 	@Test

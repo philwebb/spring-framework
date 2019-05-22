@@ -29,6 +29,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -87,7 +88,7 @@ public class InitializeDatabaseIntegrationTests {
 		DataSource dataSource = context.getBean("dataSource", DataSource.class);
 		assertCorrectSetup(dataSource);
 		JdbcTemplate t = new JdbcTemplate(dataSource);
-		assertEquals("Dave", t.queryForObject("select name from T_TEST", String.class));
+		assertThat(t.queryForObject("select name from T_TEST", String.class)).isEqualTo("Dave");
 	}
 
 	@Test

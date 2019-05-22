@@ -45,21 +45,21 @@ public class YamlProcessorTests {
 		this.processor.setResources(new ByteArrayResource("foo: bar\nbar: [1,2,3]".getBytes()));
 		this.processor.process((properties, map) -> {
 			assertEquals(4, properties.size());
-			assertEquals("bar", properties.get("foo"));
-			assertEquals("bar", properties.getProperty("foo"));
-			assertEquals(1, properties.get("bar[0]"));
-			assertEquals("1", properties.getProperty("bar[0]"));
-			assertEquals(2, properties.get("bar[1]"));
-			assertEquals("2", properties.getProperty("bar[1]"));
-			assertEquals(3, properties.get("bar[2]"));
-			assertEquals("3", properties.getProperty("bar[2]"));
+			assertThat(properties.get("foo")).isEqualTo("bar");
+			assertThat((Object) properties.getProperty("foo")).isEqualTo("bar");
+			assertThat(properties.get("bar[0]")).isEqualTo(1);
+			assertThat((Object) properties.getProperty("bar[0]")).isEqualTo("1");
+			assertThat(properties.get("bar[1]")).isEqualTo(2);
+			assertThat((Object) properties.getProperty("bar[1]")).isEqualTo("2");
+			assertThat(properties.get("bar[2]")).isEqualTo(3);
+			assertThat((Object) properties.getProperty("bar[2]")).isEqualTo("3");
 		});
 	}
 
 	@Test
 	public void testStringResource() {
 		this.processor.setResources(new ByteArrayResource("foo # a document that is a literal".getBytes()));
-		this.processor.process((properties, map) -> assertEquals("foo", map.get("document")));
+		this.processor.process((properties, map) -> assertThat(map.get("document")).isEqualTo("foo"));
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class YamlProcessorTests {
 	public void mapConvertedToIndexedBeanReference() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\nbar:\n spam: bucket".getBytes()));
 		this.processor.process((properties, map) -> {
-			assertEquals("bucket", properties.get("bar.spam"));
+			assertThat(properties.get("bar.spam")).isEqualTo("bucket");
 			assertEquals(2, properties.size());
 		});
 	}
@@ -91,7 +91,7 @@ public class YamlProcessorTests {
 	public void integerKeyBehaves() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\n1: bar".getBytes()));
 		this.processor.process((properties, map) -> {
-			assertEquals("bar", properties.get("[1]"));
+			assertThat(properties.get("[1]")).isEqualTo("bar");
 			assertEquals(2, properties.size());
 		});
 	}
@@ -100,7 +100,7 @@ public class YamlProcessorTests {
 	public void integerDeepKeyBehaves() {
 		this.processor.setResources(new ByteArrayResource("foo:\n  1: bar".getBytes()));
 		this.processor.process((properties, map) -> {
-			assertEquals("bar", properties.get("foo[1]"));
+			assertThat(properties.get("foo[1]")).isEqualTo("bar");
 			assertEquals(1, properties.size());
 		});
 	}
@@ -110,15 +110,15 @@ public class YamlProcessorTests {
 	public void flattenedMapIsSameAsPropertiesButOrdered() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\nbar:\n spam: bucket".getBytes()));
 		this.processor.process((properties, map) -> {
-			assertEquals("bucket", properties.get("bar.spam"));
+			assertThat(properties.get("bar.spam")).isEqualTo("bucket");
 			assertEquals(2, properties.size());
 			Map<String, Object> flattenedMap = processor.getFlattenedMap(map);
-			assertEquals("bucket", flattenedMap.get("bar.spam"));
+			assertThat(flattenedMap.get("bar.spam")).isEqualTo("bucket");
 			assertEquals(2, flattenedMap.size());
 			boolean condition = flattenedMap instanceof LinkedHashMap;
 			assertThat(condition).isTrue();
 			Map<String, Object> bar = (Map<String, Object>) map.get("bar");
-			assertEquals("bucket", bar.get("spam"));
+			assertThat(bar.get("spam")).isEqualTo("bucket");
 		});
 	}
 

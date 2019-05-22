@@ -125,9 +125,9 @@ public class FilteringWebHandlerTests {
 				.handle(request, response)
 				.block();
 
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 		assertNotNull(exceptionHandler.ex);
-		assertEquals("boo", exceptionHandler.ex.getMessage());
+		assertThat((Object) exceptionHandler.ex.getMessage()).isEqualTo("boo");
 	}
 
 

@@ -96,16 +96,16 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	@Test
 	public void getString() {
 		String s = template.getForObject(baseUrl + "/{method}", String.class, "get");
-		assertEquals("Invalid content", helloWorld, s);
+		assertThat((Object) s).as("Invalid content").isEqualTo(helloWorld);
 	}
 
 	@Test
 	public void getEntity() {
 		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/{method}", String.class, "get");
-		assertEquals("Invalid content", helloWorld, entity.getBody());
+		assertThat((Object) entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
 		assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
-		assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
-		assertEquals("Invalid status code", HttpStatus.OK, entity.getStatusCode());
+		assertThat((Object) entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
+		assertThat((Object) entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		assertNull("Invalid content", s);
 
 		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/status/nocontent", String.class);
-		assertEquals("Invalid response code", HttpStatus.NO_CONTENT, entity.getStatusCode());
+		assertThat((Object) entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NO_CONTENT);
 		assertNull("Invalid content", entity.getBody());
 	}
 
@@ -136,14 +136,14 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		assertNull("Invalid content", s);
 
 		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/status/notmodified", String.class);
-		assertEquals("Invalid response code", HttpStatus.NOT_MODIFIED, entity.getStatusCode());
+		assertThat((Object) entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NOT_MODIFIED);
 		assertNull("Invalid content", entity.getBody());
 	}
 
 	@Test
 	public void postForLocation() throws URISyntaxException {
 		URI location = template.postForLocation(baseUrl + "/{method}", helloWorld, "post");
-		assertEquals("Invalid location", new URI(baseUrl + "/post/1"), location);
+		assertThat((Object) location).as("Invalid location").isEqualTo(new URI(baseUrl + "/post/1"));
 	}
 
 	@Test
@@ -152,13 +152,13 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		entityHeaders.setContentType(new MediaType("text", "plain", StandardCharsets.ISO_8859_1));
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, entityHeaders);
 		URI location = template.postForLocation(baseUrl + "/{method}", entity, "post");
-		assertEquals("Invalid location", new URI(baseUrl + "/post/1"), location);
+		assertThat((Object) location).as("Invalid location").isEqualTo(new URI(baseUrl + "/post/1"));
 	}
 
 	@Test
 	public void postForObject() throws URISyntaxException {
 		String s = template.postForObject(baseUrl + "/{method}", helloWorld, String.class, "post");
-		assertEquals("Invalid content", helloWorld, s);
+		assertThat((Object) s).as("Invalid content").isEqualTo(helloWorld);
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		assumeFalse(this.clientHttpRequestFactory instanceof SimpleClientHttpRequestFactory);
 
 		String s = template.patchForObject(baseUrl + "/{method}", helloWorld, String.class, "patch");
-		assertEquals("Invalid content", helloWorld, s);
+		assertThat((Object) s).as("Invalid content").isEqualTo(helloWorld);
 	}
 
 	@Test
@@ -175,7 +175,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() ->
 				template.execute(baseUrl + "/status/notfound", HttpMethod.GET, null, null))
 			.satisfies(ex -> {
-				assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+				assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 				assertNotNull(ex.getStatusText());
 				assertNotNull(ex.getResponseBodyAsString());
 			});
@@ -186,8 +186,8 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() ->
 				template.execute(baseUrl + "/status/badrequest", HttpMethod.GET, null, null))
 			.satisfies(ex -> {
-				assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
-				assertEquals("400 Client Error", ex.getMessage());
+				assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+				assertThat((Object) ex.getMessage()).isEqualTo("400 Client Error");
 			});
 	}
 
@@ -196,7 +196,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		assertThatExceptionOfType(HttpServerErrorException.class).isThrownBy(() ->
 				template.execute(baseUrl + "/status/server", HttpMethod.GET, null, null))
 			.satisfies(ex -> {
-				assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getStatusCode());
+				assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 				assertNotNull(ex.getStatusText());
 				assertNotNull(ex.getResponseBodyAsString());
 			});
@@ -205,20 +205,19 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	@Test
 	public void optionsForAllow() throws URISyntaxException {
 		Set<HttpMethod> allowed = template.optionsForAllow(new URI(baseUrl + "/get"));
-		assertEquals("Invalid response",
-				EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD, HttpMethod.TRACE), allowed);
+		assertThat((Object) allowed).as("Invalid response").isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD, HttpMethod.TRACE));
 	}
 
 	@Test
 	public void uri() throws InterruptedException, URISyntaxException {
 		String result = template.getForObject(baseUrl + "/uri/{query}", String.class, "Z\u00fcrich");
-		assertEquals("Invalid request URI", "/uri/Z%C3%BCrich", result);
+		assertThat((Object) result).as("Invalid request URI").isEqualTo("/uri/Z%C3%BCrich");
 
 		result = template.getForObject(baseUrl + "/uri/query={query}", String.class, "foo@bar");
-		assertEquals("Invalid request URI", "/uri/query=foo@bar", result);
+		assertThat((Object) result).as("Invalid request URI").isEqualTo("/uri/query=foo@bar");
 
 		result = template.getForObject(baseUrl + "/uri/query={query}", String.class, "T\u014dky\u014d");
-		assertEquals("Invalid request URI", "/uri/query=T%C5%8Dky%C5%8D", result);
+		assertThat((Object) result).as("Invalid request URI").isEqualTo("/uri/query=T%C5%8Dky%C5%8D");
 	}
 
 	@Test
@@ -250,7 +249,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		HttpEntity<String> requestEntity = new HttpEntity<>(requestHeaders);
 		ResponseEntity<String> response =
 				template.exchange(baseUrl + "/{method}", HttpMethod.GET, requestEntity, String.class, "get");
-		assertEquals("Invalid content", helloWorld, response.getBody());
+		assertThat((Object) response.getBody()).as("Invalid content").isEqualTo(helloWorld);
 	}
 
 	@Test
@@ -260,7 +259,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		requestHeaders.setContentType(MediaType.TEXT_PLAIN);
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, requestHeaders);
 		HttpEntity<Void> result = template.exchange(baseUrl + "/{method}", POST, entity, Void.class, "post");
-		assertEquals("Invalid location", new URI(baseUrl + "/post/1"), result.getHeaders().getLocation());
+		assertThat((Object) result.getHeaders().getLocation()).as("Invalid location").isEqualTo(new URI(baseUrl + "/post/1"));
 		assertThat(result.hasBody()).isFalse();
 	}
 
@@ -296,7 +295,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	@Test  // SPR-12123
 	public void serverPort() {
 		String s = template.getForObject("http://localhost:{port}/get", String.class, port);
-		assertEquals("Invalid content", helloWorld, s);
+		assertThat((Object) s).as("Invalid content").isEqualTo(helloWorld);
 	}
 
 	@Test  // SPR-13154

@@ -80,7 +80,7 @@ public class InterceptorRegistryTests {
 	public void addInterceptor() {
 		this.registry.addInterceptor(this.interceptor1);
 		List<HandlerInterceptor> interceptors = getInterceptorsForPath(null);
-		assertEquals(Arrays.asList(this.interceptor1), interceptors);
+		assertThat((Object) interceptors).isEqualTo(Arrays.asList(this.interceptor1));
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class InterceptorRegistryTests {
 		this.registry.addInterceptor(this.interceptor1);
 		this.registry.addInterceptor(this.interceptor2);
 		List<HandlerInterceptor> interceptors = getInterceptorsForPath(null);
-		assertEquals(Arrays.asList(this.interceptor1, this.interceptor2), interceptors);
+		assertThat((Object) interceptors).isEqualTo(Arrays.asList(this.interceptor1, this.interceptor2));
 	}
 
 	@Test
@@ -96,9 +96,9 @@ public class InterceptorRegistryTests {
 		this.registry.addInterceptor(this.interceptor1).addPathPatterns("/path1/**").excludePathPatterns("/path1/secret");
 		this.registry.addInterceptor(this.interceptor2).addPathPatterns("/path2");
 
-		assertEquals(Arrays.asList(this.interceptor1), getInterceptorsForPath("/path1/test"));
-		assertEquals(Arrays.asList(this.interceptor2), getInterceptorsForPath("/path2"));
-		assertEquals(Collections.emptyList(), getInterceptorsForPath("/path1/secret"));
+		assertThat((Object) getInterceptorsForPath("/path1/test")).isEqualTo(Arrays.asList(this.interceptor1));
+		assertThat((Object) getInterceptorsForPath("/path2")).isEqualTo(Arrays.asList(this.interceptor2));
+		assertThat((Object) getInterceptorsForPath("/path1/secret")).isEqualTo(Collections.emptyList());
 	}
 
 	@Test
@@ -149,9 +149,9 @@ public class InterceptorRegistryTests {
 		this.registry.addInterceptor(this.interceptor1).excludePathPatterns("/path1/secret");
 		this.registry.addInterceptor(this.interceptor2).addPathPatterns("/path2");
 
-		assertEquals(Collections.singletonList(this.interceptor1), getInterceptorsForPath("/path1"));
-		assertEquals(Arrays.asList(this.interceptor1, this.interceptor2), getInterceptorsForPath("/path2"));
-		assertEquals(Collections.emptyList(), getInterceptorsForPath("/path1/secret"));
+		assertThat((Object) getInterceptorsForPath("/path1")).isEqualTo(Collections.singletonList(this.interceptor1));
+		assertThat((Object) getInterceptorsForPath("/path2")).isEqualTo(Arrays.asList(this.interceptor1, this.interceptor2));
+		assertThat((Object) getInterceptorsForPath("/path1/secret")).isEqualTo(Collections.emptyList());
 	}
 
 	@Test

@@ -55,8 +55,8 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isTrue();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertEquals("baz", this.request.attributes().get("predicate"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
+		assertThat(this.request.attributes().get("predicate")).isEqualTo("baz");
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isFalse();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
 		assertThat(this.request.attributes().containsKey("baz")).isFalse();
 	}
 
@@ -79,9 +79,9 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isTrue();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertEquals("baz", this.request.attributes().get("left"));
-		assertEquals("qux", this.request.attributes().get("right"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
+		assertThat(this.request.attributes().get("left")).isEqualTo("baz");
+		assertThat(this.request.attributes().get("right")).isEqualTo("qux");
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isFalse();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
 		assertThat(this.request.attributes().containsKey("left")).isFalse();
 		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
@@ -107,7 +107,7 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isFalse();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
 		assertThat(this.request.attributes().containsKey("left")).isFalse();
 		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
@@ -121,7 +121,7 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isFalse();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
 		assertThat(this.request.attributes().containsKey("left")).isFalse();
 		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
@@ -135,8 +135,8 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isTrue();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertEquals("baz", this.request.attributes().get("left"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
+		assertThat(this.request.attributes().get("left")).isEqualTo("baz");
 		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
 
@@ -149,8 +149,8 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isTrue();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertEquals("baz", this.request.attributes().get("left"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
+		assertThat(this.request.attributes().get("left")).isEqualTo("baz");
 		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
 
@@ -163,9 +163,9 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isTrue();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
 		assertThat(this.request.attributes().containsKey("left")).isFalse();
-		assertEquals("qux", this.request.attributes().get("right"));
+		assertThat(this.request.attributes().get("right")).isEqualTo("qux");
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class RequestPredicateAttributesTests {
 		boolean result = predicate.test(this.request);
 		assertThat(result).isFalse();
 
-		assertEquals("bar", this.request.attributes().get("exchange"));
+		assertThat(this.request.attributes().get("exchange")).isEqualTo("bar");
 		assertThat(this.request.attributes().containsKey("baz")).isFalse();
 		assertThat(this.request.attributes().containsKey("quux")).isFalse();
 	}

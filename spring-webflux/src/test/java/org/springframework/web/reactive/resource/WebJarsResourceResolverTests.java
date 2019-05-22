@@ -30,6 +30,7 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
@@ -76,7 +77,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain).block(TIMEOUT);
 
-		assertEquals(file, actual);
+		assertThat((Object) actual).isEqualTo(file);
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 	}
 
@@ -102,7 +103,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain).block(TIMEOUT);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 		verify(this.chain, times(1)).resolveUrlPath(expected, this.locations);
 	}
@@ -130,7 +131,7 @@ public class WebJarsResourceResolverTests {
 				.resolveResource(this.exchange, file, this.locations, this.chain)
 				.block(TIMEOUT);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveResource(this.exchange, file, this.locations);
 	}
 
@@ -165,7 +166,7 @@ public class WebJarsResourceResolverTests {
 				.resolveResource(this.exchange, file, this.locations, this.chain)
 				.block(TIMEOUT);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveResource(this.exchange, file, this.locations);
 	}
 

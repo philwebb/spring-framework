@@ -38,7 +38,7 @@ public class MonoToListenableFutureAdapterTests {
 		ListenableFuture<String> future = new MonoToListenableFutureAdapter<>(Mono.just(expected));
 		future.addCallback(actual::set, actual::set);
 
-		assertEquals(expected, actual.get());
+		assertThat(actual.get()).isEqualTo(expected);
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class MonoToListenableFutureAdapterTests {
 		ListenableFuture<String> future = new MonoToListenableFutureAdapter<>(Mono.error(expected));
 		future.addCallback(actual::set, actual::set);
 
-		assertEquals(expected, actual.get());
+		assertThat(actual.get()).isEqualTo(expected);
 	}
 
 	@Test

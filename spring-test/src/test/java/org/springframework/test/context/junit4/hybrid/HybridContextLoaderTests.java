@@ -26,6 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.SmartContextLoader;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -68,14 +69,14 @@ public class HybridContextLoaderTests {
 
 	@Test
 	public void verifyContentsOfHybridApplicationContext() {
-		assertEquals("XML", fooFromXml);
-		assertEquals("Java", fooFromJava);
+		assertThat((Object) fooFromXml).isEqualTo("XML");
+		assertThat((Object) fooFromJava).isEqualTo("Java");
 
 		// Note: the XML bean definition for "enigma" always wins since
 		// ConfigurationClassBeanDefinitionReader.isOverriddenByExistingDefinition()
 		// lets XML bean definitions override those "discovered" later via an
 		// @Bean method.
-		assertEquals("enigma from XML", enigma);
+		assertThat((Object) enigma).isEqualTo("enigma from XML");
 	}
 
 }

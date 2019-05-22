@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -45,12 +46,12 @@ public class AnnotationPointcutTests {
 
 	@Test
 	public void testAnnotationBindingInAroundAdvice() {
-		assertEquals("this value", testBean.doThis());
+		assertThat((Object) testBean.doThis()).isEqualTo("this value");
 	}
 
 	@Test
 	public void testNoMatchingWithoutAnnotationPresent() {
-		assertEquals("doTheOther", testBean.doTheOther());
+		assertThat((Object) testBean.doTheOther()).isEqualTo("doTheOther");
 	}
 
 }

@@ -35,6 +35,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
@@ -78,7 +79,7 @@ public class CachePutEvaluationTests {
 		// This forces the method to be executed again
 		Long expected = first + 1;
 		Long third = this.service.getOrPut(key, false);
-		assertEquals(expected, third);
+		assertThat((Object) third).isEqualTo(expected);
 
 		Long fourth = this.service.getOrPut(key, true);
 		assertSame(third, fourth);
@@ -91,8 +92,9 @@ public class CachePutEvaluationTests {
 		long key = 1;
 		Long value = this.service.getAndPut(key);
 
-		assertEquals("Wrong value for @Cacheable key", value, this.cache.get(key).get());
-		assertEquals("Wrong value for @CachePut key", value, this.cache.get(value + 100).get()); // See @CachePut
+		assertThat(this.cache.get(key).get()).as("Wrong value for @Cacheable key").isEqualTo(value);
+		// See @CachePut
+		assertThat(this.cache.get(value + 100).get()).as("Wrong value for @CachePut key").isEqualTo(value);
 
 		// CachePut forced a method call
 		Long anotherValue = this.service.getAndPut(key);
@@ -102,7 +104,7 @@ public class CachePutEvaluationTests {
 		// is a very bad idea. We could refine the condition now that we can figure out if we are going
 		// to invoke the method anyway but that brings a whole new set of potential regressions.
 		//assertEquals("Wrong value for @Cacheable key", anotherValue, cache.get(key).get());
-		assertEquals("Wrong value for @CachePut key", anotherValue, this.cache.get(anotherValue + 100).get());
+		assertThat(this.cache.get(anotherValue + 100).get()).as("Wrong value for @CachePut key").isEqualTo(anotherValue);
 	}
 
 	@Configuration

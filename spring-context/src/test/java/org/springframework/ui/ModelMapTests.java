@@ -80,7 +80,7 @@ public class ModelMapTests {
 		assertEquals(1, model.size());
 		String bing = (String) model.get("foo");
 		assertNotNull(bing);
-		assertEquals("bing", bing);
+		assertThat((Object) bing).isEqualTo("bing");
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class ModelMapTests {
 		assertEquals(1, model.size());
 		String bing = (String) model.get("foo");
 		assertNotNull(bing);
-		assertEquals("bing", bing);
+		assertThat((Object) bing).isEqualTo("bing");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class ModelMapTests {
 		assertEquals(1, model.size());
 		String string = (String) model.get("string");
 		assertNotNull(string);
-		assertEquals("bing", string);
+		assertThat((Object) string).isEqualTo("bing");
 	}
 
 	@Test
@@ -115,8 +115,8 @@ public class ModelMapTests {
 		String[] strings = (String[]) model.get("stringList");
 		assertNotNull(strings);
 		assertEquals(2, strings.length);
-		assertEquals("foo", strings[0]);
-		assertEquals("boing", strings[1]);
+		assertThat((Object) strings[0]).isEqualTo("foo");
+		assertThat((Object) strings[1]).isEqualTo("boing");
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class ModelMapTests {
 		model.addAttribute("bar");
 		assertEquals(1, model.size());
 		String bar = (String) model.get("string");
-		assertEquals("bar", bar);
+		assertThat((Object) bar).isEqualTo("bar");
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class ModelMapTests {
 		model.put("one", new TestBean("oneOld"));
 		model.mergeAttributes(beans);
 		assertEquals(3, model.size());
-		assertEquals("oneOld", ((TestBean) model.get("one")).getName());
+		assertThat((Object) ((TestBean) model.get("one")).getName()).isEqualTo("oneOld");
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class ModelMapTests {
 		factory.setProxyTargetClass(true);
 		map.addAttribute(factory.getProxy());
 		assertThat(map.containsKey("someInnerClass")).isTrue();
-		assertEquals(val, map.get("someInnerClass"));
+		assertThat(map.get("someInnerClass")).isEqualTo(val);
 	}
 
 	@Test

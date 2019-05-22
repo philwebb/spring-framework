@@ -166,9 +166,9 @@ public class PropertiesEditorTests {
 		assertThat(condition).isTrue();
 		Properties props = (Properties) value;
 		assertEquals(3, props.size());
-		assertEquals("1", props.getProperty("one"));
-		assertEquals("2", props.getProperty("two"));
-		assertEquals("3", props.getProperty("three"));
+		assertThat((Object) props.getProperty("one")).isEqualTo("1");
+		assertThat((Object) props.getProperty("two")).isEqualTo("2");
+		assertThat((Object) props.getProperty("three")).isEqualTo("3");
 	}
 
 }

@@ -66,12 +66,12 @@ public class GroovyMarkupConfigurerTests {
 
 		TemplateEngine engine = this.configurer.getTemplateEngine();
 		assertNotNull(engine);
-		assertEquals(MarkupTemplateEngine.class, engine.getClass());
+		assertThat((Object) engine.getClass()).isEqualTo(MarkupTemplateEngine.class);
 
 		MarkupTemplateEngine markupEngine = (MarkupTemplateEngine) engine;
 		TemplateConfiguration configuration = markupEngine.getTemplateConfiguration();
 		assertNotNull(configuration);
-		assertEquals(GroovyMarkupConfigurer.class, configuration.getClass());
+		assertThat((Object) configuration.getClass()).isEqualTo(GroovyMarkupConfigurer.class);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class GroovyMarkupConfigurerTests {
 
 		TemplateEngine engine = this.configurer.getTemplateEngine();
 		assertNotNull(engine);
-		assertEquals(TestTemplateEngine.class, engine.getClass());
+		assertThat((Object) engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class GroovyMarkupConfigurerTests {
 
 		TemplateEngine engine = this.configurer.getTemplateEngine();
 		assertNotNull(engine);
-		assertEquals(MarkupTemplateEngine.class, engine.getClass());
+		assertThat((Object) engine.getClass()).isEqualTo(MarkupTemplateEngine.class);
 
 		MarkupTemplateEngine markupEngine = (MarkupTemplateEngine) engine;
 		TemplateConfiguration configuration = markupEngine.getTemplateConfiguration();

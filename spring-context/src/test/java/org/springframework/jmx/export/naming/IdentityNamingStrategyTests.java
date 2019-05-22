@@ -25,6 +25,7 @@ import org.springframework.jmx.JmxTestBean;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -37,12 +38,9 @@ public class IdentityNamingStrategyTests {
 		JmxTestBean bean = new JmxTestBean();
 		IdentityNamingStrategy strategy = new IdentityNamingStrategy();
 		ObjectName objectName = strategy.getObjectName(bean, "null");
-		assertEquals("Domain is incorrect", bean.getClass().getPackage().getName(),
-				objectName.getDomain());
-		assertEquals("Type property is incorrect", ClassUtils.getShortName(bean.getClass()),
-				objectName.getKeyProperty(IdentityNamingStrategy.TYPE_KEY));
-		assertEquals("HashCode property is incorrect", ObjectUtils.getIdentityHexString(bean),
-				objectName.getKeyProperty(IdentityNamingStrategy.HASH_CODE_KEY));
+		assertThat((Object) objectName.getDomain()).as("Domain is incorrect").isEqualTo(bean.getClass().getPackage().getName());
+		assertThat((Object) objectName.getKeyProperty(IdentityNamingStrategy.TYPE_KEY)).as("Type property is incorrect").isEqualTo(ClassUtils.getShortName(bean.getClass()));
+		assertThat((Object) objectName.getKeyProperty(IdentityNamingStrategy.HASH_CODE_KEY)).as("HashCode property is incorrect").isEqualTo(ObjectUtils.getIdentityHexString(bean));
 	}
 
 }

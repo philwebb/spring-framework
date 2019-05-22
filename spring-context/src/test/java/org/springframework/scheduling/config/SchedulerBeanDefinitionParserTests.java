@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -44,20 +45,20 @@ public class SchedulerBeanDefinitionParserTests {
 	public void defaultScheduler() {
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) this.context.getBean("defaultScheduler");
 		Integer size = (Integer) new DirectFieldAccessor(scheduler).getPropertyValue("poolSize");
-		assertEquals(new Integer(1), size);
+		assertThat((Object) size).isEqualTo(new Integer(1));
 	}
 
 	@Test
 	public void customScheduler() {
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) this.context.getBean("customScheduler");
 		Integer size = (Integer) new DirectFieldAccessor(scheduler).getPropertyValue("poolSize");
-		assertEquals(new Integer(42), size);
+		assertThat((Object) size).isEqualTo(new Integer(42));
 	}
 
 	@Test
 	public void threadNamePrefix() {
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) this.context.getBean("customScheduler");
-		assertEquals("customScheduler-", scheduler.getThreadNamePrefix());
+		assertThat((Object) scheduler.getThreadNamePrefix()).isEqualTo("customScheduler-");
 	}
 
 }

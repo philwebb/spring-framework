@@ -76,13 +76,13 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 
 		// ArrayList containing List<Integer> to List<String>
 		Class<?> clazz = typeDescriptorForListOfString.getElementTypeDescriptor().getType();
-		assertEquals(String.class,clazz);
+		assertThat((Object) clazz).isEqualTo(String.class);
 		List<?> l = (List<?>) tcs.convertValue(listOfInteger, TypeDescriptor.forObject(listOfInteger), typeDescriptorForListOfString);
 		assertNotNull(l);
 
 		// ArrayList containing List<String> to List<Integer>
 		clazz = typeDescriptorForListOfInteger.getElementTypeDescriptor().getType();
-		assertEquals(Integer.class,clazz);
+		assertThat((Object) clazz).isEqualTo(Integer.class);
 
 		l = (List<?>) tcs.convertValue(listOfString, TypeDescriptor.forObject(listOfString), typeDescriptorForListOfString);
 		assertNotNull(l);
@@ -98,7 +98,7 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 		parser.parseExpression("listOfInteger").setValue(context,listOfString);
 		assertEquals(3,e.getValue(context,Integer.class).intValue()); // size now 3
 		Class<?> clazz = parser.parseExpression("listOfInteger[1].getClass()").getValue(context, Class.class); // element type correctly Integer
-		assertEquals(Integer.class,clazz);
+		assertThat((Object) clazz).isEqualTo(Integer.class);
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 		assertThat(evaluationContext.getTypeConverter()
 				.canConvert(TypeDescriptor.valueOf(String.class), collectionType)).isTrue();
 		// ... and it can be done successfully
-		assertEquals("[1, 2, 3, 4]", evaluationContext.getTypeConverter().convertValue("1,2,3,4", TypeDescriptor.valueOf(String.class), collectionType).toString());
+		assertThat((Object) evaluationContext.getTypeConverter().convertValue("1,2,3,4", TypeDescriptor.valueOf(String.class), collectionType).toString()).isEqualTo("[1, 2, 3, 4]");
 
 		evaluationContext.setVariable("target", new TestTarget());
 
@@ -145,26 +145,26 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 		Expression expression = parser.parseExpression("foos");
 		expression.setValue(context, foos);
 		Foo baz = root.getFoos().iterator().next();
-		assertEquals("baz", baz.value);
+		assertThat((Object) baz.value).isEqualTo("baz");
 
 		// method call
 		expression = parser.parseExpression("setFoos(#foos)");
 		context.setVariable("foos", foos);
 		expression.getValue(context);
 		baz = root.getFoos().iterator().next();
-		assertEquals("baz", baz.value);
+		assertThat((Object) baz.value).isEqualTo("baz");
 
 		// method call with result from method call
 		expression = parser.parseExpression("setFoos(getFoosAsStrings())");
 		expression.getValue(context);
 		baz = root.getFoos().iterator().next();
-		assertEquals("baz", baz.value);
+		assertThat((Object) baz.value).isEqualTo("baz");
 
 		// method call with result from method call
 		expression = parser.parseExpression("setFoos(getFoosAsObjects())");
 		expression.getValue(context);
 		baz = root.getFoos().iterator().next();
-		assertEquals("baz", baz.value);
+		assertThat((Object) baz.value).isEqualTo("baz");
 	}
 
 

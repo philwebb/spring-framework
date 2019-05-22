@@ -39,6 +39,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -102,7 +103,7 @@ public class JCacheErrorHandlerTests {
 			this.simpleService.getFail(0L);
 		}
 		catch (IllegalStateException ex) {
-			assertEquals("Test exception", ex.getMessage());
+			assertThat((Object) ex.getMessage()).isEqualTo("Test exception");
 		}
 		verify(this.errorHandler).handleCachePutError(
 				exceptionOnPut, this.errorCache, key, SimpleService.TEST_EXCEPTION);

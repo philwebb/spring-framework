@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.springframework.web.servlet.function.RequestPredicates.GET;
 import static org.springframework.web.servlet.function.RequestPredicates.accept;
@@ -57,7 +58,7 @@ public class ToStringVisitorTests {
 				"  (GET && /baz) -> \n" +
 				" }\n" +
 				"}";
-		assertEquals(expected, result);
+		assertThat((Object) result).isEqualTo(expected);
 	}
 
 	@Test
@@ -93,7 +94,7 @@ public class ToStringVisitorTests {
 		predicate.accept(visitor);
 		String result = visitor.toString();
 
-		assertEquals(expected, result);
+		assertThat((Object) result).isEqualTo(expected);
 	}
 
 

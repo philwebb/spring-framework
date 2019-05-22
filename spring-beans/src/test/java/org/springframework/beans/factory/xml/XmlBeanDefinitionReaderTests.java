@@ -116,8 +116,8 @@ public class XmlBeanDefinitionReaderTests {
 		assertThat(Arrays.asList(registry.getBeanDefinitionNames()).contains("aliased")).isTrue();
 		assertThat(registry.containsBeanDefinition("rod")).isTrue();
 		assertThat(registry.containsBeanDefinition("aliased")).isTrue();
-		assertEquals(TestBean.class.getName(), registry.getBeanDefinition("rod").getBeanClassName());
-		assertEquals(TestBean.class.getName(), registry.getBeanDefinition("aliased").getBeanClassName());
+		assertThat((Object) registry.getBeanDefinition("rod").getBeanClassName()).isEqualTo(TestBean.class.getName());
+		assertThat((Object) registry.getBeanDefinition("aliased").getBeanClassName()).isEqualTo(TestBean.class.getName());
 		assertThat(registry.isAlias("youralias")).isTrue();
 		String[] aliases = registry.getAliases("aliased");
 		assertEquals(2, aliases.length);

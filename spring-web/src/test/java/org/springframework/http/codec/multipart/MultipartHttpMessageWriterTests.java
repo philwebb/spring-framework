@@ -118,53 +118,53 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		Part part = requestParts.getFirst("name 1");
 		boolean condition4 = part instanceof FormFieldPart;
 		assertThat(condition4).isTrue();
-		assertEquals("name 1", part.name());
-		assertEquals("value 1", ((FormFieldPart) part).value());
+		assertThat((Object) part.name()).isEqualTo("name 1");
+		assertThat((Object) ((FormFieldPart) part).value()).isEqualTo("value 1");
 
 		List<Part> parts2 = requestParts.get("name 2");
 		assertEquals(2, parts2.size());
 		part = parts2.get(0);
 		boolean condition3 = part instanceof FormFieldPart;
 		assertThat(condition3).isTrue();
-		assertEquals("name 2", part.name());
-		assertEquals("value 2+1", ((FormFieldPart) part).value());
+		assertThat((Object) part.name()).isEqualTo("name 2");
+		assertThat((Object) ((FormFieldPart) part).value()).isEqualTo("value 2+1");
 		part = parts2.get(1);
 		boolean condition2 = part instanceof FormFieldPart;
 		assertThat(condition2).isTrue();
-		assertEquals("name 2", part.name());
-		assertEquals("value 2+2", ((FormFieldPart) part).value());
+		assertThat((Object) part.name()).isEqualTo("name 2");
+		assertThat((Object) ((FormFieldPart) part).value()).isEqualTo("value 2+2");
 
 		part = requestParts.getFirst("logo");
 		boolean condition1 = part instanceof FilePart;
 		assertThat(condition1).isTrue();
-		assertEquals("logo", part.name());
-		assertEquals("logo.jpg", ((FilePart) part).filename());
-		assertEquals(MediaType.IMAGE_JPEG, part.headers().getContentType());
+		assertThat((Object) part.name()).isEqualTo("logo");
+		assertThat((Object) ((FilePart) part).filename()).isEqualTo("logo.jpg");
+		assertThat((Object) part.headers().getContentType()).isEqualTo(MediaType.IMAGE_JPEG);
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
 
 		part = requestParts.getFirst("utf8");
 		boolean condition = part instanceof FilePart;
 		assertThat(condition).isTrue();
-		assertEquals("utf8", part.name());
-		assertEquals("Hall\u00F6le.jpg", ((FilePart) part).filename());
-		assertEquals(MediaType.IMAGE_JPEG, part.headers().getContentType());
+		assertThat((Object) part.name()).isEqualTo("utf8");
+		assertThat((Object) ((FilePart) part).filename()).isEqualTo("Hall\u00F6le.jpg");
+		assertThat((Object) part.headers().getContentType()).isEqualTo(MediaType.IMAGE_JPEG);
 		assertEquals(utf8.getFile().length(), part.headers().getContentLength());
 
 		part = requestParts.getFirst("json");
-		assertEquals("json", part.name());
-		assertEquals(MediaType.APPLICATION_JSON, part.headers().getContentType());
+		assertThat((Object) part.name()).isEqualTo("json");
+		assertThat((Object) part.headers().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 		String value = decodeToString(part);
-		assertEquals("{\"bar\":\"bar\"}", value);
+		assertThat((Object) value).isEqualTo("{\"bar\":\"bar\"}");
 
 		part = requestParts.getFirst("publisher");
-		assertEquals("publisher", part.name());
+		assertThat((Object) part.name()).isEqualTo("publisher");
 		value = decodeToString(part);
-		assertEquals("foobarbaz", value);
+		assertThat((Object) value).isEqualTo("foobarbaz");
 
 		part = requestParts.getFirst("partPublisher");
-		assertEquals("partPublisher", part.name());
+		assertThat((Object) part.name()).isEqualTo("partPublisher");
 		value = decodeToString(part);
-		assertEquals("AaBbCc", value);
+		assertThat((Object) value).isEqualTo("AaBbCc");
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -192,11 +192,11 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertEquals(1, requestParts.size());
 
 		Part part = requestParts.getFirst("logo");
-		assertEquals("logo", part.name());
+		assertThat((Object) part.name()).isEqualTo("logo");
 		boolean condition = part instanceof FilePart;
 		assertThat(condition).isTrue();
-		assertEquals("logo.jpg", ((FilePart) part).filename());
-		assertEquals(MediaType.IMAGE_JPEG, part.headers().getContentType());
+		assertThat((Object) ((FilePart) part).filename()).isEqualTo("logo.jpg");
+		assertThat((Object) part.headers().getContentType()).isEqualTo(MediaType.IMAGE_JPEG);
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
 	}
 
@@ -245,13 +245,13 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		Part part = requestParts.getFirst("resource");
 		boolean condition1 = part instanceof FilePart;
 		assertThat(condition1).isTrue();
-		assertEquals("spring.jpg", ((FilePart) part).filename());
+		assertThat((Object) ((FilePart) part).filename()).isEqualTo("spring.jpg");
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
 
 		part = requestParts.getFirst("buffers");
 		boolean condition = part instanceof FilePart;
 		assertThat(condition).isTrue();
-		assertEquals("buffers.jpg", ((FilePart) part).filename());
+		assertThat((Object) ((FilePart) part).filename()).isEqualTo("buffers.jpg");
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
 	}
 

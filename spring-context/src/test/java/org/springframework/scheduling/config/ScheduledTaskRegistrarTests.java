@@ -52,7 +52,7 @@ public class ScheduledTaskRegistrarTests {
 		this.taskRegistrar.setTriggerTasksList(triggerTaskList);
 		List<TriggerTask> retrievedList = this.taskRegistrar.getTriggerTaskList();
 		assertEquals(1, retrievedList.size());
-		assertEquals(mockTriggerTask, retrievedList.get(0));
+		assertThat((Object) retrievedList.get(0)).isEqualTo(mockTriggerTask);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class ScheduledTaskRegistrarTests {
 		this.taskRegistrar.setCronTasksList(cronTaskList);
 		List<CronTask> retrievedList = this.taskRegistrar.getCronTaskList();
 		assertEquals(1, retrievedList.size());
-		assertEquals(mockCronTask, retrievedList.get(0));
+		assertThat((Object) retrievedList.get(0)).isEqualTo(mockCronTask);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class ScheduledTaskRegistrarTests {
 		this.taskRegistrar.setFixedRateTasksList(fixedRateTaskList);
 		List<IntervalTask> retrievedList = this.taskRegistrar.getFixedRateTaskList();
 		assertEquals(1, retrievedList.size());
-		assertEquals(mockFixedRateTask, retrievedList.get(0));
+		assertThat((Object) retrievedList.get(0)).isEqualTo(mockFixedRateTask);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ScheduledTaskRegistrarTests {
 		this.taskRegistrar.setFixedDelayTasksList(fixedDelayTaskList);
 		List<IntervalTask> retrievedList = this.taskRegistrar.getFixedDelayTaskList();
 		assertEquals(1, retrievedList.size());
-		assertEquals(mockFixedDelayTask, retrievedList.get(0));
+		assertThat((Object) retrievedList.get(0)).isEqualTo(mockFixedDelayTask);
 	}
 
 }

@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.mock.web.test.MockServletContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -33,7 +34,7 @@ public class ServletContextPropertyUtilsTests {
 		MockServletContext servletContext = new MockServletContext();
 		servletContext.setInitParameter("test.prop", "bar");
 		String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
-		assertEquals("bar", resolved);
+		assertThat((Object) resolved).isEqualTo("bar");
 	}
 
 	@Test
@@ -42,7 +43,7 @@ public class ServletContextPropertyUtilsTests {
 		System.setProperty("test.prop", "bar");
 		try {
 			String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
-			assertEquals("bar", resolved);
+			assertThat((Object) resolved).isEqualTo("bar");
 		}
 		finally {
 			System.clearProperty("test.prop");

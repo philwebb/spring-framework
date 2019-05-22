@@ -40,6 +40,7 @@ import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.FixedBackOff;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -73,8 +74,8 @@ public class JmsListenerContainerFactoryTests {
 		SimpleMessageListenerContainer container = factory.createListenerContainer(endpoint);
 
 		assertDefaultJmsConfig(container);
-		assertEquals(messageListener, container.getMessageListener());
-		assertEquals("myQueue", container.getDestinationName());
+		assertThat(container.getMessageListener()).isEqualTo(messageListener);
+		assertThat((Object) container.getDestinationName()).isEqualTo("myQueue");
 	}
 
 	@Test
@@ -97,8 +98,8 @@ public class JmsListenerContainerFactoryTests {
 		assertEquals(10, container.getMaxConcurrentConsumers());
 		assertEquals(5, container.getMaxMessagesPerTask());
 
-		assertEquals(messageListener, container.getMessageListener());
-		assertEquals("myQueue", container.getDestinationName());
+		assertThat(container.getMessageListener()).isEqualTo(messageListener);
+		assertThat((Object) container.getDestinationName()).isEqualTo("myQueue");
 	}
 
 	@Test
@@ -115,8 +116,8 @@ public class JmsListenerContainerFactoryTests {
 
 		assertDefaultJcaConfig(container);
 		assertEquals(10, container.getActivationSpecConfig().getMaxConcurrency());
-		assertEquals(messageListener, container.getMessageListener());
-		assertEquals("myQueue", container.getActivationSpecConfig().getDestinationName());
+		assertThat((Object) container.getMessageListener()).isEqualTo(messageListener);
+		assertThat((Object) container.getActivationSpecConfig().getDestinationName()).isEqualTo("myQueue");
 	}
 
 	@Test
@@ -178,17 +179,17 @@ public class JmsListenerContainerFactoryTests {
 	}
 
 	private void assertDefaultJmsConfig(AbstractMessageListenerContainer container) {
-		assertEquals(this.connectionFactory, container.getConnectionFactory());
-		assertEquals(this.destinationResolver, container.getDestinationResolver());
-		assertEquals(this.messageConverter, container.getMessageConverter());
-		assertEquals(true, container.isSessionTransacted());
+		assertThat((Object) container.getConnectionFactory()).isEqualTo(this.connectionFactory);
+		assertThat((Object) container.getDestinationResolver()).isEqualTo(this.destinationResolver);
+		assertThat((Object) container.getMessageConverter()).isEqualTo(this.messageConverter);
+		assertThat((Object) container.isSessionTransacted()).isEqualTo(true);
 		assertEquals(Session.DUPS_OK_ACKNOWLEDGE, container.getSessionAcknowledgeMode());
-		assertEquals(true, container.isPubSubDomain());
-		assertEquals(true, container.isReplyPubSubDomain());
-		assertEquals(new QosSettings(1, 7, 5000), container.getReplyQosSettings());
-		assertEquals(true, container.isSubscriptionDurable());
-		assertEquals("client-1234", container.getClientId());
-		assertEquals(false, container.isAutoStartup());
+		assertThat((Object) container.isPubSubDomain()).isEqualTo(true);
+		assertThat((Object) container.isReplyPubSubDomain()).isEqualTo(true);
+		assertThat((Object) container.getReplyQosSettings()).isEqualTo(new QosSettings(1, 7, 5000));
+		assertThat((Object) container.isSubscriptionDurable()).isEqualTo(true);
+		assertThat((Object) container.getClientId()).isEqualTo("client-1234");
+		assertThat((Object) container.isAutoStartup()).isEqualTo(false);
 	}
 
 	private void setDefaultJcaConfig(DefaultJcaListenerContainerFactory factory) {
@@ -203,15 +204,15 @@ public class JmsListenerContainerFactoryTests {
 	}
 
 	private void assertDefaultJcaConfig(JmsMessageEndpointManager container) {
-		assertEquals(this.messageConverter, container.getMessageConverter());
-		assertEquals(this.destinationResolver, container.getDestinationResolver());
+		assertThat((Object) container.getMessageConverter()).isEqualTo(this.messageConverter);
+		assertThat((Object) container.getDestinationResolver()).isEqualTo(this.destinationResolver);
 		JmsActivationSpecConfig config = container.getActivationSpecConfig();
 		assertNotNull(config);
 		assertEquals(Session.DUPS_OK_ACKNOWLEDGE, config.getAcknowledgeMode());
-		assertEquals(true, config.isPubSubDomain());
-		assertEquals(new QosSettings(1, 7, 5000), container.getReplyQosSettings());
-		assertEquals(true, config.isSubscriptionDurable());
-		assertEquals("client-1234", config.getClientId());
+		assertThat((Object) config.isPubSubDomain()).isEqualTo(true);
+		assertThat((Object) container.getReplyQosSettings()).isEqualTo(new QosSettings(1, 7, 5000));
+		assertThat((Object) config.isSubscriptionDurable()).isEqualTo(true);
+		assertThat((Object) config.getClientId()).isEqualTo("client-1234");
 	}
 
 }

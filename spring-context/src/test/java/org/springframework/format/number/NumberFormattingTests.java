@@ -33,6 +33,7 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.StringValueResolver;
 import org.springframework.validation.DataBinder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -79,7 +80,7 @@ public class NumberFormattingTests {
 		propertyValues.add("numberDefault", "3,339.12");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("3,339", binder.getBindingResult().getFieldValue("numberDefault"));
+		assertThat(binder.getBindingResult().getFieldValue("numberDefault")).isEqualTo("3,339");
 	}
 
 	@Test
@@ -88,7 +89,7 @@ public class NumberFormattingTests {
 		propertyValues.add("numberDefaultAnnotated", "3,339.12");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("3,339.12", binder.getBindingResult().getFieldValue("numberDefaultAnnotated"));
+		assertThat(binder.getBindingResult().getFieldValue("numberDefaultAnnotated")).isEqualTo("3,339.12");
 	}
 
 	@Test
@@ -97,7 +98,7 @@ public class NumberFormattingTests {
 		propertyValues.add("currency", "$3,339.12");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("$3,339.12", binder.getBindingResult().getFieldValue("currency"));
+		assertThat(binder.getBindingResult().getFieldValue("currency")).isEqualTo("$3,339.12");
 	}
 
 	@Test
@@ -106,7 +107,7 @@ public class NumberFormattingTests {
 		propertyValues.add("percent", "53%");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("53%", binder.getBindingResult().getFieldValue("percent"));
+		assertThat(binder.getBindingResult().getFieldValue("percent")).isEqualTo("53%");
 	}
 
 	@Test
@@ -115,7 +116,7 @@ public class NumberFormattingTests {
 		propertyValues.add("pattern", "1,25.00");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("1,25.00", binder.getBindingResult().getFieldValue("pattern"));
+		assertThat(binder.getBindingResult().getFieldValue("pattern")).isEqualTo("1,25.00");
 	}
 
 	@Test
@@ -124,16 +125,16 @@ public class NumberFormattingTests {
 		propertyValues.add("patternArray", new String[] { "1,25.00", "2,35.00" });
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("1,25.00", binder.getBindingResult().getFieldValue("patternArray[0]"));
-		assertEquals("2,35.00", binder.getBindingResult().getFieldValue("patternArray[1]"));
+		assertThat(binder.getBindingResult().getFieldValue("patternArray[0]")).isEqualTo("1,25.00");
+		assertThat(binder.getBindingResult().getFieldValue("patternArray[1]")).isEqualTo("2,35.00");
 
 		propertyValues = new MutablePropertyValues();
 		propertyValues.add("patternArray[0]", "1,25.00");
 		propertyValues.add("patternArray[1]", "2,35.00");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("1,25.00", binder.getBindingResult().getFieldValue("patternArray[0]"));
-		assertEquals("2,35.00", binder.getBindingResult().getFieldValue("patternArray[1]"));
+		assertThat(binder.getBindingResult().getFieldValue("patternArray[0]")).isEqualTo("1,25.00");
+		assertThat(binder.getBindingResult().getFieldValue("patternArray[1]")).isEqualTo("2,35.00");
 	}
 
 	@Test
@@ -142,16 +143,16 @@ public class NumberFormattingTests {
 		propertyValues.add("patternList", new String[] { "1,25.00", "2,35.00" });
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("1,25.00", binder.getBindingResult().getFieldValue("patternList[0]"));
-		assertEquals("2,35.00", binder.getBindingResult().getFieldValue("patternList[1]"));
+		assertThat(binder.getBindingResult().getFieldValue("patternList[0]")).isEqualTo("1,25.00");
+		assertThat(binder.getBindingResult().getFieldValue("patternList[1]")).isEqualTo("2,35.00");
 
 		propertyValues = new MutablePropertyValues();
 		propertyValues.add("patternList[0]", "1,25.00");
 		propertyValues.add("patternList[1]", "2,35.00");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("1,25.00", binder.getBindingResult().getFieldValue("patternList[0]"));
-		assertEquals("2,35.00", binder.getBindingResult().getFieldValue("patternList[1]"));
+		assertThat(binder.getBindingResult().getFieldValue("patternList[0]")).isEqualTo("1,25.00");
+		assertThat(binder.getBindingResult().getFieldValue("patternList[1]")).isEqualTo("2,35.00");
 	}
 
 	@Test
@@ -161,8 +162,8 @@ public class NumberFormattingTests {
 		propertyValues.add("patternList2[1]", "2,35.00");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("1,25.00", binder.getBindingResult().getFieldValue("patternList2[0]"));
-		assertEquals("2,35.00", binder.getBindingResult().getFieldValue("patternList2[1]"));
+		assertThat(binder.getBindingResult().getFieldValue("patternList2[0]")).isEqualTo("1,25.00");
+		assertThat(binder.getBindingResult().getFieldValue("patternList2[1]")).isEqualTo("2,35.00");
 	}
 
 	@Test
@@ -172,7 +173,7 @@ public class NumberFormattingTests {
 		propertyValues.add("patternList2[1]", "2,35.00");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("1,25.00,2,35.00", binder.getBindingResult().getFieldValue("patternList2"));
+		assertThat(binder.getBindingResult().getFieldValue("patternList2")).isEqualTo("1,25.00,2,35.00");
 	}
 
 

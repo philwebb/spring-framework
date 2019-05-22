@@ -32,6 +32,7 @@ import org.springframework.oxm.Marshaller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
@@ -60,17 +61,17 @@ public class MarshallingViewTests {
 
 	@Test
 	public void getContentType() {
-		assertEquals("Invalid content type", "application/xml", view.getContentType());
+		assertThat((Object) view.getContentType()).as("Invalid content type").isEqualTo("application/xml");
 	}
 
 	@Test
 	public void isExposePathVars() {
-		assertEquals("Must not expose path variables", false, view.isExposePathVariables());
+		assertThat((Object) view.isExposePathVariables()).as("Must not expose path variables").isEqualTo(false);
 	}
 
 	@Test
 	public void isExposePathVarsDefaultConstructor() {
-		assertEquals("Must not expose path variables", false, new MarshallingView().isExposePathVariables());
+		assertThat((Object) new MarshallingView().isExposePathVariables()).as("Must not expose path variables").isEqualTo(false);
 	}
 
 	@Test
@@ -88,7 +89,7 @@ public class MarshallingViewTests {
 		marshallerMock.marshal(eq(toBeMarshalled), isA(StreamResult.class));
 
 		view.render(model, request, response);
-		assertEquals("Invalid content type", "application/xml", response.getContentType());
+		assertThat((Object) response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
 		assertEquals("Invalid content length", 0, response.getContentLength());
 	}
 
@@ -107,7 +108,7 @@ public class MarshallingViewTests {
 		marshallerMock.marshal(eq(toBeMarshalled), isA(StreamResult.class));
 
 		view.render(model, request, response);
-		assertEquals("Invalid content type", "application/xml", response.getContentType());
+		assertThat((Object) response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
 		assertEquals("Invalid content length", 0, response.getContentLength());
 	}
 
@@ -173,7 +174,7 @@ public class MarshallingViewTests {
 		given(marshallerMock.supports(Object.class)).willReturn(true);
 
 		view.render(model, request, response);
-		assertEquals("Invalid content type", "application/xml", response.getContentType());
+		assertThat((Object) response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
 		assertEquals("Invalid content length", 0, response.getContentLength());
 		verify(marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
 	}
@@ -193,7 +194,7 @@ public class MarshallingViewTests {
 		given(marshallerMock.supports(Object.class)).willReturn(true);
 
 		view.render(model, request, response);
-		assertEquals("Invalid content type", "application/xml", response.getContentType());
+		assertThat((Object) response.getContentType()).as("Invalid content type").isEqualTo("application/xml");
 		assertEquals("Invalid content length", 0, response.getContentLength());
 		verify(marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
 	}

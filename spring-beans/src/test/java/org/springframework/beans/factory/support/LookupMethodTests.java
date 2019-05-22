@@ -50,7 +50,7 @@ public class LookupMethodTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		Object expected = bean.get();
-		assertEquals(TestBean.class, expected.getClass());
+		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
 	}
 
 	@Test
@@ -58,8 +58,8 @@ public class LookupMethodTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.get("haha");
-		assertEquals(TestBean.class, expected.getClass());
-		assertEquals("haha", expected.getName());
+		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
+		assertThat((Object) expected.getName()).isEqualTo("haha");
 	}
 
 	@Test
@@ -67,8 +67,8 @@ public class LookupMethodTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getOneArgument("haha");
-		assertEquals(TestBean.class, expected.getClass());
-		assertEquals("haha", expected.getName());
+		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
+		assertThat((Object) expected.getName()).isEqualTo("haha");
 	}
 
 	@Test
@@ -76,8 +76,8 @@ public class LookupMethodTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getTwoArguments("haha", 72);
-		assertEquals(TestBean.class, expected.getClass());
-		assertEquals("haha", expected.getName());
+		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
+		assertThat((Object) expected.getName()).isEqualTo("haha");
 		assertEquals(72, expected.getAge());
 	}
 
@@ -94,8 +94,8 @@ public class LookupMethodTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("extendedBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getOneArgument("haha");
-		assertEquals(TestBean.class, expected.getClass());
-		assertEquals("haha", expected.getName());
+		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
+		assertThat((Object) expected.getName()).isEqualTo("haha");
 		assertThat(expected.isJedi()).isTrue();
 	}
 

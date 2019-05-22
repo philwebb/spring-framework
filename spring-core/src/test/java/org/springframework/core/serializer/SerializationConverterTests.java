@@ -25,6 +25,7 @@ import org.springframework.core.serializer.support.DeserializingConverter;
 import org.springframework.core.serializer.support.SerializationFailedException;
 import org.springframework.core.serializer.support.SerializingConverter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -40,7 +41,7 @@ public class SerializationConverterTests {
 		SerializingConverter toBytes = new SerializingConverter();
 		byte[] bytes = toBytes.convert("Testing");
 		DeserializingConverter fromBytes = new DeserializingConverter();
-		assertEquals("Testing", fromBytes.convert(bytes));
+		assertThat(fromBytes.convert(bytes)).isEqualTo("Testing");
 	}
 
 	@Test

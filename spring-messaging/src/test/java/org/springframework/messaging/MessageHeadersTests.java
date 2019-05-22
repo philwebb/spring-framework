@@ -94,7 +94,7 @@ public class MessageHeadersTests {
 	public void testIdProvided() {
 		UUID id = new UUID(0L, 25L);
 		MessageHeaders headers = new MessageHeaders(null, id, null);
-		assertEquals(id, headers.getId());
+		assertThat((Object) headers.getId()).isEqualTo(id);
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class MessageHeadersTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("test", value);
 		MessageHeaders headers = new MessageHeaders(map);
-		assertEquals(value, headers.get("test"));
+		assertThat(headers.get("test")).isEqualTo(value);
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class MessageHeadersTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("test", value);
 		MessageHeaders headers = new MessageHeaders(map);
-		assertEquals(value, headers.get("test", Integer.class));
+		assertThat(headers.get("test", Integer.class)).isEqualTo(value);
 	}
 
 	@Test
@@ -170,10 +170,10 @@ public class MessageHeadersTests {
 		map.put("age", 42);
 		MessageHeaders input = new MessageHeaders(map);
 		MessageHeaders output = (MessageHeaders) SerializationTestUtils.serializeAndDeserialize(input);
-		assertEquals("joe", output.get("name"));
-		assertEquals(42, output.get("age"));
-		assertEquals("joe", input.get("name"));
-		assertEquals(42, input.get("age"));
+		assertThat(output.get("name")).isEqualTo("joe");
+		assertThat(output.get("age")).isEqualTo(42);
+		assertThat(input.get("name")).isEqualTo("joe");
+		assertThat(input.get("age")).isEqualTo(42);
 	}
 
 	@Test
@@ -184,9 +184,9 @@ public class MessageHeadersTests {
 		map.put("address", address);
 		MessageHeaders input = new MessageHeaders(map);
 		MessageHeaders output = (MessageHeaders) SerializationTestUtils.serializeAndDeserialize(input);
-		assertEquals("joe", output.get("name"));
+		assertThat(output.get("name")).isEqualTo("joe");
 		assertNull(output.get("address"));
-		assertEquals("joe", input.get("name"));
+		assertThat(input.get("name")).isEqualTo("joe");
 		assertSame(address, input.get("address"));
 	}
 
@@ -200,7 +200,7 @@ public class MessageHeadersTests {
 			}
 		}
 		MessageHeaders headers = new MyMH();
-		assertEquals("00000000-0000-0000-0000-000000000001", headers.getId().toString());
+		assertThat((Object) headers.getId().toString()).isEqualTo("00000000-0000-0000-0000-000000000001");
 		assertEquals(1, headers.size());
 	}
 

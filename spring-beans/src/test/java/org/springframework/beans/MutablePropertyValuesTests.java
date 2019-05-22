@@ -48,7 +48,7 @@ public class MutablePropertyValuesTests extends AbstractPropertyValuesTests {
 		doTestTony(deepCopy);
 		deepCopy.setPropertyValueAt(new PropertyValue("name", "Gordon"), 0);
 		doTestTony(pvs);
-		assertEquals("Gordon", deepCopy.getPropertyValue("name").getValue());
+		assertThat(deepCopy.getPropertyValue("name").getValue()).isEqualTo("Gordon");
 	}
 
 	@Test
@@ -117,8 +117,8 @@ public class MutablePropertyValuesTests extends AbstractPropertyValuesTests {
 		Iterator<PropertyValue> it = pvs.iterator();
 		assertThat(it.hasNext()).isTrue();
 		PropertyValue pv = it.next();
-		assertEquals("foo", pv.getName());
-		assertEquals("bar", pv.getValue());
+		assertThat((Object) pv.getName()).isEqualTo("foo");
+		assertThat(pv.getValue()).isEqualTo("bar");
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(it::remove);
 		assertThat(it.hasNext()).isFalse();
 	}

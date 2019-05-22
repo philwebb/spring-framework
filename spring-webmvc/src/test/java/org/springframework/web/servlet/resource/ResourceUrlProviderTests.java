@@ -73,7 +73,7 @@ public class ResourceUrlProviderTests {
 	@Test
 	public void getStaticResourceUrl() {
 		String url = this.urlProvider.getForLookupPath("/resources/foo.css");
-		assertEquals("/resources/foo.css", url);
+		assertThat((Object) url).isEqualTo("/resources/foo.css");
 	}
 
 	@Test // SPR-13374
@@ -84,11 +84,11 @@ public class ResourceUrlProviderTests {
 
 		String url = "/resources/foo.css?foo=bar&url=https://example.org";
 		String resolvedUrl = this.urlProvider.getForRequestUrl(request, url);
-		assertEquals("/resources/foo.css?foo=bar&url=https://example.org", resolvedUrl);
+		assertThat((Object) resolvedUrl).isEqualTo("/resources/foo.css?foo=bar&url=https://example.org");
 
 		url = "/resources/foo.css#hash";
 		resolvedUrl = this.urlProvider.getForRequestUrl(request, url);
-		assertEquals("/resources/foo.css#hash", resolvedUrl);
+		assertThat((Object) resolvedUrl).isEqualTo("/resources/foo.css#hash");
 	}
 
 	@Test // SPR-16526
@@ -114,7 +114,7 @@ public class ResourceUrlProviderTests {
 		this.handler.setResourceResolvers(resolvers);
 
 		String url = this.urlProvider.getForLookupPath("/resources/foo.css");
-		assertEquals("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css", url);
+		assertThat((Object) url).isEqualTo("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css");
 	}
 
 	@Test // SPR-12647
@@ -135,7 +135,7 @@ public class ResourceUrlProviderTests {
 		this.urlProvider.setHandlerMap(this.handlerMap);
 
 		String url = this.urlProvider.getForLookupPath("/resources/foo.css");
-		assertEquals("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css", url);
+		assertThat((Object) url).isEqualTo("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css");
 	}
 
 	@Test // SPR-12592
@@ -167,7 +167,7 @@ public class ResourceUrlProviderTests {
 		String lookupForPath = provider.getForLookupPath("/some-pattern/some-lib//some-resource");
 
 		// then
-		assertEquals("/some-pattern/some-path", lookupForPath);
+		assertThat((Object) lookupForPath).isEqualTo("/some-pattern/some-path");
 	}
 
 

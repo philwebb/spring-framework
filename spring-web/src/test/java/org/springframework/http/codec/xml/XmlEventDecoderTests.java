@@ -120,17 +120,17 @@ public class XmlEventDecoderTests extends AbstractLeakCheckingTestCase {
 
 	private static void assertStartElement(XMLEvent event, String expectedLocalName) {
 		assertThat(event.isStartElement()).isTrue();
-		assertEquals(expectedLocalName, event.asStartElement().getName().getLocalPart());
+		assertThat((Object) event.asStartElement().getName().getLocalPart()).isEqualTo(expectedLocalName);
 	}
 
 	private static void assertEndElement(XMLEvent event, String expectedLocalName) {
 		assertThat(event.isEndElement()).as(event + " is no end element").isTrue();
-		assertEquals(expectedLocalName, event.asEndElement().getName().getLocalPart());
+		assertThat((Object) event.asEndElement().getName().getLocalPart()).isEqualTo(expectedLocalName);
 	}
 
 	private static void assertCharacters(XMLEvent event, String expectedData) {
 		assertThat(event.isCharacters()).isTrue();
-		assertEquals(expectedData, event.asCharacters().getData());
+		assertThat((Object) event.asCharacters().getData()).isEqualTo(expectedData);
 	}
 
 	private Mono<DataBuffer> stringBuffer(String value) {

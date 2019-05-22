@@ -35,6 +35,7 @@ import org.springframework.jmx.access.NotificationListenerRegistrar;
 import org.springframework.jmx.export.naming.SelfNaming;
 import org.springframework.jmx.support.ObjectNameManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 
@@ -125,7 +126,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 				"Rob Harrop"));
 
 		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
-		assertEquals("Handback object not transmitted correctly", handback, listener.getLastHandback(attributeName));
+		assertThat(listener.getLastHandback(attributeName)).as("Handback object not transmitted correctly").isEqualTo(handback);
 	}
 
 	@Test

@@ -117,7 +117,7 @@ public class DelegatingWebMvcConfigurationTests {
 		assertThat(condition).isTrue();
 		assertEquals(0, resolvers.getValue().size());
 		assertEquals(0, handlers.getValue().size());
-		assertEquals(converters.getValue(), adapter.getMessageConverters());
+		assertThat((Object) adapter.getMessageConverters()).isEqualTo(converters.getValue());
 		assertNotNull(asyncConfigurer);
 	}
 
@@ -225,16 +225,11 @@ public class DelegatingWebMvcConfigurationTests {
 				delegatingConfig.mvcContentNegotiationManager(), delegatingConfig.mvcConversionService(),
 				delegatingConfig.mvcResourceUrlProvider());
 		assertNotNull(handlerMapping);
-		assertEquals("PathMatchConfigurer should configure RegisteredSuffixPatternMatch",
-				true, handlerMapping.useRegisteredSuffixPatternMatch());
-		assertEquals("PathMatchConfigurer should configure SuffixPatternMatch",
-				true, handlerMapping.useSuffixPatternMatch());
-		assertEquals("PathMatchConfigurer should configure TrailingSlashMatch",
-				false, handlerMapping.useTrailingSlashMatch());
-		assertEquals("PathMatchConfigurer should configure UrlPathHelper",
-				pathHelper, handlerMapping.getUrlPathHelper());
-		assertEquals("PathMatchConfigurer should configure PathMatcher",
-				pathMatcher, handlerMapping.getPathMatcher());
+		assertThat((Object) handlerMapping.useRegisteredSuffixPatternMatch()).as("PathMatchConfigurer should configure RegisteredSuffixPatternMatch").isEqualTo(true);
+		assertThat((Object) handlerMapping.useSuffixPatternMatch()).as("PathMatchConfigurer should configure SuffixPatternMatch").isEqualTo(true);
+		assertThat((Object) handlerMapping.useTrailingSlashMatch()).as("PathMatchConfigurer should configure TrailingSlashMatch").isEqualTo(false);
+		assertThat((Object) handlerMapping.getUrlPathHelper()).as("PathMatchConfigurer should configure UrlPathHelper").isEqualTo(pathHelper);
+		assertThat((Object) handlerMapping.getPathMatcher()).as("PathMatchConfigurer should configure PathMatcher").isEqualTo(pathMatcher);
 	}
 
 }

@@ -78,8 +78,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertEquals((Integer) 9, result.get(1));
-		assertEquals((Integer) 37, result.get(2));
+		assertThat((Object) result.get(1)).isEqualTo((Integer) 9);
+		assertThat((Object) result.get(2)).isEqualTo((Integer) 37);
 	}
 
 	@Test
@@ -114,8 +114,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertEquals((Integer) 9, result.get(1));
-		assertEquals((Integer) 37, result.get(2));
+		assertThat((Object) result.get(1)).isEqualTo((Integer) 9);
+		assertThat((Object) result.get(2)).isEqualTo((Integer) 37);
 	}
 
 	@Test
@@ -141,8 +141,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertEquals(Arrays.asList(9, 12), result.get(1));
-		assertEquals(Arrays.asList(37, 23), result.get(2));
+		assertThat((Object) result.get(1)).isEqualTo(Arrays.asList(9, 12));
+		assertThat((Object) result.get(2)).isEqualTo(Arrays.asList(37, 23));
 	}
 
 	@Test
@@ -163,8 +163,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertEquals(Arrays.asList(9, 12), result.get(1));
-		assertEquals(Arrays.asList(37, 23), result.get(2));
+		assertThat((Object) result.get(1)).isEqualTo(Arrays.asList(9, 12));
+		assertThat((Object) result.get(2)).isEqualTo(Arrays.asList(37, 23));
 	}
 
 	@Test
@@ -216,8 +216,8 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		LinkedHashMap<String, String> result = (LinkedHashMap<String, String>) conversionService.convert(map, sourceType, targetType);
-		assertEquals(map, result);
-		assertEquals(LinkedHashMap.class, result.getClass());
+		assertThat((Object) result).isEqualTo(map);
+		assertThat((Object) result.getClass()).isEqualTo(LinkedHashMap.class);
 	}
 
 	@Test
@@ -233,8 +233,8 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<String, Integer> result = (Map<String, Integer>) conversionService.convert(map, sourceType, targetType);
-		assertEquals(map, result);
-		assertEquals(NoDefaultConstructorMap.class, result.getClass());
+		assertThat((Object) result).isEqualTo(map);
+		assertThat((Object) result.getClass()).isEqualTo(NoDefaultConstructorMap.class);
 	}
 
 	@Test
@@ -277,8 +277,8 @@ public class MapToMapConverterTests {
 		result.put(MyEnum.A, 1);
 		result.put(MyEnum.C, 2);
 
-		assertEquals(result, conversionService.convert(source,
-				TypeDescriptor.forObject(source), new TypeDescriptor(getClass().getField("enumMap"))));
+		assertThat(conversionService.convert(source,
+				TypeDescriptor.forObject(source), new TypeDescriptor(getClass().getField("enumMap")))).isEqualTo(result);
 	}
 
 

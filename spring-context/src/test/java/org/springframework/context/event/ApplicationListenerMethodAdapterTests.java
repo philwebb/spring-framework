@@ -31,8 +31,7 @@ import org.springframework.core.ResolvableTypeProvider;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.ReflectionUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -331,8 +330,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 
 	private void supportsEventType(boolean match, Method method, ResolvableType eventType) {
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertEquals("Wrong match for event '" + eventType + "' on " + method,
-				match, adapter.supportsEventType(eventType));
+		assertThat((Object) adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + method).isEqualTo(match);
 	}
 
 	private void invokeListener(Method method, ApplicationEvent event) {

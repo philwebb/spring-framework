@@ -27,6 +27,7 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
@@ -53,18 +54,18 @@ public class RequestAndSessionScopedBeanTests {
 		HttpServletRequest request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 		TestBean target = (TestBean) wac.getBean(targetBeanName);
-		assertEquals("abc", target.getName());
+		assertThat((Object) target.getName()).isEqualTo("abc");
 		assertSame(target, request.getAttribute(targetBeanName));
 
 		TestBean target2 = (TestBean) wac.getBean(targetBeanName);
-		assertEquals("abc", target2.getName());
+		assertThat((Object) target2.getName()).isEqualTo("abc");
 		assertSame(target2, target);
 		assertSame(target2, request.getAttribute(targetBeanName));
 
 		request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 		TestBean target3 = (TestBean) wac.getBean(targetBeanName);
-		assertEquals("abc", target3.getName());
+		assertThat((Object) target3.getName()).isEqualTo("abc");
 		assertSame(target3, request.getAttribute(targetBeanName));
 		assertNotSame(target3, target);
 
@@ -88,7 +89,7 @@ public class RequestAndSessionScopedBeanTests {
 		wac.refresh();
 
 		TestBean target = (TestBean) wac.getBean(targetBeanName);
-		assertEquals("abc", target.getName());
+		assertThat((Object) target.getName()).isEqualTo("abc");
 		assertSame(target, request.getSession().getAttribute(targetBeanName));
 
 		RequestContextHolder.setRequestAttributes(null);

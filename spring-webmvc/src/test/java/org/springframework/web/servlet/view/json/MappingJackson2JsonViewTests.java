@@ -95,7 +95,7 @@ public class MappingJackson2JsonViewTests {
 
 	@Test
 	public void isExposePathVars() {
-		assertEquals("Must not expose path variables", false, view.isExposePathVariables());
+		assertThat((Object) view.isExposePathVariables()).as("Must not expose path variables").isEqualTo(false);
 	}
 
 	@Test
@@ -107,9 +107,9 @@ public class MappingJackson2JsonViewTests {
 		view.setUpdateContentLength(true);
 		view.render(model, request, response);
 
-		assertEquals("no-store", response.getHeader("Cache-Control"));
+		assertThat((Object) response.getHeader("Cache-Control")).isEqualTo("no-store");
 
-		assertEquals(MappingJackson2JsonView.DEFAULT_CONTENT_TYPE, response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo(MappingJackson2JsonView.DEFAULT_CONTENT_TYPE);
 
 		String jsonResult = response.getContentAsString();
 		assertThat(jsonResult.length() > 0).isTrue();
@@ -124,12 +124,12 @@ public class MappingJackson2JsonViewTests {
 		model.put("foo", "bar");
 
 		view.render(model, request, response);
-		assertEquals("application/json", response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo("application/json");
 
 		request.setAttribute(View.SELECTED_CONTENT_TYPE, new MediaType("application", "vnd.example-v2+xml"));
 		view.render(model, request, response);
 
-		assertEquals("application/vnd.example-v2+xml", response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo("application/vnd.example-v2+xml");
 	}
 
 	@Test
@@ -203,7 +203,7 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		assertThat(response.getContentAsString().length() > 0).isTrue();
-		assertEquals("{\"foo\":{\"testBeanSimple\":\"custom\"}}", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("{\"foo\":{\"testBeanSimple\":\"custom\"}}");
 
 		validateResult();
 	}
@@ -337,7 +337,7 @@ public class MappingJackson2JsonViewTests {
 		Object jsResult =
 				jsContext.evaluateString(jsScope, "(" + json + ")", "JSON Stream", 1, null);
 		assertNotNull("Json Result did not eval as valid JavaScript", jsResult);
-		assertEquals("application/json", response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo("application/json");
 	}
 
 

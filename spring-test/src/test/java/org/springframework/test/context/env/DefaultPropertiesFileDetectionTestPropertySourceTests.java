@@ -26,6 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -51,7 +52,7 @@ public class DefaultPropertiesFileDetectionTestPropertySourceTests {
 	}
 
 	protected void assertEnvironmentValue(String key, String expected) {
-		assertEquals("Value of key [" + key + "].", expected, env.getProperty(key));
+		assertThat((Object) env.getProperty(key)).as("Value of key [" + key + "].").isEqualTo(expected);
 	}
 
 

@@ -30,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -72,10 +73,10 @@ public class UrlBasedViewResolverTests {
 
 		StepVerifier.create(mono)
 				.consumeNextWith(view -> {
-					assertEquals(RedirectView.class, view.getClass());
+					assertThat((Object) view.getClass()).isEqualTo(RedirectView.class);
 					RedirectView redirectView = (RedirectView) view;
-					assertEquals("foo", redirectView.getUrl());
-					assertEquals(HttpStatus.SEE_OTHER, redirectView.getStatusCode());
+					assertThat((Object) redirectView.getUrl()).isEqualTo("foo");
+					assertThat((Object) redirectView.getStatusCode()).isEqualTo(HttpStatus.SEE_OTHER);
 				})
 				.expectComplete()
 				.verify(Duration.ZERO);
@@ -88,10 +89,10 @@ public class UrlBasedViewResolverTests {
 
 		StepVerifier.create(mono)
 				.consumeNextWith(view -> {
-					assertEquals(RedirectView.class, view.getClass());
+					assertThat((Object) view.getClass()).isEqualTo(RedirectView.class);
 					RedirectView redirectView = (RedirectView) view;
-					assertEquals("foo", redirectView.getUrl());
-					assertEquals(HttpStatus.FOUND, redirectView.getStatusCode());
+					assertThat((Object) redirectView.getUrl()).isEqualTo("foo");
+					assertThat((Object) redirectView.getStatusCode()).isEqualTo(HttpStatus.FOUND);
 				})
 				.expectComplete()
 				.verify(Duration.ZERO);

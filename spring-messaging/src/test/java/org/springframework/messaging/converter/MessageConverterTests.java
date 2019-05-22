@@ -55,7 +55,7 @@ public class MessageConverterTests {
 	public void supportsTargetClass() {
 		Message<String> message = MessageBuilder.withPayload("ABC").build();
 
-		assertEquals("success-from", this.converter.fromMessage(message, String.class));
+		assertThat(this.converter.fromMessage(message, String.class)).isEqualTo("success-from");
 		assertNull(this.converter.fromMessage(message, Integer.class));
 	}
 
@@ -64,7 +64,7 @@ public class MessageConverterTests {
 		Message<String> message = MessageBuilder.withPayload(
 				"ABC").setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.TEXT_PLAIN).build();
 
-		assertEquals("success-from", this.converter.fromMessage(message, String.class));
+		assertThat(this.converter.fromMessage(message, String.class)).isEqualTo("success-from");
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class MessageConverterTests {
 	@Test
 	public void supportsMimeTypeNotSpecified() {
 		Message<String> message = MessageBuilder.withPayload("ABC").build();
-		assertEquals("success-from", this.converter.fromMessage(message, String.class));
+		assertThat(this.converter.fromMessage(message, String.class)).isEqualTo("success-from");
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class MessageConverterTests {
 				"ABC").setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON).build();
 		this.converter = new TestMessageConverter(Collections.<MimeType>emptyList());
 
-		assertEquals("success-from", this.converter.fromMessage(message, String.class));
+		assertThat(this.converter.fromMessage(message, String.class)).isEqualTo("success-from");
 	}
 
 	@Test
@@ -120,8 +120,8 @@ public class MessageConverterTests {
 
 		assertNotNull(message.getHeaders().getId());
 		assertNotNull(message.getHeaders().getTimestamp());
-		assertEquals(MimeTypeUtils.TEXT_PLAIN, message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
-		assertEquals("bar", message.getHeaders().get("foo"));
+		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MimeTypeUtils.TEXT_PLAIN);
+		assertThat(message.getHeaders().get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -137,13 +137,13 @@ public class MessageConverterTests {
 		assertSame(headers, message.getHeaders());
 		assertNull(message.getHeaders().getId());
 		assertNull(message.getHeaders().getTimestamp());
-		assertEquals(MimeTypeUtils.TEXT_PLAIN, message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
+		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MimeTypeUtils.TEXT_PLAIN);
 	}
 
 	@Test
 	public void toMessageContentTypeHeader() {
 		Message<?> message = this.converter.toMessage("ABC", null);
-		assertEquals(MimeTypeUtils.TEXT_PLAIN, message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
+		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MimeTypeUtils.TEXT_PLAIN);
 	}
 
 

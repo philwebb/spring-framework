@@ -47,6 +47,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
@@ -237,7 +238,7 @@ public class DefaultEntityResponseBuilderTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertEquals(HttpStatus.NOT_MODIFIED, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();
@@ -262,7 +263,7 @@ public class DefaultEntityResponseBuilderTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertEquals(HttpStatus.NOT_MODIFIED, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();

@@ -41,6 +41,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
@@ -120,7 +121,7 @@ public class CacheReproTests {
 
 		assertNull(cacheResolver.getCache("foo").get("foo"));
 		Object result = bean.getSimple("foo");  // cache name = id
-		assertEquals(result, cacheResolver.getCache("foo").get("foo").get());
+		assertThat(cacheResolver.getCache("foo").get("foo").get()).isEqualTo(result);
 	}
 
 	@Test

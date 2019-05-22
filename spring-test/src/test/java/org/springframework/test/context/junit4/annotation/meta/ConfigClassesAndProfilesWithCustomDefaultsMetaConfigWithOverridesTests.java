@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.annotation.PojoAndStringConfig;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -53,17 +54,17 @@ public class ConfigClassesAndProfilesWithCustomDefaultsMetaConfigWithOverridesTe
 	@Test
 	public void verifyEmployee() {
 		assertNotNull("The employee should have been autowired.", this.employee);
-		assertEquals("John Smith", this.employee.getName());
+		assertThat((Object) this.employee.getName()).isEqualTo("John Smith");
 	}
 
 	@Test
 	public void verifyPet() {
 		assertNotNull("The pet should have been autowired.", this.pet);
-		assertEquals("Fido", this.pet.getName());
+		assertThat((Object) this.pet.getName()).isEqualTo("Fido");
 	}
 
 	@Test
 	public void verifyFoo() {
-		assertEquals("Production Foo", this.foo);
+		assertThat((Object) this.foo).isEqualTo("Production Foo");
 	}
 }

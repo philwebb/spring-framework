@@ -93,7 +93,7 @@ public class PathVariableMethodArgumentResolverTests {
 		BindingContext bindingContext = new BindingContext();
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramNamedString, bindingContext, this.exchange);
 		Object result = mono.block();
-		assertEquals("value", result);
+		assertThat(result).isEqualTo("value");
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class PathVariableMethodArgumentResolverTests {
 		BindingContext bindingContext = new BindingContext();
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramNotRequired, bindingContext, this.exchange);
 		Object result = mono.block();
-		assertEquals("value", result);
+		assertThat(result).isEqualTo("value");
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class PathVariableMethodArgumentResolverTests {
 
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramOptional, bindingContext, this.exchange);
 		Object result = mono.block();
-		assertEquals(Optional.of("value"), result);
+		assertThat(result).isEqualTo(Optional.of("value"));
 	}
 
 	@Test

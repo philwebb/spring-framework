@@ -27,6 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -60,7 +61,7 @@ public class SingleTestClassWithSingleLevelContextHierarchyTests {
 	public void loadContextHierarchy() {
 		assertNotNull("child ApplicationContext", context);
 		assertNull("parent ApplicationContext", context.getParent());
-		assertEquals("foo", foo);
+		assertThat((Object) foo).isEqualTo("foo");
 	}
 
 }

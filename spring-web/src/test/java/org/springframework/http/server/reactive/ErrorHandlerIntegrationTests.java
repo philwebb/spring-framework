@@ -27,6 +27,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -51,7 +52,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		URI url = new URI("http://localhost:" + port + "/response-body-error");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test
@@ -62,7 +63,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		URI url = new URI("http://localhost:" + port + "/handling-error");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test // SPR-15560
@@ -74,7 +75,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		URI url = new URI("http://localhost:" + port + "//");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 

@@ -132,7 +132,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 		MethodParameter param = initMethodParameter(3);
 		Object actual = testResolveArgument(param, factory);
 		assertNotNull(actual);
-		assertEquals(Optional.class, actual.getClass());
+		assertThat((Object) actual.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional<?>) actual).isPresent()).isFalse();
 
 		Foo foo = new Foo();
@@ -140,7 +140,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 
 		actual = testResolveArgument(param, factory);
 		assertNotNull(actual);
-		assertEquals(Optional.class, actual.getClass());
+		assertThat((Object) actual.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional<?>) actual).isPresent()).isTrue();
 		assertSame(foo, ((Optional<?>) actual).get());
 	}

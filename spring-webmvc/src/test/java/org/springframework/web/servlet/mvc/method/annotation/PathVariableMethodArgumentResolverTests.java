@@ -96,13 +96,13 @@ public class PathVariableMethodArgumentResolverTests {
 		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		String result = (String) resolver.resolveArgument(paramNamedString, mavContainer, webRequest, null);
-		assertEquals("PathVariable not resolved correctly", "value", result);
+		assertThat((Object) result).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(1, pathVars.size());
-		assertEquals("value", pathVars.get("name"));
+		assertThat(pathVars.get("name")).isEqualTo("value");
 	}
 
 	@Test
@@ -112,13 +112,13 @@ public class PathVariableMethodArgumentResolverTests {
 		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		String result = (String) resolver.resolveArgument(paramNotRequired, mavContainer, webRequest, null);
-		assertEquals("PathVariable not resolved correctly", "value", result);
+		assertThat((Object) result).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(1, pathVars.size());
-		assertEquals("value", pathVars.get("name"));
+		assertThat(pathVars.get("name")).isEqualTo("value");
 	}
 
 	@Test
@@ -134,13 +134,13 @@ public class PathVariableMethodArgumentResolverTests {
 		@SuppressWarnings("unchecked")
 		Optional<String> result = (Optional<String>)
 				resolver.resolveArgument(paramOptional, mavContainer, webRequest, binderFactory);
-		assertEquals("PathVariable not resolved correctly", "value", result.get());
+		assertThat((Object) result.get()).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(1, pathVars.size());
-		assertEquals(Optional.of("value"), pathVars.get("name"));
+		assertThat(pathVars.get("name")).isEqualTo(Optional.of("value"));
 	}
 
 	@Test
@@ -153,14 +153,14 @@ public class PathVariableMethodArgumentResolverTests {
 		request.setAttribute(View.PATH_VARIABLES, uriTemplateVars);
 
 		String result = (String) resolver.resolveArgument(paramNamedString, mavContainer, webRequest, null);
-		assertEquals("PathVariable not resolved correctly", "value", result);
+		assertThat((Object) result).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(2, pathVars.size());
-		assertEquals("value", pathVars.get("name"));
-		assertEquals("oldValue", pathVars.get("oldName"));
+		assertThat(pathVars.get("name")).isEqualTo("value");
+		assertThat(pathVars.get("oldName")).isEqualTo("oldValue");
 	}
 
 	@Test
@@ -180,7 +180,7 @@ public class PathVariableMethodArgumentResolverTests {
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);
 
-		assertEquals(Optional.empty(), resolver.resolveArgument(paramOptional, mavContainer, webRequest, binderFactory));
+		assertThat(resolver.resolveArgument(paramOptional, mavContainer, webRequest, binderFactory)).isEqualTo(Optional.empty());
 	}
 
 

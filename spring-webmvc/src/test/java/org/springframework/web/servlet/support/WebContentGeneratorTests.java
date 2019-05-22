@@ -21,6 +21,7 @@ import org.junit.Test;
 
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -33,34 +34,33 @@ public class WebContentGeneratorTests {
 	@Test
 	public void getAllowHeaderWithConstructorTrue() throws Exception {
 		WebContentGenerator generator = new TestWebContentGenerator(true);
-		assertEquals("GET,HEAD,POST,OPTIONS", generator.getAllowHeader());
+		assertThat((Object) generator.getAllowHeader()).isEqualTo("GET,HEAD,POST,OPTIONS");
 	}
 
 	@Test
 	public void getAllowHeaderWithConstructorFalse() throws Exception {
 		WebContentGenerator generator = new TestWebContentGenerator(false);
-		assertEquals("GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS", generator.getAllowHeader());
+		assertThat((Object) generator.getAllowHeader()).isEqualTo("GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS");
 	}
 
 	@Test
 	public void getAllowHeaderWithSupportedMethodsConstructor() throws Exception {
 		WebContentGenerator generator = new TestWebContentGenerator("POST");
-		assertEquals("POST,OPTIONS", generator.getAllowHeader());
+		assertThat((Object) generator.getAllowHeader()).isEqualTo("POST,OPTIONS");
 	}
 
 	@Test
 	public void getAllowHeaderWithSupportedMethodsSetter() throws Exception {
 		WebContentGenerator generator = new TestWebContentGenerator();
 		generator.setSupportedMethods("POST");
-		assertEquals("POST,OPTIONS", generator.getAllowHeader());
+		assertThat((Object) generator.getAllowHeader()).isEqualTo("POST,OPTIONS");
 	}
 
 	@Test
 	public void getAllowHeaderWithSupportedMethodsSetterEmpty() throws Exception {
 		WebContentGenerator generator = new TestWebContentGenerator();
 		generator.setSupportedMethods();
-		assertEquals("Effectively \"no restriction\" on supported methods",
-				"GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS", generator.getAllowHeader());
+		assertThat((Object) generator.getAllowHeader()).as("Effectively \"no restriction\" on supported methods").isEqualTo("GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS");
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class WebContentGeneratorTests {
 			response.addHeader("Vary", value);
 		}
 		generator.prepareResponse(response);
-		assertEquals(Arrays.asList(expected), response.getHeaderValues("Vary"));
+		assertThat((Object) response.getHeaderValues("Vary")).isEqualTo(Arrays.asList(expected));
 	}
 
 

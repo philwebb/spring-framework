@@ -109,8 +109,8 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		ProtectedMethodTestBean proxy = (ProtectedMethodTestBean) aop.getProxy();
 		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
-		assertEquals(proxy.getClass().getClassLoader(), bean.getClass().getClassLoader());
-		assertEquals("foo", proxy.getString());
+		assertThat((Object) bean.getClass().getClassLoader()).isEqualTo(proxy.getClass().getClassLoader());
+		assertThat((Object) proxy.getString()).isEqualTo("foo");
 	}
 
 	@Test
@@ -126,8 +126,8 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		PackageMethodTestBean proxy = (PackageMethodTestBean) aop.getProxy();
 		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
-		assertEquals(proxy.getClass().getClassLoader(), bean.getClass().getClassLoader());
-		assertEquals("foo", proxy.getString());
+		assertThat((Object) bean.getClass().getClassLoader()).isEqualTo(proxy.getClass().getClassLoader());
+		assertThat((Object) proxy.getString()).isEqualTo("foo");
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		CglibTestBean proxy = (CglibTestBean) aop.getProxy();
-		assertEquals("The name property has been overwritten by the constructor", "Rob Harrop", proxy.getName());
+		assertThat((Object) proxy.getName()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -175,7 +175,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		PrivateCglibTestBean proxy = (PrivateCglibTestBean) aop.getProxy();
-		assertEquals("The name property has been overwritten by the constructor", "Rob Harrop", proxy.toString());
+		assertThat((Object) proxy.toString()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -190,7 +190,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		CglibAopProxy aop = new CglibAopProxy(pc);
 		CglibTestBean proxy = (CglibTestBean) aop.getProxy();
 		assertNotNull("Proxy should not be null", proxy);
-		assertEquals("Constructor overrode the value of name", "Rob Harrop", proxy.getName());
+		assertThat((Object) proxy.getName()).as("Constructor overrode the value of name").isEqualTo("Rob Harrop");
 	}
 
 	@Test

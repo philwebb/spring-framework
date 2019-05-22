@@ -142,20 +142,20 @@ public class ReflectionTestUtilsTests {
 		setField(person, "favoriteNumber", PI, Number.class);
 
 		// Get reflectively
-		assertEquals(Long.valueOf(99), getField(person, "id"));
-		assertEquals("Tom", getField(person, "name"));
-		assertEquals(Integer.valueOf(42), getField(person, "age"));
-		assertEquals("blue", getField(person, "eyeColor"));
-		assertEquals(Boolean.TRUE, getField(person, "likesPets"));
-		assertEquals(PI, getField(person, "favoriteNumber"));
+		assertThat(getField(person, "id")).isEqualTo(Long.valueOf(99));
+		assertThat(getField(person, "name")).isEqualTo("Tom");
+		assertThat(getField(person, "age")).isEqualTo(Integer.valueOf(42));
+		assertThat(getField(person, "eyeColor")).isEqualTo("blue");
+		assertThat(getField(person, "likesPets")).isEqualTo(Boolean.TRUE);
+		assertThat(getField(person, "favoriteNumber")).isEqualTo(PI);
 
 		// Get directly
 		assertEquals("ID (private field in a superclass)", 99, person.getId());
-		assertEquals("name (protected field)", "Tom", person.getName());
+		assertThat((Object) person.getName()).as("name (protected field)").isEqualTo("Tom");
 		assertEquals("age (private field)", 42, person.getAge());
-		assertEquals("eye color (package private field)", "blue", person.getEyeColor());
-		assertEquals("'likes pets' flag (package private boolean field)", true, person.likesPets());
-		assertEquals("'favorite number' (package field)", PI, person.getFavoriteNumber());
+		assertThat((Object) person.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
+		assertThat((Object) person.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
+		assertThat((Object) person.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
 	}
 
 	private static void assertSetFieldAndGetFieldBehaviorForProxy(Person proxy, Person target) {
@@ -163,11 +163,11 @@ public class ReflectionTestUtilsTests {
 
 		// Get directly from Target
 		assertEquals("ID (private field in a superclass)", 99, target.getId());
-		assertEquals("name (protected field)", "Tom", target.getName());
+		assertThat((Object) target.getName()).as("name (protected field)").isEqualTo("Tom");
 		assertEquals("age (private field)", 42, target.getAge());
-		assertEquals("eye color (package private field)", "blue", target.getEyeColor());
-		assertEquals("'likes pets' flag (package private boolean field)", true, target.likesPets());
-		assertEquals("'favorite number' (package field)", PI, target.getFavoriteNumber());
+		assertThat((Object) target.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
+		assertThat((Object) target.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
+		assertThat((Object) target.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
 	}
 
 	@Test
@@ -213,8 +213,8 @@ public class ReflectionTestUtilsTests {
 		setField(StaticFields.class, "publicField", "xxx");
 		setField(StaticFields.class, "privateField", "yyy");
 
-		assertEquals("public static field", "xxx", StaticFields.publicField);
-		assertEquals("private static field", "yyy", StaticFields.getPrivateField());
+		assertThat((Object) StaticFields.publicField).as("public static field").isEqualTo("xxx");
+		assertThat((Object) StaticFields.getPrivateField()).as("private static field").isEqualTo("yyy");
 	}
 
 	@Test
@@ -222,8 +222,8 @@ public class ReflectionTestUtilsTests {
 		setField(StaticFields.class, "publicField", "xxx", String.class);
 		setField(StaticFields.class, "privateField", "yyy", String.class);
 
-		assertEquals("public static field", "xxx", StaticFields.publicField);
-		assertEquals("private static field", "yyy", StaticFields.getPrivateField());
+		assertThat((Object) StaticFields.publicField).as("public static field").isEqualTo("xxx");
+		assertThat((Object) StaticFields.getPrivateField()).as("private static field").isEqualTo("yyy");
 	}
 
 	@Test
@@ -232,21 +232,21 @@ public class ReflectionTestUtilsTests {
 		setField(staticFields, null, "publicField", "xxx", null);
 		setField(staticFields, null, "privateField", "yyy", null);
 
-		assertEquals("public static field", "xxx", StaticFields.publicField);
-		assertEquals("private static field", "yyy", StaticFields.getPrivateField());
+		assertThat((Object) StaticFields.publicField).as("public static field").isEqualTo("xxx");
+		assertThat((Object) StaticFields.getPrivateField()).as("private static field").isEqualTo("yyy");
 	}
 
 	@Test
 	public void getStaticFieldViaClass() throws Exception {
-		assertEquals("public static field", "public", getField(StaticFields.class, "publicField"));
-		assertEquals("private static field", "private", getField(StaticFields.class, "privateField"));
+		assertThat(getField(StaticFields.class, "publicField")).as("public static field").isEqualTo("public");
+		assertThat(getField(StaticFields.class, "privateField")).as("private static field").isEqualTo("private");
 	}
 
 	@Test
 	public void getStaticFieldViaInstance() throws Exception {
 		StaticFields staticFields = new StaticFields();
-		assertEquals("public static field", "public", getField(staticFields, "publicField"));
-		assertEquals("private static field", "private", getField(staticFields, "privateField"));
+		assertThat(getField(staticFields, "publicField")).as("public static field").isEqualTo("public");
+		assertThat(getField(staticFields, "privateField")).as("private static field").isEqualTo("private");
 	}
 
 	@Test
@@ -259,18 +259,18 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "setFavoriteNumber", Integer.valueOf(42), Number.class);
 
 		assertEquals("ID (protected method in a superclass)", 1, person.getId());
-		assertEquals("name (private method)", "Jerry", person.getName());
+		assertThat((Object) person.getName()).as("name (private method)").isEqualTo("Jerry");
 		assertEquals("age (protected method)", 33, person.getAge());
-		assertEquals("eye color (package private method)", "green", person.getEyeColor());
-		assertEquals("'likes pets' flag (protected method for a boolean)", false, person.likesPets());
-		assertEquals("'favorite number' (protected method for a Number)", Integer.valueOf(42), person.getFavoriteNumber());
+		assertThat((Object) person.getEyeColor()).as("eye color (package private method)").isEqualTo("green");
+		assertThat((Object) person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(false);
+		assertThat((Object) person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(Integer.valueOf(42));
 
-		assertEquals(Long.valueOf(1), invokeGetterMethod(person, "getId"));
-		assertEquals("Jerry", invokeGetterMethod(person, "getName"));
-		assertEquals(Integer.valueOf(33), invokeGetterMethod(person, "getAge"));
-		assertEquals("green", invokeGetterMethod(person, "getEyeColor"));
-		assertEquals(Boolean.FALSE, invokeGetterMethod(person, "likesPets"));
-		assertEquals(Integer.valueOf(42), invokeGetterMethod(person, "getFavoriteNumber"));
+		assertThat(invokeGetterMethod(person, "getId")).isEqualTo(Long.valueOf(1));
+		assertThat(invokeGetterMethod(person, "getName")).isEqualTo("Jerry");
+		assertThat(invokeGetterMethod(person, "getAge")).isEqualTo(Integer.valueOf(33));
+		assertThat(invokeGetterMethod(person, "getEyeColor")).isEqualTo("green");
+		assertThat(invokeGetterMethod(person, "likesPets")).isEqualTo(Boolean.FALSE);
+		assertThat(invokeGetterMethod(person, "getFavoriteNumber")).isEqualTo(Integer.valueOf(42));
 	}
 
 	@Test
@@ -283,18 +283,18 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "favoriteNumber", PI, Number.class);
 
 		assertEquals("ID (protected method in a superclass)", 99, person.getId());
-		assertEquals("name (private method)", "Tom", person.getName());
+		assertThat((Object) person.getName()).as("name (private method)").isEqualTo("Tom");
 		assertEquals("age (protected method)", 42, person.getAge());
-		assertEquals("eye color (package private method)", "blue", person.getEyeColor());
-		assertEquals("'likes pets' flag (protected method for a boolean)", true, person.likesPets());
-		assertEquals("'favorite number' (protected method for a Number)", PI, person.getFavoriteNumber());
+		assertThat((Object) person.getEyeColor()).as("eye color (package private method)").isEqualTo("blue");
+		assertThat((Object) person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(true);
+		assertThat((Object) person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(PI);
 
-		assertEquals(Long.valueOf(99), invokeGetterMethod(person, "id"));
-		assertEquals("Tom", invokeGetterMethod(person, "name"));
-		assertEquals(Integer.valueOf(42), invokeGetterMethod(person, "age"));
-		assertEquals("blue", invokeGetterMethod(person, "eyeColor"));
-		assertEquals(Boolean.TRUE, invokeGetterMethod(person, "likesPets"));
-		assertEquals(PI, invokeGetterMethod(person, "favoriteNumber"));
+		assertThat(invokeGetterMethod(person, "id")).isEqualTo(Long.valueOf(99));
+		assertThat(invokeGetterMethod(person, "name")).isEqualTo("Tom");
+		assertThat(invokeGetterMethod(person, "age")).isEqualTo(Integer.valueOf(42));
+		assertThat(invokeGetterMethod(person, "eyeColor")).isEqualTo("blue");
+		assertThat(invokeGetterMethod(person, "likesPets")).isEqualTo(Boolean.TRUE);
+		assertThat(invokeGetterMethod(person, "favoriteNumber")).isEqualTo(PI);
 	}
 
 	@Test
@@ -355,8 +355,8 @@ public class ReflectionTestUtilsTests {
 
 		// Simulate autowiring a configuration method
 		invokeMethod(component, "configure", Integer.valueOf(42), "enigma");
-		assertEquals("number should have been configured", Integer.valueOf(42), component.getNumber());
-		assertEquals("text should have been configured", "enigma", component.getText());
+		assertThat((Object) component.getNumber()).as("number should have been configured").isEqualTo(Integer.valueOf(42));
+		assertThat((Object) component.getText()).as("text should have been configured").isEqualTo("enigma");
 
 		// Simulate @PostConstruct life-cycle event
 		invokeMethod(component, "init");
@@ -412,8 +412,8 @@ public class ReflectionTestUtilsTests {
 	@Test // SPR-14363
 	public void invokeMethodOnLegacyEntityWithSideEffectsInToString() {
 		invokeMethod(entity, "configure", Integer.valueOf(42), "enigma");
-		assertEquals("number should have been configured", Integer.valueOf(42), entity.getNumber());
-		assertEquals("text should have been configured", "enigma", entity.getText());
+		assertThat((Object) entity.getNumber()).as("number should have been configured").isEqualTo(Integer.valueOf(42));
+		assertThat((Object) entity.getText()).as("text should have been configured").isEqualTo("enigma");
 	}
 
 	@Test // SPR-14363

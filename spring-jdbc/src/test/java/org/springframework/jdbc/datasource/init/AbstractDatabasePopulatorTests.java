@@ -192,7 +192,7 @@ public abstract class AbstractDatabasePopulatorTests extends AbstractDatabaseIni
 	}
 
 	private void assertTestDatabaseCreated(String name) {
-		assertEquals(name, jdbcTemplate.queryForObject("select NAME from T_TEST", String.class));
+		assertThat(jdbcTemplate.queryForObject("select NAME from T_TEST", String.class)).isEqualTo(name);
 	}
 
 }

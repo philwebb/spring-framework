@@ -57,7 +57,7 @@ public class Jackson2CborEncoderTests extends AbstractLeakCheckingTestCase {
 			try {
 				Pojo actual = this.mapper.reader().forType(Pojo.class)
 						.readValue(DataBufferTestUtils.dumpBytes(dataBuffer));
-				assertEquals(expected, actual);
+				assertThat((Object) actual).isEqualTo(expected);
 				release(dataBuffer);
 			}
 			catch (IOException ex) {

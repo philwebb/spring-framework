@@ -83,7 +83,7 @@ public class CookieValueMethodArgumentResolverTests {
 
 		boolean condition = result instanceof String;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", "bar", result);
+		assertThat(result).as("Invalid result").isEqualTo("bar");
 	}
 
 	@Test

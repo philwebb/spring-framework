@@ -84,10 +84,10 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		TypedValue tv1 = new TypedValue("hello");
 		TypedValue tv2 = new TypedValue("hello");
 		TypedValue tv3 = new TypedValue("bye");
-		assertEquals(String.class, tv1.getTypeDescriptor().getType());
-		assertEquals("TypedValue: 'hello' of [java.lang.String]", tv1.toString());
-		assertEquals(tv1, tv2);
-		assertEquals(tv2, tv1);
+		assertThat((Object) tv1.getTypeDescriptor().getType()).isEqualTo(String.class);
+		assertThat((Object) tv1.toString()).isEqualTo("TypedValue: 'hello' of [java.lang.String]");
+		assertThat((Object) tv2).isEqualTo(tv1);
+		assertThat((Object) tv1).isEqualTo(tv2);
 		assertNotEquals(tv1, tv3);
 		assertNotEquals(tv2, tv3);
 		assertNotEquals(tv3, tv1);
@@ -259,12 +259,12 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 
 		assertEquals(1, newArray.length);
 		Object firstParam = newArray[0];
-		assertEquals(String.class,firstParam.getClass().getComponentType());
+		assertThat((Object) firstParam.getClass().getComponentType()).isEqualTo(String.class);
 		Object[] firstParamArray = (Object[]) firstParam;
 		assertEquals(3,firstParamArray.length);
-		assertEquals("a",firstParamArray[0]);
-		assertEquals("b",firstParamArray[1]);
-		assertEquals("c",firstParamArray[2]);
+		assertThat(firstParamArray[0]).isEqualTo("a");
+		assertThat(firstParamArray[1]).isEqualTo("b");
+		assertThat(firstParamArray[2]).isEqualTo("c");
 	}
 
 	@Test
@@ -274,12 +274,14 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		t.setProperty("hello");
 		EvaluationContext ctx = new StandardEvaluationContext(t);
 		assertThat(rpa.canRead(ctx, t, "property")).isTrue();
-		assertEquals("hello",rpa.read(ctx, t, "property").getValue());
-		assertEquals("hello",rpa.read(ctx, t, "property").getValue()); // cached accessor used
+		assertThat(rpa.read(ctx, t, "property").getValue()).isEqualTo("hello");
+		// cached accessor used
+		assertThat(rpa.read(ctx, t, "property").getValue()).isEqualTo("hello");
 
 		assertThat(rpa.canRead(ctx, t, "field")).isTrue();
-		assertEquals(3,rpa.read(ctx, t, "field").getValue());
-		assertEquals(3,rpa.read(ctx, t, "field").getValue()); // cached accessor used
+		assertThat(rpa.read(ctx, t, "field").getValue()).isEqualTo(3);
+		// cached accessor used
+		assertThat(rpa.read(ctx, t, "field").getValue()).isEqualTo(3);
 
 		assertThat(rpa.canWrite(ctx, t, "property")).isTrue();
 		rpa.write(ctx, t, "property", "goodbye");
@@ -293,37 +295,37 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		// of populating type descriptor cache
 		rpa.write(ctx, t, "field2", 3);
 		rpa.write(ctx, t, "property2", "doodoo");
-		assertEquals(3,rpa.read(ctx, t, "field2").getValue());
+		assertThat(rpa.read(ctx, t, "field2").getValue()).isEqualTo(3);
 
 		// Attempted read as first activity on this field and property (no canRead before them)
-		assertEquals(0,rpa.read(ctx, t, "field3").getValue());
-		assertEquals("doodoo",rpa.read(ctx, t, "property3").getValue());
+		assertThat(rpa.read(ctx, t, "field3").getValue()).isEqualTo(0);
+		assertThat(rpa.read(ctx, t, "property3").getValue()).isEqualTo("doodoo");
 
 		// Access through is method
-		assertEquals(0,rpa .read(ctx, t, "field3").getValue());
-		assertEquals(false,rpa.read(ctx, t, "property4").getValue());
+		assertThat(rpa .read(ctx, t, "field3").getValue()).isEqualTo(0);
+		assertThat(rpa.read(ctx, t, "property4").getValue()).isEqualTo(false);
 		assertThat(rpa.canRead(ctx, t, "property4")).isTrue();
 
 		// repro SPR-9123, ReflectivePropertyAccessor JavaBean property names compliance tests
-		assertEquals("iD",rpa.read(ctx, t, "iD").getValue());
+		assertThat(rpa.read(ctx, t, "iD").getValue()).isEqualTo("iD");
 		assertThat(rpa.canRead(ctx, t, "iD")).isTrue();
-		assertEquals("id",rpa.read(ctx, t, "id").getValue());
+		assertThat(rpa.read(ctx, t, "id").getValue()).isEqualTo("id");
 		assertThat(rpa.canRead(ctx, t, "id")).isTrue();
-		assertEquals("ID",rpa.read(ctx, t, "ID").getValue());
+		assertThat(rpa.read(ctx, t, "ID").getValue()).isEqualTo("ID");
 		assertThat(rpa.canRead(ctx, t, "ID")).isTrue();
 		// note: "Id" is not a valid JavaBean name, nevertheless it is treated as "id"
-		assertEquals("id",rpa.read(ctx, t, "Id").getValue());
+		assertThat(rpa.read(ctx, t, "Id").getValue()).isEqualTo("id");
 		assertThat(rpa.canRead(ctx, t, "Id")).isTrue();
 
 		// repro SPR-10994
-		assertEquals("xyZ",rpa.read(ctx, t, "xyZ").getValue());
+		assertThat(rpa.read(ctx, t, "xyZ").getValue()).isEqualTo("xyZ");
 		assertThat(rpa.canRead(ctx, t, "xyZ")).isTrue();
-		assertEquals("xY",rpa.read(ctx, t, "xY").getValue());
+		assertThat(rpa.read(ctx, t, "xY").getValue()).isEqualTo("xY");
 		assertThat(rpa.canRead(ctx, t, "xY")).isTrue();
 
 		// SPR-10122, ReflectivePropertyAccessor JavaBean property names compliance tests - setters
 		rpa.write(ctx, t, "pEBS", "Test String");
-		assertEquals("Test String",rpa.read(ctx, t, "pEBS").getValue());
+		assertThat(rpa.read(ctx, t, "pEBS").getValue()).isEqualTo("Test String");
 	}
 
 	@Test
@@ -333,8 +335,9 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		tester.setProperty("hello");
 		EvaluationContext ctx = new StandardEvaluationContext(tester);
 		assertThat(reflective.canRead(ctx, tester, "property")).isTrue();
-		assertEquals("hello", reflective.read(ctx, tester, "property").getValue());
-		assertEquals("hello", reflective.read(ctx, tester, "property").getValue()); // cached accessor used
+		assertThat(reflective.read(ctx, tester, "property").getValue()).isEqualTo("hello");
+		// cached accessor used
+		assertThat(reflective.read(ctx, tester, "property").getValue()).isEqualTo("hello");
 
 		PropertyAccessor property = reflective.createOptimalAccessor(ctx, tester, "property");
 		assertThat(property.canRead(ctx, tester, "property")).isTrue();
@@ -343,8 +346,9 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 				property.canWrite(ctx, tester, "property"));
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				property.canWrite(ctx, tester, "property2"));
-		assertEquals("hello",property.read(ctx, tester, "property").getValue());
-		assertEquals("hello",property.read(ctx, tester, "property").getValue()); // cached accessor used
+		assertThat(property.read(ctx, tester, "property").getValue()).isEqualTo("hello");
+		// cached accessor used
+		assertThat(property.read(ctx, tester, "property").getValue()).isEqualTo("hello");
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				property.getSpecificTargetClasses());
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
@@ -357,8 +361,9 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 				field.canWrite(ctx, tester, "field"));
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				field.canWrite(ctx, tester, "field2"));
-		assertEquals(3,field.read(ctx, tester, "field").getValue());
-		assertEquals(3,field.read(ctx, tester, "field").getValue());  // cached accessor used
+		assertThat(field.read(ctx, tester, "field").getValue()).isEqualTo(3);
+		// cached accessor used
+		assertThat(field.read(ctx, tester, "field").getValue()).isEqualTo(3);
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				field.getSpecificTargetClasses());
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
@@ -420,7 +425,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 	}
 
 	private void checkArgument(Object expected, Object actual) {
-		assertEquals(expected,actual);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	private List<TypeDescriptor> getTypeDescriptors(Class<?>... types) {

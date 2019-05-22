@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -38,13 +39,13 @@ public class SimpMessageTypeMessageConditionTests {
 		SimpMessageType subscribeType = SimpMessageType.SUBSCRIBE;
 
 		SimpMessageType actual = condition(messageType).combine(condition(subscribeType)).getMessageType();
-		assertEquals(subscribeType, actual);
+		assertThat((Object) actual).isEqualTo(subscribeType);
 
 		actual = condition(messageType).combine(condition(messageType)).getMessageType();
-		assertEquals(messageType, actual);
+		assertThat((Object) actual).isEqualTo(messageType);
 
 		actual = condition(subscribeType).combine(condition(subscribeType)).getMessageType();
-		assertEquals(subscribeType, actual);
+		assertThat((Object) actual).isEqualTo(subscribeType);
 	}
 
 	@Test
@@ -54,7 +55,7 @@ public class SimpMessageTypeMessageConditionTests {
 		SimpMessageTypeMessageCondition actual = condition.getMatchingCondition(message);
 
 		assertNotNull(actual);
-		assertEquals(SimpMessageType.MESSAGE, actual.getMessageType());
+		assertThat((Object) actual.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
 	}
 
 	@Test

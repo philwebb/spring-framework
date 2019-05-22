@@ -163,7 +163,7 @@ public class ChannelInterceptorTests {
 			testChannel.send(MessageBuilder.withPayload("test").build());
 		}
 		catch (Exception ex) {
-			assertEquals("Simulated exception", ex.getCause().getMessage());
+			assertThat((Object) ex.getCause().getMessage()).isEqualTo("Simulated exception");
 		}
 		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
 		assertThat(interceptor2.wasAfterCompletionInvoked()).isTrue();
@@ -180,7 +180,7 @@ public class ChannelInterceptorTests {
 			this.channel.send(MessageBuilder.withPayload("test").build());
 		}
 		catch (Exception ex) {
-			assertEquals("Simulated exception", ex.getCause().getMessage());
+			assertThat((Object) ex.getCause().getMessage()).isEqualTo("Simulated exception");
 		}
 		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
 		assertThat(interceptor2.wasAfterCompletionInvoked()).isFalse();

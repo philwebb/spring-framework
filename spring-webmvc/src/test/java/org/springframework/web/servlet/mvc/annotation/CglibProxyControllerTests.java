@@ -38,6 +38,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -56,7 +57,7 @@ public class CglibProxyControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		servlet.service(request, response);
-		assertEquals("doIt", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("doIt");
 	}
 
 	@Test
@@ -66,7 +67,7 @@ public class CglibProxyControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		servlet.service(request, response);
-		assertEquals("doIt", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("doIt");
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class CglibProxyControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/hotels/bookings");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		servlet.service(request, response);
-		assertEquals("doIt", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("doIt");
 	}
 
 

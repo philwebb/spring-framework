@@ -70,7 +70,7 @@ public class AnnotatedElementKeyTests {
 	}
 
 	protected void assertKeyEquals(AnnotatedElementKey first, AnnotatedElementKey second) {
-		assertEquals(first, second);
+		assertThat((Object) second).isEqualTo(first);
 		assertEquals(first.hashCode(), second.hashCode());
 	}
 

@@ -87,7 +87,7 @@ public class ExpressionValueMethodArgumentResolverTests {
 		Object value = resolver.resolveArgument(paramSystemProperty, null, webRequest, null);
 		System.clearProperty("systemProperty");
 
-		assertEquals("22", value);
+		assertThat(value).isEqualTo("22");
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class ExpressionValueMethodArgumentResolverTests {
 		webRequest.getNativeRequest(MockHttpServletRequest.class).setContextPath("/contextPath");
 		Object value = resolver.resolveArgument(paramContextPath, null, webRequest, null);
 
-		assertEquals("/contextPath", value);
+		assertThat(value).isEqualTo("/contextPath");
 	}
 
 	public void params(@Value("#{systemProperties.systemProperty}") int param1,

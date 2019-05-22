@@ -46,6 +46,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
@@ -384,7 +385,7 @@ public class TransactionalEventListenerTests {
 			List<Object> actual = getEvents(phase);
 			assertEquals("wrong number of events for phase '" + phase + "'", expected.length, actual.size());
 			for (int i = 0; i < expected.length; i++) {
-				assertEquals("Wrong event for phase '" + phase + "' at index " + i, expected[i], actual.get(i));
+				assertThat(actual.get(i)).as("Wrong event for phase '" + phase + "' at index " + i).isEqualTo(expected[i]);
 			}
 		}
 

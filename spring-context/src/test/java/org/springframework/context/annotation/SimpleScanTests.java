@@ -49,7 +49,7 @@ public class SimpleScanTests {
 		assertEquals(1, serviceInvocationCounter.getCount());
 
 		String value = fooService.foo(1);
-		assertEquals("bar", value);
+		assertThat((Object) value).isEqualTo("bar");
 		assertEquals(2, serviceInvocationCounter.getCount());
 
 		fooService.foo(1);

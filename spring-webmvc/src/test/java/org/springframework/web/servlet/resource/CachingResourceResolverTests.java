@@ -30,6 +30,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -71,7 +72,7 @@ public class CachingResourceResolverTests {
 		Resource actual = this.chain.resolveResource(null, "bar.css", this.locations);
 
 		assertNotSame(expected, actual);
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -93,7 +94,7 @@ public class CachingResourceResolverTests {
 		String expected = "/foo.css";
 		String actual = this.chain.resolveUrlPath(expected, this.locations);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -102,7 +103,7 @@ public class CachingResourceResolverTests {
 		this.cache.put(CachingResourceResolver.RESOLVED_URL_PATH_CACHE_KEY_PREFIX + "imaginary.css", expected);
 		String actual = this.chain.resolveUrlPath("imaginary.css", this.locations);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -152,7 +153,7 @@ public class CachingResourceResolverTests {
 		String cacheKey = resourceKey(file);
 		Object actual = this.cache.get(cacheKey).get();
 
-		assertEquals(expected, actual);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test

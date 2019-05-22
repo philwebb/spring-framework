@@ -114,7 +114,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Object result = mono.block();
 		boolean condition = result instanceof String;
 		assertThat(condition).isTrue();
-		assertEquals(expected, result);
+		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Object result = mono.block();
 		boolean condition = result instanceof String;
 		assertThat(condition).isTrue();
-		assertEquals("bar", result);
+		assertThat(result).isEqualTo("bar");
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 			Object result = mono.block();
 			boolean condition = result instanceof String;
 			assertThat(condition).isTrue();
-			assertEquals("bar", result);
+			assertThat(result).isEqualTo("bar");
 		}
 		finally {
 			System.clearProperty("systemProperty");
@@ -175,7 +175,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 			Object result = mono.block();
 			boolean condition = result instanceof String;
 			assertThat(condition).isTrue();
-			assertEquals(expected, result);
+			assertThat(result).isEqualTo(expected);
 		}
 		finally {
 			System.clearProperty("systemProperty");
@@ -196,7 +196,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 			Object result = mono.block();
 			boolean condition = result instanceof String;
 			assertThat(condition).isTrue();
-			assertEquals(expected, result);
+			assertThat(result).isEqualTo(expected);
 		}
 		finally {
 			System.clearProperty("systemProperty");
@@ -227,7 +227,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 		boolean condition = result instanceof Date;
 		assertThat(condition).isTrue();
-		assertEquals(new Date(rfc1123val), result);
+		assertThat(result).isEqualTo(new Date(rfc1123val));
 	}
 
 	@Test
@@ -241,7 +241,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 		boolean condition = result instanceof Instant;
 		assertThat(condition).isTrue();
-		assertEquals(Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(rfc1123val)), result);
+		assertThat(result).isEqualTo(Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(rfc1123val)));
 	}
 
 

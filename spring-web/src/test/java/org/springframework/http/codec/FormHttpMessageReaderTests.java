@@ -82,11 +82,11 @@ public class FormHttpMessageReaderTests extends AbstractLeakCheckingTestCase {
 		MultiValueMap<String, String> result = this.reader.readMono(null, request, null).block();
 
 		assertEquals("Invalid result", 3, result.size());
-		assertEquals("Invalid result", "value 1", result.getFirst("name 1"));
+		assertThat((Object) result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 		List<String> values = result.get("name 2");
 		assertEquals("Invalid result", 2, values.size());
-		assertEquals("Invalid result", "value 2+1", values.get(0));
-		assertEquals("Invalid result", "value 2+2", values.get(1));
+		assertThat((Object) values.get(0)).as("Invalid result").isEqualTo("value 2+1");
+		assertThat((Object) values.get(1)).as("Invalid result").isEqualTo("value 2+2");
 		assertNull("Invalid result", result.getFirst("name 3"));
 	}
 
@@ -97,11 +97,11 @@ public class FormHttpMessageReaderTests extends AbstractLeakCheckingTestCase {
 		MultiValueMap<String, String> result = this.reader.read(null, request, null).single().block();
 
 		assertEquals("Invalid result", 3, result.size());
-		assertEquals("Invalid result", "value 1", result.getFirst("name 1"));
+		assertThat((Object) result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 		List<String> values = result.get("name 2");
 		assertEquals("Invalid result", 2, values.size());
-		assertEquals("Invalid result", "value 2+1", values.get(0));
-		assertEquals("Invalid result", "value 2+2", values.get(1));
+		assertThat((Object) values.get(0)).as("Invalid result").isEqualTo("value 2+1");
+		assertThat((Object) values.get(1)).as("Invalid result").isEqualTo("value 2+2");
 		assertNull("Invalid result", result.getFirst("name 3"));
 	}
 

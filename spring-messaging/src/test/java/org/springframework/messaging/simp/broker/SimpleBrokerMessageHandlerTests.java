@@ -143,10 +143,10 @@ public class SimpleBrokerMessageHandlerTests {
 		verify(this.clientOutChannel, times(4)).send(this.messageCaptor.capture());
 
 		Message<?> captured = this.messageCaptor.getAllValues().get(2);
-		assertEquals(SimpMessageType.DISCONNECT_ACK, SimpMessageHeaderAccessor.getMessageType(captured.getHeaders()));
+		assertThat((Object) SimpMessageHeaderAccessor.getMessageType(captured.getHeaders())).isEqualTo(SimpMessageType.DISCONNECT_ACK);
 		assertSame(message, captured.getHeaders().get(SimpMessageHeaderAccessor.DISCONNECT_MESSAGE_HEADER));
-		assertEquals(sess1, SimpMessageHeaderAccessor.getSessionId(captured.getHeaders()));
-		assertEquals("joe", SimpMessageHeaderAccessor.getUser(captured.getHeaders()).getName());
+		assertThat((Object) SimpMessageHeaderAccessor.getSessionId(captured.getHeaders())).isEqualTo(sess1);
+		assertThat((Object) SimpMessageHeaderAccessor.getUser(captured.getHeaders()).getName()).isEqualTo("joe");
 
 		assertThat(messageCaptured(sess2, "sub1", "/foo")).isTrue();
 		assertThat(messageCaptured(sess2, "sub2", "/foo")).isTrue();
@@ -161,9 +161,9 @@ public class SimpleBrokerMessageHandlerTests {
 		Message<?> connectAckMessage = this.messageCaptor.getValue();
 
 		SimpMessageHeaderAccessor connectAckHeaders = SimpMessageHeaderAccessor.wrap(connectAckMessage);
-		assertEquals(connectMessage, connectAckHeaders.getHeader(SimpMessageHeaderAccessor.CONNECT_MESSAGE_HEADER));
-		assertEquals(id, connectAckHeaders.getSessionId());
-		assertEquals("joe", connectAckHeaders.getUser().getName());
+		assertThat(connectAckHeaders.getHeader(SimpMessageHeaderAccessor.CONNECT_MESSAGE_HEADER)).isEqualTo(connectMessage);
+		assertThat((Object) connectAckHeaders.getSessionId()).isEqualTo(id);
+		assertThat((Object) connectAckHeaders.getUser().getName()).isEqualTo("joe");
 		assertArrayEquals(new long[] {10000, 10000},
 				SimpMessageHeaderAccessor.getHeartbeat(connectAckHeaders.getMessageHeaders()));
 	}
@@ -237,11 +237,11 @@ public class SimpleBrokerMessageHandlerTests {
 		assertEquals(2, messages.size());
 
 		MessageHeaders headers = messages.get(0).getHeaders();
-		assertEquals(SimpMessageType.CONNECT_ACK, headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER));
+		assertThat(headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.CONNECT_ACK);
 		headers = messages.get(1).getHeaders();
-		assertEquals(SimpMessageType.DISCONNECT_ACK, headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER));
-		assertEquals(id, headers.get(SimpMessageHeaderAccessor.SESSION_ID_HEADER));
-		assertEquals(user, headers.get(SimpMessageHeaderAccessor.USER_HEADER));
+		assertThat(headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.DISCONNECT_ACK);
+		assertThat(headers.get(SimpMessageHeaderAccessor.SESSION_ID_HEADER)).isEqualTo(id);
+		assertThat(headers.get(SimpMessageHeaderAccessor.USER_HEADER)).isEqualTo(user);
 	}
 
 	@Test
@@ -268,11 +268,11 @@ public class SimpleBrokerMessageHandlerTests {
 		assertEquals(2, messages.size());
 
 		MessageHeaders headers = messages.get(0).getHeaders();
-		assertEquals(SimpMessageType.CONNECT_ACK, headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER));
+		assertThat(headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.CONNECT_ACK);
 		headers = messages.get(1).getHeaders();
-		assertEquals(SimpMessageType.HEARTBEAT, headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER));
-		assertEquals(id, headers.get(SimpMessageHeaderAccessor.SESSION_ID_HEADER));
-		assertEquals(user, headers.get(SimpMessageHeaderAccessor.USER_HEADER));
+		assertThat(headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.HEARTBEAT);
+		assertThat(headers.get(SimpMessageHeaderAccessor.SESSION_ID_HEADER)).isEqualTo(id);
+		assertThat(headers.get(SimpMessageHeaderAccessor.USER_HEADER)).isEqualTo(user);
 	}
 
 	@Test
@@ -297,8 +297,7 @@ public class SimpleBrokerMessageHandlerTests {
 		verify(this.clientOutChannel, times(1)).send(this.messageCaptor.capture());
 		List<Message<?>> messages = this.messageCaptor.getAllValues();
 		assertEquals(1, messages.size());
-		assertEquals(SimpMessageType.CONNECT_ACK,
-				messages.get(0).getHeaders().get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER));
+		assertThat(messages.get(0).getHeaders().get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.CONNECT_ACK);
 	}
 
 

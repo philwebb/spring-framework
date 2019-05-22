@@ -31,6 +31,7 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.server.WebFilterChain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS;
@@ -110,8 +111,8 @@ public class CorsWebFilterTests {
 		WebFilterChain filterChain = filterExchange -> {
 			try {
 				HttpHeaders headers = filterExchange.getResponse().getHeaders();
-				assertEquals("https://domain2.com", headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
-				assertEquals("header3, header4", headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS));
+				assertThat((Object) headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("https://domain2.com");
+				assertThat((Object) headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS)).isEqualTo("header3, header4");
 			}
 			catch (AssertionError ex) {
 				return Mono.error(ex);
@@ -160,9 +161,9 @@ public class CorsWebFilterTests {
 		filter.filter(exchange, filterChain).block();
 
 		HttpHeaders headers = exchange.getResponse().getHeaders();
-		assertEquals("https://domain2.com", headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
-		assertEquals("header1, header2", headers.getFirst(ACCESS_CONTROL_ALLOW_HEADERS));
-		assertEquals("header3, header4", headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS));
+		assertThat((Object) headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("https://domain2.com");
+		assertThat((Object) headers.getFirst(ACCESS_CONTROL_ALLOW_HEADERS)).isEqualTo("header1, header2");
+		assertThat((Object) headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS)).isEqualTo("header3, header4");
 		assertEquals(123L, Long.parseLong(headers.getFirst(ACCESS_CONTROL_MAX_AGE)));
 	}
 

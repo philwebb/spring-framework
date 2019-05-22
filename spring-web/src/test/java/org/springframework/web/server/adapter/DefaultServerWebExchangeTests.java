@@ -25,6 +25,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 import org.springframework.web.server.session.DefaultWebSessionManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -38,14 +39,14 @@ public class DefaultServerWebExchangeTests {
 	@Test
 	public void transformUrlDefault() {
 		ServerWebExchange exchange = createExchange();
-		assertEquals("/foo", exchange.transformUrl("/foo"));
+		assertThat((Object) exchange.transformUrl("/foo")).isEqualTo("/foo");
 	}
 
 	@Test
 	public void transformUrlWithEncoder() {
 		ServerWebExchange exchange = createExchange();
 		exchange.addUrlTransformer(s -> s + "?nonce=123");
-		assertEquals("/foo?nonce=123", exchange.transformUrl("/foo"));
+		assertThat((Object) exchange.transformUrl("/foo")).isEqualTo("/foo?nonce=123");
 	}
 
 	@Test
@@ -53,7 +54,7 @@ public class DefaultServerWebExchangeTests {
 		ServerWebExchange exchange = createExchange();
 		exchange.addUrlTransformer(s -> s + ";p=abc");
 		exchange.addUrlTransformer(s -> s + "?q=123");
-		assertEquals("/foo;p=abc?q=123", exchange.transformUrl("/foo"));
+		assertThat((Object) exchange.transformUrl("/foo")).isEqualTo("/foo;p=abc?q=123");
 	}
 
 

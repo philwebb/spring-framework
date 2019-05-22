@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import org.springframework.jmx.AbstractJmxTests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -47,16 +48,16 @@ public class CustomEditorConfigurerTests extends AbstractJmxTests {
 		Date startJmx = (Date) getServer().getAttribute(oname, "StartDate");
 		Date endJmx = (Date) getServer().getAttribute(oname, "EndDate");
 
-		assertEquals("startDate ", getStartDate(), startJmx);
-		assertEquals("endDate ", getEndDate(), endJmx);
+		assertThat((Object) startJmx).as("startDate ").isEqualTo(getStartDate());
+		assertThat((Object) endJmx).as("endDate ").isEqualTo(getEndDate());
 	}
 
 	@Test
 	public void testGetDates() throws Exception {
 		DateRange dr = (DateRange) getContext().getBean("dateRange");
 
-		assertEquals("startDate ", getStartDate(), dr.getStartDate());
-		assertEquals("endDate ", getEndDate(), dr.getEndDate());
+		assertThat((Object) dr.getStartDate()).as("startDate ").isEqualTo(getStartDate());
+		assertThat((Object) dr.getEndDate()).as("endDate ").isEqualTo(getEndDate());
 	}
 
 	private Date getStartDate() throws ParseException {

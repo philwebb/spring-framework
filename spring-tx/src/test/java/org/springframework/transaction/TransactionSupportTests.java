@@ -280,7 +280,7 @@ public class TransactionSupportTests {
 
 		assertNotEquals(template1, template2);
 		assertNotEquals(template1, template3);
-		assertEquals(template2, template3);
+		assertThat((Object) template3).isEqualTo(template2);
 	}
 
 

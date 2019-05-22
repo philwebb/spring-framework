@@ -18,6 +18,7 @@ package org.springframework.web.servlet.tags;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -33,13 +34,13 @@ public class ParamTests {
 	@Test
 	public void name() {
 		param.setName("name");
-		assertEquals("name", param.getName());
+		assertThat((Object) param.getName()).isEqualTo("name");
 	}
 
 	@Test
 	public void value() {
 		param.setValue("value");
-		assertEquals("value", param.getValue());
+		assertThat((Object) param.getValue()).isEqualTo("value");
 	}
 
 	@Test

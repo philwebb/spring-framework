@@ -328,7 +328,7 @@ public class ExtendedBeanInfoTests {
 
 		assertThat(hasReadMethodForProperty(bi, "foo")).isTrue();
 		assertThat(hasReadMethodForProperty(ebi, "foo")).isTrue();
-		assertEquals(hasWriteMethodForProperty(bi, "foo"), hasWriteMethodForProperty(ebi, "foo"));
+		assertThat((Object) hasWriteMethodForProperty(ebi, "foo")).isEqualTo(hasWriteMethodForProperty(bi, "foo"));
 	}
 
 	@Test
@@ -343,7 +343,7 @@ public class ExtendedBeanInfoTests {
 
 		assertThat(hasIndexedReadMethodForProperty(bi, "foos")).isTrue();
 		assertThat(hasIndexedReadMethodForProperty(ebi, "foos")).isTrue();
-		assertEquals(hasIndexedWriteMethodForProperty(bi, "foos"), hasIndexedWriteMethodForProperty(ebi, "foos"));
+		assertThat((Object) hasIndexedWriteMethodForProperty(ebi, "foos")).isEqualTo(hasIndexedWriteMethodForProperty(bi, "foos"));
 	}
 
 	/**
@@ -854,10 +854,10 @@ public class ExtendedBeanInfoTests {
 
 		// ExtendedBeanInfo needs to behave exactly like BeanInfo...
 		BeanInfo ebi = new ExtendedBeanInfo(bi);
-		assertEquals(hasReadMethod, hasReadMethodForProperty(ebi, "address"));
-		assertEquals(hasWriteMethod, hasWriteMethodForProperty(ebi, "address"));
-		assertEquals(hasIndexedReadMethod, hasIndexedReadMethodForProperty(ebi, "address"));
-		assertEquals(hasIndexedWriteMethod, hasIndexedWriteMethodForProperty(ebi, "address"));
+		assertThat((Object) hasReadMethodForProperty(ebi, "address")).isEqualTo(hasReadMethod);
+		assertThat((Object) hasWriteMethodForProperty(ebi, "address")).isEqualTo(hasWriteMethod);
+		assertThat((Object) hasIndexedReadMethodForProperty(ebi, "address")).isEqualTo(hasIndexedReadMethod);
+		assertThat((Object) hasIndexedWriteMethodForProperty(ebi, "address")).isEqualTo(hasIndexedWriteMethod);
 	}
 
 	@Test

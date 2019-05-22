@@ -36,19 +36,19 @@ public class LocaleContextHolderTests {
 		LocaleContext lc = new SimpleLocaleContext(Locale.GERMAN);
 		LocaleContextHolder.setLocaleContext(lc);
 		assertSame(lc, LocaleContextHolder.getLocaleContext());
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 
 		lc = new SimpleLocaleContext(Locale.GERMANY);
 		LocaleContextHolder.setLocaleContext(lc);
 		assertSame(lc, LocaleContextHolder.getLocaleContext());
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 
 		LocaleContextHolder.resetLocaleContext();
 		assertNull(LocaleContextHolder.getLocaleContext());
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 	}
 
 	@Test
@@ -56,122 +56,122 @@ public class LocaleContextHolderTests {
 		LocaleContext lc = new SimpleTimeZoneAwareLocaleContext(Locale.GERMANY, TimeZone.getTimeZone("GMT+1"));
 		LocaleContextHolder.setLocaleContext(lc);
 		assertSame(lc, LocaleContextHolder.getLocaleContext());
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+1"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		LocaleContextHolder.resetLocaleContext();
 		assertNull(LocaleContextHolder.getLocaleContext());
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 	}
 
 	@Test
 	public void testSetLocale() {
 		LocaleContextHolder.setLocale(Locale.GERMAN);
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 		boolean condition1 = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition1).isFalse();
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocaleContext().getLocale());
+		assertThat((Object) LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
 
 		LocaleContextHolder.setLocale(Locale.GERMANY);
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 		boolean condition = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition).isFalse();
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocaleContext().getLocale());
+		assertThat((Object) LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMANY);
 
 		LocaleContextHolder.setLocale(null);
 		assertNull(LocaleContextHolder.getLocaleContext());
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 
 		LocaleContextHolder.setDefaultLocale(Locale.GERMAN);
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocale());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
 		LocaleContextHolder.setDefaultLocale(null);
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
 	}
 
 	@Test
 	public void testSetTimeZone() {
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+1"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 		boolean condition1 = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition1).isTrue();
 		assertNull(LocaleContextHolder.getLocaleContext().getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+1"), ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone());
+		assertThat((Object) ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+2"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 		boolean condition = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition).isTrue();
 		assertNull(LocaleContextHolder.getLocaleContext().getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+2"), ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone());
+		assertThat((Object) ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 
 		LocaleContextHolder.setTimeZone(null);
 		assertNull(LocaleContextHolder.getLocaleContext());
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 
 		LocaleContextHolder.setDefaultTimeZone(TimeZone.getTimeZone("GMT+1"));
-		assertEquals(TimeZone.getTimeZone("GMT+1"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 		LocaleContextHolder.setDefaultTimeZone(null);
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 	}
 
 	@Test
 	public void testSetLocaleAndSetTimeZoneMixed() {
 		LocaleContextHolder.setLocale(Locale.GERMANY);
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 		boolean condition5 = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition5).isFalse();
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocaleContext().getLocale());
+		assertThat((Object) LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMANY);
 
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+1"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMANY);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 		boolean condition3 = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition3).isTrue();
-		assertEquals(Locale.GERMANY, LocaleContextHolder.getLocaleContext().getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+1"), ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMANY);
+		assertThat((Object) ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		LocaleContextHolder.setLocale(Locale.GERMAN);
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+1"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 		boolean condition2 = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition2).isTrue();
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocaleContext().getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+1"), ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
+		assertThat((Object) ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		LocaleContextHolder.setTimeZone(null);
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 		boolean condition4 = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition4).isFalse();
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocaleContext().getLocale());
+		assertThat((Object) LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
 
 		LocaleContextHolder.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+2"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.GERMAN);
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 		boolean condition1 = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition1).isTrue();
-		assertEquals(Locale.GERMAN, LocaleContextHolder.getLocaleContext().getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+2"), ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocaleContext().getLocale()).isEqualTo(Locale.GERMAN);
+		assertThat((Object) ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 
 		LocaleContextHolder.setLocale(null);
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+2"), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 		boolean condition = LocaleContextHolder.getLocaleContext() instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition).isTrue();
 		assertNull(LocaleContextHolder.getLocaleContext().getLocale());
-		assertEquals(TimeZone.getTimeZone("GMT+2"), ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone());
+		assertThat((Object) ((TimeZoneAwareLocaleContext) LocaleContextHolder.getLocaleContext()).getTimeZone()).isEqualTo(TimeZone.getTimeZone("GMT+2"));
 
 		LocaleContextHolder.setTimeZone(null);
-		assertEquals(Locale.getDefault(), LocaleContextHolder.getLocale());
-		assertEquals(TimeZone.getDefault(), LocaleContextHolder.getTimeZone());
+		assertThat((Object) LocaleContextHolder.getLocale()).isEqualTo(Locale.getDefault());
+		assertThat((Object) LocaleContextHolder.getTimeZone()).isEqualTo(TimeZone.getDefault());
 		assertNull(LocaleContextHolder.getLocaleContext());
 	}
 

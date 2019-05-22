@@ -65,7 +65,7 @@ public class DispatcherServletInitializerTests {
 		assertNotNull(servlets.get(SERVLET_NAME));
 
 		DispatcherServlet servlet = (DispatcherServlet) servlets.get(SERVLET_NAME);
-		assertEquals(MyDispatcherServlet.class, servlet.getClass());
+		assertThat((Object) servlet.getClass()).isEqualTo(MyDispatcherServlet.class);
 		WebApplicationContext servletContext = servlet.getWebApplicationContext();
 
 		assertThat(servletContext.containsBean("bean")).isTrue();
@@ -76,9 +76,9 @@ public class DispatcherServletInitializerTests {
 		assertNotNull(registrations.get(SERVLET_NAME));
 
 		MockServletRegistration registration = registrations.get(SERVLET_NAME);
-		assertEquals(Collections.singleton(SERVLET_MAPPING), registration.getMappings());
+		assertThat((Object) registration.getMappings()).isEqualTo(Collections.singleton(SERVLET_MAPPING));
 		assertEquals(1, registration.getLoadOnStartup());
-		assertEquals(ROLE_NAME, registration.getRunAsRole());
+		assertThat((Object) registration.getRunAsRole()).isEqualTo(ROLE_NAME);
 	}
 
 

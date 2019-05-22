@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -39,14 +40,14 @@ public class ByteArrayMultipartFileEditorTests {
 	public void setValueAsByteArray() throws Exception {
 		String expectedValue = "Shumwere, shumhow, a shuck ish washing you. - Drunken Far Side";
 		editor.setValue(expectedValue.getBytes());
-		assertEquals(expectedValue, editor.getAsText());
+		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test
 	public void setValueAsString() throws Exception {
 		String expectedValue = "'Green Wing' - classic British comedy";
 		editor.setValue(expectedValue);
-		assertEquals(expectedValue, editor.getAsText());
+		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test
@@ -60,13 +61,13 @@ public class ByteArrayMultipartFileEditorTests {
 		};
 
 		editor.setValue(object);
-		assertEquals(expectedValue, editor.getAsText());
+		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test
 	public void setValueAsNullGetsBackEmptyString() throws Exception {
 		editor.setValue(null);
-		assertEquals("", editor.getAsText());
+		assertThat((Object) editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public class ByteArrayMultipartFileEditorTests {
 		MultipartFile file = mock(MultipartFile.class);
 		given(file.getBytes()).willReturn(expectedValue.getBytes());
 		editor.setValue(file);
-		assertEquals(expectedValue, editor.getAsText());
+		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test

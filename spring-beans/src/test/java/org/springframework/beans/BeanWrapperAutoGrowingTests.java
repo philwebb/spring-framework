@@ -55,7 +55,7 @@ public class BeanWrapperAutoGrowingTests {
 	@Test
 	public void setPropertyValueNullValueInNestedPath() {
 		wrapper.setPropertyValue("nested.prop", "test");
-		assertEquals("test", bean.getNested().getProp());
+		assertThat((Object) bean.getNested().getProp()).isEqualTo("test");
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class BeanWrapperAutoGrowingTests {
 	@Test
 	public void setPropertyValueAutoGrowArray() {
 		wrapper.setPropertyValue("array[0].prop", "test");
-		assertEquals("test", bean.getArray()[0].getProp());
+		assertThat((Object) bean.getArray()[0].getProp()).isEqualTo("test");
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class BeanWrapperAutoGrowingTests {
 	@Test
 	public void setPropertyValueAutoGrowList() {
 		wrapper.setPropertyValue("list[0].prop", "test");
-		assertEquals("test", bean.getList().get(0).getProp());
+		assertThat((Object) bean.getList().get(0).getProp()).isEqualTo("test");
 	}
 
 	@Test

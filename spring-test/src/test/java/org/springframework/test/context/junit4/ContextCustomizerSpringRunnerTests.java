@@ -29,6 +29,7 @@ import org.springframework.test.context.junit4.ContextCustomizerSpringRunnerTest
 import org.springframework.test.context.support.DefaultTestContextBootstrapper;
 
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -48,7 +49,7 @@ public class ContextCustomizerSpringRunnerTests {
 
 	@Test
 	public void injectedBean() {
-		assertEquals("foo", foo);
+		assertThat((Object) foo).isEqualTo("foo");
 	}
 
 

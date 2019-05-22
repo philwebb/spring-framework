@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.util.backoff.BackOffExecution;
 import org.springframework.util.backoff.ExponentialBackOff;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 
@@ -123,11 +124,11 @@ public class ExponentialBackOffTests {
 	public void toStringContent() {
 		ExponentialBackOff backOff = new ExponentialBackOff(2000L, 2.0);
 		BackOffExecution execution = backOff.start();
-		assertEquals("ExponentialBackOff{currentInterval=n/a, multiplier=2.0}", execution.toString());
+		assertThat((Object) execution.toString()).isEqualTo("ExponentialBackOff{currentInterval=n/a, multiplier=2.0}");
 		execution.nextBackOff();
-		assertEquals("ExponentialBackOff{currentInterval=2000ms, multiplier=2.0}", execution.toString());
+		assertThat((Object) execution.toString()).isEqualTo("ExponentialBackOff{currentInterval=2000ms, multiplier=2.0}");
 		execution.nextBackOff();
-		assertEquals("ExponentialBackOff{currentInterval=4000ms, multiplier=2.0}", execution.toString());
+		assertThat((Object) execution.toString()).isEqualTo("ExponentialBackOff{currentInterval=4000ms, multiplier=2.0}");
 	}
 
 }

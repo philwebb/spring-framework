@@ -27,7 +27,6 @@ import com.rometools.rome.feed.atom.Content;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 import org.junit.Test;
-import org.xmlunit.matchers.CompareMatcher;
 
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
@@ -54,7 +53,7 @@ public class AtomFeedViewTests {
 		model.put("1", "This is entry 1");
 
 		view.render(model, request, response);
-		assertEquals("Invalid content-type", "application/atom+xml", response.getContentType());
+		assertThat((Object) response.getContentType()).as("Invalid content-type").isEqualTo("application/atom+xml");
 		String expected = "<feed xmlns=\"http://www.w3.org/2005/Atom\">" + "<title>Test Feed</title>" +
 				"<entry><title>2</title><summary>This is entry 2</summary></entry>" +
 				"<entry><title>1</title><summary>This is entry 1</summary></entry>" + "</feed>";

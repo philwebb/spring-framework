@@ -166,7 +166,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		Object result = processor.resolveArgument(paramRequestBodyString, mavContainer,
 				webRequest, new ValidatingBinderFactory());
 
-		assertEquals("Invalid argument", body, result);
+		assertThat(result).as("Invalid argument").isEqualTo(body);
 		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
@@ -256,8 +256,8 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		servletRequest.setContent("body".getBytes());
 		given(stringMessageConverter.canRead(String.class, MediaType.TEXT_PLAIN)).willReturn(true);
 		given(stringMessageConverter.read(eq(String.class), isA(HttpInputMessage.class))).willReturn("body");
-		assertEquals("body", processor.resolveArgument(paramStringNotRequired, mavContainer,
-				webRequest, new ValidatingBinderFactory()));
+		assertThat(processor.resolveArgument(paramStringNotRequired, mavContainer,
+				webRequest, new ValidatingBinderFactory())).isEqualTo("body");
 	}
 
 	@Test
@@ -284,8 +284,8 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		servletRequest.setContent("body".getBytes());
 		given(stringMessageConverter.canRead(String.class, MediaType.TEXT_PLAIN)).willReturn(true);
 		given(stringMessageConverter.read(eq(String.class), isA(HttpInputMessage.class))).willReturn("body");
-		assertEquals(Optional.of("body"), processor.resolveArgument(paramOptionalString, mavContainer,
-				webRequest, new ValidatingBinderFactory()));
+		assertThat(processor.resolveArgument(paramOptionalString, mavContainer,
+				webRequest, new ValidatingBinderFactory())).isEqualTo(Optional.of("body"));
 	}
 
 	@Test
@@ -293,7 +293,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		servletRequest.setContentType("text/plain");
 		servletRequest.setContent(new byte[0]);
 		given(stringMessageConverter.canRead(String.class, MediaType.TEXT_PLAIN)).willReturn(true);
-		assertEquals(Optional.empty(), processor.resolveArgument(paramOptionalString, mavContainer, webRequest, new ValidatingBinderFactory()));
+		assertThat(processor.resolveArgument(paramOptionalString, mavContainer, webRequest, new ValidatingBinderFactory())).isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -301,8 +301,8 @@ public class RequestResponseBodyMethodProcessorMockTests {
 		servletRequest.setContent(new byte[0]);
 		given(stringMessageConverter.canRead(String.class, MediaType.TEXT_PLAIN)).willReturn(true);
 		given(stringMessageConverter.canRead(String.class, MediaType.APPLICATION_OCTET_STREAM)).willReturn(false);
-		assertEquals(Optional.empty(), processor.resolveArgument(paramOptionalString, mavContainer,
-				webRequest, new ValidatingBinderFactory()));
+		assertThat(processor.resolveArgument(paramOptionalString, mavContainer,
+				webRequest, new ValidatingBinderFactory())).isEqualTo(Optional.empty());
 	}
 
 	@Test

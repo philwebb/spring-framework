@@ -39,7 +39,7 @@ public class AttributeAccessorSupportTests {
 	@Test
 	public void setAndGet() throws Exception {
 		this.attributeAccessor.setAttribute(NAME, VALUE);
-		assertEquals(VALUE, this.attributeAccessor.getAttribute(NAME));
+		assertThat(this.attributeAccessor.getAttribute(NAME)).isEqualTo(VALUE);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class AttributeAccessorSupportTests {
 	public void remove() throws Exception {
 		assertThat(this.attributeAccessor.hasAttribute(NAME)).isFalse();
 		this.attributeAccessor.setAttribute(NAME, VALUE);
-		assertEquals(VALUE, this.attributeAccessor.removeAttribute(NAME));
+		assertThat(this.attributeAccessor.removeAttribute(NAME)).isEqualTo(VALUE);
 		assertThat(this.attributeAccessor.hasAttribute(NAME)).isFalse();
 	}
 

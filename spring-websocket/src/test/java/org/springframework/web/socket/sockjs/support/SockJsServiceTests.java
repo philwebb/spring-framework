@@ -91,25 +91,23 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 	public void handleInfoGet() throws IOException {
 		resetResponseAndHandleRequest("GET", "/echo/info", HttpStatus.OK);
 
-		assertEquals("application/json;charset=UTF-8", this.servletResponse.getContentType());
+		assertThat((Object) this.servletResponse.getContentType()).isEqualTo("application/json;charset=UTF-8");
 		String header = this.servletResponse.getHeader(HttpHeaders.CACHE_CONTROL);
-		assertEquals("no-store, no-cache, must-revalidate, max-age=0", header);
+		assertThat((Object) header).isEqualTo("no-store, no-cache, must-revalidate, max-age=0");
 		assertNull(this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
 		assertNull(this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS));
 		assertNull(this.servletResponse.getHeader(HttpHeaders.VARY));
 
 		String body = this.servletResponse.getContentAsString();
-		assertEquals("{\"entropy\"", body.substring(0, body.indexOf(':')));
-		assertEquals(",\"origins\":[\"*:*\"],\"cookie_needed\":true,\"websocket\":true}",
-				body.substring(body.indexOf(',')));
+		assertThat((Object) body.substring(0, body.indexOf(':'))).isEqualTo("{\"entropy\"");
+		assertThat((Object) body.substring(body.indexOf(','))).isEqualTo(",\"origins\":[\"*:*\"],\"cookie_needed\":true,\"websocket\":true}");
 
 		this.service.setSessionCookieNeeded(false);
 		this.service.setWebSocketEnabled(false);
 		resetResponseAndHandleRequest("GET", "/echo/info", HttpStatus.OK);
 
 		body = this.servletResponse.getContentAsString();
-		assertEquals(",\"origins\":[\"*:*\"],\"cookie_needed\":false,\"websocket\":false}",
-				body.substring(body.indexOf(',')));
+		assertThat((Object) body.substring(body.indexOf(','))).isEqualTo(",\"origins\":[\"*:*\"],\"cookie_needed\":false,\"websocket\":false}");
 
 		this.service.setAllowedOrigins(Collections.singletonList("https://mydomain1.com"));
 		resetResponseAndHandleRequest("GET", "/echo/info", HttpStatus.OK);
@@ -124,13 +122,12 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain2.com");
 		resetResponseAndHandleRequest("GET", "/echo/info", HttpStatus.OK);
 
-		assertEquals("application/json;charset=UTF-8", this.servletResponse.getContentType());
+		assertThat((Object) this.servletResponse.getContentType()).isEqualTo("application/json;charset=UTF-8");
 		String header = this.servletResponse.getHeader(HttpHeaders.CACHE_CONTROL);
-		assertEquals("no-store, no-cache, must-revalidate, max-age=0", header);
+		assertThat((Object) header).isEqualTo("no-store, no-cache, must-revalidate, max-age=0");
 		String body = this.servletResponse.getContentAsString();
-		assertEquals("{\"entropy\"", body.substring(0, body.indexOf(':')));
-		assertEquals(",\"origins\":[\"*:*\"],\"cookie_needed\":true,\"websocket\":true}",
-				body.substring(body.indexOf(',')));
+		assertThat((Object) body.substring(0, body.indexOf(':'))).isEqualTo("{\"entropy\"");
+		assertThat((Object) body.substring(body.indexOf(','))).isEqualTo(",\"origins\":[\"*:*\"],\"cookie_needed\":true,\"websocket\":true}");
 
 		this.service.setAllowedOrigins(Collections.singletonList("http://mydomain1.com"));
 		resetResponseAndHandleRequest("GET", "/echo/info", HttpStatus.OK);
@@ -153,7 +150,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 
 		handleRequest("GET", "/echo/info", HttpStatus.OK);
 
-		assertEquals("foobar:123", this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+		assertThat((Object) this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("foobar:123");
 	}
 
 	@Test  // SPR-11919
@@ -215,7 +212,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 		this.service.setAllowedOrigins(Collections.singletonList("https://mydomain1.com"));
 		resetResponseAndHandleRequest("OPTIONS", "/echo/info", HttpStatus.FORBIDDEN);
 		corsConfiguration = this.service.getCorsConfiguration(this.servletRequest);
-		assertEquals(Collections.singletonList("https://mydomain1.com"), corsConfiguration.getAllowedOrigins());
+		assertThat((Object) corsConfiguration.getAllowedOrigins()).isEqualTo(Collections.singletonList("https://mydomain1.com"));
 	}
 
 	@Test  // SPR-12283
@@ -241,11 +238,11 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 	public void handleIframeRequest() throws IOException {
 		resetResponseAndHandleRequest("GET", "/echo/iframe.html", HttpStatus.OK);
 
-		assertEquals("text/html;charset=UTF-8", this.servletResponse.getContentType());
+		assertThat((Object) this.servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
 		assertThat(this.servletResponse.getContentAsString().startsWith("<!DOCTYPE html>\n")).isTrue();
 		assertEquals(490, this.servletResponse.getContentLength());
-		assertEquals("no-store, no-cache, must-revalidate, max-age=0", this.response.getHeaders().getCacheControl());
-		assertEquals("\"0096cbd37f2a5218c33bb0826a7c74cbf\"", this.response.getHeaders().getETag());
+		assertThat((Object) this.response.getHeaders().getCacheControl()).isEqualTo("no-store, no-cache, must-revalidate, max-age=0");
+		assertThat((Object) this.response.getHeaders().getETag()).isEqualTo("\"0096cbd37f2a5218c33bb0826a7c74cbf\"");
 	}
 
 	@Test
@@ -257,7 +254,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 	@Test
 	public void handleRawWebSocketRequest() throws IOException {
 		resetResponseAndHandleRequest("GET", "/echo", HttpStatus.OK);
-		assertEquals("Welcome to SockJS!\n", this.servletResponse.getContentAsString());
+		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("Welcome to SockJS!\n");
 
 		resetResponseAndHandleRequest("GET", "/echo/websocket", HttpStatus.OK);
 		assertNull("Raw WebSocket should not open a SockJS session", this.service.sessionId);

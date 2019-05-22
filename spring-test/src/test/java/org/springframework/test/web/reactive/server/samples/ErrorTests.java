@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -71,7 +72,7 @@ public class ErrorTests {
 
 		byte[] content = result.getRequestBodyContent();
 		assertNotNull(content);
-		assertEquals("{\"name\":\"Dan\"}", new String(content, StandardCharsets.UTF_8));
+		assertThat((Object) new String(content, StandardCharsets.UTF_8)).isEqualTo("{\"name\":\"Dan\"}");
 	}
 
 

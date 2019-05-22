@@ -104,8 +104,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 
 		int result = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, result);
-		assertEquals("Form attribute not exposed", commandName,
-				getPageContext().getRequest().getAttribute(FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME));
+		assertThat(getPageContext().getRequest().getAttribute(FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME)).as("Form attribute not exposed").isEqualTo(commandName);
 
 		result = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, result);
@@ -150,8 +149,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 
 		int result = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, result);
-		assertEquals("Form attribute not exposed", commandName,
-				getPageContext().getAttribute(FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(getPageContext().getAttribute(FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).as("Form attribute not exposed").isEqualTo(commandName);
 
 		result = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, result);
@@ -195,8 +193,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 
 		int result = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, result);
-		assertEquals("Form attribute not exposed", commandName,
-				getPageContext().getAttribute(FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(getPageContext().getAttribute(FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).as("Form attribute not exposed").isEqualTo(commandName);
 
 		result = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, result);
@@ -232,8 +229,8 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 		String xssQueryString = QUERY_STRING + "&stuff=\"><script>alert('XSS!')</script>";
 		request.setQueryString(xssQueryString);
 		tag.doStartTag();
-		assertEquals("<form id=\"command\" action=\"/my/form?foo=bar&amp;stuff=&quot;&gt;&lt;" +
-						"script&gt;alert(&#39;XSS!&#39;)&lt;/script&gt;\" method=\"post\">", getOutput());
+		assertThat((Object) getOutput()).isEqualTo(("<form id=\"command\" action=\"/my/form?foo=bar&amp;stuff=&quot;&gt;&lt;" +
+						"script&gt;alert(&#39;XSS!&#39;)&lt;/script&gt;\" method=\"post\">"));
 	}
 
 	@Test
@@ -249,7 +246,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 		String inputOutput = getInputTag(output);
 
 		assertContainsAttribute(formOutput, "method", "get");
-		assertEquals("", inputOutput);
+		assertThat((Object) inputOutput).isEqualTo("");
 	}
 
 	@Test
@@ -265,7 +262,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 		String inputOutput = getInputTag(output);
 
 		assertContainsAttribute(formOutput, "method", "post");
-		assertEquals("", inputOutput);
+		assertThat((Object) inputOutput).isEqualTo("");
 	}
 
 	@Test
@@ -347,7 +344,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 
 		String output = getOutput();
 
-		assertEquals("<div>\n<input type=\"hidden\" name=\"key\" value=\"value\" />\n</div>", getInputTag(output));
+		assertThat((Object) getInputTag(output)).isEqualTo("<div>\n<input type=\"hidden\" name=\"key\" value=\"value\" />\n</div>");
 		assertFormTagOpened(output);
 		assertFormTagClosed(output);
 	}

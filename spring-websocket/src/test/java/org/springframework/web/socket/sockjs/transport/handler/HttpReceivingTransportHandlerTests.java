@@ -26,8 +26,7 @@ import org.springframework.web.socket.sockjs.transport.session.AbstractSockJsSes
 import org.springframework.web.socket.sockjs.transport.session.StubSockJsServiceConfig;
 import org.springframework.web.socket.sockjs.transport.session.TestHttpSockJsSession;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.willThrow;
@@ -93,7 +92,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 		transportHandler.initialize(new StubSockJsServiceConfig());
 		transportHandler.handleRequest(this.request, this.response, wsHandler, session);
 
-		assertEquals("text/plain;charset=UTF-8", this.response.getHeaders().getContentType().toString());
+		assertThat((Object) this.response.getHeaders().getContentType().toString()).isEqualTo("text/plain;charset=UTF-8");
 		verify(wsHandler).handleMessage(session, new TextMessage("x"));
 	}
 

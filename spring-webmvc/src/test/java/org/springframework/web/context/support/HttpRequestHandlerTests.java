@@ -31,8 +31,7 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIOException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -73,7 +72,7 @@ public class HttpRequestHandlerTests {
 		servlet.init(new MockServletConfig(servletContext, "myHandler"));
 
 		servlet.service(request, response);
-		assertEquals("myResponse", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("myResponse");
 
 		request.setParameter("exception", "ServletException");
 		assertThatExceptionOfType(ServletException.class).isThrownBy(() ->

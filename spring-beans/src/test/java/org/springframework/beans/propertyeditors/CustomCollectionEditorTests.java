@@ -65,9 +65,9 @@ public class CustomCollectionEditorTests {
 		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals("There must be 3 elements in the converted collection", 3, list.size());
-		assertEquals(new Integer(0), list.get(0));
-		assertEquals(new Integer(1), list.get(1));
-		assertEquals(new Integer(2), list.get(2));
+		assertThat(list.get(0)).isEqualTo(new Integer(0));
+		assertThat(list.get(1)).isEqualTo(new Integer(1));
+		assertThat(list.get(2)).isEqualTo(new Integer(2));
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class CustomCollectionEditorTests {
 		Collection<?> value = (Collection<?>) editor.getValue();
 		assertNotNull(value);
 		assertEquals("There must be 1 element in the converted collection", 1, value.size());
-		assertEquals("0, 1, 2", value.iterator().next());
+		assertThat(value.iterator().next()).isEqualTo("0, 1, 2");
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class CustomCollectionEditorTests {
 		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals("There must be 1 element in the converted collection", 1, list.size());
-		assertEquals("0, 1, 2", list.get(0));
+		assertThat(list.get(0)).isEqualTo("0, 1, 2");
 	}
 
 

@@ -59,7 +59,7 @@ public class ServletRequestDataBinderTests {
 		binder.bind(request);
 
 		assertNotNull(tb.getSpouse());
-		assertEquals("test", tb.getSpouse().getName());
+		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -141,11 +141,11 @@ public class ServletRequestDataBinderTests {
 		request.addParameter("!name", "anonymous");
 		request.addParameter("name", "Scott");
 		binder.bind(request);
-		assertEquals("Scott", target.getName());
+		assertThat((Object) target.getName()).isEqualTo("Scott");
 
 		request.removeParameter("name");
 		binder.bind(request);
-		assertEquals("anonymous", target.getName());
+		assertThat((Object) target.getName()).isEqualTo("anonymous");
 	}
 
 	@Test
@@ -184,7 +184,7 @@ public class ServletRequestDataBinderTests {
 		binder.bind(request);
 
 		assertNotNull(tb.getSpouse());
-		assertEquals("test", tb.getSpouse().getName());
+		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public class ServletRequestDataBinderTests {
 		boolean condition = pvs.getPropertyValue("forname").getValue() instanceof String[];
 		assertThat(condition).as("Found array value").isTrue();
 		String[] values = (String[]) pvs.getPropertyValue("forname").getValue();
-		assertEquals("Correct values", Arrays.asList(values), Arrays.asList(original));
+		assertThat(Arrays.asList(original)).as("Correct values").isEqualTo(Arrays.asList(values));
 	}
 
 	/**

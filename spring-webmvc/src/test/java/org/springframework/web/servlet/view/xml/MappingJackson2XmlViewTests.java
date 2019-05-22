@@ -82,7 +82,7 @@ public class MappingJackson2XmlViewTests {
 
 	@Test
 	public void isExposePathVars() {
-		assertEquals("Must not expose path variables", false, view.isExposePathVariables());
+		assertThat((Object) view.isExposePathVariables()).as("Must not expose path variables").isEqualTo(false);
 	}
 
 	@Test
@@ -94,9 +94,9 @@ public class MappingJackson2XmlViewTests {
 		view.setUpdateContentLength(true);
 		view.render(model, request, response);
 
-		assertEquals("no-store", response.getHeader("Cache-Control"));
+		assertThat((Object) response.getHeader("Cache-Control")).isEqualTo("no-store");
 
-		assertEquals(MappingJackson2XmlView.DEFAULT_CONTENT_TYPE, response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo(MappingJackson2XmlView.DEFAULT_CONTENT_TYPE);
 
 		String jsonResult = response.getContentAsString();
 		assertThat(jsonResult.length() > 0).isTrue();
@@ -111,12 +111,12 @@ public class MappingJackson2XmlViewTests {
 		model.put("foo", "bar");
 
 		view.render(model, request, response);
-		assertEquals("application/xml", response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo("application/xml");
 
 		request.setAttribute(View.SELECTED_CONTENT_TYPE, new MediaType("application", "vnd.example-v2+xml"));
 		view.render(model, request, response);
 
-		assertEquals("application/vnd.example-v2+xml", response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo("application/vnd.example-v2+xml");
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class MappingJackson2XmlViewTests {
 		Object xmlResult =
 				jsContext.evaluateString(jsScope, "(" + response.getContentAsString() + ")", "XML Stream", 1, null);
 		assertNotNull("XML Result did not eval as valid JavaScript", xmlResult);
-		assertEquals("application/xml", response.getContentType());
+		assertThat((Object) response.getContentType()).isEqualTo("application/xml");
 	}
 
 

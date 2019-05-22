@@ -18,6 +18,7 @@ package org.springframework.core.log;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -30,42 +31,42 @@ public class LogSupportTests {
 	@Test
 	public void testLogMessageWithSupplier() {
 		LogMessage msg = LogMessage.of(() -> new StringBuilder("a").append(" b"));
-		assertEquals("a b", msg.toString());
+		assertThat((Object) msg.toString()).isEqualTo("a b");
 		assertSame(msg.toString(), msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat1() {
 		LogMessage msg = LogMessage.format("a %s", "b");
-		assertEquals("a b", msg.toString());
+		assertThat((Object) msg.toString()).isEqualTo("a b");
 		assertSame(msg.toString(), msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat2() {
 		LogMessage msg = LogMessage.format("a %s %s", "b", "c");
-		assertEquals("a b c", msg.toString());
+		assertThat((Object) msg.toString()).isEqualTo("a b c");
 		assertSame(msg.toString(), msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat3() {
 		LogMessage msg = LogMessage.format("a %s %s %s", "b", "c", "d");
-		assertEquals("a b c d", msg.toString());
+		assertThat((Object) msg.toString()).isEqualTo("a b c d");
 		assertSame(msg.toString(), msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat4() {
 		LogMessage msg = LogMessage.format("a %s %s %s %s", "b", "c", "d", "e");
-		assertEquals("a b c d e", msg.toString());
+		assertThat((Object) msg.toString()).isEqualTo("a b c d e");
 		assertSame(msg.toString(), msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormatX() {
 		LogMessage msg = LogMessage.format("a %s %s %s %s %s", "b", "c", "d", "e", "f");
-		assertEquals("a b c d e f", msg.toString());
+		assertThat((Object) msg.toString()).isEqualTo("a b c d e f");
 		assertSame(msg.toString(), msg.toString());
 	}
 

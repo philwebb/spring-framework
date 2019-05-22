@@ -91,7 +91,7 @@ public class MarshallingHttpMessageConverterTests {
 		converter.setUnmarshaller(unmarshaller);
 
 		String result = (String) converter.read(Object.class, inputMessage);
-		assertEquals("Invalid result", body, result);
+		assertThat((Object) result).as("Invalid result").isEqualTo(body);
 	}
 
 	@Test
@@ -135,8 +135,7 @@ public class MarshallingHttpMessageConverterTests {
 		MarshallingHttpMessageConverter converter = new MarshallingHttpMessageConverter(marshaller);
 		converter.write(body, null, outputMessage);
 
-		assertEquals("Invalid content-type", new MediaType("application", "xml"),
-				outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
 	}
 
 	@Test

@@ -92,7 +92,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		bindTag.doStartTag();
 
 		BindStatus bindStatus = (BindStatus) getPageContext().findAttribute(BindTag.STATUS_VARIABLE_NAME);
-		assertEquals("Rob", bindStatus.getValue());
+		assertThat(bindStatus.getValue()).isEqualTo("Rob");
 	}
 
 	@Test
@@ -271,7 +271,7 @@ public class InputTagTests extends AbstractFormTagTests {
 		bindTag.doStartTag();
 
 		BindStatus bindStatus = (BindStatus) getPageContext().findAttribute(BindTag.STATUS_VARIABLE_NAME);
-		assertEquals("Sally", bindStatus.getValue());
+		assertThat(bindStatus.getValue()).isEqualTo("Sally");
 	}
 
 	@Test

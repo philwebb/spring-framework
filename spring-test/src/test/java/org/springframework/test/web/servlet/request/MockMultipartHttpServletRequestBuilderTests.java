@@ -22,6 +22,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockServletContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -37,11 +38,11 @@ public class MockMultipartHttpServletRequestBuilderTests {
 		Object result = new MockMultipartHttpServletRequestBuilder("/fileUpload").merge(parent);
 
 		assertNotNull(result);
-		assertEquals(MockMultipartHttpServletRequestBuilder.class, result.getClass());
+		assertThat((Object) result.getClass()).isEqualTo(MockMultipartHttpServletRequestBuilder.class);
 
 		MockMultipartHttpServletRequestBuilder builder = (MockMultipartHttpServletRequestBuilder) result;
 		MockHttpServletRequest request = builder.buildRequest(new MockServletContext());
-		assertEquals("UTF-8", request.getCharacterEncoding());
+		assertThat((Object) request.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 }

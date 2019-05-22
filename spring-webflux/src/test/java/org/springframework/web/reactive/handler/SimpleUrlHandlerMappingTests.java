@@ -31,6 +31,7 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -111,7 +112,7 @@ public class SimpleUrlHandlerMappingTests {
 			//noinspection OptionalGetWithoutIsPresent
 			PathContainer path = exchange.getAttribute(PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 			assertNotNull(path);
-			assertEquals(pathWithinMapping, path.value());
+			assertThat((Object) path.value()).isEqualTo(pathWithinMapping);
 		}
 		else {
 			assertNull(actual);

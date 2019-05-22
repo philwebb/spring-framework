@@ -27,6 +27,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -43,11 +44,11 @@ public class BeanInfoTests {
 		Integer value = new Integer(1);
 
 		bw.setPropertyValue("value", value);
-		assertEquals("value not set correctly", bean.getValue(), value);
+		assertThat((Object) value).as("value not set correctly").isEqualTo(bean.getValue());
 
 		value = new Integer(2);
 		bw.setPropertyValue("value", value.toString());
-		assertEquals("value not converted", bean.getValue(), value);
+		assertThat((Object) value).as("value not converted").isEqualTo(bean.getValue());
 
 		bw.setPropertyValue("value", null);
 		assertNull("value not null", bean.getValue());

@@ -45,7 +45,7 @@ public class PropertiesFactoryBeanTests {
 		pfb.setLocation(TEST_PROPS);
 		pfb.afterPropertiesSet();
 		Properties props = pfb.getObject();
-		assertEquals("99", props.getProperty("tb.array[0].age"));
+		assertThat((Object) props.getProperty("tb.array[0].age")).isEqualTo("99");
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class PropertiesFactoryBeanTests {
 		pfb.setLocation(TEST_PROPS_XML);
 		pfb.afterPropertiesSet();
 		Properties props = pfb.getObject();
-		assertEquals("99", props.getProperty("tb.array[0].age"));
+		assertThat((Object) props.getProperty("tb.array[0].age")).isEqualTo("99");
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class PropertiesFactoryBeanTests {
 		pfb.setProperties(localProps);
 		pfb.afterPropertiesSet();
 		Properties props = pfb.getObject();
-		assertEquals("value2", props.getProperty("key2"));
+		assertThat((Object) props.getProperty("key2")).isEqualTo("value2");
 	}
 
 	@Test
@@ -78,8 +78,8 @@ public class PropertiesFactoryBeanTests {
 		pfb.setProperties(localProps);
 		pfb.afterPropertiesSet();
 		Properties props = pfb.getObject();
-		assertEquals("99", props.getProperty("tb.array[0].age"));
-		assertEquals("value2", props.getProperty("key2"));
+		assertThat((Object) props.getProperty("tb.array[0].age")).isEqualTo("99");
+		assertThat((Object) props.getProperty("key2")).isEqualTo("value2");
 	}
 
 	@Test
@@ -103,12 +103,12 @@ public class PropertiesFactoryBeanTests {
 		pfb.afterPropertiesSet();
 
 		Properties props = pfb.getObject();
-		assertEquals("99", props.getProperty("tb.array[0].age"));
-		assertEquals("value2", props.getProperty("key2"));
-		assertEquals("framework", props.getProperty("spring"));
-		assertEquals("Mattingly", props.getProperty("Don"));
-		assertEquals("man", props.getProperty("spider"));
-		assertEquals("man", props.getProperty("bat"));
+		assertThat((Object) props.getProperty("tb.array[0].age")).isEqualTo("99");
+		assertThat((Object) props.getProperty("key2")).isEqualTo("value2");
+		assertThat((Object) props.getProperty("spring")).isEqualTo("framework");
+		assertThat((Object) props.getProperty("Don")).isEqualTo("Mattingly");
+		assertThat((Object) props.getProperty("spider")).isEqualTo("man");
+		assertThat((Object) props.getProperty("bat")).isEqualTo("man");
 	}
 
 	@Test
@@ -122,8 +122,8 @@ public class PropertiesFactoryBeanTests {
 		pfb.setLocalOverride(true);
 		pfb.afterPropertiesSet();
 		Properties props = pfb.getObject();
-		assertEquals("0", props.getProperty("tb.array[0].age"));
-		assertEquals("value2", props.getProperty("key2"));
+		assertThat((Object) props.getProperty("tb.array[0].age")).isEqualTo("0");
+		assertThat((Object) props.getProperty("key2")).isEqualTo("value2");
 	}
 
 	@Test
@@ -136,12 +136,12 @@ public class PropertiesFactoryBeanTests {
 		pfb.setProperties(localProps);
 		pfb.afterPropertiesSet();
 		Properties props = pfb.getObject();
-		assertEquals("99", props.getProperty("tb.array[0].age"));
-		assertEquals("value2", props.getProperty("key2"));
+		assertThat((Object) props.getProperty("tb.array[0].age")).isEqualTo("99");
+		assertThat((Object) props.getProperty("key2")).isEqualTo("value2");
 		Properties newProps = pfb.getObject();
 		assertThat(props != newProps).isTrue();
-		assertEquals("99", newProps.getProperty("tb.array[0].age"));
-		assertEquals("value2", newProps.getProperty("key2"));
+		assertThat((Object) newProps.getProperty("tb.array[0].age")).isEqualTo("99");
+		assertThat((Object) newProps.getProperty("key2")).isEqualTo("value2");
 	}
 
 }

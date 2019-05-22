@@ -41,6 +41,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -66,16 +67,16 @@ public class HttpHandlerConnectorTests {
 				}).block(Duration.ofSeconds(5));
 
 		MockServerHttpRequest request = (MockServerHttpRequest) handler.getSavedRequest();
-		assertEquals(HttpMethod.POST, request.getMethod());
-		assertEquals("/custom-path", request.getURI().toString());
+		assertThat((Object) request.getMethod()).isEqualTo(HttpMethod.POST);
+		assertThat((Object) request.getURI().toString()).isEqualTo("/custom-path");
 
 		HttpHeaders headers = request.getHeaders();
-		assertEquals(Arrays.asList("h0", "h1"), headers.get("custom-header"));
-		assertEquals(new HttpCookie("custom-cookie", "c0"), request.getCookies().getFirst("custom-cookie"));
-		assertEquals(Collections.singletonList("custom-cookie=c0"), headers.get(HttpHeaders.COOKIE));
+		assertThat((Object) headers.get("custom-header")).isEqualTo(Arrays.asList("h0", "h1"));
+		assertThat((Object) request.getCookies().getFirst("custom-cookie")).isEqualTo(new HttpCookie("custom-cookie", "c0"));
+		assertThat((Object) headers.get(HttpHeaders.COOKIE)).isEqualTo(Collections.singletonList("custom-cookie=c0"));
 
 		DataBuffer buffer = request.getBody().blockFirst(Duration.ZERO);
-		assertEquals("Custom body", DataBufferTestUtils.dumpString(buffer, UTF_8));
+		assertThat((Object) DataBufferTestUtils.dumpString(buffer, UTF_8)).isEqualTo("Custom body");
 	}
 
 	@Test
@@ -94,14 +95,14 @@ public class HttpHandlerConnectorTests {
 				.connect(HttpMethod.GET, URI.create("/custom-path"), ReactiveHttpOutputMessage::setComplete)
 				.block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		HttpHeaders headers = response.getHeaders();
-		assertEquals(Arrays.asList("h0", "h1"), headers.get("custom-header"));
-		assertEquals(cookie, response.getCookies().getFirst("custom-cookie"));
-		assertEquals(Collections.singletonList("custom-cookie=c0"), headers.get(HttpHeaders.SET_COOKIE));
+		assertThat((Object) headers.get("custom-header")).isEqualTo(Arrays.asList("h0", "h1"));
+		assertThat((Object) response.getCookies().getFirst("custom-cookie")).isEqualTo(cookie);
+		assertThat((Object) headers.get(HttpHeaders.SET_COOKIE)).isEqualTo(Collections.singletonList("custom-cookie=c0"));
 
 		DataBuffer buffer = response.getBody().blockFirst(Duration.ZERO);
-		assertEquals("Custom body", DataBufferTestUtils.dumpString(buffer, UTF_8));
+		assertThat((Object) DataBufferTestUtils.dumpString(buffer, UTF_8)).isEqualTo("Custom body");
 	}
 
 	private DataBuffer toDataBuffer(String body) {

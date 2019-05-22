@@ -61,9 +61,9 @@ public class MethodParameterTests {
 
 	@Test
 	public void testEquals() throws NoSuchMethodException {
-		assertEquals(stringParameter, stringParameter);
-		assertEquals(longParameter, longParameter);
-		assertEquals(intReturnType, intReturnType);
+		assertThat((Object) stringParameter).isEqualTo(stringParameter);
+		assertThat((Object) longParameter).isEqualTo(longParameter);
+		assertThat((Object) intReturnType).isEqualTo(intReturnType);
 
 		assertThat(stringParameter.equals(longParameter)).isFalse();
 		assertThat(stringParameter.equals(intReturnType)).isFalse();
@@ -74,8 +74,8 @@ public class MethodParameterTests {
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new MethodParameter(method, 0);
-		assertEquals(stringParameter, methodParameter);
-		assertEquals(methodParameter, stringParameter);
+		assertThat((Object) methodParameter).isEqualTo(stringParameter);
+		assertThat((Object) stringParameter).isEqualTo(methodParameter);
 		assertNotEquals(longParameter, methodParameter);
 		assertNotEquals(methodParameter, longParameter);
 	}
@@ -95,14 +95,14 @@ public class MethodParameterTests {
 	@Test
 	@SuppressWarnings("deprecation")
 	public void testFactoryMethods() {
-		assertEquals(stringParameter, MethodParameter.forMethodOrConstructor(method, 0));
-		assertEquals(longParameter, MethodParameter.forMethodOrConstructor(method, 1));
+		assertThat((Object) MethodParameter.forMethodOrConstructor(method, 0)).isEqualTo(stringParameter);
+		assertThat((Object) MethodParameter.forMethodOrConstructor(method, 1)).isEqualTo(longParameter);
 
-		assertEquals(stringParameter, MethodParameter.forExecutable(method, 0));
-		assertEquals(longParameter, MethodParameter.forExecutable(method, 1));
+		assertThat((Object) MethodParameter.forExecutable(method, 0)).isEqualTo(stringParameter);
+		assertThat((Object) MethodParameter.forExecutable(method, 1)).isEqualTo(longParameter);
 
-		assertEquals(stringParameter, MethodParameter.forParameter(method.getParameters()[0]));
-		assertEquals(longParameter, MethodParameter.forParameter(method.getParameters()[1]));
+		assertThat((Object) MethodParameter.forParameter(method.getParameters()[0])).isEqualTo(stringParameter);
+		assertThat((Object) MethodParameter.forParameter(method.getParameters()[1])).isEqualTo(longParameter);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class MethodParameterTests {
 	public void annotatedConstructorParameterInStaticNestedClass() throws Exception {
 		Constructor<?> constructor = NestedClass.class.getDeclaredConstructor(String.class);
 		MethodParameter methodParameter = MethodParameter.forExecutable(constructor, 0);
-		assertEquals(String.class, methodParameter.getParameterType());
+		assertThat((Object) methodParameter.getParameterType()).isEqualTo(String.class);
 		assertNotNull("Failed to find @Param annotation", methodParameter.getParameterAnnotation(Param.class));
 	}
 
@@ -124,15 +124,15 @@ public class MethodParameterTests {
 		Constructor<?> constructor = InnerClass.class.getConstructor(getClass(), String.class, Callable.class);
 
 		MethodParameter methodParameter = MethodParameter.forExecutable(constructor, 0);
-		assertEquals(getClass(), methodParameter.getParameterType());
+		assertThat((Object) methodParameter.getParameterType()).isEqualTo(getClass());
 		assertNull(methodParameter.getParameterAnnotation(Param.class));
 
 		methodParameter = MethodParameter.forExecutable(constructor, 1);
-		assertEquals(String.class, methodParameter.getParameterType());
+		assertThat((Object) methodParameter.getParameterType()).isEqualTo(String.class);
 		assertNotNull("Failed to find @Param annotation", methodParameter.getParameterAnnotation(Param.class));
 
 		methodParameter = MethodParameter.forExecutable(constructor, 2);
-		assertEquals(Callable.class, methodParameter.getParameterType());
+		assertThat((Object) methodParameter.getParameterType()).isEqualTo(Callable.class);
 		assertNull(methodParameter.getParameterAnnotation(Param.class));
 	}
 
@@ -141,17 +141,16 @@ public class MethodParameterTests {
 		Constructor<?> constructor = InnerClass.class.getConstructor(getClass(), String.class, Callable.class);
 
 		MethodParameter methodParameter = MethodParameter.forExecutable(constructor, 0);
-		assertEquals(getClass(), methodParameter.getParameterType());
-		assertEquals(getClass(), methodParameter.getGenericParameterType());
+		assertThat((Object) methodParameter.getParameterType()).isEqualTo(getClass());
+		assertThat((Object) methodParameter.getGenericParameterType()).isEqualTo(getClass());
 
 		methodParameter = MethodParameter.forExecutable(constructor, 1);
-		assertEquals(String.class, methodParameter.getParameterType());
-		assertEquals(String.class, methodParameter.getGenericParameterType());
+		assertThat((Object) methodParameter.getParameterType()).isEqualTo(String.class);
+		assertThat((Object) methodParameter.getGenericParameterType()).isEqualTo(String.class);
 
 		methodParameter = MethodParameter.forExecutable(constructor, 2);
-		assertEquals(Callable.class, methodParameter.getParameterType());
-		assertEquals(ResolvableType.forClassWithGenerics(Callable.class, Integer.class).getType(),
-				methodParameter.getGenericParameterType());
+		assertThat((Object) methodParameter.getParameterType()).isEqualTo(Callable.class);
+		assertThat((Object) methodParameter.getGenericParameterType()).isEqualTo(ResolvableType.forClassWithGenerics(Callable.class, Integer.class).getType());
 	}
 
 

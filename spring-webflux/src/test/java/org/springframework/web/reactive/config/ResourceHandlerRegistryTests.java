@@ -89,8 +89,7 @@ public class ResourceHandlerRegistryTests {
 		handler.handle(exchange).block(Duration.ofSeconds(5));
 
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals("test stylesheet content",
-						DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)))
+				.consumeNextWith(buf -> assertThat((Object) DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)).isEqualTo("test stylesheet content"))
 				.expectComplete()
 				.verify();
 	}

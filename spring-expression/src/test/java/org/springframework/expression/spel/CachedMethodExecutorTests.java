@@ -24,6 +24,7 @@ import org.springframework.expression.spel.ast.MethodReference;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -60,7 +61,7 @@ public class CachedMethodExecutorTests {
 
 	private void assertMethodExecution(Expression expression, Object var, String expected) {
 		this.context.setVariable("var", var);
-		assertEquals(expected, expression.getValue(this.context));
+		assertThat(expression.getValue(this.context)).isEqualTo(expected);
 	}
 
 

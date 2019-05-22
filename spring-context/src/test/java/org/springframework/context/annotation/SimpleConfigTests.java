@@ -42,12 +42,12 @@ public class SimpleConfigTests {
 		ServiceInvocationCounter serviceInvocationCounter = ctx.getBean("serviceInvocationCounter", ServiceInvocationCounter.class);
 
 		String value = fooService.foo(1);
-		assertEquals("bar", value);
+		assertThat((Object) value).isEqualTo("bar");
 
 		Future<?> future = fooService.asyncFoo(1);
 		boolean condition = future instanceof FutureTask;
 		assertThat(condition).isTrue();
-		assertEquals("bar", future.get());
+		assertThat(future.get()).isEqualTo("bar");
 
 		assertEquals(2, serviceInvocationCounter.getCount());
 

@@ -20,6 +20,7 @@ import javax.management.ObjectName;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -31,7 +32,7 @@ public abstract class AbstractNamingStrategyTests {
 	public void naming() throws Exception {
 		ObjectNamingStrategy strat = getStrategy();
 		ObjectName objectName = strat.getObjectName(getManagedResource(), getKey());
-		assertEquals(objectName.getCanonicalName(), getCorrectObjectName());
+		assertThat((Object) getCorrectObjectName()).isEqualTo(objectName.getCanonicalName());
 	}
 
 	protected abstract ObjectNamingStrategy getStrategy() throws Exception;

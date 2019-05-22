@@ -85,20 +85,20 @@ public class JndiJtaTransactionManagerTests {
 		ptm.afterPropertiesSet();
 
 		if (tmFound) {
-			assertEquals(tm, ptm.getTransactionManager());
+			assertThat((Object) ptm.getTransactionManager()).isEqualTo(tm);
 		}
 		else {
 			assertNull(ptm.getTransactionManager());
 		}
 
 		if (defaultUt) {
-			assertEquals(ut, ptm.getUserTransaction());
+			assertThat((Object) ptm.getUserTransaction()).isEqualTo(ut);
 		}
 		else {
 			boolean condition = ptm.getUserTransaction() instanceof UserTransactionAdapter;
 			assertThat(condition).isTrue();
 			UserTransactionAdapter uta = (UserTransactionAdapter) ptm.getUserTransaction();
-			assertEquals(tm, uta.getTransactionManager());
+			assertThat((Object) uta.getTransactionManager()).isEqualTo(tm);
 		}
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
@@ -145,8 +145,8 @@ public class JndiJtaTransactionManagerTests {
 		ptm.setJndiTemplate(jndiTemplate);
 		ptm.afterPropertiesSet();
 
-		assertEquals(ut, ptm.getUserTransaction());
-		assertEquals(tm, ptm.getTransactionManager());
+		assertThat((Object) ptm.getUserTransaction()).isEqualTo(ut);
+		assertThat((Object) ptm.getTransactionManager()).isEqualTo(tm);
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
 		boolean condition1 = !TransactionSynchronizationManager.isSynchronizationActive();
@@ -181,7 +181,7 @@ public class JndiJtaTransactionManagerTests {
 		ptm.setCacheUserTransaction(false);
 		ptm.afterPropertiesSet();
 
-		assertEquals(ut, ptm.getUserTransaction());
+		assertThat((Object) ptm.getUserTransaction()).isEqualTo(ut);
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
 		assertEquals(JtaTransactionManager.SYNCHRONIZATION_ALWAYS, ptm.getTransactionSynchronization());

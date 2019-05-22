@@ -76,7 +76,7 @@ public class WebExchangeDataBinderTests {
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
 
 		assertNotNull(this.testBean.getSpouse());
-		assertEquals("test", testBean.getSpouse().getName());
+		assertThat((Object) testBean.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -144,11 +144,11 @@ public class WebExchangeDataBinderTests {
 		formData.add("!name", "anonymous");
 		formData.add("name", "Scott");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertEquals("Scott", this.testBean.getName());
+		assertThat((Object) this.testBean.getName()).isEqualTo("Scott");
 
 		formData.remove("name");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertEquals("anonymous", this.testBean.getName());
+		assertThat((Object) this.testBean.getName()).isEqualTo("anonymous");
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class WebExchangeDataBinderTests {
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
 
 		assertNotNull(this.testBean.getSpouse());
-		assertEquals("test", this.testBean.getSpouse().getName());
+		assertThat((Object) this.testBean.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -184,7 +184,7 @@ public class WebExchangeDataBinderTests {
 		this.binder.bind(exchange).block(Duration.ofSeconds(5));
 
 		assertNotNull(this.testBean.getSpouse());
-		assertEquals("test", this.testBean.getSpouse().getName());
+		assertThat((Object) this.testBean.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -204,13 +204,13 @@ public class WebExchangeDataBinderTests {
 		data.add("somePartList", new ClassPathResource("org/springframework/http/server/reactive/spring.png"));
 		binder.bind(exchangeMultipart(data)).block(Duration.ofMillis(5000));
 
-		assertEquals("bar", bean.getName());
-		assertEquals(Arrays.asList("123", "abc"), bean.getSomeList());
+		assertThat((Object) bean.getName()).isEqualTo("bar");
+		assertThat((Object) bean.getSomeList()).isEqualTo(Arrays.asList("123", "abc"));
 		assertArrayEquals(new String[] {"dec", "456"}, bean.getSomeArray());
-		assertEquals("foo.txt", bean.getPart().filename());
+		assertThat((Object) bean.getPart().filename()).isEqualTo("foo.txt");
 		assertEquals(2, bean.getSomePartList().size());
-		assertEquals("foo.txt", bean.getSomePartList().get(0).filename());
-		assertEquals("spring.png", bean.getSomePartList().get(1).filename());
+		assertThat((Object) bean.getSomePartList().get(0).filename()).isEqualTo("foo.txt");
+		assertThat((Object) bean.getSomePartList().get(1).filename()).isEqualTo("spring.png");
 	}
 
 

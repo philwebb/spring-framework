@@ -37,6 +37,7 @@ import org.springframework.web.reactive.result.view.View;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.springframework.web.reactive.function.server.HandlerFilterFunction.ofResponseProcessor;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -77,11 +78,11 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/normal", String.class);
 
-		assertEquals(HttpStatus.OK, result.getStatusCode());
+		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
 		assertEquals(2, body.size());
-		assertEquals("foo", body.get("name"));
-		assertEquals("baz", body.get("bar"));
+		assertThat((Object) body.get("name")).isEqualTo("foo");
+		assertThat((Object) body.get("bar")).isEqualTo("baz");
 	}
 
 	@Test
@@ -89,12 +90,12 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/filter", String.class);
 
-		assertEquals(HttpStatus.OK, result.getStatusCode());
+		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
 		assertEquals(3, body.size());
-		assertEquals("foo", body.get("name"));
-		assertEquals("baz", body.get("bar"));
-		assertEquals("quux", body.get("qux"));
+		assertThat((Object) body.get("name")).isEqualTo("foo");
+		assertThat((Object) body.get("bar")).isEqualTo("baz");
+		assertThat((Object) body.get("qux")).isEqualTo("quux");
 	}
 
 	private Map<String, String> parseBody(String body) {

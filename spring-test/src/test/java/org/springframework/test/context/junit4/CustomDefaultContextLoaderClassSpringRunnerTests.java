@@ -27,6 +27,7 @@ import org.springframework.test.context.support.DefaultTestContextBootstrapper;
 import org.springframework.test.context.support.GenericPropertiesContextLoader;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -53,10 +54,10 @@ public class CustomDefaultContextLoaderClassSpringRunnerTests {
 	@Test
 	public void verifyAnnotationAutowiredFields() {
 		assertNotNull("The cat field should have been autowired.", this.cat);
-		assertEquals("Garfield", this.cat.getName());
+		assertThat((Object) this.cat.getName()).isEqualTo("Garfield");
 
 		assertNotNull("The testString field should have been autowired.", this.testString);
-		assertEquals("Test String", this.testString);
+		assertThat((Object) this.testString).isEqualTo("Test String");
 	}
 
 

@@ -31,6 +31,7 @@ import org.junit.Test;
 
 import org.springframework.jmx.AbstractMBeanServerTests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -121,8 +122,7 @@ public class ConnectorServerFactoryBeanTests extends AbstractMBeanServerTests {
 		assertNotNull("MBeanServerConnection should not be null", connection);
 
 		// Test for MBean server equality.
-		assertEquals("Registered MBean count should be the same", hostedServer.getMBeanCount(),
-				connection.getMBeanCount());
+		assertThat((Object) connection.getMBeanCount()).as("Registered MBean count should be the same").isEqualTo(hostedServer.getMBeanCount());
 	}
 
 }

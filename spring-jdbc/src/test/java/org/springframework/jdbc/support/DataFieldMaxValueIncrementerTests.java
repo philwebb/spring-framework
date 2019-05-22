@@ -30,6 +30,7 @@ import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.PostgresSequenceMaxValueIncrementer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -66,7 +67,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.afterPropertiesSet();
 
 		assertEquals(10, incrementer.nextLongValue());
-		assertEquals("12", incrementer.nextStringValue());
+		assertThat((Object) incrementer.nextStringValue()).isEqualTo("12");
 
 		verify(resultSet, times(2)).close();
 		verify(statement, times(2)).close();
@@ -91,7 +92,7 @@ public class DataFieldMaxValueIncrementerTests {
 
 		assertEquals(0, incrementer.nextIntValue());
 		assertEquals(1, incrementer.nextLongValue());
-		assertEquals("002", incrementer.nextStringValue());
+		assertThat((Object) incrementer.nextStringValue()).isEqualTo("002");
 		assertEquals(3, incrementer.nextIntValue());
 		assertEquals(4, incrementer.nextLongValue());
 
@@ -122,7 +123,7 @@ public class DataFieldMaxValueIncrementerTests {
 
 		assertEquals(0, incrementer.nextIntValue());
 		assertEquals(1, incrementer.nextLongValue());
-		assertEquals("002", incrementer.nextStringValue());
+		assertThat((Object) incrementer.nextStringValue()).isEqualTo("002");
 		assertEquals(3, incrementer.nextIntValue());
 		assertEquals(4, incrementer.nextLongValue());
 
@@ -152,7 +153,7 @@ public class DataFieldMaxValueIncrementerTests {
 
 		assertEquals(1, incrementer.nextIntValue());
 		assertEquals(2, incrementer.nextLongValue());
-		assertEquals("3", incrementer.nextStringValue());
+		assertThat((Object) incrementer.nextStringValue()).isEqualTo("3");
 		assertEquals(4, incrementer.nextLongValue());
 
 		verify(statement, times(2)).executeUpdate("update myseq set seq = last_insert_id(seq + 2)");
@@ -176,7 +177,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.afterPropertiesSet();
 
 		assertEquals(10, incrementer.nextLongValue());
-		assertEquals("12", incrementer.nextStringValue());
+		assertThat((Object) incrementer.nextStringValue()).isEqualTo("12");
 
 		verify(resultSet, times(2)).close();
 		verify(statement, times(2)).close();
@@ -197,7 +198,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setPaddingLength(5);
 		incrementer.afterPropertiesSet();
 
-		assertEquals("00010", incrementer.nextStringValue());
+		assertThat((Object) incrementer.nextStringValue()).isEqualTo("00010");
 		assertEquals(12, incrementer.nextIntValue());
 
 		verify(resultSet, times(2)).close();

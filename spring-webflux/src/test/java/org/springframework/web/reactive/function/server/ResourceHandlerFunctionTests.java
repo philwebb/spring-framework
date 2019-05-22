@@ -80,13 +80,13 @@ public class ResourceHandlerFunctionTests {
 		Mono<ServerResponse> responseMono = this.handlerFunction.handle(request);
 
 		Mono<Void> result = responseMono.flatMap(response -> {
-					assertEquals(HttpStatus.OK, response.statusCode());
+			assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK);
 			boolean condition = response instanceof EntityResponse;
 			assertThat(condition).isTrue();
 			@SuppressWarnings("unchecked")
 					EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
-					assertEquals(this.resource, entityResponse.entity());
-					return response.writeTo(exchange, context);
+			assertThat((Object) entityResponse.entity()).isEqualTo(this.resource);
+			return response.writeTo(exchange, context);
 				});
 
 		StepVerifier.create(result)
@@ -103,7 +103,7 @@ public class ResourceHandlerFunctionTests {
 				})
 				.expectComplete()
 				.verify();
-		assertEquals(MediaType.TEXT_PLAIN, mockResponse.getHeaders().getContentType());
+		assertThat((Object) mockResponse.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 		assertEquals(this.resource.contentLength(), mockResponse.getHeaders().getContentLength());
 	}
 
@@ -117,19 +117,19 @@ public class ResourceHandlerFunctionTests {
 		Mono<ServerResponse> responseMono = this.handlerFunction.handle(request);
 
 		Mono<Void> result = responseMono.flatMap(response -> {
-			assertEquals(HttpStatus.OK, response.statusCode());
+			assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK);
 			boolean condition = response instanceof EntityResponse;
 			assertThat(condition).isTrue();
 			@SuppressWarnings("unchecked")
 			EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
-			assertEquals(this.resource.getFilename(), entityResponse.entity().getFilename());
+			assertThat((Object) entityResponse.entity().getFilename()).isEqualTo(this.resource.getFilename());
 			return response.writeTo(exchange, context);
 		});
 
 		StepVerifier.create(result).expectComplete().verify();
 		StepVerifier.create(mockResponse.getBody()).expectComplete().verify();
 
-		assertEquals(MediaType.TEXT_PLAIN, mockResponse.getHeaders().getContentType());
+		assertThat((Object) mockResponse.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 		assertEquals(this.resource.contentLength(), mockResponse.getHeaders().getContentLength());
 	}
 
@@ -142,9 +142,8 @@ public class ResourceHandlerFunctionTests {
 
 		Mono<ServerResponse> responseMono = this.handlerFunction.handle(request);
 		Mono<Void> result = responseMono.flatMap(response -> {
-			assertEquals(HttpStatus.OK, response.statusCode());
-			assertEquals(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS),
-					response.headers().getAllow());
+			assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK);
+			assertThat((Object) response.headers().getAllow()).isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS));
 			return response.writeTo(exchange, context);
 		});
 
@@ -152,9 +151,8 @@ public class ResourceHandlerFunctionTests {
 		StepVerifier.create(result)
 				.expectComplete()
 				.verify();
-		assertEquals(HttpStatus.OK, mockResponse.getStatusCode());
-		assertEquals(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS),
-				mockResponse.getHeaders().getAllow());
+		assertThat((Object) mockResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat((Object) mockResponse.getHeaders().getAllow()).isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS));
 
 		StepVerifier.create(mockResponse.getBody()).expectComplete().verify();
 	}

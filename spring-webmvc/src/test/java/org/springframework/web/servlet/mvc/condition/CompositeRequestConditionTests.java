@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
@@ -61,7 +62,7 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition cond2 = new CompositeRequestCondition(this.param2, this.header2);
 		CompositeRequestCondition cond3 = new CompositeRequestCondition(this.param3, this.header3);
 
-		assertEquals(cond3, cond1.combine(cond2));
+		assertThat((Object) cond1.combine(cond2)).isEqualTo(cond3);
 	}
 
 	@Test
@@ -94,7 +95,7 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition condition = new CompositeRequestCondition(this.param1, getPostCond);
 		CompositeRequestCondition matchingCondition = new CompositeRequestCondition(this.param1, getCond);
 
-		assertEquals(matchingCondition, condition.getMatchingCondition(request));
+		assertThat((Object) condition.getMatchingCondition(request)).isEqualTo(matchingCondition);
 	}
 
 	@Test

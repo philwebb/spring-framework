@@ -189,7 +189,7 @@ public class SimpleNamingContextTests {
 				badCtx2.lookup(name));
 		Object o2 = new Object();
 		builder.bind(name, o2);
-		assertEquals(badCtx2.lookup(name), o2);
+		assertThat(o2).isEqualTo(badCtx2.lookup(name));
 	}
 
 

@@ -45,6 +45,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -84,7 +85,7 @@ public class ContentNegotiatingViewResolverTests {
 		request.addHeader("Accept", "text/html,application/xml;q=0.9,application/xhtml+xml,*/*;q=0.8");
 		viewResolver.afterPropertiesSet();
 		List<MediaType> result = viewResolver.getMediaTypes(request);
-		assertEquals("Invalid content type", new MediaType("application", "xhtml+xml"), result.get(0));
+		assertThat((Object) result.get(0)).as("Invalid content type").isEqualTo(new MediaType("application", "xhtml+xml"));
 	}
 
 	@Test
@@ -273,7 +274,7 @@ public class ContentNegotiatingViewResolverTests {
 		View result = viewResolver.resolveViewName(viewName, locale);
 
 		assertSame("Invalid view", viewMock, result);
-		assertEquals(new MediaType("application", "vnd.example-v2+xml"), request.getAttribute(View.SELECTED_CONTENT_TYPE));
+		assertThat(request.getAttribute(View.SELECTED_CONTENT_TYPE)).isEqualTo(new MediaType("application", "vnd.example-v2+xml"));
 	}
 
 	@Test
@@ -419,7 +420,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(jsonView.getContentType()).willReturn("application/json");
 
 		View actualView = viewResolver.resolveViewName(viewName, locale);
-		assertEquals("Invalid view", RedirectView.class, actualView.getClass());
+		assertThat((Object) actualView.getClass()).as("Invalid view").isEqualTo(RedirectView.class);
 	}
 
 	@Test

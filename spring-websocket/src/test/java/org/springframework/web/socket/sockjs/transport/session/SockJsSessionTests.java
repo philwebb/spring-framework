@@ -164,7 +164,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.setActive(false);
 		this.session.close();
 
-		assertEquals(Collections.emptyList(), this.session.getSockJsFramesWritten());
+		assertThat((Object) this.session.getSockJsFramesWritten()).isEqualTo(Collections.emptyList());
 	}
 
 	@Test
@@ -176,12 +176,12 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.close();
 
 		assertEquals(1, this.session.getSockJsFramesWritten().size());
-		assertEquals(SockJsFrame.closeFrameGoAway(), this.session.getSockJsFramesWritten().get(0));
+		assertThat((Object) this.session.getSockJsFramesWritten().get(0)).isEqualTo(SockJsFrame.closeFrameGoAway());
 
 		assertEquals(1, this.session.getNumberOfLastActiveTimeUpdates());
 		assertThat(this.session.didCancelHeartbeat()).isTrue();
 
-		assertEquals(new CloseStatus(3000, "Go away!"), this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(new CloseStatus(3000, "Go away!"));
 		assertClosed();
 		verify(this.webSocketHandler).afterConnectionClosed(this.session, new CloseStatus(3000, "Go away!"));
 	}
@@ -194,7 +194,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.setActive(true);
 		this.session.close();
 
-		assertEquals(new CloseStatus(3000, "Go away!"), this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(new CloseStatus(3000, "Go away!"));
 		assertClosed();
 	}
 
@@ -206,7 +206,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.setActive(true);
 		this.session.close(CloseStatus.NORMAL);
 
-		assertEquals(CloseStatus.NORMAL, this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.NORMAL);
 		assertClosed();
 	}
 
@@ -216,7 +216,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.setActive(true);
 		this.session.tryCloseWithSockJsTransportError(new Exception(), CloseStatus.BAD_DATA);
 
-		assertEquals(CloseStatus.BAD_DATA, this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.BAD_DATA);
 		assertClosed();
 	}
 
@@ -225,7 +225,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.writeFrame(SockJsFrame.openFrame());
 
 		assertEquals(1, this.session.getSockJsFramesWritten().size());
-		assertEquals(SockJsFrame.openFrame(), this.session.getSockJsFramesWritten().get(0));
+		assertThat((Object) this.session.getSockJsFramesWritten().get(0)).isEqualTo(SockJsFrame.openFrame());
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 
 		assertThatExceptionOfType(SockJsTransportFailureException.class).isThrownBy(() ->
 				this.session.writeFrame(SockJsFrame.openFrame()));
-		assertEquals(CloseStatus.SERVER_ERROR, this.session.getCloseStatus());
+		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
 		verify(this.webSocketHandler).afterConnectionClosed(this.session, CloseStatus.SERVER_ERROR);
 	}
 
@@ -245,7 +245,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.sendHeartbeat();
 
 		assertEquals(1, this.session.getSockJsFramesWritten().size());
-		assertEquals(SockJsFrame.heartbeatFrame(), this.session.getSockJsFramesWritten().get(0));
+		assertThat((Object) this.session.getSockJsFramesWritten().get(0)).isEqualTo(SockJsFrame.heartbeatFrame());
 
 		verify(this.taskScheduler).schedule(any(Runnable.class), any(Date.class));
 		verifyNoMoreInteractions(this.taskScheduler);
@@ -265,7 +265,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.setActive(true);
 		this.session.sendHeartbeat();
 
-		assertEquals(Collections.emptyList(), this.session.getSockJsFramesWritten());
+		assertThat((Object) this.session.getSockJsFramesWritten()).isEqualTo(Collections.emptyList());
 	}
 
 	@Test

@@ -42,7 +42,7 @@ public class GenericApplicationContextTests {
 		ac.registerBeanDefinition("testBean", new RootBeanDefinition(String.class));
 		ac.refresh();
 
-		assertEquals("", ac.getBean("testBean"));
+		assertThat(ac.getBean("testBean")).isEqualTo("");
 		assertSame(ac.getBean("testBean"), ac.getBean(String.class));
 		assertSame(ac.getBean("testBean"), ac.getBean(CharSequence.class));
 
@@ -59,7 +59,7 @@ public class GenericApplicationContextTests {
 		assertSame(ac.getBean("testBean"), ac.getBean("testBean"));
 		assertSame(ac.getBean("testBean"), ac.getBean(String.class));
 		assertSame(ac.getBean("testBean"), ac.getBean(CharSequence.class));
-		assertEquals(ac.toString(), ac.getBean("testBean"));
+		assertThat(ac.getBean("testBean")).isEqualTo(ac.toString());
 	}
 
 	@Test
@@ -70,9 +70,9 @@ public class GenericApplicationContextTests {
 		ac.refresh();
 
 		assertNotSame(ac.getBean("testBean"), ac.getBean("testBean"));
-		assertEquals(ac.getBean("testBean"), ac.getBean(String.class));
-		assertEquals(ac.getBean("testBean"), ac.getBean(CharSequence.class));
-		assertEquals(ac.toString(), ac.getBean("testBean"));
+		assertThat(ac.getBean(String.class)).isEqualTo(ac.getBean("testBean"));
+		assertThat(ac.getBean(CharSequence.class)).isEqualTo(ac.getBean("testBean"));
+		assertThat(ac.getBean("testBean")).isEqualTo(ac.toString());
 	}
 
 	@Test

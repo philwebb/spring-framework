@@ -167,7 +167,7 @@ public class DispatcherHandlerErrorTests {
 		WebHandler webHandler = new ExceptionHandlingWebHandler(this.dispatcherHandler, handlers);
 		webHandler.handle(exchange).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 

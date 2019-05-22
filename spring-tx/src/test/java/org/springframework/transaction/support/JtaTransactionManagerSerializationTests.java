@@ -61,7 +61,7 @@ public class JtaTransactionManagerSerializationTests {
 				.getUserTransaction() == ut2).as("UserTransaction looked up on client").isTrue();
 		assertNull("TransactionManager didn't survive", serializedJtatm
 				.getTransactionManager());
-		assertEquals(true, serializedJtatm.isRollbackOnCommitFailure());
+		assertThat((Object) serializedJtatm.isRollbackOnCommitFailure()).isEqualTo(true);
 	}
 
 }

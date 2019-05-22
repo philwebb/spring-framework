@@ -161,50 +161,50 @@ public class ApplicationContextExpressionTests {
 			TestBean tb0 = ac.getBean("tb0", TestBean.class);
 
 			TestBean tb1 = ac.getBean("tb1", TestBean.class);
-			assertEquals("XXXmyNameYYY42ZZZ", tb1.getName());
+			assertThat((Object) tb1.getName()).isEqualTo("XXXmyNameYYY42ZZZ");
 			assertEquals(42, tb1.getAge());
 
 			TestBean tb2 = ac.getBean("tb2", TestBean.class);
-			assertEquals("{ XXXmyNameYYY42ZZZ }", tb2.getName());
+			assertThat((Object) tb2.getName()).isEqualTo("{ XXXmyNameYYY42ZZZ }");
 			assertEquals(42, tb2.getAge());
-			assertEquals("123 UK", tb2.getCountry());
+			assertThat((Object) tb2.getCountry()).isEqualTo("123 UK");
 
 			ValueTestBean tb3 = ac.getBean("tb3", ValueTestBean.class);
-			assertEquals("XXXmyNameYYY42ZZZ", tb3.name);
+			assertThat((Object) tb3.name).isEqualTo("XXXmyNameYYY42ZZZ");
 			assertEquals(42, tb3.age);
 			assertEquals(42, tb3.ageFactory.getObject().intValue());
-			assertEquals("123 UK", tb3.country);
-			assertEquals("123 UK", tb3.countryFactory.getObject());
+			assertThat((Object) tb3.country).isEqualTo("123 UK");
+			assertThat((Object) tb3.countryFactory.getObject()).isEqualTo("123 UK");
 			System.getProperties().put("country", "US");
-			assertEquals("123 UK", tb3.country);
-			assertEquals("123 US", tb3.countryFactory.getObject());
+			assertThat((Object) tb3.country).isEqualTo("123 UK");
+			assertThat((Object) tb3.countryFactory.getObject()).isEqualTo("123 US");
 			System.getProperties().put("country", "UK");
-			assertEquals("123 UK", tb3.country);
-			assertEquals("123 UK", tb3.countryFactory.getObject());
-			assertEquals("123", tb3.optionalValue1.get());
-			assertEquals("123", tb3.optionalValue2.get());
+			assertThat((Object) tb3.country).isEqualTo("123 UK");
+			assertThat((Object) tb3.countryFactory.getObject()).isEqualTo("123 UK");
+			assertThat((Object) tb3.optionalValue1.get()).isEqualTo("123");
+			assertThat((Object) tb3.optionalValue2.get()).isEqualTo("123");
 			assertThat(tb3.optionalValue3.isPresent()).isFalse();
 			assertSame(tb0, tb3.tb);
 
 			tb3 = (ValueTestBean) SerializationTestUtils.serializeAndDeserialize(tb3);
-			assertEquals("123 UK", tb3.countryFactory.getObject());
+			assertThat((Object) tb3.countryFactory.getObject()).isEqualTo("123 UK");
 
 			ConstructorValueTestBean tb4 = ac.getBean("tb4", ConstructorValueTestBean.class);
-			assertEquals("XXXmyNameYYY42ZZZ", tb4.name);
+			assertThat((Object) tb4.name).isEqualTo("XXXmyNameYYY42ZZZ");
 			assertEquals(42, tb4.age);
-			assertEquals("123 UK", tb4.country);
+			assertThat((Object) tb4.country).isEqualTo("123 UK");
 			assertSame(tb0, tb4.tb);
 
 			MethodValueTestBean tb5 = ac.getBean("tb5", MethodValueTestBean.class);
-			assertEquals("XXXmyNameYYY42ZZZ", tb5.name);
+			assertThat((Object) tb5.name).isEqualTo("XXXmyNameYYY42ZZZ");
 			assertEquals(42, tb5.age);
-			assertEquals("123 UK", tb5.country);
+			assertThat((Object) tb5.country).isEqualTo("123 UK");
 			assertSame(tb0, tb5.tb);
 
 			PropertyValueTestBean tb6 = ac.getBean("tb6", PropertyValueTestBean.class);
-			assertEquals("XXXmyNameYYY42ZZZ", tb6.name);
+			assertThat((Object) tb6.name).isEqualTo("XXXmyNameYYY42ZZZ");
 			assertEquals(42, tb6.age);
-			assertEquals("123 UK", tb6.country);
+			assertThat((Object) tb6.country).isEqualTo("123 UK");
 			assertSame(tb0, tb6.tb);
 		}
 		finally {
@@ -230,16 +230,16 @@ public class ApplicationContextExpressionTests {
 			System.getProperties().put("name", "juergen1");
 			System.getProperties().put("country", " UK1 ");
 			PrototypeTestBean tb = (PrototypeTestBean) ac.getBean("test");
-			assertEquals("juergen1", tb.getName());
-			assertEquals("UK1", tb.getCountry());
-			assertEquals("-UK1-", tb.getCountry2());
+			assertThat((Object) tb.getName()).isEqualTo("juergen1");
+			assertThat((Object) tb.getCountry()).isEqualTo("UK1");
+			assertThat((Object) tb.getCountry2()).isEqualTo("-UK1-");
 
 			System.getProperties().put("name", "juergen2");
 			System.getProperties().put("country", "  UK2  ");
 			tb = (PrototypeTestBean) ac.getBean("test");
-			assertEquals("juergen2", tb.getName());
-			assertEquals("UK2", tb.getCountry());
-			assertEquals("-UK2-", tb.getCountry2());
+			assertThat((Object) tb.getName()).isEqualTo("juergen2");
+			assertThat((Object) tb.getCountry()).isEqualTo("UK2");
+			assertThat((Object) tb.getCountry2()).isEqualTo("-UK2-");
 		}
 		finally {
 			System.getProperties().remove("name");
@@ -265,8 +265,8 @@ public class ApplicationContextExpressionTests {
 		try {
 			for (int i = 0; i < 100000; i++) {
 				TestBean tb = (TestBean) ac.getBean("test");
-				assertEquals("juergen", tb.getName());
-				assertEquals("UK", tb.getCountry());
+				assertThat((Object) tb.getName()).isEqualTo("juergen");
+				assertThat((Object) tb.getCountry()).isEqualTo("UK");
 			}
 			sw.stop();
 		}
@@ -304,7 +304,7 @@ public class ApplicationContextExpressionTests {
 			ac.refresh();
 
 			TestBean tb = ac.getBean("tb", TestBean.class);
-			assertEquals("NL", tb.getCountry());
+			assertThat((Object) tb.getCountry()).isEqualTo("NL");
 
 		}
 		finally {
@@ -333,14 +333,13 @@ public class ApplicationContextExpressionTests {
 		try (AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(ResourceInjectionBean.class)) {
 			ResourceInjectionBean resourceInjectionBean = ac.getBean(ResourceInjectionBean.class);
 			Resource resource = new ClassPathResource("do_not_delete_me.txt");
-			assertEquals(resource, resourceInjectionBean.resource);
-			assertEquals(resource.getURL(), resourceInjectionBean.url);
-			assertEquals(resource.getURI(), resourceInjectionBean.uri);
-			assertEquals(resource.getFile(), resourceInjectionBean.file);
+			assertThat((Object) resourceInjectionBean.resource).isEqualTo(resource);
+			assertThat((Object) resourceInjectionBean.url).isEqualTo(resource.getURL());
+			assertThat((Object) resourceInjectionBean.uri).isEqualTo(resource.getURI());
+			assertThat((Object) resourceInjectionBean.file).isEqualTo(resource.getFile());
 			assertArrayEquals(FileCopyUtils.copyToByteArray(resource.getInputStream()),
 					FileCopyUtils.copyToByteArray(resourceInjectionBean.inputStream));
-			assertEquals(FileCopyUtils.copyToString(new EncodedResource(resource).getReader()),
-					FileCopyUtils.copyToString(resourceInjectionBean.reader));
+			assertThat((Object) FileCopyUtils.copyToString(resourceInjectionBean.reader)).isEqualTo(FileCopyUtils.copyToString(new EncodedResource(resource).getReader()));
 		}
 		finally {
 			System.getProperties().remove("logfile");

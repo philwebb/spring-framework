@@ -138,7 +138,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		try {
 			start(exporter);
 			Object name = server.getAttribute(ObjectNameManager.getInstance("spring:name=dynBean"), "Name");
-			assertEquals("The name attribute is incorrect", "Rob Harrop", name);
+			assertThat(name).as("The name attribute is incorrect").isEqualTo("Rob Harrop");
 			assertThat(asm.invoked).as("Assembler should not have been invoked").isFalse();
 		}
 		finally {
@@ -191,12 +191,12 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			ObjectName oname = ObjectNameManager.getInstance("spring:mbean=true");
 			assertNotNull(server.getObjectInstance(oname));
 			String name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "Rob Harrop", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("Rob Harrop");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=another");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "Juergen Hoeller", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
 		}
 		finally {
 			ctx.close();
@@ -253,7 +253,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		ObjectName oname = ObjectName.getInstance(name);
 		Object nameValue = server.getAttribute(oname, "Name");
-		assertEquals("Rob Harrop", nameValue);
+		assertThat(nameValue).isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -306,7 +306,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		assertNotNull(instance2);
 
 		// should still be the first bean with name Rob Harrop
-		assertEquals("Rob Harrop", server.getAttribute(objectName, "Name"));
+		assertThat(server.getAttribute(objectName, "Name")).isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -335,7 +335,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		assertNotNull(instance);
 
 		// should still be the new bean with name Sally Greenwood
-		assertEquals("Sally Greenwood", server.getAttribute(objectName, "Name"));
+		assertThat(server.getAttribute(objectName, "Name")).isEqualTo("Sally Greenwood");
 	}
 
 	@Test
@@ -361,11 +361,11 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		Object result = server.invoke(objectName, "add", new Object[] {new Integer(2), new Integer(3)}, new String[] {
 				int.class.getName(), int.class.getName()});
 
-		assertEquals("Incorrect result return from add", result, new Integer(5));
-		assertEquals("Incorrect attribute value", name, server.getAttribute(objectName, "Name"));
+		assertThat((Object) new Integer(5)).as("Incorrect result return from add").isEqualTo(result);
+		assertThat(server.getAttribute(objectName, "Name")).as("Incorrect attribute value").isEqualTo(name);
 
 		server.setAttribute(objectName, new Attribute("Name", otherName));
-		assertEquals("Incorrect updated name.", otherName, bean.getName());
+		assertThat((Object) bean.getName()).as("Incorrect updated name.").isEqualTo(otherName);
 	}
 
 	@Test
@@ -686,8 +686,8 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		ObjectName desired = ObjectNameManager.getInstance(OBJECT_NAME);
 		assertEquals("Incorrect number of registrations", 1, listener.getRegistered().size());
 		assertEquals("Incorrect number of unregistrations", 1, listener.getUnregistered().size());
-		assertEquals("Incorrect ObjectName in register", desired, listener.getRegistered().get(0));
-		assertEquals("Incorrect ObjectName in unregister", desired, listener.getUnregistered().get(0));
+		assertThat((Object) listener.getRegistered().get(0)).as("Incorrect ObjectName in register").isEqualTo(desired);
+		assertThat((Object) listener.getUnregistered().get(0)).as("Incorrect ObjectName in unregister").isEqualTo(desired);
 	}
 
 

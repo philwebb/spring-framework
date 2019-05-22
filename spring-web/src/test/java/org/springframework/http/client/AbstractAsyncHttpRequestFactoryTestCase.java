@@ -67,12 +67,12 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 	public void status() throws Exception {
 		URI uri = new URI(baseUrl + "/status/notfound");
 		AsyncClientHttpRequest request = this.factory.createAsyncRequest(uri, HttpMethod.GET);
-		assertEquals("Invalid HTTP method", HttpMethod.GET, request.getMethod());
-		assertEquals("Invalid HTTP URI", uri, request.getURI());
+		assertThat((Object) request.getMethod()).as("Invalid HTTP method").isEqualTo(HttpMethod.GET);
+		assertThat((Object) request.getURI()).as("Invalid HTTP URI").isEqualTo(uri);
 		Future<ClientHttpResponse> futureResponse = request.executeAsync();
 		ClientHttpResponse response = futureResponse.get();
 		try {
-			assertEquals("Invalid status code", HttpStatus.NOT_FOUND, response.getStatusCode());
+			assertThat((Object) response.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.NOT_FOUND);
 		}
 		finally {
 			response.close();
@@ -83,14 +83,14 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 	public void statusCallback() throws Exception {
 		URI uri = new URI(baseUrl + "/status/notfound");
 		AsyncClientHttpRequest request = this.factory.createAsyncRequest(uri, HttpMethod.GET);
-		assertEquals("Invalid HTTP method", HttpMethod.GET, request.getMethod());
-		assertEquals("Invalid HTTP URI", uri, request.getURI());
+		assertThat((Object) request.getMethod()).as("Invalid HTTP method").isEqualTo(HttpMethod.GET);
+		assertThat((Object) request.getURI()).as("Invalid HTTP URI").isEqualTo(uri);
 		ListenableFuture<ClientHttpResponse> listenableFuture = request.executeAsync();
 		listenableFuture.addCallback(new ListenableFutureCallback<ClientHttpResponse>() {
 			@Override
 			public void onSuccess(ClientHttpResponse result) {
 				try {
-					assertEquals("Invalid status code", HttpStatus.NOT_FOUND, result.getStatusCode());
+					assertThat((Object) result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.NOT_FOUND);
 				}
 				catch (IOException ex) {
 					throw new AssertionError(ex.getMessage(), ex);
@@ -103,7 +103,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 		});
 		ClientHttpResponse response = listenableFuture.get();
 		try {
-			assertEquals("Invalid status code", HttpStatus.NOT_FOUND, response.getStatusCode());
+			assertThat((Object) response.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.NOT_FOUND);
 		}
 		finally {
 			response.close();
@@ -113,7 +113,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 	@Test
 	public void echo() throws Exception {
 		AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(baseUrl + "/echo"), HttpMethod.PUT);
-		assertEquals("Invalid HTTP method", HttpMethod.PUT, request.getMethod());
+		assertThat((Object) request.getMethod()).as("Invalid HTTP method").isEqualTo(HttpMethod.PUT);
 		String headerName = "MyHeader";
 		String headerValue1 = "value1";
 		request.getHeaders().add(headerName, headerValue1);
@@ -133,10 +133,9 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 		Future<ClientHttpResponse> futureResponse = request.executeAsync();
 		ClientHttpResponse response = futureResponse.get();
 		try {
-			assertEquals("Invalid status code", HttpStatus.OK, response.getStatusCode());
+			assertThat((Object) response.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 			assertThat(response.getHeaders().containsKey(headerName)).as("Header not found").isTrue();
-			assertEquals("Header value not found", Arrays.asList(headerValue1, headerValue2),
-					response.getHeaders().get(headerName));
+			assertThat((Object) response.getHeaders().get(headerName)).as("Header value not found").isEqualTo(Arrays.asList(headerValue1, headerValue2));
 			byte[] result = FileCopyUtils.copyToByteArray(response.getBody());
 			assertThat(Arrays.equals(body, result)).as("Invalid body").isTrue();
 		}
@@ -207,8 +206,8 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 			}
 			Future<ClientHttpResponse> futureResponse = request.executeAsync();
 			response = futureResponse.get();
-			assertEquals("Invalid response status", HttpStatus.OK, response.getStatusCode());
-			assertEquals("Invalid method", path.toUpperCase(Locale.ENGLISH), request.getMethod().name());
+			assertThat((Object) response.getStatusCode()).as("Invalid response status").isEqualTo(HttpStatus.OK);
+			assertThat((Object) request.getMethod().name()).as("Invalid method").isEqualTo(path.toUpperCase(Locale.ENGLISH));
 		}
 		finally {
 			if (response != null) {

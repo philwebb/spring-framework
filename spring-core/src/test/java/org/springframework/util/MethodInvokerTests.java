@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -60,14 +61,14 @@ public class MethodInvokerTests {
 		mi.setTargetMethod("supertypes");
 		mi.setArguments(new ArrayList<>(), new ArrayList<>(), "hello");
 		mi.prepare();
-		assertEquals("hello", mi.invoke());
+		assertThat(mi.invoke()).isEqualTo("hello");
 
 		mi = new MethodInvoker();
 		mi.setTargetClass(TestClass1.class);
 		mi.setTargetMethod("supertypes2");
 		mi.setArguments(new ArrayList<>(), new ArrayList<>(), "hello", "bogus");
 		mi.prepare();
-		assertEquals("hello", mi.invoke());
+		assertThat(mi.invoke()).isEqualTo("hello");
 
 		// Sanity check: check that argument conversion doesn't work with plain MethodInvoker
 		mi = new MethodInvoker();
@@ -98,7 +99,7 @@ public class MethodInvokerTests {
 		methodInvoker.setArguments(new Purchaser());
 		methodInvoker.prepare();
 		String greeting = (String) methodInvoker.invoke();
-		assertEquals("purchaser: hello", greeting);
+		assertThat((Object) greeting).isEqualTo("purchaser: hello");
 	}
 
 	@Test
@@ -109,7 +110,7 @@ public class MethodInvokerTests {
 		methodInvoker.setArguments(new Shopper());
 		methodInvoker.prepare();
 		String greeting = (String) methodInvoker.invoke();
-		assertEquals("purchaser: may I help you?", greeting);
+		assertThat((Object) greeting).isEqualTo("purchaser: may I help you?");
 	}
 
 	@Test
@@ -120,7 +121,7 @@ public class MethodInvokerTests {
 		methodInvoker.setArguments(new Salesman());
 		methodInvoker.prepare();
 		String greeting = (String) methodInvoker.invoke();
-		assertEquals("greetable: how are sales?", greeting);
+		assertThat((Object) greeting).isEqualTo("greetable: how are sales?");
 	}
 
 	@Test
@@ -131,7 +132,7 @@ public class MethodInvokerTests {
 		methodInvoker.setArguments(new Customer());
 		methodInvoker.prepare();
 		String greeting = (String) methodInvoker.invoke();
-		assertEquals("customer: good day", greeting);
+		assertThat((Object) greeting).isEqualTo("customer: good day");
 	}
 
 	@Test
@@ -142,7 +143,7 @@ public class MethodInvokerTests {
 		methodInvoker.setArguments(new Regular("Kotter"));
 		methodInvoker.prepare();
 		String greeting = (String) methodInvoker.invoke();
-		assertEquals("regular: welcome back Kotter", greeting);
+		assertThat((Object) greeting).isEqualTo("regular: welcome back Kotter");
 	}
 
 	@Test
@@ -153,7 +154,7 @@ public class MethodInvokerTests {
 		methodInvoker.setArguments(new VIP("Fonzie"));
 		methodInvoker.prepare();
 		String greeting = (String) methodInvoker.invoke();
-		assertEquals("regular: whassup dude?", greeting);
+		assertThat((Object) greeting).isEqualTo("regular: whassup dude?");
 	}
 
 

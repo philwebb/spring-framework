@@ -167,12 +167,12 @@ public class AnnotationAttributesTests {
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("value", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertEquals(value, attributes.getString(alias)));
+		aliases.stream().forEach(alias -> assertThat((Object) attributes.getString(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("location1", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertEquals(value, attributes.getString(alias)));
+		aliases.stream().forEach(alias -> assertThat((Object) attributes.getString(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("value", value);
@@ -180,7 +180,7 @@ public class AnnotationAttributesTests {
 		attributes.put("xmlFile", value);
 		attributes.put("groovyScript", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertEquals(value, attributes.getString(alias)));
+		aliases.stream().forEach(alias -> assertThat((Object) attributes.getString(alias)).isEqualTo(value));
 	}
 
 	@Test

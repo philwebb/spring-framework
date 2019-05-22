@@ -23,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
@@ -58,10 +59,10 @@ public class DigestUtilsTests {
 		String expected = "b10a8db164e0754105b7a99be72e3fe5";
 
 		String hash = DigestUtils.md5DigestAsHex(bytes);
-		assertEquals("Invalid hash", expected, hash);
+		assertThat((Object) hash).as("Invalid hash").isEqualTo(expected);
 
 		hash = DigestUtils.md5DigestAsHex(new ByteArrayInputStream(bytes));
-		assertEquals("Invalid hash", expected, hash);
+		assertThat((Object) hash).as("Invalid hash").isEqualTo(expected);
 	}
 
 	@Test
@@ -70,11 +71,11 @@ public class DigestUtilsTests {
 
 		StringBuilder builder = new StringBuilder();
 		DigestUtils.appendMd5DigestAsHex(bytes, builder);
-		assertEquals("Invalid hash", expected, builder.toString());
+		assertThat((Object) builder.toString()).as("Invalid hash").isEqualTo(expected);
 
 		builder = new StringBuilder();
 		DigestUtils.appendMd5DigestAsHex(new ByteArrayInputStream(bytes), builder);
-		assertEquals("Invalid hash", expected, builder.toString());
+		assertThat((Object) builder.toString()).as("Invalid hash").isEqualTo(expected);
 	}
 
 }

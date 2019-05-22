@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.DelegatingSmartContextLoader;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -40,7 +41,7 @@ public class DefaultLoaderBeanOverridingExplicitConfigClassesInheritedTests exte
 	@Override
 	public void verifyEmployeeSetFromBaseContextConfig() {
 		assertNotNull("The employee should have been autowired.", this.employee);
-		assertEquals("The employee bean should have been overridden.", "Yoda", this.employee.getName());
+		assertThat((Object) this.employee.getName()).as("The employee bean should have been overridden.").isEqualTo("Yoda");
 	}
 
 }

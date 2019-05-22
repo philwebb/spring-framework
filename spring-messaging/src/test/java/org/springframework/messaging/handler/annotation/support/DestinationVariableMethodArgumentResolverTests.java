@@ -66,11 +66,11 @@ public class DestinationVariableMethodArgumentResolverTests {
 
 		MethodParameter param = this.resolvable.annot(destinationVar().noValue()).arg();
 		Object result = this.resolver.resolveArgument(param, message);
-		assertEquals("bar", result);
+		assertThat(result).isEqualTo("bar");
 
 		param = this.resolvable.annot(destinationVar("name")).arg();
 		result = this.resolver.resolveArgument(param, message);
-		assertEquals("value", result);
+		assertThat(result).isEqualTo("value");
 	}
 
 	@Test

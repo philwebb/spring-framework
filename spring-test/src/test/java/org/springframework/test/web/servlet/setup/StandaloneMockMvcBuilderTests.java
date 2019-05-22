@@ -38,6 +38,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -64,7 +65,7 @@ public class StandaloneMockMvcBuilderTests {
 		HandlerExecutionChain chain = hm.getHandler(request);
 
 		assertNotNull(chain);
-		assertEquals("handleWithPlaceholders", ((HandlerMethod) chain.getHandler()).getMethod().getName());
+		assertThat((Object) ((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("handleWithPlaceholders");
 	}
 
 	@Test  // SPR-13637
@@ -78,7 +79,7 @@ public class StandaloneMockMvcBuilderTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/persons");
 		HandlerExecutionChain chain = hm.getHandler(request);
 		assertNotNull(chain);
-		assertEquals("persons", ((HandlerMethod) chain.getHandler()).getMethod().getName());
+		assertThat((Object) ((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("persons");
 
 		request = new MockHttpServletRequest("GET", "/persons.xml");
 		chain = hm.getHandler(request);
@@ -90,7 +91,7 @@ public class StandaloneMockMvcBuilderTests {
 		TestStandaloneMockMvcBuilder builder = new TestStandaloneMockMvcBuilder(new PlaceholderController());
 		builder.addPlaceholderValue("sys.login.ajax", "/foo");
 		WebApplicationContext  wac = builder.initWebAppContext();
-		assertEquals(wac, WebApplicationContextUtils.getRequiredWebApplicationContext(wac.getServletContext()));
+		assertThat((Object) WebApplicationContextUtils.getRequiredWebApplicationContext(wac.getServletContext())).isEqualTo(wac);
 	}
 
 	@Test

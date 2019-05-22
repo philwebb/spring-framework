@@ -53,6 +53,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static org.springframework.core.io.buffer.support.DataBufferTestUtils.dumpString;
@@ -96,7 +97,7 @@ public class MessageWriterResultHandlerTests {
 		MethodParameter type = on(TestController.class).resolveReturnType(Resource.class);
 		this.resultHandler.writeBody(body, type, this.exchange).block(Duration.ofSeconds(5));
 
-		assertEquals("image/png", this.exchange.getResponse().getHeaders().getFirst("Content-Type"));
+		assertThat((Object) this.exchange.getResponse().getHeaders().getFirst("Content-Type")).isEqualTo("image/png");
 	}
 
 	@Test  // SPR-13631
@@ -108,7 +109,7 @@ public class MessageWriterResultHandlerTests {
 		MethodParameter type = on(TestController.class).resolveReturnType(String.class);
 		this.resultHandler.writeBody(body, type, this.exchange).block(Duration.ofSeconds(5));
 
-		assertEquals(MediaType.parseMediaType("application/json;charset=UTF-8"), this.exchange.getResponse().getHeaders().getContentType());
+		assertThat((Object) this.exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.parseMediaType("application/json;charset=UTF-8"));
 	}
 
 	@Test
@@ -155,7 +156,7 @@ public class MessageWriterResultHandlerTests {
 		List<ParentClass> body = Arrays.asList(new Foo("foo"), new Bar("bar"));
 		this.resultHandler.writeBody(body, returnType, this.exchange).block(Duration.ofSeconds(5));
 
-		assertEquals(APPLICATION_JSON, this.exchange.getResponse().getHeaders().getContentType());
+		assertThat((Object) this.exchange.getResponse().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
 		assertResponseBody("[{\"type\":\"foo\",\"parentProperty\":\"foo\"}," +
 				"{\"type\":\"bar\",\"parentProperty\":\"bar\"}]");
 	}
@@ -166,7 +167,7 @@ public class MessageWriterResultHandlerTests {
 		MethodParameter type = on(TestController.class).resolveReturnType(Identifiable.class);
 		this.resultHandler.writeBody(body, type, this.exchange).block(Duration.ofSeconds(5));
 
-		assertEquals(APPLICATION_JSON, this.exchange.getResponse().getHeaders().getContentType());
+		assertThat((Object) this.exchange.getResponse().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
 		assertResponseBody("{\"id\":123,\"name\":\"foo\"}");
 	}
 
@@ -178,14 +179,14 @@ public class MessageWriterResultHandlerTests {
 		List<SimpleBean> body = Arrays.asList(new SimpleBean(123L, "foo"), new SimpleBean(456L, "bar"));
 		this.resultHandler.writeBody(body, returnType, this.exchange).block(Duration.ofSeconds(5));
 
-		assertEquals(APPLICATION_JSON, this.exchange.getResponse().getHeaders().getContentType());
+		assertThat((Object) this.exchange.getResponse().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
 		assertResponseBody("[{\"id\":123,\"name\":\"foo\"},{\"id\":456,\"name\":\"bar\"}]");
 	}
 
 
 	private void assertResponseBody(String responseBody) {
 		StepVerifier.create(this.exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals(responseBody, dumpString(buf, StandardCharsets.UTF_8)))
+				.consumeNextWith(buf -> assertThat((Object) dumpString(buf, StandardCharsets.UTF_8)).isEqualTo(responseBody))
 				.expectComplete()
 				.verify();
 	}

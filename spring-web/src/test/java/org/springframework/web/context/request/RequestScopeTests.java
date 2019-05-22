@@ -76,7 +76,7 @@ public class RequestScopeTests {
 		String name = "requestScopedObject";
 		assertNull(request.getAttribute(name));
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
-		assertEquals("/path", bean.getName());
+		assertThat((Object) bean.getName()).isEqualTo("/path");
 		assertSame(bean, request.getAttribute(name));
 		assertSame(bean, this.beanFactory.getBean(name));
 	}

@@ -130,7 +130,7 @@ public class RequestMethodsRequestConditionTests {
 		ServerWebExchange exchange = getExchange(method.name());
 		RequestMethodsRequestCondition actual = condition.getMatchingCondition(exchange);
 		assertNotNull(actual);
-		assertEquals(Collections.singleton(method), actual.getContent());
+		assertThat((Object) actual.getContent()).isEqualTo(Collections.singleton(method));
 	}
 
 	private void testNoMatch(RequestMethodsRequestCondition condition, RequestMethod method) throws Exception {

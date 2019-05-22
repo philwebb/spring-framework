@@ -135,7 +135,7 @@ public class DeferredResultReturnValueHandlerTests {
 		setResultTask.run();
 
 		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult()).isTrue();
-		assertEquals(expectedValue, WebAsyncUtils.getAsyncManager(this.webRequest).getConcurrentResult());
+		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).getConcurrentResult()).isEqualTo(expectedValue);
 	}
 
 

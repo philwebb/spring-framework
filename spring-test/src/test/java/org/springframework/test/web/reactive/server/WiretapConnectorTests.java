@@ -34,6 +34,7 @@ import org.springframework.web.reactive.function.client.ExchangeFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunctions;
 
 import static java.time.Duration.ofMillis;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -59,8 +60,8 @@ public class WiretapConnectorTests {
 
 		WiretapConnector.Info actual = wiretapConnector.claimRequest("1");
 		ExchangeResult result = actual.createExchangeResult(Duration.ZERO, null);
-		assertEquals(HttpMethod.GET, result.getMethod());
-		assertEquals("/test", result.getUrl().toString());
+		assertThat((Object) result.getMethod()).isEqualTo(HttpMethod.GET);
+		assertThat((Object) result.getUrl().toString()).isEqualTo("/test");
 	}
 
 }

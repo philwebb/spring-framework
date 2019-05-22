@@ -40,6 +40,7 @@ import org.xml.sax.XMLReader;
 
 import org.springframework.util.xml.StaxUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -146,11 +147,9 @@ public abstract class AbstractUnmarshallerTests<U extends Unmarshaller> {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(INPUT_STRING));
 		streamReader.nextTag(); // skip to flights
-		assertEquals("Invalid element", new QName("http://samples.springframework.org/flight", "flights"),
-				streamReader.getName());
+		assertThat((Object) streamReader.getName()).as("Invalid element").isEqualTo(new QName("http://samples.springframework.org/flight", "flights"));
 		streamReader.nextTag(); // skip to flight
-		assertEquals("Invalid element", new QName("http://samples.springframework.org/flight", "flight"),
-				streamReader.getName());
+		assertThat((Object) streamReader.getName()).as("Invalid element").isEqualTo(new QName("http://samples.springframework.org/flight", "flight"));
 		Source source = StaxUtils.createStaxSource(streamReader);
 		Object flight = unmarshaller.unmarshal(source);
 		testFlight(flight);

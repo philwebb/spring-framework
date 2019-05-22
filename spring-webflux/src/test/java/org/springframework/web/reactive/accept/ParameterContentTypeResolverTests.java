@@ -27,6 +27,7 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.NotAcceptableStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -42,7 +43,7 @@ public class ParameterContentTypeResolverTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
 		List<MediaType> mediaTypes = resolver.resolveMediaTypes(exchange);
 
-		assertEquals(RequestedContentTypeResolver.MEDIA_TYPE_ALL_LIST, mediaTypes);
+		assertThat((Object) mediaTypes).isEqualTo(RequestedContentTypeResolver.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test
@@ -59,12 +60,12 @@ public class ParameterContentTypeResolverTests {
 		Map<String, MediaType> mapping = Collections.emptyMap();
 		RequestedContentTypeResolver resolver = new ParameterContentTypeResolver(mapping);
 		List<MediaType> mediaTypes = resolver.resolveMediaTypes(exchange);
-		assertEquals(Collections.singletonList(new MediaType("text", "html")), mediaTypes);
+		assertThat((Object) mediaTypes).isEqualTo(Collections.singletonList(new MediaType("text", "html")));
 
 		mapping = Collections.singletonMap("HTML", MediaType.APPLICATION_XHTML_XML);
 		resolver = new ParameterContentTypeResolver(mapping);
 		mediaTypes = resolver.resolveMediaTypes(exchange);
-		assertEquals(Collections.singletonList(new MediaType("application", "xhtml+xml")), mediaTypes);
+		assertThat((Object) mediaTypes).isEqualTo(Collections.singletonList(new MediaType("application", "xhtml+xml")));
 	}
 
 	@Test
@@ -73,7 +74,7 @@ public class ParameterContentTypeResolverTests {
 		RequestedContentTypeResolver resolver = new ParameterContentTypeResolver(Collections.emptyMap());
 		List<MediaType> mediaTypes = resolver.resolveMediaTypes(exchange);
 
-		assertEquals(Collections.singletonList(new MediaType("application", "vnd.ms-excel")), mediaTypes);
+		assertThat((Object) mediaTypes).isEqualTo(Collections.singletonList(new MediaType("application", "vnd.ms-excel")));
 	}
 
 	@Test // SPR-13747
@@ -83,7 +84,7 @@ public class ParameterContentTypeResolverTests {
 		ParameterContentTypeResolver resolver = new ParameterContentTypeResolver(mapping);
 		List<MediaType> mediaTypes = resolver.resolveMediaTypes(exchange);
 
-		assertEquals(Collections.singletonList(MediaType.APPLICATION_JSON), mediaTypes);
+		assertThat((Object) mediaTypes).isEqualTo(Collections.singletonList(MediaType.APPLICATION_JSON));
 	}
 
 	private MockServerWebExchange createExchange(String format) {

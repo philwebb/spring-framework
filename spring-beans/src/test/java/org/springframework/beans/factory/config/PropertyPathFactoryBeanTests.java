@@ -46,10 +46,10 @@ public class PropertyPathFactoryBeanTests {
 	public void testPropertyPathFactoryBeanWithSingletonResult() {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
-		assertEquals(new Integer(12), xbf.getBean("propertyPath1"));
-		assertEquals(new Integer(11), xbf.getBean("propertyPath2"));
-		assertEquals(new Integer(10), xbf.getBean("tb.age"));
-		assertEquals(ITestBean.class, xbf.getType("otb.spouse"));
+		assertThat(xbf.getBean("propertyPath1")).isEqualTo(new Integer(12));
+		assertThat(xbf.getBean("propertyPath2")).isEqualTo(new Integer(11));
+		assertThat(xbf.getBean("tb.age")).isEqualTo(new Integer(10));
+		assertThat((Object) xbf.getType("otb.spouse")).isEqualTo(ITestBean.class);
 		Object result1 = xbf.getBean("otb.spouse");
 		Object result2 = xbf.getBean("otb.spouse");
 		boolean condition = result1 instanceof TestBean;
@@ -63,7 +63,7 @@ public class PropertyPathFactoryBeanTests {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
 		assertNull(xbf.getType("tb.spouse"));
-		assertEquals(TestBean.class, xbf.getType("propertyPath3"));
+		assertThat((Object) xbf.getType("propertyPath3")).isEqualTo(TestBean.class);
 		Object result1 = xbf.getBean("tb.spouse");
 		Object result2 = xbf.getBean("propertyPath3");
 		Object result3 = xbf.getBean("propertyPath3");
@@ -86,7 +86,7 @@ public class PropertyPathFactoryBeanTests {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONTEXT);
 		assertNull(xbf.getType("tb.spouse.spouse"));
-		assertEquals("null", xbf.getBean("tb.spouse.spouse").toString());
+		assertThat((Object) xbf.getBean("tb.spouse.spouse").toString()).isEqualTo("null");
 	}
 
 	@Test

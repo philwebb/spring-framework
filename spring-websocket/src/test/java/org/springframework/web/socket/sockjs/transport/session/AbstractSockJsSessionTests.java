@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.socket.WebSocketHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -66,9 +67,9 @@ public abstract class AbstractSockJsSessionTests<S extends AbstractSockJsSession
 	}
 
 	private void assertState(boolean isNew, boolean isOpen, boolean isClosed) {
-		assertEquals(isNew, this.session.isNew());
-		assertEquals(isOpen, this.session.isOpen());
-		assertEquals(isClosed, this.session.isClosed());
+		assertThat((Object) this.session.isNew()).isEqualTo(isNew);
+		assertThat((Object) this.session.isOpen()).isEqualTo(isOpen);
+		assertThat((Object) this.session.isClosed()).isEqualTo(isClosed);
 	}
 
 }

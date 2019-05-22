@@ -103,8 +103,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("fixedDelay", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("fixedDelay");
 		assertEquals(0L, task.getInitialDelay());
 		assertEquals(5000L, task.getInterval());
 	}
@@ -131,8 +131,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("fixedRate", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("fixedRate");
 		assertEquals(0L, task.getInitialDelay());
 		assertEquals(3000L, task.getInterval());
 	}
@@ -159,8 +159,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("fixedRate", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("fixedRate");
 		assertEquals(1000L, task.getInitialDelay());
 		assertEquals(3000L, task.getInterval());
 	}
@@ -222,16 +222,16 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable1 = (ScheduledMethodRunnable) task1.getRunnable();
 		Object targetObject = runnable1.getTarget();
 		Method targetMethod = runnable1.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("fixedRate", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("fixedRate");
 		assertEquals(0, task1.getInitialDelay());
 		assertEquals(4000L, task1.getInterval());
 		IntervalTask task2 = fixedRateTasks.get(1);
 		ScheduledMethodRunnable runnable2 = (ScheduledMethodRunnable) task2.getRunnable();
 		targetObject = runnable2.getTarget();
 		targetMethod = runnable2.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("fixedRate", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("fixedRate");
 		assertEquals(2000L, task2.getInitialDelay());
 		assertEquals(4000L, task2.getInterval());
 	}
@@ -258,9 +258,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("cron", targetMethod.getName());
-		assertEquals("*/7 * * * * ?", task.getExpression());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("cron");
+		assertThat((Object) task.getExpression()).isEqualTo("*/7 * * * * ?");
 	}
 
 	@Test
@@ -285,9 +285,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("cron", targetMethod.getName());
-		assertEquals("0 0 0-4,6-23 * * ?", task.getExpression());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("cron");
+		assertThat((Object) task.getExpression()).isEqualTo("0 0 0-4,6-23 * * ?");
 		Trigger trigger = task.getTrigger();
 		assertNotNull(trigger);
 		boolean condition = trigger instanceof CronTrigger;
@@ -305,7 +305,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		cal.add(Calendar.MINUTE, 30);
 		cal.add(Calendar.HOUR_OF_DAY, 1);  // 6:00
 		Date nextExecutionTime = cronTrigger.nextExecutionTime(triggerContext);
-		assertEquals(cal.getTime(), nextExecutionTime);  // assert that 6:00 is next execution time
+		// assert that 6:00 is next execution time
+		assertThat((Object) nextExecutionTime).isEqualTo(cal.getTime());
 	}
 
 	@Test
@@ -350,9 +351,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(context.getBean(ScopedProxyUtils.getTargetBeanName("target")), targetObject);
-		assertEquals("cron", targetMethod.getName());
-		assertEquals("*/7 * * * * ?", task.getExpression());
+		assertThat(targetObject).isEqualTo(context.getBean(ScopedProxyUtils.getTargetBeanName("target")));
+		assertThat((Object) targetMethod.getName()).isEqualTo("cron");
+		assertThat((Object) task.getExpression()).isEqualTo("*/7 * * * * ?");
 	}
 
 	@Test
@@ -377,8 +378,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("checkForUpdates", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("checkForUpdates");
 		assertEquals(5000L, task.getInterval());
 	}
 
@@ -404,8 +405,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("checkForUpdates", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("checkForUpdates");
 		assertEquals(5000L, task.getInterval());
 		assertEquals(1000L, task.getInitialDelay());
 	}
@@ -432,9 +433,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("generateReport", targetMethod.getName());
-		assertEquals("0 0 * * * ?", task.getExpression());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("generateReport");
+		assertThat((Object) task.getExpression()).isEqualTo("0 0 * * * ?");
 	}
 
 	@Test
@@ -465,9 +466,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("x", targetMethod.getName());
-		assertEquals(businessHoursCronExpression, task.getExpression());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("x");
+		assertThat((Object) task.getExpression()).isEqualTo(businessHoursCronExpression);
 	}
 
 	@Test
@@ -525,8 +526,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("fixedDelay", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("fixedDelay");
 		assertEquals(1000L, task.getInitialDelay());
 		assertEquals(5000L, task.getInterval());
 	}
@@ -568,8 +569,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("fixedRate", targetMethod.getName());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("fixedRate");
 		assertEquals(1000L, task.getInitialDelay());
 		assertEquals(3000L, task.getInterval());
 	}
@@ -600,9 +601,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("x", targetMethod.getName());
-		assertEquals(businessHoursCronExpression, task.getExpression());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("x");
+		assertThat((Object) task.getExpression()).isEqualTo(businessHoursCronExpression);
 	}
 
 	@Test
@@ -633,9 +634,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("y", targetMethod.getName());
-		assertEquals(businessHoursCronExpression, task.getExpression());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("y");
+		assertThat((Object) task.getExpression()).isEqualTo(businessHoursCronExpression);
 	}
 
 	@Test
@@ -660,9 +661,9 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task.getRunnable();
 		Object targetObject = runnable.getTarget();
 		Method targetMethod = runnable.getMethod();
-		assertEquals(target, targetObject);
-		assertEquals("cron", targetMethod.getName());
-		assertEquals("0 0 9-17 * * MON-FRI", task.getExpression());
+		assertThat(targetObject).isEqualTo(target);
+		assertThat((Object) targetMethod.getName()).isEqualTo("cron");
+		assertThat((Object) task.getExpression()).isEqualTo("0 0 9-17 * * MON-FRI");
 	}
 
 	@Test

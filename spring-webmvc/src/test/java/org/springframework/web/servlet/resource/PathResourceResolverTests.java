@@ -54,7 +54,7 @@ public class PathResourceResolverTests {
 		String requestPath = "bar.css";
 		Resource actual = this.resolver.resolveResource(null, requestPath, Collections.singletonList(location), null);
 
-		assertEquals(location.createRelative(requestPath), actual);
+		assertThat((Object) actual).isEqualTo(location.createRelative(requestPath));
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class PathResourceResolverTests {
 		Resource location = getResource("main.css");
 		List<Resource> locations = Collections.singletonList(location);
 		String actual = this.resolver.resolveUrlPath("../testalternatepath/bar.css", locations, null);
-		assertEquals("../testalternatepath/bar.css", actual);
+		assertThat((Object) actual).isEqualTo("../testalternatepath/bar.css");
 	}
 
 	// SPR-12432
@@ -155,19 +155,19 @@ public class PathResourceResolverTests {
 		this.resolver.setLocationCharsets(Collections.singletonMap(location, StandardCharsets.ISO_8859_1));
 		this.resolver.resolveResource(new MockHttpServletRequest(), "/Ä ;ä.txt", locations, null);
 
-		assertEquals("%C4%20%3B%E4.txt", location.getSavedRelativePath());
+		assertThat((Object) location.getSavedRelativePath()).isEqualTo("%C4%20%3B%E4.txt");
 
 		// UTF-8
 		this.resolver.setLocationCharsets(Collections.singletonMap(location, StandardCharsets.UTF_8));
 		this.resolver.resolveResource(new MockHttpServletRequest(), "/Ä ;ä.txt", locations, null);
 
-		assertEquals("%C3%84%20%3B%C3%A4.txt", location.getSavedRelativePath());
+		assertThat((Object) location.getSavedRelativePath()).isEqualTo("%C3%84%20%3B%C3%A4.txt");
 
 		// UTF-8 by default
 		this.resolver.setLocationCharsets(Collections.emptyMap());
 		this.resolver.resolveResource(new MockHttpServletRequest(), "/Ä ;ä.txt", locations, null);
 
-		assertEquals("%C3%84%20%3B%C3%A4.txt", location.getSavedRelativePath());
+		assertThat((Object) location.getSavedRelativePath()).isEqualTo("%C3%84%20%3B%C3%A4.txt");
 	}
 
 	private Resource getResource(String filePath) {

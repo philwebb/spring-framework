@@ -25,6 +25,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jmx.support.ObjectNameManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -44,7 +45,7 @@ public class AnnotationLazyInitMBeanTests {
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean4");
 			assertNotNull(server.getObjectInstance(oname));
 			String name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "TEST", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("TEST");
 		}
 		finally {
 			ctx.close();
@@ -62,22 +63,22 @@ public class AnnotationLazyInitMBeanTests {
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean4");
 			assertNotNull(server.getObjectInstance(oname));
 			String name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "TEST", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("TEST");
 
 			oname = ObjectNameManager.getInstance("bean:name=testBean5");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "FACTORY", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("FACTORY");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=true");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "Rob Harrop", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("Rob Harrop");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=another");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertEquals("Invalid name returned", "Juergen Hoeller", name);
+			assertThat((Object) name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
 		}
 		finally {
 			System.clearProperty("domain");

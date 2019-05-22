@@ -154,7 +154,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setExpectedType(String.class);
 		jof.setDefaultObject("myString");
 		jof.afterPropertiesSet();
-		assertEquals("myString", jof.getObject());
+		assertThat(jof.getObject()).isEqualTo("myString");
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setExpectedType(String.class);
 		jof.setDefaultObject("myString");
 		jof.afterPropertiesSet();
-		assertEquals("myString", jof.getObject());
+		assertThat(jof.getObject()).isEqualTo("myString");
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setExpectedType(Integer.class);
 		jof.setDefaultObject("5");
 		jof.afterPropertiesSet();
-		assertEquals(new Integer(5), jof.getObject());
+		assertThat(jof.getObject()).isEqualTo(new Integer(5));
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setDefaultObject("5");
 		jof.setBeanFactory(new DefaultListableBeanFactory());
 		jof.afterPropertiesSet();
-		assertEquals(new Integer(5), jof.getObject());
+		assertThat(jof.getObject()).isEqualTo(new Integer(5));
 	}
 
 	@Test
@@ -252,7 +252,7 @@ public class JndiObjectFactoryBeanTests {
 		assertNull(tb.getName());
 		assertEquals(0, tb.getAge());
 		proxy.setAge(99);
-		assertEquals("tb", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("tb");
 		assertEquals(99, tb.getAge());
 	}
 
@@ -278,7 +278,7 @@ public class JndiObjectFactoryBeanTests {
 		boolean condition = jof.getObject() instanceof ITestBean;
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
-		assertEquals("tb", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("tb");
 		assertEquals(1, tb.getAge());
 		proxy.returnsThis();
 		assertEquals(2, tb.getAge());
@@ -312,7 +312,7 @@ public class JndiObjectFactoryBeanTests {
 		assertNull(tb.getName());
 		assertEquals(0, tb.getAge());
 		proxy.returnsThis();
-		assertEquals("tb", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("tb");
 		assertEquals(1, tb.getAge());
 		proxy.returnsThis();
 		assertEquals(2, tb.getAge());

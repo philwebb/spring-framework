@@ -66,9 +66,9 @@ public class StreamConverterTests {
 		assertThat(condition).as("Converted object must be a list").isTrue();
 		@SuppressWarnings("unchecked")
 		List<String> content = (List<String>) result;
-		assertEquals("1", content.get(0));
-		assertEquals("2", content.get(1));
-		assertEquals("3", content.get(2));
+		assertThat((Object) content.get(0)).isEqualTo("1");
+		assertThat((Object) content.get(1)).isEqualTo("2");
+		assertThat((Object) content.get(2)).isEqualTo("3");
 		assertEquals("Wrong number of elements", 3, content.size());
 	}
 
@@ -82,9 +82,9 @@ public class StreamConverterTests {
 		assertNotNull("Converted object must not be null", result);
 		assertThat(result.getClass().isArray()).as("Converted object must be an array").isTrue();
 		Long[] content = (Long[]) result;
-		assertEquals(Long.valueOf(1L), content[0]);
-		assertEquals(Long.valueOf(2L), content[1]);
-		assertEquals(Long.valueOf(3L), content[2]);
+		assertThat((Object) content[0]).isEqualTo(Long.valueOf(1L));
+		assertThat((Object) content[1]).isEqualTo(Long.valueOf(2L));
+		assertThat((Object) content[2]).isEqualTo(Long.valueOf(3L));
 		assertEquals("Wrong number of elements", 3, content.length);
 	}
 
@@ -99,9 +99,9 @@ public class StreamConverterTests {
 		assertThat(condition).as("Converted object must be a list").isTrue();
 		@SuppressWarnings("unchecked")
 		List<Object> content = (List<Object>) result;
-		assertEquals(1, content.get(0));
-		assertEquals(2, content.get(1));
-		assertEquals(3, content.get(2));
+		assertThat(content.get(0)).isEqualTo(1);
+		assertThat(content.get(1)).isEqualTo(2);
+		assertThat(content.get(2)).isEqualTo(3);
 		assertEquals("Wrong number of elements", 3, content.size());
 	}
 
@@ -165,7 +165,7 @@ public class StreamConverterTests {
 		Stream<Object> content = (Stream<Object>) result;
 		StringBuilder sb = new StringBuilder();
 		content.forEach(sb::append);
-		assertEquals("123", sb.toString());
+		assertThat((Object) sb.toString()).isEqualTo("123");
 	}
 
 	@Test

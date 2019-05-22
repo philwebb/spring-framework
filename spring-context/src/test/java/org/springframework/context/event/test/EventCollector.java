@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -76,7 +77,7 @@ public class EventCollector {
 		List<Object> actual = this.content.getOrDefault(listenerId, Collections.emptyList());
 		assertEquals("Wrong number of events", events.length, actual.size());
 		for (int i = 0; i < events.length; i++) {
-			assertEquals("Wrong event at index " + i, events[i], actual.get(i));
+			assertThat(actual.get(i)).as("Wrong event at index " + i).isEqualTo(events[i]);
 		}
 	}
 

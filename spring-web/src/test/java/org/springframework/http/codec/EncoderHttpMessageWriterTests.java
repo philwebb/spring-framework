@@ -85,7 +85,7 @@ public class EncoderHttpMessageWriterTests {
 	public void getWritableMediaTypes() {
 		configureEncoder(MimeTypeUtils.TEXT_HTML, MimeTypeUtils.TEXT_XML);
 		HttpMessageWriter<?> writer = new EncoderHttpMessageWriter<>(this.encoder);
-		assertEquals(Arrays.asList(TEXT_HTML, TEXT_XML), writer.getWritableMediaTypes());
+		assertThat((Object) writer.getWritableMediaTypes()).isEqualTo(Arrays.asList(TEXT_HTML, TEXT_XML));
 	}
 
 	@Test
@@ -104,8 +104,8 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Flux.empty(), forClass(String.class), TEXT_PLAIN, this.response, NO_HINTS);
 
-		assertEquals(TEXT_PLAIN, response.getHeaders().getContentType());
-		assertEquals(TEXT_PLAIN, this.mediaTypeCaptor.getValue());
+		assertThat((Object) response.getHeaders().getContentType()).isEqualTo(TEXT_PLAIN);
+		assertThat((Object) this.mediaTypeCaptor.getValue()).isEqualTo(TEXT_PLAIN);
 	}
 
 	@Test
@@ -125,8 +125,8 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Flux.empty(), forClass(String.class), negotiatedMediaType, this.response, NO_HINTS);
 
-		assertEquals(defaultContentType, this.response.getHeaders().getContentType());
-		assertEquals(defaultContentType, this.mediaTypeCaptor.getValue());
+		assertThat((Object) this.response.getHeaders().getContentType()).isEqualTo(defaultContentType);
+		assertThat((Object) this.mediaTypeCaptor.getValue()).isEqualTo(defaultContentType);
 	}
 
 	@Test
@@ -135,8 +135,8 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Flux.empty(), forClass(String.class), TEXT_HTML, response, NO_HINTS);
 
-		assertEquals(new MediaType("text", "html", UTF_8), this.response.getHeaders().getContentType());
-		assertEquals(new MediaType("text", "html", UTF_8), this.mediaTypeCaptor.getValue());
+		assertThat((Object) this.response.getHeaders().getContentType()).isEqualTo(new MediaType("text", "html", UTF_8));
+		assertThat((Object) this.mediaTypeCaptor.getValue()).isEqualTo(new MediaType("text", "html", UTF_8));
 	}
 
 	@Test
@@ -146,8 +146,8 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Flux.empty(), forClass(String.class), negotiatedMediaType, this.response, NO_HINTS);
 
-		assertEquals(negotiatedMediaType, this.response.getHeaders().getContentType());
-		assertEquals(negotiatedMediaType, this.mediaTypeCaptor.getValue());
+		assertThat((Object) this.response.getHeaders().getContentType()).isEqualTo(negotiatedMediaType);
+		assertThat((Object) this.mediaTypeCaptor.getValue()).isEqualTo(negotiatedMediaType);
 	}
 
 	@Test
@@ -159,8 +159,8 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		writer.write(Flux.empty(), forClass(String.class), TEXT_PLAIN, this.response, NO_HINTS);
 
-		assertEquals(outputMessageMediaType, this.response.getHeaders().getContentType());
-		assertEquals(outputMessageMediaType, this.mediaTypeCaptor.getValue());
+		assertThat((Object) this.response.getHeaders().getContentType()).isEqualTo(outputMessageMediaType);
+		assertThat((Object) this.mediaTypeCaptor.getValue()).isEqualTo(outputMessageMediaType);
 	}
 
 	@Test

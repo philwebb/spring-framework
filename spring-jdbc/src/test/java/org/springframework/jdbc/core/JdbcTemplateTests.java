@@ -281,7 +281,7 @@ public class JdbcTemplateTests {
 				return "test";
 			}
 		});
-		assertEquals("test", result);
+		assertThat((Object) result).isEqualTo("test");
 	}
 
 	@Test
@@ -297,7 +297,7 @@ public class JdbcTemplateTests {
 			}
 		});
 
-		assertEquals("test", result);
+		assertThat((Object) result).isEqualTo("test");
 		verify(this.preparedStatement).setFetchSize(10);
 		verify(this.preparedStatement).setMaxRows(20);
 		verify(this.preparedStatement).close();
@@ -1093,7 +1093,7 @@ public class JdbcTemplateTests {
 
 		Map<String, Object> map = this.template.queryForMap("my query");
 		assertEquals(1, map.size());
-		assertEquals("first value", map.get("x"));
+		assertThat(map.get("x")).isEqualTo("first value");
 	}
 
 

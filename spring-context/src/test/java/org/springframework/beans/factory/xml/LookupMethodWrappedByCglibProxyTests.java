@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -52,8 +53,8 @@ public class LookupMethodWrappedByCglibProxyTests {
 	public void testAutoProxiedLookup() {
 		OverloadLookup olup = (OverloadLookup) applicationContext.getBean("autoProxiedOverload");
 		ITestBean jenny = olup.newTestBean();
-		assertEquals("Jenny", jenny.getName());
-		assertEquals("foo", olup.testMethod());
+		assertThat((Object) jenny.getName()).isEqualTo("Jenny");
+		assertThat((Object) olup.testMethod()).isEqualTo("foo");
 		assertInterceptorCount(2);
 	}
 
@@ -61,8 +62,8 @@ public class LookupMethodWrappedByCglibProxyTests {
 	public void testRegularlyProxiedLookup() {
 		OverloadLookup olup = (OverloadLookup) applicationContext.getBean("regularlyProxiedOverload");
 		ITestBean jenny = olup.newTestBean();
-		assertEquals("Jenny", jenny.getName());
-		assertEquals("foo", olup.testMethod());
+		assertThat((Object) jenny.getName()).isEqualTo("Jenny");
+		assertThat((Object) olup.testMethod()).isEqualTo("foo");
 		assertInterceptorCount(2);
 	}
 

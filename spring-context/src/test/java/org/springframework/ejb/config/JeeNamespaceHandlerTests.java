@@ -56,7 +56,7 @@ public class JeeNamespaceHandlerTests {
 	@Test
 	public void testSimpleDefinition() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getMergedBeanDefinition("simple");
-		assertEquals(JndiObjectFactoryBean.class.getName(), beanDefinition.getBeanClassName());
+		assertThat((Object) beanDefinition.getBeanClassName()).isEqualTo(JndiObjectFactoryBean.class.getName());
 		assertPropertyValue(beanDefinition, "jndiName", "jdbc/MyDataSource");
 		assertPropertyValue(beanDefinition, "resourceRef", "true");
 	}
@@ -64,7 +64,7 @@ public class JeeNamespaceHandlerTests {
 	@Test
 	public void testComplexDefinition() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getMergedBeanDefinition("complex");
-		assertEquals(JndiObjectFactoryBean.class.getName(), beanDefinition.getBeanClassName());
+		assertThat((Object) beanDefinition.getBeanClassName()).isEqualTo(JndiObjectFactoryBean.class.getName());
 		assertPropertyValue(beanDefinition, "jndiName", "jdbc/MyDataSource");
 		assertPropertyValue(beanDefinition, "resourceRef", "true");
 		assertPropertyValue(beanDefinition, "cache", "true");
@@ -92,7 +92,7 @@ public class JeeNamespaceHandlerTests {
 	@Test
 	public void testSimpleLocalSlsb() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getMergedBeanDefinition("simpleLocalEjb");
-		assertEquals(LocalStatelessSessionProxyFactoryBean.class.getName(), beanDefinition.getBeanClassName());
+		assertThat((Object) beanDefinition.getBeanClassName()).isEqualTo(LocalStatelessSessionProxyFactoryBean.class.getName());
 		assertPropertyValue(beanDefinition, "businessInterface", ITestBean.class.getName());
 		assertPropertyValue(beanDefinition, "jndiName", "ejb/MyLocalBean");
 	}
@@ -100,7 +100,7 @@ public class JeeNamespaceHandlerTests {
 	@Test
 	public void testSimpleRemoteSlsb() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getMergedBeanDefinition("simpleRemoteEjb");
-		assertEquals(SimpleRemoteStatelessSessionProxyFactoryBean.class.getName(), beanDefinition.getBeanClassName());
+		assertThat((Object) beanDefinition.getBeanClassName()).isEqualTo(SimpleRemoteStatelessSessionProxyFactoryBean.class.getName());
 		assertPropertyValue(beanDefinition, "businessInterface", ITestBean.class.getName());
 		assertPropertyValue(beanDefinition, "jndiName", "ejb/MyRemoteBean");
 	}
@@ -108,7 +108,7 @@ public class JeeNamespaceHandlerTests {
 	@Test
 	public void testComplexLocalSlsb() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getMergedBeanDefinition("complexLocalEjb");
-		assertEquals(LocalStatelessSessionProxyFactoryBean.class.getName(), beanDefinition.getBeanClassName());
+		assertThat((Object) beanDefinition.getBeanClassName()).isEqualTo(LocalStatelessSessionProxyFactoryBean.class.getName());
 		assertPropertyValue(beanDefinition, "businessInterface", ITestBean.class.getName());
 		assertPropertyValue(beanDefinition, "jndiName", "ejb/MyLocalBean");
 		assertPropertyValue(beanDefinition, "cacheHome", "true");
@@ -120,7 +120,7 @@ public class JeeNamespaceHandlerTests {
 	@Test
 	public void testComplexRemoteSlsb() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getMergedBeanDefinition("complexRemoteEjb");
-		assertEquals(SimpleRemoteStatelessSessionProxyFactoryBean.class.getName(), beanDefinition.getBeanClassName());
+		assertThat((Object) beanDefinition.getBeanClassName()).isEqualTo(SimpleRemoteStatelessSessionProxyFactoryBean.class.getName());
 		assertPropertyValue(beanDefinition, "businessInterface", ITestBean.class.getName());
 		assertPropertyValue(beanDefinition, "jndiName", "ejb/MyRemoteBean");
 		assertPropertyValue(beanDefinition, "cacheHome", "true");
@@ -143,8 +143,7 @@ public class JeeNamespaceHandlerTests {
 	}
 
 	private void assertPropertyValue(BeanDefinition beanDefinition, String propertyName, Object expectedValue) {
-		assertEquals("Property '" + propertyName + "' incorrect",
-				expectedValue, beanDefinition.getPropertyValues().getPropertyValue(propertyName).getValue());
+		assertThat(beanDefinition.getPropertyValues().getPropertyValue(propertyName).getValue()).as("Property '" + propertyName + "' incorrect").isEqualTo(expectedValue);
 	}
 
 }

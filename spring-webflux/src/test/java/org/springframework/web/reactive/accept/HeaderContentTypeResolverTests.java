@@ -25,6 +25,7 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.NotAcceptableStatusException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -45,10 +46,10 @@ public class HeaderContentTypeResolverTests {
 				MockServerWebExchange.from(MockServerHttpRequest.get("/").header("accept", header)));
 
 		assertEquals(4, mediaTypes.size());
-		assertEquals("text/html", mediaTypes.get(0).toString());
-		assertEquals("text/x-c", mediaTypes.get(1).toString());
-		assertEquals("text/x-dvi;q=0.8", mediaTypes.get(2).toString());
-		assertEquals("text/plain;q=0.5", mediaTypes.get(3).toString());
+		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("text/html");
+		assertThat((Object) mediaTypes.get(1).toString()).isEqualTo("text/x-c");
+		assertThat((Object) mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");
+		assertThat((Object) mediaTypes.get(3).toString()).isEqualTo("text/plain;q=0.5");
 	}
 
 	@Test

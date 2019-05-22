@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.springframework.cache.Cache;
 import org.springframework.cache.jcache.AbstractJCacheTests;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -47,7 +48,7 @@ public class CacheResolverAdapterTests extends AbstractJCacheTests {
 		Collection<? extends Cache> caches = adapter.resolveCaches(dummyContext);
 		assertNotNull(caches);
 		assertEquals(1, caches.size());
-		assertEquals("testCache", caches.iterator().next().getName());
+		assertThat((Object) caches.iterator().next().getName()).isEqualTo("testCache");
 	}
 
 	@Test

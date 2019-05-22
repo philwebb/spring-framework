@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import org.springframework.mock.web.test.MockPageContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -40,11 +41,11 @@ public class TagIdGeneratorTests {
 
 	private void assertNextId() {
 		PageContext pageContext = new MockPageContext();
-		assertEquals("foo1", TagIdGenerator.nextId("foo", pageContext));
-		assertEquals("foo2", TagIdGenerator.nextId("foo", pageContext));
-		assertEquals("foo3", TagIdGenerator.nextId("foo", pageContext));
-		assertEquals("foo4", TagIdGenerator.nextId("foo", pageContext));
-		assertEquals("bar1", TagIdGenerator.nextId("bar", pageContext));
+		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo1");
+		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo2");
+		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo3");
+		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo4");
+		assertThat((Object) TagIdGenerator.nextId("bar", pageContext)).isEqualTo("bar1");
 	}
 
 }

@@ -151,8 +151,8 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.setDateFormat(this.dateFormat);
 		this.factory.afterPropertiesSet();
 
-		assertEquals(this.dateFormat, this.factory.getObject().getSerializationConfig().getDateFormat());
-		assertEquals(this.dateFormat, this.factory.getObject().getDeserializationConfig().getDateFormat());
+		assertThat((Object) this.factory.getObject().getSerializationConfig().getDateFormat()).isEqualTo(this.dateFormat);
+		assertThat((Object) this.factory.getObject().getDeserializationConfig().getDateFormat()).isEqualTo(this.dateFormat);
 	}
 
 	@Test
@@ -160,8 +160,8 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.setSimpleDateFormat(DATE_FORMAT);
 		this.factory.afterPropertiesSet();
 
-		assertEquals(this.dateFormat, this.factory.getObject().getSerializationConfig().getDateFormat());
-		assertEquals(this.dateFormat, this.factory.getObject().getDeserializationConfig().getDateFormat());
+		assertThat((Object) this.factory.getObject().getSerializationConfig().getDateFormat()).isEqualTo(this.dateFormat);
+		assertThat((Object) this.factory.getObject().getDeserializationConfig().getDateFormat()).isEqualTo(this.dateFormat);
 	}
 
 	@Test
@@ -169,8 +169,8 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.setLocale(Locale.FRENCH);
 		this.factory.afterPropertiesSet();
 
-		assertEquals(Locale.FRENCH, this.factory.getObject().getSerializationConfig().getLocale());
-		assertEquals(Locale.FRENCH, this.factory.getObject().getDeserializationConfig().getLocale());
+		assertThat((Object) this.factory.getObject().getSerializationConfig().getLocale()).isEqualTo(Locale.FRENCH);
+		assertThat((Object) this.factory.getObject().getDeserializationConfig().getLocale()).isEqualTo(Locale.FRENCH);
 	}
 
 	@Test
@@ -180,8 +180,8 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.setTimeZone(timeZone);
 		this.factory.afterPropertiesSet();
 
-		assertEquals(timeZone, this.factory.getObject().getSerializationConfig().getTimeZone());
-		assertEquals(timeZone, this.factory.getObject().getDeserializationConfig().getTimeZone());
+		assertThat((Object) this.factory.getObject().getSerializationConfig().getTimeZone()).isEqualTo(timeZone);
+		assertThat((Object) this.factory.getObject().getDeserializationConfig().getTimeZone()).isEqualTo(timeZone);
 	}
 
 	@Test
@@ -190,8 +190,8 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.afterPropertiesSet();
 
 		TimeZone timeZone = TimeZone.getTimeZone("GMT");
-		assertEquals(timeZone, this.factory.getObject().getSerializationConfig().getTimeZone());
-		assertEquals(timeZone, this.factory.getObject().getDeserializationConfig().getTimeZone());
+		assertThat((Object) this.factory.getObject().getSerializationConfig().getTimeZone()).isEqualTo(timeZone);
+		assertThat((Object) this.factory.getObject().getDeserializationConfig().getTimeZone()).isEqualTo(timeZone);
 	}
 
 	@Test
@@ -215,7 +215,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 		Long timestamp = 1322903730000L;
 		DateTime dateTime = new DateTime(timestamp, DateTimeZone.UTC);
-		assertEquals(timestamp.toString(), new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8"));
+		assertThat((Object) new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo(timestamp.toString());
 	}
 
 	@Test // SPR-12634
@@ -226,7 +226,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		ObjectMapper objectMapper = this.factory.getObject();
 
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
-		assertEquals("1322903730000", new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8"));
+		assertThat((Object) new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
 		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
@@ -240,7 +240,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		ObjectMapper objectMapper = this.factory.getObject();
 
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
-		assertEquals("1322903730000", new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8"));
+		assertThat((Object) new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
 		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
@@ -250,7 +250,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 		assertNotNull(this.factory.getObject());
 		assertThat(this.factory.isSingleton()).isTrue();
-		assertEquals(ObjectMapper.class, this.factory.getObjectType());
+		assertThat((Object) this.factory.getObjectType()).isEqualTo(ObjectMapper.class);
 	}
 
 	@Test
@@ -311,7 +311,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 		this.factory.setObjectMapper(objectMapper);
 		assertThat(this.factory.isSingleton()).isTrue();
-		assertEquals(ObjectMapper.class, this.factory.getObjectType());
+		assertThat((Object) this.factory.getObjectType()).isEqualTo(ObjectMapper.class);
 
 		Map<Class<?>, JsonDeserializer<?>> deserializers = new HashMap<>();
 		deserializers.put(Date.class, new DateDeserializer());
@@ -375,7 +375,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 		assertNotNull(this.factory.getObject());
 		assertThat(this.factory.isSingleton()).isTrue();
-		assertEquals(XmlMapper.class, this.factory.getObjectType());
+		assertThat((Object) this.factory.getObjectType()).isEqualTo(XmlMapper.class);
 	}
 
 	@Test
@@ -385,7 +385,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 		assertNotNull(this.factory.getObject());
 		assertThat(this.factory.isSingleton()).isTrue();
-		assertEquals(XmlMapper.class, this.factory.getObjectType());
+		assertThat((Object) this.factory.getObjectType()).isEqualTo(XmlMapper.class);
 	}
 
 	@Test  // SPR-14435
@@ -395,7 +395,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 		assertNotNull(this.factory.getObject());
 		assertThat(this.factory.isSingleton()).isTrue();
-		assertEquals(SmileFactory.class, this.factory.getObject().getFactory().getClass());
+		assertThat((Object) this.factory.getObject().getFactory().getClass()).isEqualTo(SmileFactory.class);
 	}
 
 

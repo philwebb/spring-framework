@@ -25,6 +25,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 
@@ -41,7 +42,7 @@ public class BeanNameAutoProxyCreatorInitTests {
 				new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 		TestBean bean = (TestBean) ctx.getBean("bean");
 		bean.setName("foo");
-		assertEquals("foo", bean.getName());
+		assertThat((Object) bean.getName()).isEqualTo("foo");
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				bean.setName(null));
 	}

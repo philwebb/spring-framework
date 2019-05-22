@@ -144,12 +144,12 @@ public class AnnotationDrivenEventListenerTests {
 
 		List<Object> events = this.eventCollector.getEvents(listener);
 		assertEquals("Wrong number of initial context events", 1, events.size());
-		assertEquals(ContextRefreshedEvent.class, events.get(0).getClass());
+		assertThat((Object) events.get(0).getClass()).isEqualTo(ContextRefreshedEvent.class);
 
 		this.context.stop();
 		List<Object> eventsAfterStop = this.eventCollector.getEvents(listener);
 		assertEquals("Wrong number of context events on shutdown", 2, eventsAfterStop.size());
-		assertEquals(ContextStoppedEvent.class, eventsAfterStop.get(1).getClass());
+		assertThat((Object) eventsAfterStop.get(1).getClass()).isEqualTo(ContextStoppedEvent.class);
 		this.eventCollector.assertTotalEventsCount(2);
 	}
 

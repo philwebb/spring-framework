@@ -24,6 +24,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -41,9 +42,9 @@ public class SimplePropertyNamespaceHandlerTests {
 				new ClassPathResource("simplePropertyNamespaceHandlerTests.xml", getClass()));
 		ITestBean rob = (TestBean) beanFactory.getBean("rob");
 		ITestBean sally = (TestBean) beanFactory.getBean("sally");
-		assertEquals("Rob Harrop", rob.getName());
+		assertThat((Object) rob.getName()).isEqualTo("Rob Harrop");
 		assertEquals(24, rob.getAge());
-		assertEquals(rob.getSpouse(), sally);
+		assertThat((Object) sally).isEqualTo(rob.getSpouse());
 	}
 
 	@Test
@@ -53,9 +54,9 @@ public class SimplePropertyNamespaceHandlerTests {
 				new ClassPathResource("simplePropertyNamespaceHandlerTests.xml", getClass()));
 		TestBean sally = (TestBean) beanFactory.getBean("sally2");
 		ITestBean rob = sally.getSpouse();
-		assertEquals("Rob Harrop", rob.getName());
+		assertThat((Object) rob.getName()).isEqualTo("Rob Harrop");
 		assertEquals(24, rob.getAge());
-		assertEquals(rob.getSpouse(), sally);
+		assertThat((Object) sally).isEqualTo(rob.getSpouse());
 	}
 
 	@Test
@@ -72,7 +73,7 @@ public class SimplePropertyNamespaceHandlerTests {
 		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(
 				new ClassPathResource("simplePropertyNamespaceHandlerTests.xml", getClass()));
 		ITestBean sally = (TestBean) beanFactory.getBean("derivedSally");
-		assertEquals("r", sally.getSpouse().getName());
+		assertThat((Object) sally.getSpouse().getName()).isEqualTo("r");
 	}
 
 }

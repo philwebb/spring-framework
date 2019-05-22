@@ -99,15 +99,15 @@ public class HeadersAdaptersTests {
 	public void addShouldKeepOrdering() {
 		this.headers.add("TestHeader", "first");
 		this.headers.add("TestHeader", "second");
-		assertEquals("first", this.headers.getFirst("TestHeader"));
-		assertEquals("first", this.headers.get("TestHeader").get(0));
+		assertThat((Object) this.headers.getFirst("TestHeader")).isEqualTo("first");
+		assertThat((Object) this.headers.get("TestHeader").get(0)).isEqualTo("first");
 	}
 
 	@Test
 	public void putShouldOverrideExisting() {
 		this.headers.add("TestHeader", "first");
 		this.headers.put("TestHeader", Arrays.asList("override"));
-		assertEquals("override", this.headers.getFirst("TestHeader"));
+		assertThat((Object) this.headers.getFirst("TestHeader")).isEqualTo("override");
 		assertEquals(1, this.headers.get("TestHeader").size());
 	}
 

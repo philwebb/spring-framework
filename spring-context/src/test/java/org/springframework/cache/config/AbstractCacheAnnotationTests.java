@@ -109,7 +109,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertSame(r1, r2);
 		assertSame(r1, r3);
 
-		assertEquals(r3, this.cm.getCache("testCache").get(o1).get());
+		assertThat(this.cm.getCache("testCache").get(o1).get()).isEqualTo(r3);
 		assertNull("Cached value should be null", r3);
 	}
 
@@ -135,7 +135,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertSame(r1, r2);
 		assertSame(r1, r3);
 
-		assertEquals(r3, this.cm.getCache("testCache").get(o1).get());
+		assertThat(this.cm.getCache("testCache").get(o1).get()).isEqualTo(r3);
 		assertNull("Cached value should be null", r3);
 	}
 
@@ -383,11 +383,11 @@ public abstract class AbstractCacheAnnotationTests {
 		Integer three = 3;
 
 		Cache cache = this.cm.getCache("testCache");
-		assertEquals(one, Integer.valueOf(service.conditionalUpdate(one).toString()));
+		assertThat((Object) Integer.valueOf(service.conditionalUpdate(one).toString())).isEqualTo(one);
 		assertNull(cache.get(one));
 
-		assertEquals(three, Integer.valueOf(service.conditionalUpdate(three).toString()));
-		assertEquals(three, Integer.valueOf(cache.get(three).get().toString()));
+		assertThat((Object) Integer.valueOf(service.conditionalUpdate(three).toString())).isEqualTo(three);
+		assertThat((Object) Integer.valueOf(cache.get(three).get().toString())).isEqualTo(three);
 	}
 
 	public void testMultiCache(CacheableService<?> service) {

@@ -63,7 +63,7 @@ public class LazyInitTargetSourceTests {
 
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
 		assertThat(bf.containsSingleton("target")).isFalse();
-		assertEquals("Rob Harrop", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("Rob Harrop");
 		assertThat(bf.containsSingleton("target")).isTrue();
 	}
 

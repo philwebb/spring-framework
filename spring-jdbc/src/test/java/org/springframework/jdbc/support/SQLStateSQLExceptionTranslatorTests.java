@@ -28,6 +28,7 @@ import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.UncategorizedSQLException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -89,7 +90,7 @@ public class SQLStateSQLExceptionTranslatorTests {
 		SQLExceptionTranslator translator = new SQLStateSQLExceptionTranslator();
 		DataAccessException dax = translator.translate(TASK, SQL, ex);
 		assertNotNull("Translation must *never* result in a null DataAccessException being returned.", dax);
-		assertEquals("Wrong DataAccessException type returned as the result of the translation", dataAccessExceptionType, dax.getClass());
+		assertThat((Object) dax.getClass()).as("Wrong DataAccessException type returned as the result of the translation").isEqualTo(dataAccessExceptionType);
 		assertNotNull("The original SQLException must be preserved in the translated DataAccessException", dax.getCause());
 		assertSame("The exact same original SQLException must be preserved in the translated DataAccessException", ex, dax.getCause());
 	}

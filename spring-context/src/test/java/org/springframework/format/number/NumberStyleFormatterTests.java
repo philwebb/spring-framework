@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -35,12 +36,12 @@ public class NumberStyleFormatterTests {
 
 	@Test
 	public void formatValue() {
-		assertEquals("23.56", formatter.print(new BigDecimal("23.56"), Locale.US));
+		assertThat((Object) formatter.print(new BigDecimal("23.56"), Locale.US)).isEqualTo("23.56");
 	}
 
 	@Test
 	public void parseValue() throws ParseException {
-		assertEquals(new BigDecimal("23.56"), formatter.parse("23.56", Locale.US));
+		assertThat((Object) formatter.parse("23.56", Locale.US)).isEqualTo(new BigDecimal("23.56"));
 	}
 
 	@Test

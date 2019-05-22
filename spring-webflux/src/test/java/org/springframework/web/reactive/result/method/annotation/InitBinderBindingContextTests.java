@@ -37,6 +37,7 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.SyncHandlerMethodArgumentResolver;
 import org.springframework.web.reactive.result.method.SyncInvocableHandlerMethod;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -62,7 +63,7 @@ public class InitBinderBindingContextTests {
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, null);
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertEquals("id", dataBinder.getDisallowedFields()[0]);
+		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -84,7 +85,7 @@ public class InitBinderBindingContextTests {
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertEquals("id", dataBinder.getDisallowedFields()[0]);
+		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -124,7 +125,7 @@ public class InitBinderBindingContextTests {
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertEquals("requestParam-22", dataBinder.getDisallowedFields()[0]);
+		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
 	}
 
 

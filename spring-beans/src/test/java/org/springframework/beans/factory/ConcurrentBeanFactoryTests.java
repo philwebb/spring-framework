@@ -36,6 +36,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
@@ -126,8 +127,8 @@ public class ConcurrentBeanFactoryTests {
 		ConcurrentBean b1 = (ConcurrentBean) factory.getBean("bean1");
 		ConcurrentBean b2 = (ConcurrentBean) factory.getBean("bean2");
 
-		assertEquals(DATE_1, b1.getDate());
-		assertEquals(DATE_2, b2.getDate());
+		assertThat((Object) b1.getDate()).isEqualTo(DATE_1);
+		assertThat((Object) b2.getDate()).isEqualTo(DATE_2);
 	}
 
 

@@ -56,7 +56,7 @@ public class ProceedTests {
 	@Test
 	public void testSimpleProceedWithChangedArgs() {
 		this.testBean.setName("abc");
-		assertEquals("Name changed in around advice", "ABC", this.testBean.getName());
+		assertThat((Object) this.testBean.getName()).as("Name changed in around advice").isEqualTo("ABC");
 	}
 
 	@Test
@@ -75,9 +75,9 @@ public class ProceedTests {
 	@Test
 	public void testProceedWithArgsAcrossAspects() {
 		this.testBean.setSex("male");
-		assertEquals("value changed in around advice","MALE", this.testBean.getSex());
-		assertEquals("changed value visible to next before advice in chain","MALE", this.secondTestAspect.getLastBeforeStringValue());
-		assertEquals("changed value visible to next around advice in chain","MALE", this.secondTestAspect.getLastAroundStringValue());
+		assertThat((Object) this.testBean.getSex()).as("value changed in around advice").isEqualTo("MALE");
+		assertThat((Object) this.secondTestAspect.getLastBeforeStringValue()).as("changed value visible to next before advice in chain").isEqualTo("MALE");
+		assertThat((Object) this.secondTestAspect.getLastAroundStringValue()).as("changed value visible to next around advice in chain").isEqualTo("MALE");
 	}
 
 

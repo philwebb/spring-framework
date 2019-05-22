@@ -58,7 +58,7 @@ public class ConsumesRequestConditionTests {
 	@Test
 	public void getConsumableMediaTypesNegatedExpression() {
 		ConsumesRequestCondition condition = new ConsumesRequestCondition("!application/xml");
-		assertEquals(Collections.emptySet(), condition.getConsumableMediaTypes());
+		assertThat((Object) condition.getConsumableMediaTypes()).isEqualTo(Collections.emptySet());
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class ConsumesRequestConditionTests {
 		ConsumesRequestCondition condition2 = new ConsumesRequestCondition("application/xml");
 
 		ConsumesRequestCondition result = condition1.combine(condition2);
-		assertEquals(condition2, result);
+		assertThat((Object) result).isEqualTo(condition2);
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class ConsumesRequestConditionTests {
 		ConsumesRequestCondition condition2 = new ConsumesRequestCondition();
 
 		ConsumesRequestCondition result = condition1.combine(condition2);
-		assertEquals(condition1, result);
+		assertThat((Object) result).isEqualTo(condition1);
 	}
 
 	@Test

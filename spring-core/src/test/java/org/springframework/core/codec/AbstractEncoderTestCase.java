@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.MimeType;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static org.springframework.core.io.buffer.DataBufferUtils.release;
@@ -256,7 +257,7 @@ public abstract class AbstractEncoderTestCase<E extends Encoder<?>>
 			dataBuffer.read(resultBytes);
 			release(dataBuffer);
 			String actual = new String(resultBytes, UTF_8);
-			assertEquals(expected, actual);
+			assertThat((Object) actual).isEqualTo(expected);
 		};
 
 	}

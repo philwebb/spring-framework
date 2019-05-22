@@ -70,7 +70,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L);
-		assertEquals(first, cache.get(key).get());
+		assertThat(cache.get(key).get()).isEqualTo(first);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L, "foo", "bar");
-		assertEquals(first, cache.get(key).get());
+		assertThat(cache.get(key).get()).isEqualTo(first);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L);
-		assertEquals(first, cache.get(key).get());
+		assertThat(cache.get(key).get()).isEqualTo(first);
 	}
 
 

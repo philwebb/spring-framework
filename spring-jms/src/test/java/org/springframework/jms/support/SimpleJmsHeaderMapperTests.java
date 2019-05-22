@@ -77,7 +77,7 @@ public class SimpleJmsHeaderMapperTests {
 		javax.jms.Message jmsMessage = new StubTextMessage();
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertNotNull(jmsMessage.getJMSCorrelationID());
-		assertEquals(jmsCorrelationId, jmsMessage.getJMSCorrelationID());
+		assertThat((Object) jmsMessage.getJMSCorrelationID()).isEqualTo(jmsCorrelationId);
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class SimpleJmsHeaderMapperTests {
 				.setHeader(JmsHeaders.CORRELATION_ID, 123).build();
 		javax.jms.Message jmsMessage = new StubTextMessage();
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
-		assertEquals("123", jmsMessage.getJMSCorrelationID());
+		assertThat((Object) jmsMessage.getJMSCorrelationID()).isEqualTo("123");
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class SimpleJmsHeaderMapperTests {
 		javax.jms.Message jmsMessage = new StubTextMessage();
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertNotNull(jmsMessage.getJMSType());
-		assertEquals(jmsType, jmsMessage.getJMSType());
+		assertThat((Object) jmsMessage.getJMSType()).isEqualTo(jmsType);
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		Object value = jmsMessage.getObjectProperty(JmsHeaderMapper.CONTENT_TYPE_PROPERTY);
 		assertNotNull(value);
-		assertEquals("foo", value);
+		assertThat(value).isEqualTo("foo");
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		Object value = jmsMessage.getObjectProperty("foo");
 		assertNotNull(value);
-		assertEquals(Integer.class, value.getClass());
+		assertThat((Object) value.getClass()).isEqualTo(Integer.class);
 		assertEquals(123, ((Integer) value).intValue());
 	}
 
@@ -175,7 +175,7 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		Object value = jmsMessage.getObjectProperty("custom_foo");
 		assertNotNull(value);
-		assertEquals(Integer.class, value.getClass());
+		assertThat((Object) value.getClass()).isEqualTo(Integer.class);
 		assertEquals(123, ((Integer) value).intValue());
 	}
 
@@ -480,7 +480,7 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertNull(jmsMessage.getJMSReplyTo());
 		assertNotNull(jmsMessage.getStringProperty("foo"));
-		assertEquals("bar", jmsMessage.getStringProperty("foo"));
+		assertThat((Object) jmsMessage.getStringProperty("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -498,7 +498,7 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertNull(jmsMessage.getJMSType());
 		assertNotNull(jmsMessage.getStringProperty("foo"));
-		assertEquals("bar", jmsMessage.getStringProperty("foo"));
+		assertThat((Object) jmsMessage.getStringProperty("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -516,7 +516,7 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertNull(jmsMessage.getJMSCorrelationID());
 		assertNotNull(jmsMessage.getStringProperty("foo"));
-		assertEquals("bar", jmsMessage.getStringProperty("foo"));
+		assertThat((Object) jmsMessage.getStringProperty("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -534,7 +534,7 @@ public class SimpleJmsHeaderMapperTests {
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertNull(jmsMessage.getJMSCorrelationID());
 		assertNotNull(jmsMessage.getStringProperty("foo"));
-		assertEquals("bar", jmsMessage.getStringProperty("foo"));
+		assertThat((Object) jmsMessage.getStringProperty("foo")).isEqualTo("bar");
 	}
 
 
@@ -546,8 +546,8 @@ public class SimpleJmsHeaderMapperTests {
 		}
 		else {
 			assertNotNull(headerValue);
-			assertEquals(value.getClass(), headerValue.getClass());
-			assertEquals(value, headerValue);
+			assertThat((Object) headerValue.getClass()).isEqualTo(value.getClass());
+			assertThat(headerValue).isEqualTo(value);
 		}
 	}
 
@@ -557,7 +557,7 @@ public class SimpleJmsHeaderMapperTests {
 		Map<String, Object> headers = mapper.toHeaders(jmsMessage);
 		assertNull(headers.get(headerId));
 		assertNotNull(headers.get("foo"));
-		assertEquals("bar", headers.get("foo"));
+		assertThat(headers.get("foo")).isEqualTo("bar");
 	}
 
 	private MessageBuilder<String> initBuilder() {

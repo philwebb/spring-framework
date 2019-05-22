@@ -168,8 +168,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		String[] depBeans = bf.getDependenciesForBean("annotatedBean");
 		assertEquals(2, depBeans.length);
-		assertEquals("testBean", depBeans[0]);
-		assertEquals("nestedTestBean", depBeans[1]);
+		assertThat((Object) depBeans[0]).isEqualTo("testBean");
+		assertThat((Object) depBeans[1]).isEqualTo("nestedTestBean");
 	}
 
 	@Test
@@ -1153,14 +1153,14 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", tbd);
 
 		ObjectProviderInjectionBean bean = (ObjectProviderInjectionBean) bf.getBean("annotatedBean");
-		assertEquals(bf.getBean("testBean"), bean.getTestBean());
-		assertEquals(bf.getBean("testBean", "myName"), bean.getTestBean("myName"));
-		assertEquals(bf.getBean("testBean"), bean.getOptionalTestBean());
-		assertEquals(bf.getBean("testBean"), bean.getOptionalTestBeanWithDefault());
-		assertEquals(bf.getBean("testBean"), bean.consumeOptionalTestBean());
-		assertEquals(bf.getBean("testBean"), bean.getUniqueTestBean());
-		assertEquals(bf.getBean("testBean"), bean.getUniqueTestBeanWithDefault());
-		assertEquals(bf.getBean("testBean"), bean.consumeUniqueTestBean());
+		assertThat((Object) bean.getTestBean()).isEqualTo(bf.getBean("testBean"));
+		assertThat((Object) bean.getTestBean("myName")).isEqualTo(bf.getBean("testBean", "myName"));
+		assertThat((Object) bean.getOptionalTestBean()).isEqualTo(bf.getBean("testBean"));
+		assertThat((Object) bean.getOptionalTestBeanWithDefault()).isEqualTo(bf.getBean("testBean"));
+		assertThat((Object) bean.consumeOptionalTestBean()).isEqualTo(bf.getBean("testBean"));
+		assertThat((Object) bean.getUniqueTestBean()).isEqualTo(bf.getBean("testBean"));
+		assertThat((Object) bean.getUniqueTestBeanWithDefault()).isEqualTo(bf.getBean("testBean"));
+		assertThat((Object) bean.consumeUniqueTestBean()).isEqualTo(bf.getBean("testBean"));
 
 		List<?> testBeans = bean.iterateTestBeans();
 		assertEquals(1, testBeans.size());
@@ -1185,10 +1185,10 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		assertSame(bf.getBean("testBean"), bean.getTestBean());
 		assertSame(bf.getBean("testBean"), bean.getOptionalTestBean());
 		assertSame(bf.getBean("testBean"), bean.getOptionalTestBeanWithDefault());
-		assertEquals(bf.getBean("testBean"), bean.consumeOptionalTestBean());
+		assertThat((Object) bean.consumeOptionalTestBean()).isEqualTo(bf.getBean("testBean"));
 		assertSame(bf.getBean("testBean"), bean.getUniqueTestBean());
 		assertSame(bf.getBean("testBean"), bean.getUniqueTestBeanWithDefault());
-		assertEquals(bf.getBean("testBean"), bean.consumeUniqueTestBean());
+		assertThat((Object) bean.consumeUniqueTestBean()).isEqualTo(bf.getBean("testBean"));
 
 		List<?> testBeans = bean.iterateTestBeans();
 		assertEquals(1, testBeans.size());
@@ -1213,8 +1213,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 				bean::getTestBean);
 		assertNull(bean.getOptionalTestBean());
 		assertNull(bean.consumeOptionalTestBean());
-		assertEquals(new TestBean("default"), bean.getOptionalTestBeanWithDefault());
-		assertEquals(new TestBean("default"), bean.getUniqueTestBeanWithDefault());
+		assertThat((Object) bean.getOptionalTestBeanWithDefault()).isEqualTo(new TestBean("default"));
+		assertThat((Object) bean.getUniqueTestBeanWithDefault()).isEqualTo(new TestBean("default"));
 		assertNull(bean.getUniqueTestBean());
 		assertNull(bean.consumeUniqueTestBean());
 
@@ -1515,8 +1515,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		assertNotNull("The singleton StringFactoryBean should have been registered.", factoryBean);
 		assertNotNull("The factoryBeanDependentBean should have been registered.", bean);
-		assertEquals("The FactoryBeanDependentBean should have been autowired 'by type' with the StringFactoryBean.",
-				factoryBean, bean.getFactoryBean());
+		assertThat((Object) bean.getFactoryBean()).as("The FactoryBeanDependentBean should have been autowired 'by type' with the StringFactoryBean.").isEqualTo(factoryBean);
 	}
 
 	@Test
@@ -2024,7 +2023,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		GenericInterface1Impl bean1 = (GenericInterface1Impl) bf.getBean("bean1");
 		GenericInterface2Impl bean2 = (GenericInterface2Impl) bf.getBean("bean2");
 		assertSame(bean2, bean1.gi2);
-		assertEquals(ResolvableType.forClass(GenericInterface1Impl.class), bd.getResolvableType());
+		assertThat((Object) bd.getResolvableType()).isEqualTo(ResolvableType.forClass(GenericInterface1Impl.class));
 	}
 
 	@Test
@@ -2038,7 +2037,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		GenericInterface1Impl bean1 = (GenericInterface1Impl) bf.getBean("bean1");
 		GenericInterface2Impl bean2 = (GenericInterface2Impl) bf.getBean("bean2");
 		assertSame(bean2, bean1.gi2);
-		assertEquals(ResolvableType.forClass(GenericInterface1Impl.class), bd.getResolvableType());
+		assertThat((Object) bd.getResolvableType()).isEqualTo(ResolvableType.forClass(GenericInterface1Impl.class));
 	}
 
 	@Test
@@ -2084,9 +2083,9 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("bean2", bd2);
 		bf.registerBeanDefinition("bean3", new RootBeanDefinition(MultiGenericFieldInjection.class));
 
-		assertEquals("bean1 a bean2 123", bf.getBean("bean3").toString());
-		assertEquals(ResolvableType.forClassWithGenerics(GenericInterface2Bean.class, String.class), bd1.getResolvableType());
-		assertEquals(ResolvableType.forClassWithGenerics(GenericInterface2Bean.class, Integer.class), bd2.getResolvableType());
+		assertThat((Object) bf.getBean("bean3").toString()).isEqualTo("bean1 a bean2 123");
+		assertThat((Object) bd1.getResolvableType()).isEqualTo(ResolvableType.forClassWithGenerics(GenericInterface2Bean.class, String.class));
+		assertThat((Object) bd2.getResolvableType()).isEqualTo(ResolvableType.forClassWithGenerics(GenericInterface2Bean.class, Integer.class));
 	}
 
 	@Test

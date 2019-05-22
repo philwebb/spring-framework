@@ -54,7 +54,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 
@@ -65,7 +65,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 
@@ -76,7 +76,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 
@@ -87,7 +87,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 

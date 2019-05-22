@@ -44,6 +44,7 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
@@ -73,7 +74,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		RequestEntity<Void> request = RequestEntity.get(url).build();
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
-		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertArrayEquals("foo".getBytes("UTF-8"), response.getBody());
 	}
 
@@ -83,7 +84,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		RequestEntity<Void> request = RequestEntity.get(url).build();
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
-		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertArrayEquals("bar".getBytes("UTF-8"), response.getBody());
 	}
 
@@ -93,8 +94,8 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		RequestEntity<Void> request = RequestEntity.get(url).build();
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("bar", response.getHeaders().getFirst("foo"));
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat((Object) response.getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -105,7 +106,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 			new RestTemplate().exchange(request, byte[].class);
 		}
 		catch (HttpClientErrorException ex) {
-			assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+			assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		}
 	}
 

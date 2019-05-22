@@ -102,7 +102,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> map = (Map<String, String>)
 				this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null);
 
-		assertEquals("red", map.get("colors"));
+		assertThat((Object) map.get("colors")).isEqualTo("red");
 
 		param = this.testMethod
 				.annot(matrixAttribute().noPathVar())
@@ -112,7 +112,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		MultiValueMap<String, String> multivalueMap = (MultiValueMap<String, String>)
 				this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null);
 
-		assertEquals(Arrays.asList("red", "green", "blue"), multivalueMap.get("colors"));
+		assertThat((Object) multivalueMap.get("colors")).isEqualTo(Arrays.asList("red", "green", "blue"));
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> mapForPathVar = (Map<String, String>) this.resolver.resolveArgument(
 				param, this.mavContainer, this.webRequest, null);
 
-		assertEquals(Arrays.asList("red", "purple"), mapForPathVar.get("colors"));
+		assertThat((Object) mapForPathVar.get("colors")).isEqualTo(Arrays.asList("red", "purple"));
 
 		param = this.testMethod.annot(matrixAttribute().noName()).arg(Map.class, String.class, String.class);
 
@@ -140,7 +140,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> mapAll = (Map<String, String>)
 				this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null);
 
-		assertEquals("red", mapAll.get("colors"));
+		assertThat((Object) mapAll.get("colors")).isEqualTo("red");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> map = (Map<String, String>)
 				this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null);
 
-		assertEquals(Collections.emptyMap(), map);
+		assertThat((Object) map).isEqualTo(Collections.emptyMap());
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> map = (Map<String, String>)
 				this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null);
 
-		assertEquals(Collections.emptyMap(), map);
+		assertThat((Object) map).isEqualTo(Collections.emptyMap());
 	}
 
 

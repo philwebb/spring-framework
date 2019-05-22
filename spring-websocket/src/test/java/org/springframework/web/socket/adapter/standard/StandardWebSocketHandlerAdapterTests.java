@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -69,7 +70,7 @@ public class StandardWebSocketHandlerAdapterTests {
 		verify(this.session, atLeast(2)).addMessageHandler(any(MessageHandler.Whole.class));
 
 		given(this.session.getRequestURI()).willReturn(uri);
-		assertEquals(uri, this.webSocketSession.getUri());
+		assertThat((Object) this.webSocketSession.getUri()).isEqualTo(uri);
 	}
 
 	@Test

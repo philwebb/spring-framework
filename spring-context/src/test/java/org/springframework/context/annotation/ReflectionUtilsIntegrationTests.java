@@ -50,7 +50,7 @@ public class ReflectionUtilsIntegrationTests {
 		assertThat(m1MethodCount).isEqualTo(1);
 		for (Method method : methods) {
 			if (method.getName().contains("m1")) {
-				assertEquals(method.getReturnType(), Integer.class);
+				assertThat((Object) Integer.class).isEqualTo(method.getReturnType());
 			}
 		}
 	}

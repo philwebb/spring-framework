@@ -72,7 +72,7 @@ public class SimpleAsyncTaskExecutorTests {
 		});
 		ThreadNameHarvester task = new ThreadNameHarvester(monitor);
 		executeAndWait(executor, task, monitor);
-		assertEquals("test", task.getThreadName());
+		assertThat((Object) task.getThreadName()).isEqualTo("test");
 	}
 
 	@Test

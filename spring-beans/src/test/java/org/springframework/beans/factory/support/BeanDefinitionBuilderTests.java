@@ -44,7 +44,7 @@ public class BeanDefinitionBuilderTests {
 
 		RootBeanDefinition rbd = (RootBeanDefinition) bdb.getBeanDefinition();
 		assertThat(rbd.isSingleton()).isFalse();
-		assertEquals(TestBean.class, rbd.getBeanClass());
+		assertThat((Object) rbd.getBeanClass()).isEqualTo(TestBean.class);
 		assertThat(Arrays.equals(dependsOn, rbd.getDependsOn())).as("Depends on was added").isTrue();
 		assertThat(rbd.getPropertyValues().contains("age")).isTrue();
 	}
@@ -54,8 +54,8 @@ public class BeanDefinitionBuilderTests {
 		BeanDefinitionBuilder bdb = BeanDefinitionBuilder.rootBeanDefinition(TestBean.class, "create");
 		RootBeanDefinition rbd = (RootBeanDefinition) bdb.getBeanDefinition();
 		assertThat(rbd.hasBeanClass()).isTrue();
-		assertEquals(TestBean.class, rbd.getBeanClass());
-		assertEquals("create", rbd.getFactoryMethodName());
+		assertThat((Object) rbd.getBeanClass()).isEqualTo(TestBean.class);
+		assertThat((Object) rbd.getFactoryMethodName()).isEqualTo("create");
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class BeanDefinitionBuilderTests {
 		BeanDefinitionBuilder bdb = BeanDefinitionBuilder.rootBeanDefinition(TestBean.class.getName());
 		RootBeanDefinition rbd = (RootBeanDefinition) bdb.getBeanDefinition();
 		assertThat(rbd.hasBeanClass()).isFalse();
-		assertEquals(TestBean.class.getName(), rbd.getBeanClassName());
+		assertThat((Object) rbd.getBeanClassName()).isEqualTo(TestBean.class.getName());
 	}
 
 	@Test
@@ -71,8 +71,8 @@ public class BeanDefinitionBuilderTests {
 		BeanDefinitionBuilder bdb = BeanDefinitionBuilder.rootBeanDefinition(TestBean.class.getName(), "create");
 		RootBeanDefinition rbd = (RootBeanDefinition) bdb.getBeanDefinition();
 		assertThat(rbd.hasBeanClass()).isFalse();
-		assertEquals(TestBean.class.getName(), rbd.getBeanClassName());
-		assertEquals("create", rbd.getFactoryMethodName());
+		assertThat((Object) rbd.getBeanClassName()).isEqualTo(TestBean.class.getName());
+		assertThat((Object) rbd.getFactoryMethodName()).isEqualTo("create");
 	}
 
 }

@@ -110,7 +110,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 	@Test
 	public void createAndBind() throws Exception {
 		testBindFoo("foo", this.testMethod.annotPresent(ModelAttribute.class).arg(Foo.class), value -> {
-			assertEquals(Foo.class, value.getClass());
+			assertThat((Object) value.getClass()).isEqualTo(Foo.class);
 			return (Foo) value;
 		});
 	}
@@ -124,7 +124,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 			boolean condition = mono instanceof Mono;
 			assertThat(condition).as(mono.getClass().getName()).isTrue();
 			Object value = ((Mono<?>) mono).block(Duration.ofSeconds(5));
-			assertEquals(Foo.class, value.getClass());
+			assertThat((Object) value.getClass()).isEqualTo(Foo.class);
 			return (Foo) value;
 		});
 	}
@@ -138,7 +138,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 			boolean condition = single instanceof Single;
 			assertThat(condition).as(single.getClass().getName()).isTrue();
 			Object value = ((Single<?>) single).toBlocking().value();
-			assertEquals(Foo.class, value.getClass());
+			assertThat((Object) value.getClass()).isEqualTo(Foo.class);
 			return (Foo) value;
 		});
 	}
@@ -151,7 +151,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		MethodParameter parameter = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Foo.class);
 		testBindFoo("foo", parameter, value -> {
-			assertEquals(Foo.class, value.getClass());
+			assertThat((Object) value.getClass()).isEqualTo(Foo.class);
 			return (Foo) value;
 		});
 
@@ -166,7 +166,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		MethodParameter parameter = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Foo.class);
 		testBindFoo("foo", parameter, value -> {
-			assertEquals(Foo.class, value.getClass());
+			assertThat((Object) value.getClass()).isEqualTo(Foo.class);
 			return (Foo) value;
 		});
 
@@ -181,7 +181,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		MethodParameter parameter = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Foo.class);
 		testBindFoo("foo", parameter, value -> {
-			assertEquals(Foo.class, value.getClass());
+			assertThat((Object) value.getClass()).isEqualTo(Foo.class);
 			return (Foo) value;
 		});
 
@@ -202,7 +202,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 			boolean condition = mono instanceof Mono;
 			assertThat(condition).as(mono.getClass().getName()).isTrue();
 			Object value = ((Mono<?>) mono).block(Duration.ofSeconds(5));
-			assertEquals(Foo.class, value.getClass());
+			assertThat((Object) value.getClass()).isEqualTo(Foo.class);
 			return (Foo) value;
 		});
 	}
@@ -215,7 +215,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 				.block(Duration.ZERO);
 
 		Foo foo = valueExtractor.apply(value);
-		assertEquals("Robert", foo.getName());
+		assertThat((Object) foo.getName()).isEqualTo("Robert");
 		assertEquals(25, foo.getAge());
 
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + modelKey;
@@ -294,7 +294,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 				.block(Duration.ZERO);
 
 		Bar bar = (Bar) value;
-		assertEquals("Robert", bar.getName());
+		assertThat((Object) bar.getName()).isEqualTo("Robert");
 		assertEquals(25, bar.getAge());
 		assertEquals(1, bar.getCount());
 

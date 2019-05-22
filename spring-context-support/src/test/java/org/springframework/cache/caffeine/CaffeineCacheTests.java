@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.springframework.cache.AbstractValueAdaptingCacheTests;
 import org.springframework.cache.Cache;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -72,11 +73,12 @@ public class CaffeineCacheTests extends AbstractValueAdaptingCacheTests<Caffeine
 
 		assertNull(cache.get(key));
 		assertNull(cache.putIfAbsent(key, value));
-		assertEquals(value, cache.get(key).get());
+		assertThat(cache.get(key).get()).isEqualTo(value);
 		Cache.ValueWrapper wrapper = cache.putIfAbsent(key, "anotherValue");
 		assertNotNull(wrapper); // A value is set but is 'null'
-		assertEquals(null, wrapper.get());
-		assertEquals(value, cache.get(key).get()); // not changed
+		assertThat(wrapper.get()).isEqualTo(null);
+		// not changed
+		assertThat(cache.get(key).get()).isEqualTo(value);
 	}
 
 }

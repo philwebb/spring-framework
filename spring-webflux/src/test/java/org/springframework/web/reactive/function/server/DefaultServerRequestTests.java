@@ -78,7 +78,7 @@ public class DefaultServerRequestTests {
 				MockServerWebExchange.from(MockServerHttpRequest.method(method, "https://example.com")),
 				this.messageReaders);
 
-		assertEquals(method, request.method());
+		assertThat((Object) request.method()).isEqualTo(method);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class DefaultServerRequestTests {
 				MockServerWebExchange.from(MockServerHttpRequest.method(HttpMethod.GET, uri)),
 				this.messageReaders);
 
-		assertEquals(uri, request.uri());
+		assertThat((Object) request.uri()).isEqualTo(uri);
 	}
 
 	@Test
@@ -101,11 +101,11 @@ public class DefaultServerRequestTests {
 
 
 		URI result = request.uriBuilder().build();
-		assertEquals("http", result.getScheme());
-		assertEquals("localhost", result.getHost());
+		assertThat((Object) result.getScheme()).isEqualTo("http");
+		assertThat((Object) result.getHost()).isEqualTo("localhost");
 		assertEquals(-1, result.getPort());
-		assertEquals("/path", result.getPath());
-		assertEquals("a=1", result.getQuery());
+		assertThat((Object) result.getPath()).isEqualTo("/path");
+		assertThat((Object) result.getQuery()).isEqualTo("a=1");
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class DefaultServerRequestTests {
 
 		DefaultServerRequest request = new DefaultServerRequest(exchange, messageReaders);
 
-		assertEquals(Optional.of("bar"), request.attribute("foo"));
+		assertThat((Object) request.attribute("foo")).isEqualTo(Optional.of("bar"));
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class DefaultServerRequestTests {
 				MockServerWebExchange.from(MockServerHttpRequest.method(HttpMethod.GET, "https://example.com?foo=bar")),
 				this.messageReaders);
 
-		assertEquals(Optional.of("bar"), request.queryParam("foo"));
+		assertThat((Object) request.queryParam("foo")).isEqualTo(Optional.of("bar"));
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class DefaultServerRequestTests {
 				MockServerWebExchange.from(MockServerHttpRequest.method(HttpMethod.GET, "https://example.com?foo")),
 				this.messageReaders);
 
-		assertEquals(Optional.of(""), request.queryParam("foo"));
+		assertThat((Object) request.queryParam("foo")).isEqualTo(Optional.of(""));
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class DefaultServerRequestTests {
 				MockServerWebExchange.from(MockServerHttpRequest.method(HttpMethod.GET, "https://example.com?foo")),
 				this.messageReaders);
 
-		assertEquals(Optional.empty(), request.queryParam("bar"));
+		assertThat((Object) request.queryParam("bar")).isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class DefaultServerRequestTests {
 
 		DefaultServerRequest request = new DefaultServerRequest(exchange, messageReaders);
 
-		assertEquals("bar", request.pathVariable("foo"));
+		assertThat((Object) request.pathVariable("foo")).isEqualTo("bar");
 	}
 
 
@@ -178,7 +178,7 @@ public class DefaultServerRequestTests {
 
 		DefaultServerRequest request = new DefaultServerRequest(exchange, messageReaders);
 
-		assertEquals(pathVariables, request.pathVariables());
+		assertThat((Object) request.pathVariables()).isEqualTo(pathVariables);
 	}
 
 	@Test
@@ -205,11 +205,11 @@ public class DefaultServerRequestTests {
 				this.messageReaders);
 
 		ServerRequest.Headers headers = request.headers();
-		assertEquals(accept, headers.accept());
-		assertEquals(acceptCharset, headers.acceptCharset());
-		assertEquals(OptionalLong.of(contentLength), headers.contentLength());
-		assertEquals(Optional.of(contentType), headers.contentType());
-		assertEquals(httpHeaders, headers.asHttpHeaders());
+		assertThat((Object) headers.accept()).isEqualTo(accept);
+		assertThat((Object) headers.acceptCharset()).isEqualTo(acceptCharset);
+		assertThat((Object) headers.contentLength()).isEqualTo(OptionalLong.of(contentLength));
+		assertThat((Object) headers.contentType()).isEqualTo(Optional.of(contentType));
+		assertThat((Object) headers.asHttpHeaders()).isEqualTo(httpHeaders);
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class DefaultServerRequestTests {
 		MultiValueMap<String, HttpCookie> expected = new LinkedMultiValueMap<>();
 		expected.add("foo", cookie);
 
-		assertEquals(expected, request.cookies());
+		assertThat((Object) request.cookies()).isEqualTo(expected);
 
 	}
 
@@ -244,7 +244,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request = new DefaultServerRequest(MockServerWebExchange.from(mockRequest), messageReaders);
 
 		Mono<String> resultMono = request.body(toMono(String.class));
-		assertEquals("foo", resultMono.block());
+		assertThat((Object) resultMono.block()).isEqualTo("foo");
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request = new DefaultServerRequest(MockServerWebExchange.from(mockRequest), messageReaders);
 
 		Mono<String> resultMono = request.bodyToMono(String.class);
-		assertEquals("foo", resultMono.block());
+		assertThat((Object) resultMono.block()).isEqualTo("foo");
 	}
 
 	@Test
@@ -283,7 +283,7 @@ public class DefaultServerRequestTests {
 
 		ParameterizedTypeReference<String> typeReference = new ParameterizedTypeReference<String>() {};
 		Mono<String> resultMono = request.bodyToMono(typeReference);
-		assertEquals("foo", resultMono.block());
+		assertThat((Object) resultMono.block()).isEqualTo("foo");
 	}
 
 	@Test
@@ -324,7 +324,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request = new DefaultServerRequest(MockServerWebExchange.from(mockRequest), messageReaders);
 
 		Flux<String> resultFlux = request.bodyToFlux(String.class);
-		assertEquals(Collections.singletonList("foo"), resultFlux.collectList().block());
+		assertThat((Object) resultFlux.collectList().block()).isEqualTo(Collections.singletonList("foo"));
 	}
 
 	@Test
@@ -344,7 +344,7 @@ public class DefaultServerRequestTests {
 
 		ParameterizedTypeReference<String> typeReference = new ParameterizedTypeReference<String>() {};
 		Flux<String> resultFlux = request.bodyToFlux(typeReference);
-		assertEquals(Collections.singletonList("foo"), resultFlux.collectList().block());
+		assertThat((Object) resultFlux.collectList().block()).isEqualTo(Collections.singletonList("foo"));
 	}
 
 	@Test
@@ -387,8 +387,8 @@ public class DefaultServerRequestTests {
 		StepVerifier.create(resultData)
 				.consumeNextWith(formData -> {
 					assertEquals(2, formData.size());
-					assertEquals("bar", formData.getFirst("foo"));
-					assertEquals("qux", formData.getFirst("baz"));
+					assertThat((Object) formData.getFirst("foo")).isEqualTo("bar");
+					assertThat((Object) formData.getFirst("baz")).isEqualTo("qux");
 				})
 				.verifyComplete();
 	}
@@ -426,13 +426,13 @@ public class DefaultServerRequestTests {
 					boolean condition1 = part instanceof FormFieldPart;
 					assertThat(condition1).isTrue();
 					FormFieldPart formFieldPart = (FormFieldPart) part;
-					assertEquals("bar", formFieldPart.value());
+					assertThat((Object) formFieldPart.value()).isEqualTo("bar");
 
 					part = formData.getFirst("baz");
 					boolean condition = part instanceof FormFieldPart;
 					assertThat(condition).isTrue();
 					formFieldPart = (FormFieldPart) part;
-					assertEquals("qux", formFieldPart.value());
+					assertThat((Object) formFieldPart.value()).isEqualTo("qux");
 				})
 				.verifyComplete();
 	}

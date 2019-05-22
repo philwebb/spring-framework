@@ -149,7 +149,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 	public void testAccessingPropertyOfClass() {
 		Expression expression = parser.parseExpression("name");
 		Object value = expression.getValue(new StandardEvaluationContext(String.class));
-		assertEquals("java.lang.String", value);
+		assertThat(value).isEqualTo("java.lang.String");
 	}
 
 	@Test
@@ -159,16 +159,16 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 		StandardEvaluationContext context = new StandardEvaluationContext();
 		context.addPropertyAccessor(new ConfigurablePropertyAccessor(Collections.singletonMap("name", "Ollie")));
-		assertEquals("Ollie", expression.getValue(context));
+		assertThat(expression.getValue(context)).isEqualTo("Ollie");
 
 		context = new StandardEvaluationContext();
 		context.addPropertyAccessor(new ConfigurablePropertyAccessor(Collections.singletonMap("name", "Jens")));
-		assertEquals("Jens", expression.getValue(context));
+		assertThat(expression.getValue(context)).isEqualTo("Jens");
 	}
 
 	@Test
 	public void standardGetClassAccess() {
-		assertEquals(String.class.getName(), parser.parseExpression("'a'.class.name").getValue());
+		assertThat(parser.parseExpression("'a'.class.name").getValue()).isEqualTo(String.class.getName());
 	}
 
 	@Test
@@ -184,9 +184,9 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 		Expression expr = parser.parseExpression("name");
 		Person target = new Person("p1");
-		assertEquals("p1", expr.getValue(context, target));
+		assertThat(expr.getValue(context, target)).isEqualTo("p1");
 		target.setName("p2");
-		assertEquals("p2", expr.getValue(context, target));
+		assertThat(expr.getValue(context, target)).isEqualTo("p2");
 
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				parser.parseExpression("name='p3'").getValue(context, target));
@@ -198,17 +198,17 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 		Expression expr = parser.parseExpression("name");
 		Person target = new Person("p1");
-		assertEquals("p1", expr.getValue(context, target));
+		assertThat(expr.getValue(context, target)).isEqualTo("p1");
 		target.setName("p2");
-		assertEquals("p2", expr.getValue(context, target));
+		assertThat(expr.getValue(context, target)).isEqualTo("p2");
 
 		parser.parseExpression("name='p3'").getValue(context, target);
-		assertEquals("p3", target.getName());
-		assertEquals("p3", expr.getValue(context, target));
+		assertThat((Object) target.getName()).isEqualTo("p3");
+		assertThat(expr.getValue(context, target)).isEqualTo("p3");
 
 		expr.setValue(context, target, "p4");
-		assertEquals("p4", target.getName());
-		assertEquals("p4", expr.getValue(context, target));
+		assertThat((Object) target.getName()).isEqualTo("p4");
+		assertThat(expr.getValue(context, target)).isEqualTo("p4");
 	}
 
 	@Test
@@ -218,17 +218,17 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		assertSame(target, context.getRootObject().getValue());
 
 		Expression expr = parser.parseExpression("name");
-		assertEquals("p1", expr.getValue(context, target));
+		assertThat(expr.getValue(context, target)).isEqualTo("p1");
 		target.setName("p2");
-		assertEquals("p2", expr.getValue(context, target));
+		assertThat(expr.getValue(context, target)).isEqualTo("p2");
 
 		parser.parseExpression("name='p3'").getValue(context, target);
-		assertEquals("p3", target.getName());
-		assertEquals("p3", expr.getValue(context, target));
+		assertThat((Object) target.getName()).isEqualTo("p3");
+		assertThat(expr.getValue(context, target)).isEqualTo("p3");
 
 		expr.setValue(context, target, "p4");
-		assertEquals("p4", target.getName());
-		assertEquals("p4", expr.getValue(context, target));
+		assertThat((Object) target.getName()).isEqualTo("p4");
+		assertThat(expr.getValue(context, target)).isEqualTo("p4");
 	}
 
 	@Test
@@ -243,7 +243,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 	public void propertyAccessWithInstanceMethodResolver() {
 		EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().withInstanceMethods().build();
 		Person target = new Person("p1");
-		assertEquals("1", parser.parseExpression("name.substring(1)").getValue(context, target));
+		assertThat(parser.parseExpression("name.substring(1)").getValue(context, target)).isEqualTo("1");
 	}
 
 	@Test
@@ -252,7 +252,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().
 				withInstanceMethods().withTypedRootObject(target, TypeDescriptor.valueOf(Object.class)).build();
 
-		assertEquals("1", parser.parseExpression("name.substring(1)").getValue(context, target));
+		assertThat(parser.parseExpression("name.substring(1)").getValue(context, target)).isEqualTo("1");
 		assertSame(target, context.getRootObject().getValue());
 		assertSame(Object.class, context.getRootObject().getTypeDescriptor().getType());
 	}

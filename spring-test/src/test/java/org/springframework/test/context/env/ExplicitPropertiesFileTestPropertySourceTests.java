@@ -26,6 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -47,8 +48,8 @@ public class ExplicitPropertiesFileTestPropertySourceTests {
 	@Test
 	public void verifyPropertiesAreAvailableInEnvironment() {
 		String userHomeKey = "user.home";
-		assertEquals(System.getProperty(userHomeKey), env.getProperty(userHomeKey));
-		assertEquals("enigma", env.getProperty("explicit"));
+		assertThat((Object) env.getProperty(userHomeKey)).isEqualTo(System.getProperty(userHomeKey));
+		assertThat((Object) env.getProperty("explicit")).isEqualTo("enigma");
 	}
 
 

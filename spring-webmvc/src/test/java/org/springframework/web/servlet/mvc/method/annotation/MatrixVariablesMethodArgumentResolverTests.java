@@ -90,8 +90,7 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		params.add("colors", "blue");
 		MethodParameter param = this.testMethod.annot(matrixAttribute().noName()).arg(List.class, String.class);
 
-		assertEquals(Arrays.asList("red", "green", "blue"),
-				this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null));
+		assertThat(this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null)).isEqualTo(Arrays.asList("red", "green", "blue"));
 	}
 
 	@Test
@@ -100,13 +99,13 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		getVariablesFor("bikes").add("year", "2005");
 		MethodParameter param = this.testMethod.annot(matrixAttribute().name("year")).arg(int.class);
 
-		assertEquals("2006", this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null));
+		assertThat(this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null)).isEqualTo("2006");
 	}
 
 	@Test
 	public void resolveArgumentDefaultValue() throws Exception {
 		MethodParameter param = this.testMethod.annot(matrixAttribute().name("year")).arg(int.class);
-		assertEquals("2013", resolver.resolveArgument(param, this.mavContainer, this.webRequest, null));
+		assertThat(resolver.resolveArgument(param, this.mavContainer, this.webRequest, null)).isEqualTo("2013");
 	}
 
 	@Test
@@ -132,7 +131,7 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		params.add("anotherYear", "2012");
 		MethodParameter param = this.testMethod.annot(matrixAttribute().name("year")).arg(int.class);
 
-		assertEquals("2013", this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null));
+		assertThat(this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null)).isEqualTo("2013");
 	}
 
 

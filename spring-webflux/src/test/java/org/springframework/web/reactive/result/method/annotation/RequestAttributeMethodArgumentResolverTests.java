@@ -124,7 +124,7 @@ public class RequestAttributeMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
 
 		assertNotNull(mono.block());
-		assertEquals(Optional.class, mono.block().getClass());
+		assertThat((Object) mono.block().getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional<?>) mono.block()).isPresent()).isFalse();
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
@@ -136,7 +136,7 @@ public class RequestAttributeMethodArgumentResolverTests {
 		mono = this.resolver.resolveArgument(param, bindingContext, this.exchange);
 
 		assertNotNull(mono.block());
-		assertEquals(Optional.class, mono.block().getClass());
+		assertThat((Object) mono.block().getClass()).isEqualTo(Optional.class);
 		Optional<?> optional = (Optional<?>) mono.block();
 		assertThat(optional.isPresent()).isTrue();
 		assertSame(foo, optional.get());

@@ -101,7 +101,7 @@ public class JaxWsSupportTests {
 			((BindingProvider) orderService).getRequestContext();
 
 			String order = orderService.getOrder(1000);
-			assertEquals("order 1000", order);
+			assertThat((Object) order).isEqualTo("order 1000");
 			assertThatExceptionOfType(Exception.class).isThrownBy(() ->
 					orderService.getOrder(0))
 				.matches(ex -> ex instanceof OrderNotFoundException ||
@@ -110,7 +110,7 @@ public class JaxWsSupportTests {
 
 			ServiceAccessor serviceAccessor = ac.getBean("accessor", ServiceAccessor.class);
 			order = serviceAccessor.orderService.getOrder(1000);
-			assertEquals("order 1000", order);
+			assertThat((Object) order).isEqualTo("order 1000");
 			assertThatExceptionOfType(Exception.class).isThrownBy(() ->
 					serviceAccessor.orderService.getOrder(0))
 				.matches(ex -> ex instanceof OrderNotFoundException ||

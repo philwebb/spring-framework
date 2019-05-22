@@ -27,6 +27,7 @@ import org.springframework.core.task.NoOpRunnable;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -228,7 +229,7 @@ public class ScheduledExecutorFactoryBeanTests {
 	@Test
 	public void testObjectTypeReportsCorrectType() throws Exception {
 		ScheduledExecutorFactoryBean factory = new ScheduledExecutorFactoryBean();
-		assertEquals(ScheduledExecutorService.class, factory.getObjectType());
+		assertThat((Object) factory.getObjectType()).isEqualTo(ScheduledExecutorService.class);
 	}
 
 

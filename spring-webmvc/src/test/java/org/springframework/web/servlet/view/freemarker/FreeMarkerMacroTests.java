@@ -105,8 +105,8 @@ public class FreeMarkerMacroTests {
 				assertThat(condition).isTrue();
 				RequestContext rc = (RequestContext) model.get(FreeMarkerView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE);
 				BindStatus status = rc.getBindStatus("tb.name");
-				assertEquals("name", status.getExpression());
-				assertEquals("juergen", status.getValue());
+				assertThat((Object) status.getExpression()).isEqualTo("name");
+				assertThat(status.getValue()).isEqualTo("juergen");
 			}
 		};
 		fv.setUrl(TEMPLATE_FILE);
@@ -147,112 +147,109 @@ public class FreeMarkerMacroTests {
 
 	@Test
 	public void testName() throws Exception {
-		assertEquals("Darren", getMacroOutput("NAME"));
+		assertThat((Object) getMacroOutput("NAME")).isEqualTo("Darren");
 	}
 
 	@Test
 	public void testAge() throws Exception {
-		assertEquals("99", getMacroOutput("AGE"));
+		assertThat((Object) getMacroOutput("AGE")).isEqualTo("99");
 	}
 
 	@Test
 	public void testMessage() throws Exception {
-		assertEquals("Howdy Mundo", getMacroOutput("MESSAGE"));
+		assertThat((Object) getMacroOutput("MESSAGE")).isEqualTo("Howdy Mundo");
 	}
 
 	@Test
 	public void testDefaultMessage() throws Exception {
-		assertEquals("hi planet", getMacroOutput("DEFAULTMESSAGE"));
+		assertThat((Object) getMacroOutput("DEFAULTMESSAGE")).isEqualTo("hi planet");
 	}
 
 	@Test
 	public void testMessageArgs() throws Exception {
-		assertEquals("Howdy[World]", getMacroOutput("MESSAGEARGS"));
+		assertThat((Object) getMacroOutput("MESSAGEARGS")).isEqualTo("Howdy[World]");
 	}
 
 	@Test
 	public void testMessageArgsWithDefaultMessage() throws Exception {
-		assertEquals("Hi", getMacroOutput("MESSAGEARGSWITHDEFAULTMESSAGE"));
+		assertThat((Object) getMacroOutput("MESSAGEARGSWITHDEFAULTMESSAGE")).isEqualTo("Hi");
 	}
 
 	@Test
 	public void testTheme() throws Exception {
-		assertEquals("Howdy! Mundo!", getMacroOutput("THEME"));
+		assertThat((Object) getMacroOutput("THEME")).isEqualTo("Howdy! Mundo!");
 	}
 
 	@Test
 	public void testDefaultTheme() throws Exception {
-		assertEquals("hi! planet!", getMacroOutput("DEFAULTTHEME"));
+		assertThat((Object) getMacroOutput("DEFAULTTHEME")).isEqualTo("hi! planet!");
 	}
 
 	@Test
 	public void testThemeArgs() throws Exception {
-		assertEquals("Howdy![World]", getMacroOutput("THEMEARGS"));
+		assertThat((Object) getMacroOutput("THEMEARGS")).isEqualTo("Howdy![World]");
 	}
 
 	@Test
 	public void testThemeArgsWithDefaultMessage() throws Exception {
-		assertEquals("Hi!", getMacroOutput("THEMEARGSWITHDEFAULTMESSAGE"));
+		assertThat((Object) getMacroOutput("THEMEARGSWITHDEFAULTMESSAGE")).isEqualTo("Hi!");
 	}
 
 	@Test
 	public void testUrl() throws Exception {
-		assertEquals("/springtest/aftercontext.html", getMacroOutput("URL"));
+		assertThat((Object) getMacroOutput("URL")).isEqualTo("/springtest/aftercontext.html");
 	}
 
 	@Test
 	public void testUrlParams() throws Exception {
-		assertEquals("/springtest/aftercontext/bar?spam=bucket", getMacroOutput("URLPARAMS"));
+		assertThat((Object) getMacroOutput("URLPARAMS")).isEqualTo("/springtest/aftercontext/bar?spam=bucket");
 	}
 
 	@Test
 	public void testForm1() throws Exception {
-		assertEquals("<input type=\"text\" id=\"name\" name=\"name\" value=\"Darren\"     >", getMacroOutput("FORM1"));
+		assertThat((Object) getMacroOutput("FORM1")).isEqualTo("<input type=\"text\" id=\"name\" name=\"name\" value=\"Darren\"     >");
 	}
 
 	@Test
 	public void testForm2() throws Exception {
-		assertEquals("<input type=\"text\" id=\"name\" name=\"name\" value=\"Darren\" class=\"myCssClass\"    >",
-				getMacroOutput("FORM2"));
+		assertThat((Object) getMacroOutput("FORM2")).isEqualTo("<input type=\"text\" id=\"name\" name=\"name\" value=\"Darren\" class=\"myCssClass\"    >");
 	}
 
 	@Test
 	public void testForm3() throws Exception {
-		assertEquals("<textarea id=\"name\" name=\"name\" >\nDarren</textarea>", getMacroOutput("FORM3"));
+		assertThat((Object) getMacroOutput("FORM3")).isEqualTo("<textarea id=\"name\" name=\"name\" >\nDarren</textarea>");
 	}
 
 	@Test
 	public void testForm4() throws Exception {
-		assertEquals("<textarea id=\"name\" name=\"name\" rows=10 cols=30>\nDarren</textarea>", getMacroOutput("FORM4"));
+		assertThat((Object) getMacroOutput("FORM4")).isEqualTo("<textarea id=\"name\" name=\"name\" rows=10 cols=30>\nDarren</textarea>");
 	}
 
 	// TODO verify remaining output (fix whitespace)
 
 	@Test
 	public void testForm9() throws Exception {
-		assertEquals("<input type=\"password\" id=\"name\" name=\"name\" value=\"\"     >", getMacroOutput("FORM9"));
+		assertThat((Object) getMacroOutput("FORM9")).isEqualTo("<input type=\"password\" id=\"name\" name=\"name\" value=\"\"     >");
 	}
 
 	@Test
 	public void testForm10() throws Exception {
-		assertEquals("<input type=\"hidden\" id=\"name\" name=\"name\" value=\"Darren\"     >",
-				getMacroOutput("FORM10"));
+		assertThat((Object) getMacroOutput("FORM10")).isEqualTo("<input type=\"hidden\" id=\"name\" name=\"name\" value=\"Darren\"     >");
 	}
 
 	@Test
 	public void testForm11() throws Exception {
-		assertEquals("<input type=\"text\" id=\"name\" name=\"name\" value=\"Darren\"     >", getMacroOutput("FORM11"));
+		assertThat((Object) getMacroOutput("FORM11")).isEqualTo("<input type=\"text\" id=\"name\" name=\"name\" value=\"Darren\"     >");
 	}
 
 	@Test
 	public void testForm12() throws Exception {
-		assertEquals("<input type=\"hidden\" id=\"name\" name=\"name\" value=\"Darren\"     >",
-				getMacroOutput("FORM12"));
+		assertThat((Object) getMacroOutput("FORM12")).isEqualTo("<input type=\"hidden\" id=\"name\" name=\"name\" value=\"Darren\"     >");
 	}
 
 	@Test
 	public void testForm13() throws Exception {
-		assertEquals("<input type=\"password\" id=\"name\" name=\"name\" value=\"\"     >", getMacroOutput("FORM13"));
+		assertThat((Object) getMacroOutput("FORM13")).isEqualTo("<input type=\"password\" id=\"name\" name=\"name\" value=\"\"     >");
 	}
 
 	@Test
@@ -273,9 +270,7 @@ public class FreeMarkerMacroTests {
 
 	@Test
 	public void testForm17() throws Exception {
-		assertEquals(
-				"<input type=\"text\" id=\"spouses0.name\" name=\"spouses[0].name\" value=\"Fred\"     >",
-				getMacroOutput("FORM17"));
+		assertThat((Object) getMacroOutput("FORM17")).isEqualTo("<input type=\"text\" id=\"spouses0.name\" name=\"spouses[0].name\" value=\"Fred\"     >");
 	}
 
 	@Test

@@ -114,7 +114,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(Tag.SKIP_BODY, result);
 
 		String output = getOutput();
-		assertEquals("<select id=\"country\" name=\"country\"></select>", output);
+		assertThat((Object) output).isEqualTo("<select id=\"country\" name=\"country\"></select>");
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(Tag.SKIP_BODY, result);
 
 		String output = getOutput();
-		assertEquals("<select id=\"country\" name=\"country\"></select>", output);
+		assertThat((Object) output).isEqualTo("<select id=\"country\" name=\"country\"></select>");
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		transformTag.setParent(this.tag);
 		transformTag.setPageContext(getPageContext());
 		transformTag.doStartTag();
-		assertEquals("Austria(AT)", getPageContext().findAttribute("key"));
+		assertThat(getPageContext().findAttribute("key")).isEqualTo("Austria(AT)");
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		transformTag.setParent(this.tag);
 		transformTag.setPageContext(getPageContext());
 		transformTag.doStartTag();
-		assertEquals("Austria", getPageContext().findAttribute("key"));
+		assertThat(getPageContext().findAttribute("key")).isEqualTo("Austria");
 	}
 
 	@Test
@@ -363,7 +363,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(Tag.EVAL_BODY_INCLUDE, result);
 
 		BindStatus value = (BindStatus) getPageContext().getAttribute(SelectTag.LIST_VALUE_PAGE_ATTRIBUTE);
-		assertEquals("Selected country not exposed in page context", "UK", value.getValue());
+		assertThat(value.getValue()).as("Selected country not exposed in page context").isEqualTo("UK");
 
 		result = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, result);
@@ -409,17 +409,17 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("someIntegerArray", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("someIntegerArray");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", array.length, children.size());
 
 		Element e = (Element) selectElement.selectSingleNode("option[text() = '12']");
-		assertEquals("'12' node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("'12' node not selected").isEqualTo("selected");
 
 		e = (Element) selectElement.selectSingleNode("option[text() = '34']");
-		assertEquals("'34' node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("'34' node not selected").isEqualTo("selected");
 	}
 
 	@Test
@@ -448,13 +448,13 @@ public class SelectTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertEquals("select", rootElement.getName());
-		assertEquals("myFloat", rootElement.attribute("name").getValue());
+		assertThat((Object) rootElement.getName()).isEqualTo("select");
+		assertThat((Object) rootElement.attribute("name").getValue()).isEqualTo("myFloat");
 		List children = rootElement.elements();
 		assertEquals("Incorrect number of children", array.length, children.size());
 
 		Element e = (Element) rootElement.selectSingleNode("option[text() = '12.34f']");
-		assertEquals("'12.34' node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("'12.34' node not selected").isEqualTo("selected");
 
 		e = (Element) rootElement.selectSingleNode("option[text() = '12.32f']");
 		assertNull("'12.32' node incorrectly selected", e.attribute("selected"));
@@ -482,19 +482,19 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("someList", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("someList");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
 
 		Element e = (Element) selectElement.selectSingleNode("option[@value = 'UK']");
-		assertEquals("UK node not selected", "selected", e.attribute("selected").getValue());
-		assertEquals("United Kingdom(UK)", e.getText());
+		assertThat((Object) e.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
+		assertThat((Object) e.getText()).isEqualTo("United Kingdom(UK)");
 
 		e = (Element) selectElement.selectSingleNode("option[@value = 'AT']");
-		assertEquals("AT node not selected", "selected", e.attribute("selected").getValue());
-		assertEquals("Austria(AT)", e.getText());
+		assertThat((Object) e.attribute("selected").getValue()).as("AT node not selected").isEqualTo("selected");
+		assertThat((Object) e.getText()).isEqualTo("Austria(AT)");
 	}
 
 	@Test
@@ -531,15 +531,15 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(1, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("realCountry", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("realCountry");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
 
 		Element e = (Element) selectElement.selectSingleNode("option[@value = 'UK']");
-		assertEquals("UK node not selected", "selected", e.attribute("selected").getValue());
-		assertEquals("United Kingdom", e.getText());
+		assertThat((Object) e.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
+		assertThat((Object) e.getText()).isEqualTo("United Kingdom");
 	}
 
 	@Test
@@ -579,19 +579,19 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("someList", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("someList");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
 
 		Element e = (Element) selectElement.selectSingleNode("option[@value = 'UK']");
-		assertEquals("UK node not selected", "selected", e.attribute("selected").getValue());
-		assertEquals("United Kingdom", e.getText());
+		assertThat((Object) e.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
+		assertThat((Object) e.getText()).isEqualTo("United Kingdom");
 
 		e = (Element) selectElement.selectSingleNode("option[@value = 'AT']");
-		assertEquals("AT node not selected", "selected", e.attribute("selected").getValue());
-		assertEquals("Austria", e.getText());
+		assertThat((Object) e.attribute("selected").getValue()).as("AT node not selected").isEqualTo("selected");
+		assertThat((Object) e.getText()).isEqualTo("Austria");
 	}
 
 	@Test
@@ -625,17 +625,17 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("someList", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("someList");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
 
 		Element e = (Element) selectElement.selectSingleNode("option[@value = 'UK']");
-		assertEquals("UK node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
 
 		e = (Element) selectElement.selectSingleNode("option[@value = 'AT']");
-		assertEquals("AT node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("AT node not selected").isEqualTo("selected");
 	}
 
 	@Test
@@ -660,17 +660,17 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("someMap", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("someMap");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 2, children.size());
 
 		Element e = (Element) selectElement.selectSingleNode("option[@value = 'M']");
-		assertEquals("M node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("M node not selected").isEqualTo("selected");
 
 		e = (Element) selectElement.selectSingleNode("option[@value = 'F']");
-		assertEquals("F node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("F node not selected").isEqualTo("selected");
 	}
 
 	/**
@@ -736,8 +736,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 			assertEquals(2, rootElement.elements().size());
 
 			Element selectElement = rootElement.element("select");
-			assertEquals("select", selectElement.getName());
-			assertEquals("someMap", selectElement.attribute("name").getValue());
+			assertThat((Object) selectElement.getName()).isEqualTo("select");
+			assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("someMap");
 
 			List children = selectElement.elements();
 			assertEquals("Incorrect number of children", 3, children.size());
@@ -745,15 +745,13 @@ public class SelectTagTests extends AbstractFormTagTests {
 			Element e;
 			e = (Element) selectElement.selectSingleNode("option[@value = '" + austria.getIsoCode() + "']");
 			assertNotNull("Option node not found with Country ISO code value [" + austria.getIsoCode() + "].", e);
-			assertEquals("AT node not selected.", "selected", e.attribute("selected").getValue());
-			assertEquals("AT Locale displayLanguage property not used for option label.",
-					LOCALE_AT.getDisplayLanguage(), e.getData());
+			assertThat((Object) e.attribute("selected").getValue()).as("AT node not selected.").isEqualTo("selected");
+			assertThat(e.getData()).as("AT Locale displayLanguage property not used for option label.").isEqualTo(LOCALE_AT.getDisplayLanguage());
 
 			e = (Element) selectElement.selectSingleNode("option[@value = '" + usa.getIsoCode() + "']");
 			assertNotNull("Option node not found with Country ISO code value [" + usa.getIsoCode() + "].", e);
-			assertEquals("US node not selected.", "selected", e.attribute("selected").getValue());
-			assertEquals("US Locale displayLanguage property not used for option label.",
-					Locale.US.getDisplayLanguage(), e.getData());
+			assertThat((Object) e.attribute("selected").getValue()).as("US node not selected.").isEqualTo("selected");
+			assertThat(e.getData()).as("US Locale displayLanguage property not used for option label.").isEqualTo(Locale.US.getDisplayLanguage());
 
 		}
 		finally {
@@ -781,9 +779,9 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("someList", selectElement.attribute("name").getValue());
-		assertEquals("multiple", selectElement.attribute("multiple").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("someList");
+		assertThat((Object) selectElement.attribute("multiple").getValue()).isEqualTo("multiple");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
@@ -810,9 +808,9 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("name", selectElement.attribute("name").getValue());
-		assertEquals("multiple", selectElement.attribute("multiple").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("name");
+		assertThat((Object) selectElement.attribute("multiple").getValue()).isEqualTo("multiple");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
@@ -839,9 +837,9 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("name", selectElement.attribute("name").getValue());
-		assertEquals("multiple", selectElement.attribute("multiple").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("name");
+		assertThat((Object) selectElement.attribute("multiple").getValue()).isEqualTo("multiple");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
@@ -868,8 +866,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(1, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("name", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("name");
 		assertNull(selectElement.attribute("multiple"));
 
 		List children = selectElement.elements();
@@ -894,9 +892,9 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(2, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("name", selectElement.attribute("name").getValue());
-		assertEquals("multiple", selectElement.attribute("multiple").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("name");
+		assertThat((Object) selectElement.attribute("multiple").getValue()).isEqualTo("multiple");
 
 		List children = selectElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
@@ -923,8 +921,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(1, rootElement.elements().size());
 
 		Element selectElement = rootElement.element("select");
-		assertEquals("select", selectElement.getName());
-		assertEquals("name", selectElement.attribute("name").getValue());
+		assertThat((Object) selectElement.getName()).isEqualTo("select");
+		assertThat((Object) selectElement.attribute("name").getValue()).isEqualTo("name");
 		assertNull(selectElement.attribute("multiple"));
 
 		List children = selectElement.elements();
@@ -943,14 +941,14 @@ public class SelectTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertEquals("select", rootElement.getName());
-		assertEquals("name", rootElement.attribute("name").getValue());
+		assertThat((Object) rootElement.getName()).isEqualTo("select");
+		assertThat((Object) rootElement.attribute("name").getValue()).isEqualTo("name");
 
 		List children = rootElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());
 
 		Element e = (Element) rootElement.selectSingleNode("option[text() = 'Rob']");
-		assertEquals("Rob node not selected", "selected", e.attribute("selected").getValue());
+		assertThat((Object) e.attribute("selected").getValue()).as("Rob node not selected").isEqualTo("selected");
 	}
 
 	private Map getCountryToLocaleMap() {
@@ -993,8 +991,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertEquals("select", rootElement.getName());
-		assertEquals("country", rootElement.attribute("name").getValue());
+		assertThat((Object) rootElement.getName()).isEqualTo("select");
+		assertThat((Object) rootElement.attribute("name").getValue()).isEqualTo("country");
 
 		List children = rootElement.elements();
 		assertEquals("Incorrect number of children", 4, children.size());

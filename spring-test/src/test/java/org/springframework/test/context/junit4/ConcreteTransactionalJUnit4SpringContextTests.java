@@ -150,7 +150,7 @@ public class ConcreteTransactionalJUnit4SpringContextTests extends AbstractTrans
 		assertInTransaction(false);
 		assertNull("The nonrequiredLong property should NOT have been autowired.", this.nonrequiredLong);
 		assertNotNull("The pet field should have been autowired.", this.pet);
-		assertEquals("Fido", this.pet.getName());
+		assertThat((Object) this.pet.getName()).isEqualTo("Fido");
 	}
 
 	@Test
@@ -158,21 +158,21 @@ public class ConcreteTransactionalJUnit4SpringContextTests extends AbstractTrans
 	public void verifyAnnotationAutowiredMethods() {
 		assertInTransaction(false);
 		assertNotNull("The employee setter method should have been autowired.", this.employee);
-		assertEquals("John Smith", this.employee.getName());
+		assertThat((Object) this.employee.getName()).isEqualTo("John Smith");
 	}
 
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public void verifyResourceAnnotationWiredFields() {
 		assertInTransaction(false);
-		assertEquals("The foo field should have been wired via @Resource.", "Foo", this.foo);
+		assertThat((Object) this.foo).as("The foo field should have been wired via @Resource.").isEqualTo("Foo");
 	}
 
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public void verifyResourceAnnotationWiredMethods() {
 		assertInTransaction(false);
-		assertEquals("The bar method should have been wired via @Resource.", "Bar", this.bar);
+		assertThat((Object) this.bar).as("The bar method should have been wired via @Resource.").isEqualTo("Bar");
 	}
 
 	@Test

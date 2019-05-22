@@ -35,14 +35,13 @@ public class ResponseCookieTests {
 
 	@Test
 	public void defaultValues() {
-		assertEquals("id=1fWa", ResponseCookie.from("id", "1fWa").build().toString());
+		assertThat((Object) ResponseCookie.from("id", "1fWa").build().toString()).isEqualTo("id=1fWa");
 	}
 
 	@Test
 	public void httpOnlyStrictSecureWithDomainAndPath() {
-		assertEquals("id=1fWa; Path=/projects; Domain=spring.io; Secure; HttpOnly; SameSite=strict",
-				ResponseCookie.from("id", "1fWa").domain("spring.io").path("/projects")
-						.httpOnly(true).secure(true).sameSite("strict").build().toString());
+		assertThat((Object) ResponseCookie.from("id", "1fWa").domain("spring.io").path("/projects")
+				.httpOnly(true).secure(true).sameSite("strict").build().toString()).isEqualTo("id=1fWa; Path=/projects; Domain=spring.io; Secure; HttpOnly; SameSite=strict");
 	}
 
 	@Test
@@ -63,11 +62,9 @@ public class ResponseCookieTests {
 
 	@Test
 	public void maxAge0() {
-		assertEquals("id=1fWa; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
-				ResponseCookie.from("id", "1fWa").maxAge(Duration.ofSeconds(0)).build().toString());
+		assertThat((Object) ResponseCookie.from("id", "1fWa").maxAge(Duration.ofSeconds(0)).build().toString()).isEqualTo("id=1fWa; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT");
 
-		assertEquals("id=1fWa; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
-				ResponseCookie.from("id", "1fWa").maxAge(0).build().toString());
+		assertThat((Object) ResponseCookie.from("id", "1fWa").maxAge(0).build().toString()).isEqualTo("id=1fWa; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT");
 	}
 
 }

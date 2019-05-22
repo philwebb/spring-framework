@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -33,7 +34,7 @@ public class XmlBeanConfigurerTests {
 				"org/springframework/beans/factory/aspectj/beanConfigurerTests.xml")) {
 
 			ShouldBeConfiguredBySpring myObject = new ShouldBeConfiguredBySpring();
-			assertEquals("Rod", myObject.getName());
+			assertThat((Object) myObject.getName()).isEqualTo("Rod");
 		}
 	}
 

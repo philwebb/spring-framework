@@ -28,6 +28,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -171,7 +172,7 @@ public class LruContextCacheTests {
 			.collect(toList());
 		// @formatter:on
 
-		assertEquals(asList(expectedNames), actualNames);
+		assertThat((Object) actualNames).isEqualTo(asList(expectedNames));
 	}
 
 

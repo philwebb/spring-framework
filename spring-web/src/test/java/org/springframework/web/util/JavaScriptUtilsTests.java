@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -42,7 +43,7 @@ public class JavaScriptUtilsTests {
 		sb.append("\f");
 		sb.append("\b");
 		sb.append("\013");
-		assertEquals("\\\"\\'\\\\\\/\\t\\n\\n\\f\\b\\v", JavaScriptUtils.javaScriptEscape(sb.toString()));
+		assertThat((Object) JavaScriptUtils.javaScriptEscape(sb.toString())).isEqualTo("\\\"\\'\\\\\\/\\t\\n\\n\\f\\b\\v");
 	}
 
 	// SPR-9983
@@ -54,14 +55,14 @@ public class JavaScriptUtilsTests {
 		sb.append('\u2029');
 		String result = JavaScriptUtils.javaScriptEscape(sb.toString());
 
-		assertEquals("\\u2028\\u2029", result);
+		assertThat((Object) result).isEqualTo("\\u2028\\u2029");
 	}
 
 	// SPR-9983
 
 	@Test
 	public void escapeLessThanGreaterThanSigns() throws UnsupportedEncodingException {
-		assertEquals("\\u003C\\u003E", JavaScriptUtils.javaScriptEscape("<>"));
+		assertThat((Object) JavaScriptUtils.javaScriptEscape("<>")).isEqualTo("\\u003C\\u003E");
 	}
 
 }

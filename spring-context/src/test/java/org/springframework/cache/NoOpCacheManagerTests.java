@@ -49,7 +49,7 @@ public class NoOpCacheManagerTests {
 	public void testNoOpCache() throws Exception {
 		String name = createRandomKey();
 		Cache cache = this.manager.getCache(name);
-		assertEquals(name, cache.getName());
+		assertThat((Object) cache.getName()).isEqualTo(name);
 		Object key = new Object();
 		cache.put(key, new Object());
 		assertNull(cache.get(key));
@@ -71,7 +71,7 @@ public class NoOpCacheManagerTests {
 		Cache cache = this.manager.getCache(name);
 		Object returnValue = new Object();
 		Object value = cache.get(new Object(), () -> returnValue);
-		assertEquals(returnValue, value);
+		assertThat(value).isEqualTo(returnValue);
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class NoOpCacheManagerTests {
 		}
 		catch (Cache.ValueRetrievalException ex) {
 			assertNotNull(ex.getCause());
-			assertEquals(UnsupportedOperationException.class, ex.getCause().getClass());
+			assertThat((Object) ex.getCause().getClass()).isEqualTo(UnsupportedOperationException.class);
 		}
 	}
 

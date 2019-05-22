@@ -83,7 +83,7 @@ public class ScriptingDefaultsTests {
 		ApplicationContext context = new ClassPathXmlApplicationContext(CONFIG);
 		ITestBean testBean = (ITestBean) context.getBean("testBean");
 		ITestBean otherBean = (ITestBean) context.getBean("otherBean");
-		assertEquals(otherBean, testBean.getOtherBean());
+		assertThat((Object) testBean.getOtherBean()).isEqualTo(otherBean);
 	}
 
 	@Test

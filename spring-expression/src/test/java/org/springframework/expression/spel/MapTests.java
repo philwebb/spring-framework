@@ -154,35 +154,35 @@ public class MapTests extends AbstractExpressionTests {
 
 		expression = (SpelExpression) parser.parseExpression("foo[T]");
 		o = expression.getValue(new MapHolder());
-		assertEquals("TV", o);
+		assertThat(o).isEqualTo("TV");
 
 		expression = (SpelExpression) parser.parseExpression("foo[t]");
 		o = expression.getValue(new MapHolder());
-		assertEquals("tv", o);
+		assertThat(o).isEqualTo("tv");
 
 		expression = (SpelExpression) parser.parseExpression("foo[NEW]");
 		o = expression.getValue(new MapHolder());
-		assertEquals("VALUE", o);
+		assertThat(o).isEqualTo("VALUE");
 
 		expression = (SpelExpression) parser.parseExpression("foo[new]");
 		o = expression.getValue(new MapHolder());
-		assertEquals("value", o);
+		assertThat(o).isEqualTo("value");
 
 		expression = (SpelExpression) parser.parseExpression("foo['abc.def']");
 		o = expression.getValue(new MapHolder());
-		assertEquals("value", o);
+		assertThat(o).isEqualTo("value");
 
 		expression = (SpelExpression)parser.parseExpression("foo[foo[NEW]]");
 		o = expression.getValue(new MapHolder());
-		assertEquals("37",o);
+		assertThat(o).isEqualTo("37");
 
 		expression = (SpelExpression)parser.parseExpression("foo[foo[new]]");
 		o = expression.getValue(new MapHolder());
-		assertEquals("38",o);
+		assertThat(o).isEqualTo("38");
 
 		expression = (SpelExpression)parser.parseExpression("foo[foo[foo[T]]]");
 		o = expression.getValue(new MapHolder());
-		assertEquals("value",o);
+		assertThat(o).isEqualTo("value");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

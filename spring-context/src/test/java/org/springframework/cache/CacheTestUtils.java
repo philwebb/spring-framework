@@ -22,6 +22,7 @@ import java.util.List;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -65,7 +66,7 @@ public class CacheTestUtils {
 		for (Cache cache : caches) {
 			Cache.ValueWrapper wrapper = cache.get(key);
 			assertNotNull("An entry in " + cache + " should have been found with key " + key, wrapper);
-			assertEquals("Wrong value in " + cache + " for entry with key " + key, value, wrapper.get());
+			assertThat(wrapper.get()).as("Wrong value in " + cache + " for entry with key " + key).isEqualTo(value);
 		}
 	}
 

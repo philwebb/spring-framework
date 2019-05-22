@@ -105,15 +105,15 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 		eContext.setRootObject(new Tester());
 		eContext.setVariable("bar", 3);
 		Object o = expr.getValue(eContext);
-		assertEquals(3, o);
-		assertEquals(1, parser.parseExpression("counter").getValue(eContext));
+		assertThat(o).isEqualTo(3);
+		assertThat(parser.parseExpression("counter").getValue(eContext)).isEqualTo(1);
 
 		// Now the expression has cached that throwException(int) is the right thing to
 		// call. Let's change 'bar' to be a PlaceOfBirth which indicates the cached
 		// reference is out of date.
 		eContext.setVariable("bar", new PlaceOfBirth("London"));
 		o = expr.getValue(eContext);
-		assertEquals(0, o);
+		assertThat(o).isEqualTo(0);
 		// That confirms the logic to mark the cached reference stale and retry is working
 
 		// Now let's cause the method to exit via exception and ensure it doesn't cause
@@ -122,8 +122,8 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 		// First, switch back to throwException(int)
 		eContext.setVariable("bar", 3);
 		o = expr.getValue(eContext);
-		assertEquals(3, o);
-		assertEquals(2, parser.parseExpression("counter").getValue(eContext));
+		assertThat(o).isEqualTo(3);
+		assertThat(parser.parseExpression("counter").getValue(eContext)).isEqualTo(2);
 
 		// 4 will make it throw a checked exception - this will be wrapped by spel on the
 		// way out
@@ -136,7 +136,7 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 		// using arguments '(java.lang.Integer)'
 
 		// If counter is 4 then the method got called twice!
-		assertEquals(3, parser.parseExpression("counter").getValue(eContext));
+		assertThat(parser.parseExpression("counter").getValue(eContext)).isEqualTo(3);
 
 		// 1 will make it throw a RuntimeException - SpEL will let this through
 		eContext.setVariable("bar", 1);
@@ -148,7 +148,7 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 		// using arguments '(java.lang.Integer)'
 
 		// If counter is 5 then the method got called twice!
-		assertEquals(4, parser.parseExpression("counter").getValue(eContext));
+		assertThat(parser.parseExpression("counter").getValue(eContext)).isEqualTo(4);
 	}
 
 	@Test

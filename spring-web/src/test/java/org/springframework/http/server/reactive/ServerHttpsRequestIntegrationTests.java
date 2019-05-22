@@ -39,6 +39,7 @@ import org.springframework.http.server.reactive.bootstrap.HttpServer;
 import org.springframework.http.server.reactive.bootstrap.ReactorHttpsServer;
 import org.springframework.web.client.RestTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
@@ -95,7 +96,7 @@ public class ServerHttpsRequestIntegrationTests {
 		URI url = new URI("https://localhost:" + port + "/foo?param=bar");
 		RequestEntity<Void> request = RequestEntity.post(url).build();
 		ResponseEntity<Void> response = this.restTemplate.exchange(request, Void.class);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	public static class CheckRequestHandler implements HttpHandler {
@@ -103,12 +104,12 @@ public class ServerHttpsRequestIntegrationTests {
 		@Override
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
 			URI uri = request.getURI();
-			assertEquals("https", uri.getScheme());
+			assertThat((Object) uri.getScheme()).isEqualTo("https");
 			assertNotNull(uri.getHost());
 			assertNotEquals(-1, uri.getPort());
 			assertNotNull(request.getRemoteAddress());
-			assertEquals("/foo", uri.getPath());
-			assertEquals("param=bar", uri.getQuery());
+			assertThat((Object) uri.getPath()).isEqualTo("/foo");
+			assertThat((Object) uri.getQuery()).isEqualTo("param=bar");
 			return Mono.empty();
 		}
 	}

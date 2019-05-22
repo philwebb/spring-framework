@@ -74,25 +74,25 @@ public class BrokerMessageHandlerTests {
 	public void startAndStopShouldNotPublishBrokerAvailabilityEvents() {
 		this.handler.start();
 		this.handler.stop();
-		assertEquals(Collections.emptyList(), this.handler.availabilityEvents);
+		assertThat((Object) this.handler.availabilityEvents).isEqualTo(Collections.emptyList());
 	}
 
 	@Test
 	public void handleMessageWhenBrokerNotRunning() {
 		this.handler.handleMessage(new GenericMessage<Object>("payload"));
-		assertEquals(Collections.emptyList(), this.handler.messages);
+		assertThat((Object) this.handler.messages).isEqualTo(Collections.emptyList());
 	}
 
 	@Test
 	public void publishBrokerAvailableEvent() {
 
 		assertThat(this.handler.isBrokerAvailable()).isFalse();
-		assertEquals(Collections.emptyList(), this.handler.availabilityEvents);
+		assertThat((Object) this.handler.availabilityEvents).isEqualTo(Collections.emptyList());
 
 		this.handler.publishBrokerAvailableEvent();
 
 		assertThat(this.handler.isBrokerAvailable()).isTrue();
-		assertEquals(Arrays.asList(true), this.handler.availabilityEvents);
+		assertThat((Object) this.handler.availabilityEvents).isEqualTo(Arrays.asList(true));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class BrokerMessageHandlerTests {
 		this.handler.publishBrokerAvailableEvent();
 		this.handler.publishBrokerAvailableEvent();
 
-		assertEquals(Arrays.asList(true), this.handler.availabilityEvents);
+		assertThat((Object) this.handler.availabilityEvents).isEqualTo(Arrays.asList(true));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class BrokerMessageHandlerTests {
 		this.handler.publishBrokerUnavailableEvent();
 		assertThat(this.handler.isBrokerAvailable()).isFalse();
 
-		assertEquals(Arrays.asList(true, false), this.handler.availabilityEvents);
+		assertThat((Object) this.handler.availabilityEvents).isEqualTo(Arrays.asList(true, false));
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class BrokerMessageHandlerTests {
 		this.handler.publishBrokerUnavailableEvent();
 		this.handler.publishBrokerUnavailableEvent();
 
-		assertEquals(Arrays.asList(true, false), this.handler.availabilityEvents);
+		assertThat((Object) this.handler.availabilityEvents).isEqualTo(Arrays.asList(true, false));
 	}
 
 

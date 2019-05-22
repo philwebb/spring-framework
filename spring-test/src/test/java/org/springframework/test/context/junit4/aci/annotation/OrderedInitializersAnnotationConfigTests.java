@@ -35,6 +35,7 @@ import org.springframework.test.context.junit4.aci.annotation.OrderedInitializer
 import org.springframework.test.context.junit4.aci.annotation.OrderedInitializersAnnotationConfigTests.OrderedOneInitializer;
 import org.springframework.test.context.junit4.aci.annotation.OrderedInitializersAnnotationConfigTests.OrderedTwoInitializer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -65,9 +66,9 @@ public class OrderedInitializersAnnotationConfigTests {
 
 	@Test
 	public void activeBeans() {
-		assertEquals(PROFILE_GLOBAL, foo);
-		assertEquals(PROFILE_GLOBAL, bar);
-		assertEquals(PROFILE_TWO, baz);
+		assertThat((Object) foo).isEqualTo(PROFILE_GLOBAL);
+		assertThat((Object) bar).isEqualTo(PROFILE_GLOBAL);
+		assertThat((Object) baz).isEqualTo(PROFILE_TWO);
 	}
 
 

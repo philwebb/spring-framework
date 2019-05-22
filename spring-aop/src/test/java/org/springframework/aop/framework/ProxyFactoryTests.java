@@ -165,7 +165,7 @@ public class ProxyFactoryTests {
 		assertEquals(1, nop.getCount());
 		assertThat(advised.replaceAdvisor(new DefaultPointcutAdvisor(new NopInterceptor()), advisor2)).isFalse();
 		assertThat(advised.replaceAdvisor(advisor1, advisor2)).isTrue();
-		assertEquals(advisor2, pf.getAdvisors()[0]);
+		assertThat((Object) pf.getAdvisors()[0]).isEqualTo(advisor2);
 		assertEquals(5, proxied.getAge());
 		assertEquals(1, cba1.getCalls());
 		assertEquals(2, nop.getCount());
@@ -307,14 +307,14 @@ public class ProxyFactoryTests {
 		assertThat(AopUtils.isJdkDynamicProxy(proxy)).as("Proxy is a JDK proxy").isTrue();
 		boolean condition1 = proxy instanceof ITestBean;
 		assertThat(condition1).isTrue();
-		assertEquals(ITestBean.class, AopProxyUtils.ultimateTargetClass(proxy));
+		assertThat((Object) AopProxyUtils.ultimateTargetClass(proxy)).isEqualTo(ITestBean.class);
 
 		ProxyFactory pf2 = new ProxyFactory(proxy);
 		Object proxy2 = pf2.getProxy();
 		assertThat(AopUtils.isJdkDynamicProxy(proxy2)).as("Proxy is a JDK proxy").isTrue();
 		boolean condition = proxy2 instanceof ITestBean;
 		assertThat(condition).isTrue();
-		assertEquals(ITestBean.class, AopProxyUtils.ultimateTargetClass(proxy2));
+		assertThat((Object) AopProxyUtils.ultimateTargetClass(proxy2)).isEqualTo(ITestBean.class);
 	}
 
 	@Test
@@ -325,7 +325,7 @@ public class ProxyFactoryTests {
 		assertThat(AopUtils.isCglibProxy(proxy)).as("Proxy is a CGLIB proxy").isTrue();
 		boolean condition1 = proxy instanceof TestBean;
 		assertThat(condition1).isTrue();
-		assertEquals(TestBean.class, AopProxyUtils.ultimateTargetClass(proxy));
+		assertThat((Object) AopProxyUtils.ultimateTargetClass(proxy)).isEqualTo(TestBean.class);
 
 		ProxyFactory pf2 = new ProxyFactory(proxy);
 		pf2.setProxyTargetClass(true);
@@ -333,7 +333,7 @@ public class ProxyFactoryTests {
 		assertThat(AopUtils.isCglibProxy(proxy2)).as("Proxy is a CGLIB proxy").isTrue();
 		boolean condition = proxy2 instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertEquals(TestBean.class, AopProxyUtils.ultimateTargetClass(proxy2));
+		assertThat((Object) AopProxyUtils.ultimateTargetClass(proxy2)).isEqualTo(TestBean.class);
 	}
 
 	@Test
@@ -383,7 +383,7 @@ public class ProxyFactoryTests {
 			assertNull(invocation.getThis());
 			return invocation.getMethod().invoke(target, invocation.getArguments());
 		});
-		assertEquals("tb", proxy.getName());
+		assertThat((Object) proxy.getName()).isEqualTo("tb");
 	}
 
 

@@ -86,7 +86,7 @@ public class ByteBufferDecoderTests extends AbstractDecoderTestCase<ByteBufferDe
 	}
 
 	private Consumer<ByteBuffer> expectByteBuffer(ByteBuffer expected) {
-		return actual -> assertEquals(expected, actual);
+		return actual -> assertThat((Object) actual).isEqualTo(expected);
 	}
 
 }

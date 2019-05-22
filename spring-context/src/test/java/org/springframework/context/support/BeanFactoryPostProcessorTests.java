@@ -88,7 +88,7 @@ public class BeanFactoryPostProcessorTests {
 		ac.registerSingleton("bfpp2", PropertyPlaceholderConfigurer.class, pvs2);
 		ac.refresh();
 		TestBeanFactoryPostProcessor bfpp = (TestBeanFactoryPostProcessor) ac.getBean("bfpp1");
-		assertEquals("value", bfpp.initValue);
+		assertThat((Object) bfpp.initValue).isEqualTo("value");
 		assertThat(bfpp.wasCalled).isTrue();
 	}
 

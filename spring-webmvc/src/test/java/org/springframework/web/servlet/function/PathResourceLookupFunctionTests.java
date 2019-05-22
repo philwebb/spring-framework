@@ -51,7 +51,7 @@ public class PathResourceLookupFunctionTests {
 		assertThat(result.isPresent()).isTrue();
 
 		File expected = new ClassPathResource("response.txt", getClass()).getFile();
-		assertEquals(expected, result.get().getFile());
+		assertThat((Object) result.get().getFile()).isEqualTo(expected);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class PathResourceLookupFunctionTests {
 		File expected =
 				new ClassPathResource("org/springframework/web/servlet/function/child/response.txt")
 						.getFile();
-		assertEquals(expected, result.get().getFile());
+		assertThat((Object) result.get().getFile()).isEqualTo(expected);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class PathResourceLookupFunctionTests {
 		Optional<Resource> result = customLookupFunction.apply(request);
 		assertThat(result.isPresent()).isTrue();
 
-		assertEquals(defaultResource.getFile(), result.get().getFile());
+		assertThat((Object) result.get().getFile()).isEqualTo(defaultResource.getFile());
 	}
 
 }

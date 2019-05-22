@@ -22,6 +22,7 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -44,7 +45,7 @@ public class CookieWebSessionIdResolverTests {
 		assertEquals(1, cookies.size());
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
 		assertNotNull(cookie);
-		assertEquals("SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax", cookie.toString());
+		assertThat((Object) cookie.toString()).isEqualTo("SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax");
 	}
 
 	@Test
@@ -61,7 +62,7 @@ public class CookieWebSessionIdResolverTests {
 		assertEquals(1, cookies.size());
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
 		assertNotNull(cookie);
-		assertEquals("SESSION=123; Path=/; Domain=example.org; HttpOnly; SameSite=Strict", cookie.toString());
+		assertThat((Object) cookie.toString()).isEqualTo("SESSION=123; Path=/; Domain=example.org; HttpOnly; SameSite=Strict");
 	}
 
 }

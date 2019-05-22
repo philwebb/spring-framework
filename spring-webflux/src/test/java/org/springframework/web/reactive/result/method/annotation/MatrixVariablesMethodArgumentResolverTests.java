@@ -83,8 +83,7 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		params.add("colors", "blue");
 		MethodParameter param = this.testMethod.annot(matrixAttribute().noName()).arg(List.class, String.class);
 
-		assertEquals(Arrays.asList("red", "green", "blue"),
-				this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO));
+		assertThat(this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO)).isEqualTo(Arrays.asList("red", "green", "blue"));
 	}
 
 	@Test
@@ -94,14 +93,14 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(matrixAttribute().name("year")).arg(int.class);
 
 		Object actual = this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
-		assertEquals(2006, actual);
+		assertThat(actual).isEqualTo(2006);
 	}
 
 	@Test
 	public void resolveArgumentDefaultValue() throws Exception {
 		MethodParameter param = this.testMethod.annot(matrixAttribute().name("year")).arg(int.class);
 		Object actual = this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
-		assertEquals(2013, actual);
+		assertThat(actual).isEqualTo(2013);
 	}
 
 	@Test
@@ -128,7 +127,7 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(matrixAttribute().name("year")).arg(int.class);
 
 		Object actual = this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
-		assertEquals(2013, actual);
+		assertThat(actual).isEqualTo(2013);
 	}
 
 	@SuppressWarnings("unchecked")

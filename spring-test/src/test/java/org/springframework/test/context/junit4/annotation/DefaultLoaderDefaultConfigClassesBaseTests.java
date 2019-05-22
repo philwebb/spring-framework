@@ -27,6 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DelegatingSmartContextLoader;
 import org.springframework.tests.sample.beans.Employee;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -64,7 +65,7 @@ public class DefaultLoaderDefaultConfigClassesBaseTests {
 	@Test
 	public void verifyEmployeeSetFromBaseContextConfig() {
 		assertNotNull("The employee field should have been autowired.", this.employee);
-		assertEquals("John Smith", this.employee.getName());
+		assertThat((Object) this.employee.getName()).isEqualTo("John Smith");
 	}
 
 }

@@ -89,14 +89,14 @@ public class JmxUtilsTests {
 	public void testGetAttributeNameWithStrictCasing() {
 		PropertyDescriptor pd = new BeanWrapperImpl(AttributeTestBean.class).getPropertyDescriptor("name");
 		String attributeName = JmxUtils.getAttributeName(pd, true);
-		assertEquals("Incorrect casing on attribute name", "Name", attributeName);
+		assertThat((Object) attributeName).as("Incorrect casing on attribute name").isEqualTo("Name");
 	}
 
 	@Test
 	public void testGetAttributeNameWithoutStrictCasing() {
 		PropertyDescriptor pd = new BeanWrapperImpl(AttributeTestBean.class).getPropertyDescriptor("name");
 		String attributeName = JmxUtils.getAttributeName(pd, false);
-		assertEquals("Incorrect casing on attribute name", "name", attributeName);
+		assertThat((Object) attributeName).as("Incorrect casing on attribute name").isEqualTo("name");
 	}
 
 	@Test
@@ -107,9 +107,9 @@ public class JmxUtilsTests {
 
 		String typeProperty = "type";
 
-		assertEquals("Domain of transformed name is incorrect", objectName.getDomain(), uniqueName.getDomain());
-		assertEquals("Type key is incorrect", objectName.getKeyProperty(typeProperty), uniqueName.getKeyProperty("type"));
-		assertEquals("Identity key is incorrect", ObjectUtils.getIdentityHexString(managedResource), uniqueName.getKeyProperty(JmxUtils.IDENTITY_OBJECT_NAME_KEY));
+		assertThat((Object) uniqueName.getDomain()).as("Domain of transformed name is incorrect").isEqualTo(objectName.getDomain());
+		assertThat((Object) uniqueName.getKeyProperty("type")).as("Type key is incorrect").isEqualTo(objectName.getKeyProperty(typeProperty));
+		assertThat((Object) uniqueName.getKeyProperty(JmxUtils.IDENTITY_OBJECT_NAME_KEY)).as("Identity key is incorrect").isEqualTo(ObjectUtils.getIdentityHexString(managedResource));
 	}
 
 	@Test

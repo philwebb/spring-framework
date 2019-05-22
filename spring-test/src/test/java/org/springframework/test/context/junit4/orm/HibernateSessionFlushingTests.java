@@ -32,6 +32,7 @@ import org.springframework.test.context.junit4.orm.domain.Person;
 import org.springframework.test.context.junit4.orm.service.PersonService;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -73,7 +74,7 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 		assertNotNull("Should be able to find Sam", sam);
 		DriversLicense driversLicense = sam.getDriversLicense();
 		assertNotNull("Sam's driver's license should not be null", driversLicense);
-		assertEquals("Verifying Sam's driver's license number", Long.valueOf(1234), driversLicense.getNumber());
+		assertThat((Object) driversLicense.getNumber()).as("Verifying Sam's driver's license number").isEqualTo(Long.valueOf(1234));
 	}
 
 	@Test  // SPR-16956
@@ -85,7 +86,7 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 		Session session = sessionFactory.getCurrentSession();
 		session.flush();
 		session.refresh(sam);
-		assertEquals("Sam", sam.getName());
+		assertThat((Object) sam.getName()).isEqualTo("Sam");
 	}
 
 	@Test

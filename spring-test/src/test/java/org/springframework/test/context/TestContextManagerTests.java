@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -104,8 +105,7 @@ public class TestContextManagerTests {
 	}
 
 	private static void assertExecutionOrder(String usageContext, String... expectedBeforeTestMethodCalls) {
-		assertEquals("execution order (" + usageContext + ") ==>", Arrays.asList(expectedBeforeTestMethodCalls),
-			executionOrder);
+		assertThat((Object) executionOrder).as("execution order (" + usageContext + ") ==>").isEqualTo(Arrays.asList(expectedBeforeTestMethodCalls));
 	}
 
 

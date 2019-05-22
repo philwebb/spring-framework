@@ -40,6 +40,7 @@ import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -73,7 +74,7 @@ public class WebSocketHandshakeTests extends AbstractWebSocketIntegrationTests {
 		headers.setSecWebSocketProtocol("foo");
 		URI url = new URI(getWsBaseUrl() + "/ws");
 		WebSocketSession session = this.webSocketClient.doHandshake(new TextWebSocketHandler(), headers, url).get();
-		assertEquals("foo", session.getAcceptedProtocol());
+		assertThat((Object) session.getAcceptedProtocol()).isEqualTo("foo");
 		session.close();
 	}
 
@@ -90,7 +91,7 @@ public class WebSocketHandshakeTests extends AbstractWebSocketIntegrationTests {
 		serverHandler.await();
 		assertNull(serverHandler.getTransportError());
 		assertEquals(1, serverHandler.getReceivedMessages().size());
-		assertEquals(PongMessage.class, serverHandler.getReceivedMessages().get(0).getClass());
+		assertThat((Object) serverHandler.getReceivedMessages().get(0).getClass()).isEqualTo(PongMessage.class);
 	}
 
 

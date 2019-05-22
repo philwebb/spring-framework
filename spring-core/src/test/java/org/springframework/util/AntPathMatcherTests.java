@@ -293,64 +293,61 @@ public class AntPathMatcherTests {
 
 	@Test
 	public void extractPathWithinPattern() throws Exception {
-		assertEquals("", pathMatcher.extractPathWithinPattern("/docs/commit.html", "/docs/commit.html"));
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/commit.html", "/docs/commit.html")).isEqualTo("");
 
-		assertEquals("cvs/commit", pathMatcher.extractPathWithinPattern("/docs/*", "/docs/cvs/commit"));
-		assertEquals("commit.html", pathMatcher.extractPathWithinPattern("/docs/cvs/*.html", "/docs/cvs/commit.html"));
-		assertEquals("cvs/commit", pathMatcher.extractPathWithinPattern("/docs/**", "/docs/cvs/commit"));
-		assertEquals("cvs/commit.html",
-				pathMatcher.extractPathWithinPattern("/docs/**/*.html", "/docs/cvs/commit.html"));
-		assertEquals("commit.html", pathMatcher.extractPathWithinPattern("/docs/**/*.html", "/docs/commit.html"));
-		assertEquals("commit.html", pathMatcher.extractPathWithinPattern("/*.html", "/commit.html"));
-		assertEquals("docs/commit.html", pathMatcher.extractPathWithinPattern("/*.html", "/docs/commit.html"));
-		assertEquals("/commit.html", pathMatcher.extractPathWithinPattern("*.html", "/commit.html"));
-		assertEquals("/docs/commit.html", pathMatcher.extractPathWithinPattern("*.html", "/docs/commit.html"));
-		assertEquals("/docs/commit.html", pathMatcher.extractPathWithinPattern("**/*.*", "/docs/commit.html"));
-		assertEquals("/docs/commit.html", pathMatcher.extractPathWithinPattern("*", "/docs/commit.html"));
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/*", "/docs/cvs/commit")).isEqualTo("cvs/commit");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/cvs/*.html", "/docs/cvs/commit.html")).isEqualTo("commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/**", "/docs/cvs/commit")).isEqualTo("cvs/commit");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/**/*.html", "/docs/cvs/commit.html")).isEqualTo("cvs/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/**/*.html", "/docs/commit.html")).isEqualTo("commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/*.html", "/commit.html")).isEqualTo("commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/*.html", "/docs/commit.html")).isEqualTo("docs/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("*.html", "/commit.html")).isEqualTo("/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("*.html", "/docs/commit.html")).isEqualTo("/docs/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("**/*.*", "/docs/commit.html")).isEqualTo("/docs/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("*", "/docs/commit.html")).isEqualTo("/docs/commit.html");
 		// SPR-10515
-		assertEquals("/docs/cvs/other/commit.html", pathMatcher.extractPathWithinPattern("**/commit.html", "/docs/cvs/other/commit.html"));
-		assertEquals("cvs/other/commit.html", pathMatcher.extractPathWithinPattern("/docs/**/commit.html", "/docs/cvs/other/commit.html"));
-		assertEquals("cvs/other/commit.html", pathMatcher.extractPathWithinPattern("/docs/**/**/**/**", "/docs/cvs/other/commit.html"));
+		assertThat((Object) pathMatcher.extractPathWithinPattern("**/commit.html", "/docs/cvs/other/commit.html")).isEqualTo("/docs/cvs/other/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/**/commit.html", "/docs/cvs/other/commit.html")).isEqualTo("cvs/other/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/**/**/**/**", "/docs/cvs/other/commit.html")).isEqualTo("cvs/other/commit.html");
 
-		assertEquals("docs/cvs/commit", pathMatcher.extractPathWithinPattern("/d?cs/*", "/docs/cvs/commit"));
-		assertEquals("cvs/commit.html",
-				pathMatcher.extractPathWithinPattern("/docs/c?s/*.html", "/docs/cvs/commit.html"));
-		assertEquals("docs/cvs/commit", pathMatcher.extractPathWithinPattern("/d?cs/**", "/docs/cvs/commit"));
-		assertEquals("docs/cvs/commit.html",
-				pathMatcher.extractPathWithinPattern("/d?cs/**/*.html", "/docs/cvs/commit.html"));
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/d?cs/*", "/docs/cvs/commit")).isEqualTo("docs/cvs/commit");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/docs/c?s/*.html", "/docs/cvs/commit.html")).isEqualTo("cvs/commit.html");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/d?cs/**", "/docs/cvs/commit")).isEqualTo("docs/cvs/commit");
+		assertThat((Object) pathMatcher.extractPathWithinPattern("/d?cs/**/*.html", "/docs/cvs/commit.html")).isEqualTo("docs/cvs/commit.html");
 	}
 
 	@Test
 	public void extractUriTemplateVariables() throws Exception {
 		Map<String, String> result = pathMatcher.extractUriTemplateVariables("/hotels/{hotel}", "/hotels/1");
-		assertEquals(Collections.singletonMap("hotel", "1"), result);
+		assertThat((Object) result).isEqualTo(Collections.singletonMap("hotel", "1"));
 
 		result = pathMatcher.extractUriTemplateVariables("/h?tels/{hotel}", "/hotels/1");
-		assertEquals(Collections.singletonMap("hotel", "1"), result);
+		assertThat((Object) result).isEqualTo(Collections.singletonMap("hotel", "1"));
 
 		result = pathMatcher.extractUriTemplateVariables("/hotels/{hotel}/bookings/{booking}", "/hotels/1/bookings/2");
 		Map<String, String> expected = new LinkedHashMap<>();
 		expected.put("hotel", "1");
 		expected.put("booking", "2");
-		assertEquals(expected, result);
+		assertThat((Object) result).isEqualTo(expected);
 
 		result = pathMatcher.extractUriTemplateVariables("/**/hotels/**/{hotel}", "/foo/hotels/bar/1");
-		assertEquals(Collections.singletonMap("hotel", "1"), result);
+		assertThat((Object) result).isEqualTo(Collections.singletonMap("hotel", "1"));
 
 		result = pathMatcher.extractUriTemplateVariables("/{page}.html", "/42.html");
-		assertEquals(Collections.singletonMap("page", "42"), result);
+		assertThat((Object) result).isEqualTo(Collections.singletonMap("page", "42"));
 
 		result = pathMatcher.extractUriTemplateVariables("/{page}.*", "/42.html");
-		assertEquals(Collections.singletonMap("page", "42"), result);
+		assertThat((Object) result).isEqualTo(Collections.singletonMap("page", "42"));
 
 		result = pathMatcher.extractUriTemplateVariables("/A-{B}-C", "/A-b-C");
-		assertEquals(Collections.singletonMap("B", "b"), result);
+		assertThat((Object) result).isEqualTo(Collections.singletonMap("B", "b"));
 
 		result = pathMatcher.extractUriTemplateVariables("/{name}.{extension}", "/test.html");
 		expected = new LinkedHashMap<>();
 		expected.put("name", "test");
 		expected.put("extension", "html");
-		assertEquals(expected, result);
+		assertThat((Object) result).isEqualTo(expected);
 	}
 
 	@Test
@@ -358,13 +355,13 @@ public class AntPathMatcherTests {
 		Map<String, String> result = pathMatcher
 				.extractUriTemplateVariables("{symbolicName:[\\w\\.]+}-{version:[\\w\\.]+}.jar",
 						"com.example-1.0.0.jar");
-		assertEquals("com.example", result.get("symbolicName"));
-		assertEquals("1.0.0", result.get("version"));
+		assertThat((Object) result.get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.get("version")).isEqualTo("1.0.0");
 
 		result = pathMatcher.extractUriTemplateVariables("{symbolicName:[\\w\\.]+}-sources-{version:[\\w\\.]+}.jar",
 				"com.example-sources-1.0.0.jar");
-		assertEquals("com.example", result.get("symbolicName"));
-		assertEquals("1.0.0", result.get("version"));
+		assertThat((Object) result.get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.get("version")).isEqualTo("1.0.0");
 	}
 
 	/**
@@ -375,23 +372,23 @@ public class AntPathMatcherTests {
 		Map<String, String> result = pathMatcher.extractUriTemplateVariables(
 				"{symbolicName:[\\p{L}\\.]+}-sources-{version:[\\p{N}\\.]+}.jar",
 				"com.example-sources-1.0.0.jar");
-		assertEquals("com.example", result.get("symbolicName"));
-		assertEquals("1.0.0", result.get("version"));
+		assertThat((Object) result.get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.get("version")).isEqualTo("1.0.0");
 
 		result = pathMatcher.extractUriTemplateVariables(
 				"{symbolicName:[\\w\\.]+}-sources-{version:[\\d\\.]+}-{year:\\d{4}}{month:\\d{2}}{day:\\d{2}}.jar",
 				"com.example-sources-1.0.0-20100220.jar");
-		assertEquals("com.example", result.get("symbolicName"));
-		assertEquals("1.0.0", result.get("version"));
-		assertEquals("2010", result.get("year"));
-		assertEquals("02", result.get("month"));
-		assertEquals("20", result.get("day"));
+		assertThat((Object) result.get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.get("version")).isEqualTo("1.0.0");
+		assertThat((Object) result.get("year")).isEqualTo("2010");
+		assertThat((Object) result.get("month")).isEqualTo("02");
+		assertThat((Object) result.get("day")).isEqualTo("20");
 
 		result = pathMatcher.extractUriTemplateVariables(
 				"{symbolicName:[\\p{L}\\.]+}-sources-{version:[\\p{N}\\.\\{\\}]+}.jar",
 				"com.example-sources-1.0.0.{12}.jar");
-		assertEquals("com.example", result.get("symbolicName"));
-		assertEquals("1.0.0.{12}", result.get("version"));
+		assertThat((Object) result.get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.get("version")).isEqualTo("1.0.0.{12}");
 	}
 
 	/**
@@ -406,33 +403,39 @@ public class AntPathMatcherTests {
 
 	@Test
 	public void combine() {
-		assertEquals("", pathMatcher.combine(null, null));
-		assertEquals("/hotels", pathMatcher.combine("/hotels", null));
-		assertEquals("/hotels", pathMatcher.combine(null, "/hotels"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels/*", "booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels/*", "/booking"));
-		assertEquals("/hotels/**/booking", pathMatcher.combine("/hotels/**", "booking"));
-		assertEquals("/hotels/**/booking", pathMatcher.combine("/hotels/**", "/booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels", "/booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels", "booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels/", "booking"));
-		assertEquals("/hotels/{hotel}", pathMatcher.combine("/hotels/*", "{hotel}"));
-		assertEquals("/hotels/**/{hotel}", pathMatcher.combine("/hotels/**", "{hotel}"));
-		assertEquals("/hotels/{hotel}", pathMatcher.combine("/hotels", "{hotel}"));
-		assertEquals("/hotels/{hotel}.*", pathMatcher.combine("/hotels", "{hotel}.*"));
-		assertEquals("/hotels/*/booking/{booking}", pathMatcher.combine("/hotels/*/booking", "{booking}"));
-		assertEquals("/hotel.html", pathMatcher.combine("/*.html", "/hotel.html"));
-		assertEquals("/hotel.html", pathMatcher.combine("/*.html", "/hotel"));
-		assertEquals("/hotel.html", pathMatcher.combine("/*.html", "/hotel.*"));
-		assertEquals("/*.html", pathMatcher.combine("/**", "/*.html"));
-		assertEquals("/*.html", pathMatcher.combine("/*", "/*.html"));
-		assertEquals("/*.html", pathMatcher.combine("/*.*", "/*.html"));
-		assertEquals("/{foo}/bar", pathMatcher.combine("/{foo}", "/bar"));    // SPR-8858
-		assertEquals("/user/user", pathMatcher.combine("/user", "/user"));    // SPR-7970
-		assertEquals("/{foo:.*[^0-9].*}/edit/", pathMatcher.combine("/{foo:.*[^0-9].*}", "/edit/")); // SPR-10062
-		assertEquals("/1.0/foo/test", pathMatcher.combine("/1.0", "/foo/test")); // SPR-10554
-		assertEquals("/hotel", pathMatcher.combine("/", "/hotel")); // SPR-12975
-		assertEquals("/hotel/booking", pathMatcher.combine("/hotel/", "/booking")); // SPR-12975
+		assertThat((Object) pathMatcher.combine(null, null)).isEqualTo("");
+		assertThat((Object) pathMatcher.combine("/hotels", null)).isEqualTo("/hotels");
+		assertThat((Object) pathMatcher.combine(null, "/hotels")).isEqualTo("/hotels");
+		assertThat((Object) pathMatcher.combine("/hotels/*", "booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/*", "/booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/**", "booking")).isEqualTo("/hotels/**/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/**", "/booking")).isEqualTo("/hotels/**/booking");
+		assertThat((Object) pathMatcher.combine("/hotels", "/booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels", "booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/", "booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/*", "{hotel}")).isEqualTo("/hotels/{hotel}");
+		assertThat((Object) pathMatcher.combine("/hotels/**", "{hotel}")).isEqualTo("/hotels/**/{hotel}");
+		assertThat((Object) pathMatcher.combine("/hotels", "{hotel}")).isEqualTo("/hotels/{hotel}");
+		assertThat((Object) pathMatcher.combine("/hotels", "{hotel}.*")).isEqualTo("/hotels/{hotel}.*");
+		assertThat((Object) pathMatcher.combine("/hotels/*/booking", "{booking}")).isEqualTo("/hotels/*/booking/{booking}");
+		assertThat((Object) pathMatcher.combine("/*.html", "/hotel.html")).isEqualTo("/hotel.html");
+		assertThat((Object) pathMatcher.combine("/*.html", "/hotel")).isEqualTo("/hotel.html");
+		assertThat((Object) pathMatcher.combine("/*.html", "/hotel.*")).isEqualTo("/hotel.html");
+		assertThat((Object) pathMatcher.combine("/**", "/*.html")).isEqualTo("/*.html");
+		assertThat((Object) pathMatcher.combine("/*", "/*.html")).isEqualTo("/*.html");
+		assertThat((Object) pathMatcher.combine("/*.*", "/*.html")).isEqualTo("/*.html");
+		// SPR-8858
+		assertThat((Object) pathMatcher.combine("/{foo}", "/bar")).isEqualTo("/{foo}/bar");
+		// SPR-7970
+		assertThat((Object) pathMatcher.combine("/user", "/user")).isEqualTo("/user/user");
+		// SPR-10062
+		assertThat((Object) pathMatcher.combine("/{foo:.*[^0-9].*}", "/edit/")).isEqualTo("/{foo:.*[^0-9].*}/edit/");
+		// SPR-10554
+		assertThat((Object) pathMatcher.combine("/1.0", "/foo/test")).isEqualTo("/1.0/foo/test");
+		// SPR-12975
+		assertThat((Object) pathMatcher.combine("/", "/hotel")).isEqualTo("/hotel");
+		// SPR-12975
+		assertThat((Object) pathMatcher.combine("/hotel/", "/booking")).isEqualTo("/hotel/booking");
 	}
 
 	@Test
@@ -502,74 +505,74 @@ public class AntPathMatcherTests {
 		paths.add(null);
 		paths.add("/hotels/new");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new", paths.get(0));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new");
 		assertNull(paths.get(1));
 		paths.clear();
 
 		paths.add("/hotels/new");
 		paths.add(null);
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new", paths.get(0));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new");
 		assertNull(paths.get(1));
 		paths.clear();
 
 		paths.add("/hotels/*");
 		paths.add("/hotels/new");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new", paths.get(0));
-		assertEquals("/hotels/*", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/*");
 		paths.clear();
 
 		paths.add("/hotels/new");
 		paths.add("/hotels/*");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new", paths.get(0));
-		assertEquals("/hotels/*", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/*");
 		paths.clear();
 
 		paths.add("/hotels/**");
 		paths.add("/hotels/*");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/*", paths.get(0));
-		assertEquals("/hotels/**", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/*");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/**");
 		paths.clear();
 
 		paths.add("/hotels/*");
 		paths.add("/hotels/**");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/*", paths.get(0));
-		assertEquals("/hotels/**", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/*");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/**");
 		paths.clear();
 
 		paths.add("/hotels/{hotel}");
 		paths.add("/hotels/new");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new", paths.get(0));
-		assertEquals("/hotels/{hotel}", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/{hotel}");
 		paths.clear();
 
 		paths.add("/hotels/new");
 		paths.add("/hotels/{hotel}");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new", paths.get(0));
-		assertEquals("/hotels/{hotel}", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/{hotel}");
 		paths.clear();
 
 		paths.add("/hotels/*");
 		paths.add("/hotels/{hotel}");
 		paths.add("/hotels/new");
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new", paths.get(0));
-		assertEquals("/hotels/{hotel}", paths.get(1));
-		assertEquals("/hotels/*", paths.get(2));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/{hotel}");
+		assertThat((Object) paths.get(2)).isEqualTo("/hotels/*");
 		paths.clear();
 
 		paths.add("/hotels/ne*");
 		paths.add("/hotels/n*");
 		Collections.shuffle(paths);
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/ne*", paths.get(0));
-		assertEquals("/hotels/n*", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/ne*");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/n*");
 		paths.clear();
 
 		comparator = pathMatcher.getPatternComparator("/hotels/new.html");
@@ -577,16 +580,16 @@ public class AntPathMatcherTests {
 		paths.add("/hotels/{hotel}");
 		Collections.shuffle(paths);
 		Collections.sort(paths, comparator);
-		assertEquals("/hotels/new.*", paths.get(0));
-		assertEquals("/hotels/{hotel}", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/hotels/new.*");
+		assertThat((Object) paths.get(1)).isEqualTo("/hotels/{hotel}");
 		paths.clear();
 
 		comparator = pathMatcher.getPatternComparator("/web/endUser/action/login.html");
 		paths.add("/**/login.*");
 		paths.add("/**/endUser/action/login.*");
 		Collections.sort(paths, comparator);
-		assertEquals("/**/endUser/action/login.*", paths.get(0));
-		assertEquals("/**/login.*", paths.get(1));
+		assertThat((Object) paths.get(0)).isEqualTo("/**/endUser/action/login.*");
+		assertThat((Object) paths.get(1)).isEqualTo("/**/login.*");
 		paths.clear();
 	}
 
@@ -675,8 +678,7 @@ public class AntPathMatcherTests {
 	@Test
 	public void extensionMappingWithDotPathSeparator() {
 		pathMatcher.setPathSeparator(".");
-		assertEquals("Extension mapping should be disabled with \".\" as path separator",
-				"/*.html.hotel.*", pathMatcher.combine("/*.html", "hotel.*"));
+		assertThat((Object) pathMatcher.combine("/*.html", "hotel.*")).as("Extension mapping should be disabled with \".\" as path separator").isEqualTo("/*.html.hotel.*");
 	}
 
 }

@@ -30,6 +30,7 @@ import org.springframework.web.accept.FixedContentNegotiationStrategy;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -59,20 +60,17 @@ public class ContentNegotiationConfigurerTests {
 
 		this.servletRequest.setRequestURI("/flower.gif");
 
-		assertEquals("Should be able to resolve file extensions by default",
-				MediaType.IMAGE_GIF, manager.resolveMediaTypes(this.webRequest).get(0));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).as("Should be able to resolve file extensions by default").isEqualTo(MediaType.IMAGE_GIF);
 
 		this.servletRequest.setRequestURI("/flower?format=gif");
 		this.servletRequest.addParameter("format", "gif");
 
-		assertEquals("Should not resolve request parameters by default",
-				ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST, manager.resolveMediaTypes(this.webRequest));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest)).as("Should not resolve request parameters by default").isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 
 		this.servletRequest.setRequestURI("/flower");
 		this.servletRequest.addHeader("Accept", MediaType.IMAGE_GIF_VALUE);
 
-		assertEquals("Should resolve Accept header by default",
-				MediaType.IMAGE_GIF, manager.resolveMediaTypes(this.webRequest).get(0));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).as("Should resolve Accept header by default").isEqualTo(MediaType.IMAGE_GIF);
 	}
 
 	@Test
@@ -81,7 +79,7 @@ public class ContentNegotiationConfigurerTests {
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
 		this.servletRequest.setRequestURI("/flower.json");
-		assertEquals(MediaType.APPLICATION_JSON, manager.resolveMediaTypes(this.webRequest).get(0));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -94,7 +92,7 @@ public class ContentNegotiationConfigurerTests {
 		this.servletRequest.setRequestURI("/flower");
 		this.servletRequest.addParameter("f", "json");
 
-		assertEquals(MediaType.APPLICATION_JSON, manager.resolveMediaTypes(this.webRequest).get(0));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -105,7 +103,7 @@ public class ContentNegotiationConfigurerTests {
 		this.servletRequest.setRequestURI("/flower");
 		this.servletRequest.addHeader("Accept", MediaType.IMAGE_GIF_VALUE);
 
-		assertEquals(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST, manager.resolveMediaTypes(this.webRequest));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest)).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test
@@ -113,7 +111,7 @@ public class ContentNegotiationConfigurerTests {
 		this.configurer.defaultContentType(MediaType.APPLICATION_JSON);
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
-		assertEquals(MediaType.APPLICATION_JSON, manager.resolveMediaTypes(this.webRequest).get(0));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -121,7 +119,7 @@ public class ContentNegotiationConfigurerTests {
 		this.configurer.defaultContentType(MediaType.APPLICATION_JSON, MediaType.ALL);
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
-		assertEquals(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.ALL), manager.resolveMediaTypes(this.webRequest));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest)).isEqualTo(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.ALL));
 	}
 
 	@Test
@@ -129,7 +127,7 @@ public class ContentNegotiationConfigurerTests {
 		this.configurer.defaultContentTypeStrategy(new FixedContentNegotiationStrategy(MediaType.APPLICATION_JSON));
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
-		assertEquals(MediaType.APPLICATION_JSON, manager.resolveMediaTypes(this.webRequest).get(0));
+		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 }

@@ -531,59 +531,59 @@ public class MethodJmsListenerEndpointTests {
 		public void resolveGenericMessage(Message<String> message) {
 			this.invocations.put("resolveGenericMessage", true);
 			assertNotNull("Generic message not injected", message);
-			assertEquals("Wrong message payload", "test", message.getPayload());
+			assertThat((Object) message.getPayload()).as("Wrong message payload").isEqualTo("test");
 		}
 
 		public void resolveHeaderAndPayload(@Payload String content, @Header int myCounter) {
 			this.invocations.put("resolveHeaderAndPayload", true);
-			assertEquals("Wrong @Payload resolution", "my payload", content);
+			assertThat((Object) content).as("Wrong @Payload resolution").isEqualTo("my payload");
 			assertEquals("Wrong @Header resolution", 55, myCounter);
 		}
 
 		public void resolveCustomHeaderNameAndPayload(@Payload String content, @Header("myCounter") int counter) {
 			this.invocations.put("resolveCustomHeaderNameAndPayload", true);
-			assertEquals("Wrong @Payload resolution", "my payload", content);
+			assertThat((Object) content).as("Wrong @Payload resolution").isEqualTo("my payload");
 			assertEquals("Wrong @Header resolution", 24, counter);
 		}
 
 		public void resolveCustomHeaderNameAndPayloadWithHeaderNameSet(@Payload String content, @Header(name = "myCounter") int counter) {
 			this.invocations.put("resolveCustomHeaderNameAndPayloadWithHeaderNameSet", true);
-			assertEquals("Wrong @Payload resolution", "my payload", content);
+			assertThat((Object) content).as("Wrong @Payload resolution").isEqualTo("my payload");
 			assertEquals("Wrong @Header resolution", 24, counter);
 		}
 
 		public void resolveHeaders(String content, @Headers Map<String, Object> headers) {
 			this.invocations.put("resolveHeaders", true);
-			assertEquals("Wrong payload resolution", "my payload", content);
+			assertThat((Object) content).as("Wrong payload resolution").isEqualTo("my payload");
 			assertNotNull("headers not injected", headers);
-			assertEquals("Missing JMS message id header", "abcd-1234", headers.get(JmsHeaders.MESSAGE_ID));
-			assertEquals("Missing custom header", 1234, headers.get("customInt"));
+			assertThat(headers.get(JmsHeaders.MESSAGE_ID)).as("Missing JMS message id header").isEqualTo("abcd-1234");
+			assertThat(headers.get("customInt")).as("Missing custom header").isEqualTo(1234);
 		}
 
 		public void resolveMessageHeaders(MessageHeaders headers) {
 			this.invocations.put("resolveMessageHeaders", true);
 			assertNotNull("MessageHeaders not injected", headers);
-			assertEquals("Missing JMS message type header", "myMessageType", headers.get(JmsHeaders.TYPE));
+			assertThat(headers.get(JmsHeaders.TYPE)).as("Missing JMS message type header").isEqualTo("myMessageType");
 			assertEquals("Missing custom header", 4567L, (long) headers.get("customLong"), 0.0);
 		}
 
 		public void resolveJmsMessageHeaderAccessor(JmsMessageHeaderAccessor headers) {
 			this.invocations.put("resolveJmsMessageHeaderAccessor", true);
 			assertNotNull("MessageHeaders not injected", headers);
-			assertEquals("Missing JMS message priority header", Integer.valueOf(9), headers.getPriority());
-			assertEquals("Missing custom header", true, headers.getHeader("customBoolean"));
+			assertThat((Object) headers.getPriority()).as("Missing JMS message priority header").isEqualTo(Integer.valueOf(9));
+			assertThat(headers.getHeader("customBoolean")).as("Missing custom header").isEqualTo(true);
 		}
 
 		public void resolveObjectPayload(MyBean bean) {
 			this.invocations.put("resolveObjectPayload", true);
 			assertNotNull("Object payload not injected", bean);
-			assertEquals("Wrong content for payload", "myBean name", bean.name);
+			assertThat((Object) bean.name).as("Wrong content for payload").isEqualTo("myBean name");
 		}
 
 		public void resolveConvertedPayload(Integer counter) {
 			this.invocations.put("resolveConvertedPayload", true);
 			assertNotNull("Payload not injected", counter);
-			assertEquals("Wrong content for payload", Integer.valueOf(33), counter);
+			assertThat((Object) counter).as("Wrong content for payload").isEqualTo(Integer.valueOf(33));
 		}
 
 		public String processAndReply(@Payload String content) {

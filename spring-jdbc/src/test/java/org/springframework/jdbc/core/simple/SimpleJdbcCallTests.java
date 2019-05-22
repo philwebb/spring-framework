@@ -33,6 +33,7 @@ import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -231,7 +232,7 @@ public class SimpleJdbcCallTests {
 
 
 	private void verifyStatement(SimpleJdbcCall adder, String expected) {
-		assertEquals("Incorrect call statement", expected, adder.getCallString());
+		assertThat((Object) adder.getCallString()).as("Incorrect call statement").isEqualTo(expected);
 	}
 
 	private void initializeAddInvoiceWithoutMetaData(boolean isFunction) throws SQLException {

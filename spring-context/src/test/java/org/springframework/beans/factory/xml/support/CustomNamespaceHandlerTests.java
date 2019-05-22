@@ -118,14 +118,14 @@ public class CustomNamespaceHandlerTests {
 		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		Advisor[] advisors = ((Advised) bean).getAdvisors();
 		assertEquals("Incorrect number of advisors", 1, advisors.length);
-		assertEquals("Incorrect advice class", DebugInterceptor.class, advisors[0].getAdvice().getClass());
+		assertThat((Object) advisors[0].getAdvice().getClass()).as("Incorrect advice class").isEqualTo(DebugInterceptor.class);
 	}
 
 	@Test
 	public void testProxyingDecoratorNoInstance() throws Exception {
 		String[] beanNames = this.beanFactory.getBeanNamesForType(ApplicationListener.class);
 		assertThat(Arrays.asList(beanNames).contains("debuggingTestBeanNoInstance")).isTrue();
-		assertEquals(ApplicationListener.class, this.beanFactory.getType("debuggingTestBeanNoInstance"));
+		assertThat((Object) this.beanFactory.getType("debuggingTestBeanNoInstance")).isEqualTo(ApplicationListener.class);
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				this.beanFactory.getBean("debuggingTestBeanNoInstance"))
 			.satisfies(ex -> assertThat(ex.getRootCause()).isInstanceOf(BeanInstantiationException.class));
@@ -138,14 +138,14 @@ public class CustomNamespaceHandlerTests {
 		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		Advisor[] advisors = ((Advised) bean).getAdvisors();
 		assertEquals("Incorrect number of advisors", 2, advisors.length);
-		assertEquals("Incorrect advice class", DebugInterceptor.class, advisors[0].getAdvice().getClass());
-		assertEquals("Incorrect advice class", NopInterceptor.class, advisors[1].getAdvice().getClass());
+		assertThat((Object) advisors[0].getAdvice().getClass()).as("Incorrect advice class").isEqualTo(DebugInterceptor.class);
+		assertThat((Object) advisors[1].getAdvice().getClass()).as("Incorrect advice class").isEqualTo(NopInterceptor.class);
 	}
 
 	@Test
 	public void testDecorationViaAttribute() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getBeanDefinition("decorateWithAttribute");
-		assertEquals("foo", beanDefinition.getAttribute("objectName"));
+		assertThat(beanDefinition.getAttribute("objectName")).isEqualTo("foo");
 	}
 
 	@Test  // SPR-2728
@@ -171,7 +171,7 @@ public class CustomNamespaceHandlerTests {
 
 
 	private void assertTestBean(ITestBean bean) {
-		assertEquals("Invalid name", "Rob Harrop", bean.getName());
+		assertThat((Object) bean.getName()).as("Invalid name").isEqualTo("Rob Harrop");
 		assertEquals("Invalid age", 23, bean.getAge());
 	}
 

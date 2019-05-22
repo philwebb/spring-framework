@@ -58,7 +58,7 @@ public class ServletServerHttpRequestTests {
 	@Test
 	public void getMethod() {
 		mockRequest.setMethod("POST");
-		assertEquals("Invalid method", HttpMethod.POST, request.getMethod());
+		assertThat((Object) request.getMethod()).as("Invalid method").isEqualTo(HttpMethod.POST);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setServerPort(uri.getPort());
 		mockRequest.setRequestURI(uri.getPath());
 		mockRequest.setQueryString(uri.getQuery());
-		assertEquals(uri, request.getURI());
+		assertThat((Object) request.getURI()).isEqualTo(uri);
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setServerPort(uri.getPort());
 		mockRequest.setRequestURI(uri.getPath());
 		mockRequest.setQueryString(uri.getQuery());
-		assertEquals(uri, request.getURI());
+		assertThat((Object) request.getURI()).isEqualTo(uri);
 	}
 
 	@Test  // SPR-16414
@@ -88,7 +88,7 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setServerName("example.com");
 		mockRequest.setRequestURI("/path");
 		mockRequest.setQueryString("query=foo");
-		assertEquals(new URI("http://example.com/path?query=foo"), request.getURI());
+		assertThat((Object) request.getURI()).isEqualTo(new URI("http://example.com/path?query=foo"));
 	}
 
 	@Test  // SPR-16414
@@ -96,7 +96,7 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setServerName("example.com");
 		mockRequest.setRequestURI("/path");
 		mockRequest.setQueryString("query=foo%%x");
-		assertEquals(new URI("http://example.com/path"), request.getURI());
+		assertThat((Object) request.getURI()).isEqualTo(new URI("http://example.com/path"));
 	}
 
 	@Test  // SPR-13876
@@ -108,7 +108,7 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setServerPort(uri.getPort());
 		mockRequest.setRequestURI(uri.getRawPath());
 		mockRequest.setQueryString(uri.getRawQuery());
-		assertEquals(uri, request.getURI());
+		assertThat((Object) request.getURI()).isEqualTo(uri);
 	}
 
 	@Test
@@ -128,8 +128,7 @@ public class ServletServerHttpRequestTests {
 		assertEquals("Invalid header values returned", 2, headerValues.size());
 		assertThat(headerValues.contains(headerValue1)).as("Invalid header values returned").isTrue();
 		assertThat(headerValues.contains(headerValue2)).as("Invalid header values returned").isTrue();
-		assertEquals("Invalid Content-Type", new MediaType("text", "plain", StandardCharsets.UTF_8),
-				headers.getContentType());
+		assertThat((Object) headers.getContentType()).as("Invalid Content-Type").isEqualTo(new MediaType("text", "plain", StandardCharsets.UTF_8));
 	}
 
 	@Test

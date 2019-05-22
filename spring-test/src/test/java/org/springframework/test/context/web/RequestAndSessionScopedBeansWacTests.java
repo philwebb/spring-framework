@@ -27,6 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -63,7 +64,7 @@ public class RequestAndSessionScopedBeansWacTests {
 		request.setContextPath(contextPath);
 		TestBean testBean = wac.getBean(beanName, TestBean.class);
 
-		assertEquals(contextPath, testBean.getName());
+		assertThat((Object) testBean.getName()).isEqualTo(contextPath);
 		assertSame(testBean, request.getAttribute(beanName));
 		assertSame(testBean, wac.getBean(beanName, TestBean.class));
 	}

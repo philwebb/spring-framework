@@ -169,7 +169,7 @@ public class PrintingResultHandlerTests {
 		// Manually validate cookie values since maxAge changes...
 		List<String> cookieValues = this.response.getHeaders("Set-Cookie");
 		assertEquals(2, cookieValues.size());
-		assertEquals("cookie=cookieValue", cookieValues.get(0));
+		assertThat((Object) cookieValues.get(0)).isEqualTo("cookie=cookieValue");
 		assertThat(cookieValues.get(1).startsWith(
 				"enigma=42; Path=/crumbs; Domain=.example.com; Max-Age=1234; Expires=")).as("Actual: " + cookieValues.get(1)).isTrue();
 
@@ -339,8 +339,7 @@ public class PrintingResultHandlerTests {
 	private void assertValue(String heading, String label, Object value) {
 		Map<String, Map<String, Object>> printedValues = this.handler.getPrinter().printedValues;
 		assertThat(printedValues.containsKey(heading)).as("Heading '" + heading + "' not printed").isTrue();
-		assertEquals("For label '" + label + "' under heading '" + heading + "' =>", value,
-				printedValues.get(heading).get(label));
+		assertThat(printedValues.get(heading).get(label)).as("For label '" + label + "' under heading '" + heading + "' =>").isEqualTo(value);
 	}
 
 

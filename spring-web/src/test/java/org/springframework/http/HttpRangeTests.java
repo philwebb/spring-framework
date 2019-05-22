@@ -27,6 +27,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.support.ResourceRegion;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -131,7 +132,7 @@ public class HttpRangeTests {
 		ranges.add(HttpRange.createByteRange(0, 499));
 		ranges.add(HttpRange.createByteRange(9500));
 		ranges.add(HttpRange.createSuffixRange(500));
-		assertEquals("Invalid Range header", "bytes=0-499, 9500-, -500", HttpRange.toString(ranges));
+		assertThat((Object) HttpRange.toString(ranges)).as("Invalid Range header").isEqualTo("bytes=0-499, 9500-, -500");
 	}
 
 	@Test
@@ -140,7 +141,7 @@ public class HttpRangeTests {
 		ByteArrayResource resource = new ByteArrayResource(bytes);
 		HttpRange range = HttpRange.createByteRange(0, 5);
 		ResourceRegion region = range.toResourceRegion(resource);
-		assertEquals(resource, region.getResource());
+		assertThat((Object) region.getResource()).isEqualTo(resource);
 		assertEquals(0L, region.getPosition());
 		assertEquals(6L, region.getCount());
 	}

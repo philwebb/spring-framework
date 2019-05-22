@@ -136,7 +136,7 @@ public class DelegatingSmartContextLoaderTests {
 
 		ApplicationContext applicationContext = loader.loadContext(mergedConfig);
 		assertNotNull(applicationContext);
-		assertEquals("foo", applicationContext.getBean(String.class));
+		assertThat(applicationContext.getBean(String.class)).isEqualTo("foo");
 		boolean condition = applicationContext instanceof ConfigurableApplicationContext;
 		assertThat(condition).isTrue();
 		((ConfigurableApplicationContext) applicationContext).close();

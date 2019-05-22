@@ -45,7 +45,7 @@ public class ExposeInvocationInterceptorTests {
 		String name = "tony";
 		tb.setName(name);
 		// Fires context checks
-		assertEquals(name, tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo(name);
 	}
 
 }

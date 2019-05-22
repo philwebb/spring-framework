@@ -43,7 +43,7 @@ public class StandardScriptFactoryTests {
 		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("messengerWithInterface")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("messengerWithInterface");
 		assertThat(AopUtils.isAopProxy(messenger)).isFalse();
-		assertEquals("Hello World!", messenger.getMessage());
+		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class StandardScriptFactoryTests {
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).isTrue();
-		assertEquals("Hello World!", messenger.getMessage());
+		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class StandardScriptFactoryTests {
 		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("inlineMessengerWithInterface")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("inlineMessengerWithInterface");
 		assertThat(AopUtils.isAopProxy(messenger)).isFalse();
-		assertEquals("Hello World!", messenger.getMessage());
+		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
 	}
 
 }

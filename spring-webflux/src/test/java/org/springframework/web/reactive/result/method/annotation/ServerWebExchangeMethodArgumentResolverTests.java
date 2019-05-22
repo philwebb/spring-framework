@@ -89,7 +89,7 @@ public class ServerWebExchangeMethodArgumentResolverTests {
 
 	private void testResolveArgument(MethodParameter parameter, Object expected) {
 		Mono<Object> mono = this.resolver.resolveArgument(parameter, new BindingContext(), this.exchange);
-		assertEquals(expected, mono.block());
+		assertThat(mono.block()).isEqualTo(expected);
 	}
 
 	@Test
@@ -98,8 +98,8 @@ public class ServerWebExchangeMethodArgumentResolverTests {
 		Object value = this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block();
 
 		assertNotNull(value);
-		assertEquals(UriComponentsBuilder.class, value.getClass());
-		assertEquals("https://example.org:9999/next", ((UriComponentsBuilder) value).path("/next").toUriString());
+		assertThat((Object) value.getClass()).isEqualTo(UriComponentsBuilder.class);
+		assertThat((Object) ((UriComponentsBuilder) value).path("/next").toUriString()).isEqualTo("https://example.org:9999/next");
 	}
 
 

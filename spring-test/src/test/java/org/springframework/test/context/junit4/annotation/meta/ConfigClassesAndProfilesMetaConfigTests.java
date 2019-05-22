@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -66,6 +67,6 @@ public class ConfigClassesAndProfilesMetaConfigTests {
 
 	@Test
 	public void foo() {
-		assertEquals("Local Dev Foo", foo);
+		assertThat((Object) foo).isEqualTo("Local Dev Foo");
 	}
 }

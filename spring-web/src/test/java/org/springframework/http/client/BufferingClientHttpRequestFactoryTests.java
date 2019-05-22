@@ -38,7 +38,7 @@ public class BufferingClientHttpRequestFactoryTests extends AbstractHttpRequestF
 	@Test
 	public void repeatableRead() throws Exception {
 		ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/echo"), HttpMethod.PUT);
-		assertEquals("Invalid HTTP method", HttpMethod.PUT, request.getMethod());
+		assertThat((Object) request.getMethod()).as("Invalid HTTP method").isEqualTo(HttpMethod.PUT);
 		String headerName = "MyHeader";
 		String headerValue1 = "value1";
 		request.getHeaders().add(headerName, headerValue1);
@@ -49,16 +49,14 @@ public class BufferingClientHttpRequestFactoryTests extends AbstractHttpRequestF
 		FileCopyUtils.copy(body, request.getBody());
 		ClientHttpResponse response = request.execute();
 		try {
-			assertEquals("Invalid status code", HttpStatus.OK, response.getStatusCode());
-			assertEquals("Invalid status code", HttpStatus.OK, response.getStatusCode());
+			assertThat((Object) response.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+			assertThat((Object) response.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 
 			assertThat(response.getHeaders().containsKey(headerName)).as("Header not found").isTrue();
 			assertThat(response.getHeaders().containsKey(headerName)).as("Header not found").isTrue();
 
-			assertEquals("Header value not found", Arrays.asList(headerValue1, headerValue2),
-					response.getHeaders().get(headerName));
-			assertEquals("Header value not found", Arrays.asList(headerValue1, headerValue2),
-					response.getHeaders().get(headerName));
+			assertThat((Object) response.getHeaders().get(headerName)).as("Header value not found").isEqualTo(Arrays.asList(headerValue1, headerValue2));
+			assertThat((Object) response.getHeaders().get(headerName)).as("Header value not found").isEqualTo(Arrays.asList(headerValue1, headerValue2));
 
 			byte[] result = FileCopyUtils.copyToByteArray(response.getBody());
 			assertThat(Arrays.equals(body, result)).as("Invalid body").isTrue();

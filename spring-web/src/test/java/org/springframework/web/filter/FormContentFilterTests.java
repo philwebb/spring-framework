@@ -29,6 +29,7 @@ import org.springframework.mock.web.test.MockFilterChain;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
@@ -104,7 +105,7 @@ public class FormContentFilterTests {
 		this.request.setContent("name=value".getBytes("ISO-8859-1"));
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 
-		assertEquals("value", this.filterChain.getRequest().getParameter("name"));
+		assertThat((Object) this.filterChain.getRequest().getParameter("name")).isEqualTo("value");
 	}
 
 	@Test
@@ -114,8 +115,7 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 
 		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
-		assertEquals("Query string parameters should be listed ahead of form parameters",
-				"value1", this.filterChain.getRequest().getParameter("name"));
+		assertThat((Object) this.filterChain.getRequest().getParameter("name")).as("Query string parameters should be listed ahead of form parameters").isEqualTo("value1");
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class FormContentFilterTests {
 		List<String> names = Collections.list(this.filterChain.getRequest().getParameterNames());
 
 		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
-		assertEquals(Arrays.asList("name1", "name2", "name3", "name4"), names);
+		assertThat((Object) names).isEqualTo(Arrays.asList("name1", "name2", "name3", "name4"));
 	}
 
 	@Test

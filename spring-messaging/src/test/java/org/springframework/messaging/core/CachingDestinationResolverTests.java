@@ -18,6 +18,7 @@ package org.springframework.messaging.core;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -42,10 +43,10 @@ public class CachingDestinationResolverTests {
 		given(resolver.resolveDestination("abcd")).willReturn("dcba");
 		given(resolver.resolveDestination("1234")).willReturn("4321");
 
-		assertEquals("dcba", resolverProxy.resolveDestination("abcd"));
-		assertEquals("4321", resolverProxy.resolveDestination("1234"));
-		assertEquals("4321", resolverProxy.resolveDestination("1234"));
-		assertEquals("dcba", resolverProxy.resolveDestination("abcd"));
+		assertThat((Object) resolverProxy.resolveDestination("abcd")).isEqualTo("dcba");
+		assertThat((Object) resolverProxy.resolveDestination("1234")).isEqualTo("4321");
+		assertThat((Object) resolverProxy.resolveDestination("1234")).isEqualTo("4321");
+		assertThat((Object) resolverProxy.resolveDestination("abcd")).isEqualTo("dcba");
 
 		verify(resolver, times(1)).resolveDestination("abcd");
 		verify(resolver, times(1)).resolveDestination("1234");

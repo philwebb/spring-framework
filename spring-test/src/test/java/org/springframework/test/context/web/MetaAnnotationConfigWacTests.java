@@ -27,6 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
@@ -55,7 +56,7 @@ public class MetaAnnotationConfigWacTests {
 
 	@Test
 	public void fooEnigmaAutowired() {
-		assertEquals("enigma", foo);
+		assertThat((Object) foo).isEqualTo("enigma");
 	}
 
 	@Test
@@ -70,8 +71,7 @@ public class MetaAnnotationConfigWacTests {
 		assertSame("test WAC and Root WAC in ServletContext must be the same object.", wac, rootWac);
 		assertSame("ServletContext instances must be the same object.", mockServletContext, wac.getServletContext());
 
-		assertEquals("Getting real path for ServletContext resource.",
-			new File("src/main/webapp/index.jsp").getCanonicalPath(), mockServletContext.getRealPath("index.jsp"));
+		assertThat((Object) mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
 	}
 
 }

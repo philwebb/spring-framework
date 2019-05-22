@@ -44,8 +44,7 @@ public class RequestContextListenerTests {
 		assertNull(RequestContextHolder.getRequestAttributes());
 		listener.requestInitialized(new ServletRequestEvent(context, request));
 		assertNotNull(RequestContextHolder.getRequestAttributes());
-		assertEquals("value",
-				RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST));
+		assertThat(RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST)).isEqualTo("value");
 		MockRunnable runnable = new MockRunnable();
 		RequestContextHolder.getRequestAttributes().registerDestructionCallback(
 				"test", runnable, RequestAttributes.SCOPE_REQUEST);
@@ -65,8 +64,7 @@ public class RequestContextListenerTests {
 		assertNull(RequestContextHolder.getRequestAttributes());
 		listener.requestInitialized(new ServletRequestEvent(context, request));
 		assertNotNull(RequestContextHolder.getRequestAttributes());
-		assertEquals("value",
-				RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST));
+		assertThat(RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST)).isEqualTo("value");
 		MockRunnable runnable = new MockRunnable();
 		RequestContextHolder.getRequestAttributes().registerDestructionCallback(
 				"test", runnable, RequestAttributes.SCOPE_REQUEST);
@@ -87,8 +85,7 @@ public class RequestContextListenerTests {
 		assertNull(RequestContextHolder.getRequestAttributes());
 		listener.requestInitialized(new ServletRequestEvent(context, request));
 		assertNotNull(RequestContextHolder.getRequestAttributes());
-		assertEquals("value",
-				RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST));
+		assertThat(RequestContextHolder.getRequestAttributes().getAttribute("test", RequestAttributes.SCOPE_REQUEST)).isEqualTo("value");
 		MockRunnable runnable = new MockRunnable();
 		RequestContextHolder.getRequestAttributes().registerDestructionCallback(
 				"test", runnable, RequestAttributes.SCOPE_REQUEST);

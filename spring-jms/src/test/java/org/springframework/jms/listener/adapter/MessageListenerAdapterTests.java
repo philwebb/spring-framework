@@ -207,7 +207,7 @@ public class MessageListenerAdapterTests {
 	@Test
 	public void testThatTheDefaultMessageHandlingMethodNameIsTheConstantDefault() throws Exception {
 		MessageListenerAdapter adapter = new MessageListenerAdapter();
-		assertEquals(MessageListenerAdapter.ORIGINAL_DEFAULT_LISTENER_METHOD, adapter.getDefaultListenerMethod());
+		assertThat((Object) adapter.getDefaultListenerMethod()).isEqualTo(MessageListenerAdapter.ORIGINAL_DEFAULT_LISTENER_METHOD);
 	}
 
 	@Test

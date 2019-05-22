@@ -200,8 +200,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPath("tb");
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertEquals("Error messages String should be 'message1'",
-				"message1", status.getErrorMessagesAsString(","));
+		assertThat((Object) status.getErrorMessagesAsString(",")).as("Error messages String should be 'message1'").isEqualTo("message1");
 
 		// two errors
 		pc = createPageContext();
@@ -214,8 +213,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPath("tb");
 		tag.doStartTag();
 		status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertEquals("Error messages String should be 'message1,message2'",
-				"message1,message2", status.getErrorMessagesAsString(","));
+		assertThat((Object) status.getErrorMessagesAsString(",")).as("Error messages String should be 'message1,message2'").isEqualTo("message1,message2");
 
 		// no errors
 		pc = createPageContext();
@@ -226,7 +224,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPath("tb");
 		tag.doStartTag();
 		status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertEquals("Error messages String should be ''", "", status.getErrorMessagesAsString(","));
+		assertThat((Object) status.getErrorMessagesAsString(",")).as("Error messages String should be ''").isEqualTo("");
 	}
 
 	@Test
@@ -465,7 +463,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setPath("tb.name");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
-		assertEquals("name", tag.getProperty());
+		assertThat((Object) tag.getProperty()).isEqualTo("name");
 	}
 
 	@Test
@@ -566,7 +564,7 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", tb);
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertEquals("doctor", status.getExpression());
+		assertThat((Object) status.getExpression()).isEqualTo("doctor");
 		boolean condition = status.getValue() instanceof NestedTestBean;
 		assertThat(condition).isTrue();
 		assertThat(status.getDisplayValue().contains("juergen&amp;eva")).isTrue();
@@ -582,7 +580,7 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen&eva", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertEquals("someSet", status.getExpression());
+		assertThat((Object) status.getExpression()).isEqualTo("someSet");
 		boolean condition = status.getValue() instanceof Set;
 		assertThat(condition).isTrue();
 	}
@@ -596,8 +594,8 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen&eva", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertEquals("name", status.getExpression());
-		assertEquals("juergen&eva", status.getValue());
+		assertThat((Object) status.getExpression()).isEqualTo("name");
+		assertThat(status.getValue()).isEqualTo("juergen&eva");
 	}
 
 	@Test
@@ -610,8 +608,8 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen&eva", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertEquals("name", status.getExpression());
-		assertEquals("juergen&amp;eva", status.getValue());
+		assertThat((Object) status.getExpression()).isEqualTo("name");
+		assertThat(status.getValue()).isEqualTo("juergen&amp;eva");
 	}
 
 	@Test
@@ -699,7 +697,7 @@ public class BindTagTests extends AbstractTagTests {
 		anotherTag.doStartTag();
 		anotherTag.doEndTag();
 
-		assertEquals("foo.", pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.");
 
 		tag.doEndTag();
 		assertNull(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
@@ -714,7 +712,7 @@ public class BindTagTests extends AbstractTagTests {
 		int returnValue = tag.doStartTag();
 
 		assertEquals(Tag.EVAL_BODY_INCLUDE, returnValue);
-		assertEquals("foo.", pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.");
 	}
 
 	@Test
@@ -724,21 +722,21 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPath("foo");
 		tag.setPageContext(pc);
 		tag.doStartTag();
-		assertEquals("foo.", pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.");
 
 		NestedPathTag anotherTag = new NestedPathTag();
 		anotherTag.setPageContext(pc);
 		anotherTag.setPath("bar");
 		anotherTag.doStartTag();
 
-		assertEquals("foo.bar.", pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.bar.");
 
 		NestedPathTag yetAnotherTag = new NestedPathTag();
 		yetAnotherTag.setPageContext(pc);
 		yetAnotherTag.setPath("boo");
 		yetAnotherTag.doStartTag();
 
-		assertEquals("foo.bar.boo.", pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.bar.boo.");
 
 		yetAnotherTag.doEndTag();
 
@@ -747,7 +745,7 @@ public class BindTagTests extends AbstractTagTests {
 		andAnotherTag.setPath("boo2");
 		andAnotherTag.doStartTag();
 
-		assertEquals("foo.bar.boo2.", pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE));
+		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.bar.boo2.");
 	}
 
 	@Test
@@ -768,8 +766,8 @@ public class BindTagTests extends AbstractTagTests {
 		assertThat(bindTag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status != null).as("Has status variable").isTrue();
-		assertEquals("tb.name", status.getPath());
-		assertEquals("Correct field value", "", status.getDisplayValue());
+		assertThat((Object) status.getPath()).isEqualTo("tb.name");
+		assertThat((Object) status.getDisplayValue()).as("Correct field value").isEqualTo("");
 
 		BindTag bindTag2 = new BindTag();
 		bindTag2.setPageContext(pc);
@@ -778,15 +776,15 @@ public class BindTagTests extends AbstractTagTests {
 		assertThat(bindTag2.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		BindStatus status2 = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status2 != null).as("Has status variable").isTrue();
-		assertEquals("tb.age", status2.getPath());
-		assertEquals("Correct field value", "0", status2.getDisplayValue());
+		assertThat((Object) status2.getPath()).isEqualTo("tb.age");
+		assertThat((Object) status2.getDisplayValue()).as("Correct field value").isEqualTo("0");
 
 		bindTag2.doEndTag();
 
 		BindStatus status3 = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertSame("Status matches previous status", status, status3);
-		assertEquals("tb.name", status.getPath());
-		assertEquals("Correct field value", "", status.getDisplayValue());
+		assertThat((Object) status.getPath()).isEqualTo("tb.name");
+		assertThat((Object) status.getDisplayValue()).as("Correct field value").isEqualTo("");
 
 		bindTag.doEndTag();
 		nestedPathTag.doEndTag();
@@ -811,7 +809,7 @@ public class BindTagTests extends AbstractTagTests {
 		assertThat(bindTag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status != null).as("Has status variable").isTrue();
-		assertEquals("tb2.name", status.getPath());
+		assertThat((Object) status.getPath()).isEqualTo("tb2.name");
 	}
 
 	@Test
@@ -840,7 +838,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.doStartTag();
 
 		assertNotNull(pc.getAttribute("theDate"));
-		assertEquals(pc.getAttribute("theDate"), df.format(tb.getDate()));
+		assertThat((Object) df.format(tb.getDate())).isEqualTo(pc.getAttribute("theDate"));
 
 		// try another time, this time using Strings
 		bind = new BindTag();
@@ -856,7 +854,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.doStartTag();
 
 		assertNotNull(pc.getAttribute("theString"));
-		assertEquals("name", pc.getAttribute("theString"));
+		assertThat(pc.getAttribute("theString")).isEqualTo("name");
 	}
 
 	@Test
@@ -885,7 +883,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.doStartTag();
 
 		assertNotNull(pc.getAttribute("theString"));
-		assertEquals("na&lt;me", pc.getAttribute("theString"));
+		assertThat(pc.getAttribute("theString")).isEqualTo("na&lt;me");
 	}
 
 	@Test
@@ -975,7 +973,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.release();
 
 		assertNotNull(pc.getAttribute("theDate"));
-		assertEquals(df.format(tb.getDate()), pc.getAttribute("theDate"));
+		assertThat(pc.getAttribute("theDate")).isEqualTo(df.format(tb.getDate()));
 
 		// try another time, this time using Strings
 		bind = new BindTag();
@@ -994,7 +992,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.release();
 
 		assertNotNull(pc.getAttribute("theString"));
-		assertEquals("name", pc.getAttribute("theString"));
+		assertThat(pc.getAttribute("theString")).isEqualTo("name");
 	}
 
 	/**

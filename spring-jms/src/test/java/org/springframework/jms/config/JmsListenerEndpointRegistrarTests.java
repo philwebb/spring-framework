@@ -21,8 +21,7 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -75,7 +74,7 @@ public class JmsListenerEndpointRegistrarTests {
 		this.registrar.afterPropertiesSet();
 		assertNotNull("Container not created", this.registry.getListenerContainer("some id"));
 		assertEquals(1, this.registry.getListenerContainers().size());
-		assertEquals("some id", this.registry.getListenerContainerIds().iterator().next());
+		assertThat((Object) this.registry.getListenerContainerIds().iterator().next()).isEqualTo("some id");
 	}
 
 	@Test
@@ -98,7 +97,7 @@ public class JmsListenerEndpointRegistrarTests {
 		this.registrar.afterPropertiesSet();
 		assertNotNull("Container not created", this.registry.getListenerContainer("myEndpoint"));
 		assertEquals(1, this.registry.getListenerContainers().size());
-		assertEquals("myEndpoint", this.registry.getListenerContainerIds().iterator().next());
+		assertThat((Object) this.registry.getListenerContainerIds().iterator().next()).isEqualTo("myEndpoint");
 	}
 
 }

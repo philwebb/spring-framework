@@ -184,7 +184,7 @@ public class RequestPartMethodArgumentResolverTests {
 		Object actual = resolver.resolveArgument(paramMultipartFileList, null, webRequest, null);
 		boolean condition = actual instanceof List;
 		assertThat(condition).isTrue();
-		assertEquals(Arrays.asList(multipartFile1, multipartFile2), actual);
+		assertThat(actual).isEqualTo(Arrays.asList(multipartFile1, multipartFile2));
 	}
 
 	@Test
@@ -195,8 +195,8 @@ public class RequestPartMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		MultipartFile[] parts = (MultipartFile[]) actual;
 		assertEquals(2, parts.length);
-		assertEquals(parts[0], multipartFile1);
-		assertEquals(parts[1], multipartFile2);
+		assertThat((Object) multipartFile1).isEqualTo(parts[0]);
+		assertThat((Object) multipartFile2).isEqualTo(parts[1]);
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class RequestPartMethodArgumentResolverTests {
 
 		boolean condition = result instanceof MultipartFile;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -227,7 +227,7 @@ public class RequestPartMethodArgumentResolverTests {
 		Object result = resolver.resolveArgument(paramPart, null, webRequest, null);
 		boolean condition = result instanceof Part;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, result);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -245,7 +245,7 @@ public class RequestPartMethodArgumentResolverTests {
 		Object result = resolver.resolveArgument(paramPartList, null, webRequest, null);
 		boolean condition = result instanceof List;
 		assertThat(condition).isTrue();
-		assertEquals(Arrays.asList(part1, part2), result);
+		assertThat(result).isEqualTo(Arrays.asList(part1, part2));
 	}
 
 	@Test
@@ -265,8 +265,8 @@ public class RequestPartMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		Part[] parts = (Part[]) result;
 		assertEquals(2, parts.length);
-		assertEquals(parts[0], part1);
-		assertEquals(parts[1], part2);
+		assertThat((Object) part1).isEqualTo(parts[0]);
+		assertThat((Object) part2).isEqualTo(parts[1]);
 	}
 
 	@Test
@@ -338,12 +338,12 @@ public class RequestPartMethodArgumentResolverTests {
 		Object actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
 		boolean condition1 = actualValue instanceof Optional;
 		assertThat(condition1).isTrue();
-		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(expected);
 
 		actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
 		boolean condition = actualValue instanceof Optional;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -352,10 +352,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -363,10 +363,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(new MockHttpServletRequest());
 
 		Object actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -380,12 +380,12 @@ public class RequestPartMethodArgumentResolverTests {
 		Object actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
 		boolean condition1 = actualValue instanceof Optional;
 		assertThat(condition1).isTrue();
-		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(Collections.singletonList(expected));
 
 		actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
 		boolean condition = actualValue instanceof Optional;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(Collections.singletonList(expected));
 	}
 
 	@Test
@@ -394,10 +394,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -405,10 +405,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(new MockHttpServletRequest());
 
 		Object actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -424,12 +424,12 @@ public class RequestPartMethodArgumentResolverTests {
 		Object actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
 		boolean condition1 = actualValue instanceof Optional;
 		assertThat(condition1).isTrue();
-		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(expected);
 
 		actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
 		boolean condition = actualValue instanceof Optional;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -440,10 +440,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -451,10 +451,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(new MockHttpServletRequest());
 
 		Object actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -470,12 +470,12 @@ public class RequestPartMethodArgumentResolverTests {
 		Object actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
 		boolean condition1 = actualValue instanceof Optional;
 		assertThat(condition1).isTrue();
-		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(Collections.singletonList(expected));
 
 		actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
 		boolean condition = actualValue instanceof Optional;
 		assertThat(condition).isTrue();
-		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
+		assertThat(((Optional<?>) actualValue).get()).as("Invalid result").isEqualTo(Collections.singletonList(expected));
 	}
 
 	@Test
@@ -486,10 +486,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -497,10 +497,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(new MockHttpServletRequest());
 
 		Object actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -513,11 +513,11 @@ public class RequestPartMethodArgumentResolverTests {
 
 		Object actualValue = resolver.resolveArgument(
 				optionalRequestPart, mavContainer, webRequest, new ValidatingBinderFactory());
-		assertEquals("Invalid argument value", Optional.of(simpleBean), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.of(simpleBean));
 		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 
 		actualValue = resolver.resolveArgument(optionalRequestPart, mavContainer, webRequest, new ValidatingBinderFactory());
-		assertEquals("Invalid argument value", Optional.of(simpleBean), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.of(simpleBean));
 		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
@@ -529,10 +529,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalRequestPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalRequestPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -540,10 +540,10 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(new MockHttpServletRequest());
 
 		Object actualValue = resolver.resolveArgument(optionalRequestPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 
 		actualValue = resolver.resolveArgument(optionalRequestPart, null, webRequest, null);
-		assertEquals("Invalid argument value", Optional.empty(), actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(Optional.empty());
 	}
 
 
@@ -554,7 +554,7 @@ public class RequestPartMethodArgumentResolverTests {
 		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
 
 		Object actualValue = resolver.resolveArgument(parameter, mavContainer, webRequest, new ValidatingBinderFactory());
-		assertEquals("Invalid argument value", argValue, actualValue);
+		assertThat(actualValue).as("Invalid argument value").isEqualTo(argValue);
 		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 

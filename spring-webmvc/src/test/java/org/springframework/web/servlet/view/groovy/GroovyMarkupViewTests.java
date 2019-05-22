@@ -89,7 +89,7 @@ public class GroovyMarkupViewTests {
 		DirectFieldAccessor accessor = new DirectFieldAccessor(view);
 		TemplateEngine engine = (TemplateEngine) accessor.getPropertyValue("engine");
 		assertNotNull(engine);
-		assertEquals(TestTemplateEngine.class, engine.getClass());
+		assertThat((Object) engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class GroovyMarkupViewTests {
 		DirectFieldAccessor accessor = new DirectFieldAccessor(view);
 		TemplateEngine engine = (TemplateEngine) accessor.getPropertyValue("engine");
 		assertNotNull(engine);
-		assertEquals(TestTemplateEngine.class, engine.getClass());
+		assertThat((Object) engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 
 	@Test
@@ -141,21 +141,20 @@ public class GroovyMarkupViewTests {
 		Map<String, Object> model = new HashMap<>();
 		model.put("name", "Spring");
 		MockHttpServletResponse response = renderViewWithModel("i18n.tpl", model, Locale.FRANCE);
-		assertEquals("<p>Bonjour Spring</p>", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<p>Bonjour Spring</p>");
 
 		response = renderViewWithModel("i18n.tpl", model, Locale.GERMANY);
-		assertEquals("<p>Include German</p><p>Hallo Spring</p>", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<p>Include German</p><p>Hallo Spring</p>");
 
 		response = renderViewWithModel("i18n.tpl", model, new Locale("es"));
-		assertEquals("<p>Include Default</p><p>Hola Spring</p>", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<p>Include Default</p><p>Hola Spring</p>");
 	}
 
 	@Test
 	public void renderLayoutTemplate() throws Exception {
 		Map<String, Object> model = new HashMap<>();
 		MockHttpServletResponse response = renderViewWithModel("content.tpl", model, Locale.US);
-		assertEquals("<html><head><title>Layout example</title></head><body><p>This is the body</p></body></html>",
-				response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<html><head><title>Layout example</title></head><body><p>This is the body</p></body></html>");
 	}
 
 

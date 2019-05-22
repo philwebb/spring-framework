@@ -28,6 +28,7 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -58,14 +59,14 @@ public class ResponseStatusExceptionHandlerTests {
 	public void handleResponseStatusException() {
 		Throwable ex = new ResponseStatusException(HttpStatus.BAD_REQUEST, "");
 		this.handler.handle(this.exchange, ex).block(Duration.ofSeconds(5));
-		assertEquals(HttpStatus.BAD_REQUEST, this.exchange.getResponse().getStatusCode());
+		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
 	public void handleNestedResponseStatusException() {
 		Throwable ex = new Exception(new ResponseStatusException(HttpStatus.BAD_REQUEST, ""));
 		this.handler.handle(this.exchange, ex).block(Duration.ofSeconds(5));
-		assertEquals(HttpStatus.BAD_REQUEST, this.exchange.getResponse().getStatusCode());
+		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test

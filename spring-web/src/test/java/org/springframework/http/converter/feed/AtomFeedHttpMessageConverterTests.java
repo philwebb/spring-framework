@@ -73,18 +73,18 @@ public class AtomFeedHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(is);
 		inputMessage.getHeaders().setContentType(new MediaType("application", "atom+xml", StandardCharsets.UTF_8));
 		Feed result = converter.read(Feed.class, inputMessage);
-		assertEquals("title", result.getTitle());
-		assertEquals("subtitle", result.getSubtitle().getValue());
+		assertThat((Object) result.getTitle()).isEqualTo("title");
+		assertThat((Object) result.getSubtitle().getValue()).isEqualTo("subtitle");
 		List<?> entries = result.getEntries();
 		assertEquals(2, entries.size());
 
 		Entry entry1 = (Entry) entries.get(0);
-		assertEquals("id1", entry1.getId());
-		assertEquals("title1", entry1.getTitle());
+		assertThat((Object) entry1.getId()).isEqualTo("id1");
+		assertThat((Object) entry1.getTitle()).isEqualTo("title1");
 
 		Entry entry2 = (Entry) entries.get(1);
-		assertEquals("id2", entry2.getId());
-		assertEquals("title2", entry2.getTitle());
+		assertThat((Object) entry2.getId()).isEqualTo("id2");
+		assertThat((Object) entry2.getTitle()).isEqualTo("title2");
 	}
 
 	@Test
@@ -108,8 +108,7 @@ public class AtomFeedHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(feed, null, outputMessage);
 
-		assertEquals("Invalid content-type", new MediaType("application", "atom+xml", StandardCharsets.UTF_8),
-				outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "atom+xml", StandardCharsets.UTF_8));
 		String expected = "<feed xmlns=\"http://www.w3.org/2005/Atom\">" + "<title>title</title>" +
 				"<entry><id>id1</id><title>title1</title></entry>" +
 				"<entry><id>id2</id><title>title2</title></entry></feed>";
@@ -128,8 +127,7 @@ public class AtomFeedHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(feed, null, outputMessage);
 
-		assertEquals("Invalid content-type", new MediaType("application", "atom+xml", Charset.forName(encoding)),
-				outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "atom+xml", Charset.forName(encoding)));
 	}
 
 }

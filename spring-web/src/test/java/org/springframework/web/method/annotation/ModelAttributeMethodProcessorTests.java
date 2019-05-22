@@ -256,7 +256,7 @@ public class ModelAttributeMethodProcessorTests {
 	@Test
 	public void handleAnnotatedReturnValue() throws Exception {
 		this.processor.handleReturnValue("expected", this.returnParamNamedModelAttr, this.container, this.request);
-		assertEquals("expected", this.container.getModel().get("modelAttrName"));
+		assertThat(this.container.getModel().get("modelAttrName")).isEqualTo("expected");
 	}
 
 	@Test

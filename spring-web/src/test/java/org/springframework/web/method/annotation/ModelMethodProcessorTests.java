@@ -85,8 +85,8 @@ public class ModelMethodProcessorTests {
 
 		processor.handleReturnValue(returnValue , returnParamModel, mavContainer, webRequest);
 
-		assertEquals("value1", mavContainer.getModel().get("attr1"));
-		assertEquals("value2", mavContainer.getModel().get("attr2"));
+		assertThat(mavContainer.getModel().get("attr1")).isEqualTo("value1");
+		assertThat(mavContainer.getModel().get("attr2")).isEqualTo("value2");
 	}
 
 	@SuppressWarnings("unused")

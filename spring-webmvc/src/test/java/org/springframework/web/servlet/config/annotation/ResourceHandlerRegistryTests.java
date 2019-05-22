@@ -96,7 +96,7 @@ public class ResourceHandlerRegistryTests {
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		handler.handleRequest(request, this.response);
 
-		assertEquals("test stylesheet content", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("test stylesheet content");
 	}
 
 	@Test
@@ -232,14 +232,14 @@ public class ResourceHandlerRegistryTests {
 
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		UrlResource resource = (UrlResource) handler.getLocations().get(1);
-		assertEquals("file:/tmp", resource.getURL().toString());
+		assertThat((Object) resource.getURL().toString()).isEqualTo("file:/tmp");
 		assertNotNull(handler.getUrlPathHelper());
 
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
 		PathResourceResolver resolver = (PathResourceResolver) resolvers.get(resolvers.size()-1);
 		Map<Resource, Charset> locationCharsets = resolver.getLocationCharsets();
 		assertEquals(1, locationCharsets.size());
-		assertEquals(StandardCharsets.ISO_8859_1, locationCharsets.values().iterator().next());
+		assertThat((Object) locationCharsets.values().iterator().next()).isEqualTo(StandardCharsets.ISO_8859_1);
 	}
 
 	private ResourceHttpRequestHandler getHandler(String pathPattern) {

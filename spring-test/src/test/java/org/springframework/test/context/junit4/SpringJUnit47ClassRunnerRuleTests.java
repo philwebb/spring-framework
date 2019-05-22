@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.test.context.TestExecutionListeners;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -44,11 +45,11 @@ public class SpringJUnit47ClassRunnerRuleTests {
 
 	@Test
 	public void testA() {
-		assertEquals("testA", name.getMethodName());
+		assertThat((Object) name.getMethodName()).isEqualTo("testA");
 	}
 
 	@Test
 	public void testB() {
-		assertEquals("testB", name.getMethodName());
+		assertThat((Object) name.getMethodName()).isEqualTo("testB");
 	}
 }

@@ -51,7 +51,7 @@ public class MockCookieTests {
 		MockCookie cookie = new MockCookie("SESSION", "123");
 		cookie.setSameSite("Strict");
 
-		assertEquals("Strict", cookie.getSameSite());
+		assertThat((Object) cookie.getSameSite()).isEqualTo("Strict");
 	}
 
 	@Test
@@ -69,17 +69,17 @@ public class MockCookieTests {
 				"SESSION=123; Domain=example.com; Max-Age=60; Path=/; Secure; HttpOnly; SameSite=Lax");
 
 		assertCookie(cookie, "SESSION", "123");
-		assertEquals("example.com", cookie.getDomain());
+		assertThat((Object) cookie.getDomain()).isEqualTo("example.com");
 		assertEquals(60, cookie.getMaxAge());
-		assertEquals("/", cookie.getPath());
+		assertThat((Object) cookie.getPath()).isEqualTo("/");
 		assertThat(cookie.getSecure()).isTrue();
 		assertThat(cookie.isHttpOnly()).isTrue();
-		assertEquals("Lax", cookie.getSameSite());
+		assertThat((Object) cookie.getSameSite()).isEqualTo("Lax");
 	}
 
 	private void assertCookie(MockCookie cookie, String name, String value) {
-		assertEquals(name, cookie.getName());
-		assertEquals(value, cookie.getValue());
+		assertThat((Object) cookie.getName()).isEqualTo(name);
+		assertThat((Object) cookie.getValue()).isEqualTo(value);
 	}
 
 	@Test
@@ -111,12 +111,12 @@ public class MockCookieTests {
 				"SESSION=123; domain=example.com; max-age=60; path=/; secure; httponly; samesite=Lax");
 
 		assertCookie(cookie, "SESSION", "123");
-		assertEquals("example.com", cookie.getDomain());
+		assertThat((Object) cookie.getDomain()).isEqualTo("example.com");
 		assertEquals(60, cookie.getMaxAge());
-		assertEquals("/", cookie.getPath());
+		assertThat((Object) cookie.getPath()).isEqualTo("/");
 		assertThat(cookie.getSecure()).isTrue();
 		assertThat(cookie.isHttpOnly()).isTrue();
-		assertEquals("Lax", cookie.getSameSite());
+		assertThat((Object) cookie.getSameSite()).isEqualTo("Lax");
 	}
 
 }

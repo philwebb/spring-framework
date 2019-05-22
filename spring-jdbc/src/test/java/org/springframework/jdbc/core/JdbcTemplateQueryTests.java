@@ -176,7 +176,7 @@ public class JdbcTemplateQueryTests {
 		String sql = "SELECT AGE FROM CUSTMR WHERE ID = 3";
 		given(this.resultSet.next()).willReturn(true, false);
 		given(this.resultSet.getString(1)).willReturn("myvalue");
-		assertEquals("myvalue", this.template.queryForObject(sql, String.class));
+		assertThat(this.template.queryForObject(sql, String.class)).isEqualTo("myvalue");
 		verify(this.resultSet).close();
 		verify(this.statement).close();
 	}
@@ -186,7 +186,7 @@ public class JdbcTemplateQueryTests {
 		String sql = "SELECT AGE FROM CUSTMR WHERE ID = 3";
 		given(this.resultSet.next()).willReturn(true, false);
 		given(this.resultSet.getObject(1, BigInteger.class)).willReturn(new BigInteger("22"));
-		assertEquals(new BigInteger("22"), this.template.queryForObject(sql, BigInteger.class));
+		assertThat(this.template.queryForObject(sql, BigInteger.class)).isEqualTo(new BigInteger("22"));
 		verify(this.resultSet).close();
 		verify(this.statement).close();
 	}
@@ -196,7 +196,7 @@ public class JdbcTemplateQueryTests {
 		String sql = "SELECT AGE FROM CUSTMR WHERE ID = 3";
 		given(this.resultSet.next()).willReturn(true, false);
 		given(this.resultSet.getBigDecimal(1)).willReturn(new BigDecimal("22.5"));
-		assertEquals(new BigDecimal("22.5"), this.template.queryForObject(sql, BigDecimal.class));
+		assertThat(this.template.queryForObject(sql, BigDecimal.class)).isEqualTo(new BigDecimal("22.5"));
 		verify(this.resultSet).close();
 		verify(this.statement).close();
 	}
@@ -206,7 +206,7 @@ public class JdbcTemplateQueryTests {
 		String sql = "SELECT AGE FROM CUSTMR WHERE ID = 3";
 		given(this.resultSet.next()).willReturn(true, false);
 		given(this.resultSet.getInt(1)).willReturn(22);
-		assertEquals(Integer.valueOf(22), this.template.queryForObject(sql, Integer.class));
+		assertThat(this.template.queryForObject(sql, Integer.class)).isEqualTo(Integer.valueOf(22));
 		verify(this.resultSet).close();
 		verify(this.statement).close();
 	}

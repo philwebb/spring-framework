@@ -89,12 +89,12 @@ public class RefreshableTargetSourceTests {
 
 		Object a = ts.getTarget();
 		Object b = ts.getTarget();
-		assertEquals("Objects should be same", a, b);
+		assertThat(b).as("Objects should be same").isEqualTo(a);
 
 		Thread.sleep(50);
 
 		Object c = ts.getTarget();
-		assertEquals("A and C should be same", a, c);
+		assertThat(c).as("A and C should be same").isEqualTo(a);
 
 		Thread.sleep(60);
 
@@ -103,7 +103,7 @@ public class RefreshableTargetSourceTests {
 		assertThat(a.equals(d)).as("A and D should not be equal").isFalse();
 
 		Object e = ts.getTarget();
-		assertEquals("D and E should be equal", d, e);
+		assertThat(e).as("D and E should be equal").isEqualTo(d);
 
 		Thread.sleep(110);
 

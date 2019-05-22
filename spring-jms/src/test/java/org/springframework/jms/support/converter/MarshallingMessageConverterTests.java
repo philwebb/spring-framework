@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -80,7 +81,7 @@ public class MarshallingMessageConverterTests {
 		given(unmarshallerMock.unmarshal(isA(Source.class))).willReturn(unmarshalled);
 
 		Object result = converter.fromMessage(bytesMessageMock);
-		assertEquals("Invalid result", result, unmarshalled);
+		assertThat(unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -106,7 +107,7 @@ public class MarshallingMessageConverterTests {
 		given(unmarshallerMock.unmarshal(isA(Source.class))).willReturn(unmarshalled);
 
 		Object result = converter.fromMessage(textMessageMock);
-		assertEquals("Invalid result", result, unmarshalled);
+		assertThat(unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 }

@@ -20,6 +20,7 @@ import javax.servlet.jsp.PageContext;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 
@@ -39,7 +40,7 @@ public class MockPageContextTests {
 	@Test
 	public void setAttributeWithNoScopeUsesPageScope() throws Exception {
 		ctx.setAttribute(key, value);
-		assertEquals(value, ctx.getAttribute(key, PageContext.PAGE_SCOPE));
+		assertThat(ctx.getAttribute(key, PageContext.PAGE_SCOPE)).isEqualTo(value);
 		assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
 		assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
 		assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));

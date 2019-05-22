@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -34,7 +35,7 @@ public class DevProfileAnnotationConfigTests extends DefaultProfileAnnotationCon
 	@Override
 	public void employee() {
 		assertNotNull("employee bean should be loaded for the 'dev' profile", employee);
-		assertEquals("John Smith", employee.getName());
+		assertThat((Object) employee.getName()).isEqualTo("John Smith");
 	}
 
 }

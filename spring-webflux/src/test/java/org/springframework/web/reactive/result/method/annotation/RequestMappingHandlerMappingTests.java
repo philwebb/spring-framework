@@ -93,18 +93,15 @@ public class RequestMappingHandlerMappingTests {
 		RequestMappingInfo info = this.handlerMapping.getMappingForMethod(method, UserController.class);
 
 		assertNotNull(info);
-		assertEquals(Collections.singleton(new PathPatternParser().parse("/api/user/{id}")),
-				info.getPatternsCondition().getPatterns());
+		assertThat((Object) info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(new PathPatternParser().parse("/api/user/{id}")));
 	}
 
 	@Test
 	public void resolveRequestMappingViaComposedAnnotation() throws Exception {
 		RequestMappingInfo info = assertComposedAnnotationMapping("postJson", "/postJson", RequestMethod.POST);
 
-		assertEquals(MediaType.APPLICATION_JSON_VALUE,
-			info.getConsumesCondition().getConsumableMediaTypes().iterator().next().toString());
-		assertEquals(MediaType.APPLICATION_JSON_VALUE,
-			info.getProducesCondition().getProducibleMediaTypes().iterator().next().toString());
+		assertThat((Object) info.getConsumesCondition().getConsumableMediaTypes().iterator().next().toString()).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
+		assertThat((Object) info.getProducesCondition().getProducibleMediaTypes().iterator().next().toString()).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	@Test // SPR-14988
@@ -112,7 +109,7 @@ public class RequestMappingHandlerMappingTests {
 		RequestMappingInfo requestMappingInfo = assertComposedAnnotationMapping(RequestMethod.POST);
 
 		ConsumesRequestCondition condition = requestMappingInfo.getConsumesCondition();
-		assertEquals(Collections.singleton(MediaType.APPLICATION_XML), condition.getConsumableMediaTypes());
+		assertThat((Object) condition.getConsumableMediaTypes()).isEqualTo(Collections.singleton(MediaType.APPLICATION_XML));
 	}
 
 	@Test // gh-22010
@@ -175,11 +172,11 @@ public class RequestMappingHandlerMappingTests {
 
 		Set<PathPattern> paths = info.getPatternsCondition().getPatterns();
 		assertEquals(1, paths.size());
-		assertEquals(path, paths.iterator().next().getPatternString());
+		assertThat((Object) paths.iterator().next().getPatternString()).isEqualTo(path);
 
 		Set<RequestMethod> methods = info.getMethodsCondition().getMethods();
 		assertEquals(1, methods.size());
-		assertEquals(requestMethod, methods.iterator().next());
+		assertThat((Object) methods.iterator().next()).isEqualTo(requestMethod);
 
 		return info;
 	}

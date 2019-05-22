@@ -94,7 +94,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 
 		result = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, result);
-		assertEquals(mockContent, getOutput());
+		assertThat((Object) getOutput()).isEqualTo(mockContent);
 	}
 
 	@Test
@@ -334,7 +334,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
 		this.tag.doFinally();
-		assertEquals(bodyContent, getOutput());
+		assertThat((Object) getOutput()).isEqualTo(bodyContent);
 		assertNull(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
 	}
 
@@ -355,8 +355,8 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
 		this.tag.doFinally();
-		assertEquals(bodyContent, getOutput());
-		assertEquals(existingAttribute, getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
+		assertThat((Object) getOutput()).isEqualTo(bodyContent);
+		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE)).isEqualTo(existingAttribute);
 	}
 
 	/**
@@ -379,9 +379,8 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
 		this.tag.doFinally();
-		assertEquals(bodyContent, getOutput());
-		assertEquals(existingAttribute,
-				getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE, PageContext.APPLICATION_SCOPE));
+		assertThat((Object) getOutput()).isEqualTo(bodyContent);
+		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE, PageContext.APPLICATION_SCOPE)).isEqualTo(existingAttribute);
 	}
 
 	/**
@@ -502,7 +501,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		String output = getOutput();
 		assertEquals(0, output.length());
 
-		assertEquals(existingAttribute, getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE, scope));
+		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE, scope)).isEqualTo(existingAttribute);
 	}
 
 }

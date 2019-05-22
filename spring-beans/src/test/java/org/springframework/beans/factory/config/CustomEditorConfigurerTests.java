@@ -71,9 +71,9 @@ public class CustomEditorConfigurerTests {
 		bf.registerBeanDefinition("tb2", bd2);
 
 		TestBean tb1 = (TestBean) bf.getBean("tb1");
-		assertEquals(df.parse("2.12.1975"), tb1.getDate());
+		assertThat((Object) tb1.getDate()).isEqualTo(df.parse("2.12.1975"));
 		TestBean tb2 = (TestBean) bf.getBean("tb2");
-		assertEquals(df.parse("2.12.1975"), tb2.getSomeMap().get("myKey"));
+		assertThat(tb2.getSomeMap().get("myKey")).isEqualTo(df.parse("2.12.1975"));
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class CustomEditorConfigurerTests {
 
 		TestBean tb = (TestBean) bf.getBean("tb");
 		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
-		assertEquals(df.parse("2.12.1975"), tb.getDate());
+		assertThat((Object) tb.getDate()).isEqualTo(df.parse("2.12.1975"));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class CustomEditorConfigurerTests {
 
 		TestBean tb = (TestBean) bf.getBean("tb");
 		assertThat(tb.getStringArray() != null && tb.getStringArray().length == 1).isTrue();
-		assertEquals("test", tb.getStringArray()[0]);
+		assertThat((Object) tb.getStringArray()[0]).isEqualTo("test");
 	}
 
 

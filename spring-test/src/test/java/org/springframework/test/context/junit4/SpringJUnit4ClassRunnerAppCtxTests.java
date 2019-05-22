@@ -185,47 +185,47 @@ public class SpringJUnit4ClassRunnerAppCtxTests implements ApplicationContextAwa
 	@Test
 	public void verifyAnnotationAutowiredAndInjectedFields() {
 		assertNull("The nonrequiredLong field should NOT have been autowired.", this.nonrequiredLong);
-		assertEquals("The quux field should have been autowired via @Autowired and @Qualifier.", "Quux", this.quux);
-		assertEquals("The namedFoo field should have been injected via @Inject and @Named.", "Quux", this.namedQuux);
+		assertThat((Object) this.quux).as("The quux field should have been autowired via @Autowired and @Qualifier.").isEqualTo("Quux");
+		assertThat((Object) this.namedQuux).as("The namedFoo field should have been injected via @Inject and @Named.").isEqualTo("Quux");
 		assertSame("@Autowired/@Qualifier and @Inject/@Named quux should be the same object.", this.quux, this.namedQuux);
 
 		assertNotNull("The pet field should have been autowired.", this.autowiredPet);
 		assertNotNull("The pet field should have been injected.", this.injectedPet);
-		assertEquals("Fido", this.autowiredPet.getName());
-		assertEquals("Fido", this.injectedPet.getName());
+		assertThat((Object) this.autowiredPet.getName()).isEqualTo("Fido");
+		assertThat((Object) this.injectedPet.getName()).isEqualTo("Fido");
 		assertSame("@Autowired and @Inject pet should be the same object.", this.autowiredPet, this.injectedPet);
 	}
 
 	@Test
 	public void verifyAnnotationAutowiredMethods() {
 		assertNotNull("The employee setter method should have been autowired.", this.employee);
-		assertEquals("John Smith", this.employee.getName());
+		assertThat((Object) this.employee.getName()).isEqualTo("John Smith");
 	}
 
 	@Test
 	public void verifyAutowiredAtValueFields() {
 		assertNotNull("Literal @Value field should have been autowired", this.literalFieldValue);
 		assertNotNull("SpEL @Value field should have been autowired.", this.spelFieldValue);
-		assertEquals("enigma", this.literalFieldValue);
-		assertEquals(Boolean.TRUE, this.spelFieldValue);
+		assertThat((Object) this.literalFieldValue).isEqualTo("enigma");
+		assertThat((Object) this.spelFieldValue).isEqualTo(Boolean.TRUE);
 	}
 
 	@Test
 	public void verifyAutowiredAtValueMethods() {
 		assertNotNull("Literal @Value method parameter should have been autowired.", this.literalParameterValue);
 		assertNotNull("SpEL @Value method parameter should have been autowired.", this.spelParameterValue);
-		assertEquals("enigma", this.literalParameterValue);
-		assertEquals(Boolean.TRUE, this.spelParameterValue);
+		assertThat((Object) this.literalParameterValue).isEqualTo("enigma");
+		assertThat((Object) this.spelParameterValue).isEqualTo(Boolean.TRUE);
 	}
 
 	@Test
 	public void verifyResourceAnnotationInjectedFields() {
-		assertEquals("The foo field should have been injected via @Resource.", "Foo", this.foo);
+		assertThat((Object) this.foo).as("The foo field should have been injected via @Resource.").isEqualTo("Foo");
 	}
 
 	@Test
 	public void verifyResourceAnnotationInjectedMethods() {
-		assertEquals("The bar method should have been wired via @Resource.", "Bar", this.bar);
+		assertThat((Object) this.bar).as("The bar method should have been wired via @Resource.").isEqualTo("Bar");
 	}
 
 }

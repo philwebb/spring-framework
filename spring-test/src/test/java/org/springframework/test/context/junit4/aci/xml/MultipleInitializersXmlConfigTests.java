@@ -26,6 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.aci.DevProfileInitializer;
 import org.springframework.test.context.junit4.aci.FooBarAliasInitializer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -46,9 +47,9 @@ public class MultipleInitializersXmlConfigTests {
 
 	@Test
 	public void activeBeans() {
-		assertEquals("foo", foo);
-		assertEquals("foo", bar);
-		assertEquals("dev profile config", baz);
+		assertThat((Object) foo).isEqualTo("foo");
+		assertThat((Object) bar).isEqualTo("foo");
+		assertThat((Object) baz).isEqualTo("dev profile config");
 	}
 
 }

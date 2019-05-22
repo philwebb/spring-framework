@@ -35,6 +35,7 @@ import org.mockito.stubbing.Answer;
 
 import org.springframework.core.MethodParameter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -98,7 +99,7 @@ public class MappingJackson2MessageConverterTests {
 				});
 
 		Object result = converter.fromMessage(bytesMessageMock);
-		assertEquals("Invalid result", result, unmarshalled);
+		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -136,7 +137,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		MyBean result = (MyBean)converter.fromMessage(textMessageMock);
-		assertEquals("Invalid result", result, unmarshalled);
+		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -149,7 +150,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		MyBean result = (MyBean)converter.fromMessage(textMessageMock);
-		assertEquals("Invalid result", result, unmarshalled);
+		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -162,7 +163,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		Object result = converter.fromMessage(textMessageMock);
-		assertEquals("Invalid result", result, unmarshalled);
+		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -175,7 +176,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		Object result = converter.fromMessage(textMessageMock);
-		assertEquals("Invalid result", result, unmarshalled);
+		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test

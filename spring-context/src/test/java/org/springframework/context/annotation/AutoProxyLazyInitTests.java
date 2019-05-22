@@ -215,7 +215,7 @@ public class AutoProxyLazyInitTests {
 		@Override
 		protected AbstractBeanFactoryBasedTargetSource createBeanFactoryBasedTargetSource(Class<?> beanClass, String beanName) {
 			if ("myBean".equals(beanName)) {
-				assertEquals(MyBean.class, beanClass);
+				assertThat((Object) beanClass).isEqualTo(MyBean.class);
 			}
 			return super.createBeanFactoryBasedTargetSource(beanClass, beanName);
 		}

@@ -34,6 +34,7 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
@@ -100,7 +101,7 @@ public abstract class AbstractTransactionalAnnotatedConfigClassTests {
 	@Test
 	public void autowiringFromConfigClass() {
 		assertNotNull("The employee should have been autowired.", employee);
-		assertEquals("John Smith", employee.getName());
+		assertThat((Object) employee.getName()).isEqualTo("John Smith");
 	}
 
 	@BeforeTransaction

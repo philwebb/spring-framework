@@ -96,7 +96,7 @@ public class CookieValueMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(
 				this.cookieParameter, this.bindingContext, exchange);
 
-		assertEquals(expected, mono.block());
+		assertThat(mono.block()).isEqualTo(expected);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class CookieValueMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(
 				this.cookieStringParameter, this.bindingContext, exchange);
 
-		assertEquals("Invalid result", cookie.getValue(), mono.block());
+		assertThat(mono.block()).as("Invalid result").isEqualTo(cookie.getValue());
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class CookieValueMethodArgumentResolverTests {
 
 		boolean condition = result instanceof String;
 		assertThat(condition).isTrue();
-		assertEquals("bar", result);
+		assertThat(result).isEqualTo("bar");
 	}
 
 	@Test

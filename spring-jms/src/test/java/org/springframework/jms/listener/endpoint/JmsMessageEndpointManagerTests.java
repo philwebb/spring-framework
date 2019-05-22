@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.jms.support.QosSettings;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -36,8 +37,8 @@ public class JmsMessageEndpointManagerTests {
 		JmsActivationSpecConfig config = new JmsActivationSpecConfig();
 		config.setPubSubDomain(false);
 		endpoint.setActivationSpecConfig(config);
-		assertEquals(false, endpoint.isPubSubDomain());
-		assertEquals(false, endpoint.isReplyPubSubDomain());
+		assertThat((Object) endpoint.isPubSubDomain()).isEqualTo(false);
+		assertThat((Object) endpoint.isReplyPubSubDomain()).isEqualTo(false);
 	}
 
 	@Test
@@ -46,8 +47,8 @@ public class JmsMessageEndpointManagerTests {
 		JmsActivationSpecConfig config = new JmsActivationSpecConfig();
 		config.setPubSubDomain(true);
 		endpoint.setActivationSpecConfig(config);
-		assertEquals(true, endpoint.isPubSubDomain());
-		assertEquals(true, endpoint.isReplyPubSubDomain());
+		assertThat((Object) endpoint.isPubSubDomain()).isEqualTo(true);
+		assertThat((Object) endpoint.isReplyPubSubDomain()).isEqualTo(true);
 	}
 
 	@Test
@@ -57,8 +58,8 @@ public class JmsMessageEndpointManagerTests {
 		config.setPubSubDomain(true);
 		config.setReplyPubSubDomain(false);
 		endpoint.setActivationSpecConfig(config);
-		assertEquals(true, endpoint.isPubSubDomain());
-		assertEquals(false, endpoint.isReplyPubSubDomain());
+		assertThat((Object) endpoint.isPubSubDomain()).isEqualTo(true);
+		assertThat((Object) endpoint.isReplyPubSubDomain()).isEqualTo(false);
 	}
 
 	@Test

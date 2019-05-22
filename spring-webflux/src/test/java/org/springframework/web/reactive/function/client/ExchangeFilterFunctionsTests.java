@@ -73,7 +73,7 @@ public class ExchangeFilterFunctionsTests {
 
 
 		ClientResponse result = filter.filter(request, exchange).block();
-		assertEquals(response, result);
+		assertThat((Object) result).isEqualTo(response);
 
 		assertThat(filtersInvoked[0]).isTrue();
 		assertThat(filtersInvoked[1]).isTrue();
@@ -94,7 +94,7 @@ public class ExchangeFilterFunctionsTests {
 
 		ExchangeFunction filteredExchange = filter.apply(exchange);
 		ClientResponse result = filteredExchange.exchange(request).block();
-		assertEquals(response, result);
+		assertThat((Object) result).isEqualTo(response);
 		assertThat(filterInvoked[0]).isTrue();
 	}
 
@@ -112,7 +112,7 @@ public class ExchangeFilterFunctionsTests {
 		ExchangeFilterFunction auth = ExchangeFilterFunctions.basicAuthentication("foo", "bar");
 		assertThat(request.headers().containsKey(HttpHeaders.AUTHORIZATION)).isFalse();
 		ClientResponse result = auth.filter(request, exchange).block();
-		assertEquals(response, result);
+		assertThat((Object) result).isEqualTo(response);
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class ExchangeFilterFunctionsTests {
 		ExchangeFilterFunction auth = ExchangeFilterFunctions.basicAuthentication();
 		assertThat(request.headers().containsKey(HttpHeaders.AUTHORIZATION)).isFalse();
 		ClientResponse result = auth.filter(request, exchange).block();
-		assertEquals(response, result);
+		assertThat((Object) result).isEqualTo(response);
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class ExchangeFilterFunctionsTests {
 		ExchangeFilterFunction auth = ExchangeFilterFunctions.basicAuthentication();
 		assertThat(request.headers().containsKey(HttpHeaders.AUTHORIZATION)).isFalse();
 		ClientResponse result = auth.filter(request, exchange).block();
-		assertEquals(response, result);
+		assertThat((Object) result).isEqualTo(response);
 	}
 
 	@Test
@@ -210,8 +210,8 @@ public class ExchangeFilterFunctionsTests {
 				.filter(request, req -> Mono.just(response));
 
 		StepVerifier.create(result.flatMapMany(res -> res.body(BodyExtractors.toDataBuffers())))
-				.consumeNextWith(buffer -> assertEquals("foo", string(buffer)))
-				.consumeNextWith(buffer -> assertEquals("ba", string(buffer)))
+				.consumeNextWith(buffer -> assertThat((Object) string(buffer)).isEqualTo("foo"))
+				.consumeNextWith(buffer -> assertThat((Object) string(buffer)).isEqualTo("ba"))
 				.expectComplete()
 				.verify();
 

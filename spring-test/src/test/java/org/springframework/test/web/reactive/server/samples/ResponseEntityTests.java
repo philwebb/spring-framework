@@ -22,7 +22,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -87,7 +86,7 @@ public class ResponseEntityTests {
 				.expectStatus().isOk()
 				.expectHeader().contentType(MediaType.APPLICATION_JSON)
 				.expectBody(Person.class)
-				.consumeWith(result -> assertEquals(new Person("John"), result.getResponseBody()));
+				.consumeWith(result -> assertThat((Object) result.getResponseBody()).isEqualTo(new Person("John")));
 	}
 
 	@Test

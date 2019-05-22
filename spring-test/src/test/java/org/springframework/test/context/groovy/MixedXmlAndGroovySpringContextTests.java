@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -56,13 +57,13 @@ public class MixedXmlAndGroovySpringContextTests {
 	@Test
 	public final void verifyAnnotationAutowiredFields() {
 		assertNotNull("The employee field should have been autowired.", this.employee);
-		assertEquals("Dilbert", this.employee.getName());
+		assertThat((Object) this.employee.getName()).isEqualTo("Dilbert");
 
 		assertNotNull("The pet field should have been autowired.", this.pet);
-		assertEquals("Dogbert", this.pet.getName());
+		assertThat((Object) this.pet.getName()).isEqualTo("Dogbert");
 
-		assertEquals("The foo field should have been autowired.", "Groovy Foo", this.foo);
-		assertEquals("The bar field should have been autowired.", "XML Bar", this.bar);
+		assertThat((Object) this.foo).as("The foo field should have been autowired.").isEqualTo("Groovy Foo");
+		assertThat((Object) this.bar).as("The bar field should have been autowired.").isEqualTo("XML Bar");
 	}
 
 }

@@ -44,8 +44,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -63,7 +62,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request =
 				new DefaultServerRequest(servletRequest, this.messageConverters);
 
-		assertEquals(HttpMethod.HEAD, request.method());
+		assertThat((Object) request.method()).isEqualTo(HttpMethod.HEAD);
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request =
 				new DefaultServerRequest(servletRequest, this.messageConverters);
 
-		assertEquals(URI.create("https://example.com/"), request.uri());
+		assertThat((Object) request.uri()).isEqualTo(URI.create("https://example.com/"));
 	}
 
 	@Test
@@ -88,11 +87,11 @@ public class DefaultServerRequestTests {
 				new DefaultServerRequest(servletRequest, this.messageConverters);
 
 		URI result = request.uriBuilder().build();
-		assertEquals("http", result.getScheme());
-		assertEquals("localhost", result.getHost());
+		assertThat((Object) result.getScheme()).isEqualTo("http");
+		assertThat((Object) result.getHost()).isEqualTo("localhost");
 		assertEquals(-1, result.getPort());
-		assertEquals("/path", result.getPath());
-		assertEquals("a=1", result.getQuery());
+		assertThat((Object) result.getPath()).isEqualTo("/path");
+		assertThat((Object) result.getQuery()).isEqualTo("a=1");
 	}
 
 	@Test
@@ -103,7 +102,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request =
 				new DefaultServerRequest(servletRequest, this.messageConverters);
 
-		assertEquals(Optional.of("bar"), request.attribute("foo"));
+		assertThat((Object) request.attribute("foo")).isEqualTo(Optional.of("bar"));
 	}
 
 	@Test
@@ -114,7 +113,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request =
 				new DefaultServerRequest(servletRequest, this.messageConverters);
 
-		assertEquals(Optional.of("bar"), request.param("foo"));
+		assertThat((Object) request.param("foo")).isEqualTo(Optional.of("bar"));
 	}
 
 	@Test
@@ -125,7 +124,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request =
 				new DefaultServerRequest(servletRequest, this.messageConverters);
 
-		assertEquals(Optional.of(""), request.param("foo"));
+		assertThat((Object) request.param("foo")).isEqualTo(Optional.of(""));
 	}
 
 	@Test
@@ -136,7 +135,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request =
 				new DefaultServerRequest(servletRequest, this.messageConverters);
 
-		assertEquals(Optional.empty(), request.param("bar"));
+		assertThat((Object) request.param("bar")).isEqualTo(Optional.empty());
 	}
 
 	@Test
@@ -149,7 +148,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request = new DefaultServerRequest(servletRequest,
 				this.messageConverters);
 
-		assertEquals("bar", request.pathVariable("foo"));
+		assertThat((Object) request.pathVariable("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -176,7 +175,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request = new DefaultServerRequest(servletRequest,
 				this.messageConverters);
 
-		assertEquals(pathVariables, request.pathVariables());
+		assertThat((Object) request.pathVariables()).isEqualTo(pathVariables);
 	}
 
 	@Test
@@ -204,11 +203,11 @@ public class DefaultServerRequestTests {
 				this.messageConverters);
 
 		ServerRequest.Headers headers = request.headers();
-		assertEquals(accept, headers.accept());
-		assertEquals(acceptCharset, headers.acceptCharset());
-		assertEquals(OptionalLong.of(contentLength), headers.contentLength());
-		assertEquals(Optional.of(contentType), headers.contentType());
-		assertEquals(httpHeaders, headers.asHttpHeaders());
+		assertThat((Object) headers.accept()).isEqualTo(accept);
+		assertThat((Object) headers.acceptCharset()).isEqualTo(acceptCharset);
+		assertThat((Object) headers.contentLength()).isEqualTo(OptionalLong.of(contentLength));
+		assertThat((Object) headers.contentType()).isEqualTo(Optional.of(contentType));
+		assertThat((Object) headers.asHttpHeaders()).isEqualTo(httpHeaders);
 	}
 
 	@Test
@@ -224,7 +223,7 @@ public class DefaultServerRequestTests {
 		MultiValueMap<String, Cookie> expected = new LinkedMultiValueMap<>();
 		expected.add("foo", cookie);
 
-		assertEquals(expected, request.cookies());
+		assertThat((Object) request.cookies()).isEqualTo(expected);
 
 	}
 
@@ -238,7 +237,7 @@ public class DefaultServerRequestTests {
 				this.messageConverters);
 
 		String result = request.body(String.class);
-		assertEquals("foo", result);
+		assertThat((Object) result).isEqualTo("foo");
 	}
 
 	@Test
@@ -252,8 +251,8 @@ public class DefaultServerRequestTests {
 
 		List<String> result = request.body(new ParameterizedTypeReference<List<String>>() {});
 		assertEquals(2, result.size());
-		assertEquals("foo", result.get(0));
-		assertEquals("bar", result.get(1));
+		assertThat((Object) result.get(0)).isEqualTo("foo");
+		assertThat((Object) result.get(1)).isEqualTo("bar");
 	}
 
 	@Test
@@ -278,7 +277,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request = new DefaultServerRequest(servletRequest,
 				this.messageConverters);
 
-		assertEquals(session, request.session());
+		assertThat((Object) request.session()).isEqualTo(session);
 
 	}
 
@@ -296,7 +295,7 @@ public class DefaultServerRequestTests {
 		DefaultServerRequest request = new DefaultServerRequest(servletRequest,
 				this.messageConverters);
 
-		assertEquals(principal, request.principal().get());
+		assertThat((Object) request.principal().get()).isEqualTo(principal);
 
 	}
 

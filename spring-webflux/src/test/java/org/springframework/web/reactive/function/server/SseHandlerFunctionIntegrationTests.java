@@ -29,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
@@ -98,16 +99,16 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 
 		StepVerifier.create(result)
 				.consumeNextWith( event -> {
-					assertEquals("0", event.id());
-					assertEquals("foo", event.data());
-					assertEquals("bar", event.comment());
+					assertThat((Object) event.id()).isEqualTo("0");
+					assertThat((Object) event.data()).isEqualTo("foo");
+					assertThat((Object) event.comment()).isEqualTo("bar");
 					assertNull(event.event());
 					assertNull(event.retry());
 				})
 				.consumeNextWith( event -> {
-					assertEquals("1", event.id());
-					assertEquals("foo", event.data());
-					assertEquals("bar", event.comment());
+					assertThat((Object) event.id()).isEqualTo("1");
+					assertThat((Object) event.data()).isEqualTo("foo");
+					assertThat((Object) event.comment()).isEqualTo("bar");
 					assertNull(event.event());
 					assertNull(event.retry());
 				})

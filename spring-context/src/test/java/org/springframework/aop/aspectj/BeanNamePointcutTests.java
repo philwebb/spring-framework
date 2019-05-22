@@ -102,8 +102,8 @@ public class BeanNamePointcutTests {
 	public void testMatchingFactoryBeanObject() {
 		boolean condition1 = this.testFactoryBean1 instanceof Advised;
 		assertThat(condition1).as("Matching bean must be advised (proxied)").isTrue();
-		assertEquals("myValue", this.testFactoryBean1.get("myKey"));
-		assertEquals("myValue", this.testFactoryBean1.get("myKey"));
+		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
+		assertThat(this.testFactoryBean1.get("myKey")).isEqualTo("myValue");
 		assertEquals("Advice not executed: must have been", 2, this.counterAspect.getCount());
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean1");
 		boolean condition = !(fb instanceof Advised);

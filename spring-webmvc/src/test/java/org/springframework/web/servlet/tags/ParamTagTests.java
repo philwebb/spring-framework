@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockBodyContent;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
@@ -58,8 +59,8 @@ public class ParamTagTests extends AbstractTagTests {
 		int action = tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
-		assertEquals("value", parent.getParam().getValue());
+		assertThat((Object) parent.getParam().getName()).isEqualTo("name");
+		assertThat((Object) parent.getParam().getValue()).isEqualTo("value");
 	}
 
 	@Test
@@ -70,8 +71,8 @@ public class ParamTagTests extends AbstractTagTests {
 		int action = tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
-		assertEquals("value", parent.getParam().getValue());
+		assertThat((Object) parent.getParam().getName()).isEqualTo("name");
+		assertThat((Object) parent.getParam().getValue()).isEqualTo("value");
 	}
 
 	@Test
@@ -81,7 +82,7 @@ public class ParamTagTests extends AbstractTagTests {
 		int action = tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
+		assertThat((Object) parent.getParam().getName()).isEqualTo("name");
 		assertNull(parent.getParam().getValue());
 	}
 
@@ -93,7 +94,7 @@ public class ParamTagTests extends AbstractTagTests {
 		int action = tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
+		assertThat((Object) parent.getParam().getName()).isEqualTo("name");
 		assertNull(parent.getParam().getValue());
 	}
 
@@ -105,8 +106,8 @@ public class ParamTagTests extends AbstractTagTests {
 		int action = tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name1", parent.getParam().getName());
-		assertEquals("value1", parent.getParam().getValue());
+		assertThat((Object) parent.getParam().getName()).isEqualTo("name1");
+		assertThat((Object) parent.getParam().getValue()).isEqualTo("value1");
 
 		tag.release();
 
@@ -119,8 +120,8 @@ public class ParamTagTests extends AbstractTagTests {
 		action = tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name2", parent.getParam().getName());
-		assertEquals("value2", parent.getParam().getValue());
+		assertThat((Object) parent.getParam().getName()).isEqualTo("name2");
+		assertThat((Object) parent.getParam().getValue()).isEqualTo("value2");
 	}
 
 	@Test

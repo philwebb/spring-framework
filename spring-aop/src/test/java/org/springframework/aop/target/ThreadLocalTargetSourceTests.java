@@ -24,6 +24,7 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.SideEffectBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
@@ -68,8 +69,8 @@ public class ThreadLocalTargetSourceTests {
 		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
 
 		ITestBean test = (ITestBean) beanFactory.getBean("threadLocal2");
-		assertEquals("Rod", test.getName());
-		assertEquals("Kerry", test.getSpouse().getName());
+		assertThat((Object) test.getName()).isEqualTo("Rod");
+		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
 	}
 
 	@Test

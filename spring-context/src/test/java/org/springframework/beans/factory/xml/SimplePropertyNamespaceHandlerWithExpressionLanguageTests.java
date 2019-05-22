@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -39,8 +40,8 @@ public class SimplePropertyNamespaceHandlerWithExpressionLanguageTests {
 						getClass());
 		ITestBean foo = applicationContext.getBean("foo", ITestBean.class);
 		ITestBean bar = applicationContext.getBean("bar", ITestBean.class);
-		assertEquals("Invalid name", "Baz", foo.getName());
-		assertEquals("Invalid name", "Baz", bar.getName());
+		assertThat((Object) foo.getName()).as("Invalid name").isEqualTo("Baz");
+		assertThat((Object) bar.getName()).as("Invalid name").isEqualTo("Baz");
 	}
 
 }

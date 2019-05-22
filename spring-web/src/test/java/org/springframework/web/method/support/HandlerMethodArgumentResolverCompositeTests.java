@@ -64,7 +64,7 @@ public class HandlerMethodArgumentResolverCompositeTests {
 		this.resolverComposite.addResolver(new StubArgumentResolver(55));
 		Object resolvedValue = this.resolverComposite.resolveArgument(paramInt, null, null, null);
 
-		assertEquals(55, resolvedValue);
+		assertThat(resolvedValue).isEqualTo(55);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class HandlerMethodArgumentResolverCompositeTests {
 		this.resolverComposite.addResolver(new StubArgumentResolver(2));
 		Object resolvedValue = this.resolverComposite.resolveArgument(paramInt, null, null, null);
 
-		assertEquals("Didn't use the first registered resolver", 1, resolvedValue);
+		assertThat(resolvedValue).as("Didn't use the first registered resolver").isEqualTo(1);
 	}
 
 	@Test

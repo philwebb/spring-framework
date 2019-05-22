@@ -103,9 +103,9 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 
 		MockServletRegistration servletRegistration = servletRegistrations.get(SERVLET_NAME);
 
-		assertEquals(Collections.singleton(SERVLET_MAPPING), servletRegistration.getMappings());
+		assertThat((Object) servletRegistration.getMappings()).isEqualTo(Collections.singleton(SERVLET_MAPPING));
 		assertEquals(1, servletRegistration.getLoadOnStartup());
-		assertEquals(ROLE_NAME, servletRegistration.getRunAsRole());
+		assertThat((Object) servletRegistration.getRunAsRole()).isEqualTo(ROLE_NAME);
 		assertThat(servletRegistration.isAsyncSupported()).isTrue();
 
 		assertEquals(4, filterRegistrations.size());
@@ -118,7 +118,7 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 			assertThat(filterRegistration.isAsyncSupported()).isTrue();
 			EnumSet<DispatcherType> enumSet = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
 					DispatcherType.INCLUDE, DispatcherType.ASYNC);
-			assertEquals(enumSet, filterRegistration.getMappings().get(SERVLET_NAME));
+			assertThat((Object) filterRegistration.getMappings().get(SERVLET_NAME)).isEqualTo(enumSet);
 		}
 
 	}
@@ -139,8 +139,7 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 
 		for (MockFilterRegistration filterRegistration : filterRegistrations.values()) {
 			assertThat(filterRegistration.isAsyncSupported()).isFalse();
-			assertEquals(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE),
-					filterRegistration.getMappings().get(SERVLET_NAME));
+			assertThat((Object) filterRegistration.getMappings().get(SERVLET_NAME)).isEqualTo(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE));
 		}
 	}
 

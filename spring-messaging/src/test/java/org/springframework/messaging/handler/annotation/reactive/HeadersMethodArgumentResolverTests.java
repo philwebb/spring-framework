@@ -67,7 +67,7 @@ public class HeadersMethodArgumentResolverTests {
 	public void resolveArgumentAnnotated() {
 		MethodParameter param = this.resolvable.annotPresent(Headers.class).arg(Map.class, String.class, Object.class);
 		Map<String, Object> headers = resolveArgument(param);
-		assertEquals("bar", headers.get("foo"));
+		assertThat(headers.get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -79,19 +79,19 @@ public class HeadersMethodArgumentResolverTests {
 	@Test
 	public void resolveArgumentMessageHeaders() {
 		MessageHeaders headers = resolveArgument(this.resolvable.arg(MessageHeaders.class));
-		assertEquals("bar", headers.get("foo"));
+		assertThat(headers.get("foo")).isEqualTo("bar");
 	}
 
 	@Test
 	public void resolveArgumentMessageHeaderAccessor() {
 		MessageHeaderAccessor headers = resolveArgument(this.resolvable.arg(MessageHeaderAccessor.class));
-		assertEquals("bar", headers.getHeader("foo"));
+		assertThat(headers.getHeader("foo")).isEqualTo("bar");
 	}
 
 	@Test
 	public void resolveArgumentMessageHeaderAccessorSubclass() {
 		TestMessageHeaderAccessor headers = resolveArgument(this.resolvable.arg(TestMessageHeaderAccessor.class));
-		assertEquals("bar", headers.getHeader("foo"));
+		assertThat(headers.getHeader("foo")).isEqualTo("bar");
 	}
 
 	@SuppressWarnings({"unchecked", "ConstantConditions"})

@@ -28,6 +28,7 @@ import org.junit.rules.TestName;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.mock.env.MockEnvironment;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -105,9 +106,7 @@ public class LiveBeansViewTests {
 	public void assertSingleLiveBeansViewMbean(String applicationName) throws MalformedObjectNameException {
 		Set<ObjectName> objectNames = searchLiveBeansViewMeans();
 		assertEquals(1, objectNames.size());
-		assertEquals("Wrong MBean name",
-				String.format("%s:application=%s", this.name.getMethodName(), applicationName),
-				objectNames.iterator().next().getCanonicalName());
+		assertThat((Object) objectNames.iterator().next().getCanonicalName()).as("Wrong MBean name").isEqualTo(String.format("%s:application=%s", this.name.getMethodName(), applicationName));
 
 	}
 

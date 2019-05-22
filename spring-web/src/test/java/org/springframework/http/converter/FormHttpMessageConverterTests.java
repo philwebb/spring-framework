@@ -91,11 +91,11 @@ public class FormHttpMessageConverterTests {
 		MultiValueMap<String, String> result = this.converter.read(null, inputMessage);
 
 		assertEquals("Invalid result", 3, result.size());
-		assertEquals("Invalid result", "value 1", result.getFirst("name 1"));
+		assertThat((Object) result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 		List<String> values = result.get("name 2");
 		assertEquals("Invalid result", 2, values.size());
-		assertEquals("Invalid result", "value 2+1", values.get(0));
-		assertEquals("Invalid result", "value 2+2", values.get(1));
+		assertThat((Object) values.get(0)).as("Invalid result").isEqualTo("value 2+1");
+		assertThat((Object) values.get(1)).as("Invalid result").isEqualTo("value 2+2");
 		assertNull("Invalid result", result.getFirst("name 3"));
 	}
 
@@ -109,10 +109,8 @@ public class FormHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		this.converter.write(body, MediaType.APPLICATION_FORM_URLENCODED, outputMessage);
 
-		assertEquals("Invalid result", "name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3",
-				outputMessage.getBodyAsString(StandardCharsets.UTF_8));
-		assertEquals("Invalid content-type", "application/x-www-form-urlencoded;charset=UTF-8",
-				outputMessage.getHeaders().getContentType().toString());
+		assertThat((Object) outputMessage.getBodyAsString(StandardCharsets.UTF_8)).as("Invalid result").isEqualTo("name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3");
+		assertThat((Object) outputMessage.getHeaders().getContentType().toString()).as("Invalid content-type").isEqualTo("application/x-www-form-urlencoded;charset=UTF-8");
 		assertEquals("Invalid content-length", outputMessage.getBodyAsBytes().length,
 				outputMessage.getHeaders().getContentLength());
 	}
@@ -158,36 +156,36 @@ public class FormHttpMessageConverterTests {
 		assertEquals(6, items.size());
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();
-		assertEquals("name 1", item.getFieldName());
-		assertEquals("value 1", item.getString());
+		assertThat((Object) item.getFieldName()).isEqualTo("name 1");
+		assertThat((Object) item.getString()).isEqualTo("value 1");
 
 		item = items.get(1);
 		assertThat(item.isFormField()).isTrue();
-		assertEquals("name 2", item.getFieldName());
-		assertEquals("value 2+1", item.getString());
+		assertThat((Object) item.getFieldName()).isEqualTo("name 2");
+		assertThat((Object) item.getString()).isEqualTo("value 2+1");
 
 		item = items.get(2);
 		assertThat(item.isFormField()).isTrue();
-		assertEquals("name 2", item.getFieldName());
-		assertEquals("value 2+2", item.getString());
+		assertThat((Object) item.getFieldName()).isEqualTo("name 2");
+		assertThat((Object) item.getString()).isEqualTo("value 2+2");
 
 		item = items.get(3);
 		assertThat(item.isFormField()).isFalse();
-		assertEquals("logo", item.getFieldName());
-		assertEquals("logo.jpg", item.getName());
-		assertEquals("image/jpeg", item.getContentType());
+		assertThat((Object) item.getFieldName()).isEqualTo("logo");
+		assertThat((Object) item.getName()).isEqualTo("logo.jpg");
+		assertThat((Object) item.getContentType()).isEqualTo("image/jpeg");
 		assertEquals(logo.getFile().length(), item.getSize());
 
 		item = items.get(4);
 		assertThat(item.isFormField()).isFalse();
-		assertEquals("utf8", item.getFieldName());
-		assertEquals("Hall\u00F6le.jpg", item.getName());
-		assertEquals("image/jpeg", item.getContentType());
+		assertThat((Object) item.getFieldName()).isEqualTo("utf8");
+		assertThat((Object) item.getName()).isEqualTo("Hall\u00F6le.jpg");
+		assertThat((Object) item.getContentType()).isEqualTo("image/jpeg");
 		assertEquals(logo.getFile().length(), item.getSize());
 
 		item = items.get(5);
-		assertEquals("xml", item.getFieldName());
-		assertEquals("text/xml", item.getContentType());
+		assertThat((Object) item.getFieldName()).isEqualTo("xml");
+		assertThat((Object) item.getContentType()).isEqualTo("text/xml");
 		verify(outputMessage.getBody(), never()).close();
 	}
 
@@ -222,12 +220,12 @@ public class FormHttpMessageConverterTests {
 
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();
-		assertEquals("part1", item.getFieldName());
-		assertEquals("{\"string\":\"foo\"}", item.getString());
+		assertThat((Object) item.getFieldName()).isEqualTo("part1");
+		assertThat((Object) item.getString()).isEqualTo("{\"string\":\"foo\"}");
 
 		item = items.get(1);
 		assertThat(item.isFormField()).isTrue();
-		assertEquals("part2", item.getFieldName());
+		assertThat((Object) item.getFieldName()).isEqualTo("part2");
 
 		// With developer builds we get: <MyBean><string>foo</string></MyBean>
 		// But on CI server we get: <MyBean xmlns=""><string>foo</string></MyBean>

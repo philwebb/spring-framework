@@ -45,7 +45,7 @@ public class EhCacheSupportTests {
 	public void testBlankCacheManager() {
 		EhCacheManagerFactoryBean cacheManagerFb = new EhCacheManagerFactoryBean();
 		cacheManagerFb.setCacheManagerName("myCacheManager");
-		assertEquals(CacheManager.class, cacheManagerFb.getObjectType());
+		assertThat((Object) cacheManagerFb.getObjectType()).isEqualTo(CacheManager.class);
 		assertThat(cacheManagerFb.isSingleton()).as("Singleton property").isTrue();
 		cacheManagerFb.afterPropertiesSet();
 		try {
@@ -64,7 +64,7 @@ public class EhCacheSupportTests {
 		EhCacheManagerFactoryBean cacheManagerFb = new EhCacheManagerFactoryBean();
 		try {
 			cacheManagerFb.setCacheManagerName("myCacheManager");
-			assertEquals(CacheManager.class, cacheManagerFb.getObjectType());
+			assertThat((Object) cacheManagerFb.getObjectType()).isEqualTo(CacheManager.class);
 			assertThat(cacheManagerFb.isSingleton()).as("Singleton property").isTrue();
 			cacheManagerFb.afterPropertiesSet();
 			CacheManager cm = cacheManagerFb.getObject();
@@ -86,7 +86,7 @@ public class EhCacheSupportTests {
 	public void testAcceptExistingCacheManager() {
 		EhCacheManagerFactoryBean cacheManagerFb = new EhCacheManagerFactoryBean();
 		cacheManagerFb.setCacheManagerName("myCacheManager");
-		assertEquals(CacheManager.class, cacheManagerFb.getObjectType());
+		assertThat((Object) cacheManagerFb.getObjectType()).isEqualTo(CacheManager.class);
 		assertThat(cacheManagerFb.isSingleton()).as("Singleton property").isTrue();
 		cacheManagerFb.afterPropertiesSet();
 		try {
@@ -159,7 +159,7 @@ public class EhCacheSupportTests {
 			Class<? extends Ehcache> objectType2 = cacheFb.getObjectType();
 			assertSame(objectType, objectType2);
 			CacheConfiguration config = cache.getCacheConfiguration();
-			assertEquals("myCache1", cache.getName());
+			assertThat((Object) cache.getName()).isEqualTo("myCache1");
 			if (useCacheManagerFb){
 				assertEquals("myCache1.maxElements", 300, config.getMaxEntriesLocalHeap());
 			}
@@ -176,7 +176,7 @@ public class EhCacheSupportTests {
 			cacheFb.afterPropertiesSet();
 			cache = (Cache) cacheFb.getObject();
 			config = cache.getCacheConfiguration();
-			assertEquals("undefinedCache", cache.getName());
+			assertThat((Object) cache.getName()).isEqualTo("undefinedCache");
 			assertThat(config.getMaxEntriesLocalHeap() == 10000).as("default maxElements is correct").isTrue();
 			assertThat(config.isEternal()).as("default eternal is correct").isFalse();
 			assertThat(config.getTimeToLiveSeconds() == 120).as("default timeToLive is correct").isTrue();
@@ -197,7 +197,7 @@ public class EhCacheSupportTests {
 			cache = (Cache) cacheFb.getObject();
 			config = cache.getCacheConfiguration();
 
-			assertEquals("undefinedCache2", cache.getName());
+			assertThat((Object) cache.getName()).isEqualTo("undefinedCache2");
 			assertThat(config.getMaxEntriesLocalHeap() == 5).as("overridden maxElements is correct").isTrue();
 			assertThat(config.getTimeToLiveSeconds() == 8).as("default timeToLive is correct").isTrue();
 			assertThat(config.getTimeToIdleSeconds() == 7).as("default timeToIdle is correct").isTrue();
@@ -223,7 +223,7 @@ public class EhCacheSupportTests {
 			cacheFb.setCacheManager(cm);
 			cacheFb.setCacheName("myCache1");
 			cacheFb.setBlocking(true);
-			assertEquals(cacheFb.getObjectType(), BlockingCache.class);
+			assertThat((Object) BlockingCache.class).isEqualTo(cacheFb.getObjectType());
 			cacheFb.afterPropertiesSet();
 			Ehcache myCache1 = cm.getEhcache("myCache1");
 			boolean condition = myCache1 instanceof BlockingCache;
@@ -244,12 +244,12 @@ public class EhCacheSupportTests {
 			cacheFb.setCacheManager(cm);
 			cacheFb.setCacheName("myCache1");
 			cacheFb.setCacheEntryFactory(key -> key);
-			assertEquals(cacheFb.getObjectType(), SelfPopulatingCache.class);
+			assertThat((Object) SelfPopulatingCache.class).isEqualTo(cacheFb.getObjectType());
 			cacheFb.afterPropertiesSet();
 			Ehcache myCache1 = cm.getEhcache("myCache1");
 			boolean condition = myCache1 instanceof SelfPopulatingCache;
 			assertThat(condition).isTrue();
-			assertEquals("myKey1", myCache1.get("myKey1").getObjectValue());
+			assertThat(myCache1.get("myKey1").getObjectValue()).isEqualTo("myKey1");
 		}
 		finally {
 			cacheManagerFb.destroy();
@@ -274,12 +274,12 @@ public class EhCacheSupportTests {
 				public void updateEntryValue(Object key, Object value) {
 				}
 			});
-			assertEquals(cacheFb.getObjectType(), UpdatingSelfPopulatingCache.class);
+			assertThat((Object) UpdatingSelfPopulatingCache.class).isEqualTo(cacheFb.getObjectType());
 			cacheFb.afterPropertiesSet();
 			Ehcache myCache1 = cm.getEhcache("myCache1");
 			boolean condition = myCache1 instanceof UpdatingSelfPopulatingCache;
 			assertThat(condition).isTrue();
-			assertEquals("myKey1", myCache1.get("myKey1").getObjectValue());
+			assertThat(myCache1.get("myKey1").getObjectValue()).isEqualTo("myKey1");
 		}
 		finally {
 			cacheManagerFb.destroy();

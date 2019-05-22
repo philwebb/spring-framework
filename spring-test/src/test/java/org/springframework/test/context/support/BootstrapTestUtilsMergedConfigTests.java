@@ -30,6 +30,7 @@ import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.web.WebDelegatingSmartContextLoader;
 import org.springframework.test.context.web.WebMergedContextConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
@@ -124,8 +125,8 @@ public class BootstrapTestUtilsMergedConfigTests extends AbstractContextConfigur
 		WebMergedContextConfiguration webMergedConfig = (WebMergedContextConfiguration) buildMergedContextConfiguration(webTestClass);
 		MergedContextConfiguration standardMergedConfig = buildMergedContextConfiguration(standardTestClass);
 
-		assertEquals(webMergedConfig, webMergedConfig);
-		assertEquals(standardMergedConfig, standardMergedConfig);
+		assertThat((Object) webMergedConfig).isEqualTo(webMergedConfig);
+		assertThat((Object) standardMergedConfig).isEqualTo(standardMergedConfig);
 		assertNotEquals(standardMergedConfig, webMergedConfig);
 		assertNotEquals(webMergedConfig, standardMergedConfig);
 

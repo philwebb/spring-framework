@@ -150,7 +150,7 @@ public class HeaderAssertionTests {
 			if (ERROR_MESSAGE.equals(err.getMessage())) {
 				throw err;
 			}
-			assertEquals("Response does not contain header 'X-Custom-Header'", err.getMessage());
+			assertThat((Object) err.getMessage()).isEqualTo("Response does not contain header 'X-Custom-Header'");
 		}
 	}
 

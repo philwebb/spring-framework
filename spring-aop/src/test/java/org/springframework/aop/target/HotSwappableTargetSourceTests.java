@@ -31,6 +31,7 @@ import org.springframework.tests.sample.beans.SerializablePerson;
 import org.springframework.tests.sample.beans.SideEffectBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
@@ -91,7 +92,7 @@ public class HotSwappableTargetSourceTests {
 
 		HotSwappableTargetSource swapper = (HotSwappableTargetSource) beanFactory.getBean("swapper");
 		Object old = swapper.swap(target2);
-		assertEquals("Correct old target was returned", target1, old);
+		assertThat(old).as("Correct old target was returned").isEqualTo(target1);
 
 		// TODO should be able to make this assertion: need to fix target handling
 		// in AdvisedSupport
@@ -130,16 +131,16 @@ public class HotSwappableTargetSourceTests {
 		pf.addAdvisor(new DefaultPointcutAdvisor(new SerializableNopInterceptor()));
 		Person p = (Person) pf.getProxy();
 
-		assertEquals(sp1.getName(), p.getName());
+		assertThat((Object) p.getName()).isEqualTo(sp1.getName());
 		hts.swap(sp2);
-		assertEquals(sp2.getName(), p.getName());
+		assertThat((Object) p.getName()).isEqualTo(sp2.getName());
 
 		p = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		// We need to get a reference to the client-side targetsource
 		hts = (HotSwappableTargetSource) ((Advised) p).getTargetSource();
-		assertEquals(sp2.getName(), p.getName());
+		assertThat((Object) p.getName()).isEqualTo(sp2.getName());
 		hts.swap(sp1);
-		assertEquals(sp1.getName(), p.getName());
+		assertThat((Object) p.getName()).isEqualTo(sp1.getName());
 
 	}
 

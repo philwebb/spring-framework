@@ -27,6 +27,7 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
@@ -135,7 +136,7 @@ public class DefaultMockMvcBuilderTests {
 		MockMvc mvc = builder.build();
 		DispatcherServlet ds = (DispatcherServlet) new DirectFieldAccessor(mvc)
 				.getPropertyValue("servlet");
-		assertEquals("test-id", ds.getContextId());
+		assertThat((Object) ds.getContextId()).isEqualTo("test-id");
 	}
 
 	@Test
@@ -148,7 +149,7 @@ public class DefaultMockMvcBuilderTests {
 		MockMvc mvc = builder.build();
 		DispatcherServlet ds = (DispatcherServlet) new DirectFieldAccessor(mvc)
 				.getPropertyValue("servlet");
-		assertEquals("override-id", ds.getContextId());
+		assertThat((Object) ds.getContextId()).isEqualTo("override-id");
 	}
 
 }

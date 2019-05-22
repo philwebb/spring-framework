@@ -239,7 +239,7 @@ public abstract class AbstractTransactionAspectTests {
 			public void exceptional(Throwable t) throws Throwable {
 				TransactionInfo ti = TransactionAspectSupport.currentTransactionInfo();
 				assertThat(ti.hasTransaction()).isTrue();
-				assertEquals(spouseName, getSpouse().getName());
+				assertThat((Object) getSpouse().getName()).isEqualTo(spouseName);
 			}
 		};
 		TestBean inner = new TestBean() {
@@ -292,8 +292,8 @@ public abstract class AbstractTransactionAspectTests {
 			public void exceptional(Throwable t) throws Throwable {
 				TransactionInfo ti = TransactionAspectSupport.currentTransactionInfo();
 				assertThat(ti.hasTransaction()).isTrue();
-				assertEquals(outerTxatt, ti.getTransactionAttribute());
-				assertEquals(spouseName, getSpouse().getName());
+				assertThat((Object) ti.getTransactionAttribute()).isEqualTo(outerTxatt);
+				assertThat((Object) getSpouse().getName()).isEqualTo(spouseName);
 			}
 		};
 		TestBean inner = new TestBean() {
@@ -303,7 +303,7 @@ public abstract class AbstractTransactionAspectTests {
 				TransactionInfo ti = TransactionAspectSupport.currentTransactionInfo();
 				// Has nested transaction
 				assertThat(ti.hasTransaction()).isTrue();
-				assertEquals(innerTxatt, ti.getTransactionAttribute());
+				assertThat((Object) ti.getTransactionAttribute()).isEqualTo(innerTxatt);
 				return spouseName;
 			}
 		};
@@ -410,10 +410,10 @@ public abstract class AbstractTransactionAspectTests {
 		}
 		catch (Throwable t) {
 			if (rollbackException) {
-				assertEquals("Caught wrong exception", tex, t);
+				assertThat((Object) t).as("Caught wrong exception").isEqualTo(tex);
 			}
 			else {
-				assertEquals("Caught wrong exception", ex, t);
+				assertThat((Object) t).as("Caught wrong exception").isEqualTo(ex);
 			}
 		}
 

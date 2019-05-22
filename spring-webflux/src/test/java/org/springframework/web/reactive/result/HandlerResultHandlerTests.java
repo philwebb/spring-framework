@@ -31,6 +31,7 @@ import org.springframework.web.reactive.accept.FixedContentTypeResolver;
 import org.springframework.web.reactive.accept.HeaderContentTypeResolver;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static org.springframework.http.MediaType.ALL;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -57,7 +58,7 @@ public class HandlerResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path"));
 		MediaType actual = resultHandler.selectMediaType(exchange, () -> mediaTypes);
 
-		assertEquals(IMAGE_GIF, actual);
+		assertThat((Object) actual).isEqualTo(IMAGE_GIF);
 	}
 
 	@Test
@@ -68,7 +69,7 @@ public class HandlerResultHandlerTests {
 		List<MediaType> mediaTypes = Arrays.asList(IMAGE_JPEG, IMAGE_GIF, IMAGE_PNG);
 		MediaType actual = resultHandler.selectMediaType(exchange, () -> mediaTypes);
 
-		assertEquals(IMAGE_GIF, actual);
+		assertThat((Object) actual).isEqualTo(IMAGE_GIF);
 	}
 
 	@Test  // SPR-9160
@@ -79,7 +80,7 @@ public class HandlerResultHandlerTests {
 		List<MediaType> mediaTypes = Arrays.asList(TEXT_PLAIN, APPLICATION_JSON);
 		MediaType actual = this.resultHandler.selectMediaType(exchange, () -> mediaTypes);
 
-		assertEquals(APPLICATION_JSON, actual);
+		assertThat((Object) actual).isEqualTo(APPLICATION_JSON);
 	}
 
 	@Test
@@ -89,7 +90,7 @@ public class HandlerResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path").accept(text8859));
 		MediaType actual = this.resultHandler.selectMediaType(exchange, () -> Collections.singletonList(textUtf8));
 
-		assertEquals(text8859, actual);
+		assertThat((Object) actual).isEqualTo(text8859);
 	}
 
 	@Test // SPR-12894
@@ -98,7 +99,7 @@ public class HandlerResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path"));
 		MediaType actual = this.resultHandler.selectMediaType(exchange, () -> producible);
 
-		assertEquals(APPLICATION_OCTET_STREAM, actual);
+		assertThat((Object) actual).isEqualTo(APPLICATION_OCTET_STREAM);
 	}
 
 

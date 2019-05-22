@@ -85,7 +85,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramMap, mavContainer, webRequest, null);
 
-		assertEquals(uriTemplateVars, result);
+		assertThat(result).isEqualTo(uriTemplateVars);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 	public void resolveArgumentNoUriVars() throws Exception {
 		Map<String, String> map = (Map<String, String>) resolver.resolveArgument(paramMap, mavContainer, webRequest, null);
 
-		assertEquals(Collections.emptyMap(), map);
+		assertThat((Object) map).isEqualTo(Collections.emptyMap());
 	}
 
 

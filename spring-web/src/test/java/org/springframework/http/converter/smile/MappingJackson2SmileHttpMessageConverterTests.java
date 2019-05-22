@@ -67,7 +67,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(mapper.writeValueAsBytes(body));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "x-jackson-smile"));
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
-		assertEquals("Foo", result.getString());
+		assertThat((Object) result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[]{"Foo", "Bar"}, result.getArray());
@@ -87,8 +87,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		body.setBytes(new byte[]{0x1, 0x2});
 		converter.write(body, null, outputMessage);
 		assertArrayEquals(mapper.writeValueAsBytes(body), outputMessage.getBodyAsBytes());
-		assertEquals("Invalid content-type", new MediaType("application", "x-jackson-smile"),
-				outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "x-jackson-smile"));
 	}
 
 

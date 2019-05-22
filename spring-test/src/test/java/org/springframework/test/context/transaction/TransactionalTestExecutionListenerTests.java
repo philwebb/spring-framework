@@ -223,7 +223,7 @@ public class TransactionalTestExecutionListenerTests {
 		assertThat(instance.invoked()).as("callback should not have been invoked").isFalse();
 		TransactionContextHolder.removeCurrentTransactionContext();
 		listener.beforeTestMethod(testContext);
-		assertEquals(invokedInTx, instance.invoked());
+		assertThat((Object) instance.invoked()).isEqualTo(invokedInTx);
 	}
 
 	private void assertBeforeTestMethodWithNonTransactionalTestMethod(Class<? extends Invocable> clazz) throws Exception {
@@ -274,7 +274,7 @@ public class TransactionalTestExecutionListenerTests {
 	private void assertIsRollback(Class<?> clazz, boolean rollback) throws Exception {
 		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
 		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("test"));
-		assertEquals(rollback, listener.isRollback(testContext));
+		assertThat((Object) listener.isRollback(testContext)).isEqualTo(rollback);
 	}
 
 

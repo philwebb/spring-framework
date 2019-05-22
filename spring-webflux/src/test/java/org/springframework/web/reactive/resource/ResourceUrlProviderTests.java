@@ -24,9 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.api.Condition;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,7 +79,7 @@ public class ResourceUrlProviderTests {
 		String expected = "/resources/foo.css";
 		String actual = this.urlProvider.getForUriString(expected, this.exchange).block(TIMEOUT);
 
-		assertEquals(expected, actual);
+		assertThat((Object) actual).isEqualTo(expected);
 	}
 
 	@Test  // SPR-13374
@@ -90,11 +87,11 @@ public class ResourceUrlProviderTests {
 
 		String url = "/resources/foo.css?foo=bar&url=https://example.org";
 		String resolvedUrl = this.urlProvider.getForUriString(url, this.exchange).block(TIMEOUT);
-		assertEquals(url, resolvedUrl);
+		assertThat((Object) resolvedUrl).isEqualTo(url);
 
 		url = "/resources/foo.css#hash";
 		resolvedUrl = this.urlProvider.getForUriString(url, this.exchange).block(TIMEOUT);
-		assertEquals(url, resolvedUrl);
+		assertThat((Object) resolvedUrl).isEqualTo(url);
 	}
 
 	@Test
@@ -109,7 +106,7 @@ public class ResourceUrlProviderTests {
 		String path = "/resources/foo.css";
 		String url = this.urlProvider.getForUriString(path, this.exchange).block(TIMEOUT);
 
-		assertEquals("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css", url);
+		assertThat((Object) url).isEqualTo("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css");
 	}
 
 	@Test  // SPR-12647
@@ -129,7 +126,7 @@ public class ResourceUrlProviderTests {
 
 		String path = "/resources/foo.css";
 		String url = this.urlProvider.getForUriString(path, this.exchange).block(TIMEOUT);
-		assertEquals("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css", url);
+		assertThat((Object) url).isEqualTo("/resources/foo-e36d2e05253c6c7085a91522ce43a0b4.css");
 	}
 
 	@Test  // SPR-12592

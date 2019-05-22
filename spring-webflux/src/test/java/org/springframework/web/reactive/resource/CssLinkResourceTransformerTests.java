@@ -32,6 +32,7 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.resource.EncodedResourceResolver.EncodedResource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
@@ -91,7 +92,7 @@ public class CssLinkResourceTransformerTests {
 				.consumeNextWith(transformedResource -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
-					assertEquals(expected, result);
+					assertThat((Object) result).isEqualTo(expected);
 				})
 				.expectComplete()
 				.verify();
@@ -125,7 +126,7 @@ public class CssLinkResourceTransformerTests {
 				.consumeNextWith(transformedResource -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
-					assertEquals(expected, result);
+					assertThat((Object) result).isEqualTo(expected);
 				})
 				.expectComplete()
 				.verify();
@@ -176,7 +177,7 @@ public class CssLinkResourceTransformerTests {
 				.consumeNextWith(transformedResource -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
-					assertEquals(expected, result);
+					assertThat((Object) result).isEqualTo(expected);
 				})
 				.expectComplete()
 				.verify();

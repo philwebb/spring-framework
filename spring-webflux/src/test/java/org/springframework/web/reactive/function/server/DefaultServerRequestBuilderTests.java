@@ -30,6 +30,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -61,11 +62,11 @@ public class DefaultServerRequestBuilderTests {
 				.body(body)
 				.build();
 
-		assertEquals(HttpMethod.HEAD, result.method());
+		assertThat((Object) result.method()).isEqualTo(HttpMethod.HEAD);
 		assertEquals(1, result.headers().asHttpHeaders().size());
-		assertEquals("baar", result.headers().asHttpHeaders().getFirst("foo"));
+		assertThat((Object) result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
 		assertEquals(1, result.cookies().size());
-		assertEquals("quux", result.cookies().getFirst("baz").getValue());
+		assertThat((Object) result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
 
 		StepVerifier.create(result.bodyToFlux(String.class))
 				.expectNext("baz")

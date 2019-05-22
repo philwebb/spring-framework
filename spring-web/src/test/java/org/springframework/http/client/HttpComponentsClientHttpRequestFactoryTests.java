@@ -169,7 +169,8 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 
 	private void testRequestBodyAllowed(URI uri, HttpMethod method, boolean allowed) {
 		HttpUriRequest request = ((HttpComponentsClientHttpRequestFactory) this.factory).createHttpUriRequest(method, uri);
-		assertEquals(allowed, request instanceof HttpEntityEnclosingRequest);
+		Object actual = request instanceof HttpEntityEnclosingRequest;
+		assertThat(actual).isEqualTo(allowed);
 	}
 
 }

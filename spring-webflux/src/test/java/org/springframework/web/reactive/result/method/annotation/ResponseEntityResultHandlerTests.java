@@ -158,7 +158,7 @@ public class ResponseEntityResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/path"));
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.NO_CONTENT, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 		assertEquals(0, exchange.getResponse().getHeaders().size());
 		assertResponseBodyIsEmpty(exchange);
 	}
@@ -172,9 +172,9 @@ public class ResponseEntityResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/path"));
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.OK, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertEquals(1, exchange.getResponse().getHeaders().size());
-		assertEquals("GET,POST,OPTIONS", exchange.getResponse().getHeaders().getFirst("Allow"));
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Allow")).isEqualTo("GET,POST,OPTIONS");
 		assertResponseBodyIsEmpty(exchange);
 	}
 
@@ -187,9 +187,9 @@ public class ResponseEntityResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/path"));
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.CREATED, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.CREATED);
 		assertEquals(1, exchange.getResponse().getHeaders().size());
-		assertEquals(location, exchange.getResponse().getHeaders().getLocation());
+		assertThat((Object) exchange.getResponse().getHeaders().getLocation()).isEqualTo(location);
 		assertResponseBodyIsEmpty(exchange);
 	}
 
@@ -201,7 +201,7 @@ public class ResponseEntityResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/path"));
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.NOT_FOUND, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertResponseBodyIsEmpty(exchange);
 	}
 
@@ -264,7 +264,7 @@ public class ResponseEntityResultHandlerTests {
 		HandlerResult result = handlerResult(entity, returnType);
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.OK, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertResponseBody(exchange, "body");
 	}
 
@@ -319,7 +319,7 @@ public class ResponseEntityResultHandlerTests {
 
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.OK, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertResponseBody(exchange, "body");
 	}
 
@@ -333,7 +333,7 @@ public class ResponseEntityResultHandlerTests {
 
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.NOT_FOUND, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertResponseBodyIsEmpty(exchange);
 	}
 
@@ -346,9 +346,9 @@ public class ResponseEntityResultHandlerTests {
 		exchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.OK, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertEquals(1, exchange.getResponse().getHeaders().size());
-		assertEquals(MediaType.APPLICATION_JSON, exchange.getResponse().getHeaders().getContentType());
+		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 		assertResponseBodyIsEmpty(exchange);
 	}
 
@@ -359,8 +359,8 @@ public class ResponseEntityResultHandlerTests {
 		HandlerResult result = handlerResult(returnValue, returnType);
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
-		assertEquals(HttpStatus.OK, exchange.getResponse().getStatusCode());
-		assertEquals("text/plain;charset=UTF-8", exchange.getResponse().getHeaders().getFirst("Content-Type"));
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Content-Type")).isEqualTo("text/plain;charset=UTF-8");
 		assertResponseBody(exchange, "abc");
 	}
 
@@ -374,8 +374,7 @@ public class ResponseEntityResultHandlerTests {
 
 	private void assertResponseBody(MockServerWebExchange exchange, String responseBody) {
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals(responseBody,
-						DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)))
+				.consumeNextWith(buf -> assertThat((Object) DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)).isEqualTo(responseBody))
 				.expectComplete()
 				.verify();
 	}
@@ -387,7 +386,7 @@ public class ResponseEntityResultHandlerTests {
 	private void assertConditionalResponse(MockServerWebExchange exchange, HttpStatus status,
 			String body, String etag, Instant lastModified) throws Exception {
 
-		assertEquals(status, exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(status);
 		if (body != null) {
 			assertResponseBody(exchange, body);
 		}
@@ -396,7 +395,7 @@ public class ResponseEntityResultHandlerTests {
 		}
 		if (etag != null) {
 			assertEquals(1, exchange.getResponse().getHeaders().get(HttpHeaders.ETAG).size());
-			assertEquals(etag, exchange.getResponse().getHeaders().getETag());
+			assertThat((Object) exchange.getResponse().getHeaders().getETag()).isEqualTo(etag);
 		}
 		if (lastModified.isAfter(Instant.EPOCH)) {
 			assertEquals(1, exchange.getResponse().getHeaders().get(HttpHeaders.LAST_MODIFIED).size());

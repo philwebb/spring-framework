@@ -101,7 +101,7 @@ public class JndiPropertySourceTests {
 		JndiLocatorDelegate jndiLocator = new JndiLocatorDelegate() {
 			@Override
 			public Object lookup(String jndiName) throws NamingException {
-				assertEquals("my:key", jndiName);
+				assertThat((Object) jndiName).isEqualTo("my:key");
 				return "my:value";
 			}
 		};

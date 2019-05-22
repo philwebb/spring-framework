@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import org.springframework.beans.DirectFieldAccessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -36,10 +37,10 @@ public class GroovyMarkupViewResolverTests {
 	@Test
 	public void viewClass() throws Exception {
 		GroovyMarkupViewResolver resolver = new GroovyMarkupViewResolver();
-		assertEquals(GroovyMarkupView.class, resolver.requiredViewClass());
+		assertThat((Object) resolver.requiredViewClass()).isEqualTo(GroovyMarkupView.class);
 		DirectFieldAccessor viewAccessor = new DirectFieldAccessor(resolver);
 		Class<?> viewClass = (Class<?>) viewAccessor.getPropertyValue("viewClass");
-		assertEquals(GroovyMarkupView.class, viewClass);
+		assertThat((Object) viewClass).isEqualTo(GroovyMarkupView.class);
 	}
 
 	@Test
@@ -47,7 +48,7 @@ public class GroovyMarkupViewResolverTests {
 		GroovyMarkupViewResolver resolver = new GroovyMarkupViewResolver();
 		String cacheKey = (String) resolver.getCacheKey("test", Locale.US);
 		assertNotNull(cacheKey);
-		assertEquals("test_en_US", cacheKey);
+		assertThat((Object) cacheKey).isEqualTo("test_en_US");
 	}
 
 }

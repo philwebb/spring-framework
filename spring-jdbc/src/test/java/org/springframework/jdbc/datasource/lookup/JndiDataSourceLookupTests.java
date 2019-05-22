@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
@@ -40,7 +41,7 @@ public class JndiDataSourceLookupTests {
 		JndiDataSourceLookup lookup = new JndiDataSourceLookup() {
 			@Override
 			protected <T> T lookup(String jndiName, Class<T> requiredType) {
-				assertEquals(DATA_SOURCE_NAME, jndiName);
+				assertThat((Object) jndiName).isEqualTo(DATA_SOURCE_NAME);
 				return requiredType.cast(expectedDataSource);
 			}
 		};
@@ -54,7 +55,7 @@ public class JndiDataSourceLookupTests {
 		JndiDataSourceLookup lookup = new JndiDataSourceLookup() {
 			@Override
 			protected <T> T lookup(String jndiName, Class<T> requiredType) throws NamingException {
-				assertEquals(DATA_SOURCE_NAME, jndiName);
+				assertThat((Object) jndiName).isEqualTo(DATA_SOURCE_NAME);
 				throw new NamingException();
 			}
 		};

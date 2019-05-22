@@ -27,6 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -50,8 +51,8 @@ public class InlinedPropertiesOverridePropertiesFilesTestPropertySourceTests {
 
 	@Test
 	public void inlinedPropertyOverridesValueFromPropertiesFile() {
-		assertEquals("inlined", env.getProperty("explicit"));
-		assertEquals("inlined", this.explicit);
+		assertThat((Object) env.getProperty("explicit")).isEqualTo("inlined");
+		assertThat((Object) this.explicit).isEqualTo("inlined");
 	}
 
 

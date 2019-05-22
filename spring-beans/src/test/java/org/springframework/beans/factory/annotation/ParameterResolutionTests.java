@@ -132,8 +132,8 @@ public class ParameterResolutionTests {
 			Parameter parameter = parameters[parameterIndex];
 			DependencyDescriptor intermediateDependencyDescriptor = (DependencyDescriptor) ParameterResolutionDelegate.resolveDependency(
 					parameter, parameterIndex, AutowirableClass.class, beanFactory);
-			assertEquals(constructor, intermediateDependencyDescriptor.getAnnotatedElement());
-			assertEquals(parameter, intermediateDependencyDescriptor.getMethodParameter().getParameter());
+			assertThat((Object) intermediateDependencyDescriptor.getAnnotatedElement()).isEqualTo(constructor);
+			assertThat((Object) intermediateDependencyDescriptor.getMethodParameter().getParameter()).isEqualTo(parameter);
 		}
 	}
 

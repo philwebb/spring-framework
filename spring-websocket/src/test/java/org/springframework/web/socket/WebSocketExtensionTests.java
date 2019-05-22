@@ -18,7 +18,6 @@ package org.springframework.web.socket;
 
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,10 +36,10 @@ public class WebSocketExtensionTests {
 		assertThat(extensions).hasSize(1);
 		WebSocketExtension extension = extensions.get(0);
 
-		assertEquals("x-test-extension", extension.getName());
+		assertThat((Object) extension.getName()).isEqualTo("x-test-extension");
 		assertEquals(2, extension.getParameters().size());
-		assertEquals("bar", extension.getParameters().get("foo"));
-		assertEquals("baz", extension.getParameters().get("bar"));
+		assertThat((Object) extension.getParameters().get("foo")).isEqualTo("bar");
+		assertThat((Object) extension.getParameters().get("bar")).isEqualTo("baz");
 	}
 
 	@Test

@@ -117,12 +117,10 @@ public class RequestLoggingFilterTests {
 		filter.doFilter(request, response, filterChain);
 
 		assertNotNull(filter.beforeRequestMessage);
-		assertEquals("Before request [uri=/hotels;headers=[Content-Type:\"application/json\", token:\"masked\"]]",
-				filter.beforeRequestMessage);
+		assertThat((Object) filter.beforeRequestMessage).isEqualTo("Before request [uri=/hotels;headers=[Content-Type:\"application/json\", token:\"masked\"]]");
 
 		assertNotNull(filter.afterRequestMessage);
-		assertEquals("After request [uri=/hotels;headers=[Content-Type:\"application/json\", token:\"masked\"]]",
-				filter.afterRequestMessage);
+		assertThat((Object) filter.afterRequestMessage).isEqualTo("After request [uri=/hotels;headers=[Content-Type:\"application/json\", token:\"masked\"]]");
 	}
 
 	@Test
@@ -160,7 +158,7 @@ public class RequestLoggingFilterTests {
 		FilterChain filterChain = (filterRequest, filterResponse) -> {
 			((HttpServletResponse) filterResponse).setStatus(HttpServletResponse.SC_OK);
 			String buf = FileCopyUtils.copyToString(filterRequest.getReader());
-			assertEquals(requestBody, buf);
+			assertThat((Object) buf).isEqualTo(requestBody);
 		};
 
 		filter.doFilter(request, response, filterChain);

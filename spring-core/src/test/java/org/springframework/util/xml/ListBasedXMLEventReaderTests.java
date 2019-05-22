@@ -39,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma
@@ -76,7 +75,7 @@ public class ListBasedXMLEventReaderTests {
 		assertEquals(START_DOCUMENT, reader.nextEvent().getEventType());
 		assertEquals(START_ELEMENT, reader.nextEvent().getEventType());
 		assertEquals(START_ELEMENT, reader.nextEvent().getEventType());
-		assertEquals("baz", reader.getElementText());
+		assertThat((Object) reader.getElementText()).isEqualTo("baz");
 		assertEquals(END_ELEMENT, reader.nextEvent().getEventType());
 		assertEquals(END_DOCUMENT, reader.nextEvent().getEventType());
 	}

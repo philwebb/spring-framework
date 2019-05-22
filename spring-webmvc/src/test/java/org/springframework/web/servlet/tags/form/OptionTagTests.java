@@ -439,8 +439,8 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		int result = this.tag.doStartTag();
 		assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
 
-		assertEquals(rulesVariant, getPageContext().getAttribute("value"));
-		assertEquals(rulesVariant.toId(), getPageContext().getAttribute("displayValue"));
+		assertThat(getPageContext().getAttribute("value")).isEqualTo(rulesVariant);
+		assertThat(getPageContext().getAttribute("displayValue")).isEqualTo(rulesVariant.toId());
 
 		result = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, result);
@@ -459,7 +459,7 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.doStartTag();
 		this.tag.doEndTag();
 
-		assertEquals("<option value=\"foo\">foo</option>", getOutput());
+		assertThat((Object) getOutput()).isEqualTo("<option value=\"foo\">foo</option>");
 	}
 
 	@Test

@@ -108,7 +108,7 @@ public class HttpEntityMethodProcessorTests {
 				paramSimpleBean, mavContainer, webRequest, binderFactory);
 
 		assertNotNull(result);
-		assertEquals("Jad", result.getBody().getName());
+		assertThat((Object) result.getBody().getName()).isEqualTo("Jad");
 	}
 
 	@Test  // SPR-12861
@@ -142,8 +142,8 @@ public class HttpEntityMethodProcessorTests {
 				paramList, mavContainer, webRequest, binderFactory);
 
 		assertNotNull(result);
-		assertEquals("Jad", result.getBody().get(0).getName());
-		assertEquals("Robert", result.getBody().get(1).getName());
+		assertThat((Object) result.getBody().get(0).getName()).isEqualTo("Jad");
+		assertThat((Object) result.getBody().get(1).getName()).isEqualTo("Robert");
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class HttpEntityMethodProcessorTests {
 				processor.resolveArgument(methodParam, mavContainer, webRequest, binderFactory);
 
 		assertNotNull(result);
-		assertEquals("Jad", result.getBody().getName());
+		assertThat((Object) result.getBody().getName()).isEqualTo("Jad");
 	}
 
 	@Test  // SPR-12811
@@ -199,8 +199,8 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntityMethodProcessor processor = new HttpEntityMethodProcessor(converters);
 		processor.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
 
-		assertEquals("text/plain;charset=ISO-8859-1", servletResponse.getHeader("Content-Type"));
-		assertEquals("Foo", servletResponse.getContentAsString());
+		assertThat((Object) servletResponse.getHeader("Content-Type")).isEqualTo("text/plain;charset=ISO-8859-1");
+		assertThat((Object) servletResponse.getContentAsString()).isEqualTo("Foo");
 	}
 
 

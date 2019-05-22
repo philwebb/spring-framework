@@ -76,7 +76,7 @@ public class RequestParamMapMethodArgumentResolverTests {
 		Object result= resolve(param, MockServerWebExchange.from(MockServerHttpRequest.get("/path?foo=bar")));
 		boolean condition = result instanceof Map;
 		assertThat(condition).isTrue();
-		assertEquals(Collections.singletonMap("foo", "bar"), result);
+		assertThat(result).isEqualTo(Collections.singletonMap("foo", "bar"));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class RequestParamMapMethodArgumentResolverTests {
 
 		boolean condition = result instanceof MultiValueMap;
 		assertThat(condition).isTrue();
-		assertEquals(Collections.singletonMap("foo", Arrays.asList("bar", "baz")), result);
+		assertThat(result).isEqualTo(Collections.singletonMap("foo", Arrays.asList("bar", "baz")));
 	}
 
 

@@ -87,7 +87,7 @@ public class ExpressionValueMethodArgumentResolverTests {
 					this.paramSystemProperty,  new BindingContext(), this.exchange);
 
 			Object value = mono.block();
-			assertEquals(22, value);
+			assertThat(value).isEqualTo(22);
 		}
 		finally {
 			System.clearProperty("systemProperty");

@@ -25,6 +25,7 @@ import org.springframework.mock.web.test.MockServletConfig;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.ServletContextAwareProcessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -43,7 +44,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletContext());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletContext should have been set", bean.getServletContext());
-		assertEquals(servletContext, bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isEqualTo(servletContext);
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletContext());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletContext should have been set", bean.getServletContext());
-		assertEquals(servletContext, bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isEqualTo(servletContext);
 	}
 
 	@Test
@@ -67,7 +68,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletContext());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletContext should have been set", bean.getServletContext());
-		assertEquals(servletContext, bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isEqualTo(servletContext);
 	}
 
 	@Test
@@ -79,7 +80,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletContext());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletContext should have been set", bean.getServletContext());
-		assertEquals(servletContext, bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isEqualTo(servletContext);
 	}
 
 	@Test
@@ -90,7 +91,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletContext());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletContext should have been set", bean.getServletContext());
-		assertEquals(servletContext, bean.getServletContext());
+		assertThat((Object) bean.getServletContext()).isEqualTo(servletContext);
 	}
 
 	@Test
@@ -122,7 +123,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletConfig());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletConfig should have been set", bean.getServletConfig());
-		assertEquals(servletConfig, bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isEqualTo(servletConfig);
 	}
 
 	@Test
@@ -134,7 +135,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletConfig());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletConfig should have been set", bean.getServletConfig());
-		assertEquals(servletConfig, bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isEqualTo(servletConfig);
 	}
 
 	@Test
@@ -146,7 +147,7 @@ public class ServletContextAwareProcessorTests {
 		assertNull(bean.getServletConfig());
 		processor.postProcessBeforeInitialization(bean, "testBean");
 		assertNotNull("ServletConfig should have been set", bean.getServletConfig());
-		assertEquals(servletConfig, bean.getServletConfig());
+		assertThat((Object) bean.getServletConfig()).isEqualTo(servletConfig);
 	}
 
 	@Test

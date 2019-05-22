@@ -24,6 +24,7 @@ import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler;
 import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
@@ -54,13 +55,13 @@ public class StompBrokerRelayRegistrationTests {
 		StompBrokerRelayMessageHandler handler = registration.getMessageHandler(new StubMessageChannel());
 
 		assertArrayEquals(prefixes, StringUtils.toStringArray(handler.getDestinationPrefixes()));
-		assertEquals("clientlogin", handler.getClientLogin());
-		assertEquals("clientpasscode", handler.getClientPasscode());
-		assertEquals("syslogin", handler.getSystemLogin());
-		assertEquals("syspasscode", handler.getSystemPasscode());
+		assertThat((Object) handler.getClientLogin()).isEqualTo("clientlogin");
+		assertThat((Object) handler.getClientPasscode()).isEqualTo("clientpasscode");
+		assertThat((Object) handler.getSystemLogin()).isEqualTo("syslogin");
+		assertThat((Object) handler.getSystemPasscode()).isEqualTo("syspasscode");
 		assertEquals(123, handler.getSystemHeartbeatReceiveInterval());
 		assertEquals(456, handler.getSystemHeartbeatSendInterval());
-		assertEquals("example.org", handler.getVirtualHost());
+		assertThat((Object) handler.getVirtualHost()).isEqualTo("example.org");
 	}
 
 }

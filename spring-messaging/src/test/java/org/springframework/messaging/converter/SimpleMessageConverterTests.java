@@ -24,6 +24,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
@@ -43,8 +44,8 @@ public class SimpleMessageConverterTests {
 		MessageHeaders headers = new MessageHeaders(Collections.<String, Object>singletonMap("foo", "bar"));
 		Message<?> message = this.converter.toMessage("payload", headers);
 
-		assertEquals("payload", message.getPayload());
-		assertEquals("bar", message.getHeaders().get("foo"));
+		assertThat(message.getPayload()).isEqualTo("payload");
+		assertThat(message.getHeaders().get("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -56,8 +57,8 @@ public class SimpleMessageConverterTests {
 
 		Message<?> message = this.converter.toMessage("payload", headers);
 
-		assertEquals("payload", message.getPayload());
+		assertThat(message.getPayload()).isEqualTo("payload");
 		assertSame(headers, message.getHeaders());
-		assertEquals("bar", message.getHeaders().get("foo"));
+		assertThat(message.getHeaders().get("foo")).isEqualTo("bar");
 	}
 }

@@ -30,6 +30,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
@@ -134,8 +135,7 @@ public class MockServerTests {
 				.expectHeader().valueEquals(HttpHeaders.SET_COOKIE, "a=alpha; Path=/pathA", "b=beta; Path=/pathB")
 				.expectBody().isEmpty();
 
-		assertEquals(Arrays.asList("a=alpha", "b=beta"),
-				result.getRequestHeaders().get(HttpHeaders.COOKIE));
+		assertThat((Object) result.getRequestHeaders().get(HttpHeaders.COOKIE)).isEqualTo(Arrays.asList("a=alpha", "b=beta"));
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class MockServerTests {
 		byte[] bytes = result.getResponseBodyContent();
 
 		assertNotNull(bytes);
-		assertEquals("body", new String(bytes, UTF_8));
+		assertThat((Object) new String(bytes, UTF_8)).isEqualTo("body");
 	}
 
 

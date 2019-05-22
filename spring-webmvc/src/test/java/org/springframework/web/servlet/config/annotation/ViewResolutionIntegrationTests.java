@@ -38,6 +38,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 
@@ -52,19 +53,19 @@ public class ViewResolutionIntegrationTests {
 	@Test
 	public void freemarker() throws Exception {
 		MockHttpServletResponse response = runTest(FreeMarkerWebConfig.class);
-		assertEquals("<html><body>Hello World!</body></html>", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
 	}
 
 	@Test
 	public void tiles() throws Exception {
 		MockHttpServletResponse response = runTest(TilesWebConfig.class);
-		assertEquals("/WEB-INF/index.jsp", response.getForwardedUrl());
+		assertThat((Object) response.getForwardedUrl()).isEqualTo("/WEB-INF/index.jsp");
 	}
 
 	@Test
 	public void groovyMarkup() throws Exception {
 		MockHttpServletResponse response = runTest(GroovyMarkupWebConfig.class);
-		assertEquals("<html><body>Hello World!</body></html>", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
 	}
 
 	@Test
@@ -93,7 +94,7 @@ public class ViewResolutionIntegrationTests {
 	@Test
 	public void existingViewResolver() throws Exception {
 		MockHttpServletResponse response = runTest(ExistingViewResolverConfig.class);
-		assertEquals("<html><body>Hello World!</body></html>", response.getContentAsString());
+		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
 	}
 
 

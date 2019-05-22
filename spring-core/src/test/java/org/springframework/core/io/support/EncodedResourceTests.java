@@ -52,7 +52,7 @@ public class EncodedResourceTests {
 	public void equalsWithSameEncoding() {
 		EncodedResource er1 = new EncodedResource(resource, UTF8);
 		EncodedResource er2 = new EncodedResource(resource, UTF8);
-		assertEquals(er1, er2);
+		assertThat((Object) er2).isEqualTo(er1);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class EncodedResourceTests {
 	public void equalsWithSameCharset() {
 		EncodedResource er1 = new EncodedResource(resource, UTF8_CS);
 		EncodedResource er2 = new EncodedResource(resource, UTF8_CS);
-		assertEquals(er1, er2);
+		assertThat((Object) er2).isEqualTo(er1);
 	}
 
 	@Test

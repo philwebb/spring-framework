@@ -91,7 +91,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		SubProtocolWebSocketHandler webSocketHandler = config.getBean(SubProtocolWebSocketHandler.class);
 
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();
-		assertEquals(ImmutableMessageChannelInterceptor.class, interceptors.get(interceptors.size()-1).getClass());
+		assertThat((Object) interceptors.get(interceptors.size() - 1).getClass()).isEqualTo(ImmutableMessageChannelInterceptor.class);
 
 		TestWebSocketSession session = new TestWebSocketSession("s1");
 		session.setOpen(true);
@@ -104,8 +104,8 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		StompHeaderAccessor accessor = StompHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		assertNotNull(accessor);
 		assertThat(accessor.isMutable()).isFalse();
-		assertEquals(SimpMessageType.MESSAGE, accessor.getMessageType());
-		assertEquals("/foo", accessor.getDestination());
+		assertThat((Object) accessor.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat((Object) accessor.getDestination()).isEqualTo("/foo");
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();
-		assertEquals(ImmutableMessageChannelInterceptor.class, interceptors.get(interceptors.size()-1).getClass());
+		assertThat((Object) interceptors.get(interceptors.size() - 1).getClass()).isEqualTo(ImmutableMessageChannelInterceptor.class);
 
 		assertEquals(1, handlers.size());
 		assertThat(handlers.contains(config.getBean(SubProtocolWebSocketHandler.class))).isTrue();
@@ -128,7 +128,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();
-		assertEquals(ImmutableMessageChannelInterceptor.class, interceptors.get(interceptors.size()-1).getClass());
+		assertThat((Object) interceptors.get(interceptors.size() - 1).getClass()).isEqualTo(ImmutableMessageChannelInterceptor.class);
 
 		assertEquals(2, handlers.size());
 		assertThat(handlers.contains(config.getBean(SimpleBrokerMessageHandler.class))).isTrue();
@@ -193,7 +193,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 
 		WebSocketSession session = new TestWebSocketSession("id");
 		handler.afterConnectionEstablished(session);
-		assertEquals(true, session.getAttributes().get("decorated"));
+		assertThat(session.getAttributes().get("decorated")).isEqualTo(true);
 	}
 
 

@@ -98,10 +98,10 @@ public class DataAccessUtilsTests {
 		Collection<Integer> col = new HashSet<>(1);
 		col.add(5);
 
-		assertEquals(Integer.valueOf(5), DataAccessUtils.uniqueResult(col));
-		assertEquals(Integer.valueOf(5), DataAccessUtils.requiredUniqueResult(col));
-		assertEquals(Integer.valueOf(5), DataAccessUtils.objectResult(col, Integer.class));
-		assertEquals("5", DataAccessUtils.objectResult(col, String.class));
+		assertThat(DataAccessUtils.uniqueResult(col)).isEqualTo(Integer.valueOf(5));
+		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
+		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
+		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
 		assertEquals(5, DataAccessUtils.intResult(col));
 		assertEquals(5, DataAccessUtils.longResult(col));
 	}
@@ -113,10 +113,10 @@ public class DataAccessUtilsTests {
 		col.add(i);
 		col.add(i);
 
-		assertEquals(Integer.valueOf(5), DataAccessUtils.uniqueResult(col));
-		assertEquals(Integer.valueOf(5), DataAccessUtils.requiredUniqueResult(col));
-		assertEquals(Integer.valueOf(5), DataAccessUtils.objectResult(col, Integer.class));
-		assertEquals("5", DataAccessUtils.objectResult(col, String.class));
+		assertThat(DataAccessUtils.uniqueResult(col)).isEqualTo(Integer.valueOf(5));
+		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
+		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
+		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
 		assertEquals(5, DataAccessUtils.intResult(col));
 		assertEquals(5, DataAccessUtils.longResult(col));
 	}
@@ -138,10 +138,10 @@ public class DataAccessUtilsTests {
 		Collection<Long> col = new HashSet<>(1);
 		col.add(5L);
 
-		assertEquals(Long.valueOf(5L), DataAccessUtils.uniqueResult(col));
-		assertEquals(Long.valueOf(5L), DataAccessUtils.requiredUniqueResult(col));
-		assertEquals(Long.valueOf(5L), DataAccessUtils.objectResult(col, Long.class));
-		assertEquals("5", DataAccessUtils.objectResult(col, String.class));
+		assertThat(DataAccessUtils.uniqueResult(col)).isEqualTo(Long.valueOf(5L));
+		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Long.valueOf(5L));
+		assertThat(DataAccessUtils.objectResult(col, Long.class)).isEqualTo(Long.valueOf(5L));
+		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
 		assertEquals(5, DataAccessUtils.intResult(col));
 		assertEquals(5, DataAccessUtils.longResult(col));
 	}
@@ -151,9 +151,9 @@ public class DataAccessUtilsTests {
 		Collection<String> col = new HashSet<>(1);
 		col.add("test1");
 
-		assertEquals("test1", DataAccessUtils.uniqueResult(col));
-		assertEquals("test1", DataAccessUtils.requiredUniqueResult(col));
-		assertEquals("test1", DataAccessUtils.objectResult(col, String.class));
+		assertThat(DataAccessUtils.uniqueResult(col)).isEqualTo("test1");
+		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo("test1");
+		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("test1");
 
 		assertThatExceptionOfType(TypeMismatchDataAccessException.class).isThrownBy(() ->
 				DataAccessUtils.intResult(col));
@@ -168,10 +168,10 @@ public class DataAccessUtilsTests {
 		Collection<Date> col = new HashSet<>(1);
 		col.add(date);
 
-		assertEquals(date, DataAccessUtils.uniqueResult(col));
-		assertEquals(date, DataAccessUtils.requiredUniqueResult(col));
-		assertEquals(date, DataAccessUtils.objectResult(col, Date.class));
-		assertEquals(date.toString(), DataAccessUtils.objectResult(col, String.class));
+		assertThat(DataAccessUtils.uniqueResult(col)).isEqualTo(date);
+		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(date);
+		assertThat(DataAccessUtils.objectResult(col, Date.class)).isEqualTo(date);
+		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo(date.toString());
 
 		assertThatExceptionOfType(TypeMismatchDataAccessException.class).isThrownBy(() ->
 				DataAccessUtils.intResult(col));

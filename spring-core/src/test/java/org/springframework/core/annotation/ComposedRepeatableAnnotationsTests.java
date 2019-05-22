@@ -29,8 +29,7 @@ import java.util.Set;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedRepeatableAnnotations;
@@ -220,9 +219,9 @@ public class ComposedRepeatableAnnotationsTests {
 		assertEquals(3, peteRepeats.size());
 
 		Iterator<PeteRepeat> iterator = peteRepeats.iterator();
-		assertEquals("A", iterator.next().value());
-		assertEquals("B", iterator.next().value());
-		assertEquals("C", iterator.next().value());
+		assertThat((Object) iterator.next().value()).isEqualTo("A");
+		assertThat((Object) iterator.next().value()).isEqualTo("B");
+		assertThat((Object) iterator.next().value()).isEqualTo("C");
 	}
 
 	private void assertFindRepeatableAnnotations(AnnotatedElement element) {
@@ -233,9 +232,9 @@ public class ComposedRepeatableAnnotationsTests {
 		assertEquals(3, peteRepeats.size());
 
 		Iterator<PeteRepeat> iterator = peteRepeats.iterator();
-		assertEquals("A", iterator.next().value());
-		assertEquals("B", iterator.next().value());
-		assertEquals("C", iterator.next().value());
+		assertThat((Object) iterator.next().value()).isEqualTo("A");
+		assertThat((Object) iterator.next().value()).isEqualTo("B");
+		assertThat((Object) iterator.next().value()).isEqualTo("C");
 	}
 
 	private void assertNoninheritedRepeatableAnnotations(Set<Noninherited> annotations) {
@@ -243,9 +242,9 @@ public class ComposedRepeatableAnnotationsTests {
 		assertEquals(3, annotations.size());
 
 		Iterator<Noninherited> iterator = annotations.iterator();
-		assertEquals("A", iterator.next().value());
-		assertEquals("B", iterator.next().value());
-		assertEquals("C", iterator.next().value());
+		assertThat((Object) iterator.next().value()).isEqualTo("A");
+		assertThat((Object) iterator.next().value()).isEqualTo("B");
+		assertThat((Object) iterator.next().value()).isEqualTo("C");
 	}
 
 

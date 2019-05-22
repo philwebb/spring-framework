@@ -56,7 +56,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		NumberHolder nh = new NumberHolder();
 		expression = parser.parseExpression("(T(Integer).valueOf(payload).doubleValue())/18D");
 		Object o = expression.getValue(nh);
-		assertEquals(2d,o);
+		assertThat(o).isEqualTo(2d);
 		System.out.println("Performance check for SpEL expression: '(T(Integer).valueOf(payload).doubleValue())/18D'");
 		long stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -76,7 +76,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		compile(expression);
 		System.out.println("Now compiled:");
 		o = expression.getValue(nh);
-		assertEquals(2d, o);
+		assertThat(o).isEqualTo(2d);
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -96,7 +96,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 		expression = parser.parseExpression("payload/18D");
 		o = expression.getValue(nh);
-		assertEquals(2d,o);
+		assertThat(o).isEqualTo(2d);
 		System.out.println("Performance check for SpEL expression: 'payload/18D'");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -116,7 +116,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		compile(expression);
 		System.out.println("Now compiled:");
 		o = expression.getValue(nh);
-		assertEquals(2d, o);
+		assertThat(o).isEqualTo(2d);
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -139,7 +139,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 	public void inlineLists() throws Exception {
 		expression = parser.parseExpression("{'abcde','ijklm'}[0].substring({1,3,4}[0],{1,3,4}[1])");
 		Object o = expression.getValue();
-		assertEquals("bc",o);
+		assertThat(o).isEqualTo("bc");
 		System.out.println("Performance check for SpEL expression: '{'abcde','ijklm'}[0].substring({1,3,4}[0],{1,3,4}[1])'");
 		long stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -159,7 +159,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		compile(expression);
 		System.out.println("Now compiled:");
 		o = expression.getValue();
-		assertEquals("bc", o);
+		assertThat(o).isEqualTo("bc");
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -182,7 +182,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 	public void inlineNestedLists() throws Exception {
 		expression = parser.parseExpression("{'abcde',{'ijklm','nopqr'}}[1][0].substring({1,3,4}[0],{1,3,4}[1])");
 		Object o = expression.getValue();
-		assertEquals("jk",o);
+		assertThat(o).isEqualTo("jk");
 		System.out.println("Performance check for SpEL expression: '{'abcde','ijklm'}[0].substring({1,3,4}[0],{1,3,4}[1])'");
 		long stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -202,7 +202,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		compile(expression);
 		System.out.println("Now compiled:");
 		o = expression.getValue();
-		assertEquals("jk", o);
+		assertThat(o).isEqualTo("jk");
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -226,7 +226,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		expression = parser.parseExpression("'hello' + getWorld() + ' spring'");
 		Greeter g = new Greeter();
 		Object o = expression.getValue(g);
-		assertEquals("helloworld spring", o);
+		assertThat(o).isEqualTo("helloworld spring");
 
 		System.out.println("Performance check for SpEL expression: 'hello' + getWorld() + ' spring'");
 		long stime = System.currentTimeMillis();
@@ -247,7 +247,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		compile(expression);
 		System.out.println("Now compiled:");
 		o = expression.getValue(g);
-		assertEquals("helloworld spring", o);
+		assertThat(o).isEqualTo("helloworld spring");
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
@@ -313,7 +313,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		assertThat(b).isFalse();
 
 		// Verify the same result for compiled vs interpreted
-		assertEquals(b, bc);
+		assertThat((Object) bc).isEqualTo(b);
 
 		// Verify if the input changes, the result changes
 		payload.DR[0].DRFixedSection.duration = 0.04d;
@@ -370,7 +370,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertEquals(interpretedResult,compiledResult);
+		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("method reference", interpretedTotal, compiledTotal);
 		if (compiledTotal >= interpretedTotal) {
 			fail("Compiled version is slower than interpreted!");
@@ -422,7 +422,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertEquals(interpretedResult,compiledResult);
+		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("property reference (field)",interpretedTotal, compiledTotal);
 	}
 
@@ -468,7 +468,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertEquals(interpretedResult,compiledResult);
+		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("property reference (nested field)",interpretedTotal, compiledTotal);
 	}
 
@@ -513,7 +513,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertEquals(interpretedResult,compiledResult);
+		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("nested property reference (mixed field/getter)",interpretedTotal, compiledTotal);
 	}
 
@@ -560,7 +560,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertEquals(interpretedResult,compiledResult);
+		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("nested reference (mixed field/method)", interpretedTotal, compiledTotal);
 	}
 
@@ -608,7 +608,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertEquals(interpretedResult,compiledResult);
+		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
 
 		reportPerformance("property reference (getter)", interpretedTotal, compiledTotal);
 		if (compiledTotal >= interpretedTotal) {

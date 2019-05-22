@@ -67,7 +67,7 @@ public class AutoPopulatingListTests {
 		String helloWorld = "Hello World!";
 		list.add(10, null);
 		list.add(11, helloWorld);
-		assertEquals(helloWorld, list.get(11));
+		assertThat(list.get(11)).isEqualTo(helloWorld);
 
 		boolean condition3 = list.get(10) instanceof TestObject;
 		assertThat(condition3).isTrue();
@@ -93,7 +93,7 @@ public class AutoPopulatingListTests {
 	@Test
 	public void serialization() throws Exception {
 		AutoPopulatingList<?> list = new AutoPopulatingList<Object>(TestObject.class);
-		assertEquals(list, SerializationTestUtils.serializeAndDeserialize(list));
+		assertThat(SerializationTestUtils.serializeAndDeserialize(list)).isEqualTo(list);
 	}
 
 

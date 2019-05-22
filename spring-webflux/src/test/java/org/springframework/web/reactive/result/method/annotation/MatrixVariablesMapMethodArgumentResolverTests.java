@@ -96,7 +96,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 						param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
 		assertNotNull(map);
-		assertEquals("red", map.get("colors"));
+		assertThat((Object) map.get("colors")).isEqualTo("red");
 
 		param = this.testMethod
 				.annot(matrixAttribute().noPathVar())
@@ -107,7 +107,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 				(MultiValueMap<String, String>) this.resolver.resolveArgument(
 						param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
-		assertEquals(Arrays.asList("red", "green", "blue"), multivalueMap.get("colors"));
+		assertThat((Object) multivalueMap.get("colors")).isEqualTo(Arrays.asList("red", "green", "blue"));
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 				this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
 		assertNotNull(mapForPathVar);
-		assertEquals(Arrays.asList("red", "purple"), mapForPathVar.get("colors"));
+		assertThat((Object) mapForPathVar.get("colors")).isEqualTo(Arrays.asList("red", "purple"));
 
 		param = this.testMethod.annot(matrixAttribute().noName()).arg(Map.class, String.class, String.class);
 
@@ -137,7 +137,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 				this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
 		assertNotNull(mapAll);
-		assertEquals("red", mapAll.get("colors"));
+		assertThat((Object) mapAll.get("colors")).isEqualTo("red");
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> map = (Map<String, String>)
 				this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
-		assertEquals(Collections.emptyMap(), map);
+		assertThat((Object) map).isEqualTo(Collections.emptyMap());
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		Map<String, String> map = (Map<String, String>) this.resolver.resolveArgument(
 				param, new BindingContext(), this.exchange).block(Duration.ZERO);
 
-		assertEquals(Collections.emptyMap(), map);
+		assertThat((Object) map).isEqualTo(Collections.emptyMap());
 	}
 
 

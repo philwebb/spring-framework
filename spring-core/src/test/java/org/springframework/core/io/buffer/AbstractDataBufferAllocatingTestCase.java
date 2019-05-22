@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.buffer.support.DataBufferTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -96,7 +97,7 @@ public abstract class AbstractDataBufferAllocatingTestCase {
 			String value =
 					DataBufferTestUtils.dumpString(dataBuffer, StandardCharsets.UTF_8);
 			DataBufferUtils.release(dataBuffer);
-			assertEquals(expected, value);
+			assertThat((Object) value).isEqualTo(expected);
 		};
 	}
 

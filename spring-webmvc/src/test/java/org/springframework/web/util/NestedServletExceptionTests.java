@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import org.springframework.core.NestedExceptionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 
 public class NestedServletExceptionTests {
@@ -27,22 +28,22 @@ public class NestedServletExceptionTests {
 	@Test
 	public void testNestedServletExceptionString() {
 		NestedServletException exception = new NestedServletException("foo");
-		assertEquals("foo", exception.getMessage());
+		assertThat((Object) exception.getMessage()).isEqualTo("foo");
 	}
 
 	@Test
 	public void testNestedServletExceptionStringThrowable() {
 		Throwable cause = new RuntimeException();
 		NestedServletException exception = new NestedServletException("foo", cause);
-		assertEquals(NestedExceptionUtils.buildMessage("foo", cause), exception.getMessage());
-		assertEquals(cause, exception.getCause());
+		assertThat((Object) exception.getMessage()).isEqualTo(NestedExceptionUtils.buildMessage("foo", cause));
+		assertThat((Object) exception.getCause()).isEqualTo(cause);
 	}
 
 	@Test
 	public void testNestedServletExceptionStringNullThrowable() {
 		// This can happen if someone is sloppy with Throwable causes...
 		NestedServletException exception = new NestedServletException("foo", null);
-		assertEquals("foo", exception.getMessage());
+		assertThat((Object) exception.getMessage()).isEqualTo("foo");
 	}
 
 }
