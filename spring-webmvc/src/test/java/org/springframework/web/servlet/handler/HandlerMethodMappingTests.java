@@ -86,7 +86,7 @@ public class HandlerMethodMappingTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", key);
 		HandlerMethod result = this.mapping.getHandlerInternal(request);
-		assertThat((Object) result.getMethod()).isEqualTo(method1);
+		assertThat(result.getMethod()).isEqualTo(method1);
 		assertThat(request.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE)).isEqualTo(result);
 	}
 
@@ -97,7 +97,7 @@ public class HandlerMethodMappingTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
 		HandlerMethod result = this.mapping.getHandlerInternal(request);
-		assertThat((Object) result.getMethod()).isEqualTo(method1);
+		assertThat(result.getMethod()).isEqualTo(method1);
 		assertThat(request.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE)).isEqualTo(result);
 	}
 
@@ -142,7 +142,7 @@ public class HandlerMethodMappingTests {
 		List<String> directUrlMatches = this.mapping.getMappingRegistry().getMappingsByUrl(key1);
 		assertNotNull(directUrlMatches);
 		assertEquals(1, directUrlMatches.size());
-		assertThat((Object) directUrlMatches.get(0)).isEqualTo(key1);
+		assertThat(directUrlMatches.get(0)).isEqualTo(key1);
 
 		// Mapping name lookup
 
@@ -153,23 +153,23 @@ public class HandlerMethodMappingTests {
 		List<HandlerMethod> handlerMethods = this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(name1);
 		assertNotNull(handlerMethods);
 		assertEquals(1, handlerMethods.size());
-		assertThat((Object) handlerMethods.get(0)).isEqualTo(handlerMethod1);
+		assertThat(handlerMethods.get(0)).isEqualTo(handlerMethod1);
 
 		String name2 = this.method2.getName();
 		handlerMethods = this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(name2);
 		assertNotNull(handlerMethods);
 		assertEquals(1, handlerMethods.size());
-		assertThat((Object) handlerMethods.get(0)).isEqualTo(handlerMethod2);
+		assertThat(handlerMethods.get(0)).isEqualTo(handlerMethod2);
 
 		// CORS lookup
 
 		CorsConfiguration config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod1);
 		assertNotNull(config);
-		assertThat((Object) config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler.hashCode() + name1));
+		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler.hashCode() + name1));
 
 		config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod2);
 		assertNotNull(config);
-		assertThat((Object) config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler.hashCode() + name2));
+		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler.hashCode() + name2));
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class HandlerMethodMappingTests {
 		List<String> directUrlMatches = this.mapping.getMappingRegistry().getMappingsByUrl(key1);
 		assertNotNull(directUrlMatches);
 		assertEquals(1, directUrlMatches.size());
-		assertThat((Object) directUrlMatches.get(0)).isEqualTo(key1);
+		assertThat(directUrlMatches.get(0)).isEqualTo(key1);
 
 		// Mapping name lookup
 
@@ -200,18 +200,18 @@ public class HandlerMethodMappingTests {
 		List<HandlerMethod> handlerMethods = this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(name);
 		assertNotNull(handlerMethods);
 		assertEquals(2, handlerMethods.size());
-		assertThat((Object) handlerMethods.get(0)).isEqualTo(handlerMethod1);
-		assertThat((Object) handlerMethods.get(1)).isEqualTo(handlerMethod2);
+		assertThat(handlerMethods.get(0)).isEqualTo(handlerMethod1);
+		assertThat(handlerMethods.get(1)).isEqualTo(handlerMethod2);
 
 		// CORS lookup
 
 		CorsConfiguration config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod1);
 		assertNotNull(config);
-		assertThat((Object) config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler1.hashCode() + name));
+		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler1.hashCode() + name));
 
 		config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod2);
 		assertNotNull(config);
-		assertThat((Object) config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler2.hashCode() + name));
+		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + handler2.hashCode() + name));
 	}
 
 	@Test
@@ -245,7 +245,7 @@ public class HandlerMethodMappingTests {
 
 		CorsConfiguration config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod);
 		assertNotNull(config);
-		assertThat((Object) config.getAllowedOrigins().get(0)).isEqualTo(("http://" + beanName.hashCode() + this.method1.getName()));
+		assertThat(config.getAllowedOrigins().get(0)).isEqualTo(("http://" + beanName.hashCode() + this.method1.getName()));
 	}
 
 

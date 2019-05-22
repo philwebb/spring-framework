@@ -134,7 +134,7 @@ public class MethodInvocationProceedingJoinPointTests {
 			@Override
 			public void before(Method method, Object[] args, @Nullable Object target) throws Throwable {
 				SourceLocation sloc = AbstractAspectJAdvice.currentJoinPoint().getSourceLocation();
-				assertThat((Object) AbstractAspectJAdvice.currentJoinPoint().getSourceLocation()).as("Same source location must be returned on subsequent requests").isEqualTo(sloc);
+				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSourceLocation()).as("Same source location must be returned on subsequent requests").isEqualTo(sloc);
 				assertThat(sloc.getWithinType()).isEqualTo(TestBean.class);
 				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(sloc::getLine);
 				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(sloc::getFileName);
@@ -154,10 +154,10 @@ public class MethodInvocationProceedingJoinPointTests {
 			@Override
 			public void before(Method method, Object[] args, @Nullable Object target) throws Throwable {
 				StaticPart staticPart = AbstractAspectJAdvice.currentJoinPoint().getStaticPart();
-				assertThat((Object) AbstractAspectJAdvice.currentJoinPoint().getStaticPart()).as("Same static part must be returned on subsequent requests").isEqualTo(staticPart);
-				assertThat((Object) staticPart.getKind()).isEqualTo(ProceedingJoinPoint.METHOD_EXECUTION);
+				assertThat(AbstractAspectJAdvice.currentJoinPoint().getStaticPart()).as("Same static part must be returned on subsequent requests").isEqualTo(staticPart);
+				assertThat(staticPart.getKind()).isEqualTo(ProceedingJoinPoint.METHOD_EXECUTION);
 				assertSame(AbstractAspectJAdvice.currentJoinPoint().getSignature(), staticPart.getSignature());
-				assertThat((Object) staticPart.getSourceLocation()).isEqualTo(AbstractAspectJAdvice.currentJoinPoint().getSourceLocation());
+				assertThat(staticPart.getSourceLocation()).isEqualTo(AbstractAspectJAdvice.currentJoinPoint().getSourceLocation());
 			}
 		});
 		ITestBean itb = (ITestBean) pf.getProxy();
@@ -178,13 +178,13 @@ public class MethodInvocationProceedingJoinPointTests {
 				JoinPoint.StaticPart aspectJVersionJp = Factory.makeEncSJP(method);
 				JoinPoint jp = AbstractAspectJAdvice.currentJoinPoint();
 
-				assertThat((Object) jp.getSignature().toLongString()).isEqualTo(aspectJVersionJp.getSignature().toLongString());
-				assertThat((Object) jp.getSignature().toShortString()).isEqualTo(aspectJVersionJp.getSignature().toShortString());
-				assertThat((Object) jp.getSignature().toString()).isEqualTo(aspectJVersionJp.getSignature().toString());
+				assertThat(jp.getSignature().toLongString()).isEqualTo(aspectJVersionJp.getSignature().toLongString());
+				assertThat(jp.getSignature().toShortString()).isEqualTo(aspectJVersionJp.getSignature().toShortString());
+				assertThat(jp.getSignature().toString()).isEqualTo(aspectJVersionJp.getSignature().toString());
 
-				assertThat((Object) jp.toLongString()).isEqualTo(aspectJVersionJp.toLongString());
-				assertThat((Object) jp.toShortString()).isEqualTo(aspectJVersionJp.toShortString());
-				assertThat((Object) jp.toString()).isEqualTo(aspectJVersionJp.toString());
+				assertThat(jp.toLongString()).isEqualTo(aspectJVersionJp.toLongString());
+				assertThat(jp.toShortString()).isEqualTo(aspectJVersionJp.toShortString());
+				assertThat(jp.toString()).isEqualTo(aspectJVersionJp.toString());
 			}
 		});
 		ITestBean itb = (ITestBean) pf.getProxy();

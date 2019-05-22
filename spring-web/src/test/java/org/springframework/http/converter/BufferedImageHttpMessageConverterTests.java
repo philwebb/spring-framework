@@ -79,7 +79,7 @@ public class BufferedImageHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		MediaType contentType = new MediaType("image", "png");
 		converter.write(body, contentType, outputMessage);
-		assertThat((Object) outputMessage.getWrittenHeaders().getContentType()).as("Invalid content type").isEqualTo(contentType);
+		assertThat(outputMessage.getWrittenHeaders().getContentType()).as("Invalid content type").isEqualTo(contentType);
 		assertThat(outputMessage.getBodyAsBytes().length > 0).as("Invalid size").isTrue();
 		BufferedImage result = ImageIO.read(new ByteArrayInputStream(outputMessage.getBodyAsBytes()));
 		assertEquals("Invalid height", 500, result.getHeight());
@@ -94,7 +94,7 @@ public class BufferedImageHttpMessageConverterTests {
 		BufferedImage body = ImageIO.read(logo.getFile());
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(body, new MediaType("*", "*"), outputMessage);
-		assertThat((Object) outputMessage.getWrittenHeaders().getContentType()).as("Invalid content type").isEqualTo(contentType);
+		assertThat(outputMessage.getWrittenHeaders().getContentType()).as("Invalid content type").isEqualTo(contentType);
 		assertThat(outputMessage.getBodyAsBytes().length > 0).as("Invalid size").isTrue();
 		BufferedImage result = ImageIO.read(new ByteArrayInputStream(outputMessage.getBodyAsBytes()));
 		assertEquals("Invalid height", 500, result.getHeight());

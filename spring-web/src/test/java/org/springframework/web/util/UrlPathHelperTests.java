@@ -48,7 +48,7 @@ public class UrlPathHelperTests {
 		request.setContextPath("/petclinic");
 		request.setRequestURI("/petclinic/welcome.html");
 
-		assertThat((Object) helper.getPathWithinApplication(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
+		assertThat(helper.getPathWithinApplication(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class UrlPathHelperTests {
 		request.setContextPath("/petclinic");
 		request.setRequestURI("/petclinic");
 
-		assertThat((Object) helper.getPathWithinApplication(request)).as("Incorrect root path returned").isEqualTo("/");
+		assertThat(helper.getPathWithinApplication(request)).as("Incorrect root path returned").isEqualTo("/");
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class UrlPathHelperTests {
 		request.setContextPath("/");
 		request.setRequestURI("/welcome.html");
 
-		assertThat((Object) helper.getPathWithinApplication(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
+		assertThat(helper.getPathWithinApplication(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/main");
 		request.setRequestURI("/petclinic/main/welcome.html");
 
-		assertThat((Object) helper.getPathWithinServletMapping(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
+		assertThat(helper.getPathWithinServletMapping(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/main");
 		request.setRequestURI("/petclinic/main/welcome.html");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).as("Incorrect path returned").isEqualTo("/main/welcome.html");
+		assertThat(helper.getLookupPathForRequest(request)).as("Incorrect path returned").isEqualTo("/main/welcome.html");
 	}
 
 	// SPR-11101
@@ -97,19 +97,19 @@ public class UrlPathHelperTests {
 		helper.setUrlDecode(false);
 		String actual = helper.getPathWithinServletMapping(request);
 
-		assertThat((Object) actual).isEqualTo("/test_url_decoding/a%2Fb");
+		assertThat(actual).isEqualTo("/test_url_decoding/a%2Fb");
 	}
 
 	@Test
 	public void getRequestUri() {
 		request.setRequestURI("/welcome.html");
-		assertThat((Object) helper.getRequestUri(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
+		assertThat(helper.getRequestUri(request)).as("Incorrect path returned").isEqualTo("/welcome.html");
 
 		request.setRequestURI("/foo%20bar");
-		assertThat((Object) helper.getRequestUri(request)).as("Incorrect path returned").isEqualTo("/foo bar");
+		assertThat(helper.getRequestUri(request)).as("Incorrect path returned").isEqualTo("/foo bar");
 
 		request.setRequestURI("/foo+bar");
-		assertThat((Object) helper.getRequestUri(request)).as("Incorrect path returned").isEqualTo("/foo+bar");
+		assertThat(helper.getRequestUri(request)).as("Incorrect path returned").isEqualTo("/foo+bar");
 	}
 
 	@Test
@@ -117,14 +117,14 @@ public class UrlPathHelperTests {
 		helper.setRemoveSemicolonContent(true);
 
 		request.setRequestURI("/foo;f=F;o=O;o=O/bar;b=B;a=A;r=R");
-		assertThat((Object) helper.getRequestUri(request)).isEqualTo("/foo/bar");
+		assertThat(helper.getRequestUri(request)).isEqualTo("/foo/bar");
 
 		// SPR-13455
 
 		request.setServletPath("/foo/1");
 		request.setRequestURI("/foo/;test/1");
 
-		assertThat((Object) helper.getRequestUri(request)).isEqualTo("/foo/1");
+		assertThat(helper.getRequestUri(request)).isEqualTo("/foo/1");
 	}
 
 	@Test
@@ -132,18 +132,18 @@ public class UrlPathHelperTests {
 		helper.setRemoveSemicolonContent(false);
 
 		request.setRequestURI("/foo;a=b;c=d");
-		assertThat((Object) helper.getRequestUri(request)).isEqualTo("/foo;a=b;c=d");
+		assertThat(helper.getRequestUri(request)).isEqualTo("/foo;a=b;c=d");
 
 		request.setRequestURI("/foo;jsessionid=c0o7fszeb1");
-		assertThat((Object) helper.getRequestUri(request)).as("jsessionid should always be removed").isEqualTo("/foo");
+		assertThat(helper.getRequestUri(request)).as("jsessionid should always be removed").isEqualTo("/foo");
 
 		request.setRequestURI("/foo;a=b;jsessionid=c0o7fszeb1;c=d");
-		assertThat((Object) helper.getRequestUri(request)).as("jsessionid should always be removed").isEqualTo("/foo;a=b;c=d");
+		assertThat(helper.getRequestUri(request)).as("jsessionid should always be removed").isEqualTo("/foo;a=b;c=d");
 
 		// SPR-10398
 
 		request.setRequestURI("/foo;a=b;JSESSIONID=c0o7fszeb1;c=d");
-		assertThat((Object) helper.getRequestUri(request)).as("JSESSIONID should always be removed").isEqualTo("/foo;a=b;c=d");
+		assertThat(helper.getRequestUri(request)).as("JSESSIONID should always be removed").isEqualTo("/foo;a=b;c=d");
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/main");
 		request.setRequestURI("/petclinic;a=b/main;b=c/welcome.html;c=d");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/welcome.html;c=d");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/welcome.html;c=d");
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/welcome.html");
 		request.setRequestURI("/petclinic;a=b/welcome.html;c=d");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/welcome.html;c=d");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/welcome.html;c=d");
 	}
 
 
@@ -185,7 +185,7 @@ public class UrlPathHelperTests {
 		request.setPathInfo(null);
 		request.setServletPath("/");
 		request.setRequestURI("/test/");
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/");
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/foo");
 		request.setRequestURI("/test/foo");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo");
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/foo/");
 		request.setRequestURI("/test/foo/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
 	}
 
 	//SPR-12372 & SPR-13455
@@ -216,18 +216,18 @@ public class UrlPathHelperTests {
 		request.setServletPath("/foo/bar/");
 		request.setRequestURI("/SPR-12372/foo//bar/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo/bar/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo/bar/");
 
 		request.setServletPath("/foo/bar/");
 		request.setRequestURI("/SPR-12372/foo/bar//");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo/bar/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo/bar/");
 
 		// "normal" case
 		request.setServletPath("/foo/bar//");
 		request.setRequestURI("/SPR-12372/foo/bar//");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo/bar//");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo/bar//");
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class UrlPathHelperTests {
 		request.setRequestURI("/test/");
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/test/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/");
 	}
 
 	@Test
@@ -255,7 +255,7 @@ public class UrlPathHelperTests {
 		request.setRequestURI("/test/foo");
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/test/foo");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo");
 	}
 
 	@Test
@@ -272,7 +272,7 @@ public class UrlPathHelperTests {
 		request.setRequestURI("/test/foo/");
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/test/foo/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
 	}
 
 	@Test
@@ -299,7 +299,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/foo");
 		request.setRequestURI("/test/foo/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/");
 	}
 
 	// test the root mapping for /foo/* w/o a trailing slash - <host>/<context>/foo
@@ -310,7 +310,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/foo");
 		request.setRequestURI("/test/foo");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/");
 	}
 
 	@Test
@@ -320,7 +320,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/foo");
 		request.setRequestURI("/test/foo/foo");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo");
 	}
 
 	@Test
@@ -330,7 +330,7 @@ public class UrlPathHelperTests {
 		request.setServletPath("/foo");
 		request.setRequestURI("/test/foo/foo/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
 	}
 
 	@Test
@@ -341,7 +341,7 @@ public class UrlPathHelperTests {
 		request.setRequestURI("/test/foo/");
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/test/foo/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/");
 	}
 
 	@Test
@@ -360,7 +360,7 @@ public class UrlPathHelperTests {
 		request.setRequestURI("/test/foo");
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/test/foo");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/");
 	}
 
 	@Ignore
@@ -378,7 +378,7 @@ public class UrlPathHelperTests {
 		request.setRequestURI("/test/foo/foo");
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/test/foo/foo");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo");
 	}
 
 	@Test
@@ -395,7 +395,7 @@ public class UrlPathHelperTests {
 		request.setRequestURI("/test/foo/foo/");
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/test/foo/foo/");
 
-		assertThat((Object) helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
+		assertThat(helper.getLookupPathForRequest(request)).isEqualTo("/foo/");
 	}
 
 	@Test
@@ -408,20 +408,20 @@ public class UrlPathHelperTests {
 	public void getOriginatingRequestUri() {
 		request.setAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE, "/path");
 		request.setRequestURI("/forwarded");
-		assertThat((Object) helper.getOriginatingRequestUri(request)).isEqualTo("/path");
+		assertThat(helper.getOriginatingRequestUri(request)).isEqualTo("/path");
 	}
 
 	@Test
 	public void getOriginatingRequestUriWebsphere() {
 		request.setAttribute(WEBSPHERE_URI_ATTRIBUTE, "/path");
 		request.setRequestURI("/forwarded");
-		assertThat((Object) helper.getOriginatingRequestUri(request)).isEqualTo("/path");
+		assertThat(helper.getOriginatingRequestUri(request)).isEqualTo("/path");
 	}
 
 	@Test
 	public void getOriginatingRequestUriDefault() {
 		request.setRequestURI("/forwarded");
-		assertThat((Object) helper.getOriginatingRequestUri(request)).isEqualTo("/forwarded");
+		assertThat(helper.getOriginatingRequestUri(request)).isEqualTo("/forwarded");
 	}
 
 	@Test
@@ -429,13 +429,13 @@ public class UrlPathHelperTests {
 		request.setQueryString("forward=on");
 		request.setAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE, "/path");
 		request.setAttribute(WebUtils.FORWARD_QUERY_STRING_ATTRIBUTE, "original=on");
-		assertThat((Object) this.helper.getOriginatingQueryString(request)).isEqualTo("original=on");
+		assertThat(this.helper.getOriginatingQueryString(request)).isEqualTo("original=on");
 	}
 
 	@Test
 	public void getOriginatingQueryStringNotPresent() {
 		request.setQueryString("forward=true");
-		assertThat((Object) this.helper.getOriginatingQueryString(request)).isEqualTo("forward=true");
+		assertThat(this.helper.getOriginatingQueryString(request)).isEqualTo("forward=true");
 	}
 
 	@Test

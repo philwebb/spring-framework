@@ -46,8 +46,8 @@ public class WebApplicationObjectSupportTests {
 		wac.registerBeanDefinition("test", new RootBeanDefinition(TestWebApplicationObject.class));
 		wac.refresh();
 		WebApplicationObjectSupport wao = (WebApplicationObjectSupport) wac.getBean("test");
-		assertThat((Object) wac.getServletContext()).isEqualTo(wao.getServletContext());
-		assertThat((Object) tempDir).isEqualTo(wao.getTempDir());
+		assertThat(wac.getServletContext()).isEqualTo(wao.getServletContext());
+		assertThat(tempDir).isEqualTo(wao.getTempDir());
 	}
 
 	@Test

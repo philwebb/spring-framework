@@ -46,14 +46,14 @@ public class WebFluxResponseStatusExceptionHandlerTests extends ResponseStatusEx
 	public void handleAnnotatedException() {
 		Throwable ex = new CustomException();
 		this.handler.handle(this.exchange, ex).block(Duration.ofSeconds(5));
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.I_AM_A_TEAPOT);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.I_AM_A_TEAPOT);
 	}
 
 	@Test
 	public void handleNestedAnnotatedException() {
 		Throwable ex = new Exception(new CustomException());
 		this.handler.handle(this.exchange, ex).block(Duration.ofSeconds(5));
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.I_AM_A_TEAPOT);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.I_AM_A_TEAPOT);
 	}
 
 

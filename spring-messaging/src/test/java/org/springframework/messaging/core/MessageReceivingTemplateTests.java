@@ -54,7 +54,7 @@ public class MessageReceivingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		Message<?> actual = this.template.receive();
 
-		assertThat((Object) this.template.destination).isEqualTo("home");
+		assertThat(this.template.destination).isEqualTo("home");
 		assertSame(expected, actual);
 	}
 
@@ -70,7 +70,7 @@ public class MessageReceivingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		Message<?> actual = this.template.receive("somewhere");
 
-		assertThat((Object) this.template.destination).isEqualTo("somewhere");
+		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertSame(expected, actual);
 	}
 
@@ -81,7 +81,7 @@ public class MessageReceivingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		String payload = this.template.receiveAndConvert(String.class);
 
-		assertThat((Object) this.template.destination).isEqualTo("home");
+		assertThat(this.template.destination).isEqualTo("home");
 		assertSame("payload", payload);
 	}
 
@@ -91,7 +91,7 @@ public class MessageReceivingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		String payload = this.template.receiveAndConvert("somewhere", String.class);
 
-		assertThat((Object) this.template.destination).isEqualTo("somewhere");
+		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertSame("payload", payload);
 	}
 

@@ -112,7 +112,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
 		assertNotNull("constructor dependency should have been autowired", bean.getConstructorDependency());
-		assertThat((Object) bean.getConstructorDependency().getName()).isEqualTo("cd");
+		assertThat(bean.getConstructorDependency().getName()).isEqualTo("cd");
 		assertNull("property dependencies should not have been autowired", bean.getPropertyDependency1());
 		assertNull("property dependencies should not have been autowired", bean.getPropertyDependency2());
 	}
@@ -136,7 +136,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		assertNull("constructor dependency should not have been autowired", bean.getConstructorDependency());
 		assertNull("propertyDependency1 should not have been autowired", bean.getPropertyDependency1());
 		assertNotNull("propertyDependency2 should have been autowired", bean.getPropertyDependency2());
-		assertThat((Object) bean.getPropertyDependency2().getName()).isEqualTo("pd2");
+		assertThat(bean.getPropertyDependency2().getName()).isEqualTo("pd2");
 	}
 
 	@Test

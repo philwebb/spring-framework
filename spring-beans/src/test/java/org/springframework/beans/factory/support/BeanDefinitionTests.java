@@ -152,11 +152,11 @@ public class BeanDefinitionTests {
 		mergedBd.overrideFrom(childBd);
 		assertEquals(2, mergedBd.getConstructorArgumentValues().getArgumentCount());
 		assertEquals(2, mergedBd.getPropertyValues().size());
-		assertThat((Object) mergedBd).isEqualTo(bd);
+		assertThat(mergedBd).isEqualTo(bd);
 
 		mergedBd.getConstructorArgumentValues().getArgumentValue(1, null).setValue(new Integer(9));
 		assertThat(bd.getConstructorArgumentValues().getArgumentValue(1, null).getValue()).isEqualTo(new Integer(5));
-		assertThat((Object) bd.getQualifiedElement()).isEqualTo(getClass());
+		assertThat(bd.getQualifiedElement()).isEqualTo(getClass());
 	}
 
 }

@@ -53,7 +53,7 @@ public class ParameterizableViewControllerTests {
 		String viewName = "testView";
 		this.controller.setViewName(viewName);
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
-		assertThat((Object) mav.getViewName()).isEqualTo(viewName);
+		assertThat(mav.getViewName()).isEqualTo(viewName);
 		assertThat(mav.getModel().isEmpty()).isTrue();
 	}
 
@@ -79,7 +79,7 @@ public class ParameterizableViewControllerTests {
 		ModelAndView mav = this.controller.handleRequest(this.request, response);
 
 		assertNull(mav);
-		assertThat((Object) response.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
+		assertThat(response.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 	}
 
 }

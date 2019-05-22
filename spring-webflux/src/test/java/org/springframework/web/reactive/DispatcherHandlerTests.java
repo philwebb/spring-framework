@@ -70,7 +70,7 @@ public class DispatcherHandlerTests {
 
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
 		dispatcherHandler.handle(exchange).block(Duration.ofSeconds(0));
-		assertThat((Object) exchange.getResponse().getBodyAsString().block(Duration.ofSeconds(5))).isEqualTo("1");
+		assertThat(exchange.getResponse().getBodyAsString().block(Duration.ofSeconds(5))).isEqualTo("1");
 	}
 
 

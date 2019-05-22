@@ -99,7 +99,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerPathMatchFoo"));
 
-		assertThat((Object) this.testController.method).isEqualTo("pathMatchWildcard");
+		assertThat(this.testController.method).isEqualTo("pathMatchWildcard");
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/bestmatch/bar/path"));
 
-		assertThat((Object) this.testController.method).isEqualTo("bestMatch");
+		assertThat(this.testController.method).isEqualTo("bestMatch");
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerArgumentResolver"));
 
-		assertThat((Object) this.testController.method).isEqualTo("handlerArgumentResolver");
+		assertThat(this.testController.method).isEqualTo("handlerArgumentResolver");
 		assertNotNull(this.testController.arguments.get("message"));
 	}
 
@@ -130,7 +130,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerThrowsExc"));
 
-		assertThat((Object) this.testController.method).isEqualTo("illegalStateException");
+		assertThat(this.testController.method).isEqualTo("illegalStateException");
 		assertNotNull(this.testController.arguments.get("exception"));
 	}
 

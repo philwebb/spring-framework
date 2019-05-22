@@ -73,7 +73,7 @@ public class ResourceHttpMessageConverterTests {
 				ContentDisposition.builder("attachment").filename("yourlogo.jpg").build());
 		Resource actualResource = converter.read(Resource.class, inputMessage);
 		assertThat(FileCopyUtils.copyToByteArray(actualResource.getInputStream())).isEqualTo(body);
-		assertThat((Object) actualResource.getFilename()).isEqualTo("yourlogo.jpg");
+		assertThat(actualResource.getFilename()).isEqualTo("yourlogo.jpg");
 	}
 
 	@Test  // SPR-13443
@@ -86,7 +86,7 @@ public class ResourceHttpMessageConverterTests {
 			Resource actualResource = converter.read(InputStreamResource.class, inputMessage);
 			assertThat(actualResource).isInstanceOf(InputStreamResource.class);
 			assertThat(actualResource.getInputStream()).isEqualTo(body);
-			assertThat((Object) actualResource.getFilename()).isEqualTo("yourlogo.jpg");
+			assertThat(actualResource.getFilename()).isEqualTo("yourlogo.jpg");
 		}
 	}
 
@@ -107,7 +107,7 @@ public class ResourceHttpMessageConverterTests {
 		Resource body = new ClassPathResource("logo.jpg", getClass());
 		converter.write(body, null, outputMessage);
 
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(MediaType.IMAGE_JPEG);
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(MediaType.IMAGE_JPEG);
 		assertEquals("Invalid content-length", body.getFile().length(), outputMessage.getHeaders().getContentLength());
 	}
 

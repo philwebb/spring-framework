@@ -87,7 +87,7 @@ public class PayloadMethodArgumentResolverTests {
 
 		StepVerifier.create(mono)
 				.consumeErrorWith(ex -> {
-					assertThat((Object) ex.getClass()).isEqualTo(MethodArgumentResolutionException.class);
+					assertThat(ex.getClass()).isEqualTo(MethodArgumentResolutionException.class);
 					assertThat(ex.getMessage().contains("Payload content is missing")).as(ex.getMessage()).isTrue();
 				})
 				.verify();
@@ -117,7 +117,7 @@ public class PayloadMethodArgumentResolverTests {
 		Flux<Object> flux = resolveValue(param,
 				Flux.fromIterable(body).delayElements(Duration.ofMillis(10)).map(this::toDataBuffer), null);
 
-		assertThat((Object) flux.collectList().block()).isEqualTo(body);
+		assertThat(flux.collectList().block()).isEqualTo(body);
 	}
 
 	@Test

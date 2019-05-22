@@ -37,10 +37,10 @@ public class GroovyMarkupViewResolverTests {
 	@Test
 	public void viewClass() throws Exception {
 		GroovyMarkupViewResolver resolver = new GroovyMarkupViewResolver();
-		assertThat((Object) resolver.requiredViewClass()).isEqualTo(GroovyMarkupView.class);
+		assertThat(resolver.requiredViewClass()).isEqualTo(GroovyMarkupView.class);
 		DirectFieldAccessor viewAccessor = new DirectFieldAccessor(resolver);
 		Class<?> viewClass = (Class<?>) viewAccessor.getPropertyValue("viewClass");
-		assertThat((Object) viewClass).isEqualTo(GroovyMarkupView.class);
+		assertThat(viewClass).isEqualTo(GroovyMarkupView.class);
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class GroovyMarkupViewResolverTests {
 		GroovyMarkupViewResolver resolver = new GroovyMarkupViewResolver();
 		String cacheKey = (String) resolver.getCacheKey("test", Locale.US);
 		assertNotNull(cacheKey);
-		assertThat((Object) cacheKey).isEqualTo("test_en_US");
+		assertThat(cacheKey).isEqualTo("test_en_US");
 	}
 
 }

@@ -62,8 +62,8 @@ public class InvocableHandlerMethodTests {
 		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
 		assertEquals(1, getStubResolver(1).getResolvedParameters().size());
 		assertThat(value).isEqualTo("99-value");
-		assertThat((Object) getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("intArg");
-		assertThat((Object) getStubResolver(1).getResolvedParameters().get(0).getParameterName()).isEqualTo("stringArg");
+		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("intArg");
+		assertThat(getStubResolver(1).getResolvedParameters().get(0).getParameterName()).isEqualTo("stringArg");
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class InvocableHandlerMethodTests {
 		Object value = invokeAndBlock(new Handler(), method, 99, "value");
 
 		assertNotNull(value);
-		assertThat((Object) value.getClass()).isEqualTo(String.class);
+		assertThat(value.getClass()).isEqualTo(String.class);
 		assertThat(value).isEqualTo("99-value");
 	}
 
@@ -147,8 +147,8 @@ public class InvocableHandlerMethodTests {
 
 		assertNull(value);
 		assertEquals(1, getStubResolver(0).getResolvedParameters().size());
-		assertThat((Object) handler.getResult()).isEqualTo("5.25");
-		assertThat((Object) getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("amount");
+		assertThat(handler.getResult()).isEqualTo("5.25");
+		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("amount");
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class InvocableHandlerMethodTests {
 		Object value = invokeAndBlock(handler, method);
 
 		assertNull(value);
-		assertThat((Object) handler.getResult()).isEqualTo("success");
+		assertThat(handler.getResult()).isEqualTo("success");
 	}
 
 

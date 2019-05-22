@@ -46,13 +46,13 @@ public class YamlProcessorTests {
 		this.processor.process((properties, map) -> {
 			assertEquals(4, properties.size());
 			assertThat(properties.get("foo")).isEqualTo("bar");
-			assertThat((Object) properties.getProperty("foo")).isEqualTo("bar");
+			assertThat(properties.getProperty("foo")).isEqualTo("bar");
 			assertThat(properties.get("bar[0]")).isEqualTo(1);
-			assertThat((Object) properties.getProperty("bar[0]")).isEqualTo("1");
+			assertThat(properties.getProperty("bar[0]")).isEqualTo("1");
 			assertThat(properties.get("bar[1]")).isEqualTo(2);
-			assertThat((Object) properties.getProperty("bar[1]")).isEqualTo("2");
+			assertThat(properties.getProperty("bar[1]")).isEqualTo("2");
 			assertThat(properties.get("bar[2]")).isEqualTo(3);
-			assertThat((Object) properties.getProperty("bar[2]")).isEqualTo("3");
+			assertThat(properties.getProperty("bar[2]")).isEqualTo("3");
 		});
 	}
 

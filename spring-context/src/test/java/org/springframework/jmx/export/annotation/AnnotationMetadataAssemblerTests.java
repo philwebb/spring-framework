@@ -67,17 +67,17 @@ public class AnnotationMetadataAssemblerTests extends AbstractMetadataAssemblerT
 		Object bean = getContext().getBean("testInterfaceBean");
 		ModelMBeanInfo inf = getAssembler().getMBeanInfo(bean, "bean:name=interfaceTestBean");
 		assertNotNull(inf);
-		assertThat((Object) inf.getDescription()).isEqualTo("My Managed Bean");
+		assertThat(inf.getDescription()).isEqualTo("My Managed Bean");
 
 		ModelMBeanOperationInfo op = inf.getOperation("foo");
 		assertNotNull("foo operation not exposed", op);
-		assertThat((Object) op.getDescription()).isEqualTo("invoke foo");
+		assertThat(op.getDescription()).isEqualTo("invoke foo");
 
 		assertNull("doNotExpose operation should not be exposed", inf.getOperation("doNotExpose"));
 
 		ModelMBeanAttributeInfo attr = inf.getAttribute("Bar");
 		assertNotNull("bar attribute not exposed", attr);
-		assertThat((Object) attr.getDescription()).isEqualTo("Bar description");
+		assertThat(attr.getDescription()).isEqualTo("Bar description");
 
 		ModelMBeanAttributeInfo attr2 = inf.getAttribute("CacheEntries");
 		assertNotNull("cacheEntries attribute not exposed", attr2);

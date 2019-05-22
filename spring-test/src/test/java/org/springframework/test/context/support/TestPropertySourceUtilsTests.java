@@ -167,7 +167,7 @@ public class TestPropertySourceUtilsTests {
 
 		addPropertiesFilesToEnvironment(environment, resourceLoader, FOO_LOCATIONS);
 		assertEquals(1, propertySources.size());
-		assertThat((Object) environment.getProperty("key")).isEqualTo("value");
+		assertThat(environment.getProperty("key")).isEqualTo("value");
 	}
 
 	@Test

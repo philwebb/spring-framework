@@ -36,7 +36,7 @@ public class ConstantsTests {
 	@Test
 	public void constants() {
 		Constants c = new Constants(A.class);
-		assertThat((Object) c.getClassName()).isEqualTo(A.class.getName());
+		assertThat(c.getClassName()).isEqualTo(A.class.getName());
 		assertEquals(9, c.getSize());
 
 		assertEquals(A.DOG, c.asNumber("DOG").intValue());
@@ -146,44 +146,44 @@ public class ConstantsTests {
 	public void toCode() {
 		Constants c = new Constants(A.class);
 
-		assertThat((Object) c.toCode(Integer.valueOf(0), "")).isEqualTo("DOG");
-		assertThat((Object) c.toCode(Integer.valueOf(0), "D")).isEqualTo("DOG");
-		assertThat((Object) c.toCode(Integer.valueOf(0), "DO")).isEqualTo("DOG");
-		assertThat((Object) c.toCode(Integer.valueOf(0), "DoG")).isEqualTo("DOG");
-		assertThat((Object) c.toCode(Integer.valueOf(0), null)).isEqualTo("DOG");
-		assertThat((Object) c.toCode(Integer.valueOf(66), "")).isEqualTo("CAT");
-		assertThat((Object) c.toCode(Integer.valueOf(66), "C")).isEqualTo("CAT");
-		assertThat((Object) c.toCode(Integer.valueOf(66), "ca")).isEqualTo("CAT");
-		assertThat((Object) c.toCode(Integer.valueOf(66), "cAt")).isEqualTo("CAT");
-		assertThat((Object) c.toCode(Integer.valueOf(66), null)).isEqualTo("CAT");
-		assertThat((Object) c.toCode("", "")).isEqualTo("S1");
-		assertThat((Object) c.toCode("", "s")).isEqualTo("S1");
-		assertThat((Object) c.toCode("", "s1")).isEqualTo("S1");
-		assertThat((Object) c.toCode("", null)).isEqualTo("S1");
+		assertThat(c.toCode(Integer.valueOf(0), "")).isEqualTo("DOG");
+		assertThat(c.toCode(Integer.valueOf(0), "D")).isEqualTo("DOG");
+		assertThat(c.toCode(Integer.valueOf(0), "DO")).isEqualTo("DOG");
+		assertThat(c.toCode(Integer.valueOf(0), "DoG")).isEqualTo("DOG");
+		assertThat(c.toCode(Integer.valueOf(0), null)).isEqualTo("DOG");
+		assertThat(c.toCode(Integer.valueOf(66), "")).isEqualTo("CAT");
+		assertThat(c.toCode(Integer.valueOf(66), "C")).isEqualTo("CAT");
+		assertThat(c.toCode(Integer.valueOf(66), "ca")).isEqualTo("CAT");
+		assertThat(c.toCode(Integer.valueOf(66), "cAt")).isEqualTo("CAT");
+		assertThat(c.toCode(Integer.valueOf(66), null)).isEqualTo("CAT");
+		assertThat(c.toCode("", "")).isEqualTo("S1");
+		assertThat(c.toCode("", "s")).isEqualTo("S1");
+		assertThat(c.toCode("", "s1")).isEqualTo("S1");
+		assertThat(c.toCode("", null)).isEqualTo("S1");
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->
 				c.toCode("bogus", "bogus"));
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->
 				c.toCode("bogus", null));
 
-		assertThat((Object) c.toCodeForProperty(Integer.valueOf(1), "myProperty")).isEqualTo("MY_PROPERTY_NO");
-		assertThat((Object) c.toCodeForProperty(Integer.valueOf(2), "myProperty")).isEqualTo("MY_PROPERTY_YES");
+		assertThat(c.toCodeForProperty(Integer.valueOf(1), "myProperty")).isEqualTo("MY_PROPERTY_NO");
+		assertThat(c.toCodeForProperty(Integer.valueOf(2), "myProperty")).isEqualTo("MY_PROPERTY_YES");
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->
 				c.toCodeForProperty("bogus", "bogus"));
 
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(0), "")).isEqualTo("DOG");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(0), "G")).isEqualTo("DOG");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(0), "OG")).isEqualTo("DOG");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(0), "DoG")).isEqualTo("DOG");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(0), null)).isEqualTo("DOG");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(66), "")).isEqualTo("CAT");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(66), "T")).isEqualTo("CAT");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(66), "at")).isEqualTo("CAT");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(66), "cAt")).isEqualTo("CAT");
-		assertThat((Object) c.toCodeForSuffix(Integer.valueOf(66), null)).isEqualTo("CAT");
-		assertThat((Object) c.toCodeForSuffix("", "")).isEqualTo("S1");
-		assertThat((Object) c.toCodeForSuffix("", "1")).isEqualTo("S1");
-		assertThat((Object) c.toCodeForSuffix("", "s1")).isEqualTo("S1");
-		assertThat((Object) c.toCodeForSuffix("", null)).isEqualTo("S1");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(0), "")).isEqualTo("DOG");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(0), "G")).isEqualTo("DOG");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(0), "OG")).isEqualTo("DOG");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(0), "DoG")).isEqualTo("DOG");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(0), null)).isEqualTo("DOG");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(66), "")).isEqualTo("CAT");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(66), "T")).isEqualTo("CAT");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(66), "at")).isEqualTo("CAT");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(66), "cAt")).isEqualTo("CAT");
+		assertThat(c.toCodeForSuffix(Integer.valueOf(66), null)).isEqualTo("CAT");
+		assertThat(c.toCodeForSuffix("", "")).isEqualTo("S1");
+		assertThat(c.toCodeForSuffix("", "1")).isEqualTo("S1");
+		assertThat(c.toCodeForSuffix("", "s1")).isEqualTo("S1");
+		assertThat(c.toCodeForSuffix("", null)).isEqualTo("S1");
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->
 				c.toCodeForSuffix("bogus", "bogus"));
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->

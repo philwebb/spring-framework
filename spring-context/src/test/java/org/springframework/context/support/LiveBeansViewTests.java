@@ -106,7 +106,7 @@ public class LiveBeansViewTests {
 	public void assertSingleLiveBeansViewMbean(String applicationName) throws MalformedObjectNameException {
 		Set<ObjectName> objectNames = searchLiveBeansViewMeans();
 		assertEquals(1, objectNames.size());
-		assertThat((Object) objectNames.iterator().next().getCanonicalName()).as("Wrong MBean name").isEqualTo(String.format("%s:application=%s", this.name.getMethodName(), applicationName));
+		assertThat(objectNames.iterator().next().getCanonicalName()).as("Wrong MBean name").isEqualTo(String.format("%s:application=%s", this.name.getMethodName(), applicationName));
 
 	}
 

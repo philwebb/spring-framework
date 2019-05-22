@@ -135,7 +135,7 @@ public class MockServerTests {
 				.expectHeader().valueEquals(HttpHeaders.SET_COOKIE, "a=alpha; Path=/pathA", "b=beta; Path=/pathB")
 				.expectBody().isEmpty();
 
-		assertThat((Object) result.getRequestHeaders().get(HttpHeaders.COOKIE)).isEqualTo(Arrays.asList("a=alpha", "b=beta"));
+		assertThat(result.getRequestHeaders().get(HttpHeaders.COOKIE)).isEqualTo(Arrays.asList("a=alpha", "b=beta"));
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class MockServerTests {
 		byte[] bytes = result.getResponseBodyContent();
 
 		assertNotNull(bytes);
-		assertThat((Object) new String(bytes, UTF_8)).isEqualTo("body");
+		assertThat(new String(bytes, UTF_8)).isEqualTo("body");
 	}
 
 

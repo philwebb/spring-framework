@@ -118,7 +118,7 @@ public class DataBinderFieldAccessTests {
 		binder.bind(pvs);
 		binder.close();
 
-		assertThat((Object) rod.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(rod.getSpouse().getName()).isEqualTo("Kerry");
 		assertThat((rod.getSpouse()).isJedi()).isTrue();
 	}
 

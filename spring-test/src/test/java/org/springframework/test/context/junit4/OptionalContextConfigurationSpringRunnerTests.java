@@ -44,7 +44,7 @@ public class OptionalContextConfigurationSpringRunnerTests {
 
 	@Test
 	public void contextConfigurationAnnotationIsOptional() {
-		assertThat((Object) foo).isEqualTo("foo");
+		assertThat(foo).isEqualTo("foo");
 	}
 
 

@@ -287,15 +287,15 @@ public class EvaluationTests extends AbstractExpressionTests {
 		// repeated evaluation to drive use of cached executor
 		SpelExpression e = (SpelExpression) parser.parseExpression("new String('wibble')");
 		String newString = e.getValue(String.class);
-		assertThat((Object) newString).isEqualTo("wibble");
+		assertThat(newString).isEqualTo("wibble");
 		newString = e.getValue(String.class);
-		assertThat((Object) newString).isEqualTo("wibble");
+		assertThat(newString).isEqualTo("wibble");
 
 		// not writable
 		assertThat(e.isWritable(new StandardEvaluationContext())).isFalse();
 
 		// ast
-		assertThat((Object) e.toStringAST()).isEqualTo("new String('wibble')");
+		assertThat(e.toStringAST()).isEqualTo("new String('wibble')");
 	}
 
 	// unary expressions
@@ -454,10 +454,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 	public void testTypeReferencesAndQualifiedIdentifierCaching() {
 		SpelExpression e = (SpelExpression) parser.parseExpression("T(java.lang.String)");
 		assertThat(e.isWritable(new StandardEvaluationContext())).isFalse();
-		assertThat((Object) e.toStringAST()).isEqualTo("T(java.lang.String)");
+		assertThat(e.toStringAST()).isEqualTo("T(java.lang.String)");
 		assertThat(e.getValue(Class.class)).isEqualTo(String.class);
 		// use cached QualifiedIdentifier:
-		assertThat((Object) e.toStringAST()).isEqualTo("T(java.lang.String)");
+		assertThat(e.toStringAST()).isEqualTo("T(java.lang.String)");
 		assertThat(e.getValue(Class.class)).isEqualTo(String.class);
 	}
 
@@ -555,7 +555,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 	@Test
 	public void testResolvingString() {
 		Class<?> stringClass = parser.parseExpression("T(String)").getValue(Class.class);
-		assertThat((Object) stringClass).isEqualTo(String.class);
+		assertThat(stringClass).isEqualTo(String.class);
 	}
 
 	/**
@@ -570,20 +570,20 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser(config);
 		Expression e = parser.parseExpression("name");
 		e.setValue(context, "Oleg");
-		assertThat((Object) person.getName()).isEqualTo("Oleg");
+		assertThat(person.getName()).isEqualTo("Oleg");
 
 		e = parser.parseExpression("address.street");
 		e.setValue(context, "123 High St");
-		assertThat((Object) person.getAddress().getStreet()).isEqualTo("123 High St");
+		assertThat(person.getAddress().getStreet()).isEqualTo("123 High St");
 
 		e = parser.parseExpression("address.crossStreets[0]");
 		e.setValue(context, "Blah");
-		assertThat((Object) person.getAddress().getCrossStreets().get(0)).isEqualTo("Blah");
+		assertThat(person.getAddress().getCrossStreets().get(0)).isEqualTo("Blah");
 
 		e = parser.parseExpression("address.crossStreets[3]");
 		e.setValue(context, "Wibble");
-		assertThat((Object) person.getAddress().getCrossStreets().get(0)).isEqualTo("Blah");
-		assertThat((Object) person.getAddress().getCrossStreets().get(3)).isEqualTo("Wibble");
+		assertThat(person.getAddress().getCrossStreets().get(0)).isEqualTo("Blah");
+		assertThat(person.getAddress().getCrossStreets().get(3)).isEqualTo("Wibble");
 	}
 
 	/**
@@ -639,20 +639,20 @@ public class EvaluationTests extends AbstractExpressionTests {
 		Expression e =  parser.parseExpression("listOfStrings[++index3]='def'");
 		e.getValue(ctx);
 		assertEquals(2,instance.listOfStrings.size());
-		assertThat((Object) instance.listOfStrings.get(1)).isEqualTo("def");
+		assertThat(instance.listOfStrings.get(1)).isEqualTo("def");
 
 		// Check reference beyond end of collection
 		ctx = new StandardEvaluationContext(instance);
 		parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 		e =  parser.parseExpression("listOfStrings[0]");
 		String value = e.getValue(ctx, String.class);
-		assertThat((Object) value).isEqualTo("abc");
+		assertThat(value).isEqualTo("abc");
 		e =  parser.parseExpression("listOfStrings[1]");
 		value = e.getValue(ctx, String.class);
-		assertThat((Object) value).isEqualTo("def");
+		assertThat(value).isEqualTo("def");
 		e =  parser.parseExpression("listOfStrings[2]");
 		value = e.getValue(ctx, String.class);
-		assertThat((Object) value).isEqualTo("");
+		assertThat(value).isEqualTo("");
 
 		// Now turn off growing and reference off the end
 		StandardEvaluationContext failCtx = new StandardEvaluationContext(instance);
@@ -676,7 +676,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 			e.setValue(ctx, "3");
 		}
 		catch (SpelEvaluationException see) {
-			assertThat((Object) see.getMessageCode()).isEqualTo(SpelMessage.UNABLE_TO_GROW_COLLECTION);
+			assertThat(see.getMessageCode()).isEqualTo(SpelMessage.UNABLE_TO_GROW_COLLECTION);
 			assertThat(instance.getFoo().size()).isEqualTo(3);
 		}
 	}
@@ -1254,7 +1254,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		expectFailNotDecrementable(parser, ctx, "--#wibble");
 		e = parser.parseExpression("#wibble=#wibble+#wibble");
 		String s = e.getValue(ctx, String.class);
-		assertThat((Object) s).isEqualTo("hello worldhello world");
+		assertThat(s).isEqualTo("hello worldhello world");
 		assertThat(ctx.lookupVariable("wibble")).isEqualTo("hello worldhello world");
 
 		ctx.setVariable("wobble", 3);

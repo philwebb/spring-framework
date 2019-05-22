@@ -134,7 +134,7 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 		Source source = new StreamSource(new StringReader(
 				"<brand-airplane><name>test</name></brand-airplane>"));
 		JAXBElement<Airplane> airplane = (JAXBElement<Airplane>) unmarshaller.unmarshal(source);
-		assertThat((Object) airplane.getValue().getName()).as("Unmarshalling via explicit @XmlRegistry tag should return correct type").isEqualTo("test");
+		assertThat(airplane.getValue().getName()).as("Unmarshalling via explicit @XmlRegistry tag should return correct type").isEqualTo("test");
 	}
 
 	@Test

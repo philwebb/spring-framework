@@ -117,7 +117,7 @@ public class DelegatingWebMvcConfigurationTests {
 		assertThat(condition).isTrue();
 		assertEquals(0, resolvers.getValue().size());
 		assertEquals(0, handlers.getValue().size());
-		assertThat((Object) adapter.getMessageConverters()).isEqualTo(converters.getValue());
+		assertThat(adapter.getMessageConverters()).isEqualTo(converters.getValue());
 		assertNotNull(asyncConfigurer);
 	}
 
@@ -225,11 +225,11 @@ public class DelegatingWebMvcConfigurationTests {
 				delegatingConfig.mvcContentNegotiationManager(), delegatingConfig.mvcConversionService(),
 				delegatingConfig.mvcResourceUrlProvider());
 		assertNotNull(handlerMapping);
-		assertThat((Object) handlerMapping.useRegisteredSuffixPatternMatch()).as("PathMatchConfigurer should configure RegisteredSuffixPatternMatch").isEqualTo(true);
-		assertThat((Object) handlerMapping.useSuffixPatternMatch()).as("PathMatchConfigurer should configure SuffixPatternMatch").isEqualTo(true);
-		assertThat((Object) handlerMapping.useTrailingSlashMatch()).as("PathMatchConfigurer should configure TrailingSlashMatch").isEqualTo(false);
-		assertThat((Object) handlerMapping.getUrlPathHelper()).as("PathMatchConfigurer should configure UrlPathHelper").isEqualTo(pathHelper);
-		assertThat((Object) handlerMapping.getPathMatcher()).as("PathMatchConfigurer should configure PathMatcher").isEqualTo(pathMatcher);
+		assertThat(handlerMapping.useRegisteredSuffixPatternMatch()).as("PathMatchConfigurer should configure RegisteredSuffixPatternMatch").isEqualTo(true);
+		assertThat(handlerMapping.useSuffixPatternMatch()).as("PathMatchConfigurer should configure SuffixPatternMatch").isEqualTo(true);
+		assertThat(handlerMapping.useTrailingSlashMatch()).as("PathMatchConfigurer should configure TrailingSlashMatch").isEqualTo(false);
+		assertThat(handlerMapping.getUrlPathHelper()).as("PathMatchConfigurer should configure UrlPathHelper").isEqualTo(pathHelper);
+		assertThat(handlerMapping.getPathMatcher()).as("PathMatchConfigurer should configure PathMatcher").isEqualTo(pathMatcher);
 	}
 
 }

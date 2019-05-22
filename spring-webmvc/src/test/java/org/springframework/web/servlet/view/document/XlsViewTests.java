@@ -67,11 +67,11 @@ public class XlsViewTests {
 		excelView.render(new HashMap<>(), request, response);
 
 		Workbook wb = new HSSFWorkbook(new ByteArrayInputStream(response.getContentAsByteArray()));
-		assertThat((Object) wb.getSheetName(0)).isEqualTo("Test Sheet");
+		assertThat(wb.getSheetName(0)).isEqualTo("Test Sheet");
 		Sheet sheet = wb.getSheet("Test Sheet");
 		Row row = sheet.getRow(0);
 		Cell cell = row.getCell(0);
-		assertThat((Object) cell.getStringCellValue()).isEqualTo("Test Value");
+		assertThat(cell.getStringCellValue()).isEqualTo("Test Value");
 	}
 
 	@Test
@@ -91,11 +91,11 @@ public class XlsViewTests {
 		excelView.render(new HashMap<>(), request, response);
 
 		Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(response.getContentAsByteArray()));
-		assertThat((Object) wb.getSheetName(0)).isEqualTo("Test Sheet");
+		assertThat(wb.getSheetName(0)).isEqualTo("Test Sheet");
 		Sheet sheet = wb.getSheet("Test Sheet");
 		Row row = sheet.getRow(0);
 		Cell cell = row.getCell(0);
-		assertThat((Object) cell.getStringCellValue()).isEqualTo("Test Value");
+		assertThat(cell.getStringCellValue()).isEqualTo("Test Value");
 	}
 
 	@Test
@@ -115,11 +115,11 @@ public class XlsViewTests {
 		excelView.render(new HashMap<>(), request, response);
 
 		Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(response.getContentAsByteArray()));
-		assertThat((Object) wb.getSheetName(0)).isEqualTo("Test Sheet");
+		assertThat(wb.getSheetName(0)).isEqualTo("Test Sheet");
 		Sheet sheet = wb.getSheet("Test Sheet");
 		Row row = sheet.getRow(0);
 		Cell cell = row.getCell(0);
-		assertThat((Object) cell.getStringCellValue()).isEqualTo("Test Value");
+		assertThat(cell.getStringCellValue()).isEqualTo("Test Value");
 	}
 
 }

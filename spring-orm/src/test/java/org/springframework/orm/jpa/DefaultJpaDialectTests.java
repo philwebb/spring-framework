@@ -62,6 +62,6 @@ public class DefaultJpaDialectTests {
 	@Test
 	public void testTranslateException() {
 		OptimisticLockException ex = new OptimisticLockException();
-		assertThat((Object) dialect.translateExceptionIfPossible(ex).getCause()).isEqualTo(EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex).getCause());
+		assertThat(dialect.translateExceptionIfPossible(ex).getCause()).isEqualTo(EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex).getCause());
 	}
 }

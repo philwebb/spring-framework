@@ -35,10 +35,10 @@ public class TagUtilsTests {
 
 	@Test
 	public void getScopeSunnyDay() {
-		assertThat((Object) TagUtils.SCOPE_PAGE).isEqualTo("page");
-		assertThat((Object) TagUtils.SCOPE_APPLICATION).isEqualTo("application");
-		assertThat((Object) TagUtils.SCOPE_SESSION).isEqualTo("session");
-		assertThat((Object) TagUtils.SCOPE_REQUEST).isEqualTo("request");
+		assertThat(TagUtils.SCOPE_PAGE).isEqualTo("page");
+		assertThat(TagUtils.SCOPE_APPLICATION).isEqualTo("application");
+		assertThat(TagUtils.SCOPE_SESSION).isEqualTo("session");
+		assertThat(TagUtils.SCOPE_REQUEST).isEqualTo("request");
 
 		assertEquals(PageContext.PAGE_SCOPE, TagUtils.getScope("page"));
 		assertEquals(PageContext.REQUEST_SCOPE, TagUtils.getScope("request"));

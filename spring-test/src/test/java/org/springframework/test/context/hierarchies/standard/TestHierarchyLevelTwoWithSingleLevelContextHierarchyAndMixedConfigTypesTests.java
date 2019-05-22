@@ -58,9 +58,9 @@ public class TestHierarchyLevelTwoWithSingleLevelContextHierarchyAndMixedConfigT
 		assertNotNull("child ApplicationContext", context);
 		assertNotNull("parent ApplicationContext", context.getParent());
 		assertNull("grandparent ApplicationContext", context.getParent().getParent());
-		assertThat((Object) foo).isEqualTo("foo-level-2");
-		assertThat((Object) bar).isEqualTo("bar");
-		assertThat((Object) baz).isEqualTo("baz");
+		assertThat(foo).isEqualTo("foo-level-2");
+		assertThat(bar).isEqualTo("bar");
+		assertThat(baz).isEqualTo("baz");
 	}
 
 }

@@ -29,8 +29,8 @@ public class PatternMatchUtilsTests {
 
 	@Test
 	public void testTrivial() {
-		assertThat((Object) PatternMatchUtils.simpleMatch((String) null, "")).isEqualTo(false);
-		assertThat((Object) PatternMatchUtils.simpleMatch("1", null)).isEqualTo(false);
+		assertThat(PatternMatchUtils.simpleMatch((String) null, "")).isEqualTo(false);
+		assertThat(PatternMatchUtils.simpleMatch("1", null)).isEqualTo(false);
 		doTest("*", "123", true);
 		doTest("123", "123", true);
 	}
@@ -101,7 +101,7 @@ public class PatternMatchUtilsTests {
 	}
 
 	private void doTest(String pattern, String str, boolean shouldMatch) {
-		assertThat((Object) PatternMatchUtils.simpleMatch(pattern, str)).isEqualTo(shouldMatch);
+		assertThat(PatternMatchUtils.simpleMatch(pattern, str)).isEqualTo(shouldMatch);
 	}
 
 }

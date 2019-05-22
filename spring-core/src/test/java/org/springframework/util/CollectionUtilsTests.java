@@ -63,9 +63,9 @@ public class CollectionUtilsTests {
 		list.add("value3");
 
 		CollectionUtils.mergeArrayIntoCollection(arr, list);
-		assertThat((Object) list.get(0)).isEqualTo("value3");
-		assertThat((Object) list.get(1)).isEqualTo("value1");
-		assertThat((Object) list.get(2)).isEqualTo("value2");
+		assertThat(list.get(0)).isEqualTo("value3");
+		assertThat(list.get(1)).isEqualTo("value1");
+		assertThat(list.get(2)).isEqualTo("value2");
 	}
 
 	@Test
@@ -75,9 +75,9 @@ public class CollectionUtilsTests {
 		list.add(Integer.valueOf(3));
 
 		CollectionUtils.mergeArrayIntoCollection(arr, list);
-		assertThat((Object) list.get(0)).isEqualTo(Integer.valueOf(3));
-		assertThat((Object) list.get(1)).isEqualTo(Integer.valueOf(1));
-		assertThat((Object) list.get(2)).isEqualTo(Integer.valueOf(2));
+		assertThat(list.get(0)).isEqualTo(Integer.valueOf(3));
+		assertThat(list.get(1)).isEqualTo(Integer.valueOf(1));
+		assertThat(list.get(2)).isEqualTo(Integer.valueOf(2));
 	}
 
 	@Test
@@ -92,10 +92,10 @@ public class CollectionUtilsTests {
 		map.put("prop4", "value4");
 
 		CollectionUtils.mergePropertiesIntoMap(props, map);
-		assertThat((Object) map.get("prop1")).isEqualTo("value1");
-		assertThat((Object) map.get("prop2")).isEqualTo("value2");
-		assertThat((Object) map.get("prop3")).isEqualTo(Integer.valueOf(3));
-		assertThat((Object) map.get("prop4")).isEqualTo("value4");
+		assertThat(map.get("prop1")).isEqualTo("value1");
+		assertThat(map.get("prop2")).isEqualTo("value2");
+		assertThat(map.get("prop3")).isEqualTo(Integer.valueOf(3));
+		assertThat(map.get("prop4")).isEqualTo("value4");
 	}
 
 	@Test

@@ -109,13 +109,13 @@ public class TestNGSpringContextWebTests extends AbstractTestNGSpringContextTest
 		assertSame("ServletContext instances must be the same object.", mockServletContext, wac.getServletContext());
 		assertSame("ServletContext in the WAC and in the mock request", mockServletContext, request.getServletContext());
 
-		assertThat((Object) mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
+		assertThat(mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
 
 	}
 
 	@Test
 	void fooEnigmaAutowired() {
-		assertThat((Object) foo).isEqualTo("enigma");
+		assertThat(foo).isEqualTo("enigma");
 	}
 
 }

@@ -99,7 +99,7 @@ public class MappingJackson2MessageConverterTests {
 				});
 
 		Object result = converter.fromMessage(bytesMessageMock);
-		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
+		assertThat(unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		MyBean result = (MyBean)converter.fromMessage(textMessageMock);
-		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
+		assertThat(unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		MyBean result = (MyBean)converter.fromMessage(textMessageMock);
-		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
+		assertThat(unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		Object result = converter.fromMessage(textMessageMock);
-		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
+		assertThat(unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class MappingJackson2MessageConverterTests {
 		given(textMessageMock.getText()).willReturn(text);
 
 		Object result = converter.fromMessage(textMessageMock);
-		assertThat((Object) unmarshalled).as("Invalid result").isEqualTo(result);
+		assertThat(unmarshalled).as("Invalid result").isEqualTo(result);
 	}
 
 	@Test

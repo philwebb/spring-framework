@@ -149,7 +149,7 @@ public class EnableMBeanExportConfigurationTests {
 		ObjectName oname = ObjectNameManager.getInstance(objectName);
 		assertNotNull(server.getObjectInstance(oname));
 		String name = (String) server.getAttribute(oname, "Name");
-		assertThat((Object) name).as("Invalid name returned").isEqualTo(expected);
+		assertThat(name).as("Invalid name returned").isEqualTo(expected);
 	}
 
 

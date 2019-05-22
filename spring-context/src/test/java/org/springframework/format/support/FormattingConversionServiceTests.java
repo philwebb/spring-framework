@@ -88,9 +88,9 @@ public class FormattingConversionServiceTests {
 	public void formatFieldForTypeWithFormatter() throws ParseException {
 		formattingService.addFormatterForFieldType(Number.class, new NumberStyleFormatter());
 		String formatted = formattingService.convert(3, String.class);
-		assertThat((Object) formatted).isEqualTo("3");
+		assertThat(formatted).isEqualTo("3");
 		Integer i = formattingService.convert("3", Integer.class);
-		assertThat((Object) i).isEqualTo(new Integer(3));
+		assertThat(i).isEqualTo(new Integer(3));
 	}
 
 	@Test
@@ -104,9 +104,9 @@ public class FormattingConversionServiceTests {
 		formattingService.addFormatterForFieldType(LocalDate.class, new ReadablePartialPrinter(DateTimeFormat
 				.shortDate()), new DateTimeParser(DateTimeFormat.shortDate()));
 		String formatted = formattingService.convert(new LocalDate(2009, 10, 31), String.class);
-		assertThat((Object) formatted).isEqualTo("10/31/09");
+		assertThat(formatted).isEqualTo("10/31/09");
 		LocalDate date = formattingService.convert("10/31/09", LocalDate.class);
-		assertThat((Object) date).isEqualTo(new LocalDate(2009, 10, 31));
+		assertThat(date).isEqualTo(new LocalDate(2009, 10, 31));
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class FormattingConversionServiceTests {
 		ac.registerBeanDefinition("conversionService", new RootBeanDefinition(FormattingConversionServiceFactoryBean.class));
 		ac.refresh();
 		ValueBean valueBean = ac.getBean(ValueBean.class);
-		assertThat((Object) new LocalDate(valueBean.date)).isEqualTo(new LocalDate(2009, 10, 31));
+		assertThat(new LocalDate(valueBean.date)).isEqualTo(new LocalDate(2009, 10, 31));
 	}
 
 	@Test
@@ -134,8 +134,8 @@ public class FormattingConversionServiceTests {
 		System.setProperty("myNumber", "99.99%");
 		try {
 			MetaValueBean valueBean = ac.getBean(MetaValueBean.class);
-			assertThat((Object) new LocalDate(valueBean.date)).isEqualTo(new LocalDate(2009, 10, 31));
-			assertThat((Object) valueBean.number).isEqualTo(Double.valueOf(0.9999));
+			assertThat(new LocalDate(valueBean.date)).isEqualTo(new LocalDate(2009, 10, 31));
+			assertThat(valueBean.number).isEqualTo(Double.valueOf(0.9999));
 		}
 		finally {
 			System.clearProperty("myDate");
@@ -204,10 +204,10 @@ public class FormattingConversionServiceTests {
 
 		String formatted = (String) formattingService.convert(new LocalDate(2009, 10, 31).toDateTimeAtCurrentTime()
 				.toDate(), new TypeDescriptor(modelClass.getField("date")), TypeDescriptor.valueOf(String.class));
-		assertThat((Object) formatted).isEqualTo("10/31/09");
+		assertThat(formatted).isEqualTo("10/31/09");
 		LocalDate date = new LocalDate(formattingService.convert("10/31/09", TypeDescriptor.valueOf(String.class),
 				new TypeDescriptor(modelClass.getField("date"))));
-		assertThat((Object) date).isEqualTo(new LocalDate(2009, 10, 31));
+		assertThat(date).isEqualTo(new LocalDate(2009, 10, 31));
 
 		List<Date> dates = new ArrayList<>();
 		dates.add(new LocalDate(2009, 10, 31).toDateTimeAtCurrentTime().toDate());
@@ -215,12 +215,12 @@ public class FormattingConversionServiceTests {
 		dates.add(new LocalDate(2009, 11, 2).toDateTimeAtCurrentTime().toDate());
 		formatted = (String) formattingService.convert(dates,
 				new TypeDescriptor(modelClass.getField("dates")), TypeDescriptor.valueOf(String.class));
-		assertThat((Object) formatted).isEqualTo("10-31-09,11-1-09,11-2-09");
+		assertThat(formatted).isEqualTo("10-31-09,11-1-09,11-2-09");
 		dates = (List<Date>) formattingService.convert("10-31-09,11-1-09,11-2-09",
 				TypeDescriptor.valueOf(String.class), new TypeDescriptor(modelClass.getField("dates")));
-		assertThat((Object) new LocalDate(dates.get(0))).isEqualTo(new LocalDate(2009, 10, 31));
-		assertThat((Object) new LocalDate(dates.get(1))).isEqualTo(new LocalDate(2009, 11, 1));
-		assertThat((Object) new LocalDate(dates.get(2))).isEqualTo(new LocalDate(2009, 11, 2));
+		assertThat(new LocalDate(dates.get(0))).isEqualTo(new LocalDate(2009, 10, 31));
+		assertThat(new LocalDate(dates.get(1))).isEqualTo(new LocalDate(2009, 11, 1));
+		assertThat(new LocalDate(dates.get(2))).isEqualTo(new LocalDate(2009, 11, 2));
 
 		Object model = modelClass.newInstance();
 		ConfigurablePropertyAccessor accessor = directFieldAccess ? PropertyAccessorFactory.forDirectFieldAccess(model) :
@@ -228,17 +228,17 @@ public class FormattingConversionServiceTests {
 		accessor.setConversionService(formattingService);
 		accessor.setPropertyValue("dates", "10-31-09,11-1-09,11-2-09");
 		dates = (List<Date>) accessor.getPropertyValue("dates");
-		assertThat((Object) new LocalDate(dates.get(0))).isEqualTo(new LocalDate(2009, 10, 31));
-		assertThat((Object) new LocalDate(dates.get(1))).isEqualTo(new LocalDate(2009, 11, 1));
-		assertThat((Object) new LocalDate(dates.get(2))).isEqualTo(new LocalDate(2009, 11, 2));
+		assertThat(new LocalDate(dates.get(0))).isEqualTo(new LocalDate(2009, 10, 31));
+		assertThat(new LocalDate(dates.get(1))).isEqualTo(new LocalDate(2009, 11, 1));
+		assertThat(new LocalDate(dates.get(2))).isEqualTo(new LocalDate(2009, 11, 2));
 		if (!directFieldAccess) {
 			accessor.setPropertyValue("dates[0]", "10-30-09");
 			accessor.setPropertyValue("dates[1]", "10-1-09");
 			accessor.setPropertyValue("dates[2]", "10-2-09");
 			dates = (List<Date>) accessor.getPropertyValue("dates");
-			assertThat((Object) new LocalDate(dates.get(0))).isEqualTo(new LocalDate(2009, 10, 30));
-			assertThat((Object) new LocalDate(dates.get(1))).isEqualTo(new LocalDate(2009, 10, 1));
-			assertThat((Object) new LocalDate(dates.get(2))).isEqualTo(new LocalDate(2009, 10, 2));
+			assertThat(new LocalDate(dates.get(0))).isEqualTo(new LocalDate(2009, 10, 30));
+			assertThat(new LocalDate(dates.get(1))).isEqualTo(new LocalDate(2009, 10, 1));
+			assertThat(new LocalDate(dates.get(2))).isEqualTo(new LocalDate(2009, 10, 2));
 		}
 	}
 
@@ -303,7 +303,7 @@ public class FormattingConversionServiceTests {
 		formattingService.addFormatterForFieldAnnotation(new JodaDateTimeFormatAnnotationFormatterFactory() {
 			@Override
 			public Printer<?> getPrinter(org.springframework.format.annotation.DateTimeFormat annotation, Class<?> fieldType) {
-				assertThat((Object) fieldType).isEqualTo(MyDate.class);
+				assertThat(fieldType).isEqualTo(MyDate.class);
 				return super.getPrinter(annotation, fieldType);
 			}
 		});

@@ -92,7 +92,7 @@ public class FreeMarkerConfigurerTests {
 		assertThat(fcfb.getObject()).isInstanceOf(Configuration.class);
 		Configuration fc = fcfb.getObject();
 		Template ft = fc.getTemplate("test");
-		assertThat((Object) FreeMarkerTemplateUtils.processTemplateIntoString(ft, new HashMap())).isEqualTo("test");
+		assertThat(FreeMarkerTemplateUtils.processTemplateIntoString(ft, new HashMap())).isEqualTo("test");
 	}
 
 	@Test  // SPR-12448

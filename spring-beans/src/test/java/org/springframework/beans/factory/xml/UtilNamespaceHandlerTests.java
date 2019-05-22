@@ -81,12 +81,12 @@ public class UtilNamespaceHandlerTests {
 		ComponentDefinition propertiesComponent = this.listener.getComponentDefinition("myProperties");
 		assertNotNull("Event for 'myProperties' not sent", propertiesComponent);
 		AbstractBeanDefinition propertiesBean = (AbstractBeanDefinition) propertiesComponent.getBeanDefinitions()[0];
-		assertThat((Object) propertiesBean.getBeanClass()).as("Incorrect BeanDefinition").isEqualTo(PropertiesFactoryBean.class);
+		assertThat(propertiesBean.getBeanClass()).as("Incorrect BeanDefinition").isEqualTo(PropertiesFactoryBean.class);
 
 		ComponentDefinition constantComponent = this.listener.getComponentDefinition("min");
 		assertNotNull("Event for 'min' not sent", propertiesComponent);
 		AbstractBeanDefinition constantBean = (AbstractBeanDefinition) constantComponent.getBeanDefinitions()[0];
-		assertThat((Object) constantBean.getBeanClass()).as("Incorrect BeanDefinition").isEqualTo(FieldRetrievingFactoryBean.class);
+		assertThat(constantBean.getBeanClass()).as("Incorrect BeanDefinition").isEqualTo(FieldRetrievingFactoryBean.class);
 	}
 
 	@Test
@@ -99,13 +99,13 @@ public class UtilNamespaceHandlerTests {
 	@Test
 	public void testPropertyPath() {
 		String name = (String) this.beanFactory.getBean("name");
-		assertThat((Object) name).isEqualTo("Rob Harrop");
+		assertThat(name).isEqualTo("Rob Harrop");
 	}
 
 	@Test
 	public void testNestedPropertyPath() {
 		TestBean bean = (TestBean) this.beanFactory.getBean("testBean");
-		assertThat((Object) bean.getName()).isEqualTo("Rob Harrop");
+		assertThat(bean.getName()).isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -196,9 +196,9 @@ public class UtilNamespaceHandlerTests {
 		assertThat(innerSet.contains("bar")).isTrue();
 
 		TestBean bean2 = (TestBean) this.beanFactory.getBean("nestedCollectionsBean");
-		assertThat((Object) bean2.getSomeList()).isEqualTo(list);
-		assertThat((Object) bean2.getSomeSet()).isEqualTo(set);
-		assertThat((Object) bean2.getSomeMap()).isEqualTo(map);
+		assertThat(bean2.getSomeList()).isEqualTo(list);
+		assertThat(bean2.getSomeSet()).isEqualTo(set);
+		assertThat(bean2.getSomeMap()).isEqualTo(map);
 		assertThat(list == bean2.getSomeList()).isFalse();
 		assertThat(set == bean2.getSomeSet()).isFalse();
 		assertThat(map == bean2.getSomeMap()).isFalse();
@@ -209,7 +209,7 @@ public class UtilNamespaceHandlerTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("nestedShortcutCollections");
 
 		assertEquals(1, bean.getStringArray().length);
-		assertThat((Object) bean.getStringArray()[0]).isEqualTo("fooStr");
+		assertThat(bean.getStringArray()[0]).isEqualTo("fooStr");
 
 		List list = bean.getSomeList();
 		assertEquals(1, list.size());
@@ -222,8 +222,8 @@ public class UtilNamespaceHandlerTests {
 		TestBean bean2 = (TestBean) this.beanFactory.getBean("nestedShortcutCollections");
 		assertThat(Arrays.equals(bean.getStringArray(), bean2.getStringArray())).isTrue();
 		assertThat(bean.getStringArray() == bean2.getStringArray()).isFalse();
-		assertThat((Object) bean2.getSomeList()).isEqualTo(list);
-		assertThat((Object) bean2.getSomeSet()).isEqualTo(set);
+		assertThat(bean2.getSomeList()).isEqualTo(list);
+		assertThat(bean2.getSomeSet()).isEqualTo(set);
 		assertThat(list == bean2.getSomeList()).isFalse();
 		assertThat(set == bean2.getSomeSet()).isFalse();
 	}
@@ -246,9 +246,9 @@ public class UtilNamespaceHandlerTests {
 		assertThat(map.get("min")).isEqualTo(CustomEnum.VALUE_1);
 
 		TestBean bean2 = (TestBean) this.beanFactory.getBean("nestedCustomTagBean");
-		assertThat((Object) bean2.getSomeList()).isEqualTo(list);
-		assertThat((Object) bean2.getSomeSet()).isEqualTo(set);
-		assertThat((Object) bean2.getSomeMap()).isEqualTo(map);
+		assertThat(bean2.getSomeList()).isEqualTo(list);
+		assertThat(bean2.getSomeSet()).isEqualTo(set);
+		assertThat(bean2.getSomeMap()).isEqualTo(map);
 		assertThat(list == bean2.getSomeList()).isFalse();
 		assertThat(set == bean2.getSomeSet()).isFalse();
 		assertThat(map == bean2.getSomeMap()).isFalse();
@@ -337,7 +337,7 @@ public class UtilNamespaceHandlerTests {
 	@Test
 	public void testNestedInConstructor() {
 		TestBean bean = (TestBean) this.beanFactory.getBean("constructedTestBean");
-		assertThat((Object) bean.getName()).isEqualTo("Rob Harrop");
+		assertThat(bean.getName()).isEqualTo("Rob Harrop");
 	}
 
 	@Test

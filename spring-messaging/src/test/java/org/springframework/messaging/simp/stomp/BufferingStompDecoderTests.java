@@ -48,7 +48,7 @@ public class BufferingStompDecoderTests {
 
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk));
 		assertEquals(1, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Message body");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Message body");
 
 		assertEquals(0, stompDecoder.getBufferSize());
 		assertNull(stompDecoder.getExpectedContentLength());
@@ -61,11 +61,11 @@ public class BufferingStompDecoderTests {
 		String chunk2 = " body\0";
 
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk1));
-		assertThat((Object) messages).isEqualTo(Collections.<Message<byte[]>>emptyList());
+		assertThat(messages).isEqualTo(Collections.<Message<byte[]>>emptyList());
 
 		messages = stompDecoder.decode(toByteBuffer(chunk2));
 		assertEquals(1, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Message body");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Message body");
 
 		assertEquals(0, stompDecoder.getBufferSize());
 		assertNull(stompDecoder.getExpectedContentLength());
@@ -78,8 +78,8 @@ public class BufferingStompDecoderTests {
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk));
 
 		assertEquals(2, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Payload1");
-		assertThat((Object) new String(messages.get(1).getPayload())).isEqualTo("Payload2");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
+		assertThat(new String(messages.get(1).getPayload())).isEqualTo("Payload2");
 
 		assertEquals(0, stompDecoder.getBufferSize());
 		assertNull(stompDecoder.getExpectedContentLength());
@@ -93,7 +93,7 @@ public class BufferingStompDecoderTests {
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk1));
 
 		assertEquals(1, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Payload1");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 
 		assertEquals(23, stompDecoder.getBufferSize());
 		assertEquals(contentLength, (int) stompDecoder.getExpectedContentLength());
@@ -109,7 +109,7 @@ public class BufferingStompDecoderTests {
 		messages = stompDecoder.decode(toByteBuffer(chunk3));
 
 		assertEquals(1, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Payload2a-Payload2b");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload2a-Payload2b");
 		assertEquals(0, stompDecoder.getBufferSize());
 		assertNull(stompDecoder.getExpectedContentLength());
 	}
@@ -121,7 +121,7 @@ public class BufferingStompDecoderTests {
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk1));
 
 		assertEquals(1, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Payload1");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 
 		assertEquals(13, stompDecoder.getBufferSize());
 		assertNull(stompDecoder.getExpectedContentLength());
@@ -137,7 +137,7 @@ public class BufferingStompDecoderTests {
 		messages = stompDecoder.decode(toByteBuffer(chunk3));
 
 		assertEquals(1, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Payload2a-Payload2b");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload2a-Payload2b");
 		assertEquals(0, stompDecoder.getBufferSize());
 		assertNull(stompDecoder.getExpectedContentLength());
 	}
@@ -149,7 +149,7 @@ public class BufferingStompDecoderTests {
 		List<Message<byte[]>> messages = stompDecoder.decode(toByteBuffer(chunk1));
 
 		assertEquals("We should have gotten the 1st message", 1, messages.size());
-		assertThat((Object) new String(messages.get(0).getPayload())).isEqualTo("Payload1");
+		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 
 		assertEquals(24, stompDecoder.getBufferSize());
 		assertEquals(129, (int) stompDecoder.getExpectedContentLength());

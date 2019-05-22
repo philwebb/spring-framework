@@ -207,7 +207,7 @@ public class RequestParamMethodArgumentResolverTests {
 		exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?name=123"));
 		result = resolve(param, exchange);
 
-		assertThat((Object) result.getClass()).isEqualTo(Optional.class);
+		assertThat(result.getClass()).isEqualTo(Optional.class);
 		Optional<?> value = (Optional<?>) result;
 		assertThat(value.isPresent()).isTrue();
 		assertThat(value.get()).isEqualTo(123);

@@ -298,9 +298,9 @@ public class SendToMethodReturnValueHandlerTests {
 			int index, String destination) {
 
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(index);
-		assertThat((Object) accessor.getSessionId()).isEqualTo(sessionId);
-		assertThat((Object) accessor.getDestination()).isEqualTo(destination);
-		assertThat((Object) accessor.getContentType()).isEqualTo(MIME_TYPE);
+		assertThat(accessor.getSessionId()).isEqualTo(sessionId);
+		assertThat(accessor.getDestination()).isEqualTo(destination);
+		assertThat(accessor.getContentType()).isEqualTo(MIME_TYPE);
 		assertNull("Subscription id should not be copied", accessor.getSubscriptionId());
 		assertThat(accessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER)).isEqualTo(methodParameter);
 	}
@@ -315,7 +315,7 @@ public class SendToMethodReturnValueHandlerTests {
 		verify(this.messageChannel, times(1)).send(this.messageCaptor.capture());
 
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
-		assertThat((Object) accessor.getDestination()).isEqualTo("/topic/dest.foo.bar");
+		assertThat(accessor.getDestination()).isEqualTo("/topic/dest.foo.bar");
 	}
 
 	@Test
@@ -335,7 +335,7 @@ public class SendToMethodReturnValueHandlerTests {
 				MessageHeaderAccessor.getAccessor(headers, SimpMessageHeaderAccessor.class);
 		assertNotNull(accessor);
 		assertThat(accessor.isMutable()).isTrue();
-		assertThat((Object) accessor.getSessionId()).isEqualTo("sess1");
+		assertThat(accessor.getSessionId()).isEqualTo("sess1");
 		assertNull("Subscription id should not be copied", accessor.getSubscriptionId());
 		assertThat(accessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER)).isEqualTo(this.noAnnotationsReturnType);
 	}
@@ -354,12 +354,12 @@ public class SendToMethodReturnValueHandlerTests {
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
 		assertNull(accessor.getSessionId());
 		assertNull(accessor.getSubscriptionId());
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest1"));
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest1"));
 
 		accessor = getCapturedAccessor(1);
 		assertNull(accessor.getSessionId());
 		assertNull(accessor.getSubscriptionId());
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest2"));
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest2"));
 	}
 
 	@Test
@@ -376,22 +376,22 @@ public class SendToMethodReturnValueHandlerTests {
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
 		assertNull(accessor.getSessionId());
 		assertNull(accessor.getSubscriptionId());
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest1"));
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest1"));
 
 		accessor = getCapturedAccessor(1);
 		assertNull(accessor.getSessionId());
 		assertNull(accessor.getSubscriptionId());
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest2"));
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest2"));
 
 		accessor = getCapturedAccessor(2);
-		assertThat((Object) accessor.getSessionId()).isEqualTo("sess1");
+		assertThat(accessor.getSessionId()).isEqualTo("sess1");
 		assertNull(accessor.getSubscriptionId());
-		assertThat((Object) accessor.getDestination()).isEqualTo("/dest1");
+		assertThat(accessor.getDestination()).isEqualTo("/dest1");
 
 		accessor = getCapturedAccessor(3);
-		assertThat((Object) accessor.getSessionId()).isEqualTo("sess1");
+		assertThat(accessor.getSessionId()).isEqualTo("sess1");
 		assertNull(accessor.getSubscriptionId());
-		assertThat((Object) accessor.getDestination()).isEqualTo("/dest2");
+		assertThat(accessor.getDestination()).isEqualTo("/dest2");
 	}
 
 	@Test  // SPR-12170
@@ -412,8 +412,8 @@ public class SendToMethodReturnValueHandlerTests {
 		verify(this.messageChannel, times(1)).send(this.messageCaptor.capture());
 
 		SimpMessageHeaderAccessor actual = getCapturedAccessor(0);
-		assertThat((Object) actual.getSessionId()).isEqualTo(sessionId);
-		assertThat((Object) actual.getDestination()).isEqualTo("/topic/chat.message.filtered.roomA");
+		assertThat(actual.getSessionId()).isEqualTo(sessionId);
+		assertThat(actual.getDestination()).isEqualTo("/topic/chat.message.filtered.roomA");
 	}
 
 	@Test
@@ -428,16 +428,16 @@ public class SendToMethodReturnValueHandlerTests {
 		verify(this.messageChannel, times(2)).send(this.messageCaptor.capture());
 
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
-		assertThat((Object) accessor.getSessionId()).isEqualTo(sessionId);
-		assertThat((Object) accessor.getContentType()).isEqualTo(MIME_TYPE);
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest1"));
+		assertThat(accessor.getSessionId()).isEqualTo(sessionId);
+		assertThat(accessor.getContentType()).isEqualTo(MIME_TYPE);
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest1"));
 		assertNull("Subscription id should not be copied", accessor.getSubscriptionId());
 		assertThat(accessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER)).isEqualTo(this.sendToUserInSessionReturnType);
 
 		accessor = getCapturedAccessor(1);
-		assertThat((Object) accessor.getSessionId()).isEqualTo(sessionId);
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest2"));
-		assertThat((Object) accessor.getContentType()).isEqualTo(MIME_TYPE);
+		assertThat(accessor.getSessionId()).isEqualTo(sessionId);
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/dest2"));
+		assertThat(accessor.getContentType()).isEqualTo(MIME_TYPE);
 		assertNull("Subscription id should not be copied", accessor.getSubscriptionId());
 		assertThat(accessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER)).isEqualTo(this.sendToUserInSessionReturnType);
 	}
@@ -454,10 +454,10 @@ public class SendToMethodReturnValueHandlerTests {
 		verify(this.messageChannel, times(2)).send(this.messageCaptor.capture());
 
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
-		assertThat((Object) accessor.getDestination()).isEqualTo("/user/Me myself and I/dest1");
+		assertThat(accessor.getDestination()).isEqualTo("/user/Me myself and I/dest1");
 
 		accessor = getCapturedAccessor(1);
-		assertThat((Object) accessor.getDestination()).isEqualTo("/user/Me myself and I/dest2");
+		assertThat(accessor.getDestination()).isEqualTo("/user/Me myself and I/dest2");
 	}
 
 	@Test
@@ -474,7 +474,7 @@ public class SendToMethodReturnValueHandlerTests {
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
 		assertNull(accessor.getSessionId());
 		assertNull(accessor.getSubscriptionId());
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/queue/dest"));
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/queue/dest"));
 	}
 
 	@Test
@@ -488,7 +488,7 @@ public class SendToMethodReturnValueHandlerTests {
 		verify(this.messageChannel, times(1)).send(this.messageCaptor.capture());
 
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/queue/dest.foo.bar"));
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/queue/dest.foo.bar"));
 	}
 
 	@Test
@@ -503,9 +503,9 @@ public class SendToMethodReturnValueHandlerTests {
 		verify(this.messageChannel, times(1)).send(this.messageCaptor.capture());
 
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
-		assertThat((Object) accessor.getSessionId()).isEqualTo(sessionId);
-		assertThat((Object) accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/queue/dest"));
-		assertThat((Object) accessor.getContentType()).isEqualTo(MIME_TYPE);
+		assertThat(accessor.getSessionId()).isEqualTo(sessionId);
+		assertThat(accessor.getDestination()).isEqualTo(("/user/" + user.getName() + "/queue/dest"));
+		assertThat(accessor.getContentType()).isEqualTo(MIME_TYPE);
 		assertNull("Subscription id should not be copied", accessor.getSubscriptionId());
 		assertThat(accessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER)).isEqualTo(this.sendToUserInSessionDefaultDestReturnType);
 	}
@@ -521,12 +521,12 @@ public class SendToMethodReturnValueHandlerTests {
 		verify(this.messageChannel, times(2)).send(this.messageCaptor.capture());
 
 		SimpMessageHeaderAccessor accessor = getCapturedAccessor(0);
-		assertThat((Object) accessor.getDestination()).isEqualTo("/user/sess1/dest1");
-		assertThat((Object) accessor.getSessionId()).isEqualTo("sess1");
+		assertThat(accessor.getDestination()).isEqualTo("/user/sess1/dest1");
+		assertThat(accessor.getSessionId()).isEqualTo("sess1");
 
 		accessor = getCapturedAccessor(1);
-		assertThat((Object) accessor.getDestination()).isEqualTo("/user/sess1/dest2");
-		assertThat((Object) accessor.getSessionId()).isEqualTo("sess1");
+		assertThat(accessor.getDestination()).isEqualTo("/user/sess1/dest2");
+		assertThat(accessor.getSessionId()).isEqualTo("sess1");
 	}
 
 	@Test
@@ -542,7 +542,7 @@ public class SendToMethodReturnValueHandlerTests {
 		assertNotNull(message);
 
 		String bytes = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
-		assertThat((Object) bytes).isEqualTo("{\"withView1\":\"with\"}");
+		assertThat(bytes).isEqualTo("{\"withView1\":\"with\"}");
 	}
 
 

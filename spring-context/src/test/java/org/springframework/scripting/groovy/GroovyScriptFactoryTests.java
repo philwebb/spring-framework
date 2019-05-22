@@ -82,8 +82,8 @@ public class GroovyScriptFactoryTests {
 		boolean condition2 = messenger instanceof Refreshable;
 		assertThat(condition2).as("Scripted object should not be instance of Refreshable").isFalse();
 
-		assertThat((Object) calc).isEqualTo(calc);
-		assertThat((Object) messenger).isEqualTo(messenger);
+		assertThat(calc).isEqualTo(calc);
+		assertThat(messenger).isEqualTo(messenger);
 		boolean condition1 = !messenger.equals(calc);
 		assertThat(condition1).isTrue();
 		assertThat(messenger.hashCode() != calc.hashCode()).isTrue();
@@ -91,7 +91,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(condition).isTrue();
 
 		String desiredMessage = "Hello World!";
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
 
 		assertThat(ctx.getBeansOfType(Calculator.class).values().contains(calc)).isTrue();
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
@@ -115,8 +115,8 @@ public class GroovyScriptFactoryTests {
 		boolean condition2 = messenger instanceof Refreshable;
 		assertThat(condition2).as("Scripted object should not be instance of Refreshable").isFalse();
 
-		assertThat((Object) calc).isEqualTo(calc);
-		assertThat((Object) messenger).isEqualTo(messenger);
+		assertThat(calc).isEqualTo(calc);
+		assertThat(messenger).isEqualTo(messenger);
 		boolean condition1 = !messenger.equals(calc);
 		assertThat(condition1).isTrue();
 		assertThat(messenger.hashCode() != calc.hashCode()).isTrue();
@@ -124,7 +124,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(condition).isTrue();
 
 		String desiredMessage = "Hello World!";
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
 
 		assertThat(ctx.getBeansOfType(Calculator.class).values().contains(calc)).isTrue();
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
@@ -142,12 +142,12 @@ public class GroovyScriptFactoryTests {
 
 		assertNotSame(messenger, messenger2);
 		assertSame(messenger.getClass(), messenger2.getClass());
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Hello World!");
 		messenger.setMessage("Bye World!");
 		messenger2.setMessage("Byebye World!");
-		assertThat((Object) messenger.getMessage()).isEqualTo("Bye World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Byebye World!");
+		assertThat(messenger.getMessage()).isEqualTo("Bye World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Byebye World!");
 	}
 
 	@Test
@@ -162,12 +162,12 @@ public class GroovyScriptFactoryTests {
 
 		assertNotSame(messenger, messenger2);
 		assertSame(messenger.getClass(), messenger2.getClass());
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Hello World!");
 		messenger.setMessage("Bye World!");
 		messenger2.setMessage("Byebye World!");
-		assertThat((Object) messenger.getMessage()).isEqualTo("Bye World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Byebye World!");
+		assertThat(messenger.getMessage()).isEqualTo("Bye World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Byebye World!");
 	}
 
 	@Test
@@ -181,7 +181,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(condition).as("Scripted object should not be instance of Refreshable").isFalse();
 
 		String desiredMessage = "Hello World!";
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 	}
 
@@ -196,7 +196,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(condition).as("Scripted object should not be instance of Refreshable").isFalse();
 
 		String desiredMessage = "Hello World!";
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 	}
 
@@ -211,7 +211,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(condition).as("Scripted object should not be instance of Refreshable").isFalse();
 
 		String desiredMessage = "Hello World!";
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 	}
 
@@ -226,7 +226,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(condition).as("Scripted object should not be instance of Refreshable").isFalse();
 
 		String desiredMessage = "Hello World!";
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 	}
 
@@ -240,12 +240,12 @@ public class GroovyScriptFactoryTests {
 		assertThat(condition).as("Should be an instance of Refreshable").isTrue();
 
 		String desiredMessage = "Hello World!";
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
 
 		Refreshable refreshable = (Refreshable) messenger;
 		refreshable.refresh();
 
-		assertThat((Object) messenger.getMessage()).as("Message is incorrect after refresh.").isEqualTo(desiredMessage);
+		assertThat(messenger.getMessage()).as("Message is incorrect after refresh.").isEqualTo(desiredMessage);
 		assertEquals("Incorrect refresh count", 2, refreshable.getRefreshCount());
 	}
 
@@ -259,18 +259,18 @@ public class GroovyScriptFactoryTests {
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).as("Should be an instance of Refreshable").isTrue();
 
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Hello World!");
 		messenger.setMessage("Bye World!");
 		messenger2.setMessage("Byebye World!");
-		assertThat((Object) messenger.getMessage()).isEqualTo("Bye World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Byebye World!");
+		assertThat(messenger.getMessage()).isEqualTo("Bye World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Byebye World!");
 
 		Refreshable refreshable = (Refreshable) messenger;
 		refreshable.refresh();
 
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Byebye World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Byebye World!");
 		assertEquals("Incorrect refresh count", 2, refreshable.getRefreshCount());
 	}
 
@@ -301,7 +301,7 @@ public class GroovyScriptFactoryTests {
 		given(script.getScriptAsString()).willReturn(badScript);
 		given(script.suggestedClassName()).willReturn("someName");
 		GroovyScriptFactory factory = new GroovyScriptFactory(ScriptFactoryPostProcessor.INLINE_SCRIPT_PREFIX + badScript);
-		assertThat((Object) factory.getScriptedObject(script).toString()).isEqualTo("X");
+		assertThat(factory.getScriptedObject(script).toString()).isEqualTo("X");
 	}
 
 	@Test
@@ -309,7 +309,7 @@ public class GroovyScriptFactoryTests {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("twoClassesCorrectOneFirst.xml", getClass());
 		Messenger messenger = (Messenger) ctx.getBean("messenger");
 		assertNotNull(messenger);
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 
 		// Check can cast to GroovyObject
 		GroovyObject goo = (GroovyObject) messenger;
@@ -377,7 +377,7 @@ public class GroovyScriptFactoryTests {
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).isFalse();
 		assertEquals(0, countingAspect.getCalls());
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertEquals(1, countingAspect.getCalls());
 
 		ctx.close();
@@ -392,12 +392,12 @@ public class GroovyScriptFactoryTests {
 
 		assertNotSame(messenger, messenger2);
 		assertSame(messenger.getClass(), messenger2.getClass());
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Hello World!");
 		messenger.setMessage("Bye World!");
 		messenger2.setMessage("Byebye World!");
-		assertThat((Object) messenger.getMessage()).isEqualTo("Bye World!");
-		assertThat((Object) messenger2.getMessage()).isEqualTo("Byebye World!");
+		assertThat(messenger.getMessage()).isEqualTo("Bye World!");
+		assertThat(messenger2.getMessage()).isEqualTo("Byebye World!");
 	}
 
 	@Test
@@ -423,7 +423,7 @@ public class GroovyScriptFactoryTests {
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).isTrue();
 		assertEquals(0, countingAspect.getCalls());
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertEquals(1, countingAspect.getCalls());
 
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
@@ -440,7 +440,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).isTrue();
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 
 		assertThat(ctx.getBeansOfType(ConcreteMessenger.class).values().contains(messenger)).isTrue();
 
@@ -473,7 +473,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("messenger")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("messenger");
 		assertThat(AopUtils.isAopProxy(messenger)).isFalse();
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 	}
 
 	@Test
@@ -492,7 +492,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).isTrue();
-		assertThat((Object) messenger.getMessage()).isEqualTo("Hello World!");
+		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 	}
 
 	@Test
@@ -521,14 +521,14 @@ public class GroovyScriptFactoryTests {
 		TestBean tb = (TestBean) ctx.getBean("testBean");
 
 		ContextScriptBean bean = (ContextScriptBean) ctx.getBean("bean");
-		assertThat((Object) bean.getName()).as("The first property ain't bein' injected.").isEqualTo("Sophie Marceau");
+		assertThat(bean.getName()).as("The first property ain't bein' injected.").isEqualTo("Sophie Marceau");
 		assertEquals("The second property ain't bein' injected.", 31, bean.getAge());
-		assertThat((Object) bean.getTestBean()).isEqualTo(tb);
-		assertThat((Object) bean.getApplicationContext()).isEqualTo(ctx);
+		assertThat(bean.getTestBean()).isEqualTo(tb);
+		assertThat(bean.getApplicationContext()).isEqualTo(ctx);
 
 		ContextScriptBean bean2 = (ContextScriptBean) ctx.getBean("bean2");
-		assertThat((Object) bean2.getTestBean()).isEqualTo(tb);
-		assertThat((Object) bean2.getApplicationContext()).isEqualTo(ctx);
+		assertThat(bean2.getTestBean()).isEqualTo(tb);
+		assertThat(bean2.getApplicationContext()).isEqualTo(ctx);
 	}
 
 	@Test

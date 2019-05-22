@@ -100,7 +100,7 @@ public class StandardWebSocketClientTests {
 		WebSocketSession session = this.wsClient.doHandshake(this.wsHandler, this.headers, uri).get();
 
 		assertNotNull(session.getRemoteAddress());
-		assertThat((Object) session.getRemoteAddress().getHostName()).isEqualTo("localhost");
+		assertThat(session.getRemoteAddress().getHostName()).isEqualTo("localhost");
 		assertEquals(443, session.getLocalAddress().getPort());
 	}
 
@@ -115,7 +115,7 @@ public class StandardWebSocketClientTests {
 		WebSocketSession session = this.wsClient.doHandshake(this.wsHandler, this.headers, uri).get();
 
 		assertEquals(1, session.getHandshakeHeaders().size());
-		assertThat((Object) session.getHandshakeHeaders().getFirst("foo")).isEqualTo("bar");
+		assertThat(session.getHandshakeHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class StandardWebSocketClientTests {
 		verify(this.wsContainer).connectToServer(any(Endpoint.class), captor.capture(), any(URI.class));
 		ClientEndpointConfig endpointConfig = captor.getValue();
 
-		assertThat((Object) endpointConfig.getPreferredSubprotocols()).isEqualTo(protocols);
+		assertThat(endpointConfig.getPreferredSubprotocols()).isEqualTo(protocols);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class StandardWebSocketClientTests {
 		verify(this.wsContainer).connectToServer(any(Endpoint.class), captor.capture(), any(URI.class));
 		ClientEndpointConfig endpointConfig = captor.getValue();
 
-		assertThat((Object) endpointConfig.getUserProperties()).isEqualTo(userProperties);
+		assertThat(endpointConfig.getUserProperties()).isEqualTo(userProperties);
 	}
 
 	@Test

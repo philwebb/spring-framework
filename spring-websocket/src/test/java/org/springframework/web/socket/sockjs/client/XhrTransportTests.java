@@ -51,7 +51,7 @@ public class XhrTransportTests {
 	public void infoResponse() throws Exception {
 		TestXhrTransport transport = new TestXhrTransport();
 		transport.infoResponseToReturn = new ResponseEntity<>("body", HttpStatus.OK);
-		assertThat((Object) transport.executeInfoRequest(new URI("https://example.com/info"), null)).isEqualTo("body");
+		assertThat(transport.executeInfoRequest(new URI("https://example.com/info"), null)).isEqualTo("body");
 	}
 
 	@Test
@@ -72,8 +72,8 @@ public class XhrTransportTests {
 		URI url = new URI("https://example.com");
 		transport.executeSendRequest(url, requestHeaders, new TextMessage("payload"));
 		assertEquals(2, transport.actualSendRequestHeaders.size());
-		assertThat((Object) transport.actualSendRequestHeaders.getFirst("foo")).isEqualTo("bar");
-		assertThat((Object) transport.actualSendRequestHeaders.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(transport.actualSendRequestHeaders.getFirst("foo")).isEqualTo("bar");
+		assertThat(transport.actualSendRequestHeaders.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class XhrTransportTests {
 		verifyNoMoreInteractions(request);
 
 		assertEquals(1, transport.actualHandshakeHeaders.size());
-		assertThat((Object) transport.actualHandshakeHeaders.getOrigin()).isEqualTo("foo");
+		assertThat(transport.actualHandshakeHeaders.getOrigin()).isEqualTo("foo");
 
 		assertThat(transport.actualSession.isDisconnected()).isFalse();
 		captor.getValue().run();

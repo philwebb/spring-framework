@@ -160,7 +160,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		TestCallable task = new TestCallable(1);
 		Future<String> future = executor.submit(task);
 		String result = future.get(1000, TimeUnit.MILLISECONDS);
-		assertThat((Object) result.substring(0, THREAD_NAME_PREFIX.length())).isEqualTo(THREAD_NAME_PREFIX);
+		assertThat(result.substring(0, THREAD_NAME_PREFIX.length())).isEqualTo(THREAD_NAME_PREFIX);
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> future.isDone() && outcome != null);
-		assertThat((Object) outcome.toString().substring(0, THREAD_NAME_PREFIX.length())).isEqualTo(THREAD_NAME_PREFIX);
+		assertThat(outcome.toString().substring(0, THREAD_NAME_PREFIX.length())).isEqualTo(THREAD_NAME_PREFIX);
 	}
 
 	@Test
@@ -228,7 +228,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 
 
 	private void assertThreadNamePrefix(TestTask task) {
-		assertThat((Object) task.lastThread.getName().substring(0, THREAD_NAME_PREFIX.length())).isEqualTo(THREAD_NAME_PREFIX);
+		assertThat(task.lastThread.getName().substring(0, THREAD_NAME_PREFIX.length())).isEqualTo(THREAD_NAME_PREFIX);
 	}
 
 	private void await(TestTask task) {

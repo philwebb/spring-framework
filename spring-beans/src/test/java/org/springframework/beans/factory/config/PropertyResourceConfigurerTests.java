@@ -115,8 +115,8 @@ public class PropertyResourceConfigurerTests {
 
 		assertEquals(99, tb1.getAge());
 		assertEquals(99, tb2.getAge());
-		assertThat((Object) tb1.getName()).isEqualTo(null);
-		assertThat((Object) tb2.getName()).isEqualTo("test");
+		assertThat(tb1.getName()).isEqualTo(null);
+		assertThat(tb2.getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class PropertyResourceConfigurerTests {
 
 		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
-		assertThat((Object) ((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
+		assertThat(((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class PropertyResourceConfigurerTests {
 
 		IndexedTestBean tb = (IndexedTestBean) factory.getBean("my.tb");
 		assertEquals(99, tb.getArray()[0].getAge());
-		assertThat((Object) ((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
+		assertThat(((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class PropertyResourceConfigurerTests {
 		poc.postProcessBeanFactory(factory);
 
 		PropertiesHolder tb = (PropertiesHolder) factory.getBean("tb");
-		assertThat((Object) tb.getHeldProperties().getProperty("mail.smtp.auth")).isEqualTo("true");
+		assertThat(tb.getHeldProperties().getProperty("mail.smtp.auth")).isEqualTo("true");
 	}
 
 	@Test
@@ -201,7 +201,7 @@ public class PropertyResourceConfigurerTests {
 
 		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
-		assertThat((Object) ((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
+		assertThat(((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -216,7 +216,7 @@ public class PropertyResourceConfigurerTests {
 
 		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
-		assertThat((Object) ((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
+		assertThat(((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -230,7 +230,7 @@ public class PropertyResourceConfigurerTests {
 
 		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
-		assertThat((Object) ((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
+		assertThat(((TestBean) tb.getList().get(1)).getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -246,8 +246,8 @@ public class PropertyResourceConfigurerTests {
 		bfpp.postProcessBeanFactory(factory);
 
 		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
-		assertThat((Object) tb.getArray()[0].getName()).isEqualTo("X99");
-		assertThat((Object) ((TestBean) tb.getList().get(1)).getName()).isEqualTo("Xtest");
+		assertThat(tb.getArray()[0].getName()).isEqualTo("X99");
+		assertThat(((TestBean) tb.getList().get(1)).getName()).isEqualTo("Xtest");
 	}
 
 	@Test
@@ -265,7 +265,7 @@ public class PropertyResourceConfigurerTests {
 			props.setProperty("tb3.name", "test");
 			poc.setProperties(props);
 			poc.postProcessBeanFactory(factory);
-			assertThat((Object) factory.getBean("tb2", TestBean.class).getName()).isEqualTo("test");
+			assertThat(factory.getBean("tb2", TestBean.class).getName()).isEqualTo("test");
 		}
 		{
 			PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
@@ -314,8 +314,8 @@ public class PropertyResourceConfigurerTests {
 		TestBean tb2 = (TestBean) factory.getBean("tb2");
 		assertEquals(99, tb1.getAge());
 		assertEquals(99, tb2.getAge());
-		assertThat((Object) tb1.getName()).isEqualTo(null);
-		assertThat((Object) tb2.getName()).isEqualTo("test");
+		assertThat(tb1.getName()).isEqualTo(null);
+		assertThat(tb2.getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -404,14 +404,14 @@ public class PropertyResourceConfigurerTests {
 		TestBean tb2 = (TestBean) factory.getBean("tb2");
 		assertEquals(98, tb1.getAge());
 		assertEquals(98, tb2.getAge());
-		assertThat((Object) tb1.getName()).isEqualTo("namemyvarmyvar${");
-		assertThat((Object) tb2.getName()).isEqualTo("myvarname98");
-		assertThat((Object) tb1.getSpouse()).isEqualTo(tb2);
+		assertThat(tb1.getName()).isEqualTo("namemyvarmyvar${");
+		assertThat(tb2.getName()).isEqualTo("myvarname98");
+		assertThat(tb1.getSpouse()).isEqualTo(tb2);
 		assertEquals(1, tb1.getSomeMap().size());
 		assertThat(tb1.getSomeMap().get("myKey")).isEqualTo("myValue");
 		assertEquals(2, tb2.getStringArray().length);
-		assertThat((Object) tb2.getStringArray()[0]).isEqualTo(System.getProperty("os.name"));
-		assertThat((Object) tb2.getStringArray()[1]).isEqualTo("98");
+		assertThat(tb2.getStringArray()[0]).isEqualTo(System.getProperty("os.name"));
+		assertThat(tb2.getStringArray()[1]).isEqualTo("98");
 		assertEquals(2, tb2.getFriends().size());
 		assertThat(tb2.getFriends().iterator().next()).isEqualTo("na98me");
 		assertThat(tb2.getFriends().toArray()[1]).isEqualTo(tb2);
@@ -427,11 +427,11 @@ public class PropertyResourceConfigurerTests {
 		TestBean inner1 = (TestBean) tb2.getSomeMap().get("key3");
 		TestBean inner2 = (TestBean) tb2.getSomeMap().get("mykey4");
 		assertEquals(0, inner1.getAge());
-		assertThat((Object) inner1.getName()).isEqualTo(null);
-		assertThat((Object) inner1.getCountry()).isEqualTo(System.getProperty("os.name"));
+		assertThat(inner1.getName()).isEqualTo(null);
+		assertThat(inner1.getCountry()).isEqualTo(System.getProperty("os.name"));
 		assertEquals(98, inner2.getAge());
-		assertThat((Object) inner2.getName()).isEqualTo("namemyvarmyvar${");
-		assertThat((Object) inner2.getCountry()).isEqualTo(System.getProperty("os.name"));
+		assertThat(inner2.getName()).isEqualTo("namemyvarmyvar${");
+		assertThat(inner2.getCountry()).isEqualTo(System.getProperty("os.name"));
 	}
 
 	@Test
@@ -443,7 +443,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getCountry()).isEqualTo(System.getProperty("os.name"));
+		assertThat(tb.getCountry()).isEqualTo(System.getProperty("os.name"));
 	}
 
 	@Test
@@ -458,7 +458,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getCountry()).isEqualTo("myos");
+		assertThat(tb.getCountry()).isEqualTo("myos");
 	}
 
 	@Test
@@ -474,7 +474,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getCountry()).isEqualTo(System.getProperty("os.name"));
+		assertThat(tb.getCountry()).isEqualTo(System.getProperty("os.name"));
 	}
 
 	@Test
@@ -508,7 +508,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getName()).isEqualTo("${ref}");
+		assertThat(tb.getName()).isEqualTo("${ref}");
 	}
 
 	@Test
@@ -553,7 +553,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getName()).isEqualTo("myname");
+		assertThat(tb.getName()).isEqualTo("myname");
 	}
 
 	@Test
@@ -617,7 +617,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getTouchy()).isEqualTo("mytest");
+		assertThat(tb.getTouchy()).isEqualTo("mytest");
 	}
 
 	@Test
@@ -629,7 +629,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getTouchy()).isEqualTo("mytest");
+		assertThat(tb.getTouchy()).isEqualTo("mytest");
 	}
 
 	@Test
@@ -649,11 +649,11 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getTouchy()).isEqualTo("mytest");
+		assertThat(tb.getTouchy()).isEqualTo("mytest");
 		tb = (TestBean) factory.getBean("alias");
-		assertThat((Object) tb.getTouchy()).isEqualTo("mytest");
+		assertThat(tb.getTouchy()).isEqualTo("mytest");
 		tb = (TestBean) factory.getBean("alias2");
-		assertThat((Object) tb.getTouchy()).isEqualTo("mytest");
+		assertThat(tb.getTouchy()).isEqualTo("mytest");
 	}
 
 	@Test
@@ -675,9 +675,9 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getName()).isEqualTo("myNameValue");
+		assertThat(tb.getName()).isEqualTo("myNameValue");
 		assertEquals(99, tb.getAge());
-		assertThat((Object) tb.getTouchy()).isEqualTo("myOtherTouchyValue");
+		assertThat(tb.getTouchy()).isEqualTo("myOtherTouchyValue");
 		Preferences.userRoot().remove("myTouchy");
 		Preferences.systemRoot().remove("myTouchy");
 		Preferences.systemRoot().remove("myName");
@@ -704,9 +704,9 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getName()).isEqualTo("myNameValue");
+		assertThat(tb.getName()).isEqualTo("myNameValue");
 		assertEquals(99, tb.getAge());
-		assertThat((Object) tb.getTouchy()).isEqualTo("myOtherTouchyValue");
+		assertThat(tb.getTouchy()).isEqualTo("myOtherTouchyValue");
 		Preferences.userRoot().node("myUserPath").remove("myTouchy");
 		Preferences.systemRoot().node("mySystemPath").remove("myTouchy");
 		Preferences.systemRoot().node("mySystemPath").remove("myName");
@@ -733,9 +733,9 @@ public class PropertyResourceConfigurerTests {
 		ppc.postProcessBeanFactory(factory);
 
 		TestBean tb = (TestBean) factory.getBean("tb");
-		assertThat((Object) tb.getName()).isEqualTo("myNameValue");
+		assertThat(tb.getName()).isEqualTo("myNameValue");
 		assertEquals(99, tb.getAge());
-		assertThat((Object) tb.getTouchy()).isEqualTo("myOtherTouchyValue");
+		assertThat(tb.getTouchy()).isEqualTo("myOtherTouchyValue");
 		Preferences.userRoot().node("myUserPath/myotherpath").remove("myTouchy");
 		Preferences.systemRoot().node("mySystemPath/myotherpath").remove("myTouchy");
 		Preferences.systemRoot().node("mySystemPath/mypath").remove("myName");

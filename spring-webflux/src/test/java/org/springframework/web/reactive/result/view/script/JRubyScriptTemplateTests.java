@@ -48,7 +48,7 @@ public class JRubyScriptTemplateTests {
 		model.put("body", "This is the body");
 		String url = "org/springframework/web/reactive/result/view/script/jruby/template.erb";
 		MockServerHttpResponse response = renderViewWithModel(url, model);
-		assertThat((Object) response.getBodyAsString().block()).isEqualTo("<html><head><title>Layout example</title></head><body><p>This is the body</p></body></html>");
+		assertThat(response.getBodyAsString().block()).isEqualTo("<html><head><title>Layout example</title></head><body><p>This is the body</p></body></html>");
 	}
 
 	private MockServerHttpResponse renderViewWithModel(String viewUrl, Map<String, Object> model) throws Exception {

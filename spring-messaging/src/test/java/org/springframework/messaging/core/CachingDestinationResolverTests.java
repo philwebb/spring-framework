@@ -43,10 +43,10 @@ public class CachingDestinationResolverTests {
 		given(resolver.resolveDestination("abcd")).willReturn("dcba");
 		given(resolver.resolveDestination("1234")).willReturn("4321");
 
-		assertThat((Object) resolverProxy.resolveDestination("abcd")).isEqualTo("dcba");
-		assertThat((Object) resolverProxy.resolveDestination("1234")).isEqualTo("4321");
-		assertThat((Object) resolverProxy.resolveDestination("1234")).isEqualTo("4321");
-		assertThat((Object) resolverProxy.resolveDestination("abcd")).isEqualTo("dcba");
+		assertThat(resolverProxy.resolveDestination("abcd")).isEqualTo("dcba");
+		assertThat(resolverProxy.resolveDestination("1234")).isEqualTo("4321");
+		assertThat(resolverProxy.resolveDestination("1234")).isEqualTo("4321");
+		assertThat(resolverProxy.resolveDestination("abcd")).isEqualTo("dcba");
 
 		verify(resolver, times(1)).resolveDestination("abcd");
 		verify(resolver, times(1)).resolveDestination("1234");

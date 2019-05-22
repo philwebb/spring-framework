@@ -42,7 +42,7 @@ public class ServletRequestUtilsTests {
 		request.addParameter("param2", "e");
 		request.addParameter("paramEmpty", "");
 
-		assertThat((Object) new Integer(5)).isEqualTo(ServletRequestUtils.getIntParameter(request, "param1"));
+		assertThat(new Integer(5)).isEqualTo(ServletRequestUtils.getIntParameter(request, "param1"));
 		assertEquals(ServletRequestUtils.getIntParameter(request, "param1", 6), 5);
 		assertEquals(ServletRequestUtils.getRequiredIntParameter(request, "param1"), 5);
 
@@ -50,7 +50,7 @@ public class ServletRequestUtilsTests {
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->
 				ServletRequestUtils.getRequiredIntParameter(request, "param2"));
 
-		assertThat((Object) null).isEqualTo(ServletRequestUtils.getIntParameter(request, "param3"));
+		assertThat(null).isEqualTo(ServletRequestUtils.getIntParameter(request, "param3"));
 		assertEquals(ServletRequestUtils.getIntParameter(request, "param3", 6), 6);
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->
 				ServletRequestUtils.getRequiredIntParameter(request, "param3"));
@@ -86,7 +86,7 @@ public class ServletRequestUtilsTests {
 		request.addParameter("param2", "e");
 		request.addParameter("paramEmpty", "");
 
-		assertThat((Object) new Long(5L)).isEqualTo(ServletRequestUtils.getLongParameter(request, "param1"));
+		assertThat(new Long(5L)).isEqualTo(ServletRequestUtils.getLongParameter(request, "param1"));
 		assertEquals(ServletRequestUtils.getLongParameter(request, "param1", 6L), 5L);
 		assertEquals(ServletRequestUtils.getRequiredIntParameter(request, "param1"), 5L);
 
@@ -94,7 +94,7 @@ public class ServletRequestUtilsTests {
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->
 				ServletRequestUtils.getRequiredLongParameter(request, "param2"));
 
-		assertThat((Object) null).isEqualTo(ServletRequestUtils.getLongParameter(request, "param3"));
+		assertThat(null).isEqualTo(ServletRequestUtils.getLongParameter(request, "param3"));
 		assertEquals(ServletRequestUtils.getLongParameter(request, "param3", 6L), 6L);
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->
 				ServletRequestUtils.getRequiredLongParameter(request, "param3"));
@@ -264,14 +264,14 @@ public class ServletRequestUtilsTests {
 		boolean[] values = ServletRequestUtils.getRequiredBooleanParameters(request, "param");
 		assertEquals(array.length, values.length);
 		for (int i = 0; i < array.length; i++) {
-			assertThat((Object) values[i]).isEqualTo(array[i]);
+			assertThat(values[i]).isEqualTo(array[i]);
 		}
 
 		array = new boolean[] {false, true, false};
 		values = ServletRequestUtils.getRequiredBooleanParameters(request, "param2");
 		assertEquals(array.length, values.length);
 		for (int i = 0; i < array.length; i++) {
-			assertThat((Object) values[i]).isEqualTo(array[i]);
+			assertThat(values[i]).isEqualTo(array[i]);
 		}
 	}
 
@@ -281,18 +281,18 @@ public class ServletRequestUtilsTests {
 		request.addParameter("param1", "str");
 		request.addParameter("paramEmpty", "");
 
-		assertThat((Object) ServletRequestUtils.getStringParameter(request, "param1")).isEqualTo("str");
-		assertThat((Object) ServletRequestUtils.getStringParameter(request, "param1", "string")).isEqualTo("str");
-		assertThat((Object) ServletRequestUtils.getRequiredStringParameter(request, "param1")).isEqualTo("str");
+		assertThat(ServletRequestUtils.getStringParameter(request, "param1")).isEqualTo("str");
+		assertThat(ServletRequestUtils.getStringParameter(request, "param1", "string")).isEqualTo("str");
+		assertThat(ServletRequestUtils.getRequiredStringParameter(request, "param1")).isEqualTo("str");
 
-		assertThat((Object) ServletRequestUtils.getStringParameter(request, "param3")).isEqualTo(null);
-		assertThat((Object) ServletRequestUtils.getStringParameter(request, "param3", "string")).isEqualTo("string");
+		assertThat(ServletRequestUtils.getStringParameter(request, "param3")).isEqualTo(null);
+		assertThat(ServletRequestUtils.getStringParameter(request, "param3", "string")).isEqualTo("string");
 		assertNull(ServletRequestUtils.getStringParameter(request, "param3", null));
 		assertThatExceptionOfType(ServletRequestBindingException.class).isThrownBy(() ->
 				ServletRequestUtils.getRequiredStringParameter(request, "param3"));
 
-		assertThat((Object) ServletRequestUtils.getStringParameter(request, "paramEmpty")).isEqualTo("");
-		assertThat((Object) ServletRequestUtils.getRequiredStringParameter(request, "paramEmpty")).isEqualTo("");
+		assertThat(ServletRequestUtils.getStringParameter(request, "paramEmpty")).isEqualTo("");
+		assertThat(ServletRequestUtils.getRequiredStringParameter(request, "paramEmpty")).isEqualTo("");
 	}
 
 	@Test

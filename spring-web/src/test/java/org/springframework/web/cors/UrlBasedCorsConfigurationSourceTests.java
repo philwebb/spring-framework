@@ -49,7 +49,7 @@ public class UrlBasedCorsConfigurationSourceTests {
 		assertNull(this.configSource.getCorsConfiguration(request));
 
 		request.setRequestURI("/bar/test.html");
-		assertThat((Object) this.configSource.getCorsConfiguration(request)).isEqualTo(config);
+		assertThat(this.configSource.getCorsConfiguration(request)).isEqualTo(config);
 	}
 
 	@Test

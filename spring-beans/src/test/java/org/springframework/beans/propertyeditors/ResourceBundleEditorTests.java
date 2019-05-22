@@ -48,7 +48,7 @@ public class ResourceBundleEditorTests {
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
 		String string = bundle.getString(MESSAGE_KEY);
-		assertThat((Object) string).isEqualTo(MESSAGE_KEY);
+		assertThat(string).isEqualTo(MESSAGE_KEY);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ResourceBundleEditorTests {
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
 		String string = bundle.getString(MESSAGE_KEY);
-		assertThat((Object) string).isEqualTo(MESSAGE_KEY);
+		assertThat(string).isEqualTo(MESSAGE_KEY);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class ResourceBundleEditorTests {
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
 		String string = bundle.getString(MESSAGE_KEY);
-		assertThat((Object) string).isEqualTo("yob");
+		assertThat(string).isEqualTo("yob");
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ResourceBundleEditorTests {
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
 		String string = bundle.getString(MESSAGE_KEY);
-		assertThat((Object) string).isEqualTo("chav");
+		assertThat(string).isEqualTo("chav");
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class ResourceBundleEditorTests {
 		assertThat(condition).as("Returned object was not a ResourceBundle (must be for valid setAsText(..) call).").isTrue();
 		ResourceBundle bundle = (ResourceBundle) value;
 		String string = bundle.getString(MESSAGE_KEY);
-		assertThat((Object) string).isEqualTo("ned");
+		assertThat(string).isEqualTo("ned");
 	}
 
 	@Test

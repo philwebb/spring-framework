@@ -139,7 +139,7 @@ public class TransactionAttributeEditorTests {
 		TransactionAttributeEditor pe = new TransactionAttributeEditor();
 		pe.setAsText(source.toString());
 		TransactionAttribute ta = (TransactionAttribute) pe.getValue();
-		assertThat((Object) source).isEqualTo(ta);
+		assertThat(source).isEqualTo(ta);
 		assertEquals(TransactionDefinition.PROPAGATION_SUPPORTS, ta.getPropagationBehavior());
 		assertEquals(TransactionDefinition.ISOLATION_REPEATABLE_READ, ta.getIsolationLevel());
 		assertEquals(10, ta.getTimeout());
@@ -150,7 +150,7 @@ public class TransactionAttributeEditorTests {
 		source.setTimeout(9);
 		assertNotSame(ta, source);
 		source.setTimeout(10);
-		assertThat((Object) source).isEqualTo(ta);
+		assertThat(source).isEqualTo(ta);
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class TransactionAttributeEditorTests {
 		TransactionAttributeEditor pe = new TransactionAttributeEditor();
 		pe.setAsText(source.toString());
 		TransactionAttribute ta = (TransactionAttribute) pe.getValue();
-		assertThat((Object) source).isEqualTo(ta);
+		assertThat(source).isEqualTo(ta);
 		assertEquals(TransactionDefinition.PROPAGATION_SUPPORTS, ta.getPropagationBehavior());
 		assertEquals(TransactionDefinition.ISOLATION_REPEATABLE_READ, ta.getIsolationLevel());
 		assertEquals(10, ta.getTimeout());
@@ -178,7 +178,7 @@ public class TransactionAttributeEditorTests {
 		assertNotSame(ta, source);
 		source.getRollbackRules().add(new RollbackRuleAttribute("IllegalArgumentException"));
 		source.getRollbackRules().add(new NoRollbackRuleAttribute("IllegalStateException"));
-		assertThat((Object) source).isEqualTo(ta);
+		assertThat(source).isEqualTo(ta);
 	}
 
 }

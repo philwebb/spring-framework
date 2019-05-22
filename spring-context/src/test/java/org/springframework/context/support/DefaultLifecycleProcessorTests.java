@@ -47,7 +47,7 @@ public class DefaultLifecycleProcessorTests {
 		context.refresh();
 		Object lifecycleProcessor = new DirectFieldAccessor(context).getPropertyValue("lifecycleProcessor");
 		assertNotNull(lifecycleProcessor);
-		assertThat((Object) lifecycleProcessor.getClass()).isEqualTo(DefaultLifecycleProcessor.class);
+		assertThat(lifecycleProcessor.getClass()).isEqualTo(DefaultLifecycleProcessor.class);
 	}
 
 	@Test
@@ -298,7 +298,7 @@ public class DefaultLifecycleProcessorTests {
 		context.stop();
 		assertEquals(1, stoppedBeans.size());
 		assertThat(bean.isRunning()).isFalse();
-		assertThat((Object) stoppedBeans.get(0)).isEqualTo(bean);
+		assertThat(stoppedBeans.get(0)).isEqualTo(bean);
 	}
 
 	@Test
@@ -314,7 +314,7 @@ public class DefaultLifecycleProcessorTests {
 		context.stop();
 		assertEquals(1, stoppedBeans.size());
 		assertThat(bean.isRunning()).isFalse();
-		assertThat((Object) stoppedBeans.get(0)).isEqualTo(bean);
+		assertThat(stoppedBeans.get(0)).isEqualTo(bean);
 	}
 
 	@Test
@@ -386,9 +386,9 @@ public class DefaultLifecycleProcessorTests {
 		assertEquals(4, startedBeans.size());
 		assertEquals(Integer.MIN_VALUE, getPhase(startedBeans.get(0)));
 		assertEquals(99, getPhase(startedBeans.get(1)));
-		assertThat((Object) startedBeans.get(1)).isEqualTo(bean99);
+		assertThat(startedBeans.get(1)).isEqualTo(bean99);
 		assertEquals(2, getPhase(startedBeans.get(2)));
-		assertThat((Object) startedBeans.get(2)).isEqualTo(bean2);
+		assertThat(startedBeans.get(2)).isEqualTo(bean2);
 		assertEquals(Integer.MAX_VALUE, getPhase(startedBeans.get(3)));
 		context.stop();
 	}
@@ -429,9 +429,9 @@ public class DefaultLifecycleProcessorTests {
 		assertEquals(6, stoppedBeans.size());
 		assertEquals(Integer.MAX_VALUE, getPhase(stoppedBeans.get(0)));
 		assertEquals(2, getPhase(stoppedBeans.get(1)));
-		assertThat((Object) stoppedBeans.get(1)).isEqualTo(bean2);
+		assertThat(stoppedBeans.get(1)).isEqualTo(bean2);
 		assertEquals(99, getPhase(stoppedBeans.get(2)));
-		assertThat((Object) stoppedBeans.get(2)).isEqualTo(bean99);
+		assertThat(stoppedBeans.get(2)).isEqualTo(bean99);
 		assertEquals(7, getPhase(stoppedBeans.get(3)));
 		assertEquals(1, getPhase(stoppedBeans.get(4)));
 		assertEquals(Integer.MIN_VALUE, getPhase(stoppedBeans.get(5)));

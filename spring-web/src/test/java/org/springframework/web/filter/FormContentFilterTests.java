@@ -105,7 +105,7 @@ public class FormContentFilterTests {
 		this.request.setContent("name=value".getBytes("ISO-8859-1"));
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 
-		assertThat((Object) this.filterChain.getRequest().getParameter("name")).isEqualTo("value");
+		assertThat(this.filterChain.getRequest().getParameter("name")).isEqualTo("value");
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 
 		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
-		assertThat((Object) this.filterChain.getRequest().getParameter("name")).as("Query string parameters should be listed ahead of form parameters").isEqualTo("value1");
+		assertThat(this.filterChain.getRequest().getParameter("name")).as("Query string parameters should be listed ahead of form parameters").isEqualTo("value1");
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class FormContentFilterTests {
 		List<String> names = Collections.list(this.filterChain.getRequest().getParameterNames());
 
 		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
-		assertThat((Object) names).isEqualTo(Arrays.asList("name1", "name2", "name3", "name4"));
+		assertThat(names).isEqualTo(Arrays.asList("name1", "name2", "name3", "name4"));
 	}
 
 	@Test

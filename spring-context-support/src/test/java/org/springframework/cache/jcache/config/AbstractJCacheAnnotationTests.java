@@ -105,7 +105,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertThat((Object) result.get().getClass()).isEqualTo(UnsupportedOperationException.class);
+		assertThat(result.get().getClass()).isEqualTo(UnsupportedOperationException.class);
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Cache.ValueWrapper result = cache.get(key);
 		assertNotNull(result);
-		assertThat((Object) result.get().getClass()).isEqualTo(IOException.class);
+		assertThat(result.get().getClass()).isEqualTo(IOException.class);
 	}
 
 

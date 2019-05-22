@@ -87,7 +87,7 @@ public class RequestMappingHandlerMappingTests {
 
 		assertThat(this.handlerMapping.useSuffixPatternMatch()).isTrue();
 		assertThat(this.handlerMapping.useRegisteredSuffixPatternMatch()).isTrue();
-		assertThat((Object) this.handlerMapping.getFileExtensions()).isEqualTo(Arrays.asList("json"));
+		assertThat(this.handlerMapping.getFileExtensions()).isEqualTo(Arrays.asList("json"));
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class RequestMappingHandlerMappingTests {
 		hm.setApplicationContext(wac);
 		hm.afterPropertiesSet();
 
-		assertThat((Object) extensions).isEqualTo(Collections.singleton("json"));
+		assertThat(extensions).isEqualTo(Collections.singleton("json"));
 	}
 
 	@Test
@@ -153,15 +153,15 @@ public class RequestMappingHandlerMappingTests {
 		RequestMappingInfo info = this.handlerMapping.getMappingForMethod(method, UserController.class);
 
 		assertNotNull(info);
-		assertThat((Object) info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton("/api/user/{id}"));
+		assertThat(info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton("/api/user/{id}"));
 	}
 
 	@Test
 	public void resolveRequestMappingViaComposedAnnotation() throws Exception {
 		RequestMappingInfo info = assertComposedAnnotationMapping("postJson", "/postJson", RequestMethod.POST);
 
-		assertThat((Object) info.getConsumesCondition().getConsumableMediaTypes().iterator().next().toString()).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
-		assertThat((Object) info.getProducesCondition().getProducibleMediaTypes().iterator().next().toString()).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
+		assertThat(info.getConsumesCondition().getConsumableMediaTypes().iterator().next().toString()).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
+		assertThat(info.getProducesCondition().getProducibleMediaTypes().iterator().next().toString()).isEqualTo(MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	@Test // SPR-14988
@@ -169,7 +169,7 @@ public class RequestMappingHandlerMappingTests {
 		RequestMappingInfo requestMappingInfo = assertComposedAnnotationMapping(RequestMethod.POST);
 
 		ConsumesRequestCondition condition = requestMappingInfo.getConsumesCondition();
-		assertThat((Object) condition.getConsumableMediaTypes()).isEqualTo(Collections.singleton(MediaType.APPLICATION_XML));
+		assertThat(condition.getConsumableMediaTypes()).isEqualTo(Collections.singleton(MediaType.APPLICATION_XML));
 	}
 
 	@Test // gh-22010
@@ -228,11 +228,11 @@ public class RequestMappingHandlerMappingTests {
 
 		Set<String> paths = info.getPatternsCondition().getPatterns();
 		assertEquals(1, paths.size());
-		assertThat((Object) paths.iterator().next()).isEqualTo(path);
+		assertThat(paths.iterator().next()).isEqualTo(path);
 
 		Set<RequestMethod> methods = info.getMethodsCondition().getMethods();
 		assertEquals(1, methods.size());
-		assertThat((Object) methods.iterator().next()).isEqualTo(requestMethod);
+		assertThat(methods.iterator().next()).isEqualTo(requestMethod);
 
 		return info;
 	}

@@ -53,8 +53,8 @@ public class StompSubProtocolErrorHandlerTests {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
 		assertNotNull(accessor);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.ERROR);
-		assertThat((Object) accessor.getMessage()).isEqualTo(ex.getMessage());
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.ERROR);
+		assertThat(accessor.getMessage()).isEqualTo(ex.getMessage());
 		assertArrayEquals(new byte[0], actual.getPayload());
 	}
 
@@ -70,7 +70,7 @@ public class StompSubProtocolErrorHandlerTests {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
 		assertNotNull(accessor);
-		assertThat((Object) accessor.getReceiptId()).isEqualTo(receiptId);
+		assertThat(accessor.getReceiptId()).isEqualTo(receiptId);
 	}
 
 

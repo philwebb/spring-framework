@@ -352,8 +352,8 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("doctor.company", doctorCompany);
 		accessor.setPropertyValue("lawyer.company", lawyerCompany);
-		assertThat((Object) target.getDoctor().getCompany()).isEqualTo(doctorCompany);
-		assertThat((Object) target.getLawyer().getCompany()).isEqualTo(lawyerCompany);
+		assertThat(target.getDoctor().getCompany()).isEqualTo(doctorCompany);
+		assertThat(target.getLawyer().getCompany()).isEqualTo(lawyerCompany);
 	}
 
 	@Test
@@ -544,7 +544,7 @@ public abstract class AbstractPropertyAccessorTests {
 		TestBean target = new TestBean();
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValues(values);
-		assertThat((Object) target.getName()).isEqualTo("42");
+		assertThat(target.getName()).isEqualTo("42");
 	}
 
 	@Test
@@ -560,7 +560,7 @@ public abstract class AbstractPropertyAccessorTests {
 			}
 		});
 		accessor.setPropertyValues(values);
-		assertThat((Object) target.getName()).isEqualTo(Integer.class.toString());
+		assertThat(target.getName()).isEqualTo(Integer.class.toString());
 	}
 
 	@Test
@@ -579,11 +579,11 @@ public abstract class AbstractPropertyAccessorTests {
 			}
 		});
 		accessor.setPropertyValue("name", new String[] {});
-		assertThat((Object) target.getName()).isEqualTo("");
+		assertThat(target.getName()).isEqualTo("");
 		accessor.setPropertyValue("name", new String[] {"a1", "b2"});
-		assertThat((Object) target.getName()).isEqualTo("a1-b2");
+		assertThat(target.getName()).isEqualTo("a1-b2");
 		accessor.setPropertyValue("name", null);
-		assertThat((Object) target.getName()).isEqualTo("");
+		assertThat(target.getName()).isEqualTo("");
 	}
 
 	@Test
@@ -711,10 +711,10 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		accessor.setPropertyValue("autowire", "BY_NAME");
-		assertThat((Object) target.getAutowire()).isEqualTo(Autowire.BY_NAME);
+		assertThat(target.getAutowire()).isEqualTo(Autowire.BY_NAME);
 
 		accessor.setPropertyValue("autowire", "  BY_TYPE ");
-		assertThat((Object) target.getAutowire()).isEqualTo(Autowire.BY_TYPE);
+		assertThat(target.getAutowire()).isEqualTo(Autowire.BY_TYPE);
 
 		assertThatExceptionOfType(TypeMismatchException.class).isThrownBy(() ->
 				accessor.setPropertyValue("autowire", "NHERITED"));
@@ -725,7 +725,7 @@ public abstract class AbstractPropertyAccessorTests {
 		EnumConsumer target = new EnumConsumer();
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("enumValue", TestEnum.class.getName() + ".TEST_VALUE");
-		assertThat((Object) target.getEnumValue()).isEqualTo(TestEnum.TEST_VALUE);
+		assertThat(target.getEnumValue()).isEqualTo(TestEnum.TEST_VALUE);
 	}
 
 	@Test
@@ -733,7 +733,7 @@ public abstract class AbstractPropertyAccessorTests {
 		WildcardEnumConsumer target = new WildcardEnumConsumer();
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("enumValue", TestEnum.class.getName() + ".TEST_VALUE");
-		assertThat((Object) target.getEnumValue()).isEqualTo(TestEnum.TEST_VALUE);
+		assertThat(target.getEnumValue()).isEqualTo(TestEnum.TEST_VALUE);
 	}
 
 	@Test
@@ -1337,8 +1337,8 @@ public abstract class AbstractPropertyAccessorTests {
 		goodValues.add("map[key1]", "rod");
 		goodValues.add("map[key2]", "rob");
 		accessor.setPropertyValues(goodValues);
-		assertThat((Object) ((TestBean) target.getMap().get("key1")).getName()).isEqualTo("rod");
-		assertThat((Object) ((TestBean) target.getMap().get("key2")).getName()).isEqualTo("rob");
+		assertThat(((TestBean) target.getMap().get("key1")).getName()).isEqualTo("rod");
+		assertThat(((TestBean) target.getMap().get("key2")).getName()).isEqualTo("rob");
 
 		MutablePropertyValues badValues = new MutablePropertyValues();
 		badValues.add("map[key1]", "rod");
@@ -1368,8 +1368,8 @@ public abstract class AbstractPropertyAccessorTests {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.add("map", Collections.unmodifiableMap(inputMap));
 		accessor.setPropertyValues(pvs);
-		assertThat((Object) ((TestBean) target.getMap().get(1)).getName()).isEqualTo("rod");
-		assertThat((Object) ((TestBean) target.getMap().get(2)).getName()).isEqualTo("rob");
+		assertThat(((TestBean) target.getMap().get(1)).getName()).isEqualTo("rod");
+		assertThat(((TestBean) target.getMap().get(2)).getName()).isEqualTo("rob");
 	}
 
 	@Test
@@ -1392,8 +1392,8 @@ public abstract class AbstractPropertyAccessorTests {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.add("map", new ReadOnlyMap<>(inputMap));
 		accessor.setPropertyValues(pvs);
-		assertThat((Object) ((TestBean) target.getMap().get(1)).getName()).isEqualTo("rod");
-		assertThat((Object) ((TestBean) target.getMap().get(2)).getName()).isEqualTo("rob");
+		assertThat(((TestBean) target.getMap().get(1)).getName()).isEqualTo("rod");
+		assertThat(((TestBean) target.getMap().get(2)).getName()).isEqualTo("rob");
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // must work with raw map in this test
@@ -1452,7 +1452,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("someProperty", "someValue");
 		assertThat(accessor.getPropertyValue("someProperty")).isEqualTo("someValue");
-		assertThat((Object) target.getSomeProperty()).isEqualTo("someValue");
+		assertThat(target.getSomeProperty()).isEqualTo("someValue");
 	}
 
 	@Test
@@ -1507,15 +1507,15 @@ public abstract class AbstractPropertyAccessorTests {
 		TestBean tb4 = ((TestBean) target.getMap().get("key1"));
 		TestBean tb5 = ((TestBean) target.getMap().get("key.3"));
 		TestBean tb8 = ((TestBean) target.getMap().get("key5[foo]"));
-		assertThat((Object) tb0.getName()).isEqualTo("name0");
-		assertThat((Object) tb1.getName()).isEqualTo("name1");
-		assertThat((Object) tb2.getName()).isEqualTo("name2");
-		assertThat((Object) tb3.getName()).isEqualTo("name3");
-		assertThat((Object) tb6.getName()).isEqualTo("name6");
-		assertThat((Object) tb7.getName()).isEqualTo("name7");
-		assertThat((Object) tb4.getName()).isEqualTo("name4");
-		assertThat((Object) tb5.getName()).isEqualTo("name5");
-		assertThat((Object) tb8.getName()).isEqualTo("name8");
+		assertThat(tb0.getName()).isEqualTo("name0");
+		assertThat(tb1.getName()).isEqualTo("name1");
+		assertThat(tb2.getName()).isEqualTo("name2");
+		assertThat(tb3.getName()).isEqualTo("name3");
+		assertThat(tb6.getName()).isEqualTo("name6");
+		assertThat(tb7.getName()).isEqualTo("name7");
+		assertThat(tb4.getName()).isEqualTo("name4");
+		assertThat(tb5.getName()).isEqualTo("name5");
+		assertThat(tb8.getName()).isEqualTo("name8");
 		assertThat(accessor.getPropertyValue("array[0].name")).isEqualTo("name0");
 		assertThat(accessor.getPropertyValue("array[1].name")).isEqualTo("name1");
 		assertThat(accessor.getPropertyValue("list[0].name")).isEqualTo("name2");
@@ -1545,12 +1545,12 @@ public abstract class AbstractPropertyAccessorTests {
 		pvs.add("map[key4][1].name", "nameB");
 		pvs.add("map[key5[foo]].name", "name10");
 		accessor.setPropertyValues(pvs);
-		assertThat((Object) tb0.getName()).isEqualTo("name5");
-		assertThat((Object) tb1.getName()).isEqualTo("name4");
-		assertThat((Object) tb2.getName()).isEqualTo("name3");
-		assertThat((Object) tb3.getName()).isEqualTo("name2");
-		assertThat((Object) tb4.getName()).isEqualTo("name1");
-		assertThat((Object) tb5.getName()).isEqualTo("name0");
+		assertThat(tb0.getName()).isEqualTo("name5");
+		assertThat(tb1.getName()).isEqualTo("name4");
+		assertThat(tb2.getName()).isEqualTo("name3");
+		assertThat(tb3.getName()).isEqualTo("name2");
+		assertThat(tb4.getName()).isEqualTo("name1");
+		assertThat(tb5.getName()).isEqualTo("name0");
 		assertThat(accessor.getPropertyValue("array[0].name")).isEqualTo("name5");
 		assertThat(accessor.getPropertyValue("array[1].name")).isEqualTo("name4");
 		assertThat(accessor.getPropertyValue("list[0].name")).isEqualTo("name3");
@@ -1599,8 +1599,8 @@ public abstract class AbstractPropertyAccessorTests {
 		pvs.add("map[key5]", tb4);
 		pvs.add("map['key9']", tb5);
 		accessor.setPropertyValues(pvs);
-		assertThat((Object) target.getArray()[0]).isEqualTo(tb5);
-		assertThat((Object) target.getArray()[1]).isEqualTo(tb4);
+		assertThat(target.getArray()[0]).isEqualTo(tb5);
+		assertThat(target.getArray()[1]).isEqualTo(tb4);
 		assertThat((target.getList().get(0))).isEqualTo(tb3);
 		assertThat((target.getList().get(1))).isEqualTo(tb2);
 		assertThat((target.getList().get(2))).isEqualTo(tb0);
@@ -1628,7 +1628,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "Paris", "FR");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		assertThat((Object) accessor.getPropertyType("address.city")).isEqualTo(String.class);
+		assertThat(accessor.getPropertyType("address.city")).isEqualTo(String.class);
 	}
 
 	@Test
@@ -1659,15 +1659,15 @@ public abstract class AbstractPropertyAccessorTests {
 	public void propertyTypeIndexedProperty() {
 		IndexedTestBean target = new IndexedTestBean();
 		AbstractPropertyAccessor accessor = createAccessor(target);
-		assertThat((Object) accessor.getPropertyType("map[key0]")).isEqualTo(null);
+		assertThat(accessor.getPropertyType("map[key0]")).isEqualTo(null);
 
 		accessor = createAccessor(target);
 		accessor.setPropertyValue("map[key0]", "my String");
-		assertThat((Object) accessor.getPropertyType("map[key0]")).isEqualTo(String.class);
+		assertThat(accessor.getPropertyType("map[key0]")).isEqualTo(String.class);
 
 		accessor = createAccessor(target);
 		accessor.registerCustomEditor(String.class, "map[key0]", new StringTrimmerEditor(false));
-		assertThat((Object) accessor.getPropertyType("map[key0]")).isEqualTo(String.class);
+		assertThat(accessor.getPropertyType("map[key0]")).isEqualTo(String.class);
 	}
 
 	@Test
@@ -1675,7 +1675,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Spr10115Bean target = new Spr10115Bean();
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("prop1", "val1");
-		assertThat((Object) Spr10115Bean.prop1).isEqualTo("val1");
+		assertThat(Spr10115Bean.prop1).isEqualTo("val1");
 	}
 
 	@Test
@@ -1683,7 +1683,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Spr13837Bean target = new Spr13837Bean();
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("something", 42);
-		assertThat((Object) target.something).isEqualTo(Integer.valueOf(42));
+		assertThat(target.something).isEqualTo(Integer.valueOf(42));
 	}
 
 

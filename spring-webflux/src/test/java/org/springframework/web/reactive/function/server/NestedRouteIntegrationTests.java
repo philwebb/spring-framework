@@ -66,8 +66,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/foo/bar", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody()).isEqualTo("/foo/bar");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("/foo/bar");
 	}
 
 	@Test
@@ -75,8 +75,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/foo/baz", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody()).isEqualTo("/foo/baz");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("/foo/baz");
 	}
 
 	@Test
@@ -84,8 +84,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/1/2/3", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody()).isEqualTo("/{foo}/{bar}/{baz}\n{foo=1, bar=2, baz=3}");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("/{foo}/{bar}/{baz}\n{foo=1, bar=2, baz=3}");
 	}
 
 	// SPR-16868
@@ -94,8 +94,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/1/bar", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody()).isEqualTo("/{foo}/bar\n{foo=1}");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("/{foo}/bar\n{foo=1}");
 
 	}
 
@@ -105,8 +105,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/qux/quux", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody()).isEqualTo("/{qux}/quux\n{qux=qux}");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("/{qux}/quux\n{qux=qux}");
 
 	}
 
@@ -116,8 +116,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 		ResponseEntity<String> result =
 				restTemplate.postForEntity("http://localhost:" + port + "/qux/quux", "", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody()).isEqualTo("{}");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("{}");
 
 	}
 

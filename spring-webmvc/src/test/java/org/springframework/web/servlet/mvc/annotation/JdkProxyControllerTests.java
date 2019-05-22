@@ -55,7 +55,7 @@ public class JdkProxyControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		servlet.service(request, response);
-		assertThat((Object) response.getContentAsString()).isEqualTo("doIt");
+		assertThat(response.getContentAsString()).isEqualTo("doIt");
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class JdkProxyControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		servlet.service(request, response);
-		assertThat((Object) response.getContentAsString()).isEqualTo("doIt");
+		assertThat(response.getContentAsString()).isEqualTo("doIt");
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class JdkProxyControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/hotels/bookings");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		servlet.service(request, response);
-		assertThat((Object) response.getContentAsString()).isEqualTo("doIt");
+		assertThat(response.getContentAsString()).isEqualTo("doIt");
 	}
 
 

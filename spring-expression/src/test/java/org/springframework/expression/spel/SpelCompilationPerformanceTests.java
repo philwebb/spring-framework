@@ -313,7 +313,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		assertThat(b).isFalse();
 
 		// Verify the same result for compiled vs interpreted
-		assertThat((Object) bc).isEqualTo(b);
+		assertThat(bc).isEqualTo(b);
 
 		// Verify if the input changes, the result changes
 		payload.DR[0].DRFixedSection.duration = 0.04d;
@@ -370,7 +370,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
+		assertThat(compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("method reference", interpretedTotal, compiledTotal);
 		if (compiledTotal >= interpretedTotal) {
 			fail("Compiled version is slower than interpreted!");
@@ -422,7 +422,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
+		assertThat(compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("property reference (field)",interpretedTotal, compiledTotal);
 	}
 
@@ -468,7 +468,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
+		assertThat(compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("property reference (nested field)",interpretedTotal, compiledTotal);
 	}
 
@@ -513,7 +513,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
+		assertThat(compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("nested property reference (mixed field/getter)",interpretedTotal, compiledTotal);
 	}
 
@@ -560,7 +560,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
+		assertThat(compiledResult).isEqualTo(interpretedResult);
 		reportPerformance("nested reference (mixed field/method)", interpretedTotal, compiledTotal);
 	}
 
@@ -608,7 +608,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		}
 		logln();
 
-		assertThat((Object) compiledResult).isEqualTo(interpretedResult);
+		assertThat(compiledResult).isEqualTo(interpretedResult);
 
 		reportPerformance("property reference (getter)", interpretedTotal, compiledTotal);
 		if (compiledTotal >= interpretedTotal) {

@@ -74,7 +74,7 @@ public class AopNamespaceHandlerEventTests {
 		assertThat(condition).as("No holder with nested components").isTrue();
 
 		CompositeComponentDefinition compositeDef = (CompositeComponentDefinition) componentDefinitions[0];
-		assertThat((Object) compositeDef.getName()).isEqualTo("aop:config");
+		assertThat(compositeDef.getName()).isEqualTo("aop:config");
 
 		ComponentDefinition[] nestedComponentDefs = compositeDef.getNestedComponents();
 		assertEquals("Incorrect number of inner components", 2, nestedComponentDefs.length);
@@ -98,7 +98,7 @@ public class AopNamespaceHandlerEventTests {
 		boolean condition1 = componentDefinitions[0] instanceof CompositeComponentDefinition;
 		assertThat(condition1).as("No holder with nested components").isTrue();
 		CompositeComponentDefinition compositeDef = (CompositeComponentDefinition) componentDefinitions[0];
-		assertThat((Object) compositeDef.getName()).isEqualTo("aop:config");
+		assertThat(compositeDef.getName()).isEqualTo("aop:config");
 
 		ComponentDefinition[] nestedComponentDefs = compositeDef.getNestedComponents();
 		assertEquals("Incorrect number of inner components", 3, nestedComponentDefs.length);
@@ -117,7 +117,7 @@ public class AopNamespaceHandlerEventTests {
 		boolean condition = componentDefinitions[1] instanceof BeanComponentDefinition;
 		assertThat(condition).as("No advice bean found").isTrue();
 		BeanComponentDefinition adviceDef = (BeanComponentDefinition) componentDefinitions[1];
-		assertThat((Object) adviceDef.getBeanName()).isEqualTo("countingAdvice");
+		assertThat(adviceDef.getBeanName()).isEqualTo("countingAdvice");
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class AopNamespaceHandlerEventTests {
 		boolean condition1 = componentDefinitions[0] instanceof CompositeComponentDefinition;
 		assertThat(condition1).as("No holder with nested components").isTrue();
 		CompositeComponentDefinition compositeDef = (CompositeComponentDefinition) componentDefinitions[0];
-		assertThat((Object) compositeDef.getName()).isEqualTo("aop:config");
+		assertThat(compositeDef.getName()).isEqualTo("aop:config");
 
 		ComponentDefinition[] nestedComponentDefs = compositeDef.getNestedComponents();
 		assertEquals("Incorrect number of inner components", 2, nestedComponentDefs.length);
@@ -148,7 +148,7 @@ public class AopNamespaceHandlerEventTests {
 		boolean condition = componentDefinitions[1] instanceof BeanComponentDefinition;
 		assertThat(condition).as("No advice bean found").isTrue();
 		BeanComponentDefinition adviceDef = (BeanComponentDefinition) componentDefinitions[1];
-		assertThat((Object) adviceDef.getBeanName()).isEqualTo("countingAdvice");
+		assertThat(adviceDef.getBeanName()).isEqualTo("countingAdvice");
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class AopNamespaceHandlerEventTests {
 		boolean condition = componentDefinitions[0] instanceof CompositeComponentDefinition;
 		assertThat(condition).as("No holder with nested components").isTrue();
 		CompositeComponentDefinition compositeDef = (CompositeComponentDefinition) componentDefinitions[0];
-		assertThat((Object) compositeDef.getName()).isEqualTo("aop:config");
+		assertThat(compositeDef.getName()).isEqualTo("aop:config");
 
 		ComponentDefinition[] nestedComponentDefs = compositeDef.getNestedComponents();
 		assertEquals("Incorrect number of inner components", 2, nestedComponentDefs.length);

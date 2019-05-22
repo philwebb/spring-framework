@@ -137,8 +137,8 @@ public class RequestResponseBodyMethodProcessorTests {
 				paramGenericList, container, request, factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.get(0).getName()).isEqualTo("Jad");
-		assertThat((Object) result.get(1).getName()).isEqualTo("Robert");
+		assertThat(result.get(0).getName()).isEqualTo("Jad");
+		assertThat(result.get(1).getName()).isEqualTo("Robert");
 	}
 
 	@Test
@@ -157,8 +157,8 @@ public class RequestResponseBodyMethodProcessorTests {
 				paramMultiValueMap, container, request, factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.getFirst("fruit")).isEqualTo("apple");
-		assertThat((Object) result.getFirst("vegetable")).isEqualTo("kale");
+		assertThat(result.getFirst("fruit")).isEqualTo("apple");
+		assertThat(result.getFirst("vegetable")).isEqualTo("kale");
 	}
 
 	@Test
@@ -175,7 +175,7 @@ public class RequestResponseBodyMethodProcessorTests {
 				paramSimpleBean, container, request, factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.getName()).isEqualTo("Jad");
+		assertThat(result.getName()).isEqualTo("Jad");
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class RequestResponseBodyMethodProcessorTests {
 				paramString, container, request, factory);
 
 		assertNotNull(result);
-		assertThat((Object) result).isEqualTo("foobarbaz");
+		assertThat(result).isEqualTo("foobarbaz");
 	}
 
 	@Test // SPR-9942
@@ -215,7 +215,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters, advice);
 		String arg = (String) processor.resolveArgument(paramString, container, request, factory);
 		assertNotNull(arg);
-		assertThat((Object) arg).isEqualTo("default value for empty body");
+		assertThat(arg).isEqualTo("default value for empty body");
 	}
 
 	@Test  // SPR-9964
@@ -235,7 +235,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		SimpleBean result = (SimpleBean) processor.resolveArgument(methodParam, container, request, factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.getName()).isEqualTo("Jad");
+		assertThat(result.getName()).isEqualTo("Jad");
 	}
 
 	@Test  // SPR-14470
@@ -257,8 +257,8 @@ public class RequestResponseBodyMethodProcessorTests {
 				methodParam, container, request, factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.get(0).getName()).isEqualTo("Jad");
-		assertThat((Object) result.get(1).getName()).isEqualTo("Robert");
+		assertThat(result.get(0).getName()).isEqualTo("Jad");
+		assertThat(result.get(1).getName()).isEqualTo("Robert");
 	}
 
 	@Test  // SPR-11225
@@ -280,7 +280,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		SimpleBean result = (SimpleBean) processor.resolveArgument(methodParam, container, request, factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.getName()).isEqualTo("Jad");
+		assertThat(result.getName()).isEqualTo("Jad");
 	}
 
 	@Test  // SPR-9160
@@ -294,7 +294,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		processor.writeWithMessageConverters("Foo", returnTypeString, request);
 
-		assertThat((Object) servletResponse.getHeader("Content-Type")).isEqualTo("application/json;charset=UTF-8");
+		assertThat(servletResponse.getHeader("Content-Type")).isEqualTo("application/json;charset=UTF-8");
 	}
 
 	@Test
@@ -306,8 +306,8 @@ public class RequestResponseBodyMethodProcessorTests {
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 		processor.handleReturnValue("Foo", returnTypeString, container, request);
 
-		assertThat((Object) servletResponse.getHeader("Content-Type")).isEqualTo("text/plain;charset=ISO-8859-1");
-		assertThat((Object) servletResponse.getContentAsString()).isEqualTo("Foo");
+		assertThat(servletResponse.getHeader("Content-Type")).isEqualTo("text/plain;charset=ISO-8859-1");
+		assertThat(servletResponse.getContentAsString()).isEqualTo("Foo");
 	}
 
 	@Test  // SPR-13423
@@ -322,8 +322,8 @@ public class RequestResponseBodyMethodProcessorTests {
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 		processor.handleReturnValue(new StringBuilder("Foo"), returnType, container, request);
 
-		assertThat((Object) servletResponse.getHeader("Content-Type")).isEqualTo("text/plain;charset=ISO-8859-1");
-		assertThat((Object) servletResponse.getContentAsString()).isEqualTo("Foo");
+		assertThat(servletResponse.getHeader("Content-Type")).isEqualTo("text/plain;charset=ISO-8859-1");
+		assertThat(servletResponse.getContentAsString()).isEqualTo("Foo");
 	}
 
 	@Test
@@ -337,7 +337,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		processor.writeWithMessageConverters("Foo", returnTypeString, request);
 
-		assertThat((Object) servletResponse.getHeader("Content-Type")).isEqualTo("text/plain;charset=UTF-8");
+		assertThat(servletResponse.getHeader("Content-Type")).isEqualTo("text/plain;charset=UTF-8");
 	}
 
 	// SPR-12894
@@ -356,7 +356,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		ClassPathResource resource = new ClassPathResource("logo.jpg", getClass());
 		processor.writeWithMessageConverters(resource, returnType, this.request);
 
-		assertThat((Object) this.servletResponse.getHeader("Content-Type")).isEqualTo("image/jpeg");
+		assertThat(this.servletResponse.getHeader("Content-Type")).isEqualTo("image/jpeg");
 	}
 
 	// SPR-13135
@@ -532,7 +532,7 @@ public class RequestResponseBodyMethodProcessorTests {
 				processor.resolveArgument(methodParameter, this.container, this.request, this.factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.getWithView1()).isEqualTo("with");
+		assertThat(result.getWithView1()).isEqualTo("with");
 		assertNull(result.getWithView2());
 		assertNull(result.getWithoutView());
 	}
@@ -559,7 +559,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		assertNotNull(result);
 		assertNotNull(result.getBody());
-		assertThat((Object) result.getBody().getWithView1()).isEqualTo("with");
+		assertThat(result.getBody().getWithView1()).isEqualTo("with");
 		assertNull(result.getBody().getWithView2());
 		assertNull(result.getBody().getWithoutView());
 	}
@@ -588,7 +588,7 @@ public class RequestResponseBodyMethodProcessorTests {
 				processor.resolveArgument(methodParameter, this.container, this.request, this.factory);
 
 		assertNotNull(result);
-		assertThat((Object) result.getWithView1()).isEqualTo("with");
+		assertThat(result.getWithView1()).isEqualTo("with");
 		assertNull(result.getWithView2());
 		assertNull(result.getWithoutView());
 	}
@@ -618,7 +618,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		assertNotNull(result);
 		assertNotNull(result.getBody());
-		assertThat((Object) result.getBody().getWithView1()).isEqualTo("with");
+		assertThat(result.getBody().getWithView1()).isEqualTo("with");
 		assertNull(result.getBody().getWithView2());
 		assertNull(result.getBody().getWithoutView());
 	}
@@ -692,7 +692,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		Object returnValue = new JacksonController().defaultCharset();
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
-		assertThat((Object) this.servletResponse.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(this.servletResponse.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 	@Test  // SPR-14520
@@ -711,7 +711,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		String value = (String) processor.readWithMessageConverters(
 				this.request, methodParameter, methodParameter.getGenericParameterType());
-		assertThat((Object) value).isEqualTo("foo");
+		assertThat(value).isEqualTo("foo");
 	}
 
 	private void assertContentDisposition(RequestResponseBodyMethodProcessor processor,
@@ -722,7 +722,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		String header = servletResponse.getHeader("Content-Disposition");
 		if (expectContentDisposition) {
-			assertThat((Object) header).as("Expected 'Content-Disposition' header. Use case: '" + comment + "'").isEqualTo("inline;filename=f.txt");
+			assertThat(header).as("Expected 'Content-Disposition' header. Use case: '" + comment + "'").isEqualTo("inline;filename=f.txt");
 		}
 		else {
 			assertNull("Did not expect 'Content-Disposition' header. Use case: '" + comment + "'", header);

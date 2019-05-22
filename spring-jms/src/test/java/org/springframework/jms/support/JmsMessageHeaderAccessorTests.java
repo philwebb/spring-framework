@@ -58,15 +58,15 @@ public class JmsMessageHeaderAccessorTests {
 		Map<String, Object> mappedHeaders = new SimpleJmsHeaderMapper().toHeaders(jmsMessage);
 		Message<String> message = MessageBuilder.withPayload("test").copyHeaders(mappedHeaders).build();
 		JmsMessageHeaderAccessor headerAccessor = JmsMessageHeaderAccessor.wrap(message);
-		assertThat((Object) headerAccessor.getCorrelationId()).isEqualTo("correlation-1234");
-		assertThat((Object) headerAccessor.getDestination()).isEqualTo(destination);
-		assertThat((Object) headerAccessor.getDeliveryMode()).isEqualTo(Integer.valueOf(1));
+		assertThat(headerAccessor.getCorrelationId()).isEqualTo("correlation-1234");
+		assertThat(headerAccessor.getDestination()).isEqualTo(destination);
+		assertThat(headerAccessor.getDeliveryMode()).isEqualTo(Integer.valueOf(1));
 		assertEquals(1234L, headerAccessor.getExpiration(), 0.0);
-		assertThat((Object) headerAccessor.getMessageId()).isEqualTo("abcd-1234");
-		assertThat((Object) headerAccessor.getPriority()).isEqualTo(Integer.valueOf(9));
-		assertThat((Object) headerAccessor.getReplyTo()).isEqualTo(replyTo);
-		assertThat((Object) headerAccessor.getRedelivered()).isEqualTo(true);
-		assertThat((Object) headerAccessor.getType()).isEqualTo("type");
+		assertThat(headerAccessor.getMessageId()).isEqualTo("abcd-1234");
+		assertThat(headerAccessor.getPriority()).isEqualTo(Integer.valueOf(9));
+		assertThat(headerAccessor.getReplyTo()).isEqualTo(replyTo);
+		assertThat(headerAccessor.getRedelivered()).isEqualTo(true);
+		assertThat(headerAccessor.getType()).isEqualTo("type");
 		assertEquals(4567L, headerAccessor.getTimestamp(), 0.0);
 
 		// Making sure replyChannel is not mixed with replyTo

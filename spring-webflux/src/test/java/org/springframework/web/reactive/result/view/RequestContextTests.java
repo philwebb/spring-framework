@@ -52,7 +52,7 @@ public class RequestContextTests {
 	@Test
 	public void testGetContextUrl() throws Exception {
 		RequestContext context = new RequestContext(this.exchange, this.model, this.applicationContext);
-		assertThat((Object) context.getContextUrl("bar")).isEqualTo("/foo/bar");
+		assertThat(context.getContextUrl("bar")).isEqualTo("/foo/bar");
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class RequestContextTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar");
 		map.put("spam", "bucket");
-		assertThat((Object) context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("/foo/bar?spam=bucket");
+		assertThat(context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("/foo/bar?spam=bucket");
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class RequestContextTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar baz");
 		map.put("spam", "&bucket=");
-		assertThat((Object) context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("/foo/bar%20baz?spam=%26bucket%3D");
+		assertThat(context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("/foo/bar%20baz?spam=%26bucket%3D");
 	}
 
 }

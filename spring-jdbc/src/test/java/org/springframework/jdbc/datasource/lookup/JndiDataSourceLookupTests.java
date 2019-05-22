@@ -41,7 +41,7 @@ public class JndiDataSourceLookupTests {
 		JndiDataSourceLookup lookup = new JndiDataSourceLookup() {
 			@Override
 			protected <T> T lookup(String jndiName, Class<T> requiredType) {
-				assertThat((Object) jndiName).isEqualTo(DATA_SOURCE_NAME);
+				assertThat(jndiName).isEqualTo(DATA_SOURCE_NAME);
 				return requiredType.cast(expectedDataSource);
 			}
 		};
@@ -55,7 +55,7 @@ public class JndiDataSourceLookupTests {
 		JndiDataSourceLookup lookup = new JndiDataSourceLookup() {
 			@Override
 			protected <T> T lookup(String jndiName, Class<T> requiredType) throws NamingException {
-				assertThat((Object) jndiName).isEqualTo(DATA_SOURCE_NAME);
+				assertThat(jndiName).isEqualTo(DATA_SOURCE_NAME);
 				throw new NamingException();
 			}
 		};

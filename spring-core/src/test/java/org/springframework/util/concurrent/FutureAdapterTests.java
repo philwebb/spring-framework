@@ -75,14 +75,14 @@ public class FutureAdapterTests {
 	public void get() throws Exception {
 		given(adaptee.get()).willReturn(42);
 		String result = adapter.get();
-		assertThat((Object) result).isEqualTo("42");
+		assertThat(result).isEqualTo("42");
 	}
 
 	@Test
 	public void getTimeOut() throws Exception {
 		given(adaptee.get(1, TimeUnit.SECONDS)).willReturn(42);
 		String result = adapter.get(1, TimeUnit.SECONDS);
-		assertThat((Object) result).isEqualTo("42");
+		assertThat(result).isEqualTo("42");
 	}
 
 

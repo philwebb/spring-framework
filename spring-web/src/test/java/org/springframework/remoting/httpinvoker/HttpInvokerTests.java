@@ -83,7 +83,7 @@ public class HttpInvokerTests {
 			@Override
 			protected RemoteInvocationResult doExecuteRequest(
 					HttpInvokerClientConfiguration config, ByteArrayOutputStream baos) throws Exception {
-				assertThat((Object) config.getServiceUrl()).isEqualTo("https://myurl");
+				assertThat(config.getServiceUrl()).isEqualTo("https://myurl");
 				MockHttpServletRequest request = new MockHttpServletRequest();
 				MockHttpServletResponse response = new MockHttpServletResponse();
 				request.setContent(baos.toByteArray());
@@ -98,7 +98,7 @@ public class HttpInvokerTests {
 
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
-		assertThat((Object) proxy.getName()).isEqualTo("myname");
+		assertThat(proxy.getName()).isEqualTo("myname");
 		assertEquals(99, proxy.getAge());
 		proxy.setAge(50);
 		assertEquals(50, proxy.getAge());
@@ -189,7 +189,7 @@ public class HttpInvokerTests {
 			protected RemoteInvocationResult doExecuteRequest(
 					HttpInvokerClientConfiguration config, ByteArrayOutputStream baos)
 					throws IOException, ClassNotFoundException {
-				assertThat((Object) config.getServiceUrl()).isEqualTo("https://myurl");
+				assertThat(config.getServiceUrl()).isEqualTo("https://myurl");
 				MockHttpServletRequest request = new MockHttpServletRequest();
 				request.addHeader("Compression", "gzip");
 				MockHttpServletResponse response = new MockHttpServletResponse();
@@ -215,7 +215,7 @@ public class HttpInvokerTests {
 
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
-		assertThat((Object) proxy.getName()).isEqualTo("myname");
+		assertThat(proxy.getName()).isEqualTo("myname");
 		assertEquals(99, proxy.getAge());
 		proxy.setAge(50);
 		assertEquals(50, proxy.getAge());
@@ -259,7 +259,7 @@ public class HttpInvokerTests {
 			@Override
 			protected RemoteInvocationResult doExecuteRequest(
 					HttpInvokerClientConfiguration config, ByteArrayOutputStream baos) throws Exception {
-				assertThat((Object) config.getServiceUrl()).isEqualTo("https://myurl");
+				assertThat(config.getServiceUrl()).isEqualTo("https://myurl");
 				MockHttpServletRequest request = new MockHttpServletRequest();
 				MockHttpServletResponse response = new MockHttpServletResponse();
 				request.setContent(baos.toByteArray());
@@ -285,7 +285,7 @@ public class HttpInvokerTests {
 
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
-		assertThat((Object) proxy.getName()).isEqualTo("myname");
+		assertThat(proxy.getName()).isEqualTo("myname");
 		assertEquals(99, proxy.getAge());
 		proxy.setAge(50);
 		assertEquals(50, proxy.getAge());
@@ -309,8 +309,8 @@ public class HttpInvokerTests {
 					throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 				assertNotNull(invocation.getAttributes());
 				assertEquals(1, invocation.getAttributes().size());
-				assertThat((Object) invocation.getAttributes().get("myKey")).isEqualTo("myValue");
-				assertThat((Object) invocation.getAttribute("myKey")).isEqualTo("myValue");
+				assertThat(invocation.getAttributes().get("myKey")).isEqualTo("myValue");
+				assertThat(invocation.getAttribute("myKey")).isEqualTo("myValue");
 				return super.invoke(invocation, targetObject);
 			}
 		});
@@ -328,8 +328,8 @@ public class HttpInvokerTests {
 						invocation.addAttribute("myKey", "myValue"));
 				assertNotNull(invocation.getAttributes());
 				assertEquals(1, invocation.getAttributes().size());
-				assertThat((Object) invocation.getAttributes().get("myKey")).isEqualTo("myValue");
-				assertThat((Object) invocation.getAttribute("myKey")).isEqualTo("myValue");
+				assertThat(invocation.getAttributes().get("myKey")).isEqualTo("myValue");
+				assertThat(invocation.getAttribute("myKey")).isEqualTo("myValue");
 				return invocation;
 			}
 		});
@@ -338,7 +338,7 @@ public class HttpInvokerTests {
 			@Override
 			protected RemoteInvocationResult doExecuteRequest(
 					HttpInvokerClientConfiguration config, ByteArrayOutputStream baos) throws Exception {
-				assertThat((Object) config.getServiceUrl()).isEqualTo("https://myurl");
+				assertThat(config.getServiceUrl()).isEqualTo("https://myurl");
 				MockHttpServletRequest request = new MockHttpServletRequest();
 				MockHttpServletResponse response = new MockHttpServletResponse();
 				request.setContent(baos.toByteArray());
@@ -350,7 +350,7 @@ public class HttpInvokerTests {
 
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
-		assertThat((Object) proxy.getName()).isEqualTo("myname");
+		assertThat(proxy.getName()).isEqualTo("myname");
 		assertEquals(99, proxy.getAge());
 	}
 
@@ -391,7 +391,7 @@ public class HttpInvokerTests {
 			@Override
 			protected RemoteInvocationResult doExecuteRequest(
 					HttpInvokerClientConfiguration config, ByteArrayOutputStream baos) throws Exception {
-				assertThat((Object) config.getServiceUrl()).isEqualTo("https://myurl");
+				assertThat(config.getServiceUrl()).isEqualTo("https://myurl");
 				MockHttpServletRequest request = new MockHttpServletRequest();
 				MockHttpServletResponse response = new MockHttpServletResponse();
 				request.setContent(baos.toByteArray());
@@ -403,7 +403,7 @@ public class HttpInvokerTests {
 
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
-		assertThat((Object) proxy.getName()).isEqualTo("myname");
+		assertThat(proxy.getName()).isEqualTo("myname");
 		assertEquals(99, proxy.getAge());
 	}
 

@@ -39,7 +39,7 @@ public class SessionLocaleResolverTests {
 		request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Locale.GERMAN);
 
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
-		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
+		assertThat(resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 	}
 
 	@Test
@@ -49,14 +49,14 @@ public class SessionLocaleResolverTests {
 
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 		resolver.setLocale(request, response, Locale.GERMAN);
-		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
+		assertThat(resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 
 		HttpSession session = request.getSession();
 		request = new MockHttpServletRequest();
 		request.setSession(session);
 		resolver = new SessionLocaleResolver();
 
-		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
+		assertThat(resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class SessionLocaleResolverTests {
 
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 
-		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(request.getLocale());
+		assertThat(resolver.resolveLocale(request)).isEqualTo(request.getLocale());
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class SessionLocaleResolverTests {
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 		resolver.setDefaultLocale(Locale.GERMAN);
 
-		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
+		assertThat(resolver.resolveLocale(request)).isEqualTo(Locale.GERMAN);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class SessionLocaleResolverTests {
 		request.addPreferredLocale(Locale.TAIWAN);
 		request.setSession(session);
 		resolver = new SessionLocaleResolver();
-		assertThat((Object) resolver.resolveLocale(request)).isEqualTo(Locale.TAIWAN);
+		assertThat(resolver.resolveLocale(request)).isEqualTo(Locale.TAIWAN);
 	}
 
 }

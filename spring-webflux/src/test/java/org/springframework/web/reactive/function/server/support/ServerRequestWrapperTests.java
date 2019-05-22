@@ -94,7 +94,7 @@ public class ServerRequestWrapperTests {
 		String value = "bar";
 		given(mockRequest.attribute(name)).willReturn(Optional.of(value));
 
-		assertThat((Object) wrapper.attribute(name)).isEqualTo(Optional.of(value));
+		assertThat(wrapper.attribute(name)).isEqualTo(Optional.of(value));
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class ServerRequestWrapperTests {
 		String value = "bar";
 		given(mockRequest.queryParam(name)).willReturn(Optional.of(value));
 
-		assertThat((Object) wrapper.queryParam(name)).isEqualTo(Optional.of(value));
+		assertThat(wrapper.queryParam(name)).isEqualTo(Optional.of(value));
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class ServerRequestWrapperTests {
 		String value = "bar";
 		given(mockRequest.pathVariable(name)).willReturn(value);
 
-		assertThat((Object) wrapper.pathVariable(name)).isEqualTo(value);
+		assertThat(wrapper.pathVariable(name)).isEqualTo(value);
 	}
 
 	@Test

@@ -50,7 +50,7 @@ public class HeaderWebSessionIdResolverTests {
 	public void expireWhenValidThenSetsEmptyHeader() {
 		this.idResolver.expireSession(this.exchange);
 
-		assertThat((Object) this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(""));
+		assertThat(this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(""));
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class HeaderWebSessionIdResolverTests {
 
 		this.idResolver.expireSession(this.exchange);
 
-		assertThat((Object) this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(""));
+		assertThat(this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(""));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class HeaderWebSessionIdResolverTests {
 
 		this.idResolver.expireSession(this.exchange);
 
-		assertThat((Object) this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(""));
+		assertThat(this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(""));
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class HeaderWebSessionIdResolverTests {
 
 		this.idResolver.setSessionId(this.exchange, id);
 
-		assertThat((Object) this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(id));
+		assertThat(this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(id));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class HeaderWebSessionIdResolverTests {
 
 		this.idResolver.setSessionId(this.exchange, id);
 
-		assertThat((Object) this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(id));
+		assertThat(this.exchange.getResponse().getHeaders().get(HeaderWebSessionIdResolver.DEFAULT_HEADER_NAME)).isEqualTo(Arrays.asList(id));
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class HeaderWebSessionIdResolverTests {
 
 		this.idResolver.setSessionId(this.exchange, id);
 
-		assertThat((Object) this.exchange.getResponse().getHeaders().get(headerName)).isEqualTo(Arrays.asList(id));
+		assertThat(this.exchange.getResponse().getHeaders().get(headerName)).isEqualTo(Arrays.asList(id));
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class HeaderWebSessionIdResolverTests {
 
 		List<String> ids = this.idResolver.resolveSessionIds(this.exchange);
 
-		assertThat((Object) ids).isEqualTo(Arrays.asList(id));
+		assertThat(ids).isEqualTo(Arrays.asList(id));
 	}
 
 	@Test
@@ -135,6 +135,6 @@ public class HeaderWebSessionIdResolverTests {
 
 		List<String> ids = this.idResolver.resolveSessionIds(this.exchange);
 
-		assertThat((Object) ids).isEqualTo(Arrays.asList(id1, id2));
+		assertThat(ids).isEqualTo(Arrays.asList(id1, id2));
 	}
 }

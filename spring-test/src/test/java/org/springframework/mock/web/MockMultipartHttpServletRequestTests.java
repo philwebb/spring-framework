@@ -77,18 +77,18 @@ public class MockMultipartHttpServletRequestTests {
 		Map<String, MultipartFile> fileMap = request.getFileMap();
 		List<String> fileMapKeys = new LinkedList<>(fileMap.keySet());
 		assertEquals(2, fileMapKeys.size());
-		assertThat((Object) fileMap.get("file1")).isEqualTo(file1);
-		assertThat((Object) fileMap.get("file2")).isEqualTo(file2);
+		assertThat(fileMap.get("file1")).isEqualTo(file1);
+		assertThat(fileMap.get("file2")).isEqualTo(file2);
 
-		assertThat((Object) file1.getName()).isEqualTo("file1");
-		assertThat((Object) file1.getOriginalFilename()).isEqualTo("");
+		assertThat(file1.getName()).isEqualTo("file1");
+		assertThat(file1.getOriginalFilename()).isEqualTo("");
 		assertNull(file1.getContentType());
 		assertThat(ObjectUtils.nullSafeEquals("myContent1".getBytes(), file1.getBytes())).isTrue();
 		assertThat(ObjectUtils.nullSafeEquals("myContent1".getBytes(),
 			FileCopyUtils.copyToByteArray(file1.getInputStream()))).isTrue();
-		assertThat((Object) file2.getName()).isEqualTo("file2");
-		assertThat((Object) file2.getOriginalFilename()).isEqualTo("myOrigFilename");
-		assertThat((Object) file2.getContentType()).isEqualTo("text/plain");
+		assertThat(file2.getName()).isEqualTo("file2");
+		assertThat(file2.getOriginalFilename()).isEqualTo("myOrigFilename");
+		assertThat(file2.getContentType()).isEqualTo("text/plain");
 		assertThat(ObjectUtils.nullSafeEquals("myContent2".getBytes(), file2.getBytes())).isTrue();
 		assertThat(ObjectUtils.nullSafeEquals("myContent2".getBytes(),
 			FileCopyUtils.copyToByteArray(file2.getInputStream()))).isTrue();

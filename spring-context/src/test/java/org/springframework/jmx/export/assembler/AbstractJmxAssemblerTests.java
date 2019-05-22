@@ -124,7 +124,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		ObjectName objectName = ObjectNameManager.getInstance(getObjectName());
 		getServer().setAttribute(objectName, new Attribute(NAME_ATTRIBUTE, "Rob Harrop"));
 		IJmxTestBean bean = (IJmxTestBean) getContext().getBean("testBean");
-		assertThat((Object) bean.getName()).isEqualTo("Rob Harrop");
+		assertThat(bean.getName()).isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -163,12 +163,12 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 
 		ModelMBeanOperationInfo get = info.getOperation("getName");
 		assertNotNull("get operation should not be null", get);
-		assertThat((Object) new Integer(4)).as("get operation should have visibility of four").isEqualTo(get.getDescriptor().getFieldValue("visibility"));
+		assertThat(new Integer(4)).as("get operation should have visibility of four").isEqualTo(get.getDescriptor().getFieldValue("visibility"));
 		assertThat(get.getDescriptor().getFieldValue("role")).as("get operation should have role \"getter\"").isEqualTo("getter");
 
 		ModelMBeanOperationInfo set = info.getOperation("setName");
 		assertNotNull("set operation should not be null", set);
-		assertThat((Object) new Integer(4)).as("set operation should have visibility of four").isEqualTo(set.getDescriptor().getFieldValue("visibility"));
+		assertThat(new Integer(4)).as("set operation should have visibility of four").isEqualTo(set.getDescriptor().getFieldValue("visibility"));
 		assertThat(set.getDescriptor().getFieldValue("role")).as("set operation should have role \"setter\"").isEqualTo("setter");
 	}
 
@@ -177,13 +177,13 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		ModelMBeanInfo info = (ModelMBeanInfo) getMBeanInfo();
 		MBeanNotificationInfo[] notifications = info.getNotifications();
 		assertEquals("Incorrect number of notifications", 1, notifications.length);
-		assertThat((Object) notifications[0].getName()).as("Incorrect notification name").isEqualTo("My Notification");
+		assertThat(notifications[0].getName()).as("Incorrect notification name").isEqualTo("My Notification");
 
 		String[] notifTypes = notifications[0].getNotifTypes();
 
 		assertEquals("Incorrect number of notification types", 2, notifTypes.length);
-		assertThat((Object) notifTypes[0]).as("Notification type.foo not found").isEqualTo("type.foo");
-		assertThat((Object) notifTypes[1]).as("Notification type.bar not found").isEqualTo("type.bar");
+		assertThat(notifTypes[0]).as("Notification type.foo not found").isEqualTo("type.foo");
+		assertThat(notifTypes[1]).as("Notification type.bar not found").isEqualTo("type.bar");
 	}
 
 	protected ModelMBeanInfo getMBeanInfoFromAssembler() throws Exception {

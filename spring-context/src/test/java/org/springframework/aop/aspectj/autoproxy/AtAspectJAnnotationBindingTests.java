@@ -49,14 +49,14 @@ public class AtAspectJAnnotationBindingTests {
 
 	@Test
 	public void testAnnotationBindingInAroundAdvice() {
-		assertThat((Object) testBean.doThis()).isEqualTo("this value doThis");
-		assertThat((Object) testBean.doThat()).isEqualTo("that value doThat");
+		assertThat(testBean.doThis()).isEqualTo("this value doThis");
+		assertThat(testBean.doThat()).isEqualTo("that value doThat");
 		assertEquals(2, testBean.doArray().length);
 	}
 
 	@Test
 	public void testNoMatchingWithoutAnnotationPresent() {
-		assertThat((Object) testBean.doTheOther()).isEqualTo("doTheOther");
+		assertThat(testBean.doTheOther()).isEqualTo("doTheOther");
 	}
 
 	@Test

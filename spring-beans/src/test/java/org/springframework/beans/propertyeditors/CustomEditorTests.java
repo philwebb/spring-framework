@@ -123,9 +123,9 @@ public class CustomEditorTests {
 		bw.setPropertyValue("name", "value");
 		bw.setPropertyValue("touchy", "value");
 		assertThat(bw.getPropertyValue("name")).isEqualTo("prefixvalue");
-		assertThat((Object) tb.getName()).isEqualTo("prefixvalue");
+		assertThat(tb.getName()).isEqualTo("prefixvalue");
 		assertThat(bw.getPropertyValue("touchy")).isEqualTo("value");
-		assertThat((Object) tb.getTouchy()).isEqualTo("value");
+		assertThat(tb.getTouchy()).isEqualTo("value");
 	}
 
 	@Test
@@ -141,9 +141,9 @@ public class CustomEditorTests {
 		bw.setPropertyValue("name", "value");
 		bw.setPropertyValue("touchy", "value");
 		assertThat(bw.getPropertyValue("name")).isEqualTo("prefixvalue");
-		assertThat((Object) tb.getName()).isEqualTo("prefixvalue");
+		assertThat(tb.getName()).isEqualTo("prefixvalue");
 		assertThat(bw.getPropertyValue("touchy")).isEqualTo("prefixvalue");
-		assertThat((Object) tb.getTouchy()).isEqualTo("prefixvalue");
+		assertThat(tb.getTouchy()).isEqualTo("prefixvalue");
 	}
 
 	@Test
@@ -160,9 +160,9 @@ public class CustomEditorTests {
 		bw.setPropertyValue("spouse.name", "value");
 		bw.setPropertyValue("touchy", "value");
 		assertThat(bw.getPropertyValue("spouse.name")).isEqualTo("prefixvalue");
-		assertThat((Object) tb.getSpouse().getName()).isEqualTo("prefixvalue");
+		assertThat(tb.getSpouse().getName()).isEqualTo("prefixvalue");
 		assertThat(bw.getPropertyValue("touchy")).isEqualTo("value");
-		assertThat((Object) tb.getTouchy()).isEqualTo("value");
+		assertThat(tb.getTouchy()).isEqualTo("value");
 	}
 
 	@Test
@@ -179,9 +179,9 @@ public class CustomEditorTests {
 		bw.setPropertyValue("spouse.name", "value");
 		bw.setPropertyValue("touchy", "value");
 		assertThat(bw.getPropertyValue("spouse.name")).isEqualTo("prefixvalue");
-		assertThat((Object) tb.getSpouse().getName()).isEqualTo("prefixvalue");
+		assertThat(tb.getSpouse().getName()).isEqualTo("prefixvalue");
 		assertThat(bw.getPropertyValue("touchy")).isEqualTo("prefixvalue");
-		assertThat((Object) tb.getTouchy()).isEqualTo("prefixvalue");
+		assertThat(tb.getTouchy()).isEqualTo("prefixvalue");
 	}
 
 	@Test
@@ -319,17 +319,17 @@ public class CustomEditorTests {
 
 		editor.setAsText(trueString);
 		assertThat(((Boolean) editor.getValue()).booleanValue()).isTrue();
-		assertThat((Object) editor.getAsText()).isEqualTo(trueString);
+		assertThat(editor.getAsText()).isEqualTo(trueString);
 		editor.setAsText(falseString);
 		assertThat(((Boolean) editor.getValue()).booleanValue()).isFalse();
-		assertThat((Object) editor.getAsText()).isEqualTo(falseString);
+		assertThat(editor.getAsText()).isEqualTo(falseString);
 
 		editor.setAsText(trueString.toUpperCase());
 		assertThat(((Boolean) editor.getValue()).booleanValue()).isTrue();
-		assertThat((Object) editor.getAsText()).isEqualTo(trueString);
+		assertThat(editor.getAsText()).isEqualTo(trueString);
 		editor.setAsText(falseString.toUpperCase());
 		assertThat(((Boolean) editor.getValue()).booleanValue()).isFalse();
-		assertThat((Object) editor.getAsText()).isEqualTo(falseString);
+		assertThat(editor.getAsText()).isEqualTo(falseString);
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				editor.setAsText(null));
 	}
@@ -485,7 +485,7 @@ public class CustomEditorTests {
 		PrimitiveArrayBean bean = new PrimitiveArrayBean();
 		BeanWrapper bw = new BeanWrapperImpl(bean);
 		bw.setPropertyValue("byteArray", "myvalue");
-		assertThat((Object) new String(bean.getByteArray())).isEqualTo("myvalue");
+		assertThat(new String(bean.getByteArray())).isEqualTo("myvalue");
 	}
 
 	@Test
@@ -493,7 +493,7 @@ public class CustomEditorTests {
 		PrimitiveArrayBean bean = new PrimitiveArrayBean();
 		BeanWrapper bw = new BeanWrapperImpl(bean);
 		bw.setPropertyValue("charArray", "myvalue");
-		assertThat((Object) new String(bean.getCharArray())).isEqualTo("myvalue");
+		assertThat(new String(bean.getCharArray())).isEqualTo("myvalue");
 	}
 
 	@Test
@@ -515,7 +515,7 @@ public class CustomEditorTests {
 
 		CharacterEditor editor = new CharacterEditor(false);
 		editor.setAsText("M");
-		assertThat((Object) editor.getAsText()).isEqualTo("M");
+		assertThat(editor.getAsText()).isEqualTo("M");
 	}
 
 	@Test
@@ -525,16 +525,16 @@ public class CustomEditorTests {
 		bw.registerCustomEditor(Character.class, new CharacterEditor(true));
 
 		bw.setPropertyValue("myCharacter", new Character('c'));
-		assertThat((Object) cb.getMyCharacter()).isEqualTo(new Character('c'));
+		assertThat(cb.getMyCharacter()).isEqualTo(new Character('c'));
 
 		bw.setPropertyValue("myCharacter", "c");
-		assertThat((Object) cb.getMyCharacter()).isEqualTo(new Character('c'));
+		assertThat(cb.getMyCharacter()).isEqualTo(new Character('c'));
 
 		bw.setPropertyValue("myCharacter", "\u0041");
-		assertThat((Object) cb.getMyCharacter()).isEqualTo(new Character('A'));
+		assertThat(cb.getMyCharacter()).isEqualTo(new Character('A'));
 
 		bw.setPropertyValue("myCharacter", " ");
-		assertThat((Object) cb.getMyCharacter()).isEqualTo(new Character(' '));
+		assertThat(cb.getMyCharacter()).isEqualTo(new Character(' '));
 
 		bw.setPropertyValue("myCharacter", "");
 		assertNull(cb.getMyCharacter());
@@ -550,14 +550,14 @@ public class CustomEditorTests {
 	@Test
 	public void testCharacterEditorGetAsTextReturnsEmptyStringIfValueIsNull() throws Exception {
 		PropertyEditor charEditor = new CharacterEditor(false);
-		assertThat((Object) charEditor.getAsText()).isEqualTo("");
+		assertThat(charEditor.getAsText()).isEqualTo("");
 		charEditor = new CharacterEditor(true);
 		charEditor.setAsText(null);
-		assertThat((Object) charEditor.getAsText()).isEqualTo("");
+		assertThat(charEditor.getAsText()).isEqualTo("");
 		charEditor.setAsText("");
-		assertThat((Object) charEditor.getAsText()).isEqualTo("");
+		assertThat(charEditor.getAsText()).isEqualTo("");
 		charEditor.setAsText(" ");
-		assertThat((Object) charEditor.getAsText()).isEqualTo(" ");
+		assertThat(charEditor.getAsText()).isEqualTo(" ");
 	}
 
 	@Test
@@ -572,14 +572,14 @@ public class CustomEditorTests {
 		PropertyEditor classEditor = new ClassEditor();
 		classEditor.setAsText(TestBean.class.getName());
 		assertThat(classEditor.getValue()).isEqualTo(TestBean.class);
-		assertThat((Object) classEditor.getAsText()).isEqualTo(TestBean.class.getName());
+		assertThat(classEditor.getAsText()).isEqualTo(TestBean.class.getName());
 
 		classEditor.setAsText(null);
-		assertThat((Object) classEditor.getAsText()).isEqualTo("");
+		assertThat(classEditor.getAsText()).isEqualTo("");
 		classEditor.setAsText("");
-		assertThat((Object) classEditor.getAsText()).isEqualTo("");
+		assertThat(classEditor.getAsText()).isEqualTo("");
 		classEditor.setAsText("\t  ");
-		assertThat((Object) classEditor.getAsText()).isEqualTo("");
+		assertThat(classEditor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -594,7 +594,7 @@ public class CustomEditorTests {
 		PropertyEditor classEditor = new ClassEditor();
 		classEditor.setAsText("org.springframework.tests.sample.beans.TestBean[]");
 		assertThat(classEditor.getValue()).isEqualTo(TestBean[].class);
-		assertThat((Object) classEditor.getAsText()).isEqualTo("org.springframework.tests.sample.beans.TestBean[]");
+		assertThat(classEditor.getAsText()).isEqualTo("org.springframework.tests.sample.beans.TestBean[]");
 	}
 
 	/*
@@ -605,7 +605,7 @@ public class CustomEditorTests {
 		String[][] chessboard = new String[8][8];
 		ClassEditor editor = new ClassEditor();
 		editor.setValue(chessboard.getClass());
-		assertThat((Object) editor.getAsText()).isEqualTo("java.lang.String[][]");
+		assertThat(editor.getAsText()).isEqualTo("java.lang.String[][]");
 	}
 
 	/*
@@ -616,7 +616,7 @@ public class CustomEditorTests {
 		String[][][][][] ridiculousChessboard = new String[8][4][0][1][3];
 		ClassEditor editor = new ClassEditor();
 		editor.setValue(ridiculousChessboard.getClass());
-		assertThat((Object) editor.getAsText()).isEqualTo("java.lang.String[][][][][]");
+		assertThat(editor.getAsText()).isEqualTo("java.lang.String[][][][][]");
 	}
 
 	@Test
@@ -624,7 +624,7 @@ public class CustomEditorTests {
 		PropertyEditor fileEditor = new FileEditor();
 		fileEditor.setAsText("file:myfile.txt");
 		assertThat(fileEditor.getValue()).isEqualTo(new File("myfile.txt"));
-		assertThat((Object) fileEditor.getAsText()).isEqualTo((new File("myfile.txt")).getPath());
+		assertThat(fileEditor.getAsText()).isEqualTo((new File("myfile.txt")).getPath());
 	}
 
 	@Test
@@ -659,10 +659,10 @@ public class CustomEditorTests {
 		PropertyEditor localeEditor = new LocaleEditor();
 		localeEditor.setAsText("en_CA");
 		assertThat(localeEditor.getValue()).isEqualTo(Locale.CANADA);
-		assertThat((Object) localeEditor.getAsText()).isEqualTo("en_CA");
+		assertThat(localeEditor.getAsText()).isEqualTo("en_CA");
 
 		localeEditor = new LocaleEditor();
-		assertThat((Object) localeEditor.getAsText()).isEqualTo("");
+		assertThat(localeEditor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -671,15 +671,15 @@ public class CustomEditorTests {
 
 		PropertyEditor patternEditor = new PatternEditor();
 		patternEditor.setAsText(REGEX);
-		assertThat((Object) ((Pattern) patternEditor.getValue()).pattern()).isEqualTo(Pattern.compile(REGEX).pattern());
-		assertThat((Object) patternEditor.getAsText()).isEqualTo(REGEX);
+		assertThat(((Pattern) patternEditor.getValue()).pattern()).isEqualTo(Pattern.compile(REGEX).pattern());
+		assertThat(patternEditor.getAsText()).isEqualTo(REGEX);
 
 		patternEditor = new PatternEditor();
-		assertThat((Object) patternEditor.getAsText()).isEqualTo("");
+		assertThat(patternEditor.getAsText()).isEqualTo("");
 
 		patternEditor = new PatternEditor();
 		patternEditor.setAsText(null);
-		assertThat((Object) patternEditor.getAsText()).isEqualTo("");
+		assertThat(patternEditor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -688,15 +688,15 @@ public class CustomEditorTests {
 
 		editor.setAsText("true");
 		assertThat(editor.getValue()).isEqualTo(Boolean.TRUE);
-		assertThat((Object) editor.getAsText()).isEqualTo("true");
+		assertThat(editor.getAsText()).isEqualTo("true");
 
 		editor.setAsText("false");
 		assertThat(editor.getValue()).isEqualTo(Boolean.FALSE);
-		assertThat((Object) editor.getAsText()).isEqualTo("false");
+		assertThat(editor.getAsText()).isEqualTo("false");
 
 		editor.setValue(null);
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				editor.setAsText(null));
@@ -708,15 +708,15 @@ public class CustomEditorTests {
 
 		editor.setAsText("true");
 		assertThat(editor.getValue()).isEqualTo(Boolean.TRUE);
-		assertThat((Object) editor.getAsText()).isEqualTo("true");
+		assertThat(editor.getAsText()).isEqualTo("true");
 
 		editor.setAsText("false");
 		assertThat(editor.getValue()).isEqualTo(Boolean.FALSE);
-		assertThat((Object) editor.getAsText()).isEqualTo("false");
+		assertThat(editor.getAsText()).isEqualTo("false");
 
 		editor.setValue(null);
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -724,7 +724,7 @@ public class CustomEditorTests {
 		CustomDateEditor editor = new CustomDateEditor(null, false);
 		editor.setValue(null);
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -732,7 +732,7 @@ public class CustomEditorTests {
 		CustomDateEditor editor = new CustomDateEditor(null, true);
 		editor.setValue(null);
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -756,10 +756,10 @@ public class CustomEditorTests {
 		CustomNumberEditor editor = new CustomNumberEditor(Integer.class, false);
 		editor.setAsText("5");
 		assertThat(editor.getValue()).isEqualTo(new Integer(5));
-		assertThat((Object) editor.getAsText()).isEqualTo("5");
+		assertThat(editor.getAsText()).isEqualTo("5");
 		editor.setValue(null);
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -774,13 +774,13 @@ public class CustomEditorTests {
 		CustomNumberEditor editor = new CustomNumberEditor(Integer.class, true);
 		editor.setAsText("5");
 		assertThat(editor.getValue()).isEqualTo(new Integer(5));
-		assertThat((Object) editor.getAsText()).isEqualTo("5");
+		assertThat(editor.getAsText()).isEqualTo("5");
 		editor.setAsText("");
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 		editor.setValue(null);
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -788,17 +788,17 @@ public class CustomEditorTests {
 		StringTrimmerEditor editor = new StringTrimmerEditor(false);
 		editor.setAsText("test");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText(" test ");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText("");
 		assertThat(editor.getValue()).isEqualTo("");
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 		editor.setValue(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 		editor.setAsText(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -806,15 +806,15 @@ public class CustomEditorTests {
 		StringTrimmerEditor editor = new StringTrimmerEditor(true);
 		editor.setAsText("test");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText(" test ");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText("  ");
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 		editor.setValue(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -822,15 +822,15 @@ public class CustomEditorTests {
 		StringTrimmerEditor editor = new StringTrimmerEditor("\r\n\f", false);
 		editor.setAsText("te\ns\ft");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText(" test ");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText("");
 		assertThat(editor.getValue()).isEqualTo("");
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 		editor.setValue(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -838,15 +838,15 @@ public class CustomEditorTests {
 		StringTrimmerEditor editor = new StringTrimmerEditor("\r\n\f", true);
 		editor.setAsText("te\ns\ft");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText(" test ");
 		assertThat(editor.getValue()).isEqualTo("test");
-		assertThat((Object) editor.getAsText()).isEqualTo("test");
+		assertThat(editor.getAsText()).isEqualTo("test");
 		editor.setAsText(" \n\f ");
 		assertThat(editor.getValue()).isEqualTo(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 		editor.setValue(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -865,12 +865,12 @@ public class CustomEditorTests {
 		TestBean tb3 = ((TestBean) bean.getList().get(1));
 		TestBean tb4 = ((TestBean) bean.getMap().get("key1"));
 		TestBean tb5 = ((TestBean) bean.getMap().get("key2"));
-		assertThat((Object) tb0.getName()).isEqualTo("name0");
-		assertThat((Object) tb1.getName()).isEqualTo("name1");
-		assertThat((Object) tb2.getName()).isEqualTo("name2");
-		assertThat((Object) tb3.getName()).isEqualTo("name3");
-		assertThat((Object) tb4.getName()).isEqualTo("name4");
-		assertThat((Object) tb5.getName()).isEqualTo("name5");
+		assertThat(tb0.getName()).isEqualTo("name0");
+		assertThat(tb1.getName()).isEqualTo("name1");
+		assertThat(tb2.getName()).isEqualTo("name2");
+		assertThat(tb3.getName()).isEqualTo("name3");
+		assertThat(tb4.getName()).isEqualTo("name4");
+		assertThat(tb5.getName()).isEqualTo("name5");
 		assertThat(bw.getPropertyValue("array[0].name")).isEqualTo("name0");
 		assertThat(bw.getPropertyValue("array[1].name")).isEqualTo("name1");
 		assertThat(bw.getPropertyValue("list[0].name")).isEqualTo("name2");
@@ -888,12 +888,12 @@ public class CustomEditorTests {
 		pvs.add("map[key1].name", "name1");
 		pvs.add("map['key2'].name", "name0");
 		bw.setPropertyValues(pvs);
-		assertThat((Object) tb0.getName()).isEqualTo("prefixname5");
-		assertThat((Object) tb1.getName()).isEqualTo("prefixname4");
-		assertThat((Object) tb2.getName()).isEqualTo("prefixname3");
-		assertThat((Object) tb3.getName()).isEqualTo("prefixname2");
-		assertThat((Object) tb4.getName()).isEqualTo("prefixname1");
-		assertThat((Object) tb5.getName()).isEqualTo("prefixname0");
+		assertThat(tb0.getName()).isEqualTo("prefixname5");
+		assertThat(tb1.getName()).isEqualTo("prefixname4");
+		assertThat(tb2.getName()).isEqualTo("prefixname3");
+		assertThat(tb3.getName()).isEqualTo("prefixname2");
+		assertThat(tb4.getName()).isEqualTo("prefixname1");
+		assertThat(tb5.getName()).isEqualTo("prefixname0");
 		assertThat(bw.getPropertyValue("array[0].name")).isEqualTo("prefixname5");
 		assertThat(bw.getPropertyValue("array[1].name")).isEqualTo("prefixname4");
 		assertThat(bw.getPropertyValue("list[0].name")).isEqualTo("prefixname3");
@@ -932,12 +932,12 @@ public class CustomEditorTests {
 		TestBean tb3 = ((TestBean) bean.getList().get(1));
 		TestBean tb4 = ((TestBean) bean.getMap().get("key1"));
 		TestBean tb5 = ((TestBean) bean.getMap().get("key2"));
-		assertThat((Object) tb0.getName()).isEqualTo("name0");
-		assertThat((Object) tb1.getName()).isEqualTo("name1");
-		assertThat((Object) tb2.getName()).isEqualTo("name2");
-		assertThat((Object) tb3.getName()).isEqualTo("name3");
-		assertThat((Object) tb4.getName()).isEqualTo("name4");
-		assertThat((Object) tb5.getName()).isEqualTo("name5");
+		assertThat(tb0.getName()).isEqualTo("name0");
+		assertThat(tb1.getName()).isEqualTo("name1");
+		assertThat(tb2.getName()).isEqualTo("name2");
+		assertThat(tb3.getName()).isEqualTo("name3");
+		assertThat(tb4.getName()).isEqualTo("name4");
+		assertThat(tb5.getName()).isEqualTo("name5");
 		assertThat(bw.getPropertyValue("array[0].name")).isEqualTo("name0");
 		assertThat(bw.getPropertyValue("array[1].name")).isEqualTo("name1");
 		assertThat(bw.getPropertyValue("list[0].name")).isEqualTo("name2");
@@ -955,12 +955,12 @@ public class CustomEditorTests {
 		pvs.add("map[key1].name", "name1");
 		pvs.add("map['key2'].name", "name0");
 		bw.setPropertyValues(pvs);
-		assertThat((Object) tb0.getName()).isEqualTo("arrayname5");
-		assertThat((Object) tb1.getName()).isEqualTo("arrayname4");
-		assertThat((Object) tb2.getName()).isEqualTo("listname3");
-		assertThat((Object) tb3.getName()).isEqualTo("listname2");
-		assertThat((Object) tb4.getName()).isEqualTo("mapname1");
-		assertThat((Object) tb5.getName()).isEqualTo("mapname0");
+		assertThat(tb0.getName()).isEqualTo("arrayname5");
+		assertThat(tb1.getName()).isEqualTo("arrayname4");
+		assertThat(tb2.getName()).isEqualTo("listname3");
+		assertThat(tb3.getName()).isEqualTo("listname2");
+		assertThat(tb4.getName()).isEqualTo("mapname1");
+		assertThat(tb5.getName()).isEqualTo("mapname0");
 		assertThat(bw.getPropertyValue("array[0].name")).isEqualTo("arrayname5");
 		assertThat(bw.getPropertyValue("array[1].name")).isEqualTo("arrayname4");
 		assertThat(bw.getPropertyValue("list[0].name")).isEqualTo("listname3");
@@ -1017,12 +1017,12 @@ public class CustomEditorTests {
 		TestBean tb3 = ((TestBean) bean.getList().get(1));
 		TestBean tb4 = ((TestBean) bean.getMap().get("key1"));
 		TestBean tb5 = ((TestBean) bean.getMap().get("key2"));
-		assertThat((Object) tb0.getName()).isEqualTo("name0");
-		assertThat((Object) tb1.getName()).isEqualTo("name1");
-		assertThat((Object) tb2.getName()).isEqualTo("name2");
-		assertThat((Object) tb3.getName()).isEqualTo("name3");
-		assertThat((Object) tb4.getName()).isEqualTo("name4");
-		assertThat((Object) tb5.getName()).isEqualTo("name5");
+		assertThat(tb0.getName()).isEqualTo("name0");
+		assertThat(tb1.getName()).isEqualTo("name1");
+		assertThat(tb2.getName()).isEqualTo("name2");
+		assertThat(tb3.getName()).isEqualTo("name3");
+		assertThat(tb4.getName()).isEqualTo("name4");
+		assertThat(tb5.getName()).isEqualTo("name5");
 		assertThat(bw.getPropertyValue("array[0].name")).isEqualTo("name0");
 		assertThat(bw.getPropertyValue("array[1].name")).isEqualTo("name1");
 		assertThat(bw.getPropertyValue("list[0].name")).isEqualTo("name2");
@@ -1040,12 +1040,12 @@ public class CustomEditorTests {
 		pvs.add("map[key1].name", "name1");
 		pvs.add("map['key2'].name", "name0");
 		bw.setPropertyValues(pvs);
-		assertThat((Object) tb0.getName()).isEqualTo("array0name5");
-		assertThat((Object) tb1.getName()).isEqualTo("array1name4");
-		assertThat((Object) tb2.getName()).isEqualTo("list0name3");
-		assertThat((Object) tb3.getName()).isEqualTo("list1name2");
-		assertThat((Object) tb4.getName()).isEqualTo("mapkey1name1");
-		assertThat((Object) tb5.getName()).isEqualTo("mapkey2name0");
+		assertThat(tb0.getName()).isEqualTo("array0name5");
+		assertThat(tb1.getName()).isEqualTo("array1name4");
+		assertThat(tb2.getName()).isEqualTo("list0name3");
+		assertThat(tb3.getName()).isEqualTo("list1name2");
+		assertThat(tb4.getName()).isEqualTo("mapkey1name1");
+		assertThat(tb5.getName()).isEqualTo("mapkey2name0");
 		assertThat(bw.getPropertyValue("array[0].name")).isEqualTo("array0name5");
 		assertThat(bw.getPropertyValue("array[1].name")).isEqualTo("array1name4");
 		assertThat(bw.getPropertyValue("list[0].name")).isEqualTo("list0name3");
@@ -1103,12 +1103,12 @@ public class CustomEditorTests {
 				return ((String) getValue()).substring(4);
 			}
 		});
-		assertThat((Object) tb0.getName()).isEqualTo("name0");
-		assertThat((Object) tb1.getName()).isEqualTo("name1");
-		assertThat((Object) tb2.getName()).isEqualTo("name2");
-		assertThat((Object) tb3.getName()).isEqualTo("name3");
-		assertThat((Object) tb4.getName()).isEqualTo("name4");
-		assertThat((Object) tb5.getName()).isEqualTo("name5");
+		assertThat(tb0.getName()).isEqualTo("name0");
+		assertThat(tb1.getName()).isEqualTo("name1");
+		assertThat(tb2.getName()).isEqualTo("name2");
+		assertThat(tb3.getName()).isEqualTo("name3");
+		assertThat(tb4.getName()).isEqualTo("name4");
+		assertThat(tb5.getName()).isEqualTo("name5");
 		assertThat(bw.getPropertyValue("array[0].nestedIndexedBean.array[0].name")).isEqualTo("name0");
 		assertThat(bw.getPropertyValue("array[1].nestedIndexedBean.array[1].name")).isEqualTo("name1");
 		assertThat(bw.getPropertyValue("list[0].nestedIndexedBean.list[0].name")).isEqualTo("name2");
@@ -1124,12 +1124,12 @@ public class CustomEditorTests {
 		pvs.add("map[key1].nestedIndexedBean.map[\"key1\"].name", "name1");
 		pvs.add("map['key2'].nestedIndexedBean.map[key2].name", "name0");
 		bw.setPropertyValues(pvs);
-		assertThat((Object) tb0.getNestedIndexedBean().getArray()[0].getName()).isEqualTo("arrayname5");
-		assertThat((Object) tb1.getNestedIndexedBean().getArray()[1].getName()).isEqualTo("arrayname4");
-		assertThat((Object) ((TestBean) tb2.getNestedIndexedBean().getList().get(0)).getName()).isEqualTo("listname3");
-		assertThat((Object) ((TestBean) tb3.getNestedIndexedBean().getList().get(1)).getName()).isEqualTo("listname2");
-		assertThat((Object) ((TestBean) tb4.getNestedIndexedBean().getMap().get("key1")).getName()).isEqualTo("mapname1");
-		assertThat((Object) ((TestBean) tb5.getNestedIndexedBean().getMap().get("key2")).getName()).isEqualTo("mapname0");
+		assertThat(tb0.getNestedIndexedBean().getArray()[0].getName()).isEqualTo("arrayname5");
+		assertThat(tb1.getNestedIndexedBean().getArray()[1].getName()).isEqualTo("arrayname4");
+		assertThat(((TestBean) tb2.getNestedIndexedBean().getList().get(0)).getName()).isEqualTo("listname3");
+		assertThat(((TestBean) tb3.getNestedIndexedBean().getList().get(1)).getName()).isEqualTo("listname2");
+		assertThat(((TestBean) tb4.getNestedIndexedBean().getMap().get("key1")).getName()).isEqualTo("mapname1");
+		assertThat(((TestBean) tb5.getNestedIndexedBean().getMap().get("key2")).getName()).isEqualTo("mapname0");
 		assertThat(bw.getPropertyValue("array[0].nestedIndexedBean.array[0].name")).isEqualTo("arrayname5");
 		assertThat(bw.getPropertyValue("array[1].nestedIndexedBean.array[1].name")).isEqualTo("arrayname4");
 		assertThat(bw.getPropertyValue("list[0].nestedIndexedBean.list[0].name")).isEqualTo("listname3");
@@ -1181,12 +1181,12 @@ public class CustomEditorTests {
 		pvs.add("map[key1].nestedIndexedBean.map[\"key1\"].name", "name1");
 		pvs.add("map['key2'].nestedIndexedBean.map[key2].name", "name0");
 		bw.setPropertyValues(pvs);
-		assertThat((Object) tb0.getNestedIndexedBean().getArray()[0].getName()).isEqualTo("arrayname5");
-		assertThat((Object) tb1.getNestedIndexedBean().getArray()[1].getName()).isEqualTo("name4");
-		assertThat((Object) ((TestBean) tb2.getNestedIndexedBean().getList().get(0)).getName()).isEqualTo("name3");
-		assertThat((Object) ((TestBean) tb3.getNestedIndexedBean().getList().get(1)).getName()).isEqualTo("listname2");
-		assertThat((Object) ((TestBean) tb4.getNestedIndexedBean().getMap().get("key1")).getName()).isEqualTo("mapname1");
-		assertThat((Object) ((TestBean) tb5.getNestedIndexedBean().getMap().get("key2")).getName()).isEqualTo("name0");
+		assertThat(tb0.getNestedIndexedBean().getArray()[0].getName()).isEqualTo("arrayname5");
+		assertThat(tb1.getNestedIndexedBean().getArray()[1].getName()).isEqualTo("name4");
+		assertThat(((TestBean) tb2.getNestedIndexedBean().getList().get(0)).getName()).isEqualTo("name3");
+		assertThat(((TestBean) tb3.getNestedIndexedBean().getList().get(1)).getName()).isEqualTo("listname2");
+		assertThat(((TestBean) tb4.getNestedIndexedBean().getMap().get("key1")).getName()).isEqualTo("mapname1");
+		assertThat(((TestBean) tb5.getNestedIndexedBean().getMap().get("key2")).getName()).isEqualTo("name0");
 	}
 
 	@Test
@@ -1235,12 +1235,12 @@ public class CustomEditorTests {
 		pvs.add("map[key1]", "e");
 		pvs.add("map['key2']", "f");
 		bw.setPropertyValues(pvs);
-		assertThat((Object) bean.getArray()[0].getName()).isEqualTo("arraya");
-		assertThat((Object) bean.getArray()[1].getName()).isEqualTo("arrayb");
-		assertThat((Object) ((TestBean) bean.getList().get(0)).getName()).isEqualTo("listc");
-		assertThat((Object) ((TestBean) bean.getList().get(1)).getName()).isEqualTo("listd");
-		assertThat((Object) ((TestBean) bean.getMap().get("key1")).getName()).isEqualTo("mape");
-		assertThat((Object) ((TestBean) bean.getMap().get("key2")).getName()).isEqualTo("mapf");
+		assertThat(bean.getArray()[0].getName()).isEqualTo("arraya");
+		assertThat(bean.getArray()[1].getName()).isEqualTo("arrayb");
+		assertThat(((TestBean) bean.getList().get(0)).getName()).isEqualTo("listc");
+		assertThat(((TestBean) bean.getList().get(1)).getName()).isEqualTo("listd");
+		assertThat(((TestBean) bean.getMap().get("key1")).getName()).isEqualTo("mape");
+		assertThat(((TestBean) bean.getMap().get("key2")).getName()).isEqualTo("mapf");
 	}
 
 	@Test
@@ -1322,12 +1322,12 @@ public class CustomEditorTests {
 		pvs.add("map[key1]", "e");
 		pvs.add("map['key2']", "f");
 		bw.setPropertyValues(pvs);
-		assertThat((Object) bean.getArray()[0].getName()).isEqualTo("array0a");
-		assertThat((Object) bean.getArray()[1].getName()).isEqualTo("array1b");
-		assertThat((Object) ((TestBean) bean.getList().get(0)).getName()).isEqualTo("list0c");
-		assertThat((Object) ((TestBean) bean.getList().get(1)).getName()).isEqualTo("list1d");
-		assertThat((Object) ((TestBean) bean.getMap().get("key1")).getName()).isEqualTo("mapkey1e");
-		assertThat((Object) ((TestBean) bean.getMap().get("key2")).getName()).isEqualTo("mapkey2f");
+		assertThat(bean.getArray()[0].getName()).isEqualTo("array0a");
+		assertThat(bean.getArray()[1].getName()).isEqualTo("array1b");
+		assertThat(((TestBean) bean.getList().get(0)).getName()).isEqualTo("list0c");
+		assertThat(((TestBean) bean.getList().get(1)).getName()).isEqualTo("list1d");
+		assertThat(((TestBean) bean.getMap().get("key1")).getName()).isEqualTo("mapkey1e");
+		assertThat(((TestBean) bean.getMap().get("key2")).getName()).isEqualTo("mapkey2f");
 	}
 
 	@Test
@@ -1343,7 +1343,7 @@ public class CustomEditorTests {
 			}
 		});
 		bw.setPropertyValue("list", "1");
-		assertThat((Object) ((TestBean) bean.getList().get(0)).getName()).isEqualTo("list1");
+		assertThat(((TestBean) bean.getList().get(0)).getName()).isEqualTo("list1");
 		bw.setPropertyValue("list[0]", "test");
 		assertThat(bean.getList().get(0)).isEqualTo("test");
 	}
@@ -1375,10 +1375,10 @@ public class CustomEditorTests {
 		bw.setPropertyValue("list", new ArrayList<>());
 		bw.setPropertyValue("list[0]", tb);
 		assertThat(bean.getList().get(0)).isEqualTo(tb);
-		assertThat((Object) bw.findCustomEditor(int.class, "list.age")).isEqualTo(pe);
-		assertThat((Object) bw.findCustomEditor(null, "list.age")).isEqualTo(pe);
-		assertThat((Object) bw.findCustomEditor(int.class, "list[0].age")).isEqualTo(pe);
-		assertThat((Object) bw.findCustomEditor(null, "list[0].age")).isEqualTo(pe);
+		assertThat(bw.findCustomEditor(int.class, "list.age")).isEqualTo(pe);
+		assertThat(bw.findCustomEditor(null, "list.age")).isEqualTo(pe);
+		assertThat(bw.findCustomEditor(int.class, "list[0].age")).isEqualTo(pe);
+		assertThat(bw.findCustomEditor(null, "list[0].age")).isEqualTo(pe);
 	}
 
 	@Test
@@ -1393,8 +1393,8 @@ public class CustomEditorTests {
 		});
 		bw.setPropertyValue("array", new String[] {"a", "b"});
 		assertEquals(2, tb.getArray().length);
-		assertThat((Object) tb.getArray()[0].getName()).isEqualTo("a");
-		assertThat((Object) tb.getArray()[1].getName()).isEqualTo("b");
+		assertThat(tb.getArray()[0].getName()).isEqualTo("a");
+		assertThat(tb.getArray()[1].getName()).isEqualTo("b");
 	}
 
 	@Test
@@ -1408,7 +1408,7 @@ public class CustomEditorTests {
 			}
 		});
 		bw.setPropertyValue("name", new String[] {"a", "b"});
-		assertThat((Object) tb.getName()).isEqualTo("-a,b-");
+		assertThat(tb.getName()).isEqualTo("-a,b-");
 	}
 
 	@Test
@@ -1417,9 +1417,9 @@ public class CustomEditorTests {
 		classArrayEditor.setAsText("java.lang.String,java.util.HashMap");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
 		assertEquals(2, classes.length);
-		assertThat((Object) classes[0]).isEqualTo(String.class);
-		assertThat((Object) classes[1]).isEqualTo(HashMap.class);
-		assertThat((Object) classArrayEditor.getAsText()).isEqualTo("java.lang.String,java.util.HashMap");
+		assertThat(classes[0]).isEqualTo(String.class);
+		assertThat(classes[1]).isEqualTo(HashMap.class);
+		assertThat(classArrayEditor.getAsText()).isEqualTo("java.lang.String,java.util.HashMap");
 		// ensure setAsText can consume the return value of getAsText
 		classArrayEditor.setAsText(classArrayEditor.getAsText());
 	}
@@ -1430,11 +1430,11 @@ public class CustomEditorTests {
 		classArrayEditor.setAsText("java.lang.String[],java.util.Map[],int[],float[][][]");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
 		assertEquals(4, classes.length);
-		assertThat((Object) classes[0]).isEqualTo(String[].class);
-		assertThat((Object) classes[1]).isEqualTo(Map[].class);
-		assertThat((Object) classes[2]).isEqualTo(int[].class);
-		assertThat((Object) classes[3]).isEqualTo(float[][][].class);
-		assertThat((Object) classArrayEditor.getAsText()).isEqualTo("java.lang.String[],java.util.Map[],int[],float[][][]");
+		assertThat(classes[0]).isEqualTo(String[].class);
+		assertThat(classes[1]).isEqualTo(Map[].class);
+		assertThat(classes[2]).isEqualTo(int[].class);
+		assertThat(classes[3]).isEqualTo(float[][][].class);
+		assertThat(classArrayEditor.getAsText()).isEqualTo("java.lang.String[],java.util.Map[],int[],float[][][]");
 		// ensure setAsText can consume the return value of getAsText
 		classArrayEditor.setAsText(classArrayEditor.getAsText());
 	}
@@ -1444,7 +1444,7 @@ public class CustomEditorTests {
 		ClassArrayEditor editor = new ClassArrayEditor();
 		editor.setAsText(null);
 		assertNull(editor.getValue());
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -1452,7 +1452,7 @@ public class CustomEditorTests {
 		ClassArrayEditor editor = new ClassArrayEditor();
 		editor.setAsText("");
 		assertNull(editor.getValue());
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -1460,7 +1460,7 @@ public class CustomEditorTests {
 		ClassArrayEditor editor = new ClassArrayEditor();
 		editor.setAsText("\n");
 		assertNull(editor.getValue());
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -1471,7 +1471,7 @@ public class CustomEditorTests {
 		Charset charset = Charset.forName(name);
 		assertThat(editor.getValue()).as("Invalid Charset conversion").isEqualTo(charset);
 		editor.setValue(charset);
-		assertThat((Object) editor.getAsText()).as("Invalid Charset conversion").isEqualTo(name);
+		assertThat(editor.getAsText()).as("Invalid Charset conversion").isEqualTo(name);
 	}
 
 

@@ -97,7 +97,7 @@ public class Jackson2JsonEncoderTests extends AbstractEncoderTestCase<Jackson2Js
 		MimeType textJavascript = new MimeType("text", "javascript", StandardCharsets.UTF_8);
 		Jackson2JsonEncoder encoder = new Jackson2JsonEncoder(new ObjectMapper(), textJavascript);
 
-		assertThat((Object) encoder.getEncodableMimeTypes()).isEqualTo(Collections.singletonList(textJavascript));
+		assertThat(encoder.getEncodableMimeTypes()).isEqualTo(Collections.singletonList(textJavascript));
 	}
 
 	@Test

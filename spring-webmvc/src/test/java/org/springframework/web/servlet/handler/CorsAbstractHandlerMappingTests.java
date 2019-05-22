@@ -103,7 +103,7 @@ public class CorsAbstractHandlerMappingTests {
 		assertNotNull(chain);
 		boolean condition = chain.getHandler() instanceof CorsAwareHandler;
 		assertThat(condition).isTrue();
-		assertThat((Object) getRequiredCorsConfiguration(chain, false).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
+		assertThat(getRequiredCorsConfiguration(chain, false).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
 	}
 
 	@Test
@@ -116,8 +116,8 @@ public class CorsAbstractHandlerMappingTests {
 
 		assertNotNull(chain);
 		assertNotNull(chain.getHandler());
-		assertThat((Object) chain.getHandler().getClass().getSimpleName()).isEqualTo("PreFlightHandler");
-		assertThat((Object) getRequiredCorsConfiguration(chain, true).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
+		assertThat(chain.getHandler().getClass().getSimpleName()).isEqualTo("PreFlightHandler");
+		assertThat(getRequiredCorsConfiguration(chain, true).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class CorsAbstractHandlerMappingTests {
 		assertNotNull(chain);
 		boolean condition = chain.getHandler() instanceof SimpleHandler;
 		assertThat(condition).isTrue();
-		assertThat((Object) getRequiredCorsConfiguration(chain, false).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
+		assertThat(getRequiredCorsConfiguration(chain, false).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
 	}
 
 	@Test
@@ -150,8 +150,8 @@ public class CorsAbstractHandlerMappingTests {
 
 		assertNotNull(chain);
 		assertNotNull(chain.getHandler());
-		assertThat((Object) chain.getHandler().getClass().getSimpleName()).isEqualTo("PreFlightHandler");
-		assertThat((Object) getRequiredCorsConfiguration(chain, true).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
+		assertThat(chain.getHandler().getClass().getSimpleName()).isEqualTo("PreFlightHandler");
+		assertThat(getRequiredCorsConfiguration(chain, true).getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
 	}
 
 	@Test
@@ -168,8 +168,8 @@ public class CorsAbstractHandlerMappingTests {
 		assertThat(condition).isTrue();
 		CorsConfiguration config = getRequiredCorsConfiguration(chain, false);
 		assertNotNull(config);
-		assertThat((Object) config.getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
-		assertThat((Object) config.getAllowCredentials()).isEqualTo(true);
+		assertThat(config.getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
+		assertThat(config.getAllowCredentials()).isEqualTo(true);
 	}
 
 	@Test
@@ -183,11 +183,11 @@ public class CorsAbstractHandlerMappingTests {
 
 		assertNotNull(chain);
 		assertNotNull(chain.getHandler());
-		assertThat((Object) chain.getHandler().getClass().getSimpleName()).isEqualTo("PreFlightHandler");
+		assertThat(chain.getHandler().getClass().getSimpleName()).isEqualTo("PreFlightHandler");
 		CorsConfiguration config = getRequiredCorsConfiguration(chain, true);
 		assertNotNull(config);
-		assertThat((Object) config.getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
-		assertThat((Object) config.getAllowCredentials()).isEqualTo(true);
+		assertThat(config.getAllowedOrigins()).isEqualTo(Collections.singletonList("*"));
+		assertThat(config.getAllowCredentials()).isEqualTo(true);
 	}
 
 
@@ -196,7 +196,7 @@ public class CorsAbstractHandlerMappingTests {
 		CorsConfiguration corsConfig = null;
 		if (isPreFlightRequest) {
 			Object handler = chain.getHandler();
-			assertThat((Object) handler.getClass().getSimpleName()).isEqualTo("PreFlightHandler");
+			assertThat(handler.getClass().getSimpleName()).isEqualTo("PreFlightHandler");
 			DirectFieldAccessor accessor = new DirectFieldAccessor(handler);
 			corsConfig = (CorsConfiguration) accessor.getPropertyValue("config");
 		}

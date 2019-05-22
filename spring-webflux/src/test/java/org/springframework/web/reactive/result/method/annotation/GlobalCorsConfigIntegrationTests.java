@@ -83,9 +83,9 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 	@Test
 	public void actualRequestWithCorsEnabled() throws Exception {
 		ResponseEntity<String> entity = performGet("/cors", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
-		assertThat((Object) entity.getBody()).isEqualTo("cors");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
+		assertThat(entity.getBody()).isEqualTo("cors");
 	}
 
 	@Test
@@ -98,25 +98,25 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 	@Test
 	public void actualRequestWithoutCorsEnabled() throws Exception {
 		ResponseEntity<String> entity = performGet("/welcome", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
-		assertThat((Object) entity.getBody()).isEqualTo("welcome");
+		assertThat(entity.getBody()).isEqualTo("welcome");
 	}
 
 	@Test
 	public void actualRequestWithAmbiguousMapping() throws Exception {
 		this.headers.add(HttpHeaders.ACCEPT, MediaType.TEXT_HTML_VALUE);
 		ResponseEntity<String> entity = performGet("/ambiguous", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
 	}
 
 	@Test
 	public void preFlightRequestWithCorsEnabled() throws Exception {
 		this.headers.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
 		ResponseEntity<String> entity = performOptions("/cors", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
 		assertThat(entity.getHeaders().getAccessControlAllowMethods())
 				.containsExactly(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST);
 	}
@@ -142,8 +142,8 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 		this.headers.set(HttpHeaders.ORIGIN, "https://foo");
 		this.headers.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
 		ResponseEntity<String> entity = performOptions("/cors-restricted", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://foo");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://foo");
 		assertThat(entity.getHeaders().getAccessControlAllowMethods())
 				.containsExactly(HttpMethod.GET, HttpMethod.POST);
 	}
@@ -152,11 +152,11 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 	public void preFlightRequestWithAmbiguousMapping() throws Exception {
 		this.headers.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
 		ResponseEntity<String> entity = performOptions("/ambiguous", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("http://localhost:9000");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("http://localhost:9000");
 		assertThat(entity.getHeaders().getAccessControlAllowMethods())
 				.containsExactly(HttpMethod.GET);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowCredentials()).isEqualTo(true);
+		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isEqualTo(true);
 		assertThat(entity.getHeaders().get(HttpHeaders.VARY))
 				.containsExactly(HttpHeaders.ORIGIN, HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD,
 						HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);

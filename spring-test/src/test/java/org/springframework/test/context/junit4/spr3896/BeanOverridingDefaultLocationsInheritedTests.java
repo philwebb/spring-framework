@@ -41,6 +41,6 @@ public class BeanOverridingDefaultLocationsInheritedTests extends DefaultLocatio
 	@Override
 	public void verifyEmployeeSetFromBaseContextConfig() {
 		assertNotNull("The employee should have been autowired.", this.employee);
-		assertThat((Object) this.employee.getName()).as("The employee bean should have been overridden.").isEqualTo("Yoda");
+		assertThat(this.employee.getName()).as("The employee bean should have been overridden.").isEqualTo("Yoda");
 	}
 }

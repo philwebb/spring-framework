@@ -222,7 +222,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 		public void customArgumentResolver(Locale locale) {
 			invocations.put("customArgumentResolver", true);
-			assertThat((Object) locale).as("Wrong value for locale").isEqualTo(Locale.getDefault());
+			assertThat(locale).as("Wrong value for locale").isEqualTo(Locale.getDefault());
 		}
 	}
 

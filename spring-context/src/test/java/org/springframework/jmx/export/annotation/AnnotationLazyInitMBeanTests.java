@@ -45,7 +45,7 @@ public class AnnotationLazyInitMBeanTests {
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean4");
 			assertNotNull(server.getObjectInstance(oname));
 			String name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).as("Invalid name returned").isEqualTo("TEST");
+			assertThat(name).as("Invalid name returned").isEqualTo("TEST");
 		}
 		finally {
 			ctx.close();
@@ -63,22 +63,22 @@ public class AnnotationLazyInitMBeanTests {
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean4");
 			assertNotNull(server.getObjectInstance(oname));
 			String name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).as("Invalid name returned").isEqualTo("TEST");
+			assertThat(name).as("Invalid name returned").isEqualTo("TEST");
 
 			oname = ObjectNameManager.getInstance("bean:name=testBean5");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).as("Invalid name returned").isEqualTo("FACTORY");
+			assertThat(name).as("Invalid name returned").isEqualTo("FACTORY");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=true");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).as("Invalid name returned").isEqualTo("Rob Harrop");
+			assertThat(name).as("Invalid name returned").isEqualTo("Rob Harrop");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=another");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
+			assertThat(name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
 		}
 		finally {
 			System.clearProperty("domain");

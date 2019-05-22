@@ -48,7 +48,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	public void testConstruction() {
 		EvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
 		ExpressionState state = new ExpressionState(context);
-		assertThat((Object) state.getEvaluationContext()).isEqualTo(context);
+		assertThat(state.getEvaluationContext()).isEqualTo(context);
 	}
 
 	// Local variables are in variable scopes which come and go during evaluation.  Normal variables are
@@ -74,28 +74,28 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	public void testVariables() {
 		ExpressionState state = getState();
 		TypedValue typedValue = state.lookupVariable("foo");
-		assertThat((Object) typedValue).isEqualTo(TypedValue.NULL);
+		assertThat(typedValue).isEqualTo(TypedValue.NULL);
 
 		state.setVariable("foo",34);
 		typedValue = state.lookupVariable("foo");
 		assertThat(typedValue.getValue()).isEqualTo(34);
-		assertThat((Object) typedValue.getTypeDescriptor().getType()).isEqualTo(Integer.class);
+		assertThat(typedValue.getTypeDescriptor().getType()).isEqualTo(Integer.class);
 
 		state.setVariable("foo","abc");
 		typedValue = state.lookupVariable("foo");
 		assertThat(typedValue.getValue()).isEqualTo("abc");
-		assertThat((Object) typedValue.getTypeDescriptor().getType()).isEqualTo(String.class);
+		assertThat(typedValue.getTypeDescriptor().getType()).isEqualTo(String.class);
 	}
 
 	@Test
 	public void testNoVariableInterference() {
 		ExpressionState state = getState();
 		TypedValue typedValue = state.lookupVariable("foo");
-		assertThat((Object) typedValue).isEqualTo(TypedValue.NULL);
+		assertThat(typedValue).isEqualTo(TypedValue.NULL);
 
 		state.setLocalVariable("foo",34);
 		typedValue = state.lookupVariable("foo");
-		assertThat((Object) typedValue).isEqualTo(TypedValue.NULL);
+		assertThat(typedValue).isEqualTo(TypedValue.NULL);
 
 		state.setVariable("goo", "hello");
 		assertNull(state.lookupLocalVariable("goo"));
@@ -125,15 +125,15 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	@Test
 	public void testRootContextObject() {
 		ExpressionState state = getState();
-		assertThat((Object) state.getRootContextObject().getValue().getClass()).isEqualTo(Inventor.class);
+		assertThat(state.getRootContextObject().getValue().getClass()).isEqualTo(Inventor.class);
 
 		// although the root object is being set on the evaluation context, the value in the 'state' remains what it was when constructed
 		((StandardEvaluationContext) state.getEvaluationContext()).setRootObject(null);
-		assertThat((Object) state.getRootContextObject().getValue().getClass()).isEqualTo(Inventor.class);
+		assertThat(state.getRootContextObject().getValue().getClass()).isEqualTo(Inventor.class);
 		// assertEquals(null, state.getRootContextObject().getValue());
 
 		state = new ExpressionState(new StandardEvaluationContext());
-		assertThat((Object) state.getRootContextObject()).isEqualTo(TypedValue.NULL);
+		assertThat(state.getRootContextObject()).isEqualTo(TypedValue.NULL);
 
 
 		((StandardEvaluationContext) state.getEvaluationContext()).setRootObject(null);
@@ -161,7 +161,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 		assertThat(state.getActiveContextObject().getValue()).isEqualTo(state.getRootContextObject().getValue());
 
 		state = new ExpressionState(new StandardEvaluationContext());
-		assertThat((Object) state.getActiveContextObject()).isEqualTo(TypedValue.NULL);
+		assertThat(state.getActiveContextObject()).isEqualTo(TypedValue.NULL);
 	}
 
 	@Test
@@ -190,7 +190,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 		// supplied should override root on context
 		ExpressionState state = new ExpressionState(ctx,new TypedValue("i am a string"));
 		TypedValue stateRoot = state.getRootContextObject();
-		assertThat((Object) stateRoot.getTypeDescriptor().getType()).isEqualTo(String.class);
+		assertThat(stateRoot.getTypeDescriptor().getType()).isEqualTo(String.class);
 		assertThat(stateRoot.getValue()).isEqualTo("i am a string");
 	}
 
@@ -234,14 +234,14 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	@Test
 	public void testComparator() {
 		ExpressionState state = getState();
-		assertThat((Object) state.getTypeComparator()).isEqualTo(state.getEvaluationContext().getTypeComparator());
+		assertThat(state.getTypeComparator()).isEqualTo(state.getEvaluationContext().getTypeComparator());
 	}
 
 	@Test
 	public void testTypeLocator() throws EvaluationException {
 		ExpressionState state = getState();
 		assertNotNull(state.getEvaluationContext().getTypeLocator());
-		assertThat((Object) state.findType("java.lang.Integer")).isEqualTo(Integer.class);
+		assertThat(state.findType("java.lang.Integer")).isEqualTo(Integer.class);
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				state.findType("someMadeUpName"))
 			.satisfies(ex -> assertThat(ex.getMessageCode()).isEqualTo(SpelMessage.TYPE_NOT_FOUND));
@@ -252,16 +252,16 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	public void testTypeConversion() throws EvaluationException {
 		ExpressionState state = getState();
 		String s = (String) state.convertValue(34, TypeDescriptor.valueOf(String.class));
-		assertThat((Object) s).isEqualTo("34");
+		assertThat(s).isEqualTo("34");
 
 		s = (String)state.convertValue(new TypedValue(34), TypeDescriptor.valueOf(String.class));
-		assertThat((Object) s).isEqualTo("34");
+		assertThat(s).isEqualTo("34");
 	}
 
 	@Test
 	public void testPropertyAccessors() {
 		ExpressionState state = getState();
-		assertThat((Object) state.getPropertyAccessors()).isEqualTo(state.getEvaluationContext().getPropertyAccessors());
+		assertThat(state.getPropertyAccessors()).isEqualTo(state.getEvaluationContext().getPropertyAccessors());
 	}
 
 	/**

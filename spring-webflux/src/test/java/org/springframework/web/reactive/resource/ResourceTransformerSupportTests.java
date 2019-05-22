@@ -85,8 +85,8 @@ public class ResourceTransformerSupportTests {
 		Resource resource = getResource("main.css");
 		String actual = this.transformer.resolveUrlPath(resourcePath, exchange, resource, this.chain).block(TIMEOUT);
 
-		assertThat((Object) actual).isEqualTo("/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
-		assertThat((Object) actual).isEqualTo("/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
+		assertThat(actual).isEqualTo("/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
+		assertThat(actual).isEqualTo("/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class ResourceTransformerSupportTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get(""));
 		String actual = this.transformer.resolveUrlPath("bar.css", exchange, resource, this.chain).block(TIMEOUT);
 
-		assertThat((Object) actual).isEqualTo("bar-11e16cf79faee7ac698c805cf28248d2.css");
+		assertThat(actual).isEqualTo("bar-11e16cf79faee7ac698c805cf28248d2.css");
 	}
 
 	@Test
@@ -104,17 +104,17 @@ public class ResourceTransformerSupportTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get(""));
 		String actual = this.transformer.resolveUrlPath("../bar.css", exchange, resource, this.chain).block(TIMEOUT);
 
-		assertThat((Object) actual).isEqualTo("../bar-11e16cf79faee7ac698c805cf28248d2.css");
+		assertThat(actual).isEqualTo("../bar-11e16cf79faee7ac698c805cf28248d2.css");
 	}
 
 	@Test
 	public void toAbsolutePath() {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/resources/main.css"));
 		String absolute = this.transformer.toAbsolutePath("img/image.png", exchange);
-		assertThat((Object) absolute).isEqualTo("/resources/img/image.png");
+		assertThat(absolute).isEqualTo("/resources/img/image.png");
 
 		absolute = this.transformer.toAbsolutePath("/img/image.png", exchange);
-		assertThat((Object) absolute).isEqualTo("/img/image.png");
+		assertThat(absolute).isEqualTo("/img/image.png");
 	}
 
 	private Resource getResource(String filePath) {

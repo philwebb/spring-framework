@@ -39,13 +39,13 @@ public class SimpMessageTypeMessageConditionTests {
 		SimpMessageType subscribeType = SimpMessageType.SUBSCRIBE;
 
 		SimpMessageType actual = condition(messageType).combine(condition(subscribeType)).getMessageType();
-		assertThat((Object) actual).isEqualTo(subscribeType);
+		assertThat(actual).isEqualTo(subscribeType);
 
 		actual = condition(messageType).combine(condition(messageType)).getMessageType();
-		assertThat((Object) actual).isEqualTo(messageType);
+		assertThat(actual).isEqualTo(messageType);
 
 		actual = condition(subscribeType).combine(condition(subscribeType)).getMessageType();
-		assertThat((Object) actual).isEqualTo(subscribeType);
+		assertThat(actual).isEqualTo(subscribeType);
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class SimpMessageTypeMessageConditionTests {
 		SimpMessageTypeMessageCondition actual = condition.getMatchingCondition(message);
 
 		assertNotNull(actual);
-		assertThat((Object) actual.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(actual.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
 	}
 
 	@Test

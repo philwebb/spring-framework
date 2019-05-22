@@ -72,7 +72,7 @@ public class CachingResourceResolverTests {
 		Resource actual = this.chain.resolveResource(null, "bar.css", this.locations);
 
 		assertNotSame(expected, actual);
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class CachingResourceResolverTests {
 		String expected = "/foo.css";
 		String actual = this.chain.resolveUrlPath(expected, this.locations);
 
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class CachingResourceResolverTests {
 		this.cache.put(CachingResourceResolver.RESOLVED_URL_PATH_CACHE_KEY_PREFIX + "imaginary.css", expected);
 		String actual = this.chain.resolveUrlPath("imaginary.css", this.locations);
 
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test

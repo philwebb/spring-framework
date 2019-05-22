@@ -337,8 +337,8 @@ public abstract class AbstractReactiveTransactionAspectTests {
 		Mono.from(itb.setName(name))
 				.as(StepVerifier::create)
 				.consumeErrorWith(throwable -> {
-					assertThat((Object) throwable.getClass()).isEqualTo(RuntimeException.class);
-					assertThat((Object) throwable.getCause()).isEqualTo(ex);
+					assertThat(throwable.getClass()).isEqualTo(RuntimeException.class);
+					assertThat(throwable.getCause()).isEqualTo(ex);
 				})
 				.verify();
 

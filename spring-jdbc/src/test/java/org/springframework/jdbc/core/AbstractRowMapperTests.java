@@ -49,31 +49,31 @@ import static org.mockito.Mockito.verify;
 public abstract class AbstractRowMapperTests {
 
 	protected void verifyPerson(Person bean) throws Exception {
-		assertThat((Object) bean.getName()).isEqualTo("Bubba");
+		assertThat(bean.getName()).isEqualTo("Bubba");
 		assertEquals(22L, bean.getAge());
-		assertThat((Object) bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
-		assertThat((Object) bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
+		assertThat(bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
+		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 	protected void verifyPerson(ConcretePerson bean) throws Exception {
-		assertThat((Object) bean.getName()).isEqualTo("Bubba");
+		assertThat(bean.getName()).isEqualTo("Bubba");
 		assertEquals(22L, bean.getAge());
-		assertThat((Object) bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
-		assertThat((Object) bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
+		assertThat(bean.getBirth_date()).isEqualTo(new java.util.Date(1221222L));
+		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 	protected void verifyPerson(SpacePerson bean) {
-		assertThat((Object) bean.getLastName()).isEqualTo("Bubba");
+		assertThat(bean.getLastName()).isEqualTo("Bubba");
 		assertEquals(22L, bean.getAge());
-		assertThat((Object) bean.getBirthDate()).isEqualTo(new Timestamp(1221222L).toLocalDateTime());
-		assertThat((Object) bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
+		assertThat(bean.getBirthDate()).isEqualTo(new Timestamp(1221222L).toLocalDateTime());
+		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 	protected void verifyPerson(DatePerson bean) {
-		assertThat((Object) bean.getLastName()).isEqualTo("Bubba");
+		assertThat(bean.getLastName()).isEqualTo("Bubba");
 		assertEquals(22L, bean.getAge());
-		assertThat((Object) bean.getBirthDate()).isEqualTo(new java.sql.Date(1221222L).toLocalDate());
-		assertThat((Object) bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
+		assertThat(bean.getBirthDate()).isEqualTo(new java.sql.Date(1221222L).toLocalDate());
+		assertThat(bean.getBalance()).isEqualTo(new BigDecimal("1234.56"));
 	}
 
 

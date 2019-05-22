@@ -53,7 +53,7 @@ public class DataBufferTestUtilsTests extends AbstractDataBufferAllocatingTestCa
 
 		String result = DataBufferTestUtils.dumpString(buffer, StandardCharsets.UTF_8);
 
-		assertThat((Object) result).isEqualTo(source);
+		assertThat(result).isEqualTo(source);
 
 		release(buffer);
 	}

@@ -69,7 +69,7 @@ public class RequestMappingIntegrationTests extends AbstractRequestMappingIntegr
 		HttpHeaders headers = getRestTemplate().headForHeaders(url);
 		String contentType = headers.getFirst("Content-Type");
 		assertNotNull(contentType);
-		assertThat((Object) contentType.toLowerCase()).isEqualTo("text/html;charset=utf-8");
+		assertThat(contentType.toLowerCase()).isEqualTo("text/html;charset=utf-8");
 		assertEquals(3, headers.getContentLength());
 	}
 
@@ -84,7 +84,7 @@ public class RequestMappingIntegrationTests extends AbstractRequestMappingIntegr
 				.header("Forwarded", "host=84.198.58.199;proto=https")
 				.build();
 		ResponseEntity<String> entity = getRestTemplate().exchange(request, String.class);
-		assertThat((Object) entity.getBody()).isEqualTo("https://84.198.58.199/uri");
+		assertThat(entity.getBody()).isEqualTo("https://84.198.58.199/uri");
 	}
 
 	@Test

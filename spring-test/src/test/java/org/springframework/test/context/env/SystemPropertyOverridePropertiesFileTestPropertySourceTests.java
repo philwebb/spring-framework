@@ -62,7 +62,7 @@ public class SystemPropertyOverridePropertiesFileTestPropertySourceTests {
 
 	@Test
 	public void verifyPropertiesAreAvailableInEnvironment() {
-		assertThat((Object) env.getProperty(KEY)).isEqualTo("enigma");
+		assertThat(env.getProperty(KEY)).isEqualTo("enigma");
 	}
 
 

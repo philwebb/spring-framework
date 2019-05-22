@@ -49,7 +49,7 @@ public class CompositeIteratorTests {
 		it.add(Arrays.asList("0", "1").iterator());
 		for (int i = 0; i < 2; i++) {
 			assertThat(it.hasNext()).isTrue();
-			assertThat((Object) it.next()).isEqualTo(String.valueOf(i));
+			assertThat(it.next()).isEqualTo(String.valueOf(i));
 		}
 		assertThat(it.hasNext()).isFalse();
 		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(
@@ -64,7 +64,7 @@ public class CompositeIteratorTests {
 		it.add(Arrays.asList("3", "4").iterator());
 		for (int i = 0; i < 5; i++) {
 			assertThat(it.hasNext()).isTrue();
-			assertThat((Object) it.next()).isEqualTo(String.valueOf(i));
+			assertThat(it.next()).isEqualTo(String.valueOf(i));
 		}
 		assertThat(it.hasNext()).isFalse();
 

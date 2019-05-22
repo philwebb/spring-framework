@@ -289,7 +289,7 @@ public class ProfilesTests {
 
 	@Test
 	public void sensibleToString() {
-		assertThat((Object) Profiles.of("spring & framework", "java | kotlin").toString()).isEqualTo("spring & framework or java | kotlin");
+		assertThat(Profiles.of("spring & framework", "java | kotlin").toString()).isEqualTo("spring & framework or java | kotlin");
 	}
 
 	private void assertMalformed(Supplier<Profiles> supplier) {

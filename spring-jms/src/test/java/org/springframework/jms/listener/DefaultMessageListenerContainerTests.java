@@ -52,11 +52,11 @@ public class DefaultMessageListenerContainerTests {
 		DefaultMessageListenerContainer container = createContainer(createFailingContainerFactory());
 		container.setBackOff(backOff);
 		container.start();
-		assertThat((Object) container.isRunning()).isEqualTo(true);
+		assertThat(container.isRunning()).isEqualTo(true);
 
 		container.refreshConnectionUntilSuccessful();
 
-		assertThat((Object) container.isRunning()).isEqualTo(false);
+		assertThat(container.isRunning()).isEqualTo(false);
 		verify(backOff).start();
 		verify(execution).nextBackOff();
 	}
@@ -73,7 +73,7 @@ public class DefaultMessageListenerContainerTests {
 		container.start();
 		container.refreshConnectionUntilSuccessful();
 
-		assertThat((Object) container.isRunning()).isEqualTo(false);
+		assertThat(container.isRunning()).isEqualTo(false);
 		verify(backOff).start();
 		verify(execution, times(2)).nextBackOff();
 	}
@@ -90,7 +90,7 @@ public class DefaultMessageListenerContainerTests {
 		container.start();
 		container.refreshConnectionUntilSuccessful();
 
-		assertThat((Object) container.isRunning()).isEqualTo(true);
+		assertThat(container.isRunning()).isEqualTo(true);
 		verify(backOff).start();
 		verify(execution, times(1)).nextBackOff();  // only on attempt as the second one lead to a recovery
 	}

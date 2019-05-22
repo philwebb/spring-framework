@@ -214,7 +214,7 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext("baz");
 		processor.onComplete();
 
-		assertThat((Object) emitterHandler.getValuesAsText()).isEqualTo("data:foo\n\ndata:bar\n\ndata:baz\n\n");
+		assertThat(emitterHandler.getValuesAsText()).isEqualTo("data:foo\n\ndata:bar\n\ndata:baz\n\n");
 	}
 
 	@Test
@@ -233,7 +233,7 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext(ServerSentEvent.builder("baz").id("3").build());
 		processor.onComplete();
 
-		assertThat((Object) emitterHandler.getValuesAsText()).isEqualTo("id:1\ndata:foo\n\nid:2\ndata:bar\n\nid:3\ndata:baz\n\n");
+		assertThat(emitterHandler.getValuesAsText()).isEqualTo("id:1\ndata:foo\n\nid:2\ndata:bar\n\nid:3\ndata:baz\n\n");
 	}
 
 	@Test
@@ -257,8 +257,8 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext(bar2);
 		processor.onComplete();
 
-		assertThat((Object) message.getHeaders().getContentType().toString()).isEqualTo("application/stream+json");
-		assertThat((Object) emitterHandler.getValues()).isEqualTo(Arrays.asList(bar1, "\n", bar2, "\n"));
+		assertThat(message.getHeaders().getContentType().toString()).isEqualTo("application/stream+json");
+		assertThat(emitterHandler.getValues()).isEqualTo(Arrays.asList(bar1, "\n", bar2, "\n"));
 	}
 
 	@Test
@@ -275,7 +275,7 @@ public class ReactiveTypeHandlerTests {
 		processor.onNext("the lazy dog");
 		processor.onComplete();
 
-		assertThat((Object) emitterHandler.getValuesAsText()).isEqualTo("The quick brown fox jumps over the lazy dog");
+		assertThat(emitterHandler.getValuesAsText()).isEqualTo("The quick brown fox jumps over the lazy dog");
 	}
 
 	@Test
@@ -305,7 +305,7 @@ public class ReactiveTypeHandlerTests {
 		ServletServerHttpResponse message = new ServletServerHttpResponse(this.servletResponse);
 		ResponseBodyEmitter emitter = handleValue(Flux.empty(), Flux.class, forClass(String.class));
 		emitter.extendResponse(message);
-		assertThat((Object) message.getHeaders().getContentType().toString()).isEqualTo(expected);
+		assertThat(message.getHeaders().getContentType().toString()).isEqualTo(expected);
 		resetRequest();
 	}
 

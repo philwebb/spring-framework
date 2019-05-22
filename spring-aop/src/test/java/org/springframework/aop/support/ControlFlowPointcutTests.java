@@ -93,8 +93,8 @@ public class ControlFlowPointcutTests {
 
 	@Test
 	public void testEqualsAndHashCode() throws Exception {
-		assertThat((Object) new ControlFlowPointcut(One.class)).isEqualTo(new ControlFlowPointcut(One.class));
-		assertThat((Object) new ControlFlowPointcut(One.class, "getAge")).isEqualTo(new ControlFlowPointcut(One.class, "getAge"));
+		assertThat(new ControlFlowPointcut(One.class)).isEqualTo(new ControlFlowPointcut(One.class));
+		assertThat(new ControlFlowPointcut(One.class, "getAge")).isEqualTo(new ControlFlowPointcut(One.class, "getAge"));
 		assertThat(new ControlFlowPointcut(One.class, "getAge").equals(new ControlFlowPointcut(One.class))).isFalse();
 		assertEquals(new ControlFlowPointcut(One.class).hashCode(), new ControlFlowPointcut(One.class).hashCode());
 		assertEquals(new ControlFlowPointcut(One.class, "getAge").hashCode(), new ControlFlowPointcut(One.class, "getAge").hashCode());

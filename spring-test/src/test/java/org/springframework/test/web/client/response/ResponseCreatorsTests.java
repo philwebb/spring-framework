@@ -41,7 +41,7 @@ public class ResponseCreatorsTests {
 	public void success() throws Exception {
 		MockClientHttpResponse response = (MockClientHttpResponse) MockRestResponseCreators.withSuccess().createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
@@ -51,8 +51,8 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withSuccess("foo", MediaType.TEXT_PLAIN);
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) response.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 		assertArrayEquals("foo".getBytes(), StreamUtils.copyToByteArray(response.getBody()));
 	}
 
@@ -61,7 +61,7 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withSuccess("foo", null);
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertNull(response.getHeaders().getContentType());
 		assertArrayEquals("foo".getBytes(), StreamUtils.copyToByteArray(response.getBody()));
 	}
@@ -72,8 +72,8 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withCreatedEntity(location);
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		assertThat((Object) response.getHeaders().getLocation()).isEqualTo(location);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		assertThat(response.getHeaders().getLocation()).isEqualTo(location);
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 
@@ -82,7 +82,7 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withNoContent();
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
@@ -92,7 +92,7 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withBadRequest();
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
@@ -102,7 +102,7 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withUnauthorizedRequest();
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
@@ -112,7 +112,7 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withServerError();
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
@@ -122,7 +122,7 @@ public class ResponseCreatorsTests {
 		DefaultResponseCreator responseCreator = MockRestResponseCreators.withStatus(HttpStatus.FORBIDDEN);
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}

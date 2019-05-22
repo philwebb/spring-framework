@@ -45,7 +45,7 @@ public class CookieWebSessionIdResolverTests {
 		assertEquals(1, cookies.size());
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
 		assertNotNull(cookie);
-		assertThat((Object) cookie.toString()).isEqualTo("SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax");
+		assertThat(cookie.toString()).isEqualTo("SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax");
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class CookieWebSessionIdResolverTests {
 		assertEquals(1, cookies.size());
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
 		assertNotNull(cookie);
-		assertThat((Object) cookie.toString()).isEqualTo("SESSION=123; Path=/; Domain=example.org; HttpOnly; SameSite=Strict");
+		assertThat(cookie.toString()).isEqualTo("SESSION=123; Path=/; Domain=example.org; HttpOnly; SameSite=Strict");
 	}
 
 }

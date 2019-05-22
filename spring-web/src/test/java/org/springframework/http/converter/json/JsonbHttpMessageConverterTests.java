@@ -77,7 +77,7 @@ public class JsonbHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 		MyBean result = (MyBean) this.converter.read(MyBean.class, inputMessage);
 
-		assertThat((Object) result.getString()).isEqualTo("Foo");
+		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
@@ -130,7 +130,7 @@ public class JsonbHttpMessageConverterTests {
 		assertThat(result.contains("\"array\":[\"Foo\",\"Bar\"]")).isTrue();
 		assertThat(result.contains("\"bool\":true")).isTrue();
 		assertThat(result.contains("\"bytes\":[1,2]")).isTrue();
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "json", utf8));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "json", utf8));
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class JsonbHttpMessageConverterTests {
 		assertThat(result.contains("\"array\":[\"Foo\",\"Bar\"]")).isTrue();
 		assertThat(result.contains("\"bool\":true")).isTrue();
 		assertThat(result.contains("\"bytes\":[1,2]")).isTrue();
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "json", utf8));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "json", utf8));
 	}
 
 	@Test
@@ -161,8 +161,8 @@ public class JsonbHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		String body = "H\u00e9llo W\u00f6rld";
 		this.converter.write(body, contentType, outputMessage);
-		assertThat((Object) outputMessage.getBodyAsString(StandardCharsets.UTF_16BE)).as("Invalid result").isEqualTo(body);
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(contentType);
+		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_16BE)).as("Invalid result").isEqualTo(body);
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(contentType);
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class JsonbHttpMessageConverterTests {
 		List<MyBean> results = (List<MyBean>) converter.read(genericType, MyBeanListHolder.class, inputMessage);
 		assertEquals(1, results.size());
 		MyBean result = results.get(0);
-		assertThat((Object) result.getString()).isEqualTo("Foo");
+		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
@@ -213,7 +213,7 @@ public class JsonbHttpMessageConverterTests {
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
 		assertEquals(1, results.size());
 		MyBean result = results.get(0);
-		assertThat((Object) result.getString()).isEqualTo("Foo");
+		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
@@ -239,7 +239,7 @@ public class JsonbHttpMessageConverterTests {
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
 		assertEquals(1, results.size());
 		MyBean result = results.get(0);
-		assertThat((Object) result.getString()).isEqualTo("Foo");
+		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
@@ -256,7 +256,7 @@ public class JsonbHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		this.converter.setPrefixJson(true);
 		this.converter.writeInternal("foo", null, outputMessage);
-		assertThat((Object) outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(")]}', foo");
+		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(")]}', foo");
 	}
 
 	@Test
@@ -264,7 +264,7 @@ public class JsonbHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		this.converter.setJsonPrefix(")))");
 		this.converter.writeInternal("foo", null, outputMessage);
-		assertThat((Object) outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(")))foo");
+		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(")))foo");
 	}
 
 

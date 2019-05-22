@@ -95,7 +95,7 @@ public class ResourceUrlEncodingFilterTests {
 			request.setRequestURI("/forwarded");
 			request.setContextPath("/");
 			String result = ((HttpServletResponse) res).encodeURL("/context/resources/bar.css");
-			assertThat((Object) result).isEqualTo("/context/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
+			assertThat(result).isEqualTo("/context/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
 		});
 	}
 
@@ -162,7 +162,7 @@ public class ResourceUrlEncodingFilterTests {
 		this.filter.doFilter(request, new MockHttpServletResponse(), (req, res) -> {
 			req.setAttribute(ResourceUrlProviderExposingInterceptor.RESOURCE_URL_PROVIDER_ATTR, this.urlProvider);
 			String result = ((HttpServletResponse) res).encodeURL(url);
-			assertThat((Object) result).isEqualTo(expected);
+			assertThat(result).isEqualTo(expected);
 		});
 	}
 

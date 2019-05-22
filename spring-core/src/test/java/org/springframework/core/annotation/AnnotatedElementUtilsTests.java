@@ -95,19 +95,19 @@ public class AnnotatedElementUtilsTests {
 	@Test
 	public void getMetaAnnotationTypesOnClassWithMetaDepth1() {
 		Set<String> names = getMetaAnnotationTypes(TransactionalComponentClass.class, TransactionalComponent.class);
-		assertThat((Object) names).isEqualTo(names(Transactional.class, Component.class, Indexed.class));
+		assertThat(names).isEqualTo(names(Transactional.class, Component.class, Indexed.class));
 
 		names = getMetaAnnotationTypes(TransactionalComponentClass.class, TransactionalComponent.class.getName());
-		assertThat((Object) names).isEqualTo(names(Transactional.class, Component.class, Indexed.class));
+		assertThat(names).isEqualTo(names(Transactional.class, Component.class, Indexed.class));
 	}
 
 	@Test
 	public void getMetaAnnotationTypesOnClassWithMetaDepth2() {
 		Set<String> names = getMetaAnnotationTypes(ComposedTransactionalComponentClass.class, ComposedTransactionalComponent.class);
-		assertThat((Object) names).isEqualTo(names(TransactionalComponent.class, Transactional.class, Component.class, Indexed.class));
+		assertThat(names).isEqualTo(names(TransactionalComponent.class, Transactional.class, Component.class, Indexed.class));
 
 		names = getMetaAnnotationTypes(ComposedTransactionalComponentClass.class, ComposedTransactionalComponent.class.getName());
-		assertThat((Object) names).isEqualTo(names(TransactionalComponent.class, Transactional.class, Component.class, Indexed.class));
+		assertThat(names).isEqualTo(names(TransactionalComponent.class, Transactional.class, Component.class, Indexed.class));
 	}
 
 	private Set<String> names(Class<?>... classes) {
@@ -210,28 +210,28 @@ public class AnnotatedElementUtilsTests {
 	public void getAllAnnotationAttributesOnClassWithLocalAnnotation() {
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes(TxConfig.class, TX_NAME);
 		assertNotNull("Annotation attributes map for @Transactional on TxConfig", attributes);
-		assertThat((Object) attributes.get("value")).as("value for TxConfig").isEqualTo(asList("TxConfig"));
+		assertThat(attributes.get("value")).as("value for TxConfig").isEqualTo(asList("TxConfig"));
 	}
 
 	@Test
 	public void getAllAnnotationAttributesOnClassWithLocalComposedAnnotationAndInheritedAnnotation() {
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes(SubClassWithInheritedAnnotation.class, TX_NAME);
 		assertNotNull("Annotation attributes map for @Transactional on SubClassWithInheritedAnnotation", attributes);
-		assertThat((Object) attributes.get("qualifier")).isEqualTo(asList("composed2", "transactionManager"));
+		assertThat(attributes.get("qualifier")).isEqualTo(asList("composed2", "transactionManager"));
 	}
 
 	@Test
 	public void getAllAnnotationAttributesFavorsInheritedAnnotationsOverMoreLocallyDeclaredComposedAnnotations() {
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes(SubSubClassWithInheritedAnnotation.class, TX_NAME);
 		assertNotNull("Annotation attributes map for @Transactional on SubSubClassWithInheritedAnnotation", attributes);
-		assertThat((Object) attributes.get("qualifier")).isEqualTo(asList("transactionManager"));
+		assertThat(attributes.get("qualifier")).isEqualTo(asList("transactionManager"));
 	}
 
 	@Test
 	public void getAllAnnotationAttributesFavorsInheritedComposedAnnotationsOverMoreLocallyDeclaredComposedAnnotations() {
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes( SubSubClassWithInheritedComposedAnnotation.class, TX_NAME);
 		assertNotNull("Annotation attributes map for @Transactional on SubSubClassWithInheritedComposedAnnotation", attributes);
-		assertThat((Object) attributes.get("qualifier")).isEqualTo(asList("composed1"));
+		assertThat(attributes.get("qualifier")).isEqualTo(asList("composed1"));
 	}
 
 	/**
@@ -246,7 +246,7 @@ public class AnnotatedElementUtilsTests {
 		// See org.springframework.core.env.EnvironmentSystemIntegrationTests#mostSpecificDerivedClassDrivesEnvironment_withDevEnvAndDerivedDevConfigClass
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes(DerivedTxConfig.class, TX_NAME);
 		assertNotNull("Annotation attributes map for @Transactional on DerivedTxConfig", attributes);
-		assertThat((Object) attributes.get("value")).as("value for DerivedTxConfig").isEqualTo(asList("DerivedTxConfig"));
+		assertThat(attributes.get("value")).as("value for DerivedTxConfig").isEqualTo(asList("DerivedTxConfig"));
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class AnnotatedElementUtilsTests {
 		// See org.springframework.core.env.EnvironmentSystemIntegrationTests
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes(TxFromMultipleComposedAnnotations.class, TX_NAME);
 		assertNotNull("Annotation attributes map for @Transactional on TxFromMultipleComposedAnnotations", attributes);
-		assertThat((Object) attributes.get("value")).as("value for TxFromMultipleComposedAnnotations.").isEqualTo(asList("TxInheritedComposed", "TxComposed"));
+		assertThat(attributes.get("value")).as("value for TxFromMultipleComposedAnnotations.").isEqualTo(asList("TxInheritedComposed", "TxComposed"));
 	}
 
 	@Test
@@ -265,7 +265,7 @@ public class AnnotatedElementUtilsTests {
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes(
 				NonNullApi.class, Nonnull.class.getName());
 		assertNotNull("Annotation attributes map for @Nonnull on NonNullApi", attributes);
-		assertThat((Object) attributes.get("when")).as("value for NonNullApi").isEqualTo(asList(When.ALWAYS));
+		assertThat(attributes.get("when")).as("value for NonNullApi").isEqualTo(asList(When.ALWAYS));
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class AnnotatedElementUtilsTests {
 		MultiValueMap<String, Object> attributes = getAllAnnotationAttributes(
 				ParametersAreNonnullByDefault.class, Nonnull.class.getName());
 		assertNotNull("Annotation attributes map for @Nonnull on NonNullApi", attributes);
-		assertThat((Object) attributes.get("when")).as("value for NonNullApi").isEqualTo(asList(When.ALWAYS));
+		assertThat(attributes.get("when")).as("value for NonNullApi").isEqualTo(asList(When.ALWAYS));
 	}
 
 	@Test
@@ -282,7 +282,7 @@ public class AnnotatedElementUtilsTests {
 		String name = TX_NAME;
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(element, name);
 		assertNotNull("Annotation attributes for @Transactional on TxConfig", attributes);
-		assertThat((Object) attributes.getString("value")).as("value for TxConfig").isEqualTo("TxConfig");
+		assertThat(attributes.getString("value")).as("value for TxConfig").isEqualTo("TxConfig");
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
 	}
@@ -293,7 +293,7 @@ public class AnnotatedElementUtilsTests {
 		String name = TX_NAME;
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(element, name);
 		assertNotNull("Annotation attributes for @Transactional on DerivedTxConfig", attributes);
-		assertThat((Object) attributes.getString("value")).as("value for DerivedTxConfig").isEqualTo("DerivedTxConfig");
+		assertThat(attributes.getString("value")).as("value for DerivedTxConfig").isEqualTo("DerivedTxConfig");
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
 	}
@@ -631,7 +631,7 @@ public class AnnotatedElementUtilsTests {
 	public void findMergedAnnotationAttributesOnClassWithMetaAndLocalTxConfig() {
 		AnnotationAttributes attributes = findMergedAnnotationAttributes(MetaAndLocalTxConfigClass.class, Transactional.class);
 		assertNotNull("Should find @Transactional on MetaAndLocalTxConfigClass", attributes);
-		assertThat((Object) attributes.getString("qualifier")).as("TX qualifier for MetaAndLocalTxConfigClass.").isEqualTo("localTxMgr");
+		assertThat(attributes.getString("qualifier")).as("TX qualifier for MetaAndLocalTxConfigClass.").isEqualTo("localTxMgr");
 	}
 
 	@Test
@@ -649,10 +649,10 @@ public class AnnotatedElementUtilsTests {
 		assertNotNull(annotation);
 
 		// 3) Verify that the AnnotationAttributes and synthesized annotation are equivalent
-		assertThat((Object) attributes.getString("value")).as("TX value via attributes.").isEqualTo(qualifier);
-		assertThat((Object) annotation.value()).as("TX value via synthesized annotation.").isEqualTo(qualifier);
-		assertThat((Object) attributes.getString("qualifier")).as("TX qualifier via attributes.").isEqualTo(qualifier);
-		assertThat((Object) annotation.qualifier()).as("TX qualifier via synthesized annotation.").isEqualTo(qualifier);
+		assertThat(attributes.getString("value")).as("TX value via attributes.").isEqualTo(qualifier);
+		assertThat(annotation.value()).as("TX value via synthesized annotation.").isEqualTo(qualifier);
+		assertThat(attributes.getString("qualifier")).as("TX qualifier via attributes.").isEqualTo(qualifier);
+		assertThat(annotation.qualifier()).as("TX qualifier via synthesized annotation.").isEqualTo(qualifier);
 	}
 
 	@Test
@@ -663,7 +663,7 @@ public class AnnotatedElementUtilsTests {
 		assertNotNull(excludeFilters);
 
 		List<String> patterns = stream(excludeFilters).map(Filter::pattern).collect(toList());
-		assertThat((Object) patterns).isEqualTo(asList("*Test", "*Tests"));
+		assertThat(patterns).isEqualTo(asList("*Test", "*Tests"));
 	}
 
 	/**
@@ -705,8 +705,8 @@ public class AnnotatedElementUtilsTests {
 		Class<?> element = AliasedTransactionalComponentClass.class;
 		AliasedTransactional annotation = findMergedAnnotation(element, AliasedTransactional.class);
 		assertNotNull("@AliasedTransactional on " + element, annotation);
-		assertThat((Object) annotation.value()).as("TX value via synthesized annotation.").isEqualTo("aliasForQualifier");
-		assertThat((Object) annotation.qualifier()).as("TX qualifier via synthesized annotation.").isEqualTo("aliasForQualifier");
+		assertThat(annotation.value()).as("TX value via synthesized annotation.").isEqualTo("aliasForQualifier");
+		assertThat(annotation.qualifier()).as("TX qualifier via synthesized annotation.").isEqualTo("aliasForQualifier");
 	}
 
 	@Test

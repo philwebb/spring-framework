@@ -154,8 +154,8 @@ public class AspectJExpressionPointcutTests {
 
 		assertThat(withinBeansPc.matches(TestBean.class)).isTrue();
 		assertThat(withinBeansPc.matches(getAge, TestBean.class)).isTrue();
-		assertThat((Object) withinBeansPc.matches(DeepBean.class)).isEqualTo(matchSubpackages);
-		assertThat((Object) withinBeansPc.matches(
+		assertThat(withinBeansPc.matches(DeepBean.class)).isEqualTo(matchSubpackages);
+		assertThat(withinBeansPc.matches(
 				DeepBean.class.getMethod("aMethod", String.class), DeepBean.class)).isEqualTo(matchSubpackages);
 		assertThat(withinBeansPc.matches(String.class)).isFalse();
 		assertThat(withinBeansPc.matches(OtherIOther.class.getMethod("absquatulate"), OtherIOther.class)).isFalse();
@@ -275,14 +275,14 @@ public class AspectJExpressionPointcutTests {
 	public void testAndSubstitution() {
 		Pointcut pc = getPointcut("execution(* *(..)) and args(String)");
 		PointcutExpression expr = ((AspectJExpressionPointcut) pc).getPointcutExpression();
-		assertThat((Object) expr.getPointcutExpression()).isEqualTo("execution(* *(..)) && args(String)");
+		assertThat(expr.getPointcutExpression()).isEqualTo("execution(* *(..)) && args(String)");
 	}
 
 	@Test
 	public void testMultipleAndSubstitutions() {
 		Pointcut pc = getPointcut("execution(* *(..)) and args(String) and this(Object)");
 		PointcutExpression expr = ((AspectJExpressionPointcut) pc).getPointcutExpression();
-		assertThat((Object) expr.getPointcutExpression()).isEqualTo("execution(* *(..)) && args(String) && this(Object)");
+		assertThat(expr.getPointcutExpression()).isEqualTo("execution(* *(..)) && args(String) && this(Object)");
 	}
 
 	private Pointcut getPointcut(String expression) {

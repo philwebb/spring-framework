@@ -47,7 +47,7 @@ public class ListenableFutureTaskTests {
 		task.addCallback(new ListenableFutureCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
-				assertThat((Object) result).isEqualTo(s);
+				assertThat(result).isEqualTo(s);
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -76,7 +76,7 @@ public class ListenableFutureTaskTests {
 			}
 			@Override
 			public void onFailure(Throwable ex) {
-				assertThat((Object) ex.getMessage()).isEqualTo(s);
+				assertThat(ex.getMessage()).isEqualTo(s);
 			}
 		});
 		task.run();

@@ -36,11 +36,11 @@ public class HeadersRequestConditionTests {
 
 	@Test
 	public void headerEquals() {
-		assertThat((Object) new HeadersRequestCondition("foo")).isEqualTo(new HeadersRequestCondition("foo"));
-		assertThat((Object) new HeadersRequestCondition("FOO")).isEqualTo(new HeadersRequestCondition("foo"));
+		assertThat(new HeadersRequestCondition("foo")).isEqualTo(new HeadersRequestCondition("foo"));
+		assertThat(new HeadersRequestCondition("FOO")).isEqualTo(new HeadersRequestCondition("foo"));
 		assertNotEquals(new HeadersRequestCondition("foo"), new HeadersRequestCondition("bar"));
-		assertThat((Object) new HeadersRequestCondition("foo=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
-		assertThat((Object) new HeadersRequestCondition("FOO=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
+		assertThat(new HeadersRequestCondition("foo=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
+		assertThat(new HeadersRequestCondition("FOO=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class HeadersRequestConditionTests {
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo");
 
 		HeadersRequestCondition result = condition.getMatchingCondition(request);
-		assertThat((Object) result).isEqualTo(condition);
+		assertThat(result).isEqualTo(condition);
 
 		condition = new HeadersRequestCondition("bar");
 

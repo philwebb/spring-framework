@@ -36,12 +36,12 @@ public class NumberStyleFormatterTests {
 
 	@Test
 	public void formatValue() {
-		assertThat((Object) formatter.print(new BigDecimal("23.56"), Locale.US)).isEqualTo("23.56");
+		assertThat(formatter.print(new BigDecimal("23.56"), Locale.US)).isEqualTo("23.56");
 	}
 
 	@Test
 	public void parseValue() throws ParseException {
-		assertThat((Object) formatter.parse("23.56", Locale.US)).isEqualTo(new BigDecimal("23.56"));
+		assertThat(formatter.parse("23.56", Locale.US)).isEqualTo(new BigDecimal("23.56"));
 	}
 
 	@Test

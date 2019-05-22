@@ -55,14 +55,14 @@ public class ResourceEditorTests {
 	public void setAndGetAsTextWithNull() throws Exception {
 		PropertyEditor editor = new ResourceEditor();
 		editor.setAsText(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
 	public void setAndGetAsTextWithWhitespaceResource() throws Exception {
 		PropertyEditor editor = new ResourceEditor();
 		editor.setAsText("  ");
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class ResourceEditorTests {
 		try {
 			editor.setAsText("${test.prop}-${bar}");
 			Resource resolved = (Resource) editor.getValue();
-			assertThat((Object) resolved.getFilename()).isEqualTo("foo-${bar}");
+			assertThat(resolved.getFilename()).isEqualTo("foo-${bar}");
 		}
 		finally {
 			System.getProperties().remove("test.prop");

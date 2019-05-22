@@ -72,11 +72,11 @@ abstract class AbstractContextConfigurationUtilsTests {
 			String[] expectedLocations, Class<?>[] expectedClasses,
 			Class<? extends ContextLoader> expectedContextLoaderClass, boolean expectedInheritLocations) {
 
-		assertThat((Object) attributes.getDeclaringClass()).as("declaring class").isEqualTo(expectedDeclaringClass);
+		assertThat(attributes.getDeclaringClass()).as("declaring class").isEqualTo(expectedDeclaringClass);
 		assertArrayEquals("locations", expectedLocations, attributes.getLocations());
 		assertArrayEquals("classes", expectedClasses, attributes.getClasses());
-		assertThat((Object) attributes.isInheritLocations()).as("inherit locations").isEqualTo(expectedInheritLocations);
-		assertThat((Object) attributes.getContextLoaderClass()).as("context loader").isEqualTo(expectedContextLoaderClass);
+		assertThat(attributes.isInheritLocations()).as("inherit locations").isEqualTo(expectedInheritLocations);
+		assertThat(attributes.getContextLoaderClass()).as("context loader").isEqualTo(expectedContextLoaderClass);
 	}
 
 	void assertMergedConfig(MergedContextConfiguration mergedConfig, Class<?> expectedTestClass,
@@ -96,7 +96,7 @@ abstract class AbstractContextConfigurationUtilsTests {
 			Class<? extends ContextLoader> expectedContextLoaderClass) {
 
 		assertNotNull(mergedConfig);
-		assertThat((Object) mergedConfig.getTestClass()).isEqualTo(expectedTestClass);
+		assertThat(mergedConfig.getTestClass()).isEqualTo(expectedTestClass);
 		assertNotNull(mergedConfig.getLocations());
 		assertArrayEquals(expectedLocations, mergedConfig.getLocations());
 		assertNotNull(mergedConfig.getClasses());
@@ -106,10 +106,10 @@ abstract class AbstractContextConfigurationUtilsTests {
 			assertNull(mergedConfig.getContextLoader());
 		}
 		else {
-			assertThat((Object) mergedConfig.getContextLoader().getClass()).isEqualTo(expectedContextLoaderClass);
+			assertThat(mergedConfig.getContextLoader().getClass()).isEqualTo(expectedContextLoaderClass);
 		}
 		assertNotNull(mergedConfig.getContextInitializerClasses());
-		assertThat((Object) mergedConfig.getContextInitializerClasses()).isEqualTo(expectedInitializerClasses);
+		assertThat(mergedConfig.getContextInitializerClasses()).isEqualTo(expectedInitializerClasses);
 	}
 
 	@SafeVarargs

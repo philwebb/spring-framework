@@ -40,6 +40,6 @@ public class ClassUtilsTests {
 		pf.setProxyTargetClass(true);
 		TestBean proxy = (TestBean) pf.getProxy();
 		String className = ClassUtils.getShortName(proxy.getClass());
-		assertThat((Object) className).as("Class name did not match").isEqualTo("TestBean");
+		assertThat(className).as("Class name did not match").isEqualTo("TestBean");
 	}
 }

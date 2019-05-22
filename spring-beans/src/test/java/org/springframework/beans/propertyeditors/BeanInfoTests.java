@@ -44,11 +44,11 @@ public class BeanInfoTests {
 		Integer value = new Integer(1);
 
 		bw.setPropertyValue("value", value);
-		assertThat((Object) value).as("value not set correctly").isEqualTo(bean.getValue());
+		assertThat(value).as("value not set correctly").isEqualTo(bean.getValue());
 
 		value = new Integer(2);
 		bw.setPropertyValue("value", value.toString());
-		assertThat((Object) value).as("value not converted").isEqualTo(bean.getValue());
+		assertThat(value).as("value not converted").isEqualTo(bean.getValue());
 
 		bw.setPropertyValue("value", null);
 		assertNull("value not null", bean.getValue());

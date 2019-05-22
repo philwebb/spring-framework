@@ -79,7 +79,7 @@ public class CachePutEvaluationTests {
 		// This forces the method to be executed again
 		Long expected = first + 1;
 		Long third = this.service.getOrPut(key, false);
-		assertThat((Object) third).isEqualTo(expected);
+		assertThat(third).isEqualTo(expected);
 
 		Long fourth = this.service.getOrPut(key, true);
 		assertSame(third, fourth);

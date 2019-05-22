@@ -36,18 +36,18 @@ public class Spr11310Tests {
 	public void orderedList() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		StringHolder holder = context.getBean(StringHolder.class);
-		assertThat((Object) holder.itemsList.get(0)).isEqualTo("second");
-		assertThat((Object) holder.itemsList.get(1)).isEqualTo("first");
-		assertThat((Object) holder.itemsList.get(2)).isEqualTo("unknownOrder");
+		assertThat(holder.itemsList.get(0)).isEqualTo("second");
+		assertThat(holder.itemsList.get(1)).isEqualTo("first");
+		assertThat(holder.itemsList.get(2)).isEqualTo("unknownOrder");
 	}
 
 	@Test
 	public void orderedArray() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		StringHolder holder = context.getBean(StringHolder.class);
-		assertThat((Object) holder.itemsArray[0]).isEqualTo("second");
-		assertThat((Object) holder.itemsArray[1]).isEqualTo("first");
-		assertThat((Object) holder.itemsArray[2]).isEqualTo("unknownOrder");
+		assertThat(holder.itemsArray[0]).isEqualTo("second");
+		assertThat(holder.itemsArray[1]).isEqualTo("first");
+		assertThat(holder.itemsArray[2]).isEqualTo("unknownOrder");
 	}
 
 

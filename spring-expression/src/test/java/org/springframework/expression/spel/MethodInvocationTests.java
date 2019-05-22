@@ -187,7 +187,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		// Filter will be called but not do anything, so first doit() will be invoked
 		SpelExpression expr = (SpelExpression) parser.parseExpression("doit(1)");
 		String result = expr.getValue(context, String.class);
-		assertThat((Object) result).isEqualTo("1");
+		assertThat(result).isEqualTo("1");
 		assertThat(filter.filterCalled).isTrue();
 
 		// Filter will now remove non @Anno annotated methods
@@ -195,7 +195,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		filter.filterCalled = false;
 		expr = (SpelExpression) parser.parseExpression("doit(1)");
 		result = expr.getValue(context, String.class);
-		assertThat((Object) result).isEqualTo("double 1.0");
+		assertThat(result).isEqualTo("double 1.0");
 		assertThat(filter.filterCalled).isTrue();
 
 		// check not called for other types
@@ -203,7 +203,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		context.setRootObject(new String("abc"));
 		expr = (SpelExpression) parser.parseExpression("charAt(0)");
 		result = expr.getValue(context, String.class);
-		assertThat((Object) result).isEqualTo("a");
+		assertThat(result).isEqualTo("a");
 		assertThat(filter.filterCalled).isFalse();
 
 		// check de-registration works
@@ -212,7 +212,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		context.setRootObject(new TestObject());
 		expr = (SpelExpression) parser.parseExpression("doit(1)");
 		result = expr.getValue(context, String.class);
-		assertThat((Object) result).isEqualTo("1");
+		assertThat(result).isEqualTo("1");
 		assertThat(filter.filterCalled).isFalse();
 	}
 

@@ -71,7 +71,7 @@ public class BufferedSimpleHttpRequestFactoryTests extends AbstractHttpRequestFa
 	private void testRequestBodyAllowed(URL uri, String httpMethod, boolean allowed) throws IOException {
 		HttpURLConnection connection = new TestHttpURLConnection(uri);
 		((SimpleClientHttpRequestFactory) this.factory).prepareConnection(connection, httpMethod);
-		assertThat((Object) connection.getDoOutput()).isEqualTo(allowed);
+		assertThat(connection.getDoOutput()).isEqualTo(allowed);
 	}
 
 

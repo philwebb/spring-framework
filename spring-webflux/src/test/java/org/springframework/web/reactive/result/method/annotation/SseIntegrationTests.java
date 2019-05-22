@@ -161,16 +161,16 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 	private void verifyPersonEvents(Flux<ServerSentEvent<Person>> result) {
 		StepVerifier.create(result)
 				.consumeNextWith( event -> {
-					assertThat((Object) event.id()).isEqualTo("0");
-					assertThat((Object) event.data()).isEqualTo(new Person("foo 0"));
-					assertThat((Object) event.comment()).isEqualTo("bar 0");
+					assertThat(event.id()).isEqualTo("0");
+					assertThat(event.data()).isEqualTo(new Person("foo 0"));
+					assertThat(event.comment()).isEqualTo("bar 0");
 					assertNull(event.event());
 					assertNull(event.retry());
 				})
 				.consumeNextWith( event -> {
-					assertThat((Object) event.id()).isEqualTo("1");
-					assertThat((Object) event.data()).isEqualTo(new Person("foo 1"));
-					assertThat((Object) event.comment()).isEqualTo("bar 1");
+					assertThat(event.id()).isEqualTo("1");
+					assertThat(event.data()).isEqualTo(new Person("foo 1"));
+					assertThat(event.comment()).isEqualTo("bar 1");
 					assertNull(event.event());
 					assertNull(event.retry());
 				})

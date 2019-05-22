@@ -48,7 +48,7 @@ public class DefaultProfileXmlConfigTests {
 	@Test
 	public void pet() {
 		assertNotNull(pet);
-		assertThat((Object) pet.getName()).isEqualTo("Fido");
+		assertThat(pet.getName()).isEqualTo("Fido");
 	}
 
 	@Test

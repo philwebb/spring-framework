@@ -68,12 +68,12 @@ public class ApplicationListenerMethodTransactionalAdapterTests {
 		assertNotNull("Method must not be null", method);
 		TransactionalEventListener annotation =
 				AnnotatedElementUtils.findMergedAnnotation(method, TransactionalEventListener.class);
-		assertThat((Object) annotation.phase()).as("Wrong phase for '" + method + "'").isEqualTo(expected);
+		assertThat(annotation.phase()).as("Wrong phase for '" + method + "'").isEqualTo(expected);
 	}
 
 	private void supportsEventType(boolean match, Method method, ResolvableType eventType) {
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertThat((Object) adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + method).isEqualTo(match);
+		assertThat(adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + method).isEqualTo(match);
 	}
 
 	private ApplicationListenerMethodTransactionalAdapter createTestInstance(Method m) {

@@ -40,7 +40,7 @@ public class DefaultRenderingBuilderTests {
 		Rendering rendering = Rendering.view("abc").build();
 
 		assertThat(rendering.view()).isEqualTo("abc");
-		assertThat((Object) rendering.modelAttributes()).isEqualTo(Collections.emptyMap());
+		assertThat(rendering.modelAttributes()).isEqualTo(Collections.emptyMap());
 		assertNull(rendering.status());
 		assertEquals(0, rendering.headers().size());
 	}
@@ -50,8 +50,8 @@ public class DefaultRenderingBuilderTests {
 		Rendering rendering = Rendering.redirectTo("abc").build();
 
 		Object view = rendering.view();
-		assertThat((Object) view.getClass()).isEqualTo(RedirectView.class);
-		assertThat((Object) ((RedirectView) view).getUrl()).isEqualTo("abc");
+		assertThat(view.getClass()).isEqualTo(RedirectView.class);
+		assertThat(((RedirectView) view).getUrl()).isEqualTo("abc");
 		assertThat(((RedirectView) view).isContextRelative()).isTrue();
 		assertThat(((RedirectView) view).isPropagateQuery()).isFalse();
 	}
@@ -68,7 +68,7 @@ public class DefaultRenderingBuilderTests {
 		Foo foo = new Foo();
 		Rendering rendering = Rendering.view("foo").modelAttribute(foo).build();
 
-		assertThat((Object) rendering.modelAttributes()).isEqualTo(Collections.singletonMap("foo", foo));
+		assertThat(rendering.modelAttributes()).isEqualTo(Collections.singletonMap("foo", foo));
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class DefaultRenderingBuilderTests {
 		Map<String, Object> map = new LinkedHashMap<>(2);
 		map.put("foo", foo);
 		map.put("bar", bar);
-		assertThat((Object) rendering.modelAttributes()).isEqualTo(map);
+		assertThat(rendering.modelAttributes()).isEqualTo(map);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class DefaultRenderingBuilderTests {
 		map.put("bar", new Bar());
 		Rendering rendering = Rendering.view("foo").model(map).build();
 
-		assertThat((Object) rendering.modelAttributes()).isEqualTo(map);
+		assertThat(rendering.modelAttributes()).isEqualTo(map);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class DefaultRenderingBuilderTests {
 		Rendering rendering = Rendering.view("foo").header("foo", "bar").build();
 
 		assertEquals(1, rendering.headers().size());
-		assertThat((Object) rendering.headers().get("foo")).isEqualTo(Collections.singletonList("bar"));
+		assertThat(rendering.headers().get("foo")).isEqualTo(Collections.singletonList("bar"));
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class DefaultRenderingBuilderTests {
 		headers.add("foo", "bar");
 		Rendering rendering = Rendering.view("foo").headers(headers).build();
 
-		assertThat((Object) rendering.headers()).isEqualTo(headers);
+		assertThat(rendering.headers()).isEqualTo(headers);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class DefaultRenderingBuilderTests {
 		Rendering rendering = Rendering.redirectTo("foo").contextRelative(false).build();
 
 		Object view = rendering.view();
-		assertThat((Object) view.getClass()).isEqualTo(RedirectView.class);
+		assertThat(view.getClass()).isEqualTo(RedirectView.class);
 		assertThat(((RedirectView) view).isContextRelative()).isFalse();
 	}
 
@@ -124,7 +124,7 @@ public class DefaultRenderingBuilderTests {
 		Rendering rendering = Rendering.redirectTo("foo").propagateQuery(true).build();
 
 		Object view = rendering.view();
-		assertThat((Object) view.getClass()).isEqualTo(RedirectView.class);
+		assertThat(view.getClass()).isEqualTo(RedirectView.class);
 		assertThat(((RedirectView) view).isPropagateQuery()).isTrue();
 	}
 

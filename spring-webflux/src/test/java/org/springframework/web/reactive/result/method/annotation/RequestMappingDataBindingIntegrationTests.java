@@ -64,7 +64,7 @@ public class RequestMappingDataBindingIntegrationTests extends AbstractRequestMa
 
 	@Test
 	public void handleDateParam() throws Exception {
-		assertThat((Object) performPost("/date-param?date=2016-10-31&date-pattern=YYYY-mm-dd",
+		assertThat(performPost("/date-param?date=2016-10-31&date-pattern=YYYY-mm-dd",
 				new HttpHeaders(), null, String.class).getBody()).isEqualTo("Processed date!");
 	}
 
@@ -75,7 +75,7 @@ public class RequestMappingDataBindingIntegrationTests extends AbstractRequestMa
 		formData.add("name", "George");
 		formData.add("age", "5");
 
-		assertThat((Object) performPost("/foos/1", MediaType.APPLICATION_FORM_URLENCODED, formData,
+		assertThat(performPost("/foos/1", MediaType.APPLICATION_FORM_URLENCODED, formData,
 				MediaType.TEXT_PLAIN, String.class).getBody()).isEqualTo("Processed form: Foo[id=1, name='George', age=5]");
 	}
 

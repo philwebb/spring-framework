@@ -129,7 +129,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("headers");
+		assertThat(this.testController.method).isEqualTo("headers");
 		assertThat(this.testController.arguments.get("foo")).isEqualTo("bar");
 		assertThat(((Map<String, Object>) this.testController.arguments.get("headers")).get("foo")).isEqualTo("bar");
 	}
@@ -141,7 +141,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("optionalHeaders");
+		assertThat(this.testController.method).isEqualTo("optionalHeaders");
 		assertThat(this.testController.arguments.get("foo1")).isEqualTo("bar");
 		assertThat(this.testController.arguments.get("foo2")).isEqualTo("bar");
 	}
@@ -152,7 +152,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("optionalHeaders");
+		assertThat(this.testController.method).isEqualTo("optionalHeaders");
 		assertNull(this.testController.arguments.get("foo1"));
 		assertNull(this.testController.arguments.get("foo2"));
 	}
@@ -163,7 +163,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("messageMappingDestinationVariable");
+		assertThat(this.testController.method).isEqualTo("messageMappingDestinationVariable");
 		assertThat(this.testController.arguments.get("foo")).isEqualTo("bar");
 		assertThat(this.testController.arguments.get("name")).isEqualTo("value");
 	}
@@ -174,7 +174,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("subscribeEventDestinationVariable");
+		assertThat(this.testController.method).isEqualTo("subscribeEventDestinationVariable");
 		assertThat(this.testController.arguments.get("foo")).isEqualTo("bar");
 		assertThat(this.testController.arguments.get("name")).isEqualTo("value");
 	}
@@ -185,7 +185,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("simpleBinding");
+		assertThat(this.testController.method).isEqualTo("simpleBinding");
 		boolean condition = this.testController.arguments.get("id") instanceof Long;
 		assertThat(condition).as("should be bound to type long").isTrue();
 		assertThat(this.testController.arguments.get("id")).isEqualTo(12L);
@@ -197,7 +197,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("handleValidationException");
+		assertThat(this.testController.method).isEqualTo("handleValidationException");
 	}
 
 	@Test
@@ -206,10 +206,10 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("handleExceptionWithHandlerMethodArg");
+		assertThat(this.testController.method).isEqualTo("handleExceptionWithHandlerMethodArg");
 		HandlerMethod handlerMethod = (HandlerMethod) this.testController.arguments.get("handlerMethod");
 		assertNotNull(handlerMethod);
-		assertThat((Object) handlerMethod.getMethod().getName()).isEqualTo("illegalState");
+		assertThat(handlerMethod.getMethod().getName()).isEqualTo("illegalState");
 	}
 
 	@Test
@@ -218,10 +218,10 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("handleExceptionWithHandlerMethodArg");
+		assertThat(this.testController.method).isEqualTo("handleExceptionWithHandlerMethodArg");
 		HandlerMethod handlerMethod = (HandlerMethod) this.testController.arguments.get("handlerMethod");
 		assertNotNull(handlerMethod);
-		assertThat((Object) handlerMethod.getMethod().getName()).isEqualTo("illegalStateCause");
+		assertThat(handlerMethod.getMethod().getName()).isEqualTo("illegalStateCause");
 	}
 
 	@Test
@@ -230,10 +230,10 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("handleErrorWithHandlerMethodArg");
+		assertThat(this.testController.method).isEqualTo("handleErrorWithHandlerMethodArg");
 		HandlerMethod handlerMethod = (HandlerMethod) this.testController.arguments.get("handlerMethod");
 		assertNotNull(handlerMethod);
-		assertThat((Object) handlerMethod.getMethod().getName()).isEqualTo("errorAsThrowable");
+		assertThat(handlerMethod.getMethod().getName()).isEqualTo("errorAsThrowable");
 	}
 
 	@Test
@@ -249,7 +249,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("scope");
+		assertThat(this.testController.method).isEqualTo("scope");
 	}
 
 	@Test
@@ -264,12 +264,12 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) controller.method).isEqualTo("handleFoo");
+		assertThat(controller.method).isEqualTo("handleFoo");
 
 		message = createMessage("/app2/pre.foo");
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) controller.method).isEqualTo("handleFoo");
+		assertThat(controller.method).isEqualTo("handleFoo");
 	}
 
 	@Test
@@ -413,7 +413,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 
-		assertThat((Object) this.testController.method).isEqualTo("placeholder");
+		assertThat(this.testController.method).isEqualTo("placeholder");
 	}
 
 
@@ -527,14 +527,14 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		public void handleExceptionWithHandlerMethodArg(IllegalStateException ex, HandlerMethod handlerMethod) {
 			this.method = "handleExceptionWithHandlerMethodArg";
 			this.arguments.put("handlerMethod", handlerMethod);
-			assertThat((Object) ex.getMessage()).isEqualTo("my cause");
+			assertThat(ex.getMessage()).isEqualTo("my cause");
 		}
 
 		@MessageExceptionHandler
 		public void handleErrorWithHandlerMethodArg(Error ex, HandlerMethod handlerMethod) {
 			this.method = "handleErrorWithHandlerMethodArg";
 			this.arguments.put("handlerMethod", handlerMethod);
-			assertThat((Object) ex.getMessage()).isEqualTo("my cause");
+			assertThat(ex.getMessage()).isEqualTo("my cause");
 		}
 
 		@MessageMapping("/scope")

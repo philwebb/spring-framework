@@ -72,7 +72,7 @@ public class ErrorTests {
 
 		byte[] content = result.getRequestBodyContent();
 		assertNotNull(content);
-		assertThat((Object) new String(content, StandardCharsets.UTF_8)).isEqualTo("{\"name\":\"Dan\"}");
+		assertThat(new String(content, StandardCharsets.UTF_8)).isEqualTo("{\"name\":\"Dan\"}");
 	}
 
 

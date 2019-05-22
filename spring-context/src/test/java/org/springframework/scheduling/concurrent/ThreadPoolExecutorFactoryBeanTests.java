@@ -41,7 +41,7 @@ public class ThreadPoolExecutorFactoryBeanTests {
 
 		FutureTask<String> task = new FutureTask<>(() -> "foo");
 		executor.execute(task);
-		assertThat((Object) task.get()).isEqualTo("foo");
+		assertThat(task.get()).isEqualTo("foo");
 		context.close();
 	}
 

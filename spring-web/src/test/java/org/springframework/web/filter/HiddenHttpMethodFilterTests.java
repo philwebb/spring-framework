@@ -73,7 +73,7 @@ public class HiddenHttpMethodFilterTests {
 			@Override
 			public void doFilter(ServletRequest filterRequest,
 					ServletResponse filterResponse) throws IOException, ServletException {
-				assertThat((Object) ((HttpServletRequest) filterRequest).getMethod()).as("Invalid method").isEqualTo(expectedMethod);
+				assertThat(((HttpServletRequest) filterRequest).getMethod()).as("Invalid method").isEqualTo(expectedMethod);
 			}
 		};
 		this.filter.doFilter(request, response, filterChain);

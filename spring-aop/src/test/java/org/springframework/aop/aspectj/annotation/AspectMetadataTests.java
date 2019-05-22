@@ -47,7 +47,7 @@ public class AspectMetadataTests {
 		AspectMetadata am = new AspectMetadata(ExceptionAspect.class,"someBean");
 		assertThat(am.isPerThisOrPerTarget()).isFalse();
 		assertSame(Pointcut.TRUE, am.getPerClausePointcut());
-		assertThat((Object) am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.SINGLETON);
+		assertThat(am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.SINGLETON);
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class AspectMetadataTests {
 		AspectMetadata am = new AspectMetadata(PerTargetAspect.class,"someBean");
 		assertThat(am.isPerThisOrPerTarget()).isTrue();
 		assertNotSame(Pointcut.TRUE, am.getPerClausePointcut());
-		assertThat((Object) am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.PERTARGET);
+		assertThat(am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.PERTARGET);
 	}
 
 	@Test
@@ -63,6 +63,6 @@ public class AspectMetadataTests {
 		AspectMetadata am = new AspectMetadata(PerThisAspect.class,"someBean");
 		assertThat(am.isPerThisOrPerTarget()).isTrue();
 		assertNotSame(Pointcut.TRUE, am.getPerClausePointcut());
-		assertThat((Object) am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.PERTHIS);
+		assertThat(am.getAjType().getPerClause().getKind()).isEqualTo(PerClauseKind.PERTHIS);
 	}
 }

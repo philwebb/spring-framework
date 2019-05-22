@@ -207,7 +207,7 @@ public class GenericConversionServiceTests {
 			}
 		});
 		Integer result = conversionService.convert("3", Integer.class);
-		assertThat((Object) result).isEqualTo(Integer.valueOf(3));
+		assertThat(result).isEqualTo(Integer.valueOf(3));
 	}
 
 	// SPR-8718
@@ -286,7 +286,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new MyBaseInterfaceToStringConverter());
 		conversionService.addConverter(new ArrayToArrayConverter(conversionService));
 		String[] converted = conversionService.convert(new MyInterface[] {new MyInterfaceImplementer()}, String[].class);
-		assertThat((Object) converted[0]).isEqualTo("RESULT");
+		assertThat(converted[0]).isEqualTo("RESULT");
 	}
 
 	@Test
@@ -294,7 +294,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new MyBaseInterfaceToStringConverter());
 		conversionService.addConverter(new ArrayToArrayConverter(conversionService));
 		String[] converted = conversionService.convert(new MyInterfaceImplementer[] {new MyInterfaceImplementer()}, String[].class);
-		assertThat((Object) converted[0]).isEqualTo("RESULT");
+		assertThat(converted[0]).isEqualTo("RESULT");
 	}
 
 	@Test
@@ -302,7 +302,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new MyStringArrayToResourceArrayConverter());
 		Resource[] converted = conversionService.convert(new String[] { "x1", "z3" }, Resource[].class);
 		List<String> descriptions = Arrays.stream(converted).map(Resource::getDescription).sorted(naturalOrder()).collect(toList());
-		assertThat((Object) descriptions).isEqualTo(Arrays.asList("1", "3"));
+		assertThat(descriptions).isEqualTo(Arrays.asList("1", "3"));
 	}
 
 	@Test
@@ -447,7 +447,7 @@ public class GenericConversionServiceTests {
 	public void testConvertiblePairEqualsAndHash() {
 		GenericConverter.ConvertiblePair pair = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		GenericConverter.ConvertiblePair pairEqual = new GenericConverter.ConvertiblePair(Number.class, String.class);
-		assertThat((Object) pairEqual).isEqualTo(pair);
+		assertThat(pairEqual).isEqualTo(pair);
 		assertEquals(pair.hashCode(), pairEqual.hashCode());
 	}
 

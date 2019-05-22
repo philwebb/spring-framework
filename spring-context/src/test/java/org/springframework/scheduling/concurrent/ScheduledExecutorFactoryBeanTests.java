@@ -229,7 +229,7 @@ public class ScheduledExecutorFactoryBeanTests {
 	@Test
 	public void testObjectTypeReportsCorrectType() throws Exception {
 		ScheduledExecutorFactoryBean factory = new ScheduledExecutorFactoryBean();
-		assertThat((Object) factory.getObjectType()).isEqualTo(ScheduledExecutorService.class);
+		assertThat(factory.getObjectType()).isEqualTo(ScheduledExecutorService.class);
 	}
 
 

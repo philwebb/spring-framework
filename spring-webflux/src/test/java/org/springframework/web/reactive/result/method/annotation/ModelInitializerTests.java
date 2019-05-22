@@ -98,7 +98,7 @@ public class ModelInitializerTests {
 		this.modelInitializer.initModel(handlerMethod, context, this.exchange).block(Duration.ofMillis(5000));
 
 		WebExchangeDataBinder binder = context.createDataBinder(this.exchange, "name");
-		assertThat((Object) binder.getValidators()).isEqualTo(Collections.singletonList(validator));
+		assertThat(binder.getValidators()).isEqualTo(Collections.singletonList(validator));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -115,19 +115,19 @@ public class ModelInitializerTests {
 		assertEquals(5, model.size());
 
 		Object value = model.get("bean");
-		assertThat((Object) ((TestBean) value).getName()).isEqualTo("Bean");
+		assertThat(((TestBean) value).getName()).isEqualTo("Bean");
 
 		value = model.get("monoBean");
-		assertThat((Object) ((Mono<TestBean>) value).block(Duration.ofMillis(5000)).getName()).isEqualTo("Mono Bean");
+		assertThat(((Mono<TestBean>) value).block(Duration.ofMillis(5000)).getName()).isEqualTo("Mono Bean");
 
 		value = model.get("singleBean");
-		assertThat((Object) ((Single<TestBean>) value).toBlocking().value().getName()).isEqualTo("Single Bean");
+		assertThat(((Single<TestBean>) value).toBlocking().value().getName()).isEqualTo("Single Bean");
 
 		value = model.get("voidMethodBean");
-		assertThat((Object) ((TestBean) value).getName()).isEqualTo("Void Method Bean");
+		assertThat(((TestBean) value).getName()).isEqualTo("Void Method Bean");
 
 		value = model.get("voidMonoMethodBean");
-		assertThat((Object) ((TestBean) value).getName()).isEqualTo("Void Mono Method Bean");
+		assertThat(((TestBean) value).getName()).isEqualTo("Void Mono Method Bean");
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class ModelInitializerTests {
 
 		context.saveModel();
 		assertEquals(1, session.getAttributes().size());
-		assertThat((Object) ((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Bean");
+		assertThat(((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Bean");
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class ModelInitializerTests {
 
 		context.saveModel();
 		assertEquals(1, session.getAttributes().size());
-		assertThat((Object) ((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Session Bean");
+		assertThat(((TestBean) session.getRequiredAttribute("bean")).getName()).isEqualTo("Session Bean");
 	}
 
 	@Test

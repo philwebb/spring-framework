@@ -91,7 +91,7 @@ public class ParameterizedSpringRuleTests {
 
 		// Verifying 'parameterized' support:
 		Employee employee = this.applicationContext.getBean(this.employeeBeanName, Employee.class);
-		assertThat((Object) employee.getName()).as("Name of the employee configured as bean [" + this.employeeBeanName + "].").isEqualTo(this.employeeName);
+		assertThat(employee.getName()).as("Name of the employee configured as bean [" + this.employeeBeanName + "].").isEqualTo(this.employeeName);
 	}
 
 	@AfterClass

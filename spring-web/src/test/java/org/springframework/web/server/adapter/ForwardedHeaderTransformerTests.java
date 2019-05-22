@@ -66,7 +66,7 @@ public class ForwardedHeaderTransformerTests {
 		headers.add("foo", "bar");
 		ServerHttpRequest request = this.requestMutator.apply(getRequest(headers));
 
-		assertThat((Object) request.getURI()).isEqualTo(new URI("https://84.198.58.199/path"));
+		assertThat(request.getURI()).isEqualTo(new URI("https://84.198.58.199/path"));
 		assertForwardedHeadersRemoved(request);
 	}
 
@@ -76,7 +76,7 @@ public class ForwardedHeaderTransformerTests {
 		headers.add("Forwarded", "host=84.198.58.199;proto=https");
 		ServerHttpRequest request = this.requestMutator.apply(getRequest(headers));
 
-		assertThat((Object) request.getURI()).isEqualTo(new URI("https://84.198.58.199/path"));
+		assertThat(request.getURI()).isEqualTo(new URI("https://84.198.58.199/path"));
 		assertForwardedHeadersRemoved(request);
 	}
 
@@ -86,8 +86,8 @@ public class ForwardedHeaderTransformerTests {
 		headers.add("X-Forwarded-Prefix", "/prefix");
 		ServerHttpRequest request = this.requestMutator.apply(getRequest(headers));
 
-		assertThat((Object) request.getURI()).isEqualTo(new URI("https://example.com/prefix/path"));
-		assertThat((Object) request.getPath().value()).isEqualTo("/prefix/path");
+		assertThat(request.getURI()).isEqualTo(new URI("https://example.com/prefix/path"));
+		assertThat(request.getPath().value()).isEqualTo("/prefix/path");
 		assertForwardedHeadersRemoved(request);
 	}
 
@@ -97,8 +97,8 @@ public class ForwardedHeaderTransformerTests {
 		headers.add("X-Forwarded-Prefix", "/prefix////");
 		ServerHttpRequest request = this.requestMutator.apply(getRequest(headers));
 
-		assertThat((Object) request.getURI()).isEqualTo(new URI("https://example.com/prefix/path"));
-		assertThat((Object) request.getPath().value()).isEqualTo("/prefix/path");
+		assertThat(request.getURI()).isEqualTo(new URI("https://example.com/prefix/path"));
+		assertThat(request.getPath().value()).isEqualTo("/prefix/path");
 		assertForwardedHeadersRemoved(request);
 	}
 
@@ -114,7 +114,7 @@ public class ForwardedHeaderTransformerTests {
 
 		request = this.requestMutator.apply(request);
 
-		assertThat((Object) request.getURI()).isEqualTo(new URI("https://84.198.58.199/a%20b?q=a%2Bb"));
+		assertThat(request.getURI()).isEqualTo(new URI("https://84.198.58.199/a%20b?q=a%2Bb"));
 		assertForwardedHeadersRemoved(request);
 	}
 

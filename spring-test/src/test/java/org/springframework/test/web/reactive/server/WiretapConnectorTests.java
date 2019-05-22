@@ -60,8 +60,8 @@ public class WiretapConnectorTests {
 
 		WiretapConnector.Info actual = wiretapConnector.claimRequest("1");
 		ExchangeResult result = actual.createExchangeResult(Duration.ZERO, null);
-		assertThat((Object) result.getMethod()).isEqualTo(HttpMethod.GET);
-		assertThat((Object) result.getUrl().toString()).isEqualTo("/test");
+		assertThat(result.getMethod()).isEqualTo(HttpMethod.GET);
+		assertThat(result.getUrl().toString()).isEqualTo("/test");
 	}
 
 }

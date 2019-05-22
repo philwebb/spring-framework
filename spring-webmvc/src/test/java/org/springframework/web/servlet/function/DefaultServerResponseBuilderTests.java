@@ -68,7 +68,7 @@ public class DefaultServerResponseBuilderTests {
 	@Test
 	public void status() {
 		ServerResponse response = ServerResponse.status(HttpStatus.CREATED).build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.CREATED);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED);
 	}
 
 	@Test
@@ -79,9 +79,9 @@ public class DefaultServerResponseBuilderTests {
 				.cookie(cookie)
 				.build();
 		ServerResponse result = ServerResponse.from(other).build();
-		assertThat((Object) result.statusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.headers().getFirst("foo")).isEqualTo("bar");
-		assertThat((Object) result.cookies().getFirst("foo")).isEqualTo(cookie);
+		assertThat(result.statusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.headers().getFirst("foo")).isEqualTo("bar");
+		assertThat(result.cookies().getFirst("foo")).isEqualTo(cookie);
 	}
 
 
@@ -89,75 +89,75 @@ public class DefaultServerResponseBuilderTests {
 	public void ok() {
 		ServerResponse response = ServerResponse.ok().build();
 
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
 	public void created() {
 		URI location = URI.create("https://example.com");
 		ServerResponse response = ServerResponse.created(location).build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.CREATED);
-		assertThat((Object) response.headers().getLocation()).isEqualTo(location);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED);
+		assertThat(response.headers().getLocation()).isEqualTo(location);
 	}
 
 	@Test
 	public void accepted() {
 		ServerResponse response = ServerResponse.accepted().build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.ACCEPTED);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.ACCEPTED);
 	}
 
 	@Test
 	public void noContent() {
 		ServerResponse response = ServerResponse.noContent().build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 	}
 
 	@Test
 	public void seeOther() {
 		URI location = URI.create("https://example.com");
 		ServerResponse response = ServerResponse.seeOther(location).build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.SEE_OTHER);
-		assertThat((Object) response.headers().getLocation()).isEqualTo(location);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.SEE_OTHER);
+		assertThat(response.headers().getLocation()).isEqualTo(location);
 	}
 
 	@Test
 	public void temporaryRedirect() {
 		URI location = URI.create("https://example.com");
 		ServerResponse response = ServerResponse.temporaryRedirect(location).build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.TEMPORARY_REDIRECT);
-		assertThat((Object) response.headers().getLocation()).isEqualTo(location);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.TEMPORARY_REDIRECT);
+		assertThat(response.headers().getLocation()).isEqualTo(location);
 	}
 
 	@Test
 	public void permanentRedirect() {
 		URI location = URI.create("https://example.com");
 		ServerResponse response = ServerResponse.permanentRedirect(location).build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
-		assertThat((Object) response.headers().getLocation()).isEqualTo(location);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
+		assertThat(response.headers().getLocation()).isEqualTo(location);
 	}
 
 	@Test
 	public void badRequest() {
 		ServerResponse response = ServerResponse.badRequest().build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
 	public void notFound() {
 		ServerResponse response = ServerResponse.notFound().build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
 	public void unprocessableEntity() {
 		ServerResponse response = ServerResponse.unprocessableEntity().build();
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
 	public void allow() {
 		ServerResponse response = ServerResponse.ok().allow(HttpMethod.GET).build();
-		assertThat((Object) response.headers().getAllow()).isEqualTo(EnumSet.of(HttpMethod.GET));
+		assertThat(response.headers().getAllow()).isEqualTo(EnumSet.of(HttpMethod.GET));
 	}
 
 	@Test
@@ -169,13 +169,13 @@ public class DefaultServerResponseBuilderTests {
 	@Test
 	public void contentType() {
 		ServerResponse response = ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).build();
-		assertThat((Object) response.headers().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(response.headers().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
 	public void eTag() {
 		ServerResponse response = ServerResponse.ok().eTag("foo").build();
-		assertThat((Object) response.headers().getETag()).isEqualTo("\"foo\"");
+		assertThat(response.headers().getETag()).isEqualTo("\"foo\"");
 	}
 
 	@Test
@@ -189,14 +189,14 @@ public class DefaultServerResponseBuilderTests {
 	@Test
 	public void cacheControlTag() {
 		ServerResponse response = ServerResponse.ok().cacheControl(CacheControl.noCache()).build();
-		assertThat((Object) response.headers().getCacheControl()).isEqualTo("no-cache");
+		assertThat(response.headers().getCacheControl()).isEqualTo("no-cache");
 	}
 
 	@Test
 	public void varyBy() {
 		ServerResponse response = ServerResponse.ok().varyBy("foo").build();
 		List<String> expected = Collections.singletonList("foo");
-		assertThat((Object) response.headers().getVary()).isEqualTo(expected);
+		assertThat(response.headers().getVary()).isEqualTo(expected);
 	}
 
 
@@ -204,7 +204,7 @@ public class DefaultServerResponseBuilderTests {
 	public void statusCode() {
 		HttpStatus statusCode = HttpStatus.ACCEPTED;
 		ServerResponse response = ServerResponse.status(statusCode).build();
-		assertThat((Object) response.statusCode()).isEqualTo(statusCode);
+		assertThat(response.statusCode()).isEqualTo(statusCode);
 	}
 
 	@Test
@@ -214,7 +214,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse response = ServerResponse.ok()
 				.headers(headers -> headers.addAll(newHeaders))
 				.build();
-		assertThat((Object) response.headers()).isEqualTo(newHeaders);
+		assertThat(response.headers()).isEqualTo(newHeaders);
 	}
 
 	@Test
@@ -224,7 +224,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse response = ServerResponse.ok()
 				.cookies(cookies -> cookies.addAll(newCookies))
 				.build();
-		assertThat((Object) response.cookies()).isEqualTo(newCookies);
+		assertThat(response.cookies()).isEqualTo(newCookies);
 	}
 
 	@Test
@@ -242,8 +242,8 @@ public class DefaultServerResponseBuilderTests {
 		assertNull(mav);
 
 		assertEquals(HttpStatus.CREATED.value(), mockResponse.getStatus());
-		assertThat((Object) mockResponse.getHeader("MyKey")).isEqualTo("MyValue");
-		assertThat((Object) mockResponse.getCookie("name").getValue()).isEqualTo("value");
+		assertThat(mockResponse.getHeader("MyKey")).isEqualTo("MyValue");
+		assertThat(mockResponse.getCookie("name").getValue()).isEqualTo("value");
 	}
 
 	@Test
@@ -294,7 +294,7 @@ public class DefaultServerResponseBuilderTests {
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
 		assertNull(mav);
 
-		assertThat((Object) mockResponse.getContentAsString()).isEqualTo(body);
+		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
 	}
 
 	@Test
@@ -311,7 +311,7 @@ public class DefaultServerResponseBuilderTests {
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
 		assertNull(mav);
 
-		assertThat((Object) mockResponse.getContentAsString()).isEqualTo("[\"foo\",\"bar\"]");
+		assertThat(mockResponse.getContentAsString()).isEqualTo("[\"foo\",\"bar\"]");
 	}
 
 	@Test
@@ -330,7 +330,7 @@ public class DefaultServerResponseBuilderTests {
 		assertNull(mav);
 
 
-		assertThat((Object) mockResponse.getContentAsString()).isEqualTo(body);
+		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
 	}
 
 	@Test
@@ -348,7 +348,7 @@ public class DefaultServerResponseBuilderTests {
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
 		assertNull(mav);
 
-		assertThat((Object) mockResponse.getContentAsString()).isEqualTo(body);
+		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
 	}
 
 }

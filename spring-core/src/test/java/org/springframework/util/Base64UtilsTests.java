@@ -58,22 +58,22 @@ public class Base64UtilsTests {
 	public void encodeToStringWithJdk8VsJaxb() throws UnsupportedEncodingException {
 		byte[] bytes = new byte[]
 				{-0x4f, 0xa, -0x73, -0x4f, 0x64, -0x20, 0x75, 0x41, 0x5, -0x49, -0x57, -0x65, -0x19, 0x2e, 0x3f, -0x1b};
-		assertThat((Object) DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
+		assertThat(DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
 		assertArrayEquals(bytes, Base64Utils.decodeFromString(Base64Utils.encodeToString(bytes)));
 		assertArrayEquals(bytes, DatatypeConverter.parseBase64Binary(DatatypeConverter.printBase64Binary(bytes)));
 
 		bytes = "Hello World".getBytes("UTF-8");
-		assertThat((Object) DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
+		assertThat(DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
 		assertArrayEquals(bytes, Base64Utils.decodeFromString(Base64Utils.encodeToString(bytes)));
 		assertArrayEquals(bytes, DatatypeConverter.parseBase64Binary(DatatypeConverter.printBase64Binary(bytes)));
 
 		bytes = "Hello World\r\nSecond Line".getBytes("UTF-8");
-		assertThat((Object) DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
+		assertThat(DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
 		assertArrayEquals(bytes, Base64Utils.decodeFromString(Base64Utils.encodeToString(bytes)));
 		assertArrayEquals(bytes, DatatypeConverter.parseBase64Binary(DatatypeConverter.printBase64Binary(bytes)));
 
 		bytes = "Hello World\r\nSecond Line\r\n".getBytes("UTF-8");
-		assertThat((Object) DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
+		assertThat(DatatypeConverter.printBase64Binary(bytes)).isEqualTo(Base64Utils.encodeToString(bytes));
 		assertArrayEquals(bytes, Base64Utils.decodeFromString(Base64Utils.encodeToString(bytes)));
 		assertArrayEquals(bytes, DatatypeConverter.parseBase64Binary(DatatypeConverter.printBase64Binary(bytes)));
 	}
@@ -84,7 +84,7 @@ public class Base64UtilsTests {
 		assertArrayEquals("-_A=".getBytes(), Base64Utils.encodeUrlSafe(bytes));
 		assertArrayEquals(bytes, Base64Utils.decodeUrlSafe(Base64Utils.encodeUrlSafe(bytes)));
 
-		assertThat((Object) Base64Utils.encodeToUrlSafeString(bytes)).isEqualTo("-_A=");
+		assertThat(Base64Utils.encodeToUrlSafeString(bytes)).isEqualTo("-_A=");
 		assertArrayEquals(bytes, Base64Utils.decodeFromUrlSafeString(Base64Utils.encodeToUrlSafeString(bytes)));
 	}
 

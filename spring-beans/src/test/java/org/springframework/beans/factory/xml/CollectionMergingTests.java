@@ -94,7 +94,7 @@ public class CollectionMergingTests {
 		assertNotNull(o);
 		boolean condition = o instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TestBean) o).getName()).isEqualTo("Sally");
+		assertThat(((TestBean) o).getName()).isEqualTo("Sally");
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class CollectionMergingTests {
 		assertNotNull(map.get("Rob"));
 		boolean condition = map.get("Rob") instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TestBean) map.get("Rob")).getName()).isEqualTo("Sally");
+		assertThat(((TestBean) map.get("Rob")).getName()).isEqualTo("Sally");
 	}
 
 	@Test
@@ -124,9 +124,9 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithProps");
 		Properties props = bean.getSomeProperties();
 		assertEquals("Incorrect size", 3, props.size());
-		assertThat((Object) props.getProperty("Rob")).isEqualTo("Sally");
-		assertThat((Object) props.getProperty("Rod")).isEqualTo("Kerry");
-		assertThat((Object) props.getProperty("Juergen")).isEqualTo("Eva");
+		assertThat(props.getProperty("Rob")).isEqualTo("Sally");
+		assertThat(props.getProperty("Rod")).isEqualTo("Kerry");
+		assertThat(props.getProperty("Juergen")).isEqualTo("Eva");
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class CollectionMergingTests {
 		assertNotNull(o);
 		boolean condition = o instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TestBean) o).getName()).isEqualTo("Sally");
+		assertThat(((TestBean) o).getName()).isEqualTo("Sally");
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class CollectionMergingTests {
 		assertNotNull(map.get("Rob"));
 		boolean condition = map.get("Rob") instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TestBean) map.get("Rob")).getName()).isEqualTo("Sally");
+		assertThat(((TestBean) map.get("Rob")).getName()).isEqualTo("Sally");
 	}
 
 	@Test
@@ -201,9 +201,9 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithPropsInConstructor");
 		Properties props = bean.getSomeProperties();
 		assertEquals("Incorrect size", 3, props.size());
-		assertThat((Object) props.getProperty("Rob")).isEqualTo("Sally");
-		assertThat((Object) props.getProperty("Rod")).isEqualTo("Kerry");
-		assertThat((Object) props.getProperty("Juergen")).isEqualTo("Eva");
+		assertThat(props.getProperty("Rob")).isEqualTo("Sally");
+		assertThat(props.getProperty("Rod")).isEqualTo("Kerry");
+		assertThat(props.getProperty("Juergen")).isEqualTo("Eva");
 	}
 
 }

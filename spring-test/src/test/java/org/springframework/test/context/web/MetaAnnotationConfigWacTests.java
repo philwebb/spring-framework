@@ -56,7 +56,7 @@ public class MetaAnnotationConfigWacTests {
 
 	@Test
 	public void fooEnigmaAutowired() {
-		assertThat((Object) foo).isEqualTo("enigma");
+		assertThat(foo).isEqualTo("enigma");
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class MetaAnnotationConfigWacTests {
 		assertSame("test WAC and Root WAC in ServletContext must be the same object.", wac, rootWac);
 		assertSame("ServletContext instances must be the same object.", mockServletContext, wac.getServletContext());
 
-		assertThat((Object) mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
+		assertThat(mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
 	}
 
 }

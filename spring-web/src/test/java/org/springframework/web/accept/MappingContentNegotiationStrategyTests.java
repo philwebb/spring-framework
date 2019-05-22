@@ -44,7 +44,7 @@ public class MappingContentNegotiationStrategyTests {
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
 		assertEquals(1, mediaTypes.size());
-		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("application/json");
+		assertThat(mediaTypes.get(0).toString()).isEqualTo("application/json");
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class MappingContentNegotiationStrategyTests {
 
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
-		assertThat((Object) mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
+		assertThat(mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class MappingContentNegotiationStrategyTests {
 
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
-		assertThat((Object) mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
+		assertThat(mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class MappingContentNegotiationStrategyTests {
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(null);
 
 		assertEquals(1, mediaTypes.size());
-		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("application/xml");
+		assertThat(mediaTypes.get(0).toString()).isEqualTo("application/xml");
 	}
 
 

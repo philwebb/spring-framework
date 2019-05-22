@@ -32,7 +32,7 @@ public class BasicXmlWacTests extends AbstractBasicWacTests {
 
 	@Test
 	public void fooBarAutowired() {
-		assertThat((Object) foo).isEqualTo("bar");
+		assertThat(foo).isEqualTo("bar");
 	}
 
 }

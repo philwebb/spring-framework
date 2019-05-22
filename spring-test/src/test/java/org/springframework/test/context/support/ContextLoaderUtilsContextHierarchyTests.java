@@ -351,7 +351,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		assertThat(alphaConfig.get(0).getInitializers().length).isEqualTo(0);
 		assertThat(alphaConfig.get(1).getLocations().length).isEqualTo(0);
 		assertThat(alphaConfig.get(1).getInitializers().length).isEqualTo(1);
-		assertThat((Object) alphaConfig.get(1).getInitializers()[0]).isEqualTo(DummyApplicationContextInitializer.class);
+		assertThat(alphaConfig.get(1).getInitializers()[0]).isEqualTo(DummyApplicationContextInitializer.class);
 
 		List<ContextConfigurationAttributes> betaConfig = map.get("beta");
 		assertThat(betaConfig).hasSize(2);
@@ -360,7 +360,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		assertThat(betaConfig.get(0).getInitializers().length).isEqualTo(0);
 		assertThat(betaConfig.get(1).getLocations().length).isEqualTo(0);
 		assertThat(betaConfig.get(1).getInitializers().length).isEqualTo(1);
-		assertThat((Object) betaConfig.get(1).getInitializers()[0]).isEqualTo(DummyApplicationContextInitializer.class);
+		assertThat(betaConfig.get(1).getInitializers()[0]).isEqualTo(DummyApplicationContextInitializer.class);
 	}
 
 

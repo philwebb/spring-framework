@@ -71,9 +71,9 @@ public class ProxyFactoryBeanTests {
 
 		Proxy result = factoryBean.getObject();
 
-		assertThat((Object) result.type()).isEqualTo(type);
+		assertThat(result.type()).isEqualTo(type);
 		InetSocketAddress address = (InetSocketAddress) result.address();
-		assertThat((Object) address.getHostName()).isEqualTo(hostname);
+		assertThat(address.getHostName()).isEqualTo(hostname);
 		assertEquals(port, address.getPort());
 	}
 

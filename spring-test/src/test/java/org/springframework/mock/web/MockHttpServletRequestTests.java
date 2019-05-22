@@ -60,12 +60,12 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void protocolAndScheme() {
-		assertThat((Object) request.getProtocol()).isEqualTo(MockHttpServletRequest.DEFAULT_PROTOCOL);
-		assertThat((Object) request.getScheme()).isEqualTo(MockHttpServletRequest.DEFAULT_SCHEME);
+		assertThat(request.getProtocol()).isEqualTo(MockHttpServletRequest.DEFAULT_PROTOCOL);
+		assertThat(request.getScheme()).isEqualTo(MockHttpServletRequest.DEFAULT_SCHEME);
 		request.setProtocol("HTTP/2.0");
 		request.setScheme("https");
-		assertThat((Object) request.getProtocol()).isEqualTo("HTTP/2.0");
-		assertThat((Object) request.getScheme()).isEqualTo("https");
+		assertThat(request.getProtocol()).isEqualTo("HTTP/2.0");
+		assertThat(request.getScheme()).isEqualTo("https");
 	}
 
 	@Test
@@ -73,11 +73,11 @@ public class MockHttpServletRequestTests {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
 		assertEquals(bytes.length, request.getContentLength());
-		assertThat((Object) StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
+		assertThat(StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
 
 		request.setContent(bytes);
 		assertEquals(bytes.length, request.getContentLength());
-		assertThat((Object) StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
+		assertThat(StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
 	}
 
 	@Test
@@ -85,11 +85,11 @@ public class MockHttpServletRequestTests {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
 		assertEquals(bytes.length, request.getContentLength());
-		assertThat((Object) FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
+		assertThat(FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
 
 		request.setContent(bytes);
 		assertEquals(bytes.length, request.getContentLength());
-		assertThat((Object) FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
+		assertThat(FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class MockHttpServletRequestTests {
 		byte[] bytes = "request body".getBytes();
 		request.setContent(bytes);
 		assertEquals(bytes.length, request.getContentLength());
-		assertThat((Object) request.getContentAsByteArray()).isEqualTo(bytes);
+		assertThat(request.getContentAsByteArray()).isEqualTo(bytes);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class MockHttpServletRequestTests {
 		request.setCharacterEncoding("UTF-16");
 		request.setContent(bytes);
 		assertEquals(bytes.length, request.getContentLength());
-		assertThat((Object) request.getContentAsString()).isEqualTo(palindrome);
+		assertThat(request.getContentAsString()).isEqualTo(palindrome);
 	}
 
 	@Test
@@ -158,8 +158,8 @@ public class MockHttpServletRequestTests {
 	public void setContentType() {
 		String contentType = "test/plain";
 		request.setContentType(contentType);
-		assertThat((Object) request.getContentType()).isEqualTo(contentType);
-		assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
+		assertThat(request.getContentType()).isEqualTo(contentType);
+		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
 		assertNull(request.getCharacterEncoding());
 	}
 
@@ -167,17 +167,17 @@ public class MockHttpServletRequestTests {
 	public void setContentTypeUTF8() {
 		String contentType = "test/plain;charset=UTF-8";
 		request.setContentType(contentType);
-		assertThat((Object) request.getContentType()).isEqualTo(contentType);
-		assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
-		assertThat((Object) request.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(request.getContentType()).isEqualTo(contentType);
+		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
+		assertThat(request.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 	@Test
 	public void contentTypeHeader() {
 		String contentType = "test/plain";
 		request.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
-		assertThat((Object) request.getContentType()).isEqualTo(contentType);
-		assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
+		assertThat(request.getContentType()).isEqualTo(contentType);
+		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
 		assertNull(request.getCharacterEncoding());
 	}
 
@@ -185,36 +185,36 @@ public class MockHttpServletRequestTests {
 	public void contentTypeHeaderUTF8() {
 		String contentType = "test/plain;charset=UTF-8";
 		request.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
-		assertThat((Object) request.getContentType()).isEqualTo(contentType);
-		assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
-		assertThat((Object) request.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(request.getContentType()).isEqualTo(contentType);
+		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
+		assertThat(request.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 	@Test  // SPR-12677
 	public void setContentTypeHeaderWithMoreComplexCharsetSyntax() {
 		String contentType = "test/plain;charset=\"utf-8\";foo=\"charset=bar\";foocharset=bar;foo=bar";
 		request.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
-		assertThat((Object) request.getContentType()).isEqualTo(contentType);
-		assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
-		assertThat((Object) request.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(request.getContentType()).isEqualTo(contentType);
+		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo(contentType);
+		assertThat(request.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 	@Test
 	public void setContentTypeThenCharacterEncoding() {
 		request.setContentType("test/plain");
 		request.setCharacterEncoding("UTF-8");
-		assertThat((Object) request.getContentType()).isEqualTo("test/plain");
-		assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo("test/plain;charset=UTF-8");
-		assertThat((Object) request.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(request.getContentType()).isEqualTo("test/plain");
+		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo("test/plain;charset=UTF-8");
+		assertThat(request.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 	@Test
 	public void setCharacterEncodingThenContentType() {
 		request.setCharacterEncoding("UTF-8");
 		request.setContentType("test/plain");
-		assertThat((Object) request.getContentType()).isEqualTo("test/plain");
-		assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo("test/plain;charset=UTF-8");
-		assertThat((Object) request.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(request.getContentType()).isEqualTo("test/plain");
+		assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo("test/plain;charset=UTF-8");
+		assertThat(request.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 	@Test
@@ -222,7 +222,7 @@ public class MockHttpServletRequestTests {
 		String headerName = "Header1";
 		request.addHeader(headerName, "value1");
 		Enumeration<String> requestHeaders = request.getHeaderNames();
-		assertThat((Object) requestHeaders.nextElement()).as("HTTP header casing not being preserved").isEqualTo(headerName);
+		assertThat(requestHeaders.nextElement()).as("HTTP header casing not being preserved").isEqualTo(headerName);
 	}
 
 	@Test
@@ -235,12 +235,12 @@ public class MockHttpServletRequestTests {
 		request.setParameters(params);
 		String[] values1 = request.getParameterValues("key1");
 		assertEquals(1, values1.length);
-		assertThat((Object) request.getParameter("key1")).isEqualTo("newValue1");
-		assertThat((Object) request.getParameter("key2")).isEqualTo("value2");
+		assertThat(request.getParameter("key1")).isEqualTo("newValue1");
+		assertThat(request.getParameter("key2")).isEqualTo("value2");
 		String[] values3 = request.getParameterValues("key3");
 		assertEquals(2, values3.length);
-		assertThat((Object) values3[0]).isEqualTo("value3A");
-		assertThat((Object) values3[1]).isEqualTo("value3B");
+		assertThat(values3[0]).isEqualTo("value3A");
+		assertThat(values3[1]).isEqualTo("value3B");
 	}
 
 	@Test
@@ -253,13 +253,13 @@ public class MockHttpServletRequestTests {
 		request.addParameters(params);
 		String[] values1 = request.getParameterValues("key1");
 		assertEquals(2, values1.length);
-		assertThat((Object) values1[0]).isEqualTo("value1");
-		assertThat((Object) values1[1]).isEqualTo("newValue1");
-		assertThat((Object) request.getParameter("key2")).isEqualTo("value2");
+		assertThat(values1[0]).isEqualTo("value1");
+		assertThat(values1[1]).isEqualTo("newValue1");
+		assertThat(request.getParameter("key2")).isEqualTo("value2");
 		String[] values3 = request.getParameterValues("key3");
 		assertEquals(2, values3.length);
-		assertThat((Object) values3[0]).isEqualTo("value3A");
-		assertThat((Object) values3[1]).isEqualTo("value3B");
+		assertThat(values3[0]).isEqualTo("value3A");
+		assertThat(values3[1]).isEqualTo("value3B");
 	}
 
 	@Test
@@ -284,11 +284,11 @@ public class MockHttpServletRequestTests {
 		List<String> cookieHeaders = Collections.list(request.getHeaders("Cookie"));
 
 		assertEquals(2, cookies.length);
-		assertThat((Object) cookies[0].getName()).isEqualTo("foo");
-		assertThat((Object) cookies[0].getValue()).isEqualTo("bar");
-		assertThat((Object) cookies[1].getName()).isEqualTo("baz");
-		assertThat((Object) cookies[1].getValue()).isEqualTo("qux");
-		assertThat((Object) cookieHeaders).isEqualTo(Arrays.asList("foo=bar", "baz=qux"));
+		assertThat(cookies[0].getName()).isEqualTo("foo");
+		assertThat(cookies[0].getValue()).isEqualTo("bar");
+		assertThat(cookies[1].getName()).isEqualTo("baz");
+		assertThat(cookies[1].getValue()).isEqualTo("qux");
+		assertThat(cookieHeaders).isEqualTo(Arrays.asList("foo=bar", "baz=qux"));
 	}
 
 	@Test
@@ -305,7 +305,7 @@ public class MockHttpServletRequestTests {
 			// Create the request after changing the default locale.
 			MockHttpServletRequest request = new MockHttpServletRequest();
 			assertThat(newDefaultLocale.equals(request.getLocale())).isFalse();
-			assertThat((Object) request.getLocale()).isEqualTo(Locale.ENGLISH);
+			assertThat(request.getLocale()).isEqualTo(Locale.ENGLISH);
 		}
 		finally {
 			Locale.setDefault(originalDefaultLocale);
@@ -329,7 +329,7 @@ public class MockHttpServletRequestTests {
 		List<Locale> preferredLocales = Arrays.asList(Locale.ITALY, Locale.CHINA);
 		request.setPreferredLocales(preferredLocales);
 		assertEqualEnumerations(Collections.enumeration(preferredLocales), request.getLocales());
-		assertThat((Object) request.getHeader(HttpHeaders.ACCEPT_LANGUAGE)).isEqualTo("it-it, zh-cn");
+		assertThat(request.getHeader(HttpHeaders.ACCEPT_LANGUAGE)).isEqualTo("it-it, zh-cn");
 	}
 
 	@Test
@@ -337,62 +337,62 @@ public class MockHttpServletRequestTests {
 		String headerValue = "fr-ch, fr;q=0.9, en-*;q=0.8, de;q=0.7, *;q=0.5";
 		request.addHeader("Accept-Language", headerValue);
 		List<Locale> actual = Collections.list(request.getLocales());
-		assertThat((Object) actual).isEqualTo(Arrays.asList(Locale.forLanguageTag("fr-ch"), Locale.forLanguageTag("fr"),
+		assertThat(actual).isEqualTo(Arrays.asList(Locale.forLanguageTag("fr-ch"), Locale.forLanguageTag("fr"),
 				Locale.forLanguageTag("en"), Locale.forLanguageTag("de")));
-		assertThat((Object) request.getHeader("Accept-Language")).isEqualTo(headerValue);
+		assertThat(request.getHeader("Accept-Language")).isEqualTo(headerValue);
 	}
 
 	@Test
 	public void invalidAcceptLanguageHeader() {
 		request.addHeader("Accept-Language", "en_US");
-		assertThat((Object) request.getLocale()).isEqualTo(Locale.ENGLISH);
-		assertThat((Object) request.getHeader("Accept-Language")).isEqualTo("en_US");
+		assertThat(request.getLocale()).isEqualTo(Locale.ENGLISH);
+		assertThat(request.getHeader("Accept-Language")).isEqualTo("en_US");
 	}
 
 	@Test
 	public void emptyAcceptLanguageHeader() {
 		request.addHeader("Accept-Language", "");
-		assertThat((Object) request.getLocale()).isEqualTo(Locale.ENGLISH);
-		assertThat((Object) request.getHeader("Accept-Language")).isEqualTo("");
+		assertThat(request.getLocale()).isEqualTo(Locale.ENGLISH);
+		assertThat(request.getHeader("Accept-Language")).isEqualTo("");
 	}
 
 	@Test
 	public void getServerNameWithDefaultName() {
-		assertThat((Object) request.getServerName()).isEqualTo("localhost");
+		assertThat(request.getServerName()).isEqualTo("localhost");
 	}
 
 	@Test
 	public void getServerNameWithCustomName() {
 		request.setServerName("example.com");
-		assertThat((Object) request.getServerName()).isEqualTo("example.com");
+		assertThat(request.getServerName()).isEqualTo("example.com");
 	}
 
 	@Test
 	public void getServerNameViaHostHeaderWithoutPort() {
 		String testServer = "test.server";
 		request.addHeader(HOST, testServer);
-		assertThat((Object) request.getServerName()).isEqualTo(testServer);
+		assertThat(request.getServerName()).isEqualTo(testServer);
 	}
 
 	@Test
 	public void getServerNameViaHostHeaderWithPort() {
 		String testServer = "test.server";
 		request.addHeader(HOST, testServer + ":8080");
-		assertThat((Object) request.getServerName()).isEqualTo(testServer);
+		assertThat(request.getServerName()).isEqualTo(testServer);
 	}
 
 	@Test
 	public void getServerNameViaHostHeaderAsIpv6AddressWithoutPort() {
 		String ipv6Address = "[2001:db8:0:1]";
 		request.addHeader(HOST, ipv6Address);
-		assertThat((Object) request.getServerName()).isEqualTo("2001:db8:0:1");
+		assertThat(request.getServerName()).isEqualTo("2001:db8:0:1");
 	}
 
 	@Test
 	public void getServerNameViaHostHeaderAsIpv6AddressWithPort() {
 		String ipv6Address = "[2001:db8:0:1]:8081";
 		request.addHeader(HOST, ipv6Address);
-		assertThat((Object) request.getServerName()).isEqualTo("2001:db8:0:1");
+		assertThat(request.getServerName()).isEqualTo("2001:db8:0:1");
 	}
 
 	@Test
@@ -440,18 +440,18 @@ public class MockHttpServletRequestTests {
 	public void getRequestURL() {
 		request.setServerPort(8080);
 		request.setRequestURI("/path");
-		assertThat((Object) request.getRequestURL().toString()).isEqualTo("http://localhost:8080/path");
+		assertThat(request.getRequestURL().toString()).isEqualTo("http://localhost:8080/path");
 
 		request.setScheme("https");
 		request.setServerName("example.com");
 		request.setServerPort(8443);
-		assertThat((Object) request.getRequestURL().toString()).isEqualTo("https://example.com:8443/path");
+		assertThat(request.getRequestURL().toString()).isEqualTo("https://example.com:8443/path");
 	}
 
 	@Test
 	public void getRequestURLWithDefaults() {
 		StringBuffer requestURL = request.getRequestURL();
-		assertThat((Object) requestURL.toString()).isEqualTo("http://localhost");
+		assertThat(requestURL.toString()).isEqualTo("http://localhost");
 	}
 
 	@Test  // SPR-16138
@@ -459,7 +459,7 @@ public class MockHttpServletRequestTests {
 		String testServer = "test.server";
 		request.addHeader(HOST, testServer);
 		StringBuffer requestURL = request.getRequestURL();
-		assertThat((Object) requestURL.toString()).isEqualTo(("http://" + testServer));
+		assertThat(requestURL.toString()).isEqualTo(("http://" + testServer));
 	}
 
 	@Test  // SPR-16138
@@ -467,14 +467,14 @@ public class MockHttpServletRequestTests {
 		String testServer = "test.server:9999";
 		request.addHeader(HOST, testServer);
 		StringBuffer requestURL = request.getRequestURL();
-		assertThat((Object) requestURL.toString()).isEqualTo(("http://" + testServer));
+		assertThat(requestURL.toString()).isEqualTo(("http://" + testServer));
 	}
 
 	@Test
 	public void getRequestURLWithNullRequestUri() {
 		request.setRequestURI(null);
 		StringBuffer requestURL = request.getRequestURL();
-		assertThat((Object) requestURL.toString()).isEqualTo("http://localhost");
+		assertThat(requestURL.toString()).isEqualTo("http://localhost");
 	}
 
 	@Test
@@ -482,14 +482,14 @@ public class MockHttpServletRequestTests {
 		request.setScheme("https");
 		request.setServerPort(443);
 		StringBuffer requestURL = request.getRequestURL();
-		assertThat((Object) requestURL.toString()).isEqualTo("https://localhost");
+		assertThat(requestURL.toString()).isEqualTo("https://localhost");
 	}
 
 	@Test
 	public void getRequestURLWithNegativePort() {
 		request.setServerPort(-99);
 		StringBuffer requestURL = request.getRequestURL();
-		assertThat((Object) requestURL.toString()).isEqualTo("http://localhost");
+		assertThat(requestURL.toString()).isEqualTo("http://localhost");
 	}
 
 	@Test

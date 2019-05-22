@@ -85,7 +85,7 @@ public class ContentNegotiatingViewResolverTests {
 		request.addHeader("Accept", "text/html,application/xml;q=0.9,application/xhtml+xml,*/*;q=0.8");
 		viewResolver.afterPropertiesSet();
 		List<MediaType> result = viewResolver.getMediaTypes(request);
-		assertThat((Object) result.get(0)).as("Invalid content type").isEqualTo(new MediaType("application", "xhtml+xml"));
+		assertThat(result.get(0)).as("Invalid content type").isEqualTo(new MediaType("application", "xhtml+xml"));
 	}
 
 	@Test
@@ -420,7 +420,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(jsonView.getContentType()).willReturn("application/json");
 
 		View actualView = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) actualView.getClass()).as("Invalid view").isEqualTo(RedirectView.class);
+		assertThat(actualView.getClass()).as("Invalid view").isEqualTo(RedirectView.class);
 	}
 
 	@Test

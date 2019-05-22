@@ -101,7 +101,7 @@ public abstract class AbstractTransactionalAnnotatedConfigClassTests {
 	@Test
 	public void autowiringFromConfigClass() {
 		assertNotNull("The employee should have been autowired.", employee);
-		assertThat((Object) employee.getName()).isEqualTo("John Smith");
+		assertThat(employee.getName()).isEqualTo("John Smith");
 	}
 
 	@BeforeTransaction

@@ -115,7 +115,7 @@ public class RegexpMethodPointcutAdvisorIntegrationTests {
 		// Remembers count, but we need to get a new reference to nop...
 		nop = (SerializableNopInterceptor) ((Advised) p).getAdvisors()[0].getAdvice();
 		assertEquals(2, nop.getCount());
-		assertThat((Object) p.getName()).isEqualTo("serializableSettersAdvised");
+		assertThat(p.getName()).isEqualTo("serializableSettersAdvised");
 		p.setAge(newAge + 1);
 		assertEquals(3, nop.getCount());
 		assertEquals(newAge + 1, p.getAge());

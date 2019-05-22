@@ -98,8 +98,8 @@ public class ServerWebExchangeMethodArgumentResolverTests {
 		Object value = this.resolver.resolveArgument(param, new BindingContext(), this.exchange).block();
 
 		assertNotNull(value);
-		assertThat((Object) value.getClass()).isEqualTo(UriComponentsBuilder.class);
-		assertThat((Object) ((UriComponentsBuilder) value).path("/next").toUriString()).isEqualTo("https://example.org:9999/next");
+		assertThat(value.getClass()).isEqualTo(UriComponentsBuilder.class);
+		assertThat(((UriComponentsBuilder) value).path("/next").toUriString()).isEqualTo("https://example.org:9999/next");
 	}
 
 

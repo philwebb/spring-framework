@@ -92,7 +92,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 		transportHandler.initialize(new StubSockJsServiceConfig());
 		transportHandler.handleRequest(this.request, this.response, wsHandler, session);
 
-		assertThat((Object) this.response.getHeaders().getContentType().toString()).isEqualTo("text/plain;charset=UTF-8");
+		assertThat(this.response.getHeaders().getContentType().toString()).isEqualTo("text/plain;charset=UTF-8");
 		verify(wsHandler).handleMessage(session, new TextMessage("x"));
 	}
 

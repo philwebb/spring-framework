@@ -137,7 +137,7 @@ public class JmsInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 
-		assertThat((Object) proxy.getName()).isEqualTo("myname");
+		assertThat(proxy.getName()).isEqualTo("myname");
 		assertEquals(99, proxy.getAge());
 		proxy.setAge(50);
 		assertEquals(50, proxy.getAge());

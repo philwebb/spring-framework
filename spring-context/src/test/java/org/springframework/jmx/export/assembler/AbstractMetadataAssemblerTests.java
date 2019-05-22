@@ -53,21 +53,21 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	@Test
 	public void testDescription() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
-		assertThat((Object) info.getDescription()).as("The descriptions are not the same").isEqualTo("My Managed Bean");
+		assertThat(info.getDescription()).as("The descriptions are not the same").isEqualTo("My Managed Bean");
 	}
 
 	@Test
 	public void testAttributeDescriptionOnSetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute(AGE_ATTRIBUTE);
-		assertThat((Object) attr.getDescription()).as("The description for the age attribute is incorrect").isEqualTo("The Age Attribute");
+		assertThat(attr.getDescription()).as("The description for the age attribute is incorrect").isEqualTo("The Age Attribute");
 	}
 
 	@Test
 	public void testAttributeDescriptionOnGetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute(NAME_ATTRIBUTE);
-		assertThat((Object) attr.getDescription()).as("The description for the name attribute is incorrect").isEqualTo("The Name Attribute");
+		assertThat(attr.getDescription()).as("The description for the name attribute is incorrect").isEqualTo("The Name Attribute");
 	}
 
 	/**
@@ -149,11 +149,11 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		MBeanParameterInfo[] params = oper.getSignature();
 
 		assertEquals("Invalid number of params", 2, params.length);
-		assertThat((Object) params[0].getName()).as("Incorrect name for x param").isEqualTo("x");
-		assertThat((Object) params[0].getType()).as("Incorrect type for x param").isEqualTo(int.class.getName());
+		assertThat(params[0].getName()).as("Incorrect name for x param").isEqualTo("x");
+		assertThat(params[0].getType()).as("Incorrect type for x param").isEqualTo(int.class.getName());
 
-		assertThat((Object) params[1].getName()).as("Incorrect name for y param").isEqualTo("y");
-		assertThat((Object) params[1].getType()).as("Incorrect type for y param").isEqualTo(int.class.getName());
+		assertThat(params[1].getName()).as("Incorrect name for y param").isEqualTo("y");
+		assertThat(params[1].getType()).as("Incorrect type for y param").isEqualTo(int.class.getName());
 	}
 
 	@Test
@@ -189,8 +189,8 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo metric = inf.getAttribute(QUEUE_SIZE_METRIC);
 		ModelMBeanOperationInfo operation = inf.getOperation("getQueueSize");
-		assertThat((Object) metric.getDescription()).as("The description for the queue size metric is incorrect").isEqualTo("The QueueSize metric");
-		assertThat((Object) operation.getDescription()).as("The description for the getter operation of the queue size metric is incorrect").isEqualTo("The QueueSize metric");
+		assertThat(metric.getDescription()).as("The description for the queue size metric is incorrect").isEqualTo("The QueueSize metric");
+		assertThat(operation.getDescription()).as("The description for the getter operation of the queue size metric is incorrect").isEqualTo("The QueueSize metric");
 	}
 
 	@Test

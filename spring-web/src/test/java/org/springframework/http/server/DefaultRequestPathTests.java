@@ -57,8 +57,8 @@ public class DefaultRequestPathTests {
 		RequestPath requestPath = RequestPath.parse(uri, contextPath);
 
 		Object expected = contextPath.equals("/") ? "" : contextPath;
-		assertThat((Object) requestPath.contextPath().value()).isEqualTo(expected);
-		assertThat((Object) requestPath.pathWithinApplication().value()).isEqualTo(pathWithinApplication);
+		assertThat(requestPath.contextPath().value()).isEqualTo(expected);
+		assertThat(requestPath.pathWithinApplication().value()).isEqualTo(pathWithinApplication);
 	}
 
 	@Test
@@ -67,13 +67,13 @@ public class DefaultRequestPathTests {
 		URI uri = URI.create("http://localhost:8080/aA/bB/cC");
 		RequestPath requestPath = RequestPath.parse(uri, null);
 
-		assertThat((Object) requestPath.contextPath().value()).isEqualTo("");
-		assertThat((Object) requestPath.pathWithinApplication().value()).isEqualTo("/aA/bB/cC");
+		assertThat(requestPath.contextPath().value()).isEqualTo("");
+		assertThat(requestPath.pathWithinApplication().value()).isEqualTo("/aA/bB/cC");
 
 		requestPath = requestPath.modifyContextPath("/aA");
 
-		assertThat((Object) requestPath.contextPath().value()).isEqualTo("/aA");
-		assertThat((Object) requestPath.pathWithinApplication().value()).isEqualTo("/bB/cC");
+		assertThat(requestPath.contextPath().value()).isEqualTo("/aA");
+		assertThat(requestPath.pathWithinApplication().value()).isEqualTo("/bB/cC");
 	}
 
 }

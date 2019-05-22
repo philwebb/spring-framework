@@ -53,24 +53,24 @@ public class FixedVersionStrategyTests {
 
 	@Test
 	public void extractVersion() {
-		assertThat((Object) this.strategy.extractVersion(VERSION + "/" + PATH)).isEqualTo(VERSION);
+		assertThat(this.strategy.extractVersion(VERSION + "/" + PATH)).isEqualTo(VERSION);
 		assertNull(this.strategy.extractVersion(PATH));
 	}
 
 	@Test
 	public void removeVersion() {
-		assertThat((Object) this.strategy.removeVersion(VERSION + "/" + PATH, VERSION)).isEqualTo(("/" + PATH));
+		assertThat(this.strategy.removeVersion(VERSION + "/" + PATH, VERSION)).isEqualTo(("/" + PATH));
 	}
 
 	@Test
 	public void addVersion() {
-		assertThat((Object) this.strategy.addVersion("/" + PATH, VERSION)).isEqualTo((VERSION + "/" + PATH));
+		assertThat(this.strategy.addVersion("/" + PATH, VERSION)).isEqualTo((VERSION + "/" + PATH));
 	}
 
 	@Test  // SPR-13727
 	public void addVersionRelativePath() {
 		String relativePath = "../" + PATH;
-		assertThat((Object) this.strategy.addVersion(relativePath, VERSION)).isEqualTo(relativePath);
+		assertThat(this.strategy.addVersion(relativePath, VERSION)).isEqualTo(relativePath);
 	}
 
 }

@@ -36,7 +36,7 @@ public class CronTriggerFactoryBeanTests {
 		factory.setCronExpression("0 15 10 ? * *");
 		factory.afterPropertiesSet();
 		CronTrigger trigger = factory.getObject();
-		assertThat((Object) trigger.getCronExpression()).isEqualTo("0 15 10 ? * *");
+		assertThat(trigger.getCronExpression()).isEqualTo("0 15 10 ? * *");
 	}
 
 }

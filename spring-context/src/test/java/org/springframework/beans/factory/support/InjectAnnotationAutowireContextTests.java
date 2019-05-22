@@ -115,7 +115,7 @@ public class InjectAnnotationAutowireContextTests {
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(context);
 		context.refresh();
 		QualifiedFieldTestBean bean = (QualifiedFieldTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedMethodParameterTestBean bean =
 				(QualifiedMethodParameterTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedMethodParameterTestBean bean =
 				(QualifiedMethodParameterTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedMethodParameterTestBean bean =
 				(QualifiedMethodParameterTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedConstructorArgumentTestBean bean =
 				(QualifiedConstructorArgumentTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -269,7 +269,7 @@ public class InjectAnnotationAutowireContextTests {
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(context);
 		context.refresh();
 		QualifiedFieldTestBean bean = (QualifiedFieldTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -290,7 +290,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedMethodParameterTestBean bean =
 				(QualifiedMethodParameterTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -311,7 +311,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedConstructorArgumentTestBean bean =
 				(QualifiedConstructorArgumentTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -333,7 +333,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedFieldWithDefaultValueTestBean bean =
 				(QualifiedFieldWithDefaultValueTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -379,7 +379,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedFieldWithDefaultValueTestBean bean =
 				(QualifiedFieldWithDefaultValueTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(JUERGEN);
+		assertThat(bean.getPerson().getName()).isEqualTo(JUERGEN);
 	}
 
 	@Test
@@ -405,7 +405,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedFieldWithMultipleAttributesTestBean bean =
 				(QualifiedFieldWithMultipleAttributesTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(MARK);
+		assertThat(bean.getPerson().getName()).isEqualTo(MARK);
 	}
 
 	@Test
@@ -461,7 +461,7 @@ public class InjectAnnotationAutowireContextTests {
 		context.refresh();
 		QualifiedFieldWithMultipleAttributesTestBean bean =
 				(QualifiedFieldWithMultipleAttributesTestBean) context.getBean("autowired");
-		assertThat((Object) bean.getPerson().getName()).isEqualTo(MARK);
+		assertThat(bean.getPerson().getName()).isEqualTo(MARK);
 	}
 
 	@Test

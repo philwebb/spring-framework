@@ -588,7 +588,7 @@ public class WebSphereUowTransactionManagerTests {
 					@Override
 					public String doInTransaction(TransactionStatus status1) {
 						assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
-						assertThat((Object) TransactionSynchronizationManager.isActualTransactionActive()).isEqualTo((propagationBehavior == TransactionDefinition.PROPAGATION_REQUIRES_NEW));
+						assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isEqualTo((propagationBehavior == TransactionDefinition.PROPAGATION_REQUIRES_NEW));
 						assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isTrue();
 						return "result2";
 					}

@@ -44,7 +44,7 @@ public class ComponentScanParserWithUserDefinedStrategiesTests {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/context/annotation/customScopeResolverTests.xml");
 		BeanDefinition bd = context.getBeanFactory().getBeanDefinition("fooServiceImpl");
-		assertThat((Object) bd.getScope()).isEqualTo("myCustomScope");
+		assertThat(bd.getScope()).isEqualTo("myCustomScope");
 		assertThat(bd.isSingleton()).isFalse();
 	}
 

@@ -53,7 +53,7 @@ public class SpringBeanAutowiringSupportTests {
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(target, sc);
 		boolean condition = target.testBean instanceof TestBean;
 		assertThat(condition).isTrue();
-		assertThat((Object) target.name).isEqualTo("tb");
+		assertThat(target.name).isEqualTo("tb");
 	}
 
 

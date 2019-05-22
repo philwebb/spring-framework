@@ -191,12 +191,12 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			ObjectName oname = ObjectNameManager.getInstance("spring:mbean=true");
 			assertNotNull(server.getObjectInstance(oname));
 			String name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).as("Invalid name returned").isEqualTo("Rob Harrop");
+			assertThat(name).as("Invalid name returned").isEqualTo("Rob Harrop");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=another");
 			assertNotNull(server.getObjectInstance(oname));
 			name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
+			assertThat(name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
 		}
 		finally {
 			ctx.close();
@@ -361,11 +361,11 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		Object result = server.invoke(objectName, "add", new Object[] {new Integer(2), new Integer(3)}, new String[] {
 				int.class.getName(), int.class.getName()});
 
-		assertThat((Object) new Integer(5)).as("Incorrect result return from add").isEqualTo(result);
+		assertThat(new Integer(5)).as("Incorrect result return from add").isEqualTo(result);
 		assertThat(server.getAttribute(objectName, "Name")).as("Incorrect attribute value").isEqualTo(name);
 
 		server.setAttribute(objectName, new Attribute("Name", otherName));
-		assertThat((Object) bean.getName()).as("Incorrect updated name.").isEqualTo(otherName);
+		assertThat(bean.getName()).as("Incorrect updated name.").isEqualTo(otherName);
 	}
 
 	@Test
@@ -686,8 +686,8 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		ObjectName desired = ObjectNameManager.getInstance(OBJECT_NAME);
 		assertEquals("Incorrect number of registrations", 1, listener.getRegistered().size());
 		assertEquals("Incorrect number of unregistrations", 1, listener.getUnregistered().size());
-		assertThat((Object) listener.getRegistered().get(0)).as("Incorrect ObjectName in register").isEqualTo(desired);
-		assertThat((Object) listener.getUnregistered().get(0)).as("Incorrect ObjectName in unregister").isEqualTo(desired);
+		assertThat(listener.getRegistered().get(0)).as("Incorrect ObjectName in register").isEqualTo(desired);
+		assertThat(listener.getUnregistered().get(0)).as("Incorrect ObjectName in unregister").isEqualTo(desired);
 	}
 
 

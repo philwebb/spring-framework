@@ -59,10 +59,10 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths().build();
 
 		PathPattern emptyPattern = (new PathPatternParser()).parse("");
-		assertThat((Object) info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(emptyPattern));
+		assertThat(info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(emptyPattern));
 		assertEquals(0, info.getMethodsCondition().getMethods().size());
-		assertThat((Object) info.getConsumesCondition().isEmpty()).isEqualTo(true);
-		assertThat((Object) info.getProducesCondition().isEmpty()).isEqualTo(true);
+		assertThat(info.getConsumesCondition().isEmpty()).isEqualTo(true);
+		assertThat(info.getProducesCondition().isEmpty()).isEqualTo(true);
 		assertNotNull(info.getParamsCondition());
 		assertNotNull(info.getHeadersCondition());
 		assertNull(info.getCustomCondition());
@@ -80,7 +80,7 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo actual = paths("foo").build();
 		List<PathPattern> patterns = new ArrayList<>(actual.getPatternsCondition().getPatterns());
 		assertEquals(1, patterns.size());
-		assertThat((Object) patterns.get(0).getPatternString()).isEqualTo("/foo");
+		assertThat(patterns.get(0).getPatternString()).isEqualTo("/foo");
 	}
 
 	@Test
@@ -90,12 +90,12 @@ public class RequestMappingInfoTests {
 		RequestMappingInfo info = paths("/foo*", "/bar").build();
 		RequestMappingInfo expected = paths("/foo*").build();
 
-		assertThat((Object) info.getMatchingCondition(exchange)).isEqualTo(expected);
+		assertThat(info.getMatchingCondition(exchange)).isEqualTo(expected);
 
 		info = paths("/**", "/foo*", "/foo").build();
 		expected = paths("/foo", "/foo*", "/**").build();
 
-		assertThat((Object) info.getMatchingCondition(exchange)).isEqualTo(expected);
+		assertThat(info.getMatchingCondition(exchange)).isEqualTo(expected);
 	}
 
 	@Test
@@ -191,9 +191,9 @@ public class RequestMappingInfoTests {
 		Collections.shuffle(list);
 		list.sort(comparator);
 
-		assertThat((Object) list.get(0)).isEqualTo(oneMethodOneParam);
-		assertThat((Object) list.get(1)).isEqualTo(oneMethod);
-		assertThat((Object) list.get(2)).isEqualTo(none);
+		assertThat(list.get(0)).isEqualTo(oneMethodOneParam);
+		assertThat(list.get(1)).isEqualTo(oneMethod);
+		assertThat(list.get(2)).isEqualTo(none);
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=customBar"))
 				.build();
 
-		assertThat((Object) info2).isEqualTo(info1);
+		assertThat(info2).isEqualTo(info1);
 		assertEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo", "/NOOOOOO").methods(RequestMethod.GET)

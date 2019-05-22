@@ -51,7 +51,7 @@ public class ContentBasedVersionStrategyTests {
 		String hash = "7fbe76cdac6093784895bb4989203e5a";
 		String path = "font-awesome/css/font-awesome.min-" + hash + ".css";
 
-		assertThat((Object) this.strategy.extractVersion(path)).isEqualTo(hash);
+		assertThat(this.strategy.extractVersion(path)).isEqualTo(hash);
 		assertNull(this.strategy.extractVersion("foo/bar.css"));
 	}
 
@@ -60,7 +60,7 @@ public class ContentBasedVersionStrategyTests {
 		String hash = "7fbe76cdac6093784895bb4989203e5a";
 		String path = "font-awesome/css/font-awesome.min%s%s.css";
 
-		assertThat((Object) this.strategy.removeVersion(String.format(path, "-", hash), hash)).isEqualTo(String.format(path, "", ""));
+		assertThat(this.strategy.removeVersion(String.format(path, "-", hash), hash)).isEqualTo(String.format(path, "", ""));
 	}
 
 	@Test
@@ -68,12 +68,12 @@ public class ContentBasedVersionStrategyTests {
 		Resource expected = new ClassPathResource("test/bar.css", getClass());
 		String hash = DigestUtils.md5DigestAsHex(FileCopyUtils.copyToByteArray(expected.getInputStream()));
 
-		assertThat((Object) this.strategy.getResourceVersion(expected).block()).isEqualTo(hash);
+		assertThat(this.strategy.getResourceVersion(expected).block()).isEqualTo(hash);
 	}
 
 	@Test
 	public void addVersionToUrl() {
-		assertThat((Object) this.strategy.addVersion("test/bar.css", "123")).isEqualTo("test/bar-123.css");
+		assertThat(this.strategy.addVersion("test/bar.css", "123")).isEqualTo("test/bar-123.css");
 	}
 
 }

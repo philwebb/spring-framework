@@ -184,7 +184,7 @@ public class SimpleRemoteStatelessSessionProxyFactoryBeanTests extends SimpleRem
 		fb.setJndiName(jndiName);
 		// rely on default setting of resourceRef=false, no auto addition of java:/comp/env prefix
 		fb.setBusinessInterface(MyBusinessMethods.class);
-		assertThat((Object) MyBusinessMethods.class).isEqualTo(fb.getBusinessInterface());
+		assertThat(MyBusinessMethods.class).isEqualTo(fb.getBusinessInterface());
 		fb.setJndiTemplate(jt);
 
 		// Need lifecycle methods
@@ -216,7 +216,7 @@ public class SimpleRemoteStatelessSessionProxyFactoryBeanTests extends SimpleRem
 		fb.setJndiName(jndiName);
 		// rely on default setting of resourceRef=false, no auto addition of java:/comp/env prefix
 		fb.setBusinessInterface(MyLocalBusinessMethods.class);
-		assertThat((Object) MyLocalBusinessMethods.class).isEqualTo(fb.getBusinessInterface());
+		assertThat(MyLocalBusinessMethods.class).isEqualTo(fb.getBusinessInterface());
 		fb.setJndiTemplate(jt);
 
 		// Need lifecycle methods

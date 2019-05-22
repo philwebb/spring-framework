@@ -252,7 +252,7 @@ public class JndiObjectFactoryBeanTests {
 		assertNull(tb.getName());
 		assertEquals(0, tb.getAge());
 		proxy.setAge(99);
-		assertThat((Object) tb.getName()).isEqualTo("tb");
+		assertThat(tb.getName()).isEqualTo("tb");
 		assertEquals(99, tb.getAge());
 	}
 
@@ -278,7 +278,7 @@ public class JndiObjectFactoryBeanTests {
 		boolean condition = jof.getObject() instanceof ITestBean;
 		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
-		assertThat((Object) tb.getName()).isEqualTo("tb");
+		assertThat(tb.getName()).isEqualTo("tb");
 		assertEquals(1, tb.getAge());
 		proxy.returnsThis();
 		assertEquals(2, tb.getAge());
@@ -312,7 +312,7 @@ public class JndiObjectFactoryBeanTests {
 		assertNull(tb.getName());
 		assertEquals(0, tb.getAge());
 		proxy.returnsThis();
-		assertThat((Object) tb.getName()).isEqualTo("tb");
+		assertThat(tb.getName()).isEqualTo("tb");
 		assertEquals(1, tb.getAge());
 		proxy.returnsThis();
 		assertEquals(2, tb.getAge());

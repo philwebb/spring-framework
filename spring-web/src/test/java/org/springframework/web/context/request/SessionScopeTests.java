@@ -84,13 +84,13 @@ public class SessionScopeTests {
 		assertNull(session.getAttribute(name));
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
 		assertEquals(1, count.intValue());
-		assertThat((Object) bean).isEqualTo(session.getAttribute(name));
+		assertThat(bean).isEqualTo(session.getAttribute(name));
 		assertSame(bean, this.beanFactory.getBean(name));
 		assertEquals(1, count.intValue());
 
 		// should re-propagate updated attribute
 		requestAttributes.requestCompleted();
-		assertThat((Object) bean).isEqualTo(session.getAttribute(name));
+		assertThat(bean).isEqualTo(session.getAttribute(name));
 		assertEquals(2, count.intValue());
 	}
 
@@ -116,7 +116,7 @@ public class SessionScopeTests {
 
 		// should re-propagate updated attribute
 		requestAttributes.requestCompleted();
-		assertThat((Object) bean).isEqualTo(session.getAttribute(name));
+		assertThat(bean).isEqualTo(session.getAttribute(name));
 		assertEquals(2, count.intValue());
 	}
 
@@ -131,7 +131,7 @@ public class SessionScopeTests {
 		String name = "sessionScopedDisposableObject";
 		assertNull(session.getAttribute(name));
 		DerivedTestBean bean = (DerivedTestBean) this.beanFactory.getBean(name);
-		assertThat((Object) bean).isEqualTo(session.getAttribute(name));
+		assertThat(bean).isEqualTo(session.getAttribute(name));
 		assertSame(bean, this.beanFactory.getBean(name));
 
 		requestAttributes.requestCompleted();
@@ -168,7 +168,7 @@ public class SessionScopeTests {
 		String name = "sessionScopedDisposableObject";
 		assertNull(session.getAttribute(name));
 		DerivedTestBean bean = (DerivedTestBean) this.beanFactory.getBean(name);
-		assertThat((Object) bean).isEqualTo(session.getAttribute(name));
+		assertThat(bean).isEqualTo(session.getAttribute(name));
 		assertSame(bean, this.beanFactory.getBean(name));
 
 		requestAttributes.requestCompleted();
@@ -187,7 +187,7 @@ public class SessionScopeTests {
 		name = "sessionScopedDisposableObject";
 		assertNotNull(session.getAttribute(name));
 		bean = (DerivedTestBean) this.beanFactory.getBean(name);
-		assertThat((Object) bean).isEqualTo(session.getAttribute(name));
+		assertThat(bean).isEqualTo(session.getAttribute(name));
 		assertSame(bean, this.beanFactory.getBean(name));
 
 		requestAttributes.requestCompleted();

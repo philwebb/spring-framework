@@ -46,15 +46,15 @@ public class ByteArrayPropertyEditorTests {
 		for (int i = 0; i < text.length(); ++i) {
 			assertEquals("cyte[] differs at index '" + i + "'", text.charAt(i), bytes[i]);
 		}
-		assertThat((Object) byteEditor.getAsText()).isEqualTo(text);
+		assertThat(byteEditor.getAsText()).isEqualTo(text);
 	}
 
 	@Test
 	public void getAsTextReturnsEmptyStringIfValueIsNull() throws Exception {
-		assertThat((Object) byteEditor.getAsText()).isEqualTo("");
+		assertThat(byteEditor.getAsText()).isEqualTo("");
 
 		byteEditor.setAsText(null);
-		assertThat((Object) byteEditor.getAsText()).isEqualTo("");
+		assertThat(byteEditor.getAsText()).isEqualTo("");
 	}
 
 }

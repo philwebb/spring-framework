@@ -89,9 +89,9 @@ public class SingleTestClassWithTwoLevelContextHierarchyTests {
 		assertNotNull("child ApplicationContext", context);
 		assertNotNull("parent ApplicationContext", context.getParent());
 		assertNull("grandparent ApplicationContext", context.getParent().getParent());
-		assertThat((Object) foo).isEqualTo("foo");
-		assertThat((Object) bar).isEqualTo("bar");
-		assertThat((Object) baz).isEqualTo("baz-child");
+		assertThat(foo).isEqualTo("foo");
+		assertThat(bar).isEqualTo("bar");
+		assertThat(baz).isEqualTo("baz-child");
 	}
 
 }

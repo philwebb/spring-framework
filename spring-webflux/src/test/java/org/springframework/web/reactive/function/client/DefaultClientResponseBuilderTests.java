@@ -58,11 +58,11 @@ public class DefaultClientResponseBuilderTests {
 				.body(body)
 				.build();
 
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.BAD_GATEWAY);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_GATEWAY);
 		HttpHeaders responseHeaders = response.headers().asHttpHeaders();
-		assertThat((Object) responseHeaders.getFirst("foo")).isEqualTo("bar");
+		assertThat(responseHeaders.getFirst("foo")).isEqualTo("bar");
 		assertNotNull("qux", response.cookies().getFirst("baz"));
-		assertThat((Object) response.cookies().getFirst("baz").getValue()).isEqualTo("qux");
+		assertThat(response.cookies().getFirst("baz").getValue()).isEqualTo("qux");
 
 		StepVerifier.create(response.bodyToFlux(String.class))
 				.expectNext("baz")
@@ -91,11 +91,11 @@ public class DefaultClientResponseBuilderTests {
 				.body(body)
 				.build();
 
-		assertThat((Object) result.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(result.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertEquals(1, result.headers().asHttpHeaders().size());
-		assertThat((Object) result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
+		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
 		assertEquals(1, result.cookies().size());
-		assertThat((Object) result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
+		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
 
 		StepVerifier.create(result.bodyToFlux(String.class))
 				.expectNext("baz")

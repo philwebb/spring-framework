@@ -330,7 +330,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 
 	private void supportsEventType(boolean match, Method method, ResolvableType eventType) {
 		ApplicationListenerMethodAdapter adapter = createTestInstance(method);
-		assertThat((Object) adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + method).isEqualTo(match);
+		assertThat(adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + method).isEqualTo(match);
 	}
 
 	private void invokeListener(Method method, ApplicationEvent event) {

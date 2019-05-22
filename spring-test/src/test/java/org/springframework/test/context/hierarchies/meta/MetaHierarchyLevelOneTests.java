@@ -39,7 +39,7 @@ public class MetaHierarchyLevelOneTests {
 
 	@Test
 	public void foo() {
-		assertThat((Object) foo).isEqualTo("Dev Foo");
+		assertThat(foo).isEqualTo("Dev Foo");
 	}
 
 }

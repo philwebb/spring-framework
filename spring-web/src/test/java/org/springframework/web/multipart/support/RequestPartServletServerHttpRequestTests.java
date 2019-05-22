@@ -51,7 +51,7 @@ public class RequestPartServletServerHttpRequestTests {
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(this.mockRequest, "part");
 		this.mockRequest.setMethod("POST");
 
-		assertThat((Object) request.getMethod()).isEqualTo(HttpMethod.POST);
+		assertThat(request.getMethod()).isEqualTo(HttpMethod.POST);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class RequestPartServletServerHttpRequestTests {
 		this.mockRequest.setServerPort(uri.getPort());
 		this.mockRequest.setRequestURI(uri.getPath());
 		this.mockRequest.setQueryString(uri.getQuery());
-		assertThat((Object) request.getURI()).isEqualTo(uri);
+		assertThat(request.getURI()).isEqualTo(uri);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class RequestPartServletServerHttpRequestTests {
 
 		HttpHeaders headers = request.getHeaders();
 		assertNotNull(headers);
-		assertThat((Object) headers.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(headers.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test

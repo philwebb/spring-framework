@@ -118,7 +118,7 @@ public class RequestPartMethodArgumentResolverTests {
 		bodyBuilder.part("name", new Person("Jones"));
 		Person actual = resolveArgument(param, bodyBuilder);
 
-		assertThat((Object) actual.getName()).isEqualTo("Jones");
+		assertThat(actual.getName()).isEqualTo("Jones");
 	}
 
 	@Test
@@ -129,8 +129,8 @@ public class RequestPartMethodArgumentResolverTests {
 		bodyBuilder.part("name", new Person("James"));
 		List<Person> actual = resolveArgument(param, bodyBuilder);
 
-		assertThat((Object) actual.get(0).getName()).isEqualTo("Jones");
-		assertThat((Object) actual.get(1).getName()).isEqualTo("James");
+		assertThat(actual.get(0).getName()).isEqualTo("Jones");
+		assertThat(actual.get(1).getName()).isEqualTo("James");
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class RequestPartMethodArgumentResolverTests {
 		bodyBuilder.part("name", new Person("Jones"));
 		Mono<Person> actual = resolveArgument(param, bodyBuilder);
 
-		assertThat((Object) actual.block().getName()).isEqualTo("Jones");
+		assertThat(actual.block().getName()).isEqualTo("Jones");
 	}
 
 	@Test
@@ -152,8 +152,8 @@ public class RequestPartMethodArgumentResolverTests {
 		Flux<Person> actual = resolveArgument(param, bodyBuilder);
 
 		List<Person> persons = actual.collectList().block();
-		assertThat((Object) persons.get(0).getName()).isEqualTo("Jones");
-		assertThat((Object) persons.get(1).getName()).isEqualTo("James");
+		assertThat(persons.get(0).getName()).isEqualTo("Jones");
+		assertThat(persons.get(1).getName()).isEqualTo("James");
 	}
 
 	@Test
@@ -164,7 +164,7 @@ public class RequestPartMethodArgumentResolverTests {
 		Part actual = resolveArgument(param, bodyBuilder);
 
 		DataBuffer buffer = DataBufferUtils.join(actual.content()).block();
-		assertThat((Object) DataBufferTestUtils.dumpString(buffer, StandardCharsets.UTF_8)).isEqualTo("{\"name\":\"Jones\"}");
+		assertThat(DataBufferTestUtils.dumpString(buffer, StandardCharsets.UTF_8)).isEqualTo("{\"name\":\"Jones\"}");
 	}
 
 	@Test
@@ -175,8 +175,8 @@ public class RequestPartMethodArgumentResolverTests {
 		bodyBuilder.part("name", new Person("James"));
 		List<Part> actual = resolveArgument(param, bodyBuilder);
 
-		assertThat((Object) partToUtf8String(actual.get(0))).isEqualTo("{\"name\":\"Jones\"}");
-		assertThat((Object) partToUtf8String(actual.get(1))).isEqualTo("{\"name\":\"James\"}");
+		assertThat(partToUtf8String(actual.get(0))).isEqualTo("{\"name\":\"Jones\"}");
+		assertThat(partToUtf8String(actual.get(1))).isEqualTo("{\"name\":\"James\"}");
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class RequestPartMethodArgumentResolverTests {
 		Mono<Part> actual = resolveArgument(param, bodyBuilder);
 
 		Part part = actual.block();
-		assertThat((Object) partToUtf8String(part)).isEqualTo("{\"name\":\"Jones\"}");
+		assertThat(partToUtf8String(part)).isEqualTo("{\"name\":\"Jones\"}");
 	}
 
 	@Test
@@ -199,8 +199,8 @@ public class RequestPartMethodArgumentResolverTests {
 		Flux<Part> actual = resolveArgument(param, bodyBuilder);
 
 		List<Part> parts = actual.collectList().block();
-		assertThat((Object) partToUtf8String(parts.get(0))).isEqualTo("{\"name\":\"Jones\"}");
-		assertThat((Object) partToUtf8String(parts.get(1))).isEqualTo("{\"name\":\"James\"}");
+		assertThat(partToUtf8String(parts.get(0))).isEqualTo("{\"name\":\"Jones\"}");
+		assertThat(partToUtf8String(parts.get(1))).isEqualTo("{\"name\":\"James\"}");
 	}
 
 	@Test

@@ -46,7 +46,7 @@ public class LazyCreationTargetSourceTests {
 
 		InitCountingBean proxy = (InitCountingBean) ProxyFactory.getProxy(targetSource);
 		assertEquals("Init count should be 0", 0, InitCountingBean.initCount);
-		assertThat((Object) targetSource.getTargetClass()).as("Target class incorrect").isEqualTo(InitCountingBean.class);
+		assertThat(targetSource.getTargetClass()).as("Target class incorrect").isEqualTo(InitCountingBean.class);
 		assertEquals("Init count should still be 0 after getTargetClass()", 0, InitCountingBean.initCount);
 
 		proxy.doSomething();

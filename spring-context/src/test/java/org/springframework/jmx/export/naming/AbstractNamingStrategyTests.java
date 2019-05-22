@@ -32,7 +32,7 @@ public abstract class AbstractNamingStrategyTests {
 	public void naming() throws Exception {
 		ObjectNamingStrategy strat = getStrategy();
 		ObjectName objectName = strat.getObjectName(getManagedResource(), getKey());
-		assertThat((Object) getCorrectObjectName()).isEqualTo(objectName.getCanonicalName());
+		assertThat(getCorrectObjectName()).isEqualTo(objectName.getCanonicalName());
 	}
 
 	protected abstract ObjectNamingStrategy getStrategy() throws Exception;

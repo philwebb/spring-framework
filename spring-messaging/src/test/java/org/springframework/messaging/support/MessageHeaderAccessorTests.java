@@ -165,7 +165,7 @@ public class MessageHeaderAccessorTests {
 		headers.copyHeadersIfAbsent(null);
 
 		assertEquals(1, headers.getMessageHeaders().size());
-		assertThat((Object) headers.getMessageHeaders().keySet()).isEqualTo(Collections.singleton("id"));
+		assertThat(headers.getMessageHeaders().keySet()).isEqualTo(Collections.singleton("id"));
 	}
 
 	@Test
@@ -259,7 +259,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertNotNull(actual);
 		assertThat(actual.isMutable()).isTrue();
-		assertThat((Object) actual.getClass()).isEqualTo(TestMessageHeaderAccessor.class);
+		assertThat(actual.getClass()).isEqualTo(TestMessageHeaderAccessor.class);
 	}
 
 	@Test
@@ -316,9 +316,9 @@ public class MessageHeaderAccessorTests {
 		accessor.setContentType(MimeTypeUtils.TEXT_PLAIN);
 
 		String expected = "headers={contentType=text/plain} payload=p";
-		assertThat((Object) accessor.getShortLogMessage("p")).isEqualTo(expected);
-		assertThat((Object) accessor.getShortLogMessage("p".getBytes(StandardCharsets.UTF_8))).isEqualTo(expected);
-		assertThat((Object) accessor.getShortLogMessage(new Object() {
+		assertThat(accessor.getShortLogMessage("p")).isEqualTo(expected);
+		assertThat(accessor.getShortLogMessage("p".getBytes(StandardCharsets.UTF_8))).isEqualTo(expected);
+		assertThat(accessor.getShortLogMessage(new Object() {
 			@Override
 			public String toString() {
 				return "p";
@@ -332,10 +332,10 @@ public class MessageHeaderAccessorTests {
 		final String payload = sb.toString() + " > 80";
 
 		String actual = accessor.getShortLogMessage(payload);
-		assertThat((Object) actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + "...(truncated)"));
+		assertThat(actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + "...(truncated)"));
 
 		actual = accessor.getShortLogMessage(payload.getBytes(StandardCharsets.UTF_8));
-		assertThat((Object) actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + "...(truncated)"));
+		assertThat(actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + "...(truncated)"));
 
 		actual = accessor.getShortLogMessage(new Object() {
 			@Override
@@ -352,9 +352,9 @@ public class MessageHeaderAccessorTests {
 		accessor.setContentType(MimeTypeUtils.TEXT_PLAIN);
 
 		String expected = "headers={contentType=text/plain} payload=p";
-		assertThat((Object) accessor.getDetailedLogMessage("p")).isEqualTo(expected);
-		assertThat((Object) accessor.getDetailedLogMessage("p".getBytes(StandardCharsets.UTF_8))).isEqualTo(expected);
-		assertThat((Object) accessor.getDetailedLogMessage(new Object() {
+		assertThat(accessor.getDetailedLogMessage("p")).isEqualTo(expected);
+		assertThat(accessor.getDetailedLogMessage("p".getBytes(StandardCharsets.UTF_8))).isEqualTo(expected);
+		assertThat(accessor.getDetailedLogMessage(new Object() {
 			@Override
 			public String toString() {
 				return "p";
@@ -368,10 +368,10 @@ public class MessageHeaderAccessorTests {
 		final String payload = sb.toString() + " > 80";
 
 		String actual = accessor.getDetailedLogMessage(payload);
-		assertThat((Object) actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + " > 80"));
+		assertThat(actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + " > 80"));
 
 		actual = accessor.getDetailedLogMessage(payload.getBytes(StandardCharsets.UTF_8));
-		assertThat((Object) actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + " > 80"));
+		assertThat(actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + " > 80"));
 
 		actual = accessor.getDetailedLogMessage(new Object() {
 			@Override
@@ -379,7 +379,7 @@ public class MessageHeaderAccessorTests {
 				return payload;
 			}
 		});
-		assertThat((Object) actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + " > 80"));
+		assertThat(actual).isEqualTo(("headers={contentType=text/plain} payload=" + sb + " > 80"));
 	}
 
 	@Test

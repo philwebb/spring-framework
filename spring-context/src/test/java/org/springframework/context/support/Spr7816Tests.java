@@ -35,9 +35,9 @@ public class Spr7816Tests {
 	public void spr7816() {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("spr7816.xml", getClass());
 		FilterAdapter adapter = ctx.getBean(FilterAdapter.class);
-		assertThat((Object) adapter.getSupportedTypes().get("Building")).isEqualTo(Building.class);
-		assertThat((Object) adapter.getSupportedTypes().get("Entrance")).isEqualTo(Entrance.class);
-		assertThat((Object) adapter.getSupportedTypes().get("Dwelling")).isEqualTo(Dwelling.class);
+		assertThat(adapter.getSupportedTypes().get("Building")).isEqualTo(Building.class);
+		assertThat(adapter.getSupportedTypes().get("Entrance")).isEqualTo(Entrance.class);
+		assertThat(adapter.getSupportedTypes().get("Dwelling")).isEqualTo(Dwelling.class);
 	}
 
 	public static class FilterAdapter {

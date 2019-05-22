@@ -198,7 +198,7 @@ public class FastByteArrayOutputStreamTests {
 		DigestUtils.appendMd5DigestAsHex(inputStream, builder);
 		builder.append("\"");
 		String actual = builder.toString();
-		assertThat((Object) actual).isEqualTo("\"0b10a8db164e0754105b7a99be72e3fe5\"");
+		assertThat(actual).isEqualTo("\"0b10a8db164e0754105b7a99be72e3fe5\"");
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class FastByteArrayOutputStreamTests {
 		DigestUtils.appendMd5DigestAsHex(inputStream, builder);
 		builder.append("\"");
 		String actual = builder.toString();
-		assertThat((Object) actual).isEqualTo("\"06225ca1e4533354c516e74512065331d\"");
+		assertThat(actual).isEqualTo("\"06225ca1e4533354c516e74512065331d\"");
 	}
 
 

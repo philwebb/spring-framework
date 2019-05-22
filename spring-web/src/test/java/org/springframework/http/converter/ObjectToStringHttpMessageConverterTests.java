@@ -98,7 +98,7 @@ public class ObjectToStringHttpMessageConverterTests {
 	public void defaultCharset() throws IOException {
 		this.converter.write(Integer.valueOf(5), null, response);
 
-		assertThat((Object) servletResponse.getCharacterEncoding()).isEqualTo("ISO-8859-1");
+		assertThat(servletResponse.getCharacterEncoding()).isEqualTo("ISO-8859-1");
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class ObjectToStringHttpMessageConverterTests {
 		ObjectToStringHttpMessageConverter converter = new ObjectToStringHttpMessageConverter(cs, StandardCharsets.UTF_16);
 		converter.write((byte) 31, null, this.response);
 
-		assertThat((Object) this.servletResponse.getCharacterEncoding()).isEqualTo("UTF-16");
+		assertThat(this.servletResponse.getCharacterEncoding()).isEqualTo("UTF-16");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class ObjectToStringHttpMessageConverterTests {
 	public void write() throws IOException {
 		this.converter.write((byte) -8, null, this.response);
 
-		assertThat((Object) this.servletResponse.getCharacterEncoding()).isEqualTo("ISO-8859-1");
+		assertThat(this.servletResponse.getCharacterEncoding()).isEqualTo("ISO-8859-1");
 		assertThat(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE)).isTrue();
 		assertEquals(2, this.servletResponse.getContentLength());
 		assertArrayEquals(new byte[] { '-', '8' }, this.servletResponse.getContentAsByteArray());
@@ -164,7 +164,7 @@ public class ObjectToStringHttpMessageConverterTests {
 		MediaType contentType = new MediaType("text", "plain", StandardCharsets.UTF_16);
 		this.converter.write(Integer.valueOf(958), contentType, this.response);
 
-		assertThat((Object) this.servletResponse.getCharacterEncoding()).isEqualTo("UTF-16");
+		assertThat(this.servletResponse.getCharacterEncoding()).isEqualTo("UTF-16");
 		assertThat(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE)).isTrue();
 		assertEquals(8, this.servletResponse.getContentLength());
 		// First two bytes: byte order mark

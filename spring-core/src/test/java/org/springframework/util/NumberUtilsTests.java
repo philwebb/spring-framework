@@ -156,21 +156,21 @@ public class NumberUtilsTests {
 	public void parseBigDecimalNumber1() {
 		String bigDecimalAsString = "0.10";
 		Number bigDecimal = NumberUtils.parseNumber(bigDecimalAsString, BigDecimal.class);
-		assertThat((Object) bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
+		assertThat(bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
 	}
 
 	@Test
 	public void parseBigDecimalNumber2() {
 		String bigDecimalAsString = "0.001";
 		Number bigDecimal = NumberUtils.parseNumber(bigDecimalAsString, BigDecimal.class);
-		assertThat((Object) bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
+		assertThat(bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
 	}
 
 	@Test
 	public void parseBigDecimalNumber3() {
 		String bigDecimalAsString = "3.14159265358979323846";
 		Number bigDecimal = NumberUtils.parseNumber(bigDecimalAsString, BigDecimal.class);
-		assertThat((Object) bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
+		assertThat(bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class NumberUtilsTests {
 		String bigDecimalAsString = "0.10";
 		NumberFormat numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
 		Number bigDecimal = NumberUtils.parseNumber(bigDecimalAsString, BigDecimal.class, numberFormat);
-		assertThat((Object) bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
+		assertThat(bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class NumberUtilsTests {
 		String bigDecimalAsString = "0.001";
 		NumberFormat numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
 		Number bigDecimal = NumberUtils.parseNumber(bigDecimalAsString, BigDecimal.class, numberFormat);
-		assertThat((Object) bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
+		assertThat(bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
 	}
 
 	@Test
@@ -194,7 +194,7 @@ public class NumberUtilsTests {
 		String bigDecimalAsString = "3.14159265358979323846";
 		NumberFormat numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
 		Number bigDecimal = NumberUtils.parseNumber(bigDecimalAsString, BigDecimal.class, numberFormat);
-		assertThat((Object) bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
+		assertThat(bigDecimal).isEqualTo(new BigDecimal(bigDecimalAsString));
 	}
 
 	@Test

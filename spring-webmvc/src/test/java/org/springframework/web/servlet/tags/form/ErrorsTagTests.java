@@ -94,7 +94,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 
 		result = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, result);
-		assertThat((Object) getOutput()).isEqualTo(mockContent);
+		assertThat(getOutput()).isEqualTo(mockContent);
 	}
 
 	@Test
@@ -334,7 +334,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
 		this.tag.doFinally();
-		assertThat((Object) getOutput()).isEqualTo(bodyContent);
+		assertThat(getOutput()).isEqualTo(bodyContent);
 		assertNull(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
 	}
 
@@ -355,7 +355,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
 		this.tag.doFinally();
-		assertThat((Object) getOutput()).isEqualTo(bodyContent);
+		assertThat(getOutput()).isEqualTo(bodyContent);
 		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE)).isEqualTo(existingAttribute);
 	}
 
@@ -379,7 +379,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
 		this.tag.doFinally();
-		assertThat((Object) getOutput()).isEqualTo(bodyContent);
+		assertThat(getOutput()).isEqualTo(bodyContent);
 		assertThat(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE, PageContext.APPLICATION_SCOPE)).isEqualTo(existingAttribute);
 	}
 

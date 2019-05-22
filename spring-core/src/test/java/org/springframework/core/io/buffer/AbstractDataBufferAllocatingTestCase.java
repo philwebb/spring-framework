@@ -97,7 +97,7 @@ public abstract class AbstractDataBufferAllocatingTestCase {
 			String value =
 					DataBufferTestUtils.dumpString(dataBuffer, StandardCharsets.UTF_8);
 			DataBufferUtils.release(dataBuffer);
-			assertThat((Object) value).isEqualTo(expected);
+			assertThat(value).isEqualTo(expected);
 		};
 	}
 

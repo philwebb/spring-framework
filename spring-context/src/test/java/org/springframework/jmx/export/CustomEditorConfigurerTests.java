@@ -48,16 +48,16 @@ public class CustomEditorConfigurerTests extends AbstractJmxTests {
 		Date startJmx = (Date) getServer().getAttribute(oname, "StartDate");
 		Date endJmx = (Date) getServer().getAttribute(oname, "EndDate");
 
-		assertThat((Object) startJmx).as("startDate ").isEqualTo(getStartDate());
-		assertThat((Object) endJmx).as("endDate ").isEqualTo(getEndDate());
+		assertThat(startJmx).as("startDate ").isEqualTo(getStartDate());
+		assertThat(endJmx).as("endDate ").isEqualTo(getEndDate());
 	}
 
 	@Test
 	public void testGetDates() throws Exception {
 		DateRange dr = (DateRange) getContext().getBean("dateRange");
 
-		assertThat((Object) dr.getStartDate()).as("startDate ").isEqualTo(getStartDate());
-		assertThat((Object) dr.getEndDate()).as("endDate ").isEqualTo(getEndDate());
+		assertThat(dr.getStartDate()).as("startDate ").isEqualTo(getStartDate());
+		assertThat(dr.getEndDate()).as("endDate ").isEqualTo(getEndDate());
 	}
 
 	private Date getStartDate() throws ParseException {

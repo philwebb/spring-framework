@@ -53,7 +53,7 @@ public class BasicAnnotationConfigWacTests extends AbstractBasicWacTests {
 
 	@Test
 	public void fooEnigmaAutowired() {
-		assertThat((Object) foo).isEqualTo("enigma");
+		assertThat(foo).isEqualTo("enigma");
 	}
 
 	@Test

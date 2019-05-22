@@ -93,7 +93,7 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 		inputMessage.getHeaders().setContentType(ProtobufHttpMessageConverter.PROTOBUF);
 		Message result = this.converter.read(Msg.class, inputMessage);
-		assertThat((Object) result).isEqualTo(this.testMsg);
+		assertThat(result).isEqualTo(this.testMsg);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 		byte[] body = this.testMsg.toByteArray();
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 		Message result = this.converter.read(Msg.class, inputMessage);
-		assertThat((Object) result).isEqualTo(this.testMsg);
+		assertThat(result).isEqualTo(this.testMsg);
 	}
 
 	@Test
@@ -109,22 +109,22 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		MediaType contentType = ProtobufHttpMessageConverter.PROTOBUF;
 		this.converter.write(this.testMsg, contentType, outputMessage);
-		assertThat((Object) outputMessage.getHeaders().getContentType()).isEqualTo(contentType);
+		assertThat(outputMessage.getHeaders().getContentType()).isEqualTo(contentType);
 		assertThat(outputMessage.getBodyAsBytes().length > 0).isTrue();
 		Message result = Msg.parseFrom(outputMessage.getBodyAsBytes());
-		assertThat((Object) result).isEqualTo(this.testMsg);
+		assertThat(result).isEqualTo(this.testMsg);
 
 		String messageHeader =
 				outputMessage.getHeaders().getFirst(ProtobufHttpMessageConverter.X_PROTOBUF_MESSAGE_HEADER);
-		assertThat((Object) messageHeader).isEqualTo("Msg");
+		assertThat(messageHeader).isEqualTo("Msg");
 		String schemaHeader =
 				outputMessage.getHeaders().getFirst(ProtobufHttpMessageConverter.X_PROTOBUF_SCHEMA_HEADER);
-		assertThat((Object) schemaHeader).isEqualTo("sample.proto");
+		assertThat(schemaHeader).isEqualTo("sample.proto");
 	}
 
 	@Test
 	public void defaultContentType() throws Exception {
-		assertThat((Object) this.converter.getDefaultContentType(this.testMsg)).isEqualTo(ProtobufHttpMessageConverter.PROTOBUF);
+		assertThat(this.converter.getDefaultContentType(this.testMsg)).isEqualTo(ProtobufHttpMessageConverter.PROTOBUF);
 	}
 
 	@Test

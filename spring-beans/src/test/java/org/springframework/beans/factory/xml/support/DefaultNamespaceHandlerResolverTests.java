@@ -40,7 +40,7 @@ public class DefaultNamespaceHandlerResolverTests {
 		DefaultNamespaceHandlerResolver resolver = new DefaultNamespaceHandlerResolver(getClass().getClassLoader());
 		NamespaceHandler handler = resolver.resolve("http://www.springframework.org/schema/util");
 		assertNotNull("Handler should not be null.", handler);
-		assertThat((Object) handler.getClass()).as("Incorrect handler loaded").isEqualTo(UtilNamespaceHandler.class);
+		assertThat(handler.getClass()).as("Incorrect handler loaded").isEqualTo(UtilNamespaceHandler.class);
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class DefaultNamespaceHandlerResolverTests {
 		DefaultNamespaceHandlerResolver resolver = new DefaultNamespaceHandlerResolver();
 		NamespaceHandler handler = resolver.resolve("http://www.springframework.org/schema/util");
 		assertNotNull("Handler should not be null.", handler);
-		assertThat((Object) handler.getClass()).as("Incorrect handler loaded").isEqualTo(UtilNamespaceHandler.class);
+		assertThat(handler.getClass()).as("Incorrect handler loaded").isEqualTo(UtilNamespaceHandler.class);
 	}
 
 	@Test

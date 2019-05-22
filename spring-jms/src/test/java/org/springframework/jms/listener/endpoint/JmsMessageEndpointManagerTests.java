@@ -37,8 +37,8 @@ public class JmsMessageEndpointManagerTests {
 		JmsActivationSpecConfig config = new JmsActivationSpecConfig();
 		config.setPubSubDomain(false);
 		endpoint.setActivationSpecConfig(config);
-		assertThat((Object) endpoint.isPubSubDomain()).isEqualTo(false);
-		assertThat((Object) endpoint.isReplyPubSubDomain()).isEqualTo(false);
+		assertThat(endpoint.isPubSubDomain()).isEqualTo(false);
+		assertThat(endpoint.isReplyPubSubDomain()).isEqualTo(false);
 	}
 
 	@Test
@@ -47,8 +47,8 @@ public class JmsMessageEndpointManagerTests {
 		JmsActivationSpecConfig config = new JmsActivationSpecConfig();
 		config.setPubSubDomain(true);
 		endpoint.setActivationSpecConfig(config);
-		assertThat((Object) endpoint.isPubSubDomain()).isEqualTo(true);
-		assertThat((Object) endpoint.isReplyPubSubDomain()).isEqualTo(true);
+		assertThat(endpoint.isPubSubDomain()).isEqualTo(true);
+		assertThat(endpoint.isReplyPubSubDomain()).isEqualTo(true);
 	}
 
 	@Test
@@ -58,8 +58,8 @@ public class JmsMessageEndpointManagerTests {
 		config.setPubSubDomain(true);
 		config.setReplyPubSubDomain(false);
 		endpoint.setActivationSpecConfig(config);
-		assertThat((Object) endpoint.isPubSubDomain()).isEqualTo(true);
-		assertThat((Object) endpoint.isReplyPubSubDomain()).isEqualTo(false);
+		assertThat(endpoint.isPubSubDomain()).isEqualTo(true);
+		assertThat(endpoint.isReplyPubSubDomain()).isEqualTo(false);
 	}
 
 	@Test

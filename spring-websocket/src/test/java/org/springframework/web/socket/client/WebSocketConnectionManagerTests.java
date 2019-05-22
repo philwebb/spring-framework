@@ -60,11 +60,11 @@ public class WebSocketConnectionManagerTests {
 		WebSocketHttpHeaders expectedHeaders = new WebSocketHttpHeaders();
 		expectedHeaders.setSecWebSocketProtocol(subprotocols);
 
-		assertThat((Object) client.headers).isEqualTo(expectedHeaders);
-		assertThat((Object) client.uri).isEqualTo(new URI("/path/123"));
+		assertThat(client.headers).isEqualTo(expectedHeaders);
+		assertThat(client.uri).isEqualTo(new URI("/path/123"));
 
 		WebSocketHandlerDecorator loggingHandler = (WebSocketHandlerDecorator) client.webSocketHandler;
-		assertThat((Object) loggingHandler.getClass()).isEqualTo(LoggingWebSocketHandlerDecorator.class);
+		assertThat(loggingHandler.getClass()).isEqualTo(LoggingWebSocketHandlerDecorator.class);
 
 		assertSame(handler, loggingHandler.getDelegate());
 	}

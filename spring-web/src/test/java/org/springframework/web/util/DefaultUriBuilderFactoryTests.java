@@ -38,35 +38,35 @@ public class DefaultUriBuilderFactoryTests {
 	public void defaultSettings() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
 		URI uri = factory.uriString("/foo/{id}").build("a/b");
-		assertThat((Object) uri.toString()).isEqualTo("/foo/a%2Fb");
+		assertThat(uri.toString()).isEqualTo("/foo/a%2Fb");
 	}
 
 	@Test // SPR-17465
 	public void defaultSettingsWithBuilder() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
 		URI uri = factory.builder().path("/foo/{id}").build("a/b");
-		assertThat((Object) uri.toString()).isEqualTo("/foo/a%2Fb");
+		assertThat(uri.toString()).isEqualTo("/foo/a%2Fb");
 	}
 
 	@Test
 	public void baseUri() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("https://foo.com/v1?id=123");
 		URI uri = factory.uriString("/bar").port(8080).build();
-		assertThat((Object) uri.toString()).isEqualTo("https://foo.com:8080/v1/bar?id=123");
+		assertThat(uri.toString()).isEqualTo("https://foo.com:8080/v1/bar?id=123");
 	}
 
 	@Test
 	public void baseUriWithFullOverride() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("https://foo.com/v1?id=123");
 		URI uri = factory.uriString("https://example.com/1/2").build();
-		assertThat((Object) uri.toString()).as("Use of host should case baseUri to be completely ignored").isEqualTo("https://example.com/1/2");
+		assertThat(uri.toString()).as("Use of host should case baseUri to be completely ignored").isEqualTo("https://example.com/1/2");
 	}
 
 	@Test
 	public void baseUriWithPathOverride() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("https://foo.com/v1");
 		URI uri = factory.builder().replacePath("/baz").build();
-		assertThat((Object) uri.toString()).isEqualTo("https://foo.com/baz");
+		assertThat(uri.toString()).isEqualTo("https://foo.com/baz");
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class DefaultUriBuilderFactoryTests {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("https://{host}/v1");
 		factory.setDefaultUriVariables(singletonMap("host", "foo.com"));
 		URI uri = factory.uriString("/{id}").build(singletonMap("id", "123"));
-		assertThat((Object) uri.toString()).isEqualTo("https://foo.com/v1/123");
+		assertThat(uri.toString()).isEqualTo("https://foo.com/v1/123");
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class DefaultUriBuilderFactoryTests {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("https://{host}/v1");
 		factory.setDefaultUriVariables(singletonMap("host", "spring.io"));
 		URI uri = factory.uriString("/bar").build(singletonMap("host", "docs.spring.io"));
-		assertThat((Object) uri.toString()).isEqualTo("https://docs.spring.io/v1/bar");
+		assertThat(uri.toString()).isEqualTo("https://docs.spring.io/v1/bar");
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class DefaultUriBuilderFactoryTests {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("https://{host}/v1");
 		factory.setDefaultUriVariables(singletonMap("host", "foo.com"));
 		URI uri = factory.uriString("/bar").build();
-		assertThat((Object) uri.toString()).as("Expected delegation to build(Map) method").isEqualTo("https://foo.com/v1/bar");
+		assertThat(uri.toString()).as("Expected delegation to build(Map) method").isEqualTo("https://foo.com/v1/bar");
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class DefaultUriBuilderFactoryTests {
 		factory.setDefaultUriVariables(defaultUriVars);
 
 		URI uri = factory.expand("https://{host}:{port}/v42/customers/{id}", singletonMap("id", 123L));
-		assertThat((Object) uri.toString()).isEqualTo("https://api.example.com:443/v42/customers/123");
+		assertThat(uri.toString()).isEqualTo("https://api.example.com:443/v42/customers/123");
 	}
 
 	@Test
@@ -117,8 +117,8 @@ public class DefaultUriBuilderFactoryTests {
 		vars.put("city", "Z\u00fcrich");
 		vars.put("value", "a+b");
 
-		assertThat((Object) uriBuilder.build("Z\u00fcrich", "a+b").toString()).isEqualTo(expected);
-		assertThat((Object) uriBuilder.build(vars).toString()).isEqualTo(expected);
+		assertThat(uriBuilder.build("Z\u00fcrich", "a+b").toString()).isEqualTo(expected);
+		assertThat(uriBuilder.build(vars).toString()).isEqualTo(expected);
 	}
 
 	@Test
@@ -130,8 +130,8 @@ public class DefaultUriBuilderFactoryTests {
 		String id = "c/d";
 		String expected = "/foo/a%2Fb/c%2Fd";
 
-		assertThat((Object) uriBuilder.build(id).toString()).isEqualTo(expected);
-		assertThat((Object) uriBuilder.build(singletonMap("id", id)).toString()).isEqualTo(expected);
+		assertThat(uriBuilder.build(id).toString()).isEqualTo(expected);
+		assertThat(uriBuilder.build(singletonMap("id", id)).toString()).isEqualTo(expected);
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class DefaultUriBuilderFactoryTests {
 		factory.setDefaultUriVariables(singletonMap("host", "www.example.com"));
 		UriBuilder uriBuilder = factory.uriString("https://{host}/user/{userId}/dashboard");
 
-		assertThat((Object) uriBuilder.build(singletonMap("userId", "john;doe")).toString()).isEqualTo("https://www.example.com/user/john%3Bdoe/dashboard");
+		assertThat(uriBuilder.build(singletonMap("userId", "john;doe")).toString()).isEqualTo("https://www.example.com/user/john%3Bdoe/dashboard");
 	}
 
 	@Test
@@ -153,15 +153,15 @@ public class DefaultUriBuilderFactoryTests {
 		String id = "c%2Fd";
 		String expected = "/foo/a%2Fb/c%2Fd";
 
-		assertThat((Object) uriBuilder.build(id).toString()).isEqualTo(expected);
-		assertThat((Object) uriBuilder.build(singletonMap("id", id)).toString()).isEqualTo(expected);
+		assertThat(uriBuilder.build(id).toString()).isEqualTo(expected);
+		assertThat(uriBuilder.build(singletonMap("id", id)).toString()).isEqualTo(expected);
 	}
 
 	@Test
 	public void parsePathWithDefaultSettings() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory("/foo/{bar}");
 		URI uri = factory.uriString("/baz/{id}").build("a/b", "c/d");
-		assertThat((Object) uri.toString()).isEqualTo("/foo/a%2Fb/baz/c%2Fd");
+		assertThat(uri.toString()).isEqualTo("/foo/a%2Fb/baz/c%2Fd");
 	}
 
 	@Test
@@ -170,21 +170,21 @@ public class DefaultUriBuilderFactoryTests {
 		factory.setEncodingMode(EncodingMode.URI_COMPONENT);
 		factory.setParsePath(false);
 		URI uri = factory.uriString("/baz/{id}").build("a/b", "c/d");
-		assertThat((Object) uri.toString()).isEqualTo("/foo/a/b/baz/c/d");
+		assertThat(uri.toString()).isEqualTo("/foo/a/b/baz/c/d");
 	}
 
 	@Test // SPR-15201
 	public void pathWithTrailingSlash() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
 		URI uri = factory.expand("https://localhost:8080/spring/");
-		assertThat((Object) uri.toString()).isEqualTo("https://localhost:8080/spring/");
+		assertThat(uri.toString()).isEqualTo("https://localhost:8080/spring/");
 	}
 
 	@Test
 	public void pathWithDuplicateSlashes() {
 		DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
 		URI uri = factory.expand("/foo/////////bar");
-		assertThat((Object) uri.toString()).isEqualTo("/foo/bar");
+		assertThat(uri.toString()).isEqualTo("/foo/bar");
 	}
 
 }

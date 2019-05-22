@@ -37,13 +37,13 @@ public class DeferredImportSelectorTests {
 	public void entryEqualsSameInstance() {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
 		Group.Entry entry = new Group.Entry(metadata, "com.example.Test");
-		assertThat((Object) entry).isEqualTo(entry);
+		assertThat(entry).isEqualTo(entry);
 	}
 
 	@Test
 	public void entryEqualsSameMetadataAndClassName() {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
-		assertThat((Object) new Group.Entry(metadata, "com.example.Test")).isEqualTo(new Group.Entry(metadata, "com.example.Test"));
+		assertThat(new Group.Entry(metadata, "com.example.Test")).isEqualTo(new Group.Entry(metadata, "com.example.Test"));
 	}
 
 	@Test

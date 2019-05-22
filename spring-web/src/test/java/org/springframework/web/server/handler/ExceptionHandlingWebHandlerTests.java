@@ -49,7 +49,7 @@ public class ExceptionHandlingWebHandlerTests {
 	@Test
 	public void handleErrorSignal() throws Exception {
 		createWebHandler(new BadRequestExceptionHandler()).handle(this.exchange).block();
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class ExceptionHandlingWebHandlerTests {
 				new BadRequestExceptionHandler(),
 				new UnresolvedExceptionHandler()).handle(this.exchange).block();
 
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
@@ -78,13 +78,13 @@ public class ExceptionHandlingWebHandlerTests {
 		new HttpWebHandlerAdapter(createWebHandler(new UnresolvedExceptionHandler()))
 				.handle(this.exchange.getRequest(), this.exchange.getResponse()).block();
 
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test
 	public void thrownExceptionBecomesErrorSignal() throws Exception {
 		createWebHandler(new BadRequestExceptionHandler()).handle(this.exchange).block();
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	private WebHandler createWebHandler(WebExceptionHandler... handlers) {

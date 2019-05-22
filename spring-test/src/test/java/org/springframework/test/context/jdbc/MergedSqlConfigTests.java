@@ -43,15 +43,15 @@ public class MergedSqlConfigTests {
 
 	private void assertDefaults(MergedSqlConfig cfg) {
 		assertNotNull(cfg);
-		assertThat((Object) cfg.getDataSource()).as("dataSource").isEqualTo("");
-		assertThat((Object) cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
-		assertThat((Object) cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
-		assertThat((Object) cfg.getEncoding()).as("encoding").isEqualTo("");
-		assertThat((Object) cfg.getSeparator()).as("separator").isEqualTo(DEFAULT_STATEMENT_SEPARATOR);
-		assertThat((Object) cfg.getCommentPrefix()).as("commentPrefix").isEqualTo(DEFAULT_COMMENT_PREFIX);
-		assertThat((Object) cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_START_DELIMITER);
-		assertThat((Object) cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_END_DELIMITER);
-		assertThat((Object) cfg.getErrorMode()).as("errorMode").isEqualTo(FAIL_ON_ERROR);
+		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("");
+		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
+		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
+		assertThat(cfg.getEncoding()).as("encoding").isEqualTo("");
+		assertThat(cfg.getSeparator()).as("separator").isEqualTo(DEFAULT_STATEMENT_SEPARATOR);
+		assertThat(cfg.getCommentPrefix()).as("commentPrefix").isEqualTo(DEFAULT_COMMENT_PREFIX);
+		assertThat(cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_START_DELIMITER);
+		assertThat(cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_END_DELIMITER);
+		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(FAIL_ON_ERROR);
 	}
 
 	@Test
@@ -76,15 +76,15 @@ public class MergedSqlConfigTests {
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, getClass());
 		assertNotNull(cfg);
-		assertThat((Object) cfg.getDataSource()).as("dataSource").isEqualTo("ds");
-		assertThat((Object) cfg.getTransactionManager()).as("transactionManager").isEqualTo("txMgr");
-		assertThat((Object) cfg.getTransactionMode()).as("transactionMode").isEqualTo(ISOLATED);
-		assertThat((Object) cfg.getEncoding()).as("encoding").isEqualTo("enigma");
-		assertThat((Object) cfg.getSeparator()).as("separator").isEqualTo("\n");
-		assertThat((Object) cfg.getCommentPrefix()).as("commentPrefix").isEqualTo("`");
-		assertThat((Object) cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo("<<");
-		assertThat((Object) cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(">>");
-		assertThat((Object) cfg.getErrorMode()).as("errorMode").isEqualTo(IGNORE_FAILED_DROPS);
+		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("ds");
+		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("txMgr");
+		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(ISOLATED);
+		assertThat(cfg.getEncoding()).as("encoding").isEqualTo("enigma");
+		assertThat(cfg.getSeparator()).as("separator").isEqualTo("\n");
+		assertThat(cfg.getCommentPrefix()).as("commentPrefix").isEqualTo("`");
+		assertThat(cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo("<<");
+		assertThat(cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(">>");
+		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(IGNORE_FAILED_DROPS);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class MergedSqlConfigTests {
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, getClass());
 		assertNotNull(cfg);
-		assertThat((Object) cfg.getErrorMode()).as("errorMode").isEqualTo(CONTINUE_ON_ERROR);
+		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(CONTINUE_ON_ERROR);
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class MergedSqlConfigTests {
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, getClass());
 		assertNotNull(cfg);
-		assertThat((Object) cfg.getErrorMode()).as("errorMode").isEqualTo(IGNORE_FAILED_DROPS);
+		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(IGNORE_FAILED_DROPS);
 	}
 
 	@Test
@@ -111,15 +111,15 @@ public class MergedSqlConfigTests {
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, GlobalConfigClass.class);
 		assertNotNull(cfg);
-		assertThat((Object) cfg.getDataSource()).as("dataSource").isEqualTo("");
-		assertThat((Object) cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
-		assertThat((Object) cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
-		assertThat((Object) cfg.getEncoding()).as("encoding").isEqualTo("global");
-		assertThat((Object) cfg.getSeparator()).as("separator").isEqualTo("\n");
-		assertThat((Object) cfg.getCommentPrefix()).as("commentPrefix").isEqualTo(DEFAULT_COMMENT_PREFIX);
-		assertThat((Object) cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_START_DELIMITER);
-		assertThat((Object) cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_END_DELIMITER);
-		assertThat((Object) cfg.getErrorMode()).as("errorMode").isEqualTo(IGNORE_FAILED_DROPS);
+		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("");
+		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
+		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
+		assertThat(cfg.getEncoding()).as("encoding").isEqualTo("global");
+		assertThat(cfg.getSeparator()).as("separator").isEqualTo("\n");
+		assertThat(cfg.getCommentPrefix()).as("commentPrefix").isEqualTo(DEFAULT_COMMENT_PREFIX);
+		assertThat(cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_START_DELIMITER);
+		assertThat(cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_END_DELIMITER);
+		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(IGNORE_FAILED_DROPS);
 	}
 
 	@Test
@@ -129,15 +129,15 @@ public class MergedSqlConfigTests {
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, GlobalConfigClass.class);
 
 		assertNotNull(cfg);
-		assertThat((Object) cfg.getDataSource()).as("dataSource").isEqualTo("");
-		assertThat((Object) cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
-		assertThat((Object) cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
-		assertThat((Object) cfg.getEncoding()).as("encoding").isEqualTo("local");
-		assertThat((Object) cfg.getSeparator()).as("separator").isEqualTo("@@");
-		assertThat((Object) cfg.getCommentPrefix()).as("commentPrefix").isEqualTo(DEFAULT_COMMENT_PREFIX);
-		assertThat((Object) cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_START_DELIMITER);
-		assertThat((Object) cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_END_DELIMITER);
-		assertThat((Object) cfg.getErrorMode()).as("errorMode").isEqualTo(CONTINUE_ON_ERROR);
+		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("");
+		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
+		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
+		assertThat(cfg.getEncoding()).as("encoding").isEqualTo("local");
+		assertThat(cfg.getSeparator()).as("separator").isEqualTo("@@");
+		assertThat(cfg.getCommentPrefix()).as("commentPrefix").isEqualTo(DEFAULT_COMMENT_PREFIX);
+		assertThat(cfg.getBlockCommentStartDelimiter()).as("blockCommentStartDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_START_DELIMITER);
+		assertThat(cfg.getBlockCommentEndDelimiter()).as("blockCommentEndDelimiter").isEqualTo(DEFAULT_BLOCK_COMMENT_END_DELIMITER);
+		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(CONTINUE_ON_ERROR);
 	}
 
 	// -------------------------------------------------------------------------

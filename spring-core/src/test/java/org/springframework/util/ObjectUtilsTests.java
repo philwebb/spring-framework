@@ -196,7 +196,7 @@ public class ObjectUtilsTests {
 		String newElement = "foo";
 		String[] newArray = ObjectUtils.addObjectToArray(array, newElement);
 		assertEquals(1, newArray.length);
-		assertThat((Object) newArray[0]).isEqualTo(newElement);
+		assertThat(newArray[0]).isEqualTo(newElement);
 	}
 
 	@Test
@@ -206,8 +206,8 @@ public class ObjectUtilsTests {
 		String newElement = "bar";
 		String[] newArray = ObjectUtils.addObjectToArray(array, newElement);
 		assertEquals(2, newArray.length);
-		assertThat((Object) newArray[0]).isEqualTo(existingElement);
-		assertThat((Object) newArray[1]).isEqualTo(newElement);
+		assertThat(newArray[0]).isEqualTo(existingElement);
+		assertThat(newArray[1]).isEqualTo(newElement);
 	}
 
 	@Test
@@ -216,8 +216,8 @@ public class ObjectUtilsTests {
 		String newElement = "bar";
 		String[] newArray = ObjectUtils.addObjectToArray(array, newElement);
 		assertEquals(2, newArray.length);
-		assertThat((Object) newArray[0]).isEqualTo(null);
-		assertThat((Object) newArray[1]).isEqualTo(newElement);
+		assertThat(newArray[0]).isEqualTo(null);
+		assertThat(newArray[1]).isEqualTo(newElement);
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class ObjectUtilsTests {
 		String newElement = "foo";
 		String[] newArray = ObjectUtils.addObjectToArray(null, newElement);
 		assertEquals(1, newArray.length);
-		assertThat((Object) newArray[0]).isEqualTo(newElement);
+		assertThat(newArray[0]).isEqualTo(newElement);
 	}
 
 	@Test
@@ -284,12 +284,12 @@ public class ObjectUtilsTests {
 		Object obj = new Object();
 		String expected = obj.getClass().getName() + "@" + ObjectUtils.getIdentityHexString(obj);
 		String actual = ObjectUtils.identityToString(obj);
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
 	public void identityToStringWithNullObject() {
-		assertThat((Object) ObjectUtils.identityToString(null)).isEqualTo("");
+		assertThat(ObjectUtils.identityToString(null)).isEqualTo("");
 	}
 
 	@Test
@@ -617,176 +617,176 @@ public class ObjectUtilsTests {
 	@Test
 	public void nullSafeToStringWithBooleanArray() {
 		boolean[] array = {true, false};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{true, false}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{true, false}");
 	}
 
 	@Test
 	public void nullSafeToStringWithBooleanArrayBeingEmpty() {
 		boolean[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithBooleanArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((boolean[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((boolean[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithByteArray() {
 		byte[] array = {5, 8};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{5, 8}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{5, 8}");
 	}
 
 	@Test
 	public void nullSafeToStringWithByteArrayBeingEmpty() {
 		byte[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithByteArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((byte[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((byte[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithCharArray() {
 		char[] array = {'A', 'B'};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{'A', 'B'}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{'A', 'B'}");
 	}
 
 	@Test
 	public void nullSafeToStringWithCharArrayBeingEmpty() {
 		char[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithCharArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((char[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((char[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithDoubleArray() {
 		double[] array = {8594.93, 8594023.95};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{8594.93, 8594023.95}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{8594.93, 8594023.95}");
 	}
 
 	@Test
 	public void nullSafeToStringWithDoubleArrayBeingEmpty() {
 		double[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithDoubleArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((double[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((double[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithFloatArray() {
 		float[] array = {8.6f, 43.8f};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{8.6, 43.8}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{8.6, 43.8}");
 	}
 
 	@Test
 	public void nullSafeToStringWithFloatArrayBeingEmpty() {
 		float[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithFloatArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((float[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((float[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithIntArray() {
 		int[] array = {9, 64};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{9, 64}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{9, 64}");
 	}
 
 	@Test
 	public void nullSafeToStringWithIntArrayBeingEmpty() {
 		int[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithIntArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((int[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((int[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithLongArray() {
 		long[] array = {434L, 23423L};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{434, 23423}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{434, 23423}");
 	}
 
 	@Test
 	public void nullSafeToStringWithLongArrayBeingEmpty() {
 		long[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithLongArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((long[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((long[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithPlainOldString() {
-		assertThat((Object) ObjectUtils.nullSafeToString("I shoh love tha taste of mangoes")).isEqualTo("I shoh love tha taste of mangoes");
+		assertThat(ObjectUtils.nullSafeToString("I shoh love tha taste of mangoes")).isEqualTo("I shoh love tha taste of mangoes");
 	}
 
 	@Test
 	public void nullSafeToStringWithObjectArray() {
 		Object[] array = {"Han", Long.valueOf(43)};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{Han, 43}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{Han, 43}");
 	}
 
 	@Test
 	public void nullSafeToStringWithObjectArrayBeingEmpty() {
 		Object[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithObjectArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((Object[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((Object[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithShortArray() {
 		short[] array = {7, 9};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{7, 9}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{7, 9}");
 	}
 
 	@Test
 	public void nullSafeToStringWithShortArrayBeingEmpty() {
 		short[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithShortArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((short[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((short[]) null)).isEqualTo("null");
 	}
 
 	@Test
 	public void nullSafeToStringWithStringArray() {
 		String[] array = {"Luke", "Anakin"};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{Luke, Anakin}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{Luke, Anakin}");
 	}
 
 	@Test
 	public void nullSafeToStringWithStringArrayBeingEmpty() {
 		String[] array = {};
-		assertThat((Object) ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
+		assertThat(ObjectUtils.nullSafeToString(array)).isEqualTo("{}");
 	}
 
 	@Test
 	public void nullSafeToStringWithStringArrayEqualToNull() {
-		assertThat((Object) ObjectUtils.nullSafeToString((String[]) null)).isEqualTo("null");
+		assertThat(ObjectUtils.nullSafeToString((String[]) null)).isEqualTo("null");
 	}
 
 	@Test

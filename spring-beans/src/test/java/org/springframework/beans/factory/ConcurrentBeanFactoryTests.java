@@ -127,8 +127,8 @@ public class ConcurrentBeanFactoryTests {
 		ConcurrentBean b1 = (ConcurrentBean) factory.getBean("bean1");
 		ConcurrentBean b2 = (ConcurrentBean) factory.getBean("bean2");
 
-		assertThat((Object) b1.getDate()).isEqualTo(DATE_1);
-		assertThat((Object) b2.getDate()).isEqualTo(DATE_2);
+		assertThat(b1.getDate()).isEqualTo(DATE_1);
+		assertThat(b2.getDate()).isEqualTo(DATE_2);
 	}
 
 

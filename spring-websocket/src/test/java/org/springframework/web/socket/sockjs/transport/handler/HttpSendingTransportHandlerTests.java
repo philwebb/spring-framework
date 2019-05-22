@@ -73,8 +73,8 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		AbstractSockJsSession session = transportHandler.createSession("1", this.webSocketHandler, null);
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertThat((Object) this.response.getHeaders().getContentType().toString()).isEqualTo("application/javascript;charset=UTF-8");
-		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("o\n");
+		assertThat(this.response.getHeaders().getContentType().toString()).isEqualTo("application/javascript;charset=UTF-8");
+		assertThat(this.servletResponse.getContentAsString()).isEqualTo("o\n");
 		assertThat(this.servletRequest.isAsyncStarted()).as("Polling request should complete after open frame").isFalse();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 
@@ -88,7 +88,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
 		assertThat(this.servletRequest.isAsyncStarted()).as("Request should have been rejected").isFalse();
-		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("c[2010,\"Another connection still open\"]\n");
+		assertThat(this.servletResponse.getContentAsString()).isEqualTo("c[2010,\"Another connection still open\"]\n");
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertThat((Object) this.response.getHeaders().getContentType().toString()).isEqualTo("application/javascript;charset=UTF-8");
+		assertThat(this.response.getHeaders().getContentType().toString()).isEqualTo("application/javascript;charset=UTF-8");
 		assertThat(this.servletRequest.isAsyncStarted()).as("Streaming request not started").isTrue();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 	}
@@ -113,7 +113,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
 		assertEquals(500, this.servletResponse.getStatus());
-		assertThat((Object) this.servletResponse.getContentAsString()).isEqualTo("\"callback\" parameter required");
+		assertThat(this.servletResponse.getContentAsString()).isEqualTo("\"callback\" parameter required");
 
 		resetRequestAndResponse();
 		setRequest("POST", "/");
@@ -121,7 +121,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		this.servletRequest.addParameter("c", "callback");
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertThat((Object) this.response.getHeaders().getContentType().toString()).isEqualTo("text/html;charset=UTF-8");
+		assertThat(this.response.getHeaders().getContentType().toString()).isEqualTo("text/html;charset=UTF-8");
 		assertThat(this.servletRequest.isAsyncStarted()).as("Streaming request not started").isTrue();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 	}
@@ -134,7 +134,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertThat((Object) this.response.getHeaders().getContentType().toString()).isEqualTo("text/event-stream;charset=UTF-8");
+		assertThat(this.response.getHeaders().getContentType().toString()).isEqualTo("text/event-stream;charset=UTF-8");
 		assertThat(this.servletRequest.isAsyncStarted()).as("Streaming request not started").isTrue();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 	}
@@ -148,19 +148,19 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 
 		SockJsFrameFormat format = new XhrPollingTransportHandler().getFrameFormat(this.request);
 		String formatted = format.format(frame);
-		assertThat((Object) formatted).isEqualTo((frame.getContent() + "\n"));
+		assertThat(formatted).isEqualTo((frame.getContent() + "\n"));
 
 		format = new XhrStreamingTransportHandler().getFrameFormat(this.request);
 		formatted = format.format(frame);
-		assertThat((Object) formatted).isEqualTo((frame.getContent() + "\n"));
+		assertThat(formatted).isEqualTo((frame.getContent() + "\n"));
 
 		format = new HtmlFileTransportHandler().getFrameFormat(this.request);
 		formatted = format.format(frame);
-		assertThat((Object) formatted).isEqualTo(("<script>\np(\"" + frame.getContent() + "\");\n</script>\r\n"));
+		assertThat(formatted).isEqualTo(("<script>\np(\"" + frame.getContent() + "\");\n</script>\r\n"));
 
 		format = new EventSourceTransportHandler().getFrameFormat(this.request);
 		formatted = format.format(frame);
-		assertThat((Object) formatted).isEqualTo(("data: " + frame.getContent() + "\r\n\r\n"));
+		assertThat(formatted).isEqualTo(("data: " + frame.getContent() + "\r\n\r\n"));
 	}
 
 }

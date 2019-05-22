@@ -54,10 +54,10 @@ public class ContextConfigurationWithPropertiesExtendingPropertiesTests extends
 	@Test
 	public void verifyExtendedAnnotationAutowiredFields() {
 		assertNotNull("The dog field should have been autowired.", this.dog);
-		assertThat((Object) this.dog.getName()).isEqualTo("Fido");
+		assertThat(this.dog.getName()).isEqualTo("Fido");
 
 		assertNotNull("The testString2 field should have been autowired.", this.testString2);
-		assertThat((Object) this.testString2).isEqualTo("Test String #2");
+		assertThat(this.testString2).isEqualTo("Test String #2");
 	}
 
 }

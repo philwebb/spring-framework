@@ -126,7 +126,7 @@ public class EnableCachingTests extends AbstractCacheAnnotationTests {
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(EmptyConfigSupportConfig.class);
 		CacheInterceptor ci = context.getBean(CacheInterceptor.class);
 		assertNotNull(ci.getCacheResolver());
-		assertThat((Object) ci.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
+		assertThat(ci.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
 		assertSame(context.getBean(CacheManager.class), ((SimpleCacheResolver)ci.getCacheResolver()).getCacheManager());
 		context.close();
 	}

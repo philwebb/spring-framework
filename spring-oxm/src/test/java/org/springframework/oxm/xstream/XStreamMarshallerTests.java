@@ -314,7 +314,7 @@ public class XStreamMarshallerTests {
 		marshaller.setStreamDriver(new JettisonMappedXmlDriver());
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertThat((Object) writer.toString()).as("Invalid result").isEqualTo("{\"flight\":{\"flightNumber\":42}}");
+		assertThat(writer.toString()).as("Invalid result").isEqualTo("{\"flight\":{\"flightNumber\":42}}");
 		Object o = marshaller.unmarshal(new StreamSource(new StringReader(writer.toString())));
 		boolean condition = o instanceof Flight;
 		assertThat(condition).as("Unmarshalled object is not Flights").isTrue();
@@ -336,7 +336,7 @@ public class XStreamMarshallerTests {
 
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertThat((Object) writer.toString()).as("Invalid result").isEqualTo("{\"flightNumber\": 42}");
+		assertThat(writer.toString()).as("Invalid result").isEqualTo("{\"flightNumber\": 42}");
 	}
 
 	@Test

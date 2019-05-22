@@ -307,7 +307,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 
 		String result = String.join("", Files.readAllLines(tempFile));
 
-		assertThat((Object) result).isEqualTo("foobar");
+		assertThat(result).isEqualTo("foobar");
 		channel.close();
 	}
 
@@ -353,7 +353,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 
 		String result = String.join("", Files.readAllLines(tempFile));
 
-		assertThat((Object) result).isEqualTo("foo");
+		assertThat(result).isEqualTo("foo");
 		channel.close();
 
 		flux.subscribe(DataBufferUtils::release);
@@ -386,7 +386,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 
 		String result = String.join("", Files.readAllLines(tempFile));
 
-		assertThat((Object) result).isEqualTo("foobarbazqux");
+		assertThat(result).isEqualTo("foobarbazqux");
 	}
 
 	@Test
@@ -408,7 +408,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 
 		String result = String.join("", Files.readAllLines(tempFile));
 
-		assertThat((Object) result).isEqualTo("foobar");
+		assertThat(result).isEqualTo("foobar");
 		channel.close();
 	}
 
@@ -469,7 +469,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 
 		String result = String.join("", Files.readAllLines(tempFile));
 
-		assertThat((Object) result).isEqualTo("foo");
+		assertThat(result).isEqualTo("foo");
 		channel.close();
 
 		flux.subscribe(DataBufferUtils::release);
@@ -496,7 +496,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 							try {
 								String expected = String.join("", Files.readAllLines(source));
 								String result = String.join("", Files.readAllLines(destination));
-								assertThat((Object) result).isEqualTo(expected);
+								assertThat(result).isEqualTo(expected);
 							}
 							catch (IOException e) {
 								throw new AssertionError(e.getMessage(), e);
@@ -531,7 +531,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 								String expected = String.join("", Files.readAllLines(source));
 								String result = String.join("", Files.readAllLines(destination));
 
-								assertThat((Object) result).isEqualTo(expected);
+								assertThat(result).isEqualTo(expected);
 								latch.countDown();
 
 							}
@@ -721,7 +721,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 
 		StepVerifier.create(result)
 				.consumeNextWith(dataBuffer -> {
-					assertThat((Object) DataBufferTestUtils.dumpString(dataBuffer, StandardCharsets.UTF_8)).isEqualTo("foobarbaz");
+					assertThat(DataBufferTestUtils.dumpString(dataBuffer, StandardCharsets.UTF_8)).isEqualTo("foobarbaz");
 					release(dataBuffer);
 				})
 				.verifyComplete();

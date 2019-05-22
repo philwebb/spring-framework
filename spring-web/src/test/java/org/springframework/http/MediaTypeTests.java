@@ -42,7 +42,7 @@ public class MediaTypeTests {
 	public void testToString() throws Exception {
 		MediaType mediaType = new MediaType("text", "plain", 0.7);
 		String result = mediaType.toString();
-		assertThat((Object) result).as("Invalid toString() returned").isEqualTo("text/plain;q=0.7");
+		assertThat(result).as("Invalid toString() returned").isEqualTo("text/plain;q=0.7");
 	}
 
 	@Test
@@ -67,8 +67,8 @@ public class MediaTypeTests {
 	public void parseMediaType() throws Exception {
 		String s = "audio/*; q=0.2";
 		MediaType mediaType = MediaType.parseMediaType(s);
-		assertThat((Object) mediaType.getType()).as("Invalid type").isEqualTo("audio");
-		assertThat((Object) mediaType.getSubtype()).as("Invalid subtype").isEqualTo("*");
+		assertThat(mediaType.getType()).as("Invalid type").isEqualTo("audio");
+		assertThat(mediaType.getSubtype()).as("Invalid subtype").isEqualTo("*");
 		assertEquals("Invalid quality factor", 0.2D, mediaType.getQualityValue(), 0D);
 	}
 
@@ -142,8 +142,8 @@ public class MediaTypeTests {
 	public void parseURLConnectionMediaType() throws Exception {
 		String s = "*; q=.2";
 		MediaType mediaType = MediaType.parseMediaType(s);
-		assertThat((Object) mediaType.getType()).as("Invalid type").isEqualTo("*");
-		assertThat((Object) mediaType.getSubtype()).as("Invalid subtype").isEqualTo("*");
+		assertThat(mediaType.getType()).as("Invalid type").isEqualTo("*");
+		assertThat(mediaType.getSubtype()).as("Invalid subtype").isEqualTo("*");
 		assertEquals("Invalid quality factor", 0.2D, mediaType.getQualityValue(), 0D);
 	}
 
@@ -199,13 +199,13 @@ public class MediaTypeTests {
 		MediaType m1 = MediaType.parseMediaType("text/html; q=0.7; charset=iso-8859-1");
 		MediaType m2 = MediaType.parseMediaType("text/html; charset=iso-8859-1; q=0.7");
 
-		assertThat((Object) m2).as("Media types not equal").isEqualTo(m1);
+		assertThat(m2).as("Media types not equal").isEqualTo(m1);
 		assertEquals("compareTo() not consistent with equals", 0, m1.compareTo(m2));
 		assertEquals("compareTo() not consistent with equals", 0, m2.compareTo(m1));
 
 		m1 = MediaType.parseMediaType("text/html; q=0.7; charset=iso-8859-1");
 		m2 = MediaType.parseMediaType("text/html; Q=0.7; charset=iso-8859-1");
-		assertThat((Object) m2).as("Media types not equal").isEqualTo(m1);
+		assertThat(m2).as("Media types not equal").isEqualTo(m1);
 		assertEquals("compareTo() not consistent with equals", 0, m1.compareTo(m2));
 		assertEquals("compareTo() not consistent with equals", 0, m2.compareTo(m1));
 	}

@@ -56,20 +56,20 @@ public class ControllerInputIntegrationTests extends AbstractRequestMappingInteg
 	@Test
 	public void handleWithParam() throws Exception {
 		String expected = "Hello George!";
-		assertThat((Object) performGet("/param?name=George", new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
+		assertThat(performGet("/param?name=George", new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
 	}
 
 	@Test  // SPR-15140
 	public void handleWithEncodedParam() throws Exception {
 		String expected = "Hello  + \u00e0!";
-		assertThat((Object) performGet("/param?name=%20%2B+%C3%A0", new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
+		assertThat(performGet("/param?name=%20%2B+%C3%A0", new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
 	}
 
 	@Test
 	public void matrixVariable() throws Exception {
 		String expected = "p=11, q2=22, q4=44";
 		String url = "/first;p=11/second;q=22/third-fourth;q=44";
-		assertThat((Object) performGet(url, new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
+		assertThat(performGet(url, new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
 	}
 
 

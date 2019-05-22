@@ -53,7 +53,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		GetterBean target = new GetterBean();
 		BeanWrapper accessor = createAccessor(target);
 		accessor.setPropertyValue("name", "tom");
-		assertThat((Object) target.getAliasedName()).isEqualTo("tom");
+		assertThat(target.getAliasedName()).isEqualTo("tom");
 		assertThat(accessor.getPropertyValue("aliasedName")).isEqualTo("tom");
 	}
 
@@ -63,7 +63,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		BeanWrapper accessor = createAccessor(target);
 		accessor.setExtractOldValueForEditor(true); // This will call the getter
 		accessor.setPropertyValue("name", "tom");
-		assertThat((Object) target.getAliasedName()).isEqualTo("tom");
+		assertThat(target.getAliasedName()).isEqualTo("tom");
 		assertThat(accessor.getPropertyValue("aliasedName")).isEqualTo("tom");
 	}
 
@@ -72,7 +72,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		GetterBean target = new GetterBean();
 		BeanWrapper accessor = createAccessor(target);
 		accessor.setPropertyValue("aliasedName", "tom");
-		assertThat((Object) target.getAliasedName()).isEqualTo("tom");
+		assertThat(target.getAliasedName()).isEqualTo("tom");
 		assertThat(accessor.getPropertyValue("aliasedName")).isEqualTo("tom");
 	}
 
@@ -146,7 +146,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		PropertyTypeMismatch target = new PropertyTypeMismatch();
 		BeanWrapper accessor = createAccessor(target);
 		accessor.setPropertyValue("object", "a String");
-		assertThat((Object) target.value).isEqualTo("a String");
+		assertThat(target.value).isEqualTo("a String");
 		assertThat(target.getObject() == 8).isTrue();
 		assertThat(accessor.getPropertyValue("object")).isEqualTo(8);
 	}
@@ -158,12 +158,12 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		BeanWrapper accessor = createAccessor(target);
 		accessor.setPropertyValue("name", "a");
 		accessor.setPropertyValue("spouse.name", "b");
-		assertThat((Object) target.getName()).isEqualTo("a");
-		assertThat((Object) target.getSpouse().getName()).isEqualTo("b");
+		assertThat(target.getName()).isEqualTo("a");
+		assertThat(target.getSpouse().getName()).isEqualTo("b");
 		assertThat(accessor.getPropertyValue("name")).isEqualTo("a");
 		assertThat(accessor.getPropertyValue("spouse.name")).isEqualTo("b");
-		assertThat((Object) accessor.getPropertyDescriptor("name").getPropertyType()).isEqualTo(String.class);
-		assertThat((Object) accessor.getPropertyDescriptor("spouse.name").getPropertyType()).isEqualTo(String.class);
+		assertThat(accessor.getPropertyDescriptor("name").getPropertyType()).isEqualTo(String.class);
+		assertThat(accessor.getPropertyDescriptor("spouse.name").getPropertyType()).isEqualTo(String.class);
 	}
 
 	@Test
@@ -177,16 +177,16 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		assertSame(tb, target.value);
 		assertSame(tb, target.getObject().get());
 		assertSame(tb, ((Optional<String>) accessor.getPropertyValue("object")).get());
-		assertThat((Object) target.value.getName()).isEqualTo("x");
-		assertThat((Object) target.getObject().get().getName()).isEqualTo("x");
+		assertThat(target.value.getName()).isEqualTo("x");
+		assertThat(target.getObject().get().getName()).isEqualTo("x");
 		assertThat(accessor.getPropertyValue("object.name")).isEqualTo("x");
 
 		accessor.setPropertyValue("object.name", "y");
 		assertSame(tb, target.value);
 		assertSame(tb, target.getObject().get());
 		assertSame(tb, ((Optional<String>) accessor.getPropertyValue("object")).get());
-		assertThat((Object) target.value.getName()).isEqualTo("y");
-		assertThat((Object) target.getObject().get().getName()).isEqualTo("y");
+		assertThat(target.value.getName()).isEqualTo("y");
+		assertThat(target.getObject().get().getName()).isEqualTo("y");
 		assertThat(accessor.getPropertyValue("object.name")).isEqualTo("y");
 	}
 
@@ -197,8 +197,8 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		accessor.setAutoGrowNestedPaths(true);
 
 		accessor.setPropertyValue("object.name", "x");
-		assertThat((Object) target.value.getName()).isEqualTo("x");
-		assertThat((Object) target.getObject().get().getName()).isEqualTo("x");
+		assertThat(target.value.getName()).isEqualTo("x");
+		assertThat(target.getObject().get().getName()).isEqualTo("x");
 		assertThat(accessor.getPropertyValue("object.name")).isEqualTo("x");
 	}
 

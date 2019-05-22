@@ -97,7 +97,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 			@Override
 			protected void assertions(MethodInvocation invocation) {
 				assertThat(invocation.getThis()).isEqualTo(this);
-				assertThat((Object) invocation.getMethod().getDeclaringClass()).as("Invocation should be on ITestBean: " + invocation.getMethod()).isEqualTo(ITestBean.class);
+				assertThat(invocation.getMethod().getDeclaringClass()).as("Invocation should be on ITestBean: " + invocation.getMethod()).isEqualTo(ITestBean.class);
 			}
 		};
 
@@ -138,7 +138,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		JdkDynamicAopProxy aopProxy = new JdkDynamicAopProxy(as);
 		Named proxy = (Named) aopProxy.getProxy();
 		Named named = new Person();
-		assertThat((Object) named).as("equals()").isEqualTo(proxy);
+		assertThat(named).as("equals()").isEqualTo(proxy);
 		assertEquals("hashCode()", proxy.hashCode(), named.hashCode());
 	}
 

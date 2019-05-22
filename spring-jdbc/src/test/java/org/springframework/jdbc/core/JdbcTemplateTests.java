@@ -281,7 +281,7 @@ public class JdbcTemplateTests {
 				return "test";
 			}
 		});
-		assertThat((Object) result).isEqualTo("test");
+		assertThat(result).isEqualTo("test");
 	}
 
 	@Test
@@ -297,7 +297,7 @@ public class JdbcTemplateTests {
 			}
 		});
 
-		assertThat((Object) result).isEqualTo("test");
+		assertThat(result).isEqualTo("test");
 		verify(this.preparedStatement).setFetchSize(10);
 		verify(this.preparedStatement).setMaxRows(20);
 		verify(this.preparedStatement).close();

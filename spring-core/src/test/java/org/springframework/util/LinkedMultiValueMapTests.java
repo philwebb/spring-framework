@@ -46,7 +46,7 @@ public class LinkedMultiValueMapTests {
 		List<String> expected = new ArrayList<>(2);
 		expected.add("value1");
 		expected.add("value2");
-		assertThat((Object) map.get("key")).isEqualTo(expected);
+		assertThat(map.get("key")).isEqualTo(expected);
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class LinkedMultiValueMapTests {
 		map.set("key", "value1");
 		map.set("key", "value2");
 		assertEquals(1, map.size());
-		assertThat((Object) map.get("key")).isEqualTo(Collections.singletonList("value2"));
+		assertThat(map.get("key")).isEqualTo(Collections.singletonList("value2"));
 	}
 
 	@Test
@@ -66,14 +66,14 @@ public class LinkedMultiValueMapTests {
 		expected.add("value1");
 		expected.add("value2");
 		expected.add("value3");
-		assertThat((Object) map.get("key")).isEqualTo(expected);
+		assertThat(map.get("key")).isEqualTo(expected);
 	}
 
 	@Test
 	public void addAllWithEmptyList() {
 		map.addAll("key", Collections.emptyList());
 		assertEquals(1, map.size());
-		assertThat((Object) map.get("key")).isEqualTo(Collections.emptyList());
+		assertThat(map.get("key")).isEqualTo(Collections.emptyList());
 		assertNull(map.getFirst("key"));
 	}
 
@@ -83,7 +83,7 @@ public class LinkedMultiValueMapTests {
 		values.add("value1");
 		values.add("value2");
 		map.put("key", values);
-		assertThat((Object) map.getFirst("key")).isEqualTo("value1");
+		assertThat(map.getFirst("key")).isEqualTo("value1");
 		assertNull(map.getFirst("other"));
 	}
 
@@ -102,7 +102,7 @@ public class LinkedMultiValueMapTests {
 		map.put("key", values);
 		Map<String, String> svm = map.toSingleValueMap();
 		assertEquals(1, svm.size());
-		assertThat((Object) svm.get("key")).isEqualTo("value1");
+		assertThat(svm.get("key")).isEqualTo("value1");
 	}
 
 	@Test
@@ -116,15 +116,15 @@ public class LinkedMultiValueMapTests {
 	@Test
 	public void equals() {
 		map.set("key1", "value1");
-		assertThat((Object) map).isEqualTo(map);
+		assertThat(map).isEqualTo(map);
 		MultiValueMap<String, String> o1 = new LinkedMultiValueMap<>();
 		o1.set("key1", "value1");
-		assertThat((Object) o1).isEqualTo(map);
-		assertThat((Object) map).isEqualTo(o1);
+		assertThat(o1).isEqualTo(map);
+		assertThat(map).isEqualTo(o1);
 		Map<String, List<String>> o2 = new HashMap<>();
 		o2.put("key1", Collections.singletonList("value1"));
-		assertThat((Object) o2).isEqualTo(map);
-		assertThat((Object) map).isEqualTo(o2);
+		assertThat(o2).isEqualTo(map);
+		assertThat(map).isEqualTo(o2);
 	}
 
 }

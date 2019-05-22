@@ -74,7 +74,7 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expr = parser.parseExpression("hello ${'world'}", DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		Object o = expr.getValue();
-		assertThat((Object) o.toString()).isEqualTo("hello world");
+		assertThat(o.toString()).isEqualTo("hello world");
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expr = parser.parseExpression("hello ${'to'} you", DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		Object o = expr.getValue();
-		assertThat((Object) o.toString()).isEqualTo("hello to you");
+		assertThat(o.toString()).isEqualTo("hello to you");
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		Expression expr = parser.parseExpression("The quick ${'brown'} fox jumped over the ${'lazy'} dog",
 				DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		Object o = expr.getValue();
-		assertThat((Object) o.toString()).isEqualTo("The quick brown fox jumped over the lazy dog");
+		assertThat(o.toString()).isEqualTo("The quick brown fox jumped over the lazy dog");
 	}
 
 	@Test
@@ -99,19 +99,19 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expr = parser.parseExpression("${'hello'} world", DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		Object o = expr.getValue();
-		assertThat((Object) o.toString()).isEqualTo("hello world");
+		assertThat(o.toString()).isEqualTo("hello world");
 
 		expr = parser.parseExpression("", DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		o = expr.getValue();
-		assertThat((Object) o.toString()).isEqualTo("");
+		assertThat(o.toString()).isEqualTo("");
 
 		expr = parser.parseExpression("abc", DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		o = expr.getValue();
-		assertThat((Object) o.toString()).isEqualTo("abc");
+		assertThat(o.toString()).isEqualTo("abc");
 
 		expr = parser.parseExpression("abc", DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		o = expr.getValue((Object)null);
-		assertThat((Object) o.toString()).isEqualTo("abc");
+		assertThat(o.toString()).isEqualTo("abc");
 	}
 
 	@Test
@@ -131,19 +131,19 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		assertThat(ex.getValue(ctx, new Rooty())).isInstanceOf(String.class).isEqualTo("hello world");
 		assertThat(ex.getValue(ctx, new Rooty(), String.class)).isInstanceOf(String.class).isEqualTo("hello world");
 		assertThat(ex.getValue(ctx, new Rooty(), String.class)).isInstanceOf(String.class).isEqualTo("hello world");
-		assertThat((Object) ex.getExpressionString()).isEqualTo("hello ${'world'}");
+		assertThat(ex.getExpressionString()).isEqualTo("hello ${'world'}");
 		assertThat(ex.isWritable(new StandardEvaluationContext())).isFalse();
 		assertThat(ex.isWritable(new Rooty())).isFalse();
 		assertThat(ex.isWritable(new StandardEvaluationContext(), new Rooty())).isFalse();
 
-		assertThat((Object) ex.getValueType()).isEqualTo(String.class);
-		assertThat((Object) ex.getValueType(ctx)).isEqualTo(String.class);
-		assertThat((Object) ex.getValueTypeDescriptor().getType()).isEqualTo(String.class);
-		assertThat((Object) ex.getValueTypeDescriptor(ctx).getType()).isEqualTo(String.class);
-		assertThat((Object) ex.getValueType(new Rooty())).isEqualTo(String.class);
-		assertThat((Object) ex.getValueType(ctx, new Rooty())).isEqualTo(String.class);
-		assertThat((Object) ex.getValueTypeDescriptor(new Rooty()).getType()).isEqualTo(String.class);
-		assertThat((Object) ex.getValueTypeDescriptor(ctx, new Rooty()).getType()).isEqualTo(String.class);
+		assertThat(ex.getValueType()).isEqualTo(String.class);
+		assertThat(ex.getValueType(ctx)).isEqualTo(String.class);
+		assertThat(ex.getValueTypeDescriptor().getType()).isEqualTo(String.class);
+		assertThat(ex.getValueTypeDescriptor(ctx).getType()).isEqualTo(String.class);
+		assertThat(ex.getValueType(new Rooty())).isEqualTo(String.class);
+		assertThat(ex.getValueType(ctx, new Rooty())).isEqualTo(String.class);
+		assertThat(ex.getValueTypeDescriptor(new Rooty()).getType()).isEqualTo(String.class);
+		assertThat(ex.getValueTypeDescriptor(ctx, new Rooty()).getType()).isEqualTo(String.class);
 		assertThatExceptionOfType(EvaluationException.class).isThrownBy(() ->
 				ex.setValue(ctx, null));
 		assertThatExceptionOfType(EvaluationException.class).isThrownBy(() ->
@@ -160,21 +160,21 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		// treat the nested ${..} as a part of the expression
 		Expression ex = parser.parseExpression("hello ${listOfNumbersUpToTen.$[#this<5]} world",DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		String s = ex.getValue(TestScenarioCreator.getTestEvaluationContext(),String.class);
-		assertThat((Object) s).isEqualTo("hello 4 world");
+		assertThat(s).isEqualTo("hello 4 world");
 
 		// not a useful expression but tests nested expression syntax that clashes with template prefix/suffix
 		ex = parser.parseExpression("hello ${listOfNumbersUpToTen.$[#root.listOfNumbersUpToTen.$[#this%2==1]==3]} world",DEFAULT_TEMPLATE_PARSER_CONTEXT);
-		assertThat((Object) ex.getClass()).isEqualTo(CompositeStringExpression.class);
+		assertThat(ex.getClass()).isEqualTo(CompositeStringExpression.class);
 		CompositeStringExpression cse = (CompositeStringExpression)ex;
 		Expression[] exprs = cse.getExpressions();
 		assertEquals(3,exprs.length);
-		assertThat((Object) exprs[1].getExpressionString()).isEqualTo("listOfNumbersUpToTen.$[#root.listOfNumbersUpToTen.$[#this%2==1]==3]");
+		assertThat(exprs[1].getExpressionString()).isEqualTo("listOfNumbersUpToTen.$[#root.listOfNumbersUpToTen.$[#this%2==1]==3]");
 		s = ex.getValue(TestScenarioCreator.getTestEvaluationContext(),String.class);
-		assertThat((Object) s).isEqualTo("hello  world");
+		assertThat(s).isEqualTo("hello  world");
 
 		ex = parser.parseExpression("hello ${listOfNumbersUpToTen.$[#this<5]} ${listOfNumbersUpToTen.$[#this>5]} world",DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		s = ex.getValue(TestScenarioCreator.getTestEvaluationContext(),String.class);
-		assertThat((Object) s).isEqualTo("hello 4 10 world");
+		assertThat(s).isEqualTo("hello 4 10 world");
 
 		assertThatExceptionOfType(ParseException.class).isThrownBy(() ->
 				parser.parseExpression("hello ${listOfNumbersUpToTen.$[#this<5]} ${listOfNumbersUpToTen.$[#this>5] world",DEFAULT_TEMPLATE_PARSER_CONTEXT))
@@ -191,15 +191,15 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		// Just wanting to use the prefix or suffix within the template:
 		Expression ex = parser.parseExpression("hello ${3+4} world",DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		String s = ex.getValue(TestScenarioCreator.getTestEvaluationContext(),String.class);
-		assertThat((Object) s).isEqualTo("hello 7 world");
+		assertThat(s).isEqualTo("hello 7 world");
 
 		ex = parser.parseExpression("hello ${3+4} wo${'${'}rld",DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		s = ex.getValue(TestScenarioCreator.getTestEvaluationContext(),String.class);
-		assertThat((Object) s).isEqualTo("hello 7 wo${rld");
+		assertThat(s).isEqualTo("hello 7 wo${rld");
 
 		ex = parser.parseExpression("hello ${3+4} wo}rld",DEFAULT_TEMPLATE_PARSER_CONTEXT);
 		s = ex.getValue(TestScenarioCreator.getTestEvaluationContext(),String.class);
-		assertThat((Object) s).isEqualTo("hello 7 wo}rld");
+		assertThat(s).isEqualTo("hello 7 wo}rld");
 	}
 
 	@Test
@@ -227,18 +227,18 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 	@Test
 	public void testTemplateParserContext() {
 		TemplateParserContext tpc = new TemplateParserContext("abc","def");
-		assertThat((Object) tpc.getExpressionPrefix()).isEqualTo("abc");
-		assertThat((Object) tpc.getExpressionSuffix()).isEqualTo("def");
+		assertThat(tpc.getExpressionPrefix()).isEqualTo("abc");
+		assertThat(tpc.getExpressionSuffix()).isEqualTo("def");
 		assertThat(tpc.isTemplate()).isTrue();
 
 		tpc = new TemplateParserContext();
-		assertThat((Object) tpc.getExpressionPrefix()).isEqualTo("#{");
-		assertThat((Object) tpc.getExpressionSuffix()).isEqualTo("}");
+		assertThat(tpc.getExpressionPrefix()).isEqualTo("#{");
+		assertThat(tpc.getExpressionSuffix()).isEqualTo("}");
 		assertThat(tpc.isTemplate()).isTrue();
 
 		ParserContext pc = ParserContext.TEMPLATE_EXPRESSION;
-		assertThat((Object) pc.getExpressionPrefix()).isEqualTo("#{");
-		assertThat((Object) pc.getExpressionSuffix()).isEqualTo("}");
+		assertThat(pc.getExpressionPrefix()).isEqualTo("#{");
+		assertThat(pc.getExpressionSuffix()).isEqualTo("}");
 		assertThat(pc.isTemplate()).isTrue();
 	}
 

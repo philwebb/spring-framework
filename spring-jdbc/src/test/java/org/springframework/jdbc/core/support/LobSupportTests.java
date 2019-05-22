@@ -65,7 +65,7 @@ public class LobSupportTests {
 			}
 		};
 
-		assertThat((Object) psc.doInPreparedStatement(ps)).isEqualTo(Integer.valueOf(3));
+		assertThat(psc.doInPreparedStatement(ps)).isEqualTo(Integer.valueOf(3));
 		assertThat(svc.b).isTrue();
 		verify(creator).close();
 		verify(handler).getLobCreator();

@@ -48,19 +48,19 @@ public class GroovyControlGroupTests {
 		ApplicationContext ctx = new GenericGroovyApplicationContext(getClass(), "context.groovy");
 
 		String foo = ctx.getBean("foo", String.class);
-		assertThat((Object) foo).isEqualTo("Foo");
+		assertThat(foo).isEqualTo("Foo");
 
 		String bar = ctx.getBean("bar", String.class);
-		assertThat((Object) bar).isEqualTo("Bar");
+		assertThat(bar).isEqualTo("Bar");
 
 		Pet pet = ctx.getBean(Pet.class);
 		assertNotNull("pet", pet);
-		assertThat((Object) pet.getName()).isEqualTo("Dogbert");
+		assertThat(pet.getName()).isEqualTo("Dogbert");
 
 		Employee employee = ctx.getBean(Employee.class);
 		assertNotNull("employee", employee);
-		assertThat((Object) employee.getName()).isEqualTo("Dilbert");
-		assertThat((Object) employee.getCompany()).isEqualTo("???");
+		assertThat(employee.getName()).isEqualTo("Dilbert");
+		assertThat(employee.getCompany()).isEqualTo("???");
 	}
 
 }

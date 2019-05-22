@@ -232,7 +232,7 @@ public class SimpleJdbcCallTests {
 
 
 	private void verifyStatement(SimpleJdbcCall adder, String expected) {
-		assertThat((Object) adder.getCallString()).as("Incorrect call statement").isEqualTo(expected);
+		assertThat(adder.getCallString()).as("Incorrect call statement").isEqualTo(expected);
 	}
 
 	private void initializeAddInvoiceWithoutMetaData(boolean isFunction) throws SQLException {

@@ -117,7 +117,7 @@ public class MutablePropertyValuesTests extends AbstractPropertyValuesTests {
 		Iterator<PropertyValue> it = pvs.iterator();
 		assertThat(it.hasNext()).isTrue();
 		PropertyValue pv = it.next();
-		assertThat((Object) pv.getName()).isEqualTo("foo");
+		assertThat(pv.getName()).isEqualTo("foo");
 		assertThat(pv.getValue()).isEqualTo("bar");
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(it::remove);
 		assertThat(it.hasNext()).isFalse();

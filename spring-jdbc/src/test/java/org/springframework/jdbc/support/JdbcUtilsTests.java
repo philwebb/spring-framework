@@ -34,27 +34,27 @@ public class JdbcUtilsTests {
 
 	@Test
 	public void commonDatabaseName() {
-		assertThat((Object) JdbcUtils.commonDatabaseName("Oracle")).isEqualTo("Oracle");
-		assertThat((Object) JdbcUtils.commonDatabaseName("DB2-for-Spring")).isEqualTo("DB2");
-		assertThat((Object) JdbcUtils.commonDatabaseName("Sybase SQL Server")).isEqualTo("Sybase");
-		assertThat((Object) JdbcUtils.commonDatabaseName("Adaptive Server Enterprise")).isEqualTo("Sybase");
-		assertThat((Object) JdbcUtils.commonDatabaseName("MySQL")).isEqualTo("MySQL");
+		assertThat(JdbcUtils.commonDatabaseName("Oracle")).isEqualTo("Oracle");
+		assertThat(JdbcUtils.commonDatabaseName("DB2-for-Spring")).isEqualTo("DB2");
+		assertThat(JdbcUtils.commonDatabaseName("Sybase SQL Server")).isEqualTo("Sybase");
+		assertThat(JdbcUtils.commonDatabaseName("Adaptive Server Enterprise")).isEqualTo("Sybase");
+		assertThat(JdbcUtils.commonDatabaseName("MySQL")).isEqualTo("MySQL");
 	}
 
 	@Test
 	public void resolveTypeName() {
-		assertThat((Object) JdbcUtils.resolveTypeName(Types.VARCHAR)).isEqualTo("VARCHAR");
-		assertThat((Object) JdbcUtils.resolveTypeName(Types.NUMERIC)).isEqualTo("NUMERIC");
-		assertThat((Object) JdbcUtils.resolveTypeName(Types.INTEGER)).isEqualTo("INTEGER");
+		assertThat(JdbcUtils.resolveTypeName(Types.VARCHAR)).isEqualTo("VARCHAR");
+		assertThat(JdbcUtils.resolveTypeName(Types.NUMERIC)).isEqualTo("NUMERIC");
+		assertThat(JdbcUtils.resolveTypeName(Types.INTEGER)).isEqualTo("INTEGER");
 		assertNull(JdbcUtils.resolveTypeName(JdbcUtils.TYPE_UNKNOWN));
 	}
 
 	@Test
 	public void convertUnderscoreNameToPropertyName() {
-		assertThat((Object) JdbcUtils.convertUnderscoreNameToPropertyName("MY_NAME")).isEqualTo("myName");
-		assertThat((Object) JdbcUtils.convertUnderscoreNameToPropertyName("yOUR_nAME")).isEqualTo("yourName");
-		assertThat((Object) JdbcUtils.convertUnderscoreNameToPropertyName("a_name")).isEqualTo("AName");
-		assertThat((Object) JdbcUtils.convertUnderscoreNameToPropertyName("someone_elses_name")).isEqualTo("someoneElsesName");
+		assertThat(JdbcUtils.convertUnderscoreNameToPropertyName("MY_NAME")).isEqualTo("myName");
+		assertThat(JdbcUtils.convertUnderscoreNameToPropertyName("yOUR_nAME")).isEqualTo("yourName");
+		assertThat(JdbcUtils.convertUnderscoreNameToPropertyName("a_name")).isEqualTo("AName");
+		assertThat(JdbcUtils.convertUnderscoreNameToPropertyName("someone_elses_name")).isEqualTo("someoneElsesName");
 	}
 
 }

@@ -132,7 +132,7 @@ public class HttpRangeTests {
 		ranges.add(HttpRange.createByteRange(0, 499));
 		ranges.add(HttpRange.createByteRange(9500));
 		ranges.add(HttpRange.createSuffixRange(500));
-		assertThat((Object) HttpRange.toString(ranges)).as("Invalid Range header").isEqualTo("bytes=0-499, 9500-, -500");
+		assertThat(HttpRange.toString(ranges)).as("Invalid Range header").isEqualTo("bytes=0-499, 9500-, -500");
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class HttpRangeTests {
 		ByteArrayResource resource = new ByteArrayResource(bytes);
 		HttpRange range = HttpRange.createByteRange(0, 5);
 		ResourceRegion region = range.toResourceRegion(resource);
-		assertThat((Object) region.getResource()).isEqualTo(resource);
+		assertThat(region.getResource()).isEqualTo(resource);
 		assertEquals(0L, region.getPosition());
 		assertEquals(6L, region.getCount());
 	}

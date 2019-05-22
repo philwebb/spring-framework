@@ -165,15 +165,15 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 
 			MethodJmsListenerEndpoint first = (MethodJmsListenerEndpoint) simpleFactory.getListenerContainer(
 				"first").getEndpoint();
-			assertThat((Object) first.getId()).isEqualTo("first");
-			assertThat((Object) first.getDestination()).isEqualTo("orderQueue");
+			assertThat(first.getId()).isEqualTo("first");
+			assertThat(first.getDestination()).isEqualTo("orderQueue");
 			assertNull(first.getConcurrency());
 
 			MethodJmsListenerEndpoint second = (MethodJmsListenerEndpoint) simpleFactory.getListenerContainer(
 				"second").getEndpoint();
-			assertThat((Object) second.getId()).isEqualTo("second");
-			assertThat((Object) second.getDestination()).isEqualTo("billingQueue");
-			assertThat((Object) second.getConcurrency()).isEqualTo("2-10");
+			assertThat(second.getId()).isEqualTo("second");
+			assertThat(second.getDestination()).isEqualTo("billingQueue");
+			assertThat(second.getConcurrency()).isEqualTo("2-10");
 		}
 	}
 

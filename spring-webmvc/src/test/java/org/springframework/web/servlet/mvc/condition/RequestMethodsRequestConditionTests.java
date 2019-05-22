@@ -135,7 +135,7 @@ public class RequestMethodsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(method.name(), "");
 		RequestMethodsRequestCondition actual = condition.getMatchingCondition(request);
 		assertNotNull(actual);
-		assertThat((Object) actual.getContent()).isEqualTo(Collections.singleton(method));
+		assertThat(actual.getContent()).isEqualTo(Collections.singleton(method));
 	}
 
 	private void testNoMatch(RequestMethodsRequestCondition condition, RequestMethod method) {

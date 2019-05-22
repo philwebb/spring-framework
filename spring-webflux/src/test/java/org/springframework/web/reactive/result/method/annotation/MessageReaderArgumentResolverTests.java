@@ -132,7 +132,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		Flux<TestBean> flux = resolveValue(param, body);
 
-		assertThat((Object) flux.collectList().block()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
+		assertThat(flux.collectList().block()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		Single<TestBean> single = resolveValue(param, body);
 
-		assertThat((Object) single.toBlocking().value()).isEqualTo(new TestBean("f1", "b1"));
+		assertThat(single.toBlocking().value()).isEqualTo(new TestBean("f1", "b1"));
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		io.reactivex.Single<TestBean> single = resolveValue(param, body);
 
-		assertThat((Object) single.blockingGet()).isEqualTo(new TestBean("f1", "b1"));
+		assertThat(single.blockingGet()).isEqualTo(new TestBean("f1", "b1"));
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		Maybe<TestBean> maybe = resolveValue(param, body);
 
-		assertThat((Object) maybe.blockingGet()).isEqualTo(new TestBean("f1", "b1"));
+		assertThat(maybe.blockingGet()).isEqualTo(new TestBean("f1", "b1"));
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		Observable<?> observable = resolveValue(param, body);
 
-		assertThat((Object) observable.toList().toBlocking().first()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
+		assertThat(observable.toList().toBlocking().first()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
 	}
 
 	@Test
@@ -182,7 +182,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		io.reactivex.Observable<?> observable = resolveValue(param, body);
 
-		assertThat((Object) observable.toList().blockingGet()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
+		assertThat(observable.toList().blockingGet()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		Flowable<?> flowable = resolveValue(param, body);
 
-		assertThat((Object) flowable.toList().blockingGet()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
+		assertThat(flowable.toList().blockingGet()).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(TestBean.class);
 		TestBean value = resolveValue(param, body);
 
-		assertThat((Object) value).isEqualTo(new TestBean("f1", "b1"));
+		assertThat(value).isEqualTo(new TestBean("f1", "b1"));
 	}
 
 	@Test
@@ -224,7 +224,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		Map<String, String> actual = resolveValue(param, body);
 
-		assertThat((Object) actual).isEqualTo(map);
+		assertThat(actual).isEqualTo(map);
 	}
 
 	@Test
@@ -234,7 +234,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter param = this.testMethod.arg(type);
 		List<?> list = resolveValue(param, body);
 
-		assertThat((Object) list).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
+		assertThat(list).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
 	}
 
 	@Test
@@ -245,7 +245,7 @@ public class MessageReaderArgumentResolverTests {
 		Mono<?> mono = resolveValue(param, body);
 
 		List<?> list = (List<?>) mono.block(Duration.ofSeconds(5));
-		assertThat((Object) list).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
+		assertThat(list).isEqualTo(Arrays.asList(new TestBean("f1", "b1"), new TestBean("f2", "b2")));
 	}
 
 	@Test
@@ -289,7 +289,7 @@ public class MessageReaderArgumentResolverTests {
 		MethodParameter methodParam = handlerMethod.getMethodParameters()[0];
 		SimpleBean simpleBean = resolveValue(methodParam, "{\"name\" : \"Jad\"}");
 
-		assertThat((Object) simpleBean.getName()).isEqualTo("Jad");
+		assertThat(simpleBean.getName()).isEqualTo("Jad");
 	}
 
 

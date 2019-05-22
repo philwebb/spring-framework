@@ -58,7 +58,7 @@ public class ToStringVisitorTests {
 				"  (GET && /baz) -> \n" +
 				" }\n" +
 				"}";
-		assertThat((Object) result).isEqualTo(expected);
+		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class ToStringVisitorTests {
 		predicate.accept(visitor);
 		String result = visitor.toString();
 
-		assertThat((Object) result).isEqualTo(expected);
+		assertThat(result).isEqualTo(expected);
 	}
 
 

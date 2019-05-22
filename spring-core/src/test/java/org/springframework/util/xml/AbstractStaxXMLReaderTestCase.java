@@ -136,8 +136,8 @@ public abstract class AbstractStaxXMLReaderTestCase {
 		transformer.transform(source, result);
 
 		Node node1 = result.getNode().getFirstChild().getFirstChild();
-		assertThat((Object) node1.getTextContent()).isEqualTo(" ");
-		assertThat((Object) node1.getNextSibling().getTextContent()).isEqualTo(" Some text ");
+		assertThat(node1.getTextContent()).isEqualTo(" ");
+		assertThat(node1.getNextSibling().getTextContent()).isEqualTo(" Some text ");
 	}
 
 	@Test

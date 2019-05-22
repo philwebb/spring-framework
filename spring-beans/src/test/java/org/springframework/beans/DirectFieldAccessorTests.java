@@ -49,7 +49,7 @@ public class DirectFieldAccessorTests extends AbstractPropertyAccessorTests {
 		};
 
 		DirectFieldAccessor dfa = createAccessor(target);
-		assertThat((Object) dfa.getPropertyType("name")).isEqualTo(StringBuilder.class);
+		assertThat(dfa.getPropertyType("name")).isEqualTo(StringBuilder.class);
 		assertThat(dfa.getPropertyValue("name")).isEqualTo(sb);
 	}
 

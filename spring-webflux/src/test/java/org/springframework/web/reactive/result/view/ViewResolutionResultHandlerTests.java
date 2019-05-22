@@ -115,7 +115,7 @@ public class ViewResolutionResultHandlerTests {
 	private void testSupports(MethodParameter returnType, boolean supports) {
 		ViewResolutionResultHandler resultHandler = resultHandler(mock(ViewResolver.class));
 		HandlerResult handlerResult = new HandlerResult(new Object(), null, returnType, this.bindingContext);
-		assertThat((Object) resultHandler.supports(handlerResult)).isEqualTo(supports);
+		assertThat(resultHandler.supports(handlerResult)).isEqualTo(supports);
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class ViewResolutionResultHandlerTests {
 		resolver2.setOrder(1);
 		List<ViewResolver> resolvers = resultHandler(resolver1, resolver2).getViewResolvers();
 
-		assertThat((Object) resolvers).isEqualTo(Arrays.asList(resolver2, resolver1));
+		assertThat(resolvers).isEqualTo(Arrays.asList(resolver2, resolver1));
 	}
 
 	@Test
@@ -189,8 +189,8 @@ public class ViewResolutionResultHandlerTests {
 		returnValue = Rendering.view("account").modelAttribute("a", "a1").status(status).header("h", "h1").build();
 		String expected = "account: {a=a1, id=123}";
 		ServerWebExchange exchange = testHandle("/path", returnType, returnValue, expected, resolver);
-		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(status);
-		assertThat((Object) exchange.getResponse().getHeaders().getFirst("h")).isEqualTo("h1");
+		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(status);
+		assertThat(exchange.getResponse().getHeaders().getFirst("h")).isEqualTo("h1");
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class ViewResolutionResultHandlerTests {
 				.handleResult(exchange, handlerResult)
 				.block(Duration.ofSeconds(5));
 
-		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
+		assertThat(exchange.getResponse().getHeaders().getContentType()).isEqualTo(APPLICATION_JSON);
 		assertResponseBody(exchange, "jsonView: {" +
 				"org.springframework.validation.BindingResult.testBean=" +
 				"org.springframework.validation.BeanPropertyBindingResult: 0 errors, " +
@@ -295,7 +295,7 @@ public class ViewResolutionResultHandlerTests {
 
 		MockServerHttpResponse response = exchange.getResponse();
 		assertEquals(303, response.getStatusCode().value());
-		assertThat((Object) response.getHeaders().getLocation().toString()).isEqualTo("/");
+		assertThat(response.getHeaders().getLocation().toString()).isEqualTo("/");
 	}
 
 
@@ -326,7 +326,7 @@ public class ViewResolutionResultHandlerTests {
 
 	private void assertResponseBody(MockServerWebExchange exchange, String responseBody) {
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertThat((Object) DataBufferTestUtils.dumpString(buf, UTF_8)).isEqualTo(responseBody))
+				.consumeNextWith(buf -> assertThat(DataBufferTestUtils.dumpString(buf, UTF_8)).isEqualTo(responseBody))
 				.expectComplete()
 				.verify();
 	}

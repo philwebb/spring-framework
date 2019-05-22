@@ -56,12 +56,12 @@ public class CorsRegistryTests {
 		Map<String, CorsConfiguration> configs = this.registry.getCorsConfigurations();
 		assertEquals(1, configs.size());
 		CorsConfiguration config = configs.get("/foo");
-		assertThat((Object) config.getAllowedOrigins()).isEqualTo(Arrays.asList("https://domain2.com", "https://domain2.com"));
-		assertThat((Object) config.getAllowedMethods()).isEqualTo(Arrays.asList("DELETE"));
-		assertThat((Object) config.getAllowedHeaders()).isEqualTo(Arrays.asList("header1", "header2"));
-		assertThat((Object) config.getExposedHeaders()).isEqualTo(Arrays.asList("header3", "header4"));
-		assertThat((Object) config.getAllowCredentials()).isEqualTo(false);
-		assertThat((Object) config.getMaxAge()).isEqualTo(Long.valueOf(3600));
+		assertThat(config.getAllowedOrigins()).isEqualTo(Arrays.asList("https://domain2.com", "https://domain2.com"));
+		assertThat(config.getAllowedMethods()).isEqualTo(Arrays.asList("DELETE"));
+		assertThat(config.getAllowedHeaders()).isEqualTo(Arrays.asList("header1", "header2"));
+		assertThat(config.getExposedHeaders()).isEqualTo(Arrays.asList("header3", "header4"));
+		assertThat(config.getAllowCredentials()).isEqualTo(false);
+		assertThat(config.getMaxAge()).isEqualTo(Long.valueOf(3600));
 	}
 
 }

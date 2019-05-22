@@ -43,6 +43,6 @@ public class MetaMetaConfigDefaultsTests {
 
 	@Test
 	public void foo() {
-		assertThat((Object) foo).isEqualTo("Production Foo");
+		assertThat(foo).isEqualTo("Production Foo");
 	}
 }

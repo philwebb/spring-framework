@@ -56,7 +56,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 		assertNotNull(operation.getExceptionCacheResolver());
 
 		assertNull(operation.getExceptionCacheName());
-		assertThat((Object) operation.getExceptionCacheResolver()).isEqualTo(defaultExceptionCacheResolver);
+		assertThat(operation.getExceptionCacheResolver()).isEqualTo(defaultExceptionCacheResolver);
 
 		CacheInvocationParameter[] allParameters = operation.getAllParameters(2L);
 		assertEquals(1, allParameters.length);
@@ -110,11 +110,11 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 
 		Set<Annotation> firstParameterAnnotations = parameters[0].getAnnotations();
 		assertEquals(1, firstParameterAnnotations.size());
-		assertThat((Object) firstParameterAnnotations.iterator().next().annotationType()).isEqualTo(CacheKey.class);
+		assertThat(firstParameterAnnotations.iterator().next().annotationType()).isEqualTo(CacheKey.class);
 
 		Set<Annotation> secondParameterAnnotations = parameters[1].getAnnotations();
 		assertEquals(1, secondParameterAnnotations.size());
-		assertThat((Object) secondParameterAnnotations.iterator().next().annotationType()).isEqualTo(Value.class);
+		assertThat(secondParameterAnnotations.iterator().next().annotationType()).isEqualTo(Value.class);
 	}
 
 	@Test

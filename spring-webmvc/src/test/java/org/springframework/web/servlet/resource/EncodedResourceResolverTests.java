@@ -105,14 +105,14 @@ public class EncodedResourceResolverTests {
 		request.addHeader("Accept-Encoding", "gzip");
 		Resource actual = this.resolver.resolveResource(request, file, this.locations);
 
-		assertThat((Object) actual.getDescription()).isEqualTo(getResource(file + ".gz").getDescription());
-		assertThat((Object) actual.getFilename()).isEqualTo(getResource(file).getFilename());
+		assertThat(actual.getDescription()).isEqualTo(getResource(file + ".gz").getDescription());
+		assertThat(actual.getFilename()).isEqualTo(getResource(file).getFilename());
 
 		boolean condition = actual instanceof HttpResource;
 		assertThat(condition).isTrue();
 		HttpHeaders headers = ((HttpResource) actual).getResponseHeaders();
-		assertThat((Object) headers.getFirst(HttpHeaders.CONTENT_ENCODING)).isEqualTo("gzip");
-		assertThat((Object) headers.getFirst(HttpHeaders.VARY)).isEqualTo("Accept-Encoding");
+		assertThat(headers.getFirst(HttpHeaders.CONTENT_ENCODING)).isEqualTo("gzip");
+		assertThat(headers.getFirst(HttpHeaders.VARY)).isEqualTo("Accept-Encoding");
 	}
 
 	@Test
@@ -122,8 +122,8 @@ public class EncodedResourceResolverTests {
 		request.addHeader("Accept-Encoding", "gzip");
 		Resource resolved = this.resolver.resolveResource(request, file, this.locations);
 
-		assertThat((Object) resolved.getDescription()).isEqualTo(getResource("foo.css.gz").getDescription());
-		assertThat((Object) resolved.getFilename()).isEqualTo(getResource("foo.css").getFilename());
+		assertThat(resolved.getDescription()).isEqualTo(getResource("foo.css.gz").getDescription());
+		assertThat(resolved.getFilename()).isEqualTo(getResource("foo.css").getFilename());
 		boolean condition = resolved instanceof HttpResource;
 		assertThat(condition).isTrue();
 	}
@@ -136,8 +136,8 @@ public class EncodedResourceResolverTests {
 		request.addHeader("Accept-Encoding", "gzip");
 		Resource resolved = this.resolver.resolveResource(request, file, this.locations);
 
-		assertThat((Object) resolved.getDescription()).isEqualTo(getResource(file + ".gz").getDescription());
-		assertThat((Object) resolved.getFilename()).isEqualTo(getResource(file).getFilename());
+		assertThat(resolved.getDescription()).isEqualTo(getResource(file + ".gz").getDescription());
+		assertThat(resolved.getFilename()).isEqualTo(getResource(file).getFilename());
 		boolean condition = resolved instanceof HttpResource;
 		assertThat(condition).isTrue();
 
@@ -145,8 +145,8 @@ public class EncodedResourceResolverTests {
 		request = new MockHttpServletRequest("GET", "/js/foo.js");
 		resolved = this.resolver.resolveResource(request, file, this.locations);
 
-		assertThat((Object) resolved.getDescription()).isEqualTo(getResource(file).getDescription());
-		assertThat((Object) resolved.getFilename()).isEqualTo(getResource(file).getFilename());
+		assertThat(resolved.getDescription()).isEqualTo(getResource(file).getDescription());
+		assertThat(resolved.getFilename()).isEqualTo(getResource(file).getFilename());
 		boolean condition1 = resolved instanceof HttpResource;
 		assertThat(condition1).isFalse();
 	}
@@ -156,8 +156,8 @@ public class EncodedResourceResolverTests {
 		String file = "js/foo.js";
 		Resource resolved = this.resolver.resolveResource(null, file, this.locations);
 
-		assertThat((Object) resolved.getDescription()).isEqualTo(getResource(file).getDescription());
-		assertThat((Object) resolved.getFilename()).isEqualTo(getResource(file).getFilename());
+		assertThat(resolved.getDescription()).isEqualTo(getResource(file).getDescription());
+		assertThat(resolved.getFilename()).isEqualTo(getResource(file).getFilename());
 	}
 
 	private Resource getResource(String filePath) {

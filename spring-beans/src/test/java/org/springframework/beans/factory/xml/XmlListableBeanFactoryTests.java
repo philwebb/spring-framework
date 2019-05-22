@@ -181,7 +181,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertThat(beanNames.contains("aliasWithoutId3")).isFalse();
 
 		TestBean tb4 = (TestBean) getBeanFactory().getBean(TestBean.class.getName() + "#0");
-		assertThat((Object) tb4.getName()).isEqualTo(null);
+		assertThat(tb4.getName()).isEqualTo(null);
 
 		Map drs = getListableBeanFactory().getBeansOfType(DummyReferencer.class, false, false);
 		assertEquals(5, drs.size());
@@ -252,7 +252,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 	@Test
 	public void commentsAndCdataInValue() {
 		TestBean bean = (TestBean) getBeanFactory().getBean("commentsInValue");
-		assertThat((Object) bean.getName()).as("Failed to handle comments and CDATA properly").isEqualTo("this is a <!--comment-->");
+		assertThat(bean.getName()).as("Failed to handle comments and CDATA properly").isEqualTo("this is a <!--comment-->");
 	}
 
 }

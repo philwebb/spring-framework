@@ -66,7 +66,7 @@ public class WebRequestDataBinderTests {
 		binder.bind(new ServletWebRequest(request));
 
 		assertNotNull(tb.getSpouse());
-		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
+		assertThat(tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class WebRequestDataBinderTests {
 		binder.bind(new ServletWebRequest(request));
 
 		assertNotNull(tb.getSpouse());
-		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
+		assertThat(tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -205,11 +205,11 @@ public class WebRequestDataBinderTests {
 		request.addParameter("!name", "anonymous");
 		request.addParameter("name", "Scott");
 		binder.bind(new ServletWebRequest(request));
-		assertThat((Object) target.getName()).isEqualTo("Scott");
+		assertThat(target.getName()).isEqualTo("Scott");
 
 		request.removeParameter("name");
 		binder.bind(new ServletWebRequest(request));
-		assertThat((Object) target.getName()).isEqualTo("anonymous");
+		assertThat(target.getName()).isEqualTo("anonymous");
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class WebRequestDataBinderTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("myEnum", "FOO");
 		binder.bind(new ServletWebRequest(request));
-		assertThat((Object) target.getMyEnum()).isEqualTo(MyEnum.FOO);
+		assertThat(target.getMyEnum()).isEqualTo(MyEnum.FOO);
 	}
 
 	@Test
@@ -250,7 +250,7 @@ public class WebRequestDataBinderTests {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
 		request.addFile(new MockMultipartFile("name", "Juergen".getBytes()));
 		binder.bind(new ServletWebRequest(request));
-		assertThat((Object) target.getName()).isEqualTo("Juergen");
+		assertThat(target.getName()).isEqualTo("Juergen");
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class WebRequestDataBinderTests {
 		request.addFile(new MockMultipartFile("stringArray", "Juergen".getBytes()));
 		binder.bind(new ServletWebRequest(request));
 		assertEquals(1, target.getStringArray().length);
-		assertThat((Object) target.getStringArray()[0]).isEqualTo("Juergen");
+		assertThat(target.getStringArray()[0]).isEqualTo("Juergen");
 	}
 
 	@Test
@@ -277,8 +277,8 @@ public class WebRequestDataBinderTests {
 		request.addFile(new MockMultipartFile("stringArray", "Eva".getBytes()));
 		binder.bind(new ServletWebRequest(request));
 		assertEquals(2, target.getStringArray().length);
-		assertThat((Object) target.getStringArray()[0]).isEqualTo("Juergen");
-		assertThat((Object) target.getStringArray()[1]).isEqualTo("Eva");
+		assertThat(target.getStringArray()[0]).isEqualTo("Juergen");
+		assertThat(target.getStringArray()[1]).isEqualTo("Eva");
 	}
 
 	@Test

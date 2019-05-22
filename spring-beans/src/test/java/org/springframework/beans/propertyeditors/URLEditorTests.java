@@ -48,7 +48,7 @@ public class URLEditorTests {
 		boolean condition = value instanceof URL;
 		assertThat(condition).isTrue();
 		URL url = (URL) value;
-		assertThat((Object) urlEditor.getAsText()).isEqualTo(url.toExternalForm());
+		assertThat(urlEditor.getAsText()).isEqualTo(url.toExternalForm());
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class URLEditorTests {
 		boolean condition = value instanceof URL;
 		assertThat(condition).isTrue();
 		URL url = (URL) value;
-		assertThat((Object) urlEditor.getAsText()).isEqualTo(url.toExternalForm());
+		assertThat(urlEditor.getAsText()).isEqualTo(url.toExternalForm());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class URLEditorTests {
 		boolean condition1 = value instanceof URL;
 		assertThat(condition1).isTrue();
 		URL url = (URL) value;
-		assertThat((Object) urlEditor.getAsText()).isEqualTo(url.toExternalForm());
+		assertThat(urlEditor.getAsText()).isEqualTo(url.toExternalForm());
 		boolean condition = !url.getProtocol().startsWith("classpath");
 		assertThat(condition).isTrue();
 	}
@@ -88,13 +88,13 @@ public class URLEditorTests {
 		PropertyEditor urlEditor = new URLEditor();
 		urlEditor.setAsText(null);
 		assertNull(urlEditor.getValue());
-		assertThat((Object) urlEditor.getAsText()).isEqualTo("");
+		assertThat(urlEditor.getAsText()).isEqualTo("");
 	}
 
 	@Test
 	public void testGetAsTextReturnsEmptyStringIfValueNotSet() throws Exception {
 		PropertyEditor urlEditor = new URLEditor();
-		assertThat((Object) urlEditor.getAsText()).isEqualTo("");
+		assertThat(urlEditor.getAsText()).isEqualTo("");
 	}
 
 }

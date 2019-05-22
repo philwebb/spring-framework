@@ -89,7 +89,7 @@ public class AutoProxyCreatorTests {
 		assertThat(Proxy.isProxyClass(singletonToBeProxied.getSpouse().getClass())).isTrue();
 
 		// test whether autowiring succeeded with auto proxy creation
-		assertThat((Object) singletonToBeProxied.getNestedIndexedBean()).isEqualTo(sac.getBean("autowiredIndexedTestBean"));
+		assertThat(singletonToBeProxied.getNestedIndexedBean()).isEqualTo(sac.getBean("autowiredIndexedTestBean"));
 
 		TestInterceptor ti = (TestInterceptor) sac.getBean("testInterceptor");
 		// already 2: getSpouse + getNestedIndexedBean calls above

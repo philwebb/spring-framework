@@ -58,7 +58,7 @@ public class HandlerResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path"));
 		MediaType actual = resultHandler.selectMediaType(exchange, () -> mediaTypes);
 
-		assertThat((Object) actual).isEqualTo(IMAGE_GIF);
+		assertThat(actual).isEqualTo(IMAGE_GIF);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class HandlerResultHandlerTests {
 		List<MediaType> mediaTypes = Arrays.asList(IMAGE_JPEG, IMAGE_GIF, IMAGE_PNG);
 		MediaType actual = resultHandler.selectMediaType(exchange, () -> mediaTypes);
 
-		assertThat((Object) actual).isEqualTo(IMAGE_GIF);
+		assertThat(actual).isEqualTo(IMAGE_GIF);
 	}
 
 	@Test  // SPR-9160
@@ -80,7 +80,7 @@ public class HandlerResultHandlerTests {
 		List<MediaType> mediaTypes = Arrays.asList(TEXT_PLAIN, APPLICATION_JSON);
 		MediaType actual = this.resultHandler.selectMediaType(exchange, () -> mediaTypes);
 
-		assertThat((Object) actual).isEqualTo(APPLICATION_JSON);
+		assertThat(actual).isEqualTo(APPLICATION_JSON);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class HandlerResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path").accept(text8859));
 		MediaType actual = this.resultHandler.selectMediaType(exchange, () -> Collections.singletonList(textUtf8));
 
-		assertThat((Object) actual).isEqualTo(text8859);
+		assertThat(actual).isEqualTo(text8859);
 	}
 
 	@Test // SPR-12894
@@ -99,7 +99,7 @@ public class HandlerResultHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path"));
 		MediaType actual = this.resultHandler.selectMediaType(exchange, () -> producible);
 
-		assertThat((Object) actual).isEqualTo(APPLICATION_OCTET_STREAM);
+		assertThat(actual).isEqualTo(APPLICATION_OCTET_STREAM);
 	}
 
 

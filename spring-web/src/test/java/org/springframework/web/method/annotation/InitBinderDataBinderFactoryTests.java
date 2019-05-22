@@ -65,7 +65,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, null);
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
+		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
+		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class InitBinderDataBinderFactoryTests {
 		WebDataBinder dataBinder = factory.createBinder(this.webRequest, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
+		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
 	}
 
 	private WebDataBinderFactory createFactory(String methodName, Class<?>... parameterTypes)

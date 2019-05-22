@@ -192,31 +192,31 @@ public class Jackson2ObjectMapperBuilderTests {
 	public void dateTimeFormatSetter() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().dateFormat(dateFormat).build();
-		assertThat((Object) objectMapper.getSerializationConfig().getDateFormat()).isEqualTo(dateFormat);
-		assertThat((Object) objectMapper.getDeserializationConfig().getDateFormat()).isEqualTo(dateFormat);
+		assertThat(objectMapper.getSerializationConfig().getDateFormat()).isEqualTo(dateFormat);
+		assertThat(objectMapper.getDeserializationConfig().getDateFormat()).isEqualTo(dateFormat);
 	}
 
 	@Test
 	public void simpleDateFormatStringSetter() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().simpleDateFormat(DATE_FORMAT).build();
-		assertThat((Object) objectMapper.getSerializationConfig().getDateFormat()).isEqualTo(dateFormat);
-		assertThat((Object) objectMapper.getDeserializationConfig().getDateFormat()).isEqualTo(dateFormat);
+		assertThat(objectMapper.getSerializationConfig().getDateFormat()).isEqualTo(dateFormat);
+		assertThat(objectMapper.getDeserializationConfig().getDateFormat()).isEqualTo(dateFormat);
 	}
 
 	@Test
 	public void localeSetter() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().locale(Locale.FRENCH).build();
-		assertThat((Object) objectMapper.getSerializationConfig().getLocale()).isEqualTo(Locale.FRENCH);
-		assertThat((Object) objectMapper.getDeserializationConfig().getLocale()).isEqualTo(Locale.FRENCH);
+		assertThat(objectMapper.getSerializationConfig().getLocale()).isEqualTo(Locale.FRENCH);
+		assertThat(objectMapper.getDeserializationConfig().getLocale()).isEqualTo(Locale.FRENCH);
 	}
 
 	@Test
 	public void timeZoneSetter() {
 		TimeZone timeZone = TimeZone.getTimeZone("Europe/Paris");
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().timeZone(timeZone).build();
-		assertThat((Object) objectMapper.getSerializationConfig().getTimeZone()).isEqualTo(timeZone);
-		assertThat((Object) objectMapper.getDeserializationConfig().getTimeZone()).isEqualTo(timeZone);
+		assertThat(objectMapper.getSerializationConfig().getTimeZone()).isEqualTo(timeZone);
+		assertThat(objectMapper.getDeserializationConfig().getTimeZone()).isEqualTo(timeZone);
 	}
 
 	@Test
@@ -224,8 +224,8 @@ public class Jackson2ObjectMapperBuilderTests {
 		String zoneId = "Europe/Paris";
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().timeZone(zoneId).build();
 		TimeZone timeZone = TimeZone.getTimeZone(zoneId);
-		assertThat((Object) objectMapper.getSerializationConfig().getTimeZone()).isEqualTo(timeZone);
-		assertThat((Object) objectMapper.getDeserializationConfig().getTimeZone()).isEqualTo(timeZone);
+		assertThat(objectMapper.getSerializationConfig().getTimeZone()).isEqualTo(timeZone);
+		assertThat(objectMapper.getDeserializationConfig().getTimeZone()).isEqualTo(timeZone);
 	}
 
 	@Test
@@ -272,17 +272,17 @@ public class Jackson2ObjectMapperBuilderTests {
 
 		Long timestamp = 1322903730000L;
 		DateTime dateTime = new DateTime(timestamp, DateTimeZone.UTC);
-		assertThat((Object) new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo(timestamp.toString());
+		assertThat(new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo(timestamp.toString());
 
 		Path file = Paths.get("foo");
 		assertThat(new String(objectMapper.writeValueAsBytes(file), "UTF-8").endsWith("foo\"")).isTrue();
 
 		Optional<String> optional = Optional.of("test");
-		assertThat((Object) new String(objectMapper.writeValueAsBytes(optional), "UTF-8")).isEqualTo("\"test\"");
+		assertThat(new String(objectMapper.writeValueAsBytes(optional), "UTF-8")).isEqualTo("\"test\"");
 
 		// Kotlin module
 		IntRange range = new IntRange(1, 3);
-		assertThat((Object) new String(objectMapper.writeValueAsBytes(range), "UTF-8")).isEqualTo("{\"start\":1,\"end\":3}");
+		assertThat(new String(objectMapper.writeValueAsBytes(range), "UTF-8")).isEqualTo("{\"start\":1,\"end\":3}");
 	}
 
 	@Test  // SPR-12634
@@ -293,7 +293,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modulesToInstall(new CustomIntegerModule())
 				.build();
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
-		assertThat((Object) new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
+		assertThat(new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
 		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
@@ -306,7 +306,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modulesToInstall(CustomIntegerModule.class)
 				.build();
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
-		assertThat((Object) new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
+		assertThat(new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
 		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
@@ -317,7 +317,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
 				.serializerByType(Integer.class, new CustomIntegerSerializer()).build();
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
-		assertThat((Object) new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
+		assertThat(new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8")).isEqualTo("1322903730000");
 		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
@@ -500,15 +500,15 @@ public class Jackson2ObjectMapperBuilderTests {
 	public void xmlMapper() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml().build();
 		assertNotNull(objectMapper);
-		assertThat((Object) objectMapper.getClass()).isEqualTo(XmlMapper.class);
+		assertThat(objectMapper.getClass()).isEqualTo(XmlMapper.class);
 	}
 
 	@Test  // gh-22428
 	public void xmlMapperAndCustomFactory() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml().factory(new MyXmlFactory()).build();
 		assertNotNull(objectMapper);
-		assertThat((Object) objectMapper.getClass()).isEqualTo(XmlMapper.class);
-		assertThat((Object) objectMapper.getFactory().getClass()).isEqualTo(MyXmlFactory.class);
+		assertThat(objectMapper.getClass()).isEqualTo(XmlMapper.class);
+		assertThat(objectMapper.getFactory().getClass()).isEqualTo(MyXmlFactory.class);
 	}
 
 	@Test
@@ -525,7 +525,7 @@ public class Jackson2ObjectMapperBuilderTests {
 	public void defaultUseWrapper() throws JsonProcessingException {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml().defaultUseWrapper(false).build();
 		assertNotNull(objectMapper);
-		assertThat((Object) objectMapper.getClass()).isEqualTo(XmlMapper.class);
+		assertThat(objectMapper.getClass()).isEqualTo(XmlMapper.class);
 		ListContainer<String> container = new ListContainer<>(Arrays.asList("foo", "bar"));
 		String output = objectMapper.writeValueAsString(container);
 		assertThat(output).contains("<list>foo</list><list>bar</list></ListContainer>");
@@ -535,21 +535,21 @@ public class Jackson2ObjectMapperBuilderTests {
 	public void smile() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.smile().build();
 		assertNotNull(objectMapper);
-		assertThat((Object) objectMapper.getFactory().getClass()).isEqualTo(SmileFactory.class);
+		assertThat(objectMapper.getFactory().getClass()).isEqualTo(SmileFactory.class);
 	}
 
 	@Test  // SPR-14435
 	public void cbor() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.cbor().build();
 		assertNotNull(objectMapper);
-		assertThat((Object) objectMapper.getFactory().getClass()).isEqualTo(CBORFactory.class);
+		assertThat(objectMapper.getFactory().getClass()).isEqualTo(CBORFactory.class);
 	}
 
 	@Test  // SPR-14435
 	public void factory() {
 		ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder().factory(new SmileFactory()).build();
 		assertNotNull(objectMapper);
-		assertThat((Object) objectMapper.getFactory().getClass()).isEqualTo(SmileFactory.class);
+		assertThat(objectMapper.getFactory().getClass()).isEqualTo(SmileFactory.class);
 	}
 
 

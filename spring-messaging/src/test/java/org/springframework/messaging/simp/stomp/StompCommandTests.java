@@ -74,28 +74,28 @@ public class StompCommandTests {
 	@Test
 	public void requiresDestination() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertThat((Object) stompCommand.requiresDestination()).isEqualTo(destinationRequired.contains(stompCommand));
+			assertThat(stompCommand.requiresDestination()).isEqualTo(destinationRequired.contains(stompCommand));
 		}
 	}
 
 	@Test
 	public void requiresSubscriptionId() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertThat((Object) stompCommand.requiresSubscriptionId()).isEqualTo(subscriptionIdRequired.contains(stompCommand));
+			assertThat(stompCommand.requiresSubscriptionId()).isEqualTo(subscriptionIdRequired.contains(stompCommand));
 		}
 	}
 
 	@Test
 	public void requiresContentLength() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertThat((Object) stompCommand.requiresContentLength()).isEqualTo(contentLengthRequired.contains(stompCommand));
+			assertThat(stompCommand.requiresContentLength()).isEqualTo(contentLengthRequired.contains(stompCommand));
 		}
 	}
 
 	@Test
 	public void isBodyAllowed() throws Exception {
 		for (StompCommand stompCommand : StompCommand.values()) {
-			assertThat((Object) stompCommand.isBodyAllowed()).isEqualTo(bodyAllowed.contains(stompCommand));
+			assertThat(stompCommand.isBodyAllowed()).isEqualTo(bodyAllowed.contains(stompCommand));
 		}
 	}
 

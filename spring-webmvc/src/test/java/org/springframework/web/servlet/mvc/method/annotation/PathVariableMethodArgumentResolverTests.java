@@ -96,7 +96,7 @@ public class PathVariableMethodArgumentResolverTests {
 		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		String result = (String) resolver.resolveArgument(paramNamedString, mavContainer, webRequest, null);
-		assertThat((Object) result).as("PathVariable not resolved correctly").isEqualTo("value");
+		assertThat(result).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
@@ -112,7 +112,7 @@ public class PathVariableMethodArgumentResolverTests {
 		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		String result = (String) resolver.resolveArgument(paramNotRequired, mavContainer, webRequest, null);
-		assertThat((Object) result).as("PathVariable not resolved correctly").isEqualTo("value");
+		assertThat(result).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
@@ -134,7 +134,7 @@ public class PathVariableMethodArgumentResolverTests {
 		@SuppressWarnings("unchecked")
 		Optional<String> result = (Optional<String>)
 				resolver.resolveArgument(paramOptional, mavContainer, webRequest, binderFactory);
-		assertThat((Object) result.get()).as("PathVariable not resolved correctly").isEqualTo("value");
+		assertThat(result.get()).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
@@ -153,7 +153,7 @@ public class PathVariableMethodArgumentResolverTests {
 		request.setAttribute(View.PATH_VARIABLES, uriTemplateVars);
 
 		String result = (String) resolver.resolveArgument(paramNamedString, mavContainer, webRequest, null);
-		assertThat((Object) result).as("PathVariable not resolved correctly").isEqualTo("value");
+		assertThat(result).as("PathVariable not resolved correctly").isEqualTo("value");
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);

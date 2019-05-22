@@ -50,7 +50,7 @@ public class RouterFunctionsTests {
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
-		assertThat((Object) resultHandlerFunction.get()).isEqualTo(handlerFunction);
+		assertThat(resultHandlerFunction.get()).isEqualTo(handlerFunction);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class RouterFunctionsTests {
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
-		assertThat((Object) resultHandlerFunction.get()).isEqualTo(handlerFunction);
+		assertThat(resultHandlerFunction.get()).isEqualTo(handlerFunction);
 	}
 
 	@Test

@@ -74,11 +74,11 @@ public abstract class AbstractExpressionTests {
 		}
 
 		Class<?> resultType = value.getClass();
-		assertThat((Object) resultType).as("Type of the actual result was not as expected.  Expected '" + expectedResultType +
+		assertThat(resultType).as("Type of the actual result was not as expected.  Expected '" + expectedResultType +
 				"' but result was of type '" + resultType + "'").isEqualTo(expectedResultType);
 
 		if (expectedValue instanceof String) {
-			assertThat((Object) AbstractExpressionTests.stringValueOf(value)).as("Did not get expected value for expression '" + expression + "'.").isEqualTo(expectedValue);
+			assertThat(AbstractExpressionTests.stringValueOf(value)).as("Did not get expected value for expression '" + expression + "'.").isEqualTo(expectedValue);
 		}
 		else {
 			assertThat(value).as("Did not get expected value for expression '" + expression + "'.").isEqualTo(expectedValue);
@@ -101,7 +101,7 @@ public abstract class AbstractExpressionTests {
 		}
 
 		Class<?> resultType = value.getClass();
-		assertThat((Object) resultType).as("Type of the actual result was not as expected.  Expected '" + expectedResultType +
+		assertThat(resultType).as("Type of the actual result was not as expected.  Expected '" + expectedResultType +
 				"' but result was of type '" + resultType + "'").isEqualTo(expectedResultType);
 		assertThat(value).as("Did not get expected value for expression '" + expression + "'.").isEqualTo(expectedValue);
 	}
@@ -131,7 +131,7 @@ public abstract class AbstractExpressionTests {
 		}
 		Class<? extends Object> resultType = value.getClass();
 		if (expectedValue instanceof String) {
-			assertThat((Object) AbstractExpressionTests.stringValueOf(value)).as("Did not get expected value for expression '" + expression + "'.").isEqualTo(expectedValue);
+			assertThat(AbstractExpressionTests.stringValueOf(value)).as("Did not get expected value for expression '" + expression + "'.").isEqualTo(expectedValue);
 		}
 		else {
 			assertThat(value).as("Did not get expected value for expression '" + expression + "'.").isEqualTo(expectedValue);

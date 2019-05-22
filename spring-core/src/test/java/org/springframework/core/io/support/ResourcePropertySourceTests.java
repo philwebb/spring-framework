@@ -99,7 +99,7 @@ public class ResourcePropertySourceTests {
 	public void withResourceHavingNoDescription() throws IOException {
 		PropertySource<?> ps = new ResourcePropertySource(new ByteArrayResource("foo=bar".getBytes(), ""));
 		assertThat(ps.getProperty("foo")).isEqualTo("bar");
-		assertThat((Object) ps.getName()).isEqualTo("Byte array resource []");
+		assertThat(ps.getName()).isEqualTo("Byte array resource []");
 	}
 
 }

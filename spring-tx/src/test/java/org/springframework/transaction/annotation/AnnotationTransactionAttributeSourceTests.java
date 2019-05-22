@@ -98,7 +98,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		TransactionAttribute actual = atas.getTransactionAttribute(interfaceMethod, TestBean2.class);
 
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 
 		TransactionAttribute actual2 = atas.getTransactionAttribute(interfaceMethod2, TestBean3.class);
 		assertEquals(TransactionAttribute.PROPAGATION_REQUIRED, actual2.getPropagationBehavior());
@@ -170,7 +170,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new RollbackRuleAttribute("java.lang.Exception"));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 		assertThat(actual.rollbackOn(new Exception())).isTrue();
 		assertThat(actual.rollbackOn(new IOException())).isFalse();
 
@@ -180,7 +180,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new RollbackRuleAttribute("java.lang.Exception"));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 		assertThat(actual.rollbackOn(new Exception())).isTrue();
 		assertThat(actual.rollbackOn(new IOException())).isFalse();
 	}
@@ -199,7 +199,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 
 		assertThat(actual.isReadOnly()).isTrue();
 	}
@@ -253,7 +253,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 
 		assertThat(actual.isReadOnly()).isTrue();
 	}
@@ -274,7 +274,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 
 		assertThat(actual.isReadOnly()).isTrue();
 	}
@@ -296,7 +296,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
-		assertThat((Object) ((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
+		assertThat(((RuleBasedTransactionAttribute) actual).getRollbackRules()).isEqualTo(rbta.getRollbackRules());
 
 		assertThat(actual.isReadOnly()).isTrue();
 	}

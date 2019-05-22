@@ -73,7 +73,7 @@ public class ServletTestExecutionListenerJUnitIntegrationTests {
 	}
 
 	private void assertInjectedServletRequestEqualsRequestInRequestContextHolder() {
-		assertThat((Object) ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()).as("Injected ServletRequest must be stored in the RequestContextHolder").isEqualTo(servletRequest);
+		assertThat(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()).as("Injected ServletRequest must be stored in the RequestContextHolder").isEqualTo(servletRequest);
 	}
 
 }

@@ -76,7 +76,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		MessageCodesResolver resolver =
 				((ConfigurableWebBindingInitializer) initializer).getMessageCodesResolver();
 		assertNotNull(resolver);
-		assertThat((Object) resolver.getClass()).isEqualTo(TestMessageCodesResolver.class);
+		assertThat(resolver.getClass()).isEqualTo(TestMessageCodesResolver.class);
 		assertThat(new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect")).isEqualTo(false);
 	}
 
@@ -151,8 +151,8 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodReturnValueHandler> handlers = (List<HandlerMethodReturnValueHandler>) value;
 		assertEquals(2, handlers.size());
-		assertThat((Object) handlers.get(0).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
-		assertThat((Object) handlers.get(1).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
+		assertThat(handlers.get(0).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
+		assertThat(handlers.get(1).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
 		assertNotSame(handlers.get(0), handlers.get(1));
 	}
 

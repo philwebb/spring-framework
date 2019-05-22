@@ -41,9 +41,9 @@ public class MockServerHttpRequestTests {
 		MockServerHttpRequest request = MockServerHttpRequest.get("/")
 				.cookie(foo11, foo12, foo21, foo22).build();
 
-		assertThat((Object) request.getCookies().get("foo1")).isEqualTo(Arrays.asList(foo11, foo12));
-		assertThat((Object) request.getCookies().get("foo2")).isEqualTo(Arrays.asList(foo21, foo22));
-		assertThat((Object) request.getHeaders().get(HttpHeaders.COOKIE)).isEqualTo(Arrays.asList("foo1=bar1", "foo1=bar2", "foo2=baz1", "foo2=baz2"));
+		assertThat(request.getCookies().get("foo1")).isEqualTo(Arrays.asList(foo11, foo12));
+		assertThat(request.getCookies().get("foo2")).isEqualTo(Arrays.asList(foo21, foo22));
+		assertThat(request.getHeaders().get(HttpHeaders.COOKIE)).isEqualTo(Arrays.asList("foo1=bar1", "foo1=bar2", "foo2=baz1", "foo2=baz2"));
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class MockServerHttpRequestTests {
 				.queryParam("name B", "value B1")
 				.build();
 
-		assertThat((Object) request.getURI().toString()).isEqualTo("/foo%20bar?a=b&name%20A=value%20A1&name%20A=value%20A2&name%20B=value%20B1");
+		assertThat(request.getURI().toString()).isEqualTo("/foo%20bar?a=b&name%20A=value%20A1&name%20A=value%20A2&name%20B=value%20B1");
 	}
 
 }

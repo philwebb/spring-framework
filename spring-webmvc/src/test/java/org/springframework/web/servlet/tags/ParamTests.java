@@ -34,13 +34,13 @@ public class ParamTests {
 	@Test
 	public void name() {
 		param.setName("name");
-		assertThat((Object) param.getName()).isEqualTo("name");
+		assertThat(param.getName()).isEqualTo("name");
 	}
 
 	@Test
 	public void value() {
 		param.setValue("value");
-		assertThat((Object) param.getValue()).isEqualTo("value");
+		assertThat(param.getValue()).isEqualTo("value");
 	}
 
 	@Test

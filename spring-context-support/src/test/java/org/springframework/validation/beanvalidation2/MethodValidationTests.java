@@ -89,7 +89,7 @@ public class MethodValidationTests {
 				proxy.myValidAsyncMethod("value", 15));
 		assertThatExceptionOfType(ValidationException.class).isThrownBy(() ->
 				proxy.myValidAsyncMethod(null, 5));
-		assertThat((Object) proxy.myGenericMethod("myValue")).isEqualTo("myValue");
+		assertThat(proxy.myGenericMethod("myValue")).isEqualTo("myValue");
 		assertThatExceptionOfType(ValidationException.class).isThrownBy(() ->
 				proxy.myGenericMethod(null));
 	}

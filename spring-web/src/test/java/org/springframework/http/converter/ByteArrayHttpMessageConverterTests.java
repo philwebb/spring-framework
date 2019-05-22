@@ -65,7 +65,7 @@ public class ByteArrayHttpMessageConverterTests {
 		byte[] body = new byte[]{0x1, 0x2};
 		converter.write(body, null, outputMessage);
 		assertArrayEquals("Invalid result", body, outputMessage.getBodyAsBytes());
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "octet-stream"));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "octet-stream"));
 		assertEquals("Invalid content-length", 2, outputMessage.getHeaders().getContentLength());
 	}
 

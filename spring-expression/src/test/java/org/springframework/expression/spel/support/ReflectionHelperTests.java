@@ -84,10 +84,10 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		TypedValue tv1 = new TypedValue("hello");
 		TypedValue tv2 = new TypedValue("hello");
 		TypedValue tv3 = new TypedValue("bye");
-		assertThat((Object) tv1.getTypeDescriptor().getType()).isEqualTo(String.class);
-		assertThat((Object) tv1.toString()).isEqualTo("TypedValue: 'hello' of [java.lang.String]");
-		assertThat((Object) tv2).isEqualTo(tv1);
-		assertThat((Object) tv1).isEqualTo(tv2);
+		assertThat(tv1.getTypeDescriptor().getType()).isEqualTo(String.class);
+		assertThat(tv1.toString()).isEqualTo("TypedValue: 'hello' of [java.lang.String]");
+		assertThat(tv2).isEqualTo(tv1);
+		assertThat(tv1).isEqualTo(tv2);
 		assertNotEquals(tv1, tv3);
 		assertNotEquals(tv2, tv3);
 		assertNotEquals(tv3, tv1);
@@ -259,7 +259,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 
 		assertEquals(1, newArray.length);
 		Object firstParam = newArray[0];
-		assertThat((Object) firstParam.getClass().getComponentType()).isEqualTo(String.class);
+		assertThat(firstParam.getClass().getComponentType()).isEqualTo(String.class);
 		Object[] firstParamArray = (Object[]) firstParam;
 		assertEquals(3,firstParamArray.length);
 		assertThat(firstParamArray[0]).isEqualTo("a");

@@ -47,7 +47,7 @@ public class MockServerHttpResponseTests {
 
 		response.applyCookies();
 
-		assertThat((Object) response.getHeaders().get(HttpHeaders.SET_COOKIE)).isEqualTo(Arrays.asList("foo1=bar1", "foo1=bar2", "foo2=baz1", "foo2=baz2"));
+		assertThat(response.getHeaders().get(HttpHeaders.SET_COOKIE)).isEqualTo(Arrays.asList("foo1=bar1", "foo1=bar2", "foo2=baz1", "foo2=baz2"));
 	}
 
 }

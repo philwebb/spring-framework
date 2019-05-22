@@ -76,8 +76,8 @@ public class ClassPathBeanDefinitionScannerTests {
 
 		FooServiceImpl fooService = context.getBean("fooServiceImpl", FooServiceImpl.class);
 		assertThat(context.getDefaultListableBeanFactory().containsSingleton("myNamedComponent")).isTrue();
-		assertThat((Object) fooService.foo(123)).isEqualTo("bar");
-		assertThat((Object) fooService.lookupFoo(123)).isEqualTo("bar");
+		assertThat(fooService.foo(123)).isEqualTo("bar");
+		assertThat(fooService.lookupFoo(123)).isEqualTo("bar");
 		assertThat(context.isPrototype("thoreau")).isTrue();
 	}
 
@@ -99,8 +99,8 @@ public class ClassPathBeanDefinitionScannerTests {
 		assertThat(context.getBeanFactory().containsSingleton("fooServiceImpl")).isFalse();
 		FooServiceImpl fooService = context.getBean("fooServiceImpl", FooServiceImpl.class);
 		assertThat(context.getBeanFactory().containsSingleton("otherFooDao")).isTrue();
-		assertThat((Object) fooService.foo(123)).isEqualTo("other");
-		assertThat((Object) fooService.lookupFoo(123)).isEqualTo("other");
+		assertThat(fooService.foo(123)).isEqualTo("other");
+		assertThat(fooService.lookupFoo(123)).isEqualTo("other");
 	}
 
 	@Test
@@ -405,8 +405,8 @@ public class ClassPathBeanDefinitionScannerTests {
 		StaticListableBeanFactory myBf = (StaticListableBeanFactory) context.getBean("myBf");
 		MessageSource ms = (MessageSource) context.getBean("messageSource");
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertThat((Object) fooService.foo(123)).isEqualTo("bar");
-		assertThat((Object) fooService.lookupFoo(123)).isEqualTo("bar");
+		assertThat(fooService.foo(123)).isEqualTo("bar");
+		assertThat(fooService.lookupFoo(123)).isEqualTo("bar");
 		assertSame(context.getDefaultListableBeanFactory(), fooService.beanFactory);
 		assertEquals(2, fooService.listableBeanFactory.size());
 		assertSame(context.getDefaultListableBeanFactory(), fooService.listableBeanFactory.get(0));
@@ -451,8 +451,8 @@ public class ClassPathBeanDefinitionScannerTests {
 		context.refresh();
 
 		FooServiceImpl fooService = (FooServiceImpl) context.getBean("fooService");
-		assertThat((Object) fooService.foo(123)).isEqualTo("bar");
-		assertThat((Object) fooService.lookupFoo(123)).isEqualTo("bar");
+		assertThat(fooService.foo(123)).isEqualTo("bar");
+		assertThat(fooService.lookupFoo(123)).isEqualTo("bar");
 	}
 
 	@Test

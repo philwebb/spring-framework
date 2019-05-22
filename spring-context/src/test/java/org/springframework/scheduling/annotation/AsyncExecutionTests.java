@@ -74,11 +74,11 @@ public class AsyncExecutionTests {
 		asyncTest.doNothing(5);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 		ListenableFuture<String> listenableFuture = asyncTest.returnSomethingListenable(20);
-		assertThat((Object) listenableFuture.get()).isEqualTo("20");
+		assertThat(listenableFuture.get()).isEqualTo("20");
 		CompletableFuture<String> completableFuture = asyncTest.returnSomethingCompletable(20);
-		assertThat((Object) completableFuture.get()).isEqualTo("20");
+		assertThat(completableFuture.get()).isEqualTo("20");
 
 		assertThatExceptionOfType(ExecutionException.class).isThrownBy(() ->
 				asyncTest.returnSomething(0).get())
@@ -114,7 +114,7 @@ public class AsyncExecutionTests {
 		asyncTest.doNothing(5);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -133,9 +133,9 @@ public class AsyncExecutionTests {
 		asyncTest.doNothing(5);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 		Future<String> future2 = asyncTest.returnSomething2(30);
-		assertThat((Object) future2.get()).isEqualTo("30");
+		assertThat(future2.get()).isEqualTo("30");
 	}
 
 	@Test
@@ -154,9 +154,9 @@ public class AsyncExecutionTests {
 		asyncTest.doNothing(5);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 		Future<String> future2 = asyncTest.returnSomething2(30);
-		assertThat((Object) future2.get()).isEqualTo("30");
+		assertThat(future2.get()).isEqualTo("30");
 	}
 
 	@Test
@@ -171,11 +171,11 @@ public class AsyncExecutionTests {
 		AsyncClassBean asyncTest = context.getBean("asyncTest", AsyncClassBean.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 		ListenableFuture<String> listenableFuture = asyncTest.returnSomethingListenable(20);
-		assertThat((Object) listenableFuture.get()).isEqualTo("20");
+		assertThat(listenableFuture.get()).isEqualTo("20");
 		CompletableFuture<String> completableFuture = asyncTest.returnSomethingCompletable(20);
-		assertThat((Object) completableFuture.get()).isEqualTo("20");
+		assertThat(completableFuture.get()).isEqualTo("20");
 
 		assertThatExceptionOfType(ExecutionException.class).isThrownBy(() ->
 				asyncTest.returnSomething(0).get())
@@ -201,7 +201,7 @@ public class AsyncExecutionTests {
 		AsyncClassBean asyncTest = context.getBean("asyncTest", AsyncClassBean.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -216,7 +216,7 @@ public class AsyncExecutionTests {
 		RegularInterface asyncTest = context.getBean("asyncTest", RegularInterface.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -230,7 +230,7 @@ public class AsyncExecutionTests {
 		RegularInterface asyncTest = context.getBean("asyncTest", RegularInterface.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -245,7 +245,7 @@ public class AsyncExecutionTests {
 		AsyncInterface asyncTest = context.getBean("asyncTest", AsyncInterface.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -259,7 +259,7 @@ public class AsyncExecutionTests {
 		AsyncInterface asyncTest = context.getBean("asyncTest", AsyncInterface.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -274,7 +274,7 @@ public class AsyncExecutionTests {
 		AsyncInterface asyncTest = context.getBean("asyncTest", AsyncInterface.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -288,7 +288,7 @@ public class AsyncExecutionTests {
 		AsyncInterface asyncTest = context.getBean("asyncTest", AsyncInterface.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -304,7 +304,7 @@ public class AsyncExecutionTests {
 		asyncTest.doNothing(5);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -319,7 +319,7 @@ public class AsyncExecutionTests {
 		asyncTest.doNothing(5);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test
@@ -333,7 +333,7 @@ public class AsyncExecutionTests {
 		AsyncMethodsInterface asyncTest = context.getBean("asyncTest", AsyncMethodsInterface.class);
 		asyncTest.doSomething(10);
 		Future<String> future = asyncTest.returnSomething(20);
-		assertThat((Object) future.get()).isEqualTo("20");
+		assertThat(future.get()).isEqualTo("20");
 	}
 
 	@Test

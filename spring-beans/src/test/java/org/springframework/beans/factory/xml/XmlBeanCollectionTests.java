@@ -143,7 +143,7 @@ public class XmlBeanCollectionTests {
 		assertThat(friends[0] != jen).as("Jen not same instance").isTrue();
 		assertThat(friends[1].toString().equals(dave.toString())).isTrue();
 		assertThat(friends[1] != dave).as("Dave not same instance").isTrue();
-		assertThat((Object) dave.getSpouse().getName()).isEqualTo("Jen");
+		assertThat(dave.getSpouse().getName()).isEqualTo("Jen");
 
 		TestBean rod2 = (TestBean) this.beanFactory.getBean("pRod");
 		Object[] friends2 = rod2.getFriends().toArray();
@@ -311,7 +311,7 @@ public class XmlBeanCollectionTests {
 	public void testEmptyProps() throws Exception {
 		HasMap hasMap = (HasMap) this.beanFactory.getBean("emptyProps");
 		assertThat(hasMap.getProps().size() == 0).isTrue();
-		assertThat((Object) Properties.class).isEqualTo(hasMap.getProps().getClass());
+		assertThat(Properties.class).isEqualTo(hasMap.getProps().getClass());
 	}
 
 	@Test
@@ -359,13 +359,13 @@ public class XmlBeanCollectionTests {
 	public void testProps() throws Exception {
 		HasMap hasMap = (HasMap) this.beanFactory.getBean("props");
 		assertEquals(2, hasMap.getProps().size());
-		assertThat((Object) hasMap.getProps().getProperty("foo")).isEqualTo("bar");
-		assertThat((Object) hasMap.getProps().getProperty("2")).isEqualTo("TWO");
+		assertThat(hasMap.getProps().getProperty("foo")).isEqualTo("bar");
+		assertThat(hasMap.getProps().getProperty("2")).isEqualTo("TWO");
 
 		HasMap hasMap2 = (HasMap) this.beanFactory.getBean("propsViaMap");
 		assertEquals(2, hasMap2.getProps().size());
-		assertThat((Object) hasMap2.getProps().getProperty("foo")).isEqualTo("bar");
-		assertThat((Object) hasMap2.getProps().getProperty("2")).isEqualTo("TWO");
+		assertThat(hasMap2.getProps().getProperty("foo")).isEqualTo("bar");
+		assertThat(hasMap2.getProps().getProperty("2")).isEqualTo("TWO");
 	}
 
 	@Test

@@ -46,15 +46,15 @@ public class CacheProxyFactoryBeanTests {
 			Greeter greeter = applicationContext.getBean("greeter", Greeter.class);
 			assertNotNull(greeter);
 			assertThat(greeter.isCacheMiss()).isFalse();
-			assertThat((Object) greeter.greet("John")).isEqualTo("Hello John!");
+			assertThat(greeter.greet("John")).isEqualTo("Hello John!");
 			assertThat(greeter.isCacheMiss()).isTrue();
-			assertThat((Object) greeter.greet("Jon")).isEqualTo("Hello Jon!");
+			assertThat(greeter.greet("Jon")).isEqualTo("Hello Jon!");
 			assertThat(greeter.isCacheMiss()).isTrue();
-			assertThat((Object) greeter.greet("John")).isEqualTo("Hello John!");
+			assertThat(greeter.greet("John")).isEqualTo("Hello John!");
 			assertThat(greeter.isCacheMiss()).isFalse();
-			assertThat((Object) greeter.greet()).isEqualTo("Hello World!");
+			assertThat(greeter.greet()).isEqualTo("Hello World!");
 			assertThat(greeter.isCacheMiss()).isTrue();
-			assertThat((Object) greeter.greet()).isEqualTo("Hello World!");
+			assertThat(greeter.greet()).isEqualTo("Hello World!");
 			assertThat(greeter.isCacheMiss()).isFalse();
 		}
 	}

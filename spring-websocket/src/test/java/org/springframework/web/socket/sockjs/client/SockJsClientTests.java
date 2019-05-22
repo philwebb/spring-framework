@@ -126,13 +126,13 @@ public class SockJsClientTests {
 
 		HttpHeaders httpHeaders = headersCaptor.getValue();
 		assertEquals(2, httpHeaders.size());
-		assertThat((Object) httpHeaders.getFirst("foo")).isEqualTo("bar");
-		assertThat((Object) httpHeaders.getFirst("auth")).isEqualTo("123");
+		assertThat(httpHeaders.getFirst("foo")).isEqualTo("bar");
+		assertThat(httpHeaders.getFirst("auth")).isEqualTo("123");
 
 		httpHeaders = this.xhrTransport.getRequest().getHttpRequestHeaders();
 		assertEquals(2, httpHeaders.size());
-		assertThat((Object) httpHeaders.getFirst("foo")).isEqualTo("bar");
-		assertThat((Object) httpHeaders.getFirst("auth")).isEqualTo("123");
+		assertThat(httpHeaders.getFirst("foo")).isEqualTo("bar");
+		assertThat(httpHeaders.getFirst("auth")).isEqualTo("123");
 	}
 
 	@Test
@@ -147,9 +147,9 @@ public class SockJsClientTests {
 		this.sockJsClient.doHandshake(handler, headers, new URI(URL)).addCallback(this.connectCallback);
 
 		assertEquals(1, headersCaptor.getValue().size());
-		assertThat((Object) headersCaptor.getValue().getFirst("auth")).isEqualTo("123");
+		assertThat(headersCaptor.getValue().getFirst("auth")).isEqualTo("123");
 		assertEquals(1, this.xhrTransport.getRequest().getHttpRequestHeaders().size());
-		assertThat((Object) this.xhrTransport.getRequest().getHttpRequestHeaders().getFirst("auth")).isEqualTo("123");
+		assertThat(this.xhrTransport.getRequest().getHttpRequestHeaders().getFirst("auth")).isEqualTo("123");
 	}
 
 	@Test

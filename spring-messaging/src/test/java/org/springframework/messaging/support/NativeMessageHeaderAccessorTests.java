@@ -86,7 +86,7 @@ public class NativeMessageHeaderAccessorTests {
 		assertEquals(0, actual.size());
 
 		Map<String, List<String>> actualNativeHeaders = headerAccessor.toNativeHeaderMap();
-		assertThat((Object) actualNativeHeaders).isEqualTo(Collections.emptyMap());
+		assertThat(actualNativeHeaders).isEqualTo(Collections.emptyMap());
 	}
 
 	@Test
@@ -116,8 +116,8 @@ public class NativeMessageHeaderAccessorTests {
 				(Map<String, List<String>>) actual.get(NativeMessageHeaderAccessor.NATIVE_HEADERS);
 
 		assertNotNull(actualNativeHeaders);
-		assertThat((Object) actualNativeHeaders.get("foo")).isEqualTo(Arrays.asList("BAR"));
-		assertThat((Object) actualNativeHeaders.get("bar")).isEqualTo(Arrays.asList("baz"));
+		assertThat(actualNativeHeaders.get("foo")).isEqualTo(Arrays.asList("BAR"));
+		assertThat(actualNativeHeaders.get("bar")).isEqualTo(Arrays.asList("baz"));
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class NativeMessageHeaderAccessorTests {
 		NativeMessageHeaderAccessor headers = new NativeMessageHeaderAccessor(nativeHeaders);
 		headers.setNativeHeader("foo", "baz");
 
-		assertThat((Object) headers.getNativeHeader("foo")).isEqualTo(Arrays.asList("baz"));
+		assertThat(headers.getNativeHeader("foo")).isEqualTo(Arrays.asList("baz"));
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class NativeMessageHeaderAccessorTests {
 		NativeMessageHeaderAccessor headerAccessor = new NativeMessageHeaderAccessor();
 		headerAccessor.setNativeHeader("foo", "baz");
 
-		assertThat((Object) headerAccessor.getNativeHeader("foo")).isEqualTo(Arrays.asList("baz"));
+		assertThat(headerAccessor.getNativeHeader("foo")).isEqualTo(Arrays.asList("baz"));
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class NativeMessageHeaderAccessorTests {
 		NativeMessageHeaderAccessor headers = new NativeMessageHeaderAccessor(nativeHeaders);
 		headers.addNativeHeader("foo", "baz");
 
-		assertThat((Object) headers.getNativeHeader("foo")).isEqualTo(Arrays.asList("bar", "baz"));
+		assertThat(headers.getNativeHeader("foo")).isEqualTo(Arrays.asList("bar", "baz"));
 	}
 
 	@Test
@@ -189,7 +189,7 @@ public class NativeMessageHeaderAccessorTests {
 		NativeMessageHeaderAccessor headers = new NativeMessageHeaderAccessor(nativeHeaders);
 		headers.addNativeHeader("foo", null);
 
-		assertThat((Object) headers.getNativeHeader("foo")).isEqualTo(Arrays.asList("bar"));
+		assertThat(headers.getNativeHeader("foo")).isEqualTo(Arrays.asList("bar"));
 	}
 
 	@Test
@@ -197,7 +197,7 @@ public class NativeMessageHeaderAccessorTests {
 		NativeMessageHeaderAccessor headerAccessor = new NativeMessageHeaderAccessor();
 		headerAccessor.addNativeHeader("foo", "bar");
 
-		assertThat((Object) headerAccessor.getNativeHeader("foo")).isEqualTo(Arrays.asList("bar"));
+		assertThat(headerAccessor.getNativeHeader("foo")).isEqualTo(Arrays.asList("bar"));
 	}
 
 	@Test

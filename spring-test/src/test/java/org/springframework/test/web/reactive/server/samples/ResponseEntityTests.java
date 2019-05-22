@@ -86,7 +86,7 @@ public class ResponseEntityTests {
 				.expectStatus().isOk()
 				.expectHeader().contentType(MediaType.APPLICATION_JSON)
 				.expectBody(Person.class)
-				.consumeWith(result -> assertThat((Object) result.getResponseBody()).isEqualTo(new Person("John")));
+				.consumeWith(result -> assertThat(result.getResponseBody()).isEqualTo(new Person("John")));
 	}
 
 	@Test

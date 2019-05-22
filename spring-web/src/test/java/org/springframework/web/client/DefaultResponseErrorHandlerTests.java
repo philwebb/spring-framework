@@ -190,7 +190,7 @@ public class DefaultResponseErrorHandlerTests {
 
 		assertThat(handler.hasError(response)).isFalse();
 		assertThat(body.isClosed()).isFalse();
-		assertThat((Object) StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8)).isEqualTo("Hello World");
+		assertThat(StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8)).isEqualTo("Hello World");
 	}
 
 

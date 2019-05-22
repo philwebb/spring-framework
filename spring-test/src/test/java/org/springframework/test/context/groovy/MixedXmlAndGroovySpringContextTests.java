@@ -57,13 +57,13 @@ public class MixedXmlAndGroovySpringContextTests {
 	@Test
 	public final void verifyAnnotationAutowiredFields() {
 		assertNotNull("The employee field should have been autowired.", this.employee);
-		assertThat((Object) this.employee.getName()).isEqualTo("Dilbert");
+		assertThat(this.employee.getName()).isEqualTo("Dilbert");
 
 		assertNotNull("The pet field should have been autowired.", this.pet);
-		assertThat((Object) this.pet.getName()).isEqualTo("Dogbert");
+		assertThat(this.pet.getName()).isEqualTo("Dogbert");
 
-		assertThat((Object) this.foo).as("The foo field should have been autowired.").isEqualTo("Groovy Foo");
-		assertThat((Object) this.bar).as("The bar field should have been autowired.").isEqualTo("XML Bar");
+		assertThat(this.foo).as("The foo field should have been autowired.").isEqualTo("Groovy Foo");
+		assertThat(this.bar).as("The bar field should have been autowired.").isEqualTo("XML Bar");
 	}
 
 }

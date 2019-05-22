@@ -58,19 +58,19 @@ public class DefaultServerRequestBuilderTests {
 				.body("baz")
 				.build();
 
-		assertThat((Object) result.method()).isEqualTo(HttpMethod.HEAD);
+		assertThat(result.method()).isEqualTo(HttpMethod.HEAD);
 		assertEquals(2, result.headers().asHttpHeaders().size());
-		assertThat((Object) result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("bar");
-		assertThat((Object) result.headers().asHttpHeaders().getFirst("baz")).isEqualTo("qux");
+		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("bar");
+		assertThat(result.headers().asHttpHeaders().getFirst("baz")).isEqualTo("qux");
 		assertEquals(2, result.cookies().size());
-		assertThat((Object) result.cookies().getFirst("foo").getValue()).isEqualTo("bar");
-		assertThat((Object) result.cookies().getFirst("baz").getValue()).isEqualTo("qux");
+		assertThat(result.cookies().getFirst("foo").getValue()).isEqualTo("bar");
+		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("qux");
 		assertEquals(2, result.attributes().size());
 		assertThat(result.attributes().get("foo")).isEqualTo("bar");
 		assertThat(result.attributes().get("baz")).isEqualTo("qux");
 
 		String body = result.body(String.class);
-		assertThat((Object) body).isEqualTo("baz");
+		assertThat(body).isEqualTo("baz");
 	}
 
 }

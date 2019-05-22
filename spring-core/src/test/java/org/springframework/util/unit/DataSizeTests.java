@@ -76,112 +76,112 @@ public class DataSizeTests {
 
 	@Test
 	public void ofWithBytesUnit() {
-		assertThat((Object) DataSize.of(10, DataUnit.BYTES)).isEqualTo(DataSize.ofBytes(10));
+		assertThat(DataSize.of(10, DataUnit.BYTES)).isEqualTo(DataSize.ofBytes(10));
 	}
 
 	@Test
 	public void ofWithKilobytesUnit() {
-		assertThat((Object) DataSize.of(20, DataUnit.KILOBYTES)).isEqualTo(DataSize.ofKilobytes(20));
+		assertThat(DataSize.of(20, DataUnit.KILOBYTES)).isEqualTo(DataSize.ofKilobytes(20));
 	}
 
 	@Test
 	public void ofWithMegabytesUnit() {
-		assertThat((Object) DataSize.of(30, DataUnit.MEGABYTES)).isEqualTo(DataSize.ofMegabytes(30));
+		assertThat(DataSize.of(30, DataUnit.MEGABYTES)).isEqualTo(DataSize.ofMegabytes(30));
 	}
 
 	@Test
 	public void ofWithGigabytesUnit() {
-		assertThat((Object) DataSize.of(40, DataUnit.GIGABYTES)).isEqualTo(DataSize.ofGigabytes(40));
+		assertThat(DataSize.of(40, DataUnit.GIGABYTES)).isEqualTo(DataSize.ofGigabytes(40));
 	}
 
 	@Test
 	public void ofWithTerabytesUnit() {
-		assertThat((Object) DataSize.of(50, DataUnit.TERABYTES)).isEqualTo(DataSize.ofTerabytes(50));
+		assertThat(DataSize.of(50, DataUnit.TERABYTES)).isEqualTo(DataSize.ofTerabytes(50));
 	}
 
 	@Test
 	public void parseWithDefaultUnitUsesBytes() {
-		assertThat((Object) DataSize.parse("1024")).isEqualTo(DataSize.ofKilobytes(1));
+		assertThat(DataSize.parse("1024")).isEqualTo(DataSize.ofKilobytes(1));
 	}
 
 	@Test
 	public void parseNegativeNumberWithDefaultUnitUsesBytes() {
-		assertThat((Object) DataSize.parse("-1")).isEqualTo(DataSize.ofBytes(-1));
+		assertThat(DataSize.parse("-1")).isEqualTo(DataSize.ofBytes(-1));
 	}
 
 	@Test
 	public void parseWithNullDefaultUnitUsesBytes() {
-		assertThat((Object) DataSize.parse("1024", null)).isEqualTo(DataSize.ofKilobytes(1));
+		assertThat(DataSize.parse("1024", null)).isEqualTo(DataSize.ofKilobytes(1));
 	}
 
 	@Test
 	public void parseNegativeNumberWithNullDefaultUnitUsesBytes() {
-		assertThat((Object) DataSize.parse("-1024", null)).isEqualTo(DataSize.ofKilobytes(-1));
+		assertThat(DataSize.parse("-1024", null)).isEqualTo(DataSize.ofKilobytes(-1));
 	}
 
 	@Test
 	public void parseWithCustomDefaultUnit() {
-		assertThat((Object) DataSize.parse("1", DataUnit.KILOBYTES)).isEqualTo(DataSize.ofKilobytes(1));
+		assertThat(DataSize.parse("1", DataUnit.KILOBYTES)).isEqualTo(DataSize.ofKilobytes(1));
 	}
 
 	@Test
 	public void parseNegativeNumberWithCustomDefaultUnit() {
-		assertThat((Object) DataSize.parse("-1", DataUnit.KILOBYTES)).isEqualTo(DataSize.ofKilobytes(-1));
+		assertThat(DataSize.parse("-1", DataUnit.KILOBYTES)).isEqualTo(DataSize.ofKilobytes(-1));
 	}
 
 	@Test
 	public void parseWithBytes() {
-		assertThat((Object) DataSize.parse("1024B")).isEqualTo(DataSize.ofKilobytes(1));
+		assertThat(DataSize.parse("1024B")).isEqualTo(DataSize.ofKilobytes(1));
 	}
 
 	@Test
 	public void parseWithNegativeBytes() {
-		assertThat((Object) DataSize.parse("-1024B")).isEqualTo(DataSize.ofKilobytes(-1));
+		assertThat(DataSize.parse("-1024B")).isEqualTo(DataSize.ofKilobytes(-1));
 	}
 
 	@Test
 	public void parseWithPositiveBytes() {
-		assertThat((Object) DataSize.parse("+1024B")).isEqualTo(DataSize.ofKilobytes(1));
+		assertThat(DataSize.parse("+1024B")).isEqualTo(DataSize.ofKilobytes(1));
 	}
 
 	@Test
 	public void parseWithKilobytes() {
-		assertThat((Object) DataSize.parse("1KB")).isEqualTo(DataSize.ofBytes(1024));
+		assertThat(DataSize.parse("1KB")).isEqualTo(DataSize.ofBytes(1024));
 	}
 
 	@Test
 	public void parseWithNegativeKilobytes() {
-		assertThat((Object) DataSize.parse("-1KB")).isEqualTo(DataSize.ofBytes(-1024));
+		assertThat(DataSize.parse("-1KB")).isEqualTo(DataSize.ofBytes(-1024));
 	}
 
 	@Test
 	public void parseWithMegabytes() {
-		assertThat((Object) DataSize.parse("4MB")).isEqualTo(DataSize.ofMegabytes(4));
+		assertThat(DataSize.parse("4MB")).isEqualTo(DataSize.ofMegabytes(4));
 	}
 
 	@Test
 	public void parseWithNegativeMegabytes() {
-		assertThat((Object) DataSize.parse("-4MB")).isEqualTo(DataSize.ofMegabytes(-4));
+		assertThat(DataSize.parse("-4MB")).isEqualTo(DataSize.ofMegabytes(-4));
 	}
 
 	@Test
 	public void parseWithGigabytes() {
-		assertThat((Object) DataSize.parse("1GB")).isEqualTo(DataSize.ofMegabytes(1024));
+		assertThat(DataSize.parse("1GB")).isEqualTo(DataSize.ofMegabytes(1024));
 	}
 
 	@Test
 	public void parseWithNegativeGigabytes() {
-		assertThat((Object) DataSize.parse("-1GB")).isEqualTo(DataSize.ofMegabytes(-1024));
+		assertThat(DataSize.parse("-1GB")).isEqualTo(DataSize.ofMegabytes(-1024));
 	}
 
 	@Test
 	public void parseWithTerabytes() {
-		assertThat((Object) DataSize.parse("1TB")).isEqualTo(DataSize.ofTerabytes(1));
+		assertThat(DataSize.parse("1TB")).isEqualTo(DataSize.ofTerabytes(1));
 	}
 
 	@Test
 	public void parseWithNegativeTerabytes() {
-		assertThat((Object) DataSize.parse("-1TB")).isEqualTo(DataSize.ofTerabytes(-1));
+		assertThat(DataSize.parse("-1TB")).isEqualTo(DataSize.ofTerabytes(-1));
 	}
 
 	@Test
@@ -201,12 +201,12 @@ public class DataSizeTests {
 
 	@Test
 	public void toStringUsesBytes() {
-		assertThat((Object) DataSize.ofKilobytes(1).toString()).isEqualTo("1024B");
+		assertThat(DataSize.ofKilobytes(1).toString()).isEqualTo("1024B");
 	}
 
 	@Test
 	public void toStringWithNegativeBytes() {
-		assertThat((Object) DataSize.ofKilobytes(-1).toString()).isEqualTo("-1024B");
+		assertThat(DataSize.ofKilobytes(-1).toString()).isEqualTo("-1024B");
 	}
 
 	@Test

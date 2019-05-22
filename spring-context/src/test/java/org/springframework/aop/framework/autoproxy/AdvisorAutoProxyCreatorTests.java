@@ -125,8 +125,8 @@ public class AdvisorAutoProxyCreatorTests {
 		BeanFactory bf = new ClassPathXmlApplicationContext(CUSTOM_TARGETSOURCE_CONTEXT, CLASS);
 		ITestBean test = (ITestBean) bf.getBean("test");
 		assertThat(AopUtils.isAopProxy(test)).isFalse();
-		assertThat((Object) test.getName()).isEqualTo("Rod");
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getName()).isEqualTo("Rod");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 	}
 
 	@Test
@@ -138,9 +138,9 @@ public class AdvisorAutoProxyCreatorTests {
 		Advised advised = (Advised) test;
 		boolean condition = advised.getTargetSource() instanceof PrototypeTargetSource;
 		assertThat(condition).isTrue();
-		assertThat((Object) test.getName()).isEqualTo("Rod");
+		assertThat(test.getName()).isEqualTo("Rod");
 		// Check that references survived prototype creation
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 		assertEquals("Only 2 CountingTestBeans instantiated", 2, CountingTestBean.count);
 		CountingTestBean.count = 0;
 	}
@@ -155,8 +155,8 @@ public class AdvisorAutoProxyCreatorTests {
 		boolean condition = advised.getTargetSource() instanceof LazyInitTargetSource;
 		assertThat(condition).isTrue();
 		assertEquals("No CountingTestBean instantiated yet", 0, CountingTestBean.count);
-		assertThat((Object) test.getName()).isEqualTo("Rod");
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getName()).isEqualTo("Rod");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 		assertEquals("Only 1 CountingTestBean instantiated", 1, CountingTestBean.count);
 		CountingTestBean.count = 0;
 	}
@@ -167,9 +167,9 @@ public class AdvisorAutoProxyCreatorTests {
 				new ClassPathXmlApplicationContext(QUICK_TARGETSOURCE_CONTEXT, CLASS);
 		ITestBean test = (ITestBean) bf.getBean("test");
 		assertThat(AopUtils.isAopProxy(test)).isFalse();
-		assertThat((Object) test.getName()).isEqualTo("Rod");
+		assertThat(test.getName()).isEqualTo("Rod");
 		// Check that references survived pooling
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 
 		// Now test the pooled one
 		test = (ITestBean) bf.getBean(":test");
@@ -177,9 +177,9 @@ public class AdvisorAutoProxyCreatorTests {
 		Advised advised = (Advised) test;
 		boolean condition2 = advised.getTargetSource() instanceof CommonsPool2TargetSource;
 		assertThat(condition2).isTrue();
-		assertThat((Object) test.getName()).isEqualTo("Rod");
+		assertThat(test.getName()).isEqualTo("Rod");
 		// Check that references survived pooling
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 
 		// Now test the ThreadLocal one
 		test = (ITestBean) bf.getBean("%test");
@@ -187,9 +187,9 @@ public class AdvisorAutoProxyCreatorTests {
 		advised = (Advised) test;
 		boolean condition1 = advised.getTargetSource() instanceof ThreadLocalTargetSource;
 		assertThat(condition1).isTrue();
-		assertThat((Object) test.getName()).isEqualTo("Rod");
+		assertThat(test.getName()).isEqualTo("Rod");
 		// Check that references survived pooling
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 
 		// Now test the Prototype TargetSource
 		test = (ITestBean) bf.getBean("!test");
@@ -197,15 +197,15 @@ public class AdvisorAutoProxyCreatorTests {
 		advised = (Advised) test;
 		boolean condition = advised.getTargetSource() instanceof PrototypeTargetSource;
 		assertThat(condition).isTrue();
-		assertThat((Object) test.getName()).isEqualTo("Rod");
+		assertThat(test.getName()).isEqualTo("Rod");
 		// Check that references survived pooling
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 
 
 		ITestBean test2 = (ITestBean) bf.getBean("!test");
 		assertThat(test == test2).as("Prototypes cannot be the same object").isFalse();
-		assertThat((Object) test2.getName()).isEqualTo("Rod");
-		assertThat((Object) test2.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test2.getName()).isEqualTo("Rod");
+		assertThat(test2.getSpouse().getName()).isEqualTo("Kerry");
 		bf.close();
 	}
 

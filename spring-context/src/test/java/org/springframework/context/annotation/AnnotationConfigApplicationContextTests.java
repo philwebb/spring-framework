@@ -346,8 +346,8 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("fb", TypedFactoryBean.class, TypedFactoryBean::new, bd -> bd.setLazyInit(true));
 		context.refresh();
 
-		assertThat((Object) context.getType("fb")).isEqualTo(String.class);
-		assertThat((Object) context.getType("&fb")).isEqualTo(TypedFactoryBean.class);
+		assertThat(context.getType("fb")).isEqualTo(String.class);
+		assertThat(context.getType("&fb")).isEqualTo(TypedFactoryBean.class);
 	}
 
 	@Test
@@ -360,8 +360,8 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBeanDefinition("fb", bd);
 		context.refresh();
 
-		assertThat((Object) context.getType("fb")).isEqualTo(String.class);
-		assertThat((Object) context.getType("&fb")).isEqualTo(FactoryBean.class);
+		assertThat(context.getType("fb")).isEqualTo(String.class);
+		assertThat(context.getType("&fb")).isEqualTo(FactoryBean.class);
 	}
 
 

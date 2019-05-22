@@ -41,28 +41,28 @@ public class ContentDispositionTests {
 	public void parse() {
 		ContentDisposition disposition = ContentDisposition
 				.parse("form-data; name=\"foo\"; filename=\"foo.txt\"; size=123");
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("form-data")
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("form-data")
 				.name("foo").filename("foo.txt").size(123L).build());
 	}
 
 	@Test
 	public void parseType() {
 		ContentDisposition disposition = ContentDisposition.parse("form-data");
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("form-data").build());
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("form-data").build());
 	}
 
 	@Test
 	public void parseUnquotedFilename() {
 		ContentDisposition disposition = ContentDisposition
 				.parse("form-data; filename=unquoted");
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("form-data").filename("unquoted").build());
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("form-data").filename("unquoted").build());
 	}
 
 	@Test  // SPR-16091
 	public void parseFilenameWithSemicolon() {
 		ContentDisposition disposition = ContentDisposition
 				.parse("attachment; filename=\"filename with ; semicolon.txt\"");
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("attachment")
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("attachment")
 				.filename("filename with ; semicolon.txt").build());
 	}
 
@@ -70,7 +70,7 @@ public class ContentDispositionTests {
 	public void parseAndIgnoreEmptyParts() {
 		ContentDisposition disposition = ContentDisposition
 				.parse("form-data; name=\"foo\";; ; filename=\"foo.txt\"; size=123");
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("form-data")
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("form-data")
 				.name("foo").filename("foo.txt").size(123L).build());
 	}
 
@@ -78,7 +78,7 @@ public class ContentDispositionTests {
 	public void parseEncodedFilename() {
 		ContentDisposition disposition = ContentDisposition
 				.parse("form-data; name=\"name\"; filename*=UTF-8''%E4%B8%AD%E6%96%87.txt");
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("form-data").name("name")
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("form-data").name("name")
 				.filename("中文.txt", StandardCharsets.UTF_8).build());
 	}
 
@@ -107,7 +107,7 @@ public class ContentDispositionTests {
 						"modification-date=\"Tue, 13 Feb 2007 10:15:30 -0500\"; " +
 						"read-date=\"Wed, 14 Feb 2007 10:15:30 -0500\"");
 		DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("attachment")
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("attachment")
 				.creationDate(ZonedDateTime.parse("Mon, 12 Feb 2007 10:15:30 -0500", formatter))
 				.modificationDate(ZonedDateTime.parse("Tue, 13 Feb 2007 10:15:30 -0500", formatter))
 				.readDate(ZonedDateTime.parse("Wed, 14 Feb 2007 10:15:30 -0500", formatter)).build());
@@ -119,7 +119,7 @@ public class ContentDispositionTests {
 				.parse("attachment; creation-date=\"-1\"; modification-date=\"-1\"; " +
 						"read-date=\"Wed, 14 Feb 2007 10:15:30 -0500\"");
 		DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-		assertThat((Object) disposition).isEqualTo(ContentDisposition.builder("attachment")
+		assertThat(disposition).isEqualTo(ContentDisposition.builder("attachment")
 				.readDate(ZonedDateTime.parse("Wed, 14 Feb 2007 10:15:30 -0500", formatter)).build());
 	}
 
@@ -127,14 +127,14 @@ public class ContentDispositionTests {
 	public void headerValue() {
 		ContentDisposition disposition = ContentDisposition.builder("form-data")
 				.name("foo").filename("foo.txt").size(123L).build();
-		assertThat((Object) disposition.toString()).isEqualTo("form-data; name=\"foo\"; filename=\"foo.txt\"; size=123");
+		assertThat(disposition.toString()).isEqualTo("form-data; name=\"foo\"; filename=\"foo.txt\"; size=123");
 	}
 
 	@Test
 	public void headerValueWithEncodedFilename() {
 		ContentDisposition disposition = ContentDisposition.builder("form-data")
 				.name("name").filename("中文.txt", StandardCharsets.UTF_8).build();
-		assertThat((Object) disposition.toString()).isEqualTo("form-data; name=\"name\"; filename*=UTF-8''%E4%B8%AD%E6%96%87.txt");
+		assertThat(disposition.toString()).isEqualTo("form-data; name=\"name\"; filename*=UTF-8''%E4%B8%AD%E6%96%87.txt");
 	}
 
 	@Test  // SPR-14547
@@ -145,10 +145,10 @@ public class ContentDispositionTests {
 
 		String result = (String)ReflectionUtils.invokeMethod(encode, null, "test.txt",
 				StandardCharsets.US_ASCII);
-		assertThat((Object) result).isEqualTo("test.txt");
+		assertThat(result).isEqualTo("test.txt");
 
 		result = (String)ReflectionUtils.invokeMethod(encode, null, "中文.txt", StandardCharsets.UTF_8);
-		assertThat((Object) result).isEqualTo("UTF-8''%E4%B8%AD%E6%96%87.txt");
+		assertThat(result).isEqualTo("UTF-8''%E4%B8%AD%E6%96%87.txt");
 	}
 
 	@Test
@@ -167,10 +167,10 @@ public class ContentDispositionTests {
 		ReflectionUtils.makeAccessible(decode);
 
 		String result = (String)ReflectionUtils.invokeMethod(decode, null, "test.txt");
-		assertThat((Object) result).isEqualTo("test.txt");
+		assertThat(result).isEqualTo("test.txt");
 
 		result = (String)ReflectionUtils.invokeMethod(decode, null, "UTF-8''%E4%B8%AD%E6%96%87.txt");
-		assertThat((Object) result).isEqualTo("中文.txt");
+		assertThat(result).isEqualTo("中文.txt");
 	}
 
 	@Test

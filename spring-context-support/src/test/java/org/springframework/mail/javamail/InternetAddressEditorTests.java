@@ -38,37 +38,37 @@ public class InternetAddressEditorTests {
 
 	@Test
 	public void uninitialized() {
-		assertThat((Object) editor.getAsText()).as("Uninitialized editor did not return empty value string").isEqualTo(EMPTY);
+		assertThat(editor.getAsText()).as("Uninitialized editor did not return empty value string").isEqualTo(EMPTY);
 	}
 
 	@Test
 	public void setNull() {
 		editor.setAsText(null);
-		assertThat((Object) editor.getAsText()).as("Setting null did not result in empty value string").isEqualTo(EMPTY);
+		assertThat(editor.getAsText()).as("Setting null did not result in empty value string").isEqualTo(EMPTY);
 	}
 
 	@Test
 	public void setEmpty() {
 		editor.setAsText(EMPTY);
-		assertThat((Object) editor.getAsText()).as("Setting empty string did not result in empty value string").isEqualTo(EMPTY);
+		assertThat(editor.getAsText()).as("Setting empty string did not result in empty value string").isEqualTo(EMPTY);
 	}
 
 	@Test
 	public void allWhitespace() {
 		editor.setAsText(" ");
-		assertThat((Object) editor.getAsText()).as("All whitespace was not recognized").isEqualTo(EMPTY);
+		assertThat(editor.getAsText()).as("All whitespace was not recognized").isEqualTo(EMPTY);
 	}
 
 	@Test
 	public void simpleGoodAddress() {
 		editor.setAsText(SIMPLE);
-		assertThat((Object) editor.getAsText()).as("Simple email address failed").isEqualTo(SIMPLE);
+		assertThat(editor.getAsText()).as("Simple email address failed").isEqualTo(SIMPLE);
 	}
 
 	@Test
 	public void excessWhitespace() {
 		editor.setAsText(" " + SIMPLE + " ");
-		assertThat((Object) editor.getAsText()).as("Whitespace was not stripped").isEqualTo(SIMPLE);
+		assertThat(editor.getAsText()).as("Whitespace was not stripped").isEqualTo(SIMPLE);
 	}
 
 	@Test

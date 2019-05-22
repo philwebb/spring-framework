@@ -46,6 +46,6 @@ public class ExplicitLocationsInheritedTests extends ExplicitLocationsBaseTests 
 	@Test
 	public void verifyPetSetFromExtendedContextConfig() {
 		assertNotNull("The pet should have been autowired.", this.pet);
-		assertThat((Object) this.pet.getName()).isEqualTo("Fido");
+		assertThat(this.pet.getName()).isEqualTo("Fido");
 	}
 }

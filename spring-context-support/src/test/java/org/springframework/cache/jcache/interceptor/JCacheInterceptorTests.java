@@ -90,7 +90,7 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 		CacheOperationInvoker invoker = new DummyInvoker(0L);
 		Object execute = interceptor.execute(invoker, service, method, new Object[] {"myId"});
 		assertNotNull("result cannot be null.", execute);
-		assertThat((Object) execute.getClass()).as("Wrong result type").isEqualTo(Long.class);
+		assertThat(execute.getClass()).as("Wrong result type").isEqualTo(Long.class);
 		assertThat(execute).as("Wrong result").isEqualTo(0L);
 	}
 

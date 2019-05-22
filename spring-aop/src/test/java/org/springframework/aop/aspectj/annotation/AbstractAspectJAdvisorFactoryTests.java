@@ -327,7 +327,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		String d = "d";
 		StringBuffer e = new StringBuffer("stringbuf");
 		String expectedResult = a + b+ c + d + e;
-		assertThat((Object) mva.mungeArgs(a, b, c, d, e)).isEqualTo(expectedResult);
+		assertThat(mva.mungeArgs(a, b, c, d, e)).isEqualTo(expectedResult);
 	}
 
 	/**

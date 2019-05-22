@@ -112,7 +112,7 @@ public class SimpleUrlHandlerMappingTests {
 			//noinspection OptionalGetWithoutIsPresent
 			PathContainer path = exchange.getAttribute(PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 			assertNotNull(path);
-			assertThat((Object) path.value()).isEqualTo(pathWithinMapping);
+			assertThat(path.value()).isEqualTo(pathWithinMapping);
 		}
 		else {
 			assertNull(actual);

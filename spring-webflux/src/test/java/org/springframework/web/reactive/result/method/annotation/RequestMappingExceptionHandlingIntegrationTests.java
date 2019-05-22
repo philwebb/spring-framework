@@ -93,13 +93,13 @@ public class RequestMappingExceptionHandlingIntegrationTests extends AbstractReq
 				performGet("/SPR-16318", headers, String.class).getBody())
 			.satisfies(ex -> {
 				assertEquals(500, ex.getRawStatusCode());
-				assertThat((Object) ex.getResponseHeaders().getContentType().toString()).isEqualTo("application/problem+json");
-				assertThat((Object) ex.getResponseBodyAsString()).isEqualTo("{\"reason\":\"error\"}");
+				assertThat(ex.getResponseHeaders().getContentType().toString()).isEqualTo("application/problem+json");
+				assertThat(ex.getResponseBodyAsString()).isEqualTo("{\"reason\":\"error\"}");
 			});
 	}
 
 	private void doTest(String url, String expected) throws Exception {
-		assertThat((Object) performGet(url, new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
+		assertThat(performGet(url, new HttpHeaders(), String.class).getBody()).isEqualTo(expected);
 	}
 
 

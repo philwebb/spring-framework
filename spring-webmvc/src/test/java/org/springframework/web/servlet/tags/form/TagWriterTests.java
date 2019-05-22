@@ -39,7 +39,7 @@ public class TagWriterTests {
 		this.writer.startTag("br");
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<br/>");
+		assertThat(this.data.toString()).isEqualTo("<br/>");
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class TagWriterTests {
 		this.writer.writeAttribute("type", "text");
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<input type=\"text\"/>");
+		assertThat(this.data.toString()).isEqualTo("<input type=\"text\"/>");
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class TagWriterTests {
 		this.writer.appendValue("foobar");
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<textarea>foobar</textarea>");
+		assertThat(this.data.toString()).isEqualTo("<textarea>foobar</textarea>");
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class TagWriterTests {
 		this.writer.appendValue("foobar");
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<textarea width=\"10\" height=\"20\">foobar</textarea>");
+		assertThat(this.data.toString()).isEqualTo("<textarea width=\"10\" height=\"20\">foobar</textarea>");
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class TagWriterTests {
 		this.writer.endTag();
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<span style=\"foo\"><strong>Rob Harrop</strong></span>");
+		assertThat(this.data.toString()).isEqualTo("<span style=\"foo\"><strong>Rob Harrop</strong></span>");
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class TagWriterTests {
 		}
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<span class=\"highlight\"><strong>Rob</strong> <emphasis>Harrop</emphasis></span>");
+		assertThat(this.data.toString()).isEqualTo("<span class=\"highlight\"><strong>Rob</strong> <emphasis>Harrop</emphasis></span>");
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class TagWriterTests {
 		this.data.write("Rob Harrop"); // interleaved writing
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<span>Rob Harrop</span>");
+		assertThat(this.data.toString()).isEqualTo("<span>Rob Harrop</span>");
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class TagWriterTests {
 		this.writer.appendValue("Harrop");
 		this.writer.endTag();
 
-		assertThat((Object) this.data.toString()).isEqualTo("<span>Rob Harrop</span>");
+		assertThat(this.data.toString()).isEqualTo("<span>Rob Harrop</span>");
 	}
 
 }

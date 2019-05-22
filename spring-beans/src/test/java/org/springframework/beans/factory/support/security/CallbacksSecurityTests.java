@@ -115,7 +115,7 @@ public class CallbacksSecurityTests {
 		}
 
 		private void checkCurrentContext() {
-			assertThat((Object) getCurrentSubjectName()).isEqualTo(expectedName);
+			assertThat(getCurrentSubjectName()).isEqualTo(expectedName);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class CallbacksSecurityTests {
 		}
 
 		private void checkCurrentContext() {
-			assertThat((Object) getCurrentSubjectName()).isEqualTo(expectedName);
+			assertThat(getCurrentSubjectName()).isEqualTo(expectedName);
 		}
 	}
 
@@ -204,7 +204,7 @@ public class CallbacksSecurityTests {
 		}
 
 		private void checkCurrentContext() {
-			assertThat((Object) getCurrentSubjectName()).isEqualTo(expectedName);
+			assertThat(getCurrentSubjectName()).isEqualTo(expectedName);
 		}
 	}
 
@@ -215,16 +215,16 @@ public class CallbacksSecurityTests {
 
 		public NonPrivilegedFactory(String expected) {
 			this.expectedName = expected;
-			assertThat((Object) getCurrentSubjectName()).isEqualTo(expectedName);
+			assertThat(getCurrentSubjectName()).isEqualTo(expectedName);
 		}
 
 		public static Object makeStaticInstance(String expectedName) {
-			assertThat((Object) getCurrentSubjectName()).isEqualTo(expectedName);
+			assertThat(getCurrentSubjectName()).isEqualTo(expectedName);
 			return new Object();
 		}
 
 		public Object makeInstance() {
-			assertThat((Object) getCurrentSubjectName()).isEqualTo(expectedName);
+			assertThat(getCurrentSubjectName()).isEqualTo(expectedName);
 			return new Object();
 		}
 	}
@@ -480,8 +480,8 @@ public class CallbacksSecurityTests {
 			@Override
 			public Object run() {
 				// sanity check
-				assertThat((Object) getCurrentSubjectName()).isEqualTo("user1");
-				assertThat((Object) NonPrivilegedBean.destroyed).isEqualTo(false);
+				assertThat(getCurrentSubjectName()).isEqualTo("user1");
+				assertThat(NonPrivilegedBean.destroyed).isEqualTo(false);
 
 				beanFactory.getBean("trusted-spring-callbacks");
 				beanFactory.getBean("trusted-custom-init-destroy");
@@ -497,7 +497,7 @@ public class CallbacksSecurityTests {
 				beanFactory.getBean("trusted-working-property-injection");
 
 				beanFactory.destroySingletons();
-				assertThat((Object) NonPrivilegedBean.destroyed).isEqualTo(true);
+				assertThat(NonPrivilegedBean.destroyed).isEqualTo(true);
 				return null;
 			}
 		}, provider.getAccessControlContext());

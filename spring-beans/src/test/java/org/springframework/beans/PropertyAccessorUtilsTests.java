@@ -31,15 +31,15 @@ public class PropertyAccessorUtilsTests {
 
 	@Test
 	public void testCanonicalPropertyName() {
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map")).isEqualTo("map");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map[key1]")).isEqualTo("map[key1]");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map['key1']")).isEqualTo("map[key1]");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map[\"key1\"]")).isEqualTo("map[key1]");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map[key1][key2]")).isEqualTo("map[key1][key2]");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map['key1'][\"key2\"]")).isEqualTo("map[key1][key2]");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map[key1].name")).isEqualTo("map[key1].name");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map['key1'].name")).isEqualTo("map[key1].name");
-		assertThat((Object) PropertyAccessorUtils.canonicalPropertyName("map[\"key1\"].name")).isEqualTo("map[key1].name");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map")).isEqualTo("map");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map[key1]")).isEqualTo("map[key1]");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map['key1']")).isEqualTo("map[key1]");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map[\"key1\"]")).isEqualTo("map[key1]");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map[key1][key2]")).isEqualTo("map[key1][key2]");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map['key1'][\"key2\"]")).isEqualTo("map[key1][key2]");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map[key1].name")).isEqualTo("map[key1].name");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map['key1'].name")).isEqualTo("map[key1].name");
+		assertThat(PropertyAccessorUtils.canonicalPropertyName("map[\"key1\"].name")).isEqualTo("map[key1].name");
 	}
 
 	@Test

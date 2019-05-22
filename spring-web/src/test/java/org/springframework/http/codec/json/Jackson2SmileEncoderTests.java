@@ -65,7 +65,7 @@ public class Jackson2SmileEncoderTests extends AbstractEncoderTestCase<Jackson2S
 			try {
 				Pojo actual = this.mapper.reader().forType(Pojo.class)
 						.readValue(DataBufferTestUtils.dumpBytes(dataBuffer));
-				assertThat((Object) actual).isEqualTo(expected);
+				assertThat(actual).isEqualTo(expected);
 				release(dataBuffer);
 			}
 			catch (IOException ex) {

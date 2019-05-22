@@ -46,7 +46,7 @@ public class ServerHttpRequestIntegrationTests extends AbstractHttpHandlerIntegr
 		URI url = new URI("http://localhost:" + port + "/foo?param=bar");
 		RequestEntity<Void> request = RequestEntity.post(url).build();
 		ResponseEntity<Void> response = new RestTemplate().exchange(request, Void.class);
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 
@@ -55,12 +55,12 @@ public class ServerHttpRequestIntegrationTests extends AbstractHttpHandlerIntegr
 		@Override
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
 			URI uri = request.getURI();
-			assertThat((Object) uri.getScheme()).isEqualTo("http");
+			assertThat(uri.getScheme()).isEqualTo("http");
 			assertNotNull(uri.getHost());
 			assertNotEquals(-1, uri.getPort());
 			assertNotNull(request.getRemoteAddress());
-			assertThat((Object) uri.getPath()).isEqualTo("/foo");
-			assertThat((Object) uri.getQuery()).isEqualTo("param=bar");
+			assertThat(uri.getPath()).isEqualTo("/foo");
+			assertThat(uri.getQuery()).isEqualTo("param=bar");
 			return Mono.empty();
 		}
 	}

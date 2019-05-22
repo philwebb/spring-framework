@@ -38,7 +38,7 @@ public class NestedExceptionTests {
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedRuntimeException nex = new NestedRuntimeException(mesg) {};
 		assertNull(nex.getCause());
-		assertThat((Object) mesg).isEqualTo(nex.getMessage());
+		assertThat(mesg).isEqualTo(nex.getMessage());
 
 		// Check printStackTrace
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -56,7 +56,7 @@ public class NestedExceptionTests {
 		Exception rootCause = new Exception(rootCauseMsg);
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedRuntimeException nex = new NestedRuntimeException(myMessage, rootCause) {};
-		assertThat((Object) rootCause).isEqualTo(nex.getCause());
+		assertThat(rootCause).isEqualTo(nex.getCause());
 		assertThat(nex.getMessage().contains(myMessage)).isTrue();
 		assertThat(nex.getMessage().endsWith(rootCauseMsg)).isTrue();
 
@@ -76,7 +76,7 @@ public class NestedExceptionTests {
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedCheckedException nex = new NestedCheckedException(mesg) {};
 		assertNull(nex.getCause());
-		assertThat((Object) mesg).isEqualTo(nex.getMessage());
+		assertThat(mesg).isEqualTo(nex.getMessage());
 
 		// Check printStackTrace
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -94,7 +94,7 @@ public class NestedExceptionTests {
 		Exception rootCause = new Exception(rootCauseMsg);
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedCheckedException nex = new NestedCheckedException(myMessage, rootCause) {};
-		assertThat((Object) rootCause).isEqualTo(nex.getCause());
+		assertThat(rootCause).isEqualTo(nex.getCause());
 		assertThat(nex.getMessage().contains(myMessage)).isTrue();
 		assertThat(nex.getMessage().endsWith(rootCauseMsg)).isTrue();
 

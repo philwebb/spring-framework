@@ -74,7 +74,7 @@ public class JCacheCustomInterceptorTests {
 		Map<String, JCacheInterceptor> interceptors = ctx.getBeansOfType(JCacheInterceptor.class);
 		assertEquals("Only one interceptor should be defined", 1, interceptors.size());
 		JCacheInterceptor interceptor = interceptors.values().iterator().next();
-		assertThat((Object) interceptor.getClass()).as("Custom interceptor not defined").isEqualTo(TestCacheInterceptor.class);
+		assertThat(interceptor.getClass()).as("Custom interceptor not defined").isEqualTo(TestCacheInterceptor.class);
 	}
 
 	@Test

@@ -208,7 +208,7 @@ public class DelegatingIntroductionInterceptorTests {
 		TimeStamped tsp = (TimeStamped) factory.getProxy();
 		assertEquals(0, tsp.getTimeStamp());
 
-		assertThat((Object) tsp.toString()).isEqualTo(raw.toString());
+		assertThat(tsp.toString()).isEqualTo(raw.toString());
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class DelegatingIntroductionInterceptorTests {
 		pf.addAdvice(new DelegatingIntroductionInterceptor(delegate));
 		INestedTestBean proxy = (INestedTestBean) pf.getProxy();
 
-		assertThat((Object) proxy.getCompany()).isEqualTo(company);
+		assertThat(proxy.getCompany()).isEqualTo(company);
 		ITestBean introduction = (ITestBean) proxy;
 		assertSame("Introduced method returning delegate returns proxy", introduction, introduction.getSpouse());
 		assertThat(AopUtils.isAopProxy(introduction.getSpouse())).as("Introduced method returning delegate returns proxy").isTrue();
@@ -248,11 +248,11 @@ public class DelegatingIntroductionInterceptorTests {
 
 		Person p = (Person) factory.getProxy();
 
-		assertThat((Object) p.getName()).isEqualTo(name);
+		assertThat(p.getName()).isEqualTo(name);
 		assertEquals(time, ((TimeStamped) p).getTimeStamp());
 
 		Person p1 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
-		assertThat((Object) p1.getName()).isEqualTo(name);
+		assertThat(p1.getName()).isEqualTo(name);
 		assertEquals(time, ((TimeStamped) p1).getTimeStamp());
 	}
 

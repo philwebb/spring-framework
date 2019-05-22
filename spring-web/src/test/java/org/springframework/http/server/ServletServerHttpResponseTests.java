@@ -73,9 +73,9 @@ public class ServletServerHttpResponseTests {
 		List<String> headerValues = mockResponse.getHeaders(headerName);
 		assertThat(headerValues.contains(headerValue1)).as("Header not set").isTrue();
 		assertThat(headerValues.contains(headerValue2)).as("Header not set").isTrue();
-		assertThat((Object) mockResponse.getHeader("Content-Type")).as("Invalid Content-Type").isEqualTo("text/plain;charset=UTF-8");
-		assertThat((Object) mockResponse.getContentType()).as("Invalid Content-Type").isEqualTo("text/plain;charset=UTF-8");
-		assertThat((Object) mockResponse.getCharacterEncoding()).as("Invalid Content-Type").isEqualTo("UTF-8");
+		assertThat(mockResponse.getHeader("Content-Type")).as("Invalid Content-Type").isEqualTo("text/plain;charset=UTF-8");
+		assertThat(mockResponse.getContentType()).as("Invalid Content-Type").isEqualTo("text/plain;charset=UTF-8");
+		assertThat(mockResponse.getCharacterEncoding()).as("Invalid Content-Type").isEqualTo("UTF-8");
 	}
 
 	@Test
@@ -86,11 +86,11 @@ public class ServletServerHttpResponseTests {
 		this.mockResponse.addHeader(headerName, headerValue);
 		this.response = new ServletServerHttpResponse(this.mockResponse);
 
-		assertThat((Object) this.response.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
-		assertThat((Object) this.response.getHeaders().get(headerName)).isEqualTo(Collections.singletonList(headerValue));
+		assertThat(this.response.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
+		assertThat(this.response.getHeaders().get(headerName)).isEqualTo(Collections.singletonList(headerValue));
 		assertThat(this.response.getHeaders().containsKey(headerName)).isTrue();
-		assertThat((Object) this.response.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
-		assertThat((Object) this.response.getHeaders().getAccessControlAllowOrigin()).isEqualTo(headerValue);
+		assertThat(this.response.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
+		assertThat(this.response.getHeaders().getAccessControlAllowOrigin()).isEqualTo(headerValue);
 	}
 
 	@Test

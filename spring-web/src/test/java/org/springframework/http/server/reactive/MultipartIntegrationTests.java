@@ -61,7 +61,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.contentType(MediaType.MULTIPART_FORM_DATA)
 				.body(generateBody());
 		ResponseEntity<Void> response = restTemplate.exchange(request, Void.class);
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	private MultiValueMap<String, Object> generateBody() {
@@ -101,26 +101,26 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 		}
 
 		private void assertFooPart(Part part) {
-			assertThat((Object) part.name()).isEqualTo("fooPart");
+			assertThat(part.name()).isEqualTo("fooPart");
 			boolean condition = part instanceof FilePart;
 			assertThat(condition).isTrue();
-			assertThat((Object) ((FilePart) part).filename()).isEqualTo("foo.txt");
+			assertThat(((FilePart) part).filename()).isEqualTo("foo.txt");
 
 			StepVerifier.create(DataBufferUtils.join(part.content()))
 					.consumeNextWith(buffer -> {
 						assertEquals(12, buffer.readableByteCount());
 						byte[] byteContent = new byte[12];
 						buffer.read(byteContent);
-						assertThat((Object) new String(byteContent)).isEqualTo("Lorem Ipsum.");
+						assertThat(new String(byteContent)).isEqualTo("Lorem Ipsum.");
 					})
 					.verifyComplete();
 		}
 
 		private void assertBarPart(Part part) {
-			assertThat((Object) part.name()).isEqualTo("barPart");
+			assertThat(part.name()).isEqualTo("barPart");
 			boolean condition = part instanceof FormFieldPart;
 			assertThat(condition).isTrue();
-			assertThat((Object) ((FormFieldPart) part).value()).isEqualTo("bar");
+			assertThat(((FormFieldPart) part).value()).isEqualTo("bar");
 		}
 	}
 

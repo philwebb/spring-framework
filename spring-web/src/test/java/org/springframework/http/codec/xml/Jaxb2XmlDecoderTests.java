@@ -144,17 +144,17 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 
 	private static void assertStartElement(XMLEvent event, String expectedLocalName) {
 		assertThat(event.isStartElement()).isTrue();
-		assertThat((Object) event.asStartElement().getName().getLocalPart()).isEqualTo(expectedLocalName);
+		assertThat(event.asStartElement().getName().getLocalPart()).isEqualTo(expectedLocalName);
 	}
 
 	private static void assertEndElement(XMLEvent event, String expectedLocalName) {
 		assertThat(event.isEndElement()).isTrue();
-		assertThat((Object) event.asEndElement().getName().getLocalPart()).isEqualTo(expectedLocalName);
+		assertThat(event.asEndElement().getName().getLocalPart()).isEqualTo(expectedLocalName);
 	}
 
 	private static void assertCharacters(XMLEvent event, String expectedData) {
 		assertThat(event.isCharacters()).isTrue();
-		assertThat((Object) event.asCharacters().getData()).isEqualTo(expectedData);
+		assertThat(event.asCharacters().getData()).isEqualTo(expectedData);
 	}
 
 	@Test
@@ -223,16 +223,16 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 
 	@Test
 	public void toExpectedQName() {
-		assertThat((Object) this.decoder.toQName(Pojo.class)).isEqualTo(new QName("pojo"));
-		assertThat((Object) this.decoder.toQName(TypePojo.class)).isEqualTo(new QName("pojo"));
+		assertThat(this.decoder.toQName(Pojo.class)).isEqualTo(new QName("pojo"));
+		assertThat(this.decoder.toQName(TypePojo.class)).isEqualTo(new QName("pojo"));
 
-		assertThat((Object) this.decoder.toQName(XmlRootElementWithNameAndNamespace.class)).isEqualTo(new QName("namespace", "name"));
-		assertThat((Object) this.decoder.toQName(XmlRootElementWithName.class)).isEqualTo(new QName("namespace", "name"));
-		assertThat((Object) this.decoder.toQName(XmlRootElement.class)).isEqualTo(new QName("namespace", "xmlRootElement"));
+		assertThat(this.decoder.toQName(XmlRootElementWithNameAndNamespace.class)).isEqualTo(new QName("namespace", "name"));
+		assertThat(this.decoder.toQName(XmlRootElementWithName.class)).isEqualTo(new QName("namespace", "name"));
+		assertThat(this.decoder.toQName(XmlRootElement.class)).isEqualTo(new QName("namespace", "xmlRootElement"));
 
-		assertThat((Object) this.decoder.toQName(XmlTypeWithNameAndNamespace.class)).isEqualTo(new QName("namespace", "name"));
-		assertThat((Object) this.decoder.toQName(XmlTypeWithName.class)).isEqualTo(new QName("namespace", "name"));
-		assertThat((Object) this.decoder.toQName(XmlType.class)).isEqualTo(new QName("namespace", "xmlType"));
+		assertThat(this.decoder.toQName(XmlTypeWithNameAndNamespace.class)).isEqualTo(new QName("namespace", "name"));
+		assertThat(this.decoder.toQName(XmlTypeWithName.class)).isEqualTo(new QName("namespace", "name"));
+		assertThat(this.decoder.toQName(XmlType.class)).isEqualTo(new QName("namespace", "xmlType"));
 
 	}
 

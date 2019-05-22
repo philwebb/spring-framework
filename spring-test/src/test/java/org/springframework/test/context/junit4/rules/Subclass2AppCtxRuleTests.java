@@ -41,7 +41,7 @@ public class Subclass2AppCtxRuleTests extends BaseAppCtxRuleTests {
 
 	@Test
 	public void baz() {
-		assertThat((Object) baz).isEqualTo("baz");
+		assertThat(baz).isEqualTo("baz");
 	}
 
 

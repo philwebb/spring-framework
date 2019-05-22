@@ -67,9 +67,9 @@ public abstract class AbstractSockJsSessionTests<S extends AbstractSockJsSession
 	}
 
 	private void assertState(boolean isNew, boolean isOpen, boolean isClosed) {
-		assertThat((Object) this.session.isNew()).isEqualTo(isNew);
-		assertThat((Object) this.session.isOpen()).isEqualTo(isOpen);
-		assertThat((Object) this.session.isClosed()).isEqualTo(isClosed);
+		assertThat(this.session.isNew()).isEqualTo(isNew);
+		assertThat(this.session.isOpen()).isEqualTo(isOpen);
+		assertThat(this.session.isClosed()).isEqualTo(isClosed);
 	}
 
 }

@@ -183,7 +183,7 @@ public class TestExecutionListenersTests {
 
 	private void assertRegisteredListeners(Class<?> testClass, List<Class<?>> expected) {
 		TestContextManager testContextManager = new TestContextManager(testClass);
-		assertThat((Object) names(classes(testContextManager))).as("TELs registered for " + testClass.getSimpleName()).isEqualTo(names(expected));
+		assertThat(names(classes(testContextManager))).as("TELs registered for " + testClass.getSimpleName()).isEqualTo(names(expected));
 	}
 
 	private void assertNumRegisteredListeners(Class<?> testClass, int expected) {

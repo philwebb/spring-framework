@@ -46,7 +46,7 @@ public class CollectionsWithDefaultTypesTests {
 	public void testListHasDefaultType() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("testBean");
 		for (Object o : bean.getSomeList()) {
-			assertThat((Object) o.getClass()).as("Value type is incorrect").isEqualTo(Integer.class);
+			assertThat(o.getClass()).as("Value type is incorrect").isEqualTo(Integer.class);
 		}
 	}
 
@@ -54,7 +54,7 @@ public class CollectionsWithDefaultTypesTests {
 	public void testSetHasDefaultType() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("testBean");
 		for (Object o : bean.getSomeSet()) {
-			assertThat((Object) o.getClass()).as("Value type is incorrect").isEqualTo(Integer.class);
+			assertThat(o.getClass()).as("Value type is incorrect").isEqualTo(Integer.class);
 		}
 	}
 
@@ -73,8 +73,8 @@ public class CollectionsWithDefaultTypesTests {
 	@SuppressWarnings("rawtypes")
 	private void assertMap(Map<?,?> map) {
 		for (Map.Entry entry : map.entrySet()) {
-			assertThat((Object) entry.getKey().getClass()).as("Key type is incorrect").isEqualTo(Integer.class);
-			assertThat((Object) entry.getValue().getClass()).as("Value type is incorrect").isEqualTo(Boolean.class);
+			assertThat(entry.getKey().getClass()).as("Key type is incorrect").isEqualTo(Integer.class);
+			assertThat(entry.getValue().getClass()).as("Value type is incorrect").isEqualTo(Boolean.class);
 		}
 	}
 

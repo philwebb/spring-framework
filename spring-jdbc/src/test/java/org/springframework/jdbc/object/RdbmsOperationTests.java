@@ -133,7 +133,7 @@ public class RdbmsOperationTests {
 		operation.setFetchSize(10);
 		operation.setMaxRows(20);
 		JdbcTemplate jt = operation.getJdbcTemplate();
-		assertThat((Object) jt.getDataSource()).isEqualTo(ds);
+		assertThat(jt.getDataSource()).isEqualTo(ds);
 		assertEquals(10, jt.getFetchSize());
 		assertEquals(20, jt.getMaxRows());
 	}

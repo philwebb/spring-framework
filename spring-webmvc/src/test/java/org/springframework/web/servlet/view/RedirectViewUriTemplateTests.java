@@ -57,7 +57,7 @@ public class RedirectViewUriTemplateTests {
 		RedirectView redirectView = new RedirectView(baseUrl + "/{foo}");
 		redirectView.renderMergedOutputModel(model, this.request, this.response);
 
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo((baseUrl + "/bar"));
+		assertThat(this.response.getRedirectedUrl()).isEqualTo((baseUrl + "/bar"));
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class RedirectViewUriTemplateTests {
 		RedirectView redirectView = new RedirectView(baseUrl + "/context path/{foo}");
 		redirectView.renderMergedOutputModel(model, this.request, this.response);
 
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo((baseUrl + "/context path/bar%2Fbar%20baz"));
+		assertThat(this.response.getRedirectedUrl()).isEqualTo((baseUrl + "/context path/bar%2Fbar%20baz"));
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class RedirectViewUriTemplateTests {
 		RedirectView redirectView = new RedirectView("/foo/{foo}");
 		redirectView.renderMergedOutputModel(model, this.request, this.response);
 
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo("/foo/bar?fooArr=baz&fooArr=bazz");
+		assertThat(this.response.getRedirectedUrl()).isEqualTo("/foo/bar?fooArr=baz&fooArr=bazz");
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class RedirectViewUriTemplateTests {
 		RedirectView redirectView = new RedirectView("/foo/{foo}");
 		redirectView.renderMergedOutputModel(model, this.request, this.response);
 
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo("/foo/611");
+		assertThat(this.response.getRedirectedUrl()).isEqualTo("/foo/611");
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class RedirectViewUriTemplateTests {
 		RedirectView redirectView = new RedirectView(url + "/{key1}/{var1}/{name}");
 		redirectView.renderMergedOutputModel(model, this.request, this.response);
 
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo((url + "/value1/v1/value2?key3=value3"));
+		assertThat(this.response.getRedirectedUrl()).isEqualTo((url + "/value1/v1/value2?key3=value3"));
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class RedirectViewUriTemplateTests {
 		RedirectView redirectView = new RedirectView("");
 		redirectView.renderMergedOutputModel(model, this.request, this.response);
 
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo("");
+		assertThat(this.response.getRedirectedUrl()).isEqualTo("");
 	}
 
 	// SPR-9016
@@ -140,7 +140,7 @@ public class RedirectViewUriTemplateTests {
 		redirectView.setExpandUriTemplateVariables(false);
 		redirectView.renderMergedOutputModel(new ModelMap(), this.request, this.response);
 
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo(url);
+		assertThat(this.response.getRedirectedUrl()).isEqualTo(url);
 	}
 
 }

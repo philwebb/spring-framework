@@ -121,7 +121,7 @@ public class RequestResponseBodyAdviceChainTests {
 		String actual = (String) chain.beforeBodyWrite(this.body, this.returnType, this.contentType,
 				this.converterType, this.request, this.response);
 
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class RequestResponseBodyAdviceChainTests {
 		String actual = (String) chain.beforeBodyWrite(this.body, this.returnType, this.contentType,
 				this.converterType, this.request, this.response);
 
-		assertThat((Object) actual).isEqualTo("body-MyControllerAdvice");
+		assertThat(actual).isEqualTo("body-MyControllerAdvice");
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class RequestResponseBodyAdviceChainTests {
 		String actual = (String) chain.beforeBodyWrite(this.body, this.returnType, this.contentType,
 				this.converterType, this.request, this.response);
 
-		assertThat((Object) actual).isEqualTo(this.body);
+		assertThat(actual).isEqualTo(this.body);
 	}
 
 

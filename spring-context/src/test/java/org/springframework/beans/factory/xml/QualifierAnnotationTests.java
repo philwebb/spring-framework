@@ -73,7 +73,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByValueTestBean testBean = (QualifiedByValueTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
-		assertThat((Object) person.getName()).isEqualTo("Larry");
+		assertThat(person.getName()).isEqualTo("Larry");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByParentValueTestBean testBean = (QualifiedByParentValueTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
-		assertThat((Object) person.getName()).isEqualTo("ParentLarry");
+		assertThat(person.getName()).isEqualTo("ParentLarry");
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByBeanNameTestBean testBean = (QualifiedByBeanNameTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
-		assertThat((Object) person.getName()).isEqualTo("LarryBean");
+		assertThat(person.getName()).isEqualTo("LarryBean");
 		assertThat(testBean.myProps != null && testBean.myProps.isEmpty()).isTrue();
 	}
 
@@ -123,7 +123,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByFieldNameTestBean testBean = (QualifiedByFieldNameTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
-		assertThat((Object) person.getName()).isEqualTo("LarryBean");
+		assertThat(person.getName()).isEqualTo("LarryBean");
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByParameterNameTestBean testBean = (QualifiedByParameterNameTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
-		assertThat((Object) person.getName()).isEqualTo("LarryBean");
+		assertThat(person.getName()).isEqualTo("LarryBean");
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByAliasTestBean testBean = (QualifiedByAliasTestBean) context.getBean("testBean");
 		Person person = testBean.getStooge();
-		assertThat((Object) person.getName()).isEqualTo("LarryBean");
+		assertThat(person.getName()).isEqualTo("LarryBean");
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByAnnotationTestBean testBean = (QualifiedByAnnotationTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
-		assertThat((Object) person.getName()).isEqualTo("LarrySpecial");
+		assertThat(person.getName()).isEqualTo("LarrySpecial");
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByCustomValueTestBean testBean = (QualifiedByCustomValueTestBean) context.getBean("testBean");
 		Person person = testBean.getCurly();
-		assertThat((Object) person.getName()).isEqualTo("Curly");
+		assertThat(person.getName()).isEqualTo("Curly");
 	}
 
 	@Test
@@ -183,7 +183,7 @@ public class QualifierAnnotationTests {
 		context.refresh();
 		QualifiedByAnnotationValueTestBean testBean = (QualifiedByAnnotationValueTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
-		assertThat((Object) person.getName()).isEqualTo("LarrySpecial");
+		assertThat(person.getName()).isEqualTo("LarrySpecial");
 	}
 
 	@Test

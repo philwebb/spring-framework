@@ -219,9 +219,9 @@ public class ComposedRepeatableAnnotationsTests {
 		assertEquals(3, peteRepeats.size());
 
 		Iterator<PeteRepeat> iterator = peteRepeats.iterator();
-		assertThat((Object) iterator.next().value()).isEqualTo("A");
-		assertThat((Object) iterator.next().value()).isEqualTo("B");
-		assertThat((Object) iterator.next().value()).isEqualTo("C");
+		assertThat(iterator.next().value()).isEqualTo("A");
+		assertThat(iterator.next().value()).isEqualTo("B");
+		assertThat(iterator.next().value()).isEqualTo("C");
 	}
 
 	private void assertFindRepeatableAnnotations(AnnotatedElement element) {
@@ -232,9 +232,9 @@ public class ComposedRepeatableAnnotationsTests {
 		assertEquals(3, peteRepeats.size());
 
 		Iterator<PeteRepeat> iterator = peteRepeats.iterator();
-		assertThat((Object) iterator.next().value()).isEqualTo("A");
-		assertThat((Object) iterator.next().value()).isEqualTo("B");
-		assertThat((Object) iterator.next().value()).isEqualTo("C");
+		assertThat(iterator.next().value()).isEqualTo("A");
+		assertThat(iterator.next().value()).isEqualTo("B");
+		assertThat(iterator.next().value()).isEqualTo("C");
 	}
 
 	private void assertNoninheritedRepeatableAnnotations(Set<Noninherited> annotations) {
@@ -242,9 +242,9 @@ public class ComposedRepeatableAnnotationsTests {
 		assertEquals(3, annotations.size());
 
 		Iterator<Noninherited> iterator = annotations.iterator();
-		assertThat((Object) iterator.next().value()).isEqualTo("A");
-		assertThat((Object) iterator.next().value()).isEqualTo("B");
-		assertThat((Object) iterator.next().value()).isEqualTo("C");
+		assertThat(iterator.next().value()).isEqualTo("A");
+		assertThat(iterator.next().value()).isEqualTo("B");
+		assertThat(iterator.next().value()).isEqualTo("C");
 	}
 
 

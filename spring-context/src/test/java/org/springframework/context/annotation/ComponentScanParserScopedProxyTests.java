@@ -73,10 +73,10 @@ public class ComponentScanParserScopedProxyTests {
 		// should be dynamic proxy
 		assertThat(AopUtils.isJdkDynamicProxy(bean)).isTrue();
 		// test serializability
-		assertThat((Object) bean.foo(1)).isEqualTo("bar");
+		assertThat(bean.foo(1)).isEqualTo("bar");
 		FooService deserialized = (FooService) SerializationTestUtils.serializeAndDeserialize(bean);
 		assertNotNull(deserialized);
-		assertThat((Object) deserialized.foo(1)).isEqualTo("bar");
+		assertThat(deserialized.foo(1)).isEqualTo("bar");
 		context.close();
 	}
 
@@ -90,10 +90,10 @@ public class ComponentScanParserScopedProxyTests {
 		// should be a class-based proxy
 		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
 		// test serializability
-		assertThat((Object) bean.foo(1)).isEqualTo("bar");
+		assertThat(bean.foo(1)).isEqualTo("bar");
 		ScopedProxyTestBean deserialized = (ScopedProxyTestBean) SerializationTestUtils.serializeAndDeserialize(bean);
 		assertNotNull(deserialized);
-		assertThat((Object) deserialized.foo(1)).isEqualTo("bar");
+		assertThat(deserialized.foo(1)).isEqualTo("bar");
 		context.close();
 	}
 

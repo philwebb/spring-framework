@@ -56,7 +56,7 @@ public class ExtendedServletRequestDataBinderTests {
 		WebDataBinder binder = new ExtendedServletRequestDataBinder(target, "");
 		((ServletRequestDataBinder) binder).bind(request);
 
-		assertThat((Object) target.getName()).isEqualTo("nameValue");
+		assertThat(target.getName()).isEqualTo("nameValue");
 		assertEquals(25, target.getAge());
 	}
 
@@ -73,7 +73,7 @@ public class ExtendedServletRequestDataBinderTests {
 		WebDataBinder binder = new ExtendedServletRequestDataBinder(target, "");
 		((ServletRequestDataBinder) binder).bind(request);
 
-		assertThat((Object) target.getName()).isEqualTo("nameValue");
+		assertThat(target.getName()).isEqualTo("nameValue");
 		assertEquals(35, target.getAge());
 	}
 
@@ -83,7 +83,7 @@ public class ExtendedServletRequestDataBinderTests {
 		WebDataBinder binder = new ExtendedServletRequestDataBinder(target, "");
 		((ServletRequestDataBinder) binder).bind(request);
 
-		assertThat((Object) target.getName()).isEqualTo(null);
+		assertThat(target.getName()).isEqualTo(null);
 		assertEquals(0, target.getAge());
 	}
 

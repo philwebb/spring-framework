@@ -124,7 +124,7 @@ public class ControllerAdviceTests {
 		BindingContext bindingContext = handle(adapter, controller, "handle").getBindingContext();
 
 		WebExchangeDataBinder binder = bindingContext.createDataBinder(this.exchange, "name");
-		assertThat((Object) binder.getValidators()).isEqualTo(Collections.singletonList(validator));
+		assertThat(binder.getValidators()).isEqualTo(Collections.singletonList(validator));
 	}
 
 

@@ -34,7 +34,7 @@ public class XmlBeanConfigurerTests {
 				"org/springframework/beans/factory/aspectj/beanConfigurerTests.xml")) {
 
 			ShouldBeConfiguredBySpring myObject = new ShouldBeConfiguredBySpring();
-			assertThat((Object) myObject.getName()).isEqualTo("Rod");
+			assertThat(myObject.getName()).isEqualTo("Rod");
 		}
 	}
 

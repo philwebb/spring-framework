@@ -71,7 +71,7 @@ public class MBeanServerFactoryBeanTests {
 		bean.afterPropertiesSet();
 		try {
 			MBeanServer server = bean.getObject();
-			assertThat((Object) server.getDefaultDomain()).as("The default domain should be foo").isEqualTo("foo");
+			assertThat(server.getDefaultDomain()).as("The default domain should be foo").isEqualTo("foo");
 		}
 		finally {
 			bean.destroy();

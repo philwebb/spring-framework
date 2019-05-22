@@ -44,7 +44,7 @@ public class GsonFactoryBeanTests {
 		Gson gson = this.factory.getObject();
 		StringBean bean = new StringBean();
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"name\":null}");
+		assertThat(result).isEqualTo("{\"name\":null}");
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class GsonFactoryBeanTests {
 		Gson gson = this.factory.getObject();
 		StringBean bean = new StringBean();
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{}");
+		assertThat(result).isEqualTo("{}");
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class GsonFactoryBeanTests {
 		StringBean bean = new StringBean();
 		bean.setName("Jason");
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"name\":\"Jason\"}");
+		assertThat(result).isEqualTo("{\"name\":\"Jason\"}");
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class GsonFactoryBeanTests {
 		StringBean bean = new StringBean();
 		bean.setName("Bob=Bob");
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"name\":\"Bob=Bob\"}");
+		assertThat(result).isEqualTo("{\"name\":\"Bob=Bob\"}");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class GsonFactoryBeanTests {
 		StringBean bean = new StringBean();
 		bean.setName("Bob=Bob");
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"name\":\"Bob\\u003dBob\"}");
+		assertThat(result).isEqualTo("{\"name\":\"Bob\\u003dBob\"}");
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class GsonFactoryBeanTests {
 		Date date = cal.getTime();
 		bean.setDate(date);
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"date\":\"2014-01-01\"}");
+		assertThat(result).isEqualTo("{\"date\":\"2014-01-01\"}");
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class GsonFactoryBeanTests {
 		ByteArrayBean bean = new ByteArrayBean();
 		bean.setBytes(new byte[] {0x1, 0x2});
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"bytes\":\"AQI\\u003d\"}");
+		assertThat(result).isEqualTo("{\"bytes\":\"AQI\\u003d\"}");
 	}
 
 	@Test
@@ -155,7 +155,7 @@ public class GsonFactoryBeanTests {
 		ByteArrayBean bean = new ByteArrayBean();
 		bean.setBytes(new byte[] {0x1, 0x2});
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"bytes\":\"AQI=\"}");
+		assertThat(result).isEqualTo("{\"bytes\":\"AQI=\"}");
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class GsonFactoryBeanTests {
 		ByteArrayBean bean = new ByteArrayBean();
 		bean.setBytes(new byte[] {0x1, 0x2});
 		String result = gson.toJson(bean);
-		assertThat((Object) result).isEqualTo("{\"bytes\":[1,2]}");
+		assertThat(result).isEqualTo("{\"bytes\":[1,2]}");
 	}
 
 

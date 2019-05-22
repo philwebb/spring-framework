@@ -43,7 +43,7 @@ public class DefaultScriptDetectionXmlSupersedesGroovySpringContextTests {
 
 	@Test
 	public final void foo() {
-		assertThat((Object) this.foo).as("The foo field should have been autowired.").isEqualTo("Foo");
+		assertThat(this.foo).as("The foo field should have been autowired.").isEqualTo("Foo");
 	}
 
 }

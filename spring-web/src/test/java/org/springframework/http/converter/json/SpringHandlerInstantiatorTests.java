@@ -86,14 +86,14 @@ public class SpringHandlerInstantiatorTests {
 	public void autowiredSerializer() throws JsonProcessingException {
 		User user = new User("bob");
 		String json = this.objectMapper.writeValueAsString(user);
-		assertThat((Object) json).isEqualTo("{\"username\":\"BOB\"}");
+		assertThat(json).isEqualTo("{\"username\":\"BOB\"}");
 	}
 
 	@Test
 	public void autowiredDeserializer() throws IOException {
 		String json = "{\"username\":\"bob\"}";
 		User user = this.objectMapper.readValue(json, User.class);
-		assertThat((Object) user.getUsername()).isEqualTo("BOB");
+		assertThat(user.getUsername()).isEqualTo("BOB");
 	}
 
 	@Test

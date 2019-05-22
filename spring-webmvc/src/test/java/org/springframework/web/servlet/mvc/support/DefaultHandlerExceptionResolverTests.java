@@ -76,7 +76,7 @@ public class DefaultHandlerExceptionResolverTests {
 		assertNotNull("No ModelAndView returned", mav);
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
 		assertEquals("Invalid status code", 405, response.getStatus());
-		assertThat((Object) response.getHeader("Allow")).as("Invalid Allow header").isEqualTo("POST, PUT");
+		assertThat(response.getHeader("Allow")).as("Invalid Allow header").isEqualTo("POST, PUT");
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class DefaultHandlerExceptionResolverTests {
 		assertNotNull("No ModelAndView returned", mav);
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
 		assertEquals("Invalid status code", 415, response.getStatus());
-		assertThat((Object) response.getHeader("Accept")).as("Invalid Accept header").isEqualTo("application/pdf");
+		assertThat(response.getHeader("Accept")).as("Invalid Accept header").isEqualTo("application/pdf");
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class DefaultHandlerExceptionResolverTests {
 		assertNotNull("No ModelAndView returned", mav);
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
 		assertEquals("Invalid status code", 500, response.getStatus());
-		assertThat((Object) response.getErrorMessage()).isEqualTo("Missing URI template variable 'foo' for method parameter of type String");
+		assertThat(response.getErrorMessage()).isEqualTo("Missing URI template variable 'foo' for method parameter of type String");
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class DefaultHandlerExceptionResolverTests {
 		assertNotNull("No ModelAndView returned", mav);
 		assertThat(mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
 		assertEquals("Invalid status code", 400, response.getStatus());
-		assertThat((Object) response.getErrorMessage()).isEqualTo("Required bar parameter 'foo' is not present");
+		assertThat(response.getErrorMessage()).isEqualTo("Required bar parameter 'foo' is not present");
 	}
 
 	@Test

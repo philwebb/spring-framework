@@ -70,11 +70,11 @@ public class ScheduledTasksBeanDefinitionParserTests {
 		List<IntervalTask> tasks = (List<IntervalTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("fixedRateTasks");
 		Runnable runnable = tasks.get(0).getRunnable();
-		assertThat((Object) runnable.getClass()).isEqualTo(ScheduledMethodRunnable.class);
+		assertThat(runnable.getClass()).isEqualTo(ScheduledMethodRunnable.class);
 		Object targetObject = ((ScheduledMethodRunnable) runnable).getTarget();
 		Method targetMethod = ((ScheduledMethodRunnable) runnable).getMethod();
 		assertThat(targetObject).isEqualTo(this.testBean);
-		assertThat((Object) targetMethod.getName()).isEqualTo("test");
+		assertThat(targetMethod.getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class ScheduledTasksBeanDefinitionParserTests {
 		List<CronTask> tasks = (List<CronTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("cronTasks");
 		assertEquals(1, tasks.size());
-		assertThat((Object) tasks.get(0).getExpression()).isEqualTo("*/4 * 9-17 * * MON-FRI");
+		assertThat(tasks.get(0).getExpression()).isEqualTo("*/4 * 9-17 * * MON-FRI");
 	}
 
 	@Test

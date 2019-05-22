@@ -55,12 +55,12 @@ public class DefaultScriptDetectionGroovySpringContextTests {
 	@Test
 	public final void verifyAnnotationAutowiredFields() {
 		assertNotNull("The employee field should have been autowired.", this.employee);
-		assertThat((Object) this.employee.getName()).isEqualTo("Dilbert");
+		assertThat(this.employee.getName()).isEqualTo("Dilbert");
 
 		assertNotNull("The pet field should have been autowired.", this.pet);
-		assertThat((Object) this.pet.getName()).isEqualTo("Dogbert");
+		assertThat(this.pet.getName()).isEqualTo("Dogbert");
 
-		assertThat((Object) this.foo).as("The foo field should have been autowired.").isEqualTo("Foo");
+		assertThat(this.foo).as("The foo field should have been autowired.").isEqualTo("Foo");
 	}
 
 }

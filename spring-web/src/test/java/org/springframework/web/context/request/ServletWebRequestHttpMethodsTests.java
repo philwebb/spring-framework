@@ -101,7 +101,7 @@ public class ServletWebRequestHttpMethodsTests {
 		servletRequest.addHeader("If-None-Match", "missingquotes");
 		assertThat(request.checkNotModified(etag)).isFalse();
 		assertEquals(200, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class ServletWebRequestHttpMethodsTests {
 		assertThat(request.checkNotModified(epochTime)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
 		assertEquals(1, servletResponse.getHeaders("Last-Modified").size());
-		assertThat((Object) servletResponse.getHeader("Last-Modified")).isEqualTo(CURRENT_TIME);
+		assertThat(servletResponse.getHeader("Last-Modified")).isEqualTo(CURRENT_TIME);
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 	}
 
 
@@ -165,7 +165,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(currentETag)).isFalse();
 		assertEquals(200, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(currentETag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(currentETag);
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(paddedETag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(paddedETag);
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(currentETag)).isFalse();
 		assertEquals(200, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(String.format("\"%s\"", currentETag));
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(String.format("\"%s\"", currentETag));
 	}
 
 	@Test
@@ -197,7 +197,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag)).isFalse();
 		assertEquals(200, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 	}
 
 	@Test
@@ -208,7 +208,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag, currentDate.getTime())).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 		assertEquals(currentDate.getTime() / 1000, servletResponse.getDateHeader("Last-Modified") / 1000);
 	}
 
@@ -222,7 +222,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag, currentEpoch)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 		assertEquals(currentDate.getTime() / 1000, servletResponse.getDateHeader("Last-Modified") / 1000);
 	}
 
@@ -236,7 +236,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(currentETag, epochTime)).isFalse();
 		assertEquals(200, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(currentETag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(currentETag);
 		assertEquals(currentDate.getTime() / 1000, servletResponse.getDateHeader("Last-Modified") / 1000);
 	}
 
@@ -248,7 +248,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(weakETag)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(weakETag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(weakETag);
 	}
 
 	@Test
@@ -258,7 +258,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 	}
 
 	@Test
@@ -269,7 +269,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(etag)).isTrue();
 		assertEquals(304, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("ETag")).isEqualTo(etag);
+		assertThat(servletResponse.getHeader("ETag")).isEqualTo(etag);
 	}
 
 	@Test
@@ -303,7 +303,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(oneMinuteAgo)).isFalse();
 		assertEquals(200, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("Last-Modified")).isEqualTo(null);
+		assertThat(servletResponse.getHeader("Last-Modified")).isEqualTo(null);
 	}
 
 	@Test
@@ -315,7 +315,7 @@ public class ServletWebRequestHttpMethodsTests {
 
 		assertThat(request.checkNotModified(currentEpoch)).isTrue();
 		assertEquals(412, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("Last-Modified")).isEqualTo(null);
+		assertThat(servletResponse.getHeader("Last-Modified")).isEqualTo(null);
 	}
 
 }

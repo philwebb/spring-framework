@@ -72,7 +72,7 @@ public class DefaultJmsActivationSpecFactoryTests {
 		StubWebSphereActivationSpecImpl spec = (StubWebSphereActivationSpecImpl) activationSpecFactory
 				.createActivationSpec(new StubWebSphereResourceAdapterImpl(), activationSpecConfig);
 
-		assertThat((Object) spec.getDestination()).isEqualTo(destination);
+		assertThat(spec.getDestination()).isEqualTo(destination);
 		assertEquals(5, spec.getMaxConcurrency());
 		assertEquals(3, spec.getMaxBatchSize());
 	}

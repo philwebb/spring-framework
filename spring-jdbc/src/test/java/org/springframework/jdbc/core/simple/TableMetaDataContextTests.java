@@ -153,7 +153,7 @@ public class TableMetaDataContextTests  {
 		String insertString = context.createInsertString(keyCols);
 
 		assertEquals("wrong number of parameters: ", 0, values.size());
-		assertThat((Object) insertString).as("empty insert not generated correctly").isEqualTo("INSERT INTO customers () VALUES()");
+		assertThat(insertString).as("empty insert not generated correctly").isEqualTo("INSERT INTO customers () VALUES()");
 		verify(metaDataResultSet, atLeastOnce()).next();
 		verify(columnsResultSet, atLeastOnce()).next();
 		verify(metaDataResultSet).close();

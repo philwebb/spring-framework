@@ -57,7 +57,7 @@ public class RequestContextTests {
 	public void testGetContextUrl() throws Exception {
 		request.setContextPath("foo/");
 		RequestContext context = new RequestContext(request, response, servletContext, model);
-		assertThat((Object) context.getContextUrl("bar")).isEqualTo("foo/bar");
+		assertThat(context.getContextUrl("bar")).isEqualTo("foo/bar");
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class RequestContextTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar");
 		map.put("spam", "bucket");
-		assertThat((Object) context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("foo/bar?spam=bucket");
+		assertThat(context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("foo/bar?spam=bucket");
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class RequestContextTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar baz");
 		map.put("spam", "&bucket=");
-		assertThat((Object) context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("foo/bar%20baz?spam=%26bucket%3D");
+		assertThat(context.getContextUrl("{foo}?spam={spam}", map)).isEqualTo("foo/bar%20baz?spam=%26bucket%3D");
 	}
 
 	@Test
@@ -86,12 +86,12 @@ public class RequestContextTests {
 		request.setServletPath("/servlet");
 		RequestContext context = new RequestContext(request, response, servletContext, model);
 
-		assertThat((Object) context.getPathToServlet()).isEqualTo("/app/servlet");
+		assertThat(context.getPathToServlet()).isEqualTo("/app/servlet");
 
 		request.setAttribute(WebUtils.FORWARD_CONTEXT_PATH_ATTRIBUTE, "/origApp");
 		request.setAttribute(WebUtils.FORWARD_SERVLET_PATH_ATTRIBUTE, "/origServlet");
 
-		assertThat((Object) context.getPathToServlet()).isEqualTo("/origApp/origServlet");
+		assertThat(context.getPathToServlet()).isEqualTo("/origApp/origServlet");
 	}
 
 }

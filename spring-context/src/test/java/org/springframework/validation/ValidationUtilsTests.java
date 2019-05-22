@@ -56,7 +56,7 @@ public class ValidationUtilsTests {
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.invokeValidator(new EmptyValidator(), tb, errors);
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY");
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ValidationUtilsTests {
 		Validator testValidator = new EmptyValidator();
 		testValidator.validate(tb, errors);
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY");
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class ValidationUtilsTests {
 		Validator testValidator = new EmptyValidator();
 		testValidator.validate(tb, errors);
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY");
 	}
 
 	@Test
@@ -102,15 +102,15 @@ public class ValidationUtilsTests {
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmpty(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"});
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
 		assertThat(errors.getFieldError("name").getArguments()[0]).isEqualTo("arg");
 
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmpty(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"}, "msg");
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
 		assertThat(errors.getFieldError("name").getArguments()[0]).isEqualTo("arg");
-		assertThat((Object) errors.getFieldError("name").getDefaultMessage()).isEqualTo("msg");
+		assertThat(errors.getFieldError("name").getDefaultMessage()).isEqualTo("msg");
 	}
 
 	@Test
@@ -122,21 +122,21 @@ public class ValidationUtilsTests {
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
 
 		// Test empty String
 		tb.setName("");
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
 
 		// Test whitespace String
 		tb.setName(" ");
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
 
 		// Test OK
 		tb.setName("Roddy");
@@ -153,15 +153,15 @@ public class ValidationUtilsTests {
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"});
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
 		assertThat(errors.getFieldError("name").getArguments()[0]).isEqualTo("arg");
 
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"}, "msg");
 		assertThat(errors.hasFieldErrors("name")).isTrue();
-		assertThat((Object) errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
+		assertThat(errors.getFieldError("name").getCode()).isEqualTo("EMPTY_OR_WHITESPACE");
 		assertThat(errors.getFieldError("name").getArguments()[0]).isEqualTo("arg");
-		assertThat((Object) errors.getFieldError("name").getDefaultMessage()).isEqualTo("msg");
+		assertThat(errors.getFieldError("name").getDefaultMessage()).isEqualTo("msg");
 	}
 
 

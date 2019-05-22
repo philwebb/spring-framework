@@ -48,6 +48,6 @@ public class XsltViewResolverTests {
 
 		XsltView view = (XsltView) viewResolver.resolveViewName(viewName, Locale.ENGLISH);
 		assertNotNull("View should not be null", view);
-		assertThat((Object) view.getUrl()).as("Incorrect URL").isEqualTo((prefix + viewName + suffix));
+		assertThat(view.getUrl()).as("Incorrect URL").isEqualTo((prefix + viewName + suffix));
 	}
 }

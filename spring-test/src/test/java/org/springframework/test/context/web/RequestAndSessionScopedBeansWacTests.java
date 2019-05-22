@@ -64,7 +64,7 @@ public class RequestAndSessionScopedBeansWacTests {
 		request.setContextPath(contextPath);
 		TestBean testBean = wac.getBean(beanName, TestBean.class);
 
-		assertThat((Object) testBean.getName()).isEqualTo(contextPath);
+		assertThat(testBean.getName()).isEqualTo(contextPath);
 		assertSame(testBean, request.getAttribute(beanName));
 		assertSame(testBean, wac.getBean(beanName, TestBean.class));
 	}

@@ -52,7 +52,7 @@ public class DefaultPropertiesFileDetectionTestPropertySourceTests {
 	}
 
 	protected void assertEnvironmentValue(String key, String expected) {
-		assertThat((Object) env.getProperty(key)).as("Value of key [" + key + "].").isEqualTo(expected);
+		assertThat(env.getProperty(key)).as("Value of key [" + key + "].").isEqualTo(expected);
 	}
 
 

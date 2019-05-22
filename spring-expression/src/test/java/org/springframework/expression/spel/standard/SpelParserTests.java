@@ -48,7 +48,7 @@ public class SpelParserTests {
 		assertNotNull(expr);
 		assertNotNull(expr.getAST());
 		assertThat(expr.getValue()).isEqualTo(2);
-		assertThat((Object) expr.getValueType()).isEqualTo(Integer.class);
+		assertThat(expr.getValueType()).isEqualTo(Integer.class);
 		assertThat(expr.getAST().getValue(null)).isEqualTo(2);
 	}
 
@@ -57,9 +57,9 @@ public class SpelParserTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		EvaluationContext ctx = new StandardEvaluationContext();
 		Class<?> c = parser.parseRaw("2").getValueType();
-		assertThat((Object) c).isEqualTo(Integer.class);
+		assertThat(c).isEqualTo(Integer.class);
 		c = parser.parseRaw("12").getValueType(ctx);
-		assertThat((Object) c).isEqualTo(Integer.class);
+		assertThat(c).isEqualTo(Integer.class);
 		c = parser.parseRaw("null").getValueType();
 		assertNull(c);
 		c = parser.parseRaw("null").getValueType(ctx);
@@ -295,48 +295,48 @@ public class SpelParserTests {
 	public void tokenKind() {
 		TokenKind tk = TokenKind.NOT;
 		assertThat(tk.hasPayload()).isFalse();
-		assertThat((Object) tk.toString()).isEqualTo("NOT(!)");
+		assertThat(tk.toString()).isEqualTo("NOT(!)");
 
 		tk = TokenKind.MINUS;
 		assertThat(tk.hasPayload()).isFalse();
-		assertThat((Object) tk.toString()).isEqualTo("MINUS(-)");
+		assertThat(tk.toString()).isEqualTo("MINUS(-)");
 
 		tk = TokenKind.LITERAL_STRING;
-		assertThat((Object) tk.toString()).isEqualTo("LITERAL_STRING");
+		assertThat(tk.toString()).isEqualTo("LITERAL_STRING");
 		assertThat(tk.hasPayload()).isTrue();
 	}
 
 	@Test
 	public void token() {
 		Token token = new Token(TokenKind.NOT, 0, 3);
-		assertThat((Object) token.kind).isEqualTo(TokenKind.NOT);
+		assertThat(token.kind).isEqualTo(TokenKind.NOT);
 		assertEquals(0, token.startPos);
 		assertEquals(3, token.endPos);
-		assertThat((Object) token.toString()).isEqualTo("[NOT(!)](0,3)");
+		assertThat(token.toString()).isEqualTo("[NOT(!)](0,3)");
 
 		token = new Token(TokenKind.LITERAL_STRING, "abc".toCharArray(), 0, 3);
-		assertThat((Object) token.kind).isEqualTo(TokenKind.LITERAL_STRING);
+		assertThat(token.kind).isEqualTo(TokenKind.LITERAL_STRING);
 		assertEquals(0, token.startPos);
 		assertEquals(3, token.endPos);
-		assertThat((Object) token.toString()).isEqualTo("[LITERAL_STRING:abc](0,3)");
+		assertThat(token.toString()).isEqualTo("[LITERAL_STRING:abc](0,3)");
 	}
 
 	@Test
 	public void exceptions() {
 		ExpressionException exprEx = new ExpressionException("test");
-		assertThat((Object) exprEx.getSimpleMessage()).isEqualTo("test");
-		assertThat((Object) exprEx.toDetailedString()).isEqualTo("test");
-		assertThat((Object) exprEx.getMessage()).isEqualTo("test");
+		assertThat(exprEx.getSimpleMessage()).isEqualTo("test");
+		assertThat(exprEx.toDetailedString()).isEqualTo("test");
+		assertThat(exprEx.getMessage()).isEqualTo("test");
 
 		exprEx = new ExpressionException("wibble", "test");
-		assertThat((Object) exprEx.getSimpleMessage()).isEqualTo("test");
-		assertThat((Object) exprEx.toDetailedString()).isEqualTo("Expression [wibble]: test");
-		assertThat((Object) exprEx.getMessage()).isEqualTo("Expression [wibble]: test");
+		assertThat(exprEx.getSimpleMessage()).isEqualTo("test");
+		assertThat(exprEx.toDetailedString()).isEqualTo("Expression [wibble]: test");
+		assertThat(exprEx.getMessage()).isEqualTo("Expression [wibble]: test");
 
 		exprEx = new ExpressionException("wibble", 3, "test");
-		assertThat((Object) exprEx.getSimpleMessage()).isEqualTo("test");
-		assertThat((Object) exprEx.toDetailedString()).isEqualTo("Expression [wibble] @3: test");
-		assertThat((Object) exprEx.getMessage()).isEqualTo("Expression [wibble] @3: test");
+		assertThat(exprEx.getSimpleMessage()).isEqualTo("test");
+		assertThat(exprEx.toDetailedString()).isEqualTo("Expression [wibble] @3: test");
+		assertThat(exprEx.getMessage()).isEqualTo("Expression [wibble] @3: test");
 	}
 
 	@Test
@@ -379,7 +379,7 @@ public class SpelParserTests {
 			SpelExpression expr = parser.parseRaw(expression);
 			Object exprVal = expr.getValue();
 			assertThat(exprVal).isEqualTo(value);
-			assertThat((Object) exprVal.getClass()).isEqualTo(type);
+			assertThat(exprVal.getClass()).isEqualTo(type);
 		}
 		catch (Exception ex) {
 			throw new AssertionError(ex.getMessage(), ex);

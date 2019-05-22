@@ -46,12 +46,12 @@ public class AnnotationPointcutTests {
 
 	@Test
 	public void testAnnotationBindingInAroundAdvice() {
-		assertThat((Object) testBean.doThis()).isEqualTo("this value");
+		assertThat(testBean.doThis()).isEqualTo("this value");
 	}
 
 	@Test
 	public void testNoMatchingWithoutAnnotationPresent() {
-		assertThat((Object) testBean.doTheOther()).isEqualTo("doTheOther");
+		assertThat(testBean.doTheOther()).isEqualTo("doTheOther");
 	}
 
 }

@@ -180,26 +180,26 @@ public class PeriodicTriggerTests {
 		PeriodicTrigger trigger2 = new PeriodicTrigger(3000);
 		assertThat(trigger1.equals(new String("not a trigger"))).isFalse();
 		assertThat(trigger1.equals(null)).isFalse();
-		assertThat((Object) trigger1).isEqualTo(trigger1);
-		assertThat((Object) trigger2).isEqualTo(trigger2);
-		assertThat((Object) trigger2).isEqualTo(trigger1);
+		assertThat(trigger1).isEqualTo(trigger1);
+		assertThat(trigger2).isEqualTo(trigger2);
+		assertThat(trigger2).isEqualTo(trigger1);
 		trigger2.setInitialDelay(1234);
 		assertThat(trigger1.equals(trigger2)).isFalse();
 		assertThat(trigger2.equals(trigger1)).isFalse();
 		trigger1.setInitialDelay(1234);
-		assertThat((Object) trigger2).isEqualTo(trigger1);
+		assertThat(trigger2).isEqualTo(trigger1);
 		trigger2.setFixedRate(true);
 		assertThat(trigger1.equals(trigger2)).isFalse();
 		assertThat(trigger2.equals(trigger1)).isFalse();
 		trigger1.setFixedRate(true);
-		assertThat((Object) trigger2).isEqualTo(trigger1);
+		assertThat(trigger2).isEqualTo(trigger1);
 		PeriodicTrigger trigger3 = new PeriodicTrigger(3, TimeUnit.SECONDS);
 		trigger3.setInitialDelay(7);
 		trigger3.setFixedRate(true);
 		assertThat(trigger1.equals(trigger3)).isFalse();
 		assertThat(trigger3.equals(trigger1)).isFalse();
 		trigger1.setInitialDelay(7000);
-		assertThat((Object) trigger3).isEqualTo(trigger1);
+		assertThat(trigger3).isEqualTo(trigger1);
 	}
 
 

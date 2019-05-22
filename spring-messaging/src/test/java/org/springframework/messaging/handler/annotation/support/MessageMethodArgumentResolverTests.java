@@ -103,7 +103,7 @@ public class MessageMethodArgumentResolverTests {
 
 		assertNotNull(actual);
 		assertSame(message.getHeaders(), actual.getHeaders());
-		assertThat((Object) actual.getPayload()).isEqualTo(new Integer(4));
+		assertThat(actual.getPayload()).isEqualTo(new Integer(4));
 	}
 
 	@Test
@@ -236,7 +236,7 @@ public class MessageMethodArgumentResolverTests {
 		Message<?> outMessage = (Message<?>) actual;
 		boolean condition = outMessage.getPayload() instanceof Foo;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((Foo) outMessage.getPayload()).getFoo()).isEqualTo("bar");
+		assertThat(((Foo) outMessage.getPayload()).getFoo()).isEqualTo("bar");
 	}
 
 

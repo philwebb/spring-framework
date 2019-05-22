@@ -170,7 +170,7 @@ public class InvocableHandlerMethodTests {
 		HandlerResult result = invokeForResult(new TestController(), method);
 
 		assertNull("Expected no result (i.e. fully handled)", result);
-		assertThat((Object) this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
+		assertThat(this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -181,7 +181,7 @@ public class InvocableHandlerMethodTests {
 		HandlerResult result = invokeForResult(new TestController(), method);
 
 		assertNull("Expected no result (i.e. fully handled)", result);
-		assertThat((Object) this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
+		assertThat(this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class InvocableHandlerMethodTests {
 		HandlerResult result = invokeForResult(new TestController(), method);
 
 		assertNull("Expected no result (i.e. fully handled)", result);
-		assertThat((Object) this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
+		assertThat(this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -201,7 +201,7 @@ public class InvocableHandlerMethodTests {
 		HandlerResult result = invokeForResult(new TestController(), method);
 
 		assertNull("Expected no result (i.e. fully handled)", result);
-		assertThat((Object) this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
+		assertThat(this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
 	}
 
 	@Test

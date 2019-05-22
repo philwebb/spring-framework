@@ -42,6 +42,6 @@ public class ConfigClassesAndProfileResolverWithCustomDefaultsMetaConfigTests {
 
 	@Test
 	public void foo() {
-		assertThat((Object) foo).isEqualTo("Resolver Foo");
+		assertThat(foo).isEqualTo("Resolver Foo");
 	}
 }

@@ -125,14 +125,14 @@ public class ControllerTests {
 
 		swc.afterPropertiesSet();
 		assertNotNull(TestServlet.config);
-		assertThat((Object) TestServlet.config.getServletName()).isEqualTo("action");
-		assertThat((Object) TestServlet.config.getInitParameter("config")).isEqualTo("myValue");
+		assertThat(TestServlet.config.getServletName()).isEqualTo("action");
+		assertThat(TestServlet.config.getInitParameter("config")).isEqualTo("myValue");
 		assertNull(TestServlet.request);
 		assertThat(TestServlet.destroyed).isFalse();
 
 		assertNull(swc.handleRequest(request, response));
-		assertThat((Object) TestServlet.request).isEqualTo(request);
-		assertThat((Object) TestServlet.response).isEqualTo(response);
+		assertThat(TestServlet.request).isEqualTo(request);
+		assertThat(TestServlet.response).isEqualTo(response);
 		assertThat(TestServlet.destroyed).isFalse();
 
 		swc.destroy();
@@ -150,13 +150,13 @@ public class ControllerTests {
 
 		swc.afterPropertiesSet();
 		assertNotNull(TestServlet.config);
-		assertThat((Object) TestServlet.config.getServletName()).isEqualTo("action");
+		assertThat(TestServlet.config.getServletName()).isEqualTo("action");
 		assertNull(TestServlet.request);
 		assertThat(TestServlet.destroyed).isFalse();
 
 		assertNull(swc.handleRequest(request, response));
-		assertThat((Object) TestServlet.request).isEqualTo(request);
-		assertThat((Object) TestServlet.response).isEqualTo(response);
+		assertThat(TestServlet.request).isEqualTo(request);
+		assertThat(TestServlet.response).isEqualTo(response);
 		assertThat(TestServlet.destroyed).isFalse();
 
 		swc.destroy();

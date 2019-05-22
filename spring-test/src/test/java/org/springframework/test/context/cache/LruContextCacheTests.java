@@ -172,7 +172,7 @@ public class LruContextCacheTests {
 			.collect(toList());
 		// @formatter:on
 
-		assertThat((Object) actualNames).isEqualTo(asList(expectedNames));
+		assertThat(actualNames).isEqualTo(asList(expectedNames));
 	}
 
 

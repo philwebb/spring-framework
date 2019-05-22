@@ -89,8 +89,8 @@ public class RowMapperTests {
 		assertEquals(2, result.size());
 		TestBean testBean1 = result.get(0);
 		TestBean testBean2 = result.get(1);
-		assertThat((Object) testBean1.getName()).isEqualTo("tb1");
-		assertThat((Object) testBean2.getName()).isEqualTo("tb2");
+		assertThat(testBean1.getName()).isEqualTo("tb1");
+		assertThat(testBean2.getName()).isEqualTo("tb2");
 		assertEquals(1, testBean1.getAge());
 		assertEquals(2, testBean2.getAge());
 	}

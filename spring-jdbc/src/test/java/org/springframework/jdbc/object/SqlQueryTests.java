@@ -617,9 +617,9 @@ public class SqlQueryTests  {
 
 		assertEquals("We got two customers back", 2, cust.size());
 		assertEquals("First customer id was assigned correctly", cust.get(0).getId(), 1);
-		assertThat((Object) "rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
+		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
 		assertEquals("Second customer id was assigned correctly", cust.get(1).getId(), 2);
-		assertThat((Object) "juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
+		assertThat("juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 2, Types.NUMERIC);
 		verify(resultSet).close();
@@ -666,9 +666,9 @@ public class SqlQueryTests  {
 
 		assertEquals("We got two customers back", 2, cust.size());
 		assertEquals("First customer id was assigned correctly", cust.get(0).getId(), 1);
-		assertThat((Object) "rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
+		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
 		assertEquals("Second customer id was assigned correctly", cust.get(1).getId(), 2);
-		assertThat((Object) "juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
+		assertThat("juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);

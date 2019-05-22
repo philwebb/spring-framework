@@ -67,7 +67,7 @@ public class ViewControllerRegistryTests {
 		this.registry.addViewController("/path").setViewName("viewName");
 		ParameterizableViewController controller = getController("/path");
 
-		assertThat((Object) controller.getViewName()).isEqualTo("viewName");
+		assertThat(controller.getViewName()).isEqualTo("viewName");
 		assertNull(controller.getStatusCode());
 		assertThat(controller.isStatusOnly()).isFalse();
 		assertNotNull(controller.getApplicationContext());
@@ -93,7 +93,7 @@ public class ViewControllerRegistryTests {
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
 		assertEquals(302, this.response.getStatus());
-		assertThat((Object) this.response.getRedirectedUrl()).isEqualTo("/context/redirectTo");
+		assertThat(this.response.getRedirectedUrl()).isEqualTo("/context/redirectTo");
 		assertNotNull(redirectView.getApplicationContext());
 	}
 
@@ -110,7 +110,7 @@ public class ViewControllerRegistryTests {
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
 		assertEquals(308, this.response.getStatus());
-		assertThat((Object) response.getRedirectedUrl()).isEqualTo("/redirectTo?a=b");
+		assertThat(response.getRedirectedUrl()).isEqualTo("/redirectTo?a=b");
 		assertNotNull(redirectView.getApplicationContext());
 	}
 
@@ -120,7 +120,7 @@ public class ViewControllerRegistryTests {
 		ParameterizableViewController controller = getController("/path");
 
 		assertNull(controller.getViewName());
-		assertThat((Object) controller.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(controller.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(controller.isStatusOnly()).isTrue();
 		assertNotNull(controller.getApplicationContext());
 	}
@@ -148,7 +148,7 @@ public class ViewControllerRegistryTests {
 		ParameterizableViewController controller = getController(path);
 		assertNull(controller.getViewName());
 		assertNotNull(controller.getView());
-		assertThat((Object) controller.getView().getClass()).isEqualTo(RedirectView.class);
+		assertThat(controller.getView().getClass()).isEqualTo(RedirectView.class);
 		return (RedirectView) controller.getView();
 	}
 

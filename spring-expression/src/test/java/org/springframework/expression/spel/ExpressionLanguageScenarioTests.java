@@ -80,7 +80,7 @@ public class ExpressionLanguageScenarioTests extends AbstractExpressionTests {
 			value = expr.getValue();
 
 			assertThat(value).isEqualTo("hello world");
-			assertThat((Object) value.getClass()).isEqualTo(String.class);
+			assertThat(value.getClass()).isEqualTo(String.class);
 		}
 		catch (EvaluationException | ParseException ex) {
 			throw new AssertionError(ex.getMessage(), ex);
@@ -112,7 +112,7 @@ public class ExpressionLanguageScenarioTests extends AbstractExpressionTests {
 		// all prime numbers > 10 from the list (using selection ?{...})
 		expr = parser.parseRaw("#primes.?[#this>10]");
 		value = expr.getValue(ctx);
-		assertThat((Object) value.toString()).isEqualTo("[11, 13, 17]");
+		assertThat(value.toString()).isEqualTo("[11, 13, 17]");
 	}
 
 

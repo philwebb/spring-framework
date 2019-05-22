@@ -77,7 +77,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain).block(TIMEOUT);
 
-		assertThat((Object) actual).isEqualTo(file);
+		assertThat(actual).isEqualTo(file);
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 	}
 
@@ -103,7 +103,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain).block(TIMEOUT);
 
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 		verify(this.chain, times(1)).resolveUrlPath(expected, this.locations);
 	}
@@ -131,7 +131,7 @@ public class WebJarsResourceResolverTests {
 				.resolveResource(this.exchange, file, this.locations, this.chain)
 				.block(TIMEOUT);
 
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveResource(this.exchange, file, this.locations);
 	}
 
@@ -166,7 +166,7 @@ public class WebJarsResourceResolverTests {
 				.resolveResource(this.exchange, file, this.locations, this.chain)
 				.block(TIMEOUT);
 
-		assertThat((Object) actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveResource(this.exchange, file, this.locations);
 	}
 

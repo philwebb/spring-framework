@@ -40,14 +40,14 @@ public class ByteArrayMultipartFileEditorTests {
 	public void setValueAsByteArray() throws Exception {
 		String expectedValue = "Shumwere, shumhow, a shuck ish washing you. - Drunken Far Side";
 		editor.setValue(expectedValue.getBytes());
-		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
+		assertThat(editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test
 	public void setValueAsString() throws Exception {
 		String expectedValue = "'Green Wing' - classic British comedy";
 		editor.setValue(expectedValue);
-		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
+		assertThat(editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test
@@ -61,13 +61,13 @@ public class ByteArrayMultipartFileEditorTests {
 		};
 
 		editor.setValue(object);
-		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
+		assertThat(editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test
 	public void setValueAsNullGetsBackEmptyString() throws Exception {
 		editor.setValue(null);
-		assertThat((Object) editor.getAsText()).isEqualTo("");
+		assertThat(editor.getAsText()).isEqualTo("");
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class ByteArrayMultipartFileEditorTests {
 		MultipartFile file = mock(MultipartFile.class);
 		given(file.getBytes()).willReturn(expectedValue.getBytes());
 		editor.setValue(file);
-		assertThat((Object) editor.getAsText()).isEqualTo(expectedValue);
+		assertThat(editor.getAsText()).isEqualTo(expectedValue);
 	}
 
 	@Test

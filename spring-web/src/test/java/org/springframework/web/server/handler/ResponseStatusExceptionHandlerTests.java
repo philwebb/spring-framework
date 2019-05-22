@@ -59,14 +59,14 @@ public class ResponseStatusExceptionHandlerTests {
 	public void handleResponseStatusException() {
 		Throwable ex = new ResponseStatusException(HttpStatus.BAD_REQUEST, "");
 		this.handler.handle(this.exchange, ex).block(Duration.ofSeconds(5));
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
 	public void handleNestedResponseStatusException() {
 		Throwable ex = new Exception(new ResponseStatusException(HttpStatus.BAD_REQUEST, ""));
 		this.handler.handle(this.exchange, ex).block(Duration.ofSeconds(5));
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test

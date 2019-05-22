@@ -38,11 +38,11 @@ public class MockMultipartHttpServletRequestBuilderTests {
 		Object result = new MockMultipartHttpServletRequestBuilder("/fileUpload").merge(parent);
 
 		assertNotNull(result);
-		assertThat((Object) result.getClass()).isEqualTo(MockMultipartHttpServletRequestBuilder.class);
+		assertThat(result.getClass()).isEqualTo(MockMultipartHttpServletRequestBuilder.class);
 
 		MockMultipartHttpServletRequestBuilder builder = (MockMultipartHttpServletRequestBuilder) result;
 		MockHttpServletRequest request = builder.buildRequest(new MockServletContext());
-		assertThat((Object) request.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(request.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 }

@@ -72,7 +72,7 @@ public class MockMvcClientHttpRequestFactoryTests {
 	public void test() throws Exception {
 		RestTemplate template = new RestTemplate(new MockMvcClientHttpRequestFactory(this.mockMvc));
 		String result = template.getForObject("/foo", String.class);
-		assertThat((Object) result).isEqualTo("bar");
+		assertThat(result).isEqualTo("bar");
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class MockMvcClientHttpRequestFactoryTests {
 		org.springframework.web.client.AsyncRestTemplate template = new org.springframework.web.client.AsyncRestTemplate(
 				new MockMvcClientHttpRequestFactory(this.mockMvc));
 		ListenableFuture<ResponseEntity<String>> entity = template.getForEntity("/foo", String.class);
-		assertThat((Object) entity.get().getBody()).isEqualTo("bar");
+		assertThat(entity.get().getBody()).isEqualTo("bar");
 	}
 
 

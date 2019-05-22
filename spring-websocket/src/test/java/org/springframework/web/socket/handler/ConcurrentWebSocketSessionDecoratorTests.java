@@ -54,7 +54,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		decorator.sendMessage(textMessage);
 
 		assertEquals(1, session.getSentMessages().size());
-		assertThat((Object) session.getSentMessages().get(0)).isEqualTo(textMessage);
+		assertThat(session.getSentMessages().get(0)).isEqualTo(textMessage);
 
 		assertEquals(0, decorator.getBufferSize());
 		assertEquals(0, decorator.getTimeSinceSendStarted());
@@ -171,10 +171,10 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		WebSocketSession decorator = new ConcurrentWebSocketSessionDecorator(session, 10 * 1000, 1024);
 
 		decorator.close(CloseStatus.PROTOCOL_ERROR);
-		assertThat((Object) session.getCloseStatus()).isEqualTo(CloseStatus.PROTOCOL_ERROR);
+		assertThat(session.getCloseStatus()).isEqualTo(CloseStatus.PROTOCOL_ERROR);
 
 		decorator.close(CloseStatus.SERVER_ERROR);
-		assertThat((Object) session.getCloseStatus()).as("Should have been ignored").isEqualTo(CloseStatus.PROTOCOL_ERROR);
+		assertThat(session.getCloseStatus()).as("Should have been ignored").isEqualTo(CloseStatus.PROTOCOL_ERROR);
 	}
 
 	@Test
@@ -208,7 +208,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 
 		decorator.close(CloseStatus.PROTOCOL_ERROR);
 
-		assertThat((Object) session.getCloseStatus()).as("CloseStatus should have changed to SESSION_NOT_RELIABLE").isEqualTo(CloseStatus.SESSION_NOT_RELIABLE);
+		assertThat(session.getCloseStatus()).as("CloseStatus should have changed to SESSION_NOT_RELIABLE").isEqualTo(CloseStatus.SESSION_NOT_RELIABLE);
 	}
 
 	private void sendBlockingMessage(ConcurrentWebSocketSessionDecorator session) throws InterruptedException {

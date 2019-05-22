@@ -70,9 +70,9 @@ public class TransactionInterceptorTests extends AbstractTransactionAspectTests 
 	protected Object advised(Object target, PlatformTransactionManager ptm, TransactionAttributeSource tas) {
 		TransactionInterceptor ti = new TransactionInterceptor();
 		ti.setTransactionManager(ptm);
-		assertThat((Object) ti.getTransactionManager()).isEqualTo(ptm);
+		assertThat(ti.getTransactionManager()).isEqualTo(ptm);
 		ti.setTransactionAttributeSource(tas);
-		assertThat((Object) ti.getTransactionAttributeSource()).isEqualTo(tas);
+		assertThat(ti.getTransactionAttributeSource()).isEqualTo(tas);
 
 		ProxyFactory pf = new ProxyFactory(target);
 		pf.addAdvice(0, ti);

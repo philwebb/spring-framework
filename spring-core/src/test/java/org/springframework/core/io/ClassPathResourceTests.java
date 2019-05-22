@@ -99,14 +99,14 @@ public class ClassPathResourceTests {
 
 	@Test
 	public void dropLeadingSlashForClassLoaderAccess() {
-		assertThat((Object) new ClassPathResource("/test.html").getPath()).isEqualTo("test.html");
-		assertThat((Object) ((ClassPathResource) new ClassPathResource("").createRelative("/test.html")).getPath()).isEqualTo("test.html");
+		assertThat(new ClassPathResource("/test.html").getPath()).isEqualTo("test.html");
+		assertThat(((ClassPathResource) new ClassPathResource("").createRelative("/test.html")).getPath()).isEqualTo("test.html");
 	}
 
 	@Test
 	public void preserveLeadingSlashForClassRelativeAccess() {
-		assertThat((Object) new ClassPathResource("/test.html", getClass()).getPath()).isEqualTo("/test.html");
-		assertThat((Object) ((ClassPathResource) new ClassPathResource("", getClass()).createRelative("/test.html")).getPath()).isEqualTo("/test.html");
+		assertThat(new ClassPathResource("/test.html", getClass()).getPath()).isEqualTo("/test.html");
+		assertThat(((ClassPathResource) new ClassPathResource("", getClass()).createRelative("/test.html")).getPath()).isEqualTo("/test.html");
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class ClassPathResourceTests {
 		assertEquals(1, matcher.groupCount());
 		String match = matcher.group(1);
 
-		assertThat((Object) match).isEqualTo(expectedPath);
+		assertThat(match).isEqualTo(expectedPath);
 	}
 
 	private void assertExceptionContainsFullyQualifiedPath(ClassPathResource resource) {

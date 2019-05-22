@@ -128,8 +128,8 @@ public class FieldRetrievingFactoryBeanTests {
 				qualifiedResource(FieldRetrievingFactoryBeanTests.class, "context.xml"));
 
 		TestBean testBean = (TestBean) bf.getBean("testBean");
-		assertThat((Object) testBean.getSomeIntegerArray()[0]).isEqualTo(new Integer(Connection.TRANSACTION_SERIALIZABLE));
-		assertThat((Object) testBean.getSomeIntegerArray()[1]).isEqualTo(new Integer(Connection.TRANSACTION_SERIALIZABLE));
+		assertThat(testBean.getSomeIntegerArray()[0]).isEqualTo(new Integer(Connection.TRANSACTION_SERIALIZABLE));
+		assertThat(testBean.getSomeIntegerArray()[1]).isEqualTo(new Integer(Connection.TRANSACTION_SERIALIZABLE));
 	}
 
 

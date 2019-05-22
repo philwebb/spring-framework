@@ -99,16 +99,16 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 
 		StepVerifier.create(result)
 				.consumeNextWith( event -> {
-					assertThat((Object) event.id()).isEqualTo("0");
-					assertThat((Object) event.data()).isEqualTo("foo");
-					assertThat((Object) event.comment()).isEqualTo("bar");
+					assertThat(event.id()).isEqualTo("0");
+					assertThat(event.data()).isEqualTo("foo");
+					assertThat(event.comment()).isEqualTo("bar");
 					assertNull(event.event());
 					assertNull(event.retry());
 				})
 				.consumeNextWith( event -> {
-					assertThat((Object) event.id()).isEqualTo("1");
-					assertThat((Object) event.data()).isEqualTo("foo");
-					assertThat((Object) event.comment()).isEqualTo("bar");
+					assertThat(event.id()).isEqualTo("1");
+					assertThat(event.data()).isEqualTo("foo");
+					assertThat(event.comment()).isEqualTo("bar");
 					assertNull(event.event());
 					assertNull(event.retry());
 				})

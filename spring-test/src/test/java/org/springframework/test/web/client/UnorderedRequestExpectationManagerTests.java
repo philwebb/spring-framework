@@ -52,7 +52,7 @@ public class UnorderedRequestExpectationManagerTests {
 			this.manager.validateRequest(createRequest(GET, "/foo"));
 		}
 		catch (AssertionError error) {
-			assertThat((Object) error.getMessage()).isEqualTo(("No further requests expected: HTTP GET /foo\n" +
+			assertThat(error.getMessage()).isEqualTo(("No further requests expected: HTTP GET /foo\n" +
 						"0 request(s) executed.\n"));
 		}
 	}

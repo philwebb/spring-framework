@@ -88,34 +88,34 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	@Test
 	public void actualGetRequestWithoutAnnotation() throws Exception {
 		ResponseEntity<String> entity = performGet("/no", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
-		assertThat((Object) entity.getBody()).isEqualTo("no");
+		assertThat(entity.getBody()).isEqualTo("no");
 	}
 
 	@Test
 	public void actualPostRequestWithoutAnnotation() throws Exception {
 		ResponseEntity<String> entity = performPost("/no", this.headers, null, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
-		assertThat((Object) entity.getBody()).isEqualTo("no-post");
+		assertThat(entity.getBody()).isEqualTo("no-post");
 	}
 
 	@Test
 	public void actualRequestWithDefaultAnnotation() throws Exception {
 		ResponseEntity<String> entity = performGet("/default", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
-		assertThat((Object) entity.getBody()).isEqualTo("default");
+		assertThat(entity.getBody()).isEqualTo("default");
 	}
 
 	@Test
 	public void preflightRequestWithDefaultAnnotation() throws Exception {
 		this.headers.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
 		ResponseEntity<Void> entity = performOptions("/default", this.headers, Void.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
 		assertEquals(1800, entity.getHeaders().getAccessControlMaxAge());
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
 	}
@@ -124,19 +124,19 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	public void actualRequestWithDefaultAnnotationAndNoOrigin() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		ResponseEntity<String> entity = performGet("/default", headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
-		assertThat((Object) entity.getBody()).isEqualTo("default");
+		assertThat(entity.getBody()).isEqualTo("default");
 	}
 
 	@Test
 	public void actualRequestWithCustomizedAnnotation() throws Exception {
 		ResponseEntity<String> entity = performGet("/customized", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
 		assertEquals(-1, entity.getHeaders().getAccessControlMaxAge());
-		assertThat((Object) entity.getBody()).isEqualTo("customized");
+		assertThat(entity.getBody()).isEqualTo("customized");
 	}
 
 	@Test
@@ -145,8 +145,8 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		this.headers.add(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS, "header1, header2");
 		ResponseEntity<String> entity = performOptions("/customized", this.headers, String.class);
 
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
 		assertArrayEquals(new HttpMethod[] {HttpMethod.GET},
 				entity.getHeaders().getAccessControlAllowMethods().toArray());
 		assertArrayEquals(new String[] {"header1", "header2"},
@@ -160,38 +160,38 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	@Test
 	public void customOriginDefinedViaValueAttribute() throws Exception {
 		ResponseEntity<String> entity = performGet("/origin-value-attribute", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
-		assertThat((Object) entity.getBody()).isEqualTo("value-attribute");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
+		assertThat(entity.getBody()).isEqualTo("value-attribute");
 	}
 
 	@Test
 	public void customOriginDefinedViaPlaceholder() throws Exception {
 		ResponseEntity<String> entity = performGet("/origin-placeholder", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
-		assertThat((Object) entity.getBody()).isEqualTo("placeholder");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
+		assertThat(entity.getBody()).isEqualTo("placeholder");
 	}
 
 	@Test
 	public void classLevel() throws Exception {
 		ResponseEntity<String> entity = performGet("/foo", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
-		assertThat((Object) entity.getBody()).isEqualTo("foo");
+		assertThat(entity.getBody()).isEqualTo("foo");
 
 		entity = performGet("/bar", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("*");
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
-		assertThat((Object) entity.getBody()).isEqualTo("bar");
+		assertThat(entity.getBody()).isEqualTo("bar");
 
 		entity = performGet("/baz", this.headers, String.class);
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isTrue();
-		assertThat((Object) entity.getBody()).isEqualTo("baz");
+		assertThat(entity.getBody()).isEqualTo("baz");
 	}
 
 	@Test
@@ -200,8 +200,8 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		this.headers.add(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS, "header1");
 		ResponseEntity<String> entity = performOptions("/ambiguous-header", this.headers, String.class);
 
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
 		assertArrayEquals(new HttpMethod[] {HttpMethod.GET},
 				entity.getHeaders().getAccessControlAllowMethods().toArray());
 		assertArrayEquals(new String[] {"header1"},
@@ -214,8 +214,8 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		this.headers.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
 		ResponseEntity<String> entity = performOptions("/ambiguous-produces", this.headers, String.class);
 
-		assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
+		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
 		assertArrayEquals(new HttpMethod[] {HttpMethod.GET},
 				entity.getHeaders().getAccessControlAllowMethods().toArray());
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isTrue();

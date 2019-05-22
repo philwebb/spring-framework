@@ -104,7 +104,7 @@ public class ConcurrentBeanWrapperTests {
 
 		BeanWrapperImpl wrapper = new BeanWrapperImpl(bean);
 		wrapper.setPropertyValue("properties", value);
-		assertThat((Object) bean.getProperties()).isEqualTo(p);
+		assertThat(bean.getProperties()).isEqualTo(p);
 	}
 
 

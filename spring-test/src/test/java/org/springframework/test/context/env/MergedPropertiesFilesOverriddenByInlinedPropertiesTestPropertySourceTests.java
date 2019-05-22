@@ -38,13 +38,13 @@ public class MergedPropertiesFilesOverriddenByInlinedPropertiesTestPropertySourc
 	@Test
 	@Override
 	public void verifyPropertiesAreAvailableInEnvironment() {
-		assertThat((Object) env.getProperty("explicit")).isEqualTo("inlined");
+		assertThat(env.getProperty("explicit")).isEqualTo("inlined");
 	}
 
 	@Test
 	@Override
 	public void verifyExtendedPropertiesAreAvailableInEnvironment() {
-		assertThat((Object) env.getProperty("extended")).isEqualTo("inlined2");
+		assertThat(env.getProperty("extended")).isEqualTo("inlined2");
 	}
 
 }

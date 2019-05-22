@@ -66,9 +66,9 @@ public class OrderedInitializersAnnotationConfigTests {
 
 	@Test
 	public void activeBeans() {
-		assertThat((Object) foo).isEqualTo(PROFILE_GLOBAL);
-		assertThat((Object) bar).isEqualTo(PROFILE_GLOBAL);
-		assertThat((Object) baz).isEqualTo(PROFILE_TWO);
+		assertThat(foo).isEqualTo(PROFILE_GLOBAL);
+		assertThat(bar).isEqualTo(PROFILE_GLOBAL);
+		assertThat(baz).isEqualTo(PROFILE_TWO);
 	}
 
 

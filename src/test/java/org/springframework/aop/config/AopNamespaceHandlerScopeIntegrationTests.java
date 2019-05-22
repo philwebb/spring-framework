@@ -71,11 +71,11 @@ public class AopNamespaceHandlerScopeIntegrationTests {
 		assertThat(condition).as("Should be target class proxy").isTrue();
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
-		assertThat((Object) scoped.getName()).isEqualTo(rob);
+		assertThat(scoped.getName()).isEqualTo(rob);
 		scoped.setName(bram);
-		assertThat((Object) scoped.getName()).isEqualTo(bram);
+		assertThat(scoped.getName()).isEqualTo(bram);
 		ITestBean deserialized = (ITestBean) SerializationTestUtils.serializeAndDeserialize(scoped);
-		assertThat((Object) deserialized.getName()).isEqualTo(bram);
+		assertThat(deserialized.getName()).isEqualTo(bram);
 	}
 
 	@Test
@@ -98,12 +98,12 @@ public class AopNamespaceHandlerScopeIntegrationTests {
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
 
-		assertThat((Object) scoped.getName()).isEqualTo(rob);
+		assertThat(scoped.getName()).isEqualTo(rob);
 		scoped.setName(bram);
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(newRequest));
-		assertThat((Object) scoped.getName()).isEqualTo(rob);
+		assertThat(scoped.getName()).isEqualTo(rob);
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(oldRequest));
-		assertThat((Object) scoped.getName()).isEqualTo(bram);
+		assertThat(scoped.getName()).isEqualTo(bram);
 
 		assertThat(((Advised) scoped).getAdvisors().length > 0).as("Should have advisors").isTrue();
 	}
@@ -133,12 +133,12 @@ public class AopNamespaceHandlerScopeIntegrationTests {
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
 
-		assertThat((Object) scoped.getName()).isEqualTo(rob);
+		assertThat(scoped.getName()).isEqualTo(rob);
 		scoped.setName(bram);
 		request.setSession(newSession);
-		assertThat((Object) scoped.getName()).isEqualTo(rob);
+		assertThat(scoped.getName()).isEqualTo(rob);
 		request.setSession(oldSession);
-		assertThat((Object) scoped.getName()).isEqualTo(bram);
+		assertThat(scoped.getName()).isEqualTo(bram);
 
 		assertThat(((Advised) scoped).getAdvisors().length > 0).as("Should have advisors").isTrue();
 	}

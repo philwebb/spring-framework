@@ -64,7 +64,7 @@ public class KotlinScriptTemplateTests {
 		model.put("foo", "Foo");
 		String url = "org/springframework/web/servlet/view/script/kotlin/template.kts";
 		MockHttpServletResponse response = render(url, model, Locale.FRENCH, ScriptTemplatingConfiguration.class);
-		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>\n<p>Bonjour Foo</p>\n</body></html>");
+		assertThat(response.getContentAsString()).isEqualTo("<html><body>\n<p>Bonjour Foo</p>\n</body></html>");
 	}
 
 	@Ignore
@@ -74,7 +74,7 @@ public class KotlinScriptTemplateTests {
 		model.put("foo", "Foo");
 		String url = "org/springframework/web/servlet/view/script/kotlin/template.kts";
 		MockHttpServletResponse response = render(url, model, Locale.ENGLISH, ScriptTemplatingConfiguration.class);
-		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>\n<p>Hello Foo</p>\n</body></html>");
+		assertThat(response.getContentAsString()).isEqualTo("<html><body>\n<p>Hello Foo</p>\n</body></html>");
 	}
 
 	@Ignore
@@ -87,7 +87,7 @@ public class KotlinScriptTemplateTests {
 		model.put("footer", "</body></html>");
 		MockHttpServletResponse response = render("org/springframework/web/servlet/view/script/kotlin/eval.kts",
 				model, Locale.ENGLISH, ScriptTemplatingConfigurationWithoutRenderFunction.class);
-		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>\n<p>Hello Foo</p>\n</body></html>");
+		assertThat(response.getContentAsString()).isEqualTo("<html><body>\n<p>Hello Foo</p>\n</body></html>");
 	}
 
 

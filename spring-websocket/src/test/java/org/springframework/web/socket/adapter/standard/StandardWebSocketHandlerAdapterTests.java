@@ -70,7 +70,7 @@ public class StandardWebSocketHandlerAdapterTests {
 		verify(this.session, atLeast(2)).addMessageHandler(any(MessageHandler.Whole.class));
 
 		given(this.session.getRequestURI()).willReturn(uri);
-		assertThat((Object) this.webSocketSession.getUri()).isEqualTo(uri);
+		assertThat(this.webSocketSession.getUri()).isEqualTo(uri);
 	}
 
 	@Test

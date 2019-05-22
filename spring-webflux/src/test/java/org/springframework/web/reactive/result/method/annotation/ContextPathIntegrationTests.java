@@ -68,11 +68,11 @@ public class ContextPathIntegrationTests {
 
 			String url = "http://localhost:" + server.getPort() + "/webApp1/test";
 			actual = restTemplate.getForObject(url, String.class);
-			assertThat((Object) actual).isEqualTo("Tested in /webApp1");
+			assertThat(actual).isEqualTo("Tested in /webApp1");
 
 			url = "http://localhost:" + server.getPort() + "/webApp2/test";
 			actual = restTemplate.getForObject(url, String.class);
-			assertThat((Object) actual).isEqualTo("Tested in /webApp2");
+			assertThat(actual).isEqualTo("Tested in /webApp2");
 		}
 		finally {
 			server.stop();
@@ -102,7 +102,7 @@ public class ContextPathIntegrationTests {
 
 			String url = "http://localhost:" + server.getPort() + "/app/api/test";
 			actual = restTemplate.getForObject(url, String.class);
-			assertThat((Object) actual).isEqualTo("Tested in /app/api");
+			assertThat(actual).isEqualTo("Tested in /app/api");
 		}
 		finally {
 			server.stop();

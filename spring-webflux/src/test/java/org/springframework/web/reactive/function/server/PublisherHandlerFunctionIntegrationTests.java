@@ -60,8 +60,8 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 		ResponseEntity<Person> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/mono", Person.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody().getName()).isEqualTo("John");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody().getName()).isEqualTo("John");
 	}
 
 	@Test
@@ -70,11 +70,11 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 		ResponseEntity<List<Person>> result =
 				restTemplate.exchange("http://localhost:" + port + "/flux", HttpMethod.GET, null, reference);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		List<Person> body = result.getBody();
 		assertEquals(2, body.size());
-		assertThat((Object) body.get(0).getName()).isEqualTo("John");
-		assertThat((Object) body.get(1).getName()).isEqualTo("Jane");
+		assertThat(body.get(0).getName()).isEqualTo("John");
+		assertThat(body.get(1).getName()).isEqualTo("Jane");
 	}
 
 	@Test
@@ -84,8 +84,8 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 		RequestEntity<Person> requestEntity = RequestEntity.post(uri).body(person);
 		ResponseEntity<Person> result = restTemplate.exchange(requestEntity, Person.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) result.getBody().getName()).isEqualTo("Jack");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody().getName()).isEqualTo("Jack");
 	}
 
 

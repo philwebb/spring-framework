@@ -57,36 +57,36 @@ public class ServerHttpRequestTests {
 	public void queryParams() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=A&b=B").getQueryParams();
 		assertEquals(2, params.size());
-		assertThat((Object) params.get("a")).isEqualTo(Collections.singletonList("A"));
-		assertThat((Object) params.get("b")).isEqualTo(Collections.singletonList("B"));
+		assertThat(params.get("a")).isEqualTo(Collections.singletonList("A"));
+		assertThat(params.get("b")).isEqualTo(Collections.singletonList("B"));
 	}
 
 	@Test
 	public void queryParamsWithMultipleValues() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=1&a=2").getQueryParams();
 		assertEquals(1, params.size());
-		assertThat((Object) params.get("a")).isEqualTo(Arrays.asList("1", "2"));
+		assertThat(params.get("a")).isEqualTo(Arrays.asList("1", "2"));
 	}
 
 	@Test  // SPR-15140
 	public void queryParamsWithEncodedValue() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=%20%2B+%C3%A0").getQueryParams();
 		assertEquals(1, params.size());
-		assertThat((Object) params.get("a")).isEqualTo(Collections.singletonList(" + \u00e0"));
+		assertThat(params.get("a")).isEqualTo(Collections.singletonList(" + \u00e0"));
 	}
 
 	@Test
 	public void queryParamsWithEmptyValue() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a=").getQueryParams();
 		assertEquals(1, params.size());
-		assertThat((Object) params.get("a")).isEqualTo(Collections.singletonList(""));
+		assertThat(params.get("a")).isEqualTo(Collections.singletonList(""));
 	}
 
 	@Test
 	public void queryParamsWithNoValue() throws Exception {
 		MultiValueMap<String, String> params = createHttpRequest("/path?a").getQueryParams();
 		assertEquals(1, params.size());
-		assertThat((Object) params.get("a")).isEqualTo(Collections.singletonList(null));
+		assertThat(params.get("a")).isEqualTo(Collections.singletonList(null));
 	}
 
 	@Test
@@ -97,19 +97,19 @@ public class ServerHttpRequestTests {
 		assertSame(sslInfo, request.getSslInfo());
 
 		request = createHttpRequest("/").mutate().method(HttpMethod.DELETE).build();
-		assertThat((Object) request.getMethod()).isEqualTo(HttpMethod.DELETE);
+		assertThat(request.getMethod()).isEqualTo(HttpMethod.DELETE);
 
 		String baseUri = "https://aaa.org:8080/a";
 
 		request = createHttpRequest(baseUri).mutate().uri(URI.create("https://bbb.org:9090/b")).build();
-		assertThat((Object) request.getURI().toString()).isEqualTo("https://bbb.org:9090/b");
+		assertThat(request.getURI().toString()).isEqualTo("https://bbb.org:9090/b");
 
 		request = createHttpRequest(baseUri).mutate().path("/b/c/d").build();
-		assertThat((Object) request.getURI().toString()).isEqualTo("https://aaa.org:8080/b/c/d");
+		assertThat(request.getURI().toString()).isEqualTo("https://aaa.org:8080/b/c/d");
 
 		request = createHttpRequest(baseUri).mutate().path("/app/b/c/d").contextPath("/app").build();
-		assertThat((Object) request.getURI().toString()).isEqualTo("https://aaa.org:8080/app/b/c/d");
-		assertThat((Object) request.getPath().contextPath().value()).isEqualTo("/app");
+		assertThat(request.getURI().toString()).isEqualTo("https://aaa.org:8080/app/b/c/d");
+		assertThat(request.getPath().contextPath().value()).isEqualTo("/app");
 	}
 
 	@Test
@@ -123,8 +123,8 @@ public class ServerHttpRequestTests {
 		ServerHttpRequest request = createHttpRequest("/path?name=%E6%89%8E%E6%A0%B9");
 		request = request.mutate().path("/mutatedPath").build();
 
-		assertThat((Object) request.getURI().getRawPath()).isEqualTo("/mutatedPath");
-		assertThat((Object) request.getURI().getRawQuery()).isEqualTo("name=%E6%89%8E%E6%A0%B9");
+		assertThat(request.getURI().getRawPath()).isEqualTo("/mutatedPath");
+		assertThat(request.getURI().getRawQuery()).isEqualTo("name=%E6%89%8E%E6%A0%B9");
 	}
 
 	private ServerHttpRequest createHttpRequest(String uriString) throws Exception {

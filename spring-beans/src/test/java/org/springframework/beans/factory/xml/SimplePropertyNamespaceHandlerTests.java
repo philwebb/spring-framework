@@ -42,9 +42,9 @@ public class SimplePropertyNamespaceHandlerTests {
 				new ClassPathResource("simplePropertyNamespaceHandlerTests.xml", getClass()));
 		ITestBean rob = (TestBean) beanFactory.getBean("rob");
 		ITestBean sally = (TestBean) beanFactory.getBean("sally");
-		assertThat((Object) rob.getName()).isEqualTo("Rob Harrop");
+		assertThat(rob.getName()).isEqualTo("Rob Harrop");
 		assertEquals(24, rob.getAge());
-		assertThat((Object) sally).isEqualTo(rob.getSpouse());
+		assertThat(sally).isEqualTo(rob.getSpouse());
 	}
 
 	@Test
@@ -54,9 +54,9 @@ public class SimplePropertyNamespaceHandlerTests {
 				new ClassPathResource("simplePropertyNamespaceHandlerTests.xml", getClass()));
 		TestBean sally = (TestBean) beanFactory.getBean("sally2");
 		ITestBean rob = sally.getSpouse();
-		assertThat((Object) rob.getName()).isEqualTo("Rob Harrop");
+		assertThat(rob.getName()).isEqualTo("Rob Harrop");
 		assertEquals(24, rob.getAge());
-		assertThat((Object) sally).isEqualTo(rob.getSpouse());
+		assertThat(sally).isEqualTo(rob.getSpouse());
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class SimplePropertyNamespaceHandlerTests {
 		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(
 				new ClassPathResource("simplePropertyNamespaceHandlerTests.xml", getClass()));
 		ITestBean sally = (TestBean) beanFactory.getBean("derivedSally");
-		assertThat((Object) sally.getSpouse().getName()).isEqualTo("r");
+		assertThat(sally.getSpouse().getName()).isEqualTo("r");
 	}
 
 }

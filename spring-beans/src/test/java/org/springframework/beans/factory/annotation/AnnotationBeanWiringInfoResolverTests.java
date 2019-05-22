@@ -58,7 +58,7 @@ public class AnnotationBeanWiringInfoResolverTests {
 		BeanWiringInfo info = resolver.resolveWiringInfo(new WirelessSoap());
 		assertNotNull("Must *not* be returning null for an @Configurable class instance even when autowiring is NO", info);
 		assertThat(info.indicatesAutowiring()).isFalse();
-		assertThat((Object) info.getBeanName()).isEqualTo(WirelessSoap.class.getName());
+		assertThat(info.getBeanName()).isEqualTo(WirelessSoap.class.getName());
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class AnnotationBeanWiringInfoResolverTests {
 		BeanWiringInfo info = resolver.resolveWiringInfo(new NamedWirelessSoap());
 		assertNotNull("Must *not* be returning null for an @Configurable class instance even when autowiring is NO", info);
 		assertThat(info.indicatesAutowiring()).isFalse();
-		assertThat((Object) info.getBeanName()).isEqualTo("DerBigStick");
+		assertThat(info.getBeanName()).isEqualTo("DerBigStick");
 	}
 
 

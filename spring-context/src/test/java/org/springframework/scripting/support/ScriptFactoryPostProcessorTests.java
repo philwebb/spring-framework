@@ -105,14 +105,14 @@ public class ScriptFactoryPostProcessorTests {
 		ctx.refresh();
 
 		Messenger messenger = (Messenger) ctx.getBean(MESSENGER_BEAN_NAME);
-		assertThat((Object) messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
+		assertThat(messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
 		// cool; now let's change the script and check the refresh behaviour...
 		pauseToLetRefreshDelayKickIn(DEFAULT_SECONDS_TO_PAUSE);
 		StaticScriptSource source = getScriptSource(ctx);
 		source.setScript(CHANGED_SCRIPT);
 		Messenger refreshedMessenger = (Messenger) ctx.getBean(MESSENGER_BEAN_NAME);
 		// the updated script surrounds the message in quotes before returning...
-		assertThat((Object) refreshedMessenger.getMessage()).isEqualTo(EXPECTED_CHANGED_MESSAGE_TEXT);
+		assertThat(refreshedMessenger.getMessage()).isEqualTo(EXPECTED_CHANGED_MESSAGE_TEXT);
 	}
 
 	@Test
@@ -126,13 +126,13 @@ public class ScriptFactoryPostProcessorTests {
 		ctx.refresh();
 
 		Messenger messenger = (Messenger) ctx.getBean(MESSENGER_BEAN_NAME);
-		assertThat((Object) messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
+		assertThat(messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
 		// cool; now let's change the script and check the refresh behaviour...
 		pauseToLetRefreshDelayKickIn(DEFAULT_SECONDS_TO_PAUSE);
 		StaticScriptSource source = getScriptSource(ctx);
 		source.setScript(CHANGED_SCRIPT);
 		Messenger refreshedMessenger = (Messenger) ctx.getBean(MESSENGER_BEAN_NAME);
-		assertThat((Object) refreshedMessenger.getMessage()).as("Script seems to have been refreshed (must not be as no refreshCheckDelay set on ScriptFactoryPostProcessor)").isEqualTo(MESSAGE_TEXT);
+		assertThat(refreshedMessenger.getMessage()).as("Script seems to have been refreshed (must not be as no refreshCheckDelay set on ScriptFactoryPostProcessor)").isEqualTo(MESSAGE_TEXT);
 	}
 
 	@Test
@@ -150,17 +150,17 @@ public class ScriptFactoryPostProcessorTests {
 		ctx.refresh();
 
 		Messenger messenger = (Messenger) ctx.getBean(MESSENGER_BEAN_NAME);
-		assertThat((Object) messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
+		assertThat(messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
 		// cool; now let's change the script and check the refresh behaviour...
 		pauseToLetRefreshDelayKickIn(DEFAULT_SECONDS_TO_PAUSE);
 		StaticScriptSource source = getScriptSource(ctx);
 		source.setScript(CHANGED_SCRIPT);
 		Messenger refreshedMessenger = (Messenger) ctx.getBean(MESSENGER_BEAN_NAME);
 		// the updated script surrounds the message in quotes before returning...
-		assertThat((Object) refreshedMessenger.getMessage()).isEqualTo(EXPECTED_CHANGED_MESSAGE_TEXT);
+		assertThat(refreshedMessenger.getMessage()).isEqualTo(EXPECTED_CHANGED_MESSAGE_TEXT);
 		// ok, is this change reflected in the reference that the collaborator has?
 		DefaultMessengerService collaborator = (DefaultMessengerService) ctx.getBean(collaboratorBeanName);
-		assertThat((Object) collaborator.getMessage()).isEqualTo(EXPECTED_CHANGED_MESSAGE_TEXT);
+		assertThat(collaborator.getMessage()).isEqualTo(EXPECTED_CHANGED_MESSAGE_TEXT);
 	}
 
 	@Test
@@ -200,7 +200,7 @@ public class ScriptFactoryPostProcessorTests {
 		ctx.refresh();
 
 		Messenger messenger = (Messenger) ctx.getBean(MESSENGER_BEAN_NAME);
-		assertThat((Object) messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
+		assertThat(messenger.getMessage()).isEqualTo(MESSAGE_TEXT);
 		// cool; now let's change the script and check the refresh behaviour...
 		pauseToLetRefreshDelayKickIn(DEFAULT_SECONDS_TO_PAUSE);
 		StaticScriptSource source = getScriptSource(ctx);

@@ -47,7 +47,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/index");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("index");
+		assertThat(mv.getViewName()).isEqualTo("index");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -57,7 +57,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/index.html");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("index");
+		assertThat(mv.getViewName()).isEqualTo("index");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -67,7 +67,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/index;a=A;b=B");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("index");
+		assertThat(mv.getViewName()).isEqualTo("index");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -79,7 +79,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/index.html");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("mypre_index_mysuf");
+		assertThat(mv.getViewName()).isEqualTo("mypre_index_mysuf");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -90,7 +90,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/index.html");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("mypre_index");
+		assertThat(mv.getViewName()).isEqualTo("mypre_index");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -101,7 +101,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/index.html");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("index_mysuf");
+		assertThat(mv.getViewName()).isEqualTo("index_mysuf");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -111,7 +111,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/docs/cvs/commit.html");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("docs/cvs/commit");
+		assertThat(mv.getViewName()).isEqualTo("docs/cvs/commit");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -122,7 +122,7 @@ public class UrlFilenameViewControllerTests {
 		exposePathInMapping(request, "/docs/**");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("cvs/commit");
+		assertThat(mv.getViewName()).isEqualTo("cvs/commit");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -133,7 +133,7 @@ public class UrlFilenameViewControllerTests {
 		exposePathInMapping(request, "/docs/cvs/commit.html");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("docs/cvs/commit");
+		assertThat(mv.getViewName()).isEqualTo("docs/cvs/commit");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -144,7 +144,7 @@ public class UrlFilenameViewControllerTests {
 		request.setContextPath("/myapp");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("docs/cvs/commit");
+		assertThat(mv.getViewName()).isEqualTo("docs/cvs/commit");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -153,7 +153,7 @@ public class UrlFilenameViewControllerTests {
 		UrlFilenameViewController ctrl = new UrlFilenameViewController();
 		ctrl.setPrefix(null);
 		assertNotNull("For setPrefix(..) with null, the empty string must be used instead.", ctrl.getPrefix());
-		assertThat((Object) ctrl.getPrefix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
+		assertThat(ctrl.getPrefix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class UrlFilenameViewControllerTests {
 		UrlFilenameViewController ctrl = new UrlFilenameViewController();
 		ctrl.setSuffix(null);
 		assertNotNull("For setPrefix(..) with null, the empty string must be used instead.", ctrl.getSuffix());
-		assertThat((Object) ctrl.getSuffix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
+		assertThat(ctrl.getSuffix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/products/view.html");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("products/view");
+		assertThat(mv.getViewName()).isEqualTo("products/view");
 		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
@@ -185,7 +185,7 @@ public class UrlFilenameViewControllerTests {
 		request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, new ModelMap("name", "value"));
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
-		assertThat((Object) mv.getViewName()).isEqualTo("index");
+		assertThat(mv.getViewName()).isEqualTo("index");
 		assertEquals(1, mv.getModel().size());
 		assertThat(mv.getModel().get("name")).isEqualTo("value");
 	}

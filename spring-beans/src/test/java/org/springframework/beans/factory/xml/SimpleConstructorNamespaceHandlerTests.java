@@ -57,7 +57,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 		String name = "name-value";
 		//		beanFactory.getBean("name-value1", TestBean.class);
 		TestBean nameValue = beanFactory.getBean(name, TestBean.class);
-		assertThat((Object) nameValue.getName()).isEqualTo(name);
+		assertThat(nameValue.getName()).isEqualTo(name);
 		assertEquals(10, nameValue.getAge());
 	}
 
@@ -67,8 +67,8 @@ public class SimpleConstructorNamespaceHandlerTests {
 		TestBean nameValue = beanFactory.getBean("name-value", TestBean.class);
 		DummyBean nameRef = beanFactory.getBean("name-ref", DummyBean.class);
 
-		assertThat((Object) nameRef.getName()).isEqualTo("some-name");
-		assertThat((Object) nameRef.getSpouse()).isEqualTo(nameValue);
+		assertThat(nameRef.getName()).isEqualTo("some-name");
+		assertThat(nameRef.getSpouse()).isEqualTo(nameValue);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 		DefaultListableBeanFactory beanFactory = createFactory("simpleConstructorNamespaceHandlerTests.xml");
 		DummyBean typeRef = beanFactory.getBean("indexed-value", DummyBean.class);
 
-		assertThat((Object) typeRef.getName()).isEqualTo("at");
+		assertThat(typeRef.getName()).isEqualTo("at");
 		assertThat(typeRef.getValue()).isEqualTo("austria");
 		assertEquals(10, typeRef.getAge());
 	}
@@ -86,8 +86,8 @@ public class SimpleConstructorNamespaceHandlerTests {
 		DefaultListableBeanFactory beanFactory = createFactory("simpleConstructorNamespaceHandlerTests.xml");
 		DummyBean typeRef = beanFactory.getBean("indexed-ref", DummyBean.class);
 
-		assertThat((Object) typeRef.getName()).isEqualTo("some-name");
-		assertThat((Object) typeRef.getSpouse()).isEqualTo(beanFactory.getBean("name-value"));
+		assertThat(typeRef.getName()).isEqualTo("some-name");
+		assertThat(typeRef.getSpouse()).isEqualTo(beanFactory.getBean("name-value"));
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class SimpleConstructorNamespaceHandlerTests {
 		DefaultListableBeanFactory beanFactory = createFactory("simpleConstructorNamespaceHandlerTests.xml");
 		DummyBean derivedBean = beanFactory.getBean("beanWithRefConstructorArg", DummyBean.class);
 		assertEquals(10, derivedBean.getAge());
-		assertThat((Object) derivedBean.getName()).isEqualTo("silly name");
+		assertThat(derivedBean.getName()).isEqualTo("silly name");
 	}
 
 	private DefaultListableBeanFactory createFactory(String resourceName) {

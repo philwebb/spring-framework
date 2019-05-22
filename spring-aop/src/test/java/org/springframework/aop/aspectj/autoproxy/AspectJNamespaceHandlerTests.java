@@ -74,7 +74,7 @@ public class AspectJNamespaceHandlerTests {
 		assertEquals("Incorrect number of definitions registered", 1, registry.getBeanDefinitionCount());
 
 		BeanDefinition definition = registry.getBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
-		assertThat((Object) definition.getBeanClassName()).as("Incorrect APC class").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
+		assertThat(definition.getBeanClassName()).as("Incorrect APC class").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class AspectJNamespaceHandlerTests {
 		assertEquals("Incorrect definition count", 1, registry.getBeanDefinitionCount());
 
 		BeanDefinition definition = registry.getBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
-		assertThat((Object) definition.getBeanClassName()).as("APC class not switched").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
+		assertThat(definition.getBeanClassName()).as("APC class not switched").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class AspectJNamespaceHandlerTests {
 		assertEquals("Incorrect definition count", 1, registry.getBeanDefinitionCount());
 
 		BeanDefinition definition = registry.getBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
-		assertThat((Object) definition.getBeanClassName()).as("Incorrect APC class").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
+		assertThat(definition.getBeanClassName()).as("Incorrect APC class").isEqualTo(AspectJAwareAdvisorAutoProxyCreator.class.getName());
 	}
 
 }

@@ -74,8 +74,8 @@ public class ProtobufIntegrationTests extends AbstractRequestMappingIntegrationT
 				.exchange()
 				.doOnNext(response -> {
 					assertThat(response.headers().contentType().get().getParameters().containsKey("delimited")).isFalse();
-					assertThat((Object) response.headers().header("X-Protobuf-Schema").get(0)).isEqualTo("sample.proto");
-					assertThat((Object) response.headers().header("X-Protobuf-Message").get(0)).isEqualTo("Msg");
+					assertThat(response.headers().header("X-Protobuf-Schema").get(0)).isEqualTo("sample.proto");
+					assertThat(response.headers().header("X-Protobuf-Message").get(0)).isEqualTo("Msg");
 				})
 				.flatMap(response -> response.bodyToMono(Msg.class));
 
@@ -90,9 +90,9 @@ public class ProtobufIntegrationTests extends AbstractRequestMappingIntegrationT
 				.uri("/messages")
 				.exchange()
 				.doOnNext(response -> {
-					assertThat((Object) response.headers().contentType().get().getParameters().get("delimited")).isEqualTo("true");
-					assertThat((Object) response.headers().header("X-Protobuf-Schema").get(0)).isEqualTo("sample.proto");
-					assertThat((Object) response.headers().header("X-Protobuf-Message").get(0)).isEqualTo("Msg");
+					assertThat(response.headers().contentType().get().getParameters().get("delimited")).isEqualTo("true");
+					assertThat(response.headers().header("X-Protobuf-Schema").get(0)).isEqualTo("sample.proto");
+					assertThat(response.headers().header("X-Protobuf-Message").get(0)).isEqualTo("Msg");
 				})
 				.flatMapMany(response -> response.bodyToFlux(Msg.class));
 
@@ -109,9 +109,9 @@ public class ProtobufIntegrationTests extends AbstractRequestMappingIntegrationT
 				.uri("/message-stream")
 				.exchange()
 				.doOnNext(response -> {
-					assertThat((Object) response.headers().contentType().get().getParameters().get("delimited")).isEqualTo("true");
-					assertThat((Object) response.headers().header("X-Protobuf-Schema").get(0)).isEqualTo("sample.proto");
-					assertThat((Object) response.headers().header("X-Protobuf-Message").get(0)).isEqualTo("Msg");
+					assertThat(response.headers().contentType().get().getParameters().get("delimited")).isEqualTo("true");
+					assertThat(response.headers().header("X-Protobuf-Schema").get(0)).isEqualTo("sample.proto");
+					assertThat(response.headers().header("X-Protobuf-Message").get(0)).isEqualTo("Msg");
 				})
 				.flatMapMany(response -> response.bodyToFlux(Msg.class));
 

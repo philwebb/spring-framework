@@ -477,7 +477,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		assertNotNull("The singleton StringFactoryBean should have been registered.", factoryBean);
 		assertNotNull("The factoryBeanDependentBean should have been registered.", bean);
-		assertThat((Object) bean.getFactoryBean()).as("The FactoryBeanDependentBean should have been autowired 'by type' with the StringFactoryBean.").isEqualTo(factoryBean);
+		assertThat(bean.getFactoryBean()).as("The FactoryBeanDependentBean should have been autowired 'by type' with the StringFactoryBean.").isEqualTo(factoryBean);
 	}
 
 	@Test

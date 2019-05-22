@@ -70,7 +70,7 @@ public class DefinitionMetadataEqualsHashCodeTests {
 		// override in 'master' will not. But... the bean definitions should still be
 		// considered equal.
 
-		assertThat((Object) equal).as("Should be equal").isEqualTo(master);
+		assertThat(equal).as("Should be equal").isEqualTo(master);
 		assertEquals("Hash code for equal instances must match", master.hashCode(), equal.hashCode());
 	}
 

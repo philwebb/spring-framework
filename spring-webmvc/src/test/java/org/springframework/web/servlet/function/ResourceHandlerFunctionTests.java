@@ -74,12 +74,12 @@ public class ResourceHandlerFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, Collections.singletonList(messageConverter));
 
 		ServerResponse response = this.handlerFunction.handle(request);
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.OK);
 		boolean condition = response instanceof EntityResponse;
 		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
-		assertThat((Object) entityResponse.entity()).isEqualTo(this.resource);
+		assertThat(entityResponse.entity()).isEqualTo(this.resource);
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
@@ -89,7 +89,7 @@ public class ResourceHandlerFunctionTests {
 		byte[] expectedBytes = Files.readAllBytes(this.resource.getFile().toPath());
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
 		assertArrayEquals(expectedBytes, actualBytes);
-		assertThat((Object) servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
 		assertEquals(this.resource.contentLength(),servletResponse.getContentLength());
 	}
 
@@ -99,12 +99,12 @@ public class ResourceHandlerFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, Collections.singletonList(messageConverter));
 
 		ServerResponse response = this.handlerFunction.handle(request);
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.OK);
 		boolean condition = response instanceof EntityResponse;
 		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
-		assertThat((Object) entityResponse.entity().getFilename()).isEqualTo(this.resource.getFilename());
+		assertThat(entityResponse.entity().getFilename()).isEqualTo(this.resource.getFilename());
 
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
@@ -114,7 +114,7 @@ public class ResourceHandlerFunctionTests {
 		assertEquals(200, servletResponse.getStatus());
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
 		assertEquals(0, actualBytes.length);
-		assertThat((Object) servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
 		assertEquals(this.resource.contentLength(),servletResponse.getContentLength());
 	}
 
@@ -125,15 +125,15 @@ public class ResourceHandlerFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, Collections.singletonList(messageConverter));
 
 		ServerResponse response = this.handlerFunction.handle(request);
-		assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) response.headers().getAllow()).isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS));
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.headers().getAllow()).isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS));
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(servletRequest, servletResponse, this.context);
 		assertNull(mav);
 
 		assertEquals(200, servletResponse.getStatus());
-		assertThat((Object) servletResponse.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
+		assertThat(servletResponse.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
 		assertEquals(0, actualBytes.length);
 	}

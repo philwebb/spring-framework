@@ -87,9 +87,9 @@ public class DefaultPathContainerTests {
 		assertEquals(1, container.elements().size());
 		PathSegment segment = (PathSegment) container.elements().get(0);
 
-		assertThat((Object) segment.value()).as("value: '" + rawValue + "'").isEqualTo(rawValue);
-		assertThat((Object) segment.valueToMatch()).as("valueToMatch: '" + rawValue + "'").isEqualTo(valueToMatch);
-		assertThat((Object) segment.parameters()).as("params: '" + rawValue + "'").isEqualTo(params);
+		assertThat(segment.value()).as("value: '" + rawValue + "'").isEqualTo(rawValue);
+		assertThat(segment.valueToMatch()).as("valueToMatch: '" + rawValue + "'").isEqualTo(valueToMatch);
+		assertThat(segment.parameters()).as("params: '" + rawValue + "'").isEqualTo(params);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class DefaultPathContainerTests {
 
 		PathContainer path = PathContainer.parsePath(input);
 
-		assertThat((Object) path.value()).as("value: '" + input + "'").isEqualTo(value);
+		assertThat(path.value()).as("value: '" + input + "'").isEqualTo(value);
 		assertThat(path.elements().stream()
 				.map(PathContainer.Element::value).collect(Collectors.toList())).as("elements: " + input).isEqualTo(expectedElements);
 	}
@@ -127,16 +127,16 @@ public class DefaultPathContainerTests {
 		// basic
 		PathContainer path = PathContainer.parsePath("/a/b/c");
 		assertSame(path, path.subPath(0));
-		assertThat((Object) path.subPath(2).value()).isEqualTo("/b/c");
-		assertThat((Object) path.subPath(4).value()).isEqualTo("/c");
+		assertThat(path.subPath(2).value()).isEqualTo("/b/c");
+		assertThat(path.subPath(4).value()).isEqualTo("/c");
 
 		// root path
 		path = PathContainer.parsePath("/");
-		assertThat((Object) path.subPath(0).value()).isEqualTo("/");
+		assertThat(path.subPath(0).value()).isEqualTo("/");
 
 		// trailing slash
 		path = PathContainer.parsePath("/a/b/");
-		assertThat((Object) path.subPath(2).value()).isEqualTo("/b/");
+		assertThat(path.subPath(2).value()).isEqualTo("/b/");
 	}
 
 }

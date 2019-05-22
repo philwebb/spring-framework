@@ -44,8 +44,8 @@ public class DeprecatedBeanWarnerTests {
 
 		DeprecatedBeanWarner warner = new MyDeprecatedBeanWarner();
 		warner.postProcessBeanFactory(beanFactory);
-		assertThat((Object) this.beanName).isEqualTo(beanName);
-		assertThat((Object) this.beanDefinition).isEqualTo(def);
+		assertThat(this.beanName).isEqualTo(beanName);
+		assertThat(this.beanDefinition).isEqualTo(def);
 	}
 
 

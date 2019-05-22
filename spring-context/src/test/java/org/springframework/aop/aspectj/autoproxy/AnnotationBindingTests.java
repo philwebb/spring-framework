@@ -43,13 +43,13 @@ public class AnnotationBindingTests {
 
 	@Test
 	public void testAnnotationBindingInAroundAdvice() {
-		assertThat((Object) testBean.doThis()).isEqualTo("this value");
-		assertThat((Object) testBean.doThat()).isEqualTo("that value");
+		assertThat(testBean.doThis()).isEqualTo("this value");
+		assertThat(testBean.doThat()).isEqualTo("that value");
 	}
 
 	@Test
 	public void testNoMatchingWithoutAnnotationPresent() {
-		assertThat((Object) testBean.doTheOther()).isEqualTo("doTheOther");
+		assertThat(testBean.doTheOther()).isEqualTo("doTheOther");
 	}
 
 }

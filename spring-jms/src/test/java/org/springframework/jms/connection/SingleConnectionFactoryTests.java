@@ -286,7 +286,7 @@ public class SingleConnectionFactoryTests {
 		SingleConnectionFactory scf = new SingleConnectionFactory(cf);
 		scf.setExceptionListener(listener);
 		Connection con1 = scf.createConnection();
-		assertThat((Object) con1.getExceptionListener()).isEqualTo(listener);
+		assertThat(con1.getExceptionListener()).isEqualTo(listener);
 		con1.start();
 		con1.stop();
 		con1.close();

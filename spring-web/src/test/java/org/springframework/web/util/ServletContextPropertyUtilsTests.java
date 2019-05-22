@@ -34,7 +34,7 @@ public class ServletContextPropertyUtilsTests {
 		MockServletContext servletContext = new MockServletContext();
 		servletContext.setInitParameter("test.prop", "bar");
 		String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
-		assertThat((Object) resolved).isEqualTo("bar");
+		assertThat(resolved).isEqualTo("bar");
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class ServletContextPropertyUtilsTests {
 		System.setProperty("test.prop", "bar");
 		try {
 			String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
-			assertThat((Object) resolved).isEqualTo("bar");
+			assertThat(resolved).isEqualTo("bar");
 		}
 		finally {
 			System.clearProperty("test.prop");

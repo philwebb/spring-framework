@@ -91,7 +91,7 @@ public class RequestBodyMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestBody()).arg(String.class);
 		String value = resolveValue(param, body);
 
-		assertThat((Object) value).isEqualTo(body);
+		assertThat(value).isEqualTo(body);
 	}
 
 	@Test

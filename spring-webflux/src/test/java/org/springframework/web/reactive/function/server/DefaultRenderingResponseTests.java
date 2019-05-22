@@ -174,7 +174,7 @@ public class DefaultRenderingResponseTests {
 		StepVerifier.create(result.flatMap(response -> response.writeTo(exchange, context)))
 				.verifyComplete();
 
-		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(ViewResolverSupport.DEFAULT_CONTENT_TYPE);
+		assertThat(exchange.getResponse().getHeaders().getContentType()).isEqualTo(ViewResolverSupport.DEFAULT_CONTENT_TYPE);
 	}
 
 
@@ -205,7 +205,7 @@ public class DefaultRenderingResponseTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();
@@ -230,7 +230,7 @@ public class DefaultRenderingResponseTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();

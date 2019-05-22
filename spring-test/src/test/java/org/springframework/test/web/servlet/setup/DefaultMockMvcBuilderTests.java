@@ -136,7 +136,7 @@ public class DefaultMockMvcBuilderTests {
 		MockMvc mvc = builder.build();
 		DispatcherServlet ds = (DispatcherServlet) new DirectFieldAccessor(mvc)
 				.getPropertyValue("servlet");
-		assertThat((Object) ds.getContextId()).isEqualTo("test-id");
+		assertThat(ds.getContextId()).isEqualTo("test-id");
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class DefaultMockMvcBuilderTests {
 		MockMvc mvc = builder.build();
 		DispatcherServlet ds = (DispatcherServlet) new DirectFieldAccessor(mvc)
 				.getPropertyValue("servlet");
-		assertThat((Object) ds.getContextId()).isEqualTo("override-id");
+		assertThat(ds.getContextId()).isEqualTo("override-id");
 	}
 
 }

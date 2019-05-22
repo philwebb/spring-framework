@@ -459,7 +459,7 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.doStartTag();
 		this.tag.doEndTag();
 
-		assertThat((Object) getOutput()).isEqualTo("<option value=\"foo\">foo</option>");
+		assertThat(getOutput()).isEqualTo("<option value=\"foo\">foo</option>");
 	}
 
 	@Test

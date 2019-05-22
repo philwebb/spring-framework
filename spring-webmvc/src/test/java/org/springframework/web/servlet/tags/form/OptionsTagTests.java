@@ -112,10 +112,10 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		assertEquals("Incorrect number of children", 4, children.size());
 
 		Element element = (Element) rootElement.selectSingleNode("option[@value = 'UK']");
-		assertThat((Object) element.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
-		assertThat((Object) element.attribute("id").getValue()).isEqualTo("myOption3");
-		assertThat((Object) element.attribute("class").getValue()).isEqualTo("myClass");
-		assertThat((Object) element.attribute("onclick").getValue()).isEqualTo("CLICK");
+		assertThat(element.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
+		assertThat(element.attribute("id").getValue()).isEqualTo("myOption3");
+		assertThat(element.attribute("class").getValue()).isEqualTo("myClass");
+		assertThat(element.attribute("onclick").getValue()).isEqualTo("CLICK");
 	}
 
 	@Test
@@ -148,12 +148,12 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		assertEquals("Incorrect number of children", 4, children.size());
 
 		Element element = (Element) rootElement.selectSingleNode("option[@value = 'UK']");
-		assertThat((Object) element.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
-		assertThat((Object) element.attribute("id").getValue()).isEqualTo("myOption3");
-		assertThat((Object) element.attribute("class").getValue()).isEqualTo("myClass");
-		assertThat((Object) element.attribute("onclick").getValue()).isEqualTo("CLICK");
-		assertThat((Object) element.attribute(dynamicAttribute1).getValue()).isEqualTo(dynamicAttribute1);
-		assertThat((Object) element.attribute(dynamicAttribute2).getValue()).isEqualTo(dynamicAttribute2);
+		assertThat(element.attribute("selected").getValue()).as("UK node not selected").isEqualTo("selected");
+		assertThat(element.attribute("id").getValue()).isEqualTo("myOption3");
+		assertThat(element.attribute("class").getValue()).isEqualTo("myClass");
+		assertThat(element.attribute("onclick").getValue()).isEqualTo("CLICK");
+		assertThat(element.attribute(dynamicAttribute1).getValue()).isEqualTo(dynamicAttribute1);
+		assertThat(element.attribute(dynamicAttribute2).getValue()).isEqualTo(dynamicAttribute2);
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 
 		Element element = (Element) rootElement.selectSingleNode("option[text() = '12.34f']");
 		assertNotNull("Option node should not be null", element);
-		assertThat((Object) element.attribute("selected").getValue()).as("12.34 node not selected").isEqualTo("selected");
+		assertThat(element.attribute("selected").getValue()).as("12.34 node not selected").isEqualTo("selected");
 		assertNull("No id rendered", element.attribute("id"));
 
 		element = (Element) rootElement.selectSingleNode("option[text() = '12.35f']");
@@ -267,9 +267,9 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		assertEquals(2, rootElement.elements().size());
 		Node value1 = rootElement.selectSingleNode("option[@value = 'VALUE_1']");
 		Node value2 = rootElement.selectSingleNode("option[@value = 'VALUE_2']");
-		assertThat((Object) value1.getText()).isEqualTo("TestEnum: VALUE_1");
-		assertThat((Object) value2.getText()).isEqualTo("TestEnum: VALUE_2");
-		assertThat((Object) rootElement.selectSingleNode("option[@selected]")).isEqualTo(value2);
+		assertThat(value1.getText()).isEqualTo("TestEnum: VALUE_1");
+		assertThat(value2.getText()).isEqualTo("TestEnum: VALUE_2");
+		assertThat(rootElement.selectSingleNode("option[@selected]")).isEqualTo(value2);
 	}
 
 	@Test
@@ -297,9 +297,9 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 		assertEquals(2, rootElement.elements().size());
 		Node value1 = rootElement.selectSingleNode("option[@value = 'Value: VALUE_1']");
 		Node value2 = rootElement.selectSingleNode("option[@value = 'Value: VALUE_2']");
-		assertThat((Object) value1.getText()).isEqualTo("Label: VALUE_1");
-		assertThat((Object) value2.getText()).isEqualTo("Label: VALUE_2");
-		assertThat((Object) rootElement.selectSingleNode("option[@selected]")).isEqualTo(value2);
+		assertThat(value1.getText()).isEqualTo("Label: VALUE_1");
+		assertThat(value2.getText()).isEqualTo("Label: VALUE_2");
+		assertThat(rootElement.selectSingleNode("option[@selected]")).isEqualTo(value2);
 	}
 
 	@Override

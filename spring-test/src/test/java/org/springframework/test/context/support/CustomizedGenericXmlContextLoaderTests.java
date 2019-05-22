@@ -52,7 +52,7 @@ public class CustomizedGenericXmlContextLoaderTests {
 			}
 		}.loadContext("classpath:/org/springframework/test/context/support/CustomizedGenericXmlContextLoaderTests-context.xml");
 
-		assertThat((Object) builder.toString()).as("customizeContext() should have been called.").isEqualTo(expectedContents);
+		assertThat(builder.toString()).as("customizeContext() should have been called.").isEqualTo(expectedContents);
 	}
 
 }

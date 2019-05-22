@@ -58,7 +58,7 @@ public class ClassHierarchyWithMergedConfigLevelTwoTests extends ClassHierarchyW
 	@Override
 	public void loadContextHierarchy() {
 		super.loadContextHierarchy();
-		assertThat((Object) order).isEqualTo("parent + user + order");
+		assertThat(order).isEqualTo("parent + user + order");
 	}
 
 }

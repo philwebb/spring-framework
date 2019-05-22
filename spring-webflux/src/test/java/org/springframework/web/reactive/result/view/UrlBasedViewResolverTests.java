@@ -73,10 +73,10 @@ public class UrlBasedViewResolverTests {
 
 		StepVerifier.create(mono)
 				.consumeNextWith(view -> {
-					assertThat((Object) view.getClass()).isEqualTo(RedirectView.class);
+					assertThat(view.getClass()).isEqualTo(RedirectView.class);
 					RedirectView redirectView = (RedirectView) view;
-					assertThat((Object) redirectView.getUrl()).isEqualTo("foo");
-					assertThat((Object) redirectView.getStatusCode()).isEqualTo(HttpStatus.SEE_OTHER);
+					assertThat(redirectView.getUrl()).isEqualTo("foo");
+					assertThat(redirectView.getStatusCode()).isEqualTo(HttpStatus.SEE_OTHER);
 				})
 				.expectComplete()
 				.verify(Duration.ZERO);
@@ -89,10 +89,10 @@ public class UrlBasedViewResolverTests {
 
 		StepVerifier.create(mono)
 				.consumeNextWith(view -> {
-					assertThat((Object) view.getClass()).isEqualTo(RedirectView.class);
+					assertThat(view.getClass()).isEqualTo(RedirectView.class);
 					RedirectView redirectView = (RedirectView) view;
-					assertThat((Object) redirectView.getUrl()).isEqualTo("foo");
-					assertThat((Object) redirectView.getStatusCode()).isEqualTo(HttpStatus.FOUND);
+					assertThat(redirectView.getUrl()).isEqualTo("foo");
+					assertThat(redirectView.getStatusCode()).isEqualTo(HttpStatus.FOUND);
 				})
 				.expectComplete()
 				.verify(Duration.ZERO);

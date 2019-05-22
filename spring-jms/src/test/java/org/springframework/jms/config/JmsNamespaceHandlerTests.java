@@ -123,13 +123,13 @@ public class JmsNamespaceHandlerTests {
 
 		assertThat(containers.containsKey("listener3")).as("listener3 not found").isTrue();
 		JmsMessageEndpointManager listener3 = containers.get("listener3");
-		assertThat((Object) listener3.getResourceAdapter()).as("Wrong resource adapter").isEqualTo(context.getBean("testResourceAdapter"));
+		assertThat(listener3.getResourceAdapter()).as("Wrong resource adapter").isEqualTo(context.getBean("testResourceAdapter"));
 		assertThat(new DirectFieldAccessor(listener3).getPropertyValue("activationSpecFactory")).as("Wrong activation spec factory").isEqualTo(context.getBean("testActivationSpecFactory"));
 
 
 		Object endpointFactory = new DirectFieldAccessor(listener3).getPropertyValue("endpointFactory");
 		Object messageListener = new DirectFieldAccessor(endpointFactory).getPropertyValue("messageListener");
-		assertThat((Object) messageListener.getClass()).as("Wrong message listener").isEqualTo(MessageListenerAdapter.class);
+		assertThat(messageListener.getClass()).as("Wrong message listener").isEqualTo(MessageListenerAdapter.class);
 		MessageListenerAdapter adapter = (MessageListenerAdapter) messageListener;
 		DirectFieldAccessor adapterFieldAccessor = new DirectFieldAccessor(adapter);
 		assertThat(adapterFieldAccessor.getPropertyValue("messageConverter")).as("Message converter not set properly").isEqualTo(context.getBean("testMessageConverter"));
@@ -146,11 +146,11 @@ public class JmsNamespaceHandlerTests {
 
 		DefaultMessageListenerContainer container =
 				factory.createListenerContainer(createDummyEndpoint());
-		assertThat((Object) container.getConnectionFactory()).as("explicit connection factory not set").isEqualTo(context.getBean(EXPLICIT_CONNECTION_FACTORY));
-		assertThat((Object) container.getDestinationResolver()).as("explicit destination resolver not set").isEqualTo(context.getBean("testDestinationResolver"));
-		assertThat((Object) container.getMessageConverter()).as("explicit message converter not set").isEqualTo(context.getBean("testMessageConverter"));
-		assertThat((Object) container.isPubSubDomain()).as("Wrong pub/sub").isEqualTo(true);
-		assertThat((Object) container.isSubscriptionDurable()).as("Wrong durable flag").isEqualTo(true);
+		assertThat(container.getConnectionFactory()).as("explicit connection factory not set").isEqualTo(context.getBean(EXPLICIT_CONNECTION_FACTORY));
+		assertThat(container.getDestinationResolver()).as("explicit destination resolver not set").isEqualTo(context.getBean("testDestinationResolver"));
+		assertThat(container.getMessageConverter()).as("explicit message converter not set").isEqualTo(context.getBean("testMessageConverter"));
+		assertThat(container.isPubSubDomain()).as("Wrong pub/sub").isEqualTo(true);
+		assertThat(container.isSubscriptionDurable()).as("Wrong durable flag").isEqualTo(true);
 		assertEquals("wrong cache", DefaultMessageListenerContainer.CACHE_CONNECTION, container.getCacheLevel());
 		assertEquals("wrong concurrency", 3, container.getConcurrentConsumers());
 		assertEquals("wrong concurrency", 5, container.getMaxConcurrentConsumers());
@@ -168,9 +168,9 @@ public class JmsNamespaceHandlerTests {
 
 		JmsMessageEndpointManager container =
 				factory.createListenerContainer(createDummyEndpoint());
-		assertThat((Object) container.getResourceAdapter()).as("explicit resource adapter not set").isEqualTo(context.getBean("testResourceAdapter"));
-		assertThat((Object) container.getActivationSpecConfig().getMessageConverter()).as("explicit message converter not set").isEqualTo(context.getBean("testMessageConverter"));
-		assertThat((Object) container.isPubSubDomain()).as("Wrong pub/sub").isEqualTo(true);
+		assertThat(container.getResourceAdapter()).as("explicit resource adapter not set").isEqualTo(context.getBean("testResourceAdapter"));
+		assertThat(container.getActivationSpecConfig().getMessageConverter()).as("explicit message converter not set").isEqualTo(context.getBean("testMessageConverter"));
+		assertThat(container.isPubSubDomain()).as("Wrong pub/sub").isEqualTo(true);
 		assertEquals("wrong concurrency", 5, container.getActivationSpecConfig().getMaxConcurrency());
 		assertEquals("Wrong prefetch", 50, container.getActivationSpecConfig().getPrefetchSize());
 		assertEquals("Wrong phase", 77, container.getPhase());
@@ -191,14 +191,14 @@ public class JmsNamespaceHandlerTests {
 
 		MessageListener listener1 = getListener("listener1");
 		listener1.onMessage(message1);
-		assertThat((Object) testBean1.getName()).isEqualTo("Test1");
+		assertThat(testBean1.getName()).isEqualTo("Test1");
 
 		TextMessage message2 = mock(TextMessage.class);
 		given(message2.getText()).willReturn("Test2");
 
 		MessageListener listener2 = getListener("listener2");
 		listener2.onMessage(message2);
-		assertThat((Object) testBean2.getName()).isEqualTo("Test2");
+		assertThat(testBean2.getName()).isEqualTo("Test2");
 
 		TextMessage message3 = mock(TextMessage.class);
 
@@ -254,20 +254,20 @@ public class JmsNamespaceHandlerTests {
 				.getBean("listener1", DefaultMessageListenerContainer.class);
 		DefaultMessageListenerContainer listener2 = this.context
 				.getBean("listener2", DefaultMessageListenerContainer.class);
-		assertThat((Object) listener1.isPubSubDomain()).as("Wrong destination type on listener1").isEqualTo(true);
-		assertThat((Object) listener2.isPubSubDomain()).as("Wrong destination type on listener2").isEqualTo(true);
-		assertThat((Object) listener1.isReplyPubSubDomain()).as("Wrong response destination type on listener1").isEqualTo(false);
-		assertThat((Object) listener2.isReplyPubSubDomain()).as("Wrong response destination type on listener2").isEqualTo(false);
+		assertThat(listener1.isPubSubDomain()).as("Wrong destination type on listener1").isEqualTo(true);
+		assertThat(listener2.isPubSubDomain()).as("Wrong destination type on listener2").isEqualTo(true);
+		assertThat(listener1.isReplyPubSubDomain()).as("Wrong response destination type on listener1").isEqualTo(false);
+		assertThat(listener2.isReplyPubSubDomain()).as("Wrong response destination type on listener2").isEqualTo(false);
 
 		// JCA
 		JmsMessageEndpointManager listener3 = this.context
 				.getBean("listener3", JmsMessageEndpointManager.class);
 		JmsMessageEndpointManager listener4 = this.context
 				.getBean("listener4", JmsMessageEndpointManager.class);
-		assertThat((Object) listener3.isPubSubDomain()).as("Wrong destination type on listener3").isEqualTo(true);
-		assertThat((Object) listener4.isPubSubDomain()).as("Wrong destination type on listener4").isEqualTo(true);
-		assertThat((Object) listener3.isReplyPubSubDomain()).as("Wrong response destination type on listener3").isEqualTo(false);
-		assertThat((Object) listener4.isReplyPubSubDomain()).as("Wrong response destination type on listener4").isEqualTo(false);
+		assertThat(listener3.isPubSubDomain()).as("Wrong destination type on listener3").isEqualTo(true);
+		assertThat(listener4.isPubSubDomain()).as("Wrong destination type on listener4").isEqualTo(true);
+		assertThat(listener3.isReplyPubSubDomain()).as("Wrong response destination type on listener3").isEqualTo(false);
+		assertThat(listener4.isReplyPubSubDomain()).as("Wrong response destination type on listener4").isEqualTo(false);
 	}
 
 	@Test
@@ -344,7 +344,7 @@ public class JmsNamespaceHandlerTests {
 
 	private long getRecoveryInterval(String containerBeanName) {
 		BackOff backOff = getBackOff(containerBeanName);
-		assertThat((Object) backOff.getClass()).isEqualTo(FixedBackOff.class);
+		assertThat(backOff.getClass()).isEqualTo(FixedBackOff.class);
 		return ((FixedBackOff)backOff).getInterval();
 	}
 

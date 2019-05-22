@@ -54,17 +54,17 @@ public class ConfigClassesAndProfilesWithCustomDefaultsMetaConfigWithOverridesTe
 	@Test
 	public void verifyEmployee() {
 		assertNotNull("The employee should have been autowired.", this.employee);
-		assertThat((Object) this.employee.getName()).isEqualTo("John Smith");
+		assertThat(this.employee.getName()).isEqualTo("John Smith");
 	}
 
 	@Test
 	public void verifyPet() {
 		assertNotNull("The pet should have been autowired.", this.pet);
-		assertThat((Object) this.pet.getName()).isEqualTo("Fido");
+		assertThat(this.pet.getName()).isEqualTo("Fido");
 	}
 
 	@Test
 	public void verifyFoo() {
-		assertThat((Object) this.foo).isEqualTo("Production Foo");
+		assertThat(this.foo).isEqualTo("Production Foo");
 	}
 }

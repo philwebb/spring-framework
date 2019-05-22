@@ -139,8 +139,8 @@ public abstract class AbstractApplicationContextTests extends AbstractListableBe
 
 	@Test
 	public void messageSource() throws NoSuchMessageException {
-		assertThat((Object) applicationContext.getMessage("code1", null, Locale.getDefault())).isEqualTo("message1");
-		assertThat((Object) applicationContext.getMessage("code2", null, Locale.getDefault())).isEqualTo("message2");
+		assertThat(applicationContext.getMessage("code1", null, Locale.getDefault())).isEqualTo("message1");
+		assertThat(applicationContext.getMessage("code2", null, Locale.getDefault())).isEqualTo("message2");
 		assertThatExceptionOfType(NoSuchMessageException.class).isThrownBy(() ->
 				applicationContext.getMessage("code0", null, Locale.getDefault()));
 	}

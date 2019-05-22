@@ -95,13 +95,13 @@ public class MultiServerUserRegistryTests {
 		assertEquals(1, user.getSessions().size());
 		SimpSession session = user.getSession("remote-sess");
 		assertNotNull(session);
-		assertThat((Object) session.getId()).isEqualTo("remote-sess");
+		assertThat(session.getId()).isEqualTo("remote-sess");
 		assertSame(user, session.getUser());
 		assertEquals(1, session.getSubscriptions().size());
 		SimpSubscription subscription = session.getSubscriptions().iterator().next();
-		assertThat((Object) subscription.getId()).isEqualTo("remote-sub");
+		assertThat(subscription.getId()).isEqualTo("remote-sub");
 		assertSame(session, subscription.getSession());
-		assertThat((Object) subscription.getDestination()).isEqualTo("/remote-dest");
+		assertThat(subscription.getDestination()).isEqualTo("/remote-dest");
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class MultiServerUserRegistryTests {
 		Set<String> sessionIds = new HashSet<>(2);
 		sessionIds.add(iterator.next().getSession().getId());
 		sessionIds.add(iterator.next().getSession().getId());
-		assertThat((Object) sessionIds).isEqualTo(new HashSet<>(Arrays.asList("sess1", "sess2")));
+		assertThat(sessionIds).isEqualTo(new HashSet<>(Arrays.asList("sess1", "sess2")));
 	}
 
 	@Test  // SPR-13800
@@ -164,13 +164,13 @@ public class MultiServerUserRegistryTests {
 		assertEquals(2, user.getSessions().size());
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertSame(localSession, user.getSession("sess123"));
-		assertThat((Object) user.getSession("sess456")).isEqualTo(remoteSession);
+		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
 
 		user = this.registry.getUser("joe");
 		assertEquals(2, user.getSessions().size());
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertSame(localSession, user.getSession("sess123"));
-		assertThat((Object) user.getSession("sess456")).isEqualTo(remoteSession);
+		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
 	}
 
 	@Test

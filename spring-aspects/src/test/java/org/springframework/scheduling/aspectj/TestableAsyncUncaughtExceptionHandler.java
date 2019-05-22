@@ -63,8 +63,8 @@ class TestableAsyncUncaughtExceptionHandler
 
 	public void assertCalledWith(Method expectedMethod, Class<? extends Throwable> expectedExceptionType) {
 		assertNotNull("Handler not called", descriptor);
-		assertThat((Object) descriptor.ex.getClass()).as("Wrong exception type").isEqualTo(expectedExceptionType);
-		assertThat((Object) descriptor.method).as("Wrong method").isEqualTo(expectedMethod);
+		assertThat(descriptor.ex.getClass()).as("Wrong exception type").isEqualTo(expectedExceptionType);
+		assertThat(descriptor.method).as("Wrong method").isEqualTo(expectedMethod);
 	}
 
 	public void await(long timeout) {

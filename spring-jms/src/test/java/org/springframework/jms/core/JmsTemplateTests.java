@@ -619,10 +619,10 @@ public class JmsTemplateTests {
 		}
 
 		if (testConverter) {
-			assertThat((Object) textFromMessage).as("Message text should be equal").isEqualTo("Hello World!");
+			assertThat(textFromMessage).as("Message text should be equal").isEqualTo("Hello World!");
 		}
 		else {
-			assertThat((Object) textMessage).as("Messages should refer to the same object").isEqualTo(message);
+			assertThat(textMessage).as("Messages should refer to the same object").isEqualTo(message);
 		}
 
 		verify(this.connection).start();

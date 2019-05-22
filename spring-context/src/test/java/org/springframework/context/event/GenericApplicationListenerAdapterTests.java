@@ -150,7 +150,7 @@ public class GenericApplicationListenerAdapterTests extends AbstractApplicationE
 
 		ApplicationListener<?> listener = mock(listenerType);
 		GenericApplicationListenerAdapter adapter = new GenericApplicationListenerAdapter(listener);
-		assertThat((Object) adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + listenerType.getClass().getName()).isEqualTo(match);
+		assertThat(adapter.supportsEventType(eventType)).as("Wrong match for event '" + eventType + "' on " + listenerType.getClass().getName()).isEqualTo(match);
 	}
 
 }

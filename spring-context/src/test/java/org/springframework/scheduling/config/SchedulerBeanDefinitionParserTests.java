@@ -45,20 +45,20 @@ public class SchedulerBeanDefinitionParserTests {
 	public void defaultScheduler() {
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) this.context.getBean("defaultScheduler");
 		Integer size = (Integer) new DirectFieldAccessor(scheduler).getPropertyValue("poolSize");
-		assertThat((Object) size).isEqualTo(new Integer(1));
+		assertThat(size).isEqualTo(new Integer(1));
 	}
 
 	@Test
 	public void customScheduler() {
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) this.context.getBean("customScheduler");
 		Integer size = (Integer) new DirectFieldAccessor(scheduler).getPropertyValue("poolSize");
-		assertThat((Object) size).isEqualTo(new Integer(42));
+		assertThat(size).isEqualTo(new Integer(42));
 	}
 
 	@Test
 	public void threadNamePrefix() {
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) this.context.getBean("customScheduler");
-		assertThat((Object) scheduler.getThreadNamePrefix()).isEqualTo("customScheduler-");
+		assertThat(scheduler.getThreadNamePrefix()).isEqualTo("customScheduler-");
 	}
 
 }

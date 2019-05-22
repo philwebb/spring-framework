@@ -52,9 +52,9 @@ public class ServerHttpResponseTests {
 		assertThat(response.cookiesWritten).isTrue();
 
 		assertEquals(3, response.body.size());
-		assertThat((Object) new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("a");
-		assertThat((Object) new String(response.body.get(1).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("b");
-		assertThat((Object) new String(response.body.get(2).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("c");
+		assertThat(new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("a");
+		assertThat(new String(response.body.get(1).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("b");
+		assertThat(new String(response.body.get(2).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("c");
 	}
 
 	@Test  // SPR-14952
@@ -68,7 +68,7 @@ public class ServerHttpResponseTests {
 		assertThat(response.cookiesWritten).isTrue();
 
 		assertEquals(1, response.body.size());
-		assertThat((Object) new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("foo");
+		assertThat(new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("foo");
 	}
 
 	@Test
@@ -109,9 +109,9 @@ public class ServerHttpResponseTests {
 		assertSame(cookie, response.getCookies().getFirst("ID"));
 
 		assertEquals(3, response.body.size());
-		assertThat((Object) new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("a");
-		assertThat((Object) new String(response.body.get(1).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("b");
-		assertThat((Object) new String(response.body.get(2).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("c");
+		assertThat(new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("a");
+		assertThat(new String(response.body.get(1).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("b");
+		assertThat(new String(response.body.get(2).asByteBuffer().array(), StandardCharsets.UTF_8)).isEqualTo("c");
 	}
 
 	@Test

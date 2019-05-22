@@ -139,7 +139,7 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("priceId", 1);
 		Object result = namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertThat((Object) ps).isEqualTo(preparedStatement);
+					assertThat(ps).isEqualTo(preparedStatement);
 					ps.executeUpdate();
 					return "result";
 				});
@@ -163,7 +163,7 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("id", 1);
 		Object result = namedParameterTemplate.execute(UPDATE_ARRAY_PARAMETERS, params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertThat((Object) ps).isEqualTo(preparedStatement);
+					assertThat(ps).isEqualTo(preparedStatement);
 					ps.executeUpdate();
 					return "result";
 				});
@@ -186,7 +186,7 @@ public class NamedParameterJdbcTemplateTests {
 		params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
 		Object result = namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertThat((Object) ps).isEqualTo(preparedStatement);
+					assertThat(ps).isEqualTo(preparedStatement);
 					ps.executeUpdate();
 					return "result";
 				});
@@ -205,7 +205,7 @@ public class NamedParameterJdbcTemplateTests {
 
 		Object result = namedParameterTemplate.execute(SELECT_NO_PARAMETERS,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertThat((Object) ps).isEqualTo(preparedStatement);
+					assertThat(ps).isEqualTo(preparedStatement);
 					ps.executeQuery();
 					return "result";
 				});

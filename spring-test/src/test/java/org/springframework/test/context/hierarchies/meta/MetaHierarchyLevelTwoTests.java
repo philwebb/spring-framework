@@ -59,7 +59,7 @@ public class MetaHierarchyLevelTwoTests extends MetaHierarchyLevelOneTests {
 
 	@Test
 	public void bar() {
-		assertThat((Object) bar).isEqualTo("Prod Bar");
+		assertThat(bar).isEqualTo("Prod Bar");
 	}
 
 	@Test

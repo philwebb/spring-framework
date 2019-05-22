@@ -70,10 +70,10 @@ public class PropertiesBasedSpringJUnit4ClassRunnerAppCtxTests {
 	@Test
 	public void verifyAnnotationAutowiredFields() {
 		assertNotNull("The cat field should have been autowired.", this.cat);
-		assertThat((Object) this.cat.getName()).isEqualTo("Garfield");
+		assertThat(this.cat.getName()).isEqualTo("Garfield");
 
 		assertNotNull("The testString field should have been autowired.", this.testString);
-		assertThat((Object) this.testString).isEqualTo("Test String");
+		assertThat(this.testString).isEqualTo("Test String");
 	}
 
 }

@@ -96,7 +96,7 @@ public class ServerHttpsRequestIntegrationTests {
 		URI url = new URI("https://localhost:" + port + "/foo?param=bar");
 		RequestEntity<Void> request = RequestEntity.post(url).build();
 		ResponseEntity<Void> response = this.restTemplate.exchange(request, Void.class);
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	public static class CheckRequestHandler implements HttpHandler {
@@ -104,12 +104,12 @@ public class ServerHttpsRequestIntegrationTests {
 		@Override
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
 			URI uri = request.getURI();
-			assertThat((Object) uri.getScheme()).isEqualTo("https");
+			assertThat(uri.getScheme()).isEqualTo("https");
 			assertNotNull(uri.getHost());
 			assertNotEquals(-1, uri.getPort());
 			assertNotNull(request.getRemoteAddress());
-			assertThat((Object) uri.getPath()).isEqualTo("/foo");
-			assertThat((Object) uri.getQuery()).isEqualTo("param=bar");
+			assertThat(uri.getPath()).isEqualTo("/foo");
+			assertThat(uri.getQuery()).isEqualTo("param=bar");
 			return Mono.empty();
 		}
 	}

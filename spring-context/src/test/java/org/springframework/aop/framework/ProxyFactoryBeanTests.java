@@ -211,7 +211,7 @@ public class ProxyFactoryBeanTests {
 		ITestBean test1 = (ITestBean) factory.getBean("test1");
 		ITestBean test1_1 = (ITestBean) factory.getBean("test1");
 		//assertTrue("Singleton instances ==", test1 == test1_1);
-		assertThat((Object) test1_1).as("Singleton instances ==").isEqualTo(test1);
+		assertThat(test1_1).as("Singleton instances ==").isEqualTo(test1);
 		test1.setAge(25);
 		assertEquals(test1.getAge(), test1_1.getAge());
 		test1.setAge(250);
@@ -333,7 +333,7 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(INNER_BEAN_TARGET_CONTEXT, CLASS));
 		ITestBean itb = (ITestBean) bf.getBean("testBean");
-		assertThat((Object) itb.getName()).isEqualTo("innerBeanTarget");
+		assertThat(itb.getName()).isEqualTo("innerBeanTarget");
 		assertEquals("Only have proxy and interceptor: no target", 3, bf.getBeanDefinitionCount());
 		DependsOnITestBean doit = (DependsOnITestBean) bf.getBean("autowireCheck");
 		assertSame(itb, doit.tb);
@@ -530,15 +530,15 @@ public class ProxyFactoryBeanTests {
 		Person p = (Person) bf.getBean("serializableSingleton");
 		assertSame("Should be a Singleton", p, bf.getBean("serializableSingleton"));
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
-		assertThat((Object) p2).isEqualTo(p);
+		assertThat(p2).isEqualTo(p);
 		assertNotSame(p, p2);
-		assertThat((Object) p2.getName()).isEqualTo("serializableSingleton");
+		assertThat(p2.getName()).isEqualTo("serializableSingleton");
 
 		// Add unserializable advice
 		Advice nop = new NopInterceptor();
 		((Advised) p).addAdvice(nop);
 		// Check it still works
-		assertThat((Object) p2.getName()).isEqualTo(p2.getName());
+		assertThat(p2.getName()).isEqualTo(p2.getName());
 		assertThat(SerializationTestUtils.isSerializable(p)).as("Not serializable because an interceptor isn't serializable").isFalse();
 
 		// Remove offending interceptor...
@@ -553,9 +553,9 @@ public class ProxyFactoryBeanTests {
 		Person p = (Person) bf.getBean("serializablePrototype");
 		assertNotSame("Should not be a Singleton", p, bf.getBean("serializablePrototype"));
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
-		assertThat((Object) p2).isEqualTo(p);
+		assertThat(p2).isEqualTo(p);
 		assertNotSame(p, p2);
-		assertThat((Object) p2.getName()).isEqualTo("serializablePrototype");
+		assertThat(p2.getName()).isEqualTo("serializablePrototype");
 	}
 
 	@Test
@@ -566,9 +566,9 @@ public class ProxyFactoryBeanTests {
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&serializableSingleton");
 		ProxyFactoryBean pfb2 = (ProxyFactoryBean) SerializationTestUtils.serializeAndDeserialize(pfb);
 		Person p2 = (Person) pfb2.getObject();
-		assertThat((Object) p2).isEqualTo(p);
+		assertThat(p2).isEqualTo(p);
 		assertNotSame(p, p2);
-		assertThat((Object) p2.getName()).isEqualTo("serializableSingleton");
+		assertThat(p2.getName()).isEqualTo("serializableSingleton");
 	}
 
 	@Test

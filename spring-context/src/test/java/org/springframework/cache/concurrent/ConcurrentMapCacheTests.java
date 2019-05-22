@@ -92,7 +92,7 @@ public class ConcurrentMapCacheTests
 		content.remove(0);
 		List<String> entry = (List<String>) serializeCache.get(key).get();
 		assertEquals(3, entry.size());
-		assertThat((Object) entry.get(0)).isEqualTo("one");
+		assertThat(entry.get(0)).isEqualTo("one");
 	}
 
 	@Test

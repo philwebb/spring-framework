@@ -43,7 +43,7 @@ public class StopWatchTests {
 		sw.start(name1);
 		Thread.sleep(int1);
 		assertThat(sw.isRunning()).isTrue();
-		assertThat((Object) sw.currentTaskName()).isEqualTo(name1);
+		assertThat(sw.currentTaskName()).isEqualTo(name1);
 		sw.stop();
 
 		// TODO are timings off in JUnit? Why do these assertions sometimes fail
@@ -77,7 +77,7 @@ public class StopWatchTests {
 		assertThat(toString.contains(name1)).isTrue();
 		assertThat(toString.contains(name2)).isTrue();
 
-		assertThat((Object) sw.getId()).isEqualTo(id);
+		assertThat(sw.getId()).isEqualTo(id);
 	}
 
 	@Test

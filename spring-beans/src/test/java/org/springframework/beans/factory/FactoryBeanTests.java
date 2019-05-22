@@ -56,7 +56,7 @@ public class FactoryBeanTests {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(factory).loadBeanDefinitions(RETURNS_NULL_CONTEXT);
 
-		assertThat((Object) factory.getBean("factoryBean").toString()).isEqualTo("null");
+		assertThat(factory.getBean("factoryBean").toString()).isEqualTo("null");
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class FactoryBeanTests {
 		assertSame(beta, alpha.getBeta());
 		assertSame(gamma, beta.getGamma());
 		assertSame(gamma2, beta.getGamma());
-		assertThat((Object) beta.getName()).isEqualTo("yourName");
+		assertThat(beta.getName()).isEqualTo("yourName");
 	}
 
 	@Test

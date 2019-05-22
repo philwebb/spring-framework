@@ -94,7 +94,7 @@ public class MessageHeadersTests {
 	public void testIdProvided() {
 		UUID id = new UUID(0L, 25L);
 		MessageHeaders headers = new MessageHeaders(null, id, null);
-		assertThat((Object) headers.getId()).isEqualTo(id);
+		assertThat(headers.getId()).isEqualTo(id);
 	}
 
 	@Test
@@ -200,7 +200,7 @@ public class MessageHeadersTests {
 			}
 		}
 		MessageHeaders headers = new MyMH();
-		assertThat((Object) headers.getId().toString()).isEqualTo("00000000-0000-0000-0000-000000000001");
+		assertThat(headers.getId().toString()).isEqualTo("00000000-0000-0000-0000-000000000001");
 		assertEquals(1, headers.size());
 	}
 

@@ -56,7 +56,7 @@ public class BaseAppCtxRuleTests {
 
 	@Test
 	public void foo() {
-		assertThat((Object) foo).isEqualTo("foo");
+		assertThat(foo).isEqualTo("foo");
 	}
 
 

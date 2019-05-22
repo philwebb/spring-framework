@@ -97,7 +97,7 @@ public class StringMessageConverterTests {
 		MessageHeaders headers = new MessageHeaders(map);
 		Message<?> message = this.converter.toMessage("ABC", headers);
 
-		assertThat((Object) new String(((byte[]) message.getPayload()))).isEqualTo("ABC");
+		assertThat(new String(((byte[]) message.getPayload()))).isEqualTo("ABC");
 	}
 
 }

@@ -46,7 +46,7 @@ public class RequestMappingInfoHandlerMethodMappingNamingStrategyTests {
 
 		HandlerMethodMappingNamingStrategy<RequestMappingInfo> strategy = new RequestMappingInfoHandlerMethodMappingNamingStrategy();
 
-		assertThat((Object) strategy.getName(handlerMethod, rmi)).isEqualTo("foo");
+		assertThat(strategy.getName(handlerMethod, rmi)).isEqualTo("foo");
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class RequestMappingInfoHandlerMethodMappingNamingStrategyTests {
 
 		HandlerMethodMappingNamingStrategy<RequestMappingInfo> strategy = new RequestMappingInfoHandlerMethodMappingNamingStrategy();
 
-		assertThat((Object) strategy.getName(handlerMethod, rmi)).isEqualTo("TC#handle");
+		assertThat(strategy.getName(handlerMethod, rmi)).isEqualTo("TC#handle");
 	}
 
 

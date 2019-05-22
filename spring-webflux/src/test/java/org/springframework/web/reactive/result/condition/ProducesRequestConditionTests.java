@@ -60,7 +60,7 @@ public class ProducesRequestConditionTests {
 	@Test
 	public void getProducibleMediaTypes() {
 		ProducesRequestCondition condition = new ProducesRequestCondition("!application/xml");
-		assertThat((Object) condition.getProducibleMediaTypes()).isEqualTo(Collections.emptySet());
+		assertThat(condition.getProducibleMediaTypes()).isEqualTo(Collections.emptySet());
 	}
 
 	@Test
@@ -309,7 +309,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition2 = new ProducesRequestCondition("application/xml");
 
 		ProducesRequestCondition result = condition1.combine(condition2);
-		assertThat((Object) result).isEqualTo(condition2);
+		assertThat(result).isEqualTo(condition2);
 	}
 
 	@Test
@@ -318,7 +318,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition2 = new ProducesRequestCondition();
 
 		ProducesRequestCondition result = condition1.combine(condition2);
-		assertThat((Object) result).isEqualTo(condition1);
+		assertThat(result).isEqualTo(condition1);
 	}
 
 	@Test

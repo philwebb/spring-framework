@@ -63,28 +63,28 @@ public class ServletWebRequestTests {
 		servletRequest.addParameter("param2", "value2");
 		servletRequest.addParameter("param2", "value2a");
 
-		assertThat((Object) request.getParameter("param1")).isEqualTo("value1");
+		assertThat(request.getParameter("param1")).isEqualTo("value1");
 		assertEquals(1, request.getParameterValues("param1").length);
-		assertThat((Object) request.getParameterValues("param1")[0]).isEqualTo("value1");
-		assertThat((Object) request.getParameter("param2")).isEqualTo("value2");
+		assertThat(request.getParameterValues("param1")[0]).isEqualTo("value1");
+		assertThat(request.getParameter("param2")).isEqualTo("value2");
 		assertEquals(2, request.getParameterValues("param2").length);
-		assertThat((Object) request.getParameterValues("param2")[0]).isEqualTo("value2");
-		assertThat((Object) request.getParameterValues("param2")[1]).isEqualTo("value2a");
+		assertThat(request.getParameterValues("param2")[0]).isEqualTo("value2");
+		assertThat(request.getParameterValues("param2")[1]).isEqualTo("value2a");
 
 		Map<String, String[]> paramMap = request.getParameterMap();
 		assertEquals(2, paramMap.size());
 		assertEquals(1, paramMap.get("param1").length);
-		assertThat((Object) paramMap.get("param1")[0]).isEqualTo("value1");
+		assertThat(paramMap.get("param1")[0]).isEqualTo("value1");
 		assertEquals(2, paramMap.get("param2").length);
-		assertThat((Object) paramMap.get("param2")[0]).isEqualTo("value2");
-		assertThat((Object) paramMap.get("param2")[1]).isEqualTo("value2a");
+		assertThat(paramMap.get("param2")[0]).isEqualTo("value2");
+		assertThat(paramMap.get("param2")[1]).isEqualTo("value2a");
 	}
 
 	@Test
 	public void locale() {
 		servletRequest.addPreferredLocale(Locale.UK);
 
-		assertThat((Object) request.getLocale()).isEqualTo(Locale.UK);
+		assertThat(request.getLocale()).isEqualTo(Locale.UK);
 	}
 
 	@Test

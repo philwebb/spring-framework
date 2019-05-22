@@ -38,7 +38,7 @@ public class BootstrapWithInterfaceTests implements BootstrapWithTestInterface {
 
 	@Test
 	public void injectedBean() {
-		assertThat((Object) foo).isEqualTo("foo");
+		assertThat(foo).isEqualTo("foo");
 	}
 
 }

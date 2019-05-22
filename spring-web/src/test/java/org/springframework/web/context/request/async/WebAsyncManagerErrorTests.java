@@ -111,7 +111,7 @@ public class WebAsyncManagerErrorTests {
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(7);
-		assertThat((Object) ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
+		assertThat(((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class WebAsyncManagerErrorTests {
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(22);
-		assertThat((Object) ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
+		assertThat(((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
 
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, callable);
 	}
@@ -154,7 +154,7 @@ public class WebAsyncManagerErrorTests {
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(exception);
-		assertThat((Object) ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
+		assertThat(((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
 
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, callable);
 	}
@@ -195,7 +195,7 @@ public class WebAsyncManagerErrorTests {
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(e);
-		assertThat((Object) ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
+		assertThat(((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
 	}
 
 	@Test
@@ -217,7 +217,7 @@ public class WebAsyncManagerErrorTests {
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(e);
-		assertThat((Object) ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
+		assertThat(((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
 	}
 
 	@Test
@@ -243,7 +243,7 @@ public class WebAsyncManagerErrorTests {
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(e);
-		assertThat((Object) ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
+		assertThat(((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
 	}
 
 	@Test
@@ -269,7 +269,7 @@ public class WebAsyncManagerErrorTests {
 
 		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertThat(this.asyncManager.getConcurrentResult()).isEqualTo(e);
-		assertThat((Object) ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
+		assertThat(((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath()).isEqualTo("/test");
 	}
 
 

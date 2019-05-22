@@ -83,8 +83,8 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 		List<RootElement> result = (List<RootElement>) converter.read(rootElementListType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
-		assertThat((Object) result.get(0).type.s).as("Invalid result").isEqualTo("1");
-		assertThat((Object) result.get(1).type.s).as("Invalid result").isEqualTo("2");
+		assertThat(result.get(0).type.s).as("Invalid result").isEqualTo("1");
+		assertThat(result.get(1).type.s).as("Invalid result").isEqualTo("2");
 	}
 
 	@Test
@@ -107,8 +107,8 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 		List<TestType> result = (List<TestType>) converter.read(typeListType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
-		assertThat((Object) result.get(0).s).as("Invalid result").isEqualTo("1");
-		assertThat((Object) result.get(1).s).as("Invalid result").isEqualTo("2");
+		assertThat(result.get(0).s).as("Invalid result").isEqualTo("1");
+		assertThat(result.get(1).s).as("Invalid result").isEqualTo("2");
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 		try {
 			Collection<RootElement> result = converter.read(rootElementListType, null, inputMessage);
 			assertEquals(1, result.size());
-			assertThat((Object) result.iterator().next().external).isEqualTo("");
+			assertThat(result.iterator().next().external).isEqualTo("");
 		}
 		catch (HttpMessageNotReadableException ex) {
 			// Some parsers raise an exception
@@ -173,7 +173,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 
 		Collection<RootElement> result = c.read(rootElementListType, null, inputMessage);
 		assertEquals(1, result.size());
-		assertThat((Object) result.iterator().next().external).isEqualTo("Foo Bar");
+		assertThat(result.iterator().next().external).isEqualTo("Foo Bar");
 	}
 
 	@Test

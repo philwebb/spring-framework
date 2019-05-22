@@ -291,8 +291,8 @@ public class StoredProcedureTests {
 		Map<String, Object> res = sproc.execute();
 		List<String> rs = (List<String>) res.get("rs");
 		assertEquals(2, rs.size());
-		assertThat((Object) rs.get(0)).isEqualTo("Foo");
-		assertThat((Object) rs.get(1)).isEqualTo("Bar");
+		assertThat(rs.get(0)).isEqualTo("Foo");
+		assertThat(rs.get(1)).isEqualTo("Bar");
 		verify(resultSet).close();
 	}
 
@@ -329,8 +329,8 @@ public class StoredProcedureTests {
 
 		List<String> rs1 = (List<String>) res.get("rs");
 		assertEquals(2, rs1.size());
-		assertThat((Object) rs1.get(0)).isEqualTo("Foo");
-		assertThat((Object) rs1.get(1)).isEqualTo("Bar");
+		assertThat(rs1.get(0)).isEqualTo("Foo");
+		assertThat(rs1.get(1)).isEqualTo("Bar");
 
 		List<Object> rs2 = (List<Object>) res.get("#result-set-2");
 		assertEquals(1, rs2.size());
@@ -338,8 +338,8 @@ public class StoredProcedureTests {
 		boolean condition = o2 instanceof Map;
 		assertThat(condition).as("wron type returned for result set 2").isTrue();
 		Map<String, String> m2 = (Map<String, String>) o2;
-		assertThat((Object) m2.get("spam")).isEqualTo("Spam");
-		assertThat((Object) m2.get("eggs")).isEqualTo("Eggs");
+		assertThat(m2.get("spam")).isEqualTo("Spam");
+		assertThat(m2.get("eggs")).isEqualTo("Eggs");
 
 		Number n = (Number) res.get("#update-count-1");
 		assertEquals("wrong update count", 0, n.intValue());
@@ -384,8 +384,8 @@ public class StoredProcedureTests {
 		assertEquals("incorrect number of returns", 1, res.size());
 		List<String> rs1 = (List<String>) res.get("rs");
 		assertEquals(2, rs1.size());
-		assertThat((Object) rs1.get(0)).isEqualTo("Foo");
-		assertThat((Object) rs1.get(1)).isEqualTo("Bar");
+		assertThat(rs1.get(0)).isEqualTo("Foo");
+		assertThat(rs1.get(1)).isEqualTo("Bar");
 		verify(resultSet).close();
 	}
 

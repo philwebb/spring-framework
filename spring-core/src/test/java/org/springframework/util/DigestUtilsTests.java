@@ -59,10 +59,10 @@ public class DigestUtilsTests {
 		String expected = "b10a8db164e0754105b7a99be72e3fe5";
 
 		String hash = DigestUtils.md5DigestAsHex(bytes);
-		assertThat((Object) hash).as("Invalid hash").isEqualTo(expected);
+		assertThat(hash).as("Invalid hash").isEqualTo(expected);
 
 		hash = DigestUtils.md5DigestAsHex(new ByteArrayInputStream(bytes));
-		assertThat((Object) hash).as("Invalid hash").isEqualTo(expected);
+		assertThat(hash).as("Invalid hash").isEqualTo(expected);
 	}
 
 	@Test
@@ -71,11 +71,11 @@ public class DigestUtilsTests {
 
 		StringBuilder builder = new StringBuilder();
 		DigestUtils.appendMd5DigestAsHex(bytes, builder);
-		assertThat((Object) builder.toString()).as("Invalid hash").isEqualTo(expected);
+		assertThat(builder.toString()).as("Invalid hash").isEqualTo(expected);
 
 		builder = new StringBuilder();
 		DigestUtils.appendMd5DigestAsHex(new ByteArrayInputStream(bytes), builder);
-		assertThat((Object) builder.toString()).as("Invalid hash").isEqualTo(expected);
+		assertThat(builder.toString()).as("Invalid hash").isEqualTo(expected);
 	}
 
 }

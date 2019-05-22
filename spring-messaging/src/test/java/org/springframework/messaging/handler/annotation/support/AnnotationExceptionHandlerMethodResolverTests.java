@@ -47,33 +47,33 @@ public class AnnotationExceptionHandlerMethodResolverTests {
 	@Test
 	public void resolveMethodFromAnnotation() {
 		IOException exception = new IOException();
-		assertThat((Object) this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
+		assertThat(this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
 	}
 
 	@Test
 	public void resolveMethodFromArgument() {
 		IllegalArgumentException exception = new IllegalArgumentException();
-		assertThat((Object) this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIllegalArgumentException");
+		assertThat(this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIllegalArgumentException");
 	}
 
 	@Test
 	public void resolveMethodFromArgumentWithErrorType() {
 		AssertionError exception = new AssertionError();
-		assertThat((Object) this.resolver.resolveMethod(new IllegalStateException(exception)).getName()).isEqualTo("handleAssertionError");
+		assertThat(this.resolver.resolveMethod(new IllegalStateException(exception)).getName()).isEqualTo("handleAssertionError");
 	}
 
 	@Test
 	public void resolveMethodExceptionSubType() {
 		IOException ioException = new FileNotFoundException();
-		assertThat((Object) this.resolver.resolveMethod(ioException).getName()).isEqualTo("handleIOException");
+		assertThat(this.resolver.resolveMethod(ioException).getName()).isEqualTo("handleIOException");
 		SocketException bindException = new BindException();
-		assertThat((Object) this.resolver.resolveMethod(bindException).getName()).isEqualTo("handleSocketException");
+		assertThat(this.resolver.resolveMethod(bindException).getName()).isEqualTo("handleSocketException");
 	}
 
 	@Test
 	public void resolveMethodBestMatch() {
 		SocketException exception = new SocketException();
-		assertThat((Object) this.resolver.resolveMethod(exception).getName()).isEqualTo("handleSocketException");
+		assertThat(this.resolver.resolveMethod(exception).getName()).isEqualTo("handleSocketException");
 	}
 
 	@Test
@@ -86,13 +86,13 @@ public class AnnotationExceptionHandlerMethodResolverTests {
 	@Test
 	public void resolveMethodInherited() {
 		IOException exception = new IOException();
-		assertThat((Object) this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
+		assertThat(this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
 	}
 
 	@Test
 	public void resolveMethodAgainstCause() {
 		IllegalStateException exception = new IllegalStateException(new IOException());
-		assertThat((Object) this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
+		assertThat(this.resolver.resolveMethod(exception).getName()).isEqualTo("handleIOException");
 	}
 
 	@Test

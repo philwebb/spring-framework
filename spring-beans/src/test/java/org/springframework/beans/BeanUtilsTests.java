@@ -68,7 +68,7 @@ public class BeanUtilsTests {
 		BeanWithNullableTypes bean = BeanUtils.instantiateClass(ctor, null, null, "foo");
 		assertNull(bean.getCounter());
 		assertNull(bean.isFlag());
-		assertThat((Object) bean.getValue()).isEqualTo("foo");
+		assertThat(bean.getValue()).isEqualTo("foo");
 	}
 
 	@Test  // gh-22531
@@ -76,8 +76,8 @@ public class BeanUtilsTests {
 		Constructor<BeanWithPrimitiveTypes> ctor = BeanWithPrimitiveTypes.class.getDeclaredConstructor(int.class, boolean.class, String.class);
 		BeanWithPrimitiveTypes bean = BeanUtils.instantiateClass(ctor, null, null, "foo");
 		assertEquals(0, bean.getCounter());
-		assertThat((Object) bean.isFlag()).isEqualTo(false);
-		assertThat((Object) bean.getValue()).isEqualTo("foo");
+		assertThat(bean.isFlag()).isEqualTo(false);
+		assertThat(bean.getValue()).isEqualTo("foo");
 	}
 
 	@Test // gh-22531
@@ -101,14 +101,14 @@ public class BeanUtilsTests {
 		for (PropertyDescriptor descriptor : descriptors) {
 			if ("containedBeans".equals(descriptor.getName())) {
 				assertThat(descriptor.getPropertyType().isArray()).as("Property should be an array").isTrue();
-				assertThat((Object) ContainedBean.class).isEqualTo(descriptor.getPropertyType().getComponentType());
+				assertThat(ContainedBean.class).isEqualTo(descriptor.getPropertyType().getComponentType());
 			}
 		}
 	}
 
 	@Test
 	public void testFindEditorByConvention() {
-		assertThat((Object) BeanUtils.findEditorByConvention(Resource.class).getClass()).isEqualTo(ResourceEditor.class);
+		assertThat(BeanUtils.findEditorByConvention(Resource.class).getClass()).isEqualTo(ResourceEditor.class);
 	}
 
 	@Test
@@ -201,7 +201,7 @@ public class BeanUtilsTests {
 		source.setName("name");
 		TestBean target = new TestBean();
 		BeanUtils.copyProperties(source, target, "specialProperty");
-		assertThat((Object) "name").isEqualTo(target.getName());
+		assertThat("name").isEqualTo(target.getName());
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class BeanUtilsTests {
 		source.setFlag2(true);
 		InvalidProperty target = new InvalidProperty();
 		BeanUtils.copyProperties(source, target);
-		assertThat((Object) target.getName()).isEqualTo("name");
+		assertThat(target.getName()).isEqualTo("name");
 		assertThat((boolean) target.getFlag1()).isTrue();
 		assertThat(target.getFlag2()).isTrue();
 	}
@@ -278,16 +278,16 @@ public class BeanUtilsTests {
 		PropertyDescriptor[] descrs = BeanUtils.getPropertyDescriptors(Bean.class);
 
 		PropertyDescriptor keyDescr = BeanUtils.getPropertyDescriptor(Bean.class, "value");
-		assertThat((Object) keyDescr.getPropertyType()).isEqualTo(String.class);
+		assertThat(keyDescr.getPropertyType()).isEqualTo(String.class);
 		for (PropertyDescriptor propertyDescriptor : descrs) {
 			if (propertyDescriptor.getName().equals(keyDescr.getName())) {
-				assertThat((Object) propertyDescriptor.getPropertyType()).as(propertyDescriptor.getName() + " has unexpected type").isEqualTo(keyDescr.getPropertyType());
+				assertThat(propertyDescriptor.getPropertyType()).as(propertyDescriptor.getName() + " has unexpected type").isEqualTo(keyDescr.getPropertyType());
 			}
 		}
 	}
 
 	private void assertSignatureEquals(Method desiredMethod, String signature) {
-		assertThat((Object) BeanUtils.resolveSignature(signature, MethodSignatureBean.class)).isEqualTo(desiredMethod);
+		assertThat(BeanUtils.resolveSignature(signature, MethodSignatureBean.class)).isEqualTo(desiredMethod);
 	}
 
 

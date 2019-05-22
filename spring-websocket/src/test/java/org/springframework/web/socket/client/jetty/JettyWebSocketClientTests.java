@@ -84,8 +84,8 @@ public class JettyWebSocketClientTests {
 
 		this.wsSession = this.client.doHandshake(new TextWebSocketHandler(), headers, new URI(this.wsUrl)).get();
 
-		assertThat((Object) this.wsSession.getUri().toString()).isEqualTo(this.wsUrl);
-		assertThat((Object) this.wsSession.getAcceptedProtocol()).isEqualTo("echo");
+		assertThat(this.wsSession.getUri().toString()).isEqualTo(this.wsUrl);
+		assertThat(this.wsSession.getAcceptedProtocol()).isEqualTo("echo");
 	}
 
 	@Test
@@ -97,8 +97,8 @@ public class JettyWebSocketClientTests {
 		this.client.setTaskExecutor(new SimpleAsyncTaskExecutor());
 		this.wsSession = this.client.doHandshake(new TextWebSocketHandler(), headers, new URI(this.wsUrl)).get();
 
-		assertThat((Object) this.wsSession.getUri().toString()).isEqualTo(this.wsUrl);
-		assertThat((Object) this.wsSession.getAcceptedProtocol()).isEqualTo("echo");
+		assertThat(this.wsSession.getUri().toString()).isEqualTo(this.wsUrl);
+		assertThat(this.wsSession.getAcceptedProtocol()).isEqualTo("echo");
 	}
 
 

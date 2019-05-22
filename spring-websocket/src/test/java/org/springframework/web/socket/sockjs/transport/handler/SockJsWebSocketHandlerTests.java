@@ -51,7 +51,7 @@ public class SockJsWebSocketHandlerTests {
 		WebSocketServerSockJsSession session = new WebSocketServerSockJsSession("1", service, handler, null);
 		SockJsWebSocketHandler sockJsHandler = new SockJsWebSocketHandler(service, handler, session);
 
-		assertThat((Object) sockJsHandler.getSubProtocols()).isEqualTo(stompHandler.getSupportedProtocols());
+		assertThat(sockJsHandler.getSubProtocols()).isEqualTo(stompHandler.getSupportedProtocols());
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class SockJsWebSocketHandlerTests {
 		WebSocketServerSockJsSession session = new WebSocketServerSockJsSession("1", service, handler, null);
 		SockJsWebSocketHandler sockJsHandler = new SockJsWebSocketHandler(service, handler, session);
 
-		assertThat((Object) sockJsHandler.getSubProtocols()).isEqualTo(Collections.emptyList());
+		assertThat(sockJsHandler.getSubProtocols()).isEqualTo(Collections.emptyList());
 	}
 
 }

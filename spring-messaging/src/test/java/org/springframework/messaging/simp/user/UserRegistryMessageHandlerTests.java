@@ -129,7 +129,7 @@ public class UserRegistryMessageHandlerTests {
 		Message<?> message = captor.getValue();
 		assertNotNull(message);
 		MessageHeaders headers = message.getHeaders();
-		assertThat((Object) SimpMessageHeaderAccessor.getDestination(headers)).isEqualTo("/topic/simp-user-registry");
+		assertThat(SimpMessageHeaderAccessor.getDestination(headers)).isEqualTo("/topic/simp-user-registry");
 
 		MultiServerUserRegistry remoteRegistry = new MultiServerUserRegistry(mock(SimpUserRegistry.class));
 		remoteRegistry.addRemoteRegistryDto(message, this.converter, 20000);

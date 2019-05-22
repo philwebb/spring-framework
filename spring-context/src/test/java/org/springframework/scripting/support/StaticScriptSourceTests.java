@@ -68,7 +68,7 @@ public class StaticScriptSourceTests {
 	public void gettingScriptViaToStringDoesNotToggleIsModified() throws Exception {
 		boolean isModifiedState = source.isModified();
 		source.toString();
-		assertThat((Object) source.isModified()).as("Script's 'modified' flag must not change after script is read via toString().").isEqualTo(isModifiedState);
+		assertThat(source.isModified()).as("Script's 'modified' flag must not change after script is read via toString().").isEqualTo(isModifiedState);
 	}
 
 	@Test

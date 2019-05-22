@@ -187,7 +187,7 @@ public class SubProtocolWebSocketHandlerTests {
 		assertNull(session1.getCloseStatus());
 
 		assertThat(session2.isOpen()).isFalse();
-		assertThat((Object) session2.getCloseStatus()).isEqualTo(CloseStatus.SESSION_NOT_RELIABLE);
+		assertThat(session2.getCloseStatus()).isEqualTo(CloseStatus.SESSION_NOT_RELIABLE);
 
 		assertNotEquals("lastSessionCheckTime not updated", sixtyOneSecondsAgo,
 				handlerAccessor.getPropertyValue("lastSessionCheckTime"));

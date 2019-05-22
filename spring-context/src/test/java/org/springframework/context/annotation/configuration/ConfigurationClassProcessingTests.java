@@ -152,24 +152,24 @@ public class ConfigurationClassProcessingTests {
 	public void simplestPossibleConfig() {
 		BeanFactory factory = initBeanFactory(SimplestPossibleConfig.class);
 		String stringBean = factory.getBean("stringBean", String.class);
-		assertThat((Object) stringBean).isEqualTo("foo");
+		assertThat(stringBean).isEqualTo("foo");
 	}
 
 	@Test
 	public void configWithObjectReturnType() {
 		BeanFactory factory = initBeanFactory(ConfigWithNonSpecificReturnTypes.class);
-		assertThat((Object) factory.getType("stringBean")).isEqualTo(Object.class);
+		assertThat(factory.getType("stringBean")).isEqualTo(Object.class);
 		assertThat(factory.isTypeMatch("stringBean", String.class)).isFalse();
 		String stringBean = factory.getBean("stringBean", String.class);
-		assertThat((Object) stringBean).isEqualTo("foo");
+		assertThat(stringBean).isEqualTo("foo");
 	}
 
 	@Test
 	public void configWithFactoryBeanReturnType() {
 		ListableBeanFactory factory = initBeanFactory(ConfigWithNonSpecificReturnTypes.class);
-		assertThat((Object) factory.getType("factoryBean")).isEqualTo(List.class);
+		assertThat(factory.getType("factoryBean")).isEqualTo(List.class);
 		assertThat(factory.isTypeMatch("factoryBean", List.class)).isTrue();
-		assertThat((Object) factory.getType("&factoryBean")).isEqualTo(FactoryBean.class);
+		assertThat(factory.getType("&factoryBean")).isEqualTo(FactoryBean.class);
 		assertThat(factory.isTypeMatch("&factoryBean", FactoryBean.class)).isTrue();
 		assertThat(factory.isTypeMatch("&factoryBean", BeanClassLoaderAware.class)).isFalse();
 		assertThat(factory.isTypeMatch("&factoryBean", ListFactoryBean.class)).isFalse();
@@ -178,18 +178,18 @@ public class ConfigurationClassProcessingTests {
 
 		String[] beanNames = factory.getBeanNamesForType(FactoryBean.class);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = factory.getBeanNamesForType(BeanClassLoaderAware.class);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = factory.getBeanNamesForType(ListFactoryBean.class);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = factory.getBeanNamesForType(List.class);
-		assertThat((Object) beanNames[0]).isEqualTo("factoryBean");
+		assertThat(beanNames[0]).isEqualTo("factoryBean");
 	}
 
 	@Test
@@ -220,12 +220,12 @@ public class ConfigurationClassProcessingTests {
 		ctx.refresh();
 
 		AdaptiveInjectionPoints adaptive = ctx.getBean(AdaptiveInjectionPoints.class);
-		assertThat((Object) adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
-		assertThat((Object) adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
+		assertThat(adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
+		assertThat(adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
 
 		adaptive = ctx.getBean(AdaptiveInjectionPoints.class);
-		assertThat((Object) adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
-		assertThat((Object) adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
+		assertThat(adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
+		assertThat(adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
 		ctx.close();
 	}
 
@@ -236,12 +236,12 @@ public class ConfigurationClassProcessingTests {
 		ctx.refresh();
 
 		AdaptiveResourceInjectionPoints adaptive = ctx.getBean(AdaptiveResourceInjectionPoints.class);
-		assertThat((Object) adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
-		assertThat((Object) adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
+		assertThat(adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
+		assertThat(adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
 
 		adaptive = ctx.getBean(AdaptiveResourceInjectionPoints.class);
-		assertThat((Object) adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
-		assertThat((Object) adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
+		assertThat(adaptive.adaptiveInjectionPoint1.getName()).isEqualTo("adaptiveInjectionPoint1");
+		assertThat(adaptive.adaptiveInjectionPoint2.getName()).isEqualTo("setAdaptiveInjectionPoint2");
 		ctx.close();
 	}
 
@@ -258,9 +258,9 @@ public class ConfigurationClassProcessingTests {
 		ITestBean bar = ctx.getBean("bar", ITestBean.class);
 		ITestBean baz = ctx.getBean("baz", ITestBean.class);
 
-		assertThat((Object) foo.getName()).isEqualTo("foo-processed-myValue");
-		assertThat((Object) bar.getName()).isEqualTo("bar-processed-myValue");
-		assertThat((Object) baz.getName()).isEqualTo("baz-processed-myValue");
+		assertThat(foo.getName()).isEqualTo("foo-processed-myValue");
+		assertThat(bar.getName()).isEqualTo("bar-processed-myValue");
+		assertThat(baz.getName()).isEqualTo("baz-processed-myValue");
 
 		SpousyTestBean listener = ctx.getBean("listenerTestBean", SpousyTestBean.class);
 		assertThat(listener.refreshed).isTrue();
@@ -274,7 +274,7 @@ public class ConfigurationClassProcessingTests {
 		ctx.refresh();
 
 		assertSame(ctx.getBean("spouse"), ctx.getBean(TestBean.class).getSpouse());
-		assertThat((Object) ctx.getBean(NestedTestBean.class).getCompany()).isEqualTo("functional");
+		assertThat(ctx.getBean(NestedTestBean.class).getCompany()).isEqualTo("functional");
 	}
 
 

@@ -132,7 +132,7 @@ public class SseEmitterTests {
 		public void assertObject(int index, Object object, MediaType mediaType) {
 			assertThat(index <= this.objects.size()).isTrue();
 			assertThat(this.objects.get(index)).isEqualTo(object);
-			assertThat((Object) this.mediaTypes.get(index)).isEqualTo(mediaType);
+			assertThat(this.mediaTypes.get(index)).isEqualTo(mediaType);
 		}
 
 		@Override

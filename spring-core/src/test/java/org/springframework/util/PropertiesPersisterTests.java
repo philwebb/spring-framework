@@ -107,8 +107,8 @@ public class PropertiesPersisterTests {
 		else {
 			persister.load(props, new ByteArrayInputStream(propString.getBytes()));
 		}
-		assertThat((Object) props.getProperty("code1")).isEqualTo("message1");
-		assertThat((Object) props.getProperty("code2")).isEqualTo("message2");
+		assertThat(props.getProperty("code1")).isEqualTo("message1");
+		assertThat(props.getProperty("code2")).isEqualTo("message2");
 		return props;
 	}
 

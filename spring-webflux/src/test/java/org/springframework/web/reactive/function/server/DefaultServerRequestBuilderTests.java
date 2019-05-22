@@ -62,11 +62,11 @@ public class DefaultServerRequestBuilderTests {
 				.body(body)
 				.build();
 
-		assertThat((Object) result.method()).isEqualTo(HttpMethod.HEAD);
+		assertThat(result.method()).isEqualTo(HttpMethod.HEAD);
 		assertEquals(1, result.headers().asHttpHeaders().size());
-		assertThat((Object) result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
+		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
 		assertEquals(1, result.cookies().size());
-		assertThat((Object) result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
+		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
 
 		StepVerifier.create(result.bodyToFlux(String.class))
 				.expectNext("baz")

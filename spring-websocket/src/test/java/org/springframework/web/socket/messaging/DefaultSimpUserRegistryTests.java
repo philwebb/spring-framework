@@ -159,7 +159,7 @@ public class DefaultSimpUserRegistryTests {
 		Set<String> sessionIds = new HashSet<>(2);
 		sessionIds.add(iterator.next().getId());
 		sessionIds.add(iterator.next().getId());
-		assertThat((Object) sessionIds).isEqualTo(new HashSet<>(Arrays.asList("sub1", "sub2")));
+		assertThat(sessionIds).isEqualTo(new HashSet<>(Arrays.asList("sub1", "sub2")));
 	}
 
 	@Test

@@ -53,9 +53,9 @@ public class RequestEntityTests {
 						.header(headerName, headerValue).body(entity);
 
 		assertNotNull(requestEntity);
-		assertThat((Object) requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
+		assertThat(requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
 		assertThat(requestEntity.getHeaders().containsKey(headerName)).isTrue();
-		assertThat((Object) requestEntity.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
+		assertThat(requestEntity.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
 		assertThat(requestEntity.getBody()).isEqualTo(entity);
 	}
 
@@ -71,7 +71,7 @@ public class RequestEntityTests {
 
 		uri = new UriTemplate(url).expand(host, path);
 		RequestEntity<?> entity = RequestEntity.get(uri).build();
-		assertThat((Object) entity.getUrl()).isEqualTo(expected);
+		assertThat(entity.getUrl()).isEqualTo(expected);
 
 		Map<String, String> uriVariables = new HashMap<>(2);
 		uriVariables.put("host", host);
@@ -79,7 +79,7 @@ public class RequestEntityTests {
 
 		uri = new UriTemplate(url).expand(uriVariables);
 		entity = RequestEntity.get(uri).build();
-		assertThat((Object) entity.getUrl()).isEqualTo(expected);
+		assertThat(entity.getUrl()).isEqualTo(expected);
 	}
 
 	@Test
@@ -88,9 +88,9 @@ public class RequestEntityTests {
 				MediaType.IMAGE_GIF, MediaType.IMAGE_JPEG, MediaType.IMAGE_PNG).build();
 
 		assertNotNull(requestEntity);
-		assertThat((Object) requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
+		assertThat(requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
 		assertThat(requestEntity.getHeaders().containsKey("Accept")).isTrue();
-		assertThat((Object) requestEntity.getHeaders().getFirst("Accept")).isEqualTo("image/gif, image/jpeg, image/png");
+		assertThat(requestEntity.getHeaders().getFirst("Accept")).isEqualTo("image/gif, image/jpeg, image/png");
 		assertNull(requestEntity.getBody());
 	}
 
@@ -112,16 +112,16 @@ public class RequestEntityTests {
 				build();
 
 		assertNotNull(responseEntity);
-		assertThat((Object) responseEntity.getMethod()).isEqualTo(HttpMethod.POST);
-		assertThat((Object) responseEntity.getUrl()).isEqualTo(new URI("https://example.com"));
+		assertThat(responseEntity.getMethod()).isEqualTo(HttpMethod.POST);
+		assertThat(responseEntity.getUrl()).isEqualTo(new URI("https://example.com"));
 		HttpHeaders responseHeaders = responseEntity.getHeaders();
 
-		assertThat((Object) responseHeaders.getFirst("Accept")).isEqualTo("text/plain");
-		assertThat((Object) responseHeaders.getFirst("Accept-Charset")).isEqualTo("utf-8");
-		assertThat((Object) responseHeaders.getFirst("If-Modified-Since")).isEqualTo("Thu, 01 Jan 1970 00:00:12 GMT");
-		assertThat((Object) responseHeaders.getFirst("If-None-Match")).isEqualTo(ifNoneMatch);
-		assertThat((Object) responseHeaders.getFirst("Content-Length")).isEqualTo(String.valueOf(contentLength));
-		assertThat((Object) responseHeaders.getFirst("Content-Type")).isEqualTo(contentType.toString());
+		assertThat(responseHeaders.getFirst("Accept")).isEqualTo("text/plain");
+		assertThat(responseHeaders.getFirst("Accept-Charset")).isEqualTo("utf-8");
+		assertThat(responseHeaders.getFirst("If-Modified-Since")).isEqualTo("Thu, 01 Jan 1970 00:00:12 GMT");
+		assertThat(responseHeaders.getFirst("If-None-Match")).isEqualTo(ifNoneMatch);
+		assertThat(responseHeaders.getFirst("Content-Length")).isEqualTo(String.valueOf(contentLength));
+		assertThat(responseHeaders.getFirst("Content-Type")).isEqualTo(contentType.toString());
 
 		assertNull(responseEntity.getBody());
 	}
@@ -131,25 +131,25 @@ public class RequestEntityTests {
 		URI url = new URI("https://example.com");
 
 		RequestEntity<?> entity = RequestEntity.get(url).build();
-		assertThat((Object) entity.getMethod()).isEqualTo(HttpMethod.GET);
+		assertThat(entity.getMethod()).isEqualTo(HttpMethod.GET);
 
 		entity = RequestEntity.post(url).build();
-		assertThat((Object) entity.getMethod()).isEqualTo(HttpMethod.POST);
+		assertThat(entity.getMethod()).isEqualTo(HttpMethod.POST);
 
 		entity = RequestEntity.head(url).build();
-		assertThat((Object) entity.getMethod()).isEqualTo(HttpMethod.HEAD);
+		assertThat(entity.getMethod()).isEqualTo(HttpMethod.HEAD);
 
 		entity = RequestEntity.options(url).build();
-		assertThat((Object) entity.getMethod()).isEqualTo(HttpMethod.OPTIONS);
+		assertThat(entity.getMethod()).isEqualTo(HttpMethod.OPTIONS);
 
 		entity = RequestEntity.put(url).build();
-		assertThat((Object) entity.getMethod()).isEqualTo(HttpMethod.PUT);
+		assertThat(entity.getMethod()).isEqualTo(HttpMethod.PUT);
 
 		entity = RequestEntity.patch(url).build();
-		assertThat((Object) entity.getMethod()).isEqualTo(HttpMethod.PATCH);
+		assertThat(entity.getMethod()).isEqualTo(HttpMethod.PATCH);
 
 		entity = RequestEntity.delete(url).build();
-		assertThat((Object) entity.getMethod()).isEqualTo(HttpMethod.DELETE);
+		assertThat(entity.getMethod()).isEqualTo(HttpMethod.DELETE);
 
 	}
 
@@ -160,7 +160,7 @@ public class RequestEntityTests {
 		ParameterizedTypeReference<?> typeReference = new ParameterizedTypeReference<List<String>>() {};
 
 		RequestEntity<?> entity = RequestEntity.post(url).body(body, typeReference.getType());
-		assertThat((Object) entity.getType()).isEqualTo(typeReference.getType());
+		assertThat(entity.getType()).isEqualTo(typeReference.getType());
 	}
 
 }

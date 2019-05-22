@@ -256,7 +256,7 @@ public class AspectJAdviceParameterNameDiscovererTests {
 
 		for (int i = 0; i < discoveredNames.length; i++) {
 			assertNotNull("Parameter names must never be null", discoveredNames[i]);
-			assertThat((Object) discoveredNames[i]).as("Expecting parameter " + i + " to be named '" +
+			assertThat(discoveredNames[i]).as("Expecting parameter " + i + " to be named '" +
 						parameterNames[i] + "' but was '" + discoveredNames[i] + "'").isEqualTo(parameterNames[i]);
 		}
 	}

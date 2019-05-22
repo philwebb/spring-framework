@@ -118,7 +118,7 @@ public class BeanFactoryTransactionTests {
 		PlatformTransactionManagerFacade.delegate = ptm;
 
 		ini.setName(newName);
-		assertThat((Object) ini.getName()).isEqualTo(newName);
+		assertThat(ini.getName()).isEqualTo(newName);
 		assertEquals(2, ptm.commits);
 	}
 

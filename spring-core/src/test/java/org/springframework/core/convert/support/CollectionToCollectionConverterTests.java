@@ -106,7 +106,7 @@ public class CollectionToCollectionConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		LinkedList<Integer> result = (LinkedList<Integer>) conversionService.convert(list, sourceType, targetType);
-		assertThat((Object) result.getClass()).isEqualTo(LinkedList.class);
+		assertThat(result.getClass()).isEqualTo(LinkedList.class);
 		assertThat(result.isEmpty()).isTrue();
 	}
 
@@ -145,10 +145,10 @@ public class CollectionToCollectionConverterTests {
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("objectToCollection"));
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		List<List<List<Integer>>> result = (List<List<List<Integer>>>) conversionService.convert(list, sourceType, targetType);
-		assertThat((Object) result.get(0).get(0).get(0)).isEqualTo((Integer) 9);
-		assertThat((Object) result.get(0).get(1).get(0)).isEqualTo((Integer) 12);
-		assertThat((Object) result.get(1).get(0).get(0)).isEqualTo((Integer) 37);
-		assertThat((Object) result.get(1).get(1).get(0)).isEqualTo((Integer) 23);
+		assertThat(result.get(0).get(0).get(0)).isEqualTo((Integer) 9);
+		assertThat(result.get(0).get(1).get(0)).isEqualTo((Integer) 12);
+		assertThat(result.get(1).get(0).get(0)).isEqualTo((Integer) 37);
+		assertThat(result.get(1).get(1).get(0)).isEqualTo((Integer) 23);
 	}
 
 	@Test
@@ -165,10 +165,10 @@ public class CollectionToCollectionConverterTests {
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("objectToCollection"));
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		List<List<List<Integer>>> result = (List<List<List<Integer>>>) conversionService.convert(list, sourceType, targetType);
-		assertThat((Object) result.get(0).get(0).get(0)).isEqualTo((Integer) 9);
-		assertThat((Object) result.get(0).get(0).get(1)).isEqualTo((Integer) 12);
-		assertThat((Object) result.get(1).get(0).get(0)).isEqualTo((Integer) 37);
-		assertThat((Object) result.get(1).get(0).get(1)).isEqualTo((Integer) 23);
+		assertThat(result.get(0).get(0).get(0)).isEqualTo((Integer) 9);
+		assertThat(result.get(0).get(0).get(1)).isEqualTo((Integer) 12);
+		assertThat(result.get(1).get(0).get(0)).isEqualTo((Integer) 37);
+		assertThat(result.get(1).get(0).get(1)).isEqualTo((Integer) 23);
 	}
 
 	@Test

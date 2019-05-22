@@ -49,6 +49,6 @@ public class ExplicitLocationsBaseTests {
 	@Test
 	public void verifyEmployeeSetFromBaseContextConfig() {
 		assertNotNull("The employee should have been autowired.", this.employee);
-		assertThat((Object) this.employee.getName()).isEqualTo("John Smith");
+		assertThat(this.employee.getName()).isEqualTo("John Smith");
 	}
 }

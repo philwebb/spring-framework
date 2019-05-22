@@ -39,9 +39,9 @@ public class StringArrayPropertyEditorTests {
 		assertThat(condition).isTrue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
-			assertThat((Object) array[i]).isEqualTo(("" + i));
+			assertThat(array[i]).isEqualTo(("" + i));
 		}
-		assertThat((Object) editor.getAsText()).isEqualTo("0,1,2");
+		assertThat(editor.getAsText()).isEqualTo("0,1,2");
 	}
 
 	@Test
@@ -51,9 +51,9 @@ public class StringArrayPropertyEditorTests {
 		Object value = editor.getValue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
-			assertThat((Object) array[i]).isEqualTo(("" + i));
+			assertThat(array[i]).isEqualTo(("" + i));
 		}
-		assertThat((Object) editor.getAsText()).isEqualTo("0,1,2");
+		assertThat(editor.getAsText()).isEqualTo("0,1,2");
 	}
 
 	@Test
@@ -64,9 +64,9 @@ public class StringArrayPropertyEditorTests {
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
 			assertEquals(3, array[i].length());
-			assertThat((Object) array[i].trim()).isEqualTo(("" + i));
+			assertThat(array[i].trim()).isEqualTo(("" + i));
 		}
-		assertThat((Object) editor.getAsText()).isEqualTo("  0,1  , 2 ");
+		assertThat(editor.getAsText()).isEqualTo("  0,1  , 2 ");
 	}
 
 	@Test
@@ -78,9 +78,9 @@ public class StringArrayPropertyEditorTests {
 		assertThat(condition).isTrue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
-			assertThat((Object) array[i]).isEqualTo(("" + i));
+			assertThat(array[i]).isEqualTo(("" + i));
 		}
-		assertThat((Object) editor.getAsText()).isEqualTo("0:1:2");
+		assertThat(editor.getAsText()).isEqualTo("0:1:2");
 	}
 
 	@Test
@@ -92,9 +92,9 @@ public class StringArrayPropertyEditorTests {
 		assertThat(condition).isTrue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
-			assertThat((Object) array[i]).isEqualTo(("" + i));
+			assertThat(array[i]).isEqualTo(("" + i));
 		}
-		assertThat((Object) editor.getAsText()).isEqualTo("0,1,2");
+		assertThat(editor.getAsText()).isEqualTo("0,1,2");
 	}
 
 	@Test

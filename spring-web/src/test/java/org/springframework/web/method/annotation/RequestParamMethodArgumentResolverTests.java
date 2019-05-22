@@ -218,8 +218,8 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		MultipartFile[] parts = (MultipartFile[]) result;
 		assertEquals(2, parts.length);
-		assertThat((Object) expected1).isEqualTo(parts[0]);
-		assertThat((Object) expected2).isEqualTo(parts[1]);
+		assertThat(expected1).isEqualTo(parts[0]);
+		assertThat(expected2).isEqualTo(parts[1]);
 	}
 
 	@Test
@@ -278,8 +278,8 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		Part[] parts = (Part[]) result;
 		assertEquals(2, parts.length);
-		assertThat((Object) expected1).isEqualTo(parts[0]);
-		assertThat((Object) expected2).isEqualTo(parts[1]);
+		assertThat(expected1).isEqualTo(parts[0]);
+		assertThat(expected2).isEqualTo(parts[1]);
 	}
 
 	@Test
@@ -472,7 +472,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		request.addParameter("name", "123");
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertThat((Object) result.getClass()).isEqualTo(Optional.class);
+		assertThat(result.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional) result).get()).isEqualTo(123);
 	}
 
@@ -488,7 +488,7 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(result).isEqualTo(Optional.empty());
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertThat((Object) result.getClass()).isEqualTo(Optional.class);
+		assertThat(result.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional) result).isPresent()).isFalse();
 	}
 
@@ -505,7 +505,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		request.addParameter("name", "123", "456");
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertThat((Object) result.getClass()).isEqualTo(Optional.class);
+		assertThat(result.getClass()).isEqualTo(Optional.class);
 		assertArrayEquals(new Integer[] {123, 456}, (Integer[]) ((Optional) result).get());
 	}
 
@@ -521,7 +521,7 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(result).isEqualTo(Optional.empty());
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertThat((Object) result.getClass()).isEqualTo(Optional.class);
+		assertThat(result.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional) result).isPresent()).isFalse();
 	}
 
@@ -538,7 +538,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		request.addParameter("name", "123", "456");
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertThat((Object) result.getClass()).isEqualTo(Optional.class);
+		assertThat(result.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional) result).get()).isEqualTo(Arrays.asList("123", "456"));
 	}
 
@@ -554,7 +554,7 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(result).isEqualTo(Optional.empty());
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
-		assertThat((Object) result.getClass()).isEqualTo(Optional.class);
+		assertThat(result.getClass()).isEqualTo(Optional.class);
 		assertThat(((Optional) result).isPresent()).isFalse();
 	}
 

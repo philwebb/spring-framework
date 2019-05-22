@@ -58,9 +58,9 @@ public class StreamingSimpleClientHttpRequestFactoryTests extends AbstractHttpRe
 		try {
 			ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/echo"), HttpMethod.GET);
 			response = request.execute();
-			assertThat((Object) response.getStatusCode()).as("Invalid response status").isEqualTo(HttpStatus.OK);
+			assertThat(response.getStatusCode()).as("Invalid response status").isEqualTo(HttpStatus.OK);
 			HttpHeaders responseHeaders = response.getHeaders();
-			assertThat((Object) responseHeaders.getFirst(headerName)).as("Custom header invalid").isEqualTo(headerValue);
+			assertThat(responseHeaders.getFirst(headerName)).as("Custom header invalid").isEqualTo(headerValue);
 		}
 		finally {
 			if (response != null) {
@@ -87,7 +87,7 @@ public class StreamingSimpleClientHttpRequestFactoryTests extends AbstractHttpRe
 				body.write(buffer);
 			}
 			response = request.execute();
-			assertThat((Object) response.getStatusCode()).as("Invalid response status").isEqualTo(HttpStatus.OK);
+			assertThat(response.getStatusCode()).as("Invalid response status").isEqualTo(HttpStatus.OK);
 		}
 		finally {
 			if (response != null) {

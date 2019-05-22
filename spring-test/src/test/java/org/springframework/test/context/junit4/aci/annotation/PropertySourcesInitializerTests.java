@@ -68,7 +68,7 @@ public class PropertySourcesInitializerTests {
 
 	@Test
 	public void customPropertySourceConfiguredViaContextInitializer() {
-		assertThat((Object) enigma).isEqualTo("foo");
+		assertThat(enigma).isEqualTo("foo");
 	}
 
 

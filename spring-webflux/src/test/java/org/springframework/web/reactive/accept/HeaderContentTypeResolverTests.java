@@ -46,10 +46,10 @@ public class HeaderContentTypeResolverTests {
 				MockServerWebExchange.from(MockServerHttpRequest.get("/").header("accept", header)));
 
 		assertEquals(4, mediaTypes.size());
-		assertThat((Object) mediaTypes.get(0).toString()).isEqualTo("text/html");
-		assertThat((Object) mediaTypes.get(1).toString()).isEqualTo("text/x-c");
-		assertThat((Object) mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");
-		assertThat((Object) mediaTypes.get(3).toString()).isEqualTo("text/plain;q=0.5");
+		assertThat(mediaTypes.get(0).toString()).isEqualTo("text/html");
+		assertThat(mediaTypes.get(1).toString()).isEqualTo("text/x-c");
+		assertThat(mediaTypes.get(2).toString()).isEqualTo("text/x-dvi;q=0.8");
+		assertThat(mediaTypes.get(3).toString()).isEqualTo("text/plain;q=0.5");
 	}
 
 	@Test

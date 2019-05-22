@@ -102,7 +102,7 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 		assertNotNull(bean);
 		MultiplePrototypesInSpringContextTestBean instance = bean.getBeanInstance();
 		assertNotNull(instance);
-		assertThat((Object) instance.getName()).isEqualTo("multiple-1");
+		assertThat(instance.getName()).isEqualTo("multiple-1");
 		assertSame(applicationContext, instance.getApplicationContext());
 	}
 
@@ -119,7 +119,7 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 		assertNotNull(bean);
 		SinglePrototypeInSpringContextTestBean instance = bean.getBeanInstance();
 		assertNotNull(instance);
-		assertThat((Object) instance.getName()).isEqualTo("single");
+		assertThat(instance.getName()).isEqualTo("single");
 		assertSame(applicationContext, instance.getApplicationContext());
 
 		ContainedBean<SinglePrototypeInSpringContextTestBean> bean2 = beanContainer.getBean(
@@ -147,7 +147,7 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 		assertNotNull(bean);
 		MultiplePrototypesInSpringContextTestBean instance = bean.getBeanInstance();
 		assertNotNull(instance);
-		assertThat((Object) instance.getName()).isEqualTo("multiple-1");
+		assertThat(instance.getName()).isEqualTo("multiple-1");
 		assertSame(applicationContext, instance.getApplicationContext());
 
 		ContainedBean<MultiplePrototypesInSpringContextTestBean> bean2 = beanContainer.getBean(
@@ -179,7 +179,7 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 		assertNotNull(bean);
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();
 		assertNotNull(instance);
-		assertThat((Object) instance.getSource()).isEqualTo(BeanSource.FALLBACK);
+		assertThat(instance.getSource()).isEqualTo(BeanSource.FALLBACK);
 		assertNull(instance.getApplicationContext());
 	}
 
@@ -200,8 +200,8 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 		assertNotNull(bean);
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();
 		assertNotNull(instance);
-		assertThat((Object) instance.getSource()).isEqualTo(BeanSource.FALLBACK);
-		assertThat((Object) instance.getName()).isEqualTo("some name");
+		assertThat(instance.getSource()).isEqualTo(BeanSource.FALLBACK);
+		assertThat(instance.getName()).isEqualTo("some name");
 		assertNull(instance.getApplicationContext());
 	}
 
@@ -222,7 +222,7 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 		assertNotNull(bean);
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();
 		assertNotNull(instance);
-		assertThat((Object) instance.getSource()).isEqualTo(BeanSource.FALLBACK);
+		assertThat(instance.getSource()).isEqualTo(BeanSource.FALLBACK);
 		assertNull(instance.getApplicationContext());
 	}
 
@@ -243,8 +243,8 @@ public class HibernateNativeEntityManagerFactorySpringBeanContainerIntegrationTe
 		assertNotNull(bean);
 		NoDefinitionInSpringContextTestBean instance = bean.getBeanInstance();
 		assertNotNull(instance);
-		assertThat((Object) instance.getSource()).isEqualTo(BeanSource.FALLBACK);
-		assertThat((Object) instance.getName()).isEqualTo("some name");
+		assertThat(instance.getSource()).isEqualTo(BeanSource.FALLBACK);
+		assertThat(instance.getName()).isEqualTo("some name");
 		assertNull(instance.getApplicationContext());
 	}
 

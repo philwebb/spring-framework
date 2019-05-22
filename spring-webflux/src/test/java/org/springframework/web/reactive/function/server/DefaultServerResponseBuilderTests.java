@@ -336,9 +336,9 @@ public class DefaultServerResponseBuilderTests {
 		result.flatMap(res -> res.writeTo(exchange, EMPTY_CONTEXT)).block();
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		assertThat((Object) response.getHeaders().getFirst("MyKey")).isEqualTo("MyValue");
-		assertThat((Object) response.getCookies().getFirst("name").getValue()).isEqualTo("value");
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		assertThat(response.getHeaders().getFirst("MyKey")).isEqualTo("MyValue");
+		assertThat(response.getCookies().getFirst("name").getValue()).isEqualTo("value");
 		StepVerifier.create(response.getBody()).expectComplete().verify();
 	}
 
@@ -380,7 +380,7 @@ public class DefaultServerResponseBuilderTests {
 		responseMono.writeTo(exchange, EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();
@@ -405,7 +405,7 @@ public class DefaultServerResponseBuilderTests {
 		responseMono.writeTo(exchange, EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();

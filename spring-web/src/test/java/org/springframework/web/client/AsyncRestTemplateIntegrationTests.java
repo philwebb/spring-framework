@@ -68,20 +68,20 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void getEntity() throws Exception {
 		Future<ResponseEntity<String>> future = template.getForEntity(baseUrl + "/{method}", String.class, "get");
 		ResponseEntity<String> entity = future.get();
-		assertThat((Object) entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
+		assertThat(entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
 		assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
-		assertThat((Object) entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
-		assertThat((Object) entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
+		assertThat(entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
 	public void getEntityFromCompletable() throws Exception {
 		ListenableFuture<ResponseEntity<String>> future = template.getForEntity(baseUrl + "/{method}", String.class, "get");
 		ResponseEntity<String> entity = future.completable().get();
-		assertThat((Object) entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
+		assertThat(entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
 		assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
-		assertThat((Object) entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
-		assertThat((Object) entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+		assertThat(entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
+		assertThat(entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 	}
 
 	@Test
@@ -98,10 +98,10 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		futureEntity.addCallback(new ListenableFutureCallback<ResponseEntity<String>>() {
 			@Override
 			public void onSuccess(ResponseEntity<String> entity) {
-				assertThat((Object) entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
+				assertThat(entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
 				assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
-				assertThat((Object) entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
-				assertThat((Object) entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+				assertThat(entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
+				assertThat(entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -116,10 +116,10 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<ResponseEntity<String>> futureEntity =
 				template.getForEntity(baseUrl + "/{method}", String.class, "get");
 		futureEntity.addCallback(entity -> {
-			assertThat((Object) entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
+			assertThat(entity.getBody()).as("Invalid content").isEqualTo(helloWorld);
 			assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
-			assertThat((Object) entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
-			assertThat((Object) entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+			assertThat(entity.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(textContentType);
+			assertThat(entity.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 		}, ex -> fail(ex.getMessage()));
 		waitTillDone(futureEntity);
 	}
@@ -142,7 +142,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void getNoContent() throws Exception {
 		Future<ResponseEntity<String>> responseFuture = template.getForEntity(baseUrl + "/status/nocontent", String.class);
 		ResponseEntity<String> entity = responseFuture.get();
-		assertThat((Object) entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NO_CONTENT);
 		assertNull("Invalid content", entity.getBody());
 	}
 
@@ -150,7 +150,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void getNotModified() throws Exception {
 		Future<ResponseEntity<String>> responseFuture = template.getForEntity(baseUrl + "/status/notmodified", String.class);
 		ResponseEntity<String> entity = responseFuture.get();
-		assertThat((Object) entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NOT_MODIFIED);
 		assertNull("Invalid content", entity.getBody());
 	}
 
@@ -191,7 +191,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, entityHeaders);
 		Future<URI> locationFuture = template.postForLocation(baseUrl + "/{method}", entity, "post");
 		URI location = locationFuture.get();
-		assertThat((Object) location).as("Invalid location").isEqualTo(new URI(baseUrl + "/post/1"));
+		assertThat(location).as("Invalid location").isEqualTo(new URI(baseUrl + "/post/1"));
 	}
 
 	@Test
@@ -204,7 +204,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		locationFuture.addCallback(new ListenableFutureCallback<URI>() {
 			@Override
 			public void onSuccess(URI result) {
-				assertThat((Object) result).as("Invalid location").isEqualTo(expected);
+				assertThat(result).as("Invalid location").isEqualTo(expected);
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -221,7 +221,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, entityHeaders);
 		final URI expected = new URI(baseUrl + "/post/1");
 		ListenableFuture<URI> locationFuture = template.postForLocation(baseUrl + "/{method}", entity, "post");
-		locationFuture.addCallback(result -> assertThat((Object) result).as("Invalid location").isEqualTo(expected),
+		locationFuture.addCallback(result -> assertThat(result).as("Invalid location").isEqualTo(expected),
 				ex -> fail(ex.getMessage()));
 		waitTillDone(locationFuture);
 	}
@@ -232,7 +232,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		Future<ResponseEntity<String>> responseEntityFuture =
 				template.postForEntity(baseUrl + "/{method}", requestEntity, String.class, "post");
 		ResponseEntity<String> responseEntity = responseEntityFuture.get();
-		assertThat((Object) responseEntity.getBody()).as("Invalid content").isEqualTo(helloWorld);
+		assertThat(responseEntity.getBody()).as("Invalid content").isEqualTo(helloWorld);
 	}
 
 	@Test
@@ -243,7 +243,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		responseEntityFuture.addCallback(new ListenableFutureCallback<ResponseEntity<String>>() {
 			@Override
 			public void onSuccess(ResponseEntity<String> result) {
-				assertThat((Object) result.getBody()).as("Invalid content").isEqualTo(helloWorld);
+				assertThat(result.getBody()).as("Invalid content").isEqualTo(helloWorld);
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -259,7 +259,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<ResponseEntity<String>> responseEntityFuture =
 				template.postForEntity(baseUrl + "/{method}", requestEntity, String.class, "post");
 		responseEntityFuture.addCallback(
-				result -> assertThat((Object) result.getBody()).as("Invalid content").isEqualTo(helloWorld),
+				result -> assertThat(result.getBody()).as("Invalid content").isEqualTo(helloWorld),
 				ex -> fail(ex.getMessage()));
 		waitTillDone(responseEntityFuture);
 	}
@@ -359,7 +359,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			.withCauseInstanceOf(HttpClientErrorException.class)
 			.satisfies(ex -> {
 				HttpClientErrorException cause = (HttpClientErrorException) ex.getCause();
-				assertThat((Object) cause.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+				assertThat(cause.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 				assertNotNull(cause.getStatusText());
 				assertNotNull(cause.getResponseBodyAsString());
 			});
@@ -378,7 +378,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 				boolean condition = t instanceof HttpClientErrorException;
 				assertThat(condition).isTrue();
 				HttpClientErrorException ex = (HttpClientErrorException) t;
-				assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 				assertNotNull(ex.getStatusText());
 				assertNotNull(ex.getResponseBodyAsString());
 			}
@@ -393,7 +393,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			boolean condition = ex instanceof HttpClientErrorException;
 			assertThat(condition).isTrue();
 			HttpClientErrorException hcex = (HttpClientErrorException) ex;
-			assertThat((Object) hcex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+			assertThat(hcex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 			assertNotNull(hcex.getStatusText());
 				assertNotNull(hcex.getResponseBodyAsString());
 		});
@@ -412,7 +412,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			assertThat(condition).isTrue();
 			HttpServerErrorException cause = (HttpServerErrorException)ex.getCause();
 
-			assertThat((Object) cause.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+			assertThat(cause.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 			assertNotNull(cause.getStatusText());
 			assertNotNull(cause.getResponseBodyAsString());
 		}
@@ -431,7 +431,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 				boolean condition = ex instanceof HttpServerErrorException;
 				assertThat(condition).isTrue();
 				HttpServerErrorException hsex = (HttpServerErrorException) ex;
-				assertThat((Object) hsex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+				assertThat(hsex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 				assertNotNull(hsex.getStatusText());
 				assertNotNull(hsex.getResponseBodyAsString());
 			}
@@ -446,7 +446,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			boolean condition = ex instanceof HttpServerErrorException;
 			assertThat(condition).isTrue();
 			HttpServerErrorException hsex = (HttpServerErrorException) ex;
-			assertThat((Object) hsex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+			assertThat(hsex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 			assertNotNull(hsex.getStatusText());
 				assertNotNull(hsex.getResponseBodyAsString());
 		});
@@ -457,7 +457,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void optionsForAllow() throws Exception {
 		Future<Set<HttpMethod>> allowedFuture = template.optionsForAllow(new URI(baseUrl + "/get"));
 		Set<HttpMethod> allowed = allowedFuture.get();
-		assertThat((Object) allowed).as("Invalid response").isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD, HttpMethod.TRACE));
+		assertThat(allowed).as("Invalid response").isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD, HttpMethod.TRACE));
 	}
 
 	@Test
@@ -466,7 +466,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		allowedFuture.addCallback(new ListenableFutureCallback<Set<HttpMethod>>() {
 			@Override
 			public void onSuccess(Set<HttpMethod> result) {
-				assertThat((Object) result).as("Invalid response").isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS,
+				assertThat(result).as("Invalid response").isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS,
 								HttpMethod.HEAD, HttpMethod.TRACE));
 			}
 			@Override
@@ -480,7 +480,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void optionsForAllowCallbackWithLambdas() throws Exception{
 		ListenableFuture<Set<HttpMethod>> allowedFuture = template.optionsForAllow(new URI(baseUrl + "/get"));
-		allowedFuture.addCallback(result -> assertThat((Object) result).as("Invalid response").isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD,HttpMethod.TRACE)),
+		allowedFuture.addCallback(result -> assertThat(result).as("Invalid response").isEqualTo(EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD,HttpMethod.TRACE)),
 				ex -> fail(ex.getMessage()));
 		waitTillDone(allowedFuture);
 	}
@@ -494,7 +494,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		Future<ResponseEntity<String>> responseFuture =
 				template.exchange(baseUrl + "/{method}", HttpMethod.GET, requestEntity, String.class, "get");
 		ResponseEntity<String> response = responseFuture.get();
-		assertThat((Object) response.getBody()).as("Invalid content").isEqualTo(helloWorld);
+		assertThat(response.getBody()).as("Invalid content").isEqualTo(helloWorld);
 	}
 
 	@Test
@@ -508,7 +508,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		responseFuture.addCallback(new ListenableFutureCallback<ResponseEntity<String>>() {
 			@Override
 			public void onSuccess(ResponseEntity<String> result) {
-				assertThat((Object) result.getBody()).as("Invalid content").isEqualTo(helloWorld);
+				assertThat(result.getBody()).as("Invalid content").isEqualTo(helloWorld);
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -526,7 +526,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		HttpEntity<?> requestEntity = new HttpEntity(requestHeaders);
 		ListenableFuture<ResponseEntity<String>> responseFuture =
 				template.exchange(baseUrl + "/{method}", HttpMethod.GET, requestEntity, String.class, "get");
-		responseFuture.addCallback(result -> assertThat((Object) result.getBody()).as("Invalid content").isEqualTo(helloWorld), ex -> fail(ex.getMessage()));
+		responseFuture.addCallback(result -> assertThat(result.getBody()).as("Invalid content").isEqualTo(helloWorld), ex -> fail(ex.getMessage()));
 		waitTillDone(responseFuture);
 	}
 
@@ -539,7 +539,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		Future<ResponseEntity<Void>> resultFuture =
 				template.exchange(baseUrl + "/{method}", HttpMethod.POST, requestEntity, Void.class, "post");
 		ResponseEntity<Void> result = resultFuture.get();
-		assertThat((Object) result.getHeaders().getLocation()).as("Invalid location").isEqualTo(new URI(baseUrl + "/post/1"));
+		assertThat(result.getHeaders().getLocation()).as("Invalid location").isEqualTo(new URI(baseUrl + "/post/1"));
 		assertThat(result.hasBody()).isFalse();
 	}
 
@@ -555,7 +555,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		resultFuture.addCallback(new ListenableFutureCallback<ResponseEntity<Void>>() {
 			@Override
 			public void onSuccess(ResponseEntity<Void> result) {
-				assertThat((Object) result.getHeaders().getLocation()).as("Invalid location").isEqualTo(expected);
+				assertThat(result.getHeaders().getLocation()).as("Invalid location").isEqualTo(expected);
 				assertThat(result.hasBody()).isFalse();
 			}
 			@Override
@@ -576,7 +576,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 				template.exchange(baseUrl + "/{method}", HttpMethod.POST, requestEntity, Void.class, "post");
 		final URI expected =new URI(baseUrl + "/post/1");
 		resultFuture.addCallback(result -> {
-			assertThat((Object) result.getHeaders().getLocation()).as("Invalid location").isEqualTo(expected);
+			assertThat(result.getHeaders().getLocation()).as("Invalid location").isEqualTo(expected);
 			assertThat(result.hasBody()).isFalse();
 		}, ex -> fail(ex.getMessage()));
 		waitTillDone(resultFuture);
@@ -604,9 +604,9 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 
 		interceptor.latch.await(5, TimeUnit.SECONDS);
 		assertNotNull(interceptor.response);
-		assertThat((Object) interceptor.response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(interceptor.response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertNull(interceptor.exception);
-		assertThat((Object) future.get().getBody()).isEqualTo(helloWorld);
+		assertThat(future.get().getBody()).isEqualTo(helloWorld);
 	}
 
 	@Test
@@ -617,7 +617,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 
 		interceptor.latch.await(5, TimeUnit.SECONDS);
 		assertNotNull(interceptor.response);
-		assertThat((Object) interceptor.response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(interceptor.response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertNull(interceptor.exception);
 	}
 

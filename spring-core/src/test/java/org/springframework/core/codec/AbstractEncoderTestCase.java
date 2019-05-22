@@ -257,7 +257,7 @@ public abstract class AbstractEncoderTestCase<E extends Encoder<?>>
 			dataBuffer.read(resultBytes);
 			release(dataBuffer);
 			String actual = new String(resultBytes, UTF_8);
-			assertThat((Object) actual).isEqualTo(expected);
+			assertThat(actual).isEqualTo(expected);
 		};
 
 	}

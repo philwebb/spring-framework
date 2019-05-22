@@ -41,7 +41,7 @@ public class ContextConfigurationInterfaceTests implements ContextConfigurationT
 	@Test
 	public void profileFromTestInterface() {
 		assertNotNull(employee);
-		assertThat((Object) employee.getName()).isEqualTo("Dilbert");
+		assertThat(employee.getName()).isEqualTo("Dilbert");
 	}
 
 }

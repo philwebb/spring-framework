@@ -58,21 +58,21 @@ public class BeanNameAutoProxyCreatorTests {
 	public void testNoProxy() {
 		TestBean tb = (TestBean) beanFactory.getBean("noproxy");
 		assertThat(AopUtils.isAopProxy(tb)).isFalse();
-		assertThat((Object) tb.getName()).isEqualTo("noproxy");
+		assertThat(tb.getName()).isEqualTo("noproxy");
 	}
 
 	@Test
 	public void testJdkProxyWithExactNameMatch() {
 		ITestBean tb = (ITestBean) beanFactory.getBean("onlyJdk");
 		jdkAssertions(tb, 1);
-		assertThat((Object) tb.getName()).isEqualTo("onlyJdk");
+		assertThat(tb.getName()).isEqualTo("onlyJdk");
 	}
 
 	@Test
 	public void testJdkProxyWithDoubleProxying() {
 		ITestBean tb = (ITestBean) beanFactory.getBean("doubleJdk");
 		jdkAssertions(tb, 2);
-		assertThat((Object) tb.getName()).isEqualTo("doubleJdk");
+		assertThat(tb.getName()).isEqualTo("doubleJdk");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertThat(condition).as("Introduction was made").isTrue();
 		assertEquals(0, ((TimeStamped) tb).getTimeStamp());
 		assertEquals(3, nop.getCount());
-		assertThat((Object) tb.getName()).isEqualTo("introductionUsingJdk");
+		assertThat(tb.getName()).isEqualTo("introductionUsingJdk");
 
 		ITestBean tb2 = (ITestBean) beanFactory.getBean("second-introductionUsingJdk");
 
@@ -148,14 +148,14 @@ public class BeanNameAutoProxyCreatorTests {
 	public void testJdkProxyWithWildcardMatch() {
 		ITestBean tb = (ITestBean) beanFactory.getBean("jdk1");
 		jdkAssertions(tb, 1);
-		assertThat((Object) tb.getName()).isEqualTo("jdk1");
+		assertThat(tb.getName()).isEqualTo("jdk1");
 	}
 
 	@Test
 	public void testCglibProxyWithWildcardMatch() {
 		TestBean tb = (TestBean) beanFactory.getBean("cglib1");
 		cglibAssertions(tb);
-		assertThat((Object) tb.getName()).isEqualTo("cglib1");
+		assertThat(tb.getName()).isEqualTo("cglib1");
 	}
 
 	@Test

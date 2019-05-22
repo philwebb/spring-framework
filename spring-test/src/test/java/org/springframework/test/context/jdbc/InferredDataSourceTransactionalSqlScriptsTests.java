@@ -81,7 +81,7 @@ public class InferredDataSourceTransactionalSqlScriptsTests {
 		Collections.sort(expected);
 		List<String> actual = jdbcTemplate.queryForList("select name from user", String.class);
 		Collections.sort(actual);
-		assertThat((Object) actual).as("Users in database;").isEqualTo(expected);
+		assertThat(actual).as("Users in database;").isEqualTo(expected);
 	}
 
 

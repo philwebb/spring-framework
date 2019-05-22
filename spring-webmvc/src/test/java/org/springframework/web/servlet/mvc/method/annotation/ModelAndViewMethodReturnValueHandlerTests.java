@@ -80,7 +80,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelAndView mav = new ModelAndView(new RedirectView(), "attrName", "attrValue");
 		handler.handleReturnValue(mav, returnParamModelAndView, mavContainer, webRequest);
 
-		assertThat((Object) mavContainer.getView().getClass()).isEqualTo(RedirectView.class);
+		assertThat(mavContainer.getView().getClass()).isEqualTo(RedirectView.class);
 		assertThat(mavContainer.getModel().get("attrName")).isEqualTo("attrValue");
 	}
 
@@ -99,7 +99,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelAndView mav = new ModelAndView(new RedirectView(), "attrName", "attrValue");
 		handler.handleReturnValue(mav, returnParamModelAndView, mavContainer, webRequest);
 
-		assertThat((Object) mavContainer.getView().getClass()).isEqualTo(RedirectView.class);
+		assertThat(mavContainer.getView().getClass()).isEqualTo(RedirectView.class);
 		assertThat(mavContainer.getModel().get("attrName")).isEqualTo("attrValue");
 		assertSame("RedirectAttributes should be used if controller redirects", redirectAttributes,
 				mavContainer.getModel());
@@ -114,7 +114,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		handler.handleReturnValue(mav, returnParamModelAndView, mavContainer, webRequest);
 
 		ModelMap model = mavContainer.getModel();
-		assertThat((Object) mavContainer.getViewName()).isEqualTo("redirect:viewName");
+		assertThat(mavContainer.getViewName()).isEqualTo("redirect:viewName");
 		assertThat(model.get("attrName")).isEqualTo("attrValue");
 		assertSame(redirectAttributes, model);
 	}
@@ -129,7 +129,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		handler.handleReturnValue(mav, returnParamModelAndView, mavContainer, webRequest);
 
 		ModelMap model = mavContainer.getModel();
-		assertThat((Object) mavContainer.getViewName()).isEqualTo("myRedirect:viewName");
+		assertThat(mavContainer.getViewName()).isEqualTo("myRedirect:viewName");
 		assertThat(model.get("attrName")).isEqualTo("attrValue");
 		assertSame(redirectAttributes, model);
 	}

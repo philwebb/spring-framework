@@ -53,19 +53,19 @@ public class ViewResolutionIntegrationTests {
 	@Test
 	public void freemarker() throws Exception {
 		MockHttpServletResponse response = runTest(FreeMarkerWebConfig.class);
-		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
+		assertThat(response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
 	}
 
 	@Test
 	public void tiles() throws Exception {
 		MockHttpServletResponse response = runTest(TilesWebConfig.class);
-		assertThat((Object) response.getForwardedUrl()).isEqualTo("/WEB-INF/index.jsp");
+		assertThat(response.getForwardedUrl()).isEqualTo("/WEB-INF/index.jsp");
 	}
 
 	@Test
 	public void groovyMarkup() throws Exception {
 		MockHttpServletResponse response = runTest(GroovyMarkupWebConfig.class);
-		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
+		assertThat(response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class ViewResolutionIntegrationTests {
 	@Test
 	public void existingViewResolver() throws Exception {
 		MockHttpServletResponse response = runTest(ExistingViewResolverConfig.class);
-		assertThat((Object) response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
+		assertThat(response.getContentAsString()).isEqualTo("<html><body>Hello World!</body></html>");
 	}
 
 

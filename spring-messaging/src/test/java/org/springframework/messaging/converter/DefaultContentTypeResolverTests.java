@@ -52,7 +52,7 @@ public class DefaultContentTypeResolverTests {
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
 		MessageHeaders headers = new MessageHeaders(map);
 
-		assertThat((Object) this.resolver.resolve(headers)).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
+		assertThat(this.resolver.resolve(headers)).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class DefaultContentTypeResolverTests {
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON_VALUE);
 		MessageHeaders headers = new MessageHeaders(map);
 
-		assertThat((Object) this.resolver.resolve(headers)).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
+		assertThat(this.resolver.resolve(headers)).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class DefaultContentTypeResolverTests {
 		this.resolver.setDefaultMimeType(MimeTypeUtils.APPLICATION_JSON);
 		MessageHeaders headers = new MessageHeaders(Collections.<String, Object>emptyMap());
 
-		assertThat((Object) this.resolver.resolve(headers)).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
+		assertThat(this.resolver.resolve(headers)).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
 	}
 
 }

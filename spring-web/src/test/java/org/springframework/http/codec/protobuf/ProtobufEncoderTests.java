@@ -75,7 +75,7 @@ public class ProtobufEncoderTests extends AbstractEncoderTestCase<ProtobufEncode
 		testEncodeAll(input, Msg.class, step -> step
 				.consumeNextWith(dataBuffer -> {
 					try {
-						assertThat((Object) Msg.parseFrom(dataBuffer.asInputStream())).isEqualTo(this.msg1);
+						assertThat(Msg.parseFrom(dataBuffer.asInputStream())).isEqualTo(this.msg1);
 
 					}
 					catch (IOException ex) {
@@ -101,7 +101,7 @@ public class ProtobufEncoderTests extends AbstractEncoderTestCase<ProtobufEncode
 	protected final Consumer<DataBuffer> expect(Msg msg) {
 		return dataBuffer -> {
 			try {
-				assertThat((Object) Msg.parseDelimitedFrom(dataBuffer.asInputStream())).isEqualTo(msg);
+				assertThat(Msg.parseDelimitedFrom(dataBuffer.asInputStream())).isEqualTo(msg);
 
 			}
 			catch (IOException ex) {

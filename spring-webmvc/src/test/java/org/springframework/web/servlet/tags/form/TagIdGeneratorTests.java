@@ -41,11 +41,11 @@ public class TagIdGeneratorTests {
 
 	private void assertNextId() {
 		PageContext pageContext = new MockPageContext();
-		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo1");
-		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo2");
-		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo3");
-		assertThat((Object) TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo4");
-		assertThat((Object) TagIdGenerator.nextId("bar", pageContext)).isEqualTo("bar1");
+		assertThat(TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo1");
+		assertThat(TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo2");
+		assertThat(TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo3");
+		assertThat(TagIdGenerator.nextId("foo", pageContext)).isEqualTo("foo4");
+		assertThat(TagIdGenerator.nextId("bar", pageContext)).isEqualTo("bar1");
 	}
 
 }

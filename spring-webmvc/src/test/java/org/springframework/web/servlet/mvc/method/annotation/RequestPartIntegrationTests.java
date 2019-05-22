@@ -179,7 +179,7 @@ public class RequestPartIntegrationTests {
 		this.restTemplate.setMessageConverters(Collections.singletonList(converter));
 
 		ResponseEntity<Void> responseEntity = restTemplate.exchange(requestEntity, Void.class);
-		assertThat((Object) responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	private void testCreate(String url, String basename) {
@@ -193,7 +193,7 @@ public class RequestPartIntegrationTests {
 		parts.add("iso-8859-1-data", new HttpEntity<>(new byte[] {(byte) 0xC4}, headers)); // SPR-13096
 
 		URI location = restTemplate.postForLocation(url, parts);
-		assertThat((Object) location.toString()).isEqualTo(("http://localhost:8080/test/" + basename + "/logo.jpg"));
+		assertThat(location.toString()).isEqualTo(("http://localhost:8080/test/" + basename + "/logo.jpg"));
 	}
 
 
@@ -250,7 +250,7 @@ public class RequestPartIntegrationTests {
 
 		@RequestMapping(value = "/spr13319", method = POST, consumes = "multipart/form-data")
 		public ResponseEntity<Void> create(@RequestPart("file") MultipartFile multipartFile) {
-			assertThat((Object) multipartFile.getOriginalFilename()).isEqualTo("élève.txt");
+			assertThat(multipartFile.getOriginalFilename()).isEqualTo("élève.txt");
 			return ResponseEntity.ok().build();
 		}
 	}

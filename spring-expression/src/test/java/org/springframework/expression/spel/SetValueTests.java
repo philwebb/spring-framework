@@ -205,13 +205,13 @@ public class SetValueTests extends AbstractExpressionTests {
 		// All keys should be strings
 		Set<?> ks = parse("mapOfStringToBoolean.keySet()").getValue(eContext, Set.class);
 		for (Object o: ks) {
-			assertThat((Object) o.getClass()).isEqualTo(String.class);
+			assertThat(o.getClass()).isEqualTo(String.class);
 		}
 
 		// All values should be booleans
 		Collection<?> vs = parse("mapOfStringToBoolean.values()").getValue(eContext, Collection.class);
 		for (Object o: vs) {
-			assertThat((Object) o.getClass()).isEqualTo(Boolean.class);
+			assertThat(o.getClass()).isEqualTo(Boolean.class);
 		}
 
 		// One final test check coercion on the key for a map lookup

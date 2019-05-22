@@ -181,13 +181,13 @@ public class DefaultListableBeanFactoryTests {
 		(new PropertiesBeanDefinitionReader(lbf)).registerBeanDefinitions(p);
 		boolean condition1 = !DummyFactory.wasPrototypeCreated();
 		assertThat(condition1).as("prototype not instantiated").isTrue();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
 		lbf.preInstantiateSingletons();
 
 		boolean condition = !DummyFactory.wasPrototypeCreated();
 		assertThat(condition).as("prototype not instantiated").isTrue();
 		lbf.getBean("x1");
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
 		assertThat(lbf.containsBean("x1")).isTrue();
 		assertThat(lbf.containsBean("&x1")).isTrue();
 		assertThat(DummyFactory.wasPrototypeCreated()).as("prototype was instantiated").isTrue();
@@ -224,8 +224,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClass(DummyFactory.class))).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClassWithGenerics(FactoryBean.class, Object.class))).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClassWithGenerics(FactoryBean.class, String.class))).isFalse();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(DummyFactory.class);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(DummyFactory.class);
 		boolean condition = !DummyFactory.wasPrototypeCreated();
 		assertThat(condition).as("prototype not instantiated").isTrue();
 	}
@@ -261,8 +261,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClass(DummyFactory.class))).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClassWithGenerics(FactoryBean.class, Object.class))).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClassWithGenerics(FactoryBean.class, String.class))).isFalse();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(DummyFactory.class);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(DummyFactory.class);
 		boolean condition = !DummyFactory.wasPrototypeCreated();
 		assertThat(condition).as("prototype not instantiated").isTrue();
 	}
@@ -297,8 +297,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClass(DummyFactory.class))).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClassWithGenerics(FactoryBean.class, Object.class))).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", ResolvableType.forClassWithGenerics(FactoryBean.class, String.class))).isFalse();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(DummyFactory.class);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(DummyFactory.class);
 		boolean condition = !DummyFactory.wasPrototypeCreated();
 		assertThat(condition).as("prototype not instantiated").isTrue();
 	}
@@ -318,7 +318,7 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(condition1).as("prototype not instantiated").isTrue();
 		String[] beanNames = lbf.getBeanNamesForType(TestBean.class, true, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("x1");
+		assertThat(beanNames[0]).isEqualTo("x1");
 		assertThat(lbf.containsSingleton("x1")).isTrue();
 		assertThat(lbf.containsBean("x1")).isTrue();
 		assertThat(lbf.containsBean("&x1")).isTrue();
@@ -333,8 +333,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isTypeMatch("&x1", DummyFactory.class)).isTrue();
 		assertThat(lbf.isTypeMatch("x1", Object.class)).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", Object.class)).isTrue();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(DummyFactory.class);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(DummyFactory.class);
 		boolean condition = !DummyFactory.wasPrototypeCreated();
 		assertThat(condition).as("prototype not instantiated").isTrue();
 
@@ -352,16 +352,16 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isTypeMatch("&x2", DummyFactory.class)).isTrue();
 		assertThat(lbf.isTypeMatch("x2", Object.class)).isTrue();
 		assertThat(lbf.isTypeMatch("&x2", Object.class)).isTrue();
-		assertThat((Object) lbf.getType("x2")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x2")).isEqualTo(DummyFactory.class);
+		assertThat(lbf.getType("x2")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x2")).isEqualTo(DummyFactory.class);
 		assertEquals(1, lbf.getAliases("x1").length);
-		assertThat((Object) lbf.getAliases("x1")[0]).isEqualTo("x2");
+		assertThat(lbf.getAliases("x1")[0]).isEqualTo("x2");
 		assertEquals(1, lbf.getAliases("&x1").length);
-		assertThat((Object) lbf.getAliases("&x1")[0]).isEqualTo("&x2");
+		assertThat(lbf.getAliases("&x1")[0]).isEqualTo("&x2");
 		assertEquals(1, lbf.getAliases("x2").length);
-		assertThat((Object) lbf.getAliases("x2")[0]).isEqualTo("x1");
+		assertThat(lbf.getAliases("x2")[0]).isEqualTo("x1");
 		assertEquals(1, lbf.getAliases("&x2").length);
-		assertThat((Object) lbf.getAliases("&x2")[0]).isEqualTo("&x1");
+		assertThat(lbf.getAliases("&x2")[0]).isEqualTo("&x1");
 	}
 
 	@Test
@@ -374,7 +374,7 @@ public class DefaultListableBeanFactoryTests {
 		TestBeanFactory.initialized = false;
 		String[] beanNames = lbf.getBeanNamesForType(TestBean.class, true, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("x1");
+		assertThat(beanNames[0]).isEqualTo("x1");
 		assertThat(lbf.containsSingleton("x1")).isFalse();
 		assertThat(lbf.containsBean("x1")).isTrue();
 		assertThat(lbf.containsBean("&x1")).isFalse();
@@ -384,8 +384,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isPrototype("&x1")).isFalse();
 		assertThat(lbf.isTypeMatch("x1", TestBean.class)).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", TestBean.class)).isFalse();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(null);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(null);
 		assertThat(TestBeanFactory.initialized).isFalse();
 	}
 
@@ -400,7 +400,7 @@ public class DefaultListableBeanFactoryTests {
 		TestBeanFactory.initialized = false;
 		String[] beanNames = lbf.getBeanNamesForType(TestBean.class, true, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("x1");
+		assertThat(beanNames[0]).isEqualTo("x1");
 		assertThat(lbf.containsSingleton("x1")).isFalse();
 		assertThat(lbf.containsBean("x1")).isTrue();
 		assertThat(lbf.containsBean("&x1")).isFalse();
@@ -410,8 +410,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isPrototype("&x1")).isFalse();
 		assertThat(lbf.isTypeMatch("x1", TestBean.class)).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", TestBean.class)).isFalse();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(null);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(null);
 		assertThat(TestBeanFactory.initialized).isFalse();
 	}
 
@@ -428,7 +428,7 @@ public class DefaultListableBeanFactoryTests {
 		TestBeanFactory.initialized = false;
 		String[] beanNames = lbf.getBeanNamesForType(TestBean.class, true, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("x1");
+		assertThat(beanNames[0]).isEqualTo("x1");
 		assertThat(lbf.containsSingleton("x1")).isFalse();
 		assertThat(lbf.containsBean("x1")).isTrue();
 		assertThat(lbf.containsBean("&x1")).isFalse();
@@ -438,8 +438,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isPrototype("&x1")).isFalse();
 		assertThat(lbf.isTypeMatch("x1", TestBean.class)).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", TestBean.class)).isFalse();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(null);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(null);
 		assertThat(TestBeanFactory.initialized).isFalse();
 	}
 
@@ -457,7 +457,7 @@ public class DefaultListableBeanFactoryTests {
 		TestBeanFactory.initialized = false;
 		String[] beanNames = lbf.getBeanNamesForType(TestBean.class, true, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("x1");
+		assertThat(beanNames[0]).isEqualTo("x1");
 		assertThat(lbf.containsSingleton("x1")).isFalse();
 		assertThat(lbf.containsBean("x1")).isTrue();
 		assertThat(lbf.containsBean("&x1")).isFalse();
@@ -471,8 +471,8 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isTypeMatch("&x1", TestBean.class)).isFalse();
 		assertThat(lbf.isTypeMatch("x1", Object.class)).isTrue();
 		assertThat(lbf.isTypeMatch("&x1", Object.class)).isFalse();
-		assertThat((Object) lbf.getType("x1")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x1")).isEqualTo(null);
+		assertThat(lbf.getType("x1")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x1")).isEqualTo(null);
 		assertThat(TestBeanFactory.initialized).isFalse();
 
 		lbf.registerAlias("x1", "x2");
@@ -488,16 +488,16 @@ public class DefaultListableBeanFactoryTests {
 		assertThat(lbf.isTypeMatch("&x2", TestBean.class)).isFalse();
 		assertThat(lbf.isTypeMatch("x2", Object.class)).isTrue();
 		assertThat(lbf.isTypeMatch("&x2", Object.class)).isFalse();
-		assertThat((Object) lbf.getType("x2")).isEqualTo(TestBean.class);
-		assertThat((Object) lbf.getType("&x2")).isEqualTo(null);
+		assertThat(lbf.getType("x2")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("&x2")).isEqualTo(null);
 		assertEquals(1, lbf.getAliases("x1").length);
-		assertThat((Object) lbf.getAliases("x1")[0]).isEqualTo("x2");
+		assertThat(lbf.getAliases("x1")[0]).isEqualTo("x2");
 		assertEquals(1, lbf.getAliases("&x1").length);
-		assertThat((Object) lbf.getAliases("&x1")[0]).isEqualTo("&x2");
+		assertThat(lbf.getAliases("&x1")[0]).isEqualTo("&x2");
 		assertEquals(1, lbf.getAliases("x2").length);
-		assertThat((Object) lbf.getAliases("x2")[0]).isEqualTo("x1");
+		assertThat(lbf.getAliases("x2")[0]).isEqualTo("x1");
 		assertEquals(1, lbf.getAliases("&x2").length);
-		assertThat((Object) lbf.getAliases("&x2")[0]).isEqualTo("&x1");
+		assertThat(lbf.getAliases("&x2")[0]).isEqualTo("&x1");
 	}
 
 	@Test
@@ -616,7 +616,7 @@ public class DefaultListableBeanFactoryTests {
 		bd.setPropertyValues(pvs);
 		lbf.registerBeanDefinition("self", bd);
 		TestBean self = (TestBean) lbf.getBean("self");
-		assertThat((Object) self.getSpouse()).isEqualTo(self);
+		assertThat(self.getSpouse()).isEqualTo(self);
 	}
 
 	@Test
@@ -703,7 +703,7 @@ public class DefaultListableBeanFactoryTests {
 		(new PropertiesBeanDefinitionReader(lbf)).registerBeanDefinitions(p);
 		TestBean kerry1 = (TestBean) lbf.getBean("kerry");
 		TestBean kerry2 = (TestBean) lbf.getBean("kerry");
-		assertThat((Object) kerry1.getName()).isEqualTo("kerry");
+		assertThat(kerry1.getName()).isEqualTo("kerry");
 		assertNotNull("Non null", kerry1);
 		assertThat(kerry1 == kerry2).as("Singletons equal").isTrue();
 
@@ -752,10 +752,10 @@ public class DefaultListableBeanFactoryTests {
 		factory.registerAlias("parent", "alias");
 
 		TestBean child = (TestBean) factory.getBean("child");
-		assertThat((Object) child.getName()).isEqualTo(EXPECTED_NAME);
+		assertThat(child.getName()).isEqualTo(EXPECTED_NAME);
 		assertEquals(EXPECTED_AGE, child.getAge());
 
-		assertThat((Object) factory.getMergedBeanDefinition("child")).as("Use cached merged bean definition").isEqualTo(factory.getMergedBeanDefinition("child"));
+		assertThat(factory.getMergedBeanDefinition("child")).as("Use cached merged bean definition").isEqualTo(factory.getMergedBeanDefinition("child"));
 	}
 
 	@Test
@@ -768,8 +768,8 @@ public class DefaultListableBeanFactoryTests {
 		factory.registerBeanDefinition("child", childDefinition);
 		factory.freezeConfiguration();
 
-		assertThat((Object) factory.getType("parent")).isEqualTo(TestBean.class);
-		assertThat((Object) factory.getType("child")).isEqualTo(DerivedTestBean.class);
+		assertThat(factory.getType("parent")).isEqualTo(TestBean.class);
+		assertThat(factory.getType("child")).isEqualTo(DerivedTestBean.class);
 	}
 
 	@Test
@@ -783,7 +783,7 @@ public class DefaultListableBeanFactoryTests {
 			(new PropertiesBeanDefinitionReader(lbf)).registerBeanDefinitions(p);
 		}
 		catch (BeanDefinitionStoreException ex) {
-			assertThat((Object) ex.getBeanName()).isEqualTo("kerry");
+			assertThat(ex.getBeanName()).isEqualTo("kerry");
 			// expected
 		}
 	}
@@ -988,7 +988,7 @@ public class DefaultListableBeanFactoryTests {
 		cav.addIndexedArgumentValue(1, "myAge");
 		lbf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class, cav, pvs));
 		TestBean testBean = (TestBean) lbf.getBean("testBean");
-		assertThat((Object) testBean.getName()).isEqualTo("myName");
+		assertThat(testBean.getName()).isEqualTo("myName");
 		assertEquals(5, testBean.getAge());
 		assertThat(testBean.getMyFloat().floatValue() == 1.1f).isTrue();
 	}
@@ -1006,7 +1006,7 @@ public class DefaultListableBeanFactoryTests {
 		lbf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class, cav, pvs));
 		lbf.registerSingleton("myFloat", "1,1");
 		TestBean testBean = (TestBean) lbf.getBean("testBean");
-		assertThat((Object) testBean.getName()).isEqualTo("myName");
+		assertThat(testBean.getName()).isEqualTo("myName");
 		assertEquals(5, testBean.getAge());
 		assertThat(testBean.getMyFloat().floatValue() == 1.1f).isTrue();
 	}
@@ -1024,10 +1024,10 @@ public class DefaultListableBeanFactoryTests {
 		lbf.registerSingleton("singletonObject", singletonObject);
 
 		assertThat(lbf.isSingleton("singletonObject")).isTrue();
-		assertThat((Object) lbf.getType("singletonObject")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("singletonObject")).isEqualTo(TestBean.class);
 		TestBean test = (TestBean) lbf.getBean("test");
 		assertThat(lbf.getBean("singletonObject")).isEqualTo(singletonObject);
-		assertThat((Object) test.getSpouse()).isEqualTo(singletonObject);
+		assertThat(test.getSpouse()).isEqualTo(singletonObject);
 
 		Map<?, ?> beansOfType = lbf.getBeansOfType(TestBean.class, false, true);
 		assertEquals(2, beansOfType.size());
@@ -1038,8 +1038,8 @@ public class DefaultListableBeanFactoryTests {
 		assertEquals(2, beansOfType.size());
 
 		Iterator<String> beanNames = lbf.getBeanNamesIterator();
-		assertThat((Object) beanNames.next()).isEqualTo("test");
-		assertThat((Object) beanNames.next()).isEqualTo("singletonObject");
+		assertThat(beanNames.next()).isEqualTo("test");
+		assertThat(beanNames.next()).isEqualTo("singletonObject");
 		assertThat(beanNames.hasNext()).isFalse();
 
 		assertThat(lbf.containsSingleton("test")).isTrue();
@@ -1063,10 +1063,10 @@ public class DefaultListableBeanFactoryTests {
 		lbf.preInstantiateSingletons();
 
 		assertThat(lbf.isSingleton("singletonObject")).isTrue();
-		assertThat((Object) lbf.getType("singletonObject")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("singletonObject")).isEqualTo(TestBean.class);
 		TestBean test = (TestBean) lbf.getBean("test");
 		assertThat(lbf.getBean("singletonObject")).isEqualTo(singletonObject);
-		assertThat((Object) test.getSpouse()).isEqualTo(singletonObject);
+		assertThat(test.getSpouse()).isEqualTo(singletonObject);
 
 		Map<?, ?>  beansOfType = lbf.getBeansOfType(TestBean.class, false, true);
 		assertEquals(2, beansOfType.size());
@@ -1076,8 +1076,8 @@ public class DefaultListableBeanFactoryTests {
 		beansOfType = lbf.getBeansOfType(null, false, true);
 
 		Iterator<String> beanNames = lbf.getBeanNamesIterator();
-		assertThat((Object) beanNames.next()).isEqualTo("test");
-		assertThat((Object) beanNames.next()).isEqualTo("singletonObject");
+		assertThat(beanNames.next()).isEqualTo("test");
+		assertThat(beanNames.next()).isEqualTo("singletonObject");
 		assertThat(beanNames.hasNext()).isFalse();
 		assertEquals(2, beansOfType.size());
 
@@ -1103,11 +1103,11 @@ public class DefaultListableBeanFactoryTests {
 
 		assertThat(lbf.containsBean("singletonObject")).isTrue();
 		assertThat(lbf.isSingleton("singletonObject")).isTrue();
-		assertThat((Object) lbf.getType("singletonObject")).isEqualTo(TestBean.class);
+		assertThat(lbf.getType("singletonObject")).isEqualTo(TestBean.class);
 		assertEquals(0, lbf.getAliases("singletonObject").length);
 		DependenciesBean test = (DependenciesBean) lbf.getBean("test");
 		assertThat(lbf.getBean("singletonObject")).isEqualTo(singletonObject);
-		assertThat((Object) test.getSpouse()).isEqualTo(singletonObject);
+		assertThat(test.getSpouse()).isEqualTo(singletonObject);
 	}
 
 	@Test
@@ -1145,8 +1145,8 @@ public class DefaultListableBeanFactoryTests {
 		bf.registerBeanDefinition("arrayBean", rbd);
 		ArrayBean ab = (ArrayBean) bf.getBean("arrayBean");
 
-		assertThat((Object) ab.getResourceArray()[0]).isEqualTo(new UrlResource("http://localhost:8080"));
-		assertThat((Object) ab.getResourceArray()[1]).isEqualTo(new UrlResource("http://localhost:9090"));
+		assertThat(ab.getResourceArray()[0]).isEqualTo(new UrlResource("http://localhost:8080"));
+		assertThat(ab.getResourceArray()[1]).isEqualTo(new UrlResource("http://localhost:9090"));
 	}
 
 	@Test
@@ -1172,8 +1172,8 @@ public class DefaultListableBeanFactoryTests {
 		bf.registerBeanDefinition("arrayBean", rbd);
 		ArrayBean ab = (ArrayBean) bf.getBean("arrayBean");
 
-		assertThat((Object) ab.getIntegerArray()[0]).isEqualTo(new Integer(4));
-		assertThat((Object) ab.getIntegerArray()[1]).isEqualTo(new Integer(5));
+		assertThat(ab.getIntegerArray()[0]).isEqualTo(new Integer(4));
+		assertThat(ab.getIntegerArray()[1]).isEqualTo(new Integer(5));
 	}
 
 	@Test
@@ -1201,10 +1201,10 @@ public class DefaultListableBeanFactoryTests {
 		bf.registerBeanDefinition("arrayBean", rbd);
 		ArrayBean ab = (ArrayBean) bf.getBean("arrayBean");
 
-		assertThat((Object) ab.getIntegerArray()[0]).isEqualTo(new Integer(4));
-		assertThat((Object) ab.getIntegerArray()[1]).isEqualTo(new Integer(5));
-		assertThat((Object) ab.getResourceArray()[0]).isEqualTo(new UrlResource("http://localhost:8080"));
-		assertThat((Object) ab.getResourceArray()[1]).isEqualTo(new UrlResource("http://localhost:9090"));
+		assertThat(ab.getIntegerArray()[0]).isEqualTo(new Integer(4));
+		assertThat(ab.getIntegerArray()[1]).isEqualTo(new Integer(5));
+		assertThat(ab.getResourceArray()[0]).isEqualTo(new UrlResource("http://localhost:8080"));
+		assertThat(ab.getResourceArray()[1]).isEqualTo(new UrlResource("http://localhost:9090"));
 	}
 
 	@Test
@@ -1236,7 +1236,7 @@ public class DefaultListableBeanFactoryTests {
 		rbd.setPropertyValues(pvs);
 		bf.registerBeanDefinition("myProperties", rbd);
 		Properties properties = (Properties) bf.getBean("myProperties");
-		assertThat((Object) properties.getProperty("foo")).isEqualTo("bar");
+		assertThat(properties.getProperty("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -1330,7 +1330,7 @@ public class DefaultListableBeanFactoryTests {
 		DependenciesBean bean = (DependenciesBean)
 				lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
 		TestBean spouse = (TestBean) lbf.getBean("spouse");
-		assertThat((Object) bean.getSpouse()).isEqualTo(spouse);
+		assertThat(bean.getSpouse()).isEqualTo(spouse);
 		assertThat(BeanFactoryUtils.beanOfType(lbf, TestBean.class) == spouse).isTrue();
 	}
 
@@ -1773,7 +1773,7 @@ public class DefaultListableBeanFactoryTests {
 		DependenciesBean bean = (DependenciesBean)
 				lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
 		TestBean test = (TestBean) lbf.getBean("test");
-		assertThat((Object) bean.getSpouse()).isEqualTo(test);
+		assertThat(bean.getSpouse()).isEqualTo(test);
 	}
 
 	/**
@@ -1791,7 +1791,7 @@ public class DefaultListableBeanFactoryTests {
 		assertNotNull("The FactoryBean should have been registered.", factoryBean);
 		FactoryBeanDependentBean bean = (FactoryBeanDependentBean) lbf.autowire(FactoryBeanDependentBean.class,
 				AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
-		assertThat((Object) bean.getFactoryBean()).as("The FactoryBeanDependentBean should have been autowired 'by type' with the LazyInitFactory.").isEqualTo(factoryBean);
+		assertThat(bean.getFactoryBean()).as("The FactoryBeanDependentBean should have been autowired 'by type' with the LazyInitFactory.").isEqualTo(factoryBean);
 	}
 
 	@Test
@@ -1809,7 +1809,7 @@ public class DefaultListableBeanFactoryTests {
 		FactoryBeanDependentBean bean = (FactoryBeanDependentBean) lbf.autowire(FactoryBeanDependentBean.class,
 				AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
 		assertNotEquals(bd1FactoryBean, bean.getFactoryBean());
-		assertThat((Object) bean.getFactoryBean()).isEqualTo(bd2FactoryBean);
+		assertThat(bean.getFactoryBean()).isEqualTo(bd2FactoryBean);
 	}
 
 	@Test
@@ -1829,19 +1829,19 @@ public class DefaultListableBeanFactoryTests {
 
 		String[] beanNames = lbf.getBeanNamesForType(Runnable.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = lbf.getBeanNamesForType(Callable.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = lbf.getBeanNamesForType(RepositoryFactoryInformation.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = lbf.getBeanNamesForType(FactoryBean.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 	}
 
 	@Test
@@ -1852,19 +1852,19 @@ public class DefaultListableBeanFactoryTests {
 
 		String[] beanNames = lbf.getBeanNamesForType(Runnable.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = lbf.getBeanNamesForType(Callable.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = lbf.getBeanNamesForType(RepositoryFactoryInformation.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 
 		beanNames = lbf.getBeanNamesForType(FactoryBean.class, false, false);
 		assertEquals(1, beanNames.length);
-		assertThat((Object) beanNames[0]).isEqualTo("&factoryBean");
+		assertThat(beanNames[0]).isEqualTo("&factoryBean");
 	}
 
 	/**
@@ -1991,7 +1991,7 @@ public class DefaultListableBeanFactoryTests {
 		DependenciesBean existingBean = new DependenciesBean();
 		lbf.autowireBeanProperties(existingBean, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
 		TestBean spouse = (TestBean) lbf.getBean("spouse");
-		assertThat((Object) spouse).isEqualTo(existingBean.getSpouse());
+		assertThat(spouse).isEqualTo(existingBean.getSpouse());
 		assertSame(spouse, BeanFactoryUtils.beanOfType(lbf, TestBean.class));
 	}
 
@@ -2023,7 +2023,7 @@ public class DefaultListableBeanFactoryTests {
 		DependenciesBean existingBean = new DependenciesBean();
 		lbf.autowireBeanProperties(existingBean, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
 		TestBean test = (TestBean) lbf.getBean("test");
-		assertThat((Object) test).isEqualTo(existingBean.getSpouse());
+		assertThat(test).isEqualTo(existingBean.getSpouse());
 	}
 
 	@Test
@@ -2126,7 +2126,7 @@ public class DefaultListableBeanFactoryTests {
 		lbf.configureBean(tb, "test");
 		assertSame(lbf, tb.getBeanFactory());
 		TestBean spouse = (TestBean) lbf.getBean("spouse");
-		assertThat((Object) tb.getSpouse()).isEqualTo(spouse);
+		assertThat(tb.getSpouse()).isEqualTo(spouse);
 	}
 
 	@Test
@@ -2246,8 +2246,8 @@ public class DefaultListableBeanFactoryTests {
 		factory.registerBeanDefinition("tb2", bd2);
 		factory.registerBeanDefinition("tb3", new RootBeanDefinition(TestBean.class));
 
-		assertThat((Object) ((AbstractBeanDefinition) factory.getMergedBeanDefinition("tb1")).getLazyInit()).isEqualTo(Boolean.TRUE);
-		assertThat((Object) ((AbstractBeanDefinition) factory.getMergedBeanDefinition("tb2")).getLazyInit()).isEqualTo(Boolean.FALSE);
+		assertThat(((AbstractBeanDefinition) factory.getMergedBeanDefinition("tb1")).getLazyInit()).isEqualTo(Boolean.TRUE);
+		assertThat(((AbstractBeanDefinition) factory.getMergedBeanDefinition("tb2")).getLazyInit()).isEqualTo(Boolean.FALSE);
 		assertNull(((AbstractBeanDefinition) factory.getMergedBeanDefinition("tb3")).getLazyInit());
 
 		factory.preInstantiateSingletons();
@@ -2291,8 +2291,8 @@ public class DefaultListableBeanFactoryTests {
 		lbf.registerBeanDefinition("string", stringDef);
 		String val1 = lbf.getBean("string", String.class);
 		String val2 = lbf.getBean("string", String.class);
-		assertThat((Object) val1).isEqualTo("value");
-		assertThat((Object) val2).isEqualTo("value");
+		assertThat(val1).isEqualTo("value");
+		assertThat(val2).isEqualTo("value");
 		assertNotSame(val1, val2);
 	}
 
@@ -2307,12 +2307,12 @@ public class DefaultListableBeanFactoryTests {
 		bd.getConstructorArgumentValues().addGenericArgumentValue(list);
 		lbf.registerBeanDefinition("test", bd);
 		DerivedTestBean tb = (DerivedTestBean) lbf.getBean("test");
-		assertThat((Object) tb.getName()).isEqualTo("myName");
-		assertThat((Object) tb.getBeanName()).isEqualTo("myBeanName");
+		assertThat(tb.getName()).isEqualTo("myName");
+		assertThat(tb.getBeanName()).isEqualTo("myBeanName");
 		DerivedTestBean tb2 = (DerivedTestBean) lbf.getBean("test");
 		assertThat(tb != tb2).isTrue();
-		assertThat((Object) tb2.getName()).isEqualTo("myName");
-		assertThat((Object) tb2.getBeanName()).isEqualTo("myBeanName");
+		assertThat(tb2.getName()).isEqualTo("myName");
+		assertThat(tb2.getBeanName()).isEqualTo("myBeanName");
 	}
 
 	@Test
@@ -2327,12 +2327,12 @@ public class DefaultListableBeanFactoryTests {
 		bd.getConstructorArgumentValues().addGenericArgumentValue(list);
 		lbf.registerBeanDefinition("test", bd);
 		DerivedTestBean tb = (DerivedTestBean) lbf.getBean("test");
-		assertThat((Object) tb.getName()).isEqualTo("myName");
-		assertThat((Object) tb.getBeanName()).isEqualTo("myBeanName");
+		assertThat(tb.getName()).isEqualTo("myName");
+		assertThat(tb.getBeanName()).isEqualTo("myBeanName");
 		DerivedTestBean tb2 = (DerivedTestBean) lbf.getBean("test");
 		assertThat(tb != tb2).isTrue();
-		assertThat((Object) tb2.getName()).isEqualTo("myName");
-		assertThat((Object) tb2.getBeanName()).isEqualTo("myBeanName");
+		assertThat(tb2.getName()).isEqualTo("myName");
+		assertThat(tb2.getBeanName()).isEqualTo("myBeanName");
 	}
 
 	@Test
@@ -2391,7 +2391,7 @@ public class DefaultListableBeanFactoryTests {
 		sw.start("prototype");
 		for (int i = 0; i < 100000; i++) {
 			TestBean tb = (TestBean) lbf.getBean("test");
-			assertThat((Object) tb.getName()).isEqualTo("juergen");
+			assertThat(tb.getName()).isEqualTo("juergen");
 			assertEquals(99, tb.getAge());
 		}
 		sw.stop();
@@ -2437,7 +2437,7 @@ public class DefaultListableBeanFactoryTests {
 		sw.start("prototype");
 		for (int i = 0; i < 100000; i++) {
 			TestBean tb = (TestBean) lbf.getBean("test");
-			assertThat((Object) tb.getName()).isEqualTo("juergen");
+			assertThat(tb.getName()).isEqualTo("juergen");
 			assertEquals(99, tb.getAge());
 		}
 		sw.stop();
@@ -2654,7 +2654,7 @@ public class DefaultListableBeanFactoryTests {
 		else {
 			assertNotSame(tb, second);
 		}
-		assertThat((Object) tb.getName()).isEqualTo(expectedNameFromProperties);
+		assertThat(tb.getName()).isEqualTo(expectedNameFromProperties);
 
 		tb = (TestBean) lbf.getBean("fmGeneric");
 		second = (TestBean) lbf.getBean("fmGeneric");
@@ -2664,7 +2664,7 @@ public class DefaultListableBeanFactoryTests {
 		else {
 			assertNotSame(tb, second);
 		}
-		assertThat((Object) tb.getName()).isEqualTo(expectedNameFromProperties);
+		assertThat(tb.getName()).isEqualTo(expectedNameFromProperties);
 
 		TestBean tb2 = (TestBean) lbf.getBean("fmWithArgs");
 		second = (TestBean) lbf.getBean("fmWithArgs");
@@ -2674,7 +2674,7 @@ public class DefaultListableBeanFactoryTests {
 		else {
 			assertNotSame(tb2, second);
 		}
-		assertThat((Object) tb2.getName()).isEqualTo(expectedNameFromArgs);
+		assertThat(tb2.getName()).isEqualTo(expectedNameFromArgs);
 	}
 
 	@Test
@@ -2705,7 +2705,7 @@ public class DefaultListableBeanFactoryTests {
 		factory.registerBeanDefinition("child", child);
 
 		AbstractBeanDefinition def = (AbstractBeanDefinition) factory.getBeanDefinition("child");
-		assertThat((Object) def.getScope()).as("Child 'scope' not overriding parent scope (it must).").isEqualTo(theChildScope);
+		assertThat(def.getScope()).as("Child 'scope' not overriding parent scope (it must).").isEqualTo(theChildScope);
 	}
 
 	@Test
@@ -2721,7 +2721,7 @@ public class DefaultListableBeanFactoryTests {
 		factory.registerBeanDefinition("child", child);
 
 		BeanDefinition def = factory.getMergedBeanDefinition("child");
-		assertThat((Object) def.getScope()).as("Child 'scope' not inherited").isEqualTo("bonanza!");
+		assertThat(def.getScope()).as("Child 'scope' not inherited").isEqualTo("bonanza!");
 	}
 
 	@Test
@@ -2758,7 +2758,7 @@ public class DefaultListableBeanFactoryTests {
 		});
 		lbf.preInstantiateSingletons();
 		TestBean tb = (TestBean) lbf.getBean("test");
-		assertThat((Object) tb.getName()).as("Name was set on field by IAPP").isEqualTo(nameSetOnField);
+		assertThat(tb.getName()).as("Name was set on field by IAPP").isEqualTo(nameSetOnField);
 		if (!skipPropertyPopulation) {
 			assertEquals("Property value still set", ageSetByPropertyValue, tb.getAge());
 		}
@@ -2781,7 +2781,7 @@ public class DefaultListableBeanFactoryTests {
 		TestSecuredBean bean = (TestSecuredBean) Subject.doAsPrivileged(subject,
 				(PrivilegedAction) () -> lbf.getBean("test"), null);
 		assertNotNull(bean);
-		assertThat((Object) bean.getUserName()).isEqualTo("user1");
+		assertThat(bean.getUserName()).isEqualTo("user1");
 	}
 
 	@Test
@@ -2839,7 +2839,7 @@ public class DefaultListableBeanFactoryTests {
 		bd.getConstructorArgumentValues().addGenericArgumentValue("VALUE_1");
 		bf.registerBeanDefinition("holderBean", bd);
 		NonPublicEnumHolder holder = (NonPublicEnumHolder) bf.getBean("holderBean");
-		assertThat((Object) holder.getNonPublicEnum()).isEqualTo(NonPublicEnum.VALUE_1);
+		assertThat(holder.getNonPublicEnum()).isEqualTo(NonPublicEnum.VALUE_1);
 	}
 
 	/**

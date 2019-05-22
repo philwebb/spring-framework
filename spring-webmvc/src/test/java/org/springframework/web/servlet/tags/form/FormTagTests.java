@@ -229,7 +229,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 		String xssQueryString = QUERY_STRING + "&stuff=\"><script>alert('XSS!')</script>";
 		request.setQueryString(xssQueryString);
 		tag.doStartTag();
-		assertThat((Object) getOutput()).isEqualTo(("<form id=\"command\" action=\"/my/form?foo=bar&amp;stuff=&quot;&gt;&lt;" +
+		assertThat(getOutput()).isEqualTo(("<form id=\"command\" action=\"/my/form?foo=bar&amp;stuff=&quot;&gt;&lt;" +
 						"script&gt;alert(&#39;XSS!&#39;)&lt;/script&gt;\" method=\"post\">"));
 	}
 
@@ -246,7 +246,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 		String inputOutput = getInputTag(output);
 
 		assertContainsAttribute(formOutput, "method", "get");
-		assertThat((Object) inputOutput).isEqualTo("");
+		assertThat(inputOutput).isEqualTo("");
 	}
 
 	@Test
@@ -262,7 +262,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 		String inputOutput = getInputTag(output);
 
 		assertContainsAttribute(formOutput, "method", "post");
-		assertThat((Object) inputOutput).isEqualTo("");
+		assertThat(inputOutput).isEqualTo("");
 	}
 
 	@Test
@@ -344,7 +344,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 
 		String output = getOutput();
 
-		assertThat((Object) getInputTag(output)).isEqualTo("<div>\n<input type=\"hidden\" name=\"key\" value=\"value\" />\n</div>");
+		assertThat(getInputTag(output)).isEqualTo("<div>\n<input type=\"hidden\" name=\"key\" value=\"value\" />\n</div>");
 		assertFormTagOpened(output);
 		assertFormTagClosed(output);
 	}

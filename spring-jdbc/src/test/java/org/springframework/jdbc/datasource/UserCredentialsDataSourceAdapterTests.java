@@ -43,7 +43,7 @@ public class UserCredentialsDataSourceAdapterTests {
 		adapter.setTargetDataSource(dataSource);
 		adapter.setUsername("user");
 		adapter.setPassword("pw");
-		assertThat((Object) adapter.getConnection()).isEqualTo(connection);
+		assertThat(adapter.getConnection()).isEqualTo(connection);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class UserCredentialsDataSourceAdapterTests {
 		given(dataSource.getConnection()).willReturn(connection);
 		UserCredentialsDataSourceAdapter adapter = new UserCredentialsDataSourceAdapter();
 		adapter.setTargetDataSource(dataSource);
-		assertThat((Object) adapter.getConnection()).isEqualTo(connection);
+		assertThat(adapter.getConnection()).isEqualTo(connection);
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class UserCredentialsDataSourceAdapterTests {
 
 		adapter.setCredentialsForCurrentThread("user", "pw");
 		try {
-			assertThat((Object) adapter.getConnection()).isEqualTo(connection);
+			assertThat(adapter.getConnection()).isEqualTo(connection);
 		}
 		finally {
 			adapter.removeCredentialsFromCurrentThread();

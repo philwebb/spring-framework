@@ -48,7 +48,7 @@ public class CustomAutowireConfigurerTests {
 		bf.setAutowireCandidateResolver(customResolver);
 		cac.postProcessBeanFactory(bf);
 		TestBean testBean = (TestBean) bf.getBean("testBean");
-		assertThat((Object) testBean.getName()).isEqualTo("#1!");
+		assertThat(testBean.getName()).isEqualTo("#1!");
 	}
 
 

@@ -63,7 +63,7 @@ public class CustomInterceptorTests {
 		Map<String, CacheInterceptor> interceptors = this.ctx.getBeansOfType(CacheInterceptor.class);
 		assertEquals("Only one interceptor should be defined", 1, interceptors.size());
 		CacheInterceptor interceptor = interceptors.values().iterator().next();
-		assertThat((Object) interceptor.getClass()).as("Custom interceptor not defined").isEqualTo(TestCacheInterceptor.class);
+		assertThat(interceptor.getClass()).as("Custom interceptor not defined").isEqualTo(TestCacheInterceptor.class);
 	}
 
 	@Test

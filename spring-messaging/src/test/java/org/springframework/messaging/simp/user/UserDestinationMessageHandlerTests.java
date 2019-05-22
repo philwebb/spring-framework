@@ -75,7 +75,7 @@ public class UserDestinationMessageHandlerTests {
 		Mockito.verify(this.brokerChannel).send(captor.capture());
 
 		Message message = captor.getValue();
-		assertThat((Object) SimpMessageHeaderAccessor.getDestination(message.getHeaders())).isEqualTo("/queue/foo-user123");
+		assertThat(SimpMessageHeaderAccessor.getDestination(message.getHeaders())).isEqualTo("/queue/foo-user123");
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class UserDestinationMessageHandlerTests {
 		Mockito.verify(this.brokerChannel).send(captor.capture());
 
 		Message message = captor.getValue();
-		assertThat((Object) SimpMessageHeaderAccessor.getDestination(message.getHeaders())).isEqualTo("/queue/foo-user123");
+		assertThat(SimpMessageHeaderAccessor.getDestination(message.getHeaders())).isEqualTo("/queue/foo-user123");
 	}
 
 	@Test
@@ -102,8 +102,8 @@ public class UserDestinationMessageHandlerTests {
 		Mockito.verify(this.brokerChannel).send(captor.capture());
 
 		SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(captor.getValue());
-		assertThat((Object) accessor.getDestination()).isEqualTo("/queue/foo-user123");
-		assertThat((Object) accessor.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/queue/foo");
+		assertThat(accessor.getDestination()).isEqualTo("/queue/foo-user123");
+		assertThat(accessor.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/queue/foo");
 	}
 
 	@Test
@@ -117,8 +117,8 @@ public class UserDestinationMessageHandlerTests {
 
 		Message message = captor.getValue();
 		SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(message);
-		assertThat((Object) accessor.getDestination()).isEqualTo("/topic/unresolved");
-		assertThat((Object) accessor.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/joe/queue/foo");
+		assertThat(accessor.getDestination()).isEqualTo("/topic/unresolved");
+		assertThat(accessor.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/joe/queue/foo");
 
 		// Should ignore our own broadcast to brokerChannel
 
@@ -148,9 +148,9 @@ public class UserDestinationMessageHandlerTests {
 		Mockito.verify(this.brokerChannel).send(captor.capture());
 		assertNotNull(captor.getValue());
 		SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(captor.getValue());
-		assertThat((Object) headers.getDestination()).isEqualTo("/queue/foo-user123");
-		assertThat((Object) headers.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/queue/foo");
-		assertThat((Object) headers.getFirstNativeHeader("customHeader")).isEqualTo("customHeaderValue");
+		assertThat(headers.getDestination()).isEqualTo("/queue/foo-user123");
+		assertThat(headers.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/queue/foo");
+		assertThat(headers.getFirstNativeHeader("customHeader")).isEqualTo("customHeaderValue");
 		assertArrayEquals(payload, (byte[]) captor.getValue().getPayload());
 	}
 

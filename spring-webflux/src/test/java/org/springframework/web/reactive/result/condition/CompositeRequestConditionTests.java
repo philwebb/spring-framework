@@ -63,7 +63,7 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition cond2 = new CompositeRequestCondition(this.param2, this.header2);
 		CompositeRequestCondition cond3 = new CompositeRequestCondition(this.param3, this.header3);
 
-		assertThat((Object) cond1.combine(cond2)).isEqualTo(cond3);
+		assertThat(cond1.combine(cond2)).isEqualTo(cond3);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition composite1 = new CompositeRequestCondition(this.param1, condition1);
 		CompositeRequestCondition composite2 = new CompositeRequestCondition(this.param1, condition2);
 
-		assertThat((Object) composite1.getMatchingCondition(exchange)).isEqualTo(composite2);
+		assertThat(composite1.getMatchingCondition(exchange)).isEqualTo(composite2);
 	}
 
 	@Test

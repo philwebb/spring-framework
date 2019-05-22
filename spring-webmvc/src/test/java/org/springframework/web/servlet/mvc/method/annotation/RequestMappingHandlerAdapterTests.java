@@ -125,7 +125,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod(handler, "handle"));
-		assertThat((Object) this.response.getHeader("Cache-Control")).isEqualTo("no-store");
+		assertThat(this.response.getHeader("Cache-Control")).isEqualTo("no-store");
 	}
 
 	@Test
@@ -257,7 +257,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
 		assertEquals(200, this.response.getStatus());
-		assertThat((Object) this.response.getContentAsString()).isEqualTo("{\"status\":400,\"message\":\"body\"}");
+		assertThat(this.response.getContentAsString()).isEqualTo("{\"status\":400,\"message\":\"body\"}");
 	}
 
 	private HandlerMethod handlerMethod(Object handler, String methodName, Class<?>... paramTypes) throws Exception {

@@ -214,19 +214,19 @@ public class ScriptTemplateViewTests {
 		this.view.setApplicationContext(this.wac);
 		this.view.setUrl("org/springframework/web/servlet/view/script/empty.txt");
 		this.view.render(model, request, response);
-		assertThat((Object) response.getContentAsString()).isEqualTo("foo");
+		assertThat(response.getContentAsString()).isEqualTo("foo");
 
 		response = new MockHttpServletResponse();
 		this.view.setResourceLoaderPath("classpath:org/springframework/web/servlet/view/script/");
 		this.view.setUrl("empty.txt");
 		this.view.render(model, request, response);
-		assertThat((Object) response.getContentAsString()).isEqualTo("foo");
+		assertThat(response.getContentAsString()).isEqualTo("foo");
 
 		response = new MockHttpServletResponse();
 		this.view.setResourceLoaderPath("classpath:org/springframework/web/servlet/view/script");
 		this.view.setUrl("empty.txt");
 		this.view.render(model, request, response);
-		assertThat((Object) response.getContentAsString()).isEqualTo("foo");
+		assertThat(response.getContentAsString()).isEqualTo("foo");
 	}
 
 	@Test // SPR-13379
@@ -245,19 +245,19 @@ public class ScriptTemplateViewTests {
 		this.view.setApplicationContext(this.wac);
 
 		this.view.render(model, request, response);
-		assertThat((Object) response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_HTML_VALUE + ";charset=" +
+		assertThat(response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_HTML_VALUE + ";charset=" +
 				StandardCharsets.UTF_8));
 
 		response = new MockHttpServletResponse();
 		this.view.setContentType(MediaType.TEXT_PLAIN_VALUE);
 		this.view.render(model, request, response);
-		assertThat((Object) response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_PLAIN_VALUE + ";charset=" +
+		assertThat(response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_PLAIN_VALUE + ";charset=" +
 				StandardCharsets.UTF_8));
 
 		response = new MockHttpServletResponse();
 		this.view.setCharset(StandardCharsets.ISO_8859_1);
 		this.view.render(model, request, response);
-		assertThat((Object) response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_PLAIN_VALUE + ";charset=" +
+		assertThat(response.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo((MediaType.TEXT_PLAIN_VALUE + ";charset=" +
 				StandardCharsets.ISO_8859_1));
 
 	}

@@ -172,10 +172,10 @@ public class ScopingTests {
 		String scopedBeanName = "scopedTarget." + beanName;
 
 		// get hidden bean
-		assertThat((Object) spouse.getName()).isEqualTo(flag);
+		assertThat(spouse.getName()).isEqualTo(flag);
 
 		ITestBean spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
-		assertThat((Object) spouseFromBF.getName()).isEqualTo(spouse.getName());
+		assertThat(spouseFromBF.getName()).isEqualTo(spouse.getName());
 		// the scope proxy has kicked in
 		assertNotSame(spouse, spouseFromBF);
 
@@ -205,10 +205,10 @@ public class ScopingTests {
 		String scopedBeanName = "scopedTarget." + beanName;
 
 		// get hidden bean
-		assertThat((Object) spouse.getName()).isEqualTo(flag);
+		assertThat(spouse.getName()).isEqualTo(flag);
 
 		TestBean spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
-		assertThat((Object) spouseFromBF.getName()).isEqualTo(spouse.getName());
+		assertThat(spouseFromBF.getName()).isEqualTo(spouse.getName());
 		// the scope proxy has kicked in
 		assertNotSame(spouse, spouseFromBF);
 

@@ -70,18 +70,18 @@ public class RssChannelHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(is);
 		inputMessage.getHeaders().setContentType(new MediaType("application", "rss+xml", StandardCharsets.UTF_8));
 		Channel result = converter.read(Channel.class, inputMessage);
-		assertThat((Object) result.getTitle()).isEqualTo("title");
-		assertThat((Object) result.getLink()).isEqualTo("https://example.com");
-		assertThat((Object) result.getDescription()).isEqualTo("description");
+		assertThat(result.getTitle()).isEqualTo("title");
+		assertThat(result.getLink()).isEqualTo("https://example.com");
+		assertThat(result.getDescription()).isEqualTo("description");
 
 		List<?> items = result.getItems();
 		assertEquals(2, items.size());
 
 		Item item1 = (Item) items.get(0);
-		assertThat((Object) item1.getTitle()).isEqualTo("title1");
+		assertThat(item1.getTitle()).isEqualTo("title1");
 
 		Item item2 = (Item) items.get(1);
-		assertThat((Object) item2.getTitle()).isEqualTo("title2");
+		assertThat(item2.getTitle()).isEqualTo("title2");
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class RssChannelHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(channel, null, outputMessage);
 
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "rss+xml", StandardCharsets.UTF_8));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "rss+xml", StandardCharsets.UTF_8));
 		String expected = "<rss version=\"2.0\">" +
 				"<channel><title>title</title><link>https://example.com</link><description>description</description>" +
 				"<item><title>title1</title></item>" +
@@ -131,7 +131,7 @@ public class RssChannelHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(channel, null, outputMessage);
 
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "rss+xml", Charset.forName(encoding)));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "rss+xml", Charset.forName(encoding)));
 	}
 
 }

@@ -184,8 +184,8 @@ public class RestTemplateTests {
 		mockTextResponseBody("Hello World");
 
 		String result = template.getForObject("https://example.com", String.class);
-		assertThat((Object) result).as("Invalid GET result").isEqualTo(expected);
-		assertThat((Object) requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(result).as("Invalid GET result").isEqualTo(expected);
+		assertThat(requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
 
 		verify(response).close();
 	}
@@ -242,10 +242,10 @@ public class RestTemplateTests {
 		mockTextResponseBody(expected);
 
 		ResponseEntity<String> result = template.getForEntity("https://example.com", String.class);
-		assertThat((Object) result.getBody()).as("Invalid GET result").isEqualTo(expected);
-		assertThat((Object) requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
-		assertThat((Object) result.getHeaders().getContentType()).as("Invalid Content-Type header").isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).as("Invalid GET result").isEqualTo(expected);
+		assertThat(requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(result.getHeaders().getContentType()).as("Invalid Content-Type header").isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 
 		verify(response).close();
 	}
@@ -296,7 +296,7 @@ public class RestTemplateTests {
 		given(response.getHeaders()).willReturn(responseHeaders);
 
 		URI result = template.postForLocation("https://example.com", helloWorld);
-		assertThat((Object) result).as("Invalid POST result").isEqualTo(expected);
+		assertThat(result).as("Invalid POST result").isEqualTo(expected);
 
 		verify(response).close();
 	}
@@ -318,7 +318,7 @@ public class RestTemplateTests {
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, entityHeaders);
 
 		URI result = template.postForLocation("https://example.com", entity);
-		assertThat((Object) result).as("Invalid POST result").isEqualTo(expected);
+		assertThat(result).as("Invalid POST result").isEqualTo(expected);
 
 		verify(response).close();
 	}
@@ -339,8 +339,8 @@ public class RestTemplateTests {
 		HttpEntity<String> entity = new HttpEntity<>("Hello World", entityHeaders);
 
 		URI result = template.postForLocation("https://example.com", entity);
-		assertThat((Object) result).as("Invalid POST result").isEqualTo(expected);
-		assertThat((Object) requestHeaders.getFirst("MyHeader")).as("No custom header set").isEqualTo("MyValue");
+		assertThat(result).as("Invalid POST result").isEqualTo(expected);
+		assertThat(requestHeaders.getFirst("MyHeader")).as("No custom header set").isEqualTo("MyValue");
 
 		verify(response).close();
 	}
@@ -379,8 +379,8 @@ public class RestTemplateTests {
 		mockResponseBody(expected, MediaType.TEXT_PLAIN);
 
 		String result = template.postForObject("https://example.com", "Hello World", String.class);
-		assertThat((Object) result).as("Invalid POST result").isEqualTo(expected);
-		assertThat((Object) requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(result).as("Invalid POST result").isEqualTo(expected);
+		assertThat(requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
 
 		verify(response).close();
 	}
@@ -395,10 +395,10 @@ public class RestTemplateTests {
 		mockResponseBody(expected, MediaType.TEXT_PLAIN);
 
 		ResponseEntity<String> result = template.postForEntity("https://example.com", "Hello World", String.class);
-		assertThat((Object) result.getBody()).as("Invalid POST result").isEqualTo(expected);
-		assertThat((Object) result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
-		assertThat((Object) result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).as("Invalid POST result").isEqualTo(expected);
+		assertThat(result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 
 		verify(response).close();
 	}
@@ -438,9 +438,9 @@ public class RestTemplateTests {
 
 		ResponseEntity<String> result = template.postForEntity("https://example.com", null, String.class);
 		assertThat(result.hasBody()).as("Invalid POST result").isFalse();
-		assertThat((Object) result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
 		assertEquals("Invalid content length", 0, requestHeaders.getContentLength());
-		assertThat((Object) result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+		assertThat(result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 
 		verify(response).close();
 	}
@@ -478,8 +478,8 @@ public class RestTemplateTests {
 		mockResponseBody("42", MediaType.TEXT_PLAIN);
 
 		String result = template.patchForObject("https://example.com", "Hello World", String.class);
-		assertThat((Object) result).as("Invalid POST result").isEqualTo(expected);
-		assertThat((Object) requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(result).as("Invalid POST result").isEqualTo(expected);
+		assertThat(requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
 
 		verify(response).close();
 	}
@@ -524,7 +524,7 @@ public class RestTemplateTests {
 		given(response.getHeaders()).willReturn(responseHeaders);
 
 		Set<HttpMethod> result = template.optionsForAllow("https://example.com");
-		assertThat((Object) result).as("Invalid OPTIONS result").isEqualTo(expected);
+		assertThat(result).as("Invalid OPTIONS result").isEqualTo(expected);
 
 		verify(response).close();
 	}
@@ -573,11 +573,11 @@ public class RestTemplateTests {
 		entityHeaders.set("MyHeader", "MyValue");
 		HttpEntity<String> entity = new HttpEntity<>("Hello World", entityHeaders);
 		ResponseEntity<String> result = template.exchange("https://example.com", POST, entity, String.class);
-		assertThat((Object) result.getBody()).as("Invalid POST result").isEqualTo(expected);
-		assertThat((Object) result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
-		assertThat((Object) requestHeaders.getFirst("MyHeader")).as("Invalid custom header").isEqualTo("MyValue");
-		assertThat((Object) result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).as("Invalid POST result").isEqualTo(expected);
+		assertThat(result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(requestHeaders.getFirst("MyHeader")).as("Invalid custom header").isEqualTo("MyValue");
+		assertThat(result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 
 		verify(response).close();
 	}
@@ -608,11 +608,11 @@ public class RestTemplateTests {
 		entityHeaders.set("MyHeader", "MyValue");
 		HttpEntity<String> requestEntity = new HttpEntity<>("Hello World", entityHeaders);
 		ResponseEntity<List<Integer>> result = template.exchange("https://example.com", POST, requestEntity, intList);
-		assertThat((Object) result.getBody()).as("Invalid POST result").isEqualTo(expected);
-		assertThat((Object) result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
-		assertThat((Object) requestHeaders.getFirst("MyHeader")).as("Invalid custom header").isEqualTo("MyValue");
-		assertThat((Object) result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).as("Invalid POST result").isEqualTo(expected);
+		assertThat(result.getHeaders().getContentType()).as("Invalid Content-Type").isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(requestHeaders.getFirst("Accept")).as("Invalid Accept header").isEqualTo(MediaType.TEXT_PLAIN_VALUE);
+		assertThat(requestHeaders.getFirst("MyHeader")).as("Invalid custom header").isEqualTo("MyValue");
+		assertThat(result.getStatusCode()).as("Invalid status code").isEqualTo(HttpStatus.OK);
 
 		verify(response).close();
 	}

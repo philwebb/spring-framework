@@ -150,7 +150,7 @@ public class QualifierAnnotationAutowireBeanFactoryTests {
 		MethodParameter param = new MethodParameter(QualifiedTestBean.class.getDeclaredConstructor(Person.class), 0);
 		DependencyDescriptor qualifiedDescriptor = new DependencyDescriptor(param, false);
 		param.initParameterNameDiscovery(new LocalVariableTableParameterNameDiscoverer());
-		assertThat((Object) param.getParameterName()).isEqualTo("tpb");
+		assertThat(param.getParameterName()).isEqualTo("tpb");
 		assertThat(lbf.isAutowireCandidate(JUERGEN, null)).isTrue();
 		assertThat(lbf.isAutowireCandidate(JUERGEN, qualifiedDescriptor)).isTrue();
 		assertThat(lbf.isAutowireCandidate(MARK, qualifiedDescriptor)).isFalse();
@@ -176,9 +176,9 @@ public class QualifierAnnotationAutowireBeanFactoryTests {
 		DependencyDescriptor qualifiedDescriptor = new DependencyDescriptor(qualifiedParam, false);
 		DependencyDescriptor nonqualifiedDescriptor = new DependencyDescriptor(nonqualifiedParam, false);
 		qualifiedParam.initParameterNameDiscovery(new LocalVariableTableParameterNameDiscoverer());
-		assertThat((Object) qualifiedParam.getParameterName()).isEqualTo("tpb");
+		assertThat(qualifiedParam.getParameterName()).isEqualTo("tpb");
 		nonqualifiedParam.initParameterNameDiscovery(new LocalVariableTableParameterNameDiscoverer());
-		assertThat((Object) nonqualifiedParam.getParameterName()).isEqualTo("tpb");
+		assertThat(nonqualifiedParam.getParameterName()).isEqualTo("tpb");
 		assertThat(lbf.isAutowireCandidate(JUERGEN, null)).isTrue();
 		assertThat(lbf.isAutowireCandidate(JUERGEN, nonqualifiedDescriptor)).isTrue();
 		assertThat(lbf.isAutowireCandidate(JUERGEN, qualifiedDescriptor)).isTrue();

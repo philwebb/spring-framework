@@ -87,7 +87,7 @@ public class InternalResourceViewTests {
 		});
 
 		view.render(model, request, response);
-		assertThat((Object) response.getForwardedUrl()).isEqualTo(url);
+		assertThat(response.getForwardedUrl()).isEqualTo(url);
 
 		model.forEach((key, value) -> assertThat(request.getAttribute(key)).as("Values for model key '" + key
 						+ "' must match").isEqualTo(value));
@@ -103,7 +103,7 @@ public class InternalResourceViewTests {
 
 		// Can now try multiple tests
 		view.render(model, request, response);
-		assertThat((Object) response.getIncludedUrl()).isEqualTo(url);
+		assertThat(response.getIncludedUrl()).isEqualTo(url);
 
 		model.forEach((key, value) -> verify(request).setAttribute(key, value));
 	}
@@ -118,7 +118,7 @@ public class InternalResourceViewTests {
 
 		// Can now try multiple tests
 		view.render(model, request, response);
-		assertThat((Object) response.getIncludedUrl()).isEqualTo(url);
+		assertThat(response.getIncludedUrl()).isEqualTo(url);
 
 		model.forEach((key, value) -> verify(request).setAttribute(key, value));
 	}
@@ -134,7 +134,7 @@ public class InternalResourceViewTests {
 
 		// Can now try multiple tests
 		view.render(model, request, response);
-		assertThat((Object) response.getIncludedUrl()).isEqualTo(url);
+		assertThat(response.getIncludedUrl()).isEqualTo(url);
 
 		model.forEach((k, v) -> verify(request).setAttribute(k, v));
 	}

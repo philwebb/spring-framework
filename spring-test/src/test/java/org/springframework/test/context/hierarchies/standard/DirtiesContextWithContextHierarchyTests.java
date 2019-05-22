@@ -100,19 +100,19 @@ public class DirtiesContextWithContextHierarchyTests {
 	}
 
 	private void assertCleanParentContext() {
-		assertThat((Object) foo.toString()).isEqualTo("foo");
+		assertThat(foo.toString()).isEqualTo("foo");
 	}
 
 	private void assertCleanChildContext() {
-		assertThat((Object) baz.toString()).isEqualTo("baz-child");
+		assertThat(baz.toString()).isEqualTo("baz-child");
 	}
 
 	private void assertDirtyParentContext() {
-		assertThat((Object) foo.toString()).isEqualTo("oof");
+		assertThat(foo.toString()).isEqualTo("oof");
 	}
 
 	private void assertDirtyChildContext() {
-		assertThat((Object) baz.toString()).isEqualTo("dlihc-zab");
+		assertThat(baz.toString()).isEqualTo("dlihc-zab");
 	}
 
 	// -------------------------------------------------------------------------

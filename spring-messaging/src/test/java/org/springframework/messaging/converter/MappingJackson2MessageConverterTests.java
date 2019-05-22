@@ -94,7 +94,7 @@ public class MappingJackson2MessageConverterTests {
 		Message<?> message = MessageBuilder.withPayload(payload.getBytes(StandardCharsets.UTF_8)).build();
 		MyBean actual = (MyBean) converter.fromMessage(message, MyBean.class);
 
-		assertThat((Object) actual.getString()).isEqualTo("Foo");
+		assertThat(actual.getString()).isEqualTo("Foo");
 		assertEquals(42, actual.getNumber());
 		assertEquals(42F, actual.getFraction(), 0F);
 		assertArrayEquals(new String[]{"Foo", "Bar"}, actual.getArray());
@@ -142,7 +142,7 @@ public class MappingJackson2MessageConverterTests {
 		String payload = "{\"string\":\"string\",\"unknownProperty\":\"value\"}";
 		Message<?> message = MessageBuilder.withPayload(payload.getBytes(StandardCharsets.UTF_8)).build();
 		MyBean myBean = (MyBean)converter.fromMessage(message, MyBean.class);
-		assertThat((Object) myBean.getString()).isEqualTo("string");
+		assertThat(myBean.getString()).isEqualTo("string");
 	}
 
 	@Test // SPR-16252
@@ -171,7 +171,7 @@ public class MappingJackson2MessageConverterTests {
 
 		boolean condition = actual instanceof MyBean;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((MyBean) actual).getString()).isEqualTo("foo");
+		assertThat(((MyBean) actual).getString()).isEqualTo("foo");
 	}
 
 	@Test
@@ -207,7 +207,7 @@ public class MappingJackson2MessageConverterTests {
 		String payload = "H\u00e9llo W\u00f6rld";
 		Message<?> message = converter.toMessage(payload, headers);
 
-		assertThat((Object) new String((byte[]) message.getPayload(), StandardCharsets.UTF_16BE)).isEqualTo(("\"" + payload + "\""));
+		assertThat(new String((byte[]) message.getPayload(), StandardCharsets.UTF_16BE)).isEqualTo(("\"" + payload + "\""));
 		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(contentType);
 	}
 
@@ -245,7 +245,7 @@ public class MappingJackson2MessageConverterTests {
 		MethodParameter param = new MethodParameter(method, 0);
 		JacksonViewBean back = (JacksonViewBean) converter.fromMessage(message, JacksonViewBean.class, param);
 		assertNull(back.getWithView1());
-		assertThat((Object) back.getWithView2()).isEqualTo("with");
+		assertThat(back.getWithView2()).isEqualTo("with");
 		assertNull(back.getWithoutView());
 	}
 

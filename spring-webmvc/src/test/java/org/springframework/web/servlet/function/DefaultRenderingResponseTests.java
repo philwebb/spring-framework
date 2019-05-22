@@ -62,7 +62,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
 
-		assertThat((Object) mav.getViewName()).isEqualTo(name);
+		assertThat(mav.getViewName()).isEqualTo(name);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class DefaultRenderingResponseTests {
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
 		assertNotNull(mav);
 
-		assertThat((Object) response.getHeader("foo")).isEqualTo("bar");
+		assertThat(response.getHeader("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -152,8 +152,8 @@ public class DefaultRenderingResponseTests {
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
 		assertNotNull(mav);
 		assertEquals(1, response.getCookies().length);
-		assertThat((Object) response.getCookies()[0].getName()).isEqualTo("name");
-		assertThat((Object) response.getCookies()[0].getValue()).isEqualTo("value");
+		assertThat(response.getCookies()[0].getName()).isEqualTo("name");
+		assertThat(response.getCookies()[0].getValue()).isEqualTo("value");
 	}
 
 	@Test

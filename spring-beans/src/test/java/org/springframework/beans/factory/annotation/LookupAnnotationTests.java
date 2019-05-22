@@ -57,7 +57,7 @@ public class LookupAnnotationTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		Object expected = bean.get();
-		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
+		assertThat(expected.getClass()).isEqualTo(TestBean.class);
 		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
@@ -66,8 +66,8 @@ public class LookupAnnotationTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.get("haha");
-		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
-		assertThat((Object) expected.getName()).isEqualTo("haha");
+		assertThat(expected.getClass()).isEqualTo(TestBean.class);
+		assertThat(expected.getName()).isEqualTo("haha");
 		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
@@ -76,8 +76,8 @@ public class LookupAnnotationTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getOneArgument("haha");
-		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
-		assertThat((Object) expected.getName()).isEqualTo("haha");
+		assertThat(expected.getClass()).isEqualTo(TestBean.class);
+		assertThat(expected.getName()).isEqualTo("haha");
 		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
@@ -86,8 +86,8 @@ public class LookupAnnotationTests {
 		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getTwoArguments("haha", 72);
-		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
-		assertThat((Object) expected.getName()).isEqualTo("haha");
+		assertThat(expected.getClass()).isEqualTo(TestBean.class);
+		assertThat(expected.getName()).isEqualTo("haha");
 		assertEquals(72, expected.getAge());
 		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
@@ -106,7 +106,7 @@ public class LookupAnnotationTests {
 		AbstractBean bean = beanFactory.getBean("beanConsumer", BeanConsumer.class).abstractBean;
 		assertNotNull(bean);
 		Object expected = bean.get();
-		assertThat((Object) expected.getClass()).isEqualTo(TestBean.class);
+		assertThat(expected.getClass()).isEqualTo(TestBean.class);
 		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 

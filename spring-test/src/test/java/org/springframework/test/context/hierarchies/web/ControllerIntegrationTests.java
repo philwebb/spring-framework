@@ -84,8 +84,8 @@ public class ControllerIntegrationTests {
 
 	@Test
 	public void verifyRootWacSupport() {
-		assertThat((Object) foo).isEqualTo("foo");
-		assertThat((Object) bar).isEqualTo("bar");
+		assertThat(foo).isEqualTo("foo");
+		assertThat(bar).isEqualTo("bar");
 
 		ApplicationContext parent = wac.getParent();
 		assertNotNull(parent);

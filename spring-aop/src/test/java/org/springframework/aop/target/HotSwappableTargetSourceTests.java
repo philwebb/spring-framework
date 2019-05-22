@@ -131,16 +131,16 @@ public class HotSwappableTargetSourceTests {
 		pf.addAdvisor(new DefaultPointcutAdvisor(new SerializableNopInterceptor()));
 		Person p = (Person) pf.getProxy();
 
-		assertThat((Object) p.getName()).isEqualTo(sp1.getName());
+		assertThat(p.getName()).isEqualTo(sp1.getName());
 		hts.swap(sp2);
-		assertThat((Object) p.getName()).isEqualTo(sp2.getName());
+		assertThat(p.getName()).isEqualTo(sp2.getName());
 
 		p = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		// We need to get a reference to the client-side targetsource
 		hts = (HotSwappableTargetSource) ((Advised) p).getTargetSource();
-		assertThat((Object) p.getName()).isEqualTo(sp2.getName());
+		assertThat(p.getName()).isEqualTo(sp2.getName());
 		hts.swap(sp1);
-		assertThat((Object) p.getName()).isEqualTo(sp1.getName());
+		assertThat(p.getName()).isEqualTo(sp1.getName());
 
 	}
 

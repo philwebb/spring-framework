@@ -150,13 +150,13 @@ public class SQLErrorCodesFactoryTests {
 			protected Resource loadResource(String path) {
 				++lookups;
 				if (lookups == 1) {
-					assertThat((Object) path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_DEFAULT_PATH);
+					assertThat(path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_DEFAULT_PATH);
 					return null;
 				}
 				else {
 					// Should have only one more lookup
 					assertEquals(2, lookups);
-					assertThat((Object) path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH);
+					assertThat(path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH);
 					return null;
 				}
 			}
@@ -187,8 +187,8 @@ public class SQLErrorCodesFactoryTests {
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
 		assertThat(sf.getErrorCodes("XX").getBadSqlGrammarCodes().length == 0).isTrue();
 		assertEquals(2, sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length);
-		assertThat((Object) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]).isEqualTo("1");
-		assertThat((Object) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]).isEqualTo("2");
+		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]).isEqualTo("1");
+		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]).isEqualTo("2");
 	}
 
 	@Test
@@ -230,7 +230,7 @@ public class SQLErrorCodesFactoryTests {
 		assertEquals(1, sf.getErrorCodes("Oracle").getCustomTranslations().length);
 		CustomSQLErrorCodesTranslation translation =
 				sf.getErrorCodes("Oracle").getCustomTranslations()[0];
-		assertThat((Object) translation.getExceptionClass()).isEqualTo(CustomErrorCodeException.class);
+		assertThat(translation.getExceptionClass()).isEqualTo(CustomErrorCodeException.class);
 		assertEquals(1, translation.getErrorCodes().length);
 	}
 

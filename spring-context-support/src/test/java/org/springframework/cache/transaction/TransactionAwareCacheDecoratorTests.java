@@ -56,7 +56,7 @@ public class TransactionAwareCacheDecoratorTests {
 	public void regularOperationsOnTarget() {
 		Cache target = new ConcurrentMapCache("testCache");
 		Cache cache = new TransactionAwareCacheDecorator(target);
-		assertThat((Object) cache.getName()).isEqualTo(target.getName());
+		assertThat(cache.getName()).isEqualTo(target.getName());
 		assertThat(cache.getNativeCache()).isEqualTo(target.getNativeCache());
 
 		Object key = new Object();

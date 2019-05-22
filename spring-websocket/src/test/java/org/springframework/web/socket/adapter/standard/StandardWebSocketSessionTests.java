@@ -97,7 +97,7 @@ public class StandardWebSocketSessionTests {
 
 		reset(nativeSession);
 
-		assertThat((Object) session.getAcceptedProtocol()).isEqualTo(protocol);
+		assertThat(session.getAcceptedProtocol()).isEqualTo(protocol);
 		verifyNoMoreInteractions(nativeSession);
 	}
 

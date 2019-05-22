@@ -104,7 +104,7 @@ public class BootstrapUtilsTests {
 		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(testClass, delegate);
 		TestContextBootstrapper bootstrapper = resolveTestContextBootstrapper(bootstrapContext);
 		assertNotNull(bootstrapper);
-		assertThat((Object) bootstrapper.getClass()).isEqualTo(expectedBootstrapper);
+		assertThat(bootstrapper.getClass()).isEqualTo(expectedBootstrapper);
 	}
 
 	// -------------------------------------------------------------------

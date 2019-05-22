@@ -54,8 +54,8 @@ public class DelegatingNavigationHandlerTests {
 		beanFactory.addBean("jsfNavigationHandler", targetHandler);
 
 		delNavHandler.handleNavigation(facesContext, "fromAction", "myViewId");
-		assertThat((Object) targetHandler.lastFromAction).isEqualTo("fromAction");
-		assertThat((Object) targetHandler.lastOutcome).isEqualTo("myViewId");
+		assertThat(targetHandler.lastFromAction).isEqualTo("fromAction");
+		assertThat(targetHandler.lastOutcome).isEqualTo("myViewId");
 	}
 
 	@Test
@@ -64,12 +64,12 @@ public class DelegatingNavigationHandlerTests {
 		beanFactory.addBean("jsfNavigationHandler", targetHandler);
 
 		delNavHandler.handleNavigation(facesContext, "fromAction", "myViewId");
-		assertThat((Object) targetHandler.lastFromAction).isEqualTo("fromAction");
-		assertThat((Object) targetHandler.lastOutcome).isEqualTo("myViewId");
+		assertThat(targetHandler.lastFromAction).isEqualTo("fromAction");
+		assertThat(targetHandler.lastOutcome).isEqualTo("myViewId");
 
 		// Original handler must have been invoked as well...
-		assertThat((Object) origNavHandler.lastFromAction).isEqualTo("fromAction");
-		assertThat((Object) origNavHandler.lastOutcome).isEqualTo("myViewId");
+		assertThat(origNavHandler.lastFromAction).isEqualTo("fromAction");
+		assertThat(origNavHandler.lastOutcome).isEqualTo("myViewId");
 	}
 
 

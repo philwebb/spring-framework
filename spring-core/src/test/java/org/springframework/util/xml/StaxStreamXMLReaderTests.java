@@ -50,9 +50,9 @@ public class StaxStreamXMLReaderTests extends AbstractStaxXMLReaderTestCase {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(CONTENT));
 		streamReader.nextTag();  // skip to root
-		assertThat((Object) streamReader.getName()).as("Invalid element").isEqualTo(new QName("http://springframework.org/spring-ws", "root"));
+		assertThat(streamReader.getName()).as("Invalid element").isEqualTo(new QName("http://springframework.org/spring-ws", "root"));
 		streamReader.nextTag();  // skip to child
-		assertThat((Object) streamReader.getName()).as("Invalid element").isEqualTo(new QName("http://springframework.org/spring-ws", "child"));
+		assertThat(streamReader.getName()).as("Invalid element").isEqualTo(new QName("http://springframework.org/spring-ws", "child"));
 		StaxStreamXMLReader xmlReader = new StaxStreamXMLReader(streamReader);
 
 		ContentHandler contentHandler = mock(ContentHandler.class);

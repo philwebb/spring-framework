@@ -133,7 +133,7 @@ public class ExtractingResponseErrorHandlerTests {
 		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() ->
 				this.errorHandler.handleError(this.response))
 			.satisfies(ex -> {
-				assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 				assertArrayEquals(body, ex.getResponseBodyAsByteArray());
 			});
 	}

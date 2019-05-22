@@ -85,7 +85,7 @@ public class JCacheJavaConfigTests extends AbstractJCacheAnnotationTests {
 
 		DefaultJCacheOperationSource cos = context.getBean(DefaultJCacheOperationSource.class);
 		assertNotNull(cos.getCacheResolver());
-		assertThat((Object) cos.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
+		assertThat(cos.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
 		assertSame(context.getBean(CacheManager.class),
 				((SimpleCacheResolver) cos.getCacheResolver()).getCacheManager());
 		assertNull(cos.getExceptionCacheResolver());

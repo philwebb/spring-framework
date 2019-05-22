@@ -54,18 +54,18 @@ public class RequestAndSessionScopedBeanTests {
 		HttpServletRequest request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 		TestBean target = (TestBean) wac.getBean(targetBeanName);
-		assertThat((Object) target.getName()).isEqualTo("abc");
+		assertThat(target.getName()).isEqualTo("abc");
 		assertSame(target, request.getAttribute(targetBeanName));
 
 		TestBean target2 = (TestBean) wac.getBean(targetBeanName);
-		assertThat((Object) target2.getName()).isEqualTo("abc");
+		assertThat(target2.getName()).isEqualTo("abc");
 		assertSame(target2, target);
 		assertSame(target2, request.getAttribute(targetBeanName));
 
 		request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 		TestBean target3 = (TestBean) wac.getBean(targetBeanName);
-		assertThat((Object) target3.getName()).isEqualTo("abc");
+		assertThat(target3.getName()).isEqualTo("abc");
 		assertSame(target3, request.getAttribute(targetBeanName));
 		assertNotSame(target3, target);
 
@@ -89,7 +89,7 @@ public class RequestAndSessionScopedBeanTests {
 		wac.refresh();
 
 		TestBean target = (TestBean) wac.getBean(targetBeanName);
-		assertThat((Object) target.getName()).isEqualTo("abc");
+		assertThat(target.getName()).isEqualTo("abc");
 		assertSame(target, request.getSession().getAttribute(targetBeanName));
 
 		RequestContextHolder.setRequestAttributes(null);

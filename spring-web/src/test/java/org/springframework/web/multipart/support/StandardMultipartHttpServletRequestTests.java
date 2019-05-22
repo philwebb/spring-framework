@@ -49,7 +49,7 @@ public class StandardMultipartHttpServletRequestTests {
 
 		MultipartFile multipartFile = request.getFile("file");
 		assertNotNull(multipartFile);
-		assertThat((Object) multipartFile.getOriginalFilename()).isEqualTo("myFile.txt");
+		assertThat(multipartFile.getOriginalFilename()).isEqualTo("myFile.txt");
 	}
 
 	@Test  // SPR-13319
@@ -59,7 +59,7 @@ public class StandardMultipartHttpServletRequestTests {
 
 		MultipartFile multipartFile = request.getFile("file");
 		assertNotNull(multipartFile);
-		assertThat((Object) multipartFile.getOriginalFilename()).isEqualTo("foo-ä-€.html");
+		assertThat(multipartFile.getOriginalFilename()).isEqualTo("foo-ä-€.html");
 	}
 
 	@Test  // SPR-15205
@@ -69,7 +69,7 @@ public class StandardMultipartHttpServletRequestTests {
 
 		MultipartFile multipartFile = request.getFile("file");
 		assertNotNull(multipartFile);
-		assertThat((Object) multipartFile.getOriginalFilename()).isEqualTo("Declaração.pdf");
+		assertThat(multipartFile.getOriginalFilename()).isEqualTo("Declaração.pdf");
 	}
 
 	@Test

@@ -136,7 +136,7 @@ public class DefaultRequestToViewNameTranslatorTests {
 	private void assertViewName(String expectedViewName) {
 		String actualViewName = this.translator.getViewName(this.request);
 		assertNotNull(actualViewName);
-		assertThat((Object) actualViewName).as("Did not get the expected viewName from the DefaultRequestToViewNameTranslator.getViewName(..)").isEqualTo(expectedViewName);
+		assertThat(actualViewName).as("Did not get the expected viewName from the DefaultRequestToViewNameTranslator.getViewName(..)").isEqualTo(expectedViewName);
 	}
 
 }

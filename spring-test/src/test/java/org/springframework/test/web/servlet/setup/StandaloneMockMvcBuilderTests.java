@@ -65,7 +65,7 @@ public class StandaloneMockMvcBuilderTests {
 		HandlerExecutionChain chain = hm.getHandler(request);
 
 		assertNotNull(chain);
-		assertThat((Object) ((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("handleWithPlaceholders");
+		assertThat(((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("handleWithPlaceholders");
 	}
 
 	@Test  // SPR-13637
@@ -79,7 +79,7 @@ public class StandaloneMockMvcBuilderTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/persons");
 		HandlerExecutionChain chain = hm.getHandler(request);
 		assertNotNull(chain);
-		assertThat((Object) ((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("persons");
+		assertThat(((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("persons");
 
 		request = new MockHttpServletRequest("GET", "/persons.xml");
 		chain = hm.getHandler(request);
@@ -91,7 +91,7 @@ public class StandaloneMockMvcBuilderTests {
 		TestStandaloneMockMvcBuilder builder = new TestStandaloneMockMvcBuilder(new PlaceholderController());
 		builder.addPlaceholderValue("sys.login.ajax", "/foo");
 		WebApplicationContext  wac = builder.initWebAppContext();
-		assertThat((Object) WebApplicationContextUtils.getRequiredWebApplicationContext(wac.getServletContext())).isEqualTo(wac);
+		assertThat(WebApplicationContextUtils.getRequiredWebApplicationContext(wac.getServletContext())).isEqualTo(wac);
 	}
 
 	@Test

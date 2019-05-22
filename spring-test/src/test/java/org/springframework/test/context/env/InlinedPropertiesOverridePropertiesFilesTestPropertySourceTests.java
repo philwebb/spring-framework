@@ -51,8 +51,8 @@ public class InlinedPropertiesOverridePropertiesFilesTestPropertySourceTests {
 
 	@Test
 	public void inlinedPropertyOverridesValueFromPropertiesFile() {
-		assertThat((Object) env.getProperty("explicit")).isEqualTo("inlined");
-		assertThat((Object) this.explicit).isEqualTo("inlined");
+		assertThat(env.getProperty("explicit")).isEqualTo("inlined");
+		assertThat(this.explicit).isEqualTo("inlined");
 	}
 
 

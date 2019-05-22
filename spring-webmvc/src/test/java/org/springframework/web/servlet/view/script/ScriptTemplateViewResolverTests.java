@@ -33,10 +33,10 @@ public class ScriptTemplateViewResolverTests {
 	@Test
 	public void viewClass() throws Exception {
 		ScriptTemplateViewResolver resolver = new ScriptTemplateViewResolver();
-		assertThat((Object) resolver.requiredViewClass()).isEqualTo(ScriptTemplateView.class);
+		assertThat(resolver.requiredViewClass()).isEqualTo(ScriptTemplateView.class);
 		DirectFieldAccessor viewAccessor = new DirectFieldAccessor(resolver);
 		Class<?> viewClass = (Class<?>) viewAccessor.getPropertyValue("viewClass");
-		assertThat((Object) viewClass).isEqualTo(ScriptTemplateView.class);
+		assertThat(viewClass).isEqualTo(ScriptTemplateView.class);
 	}
 
 }

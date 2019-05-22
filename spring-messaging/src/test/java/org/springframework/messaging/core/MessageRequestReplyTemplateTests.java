@@ -62,7 +62,7 @@ public class MessageRequestReplyTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		Message<?> actual = this.template.sendAndReceive(requestMessage);
 
-		assertThat((Object) this.template.destination).isEqualTo("home");
+		assertThat(this.template.destination).isEqualTo("home");
 		assertSame(requestMessage, this.template.requestMessage);
 		assertSame(responseMessage, actual);
 	}
@@ -80,7 +80,7 @@ public class MessageRequestReplyTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		Message<?> actual = this.template.sendAndReceive("somewhere", requestMessage);
 
-		assertThat((Object) this.template.destination).isEqualTo("somewhere");
+		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertSame(requestMessage, this.template.requestMessage);
 		assertSame(responseMessage, actual);
 	}
@@ -92,7 +92,7 @@ public class MessageRequestReplyTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String response = this.template.convertSendAndReceive("request", String.class);
 
-		assertThat((Object) this.template.destination).isEqualTo("home");
+		assertThat(this.template.destination).isEqualTo("home");
 		assertSame("request", this.template.requestMessage.getPayload());
 		assertSame("response", response);
 	}
@@ -103,7 +103,7 @@ public class MessageRequestReplyTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String response = this.template.convertSendAndReceive("somewhere", "request", String.class);
 
-		assertThat((Object) this.template.destination).isEqualTo("somewhere");
+		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertSame("request", this.template.requestMessage.getPayload());
 		assertSame("response", response);
 	}
@@ -114,7 +114,7 @@ public class MessageRequestReplyTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String response = this.template.convertSendAndReceive("somewhere", "request", this.headers, String.class);
 
-		assertThat((Object) this.template.destination).isEqualTo("somewhere");
+		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.requestMessage.getHeaders().get("key")).isEqualTo("value");
 		assertSame("request", this.template.requestMessage.getPayload());
 		assertSame("response", response);
@@ -127,7 +127,7 @@ public class MessageRequestReplyTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String response = this.template.convertSendAndReceive("request", String.class, this.postProcessor);
 
-		assertThat((Object) this.template.destination).isEqualTo("home");
+		assertThat(this.template.destination).isEqualTo("home");
 		assertSame("request", this.template.requestMessage.getPayload());
 		assertSame("response", response);
 		assertSame(this.postProcessor.getMessage(), this.template.requestMessage);
@@ -139,7 +139,7 @@ public class MessageRequestReplyTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		String response = this.template.convertSendAndReceive("somewhere", "request", String.class, this.postProcessor);
 
-		assertThat((Object) this.template.destination).isEqualTo("somewhere");
+		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertSame("request", this.template.requestMessage.getPayload());
 		assertSame("response", response);
 		assertSame(this.postProcessor.getMessage(), this.template.requestMessage);
@@ -152,7 +152,7 @@ public class MessageRequestReplyTemplateTests {
 		String response = this.template.convertSendAndReceive("somewhere", "request", this.headers,
 				String.class, this.postProcessor);
 
-		assertThat((Object) this.template.destination).isEqualTo("somewhere");
+		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.requestMessage.getHeaders().get("key")).isEqualTo("value");
 		assertSame("request", this.template.requestMessage.getPayload());
 		assertSame("response", response);

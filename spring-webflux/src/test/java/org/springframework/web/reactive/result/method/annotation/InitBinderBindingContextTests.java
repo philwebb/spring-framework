@@ -63,7 +63,7 @@ public class InitBinderBindingContextTests {
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, null);
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
+		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class InitBinderBindingContextTests {
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("id");
+		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("id");
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class InitBinderBindingContextTests {
 		WebDataBinder dataBinder = context.createDataBinder(exchange, null, "foo");
 
 		assertNotNull(dataBinder.getDisallowedFields());
-		assertThat((Object) dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
+		assertThat(dataBinder.getDisallowedFields()[0]).isEqualTo("requestParam-22");
 	}
 
 

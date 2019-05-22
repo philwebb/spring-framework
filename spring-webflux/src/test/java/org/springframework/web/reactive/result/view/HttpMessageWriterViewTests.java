@@ -57,7 +57,7 @@ public class HttpMessageWriterViewTests {
 
 	@Test
 	public void supportedMediaTypes() throws Exception {
-		assertThat((Object) this.view.getSupportedMediaTypes()).isEqualTo(Arrays.asList(
+		assertThat(this.view.getSupportedMediaTypes()).isEqualTo(Arrays.asList(
 				MediaType.APPLICATION_JSON,
 				MediaType.parseMediaType("application/*+json")));
 	}
@@ -69,7 +69,7 @@ public class HttpMessageWriterViewTests {
 		this.model.addAttribute("foo2", Collections.singleton("bar2"));
 		this.model.addAttribute("foo3", Collections.singleton("bar3"));
 
-		assertThat((Object) doRender()).isEqualTo("[\"bar2\"]");
+		assertThat(doRender()).isEqualTo("[\"bar2\"]");
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class HttpMessageWriterViewTests {
 		this.view.setModelKeys(Collections.singleton("foo2"));
 		this.model.addAttribute("foo1", "bar1");
 
-		assertThat((Object) doRender()).isEqualTo("");
+		assertThat(doRender()).isEqualTo("");
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class HttpMessageWriterViewTests {
 		this.view.setModelKeys(new HashSet<>(Collections.singletonList("foo1")));
 		this.model.addAttribute("foo1", "bar1");
 
-		assertThat((Object) doRender()).isEqualTo("");
+		assertThat(doRender()).isEqualTo("");
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class HttpMessageWriterViewTests {
 		this.model.addAttribute("foo2", Collections.singleton("bar2"));
 		this.model.addAttribute("foo3", Collections.singleton("bar3"));
 
-		assertThat((Object) doRender()).isEqualTo("{\"foo1\":[\"bar1\"],\"foo2\":[\"bar2\"]}");
+		assertThat(doRender()).isEqualTo("{\"foo1\":[\"bar1\"],\"foo2\":[\"bar2\"]}");
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class HttpMessageWriterViewTests {
 		this.view.render(this.model, MediaType.APPLICATION_JSON, exchange).block(Duration.ZERO);
 
 		StepVerifier.create(this.exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertThat((Object) dumpString(buf)).isEqualTo("{\"foo\":\"f\",\"bar\":\"b\"}"))
+				.consumeNextWith(buf -> assertThat(dumpString(buf)).isEqualTo("{\"foo\":\"f\",\"bar\":\"b\"}"))
 				.expectComplete()
 				.verify();
 	}

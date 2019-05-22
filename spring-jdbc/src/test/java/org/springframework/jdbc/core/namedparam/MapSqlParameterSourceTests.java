@@ -58,19 +58,19 @@ public class MapSqlParameterSourceTests {
 	@Test
 	public void toStringShowsParameterDetails() {
 		MapSqlParameterSource source = new MapSqlParameterSource("FOO", new SqlParameterValue(Types.NUMERIC, "Foo"));
-		assertThat((Object) source.toString()).isEqualTo("MapSqlParameterSource {FOO=Foo (type:NUMERIC)}");
+		assertThat(source.toString()).isEqualTo("MapSqlParameterSource {FOO=Foo (type:NUMERIC)}");
 	}
 
 	@Test
 	public void toStringShowsCustomSqlType() {
 		MapSqlParameterSource source = new MapSqlParameterSource("FOO", new SqlParameterValue(Integer.MAX_VALUE, "Foo"));
-		assertThat((Object) source.toString()).isEqualTo(("MapSqlParameterSource {FOO=Foo (type:" + Integer.MAX_VALUE + ")}"));
+		assertThat(source.toString()).isEqualTo(("MapSqlParameterSource {FOO=Foo (type:" + Integer.MAX_VALUE + ")}"));
 	}
 
 	@Test
 	public void toStringDoesNotShowTypeUnknown() {
 		MapSqlParameterSource source = new MapSqlParameterSource("FOO", new SqlParameterValue(JdbcUtils.TYPE_UNKNOWN, "Foo"));
-		assertThat((Object) source.toString()).isEqualTo("MapSqlParameterSource {FOO=Foo}");
+		assertThat(source.toString()).isEqualTo("MapSqlParameterSource {FOO=Foo}");
 	}
 
 }

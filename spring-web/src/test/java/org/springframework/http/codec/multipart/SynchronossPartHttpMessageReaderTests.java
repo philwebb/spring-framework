@@ -92,20 +92,20 @@ public class SynchronossPartHttpMessageReaderTests {
 		Part part = parts.getFirst("fooPart");
 		boolean condition1 = part instanceof FilePart;
 		assertThat(condition1).isTrue();
-		assertThat((Object) part.name()).isEqualTo("fooPart");
-		assertThat((Object) ((FilePart) part).filename()).isEqualTo("foo.txt");
+		assertThat(part.name()).isEqualTo("fooPart");
+		assertThat(((FilePart) part).filename()).isEqualTo("foo.txt");
 		DataBuffer buffer = DataBufferUtils.join(part.content()).block();
 		assertEquals(12, buffer.readableByteCount());
 		byte[] byteContent = new byte[12];
 		buffer.read(byteContent);
-		assertThat((Object) new String(byteContent)).isEqualTo("Lorem Ipsum.");
+		assertThat(new String(byteContent)).isEqualTo("Lorem Ipsum.");
 
 		assertThat(parts.containsKey("barPart")).isTrue();
 		part = parts.getFirst("barPart");
 		boolean condition = part instanceof FormFieldPart;
 		assertThat(condition).isTrue();
-		assertThat((Object) part.name()).isEqualTo("barPart");
-		assertThat((Object) ((FormFieldPart) part).value()).isEqualTo("bar");
+		assertThat(part.name()).isEqualTo("barPart");
+		assertThat(((FormFieldPart) part).value()).isEqualTo("bar");
 	}
 
 	@Test // SPR-16545

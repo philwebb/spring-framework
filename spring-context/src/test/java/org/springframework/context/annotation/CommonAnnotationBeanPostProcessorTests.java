@@ -118,7 +118,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		rbd.setFactoryMethodName("create");
 		bf.registerBeanDefinition("bean", rbd);
 
-		assertThat((Object) bf.getBean("bean").toString()).isEqualTo("null");
+		assertThat(bf.getBean("bean").toString()).isEqualTo("null");
 		bf.destroySingletons();
 	}
 
@@ -244,7 +244,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		String[] depBeans = bf.getDependenciesForBean("annotatedBean");
 		assertEquals(1, depBeans.length);
-		assertThat((Object) depBeans[0]).isEqualTo("testBean4");
+		assertThat(depBeans[0]).isEqualTo("testBean4");
 	}
 
 	@Test
@@ -417,7 +417,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 			boolean condition = ex.getRootCause() instanceof NoSuchBeanDefinitionException;
 			assertThat(condition).isTrue();
 			NoSuchBeanDefinitionException innerEx = (NoSuchBeanDefinitionException) ex.getRootCause();
-			assertThat((Object) innerEx.getBeanName()).isEqualTo("testBean9");
+			assertThat(innerEx.getBeanName()).isEqualTo("testBean9");
 		}
 
 		bf.destroySingletons();
@@ -477,7 +477,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bean.testBean.setName("notLazyAnymore");
 		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
-		assertThat((Object) tb.getName()).isEqualTo("notLazyAnymore");
+		assertThat(tb.getName()).isEqualTo("notLazyAnymore");
 	}
 
 	@Test
@@ -495,7 +495,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bean.testBean.setName("notLazyAnymore");
 		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
-		assertThat((Object) tb.getName()).isEqualTo("notLazyAnymore");
+		assertThat(tb.getName()).isEqualTo("notLazyAnymore");
 	}
 
 	@Test
@@ -513,7 +513,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bean.testBean.setName("notLazyAnymore");
 		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
-		assertThat((Object) tb.getName()).isEqualTo("notLazyAnymore");
+		assertThat(tb.getName()).isEqualTo("notLazyAnymore");
 	}
 
 

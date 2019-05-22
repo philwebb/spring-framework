@@ -144,9 +144,9 @@ public class WebSocketStompClientTests {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		StompHeaders headers = StompHeaders.readOnlyStompHeaders(accessor.toNativeHeaderMap());
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.SEND);
-		assertThat((Object) headers.getFirst("a")).isEqualTo("alpha");
-		assertThat((Object) new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo("Message payload");
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.SEND);
+		assertThat(headers.getFirst("a")).isEqualTo("alpha");
+		assertThat(new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo("Message payload");
 	}
 
 	@Test
@@ -169,9 +169,9 @@ public class WebSocketStompClientTests {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		StompHeaders headers = StompHeaders.readOnlyStompHeaders(accessor.toNativeHeaderMap());
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.SEND);
-		assertThat((Object) headers.getFirst("a")).isEqualTo("alpha");
-		assertThat((Object) new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo("Message payload");
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.SEND);
+		assertThat(headers.getFirst("a")).isEqualTo("alpha");
+		assertThat(new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo("Message payload");
 	}
 
 	@Test
@@ -187,9 +187,9 @@ public class WebSocketStompClientTests {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		StompHeaders headers = StompHeaders.readOnlyStompHeaders(accessor.toNativeHeaderMap());
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.SEND);
-		assertThat((Object) headers.getFirst("a")).isEqualTo("alpha");
-		assertThat((Object) new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo("Message payload");
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.SEND);
+		assertThat(headers.getFirst("a")).isEqualTo("alpha");
+		assertThat(new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo("Message payload");
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class WebSocketStompClientTests {
 		verify(this.webSocketSession).sendMessage(textMessageCaptor.capture());
 		TextMessage textMessage = textMessageCaptor.getValue();
 		assertNotNull(textMessage);
-		assertThat((Object) textMessage.getPayload()).isEqualTo("SEND\ndestination:/topic/foo\ncontent-length:7\n\npayload\0");
+		assertThat(textMessage.getPayload()).isEqualTo("SEND\ndestination:/topic/foo\ncontent-length:7\n\npayload\0");
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class WebSocketStompClientTests {
 		verify(this.webSocketSession).sendMessage(binaryMessageCaptor.capture());
 		BinaryMessage binaryMessage = binaryMessageCaptor.getValue();
 		assertNotNull(binaryMessage);
-		assertThat((Object) new String(binaryMessage.getPayload().array(), StandardCharsets.UTF_8)).isEqualTo("SEND\ndestination:/b\ncontent-type:application/octet-stream\ncontent-length:7\n\npayload\0");
+		assertThat(new String(binaryMessage.getPayload().array(), StandardCharsets.UTF_8)).isEqualTo("SEND\ndestination:/b\ncontent-type:application/octet-stream\ncontent-length:7\n\npayload\0");
 	}
 
 	@Test

@@ -46,7 +46,7 @@ public class ConfigClassesAndProfileResolverWithCustomDefaultsMetaConfigWithOver
 
 	@Test
 	public void foo() {
-		assertThat((Object) foo).isEqualTo("Local Dev Foo");
+		assertThat(foo).isEqualTo("Local Dev Foo");
 	}
 }
 

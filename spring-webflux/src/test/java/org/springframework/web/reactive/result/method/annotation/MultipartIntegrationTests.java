@@ -86,7 +86,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 		StepVerifier
 				.create(result)
-				.consumeNextWith(response -> assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK))
+				.consumeNextWith(response -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK))
 				.verifyComplete();
 	}
 
@@ -100,7 +100,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertThat((Object) body).isEqualTo("Map[[fieldPart],[fileParts:foo.txt,fileParts:logo.png],[jsonPart]]"))
+				.consumeNextWith(body -> assertThat(body).isEqualTo("Map[[fieldPart],[fileParts:foo.txt,fileParts:logo.png],[jsonPart]]"))
 				.verifyComplete();
 	}
 
@@ -114,7 +114,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertThat((Object) body).isEqualTo("[fieldPart,fileParts:foo.txt,fileParts:logo.png,jsonPart]"))
+				.consumeNextWith(body -> assertThat(body).isEqualTo("[fieldPart,fileParts:foo.txt,fileParts:logo.png,jsonPart]"))
 				.verifyComplete();
 	}
 
@@ -128,7 +128,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertThat((Object) body).isEqualTo("[fileParts:foo.txt,fileParts:logo.png]"))
+				.consumeNextWith(body -> assertThat(body).isEqualTo("[fileParts:foo.txt,fileParts:logo.png]"))
 				.verifyComplete();
 	}
 
@@ -142,7 +142,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertThat((Object) body).isEqualTo("[fileParts:foo.txt]"))
+				.consumeNextWith(body -> assertThat(body).isEqualTo("[fileParts:foo.txt]"))
 				.verifyComplete();
 	}
 
@@ -156,7 +156,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertThat((Object) body).isEqualTo("FormBean[fieldValue,[fileParts:foo.txt,fileParts:logo.png]]"))
+				.consumeNextWith(body -> assertThat(body).isEqualTo("FormBean[fieldValue,[fileParts:foo.txt,fileParts:logo.png]]"))
 				.verifyComplete();
 	}
 
@@ -190,11 +190,11 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				@RequestPart("fileParts") FilePart fileParts,
 				@RequestPart("jsonPart") Mono<Person> personMono) {
 
-			assertThat((Object) fieldPart.value()).isEqualTo("fieldValue");
-			assertThat((Object) partDescription(fileParts)).isEqualTo("fileParts:foo.txt");
+			assertThat(fieldPart.value()).isEqualTo("fieldValue");
+			assertThat(partDescription(fileParts)).isEqualTo("fileParts:foo.txt");
 
 			StepVerifier.create(personMono)
-					.consumeNextWith(p -> assertThat((Object) p.getName()).isEqualTo("Jason"))
+					.consumeNextWith(p -> assertThat(p.getName()).isEqualTo("Jason"))
 					.verifyComplete();
 		}
 

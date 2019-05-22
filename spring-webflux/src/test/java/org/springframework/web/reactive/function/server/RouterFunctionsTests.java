@@ -135,7 +135,7 @@ public class RouterFunctionsTests {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
 		result.handle(httpRequest, httpResponse).block();
-		assertThat((Object) httpResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+		assertThat(httpResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class RouterFunctionsTests {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
 		result.handle(httpRequest, httpResponse).block();
-		assertThat((Object) httpResponse.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(httpResponse.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class RouterFunctionsTests {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
 		result.handle(httpRequest, httpResponse).block();
-		assertThat((Object) httpResponse.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(httpResponse.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class RouterFunctionsTests {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
 		result.handle(httpRequest, httpResponse).block();
-		assertThat((Object) httpResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(httpResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class RouterFunctionsTests {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
 		result.handle(httpRequest, httpResponse).block();
-		assertThat((Object) httpResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(httpResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -253,7 +253,7 @@ public class RouterFunctionsTests {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
 		result.handle(httpRequest, httpResponse).block();
-		assertThat((Object) httpResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(httpResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public class RouterFunctionsTests {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
 		result.handle(httpRequest, httpResponse).block();
-		assertThat((Object) httpResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+		assertThat(httpResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
 
 		assertThat(filterInvoked.get()).isTrue();
 	}

@@ -53,7 +53,7 @@ public class UrlBasedCorsConfigurationSourceTests {
 		assertNull(this.configSource.getCorsConfiguration(exchange));
 
 		exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/bar/test.html"));
-		assertThat((Object) this.configSource.getCorsConfiguration(exchange)).isEqualTo(config);
+		assertThat(this.configSource.getCorsConfiguration(exchange)).isEqualTo(config);
 	}
 
 }

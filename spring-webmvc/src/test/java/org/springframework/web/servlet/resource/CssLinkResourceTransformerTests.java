@@ -94,7 +94,7 @@ public class CssLinkResourceTransformerTests {
 		TransformedResource actual = (TransformedResource) this.transformerChain.transform(this.request, css);
 		String result = new String(actual.getByteArray(), StandardCharsets.UTF_8);
 		result = StringUtils.deleteAny(result, "\r");
-		assertThat((Object) result).isEqualTo(expected);
+		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class CssLinkResourceTransformerTests {
 		TransformedResource transformedResource = (TransformedResource) chain.transform(this.request, resource);
 		String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 		result = StringUtils.deleteAny(result, "\r");
-		assertThat((Object) result).isEqualTo(expected);
+		assertThat(result).isEqualTo(expected);
 
 		List<Resource> locations = Collections.singletonList(resource);
 		Mockito.verify(mockChain, Mockito.never()).resolveUrlPath("https://example.org/fonts/css", locations);
@@ -163,7 +163,7 @@ public class CssLinkResourceTransformerTests {
 		TransformedResource actual = (TransformedResource) this.transformerChain.transform(this.request, css);
 		String result = new String(actual.getByteArray(), StandardCharsets.UTF_8);
 		result = StringUtils.deleteAny(result, "\r");
-		assertThat((Object) result).isEqualTo(expected);
+		assertThat(result).isEqualTo(expected);
 	}
 
 	private Resource getResource(String filePath) {

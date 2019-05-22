@@ -80,7 +80,7 @@ public class DefaultClientResponseTests {
 		HttpStatus status = HttpStatus.CONTINUE;
 		given(mockResponse.getStatusCode()).willReturn(status);
 
-		assertThat((Object) defaultClientResponse.statusCode()).isEqualTo(status);
+		assertThat(defaultClientResponse.statusCode()).isEqualTo(status);
 	}
 
 	@Test
@@ -106,9 +106,9 @@ public class DefaultClientResponseTests {
 		given(mockResponse.getHeaders()).willReturn(httpHeaders);
 
 		ClientResponse.Headers headers = defaultClientResponse.headers();
-		assertThat((Object) headers.contentLength()).isEqualTo(OptionalLong.of(contentLength));
-		assertThat((Object) headers.contentType()).isEqualTo(Optional.of(contentType));
-		assertThat((Object) headers.asHttpHeaders()).isEqualTo(httpHeaders);
+		assertThat(headers.contentLength()).isEqualTo(OptionalLong.of(contentLength));
+		assertThat(headers.contentType()).isEqualTo(Optional.of(contentType));
+		assertThat(headers.asHttpHeaders()).isEqualTo(httpHeaders);
 	}
 
 	@Test
@@ -136,7 +136,7 @@ public class DefaultClientResponseTests {
 		given(mockExchangeStrategies.messageReaders()).willReturn(messageReaders);
 
 		Mono<String> resultMono = defaultClientResponse.body(toMono(String.class));
-		assertThat((Object) resultMono.block()).isEqualTo("foo");
+		assertThat(resultMono.block()).isEqualTo("foo");
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class DefaultClientResponseTests {
 		given(mockExchangeStrategies.messageReaders()).willReturn(messageReaders);
 
 		Mono<String> resultMono = defaultClientResponse.bodyToMono(String.class);
-		assertThat((Object) resultMono.block()).isEqualTo("foo");
+		assertThat(resultMono.block()).isEqualTo("foo");
 	}
 
 	@Test
@@ -170,7 +170,7 @@ public class DefaultClientResponseTests {
 		Mono<String> resultMono =
 				defaultClientResponse.bodyToMono(new ParameterizedTypeReference<String>() {
 				});
-		assertThat((Object) resultMono.block()).isEqualTo("foo");
+		assertThat(resultMono.block()).isEqualTo("foo");
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class DefaultClientResponseTests {
 
 		Flux<String> resultFlux = defaultClientResponse.bodyToFlux(String.class);
 		Mono<List<String>> result = resultFlux.collectList();
-		assertThat((Object) result.block()).isEqualTo(Collections.singletonList("foo"));
+		assertThat(result.block()).isEqualTo(Collections.singletonList("foo"));
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class DefaultClientResponseTests {
 				defaultClientResponse.bodyToFlux(new ParameterizedTypeReference<String>() {
 				});
 		Mono<List<String>> result = resultFlux.collectList();
-		assertThat((Object) result.block()).isEqualTo(Collections.singletonList("foo"));
+		assertThat(result.block()).isEqualTo(Collections.singletonList("foo"));
 	}
 
 	@Test
@@ -222,10 +222,10 @@ public class DefaultClientResponseTests {
 		given(mockExchangeStrategies.messageReaders()).willReturn(messageReaders);
 
 		ResponseEntity<String> result = defaultClientResponse.toEntity(String.class).block();
-		assertThat((Object) result.getBody()).isEqualTo("foo");
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("foo");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
-		assertThat((Object) result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
@@ -247,11 +247,11 @@ public class DefaultClientResponseTests {
 		given(mockExchangeStrategies.messageReaders()).willReturn(messageReaders);
 
 		ResponseEntity<String> result = defaultClientResponse.toEntity(String.class).block();
-		assertThat((Object) result.getBody()).isEqualTo("foo");
+		assertThat(result.getBody()).isEqualTo("foo");
 		assertThatIllegalArgumentException().isThrownBy(
 				result::getStatusCode);
 		assertEquals(999, result.getStatusCodeValue());
-		assertThat((Object) result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
@@ -269,10 +269,10 @@ public class DefaultClientResponseTests {
 		ResponseEntity<String> result = defaultClientResponse.toEntity(
 				new ParameterizedTypeReference<String>() {
 				}).block();
-		assertThat((Object) result.getBody()).isEqualTo("foo");
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo("foo");
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
-		assertThat((Object) result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
@@ -288,10 +288,10 @@ public class DefaultClientResponseTests {
 		given(mockExchangeStrategies.messageReaders()).willReturn(messageReaders);
 
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(String.class).block();
-		assertThat((Object) result.getBody()).isEqualTo(Collections.singletonList("foo"));
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
-		assertThat((Object) result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
@@ -313,11 +313,11 @@ public class DefaultClientResponseTests {
 		given(mockExchangeStrategies.messageReaders()).willReturn(messageReaders);
 
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(String.class).block();
-		assertThat((Object) result.getBody()).isEqualTo(Collections.singletonList("foo"));
+		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
 		assertThatIllegalArgumentException().isThrownBy(
 				result::getStatusCode);
 		assertEquals(999, result.getStatusCodeValue());
-		assertThat((Object) result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
@@ -336,10 +336,10 @@ public class DefaultClientResponseTests {
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(
 				new ParameterizedTypeReference<String>() {
 				}).block();
-		assertThat((Object) result.getBody()).isEqualTo(Collections.singletonList("foo"));
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
-		assertThat((Object) result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
 

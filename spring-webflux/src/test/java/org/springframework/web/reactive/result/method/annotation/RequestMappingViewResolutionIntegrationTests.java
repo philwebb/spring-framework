@@ -66,7 +66,7 @@ public class RequestMappingViewResolutionIntegrationTests extends AbstractReques
 	@Test
 	public void html() throws Exception {
 		String expected = "<html><body>Hello: Jason!</body></html>";
-		assertThat((Object) performGet("/html?name=Jason", MediaType.TEXT_HTML, String.class).getBody()).isEqualTo(expected);
+		assertThat(performGet("/html?name=Jason", MediaType.TEXT_HTML, String.class).getBody()).isEqualTo(expected);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class RequestMappingViewResolutionIntegrationTests extends AbstractReques
 		RequestEntity<Void> request = RequestEntity.get(uri).ifNoneMatch("\"deadb33f8badf00d\"").build();
 		ResponseEntity<String> response = getRestTemplate().exchange(request, String.class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		assertNull(response.getBody());
 	}
 
@@ -93,8 +93,8 @@ public class RequestMappingViewResolutionIntegrationTests extends AbstractReques
 		RequestEntity<Void> request = RequestEntity.get(uri).accept(MediaType.ALL).build();
 		ResponseEntity<Void> response = new RestTemplate(factory).exchange(request, Void.class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.SEE_OTHER);
-		assertThat((Object) response.getHeaders().getLocation().toString()).isEqualTo("/");
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SEE_OTHER);
+		assertThat(response.getHeaders().getLocation().toString()).isEqualTo("/");
 	}
 
 

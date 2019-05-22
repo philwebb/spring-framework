@@ -36,10 +36,10 @@ public class ParamsRequestConditionTests {
 
 	@Test
 	public void paramEquals() {
-		assertThat((Object) new ParamsRequestCondition("foo")).isEqualTo(new ParamsRequestCondition("foo"));
+		assertThat(new ParamsRequestCondition("foo")).isEqualTo(new ParamsRequestCondition("foo"));
 		assertThat(new ParamsRequestCondition("foo").equals(new ParamsRequestCondition("bar"))).isFalse();
 		assertThat(new ParamsRequestCondition("foo").equals(new ParamsRequestCondition("FOO"))).isFalse();
-		assertThat((Object) new ParamsRequestCondition("foo=bar")).isEqualTo(new ParamsRequestCondition("foo=bar"));
+		assertThat(new ParamsRequestCondition("foo=bar")).isEqualTo(new ParamsRequestCondition("foo=bar"));
 		assertThat(new ParamsRequestCondition("foo=bar").equals(new ParamsRequestCondition("FOO=bar"))).isFalse();
 	}
 

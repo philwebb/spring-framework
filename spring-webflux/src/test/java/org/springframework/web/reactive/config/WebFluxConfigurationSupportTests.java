@@ -120,7 +120,7 @@ public class WebFluxConfigurationSupportTests {
 		assertSame(resolver, mapping.getContentTypeResolver());
 
 		ServerWebExchange exchange = MockServerWebExchange.from(get("/path").accept(MediaType.APPLICATION_JSON));
-		assertThat((Object) resolver.resolveMediaTypes(exchange)).isEqualTo(Collections.singletonList(MediaType.APPLICATION_JSON));
+		assertThat(resolver.resolveMediaTypes(exchange)).isEqualTo(Collections.singletonList(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class WebFluxConfigurationSupportTests {
 
 		Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
 		assertEquals(1, map.size());
-		assertThat((Object) map.keySet().iterator().next().getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(new PathPatternParser().parse("/api/user/{id}")));
+		assertThat(map.keySet().iterator().next().getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton(new PathPatternParser().parse("/api/user/{id}")));
 	}
 
 	@Test
@@ -264,13 +264,13 @@ public class WebFluxConfigurationSupportTests {
 
 		List<ViewResolver> resolvers = handler.getViewResolvers();
 		assertEquals(1, resolvers.size());
-		assertThat((Object) resolvers.get(0).getClass()).isEqualTo(FreeMarkerViewResolver.class);
+		assertThat(resolvers.get(0).getClass()).isEqualTo(FreeMarkerViewResolver.class);
 
 		List<View> views = handler.getDefaultViews();
 		assertEquals(1, views.size());
 
 		MimeType type = MimeTypeUtils.parseMimeType("application/json");
-		assertThat((Object) views.get(0).getSupportedMediaTypes().get(0)).isEqualTo(type);
+		assertThat(views.get(0).getSupportedMediaTypes().get(0)).isEqualTo(type);
 	}
 
 	@Test

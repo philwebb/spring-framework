@@ -43,7 +43,7 @@ public class JavaScriptUtilsTests {
 		sb.append("\f");
 		sb.append("\b");
 		sb.append("\013");
-		assertThat((Object) JavaScriptUtils.javaScriptEscape(sb.toString())).isEqualTo("\\\"\\'\\\\\\/\\t\\n\\n\\f\\b\\v");
+		assertThat(JavaScriptUtils.javaScriptEscape(sb.toString())).isEqualTo("\\\"\\'\\\\\\/\\t\\n\\n\\f\\b\\v");
 	}
 
 	// SPR-9983
@@ -55,14 +55,14 @@ public class JavaScriptUtilsTests {
 		sb.append('\u2029');
 		String result = JavaScriptUtils.javaScriptEscape(sb.toString());
 
-		assertThat((Object) result).isEqualTo("\\u2028\\u2029");
+		assertThat(result).isEqualTo("\\u2028\\u2029");
 	}
 
 	// SPR-9983
 
 	@Test
 	public void escapeLessThanGreaterThanSigns() throws UnsupportedEncodingException {
-		assertThat((Object) JavaScriptUtils.javaScriptEscape("<>")).isEqualTo("\\u003C\\u003E");
+		assertThat(JavaScriptUtils.javaScriptEscape("<>")).isEqualTo("\\u003C\\u003E");
 	}
 
 }

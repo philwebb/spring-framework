@@ -134,7 +134,7 @@ public class AspectJEnableCachingIsolatedTests {
 		load(EmptyConfigSupportConfig.class);
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
 		assertNotNull(aspect.getCacheResolver());
-		assertThat((Object) aspect.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
+		assertThat(aspect.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
 		assertSame(this.ctx.getBean(CacheManager.class),
 				((SimpleCacheResolver) aspect.getCacheResolver()).getCacheManager());
 	}

@@ -169,8 +169,8 @@ public class JmsListenerContainerFactoryIntegrationTests {
 
 		public void handleIt(@Payload String msg, @Header("my-header") String myHeader) {
 			invocations.put("handleIt", true);
-			assertThat((Object) msg).as("Unexpected payload message").isEqualTo("FOO-BAR");
-			assertThat((Object) myHeader).as("Unexpected header value").isEqualTo("my-value");
+			assertThat(msg).as("Unexpected payload message").isEqualTo("FOO-BAR");
+			assertThat(myHeader).as("Unexpected header value").isEqualTo("my-value");
 		}
 	}
 

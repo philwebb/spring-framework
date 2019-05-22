@@ -40,8 +40,8 @@ public class SimplePropertyNamespaceHandlerWithExpressionLanguageTests {
 						getClass());
 		ITestBean foo = applicationContext.getBean("foo", ITestBean.class);
 		ITestBean bar = applicationContext.getBean("bar", ITestBean.class);
-		assertThat((Object) foo.getName()).as("Invalid name").isEqualTo("Baz");
-		assertThat((Object) bar.getName()).as("Invalid name").isEqualTo("Baz");
+		assertThat(foo.getName()).as("Invalid name").isEqualTo("Baz");
+		assertThat(bar.getName()).as("Invalid name").isEqualTo("Baz");
 	}
 
 }

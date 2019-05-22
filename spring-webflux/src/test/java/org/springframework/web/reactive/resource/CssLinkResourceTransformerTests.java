@@ -92,7 +92,7 @@ public class CssLinkResourceTransformerTests {
 				.consumeNextWith(transformedResource -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
-					assertThat((Object) result).isEqualTo(expected);
+					assertThat(result).isEqualTo(expected);
 				})
 				.expectComplete()
 				.verify();
@@ -126,7 +126,7 @@ public class CssLinkResourceTransformerTests {
 				.consumeNextWith(transformedResource -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
-					assertThat((Object) result).isEqualTo(expected);
+					assertThat(result).isEqualTo(expected);
 				})
 				.expectComplete()
 				.verify();
@@ -177,7 +177,7 @@ public class CssLinkResourceTransformerTests {
 				.consumeNextWith(transformedResource -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
-					assertThat((Object) result).isEqualTo(expected);
+					assertThat(result).isEqualTo(expected);
 				})
 				.expectComplete()
 				.verify();

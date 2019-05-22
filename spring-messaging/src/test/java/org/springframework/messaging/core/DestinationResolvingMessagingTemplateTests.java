@@ -143,7 +143,7 @@ public class DestinationResolvingMessagingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		String payload = this.template.receiveAndConvert("myChannel", String.class);
 
-		assertThat((Object) payload).isEqualTo("payload");
+		assertThat(payload).isEqualTo("payload");
 		assertSame(this.myChannel, this.template.messageChannel);
 	}
 
@@ -154,7 +154,7 @@ public class DestinationResolvingMessagingTemplateTests {
 		this.template.setReceiveMessage(responseMessage);
 		Message<?> actual = this.template.sendAndReceive("myChannel", requestMessage);
 
-		assertThat((Object) this.template.message).isEqualTo(requestMessage);
+		assertThat(this.template.message).isEqualTo(requestMessage);
 		assertSame(responseMessage, actual);
 		assertSame(this.myChannel, this.template.messageChannel);
 	}

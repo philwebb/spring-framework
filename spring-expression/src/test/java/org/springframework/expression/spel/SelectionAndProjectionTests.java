@@ -138,14 +138,14 @@ public class SelectionAndProjectionTests {
 		Object value = expression.getValue(context);
 		assertThat(value.getClass().isArray()).isTrue();
 		TypedValue typedValue = new TypedValue(value);
-		assertThat((Object) typedValue.getTypeDescriptor().getElementTypeDescriptor().getType()).isEqualTo(Integer.class);
+		assertThat(typedValue.getTypeDescriptor().getElementTypeDescriptor().getType()).isEqualTo(Integer.class);
 		Integer[] array = (Integer[]) value;
 		assertEquals(5, array.length);
-		assertThat((Object) array[0]).isEqualTo(new Integer(0));
-		assertThat((Object) array[1]).isEqualTo(new Integer(1));
-		assertThat((Object) array[2]).isEqualTo(new Integer(2));
-		assertThat((Object) array[3]).isEqualTo(new Integer(3));
-		assertThat((Object) array[4]).isEqualTo(new Integer(4));
+		assertThat(array[0]).isEqualTo(new Integer(0));
+		assertThat(array[1]).isEqualTo(new Integer(1));
+		assertThat(array[2]).isEqualTo(new Integer(2));
+		assertThat(array[3]).isEqualTo(new Integer(3));
+		assertThat(array[4]).isEqualTo(new Integer(4));
 	}
 
 	@Test
@@ -175,14 +175,14 @@ public class SelectionAndProjectionTests {
 		Object value = expression.getValue(context);
 		assertThat(value.getClass().isArray()).isTrue();
 		TypedValue typedValue = new TypedValue(value);
-		assertThat((Object) typedValue.getTypeDescriptor().getElementTypeDescriptor().getType()).isEqualTo(Integer.class);
+		assertThat(typedValue.getTypeDescriptor().getElementTypeDescriptor().getType()).isEqualTo(Integer.class);
 		Integer[] array = (Integer[]) value;
 		assertEquals(5, array.length);
-		assertThat((Object) array[0]).isEqualTo(new Integer(0));
-		assertThat((Object) array[1]).isEqualTo(new Integer(1));
-		assertThat((Object) array[2]).isEqualTo(new Integer(2));
-		assertThat((Object) array[3]).isEqualTo(new Integer(3));
-		assertThat((Object) array[4]).isEqualTo(new Integer(4));
+		assertThat(array[0]).isEqualTo(new Integer(0));
+		assertThat(array[1]).isEqualTo(new Integer(1));
+		assertThat(array[2]).isEqualTo(new Integer(2));
+		assertThat(array[3]).isEqualTo(new Integer(3));
+		assertThat(array[4]).isEqualTo(new Integer(4));
 	}
 
 	@Test
@@ -228,7 +228,7 @@ public class SelectionAndProjectionTests {
 		Expression exp = parser.parseExpression("colors.^[key.startsWith('b')]");
 		Map<String, String> colorsMap = (Map<String, String>) exp.getValue(context);
 		assertEquals(1, colorsMap.size());
-		assertThat((Object) colorsMap.keySet().iterator().next()).isEqualTo("beige");
+		assertThat(colorsMap.keySet().iterator().next()).isEqualTo("beige");
 	}
 
 	@Test
@@ -240,7 +240,7 @@ public class SelectionAndProjectionTests {
 		Expression exp = parser.parseExpression("colors.$[key.startsWith('b')]");
 		Map<String, String> colorsMap = (Map<String, String>) exp.getValue(context);
 		assertEquals(1, colorsMap.size());
-		assertThat((Object) colorsMap.keySet().iterator().next()).isEqualTo("brown");
+		assertThat(colorsMap.keySet().iterator().next()).isEqualTo("brown");
 	}
 
 	@Test
@@ -296,12 +296,12 @@ public class SelectionAndProjectionTests {
 		Object value = expression.getValue(context);
 		assertThat(value.getClass().isArray()).isTrue();
 		TypedValue typedValue = new TypedValue(value);
-		assertThat((Object) typedValue.getTypeDescriptor().getElementTypeDescriptor().getType()).isEqualTo(Number.class);
+		assertThat(typedValue.getTypeDescriptor().getElementTypeDescriptor().getType()).isEqualTo(Number.class);
 		Number[] array = (Number[]) value;
 		assertEquals(3, array.length);
-		assertThat((Object) array[0]).isEqualTo(new Integer(5));
-		assertThat((Object) array[1]).isEqualTo(5.9f);
-		assertThat((Object) array[2]).isEqualTo(new Integer(7));
+		assertThat(array[0]).isEqualTo(new Integer(5));
+		assertThat(array[1]).isEqualTo(5.9f);
+		assertThat(array[2]).isEqualTo(new Integer(7));
 	}
 
 

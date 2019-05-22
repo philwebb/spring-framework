@@ -67,7 +67,7 @@ public class SimpleScopeTests {
 
 		String[] scopeNames = beanFactory.getRegisteredScopeNames();
 		assertEquals(1, scopeNames.length);
-		assertThat((Object) scopeNames[0]).isEqualTo("myScope");
+		assertThat(scopeNames[0]).isEqualTo("myScope");
 		assertSame(scope, beanFactory.getRegisteredScope("myScope"));
 
 		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(

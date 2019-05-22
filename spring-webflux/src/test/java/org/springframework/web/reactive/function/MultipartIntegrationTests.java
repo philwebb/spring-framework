@@ -60,7 +60,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 
 		StepVerifier
 				.create(result)
-				.consumeNextWith(response -> assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK))
+				.consumeNextWith(response -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK))
 				.verifyComplete();
 	}
 
@@ -74,7 +74,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 
 		StepVerifier
 				.create(result)
-				.consumeNextWith(response -> assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.OK))
+				.consumeNextWith(response -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK))
 				.verifyComplete();
 	}
 
@@ -102,8 +102,8 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 						Map<String, Part> parts = map.toSingleValueMap();
 						try {
 							assertEquals(2, parts.size());
-							assertThat((Object) ((FilePart) parts.get("fooPart")).filename()).isEqualTo("foo.txt");
-							assertThat((Object) ((FormFieldPart) parts.get("barPart")).value()).isEqualTo("bar");
+							assertThat(((FilePart) parts.get("fooPart")).filename()).isEqualTo("foo.txt");
+							assertThat(((FormFieldPart) parts.get("barPart")).value()).isEqualTo("bar");
 						}
 						catch(Exception e) {
 							return Mono.error(e);
@@ -117,8 +117,8 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 					.flatMap(parts -> {
 						try {
 							assertEquals(2, parts.size());
-							assertThat((Object) ((FilePart) parts.get(0)).filename()).isEqualTo("foo.txt");
-							assertThat((Object) ((FormFieldPart) parts.get(1)).value()).isEqualTo("bar");
+							assertThat(((FilePart) parts.get(0)).filename()).isEqualTo("foo.txt");
+							assertThat(((FormFieldPart) parts.get(1)).value()).isEqualTo("bar");
 						}
 						catch(Exception e) {
 							return Mono.error(e);

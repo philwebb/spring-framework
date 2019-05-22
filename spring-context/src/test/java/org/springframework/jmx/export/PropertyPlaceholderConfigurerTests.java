@@ -41,7 +41,7 @@ public class PropertyPlaceholderConfigurerTests extends AbstractJmxTests {
 	public void testPropertiesReplaced() {
 		IJmxTestBean bean = (IJmxTestBean) getContext().getBean("testBean");
 
-		assertThat((Object) bean.getName()).as("Name is incorrect").isEqualTo("Rob Harrop");
+		assertThat(bean.getName()).as("Name is incorrect").isEqualTo("Rob Harrop");
 		assertEquals("Age is incorrect", 100, bean.getAge());
 	}
 

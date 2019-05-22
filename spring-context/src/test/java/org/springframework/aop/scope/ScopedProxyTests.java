@@ -81,11 +81,11 @@ public class ScopedProxyTests {
 		ctx.refresh();
 
 		ITestBean bean = (ITestBean) ctx.getBean("testBean");
-		assertThat((Object) bean.getName()).isEqualTo("male");
+		assertThat(bean.getName()).isEqualTo("male");
 		assertEquals(99, bean.getAge());
 
 		assertThat(scope.getMap().containsKey("scopedTarget.testBean")).isTrue();
-		assertThat((Object) scope.getMap().get("scopedTarget.testBean").getClass()).isEqualTo(TestBean.class);
+		assertThat(scope.getMap().get("scopedTarget.testBean").getClass()).isEqualTo(TestBean.class);
 	}
 
 	@Test
@@ -102,11 +102,11 @@ public class ScopedProxyTests {
 		boolean condition1 = bean instanceof ScopedObject;
 		assertThat(condition1).isTrue();
 		ScopedObject scoped = (ScopedObject) bean;
-		assertThat((Object) scoped.getTargetObject().getClass()).isEqualTo(TestBean.class);
+		assertThat(scoped.getTargetObject().getClass()).isEqualTo(TestBean.class);
 		bean.setAge(101);
 
 		assertThat(scope.getMap().containsKey("testBeanTarget")).isTrue();
-		assertThat((Object) scope.getMap().get("testBeanTarget").getClass()).isEqualTo(TestBean.class);
+		assertThat(scope.getMap().get("testBeanTarget").getClass()).isEqualTo(TestBean.class);
 
 		ITestBean deserialized = (ITestBean) SerializationTestUtils.serializeAndDeserialize(bean);
 		assertNotNull(deserialized);
@@ -115,7 +115,7 @@ public class ScopedProxyTests {
 		boolean condition = deserialized instanceof ScopedObject;
 		assertThat(condition).isTrue();
 		ScopedObject scopedDeserialized = (ScopedObject) deserialized;
-		assertThat((Object) scopedDeserialized.getTargetObject().getClass()).isEqualTo(TestBean.class);
+		assertThat(scopedDeserialized.getTargetObject().getClass()).isEqualTo(TestBean.class);
 
 		bf.setSerializationId(null);
 	}
@@ -133,11 +133,11 @@ public class ScopedProxyTests {
 		boolean condition1 = tb.getFriends() instanceof ScopedObject;
 		assertThat(condition1).isTrue();
 		ScopedObject scoped = (ScopedObject) tb.getFriends();
-		assertThat((Object) scoped.getTargetObject().getClass()).isEqualTo(ArrayList.class);
+		assertThat(scoped.getTargetObject().getClass()).isEqualTo(ArrayList.class);
 		tb.getFriends().add("myFriend");
 
 		assertThat(scope.getMap().containsKey("scopedTarget.scopedList")).isTrue();
-		assertThat((Object) scope.getMap().get("scopedTarget.scopedList").getClass()).isEqualTo(ArrayList.class);
+		assertThat(scope.getMap().get("scopedTarget.scopedList").getClass()).isEqualTo(ArrayList.class);
 
 		ArrayList<?> deserialized = (ArrayList<?>) SerializationTestUtils.serializeAndDeserialize(tb.getFriends());
 		assertNotNull(deserialized);
@@ -146,7 +146,7 @@ public class ScopedProxyTests {
 		boolean condition = deserialized instanceof ScopedObject;
 		assertThat(condition).isTrue();
 		ScopedObject scopedDeserialized = (ScopedObject) deserialized;
-		assertThat((Object) scopedDeserialized.getTargetObject().getClass()).isEqualTo(ArrayList.class);
+		assertThat(scopedDeserialized.getTargetObject().getClass()).isEqualTo(ArrayList.class);
 
 		bf.setSerializationId(null);
 	}

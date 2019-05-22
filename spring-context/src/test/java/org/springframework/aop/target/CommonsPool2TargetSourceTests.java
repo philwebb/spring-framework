@@ -200,7 +200,7 @@ public class CommonsPool2TargetSourceTests {
 	public void testSetWhenExhaustedAction() {
 		CommonsPool2TargetSource targetSource = new CommonsPool2TargetSource();
 		targetSource.setBlockWhenExhausted(true);
-		assertThat((Object) targetSource.isBlockWhenExhausted()).isEqualTo(true);
+		assertThat(targetSource.isBlockWhenExhausted()).isEqualTo(true);
 	}
 
 	@Test

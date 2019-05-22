@@ -74,7 +74,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		RequestEntity<Void> request = RequestEntity.get(url).build();
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertArrayEquals("foo".getBytes("UTF-8"), response.getBody());
 	}
 
@@ -84,7 +84,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		RequestEntity<Void> request = RequestEntity.get(url).build();
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertArrayEquals("bar".getBytes("UTF-8"), response.getBody());
 	}
 
@@ -94,8 +94,8 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		RequestEntity<Void> request = RequestEntity.get(url).build();
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) response.getHeaders().getFirst("foo")).isEqualTo("bar");
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 			new RestTemplate().exchange(request, byte[].class);
 		}
 		catch (HttpClientErrorException ex) {
-			assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+			assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		}
 	}
 

@@ -54,7 +54,7 @@ public class MethodLocatingFactoryBeanTests {
 
 	@Test
 	public void testGetObjectType() {
-		assertThat((Object) factory.getObjectType()).isEqualTo(Method.class);
+		assertThat(factory.getObjectType()).isEqualTo(Method.class);
 	}
 
 	@Test

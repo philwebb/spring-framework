@@ -54,7 +54,7 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		String[] names = discoverer.getParameterNames(setName);
 		assertNotNull("should find method info", names);
 		assertEquals("one argument", 1, names.length);
-		assertThat((Object) names[0]).isEqualTo("name");
+		assertThat(names[0]).isEqualTo("name");
 	}
 
 	@Test
@@ -71,8 +71,8 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		String[] names = discoverer.getParameterNames(twoArgCons);
 		assertNotNull("should find cons info", names);
 		assertEquals("one argument", 2, names.length);
-		assertThat((Object) names[0]).isEqualTo("name");
-		assertThat((Object) names[1]).isEqualTo("age");
+		assertThat(names[0]).isEqualTo("name");
+		assertThat(names[1]).isEqualTo("age");
 	}
 
 	@Test
@@ -91,16 +91,16 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		String[] names = discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
-		assertThat((Object) names[0]).isEqualTo("x");
-		assertThat((Object) names[1]).isEqualTo("y");
+		assertThat(names[0]).isEqualTo("x");
+		assertThat(names[1]).isEqualTo("y");
 
 		Method m2 = clazz.getMethod("staticMethod", Long.TYPE, Long.TYPE, Long.TYPE);
 		names = discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("three arguments", 3, names.length);
-		assertThat((Object) names[0]).isEqualTo("x");
-		assertThat((Object) names[1]).isEqualTo("y");
-		assertThat((Object) names[2]).isEqualTo("z");
+		assertThat(names[0]).isEqualTo("x");
+		assertThat(names[1]).isEqualTo("y");
+		assertThat(names[2]).isEqualTo("z");
 	}
 
 	@Test
@@ -111,14 +111,14 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		String[] names = discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("one argument", 1, names.length);
-		assertThat((Object) names[0]).isEqualTo("x");
+		assertThat(names[0]).isEqualTo("x");
 
 		Method m2 = clazz.getMethod("staticMethod", Long.TYPE, Long.TYPE);
 		names = discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
-		assertThat((Object) names[0]).isEqualTo("x");
-		assertThat((Object) names[1]).isEqualTo("y");
+		assertThat(names[0]).isEqualTo("x");
+		assertThat(names[1]).isEqualTo("y");
 	}
 
 	@Test
@@ -129,16 +129,16 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		String[] names = discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
-		assertThat((Object) names[0]).isEqualTo("x");
-		assertThat((Object) names[1]).isEqualTo("y");
+		assertThat(names[0]).isEqualTo("x");
+		assertThat(names[1]).isEqualTo("y");
 
 		Method m2 = clazz.getMethod("instanceMethod", Double.TYPE, Double.TYPE, Double.TYPE);
 		names = discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("three arguments", 3, names.length);
-		assertThat((Object) names[0]).isEqualTo("x");
-		assertThat((Object) names[1]).isEqualTo("y");
-		assertThat((Object) names[2]).isEqualTo("z");
+		assertThat(names[0]).isEqualTo("x");
+		assertThat(names[1]).isEqualTo("y");
+		assertThat(names[2]).isEqualTo("z");
 	}
 
 	@Test
@@ -149,14 +149,14 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		String[] names = discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("one argument", 1, names.length);
-		assertThat((Object) names[0]).isEqualTo("aa");
+		assertThat(names[0]).isEqualTo("aa");
 
 		Method m2 = clazz.getMethod("instanceMethod", String.class, String.class);
 		names = discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
-		assertThat((Object) names[0]).isEqualTo("aa");
-		assertThat((Object) names[1]).isEqualTo("bb");
+		assertThat(names[0]).isEqualTo("aa");
+		assertThat(names[1]).isEqualTo("bb");
 	}
 
 	@Test
@@ -166,40 +166,40 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		Constructor<?> ctor = clazz.getDeclaredConstructor(Object.class);
 		String[] names = discoverer.getParameterNames(ctor);
 		assertEquals(1, names.length);
-		assertThat((Object) names[0]).isEqualTo("key");
+		assertThat(names[0]).isEqualTo("key");
 
 		ctor = clazz.getDeclaredConstructor(Object.class, Object.class);
 		names = discoverer.getParameterNames(ctor);
 		assertEquals(2, names.length);
-		assertThat((Object) names[0]).isEqualTo("key");
-		assertThat((Object) names[1]).isEqualTo("value");
+		assertThat(names[0]).isEqualTo("key");
+		assertThat(names[1]).isEqualTo("value");
 
 		Method m = clazz.getMethod("generifiedStaticMethod", Object.class);
 		names = discoverer.getParameterNames(m);
 		assertEquals(1, names.length);
-		assertThat((Object) names[0]).isEqualTo("param");
+		assertThat(names[0]).isEqualTo("param");
 
 		m = clazz.getMethod("generifiedMethod", Object.class, long.class, Object.class, Object.class);
 		names = discoverer.getParameterNames(m);
 		assertEquals(4, names.length);
-		assertThat((Object) names[0]).isEqualTo("param");
-		assertThat((Object) names[1]).isEqualTo("x");
-		assertThat((Object) names[2]).isEqualTo("key");
-		assertThat((Object) names[3]).isEqualTo("value");
+		assertThat(names[0]).isEqualTo("param");
+		assertThat(names[1]).isEqualTo("x");
+		assertThat(names[2]).isEqualTo("key");
+		assertThat(names[3]).isEqualTo("value");
 
 		m = clazz.getMethod("voidStaticMethod", Object.class, long.class, int.class);
 		names = discoverer.getParameterNames(m);
 		assertEquals(3, names.length);
-		assertThat((Object) names[0]).isEqualTo("obj");
-		assertThat((Object) names[1]).isEqualTo("x");
-		assertThat((Object) names[2]).isEqualTo("i");
+		assertThat(names[0]).isEqualTo("obj");
+		assertThat(names[1]).isEqualTo("x");
+		assertThat(names[2]).isEqualTo("i");
 
 		m = clazz.getMethod("nonVoidStaticMethod", Object.class, long.class, int.class);
 		names = discoverer.getParameterNames(m);
 		assertEquals(3, names.length);
-		assertThat((Object) names[0]).isEqualTo("obj");
-		assertThat((Object) names[1]).isEqualTo("x");
-		assertThat((Object) names[2]).isEqualTo("i");
+		assertThat(names[0]).isEqualTo("obj");
+		assertThat(names[1]).isEqualTo("x");
+		assertThat(names[2]).isEqualTo("i");
 
 		m = clazz.getMethod("getDate");
 		names = discoverer.getParameterNames(m);

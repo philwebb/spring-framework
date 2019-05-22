@@ -36,7 +36,7 @@ public class DestinationPatternsMessageConditionTests {
 	@Test
 	public void prependSlash() {
 		DestinationPatternsMessageCondition c = condition("foo");
-		assertThat((Object) c.getPatterns().iterator().next()).isEqualTo("/foo");
+		assertThat(c.getPatterns().iterator().next()).isEqualTo("/foo");
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition c =
 				new DestinationPatternsMessageCondition(new String[] {"foo"}, new AntPathMatcher("."));
 
-		assertThat((Object) c.getPatterns().iterator().next()).as("Pre-pending should be disabled when not using '/' as path separator").isEqualTo("foo");
+		assertThat(c.getPatterns().iterator().next()).as("Pre-pending should be disabled when not using '/' as path separator").isEqualTo("foo");
 	}
 
 	// SPR-8255
@@ -52,7 +52,7 @@ public class DestinationPatternsMessageConditionTests {
 	@Test
 	public void prependNonEmptyPatternsOnly() {
 		DestinationPatternsMessageCondition c = condition("");
-		assertThat((Object) c.getPatterns().iterator().next()).isEqualTo("");
+		assertThat(c.getPatterns().iterator().next()).isEqualTo("");
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition c1 = condition();
 		DestinationPatternsMessageCondition c2 = condition();
 
-		assertThat((Object) c1.combine(c2)).isEqualTo(condition(""));
+		assertThat(c1.combine(c2)).isEqualTo(condition(""));
 	}
 
 	@Test
@@ -68,12 +68,12 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition c1 = condition("/type1", "/type2");
 		DestinationPatternsMessageCondition c2 = condition();
 
-		assertThat((Object) c1.combine(c2)).isEqualTo(condition("/type1", "/type2"));
+		assertThat(c1.combine(c2)).isEqualTo(condition("/type1", "/type2"));
 
 		c1 = condition();
 		c2 = condition("/method1", "/method2");
 
-		assertThat((Object) c1.combine(c2)).isEqualTo(condition("/method1", "/method2"));
+		assertThat(c1.combine(c2)).isEqualTo(condition("/method1", "/method2"));
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition c1 = condition("/t1", "/t2");
 		DestinationPatternsMessageCondition c2 = condition("/m1", "/m2");
 
-		assertThat((Object) c1.combine(c2)).isEqualTo(new DestinationPatternsMessageCondition(
+		assertThat(c1.combine(c2)).isEqualTo(new DestinationPatternsMessageCondition(
 				"/t1/m1", "/t1/m2", "/t2/m1", "/t2/m2"));
 	}
 
@@ -107,7 +107,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition match = condition.getMatchingCondition(messageTo("/foo/bar"));
 		DestinationPatternsMessageCondition expected = condition("/foo/bar", "/foo/*", "/**");
 
-		assertThat((Object) match).isEqualTo(expected);
+		assertThat(match).isEqualTo(expected);
 	}
 
 	@Test

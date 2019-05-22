@@ -200,7 +200,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPath("tb");
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getErrorMessagesAsString(",")).as("Error messages String should be 'message1'").isEqualTo("message1");
+		assertThat(status.getErrorMessagesAsString(",")).as("Error messages String should be 'message1'").isEqualTo("message1");
 
 		// two errors
 		pc = createPageContext();
@@ -213,7 +213,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPath("tb");
 		tag.doStartTag();
 		status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getErrorMessagesAsString(",")).as("Error messages String should be 'message1,message2'").isEqualTo("message1,message2");
+		assertThat(status.getErrorMessagesAsString(",")).as("Error messages String should be 'message1,message2'").isEqualTo("message1,message2");
 
 		// no errors
 		pc = createPageContext();
@@ -224,7 +224,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPath("tb");
 		tag.doStartTag();
 		status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getErrorMessagesAsString(",")).as("Error messages String should be ''").isEqualTo("");
+		assertThat(status.getErrorMessagesAsString(",")).as("Error messages String should be ''").isEqualTo("");
 	}
 
 	@Test
@@ -463,7 +463,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setPath("tb.name");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
-		assertThat((Object) tag.getProperty()).isEqualTo("name");
+		assertThat(tag.getProperty()).isEqualTo("name");
 	}
 
 	@Test
@@ -564,7 +564,7 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", tb);
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getExpression()).isEqualTo("doctor");
+		assertThat(status.getExpression()).isEqualTo("doctor");
 		boolean condition = status.getValue() instanceof NestedTestBean;
 		assertThat(condition).isTrue();
 		assertThat(status.getDisplayValue().contains("juergen&amp;eva")).isTrue();
@@ -580,7 +580,7 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen&eva", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getExpression()).isEqualTo("someSet");
+		assertThat(status.getExpression()).isEqualTo("someSet");
 		boolean condition = status.getValue() instanceof Set;
 		assertThat(condition).isTrue();
 	}
@@ -594,7 +594,7 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen&eva", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getExpression()).isEqualTo("name");
+		assertThat(status.getExpression()).isEqualTo("name");
 		assertThat(status.getValue()).isEqualTo("juergen&eva");
 	}
 
@@ -608,7 +608,7 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen&eva", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getExpression()).isEqualTo("name");
+		assertThat(status.getExpression()).isEqualTo("name");
 		assertThat(status.getValue()).isEqualTo("juergen&amp;eva");
 	}
 
@@ -766,8 +766,8 @@ public class BindTagTests extends AbstractTagTests {
 		assertThat(bindTag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status != null).as("Has status variable").isTrue();
-		assertThat((Object) status.getPath()).isEqualTo("tb.name");
-		assertThat((Object) status.getDisplayValue()).as("Correct field value").isEqualTo("");
+		assertThat(status.getPath()).isEqualTo("tb.name");
+		assertThat(status.getDisplayValue()).as("Correct field value").isEqualTo("");
 
 		BindTag bindTag2 = new BindTag();
 		bindTag2.setPageContext(pc);
@@ -776,15 +776,15 @@ public class BindTagTests extends AbstractTagTests {
 		assertThat(bindTag2.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		BindStatus status2 = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status2 != null).as("Has status variable").isTrue();
-		assertThat((Object) status2.getPath()).isEqualTo("tb.age");
-		assertThat((Object) status2.getDisplayValue()).as("Correct field value").isEqualTo("0");
+		assertThat(status2.getPath()).isEqualTo("tb.age");
+		assertThat(status2.getDisplayValue()).as("Correct field value").isEqualTo("0");
 
 		bindTag2.doEndTag();
 
 		BindStatus status3 = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertSame("Status matches previous status", status, status3);
-		assertThat((Object) status.getPath()).isEqualTo("tb.name");
-		assertThat((Object) status.getDisplayValue()).as("Correct field value").isEqualTo("");
+		assertThat(status.getPath()).isEqualTo("tb.name");
+		assertThat(status.getDisplayValue()).as("Correct field value").isEqualTo("");
 
 		bindTag.doEndTag();
 		nestedPathTag.doEndTag();
@@ -809,7 +809,7 @@ public class BindTagTests extends AbstractTagTests {
 		assertThat(bindTag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
 		assertThat(status != null).as("Has status variable").isTrue();
-		assertThat((Object) status.getPath()).isEqualTo("tb2.name");
+		assertThat(status.getPath()).isEqualTo("tb2.name");
 	}
 
 	@Test
@@ -838,7 +838,7 @@ public class BindTagTests extends AbstractTagTests {
 		transform.doStartTag();
 
 		assertNotNull(pc.getAttribute("theDate"));
-		assertThat((Object) df.format(tb.getDate())).isEqualTo(pc.getAttribute("theDate"));
+		assertThat(df.format(tb.getDate())).isEqualTo(pc.getAttribute("theDate"));
 
 		// try another time, this time using Strings
 		bind = new BindTag();

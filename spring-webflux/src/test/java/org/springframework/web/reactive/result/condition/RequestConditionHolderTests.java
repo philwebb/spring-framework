@@ -45,7 +45,7 @@ public class RequestConditionHolderTests {
 		RequestConditionHolder params2 = new RequestConditionHolder(new ParamsRequestCondition("name2"));
 		RequestConditionHolder expected = new RequestConditionHolder(new ParamsRequestCondition("name1", "name2"));
 
-		assertThat((Object) params1.combine(params2)).isEqualTo(expected);
+		assertThat(params1.combine(params2)).isEqualTo(expected);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class RequestConditionHolderTests {
 
 		RequestConditionHolder holder = custom.getMatchingCondition(this.exchange);
 		assertNotNull(holder);
-		assertThat((Object) holder.getCondition()).isEqualTo(expected);
+		assertThat(holder.getCondition()).isEqualTo(expected);
 	}
 
 	@Test

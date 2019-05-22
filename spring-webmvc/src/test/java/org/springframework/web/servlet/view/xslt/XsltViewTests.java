@@ -127,7 +127,7 @@ public class XsltViewTests {
 		Source source = new StreamSource(getProductDataResource().getInputStream());
 		view.render(singletonMap("someKey", source), this.request, this.response);
 		assertThat(this.response.getContentType().startsWith("text/html")).isTrue();
-		assertThat((Object) this.response.getCharacterEncoding()).isEqualTo("UTF-8");
+		assertThat(this.response.getCharacterEncoding()).isEqualTo("UTF-8");
 	}
 
 	@Test
@@ -189,9 +189,9 @@ public class XsltViewTests {
 		Element nameElem = (Element) elem.elements().get(1);
 		Element priceElem = (Element) elem.elements().get(2);
 
-		assertThat((Object) idElem.getText()).as("ID incorrect.").isEqualTo(id);
-		assertThat((Object) nameElem.getText()).as("Name incorrect.").isEqualTo(name);
-		assertThat((Object) priceElem.getText()).as("Price incorrect.").isEqualTo(price);
+		assertThat(idElem.getText()).as("ID incorrect.").isEqualTo(id);
+		assertThat(nameElem.getText()).as("Name incorrect.").isEqualTo(name);
+		assertThat(priceElem.getText()).as("Price incorrect.").isEqualTo(price);
 	}
 
 	private XsltView getXsltView(String templatePath) {

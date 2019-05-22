@@ -36,12 +36,12 @@ public class PercentStyleFormatterTests {
 
 	@Test
 	public void formatValue() {
-		assertThat((Object) formatter.print(new BigDecimal(".23"), Locale.US)).isEqualTo("23%");
+		assertThat(formatter.print(new BigDecimal(".23"), Locale.US)).isEqualTo("23%");
 	}
 
 	@Test
 	public void parseValue() throws ParseException {
-		assertThat((Object) formatter.parse("23.56%", Locale.US)).isEqualTo(new BigDecimal(".2356"));
+		assertThat(formatter.parse("23.56%", Locale.US)).isEqualTo(new BigDecimal(".2356"));
 	}
 
 	@Test

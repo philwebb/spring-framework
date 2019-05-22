@@ -45,11 +45,11 @@ public class SpringJUnit47ClassRunnerRuleTests {
 
 	@Test
 	public void testA() {
-		assertThat((Object) name.getMethodName()).isEqualTo("testA");
+		assertThat(name.getMethodName()).isEqualTo("testA");
 	}
 
 	@Test
 	public void testB() {
-		assertThat((Object) name.getMethodName()).isEqualTo("testB");
+		assertThat(name.getMethodName()).isEqualTo("testB");
 	}
 }

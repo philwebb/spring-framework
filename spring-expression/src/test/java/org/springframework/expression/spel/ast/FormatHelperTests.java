@@ -33,13 +33,13 @@ public class FormatHelperTests {
 	@Test
 	public void formatMethodWithSingleArgumentForMessage() {
 		String message = FormatHelper.formatMethodForMessage("foo", Arrays.asList(TypeDescriptor.forObject("a string")));
-		assertThat((Object) message).isEqualTo("foo(java.lang.String)");
+		assertThat(message).isEqualTo("foo(java.lang.String)");
 	}
 
 	@Test
 	public void formatMethodWithMultipleArgumentsForMessage() {
 		String message = FormatHelper.formatMethodForMessage("foo", Arrays.asList(TypeDescriptor.forObject("a string"), TypeDescriptor.forObject(Integer.valueOf(5))));
-		assertThat((Object) message).isEqualTo("foo(java.lang.String,java.lang.Integer)");
+		assertThat(message).isEqualTo("foo(java.lang.String,java.lang.Integer)");
 	}
 
 }

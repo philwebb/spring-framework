@@ -78,11 +78,11 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/normal", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
 		assertEquals(2, body.size());
-		assertThat((Object) body.get("name")).isEqualTo("foo");
-		assertThat((Object) body.get("bar")).isEqualTo("baz");
+		assertThat(body.get("name")).isEqualTo("foo");
+		assertThat(body.get("bar")).isEqualTo("baz");
 	}
 
 	@Test
@@ -90,12 +90,12 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 		ResponseEntity<String> result =
 				restTemplate.getForEntity("http://localhost:" + port + "/filter", String.class);
 
-		assertThat((Object) result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
 		assertEquals(3, body.size());
-		assertThat((Object) body.get("name")).isEqualTo("foo");
-		assertThat((Object) body.get("bar")).isEqualTo("baz");
-		assertThat((Object) body.get("qux")).isEqualTo("quux");
+		assertThat(body.get("name")).isEqualTo("foo");
+		assertThat(body.get("bar")).isEqualTo("baz");
+		assertThat(body.get("qux")).isEqualTo("quux");
 	}
 
 	private Map<String, String> parseBody(String body) {

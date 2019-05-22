@@ -125,7 +125,7 @@ public class GenericMessagingTemplateTests {
 		});
 
 		String actual = this.template.convertSendAndReceive(channel, "request", String.class);
-		assertThat((Object) actual).isEqualTo("response");
+		assertThat(actual).isEqualTo("response");
 	}
 
 	@Test

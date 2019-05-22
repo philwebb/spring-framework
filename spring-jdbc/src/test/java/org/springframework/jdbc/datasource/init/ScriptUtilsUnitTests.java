@@ -56,9 +56,9 @@ public class ScriptUtilsUnitTests {
 		List<String> statements = new ArrayList<>();
 		splitSqlScript(script, delim, statements);
 		assertEquals("wrong number of statements", 3, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(cleanedStatement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(cleanedStatement2);
-		assertThat((Object) statements.get(2)).as("statement 3 not split correctly").isEqualTo(cleanedStatement3);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(cleanedStatement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(cleanedStatement2);
+		assertThat(statements.get(2)).as("statement 3 not split correctly").isEqualTo(cleanedStatement3);
 	}
 
 	@Test
@@ -71,9 +71,9 @@ public class ScriptUtilsUnitTests {
 		List<String> statements = new ArrayList<>();
 		splitSqlScript(script, delim, statements);
 		assertEquals("wrong number of statements", 3, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
-		assertThat((Object) statements.get(2)).as("statement 3 not split correctly").isEqualTo(statement3);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
+		assertThat(statements.get(2)).as("statement 3 not split correctly").isEqualTo(statement3);
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class ScriptUtilsUnitTests {
 		List<String> statements = new ArrayList<>();
 		splitSqlScript(script, DEFAULT_STATEMENT_SEPARATOR, statements);
 		assertEquals("wrong number of statements", 1, statements.size());
-		assertThat((Object) statements.get(0)).as("script should have been 'stripped' but not actually 'split'").isEqualTo(script.replace('\n', ' '));
+		assertThat(statements.get(0)).as("script should have been 'stripped' but not actually 'split'").isEqualTo(script.replace('\n', ' '));
 	}
 
 	@Test  // SPR-13218
@@ -97,8 +97,8 @@ public class ScriptUtilsUnitTests {
 		List<String> statements = new ArrayList<>();
 		splitSqlScript(script, ';', statements);
 		assertEquals("wrong number of statements", 2, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
 	}
 
 	@Test  // SPR-11560
@@ -111,8 +111,8 @@ public class ScriptUtilsUnitTests {
 		String statement2 = "insert into T_TEST (NAME) values ('Dave')";
 
 		assertEquals("wrong number of statements", 2, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
 	}
 
 	@Test
@@ -128,10 +128,10 @@ public class ScriptUtilsUnitTests {
 		String statement4 = "INSERT INTO persons( person_id , name) VALUES( 1 , 'Name' )";
 
 		assertEquals("wrong number of statements", 4, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
-		assertThat((Object) statements.get(2)).as("statement 3 not split correctly").isEqualTo(statement3);
-		assertThat((Object) statements.get(3)).as("statement 4 not split correctly").isEqualTo(statement4);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
+		assertThat(statements.get(2)).as("statement 3 not split correctly").isEqualTo(statement3);
+		assertThat(statements.get(3)).as("statement 4 not split correctly").isEqualTo(statement4);
 	}
 
 	@Test  // SPR-10330
@@ -145,9 +145,9 @@ public class ScriptUtilsUnitTests {
 		String statement3 = "insert into orders(id, order_date, customer_id) values (2, '2013-06-08', 1)";
 
 		assertEquals("wrong number of statements", 3, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
-		assertThat((Object) statements.get(2)).as("statement 3 not split correctly").isEqualTo(statement3);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
+		assertThat(statements.get(2)).as("statement 3 not split correctly").isEqualTo(statement3);
 	}
 
 	@Test  // SPR-9531
@@ -160,8 +160,8 @@ public class ScriptUtilsUnitTests {
 		String statement2 = "INSERT INTO users(first_name, last_name) VALUES( 'Sam' , 'Brannen' )";
 
 		assertEquals("wrong number of statements", 2, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
 	}
 
 	@Test
@@ -174,8 +174,8 @@ public class ScriptUtilsUnitTests {
 		String statement2 = "INSERT INTO users(first_name, last_name) VALUES( 'Sam' , 'Brannen' )";
 
 		assertEquals("wrong number of statements", 2, statements.size());
-		assertThat((Object) statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
-		assertThat((Object) statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
+		assertThat(statements.get(0)).as("statement 1 not split correctly").isEqualTo(statement1);
+		assertThat(statements.get(1)).as("statement 2 not split correctly").isEqualTo(statement2);
 	}
 
 	@Test

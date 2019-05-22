@@ -36,15 +36,15 @@ public class StandardTypeLocatorTests {
 	@Test
 	public void testImports() throws EvaluationException {
 		StandardTypeLocator locator = new StandardTypeLocator();
-		assertThat((Object) locator.findType("java.lang.Integer")).isEqualTo(Integer.class);
-		assertThat((Object) locator.findType("java.lang.String")).isEqualTo(String.class);
+		assertThat(locator.findType("java.lang.Integer")).isEqualTo(Integer.class);
+		assertThat(locator.findType("java.lang.String")).isEqualTo(String.class);
 
 		List<String> prefixes = locator.getImportPrefixes();
 		assertEquals(1,prefixes.size());
 		assertThat(prefixes.contains("java.lang")).isTrue();
 		assertThat(prefixes.contains("java.util")).isFalse();
 
-		assertThat((Object) locator.findType("Boolean")).isEqualTo(Boolean.class);
+		assertThat(locator.findType("Boolean")).isEqualTo(Boolean.class);
 		// currently does not know about java.util by default
 //		assertEquals(java.util.List.class,locator.findType("List"));
 
@@ -52,7 +52,7 @@ public class StandardTypeLocatorTests {
 				locator.findType("URL"))
 			.satisfies(ex -> assertThat(ex.getMessageCode()).isEqualTo(SpelMessage.TYPE_NOT_FOUND));
 		locator.registerImport("java.net");
-		assertThat((Object) locator.findType("URL")).isEqualTo(java.net.URL.class);
+		assertThat(locator.findType("URL")).isEqualTo(java.net.URL.class);
 	}
 
 }

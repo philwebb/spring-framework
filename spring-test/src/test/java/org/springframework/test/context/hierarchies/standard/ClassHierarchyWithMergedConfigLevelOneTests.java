@@ -92,9 +92,9 @@ public class ClassHierarchyWithMergedConfigLevelOneTests {
 		assertNotNull("child ApplicationContext", context);
 		assertNotNull("parent ApplicationContext", context.getParent());
 		assertNull("grandparent ApplicationContext", context.getParent().getParent());
-		assertThat((Object) parent).isEqualTo("parent");
-		assertThat((Object) user).isEqualTo("parent + user");
-		assertThat((Object) beanFromUserConfig).isEqualTo("from UserConfig");
+		assertThat(parent).isEqualTo("parent");
+		assertThat(user).isEqualTo("parent + user");
+		assertThat(beanFromUserConfig).isEqualTo("from UserConfig");
 	}
 
 }

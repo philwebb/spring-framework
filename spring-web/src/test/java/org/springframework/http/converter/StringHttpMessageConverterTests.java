@@ -68,7 +68,7 @@ public class StringHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(TEXT_PLAIN_UTF_8);
 		String result = this.converter.read(String.class, inputMessage);
 
-		assertThat((Object) result).as("Invalid result").isEqualTo(body);
+		assertThat(result).as("Invalid result").isEqualTo(body);
 	}
 
 	@Test
@@ -77,8 +77,8 @@ public class StringHttpMessageConverterTests {
 		this.converter.write(body, null, this.outputMessage);
 
 		HttpHeaders headers = this.outputMessage.getHeaders();
-		assertThat((Object) this.outputMessage.getBodyAsString(StandardCharsets.ISO_8859_1)).isEqualTo(body);
-		assertThat((Object) headers.getContentType()).isEqualTo(new MediaType("text", "plain", StandardCharsets.ISO_8859_1));
+		assertThat(this.outputMessage.getBodyAsString(StandardCharsets.ISO_8859_1)).isEqualTo(body);
+		assertThat(headers.getContentType()).isEqualTo(new MediaType("text", "plain", StandardCharsets.ISO_8859_1));
 		assertEquals(body.getBytes(StandardCharsets.ISO_8859_1).length, headers.getContentLength());
 		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
@@ -89,8 +89,8 @@ public class StringHttpMessageConverterTests {
 		this.converter.write(body, TEXT_PLAIN_UTF_8, this.outputMessage);
 
 		HttpHeaders headers = this.outputMessage.getHeaders();
-		assertThat((Object) this.outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(body);
-		assertThat((Object) headers.getContentType()).isEqualTo(TEXT_PLAIN_UTF_8);
+		assertThat(this.outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(body);
+		assertThat(headers.getContentType()).isEqualTo(TEXT_PLAIN_UTF_8);
 		assertEquals(body.getBytes(StandardCharsets.UTF_8).length, headers.getContentLength());
 		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
@@ -104,8 +104,8 @@ public class StringHttpMessageConverterTests {
 		headers.setContentType(TEXT_PLAIN_UTF_8);
 		this.converter.write(body, requestedContentType, this.outputMessage);
 
-		assertThat((Object) this.outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(body);
-		assertThat((Object) headers.getContentType()).isEqualTo(TEXT_PLAIN_UTF_8);
+		assertThat(this.outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(body);
+		assertThat(headers.getContentType()).isEqualTo(TEXT_PLAIN_UTF_8);
 		assertEquals(body.getBytes(StandardCharsets.UTF_8).length, headers.getContentLength());
 		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}

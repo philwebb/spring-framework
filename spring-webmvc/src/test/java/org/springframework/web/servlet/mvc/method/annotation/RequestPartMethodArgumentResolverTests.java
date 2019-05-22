@@ -195,8 +195,8 @@ public class RequestPartMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		MultipartFile[] parts = (MultipartFile[]) actual;
 		assertEquals(2, parts.length);
-		assertThat((Object) multipartFile1).isEqualTo(parts[0]);
-		assertThat((Object) multipartFile2).isEqualTo(parts[1]);
+		assertThat(multipartFile1).isEqualTo(parts[0]);
+		assertThat(multipartFile2).isEqualTo(parts[1]);
 	}
 
 	@Test
@@ -265,8 +265,8 @@ public class RequestPartMethodArgumentResolverTests {
 		assertThat(condition).isTrue();
 		Part[] parts = (Part[]) result;
 		assertEquals(2, parts.length);
-		assertThat((Object) part1).isEqualTo(parts[0]);
-		assertThat((Object) part2).isEqualTo(parts[1]);
+		assertThat(part1).isEqualTo(parts[0]);
+		assertThat(part2).isEqualTo(parts[1]);
 	}
 
 	@Test

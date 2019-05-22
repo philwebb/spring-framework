@@ -37,7 +37,7 @@ public class PropertyPlaceholderHelperTests {
 		Properties props = new Properties();
 		props.setProperty("foo", "bar");
 
-		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
+		assertThat(this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("foo", "bar");
 		props.setProperty("bar", "baz");
 
-		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar,bar=baz");
+		assertThat(this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar,bar=baz");
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("bar", "${baz}");
 		props.setProperty("baz", "bar");
 
-		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
+		assertThat(this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("bar", "bar");
 		props.setProperty("inner", "ar");
 
-		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
+		assertThat(this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar");
 
 		text = "${top}";
 		props = new Properties();
@@ -76,14 +76,14 @@ public class PropertyPlaceholderHelperTests {
 		props.setProperty("differentiator", "first");
 		props.setProperty("first.grandchild", "actualValue");
 
-		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("actualValue+actualValue");
+		assertThat(this.helper.replacePlaceholders(text, props)).isEqualTo("actualValue+actualValue");
 	}
 
 	@Test
 	public void testWithResolver() {
 		String text = "foo=${foo}";
 
-		assertThat((Object) this.helper.replacePlaceholders(text, new PropertyPlaceholderHelper.PlaceholderResolver() {
+		assertThat(this.helper.replacePlaceholders(text, new PropertyPlaceholderHelper.PlaceholderResolver() {
 			@Override
 			public String resolvePlaceholder(String placeholderName) {
 				if ("foo".equals(placeholderName)) {
@@ -101,7 +101,7 @@ public class PropertyPlaceholderHelperTests {
 		Properties props = new Properties();
 		props.setProperty("foo", "bar");
 
-		assertThat((Object) this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar,bar=${bar}");
+		assertThat(this.helper.replacePlaceholders(text, props)).isEqualTo("foo=bar,bar=${bar}");
 	}
 
 	@Test

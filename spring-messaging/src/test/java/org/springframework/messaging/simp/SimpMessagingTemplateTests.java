@@ -72,8 +72,8 @@ public class SimpMessagingTemplateTests {
 				MessageHeaderAccessor.getAccessor(message, SimpMessageHeaderAccessor.class);
 
 		assertNotNull(headerAccessor);
-		assertThat((Object) headerAccessor.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
-		assertThat((Object) headerAccessor.getDestination()).isEqualTo("/user/joe/queue/foo");
+		assertThat(headerAccessor.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headerAccessor.getDestination()).isEqualTo("/user/joe/queue/foo");
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class SimpMessagingTemplateTests {
 				MessageHeaderAccessor.getAccessor(messages.get(0), SimpMessageHeaderAccessor.class);
 
 		assertNotNull(headerAccessor);
-		assertThat((Object) headerAccessor.getDestination()).isEqualTo("/user/https:%2F%2Fjoe.openid.example.org%2F/queue/foo");
+		assertThat(headerAccessor.getDestination()).isEqualTo("/user/https:%2F%2Fjoe.openid.example.org%2F/queue/foo");
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class SimpMessagingTemplateTests {
 
 		assertNotNull(headerAccessor);
 		assertNull(headerAccessor.toMap().get("key"));
-		assertThat((Object) headerAccessor.getNativeHeader("key")).isEqualTo(Arrays.asList("value"));
+		assertThat(headerAccessor.getNativeHeader("key")).isEqualTo(Arrays.asList("value"));
 	}
 
 	@Test
@@ -137,8 +137,8 @@ public class SimpMessagingTemplateTests {
 				MessageHeaderAccessor.getAccessor(message, SimpMessageHeaderAccessor.class);
 
 		assertNotNull(headerAccessor);
-		assertThat((Object) headerAccessor.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
-		assertThat((Object) headerAccessor.getDestination()).isEqualTo("/prefix/joe/queue/foo");
+		assertThat(headerAccessor.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headerAccessor.getDestination()).isEqualTo("/prefix/joe/queue/foo");
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class SimpMessagingTemplateTests {
 				MessageHeaderAccessor.getAccessor((MessageHeaders) map, SimpMessageHeaderAccessor.class);
 
 		assertThat(headerAccessor.isMutable()).isTrue();
-		assertThat((Object) headerAccessor.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headerAccessor.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
 	}
 
 	@Test
@@ -202,8 +202,8 @@ public class SimpMessagingTemplateTests {
 		Message<byte[]> sentMessage = messages.get(0);
 
 		MessageHeaderAccessor sentAccessor = MessageHeaderAccessor.getAccessor(sentMessage, MessageHeaderAccessor.class);
-		assertThat((Object) sentAccessor.getClass()).isEqualTo(StompHeaderAccessor.class);
-		assertThat((Object) ((StompHeaderAccessor) sentAccessor).getDestination()).isEqualTo("/queue/foo-user123");
+		assertThat(sentAccessor.getClass()).isEqualTo(StompHeaderAccessor.class);
+		assertThat(((StompHeaderAccessor) sentAccessor).getDestination()).isEqualTo("/queue/foo-user123");
 	}
 
 }

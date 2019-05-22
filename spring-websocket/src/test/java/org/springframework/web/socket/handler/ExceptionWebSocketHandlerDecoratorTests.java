@@ -61,7 +61,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.afterConnectionEstablished(this.session);
 
-		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
+		assertThat(this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.handleMessage(this.session, message);
 
-		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
+		assertThat(this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.handleTransportError(this.session, exception);
 
-		assertThat((Object) this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
+		assertThat(this.session.getCloseStatus()).isEqualTo(CloseStatus.SERVER_ERROR);
 	}
 
 	@Test

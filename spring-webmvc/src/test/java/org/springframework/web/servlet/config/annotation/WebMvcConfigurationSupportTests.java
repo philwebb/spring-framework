@@ -113,7 +113,7 @@ public class WebMvcConfigurationSupportTests {
 		HandlerExecutionChain chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/"));
 		assertNotNull(chain);
 		assertNotNull(chain.getInterceptors());
-		assertThat((Object) chain.getInterceptors()[0].getClass()).isEqualTo(ConversionServiceExposingInterceptor.class);
+		assertThat(chain.getInterceptors()[0].getClass()).isEqualTo(ConversionServiceExposingInterceptor.class);
 
 		chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/scoped"));
 		assertNotNull("HandlerExecutionChain for '/scoped' mapping should not be null.", chain);
@@ -153,8 +153,8 @@ public class WebMvcConfigurationSupportTests {
 		assertNotNull(chain);
 		assertNotNull(chain.getInterceptors());
 		assertEquals(3, chain.getInterceptors().length);
-		assertThat((Object) chain.getInterceptors()[1].getClass()).isEqualTo(ConversionServiceExposingInterceptor.class);
-		assertThat((Object) chain.getInterceptors()[2].getClass()).isEqualTo(ResourceUrlProviderExposingInterceptor.class);
+		assertThat(chain.getInterceptors()[1].getClass()).isEqualTo(ConversionServiceExposingInterceptor.class);
+		assertThat(chain.getInterceptors()[2].getClass()).isEqualTo(ResourceUrlProviderExposingInterceptor.class);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class WebMvcConfigurationSupportTests {
 					assertThat(mapper.getSerializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION)).isFalse();
 					assertThat(mapper.getDeserializationConfig().isEnabled(FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 					if (converter instanceof MappingJackson2XmlHttpMessageConverter) {
-						assertThat((Object) mapper.getClass()).isEqualTo(XmlMapper.class);
+						assertThat(mapper.getClass()).isEqualTo(XmlMapper.class);
 					}
 				});
 
@@ -193,8 +193,8 @@ public class WebMvcConfigurationSupportTests {
 		@SuppressWarnings("unchecked")
 		List<Object> bodyAdvice = (List<Object>) fieldAccessor.getPropertyValue("requestResponseBodyAdvice");
 		assertEquals(2, bodyAdvice.size());
-		assertThat((Object) bodyAdvice.get(0).getClass()).isEqualTo(JsonViewRequestBodyAdvice.class);
-		assertThat((Object) bodyAdvice.get(1).getClass()).isEqualTo(JsonViewResponseBodyAdvice.class);
+		assertThat(bodyAdvice.get(0).getClass()).isEqualTo(JsonViewRequestBodyAdvice.class);
+		assertThat(bodyAdvice.get(1).getClass()).isEqualTo(JsonViewResponseBodyAdvice.class);
 	}
 
 	@Test
@@ -217,9 +217,9 @@ public class WebMvcConfigurationSupportTests {
 		assertEquals(0, compositeResolver.getOrder());
 		List<HandlerExceptionResolver> expectedResolvers = compositeResolver.getExceptionResolvers();
 
-		assertThat((Object) expectedResolvers.get(0).getClass()).isEqualTo(ExceptionHandlerExceptionResolver.class);
-		assertThat((Object) expectedResolvers.get(1).getClass()).isEqualTo(ResponseStatusExceptionResolver.class);
-		assertThat((Object) expectedResolvers.get(2).getClass()).isEqualTo(DefaultHandlerExceptionResolver.class);
+		assertThat(expectedResolvers.get(0).getClass()).isEqualTo(ExceptionHandlerExceptionResolver.class);
+		assertThat(expectedResolvers.get(1).getClass()).isEqualTo(ResponseStatusExceptionResolver.class);
+		assertThat(expectedResolvers.get(2).getClass()).isEqualTo(DefaultHandlerExceptionResolver.class);
 
 		ExceptionHandlerExceptionResolver eher = (ExceptionHandlerExceptionResolver) expectedResolvers.get(0);
 		assertNotNull(eher.getApplicationContext());
@@ -227,7 +227,7 @@ public class WebMvcConfigurationSupportTests {
 		DirectFieldAccessor fieldAccessor = new DirectFieldAccessor(eher);
 		List<Object> interceptors = (List<Object>) fieldAccessor.getPropertyValue("responseBodyAdvice");
 		assertEquals(1, interceptors.size());
-		assertThat((Object) interceptors.get(0).getClass()).isEqualTo(JsonViewResponseBodyAdvice.class);
+		assertThat(interceptors.get(0).getClass()).isEqualTo(JsonViewResponseBodyAdvice.class);
 
 		LocaleContextHolder.setLocale(Locale.ENGLISH);
 		try {
@@ -235,7 +235,7 @@ public class WebMvcConfigurationSupportTests {
 			MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
 			MockHttpServletResponse response = new MockHttpServletResponse();
 			rser.resolveException(request, response, context.getBean(TestController.class), new UserAlreadyExistsException());
-			assertThat((Object) response.getErrorMessage()).isEqualTo("User already exists!");
+			assertThat(response.getErrorMessage()).isEqualTo("User already exists!");
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -250,21 +250,21 @@ public class WebMvcConfigurationSupportTests {
 
 		assertNotNull(adapter);
 		assertEquals(1, adapter.getCustomArgumentResolvers().size());
-		assertThat((Object) adapter.getCustomArgumentResolvers().get(0).getClass()).isEqualTo(TestArgumentResolver.class);
+		assertThat(adapter.getCustomArgumentResolvers().get(0).getClass()).isEqualTo(TestArgumentResolver.class);
 		assertEquals(1, adapter.getCustomReturnValueHandlers().size());
-		assertThat((Object) adapter.getCustomReturnValueHandlers().get(0).getClass()).isEqualTo(TestReturnValueHandler.class);
+		assertThat(adapter.getCustomReturnValueHandlers().get(0).getClass()).isEqualTo(TestReturnValueHandler.class);
 
 		assertNotNull(composite);
 		assertEquals(3, composite.getExceptionResolvers().size());
-		assertThat((Object) composite.getExceptionResolvers().get(0).getClass()).isEqualTo(ExceptionHandlerExceptionResolver.class);
+		assertThat(composite.getExceptionResolvers().get(0).getClass()).isEqualTo(ExceptionHandlerExceptionResolver.class);
 
 		ExceptionHandlerExceptionResolver resolver =
 				(ExceptionHandlerExceptionResolver) composite.getExceptionResolvers().get(0);
 
 		assertEquals(1, resolver.getCustomArgumentResolvers().size());
-		assertThat((Object) resolver.getCustomArgumentResolvers().get(0).getClass()).isEqualTo(TestArgumentResolver.class);
+		assertThat(resolver.getCustomArgumentResolvers().get(0).getClass()).isEqualTo(TestArgumentResolver.class);
 		assertEquals(1, resolver.getCustomReturnValueHandlers().size());
-		assertThat((Object) resolver.getCustomReturnValueHandlers().get(0).getClass()).isEqualTo(TestReturnValueHandler.class);
+		assertThat(resolver.getCustomReturnValueHandlers().get(0).getClass()).isEqualTo(TestReturnValueHandler.class);
 	}
 
 
@@ -275,7 +275,7 @@ public class WebMvcConfigurationSupportTests {
 
 		assertNotNull(resolver);
 		assertEquals(1, resolver.getViewResolvers().size());
-		assertThat((Object) resolver.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
+		assertThat(resolver.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
 		assertEquals(Ordered.LOWEST_PRECEDENCE, resolver.getOrder());
 	}
 
@@ -297,7 +297,7 @@ public class WebMvcConfigurationSupportTests {
 
 		assertNotNull(resolver);
 		assertEquals(1, resolver.getViewResolvers().size());
-		assertThat((Object) resolver.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
+		assertThat(resolver.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
 		assertEquals(123, resolver.getOrder());
 	}
 
@@ -309,7 +309,7 @@ public class WebMvcConfigurationSupportTests {
 
 		assertNotNull(urlPathHelper);
 		assertNotNull(pathMatcher);
-		assertThat((Object) pathMatcher.getClass()).isEqualTo(AntPathMatcher.class);
+		assertThat(pathMatcher.getClass()).isEqualTo(AntPathMatcher.class);
 	}
 
 	private ApplicationContext initContext(Class<?>... configClasses) {

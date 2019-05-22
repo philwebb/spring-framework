@@ -96,7 +96,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
 		assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
-		assertThat((Object) this.response.getContentAsString()).isEqualTo("foo");
+		assertThat(this.response.getContentAsString()).isEqualTo("foo");
 	}
 
 
@@ -114,10 +114,10 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
 		assertEquals(200, this.response.getStatus());
-		assertThat((Object) this.response.getHeader("foo")).isEqualTo("bar");
+		assertThat(this.response.getHeader("foo")).isEqualTo("bar");
 
 		assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
-		assertThat((Object) this.response.getContentAsString()).isEqualTo("foo");
+		assertThat(this.response.getContentAsString()).isEqualTo("foo");
 
 	}
 
@@ -137,7 +137,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		MethodParameter returnType = returnType(TestController.class, "handleResponseEntity");
 		this.handler.handleReturnValue(emitter, returnType, this.mavContainer, this.webRequest);
 
-		assertThat((Object) this.response.getHeaders("foo")).isEqualTo(Collections.singletonList("bar"));
+		assertThat(this.response.getHeaders("foo")).isEqualTo(Collections.singletonList("bar"));
 	}
 
 	private MethodParameter returnType(Class<?> clazz, String methodName) throws NoSuchMethodException {

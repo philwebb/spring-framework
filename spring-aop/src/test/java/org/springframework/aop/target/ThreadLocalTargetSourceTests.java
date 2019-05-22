@@ -69,8 +69,8 @@ public class ThreadLocalTargetSourceTests {
 		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
 
 		ITestBean test = (ITestBean) beanFactory.getBean("threadLocal2");
-		assertThat((Object) test.getName()).isEqualTo("Rod");
-		assertThat((Object) test.getSpouse().getName()).isEqualTo("Kerry");
+		assertThat(test.getName()).isEqualTo("Rod");
+		assertThat(test.getSpouse().getName()).isEqualTo("Kerry");
 	}
 
 	@Test

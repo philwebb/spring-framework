@@ -48,7 +48,7 @@ public class InvalidHttpMethodIntegrationTests extends AbstractRouterFunctionInt
 				.build();
 
 		try (Response response = client.newCall(request).execute()) {
-			assertThat((Object) response.body().string()).isEqualTo("BAR");
+			assertThat(response.body().string()).isEqualTo("BAR");
 		}
 	}
 

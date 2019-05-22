@@ -113,13 +113,13 @@ public class ContextLoaderTests {
 			@Override
 			protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
 				assertNotNull("The ServletContext should not be null.", sc);
-				assertThat((Object) sc).as("Verifying that we received the expected ServletContext.").isEqualTo(sc);
+				assertThat(sc).as("Verifying that we received the expected ServletContext.").isEqualTo(sc);
 				assertThat(wac.isActive()).as("The ApplicationContext should not yet have been refreshed.").isFalse();
 				buffer.append(expectedContents);
 			}
 		};
 		listener.contextInitialized(new ServletContextEvent(sc));
-		assertThat((Object) buffer.toString()).as("customizeContext() should have been called.").isEqualTo(expectedContents);
+		assertThat(buffer.toString()).as("customizeContext() should have been called.").isEqualTo(expectedContents);
 	}
 
 	@Test

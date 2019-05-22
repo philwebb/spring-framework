@@ -263,13 +263,13 @@ public class DelegatingFilterProxyTests {
 		proxyConfig.addInitParameter("targetFilterLifecycle", "true");
 		DelegatingFilterProxy filterProxy = new DelegatingFilterProxy();
 		filterProxy.init(proxyConfig);
-		assertThat((Object) targetFilter.filterConfig).isEqualTo(proxyConfig);
+		assertThat(targetFilter.filterConfig).isEqualTo(proxyConfig);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		filterProxy.doFilter(request, response, null);
 
-		assertThat((Object) targetFilter.filterConfig).isEqualTo(proxyConfig);
+		assertThat(targetFilter.filterConfig).isEqualTo(proxyConfig);
 		assertThat(request.getAttribute("called")).isEqualTo(Boolean.TRUE);
 
 		filterProxy.destroy();

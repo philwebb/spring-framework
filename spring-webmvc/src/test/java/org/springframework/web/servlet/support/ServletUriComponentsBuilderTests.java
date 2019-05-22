@@ -60,21 +60,21 @@ public class ServletUriComponentsBuilderTests {
 		this.request.setRequestURI("/mvc-showcase/data/param");
 		this.request.setQueryString("foo=123");
 		String result = ServletUriComponentsBuilder.fromRequest(this.request).build().toUriString();
-		assertThat((Object) result).isEqualTo("http://localhost/mvc-showcase/data/param?foo=123");
+		assertThat(result).isEqualTo("http://localhost/mvc-showcase/data/param?foo=123");
 	}
 
 	@Test
 	public void fromRequestEncodedPath() {
 		this.request.setRequestURI("/mvc-showcase/data/foo%20bar");
 		String result = ServletUriComponentsBuilder.fromRequest(this.request).build().toUriString();
-		assertThat((Object) result).isEqualTo("http://localhost/mvc-showcase/data/foo%20bar");
+		assertThat(result).isEqualTo("http://localhost/mvc-showcase/data/foo%20bar");
 	}
 
 	@Test
 	public void fromRequestAtypicalHttpPort() {
 		this.request.setServerPort(8080);
 		String result = ServletUriComponentsBuilder.fromRequest(this.request).build().toUriString();
-		assertThat((Object) result).isEqualTo("http://localhost:8080/mvc-showcase");
+		assertThat(result).isEqualTo("http://localhost:8080/mvc-showcase");
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ServletUriComponentsBuilderTests {
 		this.request.setScheme("https");
 		this.request.setServerPort(9043);
 		String result = ServletUriComponentsBuilder.fromRequest(this.request).build().toUriString();
-		assertThat((Object) result).isEqualTo("https://localhost:9043/mvc-showcase");
+		assertThat(result).isEqualTo("https://localhost:9043/mvc-showcase");
 	}
 
 	// Some X-Forwarded-* tests in addition to the ones in UriComponentsBuilderTests
@@ -101,7 +101,7 @@ public class ServletUriComponentsBuilderTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(request);
 		UriComponents result =  ServletUriComponentsBuilder.fromRequest(requestToUse).build();
 
-		assertThat((Object) result.toString()).isEqualTo("https://84.198.58.199/mvc-showcase");
+		assertThat(result.toString()).isEqualTo("https://84.198.58.199/mvc-showcase");
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class ServletUriComponentsBuilderTests {
 		this.request.setRequestURI("/mvc-showcase/data/param");
 		this.request.setQueryString("foo=123");
 		String result = ServletUriComponentsBuilder.fromRequestUri(this.request).build().toUriString();
-		assertThat((Object) result).isEqualTo("http://localhost/mvc-showcase/data/param");
+		assertThat(result).isEqualTo("http://localhost/mvc-showcase/data/param");
 	}
 
 	@Test // SPR-16650
@@ -121,7 +121,7 @@ public class ServletUriComponentsBuilderTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(this.request);
 		UriComponents result =  ServletUriComponentsBuilder.fromRequest(requestToUse).build();
 
-		assertThat((Object) result.toUriString()).isEqualTo("http://localhost/prefix/bar");
+		assertThat(result.toUriString()).isEqualTo("http://localhost/prefix/bar");
 	}
 
 	@Test // SPR-16650
@@ -133,7 +133,7 @@ public class ServletUriComponentsBuilderTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(this.request);
 		UriComponents result =  ServletUriComponentsBuilder.fromRequest(requestToUse).build();
 
-		assertThat((Object) result.toUriString()).isEqualTo("http://localhost/foo/bar");
+		assertThat(result.toUriString()).isEqualTo("http://localhost/foo/bar");
 	}
 
 	@Test // SPR-16650
@@ -145,7 +145,7 @@ public class ServletUriComponentsBuilderTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(this.request);
 		UriComponents result =  ServletUriComponentsBuilder.fromRequest(requestToUse).build();
 
-		assertThat((Object) result.toUriString()).isEqualTo("http://localhost/bar");
+		assertThat(result.toUriString()).isEqualTo("http://localhost/bar");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class ServletUriComponentsBuilderTests {
 		this.request.setRequestURI("/mvc-showcase/data/param");
 		this.request.setQueryString("foo=123");
 		String result = ServletUriComponentsBuilder.fromContextPath(this.request).build().toUriString();
-		assertThat((Object) result).isEqualTo("http://localhost/mvc-showcase");
+		assertThat(result).isEqualTo("http://localhost/mvc-showcase");
 	}
 
 	@Test // SPR-16650
@@ -165,7 +165,7 @@ public class ServletUriComponentsBuilderTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(this.request);
 		String result = ServletUriComponentsBuilder.fromContextPath(requestToUse).build().toUriString();
 
-		assertThat((Object) result).isEqualTo("http://localhost/prefix");
+		assertThat(result).isEqualTo("http://localhost/prefix");
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class ServletUriComponentsBuilderTests {
 		this.request.setServletPath("/app");
 		this.request.setQueryString("foo=123");
 		String result = ServletUriComponentsBuilder.fromServletMapping(this.request).build().toUriString();
-		assertThat((Object) result).isEqualTo("http://localhost/mvc-showcase/app");
+		assertThat(result).isEqualTo("http://localhost/mvc-showcase/app");
 	}
 
 	@Test // SPR-16650
@@ -187,7 +187,7 @@ public class ServletUriComponentsBuilderTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(this.request);
 		String result = ServletUriComponentsBuilder.fromServletMapping(requestToUse).build().toUriString();
 
-		assertThat((Object) result).isEqualTo("http://localhost/prefix/app");
+		assertThat(result).isEqualTo("http://localhost/prefix/app");
 	}
 
 	@Test
@@ -197,7 +197,7 @@ public class ServletUriComponentsBuilderTests {
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(this.request));
 		try {
 			String result = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
-			assertThat((Object) result).isEqualTo("http://localhost/mvc-showcase/data/param?foo=123");
+			assertThat(result).isEqualTo("http://localhost/mvc-showcase/data/param?foo=123");
 		}
 		finally {
 			RequestContextHolder.resetRequestAttributes();
@@ -210,7 +210,7 @@ public class ServletUriComponentsBuilderTests {
 		ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromRequestUri(this.request);
 		String extension = builder.removePathExtension();
 		String result = builder.path("/pages/1.{ext}").buildAndExpand(extension).toUriString();
-		assertThat((Object) result).isEqualTo("http://localhost/rest/books/6/pages/1.json");
+		assertThat(result).isEqualTo("http://localhost/rest/books/6/pages/1.json");
 	}
 
 	@Test

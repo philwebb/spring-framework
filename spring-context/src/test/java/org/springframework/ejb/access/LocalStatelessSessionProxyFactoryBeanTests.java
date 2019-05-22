@@ -128,7 +128,7 @@ public class LocalStatelessSessionProxyFactoryBeanTests {
 		fb.setJndiName(jndiName);
 		fb.setResourceRef(false);	// no java:comp/env prefix
 		fb.setBusinessInterface(MyBusinessMethods.class);
-		assertThat((Object) MyBusinessMethods.class).isEqualTo(fb.getBusinessInterface());
+		assertThat(MyBusinessMethods.class).isEqualTo(fb.getBusinessInterface());
 		fb.setJndiTemplate(jt);
 
 		// Need lifecycle methods

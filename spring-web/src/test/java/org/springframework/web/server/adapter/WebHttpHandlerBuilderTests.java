@@ -63,7 +63,7 @@ public class WebHttpHandlerBuilderTests {
 		MockServerHttpResponse response = new MockServerHttpResponse();
 		httpHandler.handle(request, response).block(ofMillis(5000));
 
-		assertThat((Object) response.getBodyAsString().block(ofMillis(5000))).isEqualTo("FilterB::FilterA");
+		assertThat(response.getBodyAsString().block(ofMillis(5000))).isEqualTo("FilterB::FilterA");
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class WebHttpHandlerBuilderTests {
 		context.refresh();
 
 		WebHttpHandlerBuilder builder = WebHttpHandlerBuilder.applicationContext(context);
-		builder.filters(filters -> assertThat((Object) filters).isEqualTo(Collections.emptyList()));
+		builder.filters(filters -> assertThat(filters).isEqualTo(Collections.emptyList()));
 		assertThat(builder.hasForwardedHeaderTransformer()).isTrue();
 	}
 
@@ -88,7 +88,7 @@ public class WebHttpHandlerBuilderTests {
 		MockServerHttpResponse response = new MockServerHttpResponse();
 		httpHandler.handle(request, response).block(ofMillis(5000));
 
-		assertThat((Object) response.getBodyAsString().block(ofMillis(5000))).isEqualTo("ExceptionHandlerB");
+		assertThat(response.getBodyAsString().block(ofMillis(5000))).isEqualTo("ExceptionHandlerB");
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class WebHttpHandlerBuilderTests {
 		MockServerHttpResponse response = new MockServerHttpResponse();
 		httpHandler.handle(request, response).block(ofMillis(5000));
 
-		assertThat((Object) response.getBodyAsString().block(ofMillis(5000))).isEqualTo("handled");
+		assertThat(response.getBodyAsString().block(ofMillis(5000))).isEqualTo("handled");
 	}
 
 	@Test  // SPR-16972

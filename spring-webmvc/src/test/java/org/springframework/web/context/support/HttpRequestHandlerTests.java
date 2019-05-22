@@ -72,7 +72,7 @@ public class HttpRequestHandlerTests {
 		servlet.init(new MockServletConfig(servletContext, "myHandler"));
 
 		servlet.service(request, response);
-		assertThat((Object) response.getContentAsString()).isEqualTo("myResponse");
+		assertThat(response.getContentAsString()).isEqualTo("myResponse");
 
 		request.setParameter("exception", "ServletException");
 		assertThatExceptionOfType(ServletException.class).isThrownBy(() ->

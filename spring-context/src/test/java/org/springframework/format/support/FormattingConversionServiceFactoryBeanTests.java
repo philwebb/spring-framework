@@ -186,8 +186,8 @@ public class FormattingConversionServiceFactoryBeanTests {
 
 		@Override
 		public Printer<?> getPrinter(SpecialInt annotation, Class<?> fieldType) {
-			assertThat((Object) annotation.value()).isEqualTo("aliased");
-			assertThat((Object) annotation.alias()).isEqualTo("aliased");
+			assertThat(annotation.value()).isEqualTo("aliased");
+			assertThat(annotation.alias()).isEqualTo("aliased");
 			return new Printer<Integer>() {
 				@Override
 				public String print(Integer object, Locale locale) {
@@ -198,8 +198,8 @@ public class FormattingConversionServiceFactoryBeanTests {
 
 		@Override
 		public Parser<?> getParser(SpecialInt annotation, Class<?> fieldType) {
-			assertThat((Object) annotation.value()).isEqualTo("aliased");
-			assertThat((Object) annotation.alias()).isEqualTo("aliased");
+			assertThat(annotation.value()).isEqualTo("aliased");
+			assertThat(annotation.alias()).isEqualTo("aliased");
 			return new Parser<Integer>() {
 				@Override
 				public Integer parse(String text, Locale locale) throws ParseException {

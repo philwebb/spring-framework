@@ -71,7 +71,7 @@ public class BasicAuthorizationInterceptorTests {
 		new BasicAuthorizationInterceptor("spring", "boot").intercept(request, body,
 				execution);
 		verify(execution).execute(request, body);
-		assertThat((Object) request.getHeaders().getFirst("Authorization")).isEqualTo("Basic c3ByaW5nOmJvb3Q=");
+		assertThat(request.getHeaders().getFirst("Authorization")).isEqualTo("Basic c3ByaW5nOmJvb3Q=");
 	}
 
 }

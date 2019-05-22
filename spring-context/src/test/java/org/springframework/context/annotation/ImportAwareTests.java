@@ -128,7 +128,7 @@ public class ImportAwareTests {
 		AnnotationMetadata importMetadata = new AnnotationConfigApplicationContext(
 				ConfigurationOne.class, ConfigurationTwo.class)
 				.getBean(MetadataHolder.class).importMetadata;
-		assertThat((Object) ((StandardAnnotationMetadata) importMetadata).getIntrospectedClass()).isEqualTo(ConfigurationOne.class);
+		assertThat(((StandardAnnotationMetadata) importMetadata).getIntrospectedClass()).isEqualTo(ConfigurationOne.class);
 	}
 
 	@Test
@@ -136,7 +136,7 @@ public class ImportAwareTests {
 		AnnotationMetadata importMetadata = new AnnotationConfigApplicationContext(
 				ConfigurationTwo.class, ConfigurationOne.class)
 				.getBean(MetadataHolder.class).importMetadata;
-		assertThat((Object) ((StandardAnnotationMetadata) importMetadata).getIntrospectedClass()).isEqualTo(ConfigurationOne.class);
+		assertThat(((StandardAnnotationMetadata) importMetadata).getIntrospectedClass()).isEqualTo(ConfigurationOne.class);
 	}
 
 	@Test
@@ -399,8 +399,8 @@ public class ImportAwareTests {
 		public void setImportMetadata(AnnotationMetadata annotationMetadata) {
 			AnnotationAttributes enableFeatureAttributes =
 					AnnotationAttributes.fromMap(annotationMetadata.getAnnotationAttributes(EnableFeature.class.getName()));
-			assertThat((Object) enableFeatureAttributes.annotationType()).isEqualTo(EnableFeature.class);
-			Arrays.stream(enableFeatureAttributes.getAnnotationArray("policies")).forEach(featurePolicyAttributes -> assertThat((Object) featurePolicyAttributes.annotationType()).isEqualTo(EnableFeature.FeaturePolicy.class));
+			assertThat(enableFeatureAttributes.annotationType()).isEqualTo(EnableFeature.class);
+			Arrays.stream(enableFeatureAttributes.getAnnotationArray("policies")).forEach(featurePolicyAttributes -> assertThat(featurePolicyAttributes.annotationType()).isEqualTo(EnableFeature.FeaturePolicy.class));
 		}
 	}
 

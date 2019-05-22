@@ -42,9 +42,9 @@ public class DriverManagerDataSourceTests {
 		class TestDriverManagerDataSource extends DriverManagerDataSource {
 			@Override
 			protected Connection getConnectionFromDriverManager(String url, Properties props) {
-				assertThat((Object) url).isEqualTo(jdbcUrl);
-				assertThat((Object) props.getProperty("user")).isEqualTo(uname);
-				assertThat((Object) props.getProperty("password")).isEqualTo(pwd);
+				assertThat(url).isEqualTo(jdbcUrl);
+				assertThat(props.getProperty("user")).isEqualTo(uname);
+				assertThat(props.getProperty("password")).isEqualTo(pwd);
 				return connection;
 			}
 		}
@@ -76,11 +76,11 @@ public class DriverManagerDataSourceTests {
 		class TestDriverManagerDataSource extends DriverManagerDataSource {
 			@Override
 			protected Connection getConnectionFromDriverManager(String url, Properties props) {
-				assertThat((Object) url).isEqualTo(jdbcUrl);
-				assertThat((Object) props.getProperty("user")).isEqualTo("uname");
-				assertThat((Object) props.getProperty("password")).isEqualTo("pwd");
-				assertThat((Object) props.getProperty("myProp")).isEqualTo("myValue");
-				assertThat((Object) props.getProperty("yourProp")).isEqualTo("yourValue");
+				assertThat(url).isEqualTo(jdbcUrl);
+				assertThat(props.getProperty("user")).isEqualTo("uname");
+				assertThat(props.getProperty("password")).isEqualTo("pwd");
+				assertThat(props.getProperty("myProp")).isEqualTo("myValue");
+				assertThat(props.getProperty("yourProp")).isEqualTo("yourValue");
 				return connection;
 			}
 		}
@@ -111,11 +111,11 @@ public class DriverManagerDataSourceTests {
 		class TestDriverManagerDataSource extends DriverManagerDataSource {
 			@Override
 			protected Connection getConnectionFromDriverManager(String url, Properties props) {
-				assertThat((Object) url).isEqualTo(jdbcUrl);
-				assertThat((Object) props.getProperty("user")).isEqualTo(uname);
-				assertThat((Object) props.getProperty("password")).isEqualTo(pwd);
-				assertThat((Object) props.getProperty("myProp")).isEqualTo("myValue");
-				assertThat((Object) props.getProperty("yourProp")).isEqualTo("yourValue");
+				assertThat(url).isEqualTo(jdbcUrl);
+				assertThat(props.getProperty("user")).isEqualTo(uname);
+				assertThat(props.getProperty("password")).isEqualTo(pwd);
+				assertThat(props.getProperty("myProp")).isEqualTo("myValue");
+				assertThat(props.getProperty("yourProp")).isEqualTo("yourValue");
 				return connection;
 			}
 		}

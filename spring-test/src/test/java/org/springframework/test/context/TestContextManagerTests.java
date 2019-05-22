@@ -105,7 +105,7 @@ public class TestContextManagerTests {
 	}
 
 	private static void assertExecutionOrder(String usageContext, String... expectedBeforeTestMethodCalls) {
-		assertThat((Object) executionOrder).as("execution order (" + usageContext + ") ==>").isEqualTo(Arrays.asList(expectedBeforeTestMethodCalls));
+		assertThat(executionOrder).as("execution order (" + usageContext + ") ==>").isEqualTo(Arrays.asList(expectedBeforeTestMethodCalls));
 	}
 
 

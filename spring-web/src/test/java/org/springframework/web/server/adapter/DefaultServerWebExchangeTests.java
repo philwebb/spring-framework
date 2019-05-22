@@ -39,14 +39,14 @@ public class DefaultServerWebExchangeTests {
 	@Test
 	public void transformUrlDefault() {
 		ServerWebExchange exchange = createExchange();
-		assertThat((Object) exchange.transformUrl("/foo")).isEqualTo("/foo");
+		assertThat(exchange.transformUrl("/foo")).isEqualTo("/foo");
 	}
 
 	@Test
 	public void transformUrlWithEncoder() {
 		ServerWebExchange exchange = createExchange();
 		exchange.addUrlTransformer(s -> s + "?nonce=123");
-		assertThat((Object) exchange.transformUrl("/foo")).isEqualTo("/foo?nonce=123");
+		assertThat(exchange.transformUrl("/foo")).isEqualTo("/foo?nonce=123");
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class DefaultServerWebExchangeTests {
 		ServerWebExchange exchange = createExchange();
 		exchange.addUrlTransformer(s -> s + ";p=abc");
 		exchange.addUrlTransformer(s -> s + "?q=123");
-		assertThat((Object) exchange.transformUrl("/foo")).isEqualTo("/foo;p=abc?q=123");
+		assertThat(exchange.transformUrl("/foo")).isEqualTo("/foo;p=abc?q=123");
 	}
 
 

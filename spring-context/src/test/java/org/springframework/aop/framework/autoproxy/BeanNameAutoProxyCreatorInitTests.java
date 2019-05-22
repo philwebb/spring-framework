@@ -42,7 +42,7 @@ public class BeanNameAutoProxyCreatorInitTests {
 				new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 		TestBean bean = (TestBean) ctx.getBean("bean");
 		bean.setName("foo");
-		assertThat((Object) bean.getName()).isEqualTo("foo");
+		assertThat(bean.getName()).isEqualTo("foo");
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				bean.setName(null));
 	}

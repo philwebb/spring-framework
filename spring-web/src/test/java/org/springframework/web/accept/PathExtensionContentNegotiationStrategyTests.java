@@ -61,13 +61,13 @@ public class PathExtensionContentNegotiationStrategyTests {
 		PathExtensionContentNegotiationStrategy strategy = new PathExtensionContentNegotiationStrategy();
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(this.webRequest);
 
-		assertThat((Object) mediaTypes).isEqualTo(Arrays.asList(new MediaType("text", "html")));
+		assertThat(mediaTypes).isEqualTo(Arrays.asList(new MediaType("text", "html")));
 
 		Map<String, MediaType> mapping = Collections.singletonMap("HTML", MediaType.APPLICATION_XHTML_XML);
 		strategy = new PathExtensionContentNegotiationStrategy(mapping);
 		mediaTypes = strategy.resolveMediaTypes(this.webRequest);
 
-		assertThat((Object) mediaTypes).isEqualTo(Arrays.asList(new MediaType("application", "xhtml+xml")));
+		assertThat(mediaTypes).isEqualTo(Arrays.asList(new MediaType("application", "xhtml+xml")));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class PathExtensionContentNegotiationStrategyTests {
 		PathExtensionContentNegotiationStrategy strategy = new PathExtensionContentNegotiationStrategy();
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(this.webRequest);
 
-		assertThat((Object) mediaTypes).isEqualTo(Arrays.asList(new MediaType("application", "vnd.ms-excel")));
+		assertThat(mediaTypes).isEqualTo(Arrays.asList(new MediaType("application", "vnd.ms-excel")));
 	}
 
 	// SPR-8678
@@ -90,10 +90,10 @@ public class PathExtensionContentNegotiationStrategyTests {
 
 		this.servletRequest.setContextPath("/project-1.0.0.M3");
 		this.servletRequest.setRequestURI("/project-1.0.0.M3/");
-		assertThat((Object) strategy.resolveMediaTypes(webRequest)).as("Context path should be excluded").isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
+		assertThat(strategy.resolveMediaTypes(webRequest)).as("Context path should be excluded").isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 
 		this.servletRequest.setRequestURI("/project-1.0.0.M3");
-		assertThat((Object) strategy.resolveMediaTypes(webRequest)).as("Context path should be excluded").isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
+		assertThat(strategy.resolveMediaTypes(webRequest)).as("Context path should be excluded").isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	// SPR-9390
@@ -106,7 +106,7 @@ public class PathExtensionContentNegotiationStrategyTests {
 		PathExtensionContentNegotiationStrategy strategy = new PathExtensionContentNegotiationStrategy();
 		List<MediaType> result = strategy.resolveMediaTypes(webRequest);
 
-		assertThat((Object) result).as("Invalid content type").isEqualTo(Collections.singletonList(new MediaType("text", "html")));
+		assertThat(result).as("Invalid content type").isEqualTo(Collections.singletonList(new MediaType("text", "html")));
 	}
 
 	// SPR-10170
@@ -119,7 +119,7 @@ public class PathExtensionContentNegotiationStrategyTests {
 		PathExtensionContentNegotiationStrategy strategy = new PathExtensionContentNegotiationStrategy();
 		List<MediaType> mediaTypes = strategy.resolveMediaTypes(this.webRequest);
 
-		assertThat((Object) mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
+		assertThat(mediaTypes).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test

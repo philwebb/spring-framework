@@ -175,7 +175,7 @@ public class BodyExtractorsTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(user -> {
-					assertThat((Object) user.getUsername()).isEqualTo("foo");
+					assertThat(user.getUsername()).isEqualTo("foo");
 					assertNull(user.getPassword());
 				})
 				.expectComplete()
@@ -266,11 +266,11 @@ public class BodyExtractorsTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(user -> {
-					assertThat((Object) user.getUsername()).isEqualTo("foo");
+					assertThat(user.getUsername()).isEqualTo("foo");
 					assertNull(user.getPassword());
 				})
 				.consumeNextWith(user -> {
-					assertThat((Object) user.getUsername()).isEqualTo("bar");
+					assertThat(user.getUsername()).isEqualTo("bar");
 					assertNull(user.getPassword());
 				})
 				.expectComplete()
@@ -329,11 +329,11 @@ public class BodyExtractorsTests {
 		StepVerifier.create(result)
 				.consumeNextWith(form -> {
 					assertEquals("Invalid result", 3, form.size());
-					assertThat((Object) form.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
+					assertThat(form.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 					List<String> values = form.get("name 2");
 					assertEquals("Invalid result", 2, values.size());
-					assertThat((Object) values.get(0)).as("Invalid result").isEqualTo("value 2+1");
-					assertThat((Object) values.get(1)).as("Invalid result").isEqualTo("value 2+2");
+					assertThat(values.get(0)).as("Invalid result").isEqualTo("value 2+1");
+					assertThat(values.get(1)).as("Invalid result").isEqualTo("value 2+2");
 					assertNull("Invalid result", form.getFirst("name 3"));
 				})
 				.expectComplete()
@@ -375,27 +375,27 @@ public class BodyExtractorsTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(part -> {
-					assertThat((Object) part.name()).isEqualTo("text");
+					assertThat(part.name()).isEqualTo("text");
 					boolean condition = part instanceof FormFieldPart;
 					assertThat(condition).isTrue();
 					FormFieldPart formFieldPart = (FormFieldPart) part;
-					assertThat((Object) formFieldPart.value()).isEqualTo("text default");
+					assertThat(formFieldPart.value()).isEqualTo("text default");
 				})
 				.consumeNextWith(part -> {
-					assertThat((Object) part.name()).isEqualTo("file1");
+					assertThat(part.name()).isEqualTo("file1");
 					boolean condition = part instanceof FilePart;
 					assertThat(condition).isTrue();
 					FilePart filePart = (FilePart) part;
-					assertThat((Object) filePart.filename()).isEqualTo("a.txt");
-					assertThat((Object) filePart.headers().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+					assertThat(filePart.filename()).isEqualTo("a.txt");
+					assertThat(filePart.headers().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 				})
 				.consumeNextWith(part -> {
-					assertThat((Object) part.name()).isEqualTo("file2");
+					assertThat(part.name()).isEqualTo("file2");
 					boolean condition = part instanceof FilePart;
 					assertThat(condition).isTrue();
 					FilePart filePart = (FilePart) part;
-					assertThat((Object) filePart.filename()).isEqualTo("a.html");
-					assertThat((Object) filePart.headers().getContentType()).isEqualTo(MediaType.TEXT_HTML);
+					assertThat(filePart.filename()).isEqualTo("a.html");
+					assertThat(filePart.headers().getContentType()).isEqualTo(MediaType.TEXT_HTML);
 				})
 				.expectComplete()
 				.verify();

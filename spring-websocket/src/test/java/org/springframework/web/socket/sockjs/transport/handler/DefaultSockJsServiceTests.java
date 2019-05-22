@@ -153,7 +153,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		verify(this.xhrHandler).handleRequest(this.request, this.response, this.wsHandler, this.session);
 		verify(taskScheduler).scheduleAtFixedRate(any(Runnable.class), eq(service.getDisconnectDelay()));
 
-		assertThat((Object) this.response.getHeaders().getCacheControl()).isEqualTo("no-store, no-cache, must-revalidate, max-age=0");
+		assertThat(this.response.getHeaders().getCacheControl()).isEqualTo("no-store, no-cache, must-revalidate, max-age=0");
 		assertNull(this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
 		assertNull(this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS));
 	}
@@ -304,7 +304,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 		assertNotEquals(404, this.servletResponse.getStatus());
-		assertThat((Object) this.servletResponse.getHeader("X-Frame-Options")).isEqualTo("SAMEORIGIN");
+		assertThat(this.servletResponse.getHeader("X-Frame-Options")).isEqualTo("SAMEORIGIN");
 
 		resetRequestAndResponse();
 		setRequest("GET", sockJsPrefix + sockJsPath);

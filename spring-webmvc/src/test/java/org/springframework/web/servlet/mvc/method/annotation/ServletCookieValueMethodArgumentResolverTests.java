@@ -68,7 +68,7 @@ public class ServletCookieValueMethodArgumentResolverTests {
 		request.setCookies(expected);
 
 		Cookie result = (Cookie) resolver.resolveArgument(cookieParameter, null, webRequest, null);
-		assertThat((Object) result).as("Invalid result").isEqualTo(expected);
+		assertThat(result).as("Invalid result").isEqualTo(expected);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class ServletCookieValueMethodArgumentResolverTests {
 		request.setCookies(cookie);
 
 		String result = (String) resolver.resolveArgument(cookieStringParameter, null, webRequest, null);
-		assertThat((Object) result).as("Invalid result").isEqualTo(cookie.getValue());
+		assertThat(result).as("Invalid result").isEqualTo(cookie.getValue());
 	}
 
 

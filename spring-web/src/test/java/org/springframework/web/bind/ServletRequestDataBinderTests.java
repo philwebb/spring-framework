@@ -59,7 +59,7 @@ public class ServletRequestDataBinderTests {
 		binder.bind(request);
 
 		assertNotNull(tb.getSpouse());
-		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
+		assertThat(tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -141,11 +141,11 @@ public class ServletRequestDataBinderTests {
 		request.addParameter("!name", "anonymous");
 		request.addParameter("name", "Scott");
 		binder.bind(request);
-		assertThat((Object) target.getName()).isEqualTo("Scott");
+		assertThat(target.getName()).isEqualTo("Scott");
 
 		request.removeParameter("name");
 		binder.bind(request);
-		assertThat((Object) target.getName()).isEqualTo("anonymous");
+		assertThat(target.getName()).isEqualTo("anonymous");
 	}
 
 	@Test
@@ -184,7 +184,7 @@ public class ServletRequestDataBinderTests {
 		binder.bind(request);
 
 		assertNotNull(tb.getSpouse());
-		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
+		assertThat(tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test

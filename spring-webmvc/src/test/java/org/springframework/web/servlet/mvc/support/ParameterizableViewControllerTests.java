@@ -57,7 +57,7 @@ public class ParameterizableViewControllerTests {
 	public void viewName() throws Exception {
 		this.controller.setViewName("view");
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertThat((Object) modelAndView.getViewName()).isEqualTo("view");
+		assertThat(modelAndView.getViewName()).isEqualTo("view");
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class ParameterizableViewControllerTests {
 		this.controller.setViewName("view");
 		this.controller.setStatusCode(HttpStatus.NOT_FOUND);
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
-		assertThat((Object) modelAndView.getViewName()).isEqualTo("view");
+		assertThat(modelAndView.getViewName()).isEqualTo("view");
 		assertEquals(404, this.response.getStatus());
 	}
 
@@ -83,7 +83,7 @@ public class ParameterizableViewControllerTests {
 		this.controller.setViewName("/foo");
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
-		assertThat((Object) modelAndView.getViewName()).isEqualTo("redirect:/foo");
+		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/foo");
 		assertEquals("3xx status should be left to RedirectView to set", 200, this.response.getStatus());
 		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}
@@ -94,7 +94,7 @@ public class ParameterizableViewControllerTests {
 		this.controller.setViewName("redirect:/foo");
 		ModelAndView modelAndView = this.controller.handleRequest(this.request, this.response);
 
-		assertThat((Object) modelAndView.getViewName()).isEqualTo("redirect:/foo");
+		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/foo");
 		assertEquals("3xx status should be left to RedirectView to set", 200, this.response.getStatus());
 		assertThat(this.request.getAttribute(View.RESPONSE_STATUS_ATTRIBUTE)).isEqualTo(HttpStatus.PERMANENT_REDIRECT);
 	}

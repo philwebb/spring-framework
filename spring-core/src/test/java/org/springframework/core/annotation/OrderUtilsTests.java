@@ -32,20 +32,20 @@ public class OrderUtilsTests {
 
 	@Test
 	public void getSimpleOrder() {
-		assertThat((Object) OrderUtils.getOrder(SimpleOrder.class, null)).isEqualTo(Integer.valueOf(50));
-		assertThat((Object) OrderUtils.getOrder(SimpleOrder.class, null)).isEqualTo(Integer.valueOf(50));
+		assertThat(OrderUtils.getOrder(SimpleOrder.class, null)).isEqualTo(Integer.valueOf(50));
+		assertThat(OrderUtils.getOrder(SimpleOrder.class, null)).isEqualTo(Integer.valueOf(50));
 	}
 
 	@Test
 	public void getPriorityOrder() {
-		assertThat((Object) OrderUtils.getOrder(SimplePriority.class, null)).isEqualTo(Integer.valueOf(55));
-		assertThat((Object) OrderUtils.getOrder(SimplePriority.class, null)).isEqualTo(Integer.valueOf(55));
+		assertThat(OrderUtils.getOrder(SimplePriority.class, null)).isEqualTo(Integer.valueOf(55));
+		assertThat(OrderUtils.getOrder(SimplePriority.class, null)).isEqualTo(Integer.valueOf(55));
 	}
 
 	@Test
 	public void getOrderWithBoth() {
-		assertThat((Object) OrderUtils.getOrder(OrderAndPriority.class, null)).isEqualTo(Integer.valueOf(50));
-		assertThat((Object) OrderUtils.getOrder(OrderAndPriority.class, null)).isEqualTo(Integer.valueOf(50));
+		assertThat(OrderUtils.getOrder(OrderAndPriority.class, null)).isEqualTo(Integer.valueOf(50));
+		assertThat(OrderUtils.getOrder(OrderAndPriority.class, null)).isEqualTo(Integer.valueOf(50));
 	}
 
 	@Test
@@ -62,8 +62,8 @@ public class OrderUtilsTests {
 
 	@Test
 	public void getPriorityValue() {
-		assertThat((Object) OrderUtils.getPriority(OrderAndPriority.class)).isEqualTo(Integer.valueOf(55));
-		assertThat((Object) OrderUtils.getPriority(OrderAndPriority.class)).isEqualTo(Integer.valueOf(55));
+		assertThat(OrderUtils.getPriority(OrderAndPriority.class)).isEqualTo(Integer.valueOf(55));
+		assertThat(OrderUtils.getPriority(OrderAndPriority.class)).isEqualTo(Integer.valueOf(55));
 	}
 
 

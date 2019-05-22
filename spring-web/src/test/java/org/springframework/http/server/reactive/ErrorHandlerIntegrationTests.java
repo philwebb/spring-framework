@@ -52,7 +52,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		URI url = new URI("http://localhost:" + port + "/response-body-error");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		URI url = new URI("http://localhost:" + port + "/handling-error");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Test // SPR-15560
@@ -75,7 +75,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		URI url = new URI("http://localhost:" + port + "//");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 

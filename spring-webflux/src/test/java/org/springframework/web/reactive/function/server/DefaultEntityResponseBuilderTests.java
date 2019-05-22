@@ -238,7 +238,7 @@ public class DefaultEntityResponseBuilderTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();
@@ -263,7 +263,7 @@ public class DefaultEntityResponseBuilderTests {
 		responseMono.writeTo(exchange, DefaultServerResponseBuilderTests.EMPTY_CONTEXT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
 		StepVerifier.create(response.getBody())
 				.expectError(IllegalStateException.class)
 				.verify();

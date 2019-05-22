@@ -35,7 +35,7 @@ public class ParseStateTests {
 
 		ParseState parseState = new ParseState();
 		parseState.push(entry);
-		assertThat((Object) parseState.peek()).as("Incorrect peek value.").isEqualTo(entry);
+		assertThat(parseState.peek()).as("Incorrect peek value.").isEqualTo(entry);
 		parseState.pop();
 		assertNull("Should get null on peek()", parseState.peek());
 	}
@@ -48,16 +48,16 @@ public class ParseStateTests {
 
 		ParseState parseState = new ParseState();
 		parseState.push(one);
-		assertThat((Object) parseState.peek()).isEqualTo(one);
+		assertThat(parseState.peek()).isEqualTo(one);
 		parseState.push(two);
-		assertThat((Object) parseState.peek()).isEqualTo(two);
+		assertThat(parseState.peek()).isEqualTo(two);
 		parseState.push(three);
-		assertThat((Object) parseState.peek()).isEqualTo(three);
+		assertThat(parseState.peek()).isEqualTo(three);
 
 		parseState.pop();
-		assertThat((Object) parseState.peek()).isEqualTo(two);
+		assertThat(parseState.peek()).isEqualTo(two);
 		parseState.pop();
-		assertThat((Object) parseState.peek()).isEqualTo(one);
+		assertThat(parseState.peek()).isEqualTo(one);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class ParseStateTests {
 
 		ParseState snapshot = original.snapshot();
 		original.push(new MockEntry());
-		assertThat((Object) snapshot.peek()).as("Snapshot should not have been modified.").isEqualTo(entry);
+		assertThat(snapshot.peek()).as("Snapshot should not have been modified.").isEqualTo(entry);
 	}
 
 

@@ -101,7 +101,7 @@ public class ContextPathCompositeHandlerTests {
 		new ContextPathCompositeHandler(map).handle(request, new MockServerHttpResponse());
 
 		assertThat(handler.wasInvoked()).isTrue();
-		assertThat((Object) handler.getRequest().getPath().contextPath().value()).isEqualTo("/yet/another/path");
+		assertThat(handler.getRequest().getPath().contextPath().value()).isEqualTo("/yet/another/path");
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class ContextPathCompositeHandlerTests {
 		ServerHttpResponse response = testHandle("/yet/another/path", map);
 
 		assertNotInvoked(handler1, handler2);
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test // SPR-17144
@@ -137,7 +137,7 @@ public class ContextPathCompositeHandlerTests {
 		new ContextPathCompositeHandler(map).handle(request, response).block(Duration.ofSeconds(5));
 
 		assertNotInvoked(handler);
-		assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(commitInvoked.get()).isTrue();
 	}
 
@@ -151,7 +151,7 @@ public class ContextPathCompositeHandlerTests {
 
 	private void assertInvoked(TestHttpHandler handler, String contextPath) {
 		assertThat(handler.wasInvoked()).isTrue();
-		assertThat((Object) handler.getRequest().getPath().contextPath().value()).isEqualTo(contextPath);
+		assertThat(handler.getRequest().getPath().contextPath().value()).isEqualTo(contextPath);
 	}
 
 	private void assertNotInvoked(TestHttpHandler... handlers) {

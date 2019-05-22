@@ -46,9 +46,9 @@ public class HttpEntityTests {
 		headers.setContentType(MediaType.TEXT_PLAIN);
 		String body = "foo";
 		HttpEntity<String> entity = new HttpEntity<>(body, headers);
-		assertThat((Object) entity.getBody()).isEqualTo(body);
-		assertThat((Object) entity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) entity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
+		assertThat(entity.getBody()).isEqualTo(body);
+		assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(entity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
 	}
 
 	@Test
@@ -57,9 +57,9 @@ public class HttpEntityTests {
 		map.set("Content-Type", "text/plain");
 		String body = "foo";
 		HttpEntity<String> entity = new HttpEntity<>(body, map);
-		assertThat((Object) entity.getBody()).isEqualTo(body);
-		assertThat((Object) entity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) entity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
+		assertThat(entity.getBody()).isEqualTo(body);
+		assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(entity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
 	}
 
 	@Test
@@ -94,10 +94,10 @@ public class HttpEntityTests {
 		ResponseEntity<String> responseEntity = new ResponseEntity<>(body, headers, HttpStatus.OK);
 		ResponseEntity<String> responseEntity2 = new ResponseEntity<>(body, headers, HttpStatus.OK);
 
-		assertThat((Object) responseEntity.getBody()).isEqualTo(body);
-		assertThat((Object) responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) responseEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
-		assertThat((Object) responseEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
+		assertThat(responseEntity.getBody()).isEqualTo(body);
+		assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(responseEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
+		assertThat(responseEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
 
 		assertThat(httpEntity.equals(responseEntity)).isFalse();
 		assertThat(responseEntity.equals(httpEntity)).isFalse();
@@ -114,10 +114,10 @@ public class HttpEntityTests {
 		RequestEntity<String> requestEntity = new RequestEntity<>(body, headers, HttpMethod.GET, new URI("/"));
 		RequestEntity<String> requestEntity2 = new RequestEntity<>(body, headers, HttpMethod.GET, new URI("/"));
 
-		assertThat((Object) requestEntity.getBody()).isEqualTo(body);
-		assertThat((Object) requestEntity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-		assertThat((Object) requestEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
-		assertThat((Object) requestEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
+		assertThat(requestEntity.getBody()).isEqualTo(body);
+		assertThat(requestEntity.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(requestEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
+		assertThat(requestEntity.getHeaders().getFirst("Content-Type")).isEqualTo("text/plain");
 
 		assertThat(httpEntity.equals(requestEntity)).isFalse();
 		assertThat(requestEntity.equals(httpEntity)).isFalse();

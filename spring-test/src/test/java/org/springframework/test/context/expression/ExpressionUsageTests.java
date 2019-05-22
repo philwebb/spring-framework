@@ -53,18 +53,18 @@ public class ExpressionUsageTests {
 	@Test
 	public void testSpr5906() throws Exception {
 		// verify the property values have been evaluated as expressions
-		assertThat((Object) props.getProperty("user.name")).isEqualTo("Dave");
-		assertThat((Object) props.getProperty("username")).isEqualTo("Andy");
+		assertThat(props.getProperty("user.name")).isEqualTo("Dave");
+		assertThat(props.getProperty("username")).isEqualTo("Andy");
 
 		// verify the property keys have been evaluated as expressions
-		assertThat((Object) props.getProperty("Dave")).isEqualTo("exists");
-		assertThat((Object) props.getProperty("Andy")).isEqualTo("exists also");
+		assertThat(props.getProperty("Dave")).isEqualTo("exists");
+		assertThat(props.getProperty("Andy")).isEqualTo("exists also");
 	}
 
 	@Test
 	public void testSpr5847() throws Exception {
-		assertThat((Object) andy2.getName()).isEqualTo("Andy");
-		assertThat((Object) andy.getName()).isEqualTo("Andy");
+		assertThat(andy2.getName()).isEqualTo("Andy");
+		assertThat(andy.getName()).isEqualTo("Andy");
 	}
 
 

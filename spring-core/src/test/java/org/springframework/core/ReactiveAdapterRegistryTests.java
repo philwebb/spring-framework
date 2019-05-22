@@ -105,7 +105,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(Flux.class).fromPublisher(source);
 		boolean condition = target instanceof Flux;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
+		assertThat(((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
 	}
 
 	// TODO: publisherToMono/CompletableFuture vs Single (ISE on multiple elements)?
@@ -116,7 +116,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(Mono.class).fromPublisher(source);
 		boolean condition = target instanceof Mono;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
+		assertThat(((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(CompletableFuture.class).fromPublisher(source);
 		boolean condition = target instanceof CompletableFuture;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((CompletableFuture<Integer>) target).get()).isEqualTo(Integer.valueOf(1));
+		assertThat(((CompletableFuture<Integer>) target).get()).isEqualTo(Integer.valueOf(1));
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(rx.Observable.class).fromPublisher(source);
 		boolean condition = target instanceof Observable;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((Observable<?>) target).toList().toBlocking().first()).isEqualTo(sequence);
+		assertThat(((Observable<?>) target).toList().toBlocking().first()).isEqualTo(sequence);
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(rx.Single.class).fromPublisher(source);
 		boolean condition = target instanceof Single;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((Single<Integer>) target).toBlocking().value()).isEqualTo(Integer.valueOf(1));
+		assertThat(((Single<Integer>) target).toBlocking().value()).isEqualTo(Integer.valueOf(1));
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(io.reactivex.Flowable.class).fromPublisher(source);
 		boolean condition = target instanceof Flowable;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((Flowable<?>) target).toList().blockingGet()).isEqualTo(sequence);
+		assertThat(((Flowable<?>) target).toList().blockingGet()).isEqualTo(sequence);
 	}
 
 	@Test
@@ -173,7 +173,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(io.reactivex.Observable.class).fromPublisher(source);
 		boolean condition = target instanceof io.reactivex.Observable;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((io.reactivex.Observable<?>) target).toList().blockingGet()).isEqualTo(sequence);
+		assertThat(((io.reactivex.Observable<?>) target).toList().blockingGet()).isEqualTo(sequence);
 	}
 
 	@Test
@@ -182,7 +182,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(io.reactivex.Single.class).fromPublisher(source);
 		boolean condition = target instanceof io.reactivex.Single;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((io.reactivex.Single<Integer>) target).blockingGet()).isEqualTo(Integer.valueOf(1));
+		assertThat(((io.reactivex.Single<Integer>) target).blockingGet()).isEqualTo(Integer.valueOf(1));
 	}
 
 	@Test
@@ -201,7 +201,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(rx.Observable.class).toPublisher(source);
 		boolean condition = target instanceof Flux;
 		assertThat(condition).as("Expected Flux Publisher: " + target.getClass().getName()).isTrue();
-		assertThat((Object) ((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
+		assertThat(((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(rx.Single.class).toPublisher(source);
 		boolean condition = target instanceof Mono;
 		assertThat(condition).as("Expected Mono Publisher: " + target.getClass().getName()).isTrue();
-		assertThat((Object) ((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
+		assertThat(((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
 	}
 
 	@Test
@@ -229,7 +229,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(io.reactivex.Flowable.class).toPublisher(source);
 		boolean condition = target instanceof Flux;
 		assertThat(condition).as("Expected Flux Publisher: " + target.getClass().getName()).isTrue();
-		assertThat((Object) ((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
+		assertThat(((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(io.reactivex.Observable.class).toPublisher(source);
 		boolean condition = target instanceof Flux;
 		assertThat(condition).as("Expected Flux Publisher: " + target.getClass().getName()).isTrue();
-		assertThat((Object) ((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
+		assertThat(((Flux<Integer>) target).collectList().block(Duration.ofMillis(1000))).isEqualTo(sequence);
 	}
 
 	@Test
@@ -248,7 +248,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(io.reactivex.Single.class).toPublisher(source);
 		boolean condition = target instanceof Mono;
 		assertThat(condition).as("Expected Mono Publisher: " + target.getClass().getName()).isTrue();
-		assertThat((Object) ((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
+		assertThat(((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
 	}
 
 	@Test
@@ -267,7 +267,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(CompletableFuture.class).toPublisher(future);
 		boolean condition = target instanceof Mono;
 		assertThat(condition).as("Expected Mono Publisher: " + target.getClass().getName()).isTrue();
-		assertThat((Object) ((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
+		assertThat(((Mono<Integer>) target).block(Duration.ofMillis(1000))).isEqualTo(Integer.valueOf(1));
 	}
 
 

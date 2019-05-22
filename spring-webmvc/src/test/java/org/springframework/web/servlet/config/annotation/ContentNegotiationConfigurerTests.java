@@ -60,17 +60,17 @@ public class ContentNegotiationConfigurerTests {
 
 		this.servletRequest.setRequestURI("/flower.gif");
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).as("Should be able to resolve file extensions by default").isEqualTo(MediaType.IMAGE_GIF);
+		assertThat(manager.resolveMediaTypes(this.webRequest).get(0)).as("Should be able to resolve file extensions by default").isEqualTo(MediaType.IMAGE_GIF);
 
 		this.servletRequest.setRequestURI("/flower?format=gif");
 		this.servletRequest.addParameter("format", "gif");
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest)).as("Should not resolve request parameters by default").isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
+		assertThat(manager.resolveMediaTypes(this.webRequest)).as("Should not resolve request parameters by default").isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 
 		this.servletRequest.setRequestURI("/flower");
 		this.servletRequest.addHeader("Accept", MediaType.IMAGE_GIF_VALUE);
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).as("Should resolve Accept header by default").isEqualTo(MediaType.IMAGE_GIF);
+		assertThat(manager.resolveMediaTypes(this.webRequest).get(0)).as("Should resolve Accept header by default").isEqualTo(MediaType.IMAGE_GIF);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class ContentNegotiationConfigurerTests {
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
 		this.servletRequest.setRequestURI("/flower.json");
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class ContentNegotiationConfigurerTests {
 		this.servletRequest.setRequestURI("/flower");
 		this.servletRequest.addParameter("f", "json");
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class ContentNegotiationConfigurerTests {
 		this.servletRequest.setRequestURI("/flower");
 		this.servletRequest.addHeader("Accept", MediaType.IMAGE_GIF_VALUE);
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest)).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
+		assertThat(manager.resolveMediaTypes(this.webRequest)).isEqualTo(ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST);
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class ContentNegotiationConfigurerTests {
 		this.configurer.defaultContentType(MediaType.APPLICATION_JSON);
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class ContentNegotiationConfigurerTests {
 		this.configurer.defaultContentType(MediaType.APPLICATION_JSON, MediaType.ALL);
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest)).isEqualTo(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.ALL));
+		assertThat(manager.resolveMediaTypes(this.webRequest)).isEqualTo(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.ALL));
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class ContentNegotiationConfigurerTests {
 		this.configurer.defaultContentTypeStrategy(new FixedContentNegotiationStrategy(MediaType.APPLICATION_JSON));
 		ContentNegotiationManager manager = this.configurer.buildContentNegotiationManager();
 
-		assertThat((Object) manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(manager.resolveMediaTypes(this.webRequest).get(0)).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 
 }

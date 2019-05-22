@@ -147,7 +147,7 @@ public class PathMatchingResourcePatternResolverTests {
 		assertEquals("Correct number of files found", filenames.length, resources.length);
 		for (Resource resource : resources) {
 			String actualProtocol = resource.getURL().getProtocol();
-			assertThat((Object) actualProtocol).isEqualTo(protocol);
+			assertThat(actualProtocol).isEqualTo(protocol);
 			assertFilenameIn(resource, filenames);
 		}
 	}

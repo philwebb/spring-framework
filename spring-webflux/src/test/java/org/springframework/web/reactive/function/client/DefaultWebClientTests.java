@@ -76,9 +76,9 @@ public class DefaultWebClientTests {
 				.exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.url().toString()).isEqualTo("/base/path");
-		assertThat((Object) request.headers()).isEqualTo(new HttpHeaders());
-		assertThat((Object) request.cookies()).isEqualTo(Collections.emptyMap());
+		assertThat(request.url().toString()).isEqualTo("/base/path");
+		assertThat(request.headers()).isEqualTo(new HttpHeaders());
+		assertThat(request.cookies()).isEqualTo(Collections.emptyMap());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class DefaultWebClientTests {
 				.exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.url().toString()).isEqualTo("/base/path?q=12");
+		assertThat(request.url().toString()).isEqualTo("/base/path?q=12");
 	}
 
 	@Test // gh-22705
@@ -98,7 +98,7 @@ public class DefaultWebClientTests {
 					.exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.url().toString()).isEqualTo("/base/path/identifier?q=12");
+		assertThat(request.url().toString()).isEqualTo("/base/path/identifier?q=12");
 		assertThat(request.attribute(WebClient.class.getName() + ".uriTemplate").get()).isEqualTo("/path/{id}");
 	}
 
@@ -109,7 +109,7 @@ public class DefaultWebClientTests {
 				.exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.url().toString()).isEqualTo("/path");
+		assertThat(request.url().toString()).isEqualTo("/path");
 	}
 
 	@Test
@@ -119,8 +119,8 @@ public class DefaultWebClientTests {
 				.exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.headers().getFirst("Accept")).isEqualTo("application/json");
-		assertThat((Object) request.cookies().getFirst("id")).isEqualTo("123");
+		assertThat(request.headers().getFirst("Accept")).isEqualTo("application/json");
+		assertThat(request.cookies().getFirst("id")).isEqualTo("123");
 	}
 
 	@Test
@@ -132,8 +132,8 @@ public class DefaultWebClientTests {
 		client.get().uri("/path").exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.headers().getFirst("Accept")).isEqualTo("application/json");
-		assertThat((Object) request.cookies().getFirst("id")).isEqualTo("123");
+		assertThat(request.headers().getFirst("Accept")).isEqualTo("application/json");
+		assertThat(request.cookies().getFirst("id")).isEqualTo("123");
 	}
 
 	@Test
@@ -149,8 +149,8 @@ public class DefaultWebClientTests {
 				.exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.headers().getFirst("Accept")).isEqualTo("application/xml");
-		assertThat((Object) request.cookies().getFirst("id")).isEqualTo("456");
+		assertThat(request.headers().getFirst("Accept")).isEqualTo("application/xml");
+		assertThat(request.cookies().getFirst("id")).isEqualTo("456");
 	}
 
 	@Test
@@ -278,8 +278,8 @@ public class DefaultWebClientTests {
 		client.get().uri("/path").exchange().block(Duration.ofSeconds(10));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.headers().getFirst("Accept")).isEqualTo("application/json");
-		assertThat((Object) request.cookies().getFirst("id")).isEqualTo("123");
+		assertThat(request.headers().getFirst("Accept")).isEqualTo("application/json");
+		assertThat(request.cookies().getFirst("id")).isEqualTo("123");
 	}
 
 	@Test
@@ -306,7 +306,7 @@ public class DefaultWebClientTests {
 		verifyZeroInteractions(this.exchangeFunction);
 		exchange.block(Duration.ofSeconds(10));
 		ClientRequest request = verifyAndGetRequest();
-		assertThat((Object) request.headers().getFirst("Custom")).isEqualTo("value");
+		assertThat(request.headers().getFirst("Custom")).isEqualTo("value");
 	}
 
 	private ClientRequest verifyAndGetRequest() {

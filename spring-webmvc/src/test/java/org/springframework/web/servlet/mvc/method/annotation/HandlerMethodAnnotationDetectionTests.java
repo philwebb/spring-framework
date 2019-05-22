@@ -144,8 +144,8 @@ public class HandlerMethodAnnotationDetectionTests {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		exceptionResolver.resolveException(request, response, chain.getHandler(), new Exception("failure"));
-		assertThat((Object) response.getHeader("Content-Type")).isEqualTo("text/plain;charset=ISO-8859-1");
-		assertThat((Object) response.getContentAsString()).isEqualTo("failure");
+		assertThat(response.getHeader("Content-Type")).isEqualTo("text/plain;charset=ISO-8859-1");
+		assertThat(response.getContentAsString()).isEqualTo("failure");
 	}
 
 

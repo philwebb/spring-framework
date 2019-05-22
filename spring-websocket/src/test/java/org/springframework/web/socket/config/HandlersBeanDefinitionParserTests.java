@@ -192,7 +192,7 @@ public class HandlersBeanDefinitionParserTests {
 						WebSocketTransportHandler.class);
 
 		WebSocketTransportHandler handler = (WebSocketTransportHandler) handlerMap.get(TransportType.WEBSOCKET);
-		assertThat((Object) handler.getHandshakeHandler().getClass()).isEqualTo(TestHandshakeHandler.class);
+		assertThat(handler.getHandshakeHandler().getClass()).isEqualTo(TestHandshakeHandler.class);
 
 		List<HandshakeInterceptor> interceptors = defaultSockJsService.getHandshakeInterceptors();
 		assertThat(interceptors).extracting("class")
@@ -219,15 +219,15 @@ public class HandlersBeanDefinitionParserTests {
 		assertThat(transportService.getTransportHandlers().values()).extracting("class")
 				.containsExactlyInAnyOrder(XhrPollingTransportHandler.class, XhrStreamingTransportHandler.class);
 
-		assertThat((Object) transportService.getName()).isEqualTo("testSockJsService");
+		assertThat(transportService.getName()).isEqualTo("testSockJsService");
 		assertThat(transportService.isWebSocketEnabled()).isFalse();
 		assertThat(transportService.isSessionCookieNeeded()).isFalse();
 		assertEquals(2048, transportService.getStreamBytesLimit());
 		assertEquals(256, transportService.getDisconnectDelay());
 		assertEquals(1024, transportService.getHttpMessageCacheSize());
 		assertEquals(20, transportService.getHeartbeatTime());
-		assertThat((Object) transportService.getSockJsClientLibraryUrl()).isEqualTo("/js/sockjs.min.js");
-		assertThat((Object) transportService.getMessageCodec().getClass()).isEqualTo(TestMessageCodec.class);
+		assertThat(transportService.getSockJsClientLibraryUrl()).isEqualTo("/js/sockjs.min.js");
+		assertThat(transportService.getMessageCodec().getClass()).isEqualTo(TestMessageCodec.class);
 
 		List<HandshakeInterceptor> interceptors = transportService.getHandshakeInterceptors();
 		assertThat(interceptors).extracting("class").containsExactly(OriginHandshakeInterceptor.class);

@@ -80,12 +80,12 @@ public class ViewResolverTests {
 		wac.refresh();
 
 		View view = vr.resolveViewName("example1", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("/example1.jsp");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("/example1.jsp");
 
 		view = vr.resolveViewName("example2", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((JstlView) view).getUrl()).as("Correct URL").isEqualTo("/example2.jsp");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((JstlView) view).getUrl()).as("Correct URL").isEqualTo("/example2.jsp");
 	}
 
 	@Test
@@ -121,13 +121,13 @@ public class ViewResolverTests {
 		vr.setRequestContextAttribute("rc");
 
 		View view = vr.resolveViewName("example1", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example1");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example1");
 		assertThat(((InternalResourceView) view).getContentType()).as("Correct textContentType").isEqualTo("myContentType");
 
 		view = vr.resolveViewName("example2", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example2");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example2");
 		assertThat(((InternalResourceView) view).getContentType()).as("Correct textContentType").isEqualTo("myContentType");
 
 		HttpServletRequest request = new MockHttpServletRequest(wac.getServletContext());
@@ -144,13 +144,13 @@ public class ViewResolverTests {
 		assertThat(condition).as("Correct rc attribute").isTrue();
 
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);
-		assertThat((Object) ((RedirectView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);
+		assertThat(((RedirectView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
 		assertSame("View not initialized as bean", wac, ((RedirectView) view).getApplicationContext());
 
 		view = vr.resolveViewName("forward:myUrl", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
 	}
 
 	private void doTestUrlBasedViewResolverWithPrefixes(UrlBasedViewResolver vr) throws Exception {
@@ -162,20 +162,20 @@ public class ViewResolverTests {
 		vr.setApplicationContext(wac);
 
 		View view = vr.resolveViewName("example1", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("/WEB-INF/example1.jsp");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("/WEB-INF/example1.jsp");
 
 		view = vr.resolveViewName("example2", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("/WEB-INF/example2.jsp");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("/WEB-INF/example2.jsp");
 
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);
-		assertThat((Object) ((RedirectView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);
+		assertThat(((RedirectView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
 
 		view = vr.resolveViewName("forward:myUrl", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
 	}
 
 	@Test
@@ -194,15 +194,15 @@ public class ViewResolverTests {
 		vr.setApplicationContext(wac);
 
 		View view = vr.resolveViewName("example1", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example1");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example1");
 		Map<String, Object> attributes = ((InternalResourceView) view).getStaticAttributes();
 		assertThat(attributes.get("key1")).isEqualTo("value1");
 		assertThat(attributes.get("key2")).isEqualTo(new Integer(2));
 
 		view = vr.resolveViewName("example2", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example2");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((InternalResourceView) view).getUrl()).as("Correct URL").isEqualTo("example2");
 		attributes = ((InternalResourceView) view).getStaticAttributes();
 		assertThat(attributes.get("key1")).isEqualTo("value1");
 		assertThat(attributes.get("key2")).isEqualTo(new Integer(2));
@@ -316,12 +316,12 @@ public class ViewResolverTests {
 		vr.setApplicationContext(wac);
 
 		View view = vr.resolveViewName("example1", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example1");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example1");
 
 		view = vr.resolveViewName("example2", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example2");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example2");
 
 		MockHttpServletRequest request = new MockHttpServletRequest(sc);
 		HttpServletResponse response = new MockHttpServletResponse();
@@ -337,7 +337,7 @@ public class ViewResolverTests {
 
 		assertThat(Config.get(request, Config.FMT_LOCALE)).isEqualTo(locale);
 		LocalizationContext lc = (LocalizationContext) Config.get(request, Config.FMT_LOCALIZATION_CONTEXT);
-		assertThat((Object) lc.getResourceBundle().getString("code1")).isEqualTo("messageX");
+		assertThat(lc.getResourceBundle().getString("code1")).isEqualTo("messageX");
 	}
 
 	@Test
@@ -355,12 +355,12 @@ public class ViewResolverTests {
 		vr.setApplicationContext(wac);
 
 		View view = vr.resolveViewName("example1", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example1");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example1");
 
 		view = vr.resolveViewName("example2", Locale.getDefault());
-		assertThat((Object) view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
-		assertThat((Object) ((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example2");
+		assertThat(view.getClass()).as("Correct view class").isEqualTo(JstlView.class);
+		assertThat(((JstlView) view).getUrl()).as("Correct URL").isEqualTo("example2");
 
 		MockHttpServletRequest request = new MockHttpServletRequest(sc);
 		HttpServletResponse response = new MockHttpServletResponse();
@@ -376,8 +376,8 @@ public class ViewResolverTests {
 
 		assertThat(Config.get(request, Config.FMT_LOCALE)).isEqualTo(locale);
 		LocalizationContext lc = (LocalizationContext) Config.get(request, Config.FMT_LOCALIZATION_CONTEXT);
-		assertThat((Object) lc.getResourceBundle().getString("code1")).isEqualTo("message1");
-		assertThat((Object) lc.getResourceBundle().getString("code2")).isEqualTo("message2");
+		assertThat(lc.getResourceBundle().getString("code1")).isEqualTo("message1");
+		assertThat(lc.getResourceBundle().getString("code2")).isEqualTo("message2");
 	}
 
 	@Test

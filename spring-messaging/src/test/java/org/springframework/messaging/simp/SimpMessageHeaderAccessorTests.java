@@ -33,7 +33,7 @@ public class SimpMessageHeaderAccessorTests {
 
 	@Test
 	public void getShortLogMessage() {
-		assertThat((Object) SimpMessageHeaderAccessor.create().getShortLogMessage("p")).isEqualTo("MESSAGE session=null payload=p");
+		assertThat(SimpMessageHeaderAccessor.create().getShortLogMessage("p")).isEqualTo("MESSAGE session=null payload=p");
 	}
 
 	@Test
@@ -45,7 +45,7 @@ public class SimpMessageHeaderAccessorTests {
 		accessor.setUser(new TestPrincipal("user"));
 		accessor.setSessionAttributes(Collections.<String, Object>singletonMap("key", "value"));
 
-		assertThat((Object) accessor.getShortLogMessage("p")).isEqualTo(("MESSAGE destination=/destination subscriptionId=subscription " +
+		assertThat(accessor.getShortLogMessage("p")).isEqualTo(("MESSAGE destination=/destination subscriptionId=subscription " +
 				"session=session user=user attributes[1] payload=p"));
 	}
 
@@ -59,7 +59,7 @@ public class SimpMessageHeaderAccessorTests {
 		accessor.setSessionAttributes(Collections.<String, Object>singletonMap("key", "value"));
 		accessor.setNativeHeader("nativeKey", "nativeValue");
 
-		assertThat((Object) accessor.getDetailedLogMessage("p")).isEqualTo(("MESSAGE destination=/destination subscriptionId=subscription " +
+		assertThat(accessor.getDetailedLogMessage("p")).isEqualTo(("MESSAGE destination=/destination subscriptionId=subscription " +
 				"session=session user=user attributes={key=value} nativeHeaders=" +
 				"{nativeKey=[nativeValue]} payload=p"));
 	}

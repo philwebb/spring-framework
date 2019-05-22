@@ -127,7 +127,7 @@ public class DefaultWebSessionManagerTests {
 
 		WebSession actual = this.sessionManager.getSession(this.exchange).block();
 		assertNotNull(actual);
-		assertThat((Object) actual.getId()).isEqualTo(sessionId);
+		assertThat(actual.getId()).isEqualTo(sessionId);
 	}
 
 	@Test
@@ -140,6 +140,6 @@ public class DefaultWebSessionManagerTests {
 		WebSession actual = this.sessionManager.getSession(this.exchange).block();
 
 		assertNotNull(actual);
-		assertThat((Object) actual.getId()).isEqualTo(this.updateSession.getId());
+		assertThat(actual.getId()).isEqualTo(this.updateSession.getId());
 	}
 }

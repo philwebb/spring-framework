@@ -80,7 +80,7 @@ public class ResourceTransformerSupportTests {
 		Resource resource = getResource("main.css");
 		String actual = this.transformer.resolveUrlPath(resourcePath, this.request, resource, this.transformerChain);
 
-		assertThat((Object) actual).isEqualTo("/context/servlet/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
+		assertThat(actual).isEqualTo("/context/servlet/resources/bar-11e16cf79faee7ac698c805cf28248d2.css");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ResourceTransformerSupportTests {
 		Resource resource = getResource("main.css");
 		String actual = this.transformer.resolveUrlPath("bar.css", this.request, resource, this.transformerChain);
 
-		assertThat((Object) actual).isEqualTo("bar-11e16cf79faee7ac698c805cf28248d2.css");
+		assertThat(actual).isEqualTo("bar-11e16cf79faee7ac698c805cf28248d2.css");
 	}
 
 	@Test
@@ -96,18 +96,18 @@ public class ResourceTransformerSupportTests {
 		Resource resource = getResource("images/image.png");
 		String actual = this.transformer.resolveUrlPath("../bar.css", this.request, resource, this.transformerChain);
 
-		assertThat((Object) actual).isEqualTo("../bar-11e16cf79faee7ac698c805cf28248d2.css");
+		assertThat(actual).isEqualTo("../bar-11e16cf79faee7ac698c805cf28248d2.css");
 	}
 
 	@Test
 	public void toAbsolutePath() {
 		String absolute = this.transformer.toAbsolutePath("img/image.png",
 				new MockHttpServletRequest("GET", "/resources/style.css"));
-		assertThat((Object) absolute).isEqualTo("/resources/img/image.png");
+		assertThat(absolute).isEqualTo("/resources/img/image.png");
 
 		absolute = this.transformer.toAbsolutePath("/img/image.png",
 				new MockHttpServletRequest("GET", "/resources/style.css"));
-		assertThat((Object) absolute).isEqualTo("/img/image.png");
+		assertThat(absolute).isEqualTo("/img/image.png");
 	}
 
 	private Resource getResource(String filePath) {
