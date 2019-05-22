@@ -33,7 +33,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertArrayEquals;
 
 /**
  * JUnit 4 based unit test which verifies proper

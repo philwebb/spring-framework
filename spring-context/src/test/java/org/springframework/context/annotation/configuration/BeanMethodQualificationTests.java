@@ -38,8 +38,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertArrayEquals;
-
 /**
  * Tests proving that @Qualifier annotations work when used
  * with @Configuration classes on @Bean methods.

@@ -25,7 +25,6 @@ import java.nio.charset.StandardCharsets;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;

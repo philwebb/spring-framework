@@ -49,7 +49,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;

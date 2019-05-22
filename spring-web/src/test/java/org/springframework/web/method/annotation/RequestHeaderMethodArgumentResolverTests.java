@@ -43,7 +43,6 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
 /**

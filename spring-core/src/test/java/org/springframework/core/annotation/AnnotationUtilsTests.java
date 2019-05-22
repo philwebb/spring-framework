@@ -48,7 +48,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
@@ -857,7 +856,7 @@ public class AnnotationUtilsTests {
 		assertNotNull(annotationWithDefaults);
 		assertThat(annotationWithDefaults.text()).as("text: ").isEqualTo("enigma");
 		assertThat(annotationWithDefaults.predicate()).as("predicate: ").isTrue();
-		assertArrayEquals("characters: ", new char[] { 'a', 'b', 'c' }, annotationWithDefaults.characters());
+		assertThat(annotationWithDefaults.characters()).as("characters: ").isEqualTo(new char[] { 'a', 'b', 'c' });
 	}
 
 	@Test

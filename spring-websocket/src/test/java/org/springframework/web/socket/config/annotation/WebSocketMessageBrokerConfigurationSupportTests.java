@@ -61,7 +61,6 @@ import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -161,7 +160,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 
 		SimpleBrokerMessageHandler handler = config.getBean(SimpleBrokerMessageHandler.class);
 		assertNotNull(handler.getTaskScheduler());
-		assertArrayEquals(new long[] {15000, 15000}, handler.getHeartbeatValue());
+		assertThat(handler.getHeartbeatValue()).isEqualTo(new long[] {15000, 15000});
 	}
 
 	@Test

@@ -23,7 +23,6 @@ import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
 /**

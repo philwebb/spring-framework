@@ -48,7 +48,6 @@ import org.springframework.web.socket.client.WebSocketClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -232,20 +231,20 @@ public class WebSocketStompClientTests {
 	@Test
 	public void heartbeatDefaultValue() throws Exception {
 		WebSocketStompClient stompClient = new WebSocketStompClient(mock(WebSocketClient.class));
-		assertArrayEquals(new long[] {0, 0}, stompClient.getDefaultHeartbeat());
+		assertThat(stompClient.getDefaultHeartbeat()).isEqualTo(new long[] {0, 0});
 
 		StompHeaders connectHeaders = stompClient.processConnectHeaders(null);
-		assertArrayEquals(new long[] {0, 0}, connectHeaders.getHeartbeat());
+		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {0, 0});
 	}
 
 	@Test
 	public void heartbeatDefaultValueWithScheduler() throws Exception {
 		WebSocketStompClient stompClient = new WebSocketStompClient(mock(WebSocketClient.class));
 		stompClient.setTaskScheduler(mock(TaskScheduler.class));
-		assertArrayEquals(new long[] {10000, 10000}, stompClient.getDefaultHeartbeat());
+		assertThat(stompClient.getDefaultHeartbeat()).isEqualTo(new long[] {10000, 10000});
 
 		StompHeaders connectHeaders = stompClient.processConnectHeaders(null);
-		assertArrayEquals(new long[] {10000, 10000}, connectHeaders.getHeartbeat());
+		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {10000, 10000});
 	}
 
 	@Test

@@ -29,42 +29,6 @@ import static org.assertj.core.api.Assertions.within;
  */
 public class XAssert {
 
-	public static void assertArrayEquals(String message, char[] expecteds, char[] actuals)
-			throws ArrayComparisonFailure {
-		assertThat(actuals).as(message).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(char[] expecteds, char[] actuals) {
-		assertThat(actuals).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(String message, short[] expecteds,
-			short[] actuals) throws ArrayComparisonFailure {
-		assertThat(actuals).as(message).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(short[] expecteds, short[] actuals) {
-		assertThat(actuals).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(String message, int[] expecteds, int[] actuals)
-			throws ArrayComparisonFailure {
-		assertThat(actuals).as(message).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(int[] expecteds, int[] actuals) {
-		assertThat(actuals).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(String message, long[] expecteds, long[] actuals)
-			throws ArrayComparisonFailure {
-		assertThat(actuals).as(message).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(long[] expecteds, long[] actuals) {
-		assertThat(actuals).isEqualTo(expecteds);
-	}
-
 	public static void assertEquals(long expected, long actual) {
 		assertThat(actual).isEqualTo(expected);
 	}

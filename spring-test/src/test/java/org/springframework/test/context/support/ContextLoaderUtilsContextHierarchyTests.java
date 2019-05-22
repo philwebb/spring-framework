@@ -37,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.test.context.support.ContextLoaderUtils.GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX;

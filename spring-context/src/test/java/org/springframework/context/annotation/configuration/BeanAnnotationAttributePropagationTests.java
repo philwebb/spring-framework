@@ -31,7 +31,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
 /**

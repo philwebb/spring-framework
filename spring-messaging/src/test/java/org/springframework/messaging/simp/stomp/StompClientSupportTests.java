@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -46,12 +45,12 @@ public class StompClientSupportTests {
 
 	@Test
 	public void defaultHeartbeatValue() throws Exception {
-		assertArrayEquals(new long[] {10000, 10000}, this.stompClient.getDefaultHeartbeat());
+		assertThat(this.stompClient.getDefaultHeartbeat()).isEqualTo(new long[] {10000, 10000});
 	}
 
 	@Test
 	public void isDefaultHeartbeatEnabled() throws Exception {
-		assertArrayEquals(new long[] {10000, 10000}, this.stompClient.getDefaultHeartbeat());
+		assertThat(this.stompClient.getDefaultHeartbeat()).isEqualTo(new long[] {10000, 10000});
 		assertThat(this.stompClient.isDefaultHeartbeatEnabled()).isTrue();
 
 		this.stompClient.setDefaultHeartbeat(new long[] {0, 0});
@@ -63,7 +62,7 @@ public class StompClientSupportTests {
 		StompHeaders connectHeaders = this.stompClient.processConnectHeaders(null);
 
 		assertNotNull(connectHeaders);
-		assertArrayEquals(new long[] {10000, 10000}, connectHeaders.getHeartbeat());
+		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {10000, 10000});
 	}
 
 	@Test
@@ -74,7 +73,7 @@ public class StompClientSupportTests {
 		connectHeaders = this.stompClient.processConnectHeaders(connectHeaders);
 
 		assertNotNull(connectHeaders);
-		assertArrayEquals(new long[] {15000, 15000}, connectHeaders.getHeartbeat());
+		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {15000, 15000});
 	}
 
 }

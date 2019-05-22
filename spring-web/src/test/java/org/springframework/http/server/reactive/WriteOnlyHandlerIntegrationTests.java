@@ -30,7 +30,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertArrayEquals;
 
 /**
  * @author Violeta Georgieva

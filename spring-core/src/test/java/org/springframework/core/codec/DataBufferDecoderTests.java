@@ -28,7 +28,6 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.util.MimeTypeUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertArrayEquals;
 
 /**
  * @author Sebastien Deleuze

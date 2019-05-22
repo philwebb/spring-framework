@@ -40,7 +40,6 @@ import org.springframework.scheduling.TaskScheduler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -164,8 +163,7 @@ public class SimpleBrokerMessageHandlerTests {
 		assertThat(connectAckHeaders.getHeader(SimpMessageHeaderAccessor.CONNECT_MESSAGE_HEADER)).isEqualTo(connectMessage);
 		assertThat(connectAckHeaders.getSessionId()).isEqualTo(id);
 		assertThat(connectAckHeaders.getUser().getName()).isEqualTo("joe");
-		assertArrayEquals(new long[] {10000, 10000},
-				SimpMessageHeaderAccessor.getHeartbeat(connectAckHeaders.getMessageHeaders()));
+		assertThat(SimpMessageHeaderAccessor.getHeartbeat(connectAckHeaders.getMessageHeaders())).isEqualTo(new long[] {10000, 10000});
 	}
 
 	@Test
@@ -174,7 +172,7 @@ public class SimpleBrokerMessageHandlerTests {
 		this.messageHandler.setTaskScheduler(this.taskScheduler);
 
 		assertNotNull(this.messageHandler.getHeartbeatValue());
-		assertArrayEquals(new long[] {10000, 10000}, this.messageHandler.getHeartbeatValue());
+		assertThat(this.messageHandler.getHeartbeatValue()).isEqualTo(new long[] {10000, 10000});
 	}
 
 	@Test

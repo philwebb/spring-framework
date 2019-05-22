@@ -32,7 +32,6 @@ import org.springframework.test.context.ActiveProfilesResolver;
 import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertArrayEquals;
 import static org.springframework.test.context.support.ActiveProfilesUtils.resolveActiveProfiles;
 
 /**

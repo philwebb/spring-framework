@@ -32,7 +32,6 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
 /**

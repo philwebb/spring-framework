@@ -47,7 +47,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -111,7 +110,7 @@ public class DefaultStompSessionTests {
 		assertThat(accessor.getCommand()).isEqualTo(StompCommand.CONNECT);
 		assertThat(accessor.getHost()).isEqualTo("my-host");
 		assertThat(accessor.getAcceptVersion()).containsExactly("1.1", "1.2");
-		assertArrayEquals(new long[] {11, 12}, accessor.getHeartbeat());
+		assertThat(accessor.getHeartbeat()).isEqualTo(new long[] {11, 12});
 	}
 
 	@Test // SPR-16844

@@ -62,7 +62,6 @@ import org.springframework.web.socket.sockjs.transport.SockJsSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -316,13 +315,13 @@ public class StompSubProtocolHandlerTests {
 		assertNotNull(SimpMessageHeaderAccessor.getUser(actual.getHeaders()));
 		assertThat(SimpMessageHeaderAccessor.getUser(actual.getHeaders()).getName()).isEqualTo("joe");
 		assertNotNull(SimpMessageHeaderAccessor.getHeartbeat(actual.getHeaders()));
-		assertArrayEquals(new long[] {10000, 10000}, SimpMessageHeaderAccessor.getHeartbeat(actual.getHeaders()));
+		assertThat(SimpMessageHeaderAccessor.getHeartbeat(actual.getHeaders())).isEqualTo(new long[] {10000, 10000});
 
 		StompHeaderAccessor stompAccessor = StompHeaderAccessor.wrap(actual);
 		assertThat(stompAccessor.getCommand()).isEqualTo(StompCommand.STOMP);
 		assertThat(stompAccessor.getLogin()).isEqualTo("guest");
 		assertThat(stompAccessor.getPasscode()).isEqualTo("guest");
-		assertArrayEquals(new long[] {10000, 10000}, stompAccessor.getHeartbeat());
+		assertThat(stompAccessor.getHeartbeat()).isEqualTo(new long[] {10000, 10000});
 		assertThat(stompAccessor.getAcceptVersion()).isEqualTo(new HashSet<>(Arrays.asList("1.1","1.0")));
 		assertEquals(0, this.session.getSentMessages().size());
 	}
