@@ -32,7 +32,10 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.invocation.MethodArgumentResolutionException;
 import org.springframework.messaging.handler.invocation.ResolvableMethod;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.Mockito.mock;
 
 /**

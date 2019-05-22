@@ -18,6 +18,7 @@ package org.springframework.util.xml;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.transform.Transformer;
@@ -33,8 +34,6 @@ import org.xmlunit.util.Predicate;
 import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 public class XMLEventStreamReaderTests {
 

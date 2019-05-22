@@ -27,7 +27,9 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.NestedCheckedException;
 import org.springframework.core.NestedRuntimeException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.Mockito.mock;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 

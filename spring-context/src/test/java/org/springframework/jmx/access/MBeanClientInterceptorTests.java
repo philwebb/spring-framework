@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.net.BindException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.management.Descriptor;
 import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXConnectorServer;
@@ -37,7 +38,10 @@ import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.export.assembler.AbstractReflectiveMBeanInfoAssembler;
 import org.springframework.util.SocketUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIOException;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assume.assumeTrue;
 
 /**

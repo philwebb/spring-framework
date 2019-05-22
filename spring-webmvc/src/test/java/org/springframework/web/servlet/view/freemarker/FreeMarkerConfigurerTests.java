@@ -34,8 +34,8 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.ui.freemarker.SpringTemplateLoader;
 
-import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIOException;
 
 /**
  * @author Juergen Hoeller

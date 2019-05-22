@@ -19,6 +19,7 @@ package org.springframework.test.web.servlet.htmlunit;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
 import javax.servlet.http.Cookie;
 
 import com.gargoylesoftware.htmlunit.WebRequest;
@@ -29,11 +30,8 @@ import org.junit.Test;
 
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 
 /**

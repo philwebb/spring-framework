@@ -26,10 +26,6 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 
-
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

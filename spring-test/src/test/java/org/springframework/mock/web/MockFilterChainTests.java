@@ -17,6 +17,7 @@
 package org.springframework.mock.web;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,11 +29,9 @@ import javax.servlet.ServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.assertj.core.api.Assertions.assertThat;
-
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 

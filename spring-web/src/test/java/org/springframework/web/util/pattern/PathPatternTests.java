@@ -32,7 +32,6 @@ import org.springframework.web.util.pattern.PathPattern.PathRemainingMatchInfo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Exercise matching of {@link PathPattern} objects.

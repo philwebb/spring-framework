@@ -26,8 +26,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.core.Is.is;
-
 /**
  * @author Stephane Nicoll
  */

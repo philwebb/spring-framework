@@ -18,6 +18,7 @@ package org.springframework.orm.jpa;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -30,7 +31,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.orm.jpa.domain.Person;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Integration tests using in-memory database for container-managed JPA

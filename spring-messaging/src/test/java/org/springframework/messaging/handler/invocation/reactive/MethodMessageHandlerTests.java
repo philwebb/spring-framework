@@ -46,8 +46,8 @@ import org.springframework.util.PathMatcher;
 import org.springframework.util.RouteMatcher;
 import org.springframework.util.SimpleRouteMatcher;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Unit tests for {@link AbstractMethodMessageHandler}.

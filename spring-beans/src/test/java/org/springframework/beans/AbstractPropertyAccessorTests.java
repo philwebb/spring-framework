@@ -58,8 +58,10 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
-
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.within;
 
 /**
  * Shared tests for property accessors.

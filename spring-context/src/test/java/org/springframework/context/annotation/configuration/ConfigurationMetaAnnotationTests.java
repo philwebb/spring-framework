@@ -26,8 +26,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.tests.sample.beans.TestBean;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

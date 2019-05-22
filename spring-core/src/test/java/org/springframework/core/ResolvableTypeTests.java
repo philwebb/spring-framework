@@ -52,9 +52,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.ResolvableType.VariableResolver;
 import org.springframework.util.MultiValueMap;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;

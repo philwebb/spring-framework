@@ -17,6 +17,7 @@
 package org.springframework.ejb.access;
 
 import java.lang.reflect.Proxy;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 import javax.ejb.EJBLocalObject;
@@ -26,7 +27,9 @@ import org.junit.Test;
 
 import org.springframework.jndi.JndiTemplate;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

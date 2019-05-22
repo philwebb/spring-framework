@@ -31,12 +31,8 @@ import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.ContextLoader;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.springframework.test.context.support.ContextLoaderUtils.GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX;
 import static org.springframework.test.context.support.ContextLoaderUtils.buildContextHierarchyMap;
 import static org.springframework.test.context.support.ContextLoaderUtils.resolveContextHierarchyAttributes;

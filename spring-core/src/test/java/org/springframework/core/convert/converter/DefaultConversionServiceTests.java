@@ -56,8 +56,8 @@ import org.springframework.tests.TestGroup;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StopWatch;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Unit tests for {@link DefaultConversionService}.

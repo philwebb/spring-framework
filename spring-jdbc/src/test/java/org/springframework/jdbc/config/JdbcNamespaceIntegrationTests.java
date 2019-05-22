@@ -17,6 +17,7 @@
 package org.springframework.jdbc.config;
 
 import java.util.function.Predicate;
+
 import javax.sql.DataSource;
 
 import org.junit.Test;
@@ -36,12 +37,8 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory.DEFAULT_DATABASE_NAME;
 
 /**

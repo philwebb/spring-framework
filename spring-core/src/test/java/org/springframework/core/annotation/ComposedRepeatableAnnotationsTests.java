@@ -29,7 +29,9 @@ import java.util.Set;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedRepeatableAnnotations;
 import static org.springframework.core.annotation.AnnotatedElementUtils.getMergedRepeatableAnnotations;
 

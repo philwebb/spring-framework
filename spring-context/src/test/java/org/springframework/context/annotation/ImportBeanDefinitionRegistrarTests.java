@@ -35,8 +35,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

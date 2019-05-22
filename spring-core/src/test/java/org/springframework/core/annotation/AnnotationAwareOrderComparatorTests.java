@@ -18,11 +18,10 @@ package org.springframework.core.annotation;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Priority;
 
 import org.junit.Test;
-
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 

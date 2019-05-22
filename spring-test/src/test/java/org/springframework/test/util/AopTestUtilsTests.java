@@ -21,10 +21,8 @@ import org.junit.Test;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.AopUtils;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.springframework.test.util.AopTestUtils.getTargetObject;
 import static org.springframework.test.util.AopTestUtils.getUltimateTargetObject;
 

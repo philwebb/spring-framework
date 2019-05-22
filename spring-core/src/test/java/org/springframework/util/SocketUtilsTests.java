@@ -20,11 +20,14 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.SortedSet;
+
 import javax.net.ServerSocketFactory;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.springframework.util.SocketUtils.PORT_RANGE_MAX;
 import static org.springframework.util.SocketUtils.PORT_RANGE_MIN;
 

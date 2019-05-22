@@ -28,7 +28,9 @@ import org.springframework.test.util.subpackage.Person;
 import org.springframework.test.util.subpackage.PersonEntity;
 import org.springframework.test.util.subpackage.StaticFields;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 import static org.springframework.test.util.ReflectionTestUtils.invokeGetterMethod;
 import static org.springframework.test.util.ReflectionTestUtils.invokeMethod;

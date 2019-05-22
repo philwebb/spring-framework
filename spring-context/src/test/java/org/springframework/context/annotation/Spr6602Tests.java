@@ -22,8 +22,6 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

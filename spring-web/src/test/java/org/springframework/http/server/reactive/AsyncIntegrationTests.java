@@ -19,7 +19,6 @@ package org.springframework.http.server.reactive;
 import java.net.URI;
 import java.time.Duration;
 
-import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;

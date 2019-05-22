@@ -18,14 +18,13 @@ package org.springframework.web.servlet.mvc;
 
 import java.util.Properties;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 
 

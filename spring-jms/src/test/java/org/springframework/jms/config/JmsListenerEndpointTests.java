@@ -28,7 +28,9 @@ import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.jms.listener.endpoint.JmsActivationSpecConfig;
 import org.springframework.jms.listener.endpoint.JmsMessageEndpointManager;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.Mockito.mock;
 
 /**

@@ -29,9 +29,9 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Abstract cache annotation tests (containing several reusable methods).

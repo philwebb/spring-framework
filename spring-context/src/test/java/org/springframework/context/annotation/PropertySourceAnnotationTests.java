@@ -23,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
+
 import javax.inject.Inject;
 
 import org.junit.Test;
@@ -38,10 +39,8 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.core.io.support.PropertySourceFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Tests the processing of @PropertySource annotations on @Configuration classes.

@@ -19,7 +19,6 @@ package org.springframework.http.client.support;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.core.Ordered;

@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toCollection;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

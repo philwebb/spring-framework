@@ -45,7 +45,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ObjectUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 

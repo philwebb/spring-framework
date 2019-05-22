@@ -30,7 +30,6 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.TriggerContext;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

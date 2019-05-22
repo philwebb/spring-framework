@@ -17,6 +17,7 @@
 package org.springframework.web.context.support;
 
 import java.io.IOException;
+
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,9 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIOException;
 
 /**
  * @author Juergen Hoeller

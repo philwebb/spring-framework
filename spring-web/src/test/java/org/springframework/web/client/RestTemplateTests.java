@@ -47,10 +47,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;

@@ -19,7 +19,6 @@ package org.springframework.web.socket.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 

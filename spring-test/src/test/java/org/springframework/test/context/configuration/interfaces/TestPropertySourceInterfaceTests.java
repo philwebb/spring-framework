@@ -24,7 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

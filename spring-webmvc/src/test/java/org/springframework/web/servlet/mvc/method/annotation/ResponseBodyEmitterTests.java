@@ -26,7 +26,9 @@ import org.mockito.MockitoAnnotations;
 
 import org.springframework.http.MediaType;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIOException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;

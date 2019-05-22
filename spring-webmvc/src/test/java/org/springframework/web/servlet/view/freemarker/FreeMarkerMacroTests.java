@@ -20,6 +20,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -48,7 +49,6 @@ import org.springframework.web.servlet.theme.FixedThemeResolver;
 import org.springframework.web.servlet.view.DummyMacroRequestContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 /**
  * @author Darren Davison

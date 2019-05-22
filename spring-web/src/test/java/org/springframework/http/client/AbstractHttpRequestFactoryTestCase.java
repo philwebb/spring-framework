@@ -32,7 +32,9 @@ import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * @author Arjen Poutsma

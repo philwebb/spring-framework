@@ -18,8 +18,6 @@ package org.springframework.messaging.support;
 
 import org.junit.Test;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

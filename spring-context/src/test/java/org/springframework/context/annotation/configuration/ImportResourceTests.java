@@ -34,7 +34,6 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.tests.sample.beans.TestBean;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

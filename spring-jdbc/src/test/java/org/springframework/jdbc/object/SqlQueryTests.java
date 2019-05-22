@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.junit.Before;
@@ -39,10 +40,8 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
-
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;

@@ -24,7 +24,9 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIOException;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Test suite for {@link FastByteArrayOutputStream}.

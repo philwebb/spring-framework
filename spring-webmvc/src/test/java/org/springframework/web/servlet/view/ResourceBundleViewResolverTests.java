@@ -19,6 +19,7 @@ package org.springframework.web.servlet.view;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,10 +33,8 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.View;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assume.assumeTrue;
 
 /**

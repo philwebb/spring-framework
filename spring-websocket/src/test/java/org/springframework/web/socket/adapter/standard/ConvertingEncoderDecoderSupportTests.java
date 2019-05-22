@@ -17,6 +17,7 @@
 package org.springframework.web.socket.adapter.standard;
 
 import java.nio.ByteBuffer;
+
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EncodeException;
@@ -38,9 +39,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.socket.ContextLoaderTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 

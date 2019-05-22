@@ -23,8 +23,8 @@ import org.junit.Test;
 
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author Rick Evans

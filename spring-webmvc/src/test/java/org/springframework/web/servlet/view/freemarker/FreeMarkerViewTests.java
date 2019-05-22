@@ -23,6 +23,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 
 import freemarker.ext.servlet.AllHttpScopesHashModel;
@@ -44,7 +45,9 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 

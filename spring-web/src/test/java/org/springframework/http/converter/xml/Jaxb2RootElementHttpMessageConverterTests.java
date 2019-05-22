@@ -17,6 +17,7 @@
 package org.springframework.http.converter.xml;
 
 import java.nio.charset.StandardCharsets;
+
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -41,9 +42,8 @@ import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.tests.XmlContent;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;

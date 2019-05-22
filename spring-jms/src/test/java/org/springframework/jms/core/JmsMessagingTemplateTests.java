@@ -19,6 +19,7 @@ package org.springframework.jms.core;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageFormatException;
@@ -48,7 +49,9 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.converter.GenericMessageConverter;
 import org.springframework.messaging.support.MessageBuilder;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;

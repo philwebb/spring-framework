@@ -18,6 +18,7 @@ package org.springframework.web.context.request.async;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
@@ -27,7 +28,10 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;

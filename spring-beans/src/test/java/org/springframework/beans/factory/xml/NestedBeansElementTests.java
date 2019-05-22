@@ -24,7 +24,6 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

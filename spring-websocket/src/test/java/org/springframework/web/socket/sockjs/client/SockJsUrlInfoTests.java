@@ -22,8 +22,6 @@ import org.junit.Test;
 
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

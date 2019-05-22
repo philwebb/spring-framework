@@ -26,8 +26,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-
 /**
  * Integration tests to verify claims made in <a
  * href="https://jira.springframework.org/browse/SPR-6128"

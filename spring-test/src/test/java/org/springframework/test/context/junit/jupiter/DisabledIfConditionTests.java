@@ -19,7 +19,6 @@ package org.springframework.test.context.junit.jupiter;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -28,20 +27,11 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit.SpringJUnitJupiterTestSuite;
-import org.springframework.tests.sample.beans.HasMap;
 import org.springframework.util.ReflectionUtils;
 
-
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;

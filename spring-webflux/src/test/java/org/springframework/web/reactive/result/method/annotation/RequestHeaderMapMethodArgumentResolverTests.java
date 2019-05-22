@@ -18,7 +18,6 @@ package org.springframework.web.reactive.result.method.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;

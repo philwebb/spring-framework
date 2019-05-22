@@ -28,7 +28,6 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

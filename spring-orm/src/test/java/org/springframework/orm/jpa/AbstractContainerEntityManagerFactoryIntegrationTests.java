@@ -18,6 +18,7 @@ package org.springframework.orm.jpa;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
@@ -29,7 +30,9 @@ import org.springframework.orm.jpa.domain.DriversLicense;
 import org.springframework.orm.jpa.domain.Person;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Integration tests for LocalContainerEntityManagerFactoryBean.

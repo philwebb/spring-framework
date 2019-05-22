@@ -34,12 +34,8 @@ import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 import org.springframework.web.socket.sockjs.frame.SockJsFrame;
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;

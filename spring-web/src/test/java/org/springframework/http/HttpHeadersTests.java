@@ -36,8 +36,8 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Unit tests for {@link org.springframework.http.HttpHeaders}.

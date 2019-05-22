@@ -32,10 +32,8 @@ import org.junit.Test;
 
 import org.springframework.util.FileCopyUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Unit tests for various {@link Resource} implementations.

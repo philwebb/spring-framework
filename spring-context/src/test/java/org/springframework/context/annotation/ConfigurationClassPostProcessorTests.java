@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.junit.Before;
@@ -64,7 +65,9 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * @author Chris Beams

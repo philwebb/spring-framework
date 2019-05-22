@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
+
 import javax.servlet.http.Cookie;
 
 import org.junit.Test;
@@ -44,7 +45,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author Arjen Poutsma

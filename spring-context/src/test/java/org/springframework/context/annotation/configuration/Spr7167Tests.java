@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Spr7167Tests {

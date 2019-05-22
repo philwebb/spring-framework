@@ -31,7 +31,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ActiveProfilesResolver;
 import org.springframework.util.StringUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.springframework.test.context.support.ActiveProfilesUtils.resolveActiveProfiles;
 
 /**

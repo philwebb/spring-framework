@@ -24,10 +24,6 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
-
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

@@ -31,7 +31,9 @@ import org.springframework.scripting.groovy.GroovyScriptFactory;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.Mockito.mock;
 
 /**

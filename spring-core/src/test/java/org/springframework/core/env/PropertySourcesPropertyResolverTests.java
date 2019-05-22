@@ -26,10 +26,10 @@ import org.junit.Test;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.mock.env.MockPropertySource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Chris Beams

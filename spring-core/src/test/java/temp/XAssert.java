@@ -16,11 +16,6 @@
 
 package temp;
 
-import org.junit.internal.ArrayComparisonFailure;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
-
 /**
  * Temp assert class.
  *

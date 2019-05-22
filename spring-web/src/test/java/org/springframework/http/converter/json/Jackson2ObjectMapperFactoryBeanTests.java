@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -65,8 +64,8 @@ import org.junit.Test;
 
 import org.springframework.beans.FatalBeanException;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Test cases for {@link Jackson2ObjectMapperFactoryBean}.

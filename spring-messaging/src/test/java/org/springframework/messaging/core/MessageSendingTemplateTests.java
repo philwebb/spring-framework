@@ -36,7 +36,9 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Unit tests for {@link AbstractMessageSendingTemplate}.

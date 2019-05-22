@@ -36,7 +36,9 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 @SuppressWarnings("deprecation")
 public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMockWebServerTestCase {

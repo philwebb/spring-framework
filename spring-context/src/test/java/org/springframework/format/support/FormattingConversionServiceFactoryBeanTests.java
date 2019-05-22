@@ -39,7 +39,9 @@ import org.springframework.format.Parser;
 import org.springframework.format.Printer;
 import org.springframework.format.annotation.NumberFormat;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author Rossen Stoyanchev

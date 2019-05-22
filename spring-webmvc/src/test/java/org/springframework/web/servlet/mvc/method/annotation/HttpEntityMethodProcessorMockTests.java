@@ -57,9 +57,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static java.time.Instant.ofEpochMilli;
 import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.argThat;

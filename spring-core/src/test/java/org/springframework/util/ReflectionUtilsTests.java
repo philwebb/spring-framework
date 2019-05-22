@@ -31,11 +31,8 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 import org.springframework.tests.sample.objects.TestObject;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author Rob Harrop

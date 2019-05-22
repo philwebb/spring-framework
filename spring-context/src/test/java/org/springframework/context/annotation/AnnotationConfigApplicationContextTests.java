@@ -34,10 +34,8 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.ObjectUtils;
 
 import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
-
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.util.StringUtils.uncapitalize;
 
 /**

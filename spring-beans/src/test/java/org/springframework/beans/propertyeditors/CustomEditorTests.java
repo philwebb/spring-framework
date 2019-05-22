@@ -49,7 +49,10 @@ import org.springframework.tests.sample.beans.IndexedTestBean;
 import org.springframework.tests.sample.beans.NumberTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.within;
 
 /**
  * Unit tests for the various PropertyEditors in Spring.

@@ -51,10 +51,10 @@ import org.springframework.util.StringUtils;
 
 import static java.util.Comparator.naturalOrder;
 import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit tests for {@link GenericConversionService}.

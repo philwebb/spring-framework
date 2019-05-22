@@ -17,6 +17,7 @@
 package org.springframework.util.xml;
 
 import java.io.StringWriter;
+
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
@@ -29,8 +30,6 @@ import org.xmlunit.util.Predicate;
 import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 public class XMLEventStreamWriterTests {
 

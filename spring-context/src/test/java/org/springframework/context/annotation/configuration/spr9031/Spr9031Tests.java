@@ -29,8 +29,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.configuration.spr9031.scanpackage.Spr9031Component;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

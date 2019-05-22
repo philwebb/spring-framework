@@ -18,6 +18,7 @@ package org.springframework.messaging.converter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.Before;
@@ -29,9 +30,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.tests.XmlContent;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;

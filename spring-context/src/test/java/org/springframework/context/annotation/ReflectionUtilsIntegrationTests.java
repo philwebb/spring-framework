@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import org.springframework.util.ReflectionUtils;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

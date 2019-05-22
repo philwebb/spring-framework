@@ -36,12 +36,12 @@ import org.springframework.web.context.request.WebRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.fail;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
-import static org.assertj.core.api.Assertions.fail;
 import static org.springframework.http.HttpHeaders.IF_MODIFIED_SINCE;
 import static org.springframework.http.HttpHeaders.LAST_MODIFIED;
 import static org.springframework.http.HttpHeaders.VARY;

@@ -32,7 +32,6 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

@@ -27,7 +27,9 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.InvalidMimeTypeException;
 import org.springframework.util.MimeTypeUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Test fixture for {@link org.springframework.messaging.converter.DefaultContentTypeResolver}.

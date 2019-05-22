@@ -58,9 +58,7 @@ import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import org.springframework.web.util.pattern.PathPattern;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.method;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.post;

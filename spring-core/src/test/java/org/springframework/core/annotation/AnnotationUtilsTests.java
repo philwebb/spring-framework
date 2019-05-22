@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -43,11 +44,9 @@ import org.springframework.stereotype.Component;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThat;
-
-
 import static org.springframework.core.annotation.AnnotationUtils.VALUE;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotationDeclaringClass;

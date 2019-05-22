@@ -17,6 +17,7 @@
 package org.springframework.util.xml;
 
 import java.io.StringReader;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -30,8 +31,6 @@ import org.xml.sax.XMLReader;
 import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * Unit tests for {@link DomContentHandler}.

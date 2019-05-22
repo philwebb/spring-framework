@@ -17,6 +17,7 @@
 package org.springframework.jms.support;
 
 import java.util.Map;
+
 import javax.jms.Destination;
 import javax.jms.JMSException;
 
@@ -27,7 +28,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
 
 /**
  *

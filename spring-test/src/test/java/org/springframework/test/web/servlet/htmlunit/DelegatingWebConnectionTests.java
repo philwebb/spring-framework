@@ -39,12 +39,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
-
-
-import static org.hamcrest.core.IsNot.not;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;

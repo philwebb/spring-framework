@@ -29,8 +29,8 @@ import org.junit.Test;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.StaticApplicationContext;
 
-import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIOException;
 
 /**
  * Unit tests for

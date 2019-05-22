@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.junit.Test;
@@ -42,9 +43,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.tests.transaction.CallCountingTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.BeanFactoryTransactionAttributeSourceAdvisor;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 

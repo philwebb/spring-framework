@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.spr10546.scanpackage.AEnclosingConfig;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

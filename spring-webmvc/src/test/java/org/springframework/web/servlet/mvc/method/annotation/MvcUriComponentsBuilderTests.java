@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
@@ -61,10 +62,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
-
-
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromController;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMappingName;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodCall;

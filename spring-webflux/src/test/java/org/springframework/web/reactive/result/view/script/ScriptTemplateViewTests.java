@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 
@@ -33,7 +34,9 @@ import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.support.StaticApplicationContext;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 

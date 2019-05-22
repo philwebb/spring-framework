@@ -27,7 +27,9 @@ import org.springframework.messaging.converter.GenericMessageConverter;
 import org.springframework.messaging.converter.MessageConversionException;
 import org.springframework.messaging.support.GenericMessage;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Unit tests for receiving operations in {@link AbstractMessagingTemplate}.

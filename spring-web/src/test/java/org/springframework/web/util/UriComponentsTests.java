@@ -27,11 +27,9 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.assertj.core.api.Assertions.assertThat;
-
-
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
 /**

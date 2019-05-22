@@ -26,7 +26,9 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.beans.support.ArgumentConvertingMethodInvoker;
 import org.springframework.util.MethodInvoker;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Unit tests for {@link MethodInvokingFactoryBean} and {@link MethodInvokingBean}.

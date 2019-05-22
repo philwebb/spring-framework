@@ -29,9 +29,8 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Test fixture for {@link MessageHeaderAccessor}.

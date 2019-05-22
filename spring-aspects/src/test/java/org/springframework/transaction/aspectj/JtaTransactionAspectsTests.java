@@ -17,6 +17,7 @@
 package org.springframework.transaction.aspectj;
 
 import java.io.IOException;
+
 import javax.transaction.Transactional;
 
 import org.junit.Before;
@@ -30,7 +31,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.tests.transaction.CallCountingTransactionManager;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIOException;
 
 /**
  * @author Stephane Nicoll

@@ -26,10 +26,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**

@@ -18,6 +18,7 @@ package org.springframework.aop.framework;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.accessibility.Accessible;
 import javax.swing.JFrame;
 import javax.swing.RootPaneContainer;
@@ -42,9 +43,8 @@ import org.springframework.tests.sample.beans.IOther;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Also tests AdvisedSupport and ProxyCreatorSupport superclasses.

@@ -21,6 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 import java.util.Optional;
+
 import javax.inject.Provider;
 
 import org.junit.Test;
@@ -43,7 +44,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.tests.sample.beans.Colour;
 import org.springframework.tests.sample.beans.TestBean;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 

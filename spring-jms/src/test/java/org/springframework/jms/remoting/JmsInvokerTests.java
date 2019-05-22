@@ -19,6 +19,7 @@ package org.springframework.jms.remoting;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Enumeration;
+
 import javax.jms.CompletionListener;
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -40,7 +41,9 @@ import org.springframework.remoting.RemoteTimeoutException;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 

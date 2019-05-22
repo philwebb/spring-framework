@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.http.Cookie;
 
 import org.junit.Test;
@@ -35,7 +36,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Unit tests for {@link MockHttpServletRequest}.

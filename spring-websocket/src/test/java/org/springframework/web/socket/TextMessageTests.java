@@ -16,7 +16,6 @@
 
 package org.springframework.web.socket;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

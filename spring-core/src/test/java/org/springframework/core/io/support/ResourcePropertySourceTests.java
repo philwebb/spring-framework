@@ -24,7 +24,6 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

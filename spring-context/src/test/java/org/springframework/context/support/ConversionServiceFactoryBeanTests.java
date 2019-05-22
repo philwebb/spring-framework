@@ -34,8 +34,8 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.ResourceTestBean;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * @author Keith Donald

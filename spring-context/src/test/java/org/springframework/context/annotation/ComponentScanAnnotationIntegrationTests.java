@@ -61,13 +61,7 @@ import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.tests.context.SimpleMapScope;
 import org.springframework.util.SerializationTestUtils;
 
-
-
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**

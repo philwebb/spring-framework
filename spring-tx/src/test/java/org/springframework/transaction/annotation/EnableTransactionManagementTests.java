@@ -38,9 +38,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.config.TransactionManagementConfigUtils;
 import org.springframework.transaction.event.TransactionalEventListenerFactory;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Tests demonstrating use of @EnableTransactionManagement @Configuration classes.

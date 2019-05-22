@@ -23,8 +23,6 @@ import org.junit.Test;
 
 import org.springframework.tests.mock.jndi.SimpleNamingContext;
 
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

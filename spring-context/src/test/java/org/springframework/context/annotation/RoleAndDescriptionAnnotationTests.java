@@ -22,7 +22,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.role.ComponentWithRole;
 import org.springframework.context.annotation.role.ComponentWithoutRole;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 

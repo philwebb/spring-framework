@@ -18,6 +18,7 @@ package org.springframework.web.context;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -47,10 +48,6 @@ import org.springframework.web.servlet.SimpleWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
-
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link ContextLoader} and {@link ContextLoaderListener}.

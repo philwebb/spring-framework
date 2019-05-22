@@ -38,10 +38,6 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.stereotype.Component;
 
-
-
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

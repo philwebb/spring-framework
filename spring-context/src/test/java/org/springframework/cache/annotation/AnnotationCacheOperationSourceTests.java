@@ -33,10 +33,8 @@ import org.springframework.cache.interceptor.CacheOperation;
 import org.springframework.cache.interceptor.CacheableOperation;
 import org.springframework.core.annotation.AliasFor;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * @author Costin Leau

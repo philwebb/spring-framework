@@ -29,8 +29,6 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.core.StringContains.containsString;
-
 /**
  * Unit tests for {@link AbstractMockServerSpec}.
  * @author Rossen Stoyanchev

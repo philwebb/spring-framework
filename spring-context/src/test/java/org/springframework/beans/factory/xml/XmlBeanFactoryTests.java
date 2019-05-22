@@ -70,8 +70,6 @@ import org.springframework.util.StopWatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Miscellaneous tests for XML bean definitions.
  *

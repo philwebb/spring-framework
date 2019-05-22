@@ -28,7 +28,9 @@ import org.junit.Test;
 import org.springframework.aop.ThrowsAdvice;
 import org.springframework.tests.aop.advice.MethodCounter;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
