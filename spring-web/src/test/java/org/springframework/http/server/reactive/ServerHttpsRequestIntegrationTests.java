@@ -105,7 +105,7 @@ public class ServerHttpsRequestIntegrationTests {
 			URI uri = request.getURI();
 			assertThat(uri.getScheme()).isEqualTo("https");
 			assertNotNull(uri.getHost());
-			assertThat((long) uri.getPort()).isNotEqualTo((long) -1);
+			assertThat(uri.getPort()).isNotEqualTo((long) -1);
 			assertNotNull(request.getRemoteAddress());
 			assertThat(uri.getPath()).isEqualTo("/foo");
 			assertThat(uri.getQuery()).isEqualTo("param=bar");

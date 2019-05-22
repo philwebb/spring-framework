@@ -279,7 +279,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		String sockJsPath = "/websocket";
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		wsService.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 403);
+		assertThat(this.servletResponse.getStatus()).isNotEqualTo((long) 403);
 
 		resetRequestAndResponse();
 		List<String> allowed = Collections.singletonList("https://mydomain1.com");
@@ -288,7 +288,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "https://mydomain1.com");
 		wsService.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 403);
+		assertThat(this.servletResponse.getStatus()).isNotEqualTo((long) 403);
 
 		resetRequestAndResponse();
 		setRequest("GET", sockJsPrefix + sockJsPath);
@@ -302,7 +302,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		String sockJsPath = "/iframe.html";
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 404);
+		assertThat(this.servletResponse.getStatus()).isNotEqualTo((long) 404);
 		assertThat(this.servletResponse.getHeader("X-Frame-Options")).isEqualTo("SAMEORIGIN");
 
 		resetRequestAndResponse();
@@ -316,7 +316,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.service.setAllowedOrigins(Collections.singletonList("*"));
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertThat((long) this.servletResponse.getStatus()).isNotEqualTo((long) 404);
+		assertThat(this.servletResponse.getStatus()).isNotEqualTo((long) 404);
 		assertNull(this.servletResponse.getHeader("X-Frame-Options"));
 	}
 

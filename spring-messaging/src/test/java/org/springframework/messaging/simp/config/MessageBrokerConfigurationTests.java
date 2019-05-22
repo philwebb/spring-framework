@@ -474,7 +474,7 @@ public class MessageBrokerConfigurationTests {
 
 		SimpUserRegistry registry = context.getBean(SimpUserRegistry.class);
 		assertNotNull(registry);
-		assertThat((Object) registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
+		assertThat(registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
 
 		UserDestinationMessageHandler handler = context.getBean(UserDestinationMessageHandler.class);
 		assertNull(handler.getBroadcastDestination());

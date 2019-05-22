@@ -953,7 +953,7 @@ public class UriComponentsBuilderTests {
 
 		assertThat(uri1.getPathSegments().isEmpty()).isTrue();
 		assertThat(uri2.getPathSegments().isEmpty()).isTrue();
-		assertThat((Object) uri2).isNotEqualTo(uri1);
+		assertThat(uri2).isNotEqualTo(uri1);
 	}
 
 	@Test  // SPR-17256

@@ -212,7 +212,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
-		assertThat((Object[]) parameterMap.get("foo")).isEqualTo(new String[] {"bar", "baz"});
+		assertThat(parameterMap.get("foo")).isEqualTo(new String[] {"bar", "baz"});
 	}
 
 	@Test
@@ -222,7 +222,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
-		assertThat((Object[]) parameterMap.get("foo")).isEqualTo(new String[] {"bar", "baz"});
+		assertThat(parameterMap.get("foo")).isEqualTo(new String[] {"bar", "baz"});
 		assertThat(request.getQueryString()).isEqualTo("foo=bar&foo=baz");
 	}
 
@@ -254,7 +254,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
-		assertThat((Object[]) parameterMap.get("foo")).isEqualTo(new String[] {null});
+		assertThat(parameterMap.get("foo")).isEqualTo(new String[] {null});
 		assertThat(request.getQueryString()).isEqualTo("foo");
 	}
 
@@ -268,7 +268,7 @@ public class MockHttpServletRequestBuilderTests {
 
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 
-		assertThat((Object[]) request.getParameterMap().get("foo")).isEqualTo(new String[] {"bar", "baz"});
+		assertThat(request.getParameterMap().get("foo")).isEqualTo(new String[] {"bar", "baz"});
 	}
 
 	@Test
@@ -280,9 +280,9 @@ public class MockHttpServletRequestBuilderTests {
 				.contentType(contentType).content(body.getBytes(StandardCharsets.UTF_8))
 				.buildRequest(this.servletContext);
 
-		assertThat((Object[]) request.getParameterMap().get("name 1")).isEqualTo(new String[] {"value 1"});
-		assertThat((Object[]) request.getParameterMap().get("name 2")).isEqualTo(new String[] {"value A", "value B"});
-		assertThat((Object[]) request.getParameterMap().get("name 3")).isEqualTo(new String[] {null});
+		assertThat(request.getParameterMap().get("name 1")).isEqualTo(new String[] {"value 1"});
+		assertThat(request.getParameterMap().get("name 2")).isEqualTo(new String[] {"value A", "value B"});
+		assertThat(request.getParameterMap().get("name 3")).isEqualTo(new String[] {null});
 	}
 
 	@Test

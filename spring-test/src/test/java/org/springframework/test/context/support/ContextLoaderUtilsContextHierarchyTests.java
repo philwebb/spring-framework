@@ -133,7 +133,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel2);
 		assertEquals(1, configAttributesListClassLevel2.size());
-		assertThat((Object[]) configAttributesListClassLevel2.get(0).getLocations()).isEqualTo(new String[] { "two-A.xml", "two-B.xml" });
+		assertThat(configAttributesListClassLevel2.get(0).getLocations()).isEqualTo(new String[] { "two-A.xml", "two-B.xml" });
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel3 = hierarchyAttributes.get(2);
 		debugConfigAttributes(configAttributesListClassLevel3);
@@ -157,7 +157,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel2);
 		assertEquals(1, configAttributesListClassLevel2.size());
-		assertThat((Object[]) configAttributesListClassLevel2.get(0).getLocations()).isEqualTo(new String[] { "B-one.xml", "B-two.xml" });
+		assertThat(configAttributesListClassLevel2.get(0).getLocations()).isEqualTo(new String[] { "B-one.xml", "B-two.xml" });
 		assertAttributes(configAttributesListClassLevel2.get(0),
 			TestClass2WithSingleLevelContextHierarchyFromMetaAnnotation.class,
 			new String[] { "B-one.xml",

@@ -87,13 +87,13 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		assertThat(tv1.toString()).isEqualTo("TypedValue: 'hello' of [java.lang.String]");
 		assertThat(tv2).isEqualTo(tv1);
 		assertThat(tv1).isEqualTo(tv2);
-		assertThat((Object) tv3).isNotEqualTo(tv1);
-		assertThat((Object) tv3).isNotEqualTo(tv2);
-		assertThat((Object) tv1).isNotEqualTo(tv3);
-		assertThat((Object) tv2).isNotEqualTo(tv3);
+		assertThat(tv3).isNotEqualTo(tv1);
+		assertThat(tv3).isNotEqualTo(tv2);
+		assertThat(tv1).isNotEqualTo(tv3);
+		assertThat(tv2).isNotEqualTo(tv3);
 		assertEquals(tv1.hashCode(), tv2.hashCode());
-		assertThat((long) tv3.hashCode()).isNotEqualTo((long) tv1.hashCode());
-		assertThat((long) tv3.hashCode()).isNotEqualTo((long) tv2.hashCode());
+		assertThat(tv3.hashCode()).isNotEqualTo((long) tv1.hashCode());
+		assertThat(tv3.hashCode()).isNotEqualTo((long) tv2.hashCode());
 	}
 
 	@Test

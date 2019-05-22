@@ -1807,7 +1807,7 @@ public class DefaultListableBeanFactoryTests {
 		assertNotNull(bd2FactoryBean);
 		FactoryBeanDependentBean bean = (FactoryBeanDependentBean) lbf.autowire(FactoryBeanDependentBean.class,
 				AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
-		assertThat((Object) bean.getFactoryBean()).isNotEqualTo(bd1FactoryBean);
+		assertThat(bean.getFactoryBean()).isNotEqualTo(bd1FactoryBean);
 		assertThat(bean.getFactoryBean()).isEqualTo(bd2FactoryBean);
 	}
 

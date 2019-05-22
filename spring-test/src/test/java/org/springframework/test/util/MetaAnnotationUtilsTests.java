@@ -219,7 +219,7 @@ public class MetaAnnotationUtilsTests {
 		assertNotNull("composedAnnotation should not be null", descriptor.getComposedAnnotation());
 		assertThat(descriptor.getComposedAnnotationType()).as("composedAnnotationType").isEqualTo(MetaConfig.class);
 
-		assertThat((Object[]) descriptor.getAnnotationAttributes().getClassArray("classes")).as("configured classes").isEqualTo(new Class<?>[] {String.class});
+		assertThat(descriptor.getAnnotationAttributes().getClassArray("classes")).as("configured classes").isEqualTo(new Class<?>[] {String.class});
 	}
 
 	@Test
@@ -373,8 +373,8 @@ public class MetaAnnotationUtilsTests {
 		assertNotNull(descriptor);
 		assertThat(descriptor.getRootDeclaringClass()).isEqualTo(startClass);
 		assertThat(descriptor.getAnnotationType()).isEqualTo(annotationType);
-		assertThat((Object[]) ((ContextConfiguration) descriptor.getAnnotation()).value()).isEqualTo(new Class<?>[] {});
-		assertThat((Object[]) descriptor.getAnnotationAttributes().getClassArray("classes")).isEqualTo(new Class<?>[] {MetaConfig.DevConfig.class, MetaConfig.ProductionConfig.class});
+		assertThat(((ContextConfiguration) descriptor.getAnnotation()).value()).isEqualTo(new Class<?>[] {});
+		assertThat(descriptor.getAnnotationAttributes().getClassArray("classes")).isEqualTo(new Class<?>[] {MetaConfig.DevConfig.class, MetaConfig.ProductionConfig.class});
 		assertNotNull(descriptor.getComposedAnnotation());
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaConfig.class);
 	}
@@ -391,8 +391,8 @@ public class MetaAnnotationUtilsTests {
 		assertNotNull(descriptor);
 		assertThat(descriptor.getRootDeclaringClass()).isEqualTo(startClass);
 		assertThat(descriptor.getAnnotationType()).isEqualTo(annotationType);
-		assertThat((Object[]) ((ContextConfiguration) descriptor.getAnnotation()).value()).isEqualTo(new Class<?>[] {});
-		assertThat((Object[]) descriptor.getAnnotationAttributes().getClassArray("classes")).isEqualTo(new Class<?>[] {MetaAnnotationUtilsTests.class});
+		assertThat(((ContextConfiguration) descriptor.getAnnotation()).value()).isEqualTo(new Class<?>[] {});
+		assertThat(descriptor.getAnnotationAttributes().getClassArray("classes")).isEqualTo(new Class<?>[] {MetaAnnotationUtilsTests.class});
 		assertNotNull(descriptor.getComposedAnnotation());
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaConfig.class);
 	}

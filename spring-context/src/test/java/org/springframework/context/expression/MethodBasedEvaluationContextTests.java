@@ -123,9 +123,9 @@ public class MethodBasedEvaluationContextTests {
 		assertNull(context.lookupVariable("p0"));
 		assertNull(context.lookupVariable("flag"));
 
-		assertThat((Object[]) context.lookupVariable("a1")).isEqualTo(new Object[] {"hello", "hi"});
-		assertThat((Object[]) context.lookupVariable("p1")).isEqualTo(new Object[] {"hello", "hi"});
-		assertThat((Object[]) context.lookupVariable("vararg")).isEqualTo(new Object[] {"hello", "hi"});
+		assertThat(context.lookupVariable("a1")).isEqualTo(new Object[] {"hello", "hi"});
+		assertThat(context.lookupVariable("p1")).isEqualTo(new Object[] {"hello", "hi"});
+		assertThat(context.lookupVariable("vararg")).isEqualTo(new Object[] {"hello", "hi"});
 	}
 
 	private MethodBasedEvaluationContext createEvaluationContext(Method method, Object... args) {

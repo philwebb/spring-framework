@@ -510,9 +510,9 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		float resultI = expression.getValue(new TestClass1(), Float.TYPE);
 		assertCanCompile(expression);
 		float resultC = expression.getValue(new TestClass1(), Float.TYPE);
-		assertThat((double) resultI).isCloseTo((double) 3.4f, within((double) 0.1f));
+		assertThat(resultI).isCloseTo((double) 3.4f, within((double) 0.1f));
 
-		assertThat((double) resultC).isCloseTo((double) 3.4f, within((double) 0.1f));
+		assertThat(resultC).isCloseTo((double) 3.4f, within((double) 0.1f));
 
 		assertThat(expression.getValue()).isEqualTo(3.4f);
 	}

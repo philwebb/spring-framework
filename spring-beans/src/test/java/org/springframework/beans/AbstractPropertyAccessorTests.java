@@ -503,7 +503,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Object bwAge = accessor.getPropertyValue("age");
 		boolean condition = bwAge instanceof Integer;
 		assertThat(condition).as("Age is an integer").isTrue();
-		assertThat((int) bwAge == newAge).as("Bean wrapper must pick up changes").isTrue();
+		assertThat(bwAge == newAge).as("Bean wrapper must pick up changes").isTrue();
 	}
 
 	@Test
@@ -690,9 +690,9 @@ public abstract class AbstractPropertyAccessorTests {
 		assertEquals(Long.MAX_VALUE, target.getMyPrimitiveLong());
 		assertEquals(Long.MAX_VALUE, target.getMyLong().longValue());
 
-		assertThat((double) target.getMyPrimitiveFloat()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
+		assertThat(target.getMyPrimitiveFloat()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
 
-		assertThat((double) target.getMyFloat().floatValue()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
+		assertThat(target.getMyFloat().floatValue()).isCloseTo((double) Float.MAX_VALUE, within(0.001));
 
 		assertThat(target.getMyPrimitiveDouble()).isCloseTo(Double.MAX_VALUE, within(0.001));
 

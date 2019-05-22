@@ -78,9 +78,9 @@ public class JsonbHttpMessageConverterTests {
 
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 	}
@@ -191,9 +191,9 @@ public class JsonbHttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
@@ -217,9 +217,9 @@ public class JsonbHttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
@@ -244,9 +244,9 @@ public class JsonbHttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 

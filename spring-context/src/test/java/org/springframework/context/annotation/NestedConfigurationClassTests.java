@@ -198,7 +198,7 @@ public class NestedConfigurationClassTests {
 		Object l2i1 = ctx.getBean(L0ConfigEmpty.L1ConfigEmpty.L2ConfigEmpty.class);
 		Object l2i2 = ctx.getBean(L0ConfigEmpty.L1ConfigEmpty.L2ConfigEmpty.class);
 		assertThat(l2i1 == l2i2).isTrue();
-		assertThat((Object) l2i2.toString()).isNotEqualTo(l2i1.toString());
+		assertThat(l2i2.toString()).isNotEqualTo(l2i1.toString());
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class NestedConfigurationClassTests {
 		Object l2i1 = ctx.getBean(L0ConfigConcrete.L1ConfigEmpty.L2ConfigEmpty.class);
 		Object l2i2 = ctx.getBean(L0ConfigConcrete.L1ConfigEmpty.L2ConfigEmpty.class);
 		assertThat(l2i1 == l2i2).isTrue();
-		assertThat((Object) l2i2.toString()).isNotEqualTo(l2i1.toString());
+		assertThat(l2i2.toString()).isNotEqualTo(l2i1.toString());
 	}
 
 

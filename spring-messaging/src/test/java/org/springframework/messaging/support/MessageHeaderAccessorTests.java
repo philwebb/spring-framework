@@ -82,7 +82,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaders actual = accessor.getMessageHeaders();
 
 		assertEquals(3, actual.size());
-		assertThat((Object) actual.getId()).isNotEqualTo(message.getHeaders().getId());
+		assertThat(actual.getId()).isNotEqualTo(message.getHeaders().getId());
 		assertThat(actual.get("foo")).isEqualTo("BAR");
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}

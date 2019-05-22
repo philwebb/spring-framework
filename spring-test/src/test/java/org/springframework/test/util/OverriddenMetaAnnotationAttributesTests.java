@@ -56,7 +56,7 @@ public class OverriddenMetaAnnotationAttributesTests {
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaValueConfig.class);
 
 		// direct access to annotation value:
-		assertThat((Object[]) descriptor.getAnnotation().value()).isEqualTo(new String[] { "foo.xml" });
+		assertThat(descriptor.getAnnotation().value()).isEqualTo(new String[] { "foo.xml" });
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class OverriddenMetaAnnotationAttributesTests {
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaValueConfig.class);
 
 		// direct access to annotation value:
-		assertThat((Object[]) descriptor.getAnnotation().value()).isEqualTo(new String[] { "foo.xml" });
+		assertThat(descriptor.getAnnotation().value()).isEqualTo(new String[] { "foo.xml" });
 
 		// overridden attribute:
 		AnnotationAttributes attributes = descriptor.getAnnotationAttributes();
@@ -80,7 +80,7 @@ public class OverriddenMetaAnnotationAttributesTests {
 		// NOTE: we would like to be able to override the 'value' attribute; however,
 		// Spring currently does not allow overrides for the 'value' attribute.
 		// See SPR-11393 for related discussions.
-		assertThat((Object[]) attributes.getStringArray("value")).isEqualTo(new String[] { "foo.xml" });
+		assertThat(attributes.getStringArray("value")).isEqualTo(new String[] { "foo.xml" });
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class OverriddenMetaAnnotationAttributesTests {
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaLocationsConfig.class);
 
 		// direct access to annotation attributes:
-		assertThat((Object[]) descriptor.getAnnotation().locations()).isEqualTo(new String[] { "foo.xml" });
+		assertThat(descriptor.getAnnotation().locations()).isEqualTo(new String[] { "foo.xml" });
 		assertThat(descriptor.getAnnotation().inheritLocations()).isFalse();
 	}
 
@@ -113,12 +113,12 @@ public class OverriddenMetaAnnotationAttributesTests {
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaLocationsConfig.class);
 
 		// direct access to annotation attributes:
-		assertThat((Object[]) descriptor.getAnnotation().locations()).isEqualTo(new String[] { "foo.xml" });
+		assertThat(descriptor.getAnnotation().locations()).isEqualTo(new String[] { "foo.xml" });
 		assertThat(descriptor.getAnnotation().inheritLocations()).isFalse();
 
 		// overridden attributes:
 		AnnotationAttributes attributes = descriptor.getAnnotationAttributes();
-		assertThat((Object[]) attributes.getStringArray("locations")).isEqualTo(new String[] { "bar.xml" });
+		assertThat(attributes.getStringArray("locations")).isEqualTo(new String[] { "bar.xml" });
 		assertThat(attributes.getBoolean("inheritLocations")).isTrue();
 	}
 

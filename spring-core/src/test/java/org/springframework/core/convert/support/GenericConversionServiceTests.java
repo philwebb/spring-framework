@@ -309,14 +309,14 @@ public class GenericConversionServiceTests {
 	public void testStringArrayToIntegerArray() {
 		conversionService.addConverter(new MyStringArrayToIntegerArrayConverter());
 		Integer[] converted = conversionService.convert(new String[] {"x1", "z3"}, Integer[].class);
-		assertThat((Object[]) converted).isEqualTo(new Integer[] { 1, 3 });
+		assertThat(converted).isEqualTo(new Integer[] { 1, 3 });
 	}
 
 	@Test
 	public void testStringToIntegerArray() {
 		conversionService.addConverter(new MyStringToIntegerArrayConverter());
 		Integer[] converted = conversionService.convert("x1,z3", Integer[].class);
-		assertThat((Object[]) converted).isEqualTo(new Integer[] { 1, 3 });
+		assertThat(converted).isEqualTo(new Integer[] { 1, 3 });
 	}
 
 	@Test

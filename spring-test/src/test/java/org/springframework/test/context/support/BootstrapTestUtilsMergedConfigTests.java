@@ -126,8 +126,8 @@ public class BootstrapTestUtilsMergedConfigTests extends AbstractContextConfigur
 
 		assertThat(webMergedConfig).isEqualTo(webMergedConfig);
 		assertThat(standardMergedConfig).isEqualTo(standardMergedConfig);
-		assertThat((Object) webMergedConfig).isNotEqualTo(standardMergedConfig);
-		assertThat((Object) standardMergedConfig).isNotEqualTo(webMergedConfig);
+		assertThat(webMergedConfig).isNotEqualTo(standardMergedConfig);
+		assertThat(standardMergedConfig).isNotEqualTo(webMergedConfig);
 
 		assertMergedConfig(webMergedConfig, webTestClass, EMPTY_STRING_ARRAY, array(FooConfig.class),
 			WebDelegatingSmartContextLoader.class);

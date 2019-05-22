@@ -51,7 +51,7 @@ public class DefaultMultipartHttpServletRequestTests {
 
 		String[] values = createMultipartRequest().getParameterValues("key");
 
-		assertThat((Object[]) values).isEqualTo(new String[] {"p", "q"});
+		assertThat(values).isEqualTo(new String[] {"p", "q"});
 	}
 
 	@Test // SPR-16590
@@ -66,9 +66,9 @@ public class DefaultMultipartHttpServletRequestTests {
 		Map<String, String[]> map = createMultipartRequest().getParameterMap();
 
 		assertEquals(3, map.size());
-		assertThat((Object[]) map.get("key1")).isEqualTo(new String[] {"p1", "q1"});
-		assertThat((Object[]) map.get("key2")).isEqualTo(new String[] {"p2"});
-		assertThat((Object[]) map.get("key3")).isEqualTo(new String[] {"q3"});
+		assertThat(map.get("key1")).isEqualTo(new String[] {"p1", "q1"});
+		assertThat(map.get("key2")).isEqualTo(new String[] {"p2"});
+		assertThat(map.get("key3")).isEqualTo(new String[] {"q3"});
 	}
 
 	private DefaultMultipartHttpServletRequest createMultipartRequest() {

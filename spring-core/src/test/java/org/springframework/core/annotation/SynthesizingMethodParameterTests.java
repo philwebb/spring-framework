@@ -68,14 +68,14 @@ public class SynthesizingMethodParameterTests {
 		MethodParameter methodParameter = new SynthesizingMethodParameter(method, 0);
 		assertThat(methodParameter).isEqualTo(stringParameter);
 		assertThat(stringParameter).isEqualTo(methodParameter);
-		assertThat((Object) methodParameter).isNotEqualTo(longParameter);
-		assertThat((Object) longParameter).isNotEqualTo(methodParameter);
+		assertThat(methodParameter).isNotEqualTo(longParameter);
+		assertThat(longParameter).isNotEqualTo(methodParameter);
 
 		methodParameter = new MethodParameter(method, 0);
 		assertThat(methodParameter).isEqualTo(stringParameter);
 		assertThat(stringParameter).isEqualTo(methodParameter);
-		assertThat((Object) methodParameter).isNotEqualTo(longParameter);
-		assertThat((Object) longParameter).isNotEqualTo(methodParameter);
+		assertThat(methodParameter).isNotEqualTo(longParameter);
+		assertThat(longParameter).isNotEqualTo(methodParameter);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class SynthesizingMethodParameterTests {
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		SynthesizingMethodParameter methodParameter = new SynthesizingMethodParameter(method, 0);
 		assertEquals(stringParameter.hashCode(), methodParameter.hashCode());
-		assertThat((long) methodParameter.hashCode()).isNotEqualTo((long) longParameter.hashCode());
+		assertThat(methodParameter.hashCode()).isNotEqualTo((long) longParameter.hashCode());
 	}
 
 	@Test

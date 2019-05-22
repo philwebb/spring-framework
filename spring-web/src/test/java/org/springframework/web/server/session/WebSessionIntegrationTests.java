@@ -165,7 +165,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		String newId = extractSessionId(response.getHeaders());
 		assertNotNull("Expected new session id", newId);
-		assertThat((Object) newId).isNotEqualTo(oldId);
+		assertThat(newId).isNotEqualTo(oldId);
 		assertEquals(2, this.handler.getSessionRequestCount());
 	}
 

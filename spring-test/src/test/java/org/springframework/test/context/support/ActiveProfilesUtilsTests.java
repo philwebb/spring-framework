@@ -46,7 +46,7 @@ import static org.springframework.test.context.support.ActiveProfilesUtils.resol
 public class ActiveProfilesUtilsTests extends AbstractContextConfigurationUtilsTests {
 
 	private void assertResolvedProfiles(Class<?> testClass, String... expected) {
-		assertThat((Object[]) resolveActiveProfiles(testClass)).isEqualTo(expected);
+		assertThat(resolveActiveProfiles(testClass)).isEqualTo(expected);
 	}
 
 	@Test

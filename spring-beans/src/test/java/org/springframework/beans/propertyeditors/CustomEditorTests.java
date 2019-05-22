@@ -464,13 +464,13 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(tb);
 		bw.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class, nf, true));
 		bw.setPropertyValue("bigDecimal", "1000");
-		assertThat((double) tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.0f, within((double) 0f));
+		assertThat(tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.0f, within((double) 0f));
 
 		bw.setPropertyValue("bigDecimal", "1000,5");
-		assertThat((double) tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
+		assertThat(tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
 
 		bw.setPropertyValue("bigDecimal", "1 000,5");
-		assertThat((double) tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
+		assertThat(tb.getBigDecimal().floatValue()).isCloseTo((double) 1000.5f, within((double) 0f));
 
 	}
 

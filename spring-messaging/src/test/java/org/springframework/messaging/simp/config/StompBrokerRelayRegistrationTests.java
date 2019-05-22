@@ -54,7 +54,7 @@ public class StompBrokerRelayRegistrationTests {
 
 		StompBrokerRelayMessageHandler handler = registration.getMessageHandler(new StubMessageChannel());
 
-		assertThat((Object[]) StringUtils.toStringArray(handler.getDestinationPrefixes())).isEqualTo(prefixes);
+		assertThat(StringUtils.toStringArray(handler.getDestinationPrefixes())).isEqualTo(prefixes);
 		assertThat(handler.getClientLogin()).isEqualTo("clientlogin");
 		assertThat(handler.getClientPasscode()).isEqualTo("clientpasscode");
 		assertThat(handler.getSystemLogin()).isEqualTo("syslogin");

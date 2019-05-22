@@ -716,12 +716,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("fff++");
-		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat((double) return_fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(return_fff).isCloseTo((double) 3.0f, within(0d));
 
-		assertThat((double) helper.fff).isCloseTo((double) 4.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 4.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("lll++");
@@ -774,12 +774,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("++fff");
-		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat((double) return_fff).isCloseTo((double) 4.0f, within(0d));
+		assertThat(return_fff).isCloseTo((double) 4.0f, within(0d));
 
-		assertThat((double) helper.fff).isCloseTo((double) 4.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 4.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("++lll");
@@ -875,12 +875,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("fff--");
-		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat((double) return_fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(return_fff).isCloseTo((double) 3.0f, within(0d));
 
-		assertThat((double) helper.fff).isCloseTo((double) 2.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 2.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("lll--");
@@ -932,12 +932,12 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// float
 		e = parser.parseExpression("--fff");
-		assertThat((double) helper.fff).isCloseTo((double) 3.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 3.0f, within(0d));
 
 		float return_fff = e.getValue(ctx, Float.TYPE);
-		assertThat((double) return_fff).isCloseTo((double) 2.0f, within(0d));
+		assertThat(return_fff).isCloseTo((double) 2.0f, within(0d));
 
-		assertThat((double) helper.fff).isCloseTo((double) 2.0f, within(0d));
+		assertThat(helper.fff).isCloseTo((double) 2.0f, within(0d));
 
 		// long
 		e = parser.parseExpression("--lll");

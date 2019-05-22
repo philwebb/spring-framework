@@ -40,7 +40,7 @@ public class HeadersRequestConditionTests {
 	public void headerEquals() {
 		assertThat(new HeadersRequestCondition("foo")).isEqualTo(new HeadersRequestCondition("foo"));
 		assertThat(new HeadersRequestCondition("FOO")).isEqualTo(new HeadersRequestCondition("foo"));
-		assertThat((Object) new HeadersRequestCondition("bar")).isNotEqualTo(new HeadersRequestCondition("foo"));
+		assertThat(new HeadersRequestCondition("bar")).isNotEqualTo(new HeadersRequestCondition("foo"));
 		assertThat(new HeadersRequestCondition("foo=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
 		assertThat(new HeadersRequestCondition("FOO=bar")).isEqualTo(new HeadersRequestCondition("foo=bar"));
 	}

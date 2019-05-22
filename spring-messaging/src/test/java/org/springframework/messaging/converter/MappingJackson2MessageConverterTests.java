@@ -92,9 +92,9 @@ public class MappingJackson2MessageConverterTests {
 
 		assertThat(actual.getString()).isEqualTo("Foo");
 		assertEquals(42, actual.getNumber());
-		assertThat((double) actual.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(actual.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
+		assertThat(actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(actual.isBool()).isTrue();
 		assertArrayEquals(new byte[]{0x1, 0x2}, actual.getBytes());
 	}
@@ -110,7 +110,7 @@ public class MappingJackson2MessageConverterTests {
 
 		assertThat(actual.get("string")).isEqualTo("Foo");
 		assertThat(actual.get("number")).isEqualTo(42);
-		assertThat((double) (Double) actual.get("fraction")).isCloseTo(42D, within(0D));
+		assertThat((Double) actual.get("fraction")).isCloseTo(42D, within(0D));
 
 		assertThat(actual.get("array")).isEqualTo(Arrays.asList("Foo", "Bar"));
 		assertThat(actual.get("bool")).isEqualTo(Boolean.TRUE);

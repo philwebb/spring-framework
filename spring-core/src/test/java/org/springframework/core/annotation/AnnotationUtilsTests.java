@@ -477,8 +477,8 @@ public class AnnotationUtilsTests {
 		assertNotNull(attributes);
 		assertThat(attributes.annotationType()).isEqualTo(WebMapping.class);
 		assertThat(attributes.getString("name")).as("name attribute: ").isEqualTo("foo");
-		assertThat((Object[]) attributes.getStringArray(VALUE)).as("value attribute: ").isEqualTo(asArray("/test"));
-		assertThat((Object[]) attributes.getStringArray("path")).as("path attribute: ").isEqualTo(asArray("/test"));
+		assertThat(attributes.getStringArray(VALUE)).as("value attribute: ").isEqualTo(asArray("/test"));
+		assertThat(attributes.getStringArray("path")).as("path attribute: ").isEqualTo(asArray("/test"));
 
 		method = WebController.class.getMethod("handleMappedWithPathAttribute");
 		webMapping = method.getAnnotation(WebMapping.class);
@@ -486,8 +486,8 @@ public class AnnotationUtilsTests {
 		assertNotNull(attributes);
 		assertThat(attributes.annotationType()).isEqualTo(WebMapping.class);
 		assertThat(attributes.getString("name")).as("name attribute: ").isEqualTo("bar");
-		assertThat((Object[]) attributes.getStringArray(VALUE)).as("value attribute: ").isEqualTo(asArray("/test"));
-		assertThat((Object[]) attributes.getStringArray("path")).as("path attribute: ").isEqualTo(asArray("/test"));
+		assertThat(attributes.getStringArray(VALUE)).as("value attribute: ").isEqualTo(asArray("/test"));
+		assertThat(attributes.getStringArray("path")).as("path attribute: ").isEqualTo(asArray("/test"));
 	}
 
 	@Test

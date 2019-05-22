@@ -735,7 +735,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
+			assertThat(Thread.currentThread().getName()).isNotEqualTo(event.content);
 			collectEvent(event);
 			this.countDownLatch.countDown();
 		}
@@ -782,7 +782,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
+			assertThat(Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}
@@ -808,7 +808,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
+			assertThat(Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}

@@ -106,7 +106,7 @@ public class SourceHttpMessageConverterTests {
 		DOMSource result = (DOMSource) converter.read(DOMSource.class, inputMessage);
 		Document document = (Document) result.getNode();
 		assertThat(document.getDocumentElement().getLocalName()).as("Invalid result").isEqualTo("root");
-		assertThat((Object) document.getDocumentElement().getTextContent()).as("Invalid result").isNotEqualTo("Foo Bar");
+		assertThat(document.getDocumentElement().getTextContent()).as("Invalid result").isNotEqualTo("Foo Bar");
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class SourceHttpMessageConverterTests {
 			@Override
 			public void characters(char[] ch, int start, int length) {
 				String s = new String(ch, start, length);
-				assertThat((Object) s).as("Invalid result").isNotEqualTo("Foo Bar");
+				assertThat(s).as("Invalid result").isNotEqualTo("Foo Bar");
 			}
 		});
 		reader.parse(inputSource);
@@ -222,7 +222,7 @@ public class SourceHttpMessageConverterTests {
 		assertThat(s).isEqualTo("root");
 		try {
 			s = streamReader.getElementText();
-			assertThat((Object) s).isNotEqualTo("Foo Bar");
+			assertThat(s).isNotEqualTo("Foo Bar");
 		}
 		catch (XMLStreamException ex) {
 			// Some parsers raise a parse exception

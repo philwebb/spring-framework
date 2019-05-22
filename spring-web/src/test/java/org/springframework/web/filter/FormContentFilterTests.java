@@ -151,7 +151,7 @@ public class FormContentFilterTests {
 		String[] values = this.filterChain.getRequest().getParameterValues("name");
 
 		assertNotSame("Request not wrapped", this.request, filterChain.getRequest());
-		assertThat((Object[]) values).isEqualTo(new String[] {"value1", "value2", "value3", "value4"});
+		assertThat(values).isEqualTo(new String[] {"value1", "value2", "value3", "value4"});
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class FormContentFilterTests {
 		String[] values = this.filterChain.getRequest().getParameterValues("name");
 
 		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
-		assertThat((Object[]) values).isEqualTo(new String[] {"value1", "value2"});
+		assertThat(values).isEqualTo(new String[] {"value1", "value2"});
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class FormContentFilterTests {
 		String[] values = this.filterChain.getRequest().getParameterValues("anotherName");
 
 		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
-		assertThat((Object[]) values).isEqualTo(new String[] {"anotherValue"});
+		assertThat(values).isEqualTo(new String[] {"anotherValue"});
 	}
 
 	@Test
@@ -206,8 +206,8 @@ public class FormContentFilterTests {
 
 		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
 		assertEquals(2, parameters.size());
-		assertThat((Object[]) parameters.get("name")).isEqualTo(new String[] {"value1", "value2", "value3"});
-		assertThat((Object[]) parameters.get("name4")).isEqualTo(new String[] {"value4"});
+		assertThat(parameters.get("name")).isEqualTo(new String[] {"value1", "value2", "value3"});
+		assertThat(parameters.get("name4")).isEqualTo(new String[] {"value4"});
 	}
 
 	@Test  // SPR-15835
@@ -216,7 +216,7 @@ public class FormContentFilterTests {
 		this.request.addParameter("hiddenField", "testHidden");
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 
-		assertThat((Object[]) this.filterChain.getRequest().getParameterValues("hiddenField")).isEqualTo(new String[] {"testHidden"});
+		assertThat(this.filterChain.getRequest().getParameterValues("hiddenField")).isEqualTo(new String[] {"testHidden"});
 	}
 
 }

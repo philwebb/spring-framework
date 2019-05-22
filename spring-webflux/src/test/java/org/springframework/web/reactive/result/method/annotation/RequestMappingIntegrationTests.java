@@ -90,7 +90,7 @@ public class RequestMappingIntegrationTests extends AbstractRequestMappingIntegr
 	@Test
 	public void stream() throws Exception {
 		String[] expected = {"0", "1", "2", "3", "4"};
-		assertThat((Object[]) performGet("/stream", new HttpHeaders(), String[].class).getBody()).isEqualTo(expected);
+		assertThat(performGet("/stream", new HttpHeaders(), String[].class).getBody()).isEqualTo(expected);
 	}
 
 

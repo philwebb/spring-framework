@@ -206,7 +206,7 @@ public class WebExchangeDataBinderTests {
 
 		assertThat(bean.getName()).isEqualTo("bar");
 		assertThat(bean.getSomeList()).isEqualTo(Arrays.asList("123", "abc"));
-		assertThat((Object[]) bean.getSomeArray()).isEqualTo(new String[] {"dec", "456"});
+		assertThat(bean.getSomeArray()).isEqualTo(new String[] {"dec", "456"});
 		assertThat(bean.getPart().filename()).isEqualTo("foo.txt");
 		assertEquals(2, bean.getSomePartList().size());
 		assertThat(bean.getSomePartList().get(0).filename()).isEqualTo("foo.txt");

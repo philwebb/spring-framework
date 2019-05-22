@@ -136,7 +136,7 @@ public class GenericXmlContextLoaderResourceLocationsTests {
 			logger.debug("Processed  locations: " + ObjectUtils.nullSafeToString(processedLocations));
 		}
 
-		assertThat((Object[]) processedLocations).as("Verifying locations for test [" + this.testClass + "].").isEqualTo(this.expectedLocations);
+		assertThat(processedLocations).as("Verifying locations for test [" + this.testClass + "].").isEqualTo(this.expectedLocations);
 	}
 
 }

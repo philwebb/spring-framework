@@ -80,7 +80,7 @@ public class RequestMappingHandlerMappingTests {
 		String[] patterns = new String[] { "/foo", "/${pattern}/bar" };
 		String[] result = this.handlerMapping.resolveEmbeddedValuesInPatterns(patterns);
 
-		assertThat((Object[]) result).isEqualTo(new String[] { "/foo", "/foo/bar" });
+		assertThat(result).isEqualTo(new String[] { "/foo", "/foo/bar" });
 	}
 
 	@Test

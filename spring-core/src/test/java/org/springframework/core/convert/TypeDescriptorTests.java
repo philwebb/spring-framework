@@ -629,11 +629,11 @@ public class TypeDescriptorTests {
 
 		TypeDescriptor t15 = new TypeDescriptor(testAnnotatedMethod);
 		TypeDescriptor t16 = new TypeDescriptor(new MethodParameter(getClass().getMethod("testAnnotatedMethodDifferentAnnotationValue", String.class), 0));
-		assertThat((Object) t16).isNotEqualTo(t15);
+		assertThat(t16).isNotEqualTo(t15);
 
 		TypeDescriptor t17 = new TypeDescriptor(testAnnotatedMethod);
 		TypeDescriptor t18 = new TypeDescriptor(new MethodParameter(getClass().getMethod("test5", String.class), 0));
-		assertThat((Object) t18).isNotEqualTo(t17);
+		assertThat(t18).isNotEqualTo(t17);
 	}
 
 	@Test

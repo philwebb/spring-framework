@@ -170,7 +170,7 @@ public class ServletRequestUtilsTests {
 		float[] values = ServletRequestUtils.getRequiredFloatParameters(request, "param");
 		assertEquals(3, values.length);
 		for (int i = 0; i < array.length; i++) {
-			assertThat((double) values[i]).isCloseTo((double) array[i], within((double) 0));
+			assertThat(values[i]).isCloseTo((double) array[i], within((double) 0));
 
 		}
 

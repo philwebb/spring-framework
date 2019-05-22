@@ -93,9 +93,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 	}
@@ -115,7 +115,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		HashMap<String, Object> result = (HashMap<String, Object>) converter.read(HashMap.class, inputMessage);
 		assertThat(result.get("string")).isEqualTo("Foo");
 		assertThat(result.get("number")).isEqualTo(42);
-		assertThat((double) (Double) result.get("fraction")).isCloseTo(42D, within(0D));
+		assertThat((Double) result.get("fraction")).isCloseTo(42D, within(0D));
 
 		List<String> array = new ArrayList<>();
 		array.add("Foo");
@@ -224,9 +224,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
@@ -256,9 +256,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
@@ -289,9 +289,9 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
 		assertEquals(42, result.getNumber());
-		assertThat((double) result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
+		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
-		assertThat((Object[]) result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 

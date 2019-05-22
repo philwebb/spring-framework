@@ -277,8 +277,8 @@ public class TransactionSupportTests {
 		TransactionTemplate template2 = new TransactionTemplate(tm2);
 		TransactionTemplate template3 = new TransactionTemplate(tm2);
 
-		assertThat((Object) template2).isNotEqualTo(template1);
-		assertThat((Object) template3).isNotEqualTo(template1);
+		assertThat(template2).isNotEqualTo(template1);
+		assertThat(template3).isNotEqualTo(template1);
 		assertThat(template3).isEqualTo(template2);
 	}
 
