@@ -36,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -92,7 +91,7 @@ public class MultiServerUserRegistryTests {
 		assertEquals(1, this.registry.getUserCount());
 		SimpUser user = this.registry.getUser("joe");
 		assertNotNull(user);
-		assertTrue(user.hasSessions());
+		assertThat(user.hasSessions()).isTrue();
 		assertEquals(1, user.getSessions().size());
 		SimpSession session = user.getSession("remote-sess");
 		assertNotNull(session);
@@ -161,7 +160,7 @@ public class MultiServerUserRegistryTests {
 
 		assertEquals(1, this.registry.getUserCount());
 		SimpUser user = this.registry.getUsers().iterator().next();
-		assertTrue(user.hasSessions());
+		assertThat(user.hasSessions()).isTrue();
 		assertEquals(2, user.getSessions().size());
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertSame(localSession, user.getSession("sess123"));

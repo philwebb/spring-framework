@@ -54,7 +54,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.annotation.AnnotationUtils.VALUE;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotationDeclaringClass;
@@ -161,7 +160,7 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findMethodAnnotationOnBridgeMethod() throws Exception {
 		Method bridgeMethod = SimpleFoo.class.getMethod("something", Object.class);
-		assertTrue(bridgeMethod.isBridge());
+		assertThat(bridgeMethod.isBridge()).isTrue();
 
 		assertNull(bridgeMethod.getAnnotation(Order.class));
 		assertNull(getAnnotation(bridgeMethod, Order.class));
@@ -247,7 +246,7 @@ public class AnnotationUtilsTests {
 	public void findClassAnnotationFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedAnnotations() {
 		Transactional transactional = findAnnotation(SubSubClassWithInheritedAnnotation.class, Transactional.class);
 		assertNotNull(transactional);
-		assertTrue("readOnly flag for SubSubClassWithInheritedAnnotation", transactional.readOnly());
+		assertThat(transactional.readOnly()).as("readOnly flag for SubSubClassWithInheritedAnnotation").isTrue();
 	}
 
 	// @since 4.0.3
@@ -424,15 +423,15 @@ public class AnnotationUtilsTests {
 		assertFalse(isAnnotationDeclaredLocally(Transactional.class, NonAnnotatedClass.class));
 
 		// inherited class-level annotation; note: @Transactional is inherited
-		assertTrue(isAnnotationDeclaredLocally(Transactional.class, InheritedAnnotationInterface.class));
+		assertThat(isAnnotationDeclaredLocally(Transactional.class, InheritedAnnotationInterface.class)).isTrue();
 		assertFalse(isAnnotationDeclaredLocally(Transactional.class, SubInheritedAnnotationInterface.class));
-		assertTrue(isAnnotationDeclaredLocally(Transactional.class, InheritedAnnotationClass.class));
+		assertThat(isAnnotationDeclaredLocally(Transactional.class, InheritedAnnotationClass.class)).isTrue();
 		assertFalse(isAnnotationDeclaredLocally(Transactional.class, SubInheritedAnnotationClass.class));
 
 		// non-inherited class-level annotation; note: @Order is not inherited
-		assertTrue(isAnnotationDeclaredLocally(Order.class, NonInheritedAnnotationInterface.class));
+		assertThat(isAnnotationDeclaredLocally(Order.class, NonInheritedAnnotationInterface.class)).isTrue();
 		assertFalse(isAnnotationDeclaredLocally(Order.class, SubNonInheritedAnnotationInterface.class));
-		assertTrue(isAnnotationDeclaredLocally(Order.class, NonInheritedAnnotationClass.class));
+		assertThat(isAnnotationDeclaredLocally(Order.class, NonInheritedAnnotationClass.class)).isTrue();
 		assertFalse(isAnnotationDeclaredLocally(Order.class, SubNonInheritedAnnotationClass.class));
 	}
 
@@ -448,7 +447,7 @@ public class AnnotationUtilsTests {
 		// Thus the following, though perhaps counter intuitive, must be false:
 		assertFalse(isAnnotationInherited(Transactional.class, SubInheritedAnnotationInterface.class));
 		assertFalse(isAnnotationInherited(Transactional.class, InheritedAnnotationClass.class));
-		assertTrue(isAnnotationInherited(Transactional.class, SubInheritedAnnotationClass.class));
+		assertThat(isAnnotationInherited(Transactional.class, SubInheritedAnnotationClass.class)).isTrue();
 
 		// non-inherited class-level annotation; note: @Order is not inherited
 		assertFalse(isAnnotationInherited(Order.class, NonInheritedAnnotationInterface.class));
@@ -459,10 +458,10 @@ public class AnnotationUtilsTests {
 
 	@Test
 	public void isAnnotationMetaPresentForPlainType() {
-		assertTrue(isAnnotationMetaPresent(Order.class, Documented.class));
-		assertTrue(isAnnotationMetaPresent(NonNullApi.class, Documented.class));
-		assertTrue(isAnnotationMetaPresent(NonNullApi.class, Nonnull.class));
-		assertTrue(isAnnotationMetaPresent(ParametersAreNonnullByDefault.class, Nonnull.class));
+		assertThat(isAnnotationMetaPresent(Order.class, Documented.class)).isTrue();
+		assertThat(isAnnotationMetaPresent(NonNullApi.class, Documented.class)).isTrue();
+		assertThat(isAnnotationMetaPresent(NonNullApi.class, Nonnull.class)).isTrue();
+		assertThat(isAnnotationMetaPresent(ParametersAreNonnullByDefault.class, Nonnull.class)).isTrue();
 	}
 
 	@Test
@@ -879,7 +878,7 @@ public class AnnotationUtilsTests {
 		AnnotationWithDefaults annotationWithDefaults = synthesizeAnnotation(AnnotationWithDefaults.class);
 		assertNotNull(annotationWithDefaults);
 		assertEquals("text: ", "enigma", annotationWithDefaults.text());
-		assertTrue("predicate: ", annotationWithDefaults.predicate());
+		assertThat(annotationWithDefaults.predicate()).as("predicate: ").isTrue();
 		assertArrayEquals("characters: ", new char[] { 'a', 'b', 'c' }, annotationWithDefaults.characters());
 	}
 
@@ -945,7 +944,7 @@ public class AnnotationUtilsTests {
 	@Test
 	public void synthesizeAnnotationFromMapWithNullAttributeValue() throws Exception {
 		Map<String, Object> map = Collections.singletonMap("text", null);
-		assertTrue(map.containsKey("text"));
+		assertThat(map.containsKey("text")).isTrue();
 		assertMissingTextAttribute(map);
 	}
 

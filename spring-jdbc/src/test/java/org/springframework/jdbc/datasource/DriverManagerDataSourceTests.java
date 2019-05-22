@@ -21,9 +21,9 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -56,11 +56,11 @@ public class DriverManagerDataSourceTests {
 		ds.setPassword(pwd);
 
 		Connection actualCon = ds.getConnection();
-		assertTrue(actualCon == connection);
+		assertThat(actualCon == connection).isTrue();
 
-		assertTrue(ds.getUrl().equals(jdbcUrl));
-		assertTrue(ds.getPassword().equals(pwd));
-		assertTrue(ds.getUsername().equals(uname));
+		assertThat(ds.getUrl().equals(jdbcUrl)).isTrue();
+		assertThat(ds.getPassword().equals(pwd)).isTrue();
+		assertThat(ds.getUsername().equals(uname)).isTrue();
 	}
 
 	@Test
@@ -91,9 +91,9 @@ public class DriverManagerDataSourceTests {
 		ds.setConnectionProperties(connProps);
 
 		Connection actualCon = ds.getConnection();
-		assertTrue(actualCon == connection);
+		assertThat(actualCon == connection).isTrue();
 
-		assertTrue(ds.getUrl().equals(jdbcUrl));
+		assertThat(ds.getUrl().equals(jdbcUrl)).isTrue();
 	}
 
 	@Test
@@ -128,11 +128,11 @@ public class DriverManagerDataSourceTests {
 		ds.setConnectionProperties(connProps);
 
 		Connection actualCon = ds.getConnection();
-		assertTrue(actualCon == connection);
+		assertThat(actualCon == connection).isTrue();
 
-		assertTrue(ds.getUrl().equals(jdbcUrl));
-		assertTrue(ds.getPassword().equals(pwd));
-		assertTrue(ds.getUsername().equals(uname));
+		assertThat(ds.getUrl().equals(jdbcUrl)).isTrue();
+		assertThat(ds.getPassword().equals(pwd)).isTrue();
+		assertThat(ds.getUsername().equals(uname)).isTrue();
 	}
 
 	@Test

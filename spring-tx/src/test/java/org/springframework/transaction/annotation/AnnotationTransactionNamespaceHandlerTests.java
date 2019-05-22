@@ -35,9 +35,9 @@ import org.springframework.tests.transaction.CallCountingTransactionManager;
 import org.springframework.transaction.config.TransactionManagementConfigUtils;
 import org.springframework.transaction.event.TransactionalEventListenerFactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -57,9 +57,9 @@ public class AnnotationTransactionNamespaceHandlerTests {
 	@Test
 	public void isProxy() throws Exception {
 		TransactionalTestBean bean = getTestBean();
-		assertTrue("testBean is not a proxy", AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).as("testBean is not a proxy").isTrue();
 		Map<String, Object> services = this.context.getBeansWithAnnotation(Service.class);
-		assertTrue("Stereotype annotation not visible", services.containsKey("testBean"));
+		assertThat(services.containsKey("testBean")).as("Stereotype annotation not visible").isTrue();
 	}
 
 	@Test
@@ -105,8 +105,8 @@ public class AnnotationTransactionNamespaceHandlerTests {
 
 	@Test
 	public void transactionalEventListenerRegisteredProperly() {
-		assertTrue(this.context.containsBean(TransactionManagementConfigUtils
-				.TRANSACTIONAL_EVENT_LISTENER_FACTORY_BEAN_NAME));
+		assertThat(this.context.containsBean(TransactionManagementConfigUtils
+				.TRANSACTIONAL_EVENT_LISTENER_FACTORY_BEAN_NAME)).isTrue();
 		assertEquals(1, this.context.getBeansOfType(TransactionalEventListenerFactory.class).size());
 	}
 

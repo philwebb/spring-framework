@@ -49,10 +49,10 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.Assert;
 import org.springframework.util.SocketUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@link StompBrokerRelayMessageHandler} running against ActiveMQ.
@@ -140,7 +140,7 @@ public class StompBrokerRelayMessageHandlerIntegrationTests {
 			}
 		});
 		this.activeMQBroker.stop();
-		assertTrue("Broker did not stop", latch.await(5, TimeUnit.SECONDS));
+		assertThat(latch.await(5, TimeUnit.SECONDS)).as("Broker did not stop").isTrue();
 		logger.debug("Broker stopped");
 	}
 

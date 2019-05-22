@@ -33,8 +33,8 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.beans.CollectingReaderEventListener;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -60,21 +60,25 @@ public class EventPublicationTests {
 	@Test
 	public void defaultsEventReceived() throws Exception {
 		List defaultsList = this.eventListener.getDefaults();
-		assertTrue(!defaultsList.isEmpty());
-		assertTrue(defaultsList.get(0) instanceof DocumentDefaultsDefinition);
+		boolean condition2 = !defaultsList.isEmpty();
+		assertThat(condition2).isTrue();
+		boolean condition1 = defaultsList.get(0) instanceof DocumentDefaultsDefinition;
+		assertThat(condition1).isTrue();
 		DocumentDefaultsDefinition defaults = (DocumentDefaultsDefinition) defaultsList.get(0);
 		assertEquals("true", defaults.getLazyInit());
 		assertEquals("constructor", defaults.getAutowire());
 		assertEquals("myInit", defaults.getInitMethod());
 		assertEquals("myDestroy", defaults.getDestroyMethod());
 		assertEquals("true", defaults.getMerge());
-		assertTrue(defaults.getSource() instanceof Element);
+		boolean condition = defaults.getSource() instanceof Element;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
 	public void beanEventReceived() throws Exception {
 		ComponentDefinition componentDefinition1 = this.eventListener.getComponentDefinition("testBean");
-		assertTrue(componentDefinition1 instanceof BeanComponentDefinition);
+		boolean condition3 = componentDefinition1 instanceof BeanComponentDefinition;
+		assertThat(condition3).isTrue();
 		assertEquals(1, componentDefinition1.getBeanDefinitions().length);
 		BeanDefinition beanDefinition1 = componentDefinition1.getBeanDefinitions()[0];
 		assertEquals(new TypedStringValue("Rob Harrop"),
@@ -85,10 +89,12 @@ public class EventPublicationTests {
 		BeanDefinition innerBd1 = componentDefinition1.getInnerBeanDefinitions()[0];
 		assertEquals(new TypedStringValue("ACME"),
 				innerBd1.getConstructorArgumentValues().getGenericArgumentValue(String.class).getValue());
-		assertTrue(componentDefinition1.getSource() instanceof Element);
+		boolean condition2 = componentDefinition1.getSource() instanceof Element;
+		assertThat(condition2).isTrue();
 
 		ComponentDefinition componentDefinition2 = this.eventListener.getComponentDefinition("testBean2");
-		assertTrue(componentDefinition2 instanceof BeanComponentDefinition);
+		boolean condition1 = componentDefinition2 instanceof BeanComponentDefinition;
+		assertThat(condition1).isTrue();
 		assertEquals(1, componentDefinition1.getBeanDefinitions().length);
 		BeanDefinition beanDefinition2 = componentDefinition2.getBeanDefinitions()[0];
 		assertEquals(new TypedStringValue("Juergen Hoeller"),
@@ -98,7 +104,8 @@ public class EventPublicationTests {
 		BeanDefinition innerBd2 = componentDefinition2.getInnerBeanDefinitions()[0];
 		assertEquals(new TypedStringValue("Eva Schallmeiner"),
 				innerBd2.getPropertyValues().getPropertyValue("name").getValue());
-		assertTrue(componentDefinition2.getSource() instanceof Element);
+		boolean condition = componentDefinition2.getSource() instanceof Element;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -107,10 +114,12 @@ public class EventPublicationTests {
 		assertEquals(2, aliases.size());
 		AliasDefinition aliasDefinition1 = (AliasDefinition) aliases.get(0);
 		assertEquals("testBeanAlias1", aliasDefinition1.getAlias());
-		assertTrue(aliasDefinition1.getSource() instanceof Element);
+		boolean condition1 = aliasDefinition1.getSource() instanceof Element;
+		assertThat(condition1).isTrue();
 		AliasDefinition aliasDefinition2 = (AliasDefinition) aliases.get(1);
 		assertEquals("testBeanAlias2", aliasDefinition2.getAlias());
-		assertTrue(aliasDefinition2.getSource() instanceof Element);
+		boolean condition = aliasDefinition2.getSource() instanceof Element;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -119,7 +128,8 @@ public class EventPublicationTests {
 		assertEquals(1, imports.size());
 		ImportDefinition importDefinition = (ImportDefinition) imports.get(0);
 		assertEquals("beanEventsImported.xml", importDefinition.getImportedResource());
-		assertTrue(importDefinition.getSource() instanceof Element);
+		boolean condition = importDefinition.getSource() instanceof Element;
+		assertThat(condition).isTrue();
 	}
 
 }

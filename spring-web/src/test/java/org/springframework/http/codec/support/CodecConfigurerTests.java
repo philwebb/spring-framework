@@ -53,9 +53,9 @@ import org.springframework.http.codec.xml.Jaxb2XmlDecoder;
 import org.springframework.http.codec.xml.Jaxb2XmlEncoder;
 import org.springframework.util.MimeTypeUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -284,13 +284,13 @@ public class CodecConfigurerTests {
 
 	private void assertStringDecoder(Decoder<?> decoder, boolean textOnly) {
 		assertEquals(StringDecoder.class, decoder.getClass());
-		assertTrue(decoder.canDecode(ResolvableType.forClass(String.class), MimeTypeUtils.TEXT_PLAIN));
+		assertThat(decoder.canDecode(ResolvableType.forClass(String.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
 		assertEquals(!textOnly, decoder.canDecode(ResolvableType.forClass(String.class), MediaType.TEXT_EVENT_STREAM));
 	}
 
 	private void assertStringEncoder(Encoder<?> encoder, boolean textOnly) {
 		assertEquals(CharSequenceEncoder.class, encoder.getClass());
-		assertTrue(encoder.canEncode(ResolvableType.forClass(String.class), MimeTypeUtils.TEXT_PLAIN));
+		assertThat(encoder.canEncode(ResolvableType.forClass(String.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
 		assertEquals(!textOnly, encoder.canEncode(ResolvableType.forClass(String.class), MediaType.TEXT_EVENT_STREAM));
 	}
 

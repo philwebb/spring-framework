@@ -23,8 +23,8 @@ import org.springframework.aop.framework.Advised;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test for ensuring the aspects aren't advised. See SPR-3893 for more details.
@@ -42,7 +42,8 @@ public class AspectImplementingInterfaceTests {
 		ITestBean testBean = (ITestBean) ctx.getBean("testBean");
 		AnInterface interfaceExtendingAspect = (AnInterface) ctx.getBean("interfaceExtendingAspect");
 
-		assertTrue(testBean instanceof Advised);
+		boolean condition = testBean instanceof Advised;
+		assertThat(condition).isTrue();
 		assertFalse(interfaceExtendingAspect instanceof Advised);
 	}
 

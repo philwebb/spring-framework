@@ -22,8 +22,8 @@ import java.util.Date;
 import com.google.gson.Gson;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * {@link GsonFactoryBean} tests.
@@ -65,7 +65,7 @@ public class GsonFactoryBeanTests {
 		StringBean bean = new StringBean();
 		bean.setName("Jason");
 		String result = gson.toJson(bean);
-		assertTrue(result.contains("  \"name\": \"Jason\""));
+		assertThat(result.contains("  \"name\": \"Jason\"")).isTrue();
 	}
 
 	@Test
@@ -131,8 +131,8 @@ public class GsonFactoryBeanTests {
 		Date date = cal.getTime();
 		bean.setDate(date);
 		String result = gson.toJson(bean);
-		assertTrue(result.startsWith("{\"date\":\"Jan 1, 2014"));
-		assertTrue(result.endsWith("12:00:00 AM\"}"));
+		assertThat(result.startsWith("{\"date\":\"Jan 1, 2014")).isTrue();
+		assertThat(result.endsWith("12:00:00 AM\"}")).isTrue();
 	}
 
 	@Test

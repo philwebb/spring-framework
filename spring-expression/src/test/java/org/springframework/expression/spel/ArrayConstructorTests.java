@@ -21,9 +21,9 @@ import org.junit.Test;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test construction of arrays.
@@ -122,7 +122,7 @@ public class ArrayConstructorTests extends AbstractExpressionTests {
 		Expression e = parser.parseExpression(expression);
 		Object o = e.getValue();
 		assertNotNull(o);
-		assertTrue(o.getClass().isArray());
+		assertThat(o.getClass().isArray()).isTrue();
 		StringBuilder s = new StringBuilder();
 		s.append('[');
 		if (o instanceof int[]) {

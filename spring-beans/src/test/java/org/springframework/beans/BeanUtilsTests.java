@@ -33,12 +33,10 @@ import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link BeanUtils}.
@@ -102,7 +100,7 @@ public class BeanUtilsTests {
 		PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(ContainerBean.class);
 		for (PropertyDescriptor descriptor : descriptors) {
 			if ("containedBeans".equals(descriptor.getName())) {
-				assertTrue("Property should be an array", descriptor.getPropertyType().isArray());
+				assertThat(descriptor.getPropertyType().isArray()).as("Property should be an array").isTrue();
 				assertEquals(descriptor.getPropertyType().getComponentType(), ContainedBean.class);
 			}
 		}
@@ -120,13 +118,13 @@ public class BeanUtilsTests {
 		tb.setAge(32);
 		tb.setTouchy("touchy");
 		TestBean tb2 = new TestBean();
-		assertTrue("Name empty", tb2.getName() == null);
-		assertTrue("Age empty", tb2.getAge() == 0);
-		assertTrue("Touchy empty", tb2.getTouchy() == null);
+		assertThat(tb2.getName() == null).as("Name empty").isTrue();
+		assertThat(tb2.getAge() == 0).as("Age empty").isTrue();
+		assertThat(tb2.getTouchy() == null).as("Touchy empty").isTrue();
 		BeanUtils.copyProperties(tb, tb2);
-		assertTrue("Name copied", tb2.getName().equals(tb.getName()));
-		assertTrue("Age copied", tb2.getAge() == tb.getAge());
-		assertTrue("Touchy copied", tb2.getTouchy().equals(tb.getTouchy()));
+		assertThat(tb2.getName().equals(tb.getName())).as("Name copied").isTrue();
+		assertThat(tb2.getAge() == tb.getAge()).as("Age copied").isTrue();
+		assertThat(tb2.getTouchy().equals(tb.getTouchy())).as("Touchy copied").isTrue();
 	}
 
 	@Test
@@ -136,13 +134,13 @@ public class BeanUtilsTests {
 		tb.setAge(32);
 		tb.setTouchy("touchy");
 		TestBean tb2 = new TestBean();
-		assertTrue("Name empty", tb2.getName() == null);
-		assertTrue("Age empty", tb2.getAge() == 0);
-		assertTrue("Touchy empty", tb2.getTouchy() == null);
+		assertThat(tb2.getName() == null).as("Name empty").isTrue();
+		assertThat(tb2.getAge() == 0).as("Age empty").isTrue();
+		assertThat(tb2.getTouchy() == null).as("Touchy empty").isTrue();
 		BeanUtils.copyProperties(tb, tb2);
-		assertTrue("Name copied", tb2.getName().equals(tb.getName()));
-		assertTrue("Age copied", tb2.getAge() == tb.getAge());
-		assertTrue("Touchy copied", tb2.getTouchy().equals(tb.getTouchy()));
+		assertThat(tb2.getName().equals(tb.getName())).as("Name copied").isTrue();
+		assertThat(tb2.getAge() == tb.getAge()).as("Age copied").isTrue();
+		assertThat(tb2.getTouchy().equals(tb.getTouchy())).as("Touchy copied").isTrue();
 	}
 
 	@Test
@@ -152,49 +150,49 @@ public class BeanUtilsTests {
 		tb.setAge(32);
 		tb.setTouchy("touchy");
 		DerivedTestBean tb2 = new DerivedTestBean();
-		assertTrue("Name empty", tb2.getName() == null);
-		assertTrue("Age empty", tb2.getAge() == 0);
-		assertTrue("Touchy empty", tb2.getTouchy() == null);
+		assertThat(tb2.getName() == null).as("Name empty").isTrue();
+		assertThat(tb2.getAge() == 0).as("Age empty").isTrue();
+		assertThat(tb2.getTouchy() == null).as("Touchy empty").isTrue();
 		BeanUtils.copyProperties(tb, tb2);
-		assertTrue("Name copied", tb2.getName().equals(tb.getName()));
-		assertTrue("Age copied", tb2.getAge() == tb.getAge());
-		assertTrue("Touchy copied", tb2.getTouchy().equals(tb.getTouchy()));
+		assertThat(tb2.getName().equals(tb.getName())).as("Name copied").isTrue();
+		assertThat(tb2.getAge() == tb.getAge()).as("Age copied").isTrue();
+		assertThat(tb2.getTouchy().equals(tb.getTouchy())).as("Touchy copied").isTrue();
 	}
 
 	@Test
 	public void testCopyPropertiesWithEditable() throws Exception {
 		TestBean tb = new TestBean();
-		assertTrue("Name empty", tb.getName() == null);
+		assertThat(tb.getName() == null).as("Name empty").isTrue();
 		tb.setAge(32);
 		tb.setTouchy("bla");
 		TestBean tb2 = new TestBean();
 		tb2.setName("rod");
-		assertTrue("Age empty", tb2.getAge() == 0);
-		assertTrue("Touchy empty", tb2.getTouchy() == null);
+		assertThat(tb2.getAge() == 0).as("Age empty").isTrue();
+		assertThat(tb2.getTouchy() == null).as("Touchy empty").isTrue();
 
 		// "touchy" should not be copied: it's not defined in ITestBean
 		BeanUtils.copyProperties(tb, tb2, ITestBean.class);
-		assertTrue("Name copied", tb2.getName() == null);
-		assertTrue("Age copied", tb2.getAge() == 32);
-		assertTrue("Touchy still empty", tb2.getTouchy() == null);
+		assertThat(tb2.getName() == null).as("Name copied").isTrue();
+		assertThat(tb2.getAge() == 32).as("Age copied").isTrue();
+		assertThat(tb2.getTouchy() == null).as("Touchy still empty").isTrue();
 	}
 
 	@Test
 	public void testCopyPropertiesWithIgnore() throws Exception {
 		TestBean tb = new TestBean();
-		assertTrue("Name empty", tb.getName() == null);
+		assertThat(tb.getName() == null).as("Name empty").isTrue();
 		tb.setAge(32);
 		tb.setTouchy("bla");
 		TestBean tb2 = new TestBean();
 		tb2.setName("rod");
-		assertTrue("Age empty", tb2.getAge() == 0);
-		assertTrue("Touchy empty", tb2.getTouchy() == null);
+		assertThat(tb2.getAge() == 0).as("Age empty").isTrue();
+		assertThat(tb2.getTouchy() == null).as("Touchy empty").isTrue();
 
 		// "spouse", "touchy", "age" should not be copied
 		BeanUtils.copyProperties(tb, tb2, "spouse", "touchy", "age");
-		assertTrue("Name copied", tb2.getName() == null);
-		assertTrue("Age still empty", tb2.getAge() == 0);
-		assertTrue("Touchy still empty", tb2.getTouchy() == null);
+		assertThat(tb2.getName() == null).as("Name copied").isTrue();
+		assertThat(tb2.getAge() == 0).as("Age still empty").isTrue();
+		assertThat(tb2.getTouchy() == null).as("Touchy still empty").isTrue();
 	}
 
 	@Test
@@ -215,8 +213,8 @@ public class BeanUtilsTests {
 		InvalidProperty target = new InvalidProperty();
 		BeanUtils.copyProperties(source, target);
 		assertEquals("name", target.getName());
-		assertTrue(target.getFlag1());
-		assertTrue(target.getFlag2());
+		assertThat((boolean) target.getFlag1()).isTrue();
+		assertThat(target.getFlag2()).isTrue();
 	}
 
 	@Test

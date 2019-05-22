@@ -19,8 +19,8 @@ package org.springframework.util;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -66,7 +66,7 @@ public class InstanceFilterTests {
 	}
 
 	private <T> void match(InstanceFilter<T> filter, T candidate) {
-		assertTrue("filter '" + filter + "' should match " + candidate, filter.match(candidate));
+		assertThat(filter.match(candidate)).as("filter '" + filter + "' should match " + candidate).isTrue();
 	}
 
 	private <T> void doNotMatch(InstanceFilter<T> filter, T candidate) {

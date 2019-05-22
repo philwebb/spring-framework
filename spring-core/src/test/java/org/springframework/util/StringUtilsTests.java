@@ -22,6 +22,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
@@ -29,7 +30,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -61,11 +61,11 @@ public class StringUtilsTests {
 		assertFalse(StringUtils.containsWhitespace(""));
 		assertFalse(StringUtils.containsWhitespace("a"));
 		assertFalse(StringUtils.containsWhitespace("abc"));
-		assertTrue(StringUtils.containsWhitespace(" "));
-		assertTrue(StringUtils.containsWhitespace(" a"));
-		assertTrue(StringUtils.containsWhitespace("abc "));
-		assertTrue(StringUtils.containsWhitespace("a b"));
-		assertTrue(StringUtils.containsWhitespace("a  b"));
+		assertThat(StringUtils.containsWhitespace(" ")).isTrue();
+		assertThat(StringUtils.containsWhitespace(" a")).isTrue();
+		assertThat(StringUtils.containsWhitespace("abc ")).isTrue();
+		assertThat(StringUtils.containsWhitespace("a b")).isTrue();
+		assertThat(StringUtils.containsWhitespace("a  b")).isTrue();
 	}
 
 	@Test
@@ -148,15 +148,15 @@ public class StringUtilsTests {
 	@Test
 	public void testStartsWithIgnoreCase() {
 		String prefix = "fOo";
-		assertTrue(StringUtils.startsWithIgnoreCase("foo", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("Foo", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("foobar", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("foobarbar", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("Foobar", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("FoobarBar", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("foObar", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("FOObar", prefix));
-		assertTrue(StringUtils.startsWithIgnoreCase("fOobar", prefix));
+		assertThat(StringUtils.startsWithIgnoreCase("foo", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("Foo", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("foobar", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("foobarbar", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("Foobar", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("FoobarBar", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("foObar", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("FOObar", prefix)).isTrue();
+		assertThat(StringUtils.startsWithIgnoreCase("fOobar", prefix)).isTrue();
 		assertFalse(StringUtils.startsWithIgnoreCase(null, prefix));
 		assertFalse(StringUtils.startsWithIgnoreCase("fOobar", null));
 		assertFalse(StringUtils.startsWithIgnoreCase("b", prefix));
@@ -167,15 +167,15 @@ public class StringUtilsTests {
 	@Test
 	public void testEndsWithIgnoreCase() {
 		String suffix = "fOo";
-		assertTrue(StringUtils.endsWithIgnoreCase("foo", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("Foo", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("barfoo", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("barbarfoo", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("barFoo", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("barBarFoo", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("barfoO", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("barFOO", suffix));
-		assertTrue(StringUtils.endsWithIgnoreCase("barfOo", suffix));
+		assertThat(StringUtils.endsWithIgnoreCase("foo", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("Foo", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("barfoo", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("barbarfoo", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("barFoo", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("barBarFoo", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("barfoO", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("barFOO", suffix)).isTrue();
+		assertThat(StringUtils.endsWithIgnoreCase("barfOo", suffix)).isTrue();
 		assertFalse(StringUtils.endsWithIgnoreCase(null, suffix));
 		assertFalse(StringUtils.endsWithIgnoreCase("barfOo", null));
 		assertFalse(StringUtils.endsWithIgnoreCase("b", suffix));
@@ -185,9 +185,9 @@ public class StringUtilsTests {
 
 	@Test
 	public void testSubstringMatch() {
-		assertTrue(StringUtils.substringMatch("foo", 0, "foo"));
-		assertTrue(StringUtils.substringMatch("foo", 1, "oo"));
-		assertTrue(StringUtils.substringMatch("foo", 2, "o"));
+		assertThat(StringUtils.substringMatch("foo", 0, "foo")).isTrue();
+		assertThat(StringUtils.substringMatch("foo", 1, "oo")).isTrue();
+		assertThat(StringUtils.substringMatch("foo", 2, "o")).isTrue();
 		assertFalse(StringUtils.substringMatch("foo", 0, "fOo"));
 		assertFalse(StringUtils.substringMatch("foo", 1, "fOo"));
 		assertFalse(StringUtils.substringMatch("foo", 2, "fOo"));
@@ -201,29 +201,19 @@ public class StringUtilsTests {
 
 	@Test
 	public void testCountOccurrencesOf() {
-		assertTrue("nullx2 = 0",
-				StringUtils.countOccurrencesOf(null, null) == 0);
-		assertTrue("null string = 0",
-				StringUtils.countOccurrencesOf("s", null) == 0);
-		assertTrue("null substring = 0",
-				StringUtils.countOccurrencesOf(null, "s") == 0);
+		assertThat(StringUtils.countOccurrencesOf(null, null) == 0).as("nullx2 = 0").isTrue();
+		assertThat(StringUtils.countOccurrencesOf("s", null) == 0).as("null string = 0").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(null, "s") == 0).as("null substring = 0").isTrue();
 		String s = "erowoiueoiur";
-		assertTrue("not found = 0",
-				StringUtils.countOccurrencesOf(s, "WERWER") == 0);
-		assertTrue("not found char = 0",
-				StringUtils.countOccurrencesOf(s, "x") == 0);
-		assertTrue("not found ws = 0",
-				StringUtils.countOccurrencesOf(s, " ") == 0);
-		assertTrue("not found empty string = 0",
-				StringUtils.countOccurrencesOf(s, "") == 0);
-		assertTrue("found char=2", StringUtils.countOccurrencesOf(s, "e") == 2);
-		assertTrue("found substring=2",
-				StringUtils.countOccurrencesOf(s, "oi") == 2);
-		assertTrue("found substring=2",
-				StringUtils.countOccurrencesOf(s, "oiu") == 2);
-		assertTrue("found substring=3",
-				StringUtils.countOccurrencesOf(s, "oiur") == 1);
-		assertTrue("test last", StringUtils.countOccurrencesOf(s, "r") == 2);
+		assertThat(StringUtils.countOccurrencesOf(s, "WERWER") == 0).as("not found = 0").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, "x") == 0).as("not found char = 0").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, " ") == 0).as("not found ws = 0").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, "") == 0).as("not found empty string = 0").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, "e") == 2).as("found char=2").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, "oi") == 2).as("found substring=2").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, "oiu") == 2).as("found substring=2").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, "oiur") == 1).as("found substring=3").isTrue();
+		assertThat(StringUtils.countOccurrencesOf(s, "r") == 2).as("test last").isTrue();
 	}
 
 	@Test
@@ -234,7 +224,7 @@ public class StringUtilsTests {
 
 		// Simple replace
 		String s = StringUtils.replace(inString, oldPattern, newPattern);
-		assertTrue("Replace 1 worked", s.equals("a6AazAfoo77abfoo"));
+		assertThat(s.equals("a6AazAfoo77abfoo")).as("Replace 1 worked").isTrue();
 
 		// Non match: no change
 		s = StringUtils.replace(inString, "qwoeiruqopwieurpoqwieur", newPattern);
@@ -254,26 +244,22 @@ public class StringUtilsTests {
 		String inString = "The quick brown fox jumped over the lazy dog";
 
 		String noThe = StringUtils.delete(inString, "the");
-		assertTrue("Result has no the [" + noThe + "]",
-				noThe.equals("The quick brown fox jumped over  lazy dog"));
+		assertThat(noThe.equals("The quick brown fox jumped over  lazy dog")).as("Result has no the [" + noThe + "]").isTrue();
 
 		String nohe = StringUtils.delete(inString, "he");
-		assertTrue("Result has no he [" + nohe + "]",
-				nohe.equals("T quick brown fox jumped over t lazy dog"));
+		assertThat(nohe.equals("T quick brown fox jumped over t lazy dog")).as("Result has no he [" + nohe + "]").isTrue();
 
 		String nosp = StringUtils.delete(inString, " ");
-		assertTrue("Result has no spaces",
-				nosp.equals("Thequickbrownfoxjumpedoverthelazydog"));
+		assertThat(nosp.equals("Thequickbrownfoxjumpedoverthelazydog")).as("Result has no spaces").isTrue();
 
 		String killEnd = StringUtils.delete(inString, "dog");
-		assertTrue("Result has no dog",
-				killEnd.equals("The quick brown fox jumped over the lazy "));
+		assertThat(killEnd.equals("The quick brown fox jumped over the lazy ")).as("Result has no dog").isTrue();
 
 		String mismatch = StringUtils.delete(inString, "dxxcxcxog");
-		assertTrue("Result is unchanged", mismatch.equals(inString));
+		assertThat(mismatch.equals(inString)).as("Result is unchanged").isTrue();
 
 		String nochange = StringUtils.delete(inString, "");
-		assertTrue("Result is unchanged", nochange.equals(inString));
+		assertThat(nochange.equals(inString)).as("Result is unchanged").isTrue();
 	}
 
 	@Test
@@ -281,23 +267,26 @@ public class StringUtilsTests {
 		String inString = "Able was I ere I saw Elba";
 
 		String res = StringUtils.deleteAny(inString, "I");
-		assertTrue("Result has no Is [" + res + "]", res.equals("Able was  ere  saw Elba"));
+		assertThat(res.equals("Able was  ere  saw Elba")).as("Result has no Is [" + res + "]").isTrue();
 
 		res = StringUtils.deleteAny(inString, "AeEba!");
-		assertTrue("Result has no Is [" + res + "]", res.equals("l ws I r I sw l"));
+		assertThat(res.equals("l ws I r I sw l")).as("Result has no Is [" + res + "]").isTrue();
 
 		String mismatch = StringUtils.deleteAny(inString, "#@$#$^");
-		assertTrue("Result is unchanged", mismatch.equals(inString));
+		assertThat(mismatch.equals(inString)).as("Result is unchanged").isTrue();
 
 		String whitespace = "This is\n\n\n    \t   a messagy string with whitespace\n";
-		assertTrue("Has CR", whitespace.contains("\n"));
-		assertTrue("Has tab", whitespace.contains("\t"));
-		assertTrue("Has  sp", whitespace.contains(" "));
+		assertThat(whitespace.contains("\n")).as("Has CR").isTrue();
+		assertThat(whitespace.contains("\t")).as("Has tab").isTrue();
+		assertThat(whitespace.contains(" ")).as("Has  sp").isTrue();
 		String cleaned = StringUtils.deleteAny(whitespace, "\n\t ");
-		assertTrue("Has no CR", !cleaned.contains("\n"));
-		assertTrue("Has no tab", !cleaned.contains("\t"));
-		assertTrue("Has no sp", !cleaned.contains(" "));
-		assertTrue("Still has chars", cleaned.length() > 10);
+		boolean condition2 = !cleaned.contains("\n");
+		assertThat(condition2).as("Has no CR").isTrue();
+		boolean condition1 = !cleaned.contains("\t");
+		assertThat(condition1).as("Has no tab").isTrue();
+		boolean condition = !cleaned.contains(" ");
+		assertThat(condition).as("Has no sp").isTrue();
+		assertThat(cleaned.length() > 10).as("Still has chars").isTrue();
 	}
 
 
@@ -410,24 +399,15 @@ public class StringUtilsTests {
 
 	@Test
 	public void testPathEquals() {
-		assertTrue("Must be true for the same strings",
-				StringUtils.pathEquals("/dummy1/dummy2/dummy3", "/dummy1/dummy2/dummy3"));
-		assertTrue("Must be true for the same win strings",
-				StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\dummy2\\dummy3"));
-		assertTrue("Must be true for one top path on 1",
-				StringUtils.pathEquals("/dummy1/bin/../dummy2/dummy3", "/dummy1/dummy2/dummy3"));
-		assertTrue("Must be true for one win top path on 2",
-				StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\bin\\..\\dummy2\\dummy3"));
-		assertTrue("Must be true for two top paths on 1",
-				StringUtils.pathEquals("/dummy1/bin/../dummy2/bin/../dummy3", "/dummy1/dummy2/dummy3"));
-		assertTrue("Must be true for two win top paths on 2",
-				StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\bin\\..\\dummy2\\bin\\..\\dummy3"));
-		assertTrue("Must be true for double top paths on 1",
-				StringUtils.pathEquals("/dummy1/bin/tmp/../../dummy2/dummy3", "/dummy1/dummy2/dummy3"));
-		assertTrue("Must be true for double top paths on 2 with similarity",
-				StringUtils.pathEquals("/dummy1/dummy2/dummy3", "/dummy1/dum/dum/../../dummy2/dummy3"));
-		assertTrue("Must be true for current paths",
-				StringUtils.pathEquals("./dummy1/dummy2/dummy3", "dummy1/dum/./dum/../../dummy2/dummy3"));
+		assertThat(StringUtils.pathEquals("/dummy1/dummy2/dummy3", "/dummy1/dummy2/dummy3")).as("Must be true for the same strings").isTrue();
+		assertThat(StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\dummy2\\dummy3")).as("Must be true for the same win strings").isTrue();
+		assertThat(StringUtils.pathEquals("/dummy1/bin/../dummy2/dummy3", "/dummy1/dummy2/dummy3")).as("Must be true for one top path on 1").isTrue();
+		assertThat(StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\bin\\..\\dummy2\\dummy3")).as("Must be true for one win top path on 2").isTrue();
+		assertThat(StringUtils.pathEquals("/dummy1/bin/../dummy2/bin/../dummy3", "/dummy1/dummy2/dummy3")).as("Must be true for two top paths on 1").isTrue();
+		assertThat(StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\bin\\..\\dummy2\\bin\\..\\dummy3")).as("Must be true for two win top paths on 2").isTrue();
+		assertThat(StringUtils.pathEquals("/dummy1/bin/tmp/../../dummy2/dummy3", "/dummy1/dummy2/dummy3")).as("Must be true for double top paths on 1").isTrue();
+		assertThat(StringUtils.pathEquals("/dummy1/dummy2/dummy3", "/dummy1/dum/dum/../../dummy2/dummy3")).as("Must be true for double top paths on 2 with similarity").isTrue();
+		assertThat(StringUtils.pathEquals("./dummy1/dummy2/dummy3", "dummy1/dum/./dum/../../dummy2/dummy3")).as("Must be true for current paths").isTrue();
 		assertFalse("Must be false for relative/absolute paths",
 				StringUtils.pathEquals("./dummy1/dummy2/dummy3", "/dummy1/dum/./dum/../../dummy2/dummy3"));
 		assertFalse("Must be false for different strings",
@@ -510,38 +490,35 @@ public class StringUtilsTests {
 	public void testTokenizeToStringArray() {
 		String[] sa = StringUtils.tokenizeToStringArray("a,b , ,c", ",");
 		assertEquals(3, sa.length);
-		assertTrue("components are correct",
-				sa[0].equals("a") && sa[1].equals("b") && sa[2].equals("c"));
+		assertThat(sa[0].equals("a") && sa[1].equals("b") && sa[2].equals("c")).as("components are correct").isTrue();
 	}
 
 	@Test
 	public void testTokenizeToStringArrayWithNotIgnoreEmptyTokens() {
 		String[] sa = StringUtils.tokenizeToStringArray("a,b , ,c", ",", true, false);
 		assertEquals(4, sa.length);
-		assertTrue("components are correct",
-				sa[0].equals("a") && sa[1].equals("b") && sa[2].equals("") && sa[3].equals("c"));
+		assertThat(sa[0].equals("a") && sa[1].equals("b") && sa[2].equals("") && sa[3].equals("c")).as("components are correct").isTrue();
 	}
 
 	@Test
 	public void testTokenizeToStringArrayWithNotTrimTokens() {
 		String[] sa = StringUtils.tokenizeToStringArray("a,b ,c", ",", false, true);
 		assertEquals(3, sa.length);
-		assertTrue("components are correct",
-				sa[0].equals("a") && sa[1].equals("b ") && sa[2].equals("c"));
+		assertThat(sa[0].equals("a") && sa[1].equals("b ") && sa[2].equals("c")).as("components are correct").isTrue();
 	}
 
 	@Test
 	public void testCommaDelimitedListToStringArrayWithNullProducesEmptyArray() {
 		String[] sa = StringUtils.commaDelimitedListToStringArray(null);
-		assertTrue("String array isn't null with null input", sa != null);
-		assertTrue("String array length == 0 with null input", sa.length == 0);
+		assertThat(sa != null).as("String array isn't null with null input").isTrue();
+		assertThat(sa.length == 0).as("String array length == 0 with null input").isTrue();
 	}
 
 	@Test
 	public void testCommaDelimitedListToStringArrayWithEmptyStringProducesEmptyArray() {
 		String[] sa = StringUtils.commaDelimitedListToStringArray("");
-		assertTrue("String array isn't null with null input", sa != null);
-		assertTrue("String array length == 0 with null input", sa.length == 0);
+		assertThat(sa != null).as("String array isn't null with null input").isTrue();
+		assertThat(sa.length == 0).as("String array length == 0 with null input").isTrue();
 	}
 
 	@Test
@@ -606,9 +583,8 @@ public class StringUtilsTests {
 		// Could read these from files
 		String s = "woeirqupoiewuropqiewuorpqiwueopriquwopeiurqopwieur";
 		String[] sa = StringUtils.commaDelimitedListToStringArray(s);
-		assertTrue("Found one String with no delimiters", sa.length == 1);
-		assertTrue("Single array entry matches input String with no delimiters",
-				sa[0].equals(s));
+		assertThat(sa.length == 1).as("Found one String with no delimiters").isTrue();
+		assertThat(sa[0].equals(s)).as("Single array entry matches input String with no delimiters").isTrue();
 	}
 
 	@Test
@@ -626,8 +602,7 @@ public class StringUtilsTests {
 		// Could read these from files
 		String[] sa = StringUtils.commaDelimitedListToStringArray("a,,b");
 		assertEquals("a,,b produces array length 3", 3, sa.length);
-		assertTrue("components are correct",
-				sa[0].equals("a") && sa[1].equals("") && sa[2].equals("b"));
+		assertThat(sa[0].equals("a") && sa[1].equals("") && sa[2].equals("b")).as("components are correct").isTrue();
 
 		sa = new String[] {"", "", "a", ""};
 		doTestCommaDelimitedListToStringArrayLegalMatch(sa);
@@ -642,9 +617,9 @@ public class StringUtilsTests {
 			sb.append(components[i]);
 		}
 		String[] sa = StringUtils.commaDelimitedListToStringArray(sb.toString());
-		assertTrue("String array isn't null with legal match", sa != null);
+		assertThat(sa != null).as("String array isn't null with legal match").isTrue();
 		assertEquals("String array length is correct with legal match", components.length, sa.length);
-		assertTrue("Output equals input", Arrays.equals(sa, components));
+		assertThat(Arrays.equals(sa, components)).as("Output equals input").isTrue();
 	}
 
 

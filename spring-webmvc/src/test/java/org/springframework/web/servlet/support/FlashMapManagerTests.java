@@ -33,11 +33,11 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 
 /**
@@ -218,7 +218,7 @@ public class FlashMapManagerTests {
 
 		assertNotNull(allMaps);
 		assertSame(flashMap, allMaps.get(0));
-		assertTrue(flashMap.isExpired());
+		assertThat(flashMap.isExpired()).isTrue();
 	}
 
 	@Test

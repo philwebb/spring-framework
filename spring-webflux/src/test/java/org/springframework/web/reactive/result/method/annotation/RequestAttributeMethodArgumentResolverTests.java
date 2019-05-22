@@ -37,12 +37,12 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebInputException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestAttribute;
 
 /**
@@ -72,12 +72,12 @@ public class RequestAttributeMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(
-				this.testMethod.annot(requestAttribute().noName()).arg(Foo.class)));
+		assertThat(this.resolver.supportsParameter(
+				this.testMethod.annot(requestAttribute().noName()).arg(Foo.class))).isTrue();
 
 		// SPR-16158
-		assertTrue(this.resolver.supportsParameter(
-				this.testMethod.annotPresent(RequestAttribute.class).arg(Mono.class, Foo.class)));
+		assertThat(this.resolver.supportsParameter(
+				this.testMethod.annotPresent(RequestAttribute.class).arg(Mono.class, Foo.class))).isTrue();
 
 		assertFalse(this.resolver.supportsParameter(
 				this.testMethod.annotNotPresent(RequestAttribute.class).arg()));
@@ -139,7 +139,7 @@ public class RequestAttributeMethodArgumentResolverTests {
 		assertNotNull(mono.block());
 		assertEquals(Optional.class, mono.block().getClass());
 		Optional<?> optional = (Optional<?>) mono.block();
-		assertTrue(optional.isPresent());
+		assertThat(optional.isPresent()).isTrue();
 		assertSame(foo, optional.get());
 	}
 
@@ -160,7 +160,8 @@ public class RequestAttributeMethodArgumentResolverTests {
 		this.exchange.getAttributes().put("fooMono", singleMono);
 		mono = this.resolver.resolveArgument(param, new BindingContext(), this.exchange);
 		Object value = mono.block(Duration.ZERO);
-		assertTrue(value instanceof Mono);
+		boolean condition = value instanceof Mono;
+		assertThat(condition).isTrue();
 		assertSame(foo, ((Mono<?>) value).block(Duration.ZERO));
 
 		// No attribute --> Mono.empty

@@ -34,9 +34,9 @@ import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.sockjs.client.TestTransport.XhrTestTransport;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -87,7 +87,7 @@ public class SockJsClientTests {
 	public void connectWebSocket() throws Exception {
 		setupInfoRequest(true);
 		this.sockJsClient.doHandshake(handler, URL).addCallback(this.connectCallback);
-		assertTrue(this.webSocketTransport.invoked());
+		assertThat(this.webSocketTransport.invoked()).isTrue();
 		WebSocketSession session = mock(WebSocketSession.class);
 		this.webSocketTransport.getConnectCallback().onSuccess(session);
 		verify(this.connectCallback).onSuccess(session);
@@ -99,8 +99,8 @@ public class SockJsClientTests {
 		setupInfoRequest(false);
 		this.sockJsClient.doHandshake(handler, URL);
 		assertFalse(this.webSocketTransport.invoked());
-		assertTrue(this.xhrTransport.invoked());
-		assertTrue(this.xhrTransport.getRequest().getTransportUrl().toString().endsWith("xhr_streaming"));
+		assertThat(this.xhrTransport.invoked()).isTrue();
+		assertThat(this.xhrTransport.getRequest().getTransportUrl().toString().endsWith("xhr_streaming")).isTrue();
 	}
 
 	@Test
@@ -109,8 +109,8 @@ public class SockJsClientTests {
 		this.xhrTransport.setStreamingDisabled(true);
 		this.sockJsClient.doHandshake(handler, URL).addCallback(this.connectCallback);
 		assertFalse(this.webSocketTransport.invoked());
-		assertTrue(this.xhrTransport.invoked());
-		assertTrue(this.xhrTransport.getRequest().getTransportUrl().toString().endsWith("xhr"));
+		assertThat(this.xhrTransport.invoked()).isTrue();
+		assertThat(this.xhrTransport.getRequest().getTransportUrl().toString().endsWith("xhr")).isTrue();
 	}
 
 	// SPR-13254

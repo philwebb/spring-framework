@@ -47,11 +47,11 @@ import org.springframework.util.MimeType;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
@@ -79,9 +79,9 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 	@Override
 	@Test
 	public void canDecode() {
-		assertTrue(decoder.canDecode(forClass(Pojo.class), APPLICATION_JSON));
-		assertTrue(decoder.canDecode(forClass(Pojo.class), APPLICATION_STREAM_JSON));
-		assertTrue(decoder.canDecode(forClass(Pojo.class), null));
+		assertThat(decoder.canDecode(forClass(Pojo.class), APPLICATION_JSON)).isTrue();
+		assertThat(decoder.canDecode(forClass(Pojo.class), APPLICATION_STREAM_JSON)).isTrue();
+		assertThat(decoder.canDecode(forClass(Pojo.class), null)).isTrue();
 
 		assertFalse(decoder.canDecode(forClass(String.class), null));
 		assertFalse(decoder.canDecode(forClass(Pojo.class), APPLICATION_XML));

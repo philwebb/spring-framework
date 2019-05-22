@@ -41,12 +41,12 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -126,7 +126,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertTrue("DummyJob should have been executed at least once.", DummyJob.count > 0);
+		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
 		assertEquals(DummyJob.count, taskExecutor.count);
 
 		bean.destroy();
@@ -169,7 +169,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertEquals(10, DummyJobBean.param);
-		assertTrue(DummyJobBean.count > 0);
+		assertThat(DummyJobBean.count > 0).isTrue();
 
 		bean.destroy();
 	}
@@ -205,7 +205,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertEquals(10, DummyJob.param);
-		assertTrue("DummyJob should have been executed at least once.", DummyJob.count > 0);
+		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
 
 		bean.destroy();
 	}
@@ -242,7 +242,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertEquals(0, DummyJob.param);
-		assertTrue(DummyJob.count == 0);
+		assertThat(DummyJob.count == 0).isTrue();
 
 		bean.destroy();
 	}
@@ -276,7 +276,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertEquals(10, DummyJobBean.param);
-		assertTrue(DummyJobBean.count > 0);
+		assertThat(DummyJobBean.count > 0).isTrue();
 
 		bean.destroy();
 	}
@@ -295,7 +295,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertEquals(10, DummyJob.param);
-		assertTrue("DummyJob should have been executed at least once.", DummyJob.count > 0);
+		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
 
 		bean.destroy();
 	}
@@ -376,7 +376,7 @@ public class QuartzSupportTests {
 		Scheduler bean = context.getBean("scheduler", Scheduler.class);
 		assertFalse(bean.isStarted());
 		context.refresh();
-		assertTrue(bean.isStarted());
+		assertThat(bean.isStarted()).isTrue();
 	}
 
 	@Test

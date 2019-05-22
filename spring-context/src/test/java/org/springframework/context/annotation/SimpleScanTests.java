@@ -22,8 +22,8 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -45,7 +45,7 @@ public class SimpleScanTests {
 
 		assertEquals(0, serviceInvocationCounter.getCount());
 
-		assertTrue(fooService.isInitCalled());
+		assertThat(fooService.isInitCalled()).isTrue();
 		assertEquals(1, serviceInvocationCounter.getCount());
 
 		String value = fooService.foo(1);

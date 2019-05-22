@@ -24,14 +24,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ObjectUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -134,7 +132,7 @@ public class GenericApplicationContextTests {
 		context.registerBean(BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertTrue(context.getBeanFactory().containsSingleton(BeanA.class.getName()));
+		assertThat(context.getBeanFactory().containsSingleton(BeanA.class.getName())).isTrue();
 		assertSame(context.getBean(BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
 		assertSame(context, context.getBean(BeanB.class).applicationContext);
@@ -170,7 +168,7 @@ public class GenericApplicationContextTests {
 		context.registerBean("c", BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertTrue(context.getBeanFactory().containsSingleton("a"));
+		assertThat(context.getBeanFactory().containsSingleton("a")).isTrue();
 		assertSame(context.getBean("b", BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean("c"), context.getBean("a", BeanA.class).c);
 		assertSame(context, context.getBean("b", BeanB.class).applicationContext);
@@ -200,10 +198,10 @@ public class GenericApplicationContextTests {
 		context.registerBean("c", BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertTrue(ObjectUtils.containsElement(context.getBeanNamesForType(BeanA.class), "a"));
-		assertTrue(ObjectUtils.containsElement(context.getBeanNamesForType(BeanB.class), "b"));
-		assertTrue(ObjectUtils.containsElement(context.getBeanNamesForType(BeanC.class), "c"));
-		assertTrue(context.getBeansOfType(BeanA.class).isEmpty());
+		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanA.class), "a")).isTrue();
+		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanB.class), "b")).isTrue();
+		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanC.class), "c")).isTrue();
+		assertThat(context.getBeansOfType(BeanA.class).isEmpty()).isTrue();
 		assertSame(context.getBean(BeanB.class), context.getBeansOfType(BeanB.class).values().iterator().next());
 		assertSame(context.getBean(BeanC.class), context.getBeansOfType(BeanC.class).values().iterator().next());
 	}

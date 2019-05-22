@@ -45,10 +45,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -79,9 +79,9 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 		methodEndpoint.setupListenerContainer(listenerContainer);
 		assertNotNull(listenerContainer.getMessageListener());
 
-		assertTrue("Should have been started " + container, container.isStarted());
+		assertThat(container.isStarted()).as("Should have been started " + container).isTrue();
 		context.close(); // Close and stop the listeners
-		assertTrue("Should have been stopped " + container, container.isStopped());
+		assertThat(container.isStopped()).as("Should have been stopped " + container).isTrue();
 	}
 
 	@Test
@@ -119,8 +119,9 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 			JmsListenerEndpoint endpoint = factory.getListenerContainers().get(0).getEndpoint();
 			assertEquals("Wrong endpoint type", MethodJmsListenerEndpoint.class, endpoint.getClass());
 			MethodJmsListenerEndpoint methodEndpoint = (MethodJmsListenerEndpoint) endpoint;
-			assertTrue(AopUtils.isJdkDynamicProxy(methodEndpoint.getBean()));
-			assertTrue(methodEndpoint.getBean() instanceof SimpleService);
+			assertThat(AopUtils.isJdkDynamicProxy(methodEndpoint.getBean())).isTrue();
+			boolean condition = methodEndpoint.getBean() instanceof SimpleService;
+			assertThat(condition).isTrue();
 			assertEquals(SimpleService.class.getMethod("handleIt", String.class, String.class),
 					methodEndpoint.getMethod());
 			assertEquals(InterfaceProxyTestBean.class.getMethod("handleIt", String.class, String.class),
@@ -147,8 +148,9 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 			JmsListenerEndpoint endpoint = factory.getListenerContainers().get(0).getEndpoint();
 			assertEquals("Wrong endpoint type", MethodJmsListenerEndpoint.class, endpoint.getClass());
 			MethodJmsListenerEndpoint methodEndpoint = (MethodJmsListenerEndpoint) endpoint;
-			assertTrue(AopUtils.isCglibProxy(methodEndpoint.getBean()));
-			assertTrue(methodEndpoint.getBean() instanceof ClassProxyTestBean);
+			assertThat(AopUtils.isCglibProxy(methodEndpoint.getBean())).isTrue();
+			boolean condition = methodEndpoint.getBean() instanceof ClassProxyTestBean;
+			assertThat(condition).isTrue();
 			assertEquals(ClassProxyTestBean.class.getMethod("handleIt", String.class, String.class),
 					methodEndpoint.getMethod());
 			assertEquals(ClassProxyTestBean.class.getMethod("handleIt", String.class, String.class),

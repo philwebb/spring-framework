@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.server.WebSession;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link SessionAttributesHandler}.
@@ -46,9 +46,9 @@ public class SessionAttributesHandlerTests {
 
 	@Test
 	public void isSessionAttribute() {
-		assertTrue(this.sessionAttributesHandler.isHandlerSessionAttribute("attr1", String.class));
-		assertTrue(this.sessionAttributesHandler.isHandlerSessionAttribute("attr2", String.class));
-		assertTrue(this.sessionAttributesHandler.isHandlerSessionAttribute("simple", TestBean.class));
+		assertThat(this.sessionAttributesHandler.isHandlerSessionAttribute("attr1", String.class)).isTrue();
+		assertThat(this.sessionAttributesHandler.isHandlerSessionAttribute("attr2", String.class)).isTrue();
+		assertThat(this.sessionAttributesHandler.isHandlerSessionAttribute("simple", TestBean.class)).isTrue();
 		assertFalse(this.sessionAttributesHandler.isHandlerSessionAttribute("simple", String.class));
 	}
 
@@ -105,7 +105,8 @@ public class SessionAttributesHandlerTests {
 
 		assertEquals("value1", session.getAttributes().get("attr1"));
 		assertEquals("value2", session.getAttributes().get("attr2"));
-		assertTrue(session.getAttributes().get("attr3") instanceof TestBean);
+		boolean condition = session.getAttributes().get("attr3") instanceof TestBean;
+		assertThat(condition).isTrue();
 	}
 
 

@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Shared tests for {@link CacheManager} that inherit from
@@ -83,7 +82,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
 		try {
 			assertThat(cacheManager.getCache(cacheName)).isInstanceOf(getCacheType());
-			assertTrue(cacheManager.getCacheNames().contains(cacheName));
+			assertThat(cacheManager.getCacheNames().contains(cacheName)).isTrue();
 		}
 		finally {
 			removeNativeCache(cacheName);
@@ -113,7 +112,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 		try {
 			assertThat(cacheManager.getCache(cacheName))
 					.isInstanceOf(TransactionAwareCacheDecorator.class);
-			assertTrue(cacheManager.getCacheNames().contains(cacheName));
+			assertThat(cacheManager.getCacheNames().contains(cacheName)).isTrue();
 		}
 		finally {
 			removeNativeCache(cacheName);

@@ -24,8 +24,8 @@ import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test-case for AbstractHttpMessageConverter.
@@ -41,7 +41,7 @@ public class HttpMessageConverterTests {
 		MediaType mediaType = new MediaType("foo", "bar");
 		HttpMessageConverter<MyType> converter = new MyHttpMessageConverter<>(mediaType);
 
-		assertTrue(converter.canRead(MyType.class, mediaType));
+		assertThat(converter.canRead(MyType.class, mediaType)).isTrue();
 		assertFalse(converter.canRead(MyType.class, new MediaType("foo", "*")));
 		assertFalse(converter.canRead(MyType.class, MediaType.ALL));
 	}
@@ -51,8 +51,8 @@ public class HttpMessageConverterTests {
 		MediaType mediaType = new MediaType("foo");
 		HttpMessageConverter<MyType> converter = new MyHttpMessageConverter<>(mediaType);
 
-		assertTrue(converter.canRead(MyType.class, new MediaType("foo", "bar")));
-		assertTrue(converter.canRead(MyType.class, new MediaType("foo", "*")));
+		assertThat(converter.canRead(MyType.class, new MediaType("foo", "bar"))).isTrue();
+		assertThat(converter.canRead(MyType.class, new MediaType("foo", "*"))).isTrue();
 		assertFalse(converter.canRead(MyType.class, MediaType.ALL));
 	}
 
@@ -61,9 +61,9 @@ public class HttpMessageConverterTests {
 		MediaType mediaType = new MediaType("foo", "bar");
 		HttpMessageConverter<MyType> converter = new MyHttpMessageConverter<>(mediaType);
 
-		assertTrue(converter.canWrite(MyType.class, mediaType));
-		assertTrue(converter.canWrite(MyType.class, new MediaType("foo", "*")));
-		assertTrue(converter.canWrite(MyType.class, MediaType.ALL));
+		assertThat(converter.canWrite(MyType.class, mediaType)).isTrue();
+		assertThat(converter.canWrite(MyType.class, new MediaType("foo", "*"))).isTrue();
+		assertThat(converter.canWrite(MyType.class, MediaType.ALL)).isTrue();
 	}
 
 	@Test
@@ -71,9 +71,9 @@ public class HttpMessageConverterTests {
 		MediaType mediaType = new MediaType("foo");
 		HttpMessageConverter<MyType> converter = new MyHttpMessageConverter<>(mediaType);
 
-		assertTrue(converter.canWrite(MyType.class, new MediaType("foo", "bar")));
-		assertTrue(converter.canWrite(MyType.class, new MediaType("foo", "*")));
-		assertTrue(converter.canWrite(MyType.class, MediaType.ALL));
+		assertThat(converter.canWrite(MyType.class, new MediaType("foo", "bar"))).isTrue();
+		assertThat(converter.canWrite(MyType.class, new MediaType("foo", "*"))).isTrue();
+		assertThat(converter.canWrite(MyType.class, MediaType.ALL)).isTrue();
 	}
 
 

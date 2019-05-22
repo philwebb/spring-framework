@@ -41,11 +41,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 
@@ -86,7 +86,7 @@ public class WebExchangeDataBinderTests {
 		formData.add("_postProcessed", "visible");
 		formData.add("postProcessed", "on");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertTrue(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isTrue();
 
 		formData.remove("postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
@@ -101,7 +101,7 @@ public class WebExchangeDataBinderTests {
 		formData.add("_postProcessed", "visible");
 		formData.add("postProcessed", "on");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertTrue(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isTrue();
 
 		formData.remove("postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
@@ -114,7 +114,7 @@ public class WebExchangeDataBinderTests {
 		formData.add("!postProcessed", "off");
 		formData.add("postProcessed", "on");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertTrue(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isTrue();
 
 		formData.remove("postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
@@ -128,11 +128,11 @@ public class WebExchangeDataBinderTests {
 		formData.add("_postProcessed", "visible");
 		formData.add("postProcessed", "on");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertTrue(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isTrue();
 
 		formData.remove("postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertTrue(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isTrue();
 
 		formData.remove("!postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));

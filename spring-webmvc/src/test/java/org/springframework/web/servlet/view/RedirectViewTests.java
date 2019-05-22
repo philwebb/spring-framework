@@ -42,10 +42,10 @@ import org.springframework.web.servlet.support.RequestDataValueProcessorWrapper;
 import org.springframework.web.servlet.support.SessionFlashMapManager;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -216,7 +216,7 @@ public class RedirectViewTests {
 
 		assertFalse(rv.isRemoteHost("https://url.somewhere.com"));
 		assertFalse(rv.isRemoteHost("/path"));
-		assertTrue(rv.isRemoteHost("http://url.somewhereelse.com"));
+		assertThat(rv.isRemoteHost("http://url.somewhereelse.com")).isTrue();
 
 	}
 
@@ -378,7 +378,7 @@ public class RedirectViewTests {
 		TestRedirectView rv = new TestRedirectView(url, contextRelative, map);
 		rv.render(map, request, response);
 
-		assertTrue("queryProperties() should have been called.", rv.queryPropertiesCalled);
+		assertThat(rv.queryPropertiesCalled).as("queryProperties() should have been called.").isTrue();
 		assertEquals(expectedUrl, this.response.getRedirectedUrl());
 	}
 
@@ -400,7 +400,7 @@ public class RedirectViewTests {
 		 */
 		@Override
 		protected Map<String, Object> queryProperties(Map<String, Object> model) {
-			assertTrue("Map and model must be equal.", this.expectedModel.equals(model));
+			assertThat(this.expectedModel.equals(model)).as("Map and model must be equal.").isTrue();
 			this.queryPropertiesCalled = true;
 			return super.queryProperties(model);
 		}

@@ -40,7 +40,6 @@ import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Abstract cache annotation tests (containing several reusable methods).
@@ -75,9 +74,9 @@ public abstract class AbstractCacheAnnotationTests {
 		this.cm = ctx.getBean("cacheManager", CacheManager.class);
 
 		Collection<String> cn = this.cm.getCacheNames();
-		assertTrue(cn.contains("testCache"));
-		assertTrue(cn.contains("secondary"));
-		assertTrue(cn.contains("primary"));
+		assertThat(cn.contains("testCache")).isTrue();
+		assertThat(cn.contains("secondary")).isTrue();
+		assertThat(cn.contains("primary")).isTrue();
 	}
 
 	@After
@@ -511,7 +510,8 @@ public abstract class AbstractCacheAnnotationTests {
 		Object r1 = service.multiConditionalCacheAndEvict(key);
 		Object r3 = service.multiConditionalCacheAndEvict(key);
 
-		assertTrue(!r1.equals(r3));
+		boolean condition = !r1.equals(r3);
+		assertThat(condition).isTrue();
 		assertNull(primary.get(key));
 
 		Object key2 = 3;

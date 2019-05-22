@@ -24,9 +24,9 @@ import org.junit.Test;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.validation.BeanPropertyBindingResult;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -122,11 +122,11 @@ public class HiddenInputTagTests extends AbstractFormTagTests {
 	}
 
 	private void assertTagClosed(String output) {
-		assertTrue(output.endsWith("/>"));
+		assertThat(output.endsWith("/>")).isTrue();
 	}
 
 	private void assertTagOpened(String output) {
-		assertTrue(output.startsWith("<input "));
+		assertThat(output.startsWith("<input ")).isTrue();
 	}
 
 	@Override

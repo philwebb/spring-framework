@@ -31,10 +31,10 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -113,7 +113,7 @@ public class XhrTransportTests {
 
 		assertFalse(transport.actualSession.isDisconnected());
 		captor.getValue().run();
-		assertTrue(transport.actualSession.isDisconnected());
+		assertThat(transport.actualSession.isDisconnected()).isTrue();
 	}
 
 

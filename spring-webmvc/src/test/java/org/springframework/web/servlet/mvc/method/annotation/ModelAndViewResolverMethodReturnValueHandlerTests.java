@@ -33,12 +33,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.ModelAndViewResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link ModelAndViewResolverMethodReturnValueHandler}.
@@ -93,7 +93,7 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 
 		assertNull(mavContainer.getView());
 		assertNull(mavContainer.getViewName());
-		assertTrue(mavContainer.getModel().isEmpty());
+		assertThat(mavContainer.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 		MethodParameter returnType = new MethodParameter(getClass().getDeclaredMethod("testBeanReturnValue"), -1);
 		handler.handleReturnValue(new TestBean(), returnType, mavContainer, request);
 
-		assertTrue(mavContainer.containsAttribute("testBean"));
+		assertThat(mavContainer.containsAttribute("testBean")).isTrue();
 	}
 
 

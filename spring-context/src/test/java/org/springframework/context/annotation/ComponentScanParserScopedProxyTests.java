@@ -26,11 +26,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.context.SimpleMapScope;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -72,7 +72,7 @@ public class ComponentScanParserScopedProxyTests {
 		// should cast to the interface
 		FooService bean = (FooService) context.getBean("scopedProxyTestBean");
 		// should be dynamic proxy
-		assertTrue(AopUtils.isJdkDynamicProxy(bean));
+		assertThat(AopUtils.isJdkDynamicProxy(bean)).isTrue();
 		// test serializability
 		assertEquals("bar", bean.foo(1));
 		FooService deserialized = (FooService) SerializationTestUtils.serializeAndDeserialize(bean);
@@ -89,7 +89,7 @@ public class ComponentScanParserScopedProxyTests {
 
 		ScopedProxyTestBean bean = (ScopedProxyTestBean) context.getBean("scopedProxyTestBean");
 		// should be a class-based proxy
-		assertTrue(AopUtils.isCglibProxy(bean));
+		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
 		// test serializability
 		assertEquals("bar", bean.foo(1));
 		ScopedProxyTestBean deserialized = (ScopedProxyTestBean) SerializationTestUtils.serializeAndDeserialize(bean);

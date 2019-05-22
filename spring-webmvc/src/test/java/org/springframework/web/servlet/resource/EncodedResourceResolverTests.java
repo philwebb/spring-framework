@@ -40,9 +40,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link EncodedResourceResolver}.
@@ -109,7 +109,8 @@ public class EncodedResourceResolverTests {
 		assertEquals(getResource(file + ".gz").getDescription(), actual.getDescription());
 		assertEquals(getResource(file).getFilename(), actual.getFilename());
 
-		assertTrue(actual instanceof HttpResource);
+		boolean condition = actual instanceof HttpResource;
+		assertThat(condition).isTrue();
 		HttpHeaders headers = ((HttpResource) actual).getResponseHeaders();
 		assertEquals("gzip", headers.getFirst(HttpHeaders.CONTENT_ENCODING));
 		assertEquals("Accept-Encoding", headers.getFirst(HttpHeaders.VARY));
@@ -124,7 +125,8 @@ public class EncodedResourceResolverTests {
 
 		assertEquals(getResource("foo.css.gz").getDescription(), resolved.getDescription());
 		assertEquals(getResource("foo.css").getFilename(), resolved.getFilename());
-		assertTrue(resolved instanceof HttpResource);
+		boolean condition = resolved instanceof HttpResource;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -137,7 +139,8 @@ public class EncodedResourceResolverTests {
 
 		assertEquals(getResource(file + ".gz").getDescription(), resolved.getDescription());
 		assertEquals(getResource(file).getFilename(), resolved.getFilename());
-		assertTrue(resolved instanceof HttpResource);
+		boolean condition = resolved instanceof HttpResource;
+		assertThat(condition).isTrue();
 
 		// 2. Resolve unencoded resource
 		request = new MockHttpServletRequest("GET", "/js/foo.js");

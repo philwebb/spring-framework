@@ -88,11 +88,11 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSION;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@link WebMvcConfigurationSupport} (imported via
@@ -133,13 +133,13 @@ public class WebMvcConfigurationSupportTests {
 		assertFalse(handlerMappings.containsKey("defaultServletHandlerMapping"));
 
 		Object nullBean = context.getBean("viewControllerHandlerMapping");
-		assertTrue(nullBean.equals(null));
+		assertThat(nullBean.equals(null)).isTrue();
 
 		nullBean = context.getBean("resourceHandlerMapping");
-		assertTrue(nullBean.equals(null));
+		assertThat(nullBean.equals(null)).isTrue();
 
 		nullBean = context.getBean("defaultServletHandlerMapping");
-		assertTrue(nullBean.equals(null));
+		assertThat(nullBean.equals(null)).isTrue();
 	}
 
 	@Test
@@ -182,11 +182,13 @@ public class WebMvcConfigurationSupportTests {
 
 		ConversionService conversionService = initializer.getConversionService();
 		assertNotNull(conversionService);
-		assertTrue(conversionService instanceof FormattingConversionService);
+		boolean condition1 = conversionService instanceof FormattingConversionService;
+		assertThat(condition1).isTrue();
 
 		Validator validator = initializer.getValidator();
 		assertNotNull(validator);
-		assertTrue(validator instanceof LocalValidatorFactoryBean);
+		boolean condition = validator instanceof LocalValidatorFactoryBean;
+		assertThat(condition).isTrue();
 
 		DirectFieldAccessor fieldAccessor = new DirectFieldAccessor(adapter);
 		@SuppressWarnings("unchecked")

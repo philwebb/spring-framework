@@ -35,10 +35,10 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -63,7 +63,7 @@ public class EntityManagerFactoryUtilsTests {
 
 		// no tx active
 		assertNull(EntityManagerFactoryUtils.doGetTransactionalEntityManager(factory, null));
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class EntityManagerFactoryUtilsTests {
 			TransactionSynchronizationManager.clearSynchronization();
 		}
 
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -91,7 +91,8 @@ public class EntityManagerFactoryUtilsTests {
 		IllegalStateException ise = new IllegalStateException();
 		DataAccessException dex = EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ise);
 		assertSame(ise, dex.getCause());
-		assertTrue(dex instanceof InvalidDataAccessApiUsageException);
+		boolean condition = dex instanceof InvalidDataAccessApiUsageException;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -99,7 +100,8 @@ public class EntityManagerFactoryUtilsTests {
 		IllegalArgumentException iae = new IllegalArgumentException();
 		DataAccessException dex = EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(iae);
 		assertSame(iae, dex.getCause());
-		assertTrue(dex instanceof InvalidDataAccessApiUsageException);
+		boolean condition = dex instanceof InvalidDataAccessApiUsageException;
+		assertThat(condition).isTrue();
 	}
 
 	/**

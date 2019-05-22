@@ -23,8 +23,8 @@ import java.lang.reflect.Method;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ProfileValueUtils}.
@@ -48,8 +48,7 @@ public class ProfileValueUtilsTests {
 	}
 
 	private void assertClassIsEnabled(Class<?> testClass) throws Exception {
-		assertTrue("Test class [" + testClass + "] should be enabled.",
-			ProfileValueUtils.isTestEnabledInThisEnvironment(testClass));
+		assertThat(ProfileValueUtils.isTestEnabledInThisEnvironment(testClass)).as("Test class [" + testClass + "] should be enabled.").isTrue();
 	}
 
 	private void assertClassIsDisabled(Class<?> testClass) throws Exception {
@@ -59,8 +58,7 @@ public class ProfileValueUtilsTests {
 
 	private void assertMethodIsEnabled(String methodName, Class<?> testClass) throws Exception {
 		Method testMethod = testClass.getMethod(methodName);
-		assertTrue("Test method [" + testMethod + "] should be enabled.",
-			ProfileValueUtils.isTestEnabledInThisEnvironment(testMethod, testClass));
+		assertThat(ProfileValueUtils.isTestEnabledInThisEnvironment(testMethod, testClass)).as("Test method [" + testMethod + "] should be enabled.").isTrue();
 	}
 
 	private void assertMethodIsDisabled(String methodName, Class<?> testClass) throws Exception {
@@ -72,8 +70,8 @@ public class ProfileValueUtilsTests {
 	private void assertMethodIsEnabled(ProfileValueSource profileValueSource, String methodName, Class<?> testClass)
 			throws Exception {
 		Method testMethod = testClass.getMethod(methodName);
-		assertTrue("Test method [" + testMethod + "] should be enabled for ProfileValueSource [" + profileValueSource
-				+ "].", ProfileValueUtils.isTestEnabledInThisEnvironment(profileValueSource, testMethod, testClass));
+		assertThat(ProfileValueUtils.isTestEnabledInThisEnvironment(profileValueSource, testMethod, testClass)).as("Test method [" + testMethod + "] should be enabled for ProfileValueSource [" + profileValueSource
+				+ "].").isTrue();
 	}
 
 	private void assertMethodIsDisabled(ProfileValueSource profileValueSource, String methodName, Class<?> testClass)

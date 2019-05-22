@@ -45,12 +45,12 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.View;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -100,7 +100,7 @@ public class MappingJackson2XmlViewTests {
 		assertEquals(MappingJackson2XmlView.DEFAULT_CONTENT_TYPE, response.getContentType());
 
 		String jsonResult = response.getContentAsString();
-		assertTrue(jsonResult.length() > 0);
+		assertThat(jsonResult.length() > 0).isTrue();
 		assertEquals(jsonResult.length(), response.getContentLength());
 
 		validateResult();
@@ -143,7 +143,7 @@ public class MappingJackson2XmlViewTests {
 		view.setUpdateContentLength(true);
 		view.render(model, request, response);
 
-		assertTrue(response.getContentAsString().length() > 0);
+		assertThat(response.getContentAsString().length() > 0).isTrue();
 		assertEquals(response.getContentAsString().length(), response.getContentLength());
 
 		validateResult();
@@ -157,8 +157,8 @@ public class MappingJackson2XmlViewTests {
 
 		view.render(model, request, response);
 
-		assertTrue(response.getContentAsString().length() > 0);
-		assertTrue(response.getContentAsString().contains("<testBeanSimple>custom</testBeanSimple>"));
+		assertThat(response.getContentAsString().length() > 0).isTrue();
+		assertThat(response.getContentAsString().contains("<testBeanSimple>custom</testBeanSimple>")).isTrue();
 
 		validateResult();
 	}
@@ -177,8 +177,8 @@ public class MappingJackson2XmlViewTests {
 		view.render(model, request, response);
 
 		String result = response.getContentAsString();
-		assertTrue(result.length() > 0);
-		assertTrue(result.contains("custom</testBeanSimple>"));
+		assertThat(result.length() > 0).isTrue();
+		assertThat(result.contains("custom</testBeanSimple>")).isTrue();
 
 		validateResult();
 	}
@@ -195,9 +195,9 @@ public class MappingJackson2XmlViewTests {
 		view.render(model, request, response);
 
 		String result = response.getContentAsString();
-		assertTrue(result.length() > 0);
+		assertThat(result.length() > 0).isTrue();
 		assertFalse(result.contains("foo"));
-		assertTrue(result.contains("bar"));
+		assertThat(result.contains("bar")).isTrue();
 		assertFalse(result.contains("baz"));
 
 		validateResult();
@@ -225,9 +225,9 @@ public class MappingJackson2XmlViewTests {
 		view.render(model, request, response);
 
 		String content = response.getContentAsString();
-		assertTrue(content.length() > 0);
+		assertThat(content.length() > 0).isTrue();
 		assertEquals(content.length(), response.getContentLength());
-		assertTrue(content.contains("foo"));
+		assertThat(content.contains("foo")).isTrue();
 		assertFalse(content.contains("boo"));
 		assertFalse(content.contains(JsonView.class.getName()));
 	}

@@ -33,9 +33,9 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.View;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -70,7 +70,7 @@ public class BaseViewTests {
 
 		checkContainsAll(model, tv.model);
 
-		assertTrue(tv.initialized);
+		assertThat(tv.initialized).isTrue();
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class BaseViewTests {
 		checkContainsAll(model, tv.model);
 		checkContainsAll(p, tv.model);
 
-		assertTrue(tv.initialized);
+		assertThat(tv.initialized).isTrue();
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class BaseViewTests {
 
 		assertEquals(3, tv.model.size());
 		assertEquals("else", tv.model.get("something"));
-		assertTrue(tv.initialized);
+		assertThat(tv.initialized).isTrue();
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class BaseViewTests {
 
 		assertEquals(3, tv.model.size());
 		assertEquals("else", tv.model.get("something"));
-		assertTrue(tv.initialized);
+		assertThat(tv.initialized).isTrue();
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class BaseViewTests {
 		checkContainsAll(model, tv.model);
 		assertEquals(3, tv.model.size());
 		assertEquals("else", tv.model.get("something"));
-		assertTrue(tv.initialized);
+		assertThat(tv.initialized).isTrue();
 	}
 
 	@Test
@@ -219,9 +219,9 @@ public class BaseViewTests {
 	public void attributeCSVParsingValid() {
 		AbstractView v = new ConcreteView();
 		v.setAttributesCSV("foo=[bar],king=[kong]");
-		assertTrue(v.getStaticAttributes().size() == 2);
-		assertTrue(v.getStaticAttributes().get("foo").equals("bar"));
-		assertTrue(v.getStaticAttributes().get("king").equals("kong"));
+		assertThat(v.getStaticAttributes().size() == 2).isTrue();
+		assertThat(v.getStaticAttributes().get("foo").equals("bar")).isTrue();
+		assertThat(v.getStaticAttributes().get("king").equals("kong")).isTrue();
 	}
 
 	@Test
@@ -231,9 +231,9 @@ public class BaseViewTests {
 		// Also tests empty value
 		String kingval = "";
 		v.setAttributesCSV("foo=(" + fooval + "),king={" + kingval + "},f1=[we]");
-		assertTrue(v.getStaticAttributes().size() == 3);
-		assertTrue(v.getStaticAttributes().get("foo").equals(fooval));
-		assertTrue(v.getStaticAttributes().get("king").equals(kingval));
+		assertThat(v.getStaticAttributes().size() == 3).isTrue();
+		assertThat(v.getStaticAttributes().get("foo").equals(fooval)).isTrue();
+		assertThat(v.getStaticAttributes().get("king").equals(kingval)).isTrue();
 	}
 
 	@Test
@@ -320,7 +320,7 @@ public class BaseViewTests {
 				throw new RuntimeException("Already initialized");
 			}
 			this.initialized = true;
-			assertTrue(getApplicationContext() == wac);
+			assertThat(getApplicationContext() == wac).isTrue();
 		}
 	}
 

@@ -31,10 +31,10 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.reactive.BindingContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ExpressionValueMethodArgumentResolver}.
@@ -69,7 +69,7 @@ public class ExpressionValueMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.paramSystemProperty));
+		assertThat(this.resolver.supportsParameter(this.paramSystemProperty)).isTrue();
 	}
 
 	@Test

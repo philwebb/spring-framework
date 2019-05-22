@@ -22,10 +22,10 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MockHttpSession}.
@@ -43,7 +43,7 @@ public class MockHttpSessionTests {
 	public void invalidateOnce() {
 		assertFalse(session.isInvalid());
 		session.invalidate();
-		assertTrue(session.isInvalid());
+		assertThat(session.isInvalid()).isTrue();
 	}
 
 	@Test

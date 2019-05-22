@@ -26,12 +26,12 @@ import org.springframework.mock.web.test.MockAsyncContext;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -62,7 +62,7 @@ public class StandardServletAsyncWebRequestTests {
 	public void isAsyncStarted() throws Exception {
 		assertFalse(this.asyncRequest.isAsyncStarted());
 		this.asyncRequest.startAsync();
-		assertTrue(this.asyncRequest.isAsyncStarted());
+		assertThat(this.asyncRequest.isAsyncStarted()).isTrue();
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class StandardServletAsyncWebRequestTests {
 		this.asyncRequest.onComplete(new AsyncEvent(this.request.getAsyncContext()));
 
 		verify(handler).run();
-		assertTrue(this.asyncRequest.isAsyncComplete());
+		assertThat(this.asyncRequest.isAsyncComplete()).isTrue();
 	}
 
 	// SPR-13292
@@ -171,6 +171,6 @@ public class StandardServletAsyncWebRequestTests {
 		this.asyncRequest.onComplete(new AsyncEvent(this.request.getAsyncContext()));
 
 		verify(handler).run();
-		assertTrue(this.asyncRequest.isAsyncComplete());
+		assertThat(this.asyncRequest.isAsyncComplete()).isTrue();
 	}
 }

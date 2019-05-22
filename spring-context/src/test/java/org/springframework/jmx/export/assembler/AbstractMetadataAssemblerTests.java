@@ -35,11 +35,11 @@ import org.springframework.jmx.export.metadata.JmxAttributeSource;
 import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.tests.aop.interceptor.NopInterceptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -88,8 +88,8 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	public void testReadWriteAttribute() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute(NAME_ATTRIBUTE);
-		assertTrue("The name attribute should be writable", attr.isWritable());
-		assertTrue("The name attribute should be readable", attr.isReadable());
+		assertThat(attr.isWritable()).as("The name attribute should be writable").isTrue();
+		assertThat(attr.isReadable()).as("The name attribute should be readable").isTrue();
 	}
 
 	/**
@@ -185,7 +185,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		assertEquals("Incorrect number of operations", getExpectedOperationCount(), inf.getOperations().length);
 		assertEquals("Incorrect number of attributes", getExpectedAttributeCount(), inf.getAttributes().length);
 
-		assertTrue("Not included in autodetection", assembler.includeBean(proxy.getClass(), "some bean name"));
+		assertThat(assembler.includeBean(proxy.getClass(), "some bean name")).as("Not included in autodetection").isTrue();
 	}
 
 	@Test

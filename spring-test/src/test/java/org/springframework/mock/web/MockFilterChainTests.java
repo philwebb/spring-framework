@@ -33,7 +33,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -114,8 +113,8 @@ public class MockFilterChainTests {
 
 		chain.doFilter(this.request, this.response);
 
-		assertTrue(filter1.invoked);
-		assertTrue(filter2.invoked);
+		assertThat(filter1.invoked).isTrue();
+		assertThat(filter2.invoked).isTrue();
 
 		verify(servlet).service(this.request, this.response);
 

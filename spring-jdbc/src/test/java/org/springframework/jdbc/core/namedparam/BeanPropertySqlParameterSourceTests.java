@@ -19,7 +19,6 @@ package org.springframework.jdbc.core.namedparam;
 import java.sql.Types;
 import java.util.Arrays;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.tests.sample.beans.TestBean;
@@ -29,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans
@@ -55,8 +53,8 @@ public class BeanPropertySqlParameterSourceTests {
 	@Test
 	public void successfulPropertyAccess() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
-		assertTrue(Arrays.asList(source.getReadablePropertyNames()).contains("name"));
-		assertTrue(Arrays.asList(source.getReadablePropertyNames()).contains("age"));
+		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("name")).isTrue();
+		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("age")).isTrue();
 		assertEquals("tb", source.getValue("name"));
 		assertEquals(99, source.getValue("age"));
 		assertEquals(Types.VARCHAR, source.getSqlType("name"));

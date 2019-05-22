@@ -33,11 +33,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Sam Brannen
@@ -90,7 +90,8 @@ public class ControllerIntegrationTests {
 
 		ApplicationContext parent = wac.getParent();
 		assertNotNull(parent);
-		assertTrue(parent instanceof WebApplicationContext);
+		boolean condition = parent instanceof WebApplicationContext;
+		assertThat(condition).isTrue();
 		WebApplicationContext root = (WebApplicationContext) parent;
 		assertFalse(root.getBeansOfType(String.class).containsKey("bar"));
 

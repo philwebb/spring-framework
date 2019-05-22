@@ -35,11 +35,11 @@ import org.springframework.jms.StubQueue;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ErrorHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -240,7 +240,7 @@ public class SimpleMessageListenerContainerTests {
 				listener.executorInvoked = true;
 				assertFalse(listener.listenerInvoked);
 				task.run();
-				assertTrue(listener.listenerInvoked);
+				assertThat(listener.listenerInvoked).isTrue();
 			}
 		});
 		this.container.afterPropertiesSet();
@@ -249,8 +249,8 @@ public class SimpleMessageListenerContainerTests {
 		final Message message = mock(Message.class);
 		messageConsumer.sendMessage(message);
 
-		assertTrue(listener.executorInvoked);
-		assertTrue(listener.listenerInvoked);
+		assertThat(listener.executorInvoked).isTrue();
+		assertThat(listener.listenerInvoked).isTrue();
 
 		verify(connection).setExceptionListener(this.container);
 		verify(connection).start();

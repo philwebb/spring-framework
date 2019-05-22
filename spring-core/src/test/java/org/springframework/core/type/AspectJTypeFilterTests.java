@@ -24,8 +24,8 @@ import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.core.type.filter.AspectJTypeFilter;
 import org.springframework.stereotype.Component;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Ramnivas Laddad
@@ -131,7 +131,7 @@ public class AspectJTypeFilterTests {
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(type);
 
 		AspectJTypeFilter filter = new AspectJTypeFilter(typePattern, getClass().getClassLoader());
-		assertTrue(filter.match(metadataReader, metadataReaderFactory));
+		assertThat(filter.match(metadataReader, metadataReaderFactory)).isTrue();
 		ClassloadingAssertions.assertClassNotLoaded(type);
 	}
 

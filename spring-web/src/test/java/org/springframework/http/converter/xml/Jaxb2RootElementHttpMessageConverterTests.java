@@ -46,12 +46,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;
 import static org.xmlunit.diff.DifferenceEvaluators.downgradeDifferencesToEqual;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * Tests for {@link Jaxb2RootElementHttpMessageConverter}.
@@ -84,20 +82,15 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue("Converter does not support reading @XmlRootElement",
-				converter.canRead(RootElement.class, null));
-		assertTrue("Converter does not support reading @XmlType",
-				converter.canRead(Type.class, null));
+		assertThat(converter.canRead(RootElement.class, null)).as("Converter does not support reading @XmlRootElement").isTrue();
+		assertThat(converter.canRead(Type.class, null)).as("Converter does not support reading @XmlType").isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue("Converter does not support writing @XmlRootElement",
-				converter.canWrite(RootElement.class, null));
-		assertTrue("Converter does not support writing @XmlRootElement subclass",
-				converter.canWrite(RootElementSubclass.class, null));
-		assertTrue("Converter does not support writing @XmlRootElement subclass",
-				converter.canWrite(rootElementCglib.getClass(), null));
+		assertThat(converter.canWrite(RootElement.class, null)).as("Converter does not support writing @XmlRootElement").isTrue();
+		assertThat(converter.canWrite(RootElementSubclass.class, null)).as("Converter does not support writing @XmlRootElement subclass").isTrue();
+		assertThat(converter.canWrite(rootElementCglib.getClass(), null)).as("Converter does not support writing @XmlRootElement subclass").isTrue();
 		assertFalse("Converter supports writing @XmlType", converter.canWrite(Type.class, null));
 	}
 

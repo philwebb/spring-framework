@@ -40,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Keith Donald
@@ -66,16 +65,17 @@ public class MapToMapConverterTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(map);
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("scalarMapTarget"));
 
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		try {
 			conversionService.convert(map, sourceType, targetType);
 		}
 		catch (ConversionFailedException ex) {
-			assertTrue(ex.getCause() instanceof ConverterNotFoundException);
+			boolean condition = ex.getCause() instanceof ConverterNotFoundException;
+			assertThat(condition).isTrue();
 		}
 
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertFalse(map.equals(result));
@@ -89,7 +89,7 @@ public class MapToMapConverterTests {
 		map.put("1", "9");
 		map.put("2", "37");
 
-		assertTrue(conversionService.canConvert(Map.class, Map.class));
+		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
 		assertSame(map, conversionService.convert(map, Map.class));
 	}
 
@@ -101,16 +101,17 @@ public class MapToMapConverterTests {
 		TypeDescriptor sourceType = new TypeDescriptor(getClass().getField("notGenericMapSource"));
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("scalarMapTarget"));
 
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		try {
 			conversionService.convert(map, sourceType, targetType);
 		}
 		catch (ConversionFailedException ex) {
-			assertTrue(ex.getCause() instanceof ConverterNotFoundException);
+			boolean condition = ex.getCause() instanceof ConverterNotFoundException;
+			assertThat(condition).isTrue();
 		}
 
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertFalse(map.equals(result));
@@ -126,17 +127,18 @@ public class MapToMapConverterTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(map);
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("collectionMapTarget"));
 
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		try {
 			conversionService.convert(map, sourceType, targetType);
 		}
 		catch (ConversionFailedException ex) {
-			assertTrue(ex.getCause() instanceof ConverterNotFoundException);
+			boolean condition = ex.getCause() instanceof ConverterNotFoundException;
+			assertThat(condition).isTrue();
 		}
 
 		conversionService.addConverter(new CollectionToCollectionConverter(conversionService));
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
 		assertFalse(map.equals(result));
@@ -158,7 +160,7 @@ public class MapToMapConverterTests {
 
 		conversionService.addConverter(new CollectionToCollectionConverter(conversionService));
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
 		assertFalse(map.equals(result));
@@ -172,7 +174,7 @@ public class MapToMapConverterTests {
 		map.put("1", Arrays.asList("9", "12"));
 		map.put("2", Arrays.asList("37", "23"));
 
-		assertTrue(conversionService.canConvert(Map.class, Map.class));
+		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
 		assertSame(map, conversionService.convert(map, Map.class));
 	}
 
@@ -184,7 +186,7 @@ public class MapToMapConverterTests {
 		conversionService.addConverter(new CollectionToCollectionConverter(conversionService));
 		conversionService.addConverter(new CollectionToObjectConverter(conversionService));
 
-		assertTrue(conversionService.canConvert(Map.class, Map.class));
+		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
 		assertSame(map, conversionService.convert(map, Map.class));
 	}
 
@@ -194,7 +196,7 @@ public class MapToMapConverterTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(map);
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("emptyMapTarget"));
 
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		assertSame(map, conversionService.convert(map, sourceType, targetType));
 	}
 
@@ -202,7 +204,7 @@ public class MapToMapConverterTests {
 	public void emptyMapNoTargetGenericInfo() throws Exception {
 		Map<String, String> map = new HashMap<>();
 
-		assertTrue(conversionService.canConvert(Map.class, Map.class));
+		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
 		assertSame(map, conversionService.convert(map, Map.class));
 	}
 
@@ -212,7 +214,7 @@ public class MapToMapConverterTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(map);
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("emptyMapDifferentTarget"));
 
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		LinkedHashMap<String, String> result = (LinkedHashMap<String, String>) conversionService.convert(map, sourceType, targetType);
 		assertEquals(map, result);
@@ -229,7 +231,7 @@ public class MapToMapConverterTests {
 		TypeDescriptor targetType = TypeDescriptor.map(NoDefaultConstructorMap.class,
 				TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Integer.class));
 
-		assertTrue(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<String, Integer> result = (Map<String, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertEquals(map, result);

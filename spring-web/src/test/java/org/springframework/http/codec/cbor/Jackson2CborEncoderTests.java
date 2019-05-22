@@ -33,10 +33,10 @@ import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.MimeType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.io.buffer.DataBufferUtils.release;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 
@@ -70,11 +70,11 @@ public class Jackson2CborEncoderTests extends AbstractLeakCheckingTestCase {
 	@Test
 	public void canEncode() {
 		ResolvableType pojoType = ResolvableType.forClass(Pojo.class);
-		assertTrue(this.encoder.canEncode(pojoType, CBOR_MIME_TYPE));
-		assertTrue(this.encoder.canEncode(pojoType, null));
+		assertThat(this.encoder.canEncode(pojoType, CBOR_MIME_TYPE)).isTrue();
+		assertThat(this.encoder.canEncode(pojoType, null)).isTrue();
 
 		// SPR-15464
-		assertTrue(this.encoder.canEncode(ResolvableType.NONE, null));
+		assertThat(this.encoder.canEncode(ResolvableType.NONE, null)).isTrue();
 	}
 
 	@Test

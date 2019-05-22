@@ -27,11 +27,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -72,7 +70,7 @@ public class WebArgumentResolverAdapterTests {
 	public void supportsParameter() throws Exception {
 		given(adaptee.resolveArgument(parameter, webRequest)).willReturn(42);
 
-		assertTrue("Parameter not supported", adapter.supportsParameter(parameter));
+		assertThat(adapter.supportsParameter(parameter)).as("Parameter not supported").isTrue();
 
 		verify(adaptee).resolveArgument(parameter, webRequest);
 	}

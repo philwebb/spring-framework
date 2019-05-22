@@ -41,11 +41,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests with {@code @CrossOrigin} and {@code @RequestMapping}
@@ -191,7 +191,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		entity = performGet("/baz", this.headers, String.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
 		assertEquals("https://site1.com", entity.getHeaders().getAccessControlAllowOrigin());
-		assertTrue(entity.getHeaders().getAccessControlAllowCredentials());
+		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isTrue();
 		assertEquals("baz", entity.getBody());
 	}
 
@@ -207,7 +207,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 				entity.getHeaders().getAccessControlAllowMethods().toArray());
 		assertArrayEquals(new String[] {"header1"},
 				entity.getHeaders().getAccessControlAllowHeaders().toArray());
-		assertTrue(entity.getHeaders().getAccessControlAllowCredentials());
+		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isTrue();
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		assertEquals("https://site1.com", entity.getHeaders().getAccessControlAllowOrigin());
 		assertArrayEquals(new HttpMethod[] {HttpMethod.GET},
 				entity.getHeaders().getAccessControlAllowMethods().toArray());
-		assertTrue(entity.getHeaders().getAccessControlAllowCredentials());
+		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isTrue();
 	}
 
 

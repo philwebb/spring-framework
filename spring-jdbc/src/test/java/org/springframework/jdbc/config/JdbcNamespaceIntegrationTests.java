@@ -43,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory.DEFAULT_DATABASE_NAME;
 
 /**
@@ -203,7 +202,8 @@ public class JdbcNamespaceIntegrationTests {
 			for (String dataSourceName : dataSources) {
 				DataSource dataSource = context.getBean(dataSourceName, DataSource.class);
 				assertNumRowsInTestTable(new JdbcTemplate(dataSource), count);
-				assertTrue(dataSource instanceof AbstractDriverBasedDataSource);
+				boolean condition = dataSource instanceof AbstractDriverBasedDataSource;
+				assertThat(condition).isTrue();
 				AbstractDriverBasedDataSource adbDataSource = (AbstractDriverBasedDataSource) dataSource;
 				assertThat(adbDataSource.getUrl()).contains(dataSourceName);
 			}
@@ -218,9 +218,10 @@ public class JdbcNamespaceIntegrationTests {
 		try {
 			DataSource dataSource = context.getBean(DataSource.class);
 			assertNumRowsInTestTable(new JdbcTemplate(dataSource), 1);
-			assertTrue(dataSource instanceof AbstractDriverBasedDataSource);
+			boolean condition = dataSource instanceof AbstractDriverBasedDataSource;
+			assertThat(condition).isTrue();
 			AbstractDriverBasedDataSource adbDataSource = (AbstractDriverBasedDataSource) dataSource;
-			assertTrue(urlPredicate.test(adbDataSource.getUrl()));
+			assertThat(urlPredicate.test(adbDataSource.getUrl())).isTrue();
 		}
 		finally {
 			context.close();

@@ -42,7 +42,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -113,8 +112,7 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 	@Test
 	@Override
 	public void count() {
-		assertTrue("should have 14 beans, not "+ this.applicationContext.getBeanDefinitionCount(),
-			this.applicationContext.getBeanDefinitionCount() == 14);
+		assertThat(this.applicationContext.getBeanDefinitionCount() == 14).as("should have 14 beans, not "+ this.applicationContext.getBeanDefinitionCount()).isTrue();
 	}
 
 	@Test
@@ -130,39 +128,42 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 		assertThatExceptionOfType(NoSuchMessageException.class).isThrownBy(() ->
 				wac.getMessage("someMessage", null, Locale.getDefault()));
 		String msg = wac.getMessage("someMessage", null, "default", Locale.getDefault());
-		assertTrue("Default message returned", "default".equals(msg));
+		assertThat("default".equals(msg)).as("Default message returned").isTrue();
 	}
 
 	@Test
 	public void contextNesting() {
 		TestBean father = (TestBean) this.applicationContext.getBean("father");
-		assertTrue("Bean from root context", father != null);
-		assertTrue("Custom BeanPostProcessor applied", father.getFriends().contains("myFriend"));
+		assertThat(father != null).as("Bean from root context").isTrue();
+		assertThat(father.getFriends().contains("myFriend")).as("Custom BeanPostProcessor applied").isTrue();
 
 		TestBean rod = (TestBean) this.applicationContext.getBean("rod");
-		assertTrue("Bean from child context", "Rod".equals(rod.getName()));
-		assertTrue("Bean has external reference", rod.getSpouse() == father);
-		assertTrue("Custom BeanPostProcessor not applied", !rod.getFriends().contains("myFriend"));
+		assertThat("Rod".equals(rod.getName())).as("Bean from child context").isTrue();
+		assertThat(rod.getSpouse() == father).as("Bean has external reference").isTrue();
+		boolean condition = !rod.getFriends().contains("myFriend");
+		assertThat(condition).as("Custom BeanPostProcessor not applied").isTrue();
 
 		rod = (TestBean) this.root.getBean("rod");
-		assertTrue("Bean from root context", "Roderick".equals(rod.getName()));
-		assertTrue("Custom BeanPostProcessor applied", rod.getFriends().contains("myFriend"));
+		assertThat("Roderick".equals(rod.getName())).as("Bean from root context").isTrue();
+		assertThat(rod.getFriends().contains("myFriend")).as("Custom BeanPostProcessor applied").isTrue();
 	}
 
 	@Test
 	public void initializingBeanAndInitMethod() throws Exception {
 		assertFalse(InitAndIB.constructed);
 		InitAndIB iib = (InitAndIB) this.applicationContext.getBean("init-and-ib");
-		assertTrue(InitAndIB.constructed);
-		assertTrue(iib.afterPropertiesSetInvoked && iib.initMethodInvoked);
-		assertTrue(!iib.destroyed && !iib.customDestroyed);
+		assertThat(InitAndIB.constructed).isTrue();
+		assertThat(iib.afterPropertiesSetInvoked && iib.initMethodInvoked).isTrue();
+		boolean condition1 = !iib.destroyed && !iib.customDestroyed;
+		assertThat(condition1).isTrue();
 		this.applicationContext.close();
-		assertTrue(!iib.destroyed && !iib.customDestroyed);
+		boolean condition = !iib.destroyed && !iib.customDestroyed;
+		assertThat(condition).isTrue();
 		ConfigurableApplicationContext parent = (ConfigurableApplicationContext) this.applicationContext.getParent();
 		parent.close();
-		assertTrue(iib.destroyed && iib.customDestroyed);
+		assertThat(iib.destroyed && iib.customDestroyed).isTrue();
 		parent.close();
-		assertTrue(iib.destroyed && iib.customDestroyed);
+		assertThat(iib.destroyed && iib.customDestroyed).isTrue();
 	}
 
 

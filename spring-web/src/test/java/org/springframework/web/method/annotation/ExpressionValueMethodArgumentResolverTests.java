@@ -31,9 +31,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link ExpressionValueMethodArgumentResolver}.
@@ -77,8 +77,8 @@ public class ExpressionValueMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() throws Exception {
-		assertTrue(resolver.supportsParameter(paramSystemProperty));
-		assertTrue(resolver.supportsParameter(paramContextPath));
+		assertThat(resolver.supportsParameter(paramSystemProperty)).isTrue();
+		assertThat(resolver.supportsParameter(paramContextPath)).isTrue();
 		assertFalse(resolver.supportsParameter(paramNotSupported));
 	}
 

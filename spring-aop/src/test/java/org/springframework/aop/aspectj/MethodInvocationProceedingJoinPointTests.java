@@ -37,13 +37,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -80,7 +78,7 @@ public class MethodInvocationProceedingJoinPointTests {
 			@Override
 			public void before(Method method, Object[] args, @Nullable Object target) throws Throwable {
 				JoinPoint jp = AbstractAspectJAdvice.currentJoinPoint();
-				assertTrue("Method named in toString", jp.toString().contains(method.getName()));
+				assertThat(jp.toString().contains(method.getName())).as("Method named in toString").isTrue();
 				// Ensure that these don't cause problems
 				jp.toShortString();
 				jp.toLongString();
@@ -89,7 +87,7 @@ public class MethodInvocationProceedingJoinPointTests {
 				assertFalse(AopUtils.isAopProxy(AbstractAspectJAdvice.currentJoinPoint().getTarget()));
 
 				ITestBean thisProxy = (ITestBean) AbstractAspectJAdvice.currentJoinPoint().getThis();
-				assertTrue(AopUtils.isAopProxy(AbstractAspectJAdvice.currentJoinPoint().getThis()));
+				assertThat(AopUtils.isAopProxy(AbstractAspectJAdvice.currentJoinPoint().getThis())).isTrue();
 
 				assertNotSame(target, thisProxy);
 
@@ -116,9 +114,9 @@ public class MethodInvocationProceedingJoinPointTests {
 				assertSame("Return same MethodSignature repeatedly", msig, AbstractAspectJAdvice.currentJoinPoint().getSignature());
 				assertSame("Return same JoinPoint repeatedly", AbstractAspectJAdvice.currentJoinPoint(), AbstractAspectJAdvice.currentJoinPoint());
 				assertEquals(method.getDeclaringClass(), msig.getDeclaringType());
-				assertTrue(Arrays.equals(method.getParameterTypes(), msig.getParameterTypes()));
+				assertThat(Arrays.equals(method.getParameterTypes(), msig.getParameterTypes())).isTrue();
 				assertEquals(method.getReturnType(), msig.getReturnType());
-				assertTrue(Arrays.equals(method.getExceptionTypes(), msig.getExceptionTypes()));
+				assertThat(Arrays.equals(method.getExceptionTypes(), msig.getExceptionTypes())).isTrue();
 				msig.toLongString();
 				msig.toShortString();
 			}

@@ -23,10 +23,10 @@ import org.junit.Test;
 
 import org.springframework.transaction.TransactionDefinition;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the various {@link TransactionAttributeSource} implementations.
@@ -45,12 +45,12 @@ public class TransactionAttributeSourceTests {
 		MatchAlwaysTransactionAttributeSource tas = new MatchAlwaysTransactionAttributeSource();
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
 		assertNotNull(ta);
-		assertTrue(TransactionDefinition.PROPAGATION_REQUIRED == ta.getPropagationBehavior());
+		assertThat(TransactionDefinition.PROPAGATION_REQUIRED == ta.getPropagationBehavior()).isTrue();
 
 		tas.setTransactionAttribute(new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_SUPPORTS));
 		ta = tas.getTransactionAttribute(IOException.class.getMethod("getMessage"), IOException.class);
 		assertNotNull(ta);
-		assertTrue(TransactionDefinition.PROPAGATION_SUPPORTS == ta.getPropagationBehavior());
+		assertThat(TransactionDefinition.PROPAGATION_SUPPORTS == ta.getPropagationBehavior()).isTrue();
 	}
 
 	@Test

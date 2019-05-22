@@ -28,9 +28,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.servlet.function.RequestPredicates.HEAD;
 
 /**
@@ -102,7 +102,7 @@ public class RouterFunctionBuilderTests {
 	@Test
 	public void resources() {
 		Resource resource = new ClassPathResource("/org/springframework/web/servlet/function/");
-		assertTrue(resource.exists());
+		assertThat(resource.exists()).isTrue();
 
 		RouterFunction<ServerResponse> route = RouterFunctions.route()
 				.resources("/resources/**", resource)

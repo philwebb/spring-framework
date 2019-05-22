@@ -45,11 +45,11 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
 import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.stereotype.Component;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -111,8 +111,8 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 		JmsListenerContainerTestFactory factory =
 				context.getBean(JmsListenerContainerTestFactory.class);
 		MessageListenerTestContainer container = factory.getListenerContainers().get(0);
-		assertTrue(container.isAutoStartup());
-		assertTrue(container.isStarted());
+		assertThat(container.isAutoStartup()).isTrue();
+		assertThat(container.isStarted()).isTrue();
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 		assertFalse(container.isStarted());
 		JmsListenerEndpointRegistry registry = context.getBean(JmsListenerEndpointRegistry.class);
 		registry.start();
-		assertTrue(container.isStarted());
+		assertThat(container.isStarted()).isTrue();
 	}
 
 	@Override
@@ -198,9 +198,9 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 		context.getBean(LazyBean.class);  // trigger lazy resolution
 		assertEquals(1, defaultFactory.getListenerContainers().size());
 		MessageListenerTestContainer container = defaultFactory.getListenerContainers().get(0);
-		assertTrue("Should have been started " + container, container.isStarted());
+		assertThat(container.isStarted()).as("Should have been started " + container).isTrue();
 		context.close();  // close and stop the listeners
-		assertTrue("Should have been stopped " + container, container.isStopped());
+		assertThat(container.isStopped()).as("Should have been stopped " + container).isTrue();
 	}
 
 

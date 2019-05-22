@@ -56,7 +56,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link ContextLoader} and {@link ContextLoaderListener}.
@@ -80,17 +79,20 @@ public class ContextLoaderTests {
 		listener.contextInitialized(event);
 		String contextAttr = WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
 		WebApplicationContext context = (WebApplicationContext) sc.getAttribute(contextAttr);
-		assertTrue("Correct WebApplicationContext exposed in ServletContext", context instanceof XmlWebApplicationContext);
-		assertTrue(WebApplicationContextUtils.getRequiredWebApplicationContext(sc) instanceof XmlWebApplicationContext);
+		boolean condition1 = context instanceof XmlWebApplicationContext;
+		assertThat(condition1).as("Correct WebApplicationContext exposed in ServletContext").isTrue();
+		boolean condition2 = WebApplicationContextUtils.getRequiredWebApplicationContext(sc) instanceof XmlWebApplicationContext;
+		assertThat(condition2).isTrue();
 		LifecycleBean lb = (LifecycleBean) context.getBean("lifecycle");
-		assertTrue("Has father", context.containsBean("father"));
-		assertTrue("Has rod", context.containsBean("rod"));
-		assertTrue("Has kerry", context.containsBean("kerry"));
-		assertTrue("Not destroyed", !lb.isDestroyed());
+		assertThat(context.containsBean("father")).as("Has father").isTrue();
+		assertThat(context.containsBean("rod")).as("Has rod").isTrue();
+		assertThat(context.containsBean("kerry")).as("Has kerry").isTrue();
+		boolean condition = !lb.isDestroyed();
+		assertThat(condition).as("Not destroyed").isTrue();
 		assertFalse(context.containsBean("beans1.bean1"));
 		assertFalse(context.containsBean("beans1.bean2"));
 		listener.contextDestroyed(event);
-		assertTrue("Destroyed", lb.isDestroyed());
+		assertThat(lb.isDestroyed()).as("Destroyed").isTrue();
 		assertNull(sc.getAttribute(contextAttr));
 		assertNull(WebApplicationContextUtils.getWebApplicationContext(sc));
 	}
@@ -248,8 +250,8 @@ public class ContextLoaderTests {
 		listener.contextInitialized(event);
 		String contextAttr = WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
 		WebApplicationContext wc = (WebApplicationContext) sc.getAttribute(contextAttr);
-		assertTrue("Correct WebApplicationContext exposed in ServletContext",
-				wc instanceof SimpleWebApplicationContext);
+		boolean condition = wc instanceof SimpleWebApplicationContext;
+		assertThat(condition).as("Correct WebApplicationContext exposed in ServletContext").isTrue();
 	}
 
 	@Test
@@ -302,8 +304,8 @@ public class ContextLoaderTests {
 		servlet.setContextConfigLocation("/org/springframework/web/context/WEB-INF/testNamespace.xml "
 				+ "/org/springframework/web/context/WEB-INF/context-addition.xml");
 		servlet.init(new MockServletConfig(new MockServletContext(""), "test"));
-		assertTrue(servlet.getWebApplicationContext().containsBean("kerry"));
-		assertTrue(servlet.getWebApplicationContext().containsBean("kerryX"));
+		assertThat(servlet.getWebApplicationContext().containsBean("kerry")).isTrue();
+		assertThat(servlet.getWebApplicationContext().containsBean("kerryX")).isTrue();
 	}
 
 	@Test
@@ -311,18 +313,18 @@ public class ContextLoaderTests {
 	public void testClassPathXmlApplicationContext() throws IOException {
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"/org/springframework/web/context/WEB-INF/applicationContext.xml");
-		assertTrue("Has father", context.containsBean("father"));
-		assertTrue("Has rod", context.containsBean("rod"));
+		assertThat(context.containsBean("father")).as("Has father").isTrue();
+		assertThat(context.containsBean("rod")).as("Has rod").isTrue();
 		assertFalse("Hasn't kerry", context.containsBean("kerry"));
-		assertTrue("Doesn't have spouse", ((TestBean) context.getBean("rod")).getSpouse() == null);
-		assertTrue("myinit not evaluated", "Roderick".equals(((TestBean) context.getBean("rod")).getName()));
+		assertThat(((TestBean) context.getBean("rod")).getSpouse() == null).as("Doesn't have spouse").isTrue();
+		assertThat("Roderick".equals(((TestBean) context.getBean("rod")).getName())).as("myinit not evaluated").isTrue();
 
 		context = new ClassPathXmlApplicationContext(new String[] {
 			"/org/springframework/web/context/WEB-INF/applicationContext.xml",
 			"/org/springframework/web/context/WEB-INF/context-addition.xml" });
-		assertTrue("Has father", context.containsBean("father"));
-		assertTrue("Has rod", context.containsBean("rod"));
-		assertTrue("Has kerry", context.containsBean("kerry"));
+		assertThat(context.containsBean("father")).as("Has father").isTrue();
+		assertThat(context.containsBean("rod")).as("Has rod").isTrue();
+		assertThat(context.containsBean("kerry")).as("Has kerry").isTrue();
 	}
 
 	@Test

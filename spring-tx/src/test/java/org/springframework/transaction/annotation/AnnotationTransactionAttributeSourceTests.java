@@ -38,11 +38,11 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Colin Sampaleanu
@@ -149,7 +149,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		assertEquals(TransactionAttribute.PROPAGATION_REQUIRES_NEW, actual.getPropagationBehavior());
 		assertEquals(TransactionAttribute.ISOLATION_REPEATABLE_READ, actual.getIsolationLevel());
 		assertEquals(5, actual.getTimeout());
-		assertTrue(actual.isReadOnly());
+		assertThat(actual.isReadOnly()).isTrue();
 
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
@@ -172,7 +172,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
-		assertTrue(actual.rollbackOn(new Exception()));
+		assertThat(actual.rollbackOn(new Exception())).isTrue();
 		assertFalse(actual.rollbackOn(new IOException()));
 
 		actual = atas.getTransactionAttribute(method, method.getDeclaringClass());
@@ -182,7 +182,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
-		assertTrue(actual.rollbackOn(new Exception()));
+		assertThat(actual.rollbackOn(new Exception())).isTrue();
 		assertFalse(actual.rollbackOn(new IOException()));
 	}
 
@@ -241,7 +241,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
 
-		assertTrue(actual.isReadOnly());
+		assertThat(actual.isReadOnly()).isTrue();
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
 
-		assertTrue(actual.isReadOnly());
+		assertThat(actual.isReadOnly()).isTrue();
 	}
 
 	@Test
@@ -277,7 +277,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
 
-		assertTrue(actual.isReadOnly());
+		assertThat(actual.isReadOnly()).isTrue();
 	}
 
 	@Test
@@ -299,7 +299,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		rbta.getRollbackRules().add(new NoRollbackRuleAttribute(IOException.class));
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
 
-		assertTrue(actual.isReadOnly());
+		assertThat(actual.isReadOnly()).isTrue();
 	}
 
 	@Test

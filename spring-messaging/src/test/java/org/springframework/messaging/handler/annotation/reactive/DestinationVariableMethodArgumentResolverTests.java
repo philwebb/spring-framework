@@ -30,10 +30,10 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.invocation.ResolvableMethod;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.messaging.handler.annotation.MessagingPredicates.destinationVar;
 
 /**
@@ -51,7 +51,7 @@ public class DestinationVariableMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(this.resolvable.annot(destinationVar().noValue()).arg()));
+		assertThat(resolver.supportsParameter(this.resolvable.annot(destinationVar().noValue()).arg())).isTrue();
 		assertFalse(resolver.supportsParameter(this.resolvable.annotNotPresent(DestinationVariable.class).arg()));
 	}
 

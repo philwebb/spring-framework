@@ -22,10 +22,10 @@ import org.junit.Test;
 
 import org.springframework.web.context.request.async.DeferredResult.DeferredResultHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -43,7 +43,7 @@ public class DeferredResultTests {
 		DeferredResult<String> result = new DeferredResult<>();
 		result.setResultHandler(handler);
 
-		assertTrue(result.setResult("hello"));
+		assertThat(result.setResult("hello")).isTrue();
 		verify(handler).handleResult("hello");
 	}
 
@@ -54,7 +54,7 @@ public class DeferredResultTests {
 		DeferredResult<String> result = new DeferredResult<>();
 		result.setResultHandler(handler);
 
-		assertTrue(result.setResult("hello"));
+		assertThat(result.setResult("hello")).isTrue();
 		assertFalse(result.setResult("hi"));
 
 		verify(handler).handleResult("hello");
@@ -71,7 +71,7 @@ public class DeferredResultTests {
 
 		result.setResult("hello");
 
-		assertTrue(result.isSetOrExpired());
+		assertThat(result.isSetOrExpired()).isTrue();
 
 		verify(handler).handleResult("hello");
 	}
@@ -105,7 +105,7 @@ public class DeferredResultTests {
 
 		result.getInterceptor().afterCompletion(null, null);
 
-		assertTrue(result.isSetOrExpired());
+		assertThat(result.isSetOrExpired()).isTrue();
 		assertEquals("completion event", sb.toString());
 	}
 

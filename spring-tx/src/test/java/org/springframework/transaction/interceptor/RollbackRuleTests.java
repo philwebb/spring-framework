@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the {@link RollbackRuleAttribute} class.
@@ -68,10 +67,10 @@ public class RollbackRuleTests {
 	@Test
 	public void alwaysTrueForThrowable() {
 		RollbackRuleAttribute rr = new RollbackRuleAttribute(java.lang.Throwable.class.getName());
-		assertTrue(rr.getDepth(new MyRuntimeException("")) > 0);
-		assertTrue(rr.getDepth(new IOException()) > 0);
-		assertTrue(rr.getDepth(new FatalBeanException(null,null)) > 0);
-		assertTrue(rr.getDepth(new RuntimeException()) > 0);
+		assertThat(rr.getDepth(new MyRuntimeException("")) > 0).isTrue();
+		assertThat(rr.getDepth(new IOException()) > 0).isTrue();
+		assertThat(rr.getDepth(new FatalBeanException(null,null)) > 0).isTrue();
+		assertThat(rr.getDepth(new RuntimeException()) > 0).isTrue();
 	}
 
 	@Test

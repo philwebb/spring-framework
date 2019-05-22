@@ -22,8 +22,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test case for {@link CorsUtils}.
@@ -36,7 +36,7 @@ public class CorsUtilsTests {
 	public void isCorsRequest() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader(HttpHeaders.ORIGIN, "https://domain.com");
-		assertTrue(CorsUtils.isCorsRequest(request));
+		assertThat(CorsUtils.isCorsRequest(request)).isTrue();
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class CorsUtilsTests {
 		request.setMethod(HttpMethod.OPTIONS.name());
 		request.addHeader(HttpHeaders.ORIGIN, "https://domain.com");
 		request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
-		assertTrue(CorsUtils.isPreFlightRequest(request));
+		assertThat(CorsUtils.isPreFlightRequest(request)).isTrue();
 	}
 
 	@Test

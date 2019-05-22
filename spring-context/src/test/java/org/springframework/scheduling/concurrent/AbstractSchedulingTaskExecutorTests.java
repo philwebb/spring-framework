@@ -33,11 +33,11 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.task.AsyncListenableTaskExecutor;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -97,7 +97,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		Future<?> future = executor.submit(task);
 		assertThatExceptionOfType(ExecutionException.class).isThrownBy(() ->
 				future.get(1000, TimeUnit.MILLISECONDS));
-		assertTrue(future.isDone());
+		assertThat(future.isDone()).isTrue();
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		Future<String> future = executor.submit(task);
 		assertThatExceptionOfType(ExecutionException.class).isThrownBy(() ->
 				future.get(1000, TimeUnit.MILLISECONDS));
-		assertTrue(future.isDone());
+		assertThat(future.isDone()).isTrue();
 	}
 
 	@Test

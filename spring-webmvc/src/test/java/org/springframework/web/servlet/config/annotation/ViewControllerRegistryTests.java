@@ -30,11 +30,11 @@ import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with a {@link ViewControllerRegistry}.
@@ -122,7 +122,7 @@ public class ViewControllerRegistryTests {
 
 		assertNull(controller.getViewName());
 		assertEquals(HttpStatus.NOT_FOUND, controller.getStatusCode());
-		assertTrue(controller.isStatusOnly());
+		assertThat(controller.isStatusOnly()).isTrue();
 		assertNotNull(controller.getApplicationContext());
 	}
 

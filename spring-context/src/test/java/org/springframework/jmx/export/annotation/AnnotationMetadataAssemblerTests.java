@@ -26,10 +26,10 @@ import org.springframework.jmx.IJmxTestBean;
 import org.springframework.jmx.export.assembler.AbstractMetadataAssemblerTests;
 import org.springframework.jmx.export.metadata.JmxAttributeSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -44,8 +44,8 @@ public class AnnotationMetadataAssemblerTests extends AbstractMetadataAssemblerT
 	public void testAttributeFromInterface() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute("Colour");
-		assertTrue("The name attribute should be writable", attr.isWritable());
-		assertTrue("The name attribute should be readable", attr.isReadable());
+		assertThat(attr.isWritable()).as("The name attribute should be writable").isTrue();
+		assertThat(attr.isReadable()).as("The name attribute should be readable").isTrue();
 	}
 
 	@Test

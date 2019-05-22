@@ -33,9 +33,9 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.lang.Nullable;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -80,8 +80,7 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 
 		SQLException dupKeyEx = new SQLException("", "", 10);
 		DataAccessException dksex = sext.translate("task", "SQL", dupKeyEx);
-		assertTrue("Not instance of DataIntegrityViolationException",
-				DataIntegrityViolationException.class.isAssignableFrom(dksex.getClass()));
+		assertThat(DataIntegrityViolationException.class.isAssignableFrom(dksex.getClass())).as("Not instance of DataIntegrityViolationException").isTrue();
 
 		// Test fallback. We assume that no database will ever return this error code,
 		// but 07xxx will be bad grammar picked up by the fallback SQLState translator
@@ -94,8 +93,8 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 	private void checkTranslation(SQLExceptionTranslator sext, int errorCode, Class<?> exClass) {
 		SQLException sex = new SQLException("", "", errorCode);
 		DataAccessException ex = sext.translate("", "", sex);
-		assertTrue(exClass.isInstance(ex));
-		assertTrue(ex.getCause() == sex);
+		assertThat(exClass.isInstance(ex)).isTrue();
+		assertThat(ex.getCause() == sex).isTrue();
 	}
 
 	@Test

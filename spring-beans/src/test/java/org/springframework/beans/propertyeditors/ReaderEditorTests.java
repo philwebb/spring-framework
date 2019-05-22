@@ -22,10 +22,10 @@ import org.junit.Test;
 
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the {@link ReaderEditor} class.
@@ -51,9 +51,10 @@ public class ReaderEditorTests {
 			editor.setAsText(resource);
 			Object value = editor.getValue();
 			assertNotNull(value);
-			assertTrue(value instanceof Reader);
+			boolean condition = value instanceof Reader;
+			assertThat(condition).isTrue();
 			reader = (Reader) value;
-			assertTrue(reader.ready());
+			assertThat(reader.ready()).isTrue();
 		}
 		finally {
 			if (reader != null) {

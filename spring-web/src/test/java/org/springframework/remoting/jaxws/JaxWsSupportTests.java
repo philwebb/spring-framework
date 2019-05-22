@@ -36,9 +36,9 @@ import org.springframework.context.annotation.AnnotationConfigUtils;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.remoting.RemoteAccessException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -96,7 +96,8 @@ public class JaxWsSupportTests {
 			ac.refresh();
 
 			OrderService orderService = ac.getBean("client", OrderService.class);
-			assertTrue(orderService instanceof BindingProvider);
+			boolean condition = orderService instanceof BindingProvider;
+			assertThat(condition).isTrue();
 			((BindingProvider) orderService).getRequestContext();
 
 			String order = orderService.getOrder(1000);

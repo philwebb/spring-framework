@@ -29,10 +29,10 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
@@ -69,7 +69,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 		Date date1 = (Date) objectFactory.getObject();
 		Date date2 = (Date) objectFactory.getObject();
-		assertTrue(date1 != date2);
+		assertThat(date1 != date2).isTrue();
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 		Date date1 = (Date) objectFactory.getObject();
 		Date date2 = (Date) objectFactory.getObject();
-		assertTrue(date1 != date2);
+		assertThat(date1 != date2).isTrue();
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 		Date date1 = (Date) provider.get();
 		Date date2 = (Date) provider.get();
-		assertTrue(date1 != date2);
+		assertThat(date1 != date2).isTrue();
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 		Date date1 = (Date) provider.get();
 		Date date2 = (Date) provider.get();
-		assertTrue(date1 != date2);
+		assertThat(date1 != date2).isTrue();
 	}
 
 	@Test

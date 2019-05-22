@@ -23,9 +23,9 @@ import javax.management.modelmbean.ModelMBeanInfo;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -41,7 +41,7 @@ public class MethodNameBasedMBeanInfoAssemblerMappedTests extends AbstractJmxAss
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = info.getAttribute(AGE_ATTRIBUTE);
 
-		assertTrue("Age is not readable", attr.isReadable());
+		assertThat(attr.isReadable()).as("Age is not readable").isTrue();
 		assertFalse("Age is not writable", attr.isWritable());
 	}
 
@@ -104,8 +104,8 @@ public class MethodNameBasedMBeanInfoAssemblerMappedTests extends AbstractJmxAss
 
 	private void assertNickName(MBeanAttributeInfo attr) {
 		assertNotNull("Nick Name should not be null", attr);
-		assertTrue("Nick Name should be writable", attr.isWritable());
-		assertTrue("Nick Name should be readable", attr.isReadable());
+		assertThat(attr.isWritable()).as("Nick Name should be writable").isTrue();
+		assertThat(attr.isReadable()).as("Nick Name should be readable").isTrue();
 	}
 
 }

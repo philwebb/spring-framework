@@ -29,12 +29,12 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -56,7 +56,7 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		assertFalse(ac.getBeanFactory().containsSingleton("testBean"));
 		assertNotNull(bean.getTestBean());
 		assertNull(bean.getTestBean().getName());
-		assertTrue(ac.getBeanFactory().containsSingleton("testBean"));
+		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) ac.getBean("testBean");
 		tb.setName("tb");
 		assertSame("tb", bean.getTestBean().getName());
@@ -79,7 +79,7 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		assertFalse(ac.getBeanFactory().containsSingleton("testBean"));
 		assertFalse(bean.getTestBeans().isEmpty());
 		assertNull(bean.getTestBeans().get(0).getName());
-		assertTrue(ac.getBeanFactory().containsSingleton("testBean"));
+		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) ac.getBean("testBean");
 		tb.setName("tb");
 		assertSame("tb", bean.getTestBean().getName());
@@ -151,7 +151,7 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		OptionalFieldResourceInjectionBean bean = (OptionalFieldResourceInjectionBean) bf.getBean("annotatedBean");
 		assertNotNull(bean.getTestBean());
 		assertNotNull(bean.getTestBeans());
-		assertTrue(bean.getTestBeans().isEmpty());
+		assertThat(bean.getTestBeans().isEmpty()).isTrue();
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
 				bean.getTestBean().getName());
 	}

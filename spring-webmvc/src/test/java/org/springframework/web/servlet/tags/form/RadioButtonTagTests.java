@@ -32,10 +32,10 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -253,11 +253,11 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 	}
 
 	private void assertTagOpened(String output) {
-		assertTrue(output.contains("<input "));
+		assertThat(output.contains("<input ")).isTrue();
 	}
 
 	private void assertTagClosed(String output) {
-		assertTrue(output.contains("/>"));
+		assertThat(output.contains("/>")).isTrue();
 	}
 
 	private Float getFloat() {

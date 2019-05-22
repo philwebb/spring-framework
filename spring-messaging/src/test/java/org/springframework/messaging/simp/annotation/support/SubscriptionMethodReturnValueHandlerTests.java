@@ -45,11 +45,11 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MimeType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -113,7 +113,7 @@ public class SubscriptionMethodReturnValueHandlerTests {
 
 	@Test
 	public void supportsReturnType() throws Exception {
-		assertTrue(this.handler.supportsReturnType(this.subscribeEventReturnType));
+		assertThat(this.handler.supportsReturnType(this.subscribeEventReturnType)).isTrue();
 		assertFalse(this.handler.supportsReturnType(this.subscribeEventSendToReturnType));
 		assertFalse(this.handler.supportsReturnType(this.messageMappingReturnType));
 	}
@@ -164,7 +164,7 @@ public class SubscriptionMethodReturnValueHandlerTests {
 				MessageHeaderAccessor.getAccessor(captor.getValue(), SimpMessageHeaderAccessor.class);
 
 		assertNotNull(headerAccessor);
-		assertTrue(headerAccessor.isMutable());
+		assertThat(headerAccessor.isMutable()).isTrue();
 		assertEquals(sessionId, headerAccessor.getSessionId());
 		assertEquals(subscriptionId, headerAccessor.getSubscriptionId());
 		assertEquals(this.subscribeEventReturnType, headerAccessor.getHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER));

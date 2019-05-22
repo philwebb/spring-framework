@@ -43,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -95,7 +94,7 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_postProcessed", "visible");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
@@ -112,7 +111,7 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_postProcessed", "visible");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
@@ -128,7 +127,7 @@ public class WebRequestDataBinderTests {
 		request.addParameter("!postProcessed", "off");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
@@ -165,11 +164,11 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_postProcessed", "visible");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("!postProcessed");
 		binder.bind(new ServletWebRequest(request));
@@ -187,11 +186,11 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_spouse.postProcessed", "visible");
 		request.addParameter("spouse.postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(((TestBean) target.getSpouse()).isPostProcessed());
+		assertThat(((TestBean) target.getSpouse()).isPostProcessed()).isTrue();
 
 		request.removeParameter("spouse.postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(((TestBean) target.getSpouse()).isPostProcessed());
+		assertThat(((TestBean) target.getSpouse()).isPostProcessed()).isTrue();
 
 		request.removeParameter("!spouse.postProcessed");
 		binder.bind(new ServletWebRequest(request));
@@ -302,8 +301,9 @@ public class WebRequestDataBinderTests {
 		request.addParameter("test_age", "" + 50);
 
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertTrue("Didn't find normal when given prefix", !pvs.contains("forname"));
-		assertTrue("Did treat prefix as normal when not given prefix", pvs.contains("test_forname"));
+		boolean condition = !pvs.contains("forname");
+		assertThat(condition).as("Didn't find normal when given prefix").isTrue();
+		assertThat(pvs.contains("test_forname")).as("Did treat prefix as normal when not given prefix").isTrue();
 
 		pvs = new ServletRequestParameterPropertyValues(request, "test");
 		doTestTony(pvs);
@@ -313,11 +313,12 @@ public class WebRequestDataBinderTests {
 	 * Must contain: forname=Tony surname=Blair age=50
 	 */
 	protected void doTestTony(PropertyValues pvs) throws Exception {
-		assertTrue("Contains 3", pvs.getPropertyValues().length == 3);
-		assertTrue("Contains forname", pvs.contains("forname"));
-		assertTrue("Contains surname", pvs.contains("surname"));
-		assertTrue("Contains age", pvs.contains("age"));
-		assertTrue("Doesn't contain tory", !pvs.contains("tory"));
+		assertThat(pvs.getPropertyValues().length == 3).as("Contains 3").isTrue();
+		assertThat(pvs.contains("forname")).as("Contains forname").isTrue();
+		assertThat(pvs.contains("surname")).as("Contains surname").isTrue();
+		assertThat(pvs.contains("age")).as("Contains age").isTrue();
+		boolean condition1 = !pvs.contains("tory");
+		assertThat(condition1).as("Doesn't contain tory").isTrue();
 
 		PropertyValue[] pvArray = pvs.getPropertyValues();
 		Map<String, String> m = new HashMap<>();
@@ -326,19 +327,20 @@ public class WebRequestDataBinderTests {
 		m.put("age", "50");
 		for (PropertyValue pv : pvArray) {
 			Object val = m.get(pv.getName());
-			assertTrue("Can't have unexpected value", val != null);
-			assertTrue("Val i string", val instanceof String);
-			assertTrue("val matches expected", val.equals(pv.getValue()));
+			assertThat(val != null).as("Can't have unexpected value").isTrue();
+			boolean condition = val instanceof String;
+			assertThat(condition).as("Val i string").isTrue();
+			assertThat(val.equals(pv.getValue())).as("val matches expected").isTrue();
 			m.remove(pv.getName());
 		}
-		assertTrue("Map size is 0", m.size() == 0);
+		assertThat(m.size() == 0).as("Map size is 0").isTrue();
 	}
 
 	@Test
 	public void testNoParameters() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertTrue("Found no parameters", pvs.getPropertyValues().length == 0);
+		assertThat(pvs.getPropertyValues().length == 0).as("Found no parameters").isTrue();
 	}
 
 	@Test
@@ -348,8 +350,9 @@ public class WebRequestDataBinderTests {
 		request.addParameter("forname", original);
 
 		ServletRequestParameterPropertyValues pvs = new ServletRequestParameterPropertyValues(request);
-		assertTrue("Found 1 parameter", pvs.getPropertyValues().length == 1);
-		assertTrue("Found array value", pvs.getPropertyValue("forname").getValue() instanceof String[]);
+		assertThat(pvs.getPropertyValues().length == 1).as("Found 1 parameter").isTrue();
+		boolean condition = pvs.getPropertyValue("forname").getValue() instanceof String[];
+		assertThat(condition).as("Found array value").isTrue();
 		String[] values = (String[]) pvs.getPropertyValue("forname").getValue();
 		assertEquals("Correct values", Arrays.asList(values), Arrays.asList(original));
 	}

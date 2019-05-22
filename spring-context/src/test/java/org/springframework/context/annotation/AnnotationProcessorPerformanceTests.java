@@ -34,8 +34,8 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StopWatch;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -70,7 +70,7 @@ public class AnnotationProcessorPerformanceTests {
 			assertSame(spouse, tb.getSpouse());
 		}
 		sw.stop();
-		assertTrue("Prototype creation took too long: " + sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 4000);
+		assertThat(sw.getTotalTimeMillis() < 4000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class AnnotationProcessorPerformanceTests {
 			assertSame(spouse, tb.getSpouse());
 		}
 		sw.stop();
-		assertTrue("Prototype creation took too long: " + sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 4000);
+		assertThat(sw.getTotalTimeMillis() < 4000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class AnnotationProcessorPerformanceTests {
 			assertSame(spouse, tb.getSpouse());
 		}
 		sw.stop();
-		assertTrue("Prototype creation took too long: " + sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 4000);
+		assertThat(sw.getTotalTimeMillis() < 4000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class AnnotationProcessorPerformanceTests {
 			assertSame(spouse, tb.getSpouse());
 		}
 		sw.stop();
-		assertTrue("Prototype creation took too long: " + sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 6000);
+		assertThat(sw.getTotalTimeMillis() < 6000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
 	}
 
 

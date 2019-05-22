@@ -29,9 +29,9 @@ import java.util.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.annotation.AnnotatedElementUtils.findAllMergedAnnotations;
 import static org.springframework.core.annotation.AnnotatedElementUtils.getAllMergedAnnotations;
 
@@ -203,8 +203,9 @@ public class MultipleComposedAnnotationsOnSingleAnnotatedElementTests {
 				}
 			}
 		}
-		assertTrue(bridgeMethod != null && bridgeMethod.isBridge());
-		assertTrue(bridgedMethod != null && !bridgedMethod.isBridge());
+		assertThat(bridgeMethod != null && bridgeMethod.isBridge()).isTrue();
+		boolean condition = bridgedMethod != null && !bridgedMethod.isBridge();
+		assertThat(condition).isTrue();
 
 		return bridgeMethod;
 	}

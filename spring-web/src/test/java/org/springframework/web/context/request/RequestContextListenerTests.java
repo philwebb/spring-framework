@@ -24,10 +24,10 @@ import org.springframework.core.task.MockRunnable;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockServletContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -52,7 +52,7 @@ public class RequestContextListenerTests {
 
 		listener.requestDestroyed(new ServletRequestEvent(context, request));
 		assertNull(RequestContextHolder.getRequestAttributes());
-		assertTrue(runnable.wasExecuted());
+		assertThat(runnable.wasExecuted()).isTrue();
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class RequestContextListenerTests {
 		request.clearAttributes();
 		listener.requestDestroyed(new ServletRequestEvent(context, request));
 		assertNull(RequestContextHolder.getRequestAttributes());
-		assertTrue(runnable.wasExecuted());
+		assertThat(runnable.wasExecuted()).isTrue();
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class RequestContextListenerTests {
 		}
 		// Still bound to original thread, but at least completed.
 		assertNotNull(RequestContextHolder.getRequestAttributes());
-		assertTrue(runnable.wasExecuted());
+		assertThat(runnable.wasExecuted()).isTrue();
 
 		// Check that a repeated execution in the same thread works and performs cleanup.
 		listener.requestInitialized(new ServletRequestEvent(context, request));

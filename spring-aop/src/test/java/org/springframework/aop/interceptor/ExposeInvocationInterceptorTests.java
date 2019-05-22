@@ -24,8 +24,8 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -75,8 +75,7 @@ class InvocationCheckExposedInvocationTestBean extends ExposedInvocationTestBean
 
 	@Override
 	protected void assertions(MethodInvocation invocation) {
-		assertTrue(invocation.getThis() == this);
-		assertTrue("Invocation should be on ITestBean: " + invocation.getMethod(),
-				ITestBean.class.isAssignableFrom(invocation.getMethod().getDeclaringClass()));
+		assertThat(invocation.getThis() == this).isTrue();
+		assertThat(ITestBean.class.isAssignableFrom(invocation.getMethod().getDeclaringClass())).as("Invocation should be on ITestBean: " + invocation.getMethod()).isTrue();
 	}
 }

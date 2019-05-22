@@ -42,7 +42,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests accessing of properties.
@@ -139,7 +138,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 		List<PropertyAccessor> copy = new ArrayList<>();
 		copy.addAll(ctx.getPropertyAccessors());
-		assertTrue(ctx.removePropertyAccessor(spa));
+		assertThat(ctx.removePropertyAccessor(spa)).isTrue();
 		assertFalse(ctx.removePropertyAccessor(spa));
 		assertEquals(1,ctx.getPropertyAccessors().size());
 

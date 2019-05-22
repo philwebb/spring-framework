@@ -27,11 +27,9 @@ import org.springframework.messaging.converter.GenericMessageConverter;
 import org.springframework.messaging.converter.MessageConversionException;
 import org.springframework.messaging.support.GenericMessage;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for receiving operations in {@link AbstractMessagingTemplate}.
@@ -118,7 +116,7 @@ public class MessageReceivingTemplateTests {
 			this.template.receiveAndConvert(Writer.class);
 		}
 		catch (MessageConversionException ex) {
-			assertTrue("Invalid exception message '" + ex.getMessage() + "'", ex.getMessage().contains("payload"));
+			assertThat(ex.getMessage().contains("payload")).as("Invalid exception message '" + ex.getMessage() + "'").isTrue();
 			assertSame(expected, ex.getFailedMessage());
 		}
 	}

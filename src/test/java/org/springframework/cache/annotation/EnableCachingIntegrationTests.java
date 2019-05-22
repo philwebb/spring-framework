@@ -36,8 +36,6 @@ import org.springframework.stereotype.Repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertTrue;
-
 /**
  * Integration tests for the @EnableCaching annotation.
  *
@@ -68,7 +66,7 @@ public class EnableCachingIntegrationTests {
 			// this test is a bit fragile, but gets the job done, proving that an
 			// attempt was made to look up the AJ aspect. It's due to classpath issues
 			// in .integration-tests that it's not found.
-			assertTrue(ex.getMessage().contains("AspectJCachingConfiguration"));
+			assertThat(ex.getMessage().contains("AspectJCachingConfiguration")).isTrue();
 		}
 	}
 
@@ -85,7 +83,7 @@ public class EnableCachingIntegrationTests {
 				}
 			}
 		}
-		assertTrue("FooRepository is not a cache proxy", isCacheProxy);
+		assertThat(isCacheProxy).as("FooRepository is not a cache proxy").isTrue();
 	}
 
 

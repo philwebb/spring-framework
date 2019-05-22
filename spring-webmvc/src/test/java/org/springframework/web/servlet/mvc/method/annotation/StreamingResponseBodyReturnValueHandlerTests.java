@@ -37,9 +37,9 @@ import org.springframework.web.context.request.async.StandardServletAsyncWebRequ
 import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 
 /**
@@ -78,8 +78,8 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 
 	@Test
 	public void supportsReturnType() throws Exception {
-		assertTrue(this.handler.supportsReturnType(returnType(TestController.class, "handle")));
-		assertTrue(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntity")));
+		assertThat(this.handler.supportsReturnType(returnType(TestController.class, "handle"))).isTrue();
+		assertThat(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntity"))).isTrue();
 		assertFalse(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntityString")));
 		assertFalse(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntityParameterized")));
 	}
@@ -95,8 +95,8 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		};
 		this.handler.handleReturnValue(streamingBody, returnType, this.mavContainer, this.webRequest);
 
-		assertTrue(this.request.isAsyncStarted());
-		assertTrue(latch.await(5, TimeUnit.SECONDS));
+		assertThat(this.request.isAsyncStarted()).isTrue();
+		assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
 		assertEquals("foo", this.response.getContentAsString());
 	}
 
@@ -113,11 +113,11 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 				});
 		this.handler.handleReturnValue(emitter, returnType, this.mavContainer, this.webRequest);
 
-		assertTrue(this.request.isAsyncStarted());
+		assertThat(this.request.isAsyncStarted()).isTrue();
 		assertEquals(200, this.response.getStatus());
 		assertEquals("bar", this.response.getHeader("foo"));
 
-		assertTrue(latch.await(5, TimeUnit.SECONDS));
+		assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
 		assertEquals("foo", this.response.getContentAsString());
 
 	}

@@ -34,7 +34,6 @@ import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
@@ -49,15 +48,15 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isCheckedException() {
-		assertTrue(ObjectUtils.isCheckedException(new Exception()));
-		assertTrue(ObjectUtils.isCheckedException(new SQLException()));
+		assertThat(ObjectUtils.isCheckedException(new Exception())).isTrue();
+		assertThat(ObjectUtils.isCheckedException(new SQLException())).isTrue();
 
 		assertFalse(ObjectUtils.isCheckedException(new RuntimeException()));
 		assertFalse(ObjectUtils.isCheckedException(new IllegalArgumentException("")));
 
 		// Any Throwable other than RuntimeException and Error
 		// has to be considered checked according to the JLS.
-		assertTrue(ObjectUtils.isCheckedException(new Throwable()));
+		assertThat(ObjectUtils.isCheckedException(new Throwable())).isTrue();
 	}
 
 	@Test
@@ -67,41 +66,44 @@ public class ObjectUtilsTests {
 		Class<?>[] sqlAndIO = new Class<?>[] {SQLException.class, IOException.class};
 		Class<?>[] throwable = new Class<?>[] {Throwable.class};
 
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException()));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), empty));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), exception));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), sqlAndIO));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), throwable));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException())).isTrue();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), empty)).isTrue();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), exception)).isTrue();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), sqlAndIO)).isTrue();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), throwable)).isTrue();
 
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Exception()));
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), empty));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), exception));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), exception)).isTrue();
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), sqlAndIO));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), throwable));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), throwable)).isTrue();
 
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new SQLException()));
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), empty));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), exception));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), sqlAndIO));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), throwable));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), exception)).isTrue();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), sqlAndIO)).isTrue();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), throwable)).isTrue();
 
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable()));
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), empty));
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), exception));
 		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), sqlAndIO));
-		assertTrue(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), throwable));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), throwable)).isTrue();
 	}
 
 	@Test
 	public void isEmptyNull() {
-		assertTrue(isEmpty(null));
+		assertThat(isEmpty(null)).isTrue();
 	}
 
 	@Test
 	public void isEmptyArray() {
-		assertTrue(isEmpty(new char[0]));
-		assertTrue(isEmpty(new Object[0]));
-		assertTrue(isEmpty(new Integer[0]));
+		boolean condition2 = isEmpty(new char[0]);
+		assertThat(condition2).isTrue();
+		boolean condition1 = isEmpty(new Object[0]);
+		assertThat(condition1).isTrue();
+		boolean condition = isEmpty(new Integer[0]);
+		assertThat(condition).isTrue();
 
 		assertFalse(isEmpty(new int[] {42}));
 		assertFalse(isEmpty(new Integer[] {42}));
@@ -109,8 +111,8 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isEmptyCollection() {
-		assertTrue(isEmpty(Collections.emptyList()));
-		assertTrue(isEmpty(Collections.emptySet()));
+		assertThat(isEmpty(Collections.emptyList())).isTrue();
+		assertThat(isEmpty(Collections.emptySet())).isTrue();
 
 		Set<String> set = new HashSet<>();
 		set.add("foo");
@@ -120,7 +122,7 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isEmptyMap() {
-		assertTrue(isEmpty(Collections.emptyMap()));
+		assertThat(isEmpty(Collections.emptyMap())).isTrue();
 
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("foo", 42L);
@@ -129,8 +131,8 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isEmptyCharSequence() {
-		assertTrue(isEmpty(new StringBuilder()));
-		assertTrue(isEmpty(""));
+		assertThat(isEmpty(new StringBuilder())).isTrue();
+		assertThat(isEmpty("")).isTrue();
 
 		assertFalse(isEmpty(new StringBuilder("foo")));
 		assertFalse(isEmpty("   "));
@@ -148,7 +150,7 @@ public class ObjectUtilsTests {
 	public void toObjectArray() {
 		int[] a = new int[] {1, 2, 3, 4, 5};
 		Integer[] wrapper = (Integer[]) ObjectUtils.toObjectArray(a);
-		assertTrue(wrapper.length == 5);
+		assertThat(wrapper.length == 5).isTrue();
 		for (int i = 0; i < wrapper.length; i++) {
 			assertEquals(a[i], wrapper[i].intValue());
 		}
@@ -236,8 +238,8 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void nullSafeEqualsWithArrays() throws Exception {
-		assertTrue(ObjectUtils.nullSafeEquals(new String[] {"a", "b", "c"}, new String[] {"a", "b", "c"}));
-		assertTrue(ObjectUtils.nullSafeEquals(new int[] {1, 2, 3}, new int[] {1, 2, 3}));
+		assertThat(ObjectUtils.nullSafeEquals(new String[] {"a", "b", "c"}, new String[] {"a", "b", "c"})).isTrue();
+		assertThat(ObjectUtils.nullSafeEquals(new int[] {1, 2, 3}, new int[] {1, 2, 3})).isTrue();
 	}
 
 	@Test
@@ -293,7 +295,7 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isArrayOfPrimitivesWithBooleanArray() {
-		assertTrue(ClassUtils.isPrimitiveArray(boolean[].class));
+		assertThat(ClassUtils.isPrimitiveArray(boolean[].class)).isTrue();
 	}
 
 	@Test
@@ -308,72 +310,72 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isPrimitiveOrWrapperWithBooleanPrimitiveClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(boolean.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(boolean.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithBooleanWrapperClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Boolean.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Boolean.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithBytePrimitiveClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(byte.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(byte.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithByteWrapperClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Byte.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Byte.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithCharacterClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Character.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Character.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithCharClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(char.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(char.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithDoublePrimitiveClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(double.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(double.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithDoubleWrapperClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Double.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Double.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithFloatPrimitiveClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(float.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(float.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithFloatWrapperClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Float.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Float.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithIntClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(int.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(int.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithIntegerClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Integer.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Integer.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithLongPrimitiveClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(long.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(long.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithLongWrapperClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Long.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Long.class)).isTrue();
 	}
 
 	@Test
@@ -383,12 +385,12 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isPrimitiveOrWrapperWithShortPrimitiveClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(short.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(short.class)).isTrue();
 	}
 
 	@Test
 	public void isPrimitiveOrWrapperWithShortWrapperClass() {
-		assertTrue(ClassUtils.isPrimitiveOrWrapper(Short.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Short.class)).isTrue();
 	}
 
 	@Test
@@ -816,7 +818,7 @@ public class ObjectUtilsTests {
 	private void assertEqualHashCodes(int expected, Object array) {
 		int actual = ObjectUtils.nullSafeHashCode(array);
 		assertEquals(expected, actual);
-		assertTrue(array.hashCode() != actual);
+		assertThat(array.hashCode() != actual).isTrue();
 	}
 
 

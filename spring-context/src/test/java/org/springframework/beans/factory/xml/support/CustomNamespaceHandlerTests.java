@@ -64,7 +64,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for custom XML namespace handler implementations.
@@ -116,7 +115,7 @@ public class CustomNamespaceHandlerTests {
 	public void testProxyingDecorator() throws Exception {
 		ITestBean bean = (ITestBean) this.beanFactory.getBean("debuggingTestBean");
 		assertTestBean(bean);
-		assertTrue(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		Advisor[] advisors = ((Advised) bean).getAdvisors();
 		assertEquals("Incorrect number of advisors", 1, advisors.length);
 		assertEquals("Incorrect advice class", DebugInterceptor.class, advisors[0].getAdvice().getClass());
@@ -125,7 +124,7 @@ public class CustomNamespaceHandlerTests {
 	@Test
 	public void testProxyingDecoratorNoInstance() throws Exception {
 		String[] beanNames = this.beanFactory.getBeanNamesForType(ApplicationListener.class);
-		assertTrue(Arrays.asList(beanNames).contains("debuggingTestBeanNoInstance"));
+		assertThat(Arrays.asList(beanNames).contains("debuggingTestBeanNoInstance")).isTrue();
 		assertEquals(ApplicationListener.class, this.beanFactory.getType("debuggingTestBeanNoInstance"));
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				this.beanFactory.getBean("debuggingTestBeanNoInstance"))
@@ -136,7 +135,7 @@ public class CustomNamespaceHandlerTests {
 	public void testChainedDecorators() throws Exception {
 		ITestBean bean = (ITestBean) this.beanFactory.getBean("chainedTestBean");
 		assertTestBean(bean);
-		assertTrue(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		Advisor[] advisors = ((Advised) bean).getAdvisors();
 		assertEquals("Incorrect number of advisors", 2, advisors.length);
 		assertEquals("Incorrect advice class", DebugInterceptor.class, advisors[0].getAdvice().getClass());

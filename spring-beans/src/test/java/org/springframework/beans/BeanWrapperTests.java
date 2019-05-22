@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Specific {@link BeanWrapperImpl} tests.
@@ -95,8 +94,8 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 						.getNewValue()).isEqualTo(invalidTouchy);
 			});
 		// Test validly set property matches
-		assertTrue("Valid set property must stick", target.getName().equals(newName));
-		assertTrue("Invalid set property must retain old value", target.getAge() == 0);
+		assertThat(target.getName().equals(newName)).as("Valid set property must stick").isTrue();
+		assertThat(target.getAge() == 0).as("Invalid set property must retain old value").isTrue();
 	}
 
 	@Test
@@ -148,7 +147,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 		BeanWrapper accessor = createAccessor(target);
 		accessor.setPropertyValue("object", "a String");
 		assertEquals("a String", target.value);
-		assertTrue(target.getObject() == 8);
+		assertThat(target.getObject() == 8).isTrue();
 		assertEquals(8, accessor.getPropertyValue("object"));
 	}
 

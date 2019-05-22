@@ -37,11 +37,11 @@ import org.springframework.web.server.WebSession;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ServerWebExchangeMethodArgumentResolver}.
@@ -61,15 +61,15 @@ public class ServerWebExchangeMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(ServerWebExchange.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(ServerHttpRequest.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(ServerHttpResponse.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(HttpMethod.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(Locale.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(TimeZone.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(ZoneId.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(UriComponentsBuilder.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(UriBuilder.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(ServerWebExchange.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(ServerHttpRequest.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(ServerHttpResponse.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(HttpMethod.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(Locale.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(TimeZone.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(ZoneId.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(UriComponentsBuilder.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(UriBuilder.class))).isTrue();
 
 		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(WebSession.class)));
 		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(String.class)));

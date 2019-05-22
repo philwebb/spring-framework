@@ -32,9 +32,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@code HeadersAdapters} {@code MultiValueMap} implementations.
@@ -92,7 +92,7 @@ public class HeadersAdaptersTests {
 	@Test
 	public void containsKeyShouldBeCaseInsensitive() {
 		this.headers.add("TestHeader", "first");
-		assertTrue(this.headers.containsKey("testheader"));
+		assertThat(this.headers.containsKey("testheader")).isTrue();
 	}
 
 	@Test

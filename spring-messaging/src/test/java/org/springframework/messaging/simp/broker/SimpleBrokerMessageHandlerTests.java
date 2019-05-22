@@ -38,13 +38,13 @@ import org.springframework.messaging.simp.TestPrincipal;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.TaskScheduler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -107,12 +107,12 @@ public class SimpleBrokerMessageHandlerTests {
 		this.messageHandler.handleMessage(createMessage("/bar", "message2"));
 
 		verify(this.clientOutChannel, times(6)).send(this.messageCaptor.capture());
-		assertTrue(messageCaptured("sess1", "sub1", "/foo"));
-		assertTrue(messageCaptured("sess1", "sub2", "/foo"));
-		assertTrue(messageCaptured("sess2", "sub1", "/foo"));
-		assertTrue(messageCaptured("sess2", "sub2", "/foo"));
-		assertTrue(messageCaptured("sess1", "sub3", "/bar"));
-		assertTrue(messageCaptured("sess2", "sub3", "/bar"));
+		assertThat(messageCaptured("sess1", "sub1", "/foo")).isTrue();
+		assertThat(messageCaptured("sess1", "sub2", "/foo")).isTrue();
+		assertThat(messageCaptured("sess2", "sub1", "/foo")).isTrue();
+		assertThat(messageCaptured("sess2", "sub2", "/foo")).isTrue();
+		assertThat(messageCaptured("sess1", "sub3", "/bar")).isTrue();
+		assertThat(messageCaptured("sess2", "sub3", "/bar")).isTrue();
 	}
 
 	@Test
@@ -148,9 +148,9 @@ public class SimpleBrokerMessageHandlerTests {
 		assertEquals(sess1, SimpMessageHeaderAccessor.getSessionId(captured.getHeaders()));
 		assertEquals("joe", SimpMessageHeaderAccessor.getUser(captured.getHeaders()).getName());
 
-		assertTrue(messageCaptured(sess2, "sub1", "/foo"));
-		assertTrue(messageCaptured(sess2, "sub2", "/foo"));
-		assertTrue(messageCaptured(sess2, "sub3", "/bar"));
+		assertThat(messageCaptured(sess2, "sub1", "/foo")).isTrue();
+		assertThat(messageCaptured(sess2, "sub2", "/foo")).isTrue();
+		assertThat(messageCaptured(sess2, "sub3", "/bar")).isTrue();
 	}
 
 	@Test

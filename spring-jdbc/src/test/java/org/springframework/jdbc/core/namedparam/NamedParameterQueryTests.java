@@ -36,8 +36,8 @@ import org.junit.Test;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -186,7 +186,8 @@ public class NamedParameterQueryTests {
 			}
 		});
 
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -202,7 +203,8 @@ public class NamedParameterQueryTests {
 		Object o = template.queryForObject("SELECT AGE FROM CUSTMR WHERE ID = :id",
 				params, Integer.class);
 
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -218,7 +220,8 @@ public class NamedParameterQueryTests {
 		Object o = template.queryForObject("SELECT AGE FROM CUSTMR WHERE ID = :id",
 				params, Integer.class);
 
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -235,7 +238,8 @@ public class NamedParameterQueryTests {
 		params.addValue("ids", Arrays.asList(3, 4));
 		Object o = template.queryForObject(sql, params, Integer.class);
 
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(connection).prepareStatement(sqlToUse);
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -255,7 +259,8 @@ public class NamedParameterQueryTests {
 				"SELECT AGE FROM CUSTMR WHERE (ID, NAME) IN (:multiExpressionList)",
 				params, Integer.class);
 
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(connection).prepareStatement(
 				"SELECT AGE FROM CUSTMR WHERE (ID, NAME) IN ((?, ?), (?, ?))");
 		verify(preparedStatement).setObject(1, 3);

@@ -18,10 +18,10 @@ package org.springframework.beans.propertyeditors;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans
@@ -35,7 +35,8 @@ public class StringArrayPropertyEditorTests {
 		editor.setAsText("0,1,2");
 		Object value = editor.getValue();
 		assertNotNull(value);
-		assertTrue(value instanceof String[]);
+		boolean condition = value instanceof String[];
+		assertThat(condition).isTrue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
 			assertEquals("" + i, array[i]);
@@ -73,7 +74,8 @@ public class StringArrayPropertyEditorTests {
 		StringArrayPropertyEditor editor = new StringArrayPropertyEditor(":");
 		editor.setAsText("0:1:2");
 		Object value = editor.getValue();
-		assertTrue(value instanceof String[]);
+		boolean condition = value instanceof String[];
+		assertThat(condition).isTrue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
 			assertEquals("" + i, array[i]);
@@ -86,7 +88,8 @@ public class StringArrayPropertyEditorTests {
 		StringArrayPropertyEditor editor = new StringArrayPropertyEditor(",", "\r\n", false);
 		editor.setAsText("0\r,1,\n2");
 		Object value = editor.getValue();
-		assertTrue(value instanceof String[]);
+		boolean condition = value instanceof String[];
+		assertThat(condition).isTrue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
 			assertEquals("" + i, array[i]);
@@ -99,7 +102,8 @@ public class StringArrayPropertyEditorTests {
 		StringArrayPropertyEditor editor = new StringArrayPropertyEditor();
 		editor.setAsText("");
 		Object value = editor.getValue();
-		assertTrue(value instanceof String[]);
+		boolean condition = value instanceof String[];
+		assertThat(condition).isTrue();
 		assertEquals(0, ((String[]) value).length);
 	}
 

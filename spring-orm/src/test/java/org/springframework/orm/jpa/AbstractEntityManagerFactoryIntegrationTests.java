@@ -38,8 +38,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -110,7 +110,7 @@ public abstract class AbstractEntityManagerFactoryIntegrationTests {
 			endTransaction();
 		}
 
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 		assertFalse(TransactionSynchronizationManager.isSynchronizationActive());
 		assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
 		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());

@@ -31,11 +31,11 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.TriggerContext;
 import org.springframework.util.ErrorHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -72,7 +72,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		scheduler.setErrorHandler(errorHandler);
 		Future<?> future = scheduler.submit(task);
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
-		assertTrue(future.isDone());
+		assertThat(future.isDone()).isTrue();
 		assertNull(result);
 		assertNotNull(errorHandler.lastError);
 	}
@@ -84,7 +84,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		scheduler.setErrorHandler(errorHandler);
 		Future<String> future = scheduler.submit(task);
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
-		assertTrue(future.isDone());
+		assertThat(future.isDone()).isTrue();
 		assertNull(result);
 		assertNotNull(errorHandler.lastError);
 	}
@@ -95,7 +95,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		Future<?> future = scheduler.schedule(task, new Date());
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertNull(result);
-		assertTrue(future.isDone());
+		assertThat(future.isDone()).isTrue();
 		assertThreadNamePrefix(task);
 	}
 
@@ -105,7 +105,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		Future<?> future = scheduler.schedule(task, new Date());
 		assertThatExceptionOfType(ExecutionException.class).isThrownBy(() ->
 				future.get(1000, TimeUnit.MILLISECONDS));
-		assertTrue(future.isDone());
+		assertThat(future.isDone()).isTrue();
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		scheduler.setErrorHandler(errorHandler);
 		Future<?> future = scheduler.schedule(task, new Date());
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
-		assertTrue(future.isDone());
+		assertThat(future.isDone()).isTrue();
 		assertNull(result);
 		assertNotNull(errorHandler.lastError);
 	}

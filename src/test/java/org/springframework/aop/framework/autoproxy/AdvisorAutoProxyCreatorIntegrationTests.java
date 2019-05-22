@@ -37,9 +37,9 @@ import org.springframework.tests.transaction.CallCountingTransactionManager;
 import org.springframework.transaction.NoTransactionException;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for auto proxy creation by advisor recognition working in
@@ -88,7 +88,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 	public void testTxIsProxied() throws Exception {
 		BeanFactory bf = getBeanFactory();
 		ITestBean test = (ITestBean) bf.getBean("test");
-		assertTrue(AopUtils.isAopProxy(test));
+		assertThat(AopUtils.isAopProxy(test)).isTrue();
 	}
 
 	@Test
@@ -172,7 +172,8 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 		BeanFactory bf = getBeanFactory();
 
 		Object bean = bf.getBean(TXMANAGER_BEAN_NAME);
-		assertTrue(bean instanceof CallCountingTransactionManager);
+		boolean condition = bean instanceof CallCountingTransactionManager;
+		assertThat(condition).isTrue();
 		CallCountingTransactionManager txMan = (CallCountingTransactionManager) bf.getBean(TXMANAGER_BEAN_NAME);
 
 		Rollback rb = (Rollback) bf.getBean("rollback");

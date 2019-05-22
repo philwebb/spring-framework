@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.Ordered;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test for SPR-3522. Arguments changed on a call to proceed should be
@@ -68,8 +68,8 @@ public class ProceedTests {
 	@Test
 	public void testProceedWithArgsInSameAspect() {
 		this.testBean.setMyFloat(1.0F);
-		assertTrue("value changed in around advice", this.testBean.getMyFloat() > 1.9F);
-		assertTrue("changed value visible to next advice in chain", this.firstTestAspect.getLastBeforeFloatValue() > 1.9F);
+		assertThat(this.testBean.getMyFloat() > 1.9F).as("value changed in around advice").isTrue();
+		assertThat(this.firstTestAspect.getLastBeforeFloatValue() > 1.9F).as("changed value visible to next advice in chain").isTrue();
 	}
 
 	@Test

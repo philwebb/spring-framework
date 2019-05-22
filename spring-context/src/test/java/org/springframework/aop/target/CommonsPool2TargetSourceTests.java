@@ -32,10 +32,10 @@ import org.springframework.tests.sample.beans.SerializablePerson;
 import org.springframework.tests.sample.beans.SideEffectBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for pooling invoker interceptor.
@@ -115,7 +115,8 @@ public class CommonsPool2TargetSourceTests {
 		CommonsPool2TargetSource cpts = (CommonsPool2TargetSource) beanFactory.getBean("personPoolTargetSource");
 
 		SingletonTargetSource serialized = (SingletonTargetSource) SerializationTestUtils.serializeAndDeserialize(cpts);
-		assertTrue(serialized.getTarget() instanceof Person);
+		boolean condition = serialized.getTarget() instanceof Person;
+		assertThat(condition).isTrue();
 	}
 
 
@@ -124,11 +125,13 @@ public class CommonsPool2TargetSourceTests {
 		Person pooled = (Person) beanFactory.getBean("pooledPerson");
 
 		//System.out.println(((Advised) pooled).toProxyConfigString());
-		assertTrue(((Advised) pooled).getTargetSource() instanceof CommonsPool2TargetSource);
+		boolean condition1 = ((Advised) pooled).getTargetSource() instanceof CommonsPool2TargetSource;
+		assertThat(condition1).isTrue();
 
 		//((Advised) pooled).setTargetSource(new SingletonTargetSource(new SerializablePerson()));
 		Person serialized = (Person) SerializationTestUtils.serializeAndDeserialize(pooled);
-		assertTrue(((Advised) serialized).getTargetSource() instanceof SingletonTargetSource);
+		boolean condition = ((Advised) serialized).getTargetSource() instanceof SingletonTargetSource;
+		assertThat(condition).isTrue();
 		serialized.setAge(25);
 		assertEquals(25, serialized.getAge());
 	}
@@ -208,8 +211,10 @@ public class CommonsPool2TargetSourceTests {
 
 		Object first = targetSource.getTarget();
 		Object second = targetSource.getTarget();
-		assertTrue(first instanceof SerializablePerson);
-		assertTrue(second instanceof SerializablePerson);
+		boolean condition1 = first instanceof SerializablePerson;
+		assertThat(condition1).isTrue();
+		boolean condition = second instanceof SerializablePerson;
+		assertThat(condition).isTrue();
 		assertEquals(first, second);
 
 		targetSource.releaseTarget(first);

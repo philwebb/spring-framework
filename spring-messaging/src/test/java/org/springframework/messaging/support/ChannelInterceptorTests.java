@@ -29,11 +29,11 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -69,7 +69,7 @@ public class ChannelInterceptorTests {
 
 		assertNotNull(result);
 		assertSame(expected, result);
-		assertTrue(interceptor.wasAfterCompletionInvoked());
+		assertThat(interceptor.wasAfterCompletionInvoked()).isTrue();
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class ChannelInterceptorTests {
 		assertEquals(1, interceptor1.getCounter().get());
 		assertEquals(1, interceptor2.getCounter().get());
 		assertEquals(0, this.messageHandler.getMessages().size());
-		assertTrue(interceptor1.wasAfterCompletionInvoked());
+		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
 		assertFalse(interceptor2.wasAfterCompletionInvoked());
 	}
 
@@ -107,12 +107,12 @@ public class ChannelInterceptorTests {
 				assertNotNull(message);
 				assertNotNull(channel);
 				assertSame(ChannelInterceptorTests.this.channel, channel);
-				assertTrue(sent);
+				assertThat(sent).isTrue();
 			}
 		});
 		this.channel.send(MessageBuilder.withPayload("test").build());
-		assertTrue(preSendInvoked.get());
-		assertTrue(completionInvoked.get());
+		assertThat(preSendInvoked.get()).isTrue();
+		assertThat(completionInvoked.get()).isTrue();
 	}
 
 	@Test
@@ -144,8 +144,8 @@ public class ChannelInterceptorTests {
 			}
 		});
 		testChannel.send(MessageBuilder.withPayload("test").build());
-		assertTrue(preSendInvoked.get());
-		assertTrue(completionInvoked.get());
+		assertThat(preSendInvoked.get()).isTrue();
+		assertThat(completionInvoked.get()).isTrue();
 	}
 
 	@Test
@@ -166,8 +166,8 @@ public class ChannelInterceptorTests {
 		catch (Exception ex) {
 			assertEquals("Simulated exception", ex.getCause().getMessage());
 		}
-		assertTrue(interceptor1.wasAfterCompletionInvoked());
-		assertTrue(interceptor2.wasAfterCompletionInvoked());
+		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
+		assertThat(interceptor2.wasAfterCompletionInvoked()).isTrue();
 	}
 
 	@Test
@@ -183,7 +183,7 @@ public class ChannelInterceptorTests {
 		catch (Exception ex) {
 			assertEquals("Simulated exception", ex.getCause().getMessage());
 		}
-		assertTrue(interceptor1.wasAfterCompletionInvoked());
+		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
 		assertFalse(interceptor2.wasAfterCompletionInvoked());
 	}
 

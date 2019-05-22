@@ -39,7 +39,6 @@ import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link MessageHeaderAccessor}.
@@ -240,7 +239,7 @@ public class MessageHeaderAccessorTests {
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertNotNull(actual);
-		assertTrue(actual.isMutable());
+		assertThat(actual.isMutable()).isTrue();
 		assertSame(expected, actual);
 	}
 
@@ -250,7 +249,7 @@ public class MessageHeaderAccessorTests {
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertNotNull(actual);
-		assertTrue(actual.isMutable());
+		assertThat(actual.isMutable()).isTrue();
 	}
 
 	@Test
@@ -260,7 +259,7 @@ public class MessageHeaderAccessorTests {
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertNotNull(actual);
-		assertTrue(actual.isMutable());
+		assertThat(actual.isMutable()).isTrue();
 		assertEquals(TestMessageHeaderAccessor.class, actual.getClass());
 	}
 

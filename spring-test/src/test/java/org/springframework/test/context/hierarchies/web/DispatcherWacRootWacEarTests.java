@@ -27,11 +27,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Sam Brannen
@@ -71,7 +71,8 @@ public class DispatcherWacRootWacEarTests extends RootWacEarTests {
 	public void verifyDispatcherWacConfig() {
 		ApplicationContext parent = wac.getParent();
 		assertNotNull(parent);
-		assertTrue(parent instanceof WebApplicationContext);
+		boolean condition = parent instanceof WebApplicationContext;
+		assertThat(condition).isTrue();
 
 		ApplicationContext grandParent = parent.getParent();
 		assertNotNull(grandParent);

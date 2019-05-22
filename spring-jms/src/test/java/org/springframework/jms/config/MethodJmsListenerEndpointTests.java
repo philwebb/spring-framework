@@ -62,12 +62,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -490,7 +488,7 @@ public class MethodJmsListenerEndpointTests {
 	}
 
 	private void assertListenerMethodInvocation(JmsEndpointSampleBean bean, String methodName) {
-		assertTrue("Method " + methodName + " should have been invoked", bean.invocations.get(methodName));
+		assertThat((boolean) bean.invocations.get(methodName)).as("Method " + methodName + " should have been invoked").isTrue();
 	}
 
 	private void initializeFactory(DefaultMessageHandlerMethodFactory factory) {

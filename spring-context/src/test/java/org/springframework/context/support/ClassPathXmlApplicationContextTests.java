@@ -49,7 +49,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -81,7 +80,7 @@ public class ClassPathXmlApplicationContextTests {
 	@Test
 	public void testSingleConfigLocation() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(FQ_SIMPLE_CONTEXT);
-		assertTrue(ctx.containsBean("someMessageSource"));
+		assertThat(ctx.containsBean("someMessageSource")).isTrue();
 		ctx.close();
 	}
 
@@ -89,42 +88,42 @@ public class ClassPathXmlApplicationContextTests {
 	public void testMultipleConfigLocations() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
 				FQ_CONTEXT_B, FQ_CONTEXT_C, FQ_CONTEXT_A);
-		assertTrue(ctx.containsBean("service"));
-		assertTrue(ctx.containsBean("logicOne"));
-		assertTrue(ctx.containsBean("logicTwo"));
+		assertThat(ctx.containsBean("service")).isTrue();
+		assertThat(ctx.containsBean("logicOne")).isTrue();
+		assertThat(ctx.containsBean("logicTwo")).isTrue();
 
 		// re-refresh (after construction refresh)
 		Service service = (Service) ctx.getBean("service");
 		ctx.refresh();
-		assertTrue(service.isProperlyDestroyed());
+		assertThat(service.isProperlyDestroyed()).isTrue();
 
 		// regular close call
 		service = (Service) ctx.getBean("service");
 		ctx.close();
-		assertTrue(service.isProperlyDestroyed());
+		assertThat(service.isProperlyDestroyed()).isTrue();
 
 		// re-activating and re-closing the context (SPR-13425)
 		ctx.refresh();
 		service = (Service) ctx.getBean("service");
 		ctx.close();
-		assertTrue(service.isProperlyDestroyed());
+		assertThat(service.isProperlyDestroyed()).isTrue();
 	}
 
 	@Test
 	public void testConfigLocationPattern() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(CONTEXT_WILDCARD);
-		assertTrue(ctx.containsBean("service"));
-		assertTrue(ctx.containsBean("logicOne"));
-		assertTrue(ctx.containsBean("logicTwo"));
+		assertThat(ctx.containsBean("service")).isTrue();
+		assertThat(ctx.containsBean("logicOne")).isTrue();
+		assertThat(ctx.containsBean("logicTwo")).isTrue();
 		Service service = (Service) ctx.getBean("service");
 		ctx.close();
-		assertTrue(service.isProperlyDestroyed());
+		assertThat(service.isProperlyDestroyed()).isTrue();
 	}
 
 	@Test
 	public void testSingleConfigLocationWithClass() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(SIMPLE_CONTEXT, getClass());
-		assertTrue(ctx.containsBean("someMessageSource"));
+		assertThat(ctx.containsBean("someMessageSource")).isTrue();
 		ctx.close();
 	}
 
@@ -132,9 +131,9 @@ public class ClassPathXmlApplicationContextTests {
 	public void testAliasWithPlaceholder() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
 				FQ_CONTEXT_B, FQ_ALIASED_CONTEXT_C, FQ_CONTEXT_A);
-		assertTrue(ctx.containsBean("service"));
-		assertTrue(ctx.containsBean("logicOne"));
-		assertTrue(ctx.containsBean("logicTwo"));
+		assertThat(ctx.containsBean("service")).isTrue();
+		assertThat(ctx.containsBean("logicOne")).isTrue();
+		assertThat(ctx.containsBean("logicTwo")).isTrue();
 		ctx.refresh();
 	}
 
@@ -158,8 +157,8 @@ public class ClassPathXmlApplicationContextTests {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ex.printStackTrace(new PrintStream(baos));
 			String dump = FileCopyUtils.copyToString(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())));
-			assertTrue(dump.contains("someMessageSource"));
-			assertTrue(dump.contains("useCodeAsDefaultMessage"));
+			assertThat(dump.contains("someMessageSource")).isTrue();
+			assertThat(dump.contains("useCodeAsDefaultMessage")).isTrue();
 		}
 		catch (IOException ioex) {
 			throw new IllegalStateException(ioex);
@@ -169,7 +168,7 @@ public class ClassPathXmlApplicationContextTests {
 	@Test
 	public void testContextWithInvalidLazyClass() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(INVALID_CLASS_CONTEXT, getClass());
-		assertTrue(ctx.containsBean("someMessageSource"));
+		assertThat(ctx.containsBean("someMessageSource")).isTrue();
 		assertThatExceptionOfType(CannotLoadBeanClassException.class).isThrownBy(() ->
 				ctx.getBean("someMessageSource"))
 			.satisfies(ex -> assertThat(ex.contains(ClassNotFoundException.class)).isTrue());
@@ -179,8 +178,9 @@ public class ClassPathXmlApplicationContextTests {
 	@Test
 	public void testContextWithClassNameThatContainsPlaceholder() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(CLASS_WITH_PLACEHOLDER_CONTEXT, getClass());
-		assertTrue(ctx.containsBean("someMessageSource"));
-		assertTrue(ctx.getBean("someMessageSource") instanceof StaticMessageSource);
+		assertThat(ctx.containsBean("someMessageSource")).isTrue();
+		boolean condition = ctx.getBean("someMessageSource") instanceof StaticMessageSource;
+		assertThat(condition).isTrue();
 		ctx.close();
 	}
 
@@ -188,9 +188,9 @@ public class ClassPathXmlApplicationContextTests {
 	public void testMultipleConfigLocationsWithClass() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
 				new String[] {CONTEXT_B, CONTEXT_C, CONTEXT_A}, getClass());
-		assertTrue(ctx.containsBean("service"));
-		assertTrue(ctx.containsBean("logicOne"));
-		assertTrue(ctx.containsBean("logicTwo"));
+		assertThat(ctx.containsBean("service")).isTrue();
+		assertThat(ctx.containsBean("logicOne")).isTrue();
+		assertThat(ctx.containsBean("logicTwo")).isTrue();
 		ctx.close();
 	}
 
@@ -223,9 +223,9 @@ public class ClassPathXmlApplicationContextTests {
 		Service service = (Service) ctx.getBean("service");
 		assertEquals(3, service.getResources().length);
 		List<Resource> resources = Arrays.asList(service.getResources());
-		assertTrue(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_A).getFile())));
-		assertTrue(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_B).getFile())));
-		assertTrue(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_C).getFile())));
+		assertThat(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_A).getFile()))).isTrue();
+		assertThat(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_B).getFile()))).isTrue();
+		assertThat(resources.contains(new FileSystemResource(new ClassPathResource(FQ_CONTEXT_C).getFile()))).isTrue();
 		ctx.close();
 	}
 
@@ -234,24 +234,24 @@ public class ClassPathXmlApplicationContextTests {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(CONTEXT_WILDCARD);
 		ClassPathXmlApplicationContext child = new ClassPathXmlApplicationContext(
 				new String[] {CHILD_WITH_PROXY_CONTEXT}, ctx);
-		assertTrue(AopUtils.isAopProxy(child.getBean("assemblerOne")));
-		assertTrue(AopUtils.isAopProxy(child.getBean("assemblerTwo")));
+		assertThat(AopUtils.isAopProxy(child.getBean("assemblerOne"))).isTrue();
+		assertThat(AopUtils.isAopProxy(child.getBean("assemblerTwo"))).isTrue();
 		ctx.close();
 	}
 
 	@Test
 	public void testAliasForParentContext() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(FQ_SIMPLE_CONTEXT);
-		assertTrue(ctx.containsBean("someMessageSource"));
+		assertThat(ctx.containsBean("someMessageSource")).isTrue();
 
 		ClassPathXmlApplicationContext child = new ClassPathXmlApplicationContext(
 				new String[] {ALIAS_FOR_PARENT_CONTEXT}, ctx);
-		assertTrue(child.containsBean("someMessageSource"));
-		assertTrue(child.containsBean("yourMessageSource"));
-		assertTrue(child.containsBean("myMessageSource"));
-		assertTrue(child.isSingleton("someMessageSource"));
-		assertTrue(child.isSingleton("yourMessageSource"));
-		assertTrue(child.isSingleton("myMessageSource"));
+		assertThat(child.containsBean("someMessageSource")).isTrue();
+		assertThat(child.containsBean("yourMessageSource")).isTrue();
+		assertThat(child.containsBean("myMessageSource")).isTrue();
+		assertThat(child.isSingleton("someMessageSource")).isTrue();
+		assertThat(child.isSingleton("yourMessageSource")).isTrue();
+		assertThat(child.isSingleton("myMessageSource")).isTrue();
 		assertEquals(StaticMessageSource.class, child.getType("someMessageSource"));
 		assertEquals(StaticMessageSource.class, child.getType("yourMessageSource"));
 		assertEquals(StaticMessageSource.class, child.getType("myMessageSource"));
@@ -340,7 +340,8 @@ public class ClassPathXmlApplicationContextTests {
 		};
 		ResourceTestBean resource1 = (ResourceTestBean) ctx.getBean("resource1");
 		ResourceTestBean resource2 = (ResourceTestBean) ctx.getBean("resource2");
-		assertTrue(resource1.getResource() instanceof ClassPathResource);
+		boolean condition = resource1.getResource() instanceof ClassPathResource;
+		assertThat(condition).isTrue();
 		StringWriter writer = new StringWriter();
 		FileCopyUtils.copy(new InputStreamReader(resource1.getResource().getInputStream()), writer);
 		assertEquals("contexttest", writer.toString());
@@ -364,9 +365,9 @@ public class ClassPathXmlApplicationContextTests {
 		reader.loadBeanDefinitions(new ClassPathResource(CONTEXT_C, getClass()));
 		reader.loadBeanDefinitions(new ClassPathResource(CONTEXT_A, getClass()));
 		ctx.refresh();
-		assertTrue(ctx.containsBean("service"));
-		assertTrue(ctx.containsBean("logicOne"));
-		assertTrue(ctx.containsBean("logicTwo"));
+		assertThat(ctx.containsBean("service")).isTrue();
+		assertThat(ctx.containsBean("logicOne")).isTrue();
+		assertThat(ctx.containsBean("logicTwo")).isTrue();
 		ctx.close();
 	}
 
@@ -381,9 +382,9 @@ public class ClassPathXmlApplicationContextTests {
 		ctx.refresh();
 		assertEquals(ObjectUtils.identityToString(ctx), ctx.getId());
 		assertEquals(ObjectUtils.identityToString(ctx), ctx.getDisplayName());
-		assertTrue(ctx.containsBean("service"));
-		assertTrue(ctx.containsBean("logicOne"));
-		assertTrue(ctx.containsBean("logicTwo"));
+		assertThat(ctx.containsBean("service")).isTrue();
+		assertThat(ctx.containsBean("logicOne")).isTrue();
+		assertThat(ctx.containsBean("logicTwo")).isTrue();
 		ctx.close();
 	}
 
@@ -399,9 +400,9 @@ public class ClassPathXmlApplicationContextTests {
 		ctx.refresh();
 		assertEquals("testContext", ctx.getId());
 		assertEquals("Test Context", ctx.getDisplayName());
-		assertTrue(ctx.containsBean("service"));
-		assertTrue(ctx.containsBean("logicOne"));
-		assertTrue(ctx.containsBean("logicTwo"));
+		assertThat(ctx.containsBean("service")).isTrue();
+		assertThat(ctx.containsBean("logicOne")).isTrue();
+		assertThat(ctx.containsBean("logicTwo")).isTrue();
 		ctx.close();
 	}
 

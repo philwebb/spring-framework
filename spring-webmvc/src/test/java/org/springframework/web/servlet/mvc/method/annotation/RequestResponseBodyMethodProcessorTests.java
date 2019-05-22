@@ -70,13 +70,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.util.WebUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for a {@link RequestResponseBodyMethodProcessor} with
@@ -414,7 +412,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
-		assertTrue("Failed to recognize type-level @ResponseBody", processor.supportsReturnType(returnType));
+		assertThat(processor.supportsReturnType(returnType)).as("Failed to recognize type-level @ResponseBody").isTrue();
 	}
 
 	@Test
@@ -427,7 +425,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
-		assertTrue("Failed to recognize type-level @RestController", processor.supportsReturnType(returnType));
+		assertThat(processor.supportsReturnType(returnType)).as("Failed to recognize type-level @RestController").isTrue();
 	}
 
 	@Test
@@ -447,7 +445,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		String content = this.servletResponse.getContentAsString();
 		assertFalse(content.contains("\"withView1\":\"with\""));
-		assertTrue(content.contains("\"withView2\":\"with\""));
+		assertThat(content.contains("\"withView2\":\"with\"")).isTrue();
 		assertFalse(content.contains("\"withoutView\":\"without\""));
 	}
 
@@ -468,7 +466,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		String content = this.servletResponse.getContentAsString();
 		assertFalse(content.contains("\"withView1\":\"with\""));
-		assertTrue(content.contains("\"withView2\":\"with\""));
+		assertThat(content.contains("\"withView2\":\"with\"")).isTrue();
 		assertFalse(content.contains("\"withoutView\":\"without\""));
 	}
 
@@ -489,7 +487,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		String content = this.servletResponse.getContentAsString();
 		assertFalse(content.contains("<withView1>with</withView1>"));
-		assertTrue(content.contains("<withView2>with</withView2>"));
+		assertThat(content.contains("<withView2>with</withView2>")).isTrue();
 		assertFalse(content.contains("<withoutView>without</withoutView>"));
 	}
 
@@ -510,7 +508,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		String content = this.servletResponse.getContentAsString();
 		assertFalse(content.contains("<withView1>with</withView1>"));
-		assertTrue(content.contains("<withView2>with</withView2>"));
+		assertThat(content.contains("<withView2>with</withView2>")).isTrue();
 		assertFalse(content.contains("<withoutView>without</withoutView>"));
 	}
 
@@ -640,8 +638,8 @@ public class RequestResponseBodyMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
 		String content = this.servletResponse.getContentAsString();
-		assertTrue(content.contains("\"type\":\"foo\""));
-		assertTrue(content.contains("\"type\":\"bar\""));
+		assertThat(content.contains("\"type\":\"foo\"")).isTrue();
+		assertThat(content.contains("\"type\":\"bar\"")).isTrue();
 	}
 
 	@Test  // SPR-13318
@@ -658,8 +656,8 @@ public class RequestResponseBodyMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
 		String content = this.servletResponse.getContentAsString();
-		assertTrue(content.contains("\"id\":123"));
-		assertTrue(content.contains("\"name\":\"foo\""));
+		assertThat(content.contains("\"id\":123")).isTrue();
+		assertThat(content.contains("\"name\":\"foo\"")).isTrue();
 	}
 
 	@Test  // SPR-13318
@@ -676,10 +674,10 @@ public class RequestResponseBodyMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
 		String content = this.servletResponse.getContentAsString();
-		assertTrue(content.contains("\"id\":123"));
-		assertTrue(content.contains("\"name\":\"foo\""));
-		assertTrue(content.contains("\"id\":456"));
-		assertTrue(content.contains("\"name\":\"bar\""));
+		assertThat(content.contains("\"id\":123")).isTrue();
+		assertThat(content.contains("\"name\":\"foo\"")).isTrue();
+		assertThat(content.contains("\"id\":456")).isTrue();
+		assertThat(content.contains("\"name\":\"bar\"")).isTrue();
 	}
 
 	@Test  // SPR-13631

@@ -60,10 +60,10 @@ import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -146,7 +146,7 @@ public class JmsTemplateTests {
 		PrintWriter out = new PrintWriter(sw);
 		springJmsEx.printStackTrace(out);
 		String trace = sw.toString();
-		assertTrue("inner jms exception not found", trace.indexOf("host not found") > 0);
+		assertThat(trace.indexOf("host not found") > 0).as("inner jms exception not found").isTrue();
 	}
 
 	@Test
@@ -258,7 +258,7 @@ public class JmsTemplateTests {
 			TransactionSynchronizationManager.clearSynchronization();
 			scf.destroy();
 		}
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 
 		verify(this.connection).start();
 		if (useTransactedTemplate()) {

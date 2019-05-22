@@ -29,10 +29,10 @@ import org.springframework.orm.jpa.AbstractContainerEntityManagerFactoryIntegrat
 import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.orm.jpa.domain.Person;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Hibernate-specific JPA tests with native SessionFactory setup and getCurrentSession interaction.
@@ -95,7 +95,7 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 		this.transactionDefinition.setReadOnly(true);
 		startNewTransaction();
 		assertSame(FlushMode.MANUAL, sessionFactory.getCurrentSession().getHibernateFlushMode());
-		assertTrue(sessionFactory.getCurrentSession().isDefaultReadOnly());
+		assertThat(sessionFactory.getCurrentSession().isDefaultReadOnly()).isTrue();
 	}
 
 }

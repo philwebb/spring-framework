@@ -40,9 +40,9 @@ import org.springframework.jca.cci.core.InteractionCallback;
 import org.springframework.jca.cci.core.RecordCreator;
 import org.springframework.jca.cci.core.RecordExtractor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -128,7 +128,8 @@ public class CciTemplateTests {
 		ct.setOutputRecordCreator(new RecordCreator() {
 			@Override
 			public Record createRecord(RecordFactory recordFactory) {
-				assertTrue(recordFactory instanceof NotSupportedRecordFactory);
+				boolean condition = recordFactory instanceof NotSupportedRecordFactory;
+				assertThat(condition).isTrue();
 				return outputRecord;
 			}
 		});

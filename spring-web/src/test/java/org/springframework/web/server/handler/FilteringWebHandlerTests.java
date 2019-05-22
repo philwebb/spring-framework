@@ -36,10 +36,10 @@ import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link FilteringWebHandler}.
@@ -62,10 +62,10 @@ public class FilteringWebHandlerTests {
 				.handle(MockServerWebExchange.from(MockServerHttpRequest.get("/")))
 				.block(Duration.ZERO);
 
-		assertTrue(filter1.invoked());
-		assertTrue(filter2.invoked());
-		assertTrue(filter3.invoked());
-		assertTrue(targetHandler.invoked());
+		assertThat(filter1.invoked()).isTrue();
+		assertThat(filter2.invoked()).isTrue();
+		assertThat(filter3.invoked()).isTrue();
+		assertThat(targetHandler.invoked()).isTrue();
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class FilteringWebHandlerTests {
 				.handle(MockServerWebExchange.from(MockServerHttpRequest.get("/")))
 				.block(Duration.ZERO);
 
-		assertTrue(targetHandler.invoked());
+		assertThat(targetHandler.invoked()).isTrue();
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class FilteringWebHandlerTests {
 				.handle(MockServerWebExchange.from(MockServerHttpRequest.get("/")))
 				.block(Duration.ZERO);
 
-		assertTrue(filter1.invoked());
-		assertTrue(filter2.invoked());
+		assertThat(filter1.invoked()).isTrue();
+		assertThat(filter2.invoked()).isTrue();
 		assertFalse(filter3.invoked());
 		assertFalse(targetHandler.invoked());
 	}
@@ -108,8 +108,8 @@ public class FilteringWebHandlerTests {
 				.handle(MockServerWebExchange.from(MockServerHttpRequest.get("/")))
 				.block(Duration.ofSeconds(5));
 
-		assertTrue(filter.invoked());
-		assertTrue(targetHandler.invoked());
+		assertThat(filter.invoked()).isTrue();
+		assertThat(targetHandler.invoked()).isTrue();
 	}
 
 	@Test

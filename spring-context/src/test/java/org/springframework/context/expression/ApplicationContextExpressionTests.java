@@ -58,11 +58,11 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.SerializationTestUtils;
 import org.springframework.util.StopWatch;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -275,7 +275,7 @@ public class ApplicationContextExpressionTests {
 			System.getProperties().remove("country");
 			System.getProperties().remove("name");
 		}
-		assertTrue("Prototype creation took too long: " + sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 6000);
+		assertThat(sw.getTotalTimeMillis() < 6000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
 	}
 
 	@Test
@@ -325,7 +325,7 @@ public class ApplicationContextExpressionTests {
 		ac.refresh();
 
 		String str = ac.getBean("str", String.class);
-		assertTrue(str.startsWith("test-"));
+		assertThat(str.startsWith("test-")).isTrue();
 	}
 
 	@Test

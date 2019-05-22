@@ -26,8 +26,8 @@ import org.springframework.aop.framework.Advised;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Check that an aspect that depends on another bean, where the referenced bean
@@ -66,7 +66,8 @@ public class PropertyDependentAspectTests {
 	private void checkXmlAspect(String appContextFile) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(appContextFile, getClass());
 		ICounter counter = (ICounter) context.getBean("counter");
-		assertTrue("Proxy didn't get created", counter instanceof Advised);
+		boolean condition = counter instanceof Advised;
+		assertThat(condition).as("Proxy didn't get created").isTrue();
 
 		counter.increment();
 		JoinPointMonitorAspect callCountingAspect = (JoinPointMonitorAspect)context.getBean("monitoringAspect");
@@ -77,7 +78,8 @@ public class PropertyDependentAspectTests {
 	private void checkAtAspectJAspect(String appContextFile) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(appContextFile, getClass());
 		ICounter counter = (ICounter) context.getBean("counter");
-		assertTrue("Proxy didn't get created", counter instanceof Advised);
+		boolean condition = counter instanceof Advised;
+		assertThat(condition).as("Proxy didn't get created").isTrue();
 
 		counter.increment();
 		JoinPointMonitorAtAspectJAspect callCountingAspect = (JoinPointMonitorAtAspectJAspect)context.getBean("monitoringAspect");

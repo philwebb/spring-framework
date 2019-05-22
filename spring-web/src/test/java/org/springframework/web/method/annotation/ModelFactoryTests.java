@@ -41,11 +41,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolverCompo
 import org.springframework.web.method.support.InvocableHandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -110,7 +110,7 @@ public class ModelFactoryTests {
 		HandlerMethod handlerMethod = createHandlerMethod("handle");
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
-		assertTrue(this.mavContainer.containsAttribute("name"));
+		assertThat(this.mavContainer.containsAttribute("name")).isTrue();
 		assertNull(this.mavContainer.getModel().get("name"));
 	}
 
@@ -120,8 +120,8 @@ public class ModelFactoryTests {
 		HandlerMethod handlerMethod = createHandlerMethod("handle");
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
-		assertTrue(this.mavContainer.containsAttribute("foo"));
-		assertTrue(this.mavContainer.isBindingDisabled("foo"));
+		assertThat(this.mavContainer.containsAttribute("foo")).isTrue();
+		assertThat(this.mavContainer.isBindingDisabled("foo")).isTrue();
 	}
 
 	@Test
@@ -133,9 +133,9 @@ public class ModelFactoryTests {
 		HandlerMethod handlerMethod = createHandlerMethod("handle");
 		modelFactory.initModel(this.webRequest, this.mavContainer, handlerMethod);
 
-		assertTrue(this.mavContainer.containsAttribute("foo"));
+		assertThat(this.mavContainer.containsAttribute("foo")).isTrue();
 		assertSame(foo, this.mavContainer.getModel().get("foo"));
-		assertTrue(this.mavContainer.isBindingDisabled("foo"));
+		assertThat(this.mavContainer.isBindingDisabled("foo")).isTrue();
 	}
 
 	@Test

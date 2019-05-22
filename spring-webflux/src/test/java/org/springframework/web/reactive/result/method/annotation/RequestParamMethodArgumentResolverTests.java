@@ -37,12 +37,12 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
 
@@ -76,25 +76,25 @@ public class RequestParamMethodArgumentResolverTests {
 	public void supportsParameter() {
 
 		MethodParameter param = this.testMethod.annot(requestParam().notRequired("bar")).arg(String.class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotPresent(RequestParam.class).arg(String[].class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().name("name")).arg(Map.class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().name("")).arg(Map.class);
 		assertFalse(this.resolver.supportsParameter(param));
 
 		param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam()).arg(String.class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().notRequired()).arg(String.class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 	}
 
@@ -129,7 +129,8 @@ public class RequestParamMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annotPresent(RequestParam.class).arg(String[].class);
 		MockServerHttpRequest request = MockServerHttpRequest.get("/path?name=foo&name=bar").build();
 		Object result = resolve(param, MockServerWebExchange.from(request));
-		assertTrue(result instanceof String[]);
+		boolean condition = result instanceof String[];
+		assertThat(condition).isTrue();
 		assertArrayEquals(new String[] {"foo", "bar"}, (String[]) result);
 	}
 
@@ -209,7 +210,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		assertEquals(Optional.class, result.getClass());
 		Optional<?> value = (Optional<?>) result;
-		assertTrue(value.isPresent());
+		assertThat(value.isPresent()).isTrue();
 		assertEquals(123, value.get());
 	}
 

@@ -32,10 +32,10 @@ import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rossen Stoyanchev
@@ -48,9 +48,9 @@ public class ServerHttpResponseTests {
 		TestServerHttpResponse response = new TestServerHttpResponse();
 		response.writeWith(Flux.just(wrap("a"), wrap("b"), wrap("c"))).block();
 
-		assertTrue(response.statusCodeWritten);
-		assertTrue(response.headersWritten);
-		assertTrue(response.cookiesWritten);
+		assertThat(response.statusCodeWritten).isTrue();
+		assertThat(response.headersWritten).isTrue();
+		assertThat(response.cookiesWritten).isTrue();
 
 		assertEquals(3, response.body.size());
 		assertEquals("a", new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8));
@@ -64,9 +64,9 @@ public class ServerHttpResponseTests {
 		Flux<Flux<DefaultDataBuffer>> flux = Flux.just(Flux.just(wrap("foo")));
 		response.writeAndFlushWith(flux).block();
 
-		assertTrue(response.statusCodeWritten);
-		assertTrue(response.headersWritten);
-		assertTrue(response.cookiesWritten);
+		assertThat(response.statusCodeWritten).isTrue();
+		assertThat(response.headersWritten).isTrue();
+		assertThat(response.cookiesWritten).isTrue();
 
 		assertEquals(1, response.body.size());
 		assertEquals("foo", new String(response.body.get(0).asByteBuffer().array(), StandardCharsets.UTF_8));
@@ -83,7 +83,7 @@ public class ServerHttpResponseTests {
 		assertFalse(response.headersWritten);
 		assertFalse(response.cookiesWritten);
 		assertFalse(response.getHeaders().containsKey(HttpHeaders.CONTENT_LENGTH));
-		assertTrue(response.body.isEmpty());
+		assertThat(response.body.isEmpty()).isTrue();
 	}
 
 	@Test
@@ -91,10 +91,10 @@ public class ServerHttpResponseTests {
 		TestServerHttpResponse response = new TestServerHttpResponse();
 		response.setComplete().block();
 
-		assertTrue(response.statusCodeWritten);
-		assertTrue(response.headersWritten);
-		assertTrue(response.cookiesWritten);
-		assertTrue(response.body.isEmpty());
+		assertThat(response.statusCodeWritten).isTrue();
+		assertThat(response.headersWritten).isTrue();
+		assertThat(response.cookiesWritten).isTrue();
+		assertThat(response.body.isEmpty()).isTrue();
 	}
 
 	@Test
@@ -104,9 +104,9 @@ public class ServerHttpResponseTests {
 		response.beforeCommit(() -> Mono.fromRunnable(() -> response.getCookies().add(cookie.getName(), cookie)));
 		response.writeWith(Flux.just(wrap("a"), wrap("b"), wrap("c"))).block();
 
-		assertTrue(response.statusCodeWritten);
-		assertTrue(response.headersWritten);
-		assertTrue(response.cookiesWritten);
+		assertThat(response.statusCodeWritten).isTrue();
+		assertThat(response.headersWritten).isTrue();
+		assertThat(response.cookiesWritten).isTrue();
 		assertSame(cookie, response.getCookies().getFirst("ID"));
 
 		assertEquals(3, response.body.size());
@@ -125,10 +125,10 @@ public class ServerHttpResponseTests {
 		});
 		response.setComplete().block();
 
-		assertTrue(response.statusCodeWritten);
-		assertTrue(response.headersWritten);
-		assertTrue(response.cookiesWritten);
-		assertTrue(response.body.isEmpty());
+		assertThat(response.statusCodeWritten).isTrue();
+		assertThat(response.headersWritten).isTrue();
+		assertThat(response.cookiesWritten).isTrue();
+		assertThat(response.body.isEmpty()).isTrue();
 		assertSame(cookie, response.getCookies().getFirst("ID"));
 	}
 

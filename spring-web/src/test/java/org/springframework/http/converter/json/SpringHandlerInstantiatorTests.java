@@ -55,9 +55,9 @@ import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostP
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test class for {@link SpringHandlerInstantiatorTests}.
@@ -101,20 +101,20 @@ public class SpringHandlerInstantiatorTests {
 	public void autowiredKeyDeserializer() throws IOException {
 		String json = "{\"credentials\":{\"bob\":\"admin\"}}";
 		SecurityRegistry registry = this.objectMapper.readValue(json, SecurityRegistry.class);
-		assertTrue(registry.getCredentials().keySet().contains("BOB"));
+		assertThat(registry.getCredentials().keySet().contains("BOB")).isTrue();
 		assertFalse(registry.getCredentials().keySet().contains("bob"));
 	}
 
 	@Test
 	public void applicationContextAwaretypeResolverBuilder() throws JsonProcessingException {
 		this.objectMapper.writeValueAsString(new Group());
-		assertTrue(CustomTypeResolverBuilder.isAutowiredFiledInitialized);
+		assertThat(CustomTypeResolverBuilder.isAutowiredFiledInitialized).isTrue();
 	}
 
 	@Test
 	public void applicationContextAwareTypeIdResolver() throws JsonProcessingException {
 		this.objectMapper.writeValueAsString(new Group());
-		assertTrue(CustomTypeIdResolver.isAutowiredFiledInitialized);
+		assertThat(CustomTypeIdResolver.isAutowiredFiledInitialized).isTrue();
 	}
 
 

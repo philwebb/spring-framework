@@ -27,9 +27,9 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -48,7 +48,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("index", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("index", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("index", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("mypre_index_mysuf", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("mypre_index", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("index_mysuf", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("docs/cvs/commit", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("cvs/commit", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("docs/cvs/commit", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("docs/cvs/commit", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -175,7 +175,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertEquals("products/view", mv.getViewName());
-		assertTrue(mv.getModel().isEmpty());
+		assertThat(mv.getModel().isEmpty()).isTrue();
 	}
 
 	@Test

@@ -36,10 +36,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -103,7 +103,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 		exchange.getResponse().getHeaders().add("Last-Modified", CURRENT_TIME);
 
-		assertTrue(exchange.checkNotModified(currentDate));
+		assertThat(exchange.checkNotModified(currentDate)).isTrue();
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(1, exchange.getResponse().getHeaders().get("Last-Modified").size());
 		assertEquals(CURRENT_TIME, exchange.getResponse().getHeaders().getFirst("Last-Modified"));
@@ -114,7 +114,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerHttpRequest request = get("/").ifModifiedSince(currentDate.toEpochMilli()).build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		assertTrue(exchange.checkNotModified(currentDate));
+		assertThat(exchange.checkNotModified(currentDate)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(currentDate.toEpochMilli(), exchange.getResponse().getHeaders().getLastModified());
@@ -137,7 +137,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		String eTag = "\"Foo\"";
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").ifNoneMatch(eTag));
 
-		assertTrue(exchange.checkNotModified(eTag));
+		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(eTag, exchange.getResponse().getHeaders().getETag());
@@ -148,7 +148,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		String eTag = "\"Foo, Bar\"";
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").ifNoneMatch(eTag));
 
-		assertTrue(exchange.checkNotModified(eTag));
+		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(eTag, exchange.getResponse().getHeaders().getETag());
@@ -173,7 +173,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		String paddedEtag = String.format("\"%s\"", eTag);
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").ifNoneMatch(paddedEtag));
 
-		assertTrue(exchange.checkNotModified(eTag));
+		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(paddedEtag, exchange.getResponse().getHeaders().getETag());
@@ -208,7 +208,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerHttpRequest request = get("/").ifNoneMatch(eTag).ifModifiedSince(time).build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		assertTrue(exchange.checkNotModified(eTag, currentDate));
+		assertThat(exchange.checkNotModified(eTag, currentDate)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(eTag, exchange.getResponse().getHeaders().getETag());
@@ -225,7 +225,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 				.ifModifiedSince(oneMinuteAgo.toEpochMilli())
 				);
 
-		assertTrue(exchange.checkNotModified(eTag, currentDate));
+		assertThat(exchange.checkNotModified(eTag, currentDate)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(eTag, exchange.getResponse().getHeaders().getETag());
@@ -253,7 +253,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		String weakEtag = String.format("W/%s", eTag);
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").ifNoneMatch(eTag));
 
-		assertTrue(exchange.checkNotModified(weakEtag));
+		assertThat(exchange.checkNotModified(weakEtag)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(weakEtag, exchange.getResponse().getHeaders().getETag());
@@ -265,7 +265,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerHttpRequest request = get("/").ifNoneMatch(String.format("W/%s", eTag)).build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		assertTrue(exchange.checkNotModified(eTag));
+		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(eTag, exchange.getResponse().getHeaders().getETag());
@@ -277,7 +277,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		String multipleETags = String.format("\"Foo\", %s", eTag);
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").ifNoneMatch(multipleETags));
 
-		assertTrue(exchange.checkNotModified(eTag));
+		assertThat(exchange.checkNotModified(eTag)).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(eTag, exchange.getResponse().getHeaders().getETag());
@@ -290,7 +290,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerHttpRequest request = get("/").header("If-Modified-Since", header).build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		assertTrue(exchange.checkNotModified(Instant.ofEpochMilli(epochTime)));
+		assertThat(exchange.checkNotModified(Instant.ofEpochMilli(epochTime))).isTrue();
 
 		assertEquals(304, exchange.getResponse().getStatusCode().value());
 		assertEquals(epochTime, exchange.getResponse().getHeaders().getLastModified());
@@ -328,7 +328,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 		MockServerHttpRequest request = MockServerHttpRequest.put("/").ifUnmodifiedSince(millis).build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		assertTrue(exchange.checkNotModified(currentDate));
+		assertThat(exchange.checkNotModified(currentDate)).isTrue();
 		assertEquals(412, exchange.getResponse().getStatusCode().value());
 		assertEquals(-1, exchange.getResponse().getHeaders().getLastModified());
 	}

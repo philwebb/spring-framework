@@ -59,10 +59,10 @@ import org.springframework.http.codec.xml.Jaxb2XmlDecoder;
 import org.springframework.http.codec.xml.Jaxb2XmlEncoder;
 import org.springframework.util.MimeTypeUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -141,7 +141,7 @@ public class ClientCodecConfigurerTests {
 	@SuppressWarnings("unchecked")
 	private void assertStringDecoder(Decoder<?> decoder, boolean textOnly) {
 		assertEquals(StringDecoder.class, decoder.getClass());
-		assertTrue(decoder.canDecode(forClass(String.class), MimeTypeUtils.TEXT_PLAIN));
+		assertThat(decoder.canDecode(forClass(String.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
 		assertEquals(!textOnly, decoder.canDecode(forClass(String.class), MediaType.TEXT_EVENT_STREAM));
 
 		Flux<String> decoded = (Flux<String>) decoder.decode(
@@ -153,7 +153,7 @@ public class ClientCodecConfigurerTests {
 
 	private void assertStringEncoder(Encoder<?> encoder, boolean textOnly) {
 		assertEquals(CharSequenceEncoder.class, encoder.getClass());
-		assertTrue(encoder.canEncode(forClass(String.class), MimeTypeUtils.TEXT_PLAIN));
+		assertThat(encoder.canEncode(forClass(String.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
 		assertEquals(!textOnly, encoder.canEncode(forClass(String.class), MediaType.TEXT_EVENT_STREAM));
 	}
 

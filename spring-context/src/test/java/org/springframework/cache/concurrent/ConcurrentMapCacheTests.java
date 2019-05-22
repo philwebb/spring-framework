@@ -28,10 +28,10 @@ import org.junit.Test;
 import org.springframework.cache.AbstractValueAdaptingCacheTests;
 import org.springframework.core.serializer.support.SerializationDelegate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Costin Leau
@@ -84,7 +84,7 @@ public class ConcurrentMapCacheTests
 	@Test
 	public void testSerializer() {
 		ConcurrentMapCache serializeCache = createCacheWithStoreByValue();
-		assertTrue(serializeCache.isStoreByValue());
+		assertThat(serializeCache.isStoreByValue()).isTrue();
 
 		Object key = createRandomKey();
 		List<String> content = new ArrayList<>();

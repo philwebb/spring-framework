@@ -20,10 +20,10 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -86,7 +86,7 @@ public class CronSequenceGeneratorTests {
 
 	@Test
 	public void validExpression() {
-		assertTrue(CronSequenceGenerator.isValidExpression("0 */2 1-4 * * *"));
+		assertThat(CronSequenceGenerator.isValidExpression("0 */2 1-4 * * *")).isTrue();
 	}
 
 	@Test

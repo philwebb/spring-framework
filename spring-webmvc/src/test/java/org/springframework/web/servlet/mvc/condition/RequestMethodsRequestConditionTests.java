@@ -26,11 +26,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
@@ -109,13 +109,13 @@ public class RequestMethodsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 
 		int result = c1.compareTo(c2, request);
-		assertTrue("Invalid comparison result: " + result, result < 0);
+		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = c2.compareTo(c1, request);
-		assertTrue("Invalid comparison result: " + result, result > 0);
+		assertThat(result > 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = c2.compareTo(c3, request);
-		assertTrue("Invalid comparison result: " + result, result < 0);
+		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = c1.compareTo(c1, request);
 		assertEquals("Invalid comparison result ", 0, result);

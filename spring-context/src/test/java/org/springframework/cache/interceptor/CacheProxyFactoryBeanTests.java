@@ -27,10 +27,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@link CacheProxyFactoryBean}.
@@ -48,13 +48,13 @@ public class CacheProxyFactoryBeanTests {
 			assertNotNull(greeter);
 			assertFalse(greeter.isCacheMiss());
 			assertEquals("Hello John!", greeter.greet("John"));
-			assertTrue(greeter.isCacheMiss());
+			assertThat(greeter.isCacheMiss()).isTrue();
 			assertEquals("Hello Jon!", greeter.greet("Jon"));
-			assertTrue(greeter.isCacheMiss());
+			assertThat(greeter.isCacheMiss()).isTrue();
 			assertEquals("Hello John!", greeter.greet("John"));
 			assertFalse(greeter.isCacheMiss());
 			assertEquals("Hello World!", greeter.greet());
-			assertTrue(greeter.isCacheMiss());
+			assertThat(greeter.isCacheMiss()).isTrue();
 			assertEquals("Hello World!", greeter.greet());
 			assertFalse(greeter.isCacheMiss());
 		}

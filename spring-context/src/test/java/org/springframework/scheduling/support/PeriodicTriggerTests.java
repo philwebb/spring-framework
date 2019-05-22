@@ -24,9 +24,9 @@ import org.junit.Test;
 import org.springframework.scheduling.TriggerContext;
 import org.springframework.util.NumberUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -208,14 +208,14 @@ public class PeriodicTriggerTests {
 
 	private static void assertNegligibleDifference(Date d1, Date d2) {
 		long diff = Math.abs(d1.getTime() - d2.getTime());
-		assertTrue("difference exceeds threshold: " + diff, diff < 100);
+		assertThat(diff < 100).as("difference exceeds threshold: " + diff).isTrue();
 	}
 
 	private static void assertApproximateDifference(Date lesser, Date greater, long expected) {
 		long diff = greater.getTime() - lesser.getTime();
 		long variance = Math.abs(expected - diff);
-		assertTrue("expected approximate difference of " + expected +
-				", but actual difference was " + diff, variance < 100);
+		assertThat(variance < 100).as("expected approximate difference of " + expected +
+				", but actual difference was " + diff).isTrue();
 	}
 
 	private static TriggerContext context(Object scheduled, Object actual, Object completion) {

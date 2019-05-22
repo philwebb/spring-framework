@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.springframework.aop.framework.Advised;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Adrian Colyer
@@ -52,8 +52,8 @@ public class SubtypeSensitiveMatchingTests {
 
 	@Test
 	public void testBeansAreProxiedOnStaticMatch() {
-		assertTrue("bean with serializable type should be proxied",
-				this.serializableBean instanceof Advised);
+		boolean condition = this.serializableBean instanceof Advised;
+		assertThat(condition).as("bean with serializable type should be proxied").isTrue();
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public class SubtypeSensitiveMatchingTests {
 
 	@Test
 	public void testBeansThatDoNotMatchBasedOnOtherTestAreProxied() {
-		assertTrue("bean with args check should be proxied",
-				this.bar instanceof Advised);
+		boolean condition = this.bar instanceof Advised;
+		assertThat(condition).as("bean with args check should be proxied").isTrue();
 	}
 
 }

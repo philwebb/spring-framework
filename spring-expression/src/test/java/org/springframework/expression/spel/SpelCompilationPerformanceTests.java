@@ -22,9 +22,9 @@ import org.junit.Test;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelCompiler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -319,7 +319,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		// Verify if the input changes, the result changes
 		payload.DR[0].DRFixedSection.duration = 0.04d;
 		bc = expression.getValue(payload, Boolean.TYPE);
-		assertTrue(bc);
+		assertThat(bc).isTrue();
 	}
 
 	public static class HW {
@@ -650,7 +650,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 	}
 
 	private void compile(Expression expression) {
-		assertTrue(SpelCompiler.compile(expression));
+		assertThat(SpelCompiler.compile(expression)).isTrue();
 	}
 
 

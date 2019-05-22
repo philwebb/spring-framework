@@ -27,9 +27,9 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.util.MimeTypeUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Sebastien Deleuze
@@ -48,12 +48,12 @@ public class ByteBufferDecoderTests extends AbstractDecoderTestCase<ByteBufferDe
 	@Override
 	@Test
 	public void canDecode() {
-		assertTrue(this.decoder.canDecode(ResolvableType.forClass(ByteBuffer.class),
-				MimeTypeUtils.TEXT_PLAIN));
+		assertThat(this.decoder.canDecode(ResolvableType.forClass(ByteBuffer.class),
+				MimeTypeUtils.TEXT_PLAIN)).isTrue();
 		assertFalse(this.decoder.canDecode(ResolvableType.forClass(Integer.class),
 				MimeTypeUtils.TEXT_PLAIN));
-		assertTrue(this.decoder.canDecode(ResolvableType.forClass(ByteBuffer.class),
-				MimeTypeUtils.APPLICATION_JSON));
+		assertThat(this.decoder.canDecode(ResolvableType.forClass(ByteBuffer.class),
+				MimeTypeUtils.APPLICATION_JSON)).isTrue();
 	}
 
 	@Override

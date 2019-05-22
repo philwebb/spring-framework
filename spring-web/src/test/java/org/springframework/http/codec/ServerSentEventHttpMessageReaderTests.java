@@ -32,10 +32,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ServerSentEventHttpMessageReader}.
@@ -56,8 +56,8 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractLeakCheckingT
 
 	@Test
 	public void canRead() {
-		assertTrue(messageReader.canRead(ResolvableType.forClass(Object.class), new MediaType("text", "event-stream")));
-		assertTrue(messageReader.canRead(ResolvableType.forClass(ServerSentEvent.class), new MediaType("foo", "bar")));
+		assertThat(messageReader.canRead(ResolvableType.forClass(Object.class), new MediaType("text", "event-stream"))).isTrue();
+		assertThat(messageReader.canRead(ResolvableType.forClass(ServerSentEvent.class), new MediaType("foo", "bar"))).isTrue();
 	}
 
 	@Test

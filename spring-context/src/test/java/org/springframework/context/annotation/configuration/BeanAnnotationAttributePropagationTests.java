@@ -30,10 +30,10 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests proving that the various attributes available via the {@link Bean}
@@ -106,8 +106,7 @@ public class BeanAnnotationAttributePropagationTests {
 			Object foo() { return null; }
 		}
 
-		assertTrue("primary metadata was not propagated",
-				beanDef(Config.class).isPrimary());
+		assertThat(beanDef(Config.class).isPrimary()).as("primary metadata was not propagated").isTrue();
 	}
 
 	@Test
@@ -127,8 +126,7 @@ public class BeanAnnotationAttributePropagationTests {
 			Object foo() { return null; }
 		}
 
-		assertTrue("lazy metadata was not propagated",
-				beanDef(Config.class).isLazyInit());
+		assertThat(beanDef(Config.class).isLazyInit()).as("lazy metadata was not propagated").isTrue();
 	}
 
 	@Test
@@ -147,8 +145,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean Object foo() { return null; }
 		}
 
-		assertTrue("@Bean methods declared in a @Lazy @Configuration should be lazily instantiated",
-				beanDef(Config.class).isLazyInit());
+		assertThat(beanDef(Config.class).isLazyInit()).as("@Bean methods declared in a @Lazy @Configuration should be lazily instantiated").isTrue();
 	}
 
 	@Test

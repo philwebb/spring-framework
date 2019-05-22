@@ -27,12 +27,12 @@ import org.junit.Test;
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.web.server.WebSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link InMemoryWebSessionStore}.
@@ -48,7 +48,7 @@ public class InMemoryWebSessionStoreTests {
 		WebSession session = this.store.createWebSession().block();
 		assertNotNull(session);
 		session.start();
-		assertTrue(session.isStarted());
+		assertThat(session.isStarted()).isTrue();
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class InMemoryWebSessionStoreTests {
 		assertNotNull(session);
 		session.start();
 		session.getAttributes().put("foo", "bar");
-		assertTrue(session.isStarted());
+		assertThat(session.isStarted()).isTrue();
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class InMemoryWebSessionStoreTests {
 		assertNotNull(session2);
 		assertSame(session1, session2);
 		Instant time2 = session2.getLastAccessTime();
-		assertTrue(time1.isBefore(time2));
+		assertThat(time1.isBefore(time2)).isTrue();
 	}
 
 	@Test // SPR-17051

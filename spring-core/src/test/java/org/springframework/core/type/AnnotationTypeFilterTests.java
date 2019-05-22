@@ -28,8 +28,8 @@ import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Ramnivas Laddad
@@ -45,7 +45,7 @@ public class AnnotationTypeFilterTests {
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(classUnderTest);
 
 		AnnotationTypeFilter filter = new AnnotationTypeFilter(InheritedAnnotation.class);
-		assertTrue(filter.match(metadataReader, metadataReaderFactory));
+		assertThat(filter.match(metadataReader, metadataReaderFactory)).isTrue();
 		ClassloadingAssertions.assertClassNotLoaded(classUnderTest);
 	}
 
@@ -68,7 +68,7 @@ public class AnnotationTypeFilterTests {
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(classUnderTest);
 
 		AnnotationTypeFilter filter = new AnnotationTypeFilter(InheritedAnnotation.class);
-		assertTrue(filter.match(metadataReader, metadataReaderFactory));
+		assertThat(filter.match(metadataReader, metadataReaderFactory)).isTrue();
 		ClassloadingAssertions.assertClassNotLoaded(classUnderTest);
 	}
 
@@ -102,7 +102,7 @@ public class AnnotationTypeFilterTests {
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(classUnderTest);
 
 		AnnotationTypeFilter filter = new AnnotationTypeFilter(InheritedAnnotation.class, false, true);
-		assertTrue(filter.match(metadataReader, metadataReaderFactory));
+		assertThat(filter.match(metadataReader, metadataReaderFactory)).isTrue();
 		ClassloadingAssertions.assertClassNotLoaded(classUnderTest);
 	}
 

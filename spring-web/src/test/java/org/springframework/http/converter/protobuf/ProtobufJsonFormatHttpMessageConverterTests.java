@@ -29,9 +29,9 @@ import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.protobuf.Msg;
 import org.springframework.protobuf.SecondMsg;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -73,18 +73,18 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(this.converter.canRead(Msg.class, null));
-		assertTrue(this.converter.canRead(Msg.class, ProtobufHttpMessageConverter.PROTOBUF));
-		assertTrue(this.converter.canRead(Msg.class, MediaType.APPLICATION_JSON));
-		assertTrue(this.converter.canRead(Msg.class, MediaType.TEXT_PLAIN));
+		assertThat(this.converter.canRead(Msg.class, null)).isTrue();
+		assertThat(this.converter.canRead(Msg.class, ProtobufHttpMessageConverter.PROTOBUF)).isTrue();
+		assertThat(this.converter.canRead(Msg.class, MediaType.APPLICATION_JSON)).isTrue();
+		assertThat(this.converter.canRead(Msg.class, MediaType.TEXT_PLAIN)).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(this.converter.canWrite(Msg.class, null));
-		assertTrue(this.converter.canWrite(Msg.class, ProtobufHttpMessageConverter.PROTOBUF));
-		assertTrue(this.converter.canWrite(Msg.class, MediaType.APPLICATION_JSON));
-		assertTrue(this.converter.canWrite(Msg.class, MediaType.TEXT_PLAIN));
+		assertThat(this.converter.canWrite(Msg.class, null)).isTrue();
+		assertThat(this.converter.canWrite(Msg.class, ProtobufHttpMessageConverter.PROTOBUF)).isTrue();
+		assertThat(this.converter.canWrite(Msg.class, MediaType.APPLICATION_JSON)).isTrue();
+		assertThat(this.converter.canWrite(Msg.class, MediaType.TEXT_PLAIN)).isTrue();
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 		MediaType contentType = ProtobufHttpMessageConverter.PROTOBUF;
 		this.converter.write(this.testMsg, contentType, outputMessage);
 		assertEquals(contentType, outputMessage.getHeaders().getContentType());
-		assertTrue(outputMessage.getBodyAsBytes().length > 0);
+		assertThat(outputMessage.getBodyAsBytes().length > 0).isTrue();
 		Message result = Msg.parseFrom(outputMessage.getBodyAsBytes());
 		assertEquals(this.testMsg, result);
 

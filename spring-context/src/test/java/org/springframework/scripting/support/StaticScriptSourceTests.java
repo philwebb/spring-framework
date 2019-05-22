@@ -18,10 +18,10 @@ package org.springframework.scripting.support;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the StaticScriptSource class.
@@ -56,7 +56,7 @@ public class StaticScriptSourceTests {
 
 	@Test
 	public void isModifiedIsTrueByDefault() throws Exception {
-		assertTrue("Script must be flagged as 'modified' when first created.", source.isModified());
+		assertThat(source.isModified()).as("Script must be flagged as 'modified' when first created.").isTrue();
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class StaticScriptSourceTests {
 	@Test
 	public void isModifiedToggledWhenDifferentScriptIsSet() throws Exception {
 		source.setScript("use warnings;");
-		assertTrue("Script must be flagged as 'modified' when different script is passed in.", source.isModified());
+		assertThat(source.isModified()).as("Script must be flagged as 'modified' when different script is passed in.").isTrue();
 	}
 
 	@Test

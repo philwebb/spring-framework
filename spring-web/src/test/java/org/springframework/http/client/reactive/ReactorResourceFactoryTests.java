@@ -22,10 +22,10 @@ import reactor.netty.http.HttpResources;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.resources.LoopResources;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -56,7 +56,7 @@ public class ReactorResourceFactoryTests {
 
 		this.resourceFactory.destroy();
 
-		assertTrue(globalResources.isDisposed());
+		assertThat(globalResources.isDisposed()).isTrue();
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class ReactorResourceFactoryTests {
 		this.resourceFactory.addGlobalResourcesConsumer(httpResources -> invoked.set(true));
 		this.resourceFactory.afterPropertiesSet();
 
-		assertTrue(invoked.get());
+		assertThat(invoked.get()).isTrue();
 		this.resourceFactory.destroy();
 	}
 
@@ -89,8 +89,8 @@ public class ReactorResourceFactoryTests {
 
 		this.resourceFactory.destroy();
 
-		assertTrue(connectionProvider.isDisposed());
-		assertTrue(loopResources.isDisposed());
+		assertThat(connectionProvider.isDisposed()).isTrue();
+		assertThat(loopResources.isDisposed()).isTrue();
 	}
 
 	@Test

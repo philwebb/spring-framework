@@ -24,10 +24,8 @@ import javax.net.ServerSocketFactory;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.util.SocketUtils.PORT_RANGE_MAX;
 import static org.springframework.util.SocketUtils.PORT_RANGE_MIN;
 
@@ -230,8 +228,8 @@ public class SocketUtilsTests {
 		assertAvailablePorts(ports, numRequested, minPort, maxPort);
 	}
 	private void assertPortInRange(int port, int minPort, int maxPort) {
-		assertTrue("port [" + port + "] >= " + minPort, port >= minPort);
-		assertTrue("port [" + port + "] <= " + maxPort, port <= maxPort);
+		assertThat(port >= minPort).as("port [" + port + "] >= " + minPort).isTrue();
+		assertThat(port <= maxPort).as("port [" + port + "] <= " + maxPort).isTrue();
 	}
 
 	private void assertAvailablePorts(SortedSet<Integer> ports, int numRequested, int minPort, int maxPort) {

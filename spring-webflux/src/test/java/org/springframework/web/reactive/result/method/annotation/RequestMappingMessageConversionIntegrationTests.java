@@ -60,9 +60,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 
 /**
@@ -233,7 +233,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		ResponseEntity<byte[]> response = performGet("/resource", new HttpHeaders(), byte[].class);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertTrue(response.hasBody());
+		assertThat(response.hasBody()).isTrue();
 		assertEquals(951, response.getHeaders().getContentLength());
 		assertEquals(951, response.getBody().length);
 		assertEquals(new MediaType("image", "png"), response.getHeaders().getContentType());

@@ -76,11 +76,11 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.util.pattern.PathPatternParser;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
@@ -114,7 +114,7 @@ public class WebFluxConfigurationSupportTests {
 		PathPatternParser patternParser = mapping.getPathPatternParser();
 		assertNotNull(patternParser);
 		boolean matchOptionalTrailingSlash = (boolean) ReflectionUtils.getField(field, patternParser);
-		assertTrue(matchOptionalTrailingSlash);
+		assertThat(matchOptionalTrailingSlash).isTrue();
 
 		name = "webFluxContentTypeResolver";
 		RequestedContentTypeResolver resolver = context.getBean(name, RequestedContentTypeResolver.class);
@@ -301,11 +301,11 @@ public class WebFluxConfigurationSupportTests {
 
 
 	private void assertHasMessageReader(List<HttpMessageReader<?>> readers, ResolvableType type, MediaType mediaType) {
-		assertTrue(readers.stream().anyMatch(c -> mediaType == null || c.canRead(type, mediaType)));
+		assertThat(readers.stream().anyMatch(c -> mediaType == null || c.canRead(type, mediaType))).isTrue();
 	}
 
 	private void assertHasMessageWriter(List<HttpMessageWriter<?>> writers, ResolvableType type, MediaType mediaType) {
-		assertTrue(writers.stream().anyMatch(c -> mediaType == null || c.canWrite(type, mediaType)));
+		assertThat(writers.stream().anyMatch(c -> mediaType == null || c.canWrite(type, mediaType))).isTrue();
 	}
 
 	private ApplicationContext loadConfig(Class<?>... configurationClasses) {

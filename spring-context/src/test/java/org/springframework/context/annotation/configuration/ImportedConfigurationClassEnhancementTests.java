@@ -31,7 +31,6 @@ import org.springframework.util.ClassUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests cornering the bug exposed in SPR-6779.
@@ -54,8 +53,7 @@ public class ImportedConfigurationClassEnhancementTests {
 	private void autowiredConfigClassIsEnhanced(Class<?>... configClasses) {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(configClasses);
 		Config config = ctx.getBean(Config.class);
-		assertTrue("autowired config class has not been enhanced",
-				ClassUtils.isCglibProxy(config.autowiredConfig));
+		assertThat(ClassUtils.isCglibProxy(config.autowiredConfig)).as("autowired config class has not been enhanced").isTrue();
 	}
 
 

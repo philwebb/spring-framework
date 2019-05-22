@@ -30,9 +30,9 @@ import org.springframework.web.socket.sockjs.transport.session.AbstractSockJsSes
 import org.springframework.web.socket.sockjs.transport.session.StreamingSockJsSession;
 import org.springframework.web.socket.sockjs.transport.session.StubSockJsServiceConfig;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -82,7 +82,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		resetRequestAndResponse();
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertTrue("Polling request should remain open", this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).as("Polling request should remain open").isTrue();
 		verify(this.taskScheduler).schedule(any(Runnable.class), any(Date.class));
 
 		resetRequestAndResponse();
@@ -101,7 +101,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
 		assertEquals("application/javascript;charset=UTF-8", this.response.getHeaders().getContentType().toString());
-		assertTrue("Streaming request not started", this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).as("Streaming request not started").isTrue();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 	}
 
@@ -123,7 +123,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
 		assertEquals("text/html;charset=UTF-8", this.response.getHeaders().getContentType().toString());
-		assertTrue("Streaming request not started", this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).as("Streaming request not started").isTrue();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 	}
 
@@ -136,7 +136,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
 		assertEquals("text/event-stream;charset=UTF-8", this.response.getHeaders().getContentType().toString());
-		assertTrue("Streaming request not started", this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).as("Streaming request not started").isTrue();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 	}
 

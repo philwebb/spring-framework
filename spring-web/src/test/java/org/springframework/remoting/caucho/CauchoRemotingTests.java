@@ -29,10 +29,8 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SocketUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -55,8 +53,9 @@ public class CauchoRemotingTests {
 		factory.setServiceUrl("http://localhosta/testbean");
 		factory.afterPropertiesSet();
 
-		assertTrue("Correct singleton value", factory.isSingleton());
-		assertTrue(factory.getObject() instanceof ITestBean);
+		assertThat(factory.isSingleton()).as("Correct singleton value").isTrue();
+		boolean condition = factory.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean bean = (ITestBean) factory.getObject();
 
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
@@ -73,8 +72,9 @@ public class CauchoRemotingTests {
 		factory.setOverloadEnabled(true);
 		factory.afterPropertiesSet();
 
-		assertTrue("Correct singleton value", factory.isSingleton());
-		assertTrue(factory.getObject() instanceof ITestBean);
+		assertThat(factory.isSingleton()).as("Correct singleton value").isTrue();
+		boolean condition = factory.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean bean = (ITestBean) factory.getObject();
 
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
@@ -92,13 +92,14 @@ public class CauchoRemotingTests {
 		factory.setPassword("bean");
 		factory.setOverloadEnabled(true);
 		factory.afterPropertiesSet();
-		assertTrue("Correct singleton value", factory.isSingleton());
-		assertTrue(factory.getObject() instanceof ITestBean);
+		assertThat(factory.isSingleton()).as("Correct singleton value").isTrue();
+		boolean condition = factory.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean bean = (ITestBean) factory.getObject();
 
 		assertEquals("test", proxyFactory.user);
 		assertEquals("bean", proxyFactory.password);
-		assertTrue(proxyFactory.overloadEnabled);
+		assertThat(proxyFactory.overloadEnabled).isTrue();
 
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
 				bean.setName("test"));

@@ -34,8 +34,8 @@ import org.springframework.util.MimeTypeUtils;
 
 import static java.nio.charset.StandardCharsets.UTF_16BE;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link StringDecoder}.
@@ -57,10 +57,10 @@ public class StringDecoderTests extends AbstractDecoderTestCase<StringDecoder> {
 	@Override
 	@Test
 	public void canDecode() {
-		assertTrue(this.decoder.canDecode(TYPE, MimeTypeUtils.TEXT_PLAIN));
-		assertTrue(this.decoder.canDecode(TYPE, MimeTypeUtils.TEXT_HTML));
-		assertTrue(this.decoder.canDecode(TYPE, MimeTypeUtils.APPLICATION_JSON));
-		assertTrue(this.decoder.canDecode(TYPE, MimeTypeUtils.parseMimeType("text/plain;charset=utf-8")));
+		assertThat(this.decoder.canDecode(TYPE, MimeTypeUtils.TEXT_PLAIN)).isTrue();
+		assertThat(this.decoder.canDecode(TYPE, MimeTypeUtils.TEXT_HTML)).isTrue();
+		assertThat(this.decoder.canDecode(TYPE, MimeTypeUtils.APPLICATION_JSON)).isTrue();
+		assertThat(this.decoder.canDecode(TYPE, MimeTypeUtils.parseMimeType("text/plain;charset=utf-8"))).isTrue();
 		assertFalse(this.decoder.canDecode(ResolvableType.forClass(Integer.class), MimeTypeUtils.TEXT_PLAIN));
 		assertFalse(this.decoder.canDecode(ResolvableType.forClass(Object.class), MimeTypeUtils.APPLICATION_JSON));
 	}

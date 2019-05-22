@@ -86,7 +86,6 @@ import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -177,7 +176,7 @@ public abstract class AbstractAopProxyTests {
 		sw.start("Create " + howMany + " proxies");
 		testManyProxies(howMany);
 		sw.stop();
-		assertTrue("Proxy creation was too slow",  sw.getTotalTimeMillis() < 5000);
+		assertThat(sw.getTotalTimeMillis() < 5000).as("Proxy creation was too slow").isTrue();
 	}
 
 	private void testManyProxies(int howMany) {
@@ -210,7 +209,7 @@ public abstract class AbstractAopProxyTests {
 	@Test
 	public void testSerializationAdviceNotSerializable() throws Exception {
 		SerializablePerson sp = new SerializablePerson();
-		assertTrue(SerializationTestUtils.isSerializable(sp));
+		assertThat(SerializationTestUtils.isSerializable(sp)).isTrue();
 
 		ProxyFactory pf = new ProxyFactory(sp);
 
@@ -229,7 +228,7 @@ public abstract class AbstractAopProxyTests {
 		personTarget.setName("jim");
 		personTarget.setAge(26);
 
-		assertTrue(SerializationTestUtils.isSerializable(personTarget));
+		assertThat(SerializationTestUtils.isSerializable(personTarget)).isTrue();
 
 		ProxyFactory pf = new ProxyFactory(personTarget);
 
@@ -257,7 +256,7 @@ public abstract class AbstractAopProxyTests {
 		assertNotSame(p, p2);
 		assertEquals(p.getName(), p2.getName());
 		assertEquals(p.getAge(), p2.getAge());
-		assertTrue("Deserialized object is an AOP proxy", AopUtils.isAopProxy(p2));
+		assertThat(AopUtils.isAopProxy(p2)).as("Deserialized object is an AOP proxy").isTrue();
 
 		Advised a1 = (Advised) p;
 		Advised a2 = (Advised) p2;
@@ -365,7 +364,7 @@ public abstract class AbstractAopProxyTests {
 		INeedsToSeeProxy target = new TargetChecker();
 		ProxyFactory proxyFactory = new ProxyFactory(target);
 		proxyFactory.setExposeProxy(true);
-		assertTrue(proxyFactory.isExposeProxy());
+		assertThat(proxyFactory.isExposeProxy()).isTrue();
 
 		proxyFactory.addAdvice(0, di);
 		INeedsToSeeProxy proxied = (INeedsToSeeProxy) createProxy(proxyFactory);
@@ -625,7 +624,7 @@ public abstract class AbstractAopProxyTests {
 		assertEquals(newAge, itb.getAge());
 
 		// Unlock
-		assertTrue(lockable.locked());
+		assertThat(lockable.locked()).isTrue();
 		lockable.unlock();
 		itb.setAge(1);
 		assertEquals(1, itb.getAge());
@@ -830,7 +829,7 @@ public abstract class AbstractAopProxyTests {
 		pc.setFrozen(true);
 		Advised advised = (Advised) proxied;
 
-		assertTrue(pc.isFrozen());
+		assertThat(pc.isFrozen()).isTrue();
 		assertThatExceptionOfType(AopConfigException.class).as("Shouldn't be able to add Advisor when frozen").isThrownBy(() ->
 				advised.addAdvisor(new DefaultPointcutAdvisor(new NopInterceptor())))
 			.withMessageContaining("frozen");
@@ -850,7 +849,7 @@ public abstract class AbstractAopProxyTests {
 		pc.setFrozen(true);
 		Advised advised = (Advised) proxied;
 
-		assertTrue(pc.isFrozen());
+		assertThat(pc.isFrozen()).isTrue();
 		assertThatExceptionOfType(AopConfigException.class).as("Shouldn't be able to remove Advisor when frozen").isThrownBy(() ->
 				advised.removeAdvisor(0))
 			.withMessageContaining("frozen");
@@ -901,8 +900,8 @@ public abstract class AbstractAopProxyTests {
 		ITestBean proxied = (ITestBean) createProxy(pc);
 
 		String proxyConfigString = ((Advised) proxied).toProxyConfigString();
-		assertTrue(proxyConfigString.contains(advisor.toString()));
-		assertTrue(proxyConfigString.contains("1 interface"));
+		assertThat(proxyConfigString.contains(advisor.toString())).isTrue();
+		assertThat(proxyConfigString.contains("1 interface")).isTrue();
 	}
 
 	@Test
@@ -916,7 +915,7 @@ public abstract class AbstractAopProxyTests {
 		pc.addAdvisor(advisor);
 		assertFalse("Opaque defaults to false", pc.isOpaque());
 		pc.setOpaque(true);
-		assertTrue("Opaque now true for this config", pc.isOpaque());
+		assertThat(pc.isOpaque()).as("Opaque now true for this config").isTrue();
 		ITestBean proxied = (ITestBean) createProxy(pc);
 		proxied.setAge(10);
 		assertEquals(10, proxied.getAge());
@@ -942,7 +941,7 @@ public abstract class AbstractAopProxyTests {
 		ITestBean proxied = (ITestBean) createProxy(pc);
 		assertEquals(1, acf.refreshes);
 		assertEquals(1, l.activates);
-		assertTrue(pc.isActive());
+		assertThat(pc.isActive()).isTrue();
 		assertEquals(target.getAge(), proxied.getAge());
 		assertEquals(0, l.adviceChanges);
 		NopInterceptor di = new NopInterceptor();
@@ -2009,8 +2008,7 @@ public abstract class AbstractAopProxyTests {
 		@Override
 		protected void assertions(MethodInvocation invocation) {
 			assertSame(this, invocation.getThis());
-			assertTrue("Invocation should be on ITestBean: " + invocation.getMethod(),
-				ITestBean.class.isAssignableFrom(invocation.getMethod().getDeclaringClass()));
+			assertThat(ITestBean.class.isAssignableFrom(invocation.getMethod().getDeclaringClass())).as("Invocation should be on ITestBean: " + invocation.getMethod()).isTrue();
 		}
 	}
 

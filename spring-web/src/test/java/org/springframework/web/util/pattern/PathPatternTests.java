@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.http.server.PathContainer;
@@ -39,7 +38,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Exercise matching of {@link PathPattern} objects.
@@ -61,10 +59,10 @@ public class PathPatternTests {
 	@Test
 	public void hasPatternSyntax() {
 		PathPatternParser parser = new PathPatternParser();
-		assertTrue(parser.parse("/foo/*").hasPatternSyntax());
-		assertTrue(parser.parse("/foo/**/bar").hasPatternSyntax());
-		assertTrue(parser.parse("/f?o").hasPatternSyntax());
-		assertTrue(parser.parse("/foo/{bar}/baz").hasPatternSyntax());
+		assertThat(parser.parse("/foo/*").hasPatternSyntax()).isTrue();
+		assertThat(parser.parse("/foo/**/bar").hasPatternSyntax()).isTrue();
+		assertThat(parser.parse("/f?o").hasPatternSyntax()).isTrue();
+		assertThat(parser.parse("/foo/{bar}/baz").hasPatternSyntax()).isTrue();
 		assertFalse(parser.parse("/foo/bar").hasPatternSyntax());
 	}
 
@@ -98,7 +96,7 @@ public class PathPatternTests {
 	}
 
 	private void assertMatches(PathPattern pp, String path) {
-		assertTrue(pp.matches(toPathContainer(path)));
+		assertThat(pp.matches(toPathContainer(path))).isTrue();
 	}
 
 	private void assertNoMatch(PathPattern pp, String path) {
@@ -766,10 +764,10 @@ public class PathPatternTests {
 
 		// Confirming AntPathMatcher behaviour:
 		assertFalse(new AntPathMatcher().match("/{foo}", "/"));
-		assertTrue(new AntPathMatcher().match("/{foo}", "/a"));
-		assertTrue(new AntPathMatcher().match("/{foo}{bar}", "/a"));
+		assertThat(new AntPathMatcher().match("/{foo}", "/a")).isTrue();
+		assertThat(new AntPathMatcher().match("/{foo}{bar}", "/a")).isTrue();
 		assertFalse(new AntPathMatcher().match("/{foo}*", "/"));
-		assertTrue(new AntPathMatcher().match("/*", "/"));
+		assertThat(new AntPathMatcher().match("/*", "/")).isTrue();
 		assertFalse(new AntPathMatcher().match("/*{foo}", "/"));
 		Map<String, String> vars = new AntPathMatcher().extractUriTemplateVariables("/{foo}{bar}", "/a");
 		assertEquals("a",vars.get("foo"));
@@ -987,9 +985,9 @@ public class PathPatternTests {
 
 	@Test
 	public void patternCompareWithNull() {
-		assertTrue(PathPattern.SPECIFICITY_COMPARATOR.compare(null, null) == 0);
-		assertTrue(PathPattern.SPECIFICITY_COMPARATOR.compare(parse("/abc"), null) < 0);
-		assertTrue(PathPattern.SPECIFICITY_COMPARATOR.compare(null, parse("/abc")) > 0);
+		assertThat(PathPattern.SPECIFICITY_COMPARATOR.compare(null, null) == 0).isTrue();
+		assertThat(PathPattern.SPECIFICITY_COMPARATOR.compare(parse("/abc"), null) < 0).isTrue();
+		assertThat(PathPattern.SPECIFICITY_COMPARATOR.compare(null, parse("/abc")) > 0).isTrue();
 	}
 
 	@Test
@@ -1161,7 +1159,7 @@ public class PathPatternTests {
 		parser.setMatchOptionalTrailingSeparator(true);
 		PathPattern p = parser.parse(uriTemplate);
 		PathContainer pc = toPathContainer(path);
-		assertTrue(p.matches(pc));
+		assertThat(p.matches(pc)).isTrue();
 	}
 
 	private void checkNoMatch(String uriTemplate, String path) {

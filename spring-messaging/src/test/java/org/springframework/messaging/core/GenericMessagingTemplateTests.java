@@ -38,12 +38,12 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -146,7 +146,7 @@ public class GenericMessagingTemplateTests {
 		}).given(channel).send(any(Message.class), anyLong());
 
 		assertNull(this.template.convertSendAndReceive(channel, "request", String.class));
-		assertTrue(latch.await(10_000, TimeUnit.MILLISECONDS));
+		assertThat(latch.await(10_000, TimeUnit.MILLISECONDS)).isTrue();
 
 		Throwable ex = failure.get();
 		if (ex != null) {
@@ -176,7 +176,7 @@ public class GenericMessagingTemplateTests {
 				.setHeader(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER, 1L)
 				.build();
 		assertNull(this.template.sendAndReceive(channel, message));
-		assertTrue(latch.await(10_000, TimeUnit.MILLISECONDS));
+		assertThat(latch.await(10_000, TimeUnit.MILLISECONDS)).isTrue();
 
 		Throwable ex = failure.get();
 		if (ex != null) {
@@ -208,7 +208,7 @@ public class GenericMessagingTemplateTests {
 				.setHeader("rto", 1L)
 				.build();
 		assertNull(this.template.sendAndReceive(channel, message));
-		assertTrue(latch.await(10_000, TimeUnit.MILLISECONDS));
+		assertThat(latch.await(10_000, TimeUnit.MILLISECONDS)).isTrue();
 
 		Throwable ex = failure.get();
 		if (ex != null) {

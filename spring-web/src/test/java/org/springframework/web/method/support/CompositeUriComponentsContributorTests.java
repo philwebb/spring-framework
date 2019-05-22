@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.annotation.RequestHeaderMethodArgumentResolver;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for
@@ -52,8 +52,8 @@ public class CompositeUriComponentsContributorTests {
 		Method method = ClassUtils.getMethod(this.getClass(), "handleRequest", String.class, String.class, String.class);
 
 		CompositeUriComponentsContributor contributor = new CompositeUriComponentsContributor(resolvers);
-		assertTrue(contributor.supportsParameter(new MethodParameter(method, 0)));
-		assertTrue(contributor.supportsParameter(new MethodParameter(method, 1)));
+		assertThat(contributor.supportsParameter(new MethodParameter(method, 0))).isTrue();
+		assertThat(contributor.supportsParameter(new MethodParameter(method, 1))).isTrue();
 		assertFalse(contributor.supportsParameter(new MethodParameter(method, 2)));
 	}
 

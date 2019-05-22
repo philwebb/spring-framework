@@ -37,9 +37,9 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -81,8 +81,9 @@ public class ResourceHandlerFunctionTests {
 
 		Mono<Void> result = responseMono.flatMap(response -> {
 					assertEquals(HttpStatus.OK, response.statusCode());
-					assertTrue(response instanceof EntityResponse);
-					@SuppressWarnings("unchecked")
+			boolean condition = response instanceof EntityResponse;
+			assertThat(condition).isTrue();
+			@SuppressWarnings("unchecked")
 					EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
 					assertEquals(this.resource, entityResponse.entity());
 					return response.writeTo(exchange, context);
@@ -117,7 +118,8 @@ public class ResourceHandlerFunctionTests {
 
 		Mono<Void> result = responseMono.flatMap(response -> {
 			assertEquals(HttpStatus.OK, response.statusCode());
-			assertTrue(response instanceof EntityResponse);
+			boolean condition = response instanceof EntityResponse;
+			assertThat(condition).isTrue();
 			@SuppressWarnings("unchecked")
 			EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
 			assertEquals(this.resource.getFilename(), entityResponse.entity().getFilename());

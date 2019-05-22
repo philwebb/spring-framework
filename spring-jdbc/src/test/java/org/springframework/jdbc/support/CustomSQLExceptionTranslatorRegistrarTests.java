@@ -25,9 +25,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.jdbc.BadSqlGrammarException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for custom {@link SQLExceptionTranslator}.
@@ -48,13 +48,11 @@ public class CustomSQLExceptionTranslatorRegistrarTests {
 
 		DataAccessException exFor4200 = sext.doTranslate("", "", new SQLException("Ouch", "42000", 42000));
 		assertNotNull("Should have been translated", exFor4200);
-		assertTrue("Should have been instance of BadSqlGrammarException",
-			BadSqlGrammarException.class.isAssignableFrom(exFor4200.getClass()));
+		assertThat(BadSqlGrammarException.class.isAssignableFrom(exFor4200.getClass())).as("Should have been instance of BadSqlGrammarException").isTrue();
 
 		DataAccessException exFor2 = sext.doTranslate("", "", new SQLException("Ouch", "42000", 2));
 		assertNotNull("Should have been translated", exFor2);
-		assertTrue("Should have been instance of TransientDataAccessResourceException",
-			TransientDataAccessResourceException.class.isAssignableFrom(exFor2.getClass()));
+		assertThat(TransientDataAccessResourceException.class.isAssignableFrom(exFor2.getClass())).as("Should have been instance of TransientDataAccessResourceException").isTrue();
 
 		DataAccessException exFor3 = sext.doTranslate("", "", new SQLException("Ouch", "42000", 3));
 		assertNull("Should not have been translated", exFor3);

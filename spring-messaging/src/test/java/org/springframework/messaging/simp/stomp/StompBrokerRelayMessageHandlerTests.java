@@ -41,10 +41,10 @@ import org.springframework.messaging.tcp.TcpOperations;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureTask;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -282,7 +282,7 @@ public class StompBrokerRelayMessageHandlerTests {
 		}
 
 		public StompHeaderAccessor getSentHeaders(int index) {
-			assertTrue("Size: " + getSentMessages().size(), getSentMessages().size() > index);
+			assertThat(getSentMessages().size() > index).as("Size: " + getSentMessages().size()).isTrue();
 			Message<byte[]> message = getSentMessages().get(index);
 			StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 			assertNotNull(accessor);

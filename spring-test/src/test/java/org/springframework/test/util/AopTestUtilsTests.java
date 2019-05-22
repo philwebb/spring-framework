@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.test.util.AopTestUtils.getTargetObject;
 import static org.springframework.test.util.AopTestUtils.getUltimateTargetObject;
 
@@ -131,7 +130,7 @@ public class AopTestUtilsTests {
 		pf.setTarget(foo);
 		pf.addInterface(Foo.class);
 		Foo proxy = (Foo) pf.getProxy();
-		assertTrue("Proxy is a JDK dynamic proxy", AopUtils.isJdkDynamicProxy(proxy));
+		assertThat(AopUtils.isJdkDynamicProxy(proxy)).as("Proxy is a JDK dynamic proxy").isTrue();
 		assertThat(proxy).isInstanceOf(Foo.class);
 		return proxy;
 	}
@@ -141,7 +140,7 @@ public class AopTestUtilsTests {
 		pf.setTarget(foo);
 		pf.setProxyTargetClass(true);
 		Foo proxy = (Foo) pf.getProxy();
-		assertTrue("Proxy is a CGLIB proxy", AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).as("Proxy is a CGLIB proxy").isTrue();
 		assertThat(proxy).isInstanceOf(FooImpl.class);
 		return proxy;
 	}

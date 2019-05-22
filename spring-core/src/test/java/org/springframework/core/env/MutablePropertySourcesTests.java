@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Chris Beams
@@ -156,7 +155,7 @@ public class MutablePropertySourcesTests {
 		sources.addLast(new MockPropertySource("test"));
 
 		Iterator<PropertySource<?>> it = sources.iterator();
-		assertTrue(it.hasNext());
+		assertThat(it.hasNext()).isTrue();
 		assertEquals("test", it.next().getName());
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(

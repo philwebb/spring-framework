@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -54,21 +54,21 @@ public class FutureAdapterTests {
 	public void cancel() throws Exception {
 		given(adaptee.cancel(true)).willReturn(true);
 		boolean result = adapter.cancel(true);
-		assertTrue(result);
+		assertThat(result).isTrue();
 	}
 
 	@Test
 	public void isCancelled() {
 		given(adaptee.isCancelled()).willReturn(true);
 		boolean result = adapter.isCancelled();
-		assertTrue(result);
+		assertThat(result).isTrue();
 	}
 
 	@Test
 	public void isDone() {
 		given(adaptee.isDone()).willReturn(true);
 		boolean result = adapter.isDone();
-		assertTrue(result);
+		assertThat(result).isTrue();
 	}
 
 	@Test

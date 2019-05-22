@@ -27,8 +27,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.config.TaskManagementConfigUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -52,7 +52,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 
 	@Test
 	public void asyncAspectRegistered() {
-		assertTrue(context.containsBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME));
+		assertThat(context.containsBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME)).isTrue();
 	}
 
 	@Test

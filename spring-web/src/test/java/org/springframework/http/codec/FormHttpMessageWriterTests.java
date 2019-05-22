@@ -35,9 +35,9 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Sebastien Deleuze
@@ -49,14 +49,14 @@ public class FormHttpMessageWriterTests extends AbstractLeakCheckingTestCase {
 
 	@Test
 	public void canWrite() {
-		assertTrue(this.writer.canWrite(
+		assertThat(this.writer.canWrite(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isTrue();
 
 		// No generic information
-		assertTrue(this.writer.canWrite(
+		assertThat(this.writer.canWrite(
 				ResolvableType.forInstance(new LinkedMultiValueMap<String, String>()),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isTrue();
 
 		assertFalse(this.writer.canWrite(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, Object.class),

@@ -32,10 +32,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -48,7 +48,7 @@ public class MockMultipartHttpServletRequestTests {
 		assertFalse(request.getFileNames().hasNext());
 		assertNull(request.getFile("file1"));
 		assertNull(request.getFile("file2"));
-		assertTrue(request.getFileMap().isEmpty());
+		assertThat(request.getFileMap().isEmpty()).isTrue();
 
 		request.addFile(new MockMultipartFile("file1", "myContent1".getBytes()));
 		request.addFile(new MockMultipartFile("file2", "myOrigFilename", "text/plain", "myContent2".getBytes()));
@@ -71,8 +71,8 @@ public class MockMultipartHttpServletRequestTests {
 			fileNames.add(fileIter.next());
 		}
 		assertEquals(2, fileNames.size());
-		assertTrue(fileNames.contains("file1"));
-		assertTrue(fileNames.contains("file2"));
+		assertThat(fileNames.contains("file1")).isTrue();
+		assertThat(fileNames.contains("file2")).isTrue();
 		MultipartFile file1 = request.getFile("file1");
 		MultipartFile file2 = request.getFile("file2");
 		Map<String, MultipartFile> fileMap = request.getFileMap();
@@ -84,15 +84,15 @@ public class MockMultipartHttpServletRequestTests {
 		assertEquals("file1", file1.getName());
 		assertEquals("", file1.getOriginalFilename());
 		assertNull(file1.getContentType());
-		assertTrue(ObjectUtils.nullSafeEquals("myContent1".getBytes(), file1.getBytes()));
-		assertTrue(ObjectUtils.nullSafeEquals("myContent1".getBytes(),
-			FileCopyUtils.copyToByteArray(file1.getInputStream())));
+		assertThat(ObjectUtils.nullSafeEquals("myContent1".getBytes(), file1.getBytes())).isTrue();
+		assertThat(ObjectUtils.nullSafeEquals("myContent1".getBytes(),
+			FileCopyUtils.copyToByteArray(file1.getInputStream()))).isTrue();
 		assertEquals("file2", file2.getName());
 		assertEquals("myOrigFilename", file2.getOriginalFilename());
 		assertEquals("text/plain", file2.getContentType());
-		assertTrue(ObjectUtils.nullSafeEquals("myContent2".getBytes(), file2.getBytes()));
-		assertTrue(ObjectUtils.nullSafeEquals("myContent2".getBytes(),
-			FileCopyUtils.copyToByteArray(file2.getInputStream())));
+		assertThat(ObjectUtils.nullSafeEquals("myContent2".getBytes(), file2.getBytes())).isTrue();
+		assertThat(ObjectUtils.nullSafeEquals("myContent2".getBytes(),
+			FileCopyUtils.copyToByteArray(file2.getInputStream()))).isTrue();
 	}
 
 }

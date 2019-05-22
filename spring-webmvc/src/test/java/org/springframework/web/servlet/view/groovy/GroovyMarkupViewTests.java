@@ -26,7 +26,6 @@ import groovy.text.Template;
 import groovy.text.TemplateEngine;
 import groovy.text.markup.MarkupTemplateEngine;
 import groovy.text.markup.TemplateConfiguration;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +46,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -110,7 +108,7 @@ public class GroovyMarkupViewTests {
 	@Test
 	public void checkResource() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("test.tpl");
-		assertTrue(view.checkResource(Locale.US));
+		assertThat(view.checkResource(Locale.US)).isTrue();
 	}
 
 	@Test
@@ -122,13 +120,13 @@ public class GroovyMarkupViewTests {
 	@Test
 	public void checkI18nResource() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("i18n.tpl");
-		assertTrue(view.checkResource(Locale.FRENCH));
+		assertThat(view.checkResource(Locale.FRENCH)).isTrue();
 	}
 
 	@Test
 	public void checkI18nResourceMissingLocale() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("i18n.tpl");
-		assertTrue(view.checkResource(Locale.CHINESE));
+		assertThat(view.checkResource(Locale.CHINESE)).isTrue();
 	}
 
 	@Test

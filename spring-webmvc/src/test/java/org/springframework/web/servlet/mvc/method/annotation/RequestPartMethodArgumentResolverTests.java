@@ -62,7 +62,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -156,23 +155,23 @@ public class RequestPartMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(paramRequestPart));
-		assertTrue(resolver.supportsParameter(paramNamedRequestPart));
-		assertTrue(resolver.supportsParameter(paramValidRequestPart));
-		assertTrue(resolver.supportsParameter(paramMultipartFile));
-		assertTrue(resolver.supportsParameter(paramMultipartFileList));
-		assertTrue(resolver.supportsParameter(paramMultipartFileArray));
+		assertThat(resolver.supportsParameter(paramRequestPart)).isTrue();
+		assertThat(resolver.supportsParameter(paramNamedRequestPart)).isTrue();
+		assertThat(resolver.supportsParameter(paramValidRequestPart)).isTrue();
+		assertThat(resolver.supportsParameter(paramMultipartFile)).isTrue();
+		assertThat(resolver.supportsParameter(paramMultipartFileList)).isTrue();
+		assertThat(resolver.supportsParameter(paramMultipartFileArray)).isTrue();
 		assertFalse(resolver.supportsParameter(paramInt));
-		assertTrue(resolver.supportsParameter(paramMultipartFileNotAnnot));
-		assertTrue(resolver.supportsParameter(paramPart));
-		assertTrue(resolver.supportsParameter(paramPartList));
-		assertTrue(resolver.supportsParameter(paramPartArray));
+		assertThat(resolver.supportsParameter(paramMultipartFileNotAnnot)).isTrue();
+		assertThat(resolver.supportsParameter(paramPart)).isTrue();
+		assertThat(resolver.supportsParameter(paramPartList)).isTrue();
+		assertThat(resolver.supportsParameter(paramPartArray)).isTrue();
 		assertFalse(resolver.supportsParameter(paramRequestParamAnnot));
-		assertTrue(resolver.supportsParameter(optionalMultipartFile));
-		assertTrue(resolver.supportsParameter(optionalMultipartFileList));
-		assertTrue(resolver.supportsParameter(optionalPart));
-		assertTrue(resolver.supportsParameter(optionalPartList));
-		assertTrue(resolver.supportsParameter(optionalRequestPart));
+		assertThat(resolver.supportsParameter(optionalMultipartFile)).isTrue();
+		assertThat(resolver.supportsParameter(optionalMultipartFileList)).isTrue();
+		assertThat(resolver.supportsParameter(optionalPart)).isTrue();
+		assertThat(resolver.supportsParameter(optionalPartList)).isTrue();
+		assertThat(resolver.supportsParameter(optionalRequestPart)).isTrue();
 	}
 
 	@Test
@@ -184,7 +183,8 @@ public class RequestPartMethodArgumentResolverTests {
 	@Test
 	public void resolveMultipartFileList() throws Exception {
 		Object actual = resolver.resolveArgument(paramMultipartFileList, null, webRequest, null);
-		assertTrue(actual instanceof List);
+		boolean condition = actual instanceof List;
+		assertThat(condition).isTrue();
 		assertEquals(Arrays.asList(multipartFile1, multipartFile2), actual);
 	}
 
@@ -192,7 +192,8 @@ public class RequestPartMethodArgumentResolverTests {
 	public void resolveMultipartFileArray() throws Exception {
 		Object actual = resolver.resolveArgument(paramMultipartFileArray, null, webRequest, null);
 		assertNotNull(actual);
-		assertTrue(actual instanceof MultipartFile[]);
+		boolean condition = actual instanceof MultipartFile[];
+		assertThat(condition).isTrue();
 		MultipartFile[] parts = (MultipartFile[]) actual;
 		assertEquals(2, parts.length);
 		assertEquals(parts[0], multipartFile1);
@@ -209,7 +210,8 @@ public class RequestPartMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramMultipartFileNotAnnot, null, webRequest, null);
 
-		assertTrue(result instanceof MultipartFile);
+		boolean condition = result instanceof MultipartFile;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -224,7 +226,8 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object result = resolver.resolveArgument(paramPart, null, webRequest, null);
-		assertTrue(result instanceof Part);
+		boolean condition = result instanceof Part;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -241,7 +244,8 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object result = resolver.resolveArgument(paramPartList, null, webRequest, null);
-		assertTrue(result instanceof List);
+		boolean condition = result instanceof List;
+		assertThat(condition).isTrue();
 		assertEquals(Arrays.asList(part1, part2), result);
 	}
 
@@ -258,7 +262,8 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object result = resolver.resolveArgument(paramPartArray, null, webRequest, null);
-		assertTrue(result instanceof Part[]);
+		boolean condition = result instanceof Part[];
+		assertThat(condition).isTrue();
 		Part[] parts = (Part[]) result;
 		assertEquals(2, parts.length);
 		assertEquals(parts[0], part1);
@@ -332,11 +337,13 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition1 = actualValue instanceof Optional;
+		assertThat(condition1).isTrue();
 		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
 
 		actualValue = resolver.resolveArgument(optionalMultipartFile, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition = actualValue instanceof Optional;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
 	}
 
@@ -372,11 +379,13 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition1 = actualValue instanceof Optional;
+		assertThat(condition1).isTrue();
 		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
 
 		actualValue = resolver.resolveArgument(optionalMultipartFileList, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition = actualValue instanceof Optional;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
 	}
 
@@ -414,11 +423,13 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition1 = actualValue instanceof Optional;
+		assertThat(condition1).isTrue();
 		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
 
 		actualValue = resolver.resolveArgument(optionalPart, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition = actualValue instanceof Optional;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, ((Optional<?>) actualValue).get());
 	}
 
@@ -458,11 +469,13 @@ public class RequestPartMethodArgumentResolverTests {
 		webRequest = new ServletWebRequest(request);
 
 		Object actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition1 = actualValue instanceof Optional;
+		assertThat(condition1).isTrue();
 		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
 
 		actualValue = resolver.resolveArgument(optionalPartList, null, webRequest, null);
-		assertTrue(actualValue instanceof Optional);
+		boolean condition = actualValue instanceof Optional;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", Collections.singletonList(expected), ((Optional<?>) actualValue).get());
 	}
 

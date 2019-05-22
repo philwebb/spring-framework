@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -41,7 +42,6 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 import static org.springframework.http.HttpHeaders.IF_MODIFIED_SINCE;
 import static org.springframework.http.HttpHeaders.LAST_MODIFIED;
@@ -215,8 +215,7 @@ public class HeaderAssertionTests {
 	}
 
 	private void assertMessageContains(AssertionError error, String expected) {
-		assertTrue("Failure message should contain [" + expected + "], actual is [" + error.getMessage() + "]",
-				error.getMessage().contains(expected));
+		assertThat(error.getMessage().contains(expected)).as("Failure message should contain [" + expected + "], actual is [" + error.getMessage() + "]").isTrue();
 	}
 
 

@@ -35,10 +35,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link RequestHeaderMapMethodArgumentResolver}.
@@ -72,9 +72,9 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("Map parameter not supported", resolver.supportsParameter(paramMap));
-		assertTrue("MultiValueMap parameter not supported", resolver.supportsParameter(paramMultiValueMap));
-		assertTrue("HttpHeaders parameter not supported", resolver.supportsParameter(paramHttpHeaders));
+		assertThat(resolver.supportsParameter(paramMap)).as("Map parameter not supported").isTrue();
+		assertThat(resolver.supportsParameter(paramMultiValueMap)).as("MultiValueMap parameter not supported").isTrue();
+		assertThat(resolver.supportsParameter(paramHttpHeaders)).as("HttpHeaders parameter not supported").isTrue();
 		assertFalse("non-@RequestParam map supported", resolver.supportsParameter(paramUnsupported));
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.paramAlsoUnsupported))
@@ -92,7 +92,8 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		Mono<Object> mono = resolver.resolveArgument(paramMap, null, exchange);
 		Object result = mono.block();
 
-		assertTrue(result instanceof Map);
+		boolean condition = result instanceof Map;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -111,7 +112,8 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		Mono<Object> mono = resolver.resolveArgument(paramMultiValueMap, null, exchange);
 		Object result = mono.block();
 
-		assertTrue(result instanceof MultiValueMap);
+		boolean condition = result instanceof MultiValueMap;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -130,7 +132,8 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		Mono<Object> mono = resolver.resolveArgument(paramHttpHeaders, null, exchange);
 		Object result = mono.block();
 
-		assertTrue(result instanceof HttpHeaders);
+		boolean condition = result instanceof HttpHeaders;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 

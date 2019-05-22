@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -45,7 +44,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link org.springframework.http.HttpHeaders}.
@@ -394,7 +392,7 @@ public class HttpHeadersTests {
 		headers.setAccessControlAllowCredentials(false);
 		assertFalse(headers.getAccessControlAllowCredentials());
 		headers.setAccessControlAllowCredentials(true);
-		assertTrue(headers.getAccessControlAllowCredentials());
+		assertThat(headers.getAccessControlAllowCredentials()).isTrue();
 	}
 
 	@Test
@@ -520,24 +518,24 @@ public class HttpHeadersTests {
 		ZonedDateTime date = ZonedDateTime.of(2017, 6, 2, 2, 22, 0, 0, ZoneId.of("GMT"));
 		headers.setZonedDateTime(HttpHeaders.DATE, date);
 		assertThat(headers.getFirst(HttpHeaders.DATE)).isEqualTo("Fri, 02 Jun 2017 02:22:00 GMT");
-		assertTrue(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date));
+		assertThat(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date)).isTrue();
 
 		headers.clear();
 		headers.add(HttpHeaders.DATE, "Fri, 02 Jun 2017 02:22:00 GMT");
 		headers.add(HttpHeaders.DATE, "Sat, 18 Dec 2010 10:20:00 GMT");
-		assertTrue(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date));
+		assertThat(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date)).isTrue();
 		assertEquals(Arrays.asList("Fri, 02 Jun 2017 02:22:00 GMT",
 				"Sat, 18 Dec 2010 10:20:00 GMT"), headers.get(HttpHeaders.DATE));
 
 		// obsolete RFC 850 format
 		headers.clear();
 		headers.set(HttpHeaders.DATE, "Friday, 02-Jun-17 02:22:00 GMT");
-		assertTrue(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date));
+		assertThat(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date)).isTrue();
 
 		// ANSI C's asctime() format
 		headers.clear();
 		headers.set(HttpHeaders.DATE, "Fri Jun 02 02:22:00 2017");
-		assertTrue(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date));
+		assertThat(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date)).isTrue();
 	}
 
 	@Test
@@ -547,7 +545,7 @@ public class HttpHeadersTests {
 		headers.setBasicAuth(username, password);
 		String authorization = headers.getFirst(HttpHeaders.AUTHORIZATION);
 		assertNotNull(authorization);
-		assertTrue(authorization.startsWith("Basic "));
+		assertThat(authorization.startsWith("Basic ")).isTrue();
 		byte[] result = Base64.getDecoder().decode(authorization.substring(6).getBytes(StandardCharsets.ISO_8859_1));
 		assertEquals("foo:bar", new String(result, StandardCharsets.ISO_8859_1));
 	}
@@ -574,11 +572,11 @@ public class HttpHeadersTests {
 		String headerName = "MyHeader";
 		String headerValue = "value";
 
-		assertTrue(headers.isEmpty());
+		assertThat(headers.isEmpty()).isTrue();
 		headers.add(headerName, headerValue);
-		assertTrue(headers.containsKey(headerName));
+		assertThat(headers.containsKey(headerName)).isTrue();
 		headers.keySet().removeIf(key -> key.equals(headerName));
-		assertTrue(headers.isEmpty());
+		assertThat(headers.isEmpty()).isTrue();
 		headers.add(headerName, headerValue);
 		assertEquals(headerValue, headers.get(headerName).get(0));
 	}
@@ -588,11 +586,11 @@ public class HttpHeadersTests {
 		String headerName = "MyHeader";
 		String headerValue = "value";
 
-		assertTrue(headers.isEmpty());
+		assertThat(headers.isEmpty()).isTrue();
 		headers.add(headerName, headerValue);
-		assertTrue(headers.containsKey(headerName));
+		assertThat(headers.containsKey(headerName)).isTrue();
 		headers.entrySet().removeIf(entry -> entry.getKey().equals(headerName));
-		assertTrue(headers.isEmpty());
+		assertThat(headers.isEmpty()).isTrue();
 		headers.add(headerName, headerValue);
 		assertEquals(headerValue, headers.get(headerName).get(0));
 	}

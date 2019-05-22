@@ -42,9 +42,9 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -126,7 +126,7 @@ public class XsltViewTests {
 
 		Source source = new StreamSource(getProductDataResource().getInputStream());
 		view.render(singletonMap("someKey", source), this.request, this.response);
-		assertTrue(this.response.getContentType().startsWith("text/html"));
+		assertThat(this.response.getContentType().startsWith("text/html")).isTrue();
 		assertEquals("UTF-8", this.response.getCharacterEncoding());
 	}
 
@@ -136,7 +136,7 @@ public class XsltViewTests {
 		model.put("someKey", getProductDataResource());
 		model.put("title", "Product List");
 		doTestWithModel(model);
-		assertTrue(this.response.getContentAsString().contains("Product List"));
+		assertThat(this.response.getContentAsString().contains("Product List")).isTrue();
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class XsltViewTests {
 
 		view.render(model, this.request, this.response);
 		assertHtmlOutput(this.response.getContentAsString());
-		assertTrue(this.response.getContentAsString().contains("Product List"));
+		assertThat(this.response.getContentAsString().contains("Product List")).isTrue();
 
 	}
 

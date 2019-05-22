@@ -59,10 +59,10 @@ import org.springframework.tests.sample.beans.NestedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StopWatch;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for AspectJ auto-proxying. Includes mixing with Spring AOP Advisors
@@ -85,7 +85,7 @@ public class AspectJAutoProxyCreatorTests {
 		ITestBean tb = (ITestBean) bf.getBean("adrian");
 		assertEquals(68, tb.getAge());
 		MethodInvokingFactoryBean factoryBean = (MethodInvokingFactoryBean) bf.getBean("&factoryBean");
-		assertTrue(AopUtils.isAopProxy(factoryBean.getTargetObject()));
+		assertThat(AopUtils.isAopProxy(factoryBean.getTargetObject())).isTrue();
 		assertEquals(68, ((ITestBean) factoryBean.getTargetObject()).getAge());
 	}
 
@@ -209,7 +209,7 @@ public class AspectJAutoProxyCreatorTests {
 		tba.count = 0;
 		mrv.invocations = 0;
 
-		assertTrue("Autoproxying must apply from @AspectJ aspect", AopUtils.isAopProxy(shouldBeWeaved));
+		assertThat(AopUtils.isAopProxy(shouldBeWeaved)).as("Autoproxying must apply from @AspectJ aspect").isTrue();
 		assertEquals("Adrian", shouldBeWeaved.getName());
 		assertEquals(0, mrv.invocations);
 		assertEquals(34 * mrv.getMultiple(), shouldBeWeaved.getAge());
@@ -222,14 +222,14 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("perthis.xml");
 
 		ITestBean adrian1 = (ITestBean) bf.getBean("adrian");
-		assertTrue(AopUtils.isAopProxy(adrian1));
+		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
 
 		assertEquals(0, adrian1.getAge());
 		assertEquals(1, adrian1.getAge());
 
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
 		assertNotSame(adrian1, adrian2);
-		assertTrue(AopUtils.isAopProxy(adrian1));
+		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
 		assertEquals(0, adrian2.getAge());
 		assertEquals(1, adrian2.getAge());
 		assertEquals(2, adrian2.getAge());
@@ -242,7 +242,7 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("pertarget.xml");
 
 		ITestBean adrian1 = (ITestBean) bf.getBean("adrian");
-		assertTrue(AopUtils.isAopProxy(adrian1));
+		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
 
 		// Does not trigger advice or count
 		int explicitlySetAge = 25;
@@ -252,7 +252,7 @@ public class AspectJAutoProxyCreatorTests {
 		// Fire aspect
 
 		AspectMetadata am = new AspectMetadata(PerTargetAspect.class, "someBean");
-		assertTrue(am.getPerClausePointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null));
+		assertThat(am.getPerClausePointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
 
 		adrian1.getSpouse();
 
@@ -264,7 +264,7 @@ public class AspectJAutoProxyCreatorTests {
 
 		ITestBean adrian2 = (ITestBean) bf.getBean("adrian");
 		assertNotSame(adrian1, adrian2);
-		assertTrue(AopUtils.isAopProxy(adrian1));
+		assertThat(AopUtils.isAopProxy(adrian1)).isTrue();
 		assertEquals(34, adrian2.getAge());
 		adrian2.getSpouse();
 		assertEquals("Aspect now fired", 0, adrian2.getAge());
@@ -304,7 +304,7 @@ public class AspectJAutoProxyCreatorTests {
 	}
 
 	private void testAgeAspect(ITestBean adrian, int start, int increment) {
-		assertTrue(AopUtils.isAopProxy(adrian));
+		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		adrian.setName("");
 		assertEquals(start, adrian.age());
 		int newAge = 32;
@@ -323,7 +323,7 @@ public class AspectJAutoProxyCreatorTests {
 		AdviceUsingThisJoinPoint aspectInstance = (AdviceUsingThisJoinPoint) bf.getBean("aspect");
 		//(AdviceUsingThisJoinPoint) Aspects.aspectOf(AdviceUsingThisJoinPoint.class);
 		//assertEquals("method-execution(int TestBean.getAge())",aspectInstance.getLastMethodEntered());
-		assertTrue(aspectInstance.getLastMethodEntered().indexOf("TestBean.getAge())") != 0);
+		assertThat(aspectInstance.getLastMethodEntered().indexOf("TestBean.getAge())") != 0).isTrue();
 	}
 
 	@Test
@@ -331,7 +331,7 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("usesInclude.xml");
 
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
-		assertTrue(AopUtils.isAopProxy(adrian));
+		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		assertEquals(68, adrian.getAge());
 	}
 
@@ -340,8 +340,8 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("aspectsWithCGLIB.xml");
 
 		ProxyConfig pc = (ProxyConfig) bf.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME);
-		assertTrue("should be proxying classes", pc.isProxyTargetClass());
-		assertTrue("should expose proxy", pc.isExposeProxy());
+		assertThat(pc.isProxyTargetClass()).as("should be proxying classes").isTrue();
+		assertThat(pc.isExposeProxy()).as("should expose proxy").isTrue();
 	}
 
 	@Test
@@ -349,7 +349,7 @@ public class AspectJAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf = newContext("aspectsWithAbstractBean.xml");
 
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
-		assertTrue(AopUtils.isAopProxy(adrian));
+		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		assertEquals(68, adrian.getAge());
 	}
 
@@ -393,8 +393,8 @@ public class AspectJAutoProxyCreatorTests {
 
 	private void assertStopWatchTimeLimit(final StopWatch sw, final long maxTimeMillis) {
 		long totalTimeMillis = sw.getTotalTimeMillis();
-		assertTrue("'" + sw.getLastTaskName() + "' took too long: expected less than<" + maxTimeMillis +
-				"> ms, actual<" + totalTimeMillis + "> ms.", totalTimeMillis < maxTimeMillis);
+		assertThat(totalTimeMillis < maxTimeMillis).as("'" + sw.getLastTaskName() + "' took too long: expected less than<" + maxTimeMillis +
+				"> ms, actual<" + totalTimeMillis + "> ms.").isTrue();
 	}
 
 }

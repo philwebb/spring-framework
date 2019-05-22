@@ -40,11 +40,11 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests that scopes are properly supported by using a custom Scope implementations
@@ -164,7 +164,8 @@ public class ScopingTests {
 	public void testScopedProxyConfiguration() throws Exception {
 		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedInterfaceDep");
 		ITestBean spouse = singleton.getSpouse();
-		assertTrue("scoped bean is not wrapped by the scoped-proxy", spouse instanceof ScopedObject);
+		boolean condition = spouse instanceof ScopedObject;
+		assertThat(condition).as("scoped bean is not wrapped by the scoped-proxy").isTrue();
 
 		String beanName = "scopedProxyInterface";
 
@@ -196,7 +197,8 @@ public class ScopingTests {
 	public void testScopedProxyConfigurationWithClasses() throws Exception {
 		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedClassDep");
 		ITestBean spouse = singleton.getSpouse();
-		assertTrue("scoped bean is not wrapped by the scoped-proxy", spouse instanceof ScopedObject);
+		boolean condition = spouse instanceof ScopedObject;
+		assertThat(condition).as("scoped bean is not wrapped by the scoped-proxy").isTrue();
 
 		String beanName = "scopedProxyClass";
 

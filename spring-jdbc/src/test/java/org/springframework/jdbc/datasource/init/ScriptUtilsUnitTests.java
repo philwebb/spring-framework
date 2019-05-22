@@ -24,9 +24,9 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.EncodedResource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.jdbc.datasource.init.ScriptUtils.DEFAULT_STATEMENT_SEPARATOR;
 import static org.springframework.jdbc.datasource.init.ScriptUtils.containsSqlScriptDelimiters;
 import static org.springframework.jdbc.datasource.init.ScriptUtils.splitSqlScript;
@@ -183,17 +183,17 @@ public class ScriptUtilsUnitTests {
 	@Test
 	public void containsDelimiters() {
 		assertFalse(containsSqlScriptDelimiters("select 1\n select ';'", ";"));
-		assertTrue(containsSqlScriptDelimiters("select 1; select 2", ";"));
+		assertThat(containsSqlScriptDelimiters("select 1; select 2", ";")).isTrue();
 
 		assertFalse(containsSqlScriptDelimiters("select 1; select '\\n\n';", "\n"));
-		assertTrue(containsSqlScriptDelimiters("select 1\n select 2", "\n"));
+		assertThat(containsSqlScriptDelimiters("select 1\n select 2", "\n")).isTrue();
 
 		assertFalse(containsSqlScriptDelimiters("select 1\n select 2", "\n\n"));
-		assertTrue(containsSqlScriptDelimiters("select 1\n\n select 2", "\n\n"));
+		assertThat(containsSqlScriptDelimiters("select 1\n\n select 2", "\n\n")).isTrue();
 
 		// MySQL style escapes '\\'
 		assertFalse(containsSqlScriptDelimiters("insert into users(first_name, last_name)\nvalues('a\\\\', 'b;')", ";"));
-		assertTrue(containsSqlScriptDelimiters("insert into users(first_name, last_name)\nvalues('Charles', 'd\\'Artagnan'); select 1;", ";"));
+		assertThat(containsSqlScriptDelimiters("insert into users(first_name, last_name)\nvalues('Charles', 'd\\'Artagnan'); select 1;", ";")).isTrue();
 	}
 
 	private String readScript(String path) throws Exception {

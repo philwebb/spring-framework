@@ -28,9 +28,9 @@ import org.springframework.web.servlet.support.BindStatus;
 import org.springframework.web.servlet.tags.BindTag;
 import org.springframework.web.servlet.tags.NestedPathTag;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -373,11 +373,11 @@ public class InputTagTests extends AbstractFormTagTests {
 	}
 
 	protected final void assertTagClosed(String output) {
-		assertTrue("Tag not closed properly", output.endsWith("/>"));
+		assertThat(output.endsWith("/>")).as("Tag not closed properly").isTrue();
 	}
 
 	protected final void assertTagOpened(String output) {
-		assertTrue("Tag not opened properly", output.startsWith("<input "));
+		assertThat(output.startsWith("<input ")).as("Tag not opened properly").isTrue();
 	}
 
 	@SuppressWarnings("serial")

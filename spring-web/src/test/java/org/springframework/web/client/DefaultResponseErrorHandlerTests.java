@@ -32,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -53,7 +52,7 @@ public class DefaultResponseErrorHandlerTests {
 	@Test
 	public void hasErrorTrue() throws Exception {
 		given(response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
-		assertTrue(handler.hasError(response));
+		assertThat(handler.hasError(response)).isTrue();
 	}
 
 	@Test
@@ -138,7 +137,7 @@ public class DefaultResponseErrorHandlerTests {
 		given(response.getStatusText()).willReturn("Custom status code");
 		given(response.getHeaders()).willReturn(headers);
 
-		assertTrue(handler.hasError(response));
+		assertThat(handler.hasError(response)).isTrue();
 	}
 
 	@Test
@@ -163,7 +162,7 @@ public class DefaultResponseErrorHandlerTests {
 		given(response.getStatusText()).willReturn("Custom status code");
 		given(response.getHeaders()).willReturn(headers);
 
-		assertTrue(handler.hasError(response));
+		assertThat(handler.hasError(response)).isTrue();
 	}
 
 	@Test

@@ -31,12 +31,12 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Alef Arendsen
@@ -67,7 +67,8 @@ public class CookieLocaleResolverTests {
 		resolver.setCookieName("LanguageKoekje");
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals("nl", loc.getLocale().getLanguage());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertNull(((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -81,7 +82,8 @@ public class CookieLocaleResolverTests {
 		resolver.setCookieName("LanguageKoekje");
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals("nl", loc.getLocale().getLanguage());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertEquals(TimeZone.getTimeZone("GMT+1"), ((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -112,7 +114,8 @@ public class CookieLocaleResolverTests {
 		resolver.setCookieName("LanguageKoekje");
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals(Locale.GERMAN, loc.getLocale());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertEquals(TimeZone.getTimeZone("GMT+2"), ((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -142,7 +145,8 @@ public class CookieLocaleResolverTests {
 		resolver.setCookieName("LanguageKoekje");
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals("nl", loc.getLocale().getLanguage());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertEquals(TimeZone.getTimeZone("GMT+2"), ((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -184,7 +188,8 @@ public class CookieLocaleResolverTests {
 		resolver = new CookieLocaleResolver();
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals("nl", loc.getLocale().getLanguage());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertNull(((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -204,7 +209,8 @@ public class CookieLocaleResolverTests {
 		resolver = new CookieLocaleResolver();
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals("nl", loc.getLocale().getLanguage());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertEquals(TimeZone.getTimeZone("GMT+1"), ((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -225,7 +231,8 @@ public class CookieLocaleResolverTests {
 		resolver = new CookieLocaleResolver();
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals(Locale.GERMANY, loc.getLocale());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertEquals(TimeZone.getTimeZone("GMT+1"), ((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -299,7 +306,7 @@ public class CookieLocaleResolverTests {
 		assertEquals(".springframework.org", cookie.getDomain());
 		assertEquals("/mypath", cookie.getPath());
 		assertEquals(10000, cookie.getMaxAge());
-		assertTrue(cookie.getSecure());
+		assertThat(cookie.getSecure()).isTrue();
 
 		request = new MockHttpServletRequest();
 		request.setCookies(cookie);
@@ -330,7 +337,8 @@ public class CookieLocaleResolverTests {
 
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals(request.getLocale(), loc.getLocale());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertNull(((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -357,7 +365,8 @@ public class CookieLocaleResolverTests {
 
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals(Locale.GERMAN, loc.getLocale());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertEquals(TimeZone.getTimeZone("GMT+1"), ((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 
@@ -385,7 +394,8 @@ public class CookieLocaleResolverTests {
 
 		LocaleContext loc = resolver.resolveLocaleContext(request);
 		assertEquals(request.getLocale(), loc.getLocale());
-		assertTrue(loc instanceof TimeZoneAwareLocaleContext);
+		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
+		assertThat(condition).isTrue();
 		assertNull(((TimeZoneAwareLocaleContext) loc).getTimeZone());
 	}
 

@@ -27,10 +27,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -134,7 +134,7 @@ public class PathResourceResolverTests {
 	@Test // SPR-12747
 	public void checkFileLocation() throws Exception {
 		Resource resource = getResource("main.css");
-		assertTrue(this.resolver.checkResource(resource, resource));
+		assertThat(this.resolver.checkResource(resource, resource)).isTrue();
 	}
 
 	@Test // SPR-13241

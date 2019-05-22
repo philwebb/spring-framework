@@ -28,8 +28,8 @@ import reactor.test.StepVerifier;
 import org.springframework.core.io.buffer.AbstractLeakCheckingTestCase;
 import org.springframework.core.io.buffer.DataBuffer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -51,7 +51,7 @@ public class XmlEventDecoderTests extends AbstractLeakCheckingTestCase {
 				this.decoder.decode(stringBuffer(XML), null, null, Collections.emptyMap());
 
 		StepVerifier.create(events)
-				.consumeNextWith(e -> assertTrue(e.isStartDocument()))
+				.consumeNextWith(e -> assertThat(e.isStartDocument()).isTrue())
 				.consumeNextWith(e -> assertStartElement(e, "pojo"))
 				.consumeNextWith(e -> assertStartElement(e, "foo"))
 				.consumeNextWith(e -> assertCharacters(e, "foofoo"))
@@ -72,7 +72,7 @@ public class XmlEventDecoderTests extends AbstractLeakCheckingTestCase {
 				this.decoder.decode(stringBuffer(XML), null, null, Collections.emptyMap());
 
 		StepVerifier.create(events)
-				.consumeNextWith(e -> assertTrue(e.isStartDocument()))
+				.consumeNextWith(e -> assertThat(e.isStartDocument()).isTrue())
 				.consumeNextWith(e -> assertStartElement(e, "pojo"))
 				.consumeNextWith(e -> assertStartElement(e, "foo"))
 				.consumeNextWith(e -> assertCharacters(e, "foofoo"))
@@ -81,7 +81,7 @@ public class XmlEventDecoderTests extends AbstractLeakCheckingTestCase {
 				.consumeNextWith(e -> assertCharacters(e, "barbar"))
 				.consumeNextWith(e -> assertEndElement(e, "bar"))
 				.consumeNextWith(e -> assertEndElement(e, "pojo"))
-				.consumeNextWith(e -> assertTrue(e.isEndDocument()))
+				.consumeNextWith(e -> assertThat(e.isEndDocument()).isTrue())
 				.expectComplete()
 				.verify();
 	}
@@ -96,7 +96,7 @@ public class XmlEventDecoderTests extends AbstractLeakCheckingTestCase {
 				this.decoder.decode(source, null, null, Collections.emptyMap());
 
 		StepVerifier.create(events)
-				.consumeNextWith(e -> assertTrue(e.isStartDocument()))
+				.consumeNextWith(e -> assertThat(e.isStartDocument()).isTrue())
 				.consumeNextWith(e -> assertStartElement(e, "pojo"))
 				.expectError(RuntimeException.class)
 				.verify();
@@ -119,17 +119,17 @@ public class XmlEventDecoderTests extends AbstractLeakCheckingTestCase {
 	}
 
 	private static void assertStartElement(XMLEvent event, String expectedLocalName) {
-		assertTrue(event.isStartElement());
+		assertThat(event.isStartElement()).isTrue();
 		assertEquals(expectedLocalName, event.asStartElement().getName().getLocalPart());
 	}
 
 	private static void assertEndElement(XMLEvent event, String expectedLocalName) {
-		assertTrue(event + " is no end element", event.isEndElement());
+		assertThat(event.isEndElement()).as(event + " is no end element").isTrue();
 		assertEquals(expectedLocalName, event.asEndElement().getName().getLocalPart());
 	}
 
 	private static void assertCharacters(XMLEvent event, String expectedData) {
-		assertTrue(event.isCharacters());
+		assertThat(event.isCharacters()).isTrue();
 		assertEquals(expectedData, event.asCharacters().getData());
 	}
 

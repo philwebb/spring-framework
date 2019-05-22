@@ -27,12 +27,10 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.NestedCheckedException;
 import org.springframework.core.NestedRuntimeException;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
@@ -168,7 +166,7 @@ public class ServiceLocatorFactoryBeanTests {
 		assertNotSame(testBean2, testBean4);
 		assertNotSame(testBean3, testBean4);
 
-		assertTrue(factory.toString().contains("TestServiceLocator3"));
+		assertThat(factory.toString().contains("TestServiceLocator3")).isTrue();
 	}
 
 	@Ignore @Test // worked when using an ApplicationContext (see commented), fails when using BeanFactory
@@ -204,7 +202,8 @@ public class ServiceLocatorFactoryBeanTests {
 		assertFalse(testBean1 instanceof ExtendedTestService);
 		assertFalse(testBean2 instanceof ExtendedTestService);
 		assertFalse(testBean3 instanceof ExtendedTestService);
-		assertTrue(testBean4 instanceof ExtendedTestService);
+		boolean condition = testBean4 instanceof ExtendedTestService;
+		assertThat(condition).isTrue();
 	}
 
 	@Test

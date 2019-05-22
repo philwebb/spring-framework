@@ -50,8 +50,8 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.AbstractView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rossen Stoyanchev
@@ -665,7 +665,7 @@ public class UriTemplateServletAnnotationControllerHandlerMethodTests extends Ab
 				protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 						HttpServletResponse response) throws Exception {
 					for (String key : attrsToValidate.keySet()) {
-						assertTrue("Model should contain attribute named " + key, model.containsKey(key));
+						assertThat(model.containsKey(key)).as("Model should contain attribute named " + key).isTrue();
 						assertEquals(attrsToValidate.get(key), model.get(key));
 						validatedAttrCount++;
 					}

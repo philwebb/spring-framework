@@ -31,12 +31,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
-
-
-import static temp.XAssert.assertTrue;
-
 /**
  * @author Chris Beams
  * @since 3.1

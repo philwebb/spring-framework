@@ -23,8 +23,8 @@ import javax.management.modelmbean.ModelMBeanInfo;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -39,8 +39,8 @@ public class MethodExclusionMBeanInfoAssemblerNotMappedTests extends AbstractJmx
 	public void testGetAgeIsReadOnly() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = info.getAttribute(AGE_ATTRIBUTE);
-		assertTrue("Age is not readable", attr.isReadable());
-		assertTrue("Age is not writable", attr.isWritable());
+		assertThat(attr.isReadable()).as("Age is not readable").isTrue();
+		assertThat(attr.isWritable()).as("Age is not writable").isTrue();
 	}
 
 	@Test
@@ -48,8 +48,8 @@ public class MethodExclusionMBeanInfoAssemblerNotMappedTests extends AbstractJmx
 		ModelMBeanInfo inf = (ModelMBeanInfo) getMBeanInfo();
 		MBeanAttributeInfo attr = inf.getAttribute("NickName");
 		assertNotNull("Nick Name should not be null", attr);
-		assertTrue("Nick Name should be writable", attr.isWritable());
-		assertTrue("Nick Name should be readable", attr.isReadable());
+		assertThat(attr.isWritable()).as("Nick Name should be writable").isTrue();
+		assertThat(attr.isReadable()).as("Nick Name should be readable").isTrue();
 	}
 
 	@Override

@@ -26,9 +26,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test for correct application of the bean() PCD for &#64;AspectJ-based aspects.
@@ -59,7 +59,8 @@ public class BeanNamePointcutAtAspectTests {
 
 	@Test
 	public void testMatchingBeanName() {
-		assertTrue("Expected a proxy", testBean1 instanceof Advised);
+		boolean condition = testBean1 instanceof Advised;
+		assertThat(condition).as("Expected a proxy").isTrue();
 
 		// Call two methods to test for SPR-3953-like condition
 		testBean1.setAge(20);
@@ -87,7 +88,8 @@ public class BeanNamePointcutAtAspectTests {
 
 		ITestBean proxyTestBean = factory.getProxy();
 
-		assertTrue("Expected a proxy", proxyTestBean instanceof Advised);
+		boolean condition = proxyTestBean instanceof Advised;
+		assertThat(condition).as("Expected a proxy").isTrue();
 		proxyTestBean.setAge(20);
 		assertEquals("Programmatically created proxy shouldn't match bean()", 0, myCounterAspect.count);
 	}

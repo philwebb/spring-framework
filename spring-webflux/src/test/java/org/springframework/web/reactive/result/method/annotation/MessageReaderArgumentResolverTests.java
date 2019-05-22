@@ -59,10 +59,10 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.post;
 
@@ -305,8 +305,7 @@ public class MessageReaderArgumentResolverTests {
 		Object value = result.block(Duration.ofSeconds(5));
 
 		assertNotNull(value);
-		assertTrue("Unexpected return value type: " + value,
-				param.getParameterType().isAssignableFrom(value.getClass()));
+		assertThat(param.getParameterType().isAssignableFrom(value.getClass())).as("Unexpected return value type: " + value).isTrue();
 
 		return (T) value;
 	}

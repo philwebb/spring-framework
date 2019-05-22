@@ -25,9 +25,9 @@ import org.springframework.expression.spel.ast.InlineList;
 import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test usage of inline lists.
@@ -147,10 +147,11 @@ public class ListTests extends AbstractExpressionTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		SpelExpression expression = (SpelExpression) parser.parseExpression(expressionText);
 		SpelNode node = expression.getAST();
-		assertTrue(node instanceof InlineList);
+		boolean condition = node instanceof InlineList;
+		assertThat(condition).isTrue();
 		InlineList inlineList = (InlineList) node;
 		if (expectedToBeConstant) {
-			assertTrue(inlineList.isConstant());
+			assertThat(inlineList.isConstant()).isTrue();
 		}
 		else {
 			assertFalse(inlineList.isConstant());

@@ -25,8 +25,8 @@ import org.springframework.jca.StubResourceAdapter;
 import org.springframework.jms.StubQueue;
 import org.springframework.jms.support.destination.DestinationResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -56,7 +56,7 @@ public class DefaultJmsActivationSpecFactoryTests {
 
 		assertEquals(5, spec.getMaxSessions());
 		assertEquals(3, spec.getMaxMessagesPerSessions());
-		assertTrue(spec.isUseRAManagedTransaction());
+		assertThat(spec.isUseRAManagedTransaction()).isTrue();
 	}
 
 	@Test

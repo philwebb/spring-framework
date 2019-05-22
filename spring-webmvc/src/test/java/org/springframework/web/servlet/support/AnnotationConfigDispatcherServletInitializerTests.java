@@ -43,10 +43,10 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test case for {@link AbstractAnnotationConfigDispatcherServletInitializer}.
@@ -95,8 +95,9 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 		WebApplicationContext wac = servlet.getWebApplicationContext();
 		((AnnotationConfigWebApplicationContext) wac).refresh();
 
-		assertTrue(wac.containsBean("bean"));
-		assertTrue(wac.getBean("bean") instanceof MyBean);
+		assertThat(wac.containsBean("bean")).isTrue();
+		boolean condition = wac.getBean("bean") instanceof MyBean;
+		assertThat(condition).isTrue();
 
 		assertEquals(1, servletRegistrations.size());
 		assertNotNull(servletRegistrations.get(SERVLET_NAME));
@@ -106,7 +107,7 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 		assertEquals(Collections.singleton(SERVLET_MAPPING), servletRegistration.getMappings());
 		assertEquals(1, servletRegistration.getLoadOnStartup());
 		assertEquals(ROLE_NAME, servletRegistration.getRunAsRole());
-		assertTrue(servletRegistration.isAsyncSupported());
+		assertThat(servletRegistration.isAsyncSupported()).isTrue();
 
 		assertEquals(4, filterRegistrations.size());
 		assertNotNull(filterRegistrations.get("hiddenHttpMethodFilter"));
@@ -115,7 +116,7 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 		assertNotNull(filterRegistrations.get("delegatingFilterProxy#1"));
 
 		for (MockFilterRegistration filterRegistration : filterRegistrations.values()) {
-			assertTrue(filterRegistration.isAsyncSupported());
+			assertThat(filterRegistration.isAsyncSupported()).isTrue();
 			EnumSet<DispatcherType> enumSet = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
 					DispatcherType.INCLUDE, DispatcherType.ASYNC);
 			assertEquals(enumSet, filterRegistration.getMappings().get(SERVLET_NAME));
@@ -166,8 +167,9 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 		WebApplicationContext wac = servlet.getWebApplicationContext();
 		((AnnotationConfigWebApplicationContext) wac).refresh();
 
-		assertTrue(wac.containsBean("bean"));
-		assertTrue(wac.getBean("bean") instanceof MyBean);
+		assertThat(wac.containsBean("bean")).isTrue();
+		boolean condition = wac.getBean("bean") instanceof MyBean;
+		assertThat(condition).isTrue();
 	}
 
 	@Test

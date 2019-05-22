@@ -25,10 +25,10 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.util.StreamUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for the {@link MockRestResponseCreators} static factory methods.
@@ -42,7 +42,7 @@ public class ResponseCreatorsTests {
 		MockClientHttpResponse response = (MockClientHttpResponse) MockRestResponseCreators.withSuccess().createResponse(null);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertTrue(response.getHeaders().isEmpty());
+		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 
@@ -83,7 +83,7 @@ public class ResponseCreatorsTests {
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
 		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-		assertTrue(response.getHeaders().isEmpty());
+		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 
@@ -93,7 +93,7 @@ public class ResponseCreatorsTests {
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		assertTrue(response.getHeaders().isEmpty());
+		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 
@@ -103,7 +103,7 @@ public class ResponseCreatorsTests {
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
 		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-		assertTrue(response.getHeaders().isEmpty());
+		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 
@@ -113,7 +113,7 @@ public class ResponseCreatorsTests {
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-		assertTrue(response.getHeaders().isEmpty());
+		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 
@@ -123,7 +123,7 @@ public class ResponseCreatorsTests {
 		MockClientHttpResponse response = (MockClientHttpResponse) responseCreator.createResponse(null);
 
 		assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-		assertTrue(response.getHeaders().isEmpty());
+		assertThat(response.getHeaders().isEmpty()).isTrue();
 		assertEquals(0, StreamUtils.copyToByteArray(response.getBody()).length);
 	}
 

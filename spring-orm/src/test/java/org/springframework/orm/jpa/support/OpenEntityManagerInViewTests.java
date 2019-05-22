@@ -48,10 +48,10 @@ import org.springframework.web.context.request.async.WebAsyncManager;
 import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -93,7 +93,7 @@ public class OpenEntityManagerInViewTests {
 
 	@After
 	public void tearDown() throws Exception {
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 		assertFalse(TransactionSynchronizationManager.isSynchronizationActive());
 		assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
 		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
@@ -108,7 +108,7 @@ public class OpenEntityManagerInViewTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(sc);
 
 		interceptor.preHandle(new ServletWebRequest(request));
-		assertTrue(TransactionSynchronizationManager.hasResource(this.factory));
+		assertThat(TransactionSynchronizationManager.hasResource(this.factory)).isTrue();
 
 		// check that further invocations simply participate
 		interceptor.preHandle(new ServletWebRequest(request));
@@ -125,7 +125,7 @@ public class OpenEntityManagerInViewTests {
 		interceptor.afterCompletion(new ServletWebRequest(request), null);
 
 		interceptor.postHandle(new ServletWebRequest(request), null);
-		assertTrue(TransactionSynchronizationManager.hasResource(factory));
+		assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 
 		given(manager.isOpen()).willReturn(true);
 
@@ -146,7 +146,7 @@ public class OpenEntityManagerInViewTests {
 		given(factory.createEntityManager()).willReturn(this.manager);
 
 		interceptor.preHandle(this.webRequest);
-		assertTrue(TransactionSynchronizationManager.hasResource(factory));
+		assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 
 		AsyncWebRequest asyncWebRequest = new StandardServletAsyncWebRequest(this.request, this.response);
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(this.webRequest);
@@ -165,7 +165,7 @@ public class OpenEntityManagerInViewTests {
 		// Async dispatch thread
 
 		interceptor.preHandle(this.webRequest);
-		assertTrue(TransactionSynchronizationManager.hasResource(factory));
+		assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 
 		asyncManager.clearConcurrentResult();
 
@@ -184,7 +184,7 @@ public class OpenEntityManagerInViewTests {
 		interceptor.afterCompletion(new ServletWebRequest(request), null);
 
 		interceptor.postHandle(this.webRequest, null);
-		assertTrue(TransactionSynchronizationManager.hasResource(factory));
+		assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 
 		given(this.manager.isOpen()).willReturn(true);
 
@@ -205,7 +205,7 @@ public class OpenEntityManagerInViewTests {
 		given(this.factory.createEntityManager()).willReturn(this.manager);
 
 		interceptor.preHandle(this.webRequest);
-		assertTrue(TransactionSynchronizationManager.hasResource(this.factory));
+		assertThat(TransactionSynchronizationManager.hasResource(this.factory)).isTrue();
 
 		AsyncWebRequest asyncWebRequest = new StandardServletAsyncWebRequest(this.request, this.response);
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(this.request);
@@ -247,7 +247,7 @@ public class OpenEntityManagerInViewTests {
 		given(this.factory.createEntityManager()).willReturn(this.manager);
 
 		interceptor.preHandle(this.webRequest);
-		assertTrue(TransactionSynchronizationManager.hasResource(this.factory));
+		assertThat(TransactionSynchronizationManager.hasResource(this.factory)).isTrue();
 
 		AsyncWebRequest asyncWebRequest = new StandardServletAsyncWebRequest(this.request, this.response);
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(this.request);
@@ -310,7 +310,7 @@ public class OpenEntityManagerInViewTests {
 		final FilterChain filterChain = new FilterChain() {
 			@Override
 			public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse) {
-				assertTrue(TransactionSynchronizationManager.hasResource(factory));
+				assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 				servletRequest.setAttribute("invoked", Boolean.TRUE);
 			}
 		};
@@ -319,7 +319,7 @@ public class OpenEntityManagerInViewTests {
 			@Override
 			public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse)
 				throws IOException, ServletException {
-				assertTrue(TransactionSynchronizationManager.hasResource(factory2));
+				assertThat(TransactionSynchronizationManager.hasResource(factory2)).isTrue();
 				filter.doFilter(servletRequest, servletResponse, filterChain);
 			}
 		};
@@ -371,7 +371,7 @@ public class OpenEntityManagerInViewTests {
 		final FilterChain filterChain = new FilterChain() {
 			@Override
 			public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse) {
-				assertTrue(TransactionSynchronizationManager.hasResource(factory));
+				assertThat(TransactionSynchronizationManager.hasResource(factory)).isTrue();
 				servletRequest.setAttribute("invoked", Boolean.TRUE);
 				count.incrementAndGet();
 			}
@@ -383,7 +383,7 @@ public class OpenEntityManagerInViewTests {
 			@Override
 			public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse)
 				throws IOException, ServletException {
-				assertTrue(TransactionSynchronizationManager.hasResource(factory2));
+				assertThat(TransactionSynchronizationManager.hasResource(factory2)).isTrue();
 				filter.doFilter(servletRequest, servletResponse, filterChain);
 				count2.incrementAndGet();
 			}

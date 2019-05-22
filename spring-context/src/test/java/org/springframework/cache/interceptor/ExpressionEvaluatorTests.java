@@ -44,7 +44,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Costin Leau
@@ -71,12 +70,14 @@ public class ExpressionEvaluatorTests {
 		assertEquals(2, ops.size());
 		Iterator<CacheOperation> it = ops.iterator();
 		CacheOperation next = it.next();
-		assertTrue(next instanceof CacheableOperation);
-		assertTrue(next.getCacheNames().contains("test"));
+		boolean condition1 = next instanceof CacheableOperation;
+		assertThat(condition1).isTrue();
+		assertThat(next.getCacheNames().contains("test")).isTrue();
 		assertEquals("#a", next.getKey());
 		next = it.next();
-		assertTrue(next instanceof CacheableOperation);
-		assertTrue(next.getCacheNames().contains("test"));
+		boolean condition = next instanceof CacheableOperation;
+		assertThat(condition).isTrue();
+		assertThat(next.getCacheNames().contains("test")).isTrue();
 		assertEquals("#b", next.getKey());
 	}
 

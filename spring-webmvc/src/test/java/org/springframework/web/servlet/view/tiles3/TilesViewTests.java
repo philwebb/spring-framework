@@ -30,9 +30,9 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
@@ -97,7 +97,7 @@ public class TilesViewTests {
 	public void alwaysIncludeEnabled() throws Exception {
 		view.setAlwaysInclude(true);
 		view.render(new HashMap<>(), request, response);
-		assertTrue((Boolean)request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
+		assertThat((boolean) (Boolean) request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME)).isTrue();
 	}
 
 }

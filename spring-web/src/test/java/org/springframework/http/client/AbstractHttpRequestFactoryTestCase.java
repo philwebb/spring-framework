@@ -32,10 +32,8 @@ import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -104,11 +102,11 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 		ClientHttpResponse response = request.execute();
 		try {
 			assertEquals("Invalid status code", HttpStatus.OK, response.getStatusCode());
-			assertTrue("Header not found", response.getHeaders().containsKey(headerName));
+			assertThat(response.getHeaders().containsKey(headerName)).as("Header not found").isTrue();
 			assertEquals("Header value not found", Arrays.asList(headerValue1, headerValue2),
 					response.getHeaders().get(headerName));
 			byte[] result = FileCopyUtils.copyToByteArray(response.getBody());
-			assertTrue("Invalid body", Arrays.equals(body, result));
+			assertThat(Arrays.equals(body, result)).as("Invalid body").isTrue();
 		}
 		finally {
 			response.close();

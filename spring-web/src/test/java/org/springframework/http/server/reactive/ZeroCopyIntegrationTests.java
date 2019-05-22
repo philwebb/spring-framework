@@ -32,8 +32,8 @@ import org.springframework.http.server.reactive.bootstrap.ReactorHttpServer;
 import org.springframework.http.server.reactive.bootstrap.UndertowHttpServer;
 import org.springframework.web.client.RestTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -61,7 +61,7 @@ public class ZeroCopyIntegrationTests extends AbstractHttpHandlerIntegrationTest
 
 		Resource logo = new ClassPathResource("spring.png", ZeroCopyIntegrationTests.class);
 
-		assertTrue(response.hasBody());
+		assertThat(response.hasBody()).isTrue();
 		assertEquals(logo.contentLength(), response.getHeaders().getContentLength());
 		assertEquals(logo.contentLength(), response.getBody().length);
 		assertEquals(MediaType.IMAGE_PNG, response.getHeaders().getContentType());

@@ -21,11 +21,11 @@ import org.junit.Test;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -37,15 +37,18 @@ public class ConcurrentMapCacheManagerTests {
 	public void testDynamicMode() {
 		CacheManager cm = new ConcurrentMapCacheManager();
 		Cache cache1 = cm.getCache("c1");
-		assertTrue(cache1 instanceof ConcurrentMapCache);
+		boolean condition2 = cache1 instanceof ConcurrentMapCache;
+		assertThat(condition2).isTrue();
 		Cache cache1again = cm.getCache("c1");
 		assertSame(cache1again, cache1);
 		Cache cache2 = cm.getCache("c2");
-		assertTrue(cache2 instanceof ConcurrentMapCache);
+		boolean condition1 = cache2 instanceof ConcurrentMapCache;
+		assertThat(condition1).isTrue();
 		Cache cache2again = cm.getCache("c2");
 		assertSame(cache2again, cache2);
 		Cache cache3 = cm.getCache("c3");
-		assertTrue(cache3 instanceof ConcurrentMapCache);
+		boolean condition = cache3 instanceof ConcurrentMapCache;
+		assertThat(condition).isTrue();
 		Cache cache3again = cm.getCache("c3");
 		assertSame(cache3again, cache3);
 
@@ -75,11 +78,13 @@ public class ConcurrentMapCacheManagerTests {
 	public void testStaticMode() {
 		ConcurrentMapCacheManager cm = new ConcurrentMapCacheManager("c1", "c2");
 		Cache cache1 = cm.getCache("c1");
-		assertTrue(cache1 instanceof ConcurrentMapCache);
+		boolean condition3 = cache1 instanceof ConcurrentMapCache;
+		assertThat(condition3).isTrue();
 		Cache cache1again = cm.getCache("c1");
 		assertSame(cache1again, cache1);
 		Cache cache2 = cm.getCache("c2");
-		assertTrue(cache2 instanceof ConcurrentMapCache);
+		boolean condition2 = cache2 instanceof ConcurrentMapCache;
+		assertThat(condition2).isTrue();
 		Cache cache2again = cm.getCache("c2");
 		assertSame(cache2again, cache2);
 		Cache cache3 = cm.getCache("c3");
@@ -96,11 +101,13 @@ public class ConcurrentMapCacheManagerTests {
 
 		cm.setAllowNullValues(false);
 		Cache cache1x = cm.getCache("c1");
-		assertTrue(cache1x instanceof ConcurrentMapCache);
-		assertTrue(cache1x != cache1);
+		boolean condition1 = cache1x instanceof ConcurrentMapCache;
+		assertThat(condition1).isTrue();
+		assertThat(cache1x != cache1).isTrue();
 		Cache cache2x = cm.getCache("c2");
-		assertTrue(cache2x instanceof ConcurrentMapCache);
-		assertTrue(cache2x != cache2);
+		boolean condition = cache2x instanceof ConcurrentMapCache;
+		assertThat(condition).isTrue();
+		assertThat(cache2x != cache2).isTrue();
 		Cache cache3x = cm.getCache("c3");
 		assertNull(cache3x);
 
@@ -123,15 +130,17 @@ public class ConcurrentMapCacheManagerTests {
 		ConcurrentMapCacheManager cm = new ConcurrentMapCacheManager("c1", "c2");
 		assertFalse(cm.isStoreByValue());
 		Cache cache1 = cm.getCache("c1");
-		assertTrue(cache1 instanceof ConcurrentMapCache);
+		boolean condition1 = cache1 instanceof ConcurrentMapCache;
+		assertThat(condition1).isTrue();
 		assertFalse(((ConcurrentMapCache)cache1).isStoreByValue());
 		cache1.put("key", "value");
 
 		cm.setStoreByValue(true);
-		assertTrue(cm.isStoreByValue());
+		assertThat(cm.isStoreByValue()).isTrue();
 		Cache cache1x = cm.getCache("c1");
-		assertTrue(cache1x instanceof ConcurrentMapCache);
-		assertTrue(cache1x != cache1);
+		boolean condition = cache1x instanceof ConcurrentMapCache;
+		assertThat(condition).isTrue();
+		assertThat(cache1x != cache1).isTrue();
 		assertNull(cache1x.get("key"));
 	}
 

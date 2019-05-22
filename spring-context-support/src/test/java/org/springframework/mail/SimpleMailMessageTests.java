@@ -22,9 +22,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Dmitriy Kopylenko
@@ -57,11 +57,11 @@ public class SimpleMailMessageTests {
 		assertEquals("reply@mail.org", message.getReplyTo());
 		assertEquals("you@mail.org", message.getTo()[0]);
 		List<String> ccs = Arrays.asList(message.getCc());
-		assertTrue(ccs.contains("he@mail.org"));
-		assertTrue(ccs.contains("she@mail.org"));
+		assertThat(ccs.contains("he@mail.org")).isTrue();
+		assertThat(ccs.contains("she@mail.org")).isTrue();
 		List<String> bccs = Arrays.asList(message.getBcc());
-		assertTrue(bccs.contains("us@mail.org"));
-		assertTrue(bccs.contains("them@mail.org"));
+		assertThat(bccs.contains("us@mail.org")).isTrue();
+		assertThat(bccs.contains("them@mail.org")).isTrue();
 		assertEquals(sentDate, message.getSentDate());
 		assertEquals("my subject", message.getSubject());
 		assertEquals("my text", message.getText());
@@ -71,11 +71,11 @@ public class SimpleMailMessageTests {
 		assertEquals("reply@mail.org", messageCopy.getReplyTo());
 		assertEquals("you@mail.org", messageCopy.getTo()[0]);
 		ccs = Arrays.asList(messageCopy.getCc());
-		assertTrue(ccs.contains("he@mail.org"));
-		assertTrue(ccs.contains("she@mail.org"));
+		assertThat(ccs.contains("he@mail.org")).isTrue();
+		assertThat(ccs.contains("she@mail.org")).isTrue();
 		bccs = Arrays.asList(message.getBcc());
-		assertTrue(bccs.contains("us@mail.org"));
-		assertTrue(bccs.contains("them@mail.org"));
+		assertThat(bccs.contains("us@mail.org")).isTrue();
+		assertThat(bccs.contains("them@mail.org")).isTrue();
 		assertEquals(sentDate, messageCopy.getSentDate());
 		assertEquals("my subject", messageCopy.getSubject());
 		assertEquals("my text", messageCopy.getText());
@@ -129,20 +129,22 @@ public class SimpleMailMessageTests {
 		// Same object is equal
 		message1 = new SimpleMailMessage();
 		message2 = message1;
-		assertTrue(message1.equals(message2));
+		assertThat(message1.equals(message2)).isTrue();
 
 		// Null object is not equal
 		message1 = new SimpleMailMessage();
 		message2 = null;
-		assertTrue(!(message1.equals(message2)));
+		boolean condition1 = !(message1.equals(message2));
+		assertThat(condition1).isTrue();
 
 		// Different class is not equal
-		assertTrue(!(message1.equals(new Object())));
+		boolean condition = !(message1.equals(new Object()));
+		assertThat(condition).isTrue();
 
 		// Equal values are equal
 		message1 = new SimpleMailMessage();
 		message2 = new SimpleMailMessage();
-		assertTrue(message1.equals(message2));
+		assertThat(message1.equals(message2)).isTrue();
 
 		message1 = new SimpleMailMessage();
 		message1.setFrom("from@somewhere");
@@ -154,7 +156,7 @@ public class SimpleMailMessageTests {
 		message1.setSubject("subject");
 		message1.setText("text");
 		message2 = new SimpleMailMessage(message1);
-		assertTrue(message1.equals(message2));
+		assertThat(message1.equals(message2)).isTrue();
 	}
 
 	@Test

@@ -27,9 +27,9 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -57,8 +57,8 @@ public class MethodMatchersTests {
 	@Test
 	public void testDefaultMatchesAll() throws Exception {
 		MethodMatcher defaultMm = MethodMatcher.TRUE;
-		assertTrue(defaultMm.matches(EXCEPTION_GETMESSAGE, Exception.class));
-		assertTrue(defaultMm.matches(ITESTBEAN_SETAGE, TestBean.class));
+		assertThat(defaultMm.matches(EXCEPTION_GETMESSAGE, Exception.class)).isTrue();
+		assertThat(defaultMm.matches(ITESTBEAN_SETAGE, TestBean.class)).isTrue();
 	}
 
 	@Test
@@ -69,11 +69,11 @@ public class MethodMatchersTests {
 	@Test
 	public void testSingle() throws Exception {
 		MethodMatcher defaultMm = MethodMatcher.TRUE;
-		assertTrue(defaultMm.matches(EXCEPTION_GETMESSAGE, Exception.class));
-		assertTrue(defaultMm.matches(ITESTBEAN_SETAGE, TestBean.class));
+		assertThat(defaultMm.matches(EXCEPTION_GETMESSAGE, Exception.class)).isTrue();
+		assertThat(defaultMm.matches(ITESTBEAN_SETAGE, TestBean.class)).isTrue();
 		defaultMm = MethodMatchers.intersection(defaultMm, new StartsWithMatcher("get"));
 
-		assertTrue(defaultMm.matches(EXCEPTION_GETMESSAGE, Exception.class));
+		assertThat(defaultMm.matches(EXCEPTION_GETMESSAGE, Exception.class)).isTrue();
 		assertFalse(defaultMm.matches(ITESTBEAN_SETAGE, TestBean.class));
 	}
 
@@ -83,13 +83,13 @@ public class MethodMatchersTests {
 		MethodMatcher mm1 = MethodMatcher.TRUE;
 		MethodMatcher mm2 = new TestDynamicMethodMatcherWhichMatches();
 		MethodMatcher intersection = MethodMatchers.intersection(mm1, mm2);
-		assertTrue("Intersection is a dynamic matcher", intersection.isRuntime());
-		assertTrue("2Matched setAge method", intersection.matches(ITESTBEAN_SETAGE, TestBean.class));
-		assertTrue("3Matched setAge method", intersection.matches(ITESTBEAN_SETAGE, TestBean.class, new Integer(5)));
+		assertThat(intersection.isRuntime()).as("Intersection is a dynamic matcher").isTrue();
+		assertThat(intersection.matches(ITESTBEAN_SETAGE, TestBean.class)).as("2Matched setAge method").isTrue();
+		assertThat(intersection.matches(ITESTBEAN_SETAGE, TestBean.class, new Integer(5))).as("3Matched setAge method").isTrue();
 		// Knock out dynamic part
 		intersection = MethodMatchers.intersection(intersection, new TestDynamicMethodMatcherWhichDoesNotMatch());
-		assertTrue("Intersection is a dynamic matcher", intersection.isRuntime());
-		assertTrue("2Matched setAge method", intersection.matches(ITESTBEAN_SETAGE, TestBean.class));
+		assertThat(intersection.isRuntime()).as("Intersection is a dynamic matcher").isTrue();
+		assertThat(intersection.matches(ITESTBEAN_SETAGE, TestBean.class)).as("2Matched setAge method").isTrue();
 		assertFalse("3 - not Matched setAge method", intersection.matches(ITESTBEAN_SETAGE, TestBean.class, new Integer(5)));
 	}
 
@@ -100,8 +100,8 @@ public class MethodMatchersTests {
 		MethodMatcher union = MethodMatchers.union(getterMatcher, setterMatcher);
 
 		assertFalse("Union is a static matcher", union.isRuntime());
-		assertTrue("Matched setAge method", union.matches(ITESTBEAN_SETAGE, TestBean.class));
-		assertTrue("Matched getAge method", union.matches(ITESTBEAN_GETAGE, TestBean.class));
+		assertThat(union.matches(ITESTBEAN_SETAGE, TestBean.class)).as("Matched setAge method").isTrue();
+		assertThat(union.matches(ITESTBEAN_GETAGE, TestBean.class)).as("Matched getAge method").isTrue();
 		assertFalse("Didn't matched absquatulate method", union.matches(IOTHER_ABSQUATULATE, TestBean.class));
 	}
 
@@ -109,8 +109,8 @@ public class MethodMatchersTests {
 	public void testUnionEquals() {
 		MethodMatcher first = MethodMatchers.union(MethodMatcher.TRUE, MethodMatcher.TRUE);
 		MethodMatcher second = new ComposablePointcut(MethodMatcher.TRUE).union(new ComposablePointcut(MethodMatcher.TRUE)).getMethodMatcher();
-		assertTrue(first.equals(second));
-		assertTrue(second.equals(first));
+		assertThat(first.equals(second)).isTrue();
+		assertThat(second.equals(first)).isTrue();
 	}
 
 

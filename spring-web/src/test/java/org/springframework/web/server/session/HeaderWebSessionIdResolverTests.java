@@ -25,9 +25,9 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests using {@link HeaderWebSessionIdResolver}.
@@ -117,7 +117,7 @@ public class HeaderWebSessionIdResolverTests {
 	public void resolveSessionIdsWhenNoIdsThenEmpty() {
 		List<String> ids = this.idResolver.resolveSessionIds(this.exchange);
 
-		assertTrue(ids.isEmpty());
+		assertThat(ids.isEmpty()).isTrue();
 	}
 
 	@Test

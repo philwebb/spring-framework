@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link HandlerTypePredicate}.
@@ -36,9 +36,9 @@ public class HandlerTypePredicateTests {
 
 		Predicate<Class<?>> predicate = HandlerTypePredicate.forAnnotation(Controller.class);
 
-		assertTrue(predicate.test(HtmlController.class));
-		assertTrue(predicate.test(ApiController.class));
-		assertTrue(predicate.test(AnotherApiController.class));
+		assertThat(predicate.test(HtmlController.class)).isTrue();
+		assertThat(predicate.test(ApiController.class)).isTrue();
+		assertThat(predicate.test(AnotherApiController.class)).isTrue();
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class HandlerTypePredicateTests {
 
 		assertFalse(predicate.test(HtmlController.class));
 		assertFalse(predicate.test(ApiController.class));
-		assertTrue(predicate.test(AnotherApiController.class));
+		assertThat(predicate.test(AnotherApiController.class)).isTrue();
 	}
 
 

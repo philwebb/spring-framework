@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -39,10 +39,10 @@ public class ScheduledTaskRegistrarTests {
 
 	@Test
 	public void emptyTaskLists() {
-		assertTrue(this.taskRegistrar.getTriggerTaskList().isEmpty());
-		assertTrue(this.taskRegistrar.getCronTaskList().isEmpty());
-		assertTrue(this.taskRegistrar.getFixedRateTaskList().isEmpty());
-		assertTrue(this.taskRegistrar.getFixedDelayTaskList().isEmpty());
+		assertThat(this.taskRegistrar.getTriggerTaskList().isEmpty()).isTrue();
+		assertThat(this.taskRegistrar.getCronTaskList().isEmpty()).isTrue();
+		assertThat(this.taskRegistrar.getFixedRateTaskList().isEmpty()).isTrue();
+		assertThat(this.taskRegistrar.getFixedDelayTaskList().isEmpty()).isTrue();
 	}
 
 	@Test

@@ -28,10 +28,10 @@ import org.springframework.expression.spel.ast.InlineMap;
 import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test usage of inline maps.
@@ -125,10 +125,11 @@ public class MapTests extends AbstractExpressionTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		SpelExpression expression = (SpelExpression) parser.parseExpression(expressionText);
 		SpelNode node = expression.getAST();
-		assertTrue(node instanceof InlineMap);
+		boolean condition = node instanceof InlineMap;
+		assertThat(condition).isTrue();
 		InlineMap inlineMap = (InlineMap) node;
 		if (expectedToBeConstant) {
-			assertTrue(inlineMap.isConstant());
+			assertThat(inlineMap.isConstant()).isTrue();
 		}
 		else {
 			assertFalse(inlineMap.isConstant());

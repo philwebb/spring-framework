@@ -26,12 +26,10 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.beans.support.ArgumentConvertingMethodInvoker;
 import org.springframework.util.MethodInvoker;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MethodInvokingFactoryBean} and {@link MethodInvokingBean}.
@@ -102,7 +100,7 @@ public class MethodInvokingFactoryBeanTests {
 		mcfb.setTargetObject(tc1);
 		mcfb.setTargetMethod("method1");
 		mcfb.afterPropertiesSet();
-		assertTrue(int.class.equals(mcfb.getObjectType()));
+		assertThat(int.class.equals(mcfb.getObjectType())).isTrue();
 
 		mcfb = new MethodInvokingFactoryBean();
 		mcfb.setTargetClass(TestClass1.class);

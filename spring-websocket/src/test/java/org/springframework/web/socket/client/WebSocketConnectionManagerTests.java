@@ -34,10 +34,10 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link WebSocketConnectionManager}.
@@ -77,7 +77,7 @@ public class WebSocketConnectionManagerTests {
 		WebSocketConnectionManager manager = new WebSocketConnectionManager(client, handler , "/a");
 
 		manager.startInternal();
-		assertTrue(client.isRunning());
+		assertThat(client.isRunning()).isTrue();
 
 		manager.stopInternal();
 		assertFalse(client.isRunning());

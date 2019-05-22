@@ -18,11 +18,11 @@ package org.springframework.mock.web;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MockCookie}.
@@ -73,8 +73,8 @@ public class MockCookieTests {
 		assertEquals("example.com", cookie.getDomain());
 		assertEquals(60, cookie.getMaxAge());
 		assertEquals("/", cookie.getPath());
-		assertTrue(cookie.getSecure());
-		assertTrue(cookie.isHttpOnly());
+		assertThat(cookie.getSecure()).isTrue();
+		assertThat(cookie.isHttpOnly()).isTrue();
 		assertEquals("Lax", cookie.getSameSite());
 	}
 
@@ -115,8 +115,8 @@ public class MockCookieTests {
 		assertEquals("example.com", cookie.getDomain());
 		assertEquals(60, cookie.getMaxAge());
 		assertEquals("/", cookie.getPath());
-		assertTrue(cookie.getSecure());
-		assertTrue(cookie.isHttpOnly());
+		assertThat(cookie.getSecure()).isTrue();
+		assertThat(cookie.isHttpOnly()).isTrue();
 		assertEquals("Lax", cookie.getSameSite());
 	}
 

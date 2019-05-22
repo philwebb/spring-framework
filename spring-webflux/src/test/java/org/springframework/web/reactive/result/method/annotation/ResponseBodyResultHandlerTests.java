@@ -41,9 +41,9 @@ import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.method.ResolvableMethod.on;
 
 /**
@@ -108,7 +108,7 @@ public class ResponseBodyResultHandlerTests {
 
 	private void testSupports(Object controller, Method method) {
 		HandlerResult handlerResult = getHandlerResult(controller, method);
-		assertTrue(this.resultHandler.supports(handlerResult));
+		assertThat(this.resultHandler.supports(handlerResult)).isTrue();
 	}
 
 	private HandlerResult getHandlerResult(Object controller, Method method) {

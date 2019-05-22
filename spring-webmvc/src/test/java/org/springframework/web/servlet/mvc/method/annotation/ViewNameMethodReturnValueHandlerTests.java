@@ -26,9 +26,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link ViewNameMethodReturnValueHandler}.
@@ -58,7 +58,7 @@ public class ViewNameMethodReturnValueHandlerTests {
 
 	@Test
 	public void supportsReturnType() throws Exception {
-		assertTrue(this.handler.supportsReturnType(this.param));
+		assertThat(this.handler.supportsReturnType(this.param)).isTrue();
 	}
 
 	@Test

@@ -25,10 +25,10 @@ import org.springframework.tests.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -57,8 +57,8 @@ public class JtaTransactionManagerSerializationTests {
 		// should do client-side lookup
 		assertNotNull("Logger must survive serialization",
 				serializedJtatm.logger);
-		assertTrue("UserTransaction looked up on client", serializedJtatm
-				.getUserTransaction() == ut2);
+		assertThat(serializedJtatm
+				.getUserTransaction() == ut2).as("UserTransaction looked up on client").isTrue();
 		assertNull("TransactionManager didn't survive", serializedJtatm
 				.getTransactionManager());
 		assertEquals(true, serializedJtatm.isRollbackOnCommitFailure());

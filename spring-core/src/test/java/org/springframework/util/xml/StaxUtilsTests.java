@@ -35,8 +35,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -57,7 +57,7 @@ public class StaxUtilsTests {
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(expected));
 		Source source = StaxUtils.createCustomStaxSource(streamReader);
 
-		assertTrue("Not a StAX Source", StaxUtils.isStaxSource(source));
+		assertThat(StaxUtils.isStaxSource(source)).as("Not a StAX Source").isTrue();
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class StaxUtilsTests {
 		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(expected));
 		StAXSource source = new StAXSource(streamReader);
 
-		assertTrue("Not a StAX Source", StaxUtils.isStaxSource(source));
+		assertThat(StaxUtils.isStaxSource(source)).as("Not a StAX Source").isTrue();
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class StaxUtilsTests {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(new StringWriter());
 		Result result = StaxUtils.createCustomStaxResult(streamWriter);
 
-		assertTrue("Not a StAX Result", StaxUtils.isStaxResult(result));
+		assertThat(StaxUtils.isStaxResult(result)).as("Not a StAX Result").isTrue();
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class StaxUtilsTests {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(new StringWriter());
 		StAXResult result = new StAXResult(streamWriter);
 
-		assertTrue("Not a StAX Result", StaxUtils.isStaxResult(result));
+		assertThat(StaxUtils.isStaxResult(result)).as("Not a StAX Result").isTrue();
 	}
 
 }

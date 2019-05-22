@@ -23,8 +23,8 @@ import reactor.test.StepVerifier;
 
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link TransactionalOperator}.
@@ -43,7 +43,7 @@ public class TransactionalOperatorTests {
 				.as(StepVerifier::create)
 				.expectNext(true)
 				.verifyComplete();
-		assertTrue(tm.commit);
+		assertThat(tm.commit).isTrue();
 		assertFalse(tm.rollback);
 	}
 
@@ -54,7 +54,7 @@ public class TransactionalOperatorTests {
 				.as(StepVerifier::create)
 				.verifyError(IllegalStateException.class);
 		assertFalse(tm.commit);
-		assertTrue(tm.rollback);
+		assertThat(tm.rollback).isTrue();
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class TransactionalOperatorTests {
 				.as(StepVerifier::create)
 				.expectNextCount(4)
 				.verifyComplete();
-		assertTrue(tm.commit);
+		assertThat(tm.commit).isTrue();
 		assertFalse(tm.rollback);
 	}
 
@@ -75,7 +75,7 @@ public class TransactionalOperatorTests {
 				.as(StepVerifier::create)
 				.verifyError(IllegalStateException.class);
 		assertFalse(tm.commit);
-		assertTrue(tm.rollback);
+		assertThat(tm.rollback).isTrue();
 	}
 
 }

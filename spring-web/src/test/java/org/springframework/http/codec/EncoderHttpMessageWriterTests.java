@@ -44,9 +44,9 @@ import org.springframework.util.ReflectionUtils;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.core.ResolvableType.forClass;
@@ -95,7 +95,7 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<?> writer = new EncoderHttpMessageWriter<>(this.encoder);
 		given(this.encoder.canEncode(forClass(String.class), TEXT_HTML)).willReturn(true);
 
-		assertTrue(writer.canWrite(forClass(String.class), TEXT_HTML));
+		assertThat(writer.canWrite(forClass(String.class), TEXT_HTML)).isTrue();
 		assertFalse(writer.canWrite(forClass(String.class), TEXT_XML));
 	}
 
@@ -205,7 +205,7 @@ public class EncoderHttpMessageWriterTests {
 		Method method = ReflectionUtils.findMethod(writer.getClass(), "isStreamingMediaType", MediaType.class);
 		ReflectionUtils.makeAccessible(method);
 
-		assertTrue((Boolean) method.invoke(writer, streamingMediaType));
+		assertThat((boolean) (Boolean) method.invoke(writer, streamingMediaType)).isTrue();
 		assertFalse((Boolean) method.invoke(writer, new MediaType(TEXT_PLAIN, Collections.singletonMap("streaming", "false"))));
 		assertFalse((Boolean) method.invoke(writer, TEXT_HTML));
 	}

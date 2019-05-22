@@ -23,10 +23,10 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -83,7 +83,7 @@ public class DefaultSingletonBeanRegistryTests {
 		beanRegistry.destroySingletons();
 		assertEquals(0, beanRegistry.getSingletonCount());
 		assertEquals(0, beanRegistry.getSingletonNames().length);
-		assertTrue(tb.wasDestroyed());
+		assertThat(tb.wasDestroyed()).isTrue();
 	}
 
 	@Test
@@ -93,15 +93,15 @@ public class DefaultSingletonBeanRegistryTests {
 		beanRegistry.registerDependentBean("a", "b");
 		beanRegistry.registerDependentBean("b", "c");
 		beanRegistry.registerDependentBean("c", "b");
-		assertTrue(beanRegistry.isDependent("a", "b"));
-		assertTrue(beanRegistry.isDependent("b", "c"));
-		assertTrue(beanRegistry.isDependent("c", "b"));
-		assertTrue(beanRegistry.isDependent("a", "c"));
+		assertThat(beanRegistry.isDependent("a", "b")).isTrue();
+		assertThat(beanRegistry.isDependent("b", "c")).isTrue();
+		assertThat(beanRegistry.isDependent("c", "b")).isTrue();
+		assertThat(beanRegistry.isDependent("a", "c")).isTrue();
 		assertFalse(beanRegistry.isDependent("c", "a"));
 		assertFalse(beanRegistry.isDependent("b", "a"));
 		assertFalse(beanRegistry.isDependent("a", "a"));
-		assertTrue(beanRegistry.isDependent("b", "b"));
-		assertTrue(beanRegistry.isDependent("c", "c"));
+		assertThat(beanRegistry.isDependent("b", "b")).isTrue();
+		assertThat(beanRegistry.isDependent("c", "c")).isTrue();
 	}
 
 }

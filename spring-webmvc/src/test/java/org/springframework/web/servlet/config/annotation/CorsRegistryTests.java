@@ -24,8 +24,8 @@ import org.junit.Test;
 
 import org.springframework.web.cors.CorsConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with a {@link CorsRegistry}.
@@ -43,7 +43,7 @@ public class CorsRegistryTests {
 
 	@Test
 	public void noMapping() {
-		assertTrue(this.registry.getCorsConfigurations().isEmpty());
+		assertThat(this.registry.getCorsConfigurations().isEmpty()).isTrue();
 	}
 
 	@Test

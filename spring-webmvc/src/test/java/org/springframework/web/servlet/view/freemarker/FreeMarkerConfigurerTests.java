@@ -39,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -64,7 +63,8 @@ public class FreeMarkerConfigurerTests {
 		fcfb.setTemplateLoaderPath("file:/mydir");
 		fcfb.afterPropertiesSet();
 		Configuration cfg = fcfb.getObject();
-		assertTrue(cfg.getTemplateLoader() instanceof SpringTemplateLoader);
+		boolean condition = cfg.getTemplateLoader() instanceof SpringTemplateLoader;
+		assertThat(condition).isTrue();
 	}
 
 	@Test

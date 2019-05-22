@@ -28,8 +28,8 @@ import org.springframework.context.annotation.ConfigurationCondition;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Andy Wilkinson
@@ -43,7 +43,7 @@ public class ImportWithConditionTests {
 		this.context.register(ConditionalThenUnconditional.class);
 		this.context.refresh();
 		assertFalse(this.context.containsBean("beanTwo"));
-		assertTrue(this.context.containsBean("beanOne"));
+		assertThat(this.context.containsBean("beanOne")).isTrue();
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class ImportWithConditionTests {
 		this.context.register(UnconditionalThenConditional.class);
 		this.context.refresh();
 		assertFalse(this.context.containsBean("beanTwo"));
-		assertTrue(this.context.containsBean("beanOne"));
+		assertThat(this.context.containsBean("beanOne")).isTrue();
 	}
 
 

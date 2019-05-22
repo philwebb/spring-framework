@@ -31,10 +31,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link org.springframework.web.method.annotation.AbstractCookieValueMethodArgumentResolver}.
@@ -73,8 +73,8 @@ public class CookieValueMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("Cookie parameter not supported", resolver.supportsParameter(paramNamedCookie));
-		assertTrue("Cookie string parameter not supported", resolver.supportsParameter(paramNamedDefaultValueString));
+		assertThat(resolver.supportsParameter(paramNamedCookie)).as("Cookie parameter not supported").isTrue();
+		assertThat(resolver.supportsParameter(paramNamedDefaultValueString)).as("Cookie string parameter not supported").isTrue();
 		assertFalse("non-@CookieValue parameter supported", resolver.supportsParameter(paramString));
 	}
 
@@ -82,7 +82,8 @@ public class CookieValueMethodArgumentResolverTests {
 	public void resolveCookieDefaultValue() throws Exception {
 		Object result = resolver.resolveArgument(paramNamedDefaultValueString, null, webRequest, null);
 
-		assertTrue(result instanceof String);
+		boolean condition = result instanceof String;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", "bar", result);
 	}
 

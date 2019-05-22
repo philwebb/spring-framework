@@ -35,11 +35,11 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.expression.spel.testresources.Inventor;
 import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test the examples specified in the documentation.
@@ -140,7 +140,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		Expression exp = parser.parseExpression("name == 'Nikola Tesla'");
 		boolean isEqual = exp.getValue(context, Boolean.class);  // evaluates to true
-		assertTrue(isEqual);
+		assertThat(isEqual).isTrue();
 	}
 
 	// Section 7.4.1
@@ -165,7 +165,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		assertEquals(Integer.MAX_VALUE,maxValue);
 
 		boolean trueValue = (Boolean) parser.parseExpression("true").getValue();
-		assertTrue(trueValue);
+		assertThat(trueValue).isTrue();
 
 		Object nullValue = parser.parseExpression("null").getValue();
 		assertNull(nullValue);
@@ -245,7 +245,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		societyContext.setRootObject(new IEEE());
 		// evaluates to true
 		boolean isMember = parser.parseExpression("isMember('Mihajlo Pupin')").getValue(societyContext, Boolean.class);
-		assertTrue(isMember);
+		assertThat(isMember).isTrue();
 	}
 
 	// 7.5.4.1
@@ -253,14 +253,14 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	@Test
 	public void testRelationalOperators() throws Exception {
 		boolean result = parser.parseExpression("2 == 2").getValue(Boolean.class);
-		assertTrue(result);
+		assertThat(result).isTrue();
 		// evaluates to false
 		result = parser.parseExpression("2 < -5.0").getValue(Boolean.class);
 		assertFalse(result);
 
 		// evaluates to true
 		result = parser.parseExpression("'black' < 'block'").getValue(Boolean.class);
-		assertTrue(result);
+		assertThat(result).isTrue();
 	}
 
 	@Test
@@ -271,7 +271,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		// evaluates to true
 		boolean trueValue = parser.parseExpression("'5.00' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
-		assertTrue(trueValue);
+		assertThat(trueValue).isTrue();
 
 		//evaluates to false
 		falseValue = parser.parseExpression("'5.0067' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
@@ -299,12 +299,12 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		// evaluates to true
 		trueValue = parser.parseExpression("true or false").getValue(Boolean.class);
-		assertTrue(trueValue);
+		assertThat(trueValue).isTrue();
 
 		// evaluates to true
 		expression =  "isMember('Nikola Tesla') or isMember('Albert Einstien')";
 		trueValue = parser.parseExpression(expression).getValue(societyContext, Boolean.class);
-		assertTrue(trueValue);
+		assertThat(trueValue).isTrue();
 
 		// -- NOT --
 
@@ -388,7 +388,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		Class<?> dateClass = parser.parseExpression("T(java.util.Date)").getValue(Class.class);
 		assertEquals(Date.class, dateClass);
 		boolean trueValue = parser.parseExpression("T(java.math.RoundingMode).CEILING < T(java.math.RoundingMode).FLOOR").getValue(Boolean.class);
-		assertTrue(trueValue);
+		assertThat(trueValue).isTrue();
 	}
 
 	// 7.5.7
@@ -488,7 +488,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	public void testTemplating() throws Exception {
 		String randomPhrase =
 				parser.parseExpression("random number is ${T(java.lang.Math).random()}", new TemplatedParserContext()).getValue(String.class);
-		assertTrue(randomPhrase.startsWith("random number"));
+		assertThat(randomPhrase.startsWith("random number")).isTrue();
 	}
 
 	static class TemplatedParserContext implements ParserContext {

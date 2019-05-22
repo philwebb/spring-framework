@@ -33,11 +33,11 @@ import org.springframework.mock.web.test.MockFilterChain;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -238,7 +238,7 @@ public class ForwardedHeaderFilterTests {
 
 	@Test
 	public void shouldNotFilter() {
-		assertTrue(this.filter.shouldNotFilter(new MockHttpServletRequest()));
+		assertThat(this.filter.shouldNotFilter(new MockHttpServletRequest())).isTrue();
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class ForwardedHeaderFilterTests {
 		assertEquals("https", actual.getScheme());
 		assertEquals("84.198.58.199", actual.getServerName());
 		assertEquals(443, actual.getServerPort());
-		assertTrue(actual.isSecure());
+		assertThat(actual.isSecure()).isTrue();
 
 		assertNull(actual.getHeader(X_FORWARDED_PROTO));
 		assertNull(actual.getHeader(X_FORWARDED_HOST));
@@ -305,7 +305,7 @@ public class ForwardedHeaderFilterTests {
 		assertEquals("https", actual.getScheme());
 		assertEquals("84.198.58.199", actual.getServerName());
 		assertEquals(443, actual.getServerPort());
-		assertTrue(actual.isSecure());
+		assertThat(actual.isSecure()).isTrue();
 
 		assertNull(actual.getHeader(X_FORWARDED_SSL));
 		assertNull(actual.getHeader(X_FORWARDED_HOST));

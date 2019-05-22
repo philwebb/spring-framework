@@ -70,7 +70,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Shared tests for property accessors.
@@ -154,44 +153,44 @@ public abstract class AbstractPropertyAccessorTests {
 		IndexedTestBean target = new IndexedTestBean();
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		assertTrue(accessor.isReadableProperty("array"));
-		assertTrue(accessor.isReadableProperty("list"));
-		assertTrue(accessor.isReadableProperty("set"));
-		assertTrue(accessor.isReadableProperty("map"));
+		assertThat(accessor.isReadableProperty("array")).isTrue();
+		assertThat(accessor.isReadableProperty("list")).isTrue();
+		assertThat(accessor.isReadableProperty("set")).isTrue();
+		assertThat(accessor.isReadableProperty("map")).isTrue();
 		assertFalse(accessor.isReadableProperty("xxx"));
 
-		assertTrue(accessor.isWritableProperty("array"));
-		assertTrue(accessor.isWritableProperty("list"));
-		assertTrue(accessor.isWritableProperty("set"));
-		assertTrue(accessor.isWritableProperty("map"));
+		assertThat(accessor.isWritableProperty("array")).isTrue();
+		assertThat(accessor.isWritableProperty("list")).isTrue();
+		assertThat(accessor.isWritableProperty("set")).isTrue();
+		assertThat(accessor.isWritableProperty("map")).isTrue();
 		assertFalse(accessor.isWritableProperty("xxx"));
 
-		assertTrue(accessor.isReadableProperty("array[0]"));
-		assertTrue(accessor.isReadableProperty("array[0].name"));
-		assertTrue(accessor.isReadableProperty("list[0]"));
-		assertTrue(accessor.isReadableProperty("list[0].name"));
-		assertTrue(accessor.isReadableProperty("set[0]"));
-		assertTrue(accessor.isReadableProperty("set[0].name"));
-		assertTrue(accessor.isReadableProperty("map[key1]"));
-		assertTrue(accessor.isReadableProperty("map[key1].name"));
-		assertTrue(accessor.isReadableProperty("map[key4][0]"));
-		assertTrue(accessor.isReadableProperty("map[key4][0].name"));
-		assertTrue(accessor.isReadableProperty("map[key4][1]"));
-		assertTrue(accessor.isReadableProperty("map[key4][1].name"));
+		assertThat(accessor.isReadableProperty("array[0]")).isTrue();
+		assertThat(accessor.isReadableProperty("array[0].name")).isTrue();
+		assertThat(accessor.isReadableProperty("list[0]")).isTrue();
+		assertThat(accessor.isReadableProperty("list[0].name")).isTrue();
+		assertThat(accessor.isReadableProperty("set[0]")).isTrue();
+		assertThat(accessor.isReadableProperty("set[0].name")).isTrue();
+		assertThat(accessor.isReadableProperty("map[key1]")).isTrue();
+		assertThat(accessor.isReadableProperty("map[key1].name")).isTrue();
+		assertThat(accessor.isReadableProperty("map[key4][0]")).isTrue();
+		assertThat(accessor.isReadableProperty("map[key4][0].name")).isTrue();
+		assertThat(accessor.isReadableProperty("map[key4][1]")).isTrue();
+		assertThat(accessor.isReadableProperty("map[key4][1].name")).isTrue();
 		assertFalse(accessor.isReadableProperty("array[key1]"));
 
-		assertTrue(accessor.isWritableProperty("array[0]"));
-		assertTrue(accessor.isWritableProperty("array[0].name"));
-		assertTrue(accessor.isWritableProperty("list[0]"));
-		assertTrue(accessor.isWritableProperty("list[0].name"));
-		assertTrue(accessor.isWritableProperty("set[0]"));
-		assertTrue(accessor.isWritableProperty("set[0].name"));
-		assertTrue(accessor.isWritableProperty("map[key1]"));
-		assertTrue(accessor.isWritableProperty("map[key1].name"));
-		assertTrue(accessor.isWritableProperty("map[key4][0]"));
-		assertTrue(accessor.isWritableProperty("map[key4][0].name"));
-		assertTrue(accessor.isWritableProperty("map[key4][1]"));
-		assertTrue(accessor.isWritableProperty("map[key4][1].name"));
+		assertThat(accessor.isWritableProperty("array[0]")).isTrue();
+		assertThat(accessor.isWritableProperty("array[0].name")).isTrue();
+		assertThat(accessor.isWritableProperty("list[0]")).isTrue();
+		assertThat(accessor.isWritableProperty("list[0].name")).isTrue();
+		assertThat(accessor.isWritableProperty("set[0]")).isTrue();
+		assertThat(accessor.isWritableProperty("set[0].name")).isTrue();
+		assertThat(accessor.isWritableProperty("map[key1]")).isTrue();
+		assertThat(accessor.isWritableProperty("map[key1].name")).isTrue();
+		assertThat(accessor.isWritableProperty("map[key4][0]")).isTrue();
+		assertThat(accessor.isWritableProperty("map[key4][0].name")).isTrue();
+		assertThat(accessor.isWritableProperty("map[key4][1]")).isTrue();
+		assertThat(accessor.isWritableProperty("map[key4][1].name")).isTrue();
 		assertFalse(accessor.isWritableProperty("array[key1]"));
 	}
 
@@ -224,11 +223,11 @@ public abstract class AbstractPropertyAccessorTests {
 		kerry.setSpouse(target);
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		Integer KA = (Integer) accessor.getPropertyValue("spouse.age");
-		assertTrue("kerry is 35", KA == 35);
+		assertThat(KA == 35).as("kerry is 35").isTrue();
 		Integer RA = (Integer) accessor.getPropertyValue("spouse.spouse.age");
-		assertTrue("rod is 31, not" + RA, RA == 31);
+		assertThat(RA == 31).as("rod is 31, not" + RA).isTrue();
 		ITestBean spousesSpouse = (ITestBean) accessor.getPropertyValue("spouse.spouse");
-		assertTrue("spousesSpouse = initial point", target == spousesSpouse);
+		assertThat(target == spousesSpouse).as("spousesSpouse = initial point").isTrue();
 	}
 
 	@Test
@@ -315,16 +314,15 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("spouse.age", new Integer(35));
 		accessor.setPropertyValue("spouse.name", "Kerry");
 		accessor.setPropertyValue("spouse.company", "Lewisham");
-		assertTrue("kerry name is Kerry", kerry.getName().equals("Kerry"));
+		assertThat(kerry.getName().equals("Kerry")).as("kerry name is Kerry").isTrue();
 
-		assertTrue("nested set worked", target.getSpouse() == kerry);
-		assertTrue("no back relation", kerry.getSpouse() == null);
+		assertThat(target.getSpouse() == kerry).as("nested set worked").isTrue();
+		assertThat(kerry.getSpouse() == null).as("no back relation").isTrue();
 		accessor.setPropertyValue(new PropertyValue("spouse.spouse", target));
-		assertTrue("nested set worked", kerry.getSpouse() == target);
+		assertThat(kerry.getSpouse() == target).as("nested set worked").isTrue();
 
 		AbstractPropertyAccessor kerryAccessor = createAccessor(kerry);
-		assertTrue("spouse.spouse.spouse.spouse.company=Lewisham",
-				"Lewisham".equals(kerryAccessor.getPropertyValue("spouse.spouse.spouse.spouse.company")));
+		assertThat("Lewisham".equals(kerryAccessor.getPropertyValue("spouse.spouse.spouse.spouse.company"))).as("spouse.spouse.spouse.spouse.company=Lewisham").isTrue();
 	}
 
 	@Test
@@ -335,13 +333,13 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValue("spouse", kerry);
 
-		assertTrue("nested set worked", target.getSpouse() == kerry);
-		assertTrue("no back relation", kerry.getSpouse() == null);
+		assertThat(target.getSpouse() == kerry).as("nested set worked").isTrue();
+		assertThat(kerry.getSpouse() == null).as("no back relation").isTrue();
 		accessor.setPropertyValue(new PropertyValue("spouse.spouse", target));
-		assertTrue("nested set worked", kerry.getSpouse() == target);
-		assertTrue("kerry age not set", kerry.getAge() == 0);
+		assertThat(kerry.getSpouse() == target).as("nested set worked").isTrue();
+		assertThat(kerry.getAge() == 0).as("kerry age not set").isTrue();
 		accessor.setPropertyValue(new PropertyValue("spouse.age", 35));
-		assertTrue("Set primitive on spouse", kerry.getAge() == 35);
+		assertThat(kerry.getAge() == 35).as("Set primitive on spouse").isTrue();
 
 		assertEquals(kerry, accessor.getPropertyValue("spouse"));
 		assertEquals(target, accessor.getPropertyValue("spouse.spouse"));
@@ -379,7 +377,7 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.getPropertyValue("spouse.bla");
 		}
 		catch (NotReadablePropertyException ex) {
-			assertTrue(ex.getMessage().contains(TestBean.class.getName()));
+			assertThat(ex.getMessage().contains(TestBean.class.getName())).isTrue();
 		}
 	}
 
@@ -463,12 +461,12 @@ public abstract class AbstractPropertyAccessorTests {
 		target.setAge(age);
 		target.setName(name);
 		AbstractPropertyAccessor accessor = createAccessor(target);
-		assertTrue("age is OK", target.getAge() == age);
-		assertTrue("name is OK", name.equals(target.getName()));
+		assertThat(target.getAge() == age).as("age is OK").isTrue();
+		assertThat(name.equals(target.getName())).as("name is OK").isTrue();
 		accessor.setPropertyValues(new MutablePropertyValues());
 		// Check its unchanged
-		assertTrue("age is OK", target.getAge() == age);
-		assertTrue("name is OK", name.equals(target.getName()));
+		assertThat(target.getAge() == age).as("age is OK").isTrue();
+		assertThat(name.equals(target.getName())).as("name is OK").isTrue();
 	}
 
 
@@ -484,9 +482,9 @@ public abstract class AbstractPropertyAccessorTests {
 		pvs.addPropertyValue(new PropertyValue("name", newName));
 		pvs.addPropertyValue(new PropertyValue("touchy", newTouchy));
 		accessor.setPropertyValues(pvs);
-		assertTrue("Name property should have changed", target.getName().equals(newName));
-		assertTrue("Touchy property should have changed", target.getTouchy().equals(newTouchy));
-		assertTrue("Age property should have changed", target.getAge() == newAge);
+		assertThat(target.getName().equals(newName)).as("Name property should have changed").isTrue();
+		assertThat(target.getTouchy().equals(newTouchy)).as("Touchy property should have changed").isTrue();
+		assertThat(target.getAge() == newAge).as("Age property should have changed").isTrue();
 	}
 
 	@Test
@@ -499,9 +497,9 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("age", new Integer(newAge));
 		accessor.setPropertyValue(new PropertyValue("name", newName));
 		accessor.setPropertyValue(new PropertyValue("touchy", newTouchy));
-		assertTrue("Name property should have changed", target.getName().equals(newName));
-		assertTrue("Touchy property should have changed", target.getTouchy().equals(newTouchy));
-		assertTrue("Age property should have changed", target.getAge() == newAge);
+		assertThat(target.getName().equals(newName)).as("Name property should have changed").isTrue();
+		assertThat(target.getTouchy().equals(newTouchy)).as("Touchy property should have changed").isTrue();
+		assertThat(target.getAge() == newAge).as("Age property should have changed").isTrue();
 	}
 
 	@Test
@@ -511,8 +509,9 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		target.setAge(newAge);
 		Object bwAge = accessor.getPropertyValue("age");
-		assertTrue("Age is an integer", bwAge instanceof Integer);
-		assertTrue("Bean wrapper must pick up changes", (int) bwAge == newAge);
+		boolean condition = bwAge instanceof Integer;
+		assertThat(condition).as("Age is an integer").isTrue();
+		assertThat((int) bwAge == newAge).as("Bean wrapper must pick up changes").isTrue();
 	}
 
 	@Test
@@ -521,13 +520,13 @@ public abstract class AbstractPropertyAccessorTests {
 		target.setName("Frank");    // we need to change it back
 		target.setSpouse(target);
 		AbstractPropertyAccessor accessor = createAccessor(target);
-		assertTrue("name is not null to start off", target.getName() != null);
+		assertThat(target.getName() != null).as("name is not null to start off").isTrue();
 		accessor.setPropertyValue("name", null);
-		assertTrue("name is now null", target.getName() == null);
+		assertThat(target.getName() == null).as("name is now null").isTrue();
 		// now test with non-string
-		assertTrue("spouse is not null to start off", target.getSpouse() != null);
+		assertThat(target.getSpouse() != null).as("spouse is not null to start off").isTrue();
 		accessor.setPropertyValue("spouse", null);
-		assertTrue("spouse is now null", target.getSpouse() == null);
+		assertThat(target.getSpouse() == null).as("spouse is now null").isTrue();
 	}
 
 
@@ -594,12 +593,13 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		accessor.setPropertyValue("bool2", "true");
-		assertTrue("Correct bool2 value", Boolean.TRUE.equals(accessor.getPropertyValue("bool2")));
-		assertTrue("Correct bool2 value", target.getBool2());
+		assertThat(Boolean.TRUE.equals(accessor.getPropertyValue("bool2"))).as("Correct bool2 value").isTrue();
+		assertThat((boolean) target.getBool2()).as("Correct bool2 value").isTrue();
 
 		accessor.setPropertyValue("bool2", "false");
-		assertTrue("Correct bool2 value", Boolean.FALSE.equals(accessor.getPropertyValue("bool2")));
-		assertTrue("Correct bool2 value", !target.getBool2());
+		assertThat(Boolean.FALSE.equals(accessor.getPropertyValue("bool2"))).as("Correct bool2 value").isTrue();
+		boolean condition = !target.getBool2();
+		assertThat(condition).as("Correct bool2 value").isTrue();
 	}
 
 	@Test
@@ -613,20 +613,20 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("float2", "8.1");
 		accessor.setPropertyValue("double2", "6.1");
 		accessor.setPropertyValue("bigDecimal", "4.0");
-		assertTrue("Correct short2 value", new Short("2").equals(accessor.getPropertyValue("short2")));
-		assertTrue("Correct short2 value", new Short("2").equals(target.getShort2()));
-		assertTrue("Correct int2 value", new Integer("8").equals(accessor.getPropertyValue("int2")));
-		assertTrue("Correct int2 value", new Integer("8").equals(target.getInt2()));
-		assertTrue("Correct long2 value", new Long("6").equals(accessor.getPropertyValue("long2")));
-		assertTrue("Correct long2 value", new Long("6").equals(target.getLong2()));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(accessor.getPropertyValue("bigInteger")));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(target.getBigInteger()));
-		assertTrue("Correct float2 value", new Float("8.1").equals(accessor.getPropertyValue("float2")));
-		assertTrue("Correct float2 value", new Float("8.1").equals(target.getFloat2()));
-		assertTrue("Correct double2 value", new Double("6.1").equals(accessor.getPropertyValue("double2")));
-		assertTrue("Correct double2 value", new Double("6.1").equals(target.getDouble2()));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.0").equals(accessor.getPropertyValue("bigDecimal")));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.0").equals(target.getBigDecimal()));
+		assertThat(new Short("2").equals(accessor.getPropertyValue("short2"))).as("Correct short2 value").isTrue();
+		assertThat(new Short("2").equals(target.getShort2())).as("Correct short2 value").isTrue();
+		assertThat(new Integer("8").equals(accessor.getPropertyValue("int2"))).as("Correct int2 value").isTrue();
+		assertThat(new Integer("8").equals(target.getInt2())).as("Correct int2 value").isTrue();
+		assertThat(new Long("6").equals(accessor.getPropertyValue("long2"))).as("Correct long2 value").isTrue();
+		assertThat(new Long("6").equals(target.getLong2())).as("Correct long2 value").isTrue();
+		assertThat(new BigInteger("3").equals(accessor.getPropertyValue("bigInteger"))).as("Correct bigInteger value").isTrue();
+		assertThat(new BigInteger("3").equals(target.getBigInteger())).as("Correct bigInteger value").isTrue();
+		assertThat(new Float("8.1").equals(accessor.getPropertyValue("float2"))).as("Correct float2 value").isTrue();
+		assertThat(new Float("8.1").equals(target.getFloat2())).as("Correct float2 value").isTrue();
+		assertThat(new Double("6.1").equals(accessor.getPropertyValue("double2"))).as("Correct double2 value").isTrue();
+		assertThat(new Double("6.1").equals(target.getDouble2())).as("Correct double2 value").isTrue();
+		assertThat(new BigDecimal("4.0").equals(accessor.getPropertyValue("bigDecimal"))).as("Correct bigDecimal value").isTrue();
+		assertThat(new BigDecimal("4.0").equals(target.getBigDecimal())).as("Correct bigDecimal value").isTrue();
 	}
 
 	@Test
@@ -640,20 +640,20 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("float2", new Double(8.1));
 		accessor.setPropertyValue("double2", new BigDecimal(6.1));
 		accessor.setPropertyValue("bigDecimal", new Float(4.0));
-		assertTrue("Correct short2 value", new Short("2").equals(accessor.getPropertyValue("short2")));
-		assertTrue("Correct short2 value", new Short("2").equals(target.getShort2()));
-		assertTrue("Correct int2 value", new Integer("8").equals(accessor.getPropertyValue("int2")));
-		assertTrue("Correct int2 value", new Integer("8").equals(target.getInt2()));
-		assertTrue("Correct long2 value", new Long("6").equals(accessor.getPropertyValue("long2")));
-		assertTrue("Correct long2 value", new Long("6").equals(target.getLong2()));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(accessor.getPropertyValue("bigInteger")));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(target.getBigInteger()));
-		assertTrue("Correct float2 value", new Float("8.1").equals(accessor.getPropertyValue("float2")));
-		assertTrue("Correct float2 value", new Float("8.1").equals(target.getFloat2()));
-		assertTrue("Correct double2 value", new Double("6.1").equals(accessor.getPropertyValue("double2")));
-		assertTrue("Correct double2 value", new Double("6.1").equals(target.getDouble2()));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.0").equals(accessor.getPropertyValue("bigDecimal")));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.0").equals(target.getBigDecimal()));
+		assertThat(new Short("2").equals(accessor.getPropertyValue("short2"))).as("Correct short2 value").isTrue();
+		assertThat(new Short("2").equals(target.getShort2())).as("Correct short2 value").isTrue();
+		assertThat(new Integer("8").equals(accessor.getPropertyValue("int2"))).as("Correct int2 value").isTrue();
+		assertThat(new Integer("8").equals(target.getInt2())).as("Correct int2 value").isTrue();
+		assertThat(new Long("6").equals(accessor.getPropertyValue("long2"))).as("Correct long2 value").isTrue();
+		assertThat(new Long("6").equals(target.getLong2())).as("Correct long2 value").isTrue();
+		assertThat(new BigInteger("3").equals(accessor.getPropertyValue("bigInteger"))).as("Correct bigInteger value").isTrue();
+		assertThat(new BigInteger("3").equals(target.getBigInteger())).as("Correct bigInteger value").isTrue();
+		assertThat(new Float("8.1").equals(accessor.getPropertyValue("float2"))).as("Correct float2 value").isTrue();
+		assertThat(new Float("8.1").equals(target.getFloat2())).as("Correct float2 value").isTrue();
+		assertThat(new Double("6.1").equals(accessor.getPropertyValue("double2"))).as("Correct double2 value").isTrue();
+		assertThat(new Double("6.1").equals(target.getDouble2())).as("Correct double2 value").isTrue();
+		assertThat(new BigDecimal("4.0").equals(accessor.getPropertyValue("bigDecimal"))).as("Correct bigDecimal value").isTrue();
+		assertThat(new BigDecimal("4.0").equals(target.getBigDecimal())).as("Correct bigDecimal value").isTrue();
 	}
 
 	@Test
@@ -747,12 +747,12 @@ public abstract class AbstractPropertyAccessorTests {
 		String ps = "peace=war\nfreedom=slavery";
 		accessor.setPropertyValue("properties", ps);
 
-		assertTrue("name was set", target.name.equals("ptest"));
-		assertTrue("properties non null", target.properties != null);
+		assertThat(target.name.equals("ptest")).as("name was set").isTrue();
+		assertThat(target.properties != null).as("properties non null").isTrue();
 		String freedomVal = target.properties.getProperty("freedom");
 		String peaceVal = target.properties.getProperty("peace");
-		assertTrue("peace==war", peaceVal.equals("war"));
-		assertTrue("Freedom==slavery", freedomVal.equals("slavery"));
+		assertThat(peaceVal.equals("war")).as("peace==war").isTrue();
+		assertThat(freedomVal.equals("slavery")).as("Freedom==slavery").isTrue();
 	}
 
 	@Test
@@ -761,9 +761,9 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		accessor.setPropertyValue("stringArray", new String[] {"foo", "fi", "fi", "fum"});
-		assertTrue("stringArray length = 4", target.stringArray.length == 4);
-		assertTrue("correct values", target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
-				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum"));
+		assertThat(target.stringArray.length == 4).as("stringArray length = 4").isTrue();
+		assertThat(target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
+				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum")).as("correct values").isTrue();
 
 		List<String> list = new ArrayList<>();
 		list.add("foo");
@@ -771,25 +771,25 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add("fi");
 		list.add("fum");
 		accessor.setPropertyValue("stringArray", list);
-		assertTrue("stringArray length = 4", target.stringArray.length == 4);
-		assertTrue("correct values", target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
-				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum"));
+		assertThat(target.stringArray.length == 4).as("stringArray length = 4").isTrue();
+		assertThat(target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
+				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum")).as("correct values").isTrue();
 
 		Set<String> set = new HashSet<>();
 		set.add("foo");
 		set.add("fi");
 		set.add("fum");
 		accessor.setPropertyValue("stringArray", set);
-		assertTrue("stringArray length = 3", target.stringArray.length == 3);
+		assertThat(target.stringArray.length == 3).as("stringArray length = 3").isTrue();
 		List<String> result = Arrays.asList(target.stringArray);
-		assertTrue("correct values", result.contains("foo") && result.contains("fi") && result.contains("fum"));
+		assertThat(result.contains("foo") && result.contains("fi") && result.contains("fum")).as("correct values").isTrue();
 
 		accessor.setPropertyValue("stringArray", "one");
-		assertTrue("stringArray length = 1", target.stringArray.length == 1);
-		assertTrue("stringArray elt is ok", target.stringArray[0].equals("one"));
+		assertThat(target.stringArray.length == 1).as("stringArray length = 1").isTrue();
+		assertThat(target.stringArray[0].equals("one")).as("stringArray elt is ok").isTrue();
 
 		accessor.setPropertyValue("stringArray", null);
-		assertTrue("stringArray is null", target.stringArray == null);
+		assertThat(target.stringArray == null).as("stringArray is null").isTrue();
 	}
 
 	@Test
@@ -804,9 +804,9 @@ public abstract class AbstractPropertyAccessorTests {
 		});
 
 		accessor.setPropertyValue("stringArray", new String[] {"4foo", "7fi", "6fi", "5fum"});
-		assertTrue("stringArray length = 4", target.stringArray.length == 4);
-		assertTrue("correct values", target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
-				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum"));
+		assertThat(target.stringArray.length == 4).as("stringArray length = 4").isTrue();
+		assertThat(target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
+				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum")).as("correct values").isTrue();
 
 		List<String> list = new ArrayList<>();
 		list.add("4foo");
@@ -814,22 +814,22 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add("6fi");
 		list.add("5fum");
 		accessor.setPropertyValue("stringArray", list);
-		assertTrue("stringArray length = 4", target.stringArray.length == 4);
-		assertTrue("correct values", target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
-				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum"));
+		assertThat(target.stringArray.length == 4).as("stringArray length = 4").isTrue();
+		assertThat(target.stringArray[0].equals("foo") && target.stringArray[1].equals("fi") &&
+				target.stringArray[2].equals("fi") && target.stringArray[3].equals("fum")).as("correct values").isTrue();
 
 		Set<String> set = new HashSet<>();
 		set.add("4foo");
 		set.add("7fi");
 		set.add("6fum");
 		accessor.setPropertyValue("stringArray", set);
-		assertTrue("stringArray length = 3", target.stringArray.length == 3);
+		assertThat(target.stringArray.length == 3).as("stringArray length = 3").isTrue();
 		List<String> result = Arrays.asList(target.stringArray);
-		assertTrue("correct values", result.contains("foo") && result.contains("fi") && result.contains("fum"));
+		assertThat(result.contains("foo") && result.contains("fi") && result.contains("fum")).as("correct values").isTrue();
 
 		accessor.setPropertyValue("stringArray", "8one");
-		assertTrue("stringArray length = 1", target.stringArray.length == 1);
-		assertTrue("correct values", target.stringArray[0].equals("one"));
+		assertThat(target.stringArray.length == 1).as("stringArray length = 1").isTrue();
+		assertThat(target.stringArray[0].equals("one")).as("correct values").isTrue();
 	}
 
 	@Test
@@ -838,8 +838,8 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.useConfigValueEditors();
 		accessor.setPropertyValue("stringArray", "a1,b2");
-		assertTrue("stringArray length = 2", target.stringArray.length == 2);
-		assertTrue("correct values", target.stringArray[0].equals("a1") && target.stringArray[1].equals("b2"));
+		assertThat(target.stringArray.length == 2).as("stringArray length = 2").isTrue();
+		assertThat(target.stringArray[0].equals("a1") && target.stringArray[1].equals("b2")).as("correct values").isTrue();
 	}
 
 	@Test
@@ -848,8 +848,8 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.registerCustomEditor(String[].class, "stringArray", new StringArrayPropertyEditor("-"));
 		accessor.setPropertyValue("stringArray", "a1-b2");
-		assertTrue("stringArray length = 2", target.stringArray.length == 2);
-		assertTrue("correct values", target.stringArray[0].equals("a1") && target.stringArray[1].equals("b2"));
+		assertThat(target.stringArray.length == 2).as("stringArray length = 2").isTrue();
+		assertThat(target.stringArray[0].equals("a1") && target.stringArray[1].equals("b2")).as("correct values").isTrue();
 	}
 
 	@Test
@@ -863,8 +863,8 @@ public abstract class AbstractPropertyAccessorTests {
 
 		accessor.setPropertyValue("array[2]", "Test2");
 		assertEquals(3, target.getArray().length);
-		assertTrue("correct values", target.getArray()[0].equals("Test0") && target.getArray()[1] == null &&
-				target.getArray()[2].equals("Test2"));
+		assertThat(target.getArray()[0].equals("Test0") && target.getArray()[1] == null &&
+				target.getArray()[2].equals("Test2")).as("correct values").isTrue();
 	}
 
 	@Test
@@ -873,14 +873,14 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		accessor.setPropertyValue("intArray", new int[] {4, 5, 2, 3});
-		assertTrue("intArray length = 4", target.intArray.length == 4);
-		assertTrue("correct values", target.intArray[0] == 4 && target.intArray[1] == 5 &&
-				target.intArray[2] == 2 && target.intArray[3] == 3);
+		assertThat(target.intArray.length == 4).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 4 && target.intArray[1] == 5 &&
+				target.intArray[2] == 2 && target.intArray[3] == 3).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", new String[] {"4", "5", "2", "3"});
-		assertTrue("intArray length = 4", target.intArray.length == 4);
-		assertTrue("correct values", target.intArray[0] == 4 && target.intArray[1] == 5 &&
-				target.intArray[2] == 2 && target.intArray[3] == 3);
+		assertThat(target.intArray.length == 4).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 4 && target.intArray[1] == 5 &&
+				target.intArray[2] == 2 && target.intArray[3] == 3).as("correct values").isTrue();
 
 		List<Object> list = new ArrayList<>();
 		list.add(4);
@@ -888,38 +888,38 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add(2);
 		list.add("3");
 		accessor.setPropertyValue("intArray", list);
-		assertTrue("intArray length = 4", target.intArray.length == 4);
-		assertTrue("correct values", target.intArray[0] == 4 && target.intArray[1] == 5 &&
-				target.intArray[2] == 2 && target.intArray[3] == 3);
+		assertThat(target.intArray.length == 4).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 4 && target.intArray[1] == 5 &&
+				target.intArray[2] == 2 && target.intArray[3] == 3).as("correct values").isTrue();
 
 		Set<Object> set = new HashSet<>();
 		set.add("4");
 		set.add(5);
 		set.add("3");
 		accessor.setPropertyValue("intArray", set);
-		assertTrue("intArray length = 3", target.intArray.length == 3);
+		assertThat(target.intArray.length == 3).as("intArray length = 3").isTrue();
 		List<Integer> result = new ArrayList<>();
 		result.add(target.intArray[0]);
 		result.add(target.intArray[1]);
 		result.add(target.intArray[2]);
-		assertTrue("correct values", result.contains(new Integer(4)) && result.contains(new Integer(5)) &&
-				result.contains(new Integer(3)));
+		assertThat(result.contains(new Integer(4)) && result.contains(new Integer(5)) &&
+				result.contains(new Integer(3))).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", new Integer[] {1});
-		assertTrue("intArray length = 4", target.intArray.length == 1);
-		assertTrue("correct values", target.intArray[0] == 1);
+		assertThat(target.intArray.length == 1).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 1).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", new Integer(1));
-		assertTrue("intArray length = 4", target.intArray.length == 1);
-		assertTrue("correct values", target.intArray[0] == 1);
+		assertThat(target.intArray.length == 1).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 1).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", new String[] {"1"});
-		assertTrue("intArray length = 4", target.intArray.length == 1);
-		assertTrue("correct values", target.intArray[0] == 1);
+		assertThat(target.intArray.length == 1).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 1).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", "1");
-		assertTrue("intArray length = 4", target.intArray.length == 1);
-		assertTrue("correct values", target.intArray[0] == 1);
+		assertThat(target.intArray.length == 1).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 1).as("correct values").isTrue();
 	}
 
 	@Test
@@ -934,26 +934,26 @@ public abstract class AbstractPropertyAccessorTests {
 		});
 
 		accessor.setPropertyValue("intArray", new int[] {4, 5, 2, 3});
-		assertTrue("intArray length = 4", target.intArray.length == 4);
-		assertTrue("correct values", target.intArray[0] == 4 && target.intArray[1] == 5 &&
-				target.intArray[2] == 2 && target.intArray[3] == 3);
+		assertThat(target.intArray.length == 4).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 4 && target.intArray[1] == 5 &&
+				target.intArray[2] == 2 && target.intArray[3] == 3).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", new String[] {"3", "4", "1", "2"});
-		assertTrue("intArray length = 4", target.intArray.length == 4);
-		assertTrue("correct values", target.intArray[0] == 4 && target.intArray[1] == 5 &&
-				target.intArray[2] == 2 && target.intArray[3] == 3);
+		assertThat(target.intArray.length == 4).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 4 && target.intArray[1] == 5 &&
+				target.intArray[2] == 2 && target.intArray[3] == 3).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", new Integer(1));
-		assertTrue("intArray length = 4", target.intArray.length == 1);
-		assertTrue("correct values", target.intArray[0] == 1);
+		assertThat(target.intArray.length == 1).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 1).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", new String[] {"0"});
-		assertTrue("intArray length = 4", target.intArray.length == 1);
-		assertTrue("correct values", target.intArray[0] == 1);
+		assertThat(target.intArray.length == 1).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 1).as("correct values").isTrue();
 
 		accessor.setPropertyValue("intArray", "0");
-		assertTrue("intArray length = 4", target.intArray.length == 1);
-		assertTrue("correct values", target.intArray[0] == 1);
+		assertThat(target.intArray.length == 1).as("intArray length = 4").isTrue();
+		assertThat(target.intArray[0] == 1).as("correct values").isTrue();
 	}
 
 	@Test
@@ -962,8 +962,8 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.useConfigValueEditors();
 		accessor.setPropertyValue("intArray", "4,5");
-		assertTrue("intArray length = 2", target.intArray.length == 2);
-		assertTrue("correct values", target.intArray[0] == 4 && target.intArray[1] == 5);
+		assertThat(target.intArray.length == 2).as("intArray length = 2").isTrue();
+		assertThat(target.intArray[0] == 4 && target.intArray[1] == 5).as("correct values").isTrue();
 	}
 
 	@Test
@@ -993,7 +993,7 @@ public abstract class AbstractPropertyAccessorTests {
 		assertEquals(1024, target.getArray().length);
 		assertEquals(0, target.getArray()[0]);
 		long time1 = sw.getLastTaskTimeMillis();
-		assertTrue("Took too long", sw.getLastTaskTimeMillis() < 100);
+		assertThat(sw.getLastTaskTimeMillis() < 100).as("Took too long").isTrue();
 
 		accessor.registerCustomEditor(String.class, new StringTrimmerEditor(false));
 		sw.start("array2");
@@ -1001,7 +1001,7 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("array", input);
 		}
 		sw.stop();
-		assertTrue("Took too long", sw.getLastTaskTimeMillis() < 125);
+		assertThat(sw.getLastTaskTimeMillis() < 125).as("Took too long").isTrue();
 
 		accessor.registerCustomEditor(int.class, "array.somePath", new CustomNumberEditor(Integer.class, false));
 		sw.start("array3");
@@ -1009,7 +1009,7 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("array", input);
 		}
 		sw.stop();
-		assertTrue("Took too long", sw.getLastTaskTimeMillis() < 100);
+		assertThat(sw.getLastTaskTimeMillis() < 100).as("Took too long").isTrue();
 
 		accessor.registerCustomEditor(int.class, "array[0].somePath", new CustomNumberEditor(Integer.class, false));
 		sw.start("array3");
@@ -1017,7 +1017,7 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("array", input);
 		}
 		sw.stop();
-		assertTrue("Took too long", sw.getLastTaskTimeMillis() < 100);
+		assertThat(sw.getLastTaskTimeMillis() < 100).as("Took too long").isTrue();
 
 		accessor.registerCustomEditor(int.class, new CustomNumberEditor(Integer.class, false));
 		sw.start("array4");
@@ -1027,7 +1027,7 @@ public abstract class AbstractPropertyAccessorTests {
 		sw.stop();
 		assertEquals(1024, target.getArray().length);
 		assertEquals(0, target.getArray()[0]);
-		assertTrue("Took too long", sw.getLastTaskTimeMillis() > time1);
+		assertThat(sw.getLastTaskTimeMillis() > time1).as("Took too long").isTrue();
 	}
 
 	@Test
@@ -1079,8 +1079,8 @@ public abstract class AbstractPropertyAccessorTests {
 
 		accessor.setPropertyValue("array[2]", 3);
 		assertEquals(3, target.getArray().length);
-		assertTrue("correct values", target.getArray()[0] == 1 && target.getArray()[1] == 0 &&
-				target.getArray()[2] == 3);
+		assertThat(target.getArray()[0] == 1 && target.getArray()[1] == 0 &&
+				target.getArray()[2] == 3).as("correct values").isTrue();
 	}
 
 	@Test
@@ -1157,13 +1157,13 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add("list1");
 		accessor.setPropertyValue("list", list);
 		assertEquals(1, target.getCollection().size());
-		assertTrue(target.getCollection().containsAll(coll));
+		assertThat(target.getCollection().containsAll(coll)).isTrue();
 		assertEquals(1, target.getSet().size());
-		assertTrue(target.getSet().containsAll(set));
+		assertThat(target.getSet().containsAll(set)).isTrue();
 		assertEquals(1, target.getSortedSet().size());
-		assertTrue(target.getSortedSet().containsAll(sortedSet));
+		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
 		assertEquals(1, target.getList().size());
-		assertTrue(target.getList().containsAll(list));
+		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
 	@SuppressWarnings("unchecked") // list cannot be properly parameterized as it breaks other tests
@@ -1184,13 +1184,13 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add("list1");
 		accessor.setPropertyValue("list", list.toArray());
 		assertEquals(1, target.getCollection().size());
-		assertTrue(target.getCollection().containsAll(coll));
+		assertThat(target.getCollection().containsAll(coll)).isTrue();
 		assertEquals(1, target.getSet().size());
-		assertTrue(target.getSet().containsAll(set));
+		assertThat(target.getSet().containsAll(set)).isTrue();
 		assertEquals(1, target.getSortedSet().size());
-		assertTrue(target.getSortedSet().containsAll(sortedSet));
+		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
 		assertEquals(1, target.getList().size());
-		assertTrue(target.getList().containsAll(list));
+		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
 	@SuppressWarnings("unchecked") // list cannot be properly parameterized as it breaks other tests
@@ -1211,13 +1211,13 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add(3);
 		accessor.setPropertyValue("list", new int[] {3});
 		assertEquals(1, target.getCollection().size());
-		assertTrue(target.getCollection().containsAll(coll));
+		assertThat(target.getCollection().containsAll(coll)).isTrue();
 		assertEquals(1, target.getSet().size());
-		assertTrue(target.getSet().containsAll(set));
+		assertThat(target.getSet().containsAll(set)).isTrue();
 		assertEquals(1, target.getSortedSet().size());
-		assertTrue(target.getSortedSet().containsAll(sortedSet));
+		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
 		assertEquals(1, target.getList().size());
-		assertTrue(target.getList().containsAll(list));
+		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
 	@SuppressWarnings("unchecked") // list cannot be properly parameterized as it breaks other tests
@@ -1238,13 +1238,13 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add(3);
 		accessor.setPropertyValue("list", new Integer(3));
 		assertEquals(1, target.getCollection().size());
-		assertTrue(target.getCollection().containsAll(coll));
+		assertThat(target.getCollection().containsAll(coll)).isTrue();
 		assertEquals(1, target.getSet().size());
-		assertTrue(target.getSet().containsAll(set));
+		assertThat(target.getSet().containsAll(set)).isTrue();
 		assertEquals(1, target.getSortedSet().size());
-		assertTrue(target.getSortedSet().containsAll(sortedSet));
+		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
 		assertEquals(1, target.getList().size());
-		assertTrue(target.getList().containsAll(list));
+		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
 	@SuppressWarnings("unchecked") // list cannot be properly parameterized as it breaks other tests
@@ -1262,11 +1262,11 @@ public abstract class AbstractPropertyAccessorTests {
 		list.add("list1");
 		accessor.setPropertyValue("list", "list1");
 		assertEquals(1, target.getSet().size());
-		assertTrue(target.getSet().containsAll(set));
+		assertThat(target.getSet().containsAll(set)).isTrue();
 		assertEquals(1, target.getSortedSet().size());
-		assertTrue(target.getSortedSet().containsAll(sortedSet));
+		assertThat(target.getSortedSet().containsAll(sortedSet)).isTrue();
 		assertEquals(1, target.getList().size());
-		assertTrue(target.getList().containsAll(list));
+		assertThat(target.getList().containsAll(list)).isTrue();
 	}
 
 	@Test
@@ -1280,14 +1280,14 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setPropertyValue("sortedSet", "sortedSet1");
 		accessor.setPropertyValue("list", "list1 ");
 		assertEquals(1, target.getSet().size());
-		assertTrue(target.getSet().contains("set1"));
+		assertThat(target.getSet().contains("set1")).isTrue();
 		assertEquals(1, target.getSortedSet().size());
-		assertTrue(target.getSortedSet().contains("sortedSet1"));
+		assertThat(target.getSortedSet().contains("sortedSet1")).isTrue();
 		assertEquals(1, target.getList().size());
-		assertTrue(target.getList().contains("list1"));
+		assertThat(target.getList().contains("list1")).isTrue();
 
 		accessor.setPropertyValue("list", Collections.singletonList("list1 "));
-		assertTrue(target.getList().contains("list1"));
+		assertThat(target.getList().contains("list1")).isTrue();
 	}
 
 	@Test
@@ -1490,7 +1490,7 @@ public abstract class AbstractPropertyAccessorTests {
 		pvs.addPropertyValue(new PropertyValue("more.garbage", new Object()));
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		accessor.setPropertyValues(pvs, true);
-		assertTrue("Set valid and ignored invalid", target.getName().equals("rod"));
+		assertThat(target.getName().equals("rod")).as("Set valid and ignored invalid").isTrue();
 		assertThatExceptionOfType(NotWritablePropertyException.class).isThrownBy(() ->
 				accessor.setPropertyValues(pvs, false)); // Don't ignore: should fail
 	}

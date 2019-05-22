@@ -32,11 +32,11 @@ import org.springframework.web.reactive.result.view.freemarker.FreeMarkerConfigu
 import org.springframework.web.reactive.result.view.script.ScriptTemplateConfigurer;
 import org.springframework.web.reactive.result.view.script.ScriptTemplateViewResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ViewResolverRegistry}.
@@ -68,7 +68,7 @@ public class ViewResolverRegistryTests {
 		assertFalse(this.registry.hasRegistrations());
 
 		this.registry.freeMarker();
-		assertTrue(this.registry.hasRegistrations());
+		assertThat(this.registry.hasRegistrations()).isTrue();
 	}
 
 	@Test

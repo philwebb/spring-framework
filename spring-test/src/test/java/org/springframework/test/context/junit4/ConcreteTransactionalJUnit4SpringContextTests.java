@@ -33,10 +33,10 @@ import org.springframework.tests.sample.beans.Pet;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 import static org.springframework.test.transaction.TransactionTestUtils.inTransaction;
 
@@ -125,8 +125,8 @@ public class ConcreteTransactionalJUnit4SpringContextTests extends AbstractTrans
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public void verifyBeanNameSet() {
 		assertInTransaction(false);
-		assertTrue("The bean name of this test instance should have been set to the fully qualified class name " +
-				"due to BeanNameAware semantics.", this.beanName.startsWith(getClass().getName()));
+		assertThat(this.beanName.startsWith(getClass().getName())).as("The bean name of this test instance should have been set to the fully qualified class name " +
+				"due to BeanNameAware semantics.").isTrue();
 	}
 
 	@Test
@@ -141,8 +141,7 @@ public class ConcreteTransactionalJUnit4SpringContextTests extends AbstractTrans
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public void verifyBeanInitialized() {
 		assertInTransaction(false);
-		assertTrue("This test bean should have been initialized due to InitializingBean semantics.",
-				this.beanInitialized);
+		assertThat(this.beanInitialized).as("This test bean should have been initialized due to InitializingBean semantics.").isTrue();
 	}
 
 	@Test

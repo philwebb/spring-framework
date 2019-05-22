@@ -40,8 +40,8 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Sebastien Deleuze
@@ -92,9 +92,9 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 					.getMultipartData()
 					.doOnNext(parts -> {
 						assertEquals(2, parts.size());
-						assertTrue(parts.containsKey("fooPart"));
+						assertThat(parts.containsKey("fooPart")).isTrue();
 						assertFooPart(parts.getFirst("fooPart"));
-						assertTrue(parts.containsKey("barPart"));
+						assertThat(parts.containsKey("barPart")).isTrue();
 						assertBarPart(parts.getFirst("barPart"));
 					})
 					.then();
@@ -102,7 +102,8 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 		private void assertFooPart(Part part) {
 			assertEquals("fooPart", part.name());
-			assertTrue(part instanceof FilePart);
+			boolean condition = part instanceof FilePart;
+			assertThat(condition).isTrue();
 			assertEquals("foo.txt", ((FilePart) part).filename());
 
 			StepVerifier.create(DataBufferUtils.join(part.content()))
@@ -117,7 +118,8 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 		private void assertBarPart(Part part) {
 			assertEquals("barPart", part.name());
-			assertTrue(part instanceof FormFieldPart);
+			boolean condition = part instanceof FormFieldPart;
+			assertThat(condition).isTrue();
 			assertEquals("bar", ((FormFieldPart) part).value());
 		}
 	}

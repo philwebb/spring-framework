@@ -33,13 +33,13 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for
@@ -101,7 +101,7 @@ public class MessageConverterTests {
 
 		message = MessageBuilder.withPayload("ABC")
 				.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.TEXT_PLAIN).build();
-		assertTrue(this.converter.canConvertFrom(message, String.class));
+		assertThat(this.converter.canConvertFrom(message, String.class)).isTrue();
 
 	}
 

@@ -26,9 +26,9 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -45,7 +45,7 @@ public class AtAspectJAfterThrowingTests {
 		ITestBean bean = (ITestBean) ctx.getBean("testBean");
 		ExceptionHandlingAspect aspect = (ExceptionHandlingAspect) ctx.getBean("aspect");
 
-		assertTrue(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		try {
 			bean.unreliableFileOperation();
 		}

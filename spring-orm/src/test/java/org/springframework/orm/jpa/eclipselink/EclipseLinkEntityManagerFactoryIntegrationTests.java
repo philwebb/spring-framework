@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.springframework.orm.jpa.AbstractContainerEntityManagerFactoryIntegrationTests;
 import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * EclipseLink-specific JPA tests.
@@ -35,12 +35,13 @@ public class EclipseLinkEntityManagerFactoryIntegrationTests extends AbstractCon
 	@Test
 	public void testCanCastNativeEntityManagerFactoryToEclipseLinkEntityManagerFactoryImpl() {
 		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
-		assertTrue(emfi.getNativeEntityManagerFactory().getClass().getName().endsWith("EntityManagerFactoryImpl"));
+		assertThat(emfi.getNativeEntityManagerFactory().getClass().getName().endsWith("EntityManagerFactoryImpl")).isTrue();
 	}
 
 	@Test
 	public void testCanCastSharedEntityManagerProxyToEclipseLinkEntityManager() {
-		assertTrue(sharedEntityManager instanceof JpaEntityManager);
+		boolean condition = sharedEntityManager instanceof JpaEntityManager;
+		assertThat(condition).isTrue();
 		JpaEntityManager eclipselinkEntityManager = (JpaEntityManager) sharedEntityManager;
 		assertNotNull(eclipselinkEntityManager.getActiveSession());
 	}

@@ -27,13 +27,11 @@ import org.junit.Test;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -175,7 +173,7 @@ public class MediaTypeTests {
 		assertEquals("Invalid comparison result", 0, audio.compareTo(audio));
 		assertEquals("Invalid comparison result", 0, audioBasicLevel.compareTo(audioBasicLevel));
 
-		assertTrue("Invalid comparison result", audioBasicLevel.compareTo(audio) > 0);
+		assertThat(audioBasicLevel.compareTo(audio) > 0).as("Invalid comparison result").isTrue();
 
 		List<MediaType> expected = new ArrayList<>();
 		expected.add(audio);
@@ -227,8 +225,8 @@ public class MediaTypeTests {
 
 		m1 = new MediaType("audio", "basic", Collections.singletonMap("foo", "bar"));
 		m2 = new MediaType("audio", "basic", Collections.singletonMap("foo", "Bar"));
-		assertTrue("Invalid comparison result", m1.compareTo(m2) != 0);
-		assertTrue("Invalid comparison result", m2.compareTo(m1) != 0);
+		assertThat(m1.compareTo(m2) != 0).as("Invalid comparison result").isTrue();
+		assertThat(m2.compareTo(m1) != 0).as("Invalid comparison result").isTrue();
 
 
 	}
@@ -255,28 +253,28 @@ public class MediaTypeTests {
 		assertEquals("Invalid comparison result", 0, comp.compare(audioBasicLevel, audioBasicLevel));
 
 		// specific to unspecific
-		assertTrue("Invalid comparison result", comp.compare(audioBasic, audio) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audioBasic, all) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audio, all) < 0);
-		assertTrue("Invalid comparison result", comp.compare(MediaType.APPLICATION_XHTML_XML, allXml) < 0);
+		assertThat(comp.compare(audioBasic, audio) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audioBasic, all) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio, all) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(MediaType.APPLICATION_XHTML_XML, allXml) < 0).as("Invalid comparison result").isTrue();
 
 		// unspecific to specific
-		assertTrue("Invalid comparison result", comp.compare(audio, audioBasic) > 0);
-		assertTrue("Invalid comparison result", comp.compare(allXml, MediaType.APPLICATION_XHTML_XML) > 0);
-		assertTrue("Invalid comparison result", comp.compare(all, audioBasic) > 0);
-		assertTrue("Invalid comparison result", comp.compare(all, audio) > 0);
+		assertThat(comp.compare(audio, audioBasic) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(allXml, MediaType.APPLICATION_XHTML_XML) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(all, audioBasic) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(all, audio) > 0).as("Invalid comparison result").isTrue();
 
 		// qualifiers
-		assertTrue("Invalid comparison result", comp.compare(audio, audio07) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audio07, audio) > 0);
-		assertTrue("Invalid comparison result", comp.compare(audio07, audio03) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audio03, audio07) > 0);
-		assertTrue("Invalid comparison result", comp.compare(audio03, all) < 0);
-		assertTrue("Invalid comparison result", comp.compare(all, audio03) > 0);
+		assertThat(comp.compare(audio, audio07) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio07, audio) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio07, audio03) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio03, audio07) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio03, all) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(all, audio03) > 0).as("Invalid comparison result").isTrue();
 
 		// other parameters
-		assertTrue("Invalid comparison result", comp.compare(audioBasic, audioBasicLevel) > 0);
-		assertTrue("Invalid comparison result", comp.compare(audioBasicLevel, audioBasic) < 0);
+		assertThat(comp.compare(audioBasic, audioBasicLevel) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audioBasicLevel, audioBasic) < 0).as("Invalid comparison result").isTrue();
 
 		// different types
 		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic, textHtml));
@@ -359,28 +357,28 @@ public class MediaTypeTests {
 		assertEquals("Invalid comparison result", 0, comp.compare(audioBasicLevel, audioBasicLevel));
 
 		// specific to unspecific
-		assertTrue("Invalid comparison result", comp.compare(audioBasic, audio) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audioBasic, all) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audio, all) < 0);
-		assertTrue("Invalid comparison result", comp.compare(MediaType.APPLICATION_XHTML_XML, allXml) < 0);
+		assertThat(comp.compare(audioBasic, audio) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audioBasic, all) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio, all) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(MediaType.APPLICATION_XHTML_XML, allXml) < 0).as("Invalid comparison result").isTrue();
 
 		// unspecific to specific
-		assertTrue("Invalid comparison result", comp.compare(audio, audioBasic) > 0);
-		assertTrue("Invalid comparison result", comp.compare(all, audioBasic) > 0);
-		assertTrue("Invalid comparison result", comp.compare(all, audio) > 0);
-		assertTrue("Invalid comparison result", comp.compare(allXml, MediaType.APPLICATION_XHTML_XML) > 0);
+		assertThat(comp.compare(audio, audioBasic) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(all, audioBasic) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(all, audio) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(allXml, MediaType.APPLICATION_XHTML_XML) > 0).as("Invalid comparison result").isTrue();
 
 		// qualifiers
-		assertTrue("Invalid comparison result", comp.compare(audio, audio07) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audio07, audio) > 0);
-		assertTrue("Invalid comparison result", comp.compare(audio07, audio03) < 0);
-		assertTrue("Invalid comparison result", comp.compare(audio03, audio07) > 0);
-		assertTrue("Invalid comparison result", comp.compare(audio03, all) > 0);
-		assertTrue("Invalid comparison result", comp.compare(all, audio03) < 0);
+		assertThat(comp.compare(audio, audio07) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio07, audio) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio07, audio03) < 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio03, audio07) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audio03, all) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(all, audio03) < 0).as("Invalid comparison result").isTrue();
 
 		// other parameters
-		assertTrue("Invalid comparison result", comp.compare(audioBasic, audioBasicLevel) > 0);
-		assertTrue("Invalid comparison result", comp.compare(audioBasicLevel, audioBasic) < 0);
+		assertThat(comp.compare(audioBasic, audioBasicLevel) > 0).as("Invalid comparison result").isTrue();
+		assertThat(comp.compare(audioBasicLevel, audioBasic) < 0).as("Invalid comparison result").isTrue();
 
 		// different types
 		assertEquals("Invalid comparison result", 0, comp.compare(audioBasic, textHtml));
@@ -443,14 +441,14 @@ public class MediaTypeTests {
 	@Test
 	public void testWithConversionService() {
 		ConversionService conversionService = new DefaultConversionService();
-		assertTrue(conversionService.canConvert(String.class, MediaType.class));
+		assertThat(conversionService.canConvert(String.class, MediaType.class)).isTrue();
 		MediaType mediaType = MediaType.parseMediaType("application/xml");
 		assertEquals(mediaType, conversionService.convert("application/xml", MediaType.class));
 	}
 
 	@Test
 	public void isConcrete() {
-		assertTrue("text/plain not concrete", MediaType.TEXT_PLAIN.isConcrete());
+		assertThat(MediaType.TEXT_PLAIN.isConcrete()).as("text/plain not concrete").isTrue();
 		assertFalse("*/* concrete", MediaType.ALL.isConcrete());
 		assertFalse("text/* concrete", new MediaType("text", "*").isConcrete());
 	}

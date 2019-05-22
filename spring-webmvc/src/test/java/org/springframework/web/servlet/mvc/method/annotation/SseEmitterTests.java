@@ -25,8 +25,8 @@ import org.junit.Test;
 
 import org.springframework.http.MediaType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
 
 
@@ -130,7 +130,7 @@ public class SseEmitterTests {
 		}
 
 		public void assertObject(int index, Object object, MediaType mediaType) {
-			assertTrue(index <= this.objects.size());
+			assertThat(index <= this.objects.size()).isTrue();
 			assertEquals(object, this.objects.get(index));
 			assertEquals(mediaType, this.mediaTypes.get(index));
 		}

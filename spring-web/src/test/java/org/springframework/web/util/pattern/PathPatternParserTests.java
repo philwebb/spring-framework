@@ -31,7 +31,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -390,7 +389,7 @@ public class PathPatternParserTests {
 		// Based purely on catchAll
 		p1 = parse("{*foobar}");
 		p2 = parse("{*goo}");
-		assertTrue(p1.compareTo(p2) != 0);
+		assertThat(p1.compareTo(p2) != 0).isTrue();
 
 		p1 = parse("/{*foobar}");
 		p2 = parse("/abc/{*ww}");
@@ -398,8 +397,8 @@ public class PathPatternParserTests {
 		assertEquals(-1, p2.compareTo(p1));
 
 		p3 = parse("/this/that/theother");
-		assertTrue(p1.isCatchAll());
-		assertTrue(p2.isCatchAll());
+		assertThat(p1.isCatchAll()).isTrue();
+		assertThat(p2.isCatchAll()).isTrue();
 		assertFalse(p3.isCatchAll());
 		patterns = new ArrayList<>();
 		patterns.add(p2);
@@ -457,7 +456,7 @@ public class PathPatternParserTests {
 	}
 
 	private void assertMatches(PathPattern pp, String path) {
-		assertTrue(pp.matches(PathPatternTests.toPathContainer(path)));
+		assertThat(pp.matches(PathPatternTests.toPathContainer(path))).isTrue();
 	}
 
 	private void assertNoMatch(PathPattern pp, String path) {

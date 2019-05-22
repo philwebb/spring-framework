@@ -28,12 +28,10 @@ import org.springframework.test.util.subpackage.Person;
 import org.springframework.test.util.subpackage.PersonEntity;
 import org.springframework.test.util.subpackage.StaticFields;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 import static org.springframework.test.util.ReflectionTestUtils.invokeGetterMethod;
 import static org.springframework.test.util.ReflectionTestUtils.invokeMethod;
@@ -121,7 +119,7 @@ public class ReflectionTestUtilsTests {
 		ProxyFactory pf = new ProxyFactory(this.person);
 		pf.addInterface(Person.class);
 		Person proxy = (Person) pf.getProxy();
-		assertTrue("Proxy is a JDK dynamic proxy", AopUtils.isJdkDynamicProxy(proxy));
+		assertThat(AopUtils.isJdkDynamicProxy(proxy)).as("Proxy is a JDK dynamic proxy").isTrue();
 		assertSetFieldAndGetFieldBehaviorForProxy(proxy, this.person);
 	}
 
@@ -130,7 +128,7 @@ public class ReflectionTestUtilsTests {
 		ProxyFactory pf = new ProxyFactory(this.person);
 		pf.setProxyTargetClass(true);
 		Person proxy = (Person) pf.getProxy();
-		assertTrue("Proxy is a CGLIB proxy", AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).as("Proxy is a CGLIB proxy").isTrue();
 		assertSetFieldAndGetFieldBehaviorForProxy(proxy, this.person);
 	}
 
@@ -408,7 +406,7 @@ public class ReflectionTestUtilsTests {
 	public void setFieldOnLegacyEntityWithSideEffectsInToString() {
 		String testCollaborator = "test collaborator";
 		setField(entity, "collaborator", testCollaborator, Object.class);
-		assertTrue(entity.toString().contains(testCollaborator));
+		assertThat(entity.toString().contains(testCollaborator)).isTrue();
 	}
 
 	@Test // SPR-14363
@@ -428,7 +426,7 @@ public class ReflectionTestUtilsTests {
 	public void invokeSetterMethodOnLegacyEntityWithSideEffectsInToString() {
 		String testCollaborator = "test collaborator";
 		invokeSetterMethod(entity, "collaborator", testCollaborator);
-		assertTrue(entity.toString().contains(testCollaborator));
+		assertThat(entity.toString().contains(testCollaborator)).isTrue();
 	}
 
 }

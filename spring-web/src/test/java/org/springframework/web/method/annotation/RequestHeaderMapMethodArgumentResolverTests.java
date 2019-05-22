@@ -34,9 +34,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Text fixture with {@link RequestHeaderMapMethodArgumentResolver}.
@@ -78,9 +78,9 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("Map parameter not supported", resolver.supportsParameter(paramMap));
-		assertTrue("MultiValueMap parameter not supported", resolver.supportsParameter(paramMultiValueMap));
-		assertTrue("HttpHeaders parameter not supported", resolver.supportsParameter(paramHttpHeaders));
+		assertThat(resolver.supportsParameter(paramMap)).as("Map parameter not supported").isTrue();
+		assertThat(resolver.supportsParameter(paramMultiValueMap)).as("MultiValueMap parameter not supported").isTrue();
+		assertThat(resolver.supportsParameter(paramHttpHeaders)).as("HttpHeaders parameter not supported").isTrue();
 		assertFalse("non-@RequestParam map supported", resolver.supportsParameter(paramUnsupported));
 	}
 
@@ -93,7 +93,8 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramMap, null, webRequest, null);
 
-		assertTrue(result instanceof Map);
+		boolean condition = result instanceof Map;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -112,7 +113,8 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramMultiValueMap, null, webRequest, null);
 
-		assertTrue(result instanceof MultiValueMap);
+		boolean condition = result instanceof MultiValueMap;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -131,7 +133,8 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(paramHttpHeaders, null, webRequest, null);
 
-		assertTrue(result instanceof HttpHeaders);
+		boolean condition = result instanceof HttpHeaders;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 

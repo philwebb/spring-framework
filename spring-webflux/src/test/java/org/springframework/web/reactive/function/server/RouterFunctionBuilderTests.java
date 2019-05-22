@@ -29,8 +29,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.reactive.function.server.RequestPredicates.HEAD;
 
 /**
@@ -107,7 +107,7 @@ public class RouterFunctionBuilderTests {
 	@Test
 	public void resources() {
 		Resource resource = new ClassPathResource("/org/springframework/web/reactive/function/server/");
-		assertTrue(resource.exists());
+		assertThat(resource.exists()).isTrue();
 
 		RouterFunction<ServerResponse> route = RouterFunctions.route()
 				.resources("/resources/**", resource)

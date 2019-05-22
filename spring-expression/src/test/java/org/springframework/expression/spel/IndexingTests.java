@@ -37,8 +37,8 @@ import org.springframework.expression.TypedValue;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 @SuppressWarnings("rawtypes")
 public class IndexingTests {
@@ -194,7 +194,7 @@ public class IndexingTests {
 			expression.setValue(this, "4");
 		}
 		catch (EvaluationException ex) {
-			assertTrue(ex.getMessage().startsWith("EL1053E"));
+			assertThat(ex.getMessage().startsWith("EL1053E")).isTrue();
 		}
 	}
 
@@ -255,7 +255,7 @@ public class IndexingTests {
 			assertEquals("bar", expression.getValue(this));
 		}
 		catch (EvaluationException ex) {
-			assertTrue(ex.getMessage().startsWith("EL1027E"));
+			assertThat(ex.getMessage().startsWith("EL1027E")).isTrue();
 		}
 	}
 
@@ -273,7 +273,7 @@ public class IndexingTests {
 			assertEquals("bar", expression.getValue(this));
 		}
 		catch (EvaluationException ex) {
-			assertTrue(ex.getMessage().startsWith("EL1053E"));
+			assertThat(ex.getMessage().startsWith("EL1053E")).isTrue();
 		}
 	}
 
@@ -291,7 +291,7 @@ public class IndexingTests {
 			assertEquals("bar", expression.getValue(this));
 		}
 		catch (EvaluationException ex) {
-			assertTrue(ex.getMessage().startsWith("EL1053E"));
+			assertThat(ex.getMessage().startsWith("EL1053E")).isTrue();
 		}
 	}
 

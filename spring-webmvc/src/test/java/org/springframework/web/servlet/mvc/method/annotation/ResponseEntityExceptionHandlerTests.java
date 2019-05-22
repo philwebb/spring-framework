@@ -61,11 +61,11 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link ResponseEntityExceptionHandler}.
@@ -107,7 +107,7 @@ public class ResponseEntityExceptionHandlerTests {
 			Class<?>[] paramTypes = method.getParameterTypes();
 			if (method.getName().startsWith("handle") && (paramTypes.length == 4)) {
 				String name = paramTypes[0].getSimpleName();
-				assertTrue("@ExceptionHandler is missing " + name, exceptionTypes.contains(paramTypes[0]));
+				assertThat(exceptionTypes.contains(paramTypes[0])).as("@ExceptionHandler is missing " + name).isTrue();
 			}
 		}
 	}
@@ -274,8 +274,10 @@ public class ResponseEntityExceptionHandlerTests {
 			servlet.service(this.servletRequest, this.servletResponse);
 		}
 		catch (ServletException ex) {
-			assertTrue(ex.getCause() instanceof IllegalStateException);
-			assertTrue(ex.getCause().getCause() instanceof ServletRequestBindingException);
+			boolean condition1 = ex.getCause() instanceof IllegalStateException;
+			assertThat(condition1).isTrue();
+			boolean condition = ex.getCause().getCause() instanceof ServletRequestBindingException;
+			assertThat(condition).isTrue();
 		}
 	}
 

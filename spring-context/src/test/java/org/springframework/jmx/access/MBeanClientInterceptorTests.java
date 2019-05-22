@@ -37,13 +37,10 @@ import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.export.assembler.AbstractReflectiveMBeanInfoAssembler;
 import org.springframework.util.SocketUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIOException;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -92,7 +89,7 @@ public class MBeanClientInterceptorTests extends AbstractMBeanServerTests {
 	public void testProxyClassIsDifferent() throws Exception {
 		assumeTrue(runTests);
 		IJmxTestBean proxy = getProxy();
-		assertTrue("The proxy class should be different than the base class", (proxy.getClass() != IJmxTestBean.class));
+		assertThat((proxy.getClass() != IJmxTestBean.class)).as("The proxy class should be different than the base class").isTrue();
 	}
 
 	@Test

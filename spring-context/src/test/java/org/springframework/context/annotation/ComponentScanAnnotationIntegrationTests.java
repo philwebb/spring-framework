@@ -70,7 +70,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
@@ -206,7 +205,7 @@ public class ComponentScanAnnotationIntegrationTests {
 	@Test
 	public void withAwareTypeFilter() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithAwareTypeFilter.class);
-		assertTrue(ctx.getEnvironment().acceptsProfiles(Profiles.of("the-filter-ran")));
+		assertThat(ctx.getEnvironment().acceptsProfiles(Profiles.of("the-filter-ran"))).isTrue();
 	}
 
 	@Test

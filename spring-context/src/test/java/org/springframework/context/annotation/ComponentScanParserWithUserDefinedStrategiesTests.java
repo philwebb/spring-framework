@@ -23,10 +23,10 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -37,7 +37,7 @@ public class ComponentScanParserWithUserDefinedStrategiesTests {
 	public void testCustomBeanNameGenerator() {
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/context/annotation/customNameGeneratorTests.xml");
-		assertTrue(context.containsBean("testing.fooServiceImpl"));
+		assertThat(context.containsBean("testing.fooServiceImpl")).isTrue();
 	}
 
 	@Test

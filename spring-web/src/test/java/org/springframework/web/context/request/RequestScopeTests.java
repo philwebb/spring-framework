@@ -31,6 +31,7 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
@@ -38,7 +39,6 @@ import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -95,7 +95,7 @@ public class RequestScopeTests {
 		assertSame(bean, this.beanFactory.getBean(name));
 
 		requestAttributes.requestCompleted();
-		assertTrue(bean.wasDestroyed());
+		assertThat(bean.wasDestroyed()).isTrue();
 	}
 
 	@Test
@@ -107,7 +107,8 @@ public class RequestScopeTests {
 		String name = "requestScopedFactoryBean";
 		assertNull(request.getAttribute(name));
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
-		assertTrue(request.getAttribute(name) instanceof FactoryBean);
+		boolean condition = request.getAttribute(name) instanceof FactoryBean;
+		assertThat(condition).isTrue();
 		assertSame(bean, this.beanFactory.getBean(name));
 	}
 
@@ -137,8 +138,8 @@ public class RequestScopeTests {
 		TestBean inner1 = (TestBean) outer1.getSpouse();
 		assertSame(outer1, this.beanFactory.getBean(outerBeanName));
 		requestAttributes.requestCompleted();
-		assertTrue(outer1.wasDestroyed());
-		assertTrue(inner1.wasDestroyed());
+		assertThat(outer1.wasDestroyed()).isTrue();
+		assertThat(inner1.wasDestroyed()).isTrue();
 		request = new MockHttpServletRequest();
 		requestAttributes = new ServletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(requestAttributes);
@@ -161,7 +162,7 @@ public class RequestScopeTests {
 		assertSame(outer1, outer2);
 		assertSame(inner1, outer2.getSpouse());
 		requestAttributes.requestCompleted();
-		assertTrue(inner1.wasDestroyed());
+		assertThat(inner1.wasDestroyed()).isTrue();
 		assertFalse(outer1.wasDestroyed());
 	}
 

@@ -25,11 +25,11 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcutTests;
 import org.springframework.aop.framework.AopConfigException;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -65,15 +65,16 @@ public class AspectJPointcutAdvisorTests {
 				1, "someBean");
 
 		assertNotSame(Pointcut.TRUE, ajpa.getAspectMetadata().getPerClausePointcut());
-		assertTrue(ajpa.getAspectMetadata().getPerClausePointcut() instanceof AspectJExpressionPointcut);
-		assertTrue(ajpa.isPerInstance());
+		boolean condition = ajpa.getAspectMetadata().getPerClausePointcut() instanceof AspectJExpressionPointcut;
+		assertThat(condition).isTrue();
+		assertThat(ajpa.isPerInstance()).isTrue();
 
-		assertTrue(ajpa.getAspectMetadata().getPerClausePointcut().getClassFilter().matches(TestBean.class));
+		assertThat(ajpa.getAspectMetadata().getPerClausePointcut().getClassFilter().matches(TestBean.class)).isTrue();
 		assertFalse(ajpa.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(
 				TestBean.class.getMethod("getAge"), TestBean.class));
 
-		assertTrue(ajpa.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(
-				TestBean.class.getMethod("getSpouse"), TestBean.class));
+		assertThat(ajpa.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(
+				TestBean.class.getMethod("getSpouse"), TestBean.class)).isTrue();
 	}
 
 	@Test

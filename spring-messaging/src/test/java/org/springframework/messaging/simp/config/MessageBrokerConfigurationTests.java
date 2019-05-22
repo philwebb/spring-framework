@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.context.ApplicationContext;
@@ -84,7 +83,6 @@ import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -104,9 +102,9 @@ public class MessageBrokerConfigurationTests {
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
 		assertEquals(3, handlers.size());
-		assertTrue(handlers.contains(context.getBean(SimpAnnotationMethodMessageHandler.class)));
-		assertTrue(handlers.contains(context.getBean(UserDestinationMessageHandler.class)));
-		assertTrue(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class)));
+		assertThat(handlers.contains(context.getBean(SimpAnnotationMethodMessageHandler.class))).isTrue();
+		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
+		assertThat(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class))).isTrue();
 	}
 
 	@Test
@@ -117,9 +115,9 @@ public class MessageBrokerConfigurationTests {
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
 		assertEquals(3, handlers.size());
-		assertTrue(handlers.contains(context.getBean(SimpAnnotationMethodMessageHandler.class)));
-		assertTrue(handlers.contains(context.getBean(UserDestinationMessageHandler.class)));
-		assertTrue(handlers.contains(context.getBean(StompBrokerRelayMessageHandler.class)));
+		assertThat(handlers.contains(context.getBean(SimpAnnotationMethodMessageHandler.class))).isTrue();
+		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
+		assertThat(handlers.contains(context.getBean(StompBrokerRelayMessageHandler.class))).isTrue();
 	}
 
 	@Test
@@ -213,7 +211,7 @@ public class MessageBrokerConfigurationTests {
 
 		SimpleBrokerMessageHandler broker =
 				context.getBean("simpleBrokerMessageHandler", SimpleBrokerMessageHandler.class);
-		assertTrue(broker.isPreservePublishOrder());
+		assertThat(broker.isPreservePublishOrder()).isTrue();
 	}
 
 	@Test
@@ -224,8 +222,8 @@ public class MessageBrokerConfigurationTests {
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
 		assertEquals(2, handlers.size());
-		assertTrue(handlers.contains(context.getBean(UserDestinationMessageHandler.class)));
-		assertTrue(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class)));
+		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
+		assertThat(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class))).isTrue();
 
 		assertNull(channel.getExecutor());
 	}
@@ -238,8 +236,8 @@ public class MessageBrokerConfigurationTests {
 		Set<MessageHandler> handlers = channel.getSubscribers();
 
 		assertEquals(2, handlers.size());
-		assertTrue(handlers.contains(context.getBean(UserDestinationMessageHandler.class)));
-		assertTrue(handlers.contains(context.getBean(StompBrokerRelayMessageHandler.class)));
+		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
+		assertThat(handlers.contains(context.getBean(StompBrokerRelayMessageHandler.class))).isTrue();
 	}
 
 	@Test
@@ -364,11 +362,11 @@ public class MessageBrokerConfigurationTests {
 
 		List<HandlerMethodArgumentResolver> customResolvers = handler.getCustomArgumentResolvers();
 		assertEquals(1, customResolvers.size());
-		assertTrue(handler.getArgumentResolvers().contains(customResolvers.get(0)));
+		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(0))).isTrue();
 
 		List<HandlerMethodReturnValueHandler> customHandlers = handler.getCustomReturnValueHandlers();
 		assertEquals(1, customHandlers.size());
-		assertTrue(handler.getReturnValueHandlers().contains(customHandlers.get(0)));
+		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(0))).isTrue();
 	}
 
 	@Test
@@ -446,7 +444,8 @@ public class MessageBrokerConfigurationTests {
 		ApplicationContext context = loadConfig(CustomConfig.class);
 
 		SimpUserRegistry registry = context.getBean(SimpUserRegistry.class);
-		assertTrue(registry instanceof TestUserRegistry);
+		boolean condition = registry instanceof TestUserRegistry;
+		assertThat(condition).isTrue();
 		assertEquals(99, ((TestUserRegistry) registry).getOrder());
 	}
 
@@ -482,7 +481,7 @@ public class MessageBrokerConfigurationTests {
 		assertNull(handler.getBroadcastDestination());
 
 		Object nullBean = context.getBean("userRegistryMessageHandler");
-		assertTrue(nullBean.equals(null));
+		assertThat(nullBean.equals(null)).isTrue();
 	}
 
 	@Test // SPR-16275

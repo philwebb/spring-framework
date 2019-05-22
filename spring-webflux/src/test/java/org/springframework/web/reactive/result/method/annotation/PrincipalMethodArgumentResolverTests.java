@@ -30,8 +30,8 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link PrincipalMethodArgumentResolver}.
@@ -48,9 +48,9 @@ public class PrincipalMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(Principal.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(Mono.class, Principal.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(Single.class, Principal.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(Principal.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(Mono.class, Principal.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(Single.class, Principal.class))).isTrue();
 	}
 
 
@@ -67,12 +67,12 @@ public class PrincipalMethodArgumentResolverTests {
 
 		param = this.testMethod.arg(Mono.class, Principal.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
-		assertTrue(Mono.class.isAssignableFrom(actual.getClass()));
+		assertThat(Mono.class.isAssignableFrom(actual.getClass())).isTrue();
 		assertSame(user, ((Mono<?>) actual).block());
 
 		param = this.testMethod.arg(Single.class, Principal.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
-		assertTrue(Single.class.isAssignableFrom(actual.getClass()));
+		assertThat(Single.class.isAssignableFrom(actual.getClass())).isTrue();
 		assertSame(user, ((Single<?>) actual).blockingGet());
 	}
 

@@ -23,8 +23,8 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Ramnivas Laddad
@@ -41,7 +41,7 @@ public class AssignableTypeFilterTests {
 		AssignableTypeFilter matchingFilter = new AssignableTypeFilter(TestNonInheritingClass.class);
 		AssignableTypeFilter notMatchingFilter = new AssignableTypeFilter(TestInterface.class);
 		assertFalse(notMatchingFilter.match(metadataReader, metadataReaderFactory));
-		assertTrue(matchingFilter.match(metadataReader, metadataReaderFactory));
+		assertThat(matchingFilter.match(metadataReader, metadataReaderFactory)).isTrue();
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class AssignableTypeFilterTests {
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(classUnderTest);
 
 		AssignableTypeFilter filter = new AssignableTypeFilter(TestInterface.class);
-		assertTrue(filter.match(metadataReader, metadataReaderFactory));
+		assertThat(filter.match(metadataReader, metadataReaderFactory)).isTrue();
 		ClassloadingAssertions.assertClassNotLoaded(classUnderTest);
 	}
 
@@ -62,7 +62,7 @@ public class AssignableTypeFilterTests {
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(classUnderTest);
 
 		AssignableTypeFilter filter = new AssignableTypeFilter(SimpleJdbcDaoSupport.class);
-		assertTrue(filter.match(metadataReader, metadataReaderFactory));
+		assertThat(filter.match(metadataReader, metadataReaderFactory)).isTrue();
 		ClassloadingAssertions.assertClassNotLoaded(classUnderTest);
 	}
 
@@ -73,7 +73,7 @@ public class AssignableTypeFilterTests {
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(classUnderTest);
 
 		AssignableTypeFilter filter = new AssignableTypeFilter(JdbcDaoSupport.class);
-		assertTrue(filter.match(metadataReader, metadataReaderFactory));
+		assertThat(filter.match(metadataReader, metadataReaderFactory)).isTrue();
 		ClassloadingAssertions.assertClassNotLoaded(classUnderTest);
 	}
 

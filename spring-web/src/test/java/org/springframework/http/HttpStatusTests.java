@@ -22,8 +22,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /** @author Arjen Poutsma */
 public class HttpStatusTests {
@@ -120,7 +120,7 @@ public class HttpStatusTests {
 			if (value == 302 || value == 413 || value == 414) {
 				continue;
 			}
-			assertTrue("Map has no value for [" + value + "]", statusCodes.containsKey(value));
+			assertThat(statusCodes.containsKey(value)).as("Map has no value for [" + value + "]").isTrue();
 			assertEquals("Invalid name for [" + value + "]", statusCodes.get(value), status.name());
 		}
 	}

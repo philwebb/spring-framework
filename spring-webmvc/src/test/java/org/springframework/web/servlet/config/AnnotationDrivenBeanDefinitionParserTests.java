@@ -18,7 +18,6 @@ package org.springframework.web.servlet.config;
 
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.beans.DirectFieldAccessor;
@@ -56,7 +55,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for the configuration in mvc-config-annotation-driven.xml.
@@ -88,9 +86,9 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		loadBeanDefinitions("mvc-config-path-matching.xml");
 		RequestMappingHandlerMapping hm = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(hm);
-		assertTrue(hm.useSuffixPatternMatch());
+		assertThat(hm.useSuffixPatternMatch()).isTrue();
 		assertFalse(hm.useTrailingSlashMatch());
-		assertTrue(hm.useRegisteredSuffixPatternMatch());
+		assertThat(hm.useRegisteredSuffixPatternMatch()).isTrue();
 		assertThat(hm.getUrlPathHelper()).isInstanceOf(TestPathHelper.class);
 		assertThat(hm.getPathMatcher()).isInstanceOf(TestPathMatcher.class);
 		List<String> fileExtensions = hm.getContentNegotiationManager().getAllFileExtensions();
@@ -124,13 +122,17 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("customArgumentResolvers");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		boolean condition3 = value instanceof List;
+		assertThat(condition3).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodArgumentResolver> resolvers = (List<HandlerMethodArgumentResolver>) value;
 		assertEquals(3, resolvers.size());
-		assertTrue(resolvers.get(0) instanceof ServletWebArgumentResolverAdapter);
-		assertTrue(resolvers.get(1) instanceof TestHandlerMethodArgumentResolver);
-		assertTrue(resolvers.get(2) instanceof TestHandlerMethodArgumentResolver);
+		boolean condition2 = resolvers.get(0) instanceof ServletWebArgumentResolverAdapter;
+		assertThat(condition2).isTrue();
+		boolean condition1 = resolvers.get(1) instanceof TestHandlerMethodArgumentResolver;
+		assertThat(condition1).isTrue();
+		boolean condition = resolvers.get(2) instanceof TestHandlerMethodArgumentResolver;
+		assertThat(condition).isTrue();
 		assertNotSame(resolvers.get(1), resolvers.get(2));
 	}
 
@@ -145,7 +147,8 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("customReturnValueHandlers");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		boolean condition = value instanceof List;
+		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodReturnValueHandler> handlers = (List<HandlerMethodReturnValueHandler>) value;
 		assertEquals(2, handlers.size());
@@ -174,16 +177,19 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("messageConverters");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		boolean condition2 = value instanceof List;
+		assertThat(condition2).isTrue();
 		List<HttpMessageConverter<?>> converters = (List<HttpMessageConverter<?>>) value;
 		if (hasDefaultRegistrations) {
-			assertTrue("Default and custom converter expected", converters.size() > 2);
+			assertThat(converters.size() > 2).as("Default and custom converter expected").isTrue();
 		}
 		else {
-			assertTrue("Only custom converters expected", converters.size() == 2);
+			assertThat(converters.size() == 2).as("Only custom converters expected").isTrue();
 		}
-		assertTrue(converters.get(0) instanceof StringHttpMessageConverter);
-		assertTrue(converters.get(1) instanceof ResourceHttpMessageConverter);
+		boolean condition1 = converters.get(0) instanceof StringHttpMessageConverter;
+		assertThat(condition1).isTrue();
+		boolean condition = converters.get(1) instanceof ResourceHttpMessageConverter;
+		assertThat(condition).isTrue();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -191,9 +197,11 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("responseBodyAdvice");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		boolean condition1 = value instanceof List;
+		assertThat(condition1).isTrue();
 		List<ResponseBodyAdvice<?>> converters = (List<ResponseBodyAdvice<?>>) value;
-		assertTrue(converters.get(0) instanceof JsonViewResponseBodyAdvice);
+		boolean condition = converters.get(0) instanceof JsonViewResponseBodyAdvice;
+		assertThat(condition).isTrue();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -201,10 +209,13 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("requestResponseBodyAdvice");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		boolean condition2 = value instanceof List;
+		assertThat(condition2).isTrue();
 		List<ResponseBodyAdvice<?>> converters = (List<ResponseBodyAdvice<?>>) value;
-		assertTrue(converters.get(0) instanceof JsonViewRequestBodyAdvice);
-		assertTrue(converters.get(1) instanceof JsonViewResponseBodyAdvice);
+		boolean condition1 = converters.get(0) instanceof JsonViewRequestBodyAdvice;
+		assertThat(condition1).isTrue();
+		boolean condition = converters.get(1) instanceof JsonViewResponseBodyAdvice;
+		assertThat(condition).isTrue();
 	}
 
 }

@@ -50,11 +50,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.NestedServletException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link ExceptionHandlerExceptionResolver}.
@@ -111,7 +111,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.setCustomArgumentResolvers(Collections.singletonList(resolver));
 		this.resolver.afterPropertiesSet();
 
-		assertTrue(this.resolver.getArgumentResolvers().getResolvers().contains(resolver));
+		assertThat(this.resolver.getArgumentResolvers().getResolvers().contains(resolver)).isTrue();
 		assertMethodProcessorCount(RESOLVER_COUNT + 1, HANDLER_COUNT);
 	}
 
@@ -130,7 +130,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		this.resolver.setCustomReturnValueHandlers(Collections.singletonList(handler));
 		this.resolver.afterPropertiesSet();
 
-		assertTrue(this.resolver.getReturnValueHandlers().getHandlers().contains(handler));
+		assertThat(this.resolver.getReturnValueHandlers().getHandlers().contains(handler)).isTrue();
 		assertMethodProcessorCount(RESOLVER_COUNT, HANDLER_COUNT + 1);
 	}
 
@@ -174,7 +174,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull(mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("IllegalArgumentException", this.response.getContentAsString());
 	}
 
@@ -186,7 +186,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull(mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("IllegalArgumentException", this.response.getContentAsString());
 	}
 
@@ -227,7 +227,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("AnotherTestExceptionResolver: IllegalAccessException", this.response.getContentAsString());
 	}
 
@@ -242,7 +242,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("TestExceptionResolver: IllegalStateException", this.response.getContentAsString());
 	}
 
@@ -257,7 +257,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("HandlerMethod: handle", this.response.getContentAsString());
 	}
 
@@ -273,7 +273,7 @@ public class ExceptionHandlerExceptionResolverTests {
 				new NestedServletException("Handler dispatch failed", err));
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals(err.toString(), this.response.getContentAsString());
 	}
 
@@ -289,7 +289,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals(err.toString(), this.response.getContentAsString());
 	}
 
@@ -304,7 +304,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("BasePackageTestExceptionResolver: IllegalStateException", this.response.getContentAsString());
 	}
 
@@ -318,7 +318,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, null, ex);
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("DefaultTestExceptionResolver: IllegalStateException", this.response.getContentAsString());
 	}
 
@@ -333,7 +333,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull("Exception was not handled", mav);
-		assertTrue(mav.isEmpty());
+		assertThat(mav.isEmpty()).isTrue();
 		assertEquals("BasePackageTestExceptionResolver: IllegalStateException", this.response.getContentAsString());
 	}
 

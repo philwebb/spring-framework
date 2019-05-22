@@ -56,9 +56,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.reactive.function.BodyExtractors.toMono;
 
 /**
@@ -423,12 +423,14 @@ public class DefaultServerRequestTests {
 					assertEquals(2, formData.size());
 
 					Part part = formData.getFirst("foo");
-					assertTrue(part instanceof FormFieldPart);
+					boolean condition1 = part instanceof FormFieldPart;
+					assertThat(condition1).isTrue();
 					FormFieldPart formFieldPart = (FormFieldPart) part;
 					assertEquals("bar", formFieldPart.value());
 
 					part = formData.getFirst("baz");
-					assertTrue(part instanceof FormFieldPart);
+					boolean condition = part instanceof FormFieldPart;
+					assertThat(condition).isTrue();
 					formFieldPart = (FormFieldPart) part;
 					assertEquals("qux", formFieldPart.value());
 				})

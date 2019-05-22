@@ -25,9 +25,9 @@ import org.yaml.snakeyaml.scanner.ScannerException;
 
 import org.springframework.core.io.ByteArrayResource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link YamlProcessor}.
@@ -115,7 +115,8 @@ public class YamlProcessorTests {
 			Map<String, Object> flattenedMap = processor.getFlattenedMap(map);
 			assertEquals("bucket", flattenedMap.get("bar.spam"));
 			assertEquals(2, flattenedMap.size());
-			assertTrue(flattenedMap instanceof LinkedHashMap);
+			boolean condition = flattenedMap instanceof LinkedHashMap;
+			assertThat(condition).isTrue();
 			Map<String, Object> bar = (Map<String, Object>) map.get("bar");
 			assertEquals("bucket", bar.get("spam"));
 		});

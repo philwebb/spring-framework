@@ -34,13 +34,13 @@ import org.springframework.expression.spel.SpelUtilities;
 import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.support.ReflectionHelper.ArgumentsMatchKind;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for reflection helper code.
@@ -76,8 +76,8 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 //		  CompoundExpression  value:2
 //		    IntLiteral  value:2
 //		===> Expression '3+4+5+6+7-2' - AST end
-		assertTrue(s.contains("===> Expression '3+4+5+6+7-2' - AST start"));
-		assertTrue(s.contains(" OpPlus  value:((((3 + 4) + 5) + 6) + 7)  #children:2"));
+		assertThat(s.contains("===> Expression '3+4+5+6+7-2' - AST start")).isTrue();
+		assertThat(s.contains(" OpPlus  value:((((3 + 4) + 5) + 6) + 7)  #children:2")).isTrue();
 	}
 
 	@Test
@@ -274,19 +274,19 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		Tester t = new Tester();
 		t.setProperty("hello");
 		EvaluationContext ctx = new StandardEvaluationContext(t);
-		assertTrue(rpa.canRead(ctx, t, "property"));
+		assertThat(rpa.canRead(ctx, t, "property")).isTrue();
 		assertEquals("hello",rpa.read(ctx, t, "property").getValue());
 		assertEquals("hello",rpa.read(ctx, t, "property").getValue()); // cached accessor used
 
-		assertTrue(rpa.canRead(ctx, t, "field"));
+		assertThat(rpa.canRead(ctx, t, "field")).isTrue();
 		assertEquals(3,rpa.read(ctx, t, "field").getValue());
 		assertEquals(3,rpa.read(ctx, t, "field").getValue()); // cached accessor used
 
-		assertTrue(rpa.canWrite(ctx, t, "property"));
+		assertThat(rpa.canWrite(ctx, t, "property")).isTrue();
 		rpa.write(ctx, t, "property", "goodbye");
 		rpa.write(ctx, t, "property", "goodbye"); // cached accessor used
 
-		assertTrue(rpa.canWrite(ctx, t, "field"));
+		assertThat(rpa.canWrite(ctx, t, "field")).isTrue();
 		rpa.write(ctx, t, "field", 12);
 		rpa.write(ctx, t, "field", 12);
 
@@ -303,24 +303,24 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		// Access through is method
 		assertEquals(0,rpa .read(ctx, t, "field3").getValue());
 		assertEquals(false,rpa.read(ctx, t, "property4").getValue());
-		assertTrue(rpa.canRead(ctx, t, "property4"));
+		assertThat(rpa.canRead(ctx, t, "property4")).isTrue();
 
 		// repro SPR-9123, ReflectivePropertyAccessor JavaBean property names compliance tests
 		assertEquals("iD",rpa.read(ctx, t, "iD").getValue());
-		assertTrue(rpa.canRead(ctx, t, "iD"));
+		assertThat(rpa.canRead(ctx, t, "iD")).isTrue();
 		assertEquals("id",rpa.read(ctx, t, "id").getValue());
-		assertTrue(rpa.canRead(ctx, t, "id"));
+		assertThat(rpa.canRead(ctx, t, "id")).isTrue();
 		assertEquals("ID",rpa.read(ctx, t, "ID").getValue());
-		assertTrue(rpa.canRead(ctx, t, "ID"));
+		assertThat(rpa.canRead(ctx, t, "ID")).isTrue();
 		// note: "Id" is not a valid JavaBean name, nevertheless it is treated as "id"
 		assertEquals("id",rpa.read(ctx, t, "Id").getValue());
-		assertTrue(rpa.canRead(ctx, t, "Id"));
+		assertThat(rpa.canRead(ctx, t, "Id")).isTrue();
 
 		// repro SPR-10994
 		assertEquals("xyZ",rpa.read(ctx, t, "xyZ").getValue());
-		assertTrue(rpa.canRead(ctx, t, "xyZ"));
+		assertThat(rpa.canRead(ctx, t, "xyZ")).isTrue();
 		assertEquals("xY",rpa.read(ctx, t, "xY").getValue());
-		assertTrue(rpa.canRead(ctx, t, "xY"));
+		assertThat(rpa.canRead(ctx, t, "xY")).isTrue();
 
 		// SPR-10122, ReflectivePropertyAccessor JavaBean property names compliance tests - setters
 		rpa.write(ctx, t, "pEBS", "Test String");
@@ -333,12 +333,12 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		Tester tester = new Tester();
 		tester.setProperty("hello");
 		EvaluationContext ctx = new StandardEvaluationContext(tester);
-		assertTrue(reflective.canRead(ctx, tester, "property"));
+		assertThat(reflective.canRead(ctx, tester, "property")).isTrue();
 		assertEquals("hello", reflective.read(ctx, tester, "property").getValue());
 		assertEquals("hello", reflective.read(ctx, tester, "property").getValue()); // cached accessor used
 
 		PropertyAccessor property = reflective.createOptimalAccessor(ctx, tester, "property");
-		assertTrue(property.canRead(ctx, tester, "property"));
+		assertThat(property.canRead(ctx, tester, "property")).isTrue();
 		assertFalse(property.canRead(ctx, tester, "property2"));
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				property.canWrite(ctx, tester, "property"));
@@ -352,7 +352,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 				property.write(ctx, tester, "property", null));
 
 		PropertyAccessor field = reflective.createOptimalAccessor(ctx, tester, "field");
-		assertTrue(field.canRead(ctx, tester, "field"));
+		assertThat(field.canRead(ctx, tester, "field")).isTrue();
 		assertFalse(field.canRead(ctx, tester, "field2"));
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				field.canWrite(ctx, tester, "field"));
@@ -380,13 +380,13 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		}
 
 		if (expectedMatchKind == ArgumentsMatchKind.EXACT) {
-			assertTrue(matchInfo.isExactMatch());
+			assertThat(matchInfo.isExactMatch()).isTrue();
 		}
 		else if (expectedMatchKind == ArgumentsMatchKind.CLOSE) {
-			assertTrue(matchInfo.isCloseMatch());
+			assertThat(matchInfo.isCloseMatch()).isTrue();
 		}
 		else if (expectedMatchKind == ArgumentsMatchKind.REQUIRES_CONVERSION) {
-			assertTrue("expected to be a match requiring conversion, but was " + matchInfo, matchInfo.isMatchRequiringConversion());
+			assertThat(matchInfo.isMatchRequiringConversion()).as("expected to be a match requiring conversion, but was " + matchInfo).isTrue();
 		}
 	}
 
@@ -403,13 +403,13 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		}
 
 		if (expectedMatchKind == ArgumentsMatchKind.EXACT) {
-			assertTrue(matchInfo.isExactMatch());
+			assertThat(matchInfo.isExactMatch()).isTrue();
 		}
 		else if (expectedMatchKind == ArgumentsMatchKind.CLOSE) {
-			assertTrue(matchInfo.isCloseMatch());
+			assertThat(matchInfo.isCloseMatch()).isTrue();
 		}
 		else if (expectedMatchKind == ArgumentsMatchKind.REQUIRES_CONVERSION) {
-			assertTrue("expected to be a match requiring conversion, but was " + matchInfo, matchInfo.isMatchRequiringConversion());
+			assertThat(matchInfo.isMatchRequiringConversion()).as("expected to be a match requiring conversion, but was " + matchInfo).isTrue();
 		}
 	}
 

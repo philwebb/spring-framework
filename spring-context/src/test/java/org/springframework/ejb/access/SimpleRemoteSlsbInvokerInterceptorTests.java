@@ -33,7 +33,6 @@ import org.springframework.remoting.RemoteAccessException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -121,7 +120,7 @@ public class SimpleRemoteSlsbInvokerInterceptorTests {
 		JndiTemplate jt = new JndiTemplate() {
 			@Override
 			public Object lookup(String name) throws NamingException {
-				assertTrue(jndiName.equals(name));
+				assertThat(jndiName.equals(name)).isTrue();
 				throw nex;
 			}
 		};
@@ -177,8 +176,8 @@ public class SimpleRemoteSlsbInvokerInterceptorTests {
 		si.setCacheHome(cacheHome);
 
 		RemoteInterface target = (RemoteInterface) configuredProxy(si, RemoteInterface.class);
-		assertTrue(target.targetMethod() == retVal);
-		assertTrue(target.targetMethod() == retVal);
+		assertThat(target.targetMethod() == retVal).isTrue();
+		assertThat(target.targetMethod() == retVal).isTrue();
 
 		verify(mockContext, times(lookupCount)).close();
 		verify(ejb, times(2)).remove();
@@ -265,7 +264,7 @@ public class SimpleRemoteSlsbInvokerInterceptorTests {
 		SimpleRemoteSlsbInvokerInterceptor si = configuredInterceptor(mockContext, jndiName);
 
 		BusinessInterface target = (BusinessInterface) configuredProxy(si, BusinessInterface.class);
-		assertTrue(target.targetMethod() == retVal);
+		assertThat(target.targetMethod() == retVal).isTrue();
 
 		verify(mockContext).close();
 		verify(ejb).remove();

@@ -49,7 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * System tests covering use of {@link Autowired} and {@link Value} within
@@ -93,7 +92,7 @@ public class AutowiredConfigurationTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				OptionalAutowiredMethodConfig.class);
 
-		assertTrue(context.getBeansOfType(Colour.class).isEmpty());
+		assertThat(context.getBeansOfType(Colour.class).isEmpty()).isTrue();
 		assertThat(context.getBean(TestBean.class).getName()).isEqualTo("");
 	}
 

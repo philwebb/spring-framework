@@ -48,8 +48,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertTrue;
-
 /**
  * Integration tests for the @EnableTransactionManagement annotation.
  *
@@ -112,7 +110,7 @@ public class EnableTransactionManagementIntegrationTests {
 			// this test is a bit fragile, but gets the job done, proving that an
 			// attempt was made to look up the AJ aspect. It's due to classpath issues
 			// in .integration-tests that it's not found.
-			assertTrue(ex.getMessage().contains("AspectJJtaTransactionManagementConfiguration"));
+			assertThat(ex.getMessage().contains("AspectJJtaTransactionManagementConfiguration")).isTrue();
 		}
 	}
 
@@ -162,7 +160,7 @@ public class EnableTransactionManagementIntegrationTests {
 	private void assertTxProxying(AnnotationConfigApplicationContext ctx) {
 		FooRepository repo = ctx.getBean(FooRepository.class);
 		boolean isTxProxy = isTxProxy(repo);
-		assertTrue("FooRepository is not a TX proxy", isTxProxy);
+		assertThat(isTxProxy).as("FooRepository is not a TX proxy").isTrue();
 		// trigger a transaction
 		repo.findAll();
 	}

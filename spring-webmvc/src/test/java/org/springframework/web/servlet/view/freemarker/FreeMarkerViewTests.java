@@ -44,11 +44,9 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -192,7 +190,8 @@ public class FreeMarkerViewTests {
 					@Override
 					public void process(Object model, Writer writer) throws TemplateException, IOException {
 						assertEquals(Locale.US, locale);
-						assertTrue(model instanceof AllHttpScopesHashModel);
+						boolean condition = model instanceof AllHttpScopesHashModel;
+						assertThat(condition).isTrue();
 						AllHttpScopesHashModel fmModel = (AllHttpScopesHashModel) model;
 						assertEquals("myvalue", fmModel.get("myattr").toString());
 					}

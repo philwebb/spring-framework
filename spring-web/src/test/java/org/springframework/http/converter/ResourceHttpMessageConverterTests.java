@@ -37,9 +37,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -57,13 +55,13 @@ public class ResourceHttpMessageConverterTests {
 
 	@Test
 	public void canReadResource() {
-		assertTrue(converter.canRead(Resource.class, new MediaType("application", "octet-stream")));
+		assertThat(converter.canRead(Resource.class, new MediaType("application", "octet-stream"))).isTrue();
 	}
 
 	@Test
 	public void canWriteResource() {
-		assertTrue(converter.canWrite(Resource.class, new MediaType("application", "octet-stream")));
-		assertTrue(converter.canWrite(Resource.class, MediaType.ALL));
+		assertThat(converter.canWrite(Resource.class, new MediaType("application", "octet-stream"))).isTrue();
+		assertThat(converter.canWrite(Resource.class, MediaType.ALL)).isTrue();
 	}
 
 	@Test
@@ -121,7 +119,7 @@ public class ResourceHttpMessageConverterTests {
 		Resource body = new ByteArrayResource(byteArray);
 		converter.write(body, null, outputMessage);
 
-		assertTrue(Arrays.equals(byteArray, outputMessage.getBodyAsBytes()));
+		assertThat(Arrays.equals(byteArray, outputMessage.getBodyAsBytes())).isTrue();
 	}
 
 	@Test  // SPR-12999

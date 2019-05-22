@@ -27,8 +27,8 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.http.MediaType.TEXT_XML_VALUE;
 
 /**
@@ -41,7 +41,7 @@ public class RequestPredicatesTests {
 		RequestPredicate predicate = RequestPredicates.all();
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 	}
 
 
@@ -52,7 +52,7 @@ public class RequestPredicatesTests {
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "https://example.com");
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest.setMethod("POST");
 		assertFalse(predicate.test(request));
@@ -63,10 +63,10 @@ public class RequestPredicatesTests {
 		RequestPredicate predicate = RequestPredicates.methods(HttpMethod.GET, HttpMethod.HEAD);
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "https://example.com");
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest.setMethod("HEAD");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest.setMethod("POST");
 		assertFalse(predicate.test(request));
@@ -78,31 +78,31 @@ public class RequestPredicatesTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 
 		RequestPredicate predicate = RequestPredicates.GET("/p*");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.HEAD("/p*");
 		servletRequest.setMethod("HEAD");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.POST("/p*");
 		servletRequest.setMethod("POST");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.PUT("/p*");
 		servletRequest.setMethod("PUT");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.PATCH("/p*");
 		servletRequest.setMethod("PATCH");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.DELETE("/p*");
 		servletRequest.setMethod("DELETE");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.OPTIONS("/p*");
 		servletRequest.setMethod("OPTIONS");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class RequestPredicatesTests {
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/path");
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 		RequestPredicate predicate = RequestPredicates.path("/p*");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest = new MockHttpServletRequest("GET", "/foo");
 		request = new DefaultServerRequest(servletRequest, emptyList());
@@ -123,7 +123,7 @@ public class RequestPredicatesTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 
 		RequestPredicate predicate = RequestPredicates.path("/foo bar");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest = new MockHttpServletRequest();
 		request = new DefaultServerRequest(servletRequest, emptyList());
@@ -139,7 +139,7 @@ public class RequestPredicatesTests {
 		RequestPredicate predicate = pathPredicates.apply("/P*");
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/path");
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 	}
 
 
@@ -153,7 +153,7 @@ public class RequestPredicatesTests {
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/path");
 		servletRequest.addHeader(name, value);
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest = new MockHttpServletRequest();
 		request = new DefaultServerRequest(servletRequest, emptyList());
@@ -168,7 +168,7 @@ public class RequestPredicatesTests {
 		servletRequest.setContentType(json.toString());
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest = new MockHttpServletRequest();
 		request = new DefaultServerRequest(servletRequest, emptyList());
@@ -182,7 +182,7 @@ public class RequestPredicatesTests {
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/path");
 		servletRequest.addHeader("Accept", json.toString());
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest = new MockHttpServletRequest();
 		servletRequest.addHeader("Accept", TEXT_XML_VALUE);
@@ -196,11 +196,11 @@ public class RequestPredicatesTests {
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/file.txt");
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		servletRequest = new MockHttpServletRequest("GET", "/FILE.TXT");
 		request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.pathExtension("bar");
 		assertFalse(predicate.test(request));
@@ -216,10 +216,10 @@ public class RequestPredicatesTests {
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/path");
 		servletRequest.addParameter("foo", "bar");
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.param("foo", s -> s.equals("bar"));
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.param("foo", "baz");
 		assertFalse(predicate.test(request));

@@ -38,9 +38,9 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebHandler;
 
 import static java.time.Duration.ofMillis;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link WebHttpHandlerBuilder}.
@@ -55,7 +55,8 @@ public class WebHttpHandlerBuilderTests {
 		context.refresh();
 
 		HttpHandler httpHandler = WebHttpHandlerBuilder.applicationContext(context).build();
-		assertTrue(httpHandler instanceof HttpWebHandlerAdapter);
+		boolean condition = httpHandler instanceof HttpWebHandlerAdapter;
+		assertThat(condition).isTrue();
 		assertSame(context, ((HttpWebHandlerAdapter) httpHandler).getApplicationContext());
 
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").build();
@@ -73,7 +74,7 @@ public class WebHttpHandlerBuilderTests {
 
 		WebHttpHandlerBuilder builder = WebHttpHandlerBuilder.applicationContext(context);
 		builder.filters(filters -> assertEquals(Collections.emptyList(), filters));
-		assertTrue(builder.hasForwardedHeaderTransformer());
+		assertThat(builder.hasForwardedHeaderTransformer()).isTrue();
 	}
 
 	@Test  // SPR-15074

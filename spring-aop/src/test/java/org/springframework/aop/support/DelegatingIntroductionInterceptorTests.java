@@ -40,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -61,7 +60,8 @@ public class DelegatingIntroductionInterceptorTests {
 	@Test
 	public void testIntroductionInterceptorWithDelegation() throws Exception {
 		TestBean raw = new TestBean();
-		assertTrue(! (raw instanceof TimeStamped));
+		boolean condition = ! (raw instanceof TimeStamped);
+		assertThat(condition).isTrue();
 		ProxyFactory factory = new ProxyFactory(raw);
 
 		TimeStamped ts = mock(TimeStamped.class);
@@ -71,13 +71,14 @@ public class DelegatingIntroductionInterceptorTests {
 		factory.addAdvisor(0, new DefaultIntroductionAdvisor(new DelegatingIntroductionInterceptor(ts)));
 
 		TimeStamped tsp = (TimeStamped) factory.getProxy();
-		assertTrue(tsp.getTimeStamp() == timestamp);
+		assertThat(tsp.getTimeStamp() == timestamp).isTrue();
 	}
 
 	@Test
 	public void testIntroductionInterceptorWithInterfaceHierarchy() throws Exception {
 		TestBean raw = new TestBean();
-		assertTrue(! (raw instanceof SubTimeStamped));
+		boolean condition = ! (raw instanceof SubTimeStamped);
+		assertThat(condition).isTrue();
 		ProxyFactory factory = new ProxyFactory(raw);
 
 		TimeStamped ts = mock(SubTimeStamped.class);
@@ -87,13 +88,14 @@ public class DelegatingIntroductionInterceptorTests {
 		factory.addAdvisor(0, new DefaultIntroductionAdvisor(new DelegatingIntroductionInterceptor(ts), SubTimeStamped.class));
 
 		SubTimeStamped tsp = (SubTimeStamped) factory.getProxy();
-		assertTrue(tsp.getTimeStamp() == timestamp);
+		assertThat(tsp.getTimeStamp() == timestamp).isTrue();
 	}
 
 	@Test
 	public void testIntroductionInterceptorWithSuperInterface() throws Exception {
 		TestBean raw = new TestBean();
-		assertTrue(! (raw instanceof TimeStamped));
+		boolean condition1 = ! (raw instanceof TimeStamped);
+		assertThat(condition1).isTrue();
 		ProxyFactory factory = new ProxyFactory(raw);
 
 		TimeStamped ts = mock(SubTimeStamped.class);
@@ -103,8 +105,9 @@ public class DelegatingIntroductionInterceptorTests {
 		factory.addAdvisor(0, new DefaultIntroductionAdvisor(new DelegatingIntroductionInterceptor(ts), TimeStamped.class));
 
 		TimeStamped tsp = (TimeStamped) factory.getProxy();
-		assertTrue(!(tsp instanceof SubTimeStamped));
-		assertTrue(tsp.getTimeStamp() == timestamp);
+		boolean condition = !(tsp instanceof SubTimeStamped);
+		assertThat(condition).isTrue();
+		assertThat(tsp.getTimeStamp() == timestamp).isTrue();
 	}
 
 	@Test
@@ -130,7 +133,7 @@ public class DelegatingIntroductionInterceptorTests {
 		//assertTrue(Arrays.binarySearch(pf.getProxiedInterfaces(), TimeStamped.class) != -1);
 		TimeStamped ts = (TimeStamped) pf.getProxy();
 
-		assertTrue(ts.getTimeStamp() == t);
+		assertThat(ts.getTimeStamp() == t).isTrue();
 		((ITester) ts).foo();
 
 		((ITestBean) ts).getAge();
@@ -157,7 +160,7 @@ public class DelegatingIntroductionInterceptorTests {
 
 		ProxyFactory pf = new ProxyFactory(target);
 		IntroductionAdvisor ia = new DefaultIntroductionAdvisor(ii);
-		assertTrue(ia.isPerInstance());
+		assertThat(ia.isPerInstance()).isTrue();
 		pf.addAdvisor(0, ia);
 
 		//assertTrue(Arrays.binarySearch(pf.getProxiedInterfaces(), TimeStamped.class) != -1);
@@ -165,10 +168,12 @@ public class DelegatingIntroductionInterceptorTests {
 
 		assertThat(ts).isInstanceOf(TimeStamped.class);
 		// Shouldn't proxy framework interfaces
-		assertTrue(!(ts instanceof MethodInterceptor));
-		assertTrue(!(ts instanceof IntroductionInterceptor));
+		boolean condition2 = !(ts instanceof MethodInterceptor);
+		assertThat(condition2).isTrue();
+		boolean condition1 = !(ts instanceof IntroductionInterceptor);
+		assertThat(condition1).isTrue();
 
-		assertTrue(ts.getTimeStamp() == t);
+		assertThat(ts.getTimeStamp() == t).isTrue();
 		((ITester) ts).foo();
 		((ITestBean) ts).getAge();
 
@@ -179,14 +184,16 @@ public class DelegatingIntroductionInterceptorTests {
 		pf = new ProxyFactory(target);
 		pf.addAdvisor(0, new DefaultIntroductionAdvisor(ii));
 		Object o = pf.getProxy();
-		assertTrue(!(o instanceof TimeStamped));
+		boolean condition = !(o instanceof TimeStamped);
+		assertThat(condition).isTrue();
 	}
 
 	@SuppressWarnings("serial")
 	@Test
 	public void testIntroductionInterceptorDoesntReplaceToString() throws Exception {
 		TestBean raw = new TestBean();
-		assertTrue(! (raw instanceof TimeStamped));
+		boolean condition = ! (raw instanceof TimeStamped);
+		assertThat(condition).isTrue();
 		ProxyFactory factory = new ProxyFactory(raw);
 
 		TimeStamped ts = new SerializableTimeStamped(0);
@@ -222,7 +229,7 @@ public class DelegatingIntroductionInterceptorTests {
 		assertEquals(company, proxy.getCompany());
 		ITestBean introduction = (ITestBean) proxy;
 		assertSame("Introduced method returning delegate returns proxy", introduction, introduction.getSpouse());
-		assertTrue("Introduced method returning delegate returns proxy", AopUtils.isAopProxy(introduction.getSpouse()));
+		assertThat(AopUtils.isAopProxy(introduction.getSpouse())).as("Introduced method returning delegate returns proxy").isTrue();
 	}
 
 	@Test
@@ -271,7 +278,7 @@ public class DelegatingIntroductionInterceptorTests {
 
 		TimeStamped ts = (TimeStamped) pf.getProxy();
 		// From introduction interceptor, not target
-		assertTrue(ts.getTimeStamp() == t);
+		assertThat(ts.getTimeStamp() == t).isTrue();
 	}
 
 

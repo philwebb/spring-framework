@@ -29,7 +29,6 @@ import java.util.zip.CRC32;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +60,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests using an {@link ExchangeFunction} through {@link WebClient}.
@@ -510,7 +508,8 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.expectErrorSatisfies(throwable -> {
-					assertTrue(throwable instanceof WebClientResponseException);
+					boolean condition = throwable instanceof WebClientResponseException;
+					assertThat(condition).isTrue();
 					WebClientResponseException ex = (WebClientResponseException) throwable;
 					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getStatusCode());
 					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getRawStatusCode());
@@ -572,7 +571,8 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.expectErrorSatisfies(throwable -> {
-					assertTrue(throwable instanceof UnknownHttpStatusCodeException);
+					boolean condition = throwable instanceof UnknownHttpStatusCodeException;
+					assertThat(condition).isTrue();
 					UnknownHttpStatusCodeException ex = (UnknownHttpStatusCodeException) throwable;
 					assertEquals("Unknown status code ["+errorStatus+"]", ex.getMessage());
 					assertEquals(errorStatus, ex.getRawStatusCode());
@@ -734,8 +734,7 @@ public class WebClientIntegrationTests {
 				.exchange()
 				.flatMap(response -> response.toEntity(Void.class));
 
-		StepVerifier.create(result).assertNext(r ->
-			assertTrue(r.getStatusCode().is2xxSuccessful())
+		StepVerifier.create(result).assertNext(r -> assertThat(r.getStatusCode().is2xxSuccessful()).isTrue()
 		).verifyComplete();
 	}
 

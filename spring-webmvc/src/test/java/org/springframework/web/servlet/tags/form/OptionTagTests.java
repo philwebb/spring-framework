@@ -35,9 +35,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.servlet.support.BindStatus;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -472,11 +472,11 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 
 
 	private void assertOptionTagOpened(String output) {
-		assertTrue(output.startsWith("<option"));
+		assertThat(output.startsWith("<option")).isTrue();
 	}
 
 	private void assertOptionTagClosed(String output) {
-		assertTrue(output.endsWith("</option>"));
+		assertThat(output.endsWith("</option>")).isTrue();
 	}
 
 	@Override

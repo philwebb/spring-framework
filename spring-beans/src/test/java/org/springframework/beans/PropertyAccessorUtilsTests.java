@@ -20,8 +20,8 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -51,7 +51,7 @@ public class PropertyAccessorUtilsTests {
 				new String[] {"map", "map[key1]", "map[key1]", "map[key1]", "map[key1][key2]",
 											"map[key1][key2]", "map[key1].name", "map[key1].name", "map[key1].name"};
 
-		assertTrue(Arrays.equals(canonical, PropertyAccessorUtils.canonicalPropertyNames(original)));
+		assertThat(Arrays.equals(canonical, PropertyAccessorUtils.canonicalPropertyNames(original))).isTrue();
 	}
 
 }

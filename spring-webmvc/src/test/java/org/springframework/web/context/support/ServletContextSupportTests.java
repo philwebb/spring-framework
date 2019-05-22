@@ -31,10 +31,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for various ServletContext-related support classes.
@@ -133,10 +133,10 @@ public class ServletContextSupportTests {
 	public void testServletContextResourceLoader() {
 		MockServletContext sc = new MockServletContext("classpath:org/springframework/web/context");
 		ServletContextResourceLoader rl = new ServletContextResourceLoader(sc);
-		assertTrue(rl.getResource("/WEB-INF/web.xml").exists());
-		assertTrue(rl.getResource("WEB-INF/web.xml").exists());
-		assertTrue(rl.getResource("../context/WEB-INF/web.xml").exists());
-		assertTrue(rl.getResource("/../context/WEB-INF/web.xml").exists());
+		assertThat(rl.getResource("/WEB-INF/web.xml").exists()).isTrue();
+		assertThat(rl.getResource("WEB-INF/web.xml").exists()).isTrue();
+		assertThat(rl.getResource("../context/WEB-INF/web.xml").exists()).isTrue();
+		assertThat(rl.getResource("/../context/WEB-INF/web.xml").exists()).isTrue();
 	}
 
 	@Test
@@ -162,8 +162,8 @@ public class ServletContextSupportTests {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
 		assertEquals(2, foundPaths.size());
-		assertTrue(foundPaths.contains("/WEB-INF/context1.xml"));
-		assertTrue(foundPaths.contains("/WEB-INF/context2.xml"));
+		assertThat(foundPaths.contains("/WEB-INF/context1.xml")).isTrue();
+		assertThat(foundPaths.contains("/WEB-INF/context2.xml")).isTrue();
 	}
 
 	@Test
@@ -195,8 +195,8 @@ public class ServletContextSupportTests {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
 		assertEquals(2, foundPaths.size());
-		assertTrue(foundPaths.contains("/WEB-INF/mydir1/context1.xml"));
-		assertTrue(foundPaths.contains("/WEB-INF/mydir2/context2.xml"));
+		assertThat(foundPaths.contains("/WEB-INF/mydir1/context1.xml")).isTrue();
+		assertThat(foundPaths.contains("/WEB-INF/mydir2/context2.xml")).isTrue();
 	}
 
 	@Test
@@ -235,9 +235,9 @@ public class ServletContextSupportTests {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
 		assertEquals(3, foundPaths.size());
-		assertTrue(foundPaths.contains("/WEB-INF/mydir1/context1.xml"));
-		assertTrue(foundPaths.contains("/WEB-INF/mydir2/context2.xml"));
-		assertTrue(foundPaths.contains("/WEB-INF/mydir2/mydir3/context3.xml"));
+		assertThat(foundPaths.contains("/WEB-INF/mydir1/context1.xml")).isTrue();
+		assertThat(foundPaths.contains("/WEB-INF/mydir2/context2.xml")).isTrue();
+		assertThat(foundPaths.contains("/WEB-INF/mydir2/mydir3/context3.xml")).isTrue();
 	}
 
 	@Test
@@ -264,8 +264,8 @@ public class ServletContextSupportTests {
 			foundPaths.add(((ServletContextResource) resource).getPath());
 		}
 		assertEquals(2, foundPaths.size());
-		assertTrue(foundPaths.contains("/WEB-INF/context1.xml"));
-		assertTrue(foundPaths.contains("/WEB-INF/context2.xml"));
+		assertThat(foundPaths.contains("/WEB-INF/context1.xml")).isTrue();
+		assertThat(foundPaths.contains("/WEB-INF/context2.xml")).isTrue();
 	}
 
 }

@@ -41,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Costin Leau
@@ -56,23 +55,28 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void singularAnnotation() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "singular", 1);
-		assertTrue(ops.iterator().next() instanceof CacheableOperation);
+		boolean condition = ops.iterator().next() instanceof CacheableOperation;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
 	public void multipleAnnotation() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "multiple", 2);
 		Iterator<CacheOperation> it = ops.iterator();
-		assertTrue(it.next() instanceof CacheableOperation);
-		assertTrue(it.next() instanceof CacheEvictOperation);
+		boolean condition1 = it.next() instanceof CacheableOperation;
+		assertThat(condition1).isTrue();
+		boolean condition = it.next() instanceof CacheEvictOperation;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
 	public void caching() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "caching", 2);
 		Iterator<CacheOperation> it = ops.iterator();
-		assertTrue(it.next() instanceof CacheableOperation);
-		assertTrue(it.next() instanceof CacheEvictOperation);
+		boolean condition1 = it.next() instanceof CacheableOperation;
+		assertThat(condition1).isTrue();
+		boolean condition = it.next() instanceof CacheEvictOperation;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -83,20 +87,24 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void singularStereotype() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "singleStereotype", 1);
-		assertTrue(ops.iterator().next() instanceof CacheEvictOperation);
+		boolean condition = ops.iterator().next() instanceof CacheEvictOperation;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
 	public void multipleStereotypes() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "multipleStereotype", 3);
 		Iterator<CacheOperation> it = ops.iterator();
-		assertTrue(it.next() instanceof CacheableOperation);
+		boolean condition2 = it.next() instanceof CacheableOperation;
+		assertThat(condition2).isTrue();
 		CacheOperation next = it.next();
-		assertTrue(next instanceof CacheEvictOperation);
-		assertTrue(next.getCacheNames().contains("foo"));
+		boolean condition1 = next instanceof CacheEvictOperation;
+		assertThat(condition1).isTrue();
+		assertThat(next.getCacheNames().contains("foo")).isTrue();
 		next = it.next();
-		assertTrue(next instanceof CacheEvictOperation);
-		assertTrue(next.getCacheNames().contains("bar"));
+		boolean condition = next instanceof CacheEvictOperation;
+		assertThat(condition).isTrue();
+		assertThat(next.getCacheNames().contains("bar")).isTrue();
 	}
 
 	@Test
@@ -258,7 +266,8 @@ public class AnnotationCacheOperationSourceTests {
 		Collection<CacheOperation> ops = getOps(InterfaceCacheConfig.class, "interfaceCacheableOverride");
 		assertSame(1, ops.size());
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertTrue(cacheOperation instanceof CacheableOperation);
+		boolean condition = cacheOperation instanceof CacheableOperation;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -306,9 +315,7 @@ public class AnnotationCacheOperationSourceTests {
 		assertEquals("Wrong cache manager", cacheManager, actual.getCacheManager());
 		assertEquals("Wrong cache resolver", cacheResolver, actual.getCacheResolver());
 		assertEquals("Wrong number of cache names", cacheNames.length, actual.getCacheNames().size());
-		Arrays.stream(cacheNames).forEach(cacheName ->
-				assertTrue("Cache '" + cacheName + "' not found in " + actual.getCacheNames(),
-						actual.getCacheNames().contains(cacheName)));
+		Arrays.stream(cacheNames).forEach(cacheName -> assertThat(actual.getCacheNames().contains(cacheName)).as("Cache '" + cacheName + "' not found in " + actual.getCacheNames()).isTrue());
 	}
 
 

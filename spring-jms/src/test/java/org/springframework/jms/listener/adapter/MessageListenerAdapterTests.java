@@ -37,12 +37,12 @@ import org.mockito.stubbing.Answer;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.SimpleMessageConverter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -151,7 +151,7 @@ public class MessageListenerAdapterTests {
 
 		StubMessageListenerAdapter adapter = new StubMessageListenerAdapter();
 		adapter.onMessage(textMessage);
-		assertTrue(adapter.wasCalled());
+		assertThat(adapter.wasCalled()).isTrue();
 	}
 
 	@Test
@@ -178,8 +178,8 @@ public class MessageListenerAdapterTests {
 			@Override
 			protected void handleListenerException(Throwable ex) {
 				assertNotNull("The Throwable passed to the handleListenerException(..) method must never be null.", ex);
-				assertTrue("The Throwable passed to the handleListenerException(..) method must be of type [ListenerExecutionFailedException].",
-						ex instanceof ListenerExecutionFailedException);
+				boolean condition = ex instanceof ListenerExecutionFailedException;
+				assertThat(condition).as("The Throwable passed to the handleListenerException(..) method must be of type [ListenerExecutionFailedException].").isTrue();
 				ListenerExecutionFailedException lefx = (ListenerExecutionFailedException) ex;
 				Throwable cause = lefx.getCause();
 				assertNotNull("The cause of a ListenerExecutionFailedException must be preserved.", cause);
@@ -195,8 +195,8 @@ public class MessageListenerAdapterTests {
 	public void testThatTheDefaultMessageConverterisIndeedTheSimpleMessageConverter() throws Exception {
 		MessageListenerAdapter adapter = new MessageListenerAdapter();
 		assertNotNull("The default [MessageConverter] must never be null.", adapter.getMessageConverter());
-		assertTrue("The default [MessageConverter] must be of the type [SimpleMessageConverter]",
-				adapter.getMessageConverter() instanceof SimpleMessageConverter);
+		boolean condition = adapter.getMessageConverter() instanceof SimpleMessageConverter;
+		assertThat(condition).as("The default [MessageConverter] must be of the type [SimpleMessageConverter]").isTrue();
 	}
 
 	@Test

@@ -44,10 +44,10 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -65,19 +65,19 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 
 	@Test
 	public void canWrite() {
-		assertTrue(this.writer.canWrite(
+		assertThat(this.writer.canWrite(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, Object.class),
-				MediaType.MULTIPART_FORM_DATA));
-		assertTrue(this.writer.canWrite(
+				MediaType.MULTIPART_FORM_DATA)).isTrue();
+		assertThat(this.writer.canWrite(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class),
-				MediaType.MULTIPART_FORM_DATA));
+				MediaType.MULTIPART_FORM_DATA)).isTrue();
 
 		assertFalse(this.writer.canWrite(
 				ResolvableType.forClassWithGenerics(Map.class, String.class, Object.class),
 				MediaType.MULTIPART_FORM_DATA));
-		assertTrue(this.writer.canWrite(
+		assertThat(this.writer.canWrite(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, Object.class),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isTrue();
 	}
 
 	@Test
@@ -117,30 +117,35 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertEquals(7, requestParts.size());
 
 		Part part = requestParts.getFirst("name 1");
-		assertTrue(part instanceof FormFieldPart);
+		boolean condition4 = part instanceof FormFieldPart;
+		assertThat(condition4).isTrue();
 		assertEquals("name 1", part.name());
 		assertEquals("value 1", ((FormFieldPart) part).value());
 
 		List<Part> parts2 = requestParts.get("name 2");
 		assertEquals(2, parts2.size());
 		part = parts2.get(0);
-		assertTrue(part instanceof FormFieldPart);
+		boolean condition3 = part instanceof FormFieldPart;
+		assertThat(condition3).isTrue();
 		assertEquals("name 2", part.name());
 		assertEquals("value 2+1", ((FormFieldPart) part).value());
 		part = parts2.get(1);
-		assertTrue(part instanceof FormFieldPart);
+		boolean condition2 = part instanceof FormFieldPart;
+		assertThat(condition2).isTrue();
 		assertEquals("name 2", part.name());
 		assertEquals("value 2+2", ((FormFieldPart) part).value());
 
 		part = requestParts.getFirst("logo");
-		assertTrue(part instanceof FilePart);
+		boolean condition1 = part instanceof FilePart;
+		assertThat(condition1).isTrue();
 		assertEquals("logo", part.name());
 		assertEquals("logo.jpg", ((FilePart) part).filename());
 		assertEquals(MediaType.IMAGE_JPEG, part.headers().getContentType());
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
 
 		part = requestParts.getFirst("utf8");
-		assertTrue(part instanceof FilePart);
+		boolean condition = part instanceof FilePart;
+		assertThat(condition).isTrue();
 		assertEquals("utf8", part.name());
 		assertEquals("Hall\u00F6le.jpg", ((FilePart) part).filename());
 		assertEquals(MediaType.IMAGE_JPEG, part.headers().getContentType());
@@ -189,7 +194,8 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 
 		Part part = requestParts.getFirst("logo");
 		assertEquals("logo", part.name());
-		assertTrue(part instanceof FilePart);
+		boolean condition = part instanceof FilePart;
+		assertThat(condition).isTrue();
 		assertEquals("logo.jpg", ((FilePart) part).filename());
 		assertEquals(MediaType.IMAGE_JPEG, part.headers().getContentType());
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
@@ -238,12 +244,14 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertEquals(2, requestParts.size());
 
 		Part part = requestParts.getFirst("resource");
-		assertTrue(part instanceof FilePart);
+		boolean condition1 = part instanceof FilePart;
+		assertThat(condition1).isTrue();
 		assertEquals("spring.jpg", ((FilePart) part).filename());
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
 
 		part = requestParts.getFirst("buffers");
-		assertTrue(part instanceof FilePart);
+		boolean condition = part instanceof FilePart;
+		assertThat(condition).isTrue();
 		assertEquals("buffers.jpg", ((FilePart) part).filename());
 		assertEquals(logo.getFile().length(), part.headers().getContentLength());
 	}

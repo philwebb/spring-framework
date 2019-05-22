@@ -35,10 +35,10 @@ import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for the JSON Binding API, running against Apache Johnzon.
@@ -53,20 +53,20 @@ public class JsonbHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(this.converter.canRead(MyBean.class, new MediaType("application", "json")));
-		assertTrue(this.converter.canRead(Map.class, new MediaType("application", "json")));
+		assertThat(this.converter.canRead(MyBean.class, new MediaType("application", "json"))).isTrue();
+		assertThat(this.converter.canRead(Map.class, new MediaType("application", "json"))).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("application", "json")));
-		assertTrue(this.converter.canWrite(Map.class, new MediaType("application", "json")));
+		assertThat(this.converter.canWrite(MyBean.class, new MediaType("application", "json"))).isTrue();
+		assertThat(this.converter.canWrite(Map.class, new MediaType("application", "json"))).isTrue();
 	}
 
 	@Test
 	public void canReadAndWriteMicroformats() {
-		assertTrue(this.converter.canRead(MyBean.class, new MediaType("application", "vnd.test-micro-type+json")));
-		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("application", "vnd.test-micro-type+json")));
+		assertThat(this.converter.canRead(MyBean.class, new MediaType("application", "vnd.test-micro-type+json"))).isTrue();
+		assertThat(this.converter.canWrite(MyBean.class, new MediaType("application", "vnd.test-micro-type+json"))).isTrue();
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class JsonbHttpMessageConverterTests {
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
-		assertTrue(result.isBool());
+		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 	}
 
@@ -124,12 +124,12 @@ public class JsonbHttpMessageConverterTests {
 		this.converter.write(body, null, outputMessage);
 		Charset utf8 = StandardCharsets.UTF_8;
 		String result = outputMessage.getBodyAsString(utf8);
-		assertTrue(result.contains("\"string\":\"Foo\""));
-		assertTrue(result.contains("\"number\":42"));
-		assertTrue(result.contains("fraction\":42.0"));
-		assertTrue(result.contains("\"array\":[\"Foo\",\"Bar\"]"));
-		assertTrue(result.contains("\"bool\":true"));
-		assertTrue(result.contains("\"bytes\":[1,2]"));
+		assertThat(result.contains("\"string\":\"Foo\"")).isTrue();
+		assertThat(result.contains("\"number\":42")).isTrue();
+		assertThat(result.contains("fraction\":42.0")).isTrue();
+		assertThat(result.contains("\"array\":[\"Foo\",\"Bar\"]")).isTrue();
+		assertThat(result.contains("\"bool\":true")).isTrue();
+		assertThat(result.contains("\"bytes\":[1,2]")).isTrue();
 		assertEquals("Invalid content-type", new MediaType("application", "json", utf8),
 				outputMessage.getHeaders().getContentType());
 	}
@@ -147,12 +147,12 @@ public class JsonbHttpMessageConverterTests {
 		this.converter.write(body, MyBase.class, null, outputMessage);
 		Charset utf8 = StandardCharsets.UTF_8;
 		String result = outputMessage.getBodyAsString(utf8);
-		assertTrue(result.contains("\"string\":\"Foo\""));
-		assertTrue(result.contains("\"number\":42"));
-		assertTrue(result.contains("fraction\":42.0"));
-		assertTrue(result.contains("\"array\":[\"Foo\",\"Bar\"]"));
-		assertTrue(result.contains("\"bool\":true"));
-		assertTrue(result.contains("\"bytes\":[1,2]"));
+		assertThat(result.contains("\"string\":\"Foo\"")).isTrue();
+		assertThat(result.contains("\"number\":42")).isTrue();
+		assertThat(result.contains("fraction\":42.0")).isTrue();
+		assertThat(result.contains("\"array\":[\"Foo\",\"Bar\"]")).isTrue();
+		assertThat(result.contains("\"bool\":true")).isTrue();
+		assertThat(result.contains("\"bytes\":[1,2]")).isTrue();
 		assertEquals("Invalid content-type", new MediaType("application", "json", utf8),
 				outputMessage.getHeaders().getContentType());
 	}
@@ -194,7 +194,7 @@ public class JsonbHttpMessageConverterTests {
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
-		assertTrue(result.isBool());
+		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
@@ -219,7 +219,7 @@ public class JsonbHttpMessageConverterTests {
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
-		assertTrue(result.isBool());
+		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
@@ -245,7 +245,7 @@ public class JsonbHttpMessageConverterTests {
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[] {"Foo", "Bar"}, result.getArray());
-		assertTrue(result.isBool());
+		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();

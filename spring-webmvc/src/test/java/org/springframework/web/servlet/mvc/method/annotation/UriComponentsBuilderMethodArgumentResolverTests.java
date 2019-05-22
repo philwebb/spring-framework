@@ -28,10 +28,10 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link UriComponentsBuilderMethodArgumentResolver}.
@@ -67,8 +67,8 @@ public class UriComponentsBuilderMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() throws Exception {
-		assertTrue(this.resolver.supportsParameter(this.builderParam));
-		assertTrue(this.resolver.supportsParameter(this.servletBuilderParam));
+		assertThat(this.resolver.supportsParameter(this.builderParam)).isTrue();
+		assertThat(this.resolver.supportsParameter(this.servletBuilderParam)).isTrue();
 		assertFalse(this.resolver.supportsParameter(this.intParam));
 	}
 

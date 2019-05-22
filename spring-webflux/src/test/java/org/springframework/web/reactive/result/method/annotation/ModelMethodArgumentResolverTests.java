@@ -31,9 +31,9 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**
@@ -53,10 +53,10 @@ public class ModelMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.resolvable.arg(Model.class)));
-		assertTrue(this.resolver.supportsParameter(this.resolvable.arg(ModelMap.class)));
-		assertTrue(this.resolver.supportsParameter(
-				this.resolvable.annotNotPresent().arg(Map.class, String.class, Object.class)));
+		assertThat(this.resolver.supportsParameter(this.resolvable.arg(Model.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.resolvable.arg(ModelMap.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(
+				this.resolvable.annotNotPresent().arg(Map.class, String.class, Object.class))).isTrue();
 
 		assertFalse(this.resolver.supportsParameter(this.resolvable.arg(Object.class)));
 		assertFalse(this.resolver.supportsParameter(

@@ -40,11 +40,11 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 import org.springframework.web.servlet.view.xml.MarshallingView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with a {@link ViewResolverRegistry}.
@@ -80,14 +80,14 @@ public class ViewResolverRegistryTests {
 	public void hasRegistrations() {
 		assertFalse(this.registry.hasRegistrations());
 		this.registry.freeMarker();
-		assertTrue(this.registry.hasRegistrations());
+		assertThat(this.registry.hasRegistrations()).isTrue();
 	}
 
 	@Test
 	public void hasRegistrationsWhenContentNegotiationEnabled() {
 		assertFalse(this.registry.hasRegistrations());
 		this.registry.enableContentNegotiation();
-		assertTrue(this.registry.hasRegistrations());
+		assertThat(this.registry.hasRegistrations()).isTrue();
 	}
 
 	@Test

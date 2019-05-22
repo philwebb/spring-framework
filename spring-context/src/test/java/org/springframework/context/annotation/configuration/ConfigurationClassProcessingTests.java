@@ -58,13 +58,13 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.NestedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Miscellaneous system tests covering {@link Bean} naming, aliases, scoping and
@@ -169,12 +169,13 @@ public class ConfigurationClassProcessingTests {
 	public void configWithFactoryBeanReturnType() {
 		ListableBeanFactory factory = initBeanFactory(ConfigWithNonSpecificReturnTypes.class);
 		assertEquals(List.class, factory.getType("factoryBean"));
-		assertTrue(factory.isTypeMatch("factoryBean", List.class));
+		assertThat(factory.isTypeMatch("factoryBean", List.class)).isTrue();
 		assertEquals(FactoryBean.class, factory.getType("&factoryBean"));
-		assertTrue(factory.isTypeMatch("&factoryBean", FactoryBean.class));
+		assertThat(factory.isTypeMatch("&factoryBean", FactoryBean.class)).isTrue();
 		assertFalse(factory.isTypeMatch("&factoryBean", BeanClassLoaderAware.class));
 		assertFalse(factory.isTypeMatch("&factoryBean", ListFactoryBean.class));
-		assertTrue(factory.getBean("factoryBean") instanceof List);
+		boolean condition = factory.getBean("factoryBean") instanceof List;
+		assertThat(condition).isTrue();
 
 		String[] beanNames = factory.getBeanNamesForType(FactoryBean.class);
 		assertEquals(1, beanNames.length);
@@ -209,7 +210,7 @@ public class ConfigurationClassProcessingTests {
 		BeanFactory factory = initBeanFactory(ConfigWithNullReference.class);
 
 		TestBean foo = factory.getBean("foo", TestBean.class);
-		assertTrue(factory.getBean("bar").equals(null));
+		assertThat(factory.getBean("bar").equals(null)).isTrue();
 		assertNull(foo.getSpouse());
 	}
 
@@ -263,7 +264,7 @@ public class ConfigurationClassProcessingTests {
 		assertEquals("baz-processed-myValue", baz.getName());
 
 		SpousyTestBean listener = ctx.getBean("listenerTestBean", SpousyTestBean.class);
-		assertTrue(listener.refreshed);
+		assertThat(listener.refreshed).isTrue();
 		ctx.close();
 	}
 

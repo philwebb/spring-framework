@@ -45,6 +45,7 @@ import org.springframework.tests.sample.beans.NestedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
@@ -52,7 +53,6 @@ import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor}
@@ -91,7 +91,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 			bf.getBean("testBean");
 		}
 		catch (BeanCreationException ex) {
-			assertTrue(ex.getRootCause() instanceof IllegalStateException);
+			boolean condition = ex.getRootCause() instanceof IllegalStateException;
+			assertThat(condition).isTrue();
 		}
 	}
 
@@ -249,17 +250,17 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		MapConstructorInjectionBean bean = (MapConstructorInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(2, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean2"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb1));
-		assertTrue(bean.getTestBeanMap().values().contains(tb2));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 
 		bean = (MapConstructorInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(2, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean2"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb1));
-		assertTrue(bean.getTestBeanMap().values().contains(tb2));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 	}
 
 	@Test
@@ -274,17 +275,17 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		MapFieldInjectionBean bean = (MapFieldInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(2, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean2"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb1));
-		assertTrue(bean.getTestBeanMap().values().contains(tb2));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 
 		bean = (MapFieldInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(2, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean2"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb1));
-		assertTrue(bean.getTestBeanMap().values().contains(tb2));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 	}
 
 	@Test
@@ -297,14 +298,14 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		MapMethodInjectionBean bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(1, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
 		assertSame(tb, bean.getTestBean());
 
 		bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(1, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
 		assertSame(tb, bean.getTestBean());
 	}
 
@@ -328,8 +329,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 		MapMethodInjectionBean bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
 		TestBean tb = (TestBean) bf.getBean("testBean1");
 		assertEquals(1, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
 		assertSame(tb, bean.getTestBean());
 	}
 
@@ -521,7 +522,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		OptionalFieldInjectionBean bean = (OptionalFieldInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isTrue();
 		assertSame(bf.getBean("testBean"), bean.getTestBean().get());
 	}
 
@@ -539,7 +540,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		OptionalMethodInjectionBean bean = (OptionalMethodInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isTrue();
 		assertSame(bf.getBean("testBean"), bean.getTestBean().get());
 	}
 
@@ -557,7 +558,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		OptionalListFieldInjectionBean bean = (OptionalListFieldInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isTrue();
 		assertSame(bf.getBean("testBean"), bean.getTestBean().get().get(0));
 	}
 
@@ -575,7 +576,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		OptionalListMethodInjectionBean bean = (OptionalListMethodInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isTrue();
 		assertSame(bf.getBean("testBean"), bean.getTestBean().get().get(0));
 	}
 
@@ -593,7 +594,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		ProviderOfOptionalFieldInjectionBean bean = (ProviderOfOptionalFieldInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isTrue();
 		assertSame(bf.getBean("testBean"), bean.getTestBean().get());
 	}
 
@@ -611,7 +612,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		ProviderOfOptionalMethodInjectionBean bean = (ProviderOfOptionalMethodInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isTrue();
 		assertSame(bf.getBean("testBean"), bean.getTestBean().get());
 	}
 

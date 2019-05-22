@@ -26,9 +26,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scripting.Messenger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * {@link StandardScriptFactory} (lang:std) tests for JavaScript.
@@ -41,7 +41,7 @@ public class StandardScriptFactoryTests {
 	@Test
 	public void testJsr223FromTagWithInterface() throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("jsr223-with-xsd.xml", getClass());
-		assertTrue(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("messengerWithInterface"));
+		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("messengerWithInterface")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("messengerWithInterface");
 		assertFalse(AopUtils.isAopProxy(messenger));
 		assertEquals("Hello World!", messenger.getMessage());
@@ -50,17 +50,18 @@ public class StandardScriptFactoryTests {
 	@Test
 	public void testRefreshableJsr223FromTagWithInterface() throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("jsr223-with-xsd.xml", getClass());
-		assertTrue(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("refreshableMessengerWithInterface"));
+		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("refreshableMessengerWithInterface")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("refreshableMessengerWithInterface");
-		assertTrue(AopUtils.isAopProxy(messenger));
-		assertTrue(messenger instanceof Refreshable);
+		assertThat(AopUtils.isAopProxy(messenger)).isTrue();
+		boolean condition = messenger instanceof Refreshable;
+		assertThat(condition).isTrue();
 		assertEquals("Hello World!", messenger.getMessage());
 	}
 
 	@Test
 	public void testInlineJsr223FromTagWithInterface() throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("jsr223-with-xsd.xml", getClass());
-		assertTrue(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("inlineMessengerWithInterface"));
+		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("inlineMessengerWithInterface")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("inlineMessengerWithInterface");
 		assertFalse(AopUtils.isAopProxy(messenger));
 		assertEquals("Hello World!", messenger.getMessage());

@@ -21,8 +21,8 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Ramnivas Laddad
@@ -47,7 +47,8 @@ public class DeclareParentsDelegateRefTests {
 
 	@Test
 	public void testIntroductionWasMade() {
-		assertTrue("Introduction must have been made", noMethodsBean instanceof ICounter);
+		boolean condition = noMethodsBean instanceof ICounter;
+		assertThat(condition).as("Introduction must have been made").isTrue();
 	}
 
 	@Test

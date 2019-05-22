@@ -35,10 +35,10 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.HandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.method.MvcAnnotationPredicates.matrixAttribute;
 
 /**
@@ -67,14 +67,14 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 
 		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(String.class)));
 
-		assertTrue(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().noName())
-				.arg(Map.class, String.class, String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().noName())
+				.arg(Map.class, String.class, String.class))).isTrue();
 
-		assertTrue(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().noPathVar())
-				.arg(MultiValueMap.class, String.class, String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().noPathVar())
+				.arg(MultiValueMap.class, String.class, String.class))).isTrue();
 
-		assertTrue(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().pathVar("cars"))
-				.arg(MultiValueMap.class, String.class, String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().pathVar("cars"))
+				.arg(MultiValueMap.class, String.class, String.class))).isTrue();
 
 		assertFalse(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().name("name"))
 				.arg(Map.class, String.class, String.class)));

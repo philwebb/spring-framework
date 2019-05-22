@@ -30,14 +30,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.orm.jpa.domain.Person;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests using in-memory database for container-managed JPA
@@ -76,15 +74,15 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 	@SuppressWarnings("unchecked")
 	public void testEntityManagerProxyIsProxy() {
 		EntityManager em = createContainerManagedEntityManager();
-		assertTrue(Proxy.isProxyClass(em.getClass()));
+		assertThat(Proxy.isProxyClass(em.getClass())).isTrue();
 		Query q = em.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
-		assertTrue(people.isEmpty());
+		assertThat(people.isEmpty()).isTrue();
 
-		assertTrue("Should be open to start with", em.isOpen());
+		assertThat(em.isOpen()).as("Should be open to start with").isTrue();
 		assertThatIllegalStateException().as("Close should not work on container managed EM").isThrownBy(
 				em::close);
-		assertTrue(em.isOpen());
+		assertThat(em.isOpen()).isTrue();
 	}
 
 	// This would be legal, at least if not actually _starting_ a tx

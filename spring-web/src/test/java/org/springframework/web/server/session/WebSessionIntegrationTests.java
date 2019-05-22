@@ -38,11 +38,11 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.WebSession;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for with a server-side session.
@@ -143,7 +143,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		String value = response.getHeaders().getFirst("Set-Cookie");
 		assertNotNull(value);
-		assertTrue("Actual value: " + value, value.contains("Max-Age=0"));
+		assertThat(value.contains("Max-Age=0")).as("Actual value: " + value).isTrue();
 	}
 
 	@Test
@@ -189,7 +189,7 @@ public class WebSessionIntegrationTests extends AbstractHttpHandlerIntegrationTe
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		String value = response.getHeaders().getFirst("Set-Cookie");
 		assertNotNull(value);
-		assertTrue("Actual value: " + value, value.contains("Max-Age=0"));
+		assertThat(value.contains("Max-Age=0")).as("Actual value: " + value).isTrue();
 	}
 
 	private String extractSessionId(HttpHeaders headers) {

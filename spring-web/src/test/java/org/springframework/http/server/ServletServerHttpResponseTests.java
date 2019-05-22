@@ -29,9 +29,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -69,10 +69,10 @@ public class ServletServerHttpResponseTests {
 		headers.setContentType(new MediaType("text", "plain", StandardCharsets.UTF_8));
 
 		response.close();
-		assertTrue("Header not set", mockResponse.getHeaderNames().contains(headerName));
+		assertThat(mockResponse.getHeaderNames().contains(headerName)).as("Header not set").isTrue();
 		List<String> headerValues = mockResponse.getHeaders(headerName);
-		assertTrue("Header not set", headerValues.contains(headerValue1));
-		assertTrue("Header not set", headerValues.contains(headerValue2));
+		assertThat(headerValues.contains(headerValue1)).as("Header not set").isTrue();
+		assertThat(headerValues.contains(headerValue2)).as("Header not set").isTrue();
 		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", mockResponse.getHeader("Content-Type"));
 		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", mockResponse.getContentType());
 		assertEquals("Invalid Content-Type", "UTF-8", mockResponse.getCharacterEncoding());
@@ -88,7 +88,7 @@ public class ServletServerHttpResponseTests {
 
 		assertEquals(headerValue, this.response.getHeaders().getFirst(headerName));
 		assertEquals(Collections.singletonList(headerValue), this.response.getHeaders().get(headerName));
-		assertTrue(this.response.getHeaders().containsKey(headerName));
+		assertThat(this.response.getHeaders().containsKey(headerName)).isTrue();
 		assertEquals(headerValue, this.response.getHeaders().getFirst(headerName));
 		assertEquals(headerValue, this.response.getHeaders().getAccessControlAllowOrigin());
 	}

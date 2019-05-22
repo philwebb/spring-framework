@@ -44,7 +44,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests invocation of methods.
@@ -190,7 +189,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		SpelExpression expr = (SpelExpression) parser.parseExpression("doit(1)");
 		String result = expr.getValue(context, String.class);
 		assertEquals("1", result);
-		assertTrue(filter.filterCalled);
+		assertThat(filter.filterCalled).isTrue();
 
 		// Filter will now remove non @Anno annotated methods
 		filter.removeIfNotAnnotated = true;
@@ -198,7 +197,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		expr = (SpelExpression) parser.parseExpression("doit(1)");
 		result = expr.getValue(context, String.class);
 		assertEquals("double 1.0", result);
-		assertTrue(filter.filterCalled);
+		assertThat(filter.filterCalled).isTrue();
 
 		// check not called for other types
 		filter.filterCalled = false;
@@ -232,7 +231,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 
 		List<MethodResolver> copy = new ArrayList<>();
 		copy.addAll(ctx.getMethodResolvers());
-		assertTrue(ctx.removeMethodResolver(dummy));
+		assertThat(ctx.removeMethodResolver(dummy)).isTrue();
 		assertFalse(ctx.removeMethodResolver(dummy));
 		assertEquals(1, ctx.getMethodResolvers().size());
 

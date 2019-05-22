@@ -18,10 +18,10 @@ package org.springframework.util.unit;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link DataSize}.
@@ -197,7 +197,7 @@ public class DataSizeTests {
 
 	@Test
 	public void isNegativeWithNegative() {
-		assertTrue(DataSize.ofBytes(-1).isNegative());
+		assertThat(DataSize.ofBytes(-1).isNegative()).isTrue();
 	}
 
 	@Test

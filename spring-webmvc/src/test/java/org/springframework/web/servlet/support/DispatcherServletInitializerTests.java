@@ -30,9 +30,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test case for {@link AbstractDispatcherServletInitializer}.
@@ -68,8 +68,9 @@ public class DispatcherServletInitializerTests {
 		assertEquals(MyDispatcherServlet.class, servlet.getClass());
 		WebApplicationContext servletContext = servlet.getWebApplicationContext();
 
-		assertTrue(servletContext.containsBean("bean"));
-		assertTrue(servletContext.getBean("bean") instanceof MyBean);
+		assertThat(servletContext.containsBean("bean")).isTrue();
+		boolean condition = servletContext.getBean("bean") instanceof MyBean;
+		assertThat(condition).isTrue();
 
 		assertEquals(1, registrations.size());
 		assertNotNull(registrations.get(SERVLET_NAME));

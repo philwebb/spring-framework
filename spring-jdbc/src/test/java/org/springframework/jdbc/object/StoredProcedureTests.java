@@ -50,9 +50,9 @@ import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.BDDMockito.given;
@@ -335,7 +335,8 @@ public class StoredProcedureTests {
 		List<Object> rs2 = (List<Object>) res.get("#result-set-2");
 		assertEquals(1, rs2.size());
 		Object o2 = rs2.get(0);
-		assertTrue("wron type returned for result set 2", o2 instanceof Map);
+		boolean condition = o2 instanceof Map;
+		assertThat(condition).as("wron type returned for result set 2").isTrue();
 		Map<String, String> m2 = (Map<String, String>) o2;
 		assertEquals("Spam", m2.get("spam"));
 		assertEquals("Eggs", m2.get("eggs"));

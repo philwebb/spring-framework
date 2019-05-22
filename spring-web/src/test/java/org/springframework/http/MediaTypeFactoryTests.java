@@ -20,9 +20,9 @@ import org.junit.Test;
 
 import org.springframework.core.io.Resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -41,7 +41,7 @@ public class MediaTypeFactoryTests {
 	public void nullParameter() {
 		assertFalse(MediaTypeFactory.getMediaType((String) null).isPresent());
 		assertFalse(MediaTypeFactory.getMediaType((Resource) null).isPresent());
-		assertTrue(MediaTypeFactory.getMediaTypes(null).isEmpty());
+		assertThat(MediaTypeFactory.getMediaTypes(null).isEmpty()).isTrue();
 	}
 
 }

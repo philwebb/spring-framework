@@ -57,7 +57,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -140,8 +139,9 @@ public class ViewResolverTests {
 		TestBean tb = new TestBean();
 		model.put("tb", tb);
 		view.render(model, request, response);
-		assertTrue("Correct tb attribute", tb.equals(request.getAttribute("tb")));
-		assertTrue("Correct rc attribute", request.getAttribute("rc") instanceof RequestContext);
+		assertThat(tb.equals(request.getAttribute("tb"))).as("Correct tb attribute").isTrue();
+		boolean condition = request.getAttribute("rc") instanceof RequestContext;
+		assertThat(condition).as("Correct rc attribute").isTrue();
 
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
 		assertEquals("Correct view class", RedirectView.class, view.getClass());
@@ -216,8 +216,8 @@ public class ViewResolverTests {
 		model.put("tb", tb);
 		view.render(model, request, response);
 
-		assertTrue("Correct tb attribute", tb.equals(request.getAttribute("tb")));
-		assertTrue("Correct rc attribute", request.getAttribute("rc") == null);
+		assertThat(tb.equals(request.getAttribute("tb"))).as("Correct tb attribute").isTrue();
+		assertThat(request.getAttribute("rc") == null).as("Correct rc attribute").isTrue();
 		assertEquals("value1", request.getAttribute("key1"));
 		assertEquals(new Integer(2), request.getAttribute("key2"));
 	}
@@ -246,7 +246,7 @@ public class ViewResolverTests {
 				return new MockRequestDispatcher(path) {
 					@Override
 					public void forward(ServletRequest forwardRequest, ServletResponse forwardResponse) {
-						assertTrue("Correct rc attribute", forwardRequest.getAttribute("rc") == null);
+						assertThat(forwardRequest.getAttribute("rc") == null).as("Correct rc attribute").isTrue();
 						assertEquals("value1", forwardRequest.getAttribute("key1"));
 						assertEquals(new Integer(2), forwardRequest.getAttribute("key2"));
 						assertSame(wac.getBean("myBean"), forwardRequest.getAttribute("myBean"));
@@ -286,7 +286,7 @@ public class ViewResolverTests {
 				return new MockRequestDispatcher(path) {
 					@Override
 					public void forward(ServletRequest forwardRequest, ServletResponse forwardResponse) {
-						assertTrue("Correct rc attribute", forwardRequest.getAttribute("rc") == null);
+						assertThat(forwardRequest.getAttribute("rc") == null).as("Correct rc attribute").isTrue();
 						assertEquals("value1", forwardRequest.getAttribute("key1"));
 						assertEquals(new Integer(2), forwardRequest.getAttribute("key2"));
 						assertNull(forwardRequest.getAttribute("myBean"));
@@ -332,8 +332,8 @@ public class ViewResolverTests {
 		model.put("tb", tb);
 		view.render(model, request, response);
 
-		assertTrue("Correct tb attribute", tb.equals(request.getAttribute("tb")));
-		assertTrue("Correct rc attribute", request.getAttribute("rc") == null);
+		assertThat(tb.equals(request.getAttribute("tb"))).as("Correct tb attribute").isTrue();
+		assertThat(request.getAttribute("rc") == null).as("Correct rc attribute").isTrue();
 
 		assertEquals(locale, Config.get(request, Config.FMT_LOCALE));
 		LocalizationContext lc = (LocalizationContext) Config.get(request, Config.FMT_LOCALIZATION_CONTEXT);
@@ -371,8 +371,8 @@ public class ViewResolverTests {
 		model.put("tb", tb);
 		view.render(model, request, response);
 
-		assertTrue("Correct tb attribute", tb.equals(request.getAttribute("tb")));
-		assertTrue("Correct rc attribute", request.getAttribute("rc") == null);
+		assertThat(tb.equals(request.getAttribute("tb"))).as("Correct tb attribute").isTrue();
+		assertThat(request.getAttribute("rc") == null).as("Correct rc attribute").isTrue();
 
 		assertEquals(locale, Config.get(request, Config.FMT_LOCALE));
 		LocalizationContext lc = (LocalizationContext) Config.get(request, Config.FMT_LOCALIZATION_CONTEXT);
@@ -392,12 +392,12 @@ public class ViewResolverTests {
 		vr.setApplicationContext(wac);
 
 		View view1 = vr.resolveViewName("example1", Locale.getDefault());
-		assertTrue("Correct view class", TestView.class.equals(view1.getClass()));
-		assertTrue("Correct URL", "/example1.jsp".equals(((InternalResourceView) view1).getUrl()));
+		assertThat(TestView.class.equals(view1.getClass())).as("Correct view class").isTrue();
+		assertThat("/example1.jsp".equals(((InternalResourceView) view1).getUrl())).as("Correct URL").isTrue();
 
 		View view2 = vr.resolveViewName("example2", Locale.getDefault());
-		assertTrue("Correct view class", JstlView.class.equals(view2.getClass()));
-		assertTrue("Correct URL", "/example2new.jsp".equals(((InternalResourceView) view2).getUrl()));
+		assertThat(JstlView.class.equals(view2.getClass())).as("Correct view class").isTrue();
+		assertThat("/example2new.jsp".equals(((InternalResourceView) view2).getUrl())).as("Correct URL").isTrue();
 
 		ServletContext sc = new MockServletContext();
 		Map<String, Object> model = new HashMap<>();
@@ -410,9 +410,9 @@ public class ViewResolverTests {
 		request.setAttribute(DispatcherServlet.LOCALE_RESOLVER_ATTRIBUTE, new AcceptHeaderLocaleResolver());
 		request.setAttribute(DispatcherServlet.THEME_RESOLVER_ATTRIBUTE, new FixedThemeResolver());
 		view1.render(model, request, response);
-		assertTrue("Correct tb attribute", tb.equals(request.getAttribute("tb")));
-		assertTrue("Correct test1 attribute", "testvalue1".equals(request.getAttribute("test1")));
-		assertTrue("Correct test2 attribute", testBean.equals(request.getAttribute("test2")));
+		assertThat(tb.equals(request.getAttribute("tb"))).as("Correct tb attribute").isTrue();
+		assertThat("testvalue1".equals(request.getAttribute("test1"))).as("Correct test1 attribute").isTrue();
+		assertThat(testBean.equals(request.getAttribute("test2"))).as("Correct test2 attribute").isTrue();
 
 		request = new MockHttpServletRequest(sc);
 		response = new MockHttpServletResponse();
@@ -420,9 +420,9 @@ public class ViewResolverTests {
 		request.setAttribute(DispatcherServlet.LOCALE_RESOLVER_ATTRIBUTE, new AcceptHeaderLocaleResolver());
 		request.setAttribute(DispatcherServlet.THEME_RESOLVER_ATTRIBUTE, new FixedThemeResolver());
 		view2.render(model, request, response);
-		assertTrue("Correct tb attribute", tb.equals(request.getAttribute("tb")));
-		assertTrue("Correct test1 attribute", "testvalue1".equals(request.getAttribute("test1")));
-		assertTrue("Correct test2 attribute", "testvalue2".equals(request.getAttribute("test2")));
+		assertThat(tb.equals(request.getAttribute("tb"))).as("Correct tb attribute").isTrue();
+		assertThat("testvalue1".equals(request.getAttribute("test1"))).as("Correct test1 attribute").isTrue();
+		assertThat("testvalue2".equals(request.getAttribute("test2"))).as("Correct test2 attribute").isTrue();
 	}
 
 	@Test
@@ -430,7 +430,7 @@ public class ViewResolverTests {
 		StaticWebApplicationContext wac = new StaticWebApplicationContext() {
 			@Override
 			protected Resource getResourceByPath(String path) {
-				assertTrue("Correct default location", XmlViewResolver.DEFAULT_LOCATION.equals(path));
+				assertThat(XmlViewResolver.DEFAULT_LOCATION.equals(path)).as("Correct default location").isTrue();
 				return super.getResourceByPath(path);
 			}
 		};
@@ -447,7 +447,7 @@ public class ViewResolverTests {
 		StaticWebApplicationContext wac = new StaticWebApplicationContext() {
 			@Override
 			protected Resource getResourceByPath(String path) {
-				assertTrue("Correct default location", XmlViewResolver.DEFAULT_LOCATION.equals(path));
+				assertThat(XmlViewResolver.DEFAULT_LOCATION.equals(path)).as("Correct default location").isTrue();
 				return super.getResourceByPath(path);
 			}
 		};

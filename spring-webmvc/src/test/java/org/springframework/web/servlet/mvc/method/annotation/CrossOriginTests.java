@@ -53,13 +53,13 @@ import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
 import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link CrossOrigin @CrossOrigin} annotated methods.
@@ -129,7 +129,7 @@ public class CrossOriginTests {
 		assertArrayEquals(new String[] {"*"}, config.getAllowedOrigins().toArray());
 		assertNull(config.getAllowCredentials());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedHeaders().toArray());
-		assertTrue(CollectionUtils.isEmpty(config.getExposedHeaders()));
+		assertThat(CollectionUtils.isEmpty(config.getExposedHeaders())).isTrue();
 		assertEquals(new Long(1800), config.getMaxAge());
 	}
 
@@ -204,7 +204,7 @@ public class CrossOriginTests {
 		assertNotNull(config);
 		assertArrayEquals(new String[] {"GET"}, config.getAllowedMethods().toArray());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedOrigins().toArray());
-		assertTrue(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isTrue();
 	}
 
 	@Test // SPR-13468
@@ -217,7 +217,7 @@ public class CrossOriginTests {
 		assertNotNull(config);
 		assertArrayEquals(new String[] {"GET"}, config.getAllowedMethods().toArray());
 		assertArrayEquals(new String[] {"http://www.foo.com/"}, config.getAllowedOrigins().toArray());
-		assertTrue(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isTrue();
 	}
 
 	@Test // SPR-13468
@@ -230,7 +230,7 @@ public class CrossOriginTests {
 		assertNotNull(config);
 		assertArrayEquals(new String[] {"GET"}, config.getAllowedMethods().toArray());
 		assertArrayEquals(new String[] {"http://www.foo.com/"}, config.getAllowedOrigins().toArray());
-		assertTrue(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isTrue();
 	}
 
 	@Test
@@ -246,7 +246,7 @@ public class CrossOriginTests {
 		assertArrayEquals(new String[] {"*"}, config.getAllowedOrigins().toArray());
 		assertNull(config.getAllowCredentials());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedHeaders().toArray());
-		assertTrue(CollectionUtils.isEmpty(config.getExposedHeaders()));
+		assertThat(CollectionUtils.isEmpty(config.getExposedHeaders())).isTrue();
 		assertEquals(new Long(1800), config.getMaxAge());
 	}
 
@@ -263,8 +263,8 @@ public class CrossOriginTests {
 		assertArrayEquals(new String[] {"*"}, config.getAllowedMethods().toArray());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedOrigins().toArray());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedHeaders().toArray());
-		assertTrue(config.getAllowCredentials());
-		assertTrue(CollectionUtils.isEmpty(config.getExposedHeaders()));
+		assertThat((boolean) config.getAllowCredentials()).isTrue();
+		assertThat(CollectionUtils.isEmpty(config.getExposedHeaders())).isTrue();
 		assertNull(config.getMaxAge());
 	}
 
@@ -280,8 +280,8 @@ public class CrossOriginTests {
 		assertArrayEquals(new String[] {"*"}, config.getAllowedMethods().toArray());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedOrigins().toArray());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedHeaders().toArray());
-		assertTrue(config.getAllowCredentials());
-		assertTrue(CollectionUtils.isEmpty(config.getExposedHeaders()));
+		assertThat((boolean) config.getAllowCredentials()).isTrue();
+		assertThat(CollectionUtils.isEmpty(config.getExposedHeaders())).isTrue();
 		assertNull(config.getMaxAge());
 	}
 
@@ -296,7 +296,7 @@ public class CrossOriginTests {
 	private CorsConfiguration getCorsConfiguration(HandlerExecutionChain chain, boolean isPreFlightRequest) {
 		if (isPreFlightRequest) {
 			Object handler = chain.getHandler();
-			assertTrue(handler.getClass().getSimpleName().equals("PreFlightHandler"));
+			assertThat(handler.getClass().getSimpleName().equals("PreFlightHandler")).isTrue();
 			DirectFieldAccessor accessor = new DirectFieldAccessor(handler);
 			return (CorsConfiguration)accessor.getPropertyValue("config");
 		}

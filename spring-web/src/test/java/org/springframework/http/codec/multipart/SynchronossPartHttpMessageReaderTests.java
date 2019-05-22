@@ -39,10 +39,10 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.util.MultiValueMap;
 
 import static java.util.Collections.emptyMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
@@ -61,9 +61,9 @@ public class SynchronossPartHttpMessageReaderTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				forClassWithGenerics(MultiValueMap.class, String.class, Part.class),
-				MediaType.MULTIPART_FORM_DATA));
+				MediaType.MULTIPART_FORM_DATA)).isTrue();
 
 		assertFalse(this.reader.canRead(
 				forClassWithGenerics(MultiValueMap.class, String.class, Object.class),
@@ -89,9 +89,10 @@ public class SynchronossPartHttpMessageReaderTests {
 		MultiValueMap<String, Part> parts = this.reader.readMono(elementType, request, emptyMap()).block();
 		assertEquals(2, parts.size());
 
-		assertTrue(parts.containsKey("fooPart"));
+		assertThat(parts.containsKey("fooPart")).isTrue();
 		Part part = parts.getFirst("fooPart");
-		assertTrue(part instanceof FilePart);
+		boolean condition1 = part instanceof FilePart;
+		assertThat(condition1).isTrue();
 		assertEquals("fooPart", part.name());
 		assertEquals("foo.txt", ((FilePart) part).filename());
 		DataBuffer buffer = DataBufferUtils.join(part.content()).block();
@@ -100,9 +101,10 @@ public class SynchronossPartHttpMessageReaderTests {
 		buffer.read(byteContent);
 		assertEquals("Lorem Ipsum.", new String(byteContent));
 
-		assertTrue(parts.containsKey("barPart"));
+		assertThat(parts.containsKey("barPart")).isTrue();
 		part = parts.getFirst("barPart");
-		assertTrue(part instanceof FormFieldPart);
+		boolean condition = part instanceof FormFieldPart;
+		assertThat(condition).isTrue();
 		assertEquals("barPart", part.name());
 		assertEquals("bar", ((FormFieldPart) part).value());
 	}
@@ -120,9 +122,9 @@ public class SynchronossPartHttpMessageReaderTests {
 		File dest = new File(System.getProperty("java.io.tmpdir") + "/" + part.filename());
 		part.transferTo(dest).block(Duration.ofSeconds(5));
 
-		assertTrue(dest.exists());
+		assertThat(dest.exists()).isTrue();
 		assertEquals(12, dest.length());
-		assertTrue(dest.delete());
+		assertThat(dest.delete()).isTrue();
 	}
 
 	@Test

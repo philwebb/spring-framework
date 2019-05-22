@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -141,10 +140,10 @@ public class ConsumesRequestConditionTests {
 		ConsumesRequestCondition condition2 = new ConsumesRequestCondition("text/*");
 
 		int result = condition1.compareTo(condition2, request);
-		assertTrue("Invalid comparison result: " + result, result < 0);
+		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = condition2.compareTo(condition1, request);
-		assertTrue("Invalid comparison result: " + result, result > 0);
+		assertThat(result > 0).as("Invalid comparison result: " + result).isTrue();
 	}
 
 	@Test
@@ -155,10 +154,10 @@ public class ConsumesRequestConditionTests {
 		ConsumesRequestCondition condition2 = new ConsumesRequestCondition("text/*", "text/plain;q=0.7");
 
 		int result = condition1.compareTo(condition2, request);
-		assertTrue("Invalid comparison result: " + result, result < 0);
+		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = condition2.compareTo(condition1, request);
-		assertTrue("Invalid comparison result: " + result, result > 0);
+		assertThat(result > 0).as("Invalid comparison result: " + result).isTrue();
 	}
 
 

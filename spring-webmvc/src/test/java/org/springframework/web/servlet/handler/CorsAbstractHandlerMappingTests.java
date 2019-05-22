@@ -39,9 +39,9 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.support.WebContentGenerator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -75,7 +75,8 @@ public class CorsAbstractHandlerMappingTests {
 		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
 
 		assertNotNull(chain);
-		assertTrue(chain.getHandler() instanceof SimpleHandler);
+		boolean condition = chain.getHandler() instanceof SimpleHandler;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -87,7 +88,8 @@ public class CorsAbstractHandlerMappingTests {
 		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
 
 		assertNotNull(chain);
-		assertTrue(chain.getHandler() instanceof SimpleHandler);
+		boolean condition = chain.getHandler() instanceof SimpleHandler;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -99,7 +101,8 @@ public class CorsAbstractHandlerMappingTests {
 		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
 
 		assertNotNull(chain);
-		assertTrue(chain.getHandler() instanceof CorsAwareHandler);
+		boolean condition = chain.getHandler() instanceof CorsAwareHandler;
+		assertThat(condition).isTrue();
 		assertEquals(Collections.singletonList("*"), getRequiredCorsConfiguration(chain, false).getAllowedOrigins());
 	}
 
@@ -129,7 +132,8 @@ public class CorsAbstractHandlerMappingTests {
 		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
 
 		assertNotNull(chain);
-		assertTrue(chain.getHandler() instanceof SimpleHandler);
+		boolean condition = chain.getHandler() instanceof SimpleHandler;
+		assertThat(condition).isTrue();
 		assertEquals(Collections.singletonList("*"), getRequiredCorsConfiguration(chain, false).getAllowedOrigins());
 	}
 
@@ -160,7 +164,8 @@ public class CorsAbstractHandlerMappingTests {
 		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
 
 		assertNotNull(chain);
-		assertTrue(chain.getHandler() instanceof SimpleHandler);
+		boolean condition = chain.getHandler() instanceof SimpleHandler;
+		assertThat(condition).isTrue();
 		CorsConfiguration config = getRequiredCorsConfiguration(chain, false);
 		assertNotNull(config);
 		assertEquals(Collections.singletonList("*"), config.getAllowedOrigins());

@@ -36,10 +36,10 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.HandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.method.MvcAnnotationPredicates.matrixAttribute;
 
 /**
@@ -76,11 +76,11 @@ public class MatrixVariablesMethodArgumentResolverTests {
 
 		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(String.class)));
 
-		assertTrue(this.resolver.supportsParameter(
-				this.testMethod.annot(matrixAttribute().noName()).arg(List.class, String.class)));
+		assertThat(this.resolver.supportsParameter(
+				this.testMethod.annot(matrixAttribute().noName()).arg(List.class, String.class))).isTrue();
 
-		assertTrue(this.resolver.supportsParameter(
-				this.testMethod.annot(matrixAttribute().name("year")).arg(int.class)));
+		assertThat(this.resolver.supportsParameter(
+				this.testMethod.annot(matrixAttribute().name("year")).arg(int.class))).isTrue();
 	}
 
 	@Test

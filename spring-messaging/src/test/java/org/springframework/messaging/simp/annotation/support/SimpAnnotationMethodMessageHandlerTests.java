@@ -73,7 +73,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
@@ -187,7 +186,8 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		assertEquals("simpleBinding", this.testController.method);
-		assertTrue("should be bound to type long", this.testController.arguments.get("id") instanceof Long);
+		boolean condition = this.testController.arguments.get("id") instanceof Long;
+		assertThat(condition).as("should be bound to type long").isTrue();
 		assertEquals(12L, this.testController.arguments.get("id"));
 	}
 
@@ -307,7 +307,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		controller.future.run();
-		assertTrue(controller.exceptionCaught);
+		assertThat(controller.exceptionCaught).isTrue();
 	}
 
 	@Test
@@ -345,7 +345,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		controller.future.completeExceptionally(new IllegalStateException());
-		assertTrue(controller.exceptionCaught);
+		assertThat(controller.exceptionCaught).isTrue();
 	}
 
 	@Test
@@ -383,7 +383,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		controller.mono.onError(new IllegalStateException());
-		assertTrue(controller.exceptionCaught);
+		assertThat(controller.exceptionCaught).isTrue();
 	}
 
 	@Test

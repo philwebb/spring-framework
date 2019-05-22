@@ -30,9 +30,9 @@ import org.springframework.tests.aop.interceptor.NopInterceptor;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -55,8 +55,8 @@ public class AopUtilsTests {
 
 	@Test
 	public void testPointcutAlwaysApplies() {
-		assertTrue(AopUtils.canApply(new DefaultPointcutAdvisor(new NopInterceptor()), Object.class));
-		assertTrue(AopUtils.canApply(new DefaultPointcutAdvisor(new NopInterceptor()), TestBean.class));
+		assertThat(AopUtils.canApply(new DefaultPointcutAdvisor(new NopInterceptor()), Object.class)).isTrue();
+		assertThat(AopUtils.canApply(new DefaultPointcutAdvisor(new NopInterceptor()), TestBean.class)).isTrue();
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class AopUtilsTests {
 		Pointcut pc = new TestPointcut();
 
 		// will return true if we're not proxying interfaces
-		assertTrue(AopUtils.canApply(pc, Object.class));
+		assertThat(AopUtils.canApply(pc, Object.class)).isTrue();
 	}
 
 	/**

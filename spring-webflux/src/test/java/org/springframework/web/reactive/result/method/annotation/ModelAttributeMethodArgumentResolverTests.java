@@ -43,11 +43,11 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ModelAttributeMethodArgumentResolver}.
@@ -78,10 +78,10 @@ public class ModelAttributeMethodArgumentResolverTests {
 				new ModelAttributeMethodArgumentResolver(ReactiveAdapterRegistry.getSharedInstance(), false);
 
 		MethodParameter param = this.testMethod.annotPresent(ModelAttribute.class).arg(Foo.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotPresent(ModelAttribute.class).arg(Mono.class, Foo.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Foo.class);
 		assertFalse(resolver.supportsParameter(param));
@@ -96,10 +96,10 @@ public class ModelAttributeMethodArgumentResolverTests {
 				new ModelAttributeMethodArgumentResolver(ReactiveAdapterRegistry.getSharedInstance(), true);
 
 		MethodParameter param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Foo.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Mono.class, Foo.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(String.class);
 		assertFalse(resolver.supportsParameter(param));
@@ -122,7 +122,8 @@ public class ModelAttributeMethodArgumentResolverTests {
 				.annotNotPresent(ModelAttribute.class).arg(Mono.class, Foo.class);
 
 		testBindFoo("fooMono", parameter, mono -> {
-			assertTrue(mono.getClass().getName(), mono instanceof Mono);
+			boolean condition = mono instanceof Mono;
+			assertThat(condition).as(mono.getClass().getName()).isTrue();
 			Object value = ((Mono<?>) mono).block(Duration.ofSeconds(5));
 			assertEquals(Foo.class, value.getClass());
 			return (Foo) value;
@@ -135,7 +136,8 @@ public class ModelAttributeMethodArgumentResolverTests {
 				.annotPresent(ModelAttribute.class).arg(Single.class, Foo.class);
 
 		testBindFoo("fooSingle", parameter, single -> {
-			assertTrue(single.getClass().getName(), single instanceof Single);
+			boolean condition = single instanceof Single;
+			assertThat(condition).as(single.getClass().getName()).isTrue();
 			Object value = ((Single<?>) single).toBlocking().value();
 			assertEquals(Foo.class, value.getClass());
 			return (Foo) value;
@@ -198,7 +200,8 @@ public class ModelAttributeMethodArgumentResolverTests {
 				.annotNotPresent(ModelAttribute.class).arg(Mono.class, Foo.class);
 
 		testBindFoo(modelKey, parameter, mono -> {
-			assertTrue(mono.getClass().getName(), mono instanceof Mono);
+			boolean condition = mono instanceof Mono;
+			assertThat(condition).as(mono.getClass().getName()).isTrue();
 			Object value = ((Mono<?>) mono).block(Duration.ofSeconds(5));
 			assertEquals(Foo.class, value.getClass());
 			return (Foo) value;
@@ -222,7 +225,8 @@ public class ModelAttributeMethodArgumentResolverTests {
 		assertEquals(map.toString(), 2, map.size());
 		assertSame(foo, map.get(modelKey));
 		assertNotNull(map.get(bindingResultKey));
-		assertTrue(map.get(bindingResultKey) instanceof BindingResult);
+		boolean condition = map.get(bindingResultKey) instanceof BindingResult;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -241,7 +245,8 @@ public class ModelAttributeMethodArgumentResolverTests {
 				resolvedArgumentMono -> {
 					Object value = resolvedArgumentMono.block(Duration.ofSeconds(5));
 					assertNotNull(value);
-					assertTrue(value instanceof Mono);
+					boolean condition = value instanceof Mono;
+					assertThat(condition).isTrue();
 					return (Mono<?>) value;
 				});
 	}
@@ -255,7 +260,8 @@ public class ModelAttributeMethodArgumentResolverTests {
 				resolvedArgumentMono -> {
 					Object value = resolvedArgumentMono.block(Duration.ofSeconds(5));
 					assertNotNull(value);
-					assertTrue(value instanceof Single);
+					boolean condition = value instanceof Single;
+					assertThat(condition).isTrue();
 					return Mono.from(RxReactiveStreams.toPublisher((Single<?>) value));
 				});
 	}
@@ -269,10 +275,11 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		StepVerifier.create(mono)
 				.consumeErrorWith(ex -> {
-					assertTrue(ex instanceof WebExchangeBindException);
+					boolean condition = ex instanceof WebExchangeBindException;
+					assertThat(condition).isTrue();
 					WebExchangeBindException bindException = (WebExchangeBindException) ex;
 					assertEquals(1, bindException.getErrorCount());
-					assertTrue(bindException.hasFieldErrors("age"));
+					assertThat(bindException.hasFieldErrors("age")).isTrue();
 				})
 				.verify();
 	}
@@ -299,7 +306,8 @@ public class ModelAttributeMethodArgumentResolverTests {
 		assertEquals(map.toString(), 2, map.size());
 		assertSame(bar, map.get(key));
 		assertNotNull(map.get(bindingResultKey));
-		assertTrue(map.get(bindingResultKey) instanceof BindingResult);
+		boolean condition = map.get(bindingResultKey) instanceof BindingResult;
+		assertThat(condition).isTrue();
 	}
 
 	// TODO: SPR-15871, SPR-15542

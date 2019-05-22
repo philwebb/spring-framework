@@ -33,10 +33,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.BodyExtractors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -65,7 +65,7 @@ public class ExchangeFilterFunctionsTests {
 			return n.exchange(r);
 		};
 		ExchangeFilterFunction filter2 = (r, n) -> {
-			assertTrue(filtersInvoked[0]);
+			assertThat(filtersInvoked[0]).isTrue();
 			assertFalse(filtersInvoked[1]);
 			filtersInvoked[1] = true;
 			return n.exchange(r);
@@ -76,8 +76,8 @@ public class ExchangeFilterFunctionsTests {
 		ClientResponse result = filter.filter(request, exchange).block();
 		assertEquals(response, result);
 
-		assertTrue(filtersInvoked[0]);
-		assertTrue(filtersInvoked[1]);
+		assertThat(filtersInvoked[0]).isTrue();
+		assertThat(filtersInvoked[1]).isTrue();
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class ExchangeFilterFunctionsTests {
 		ExchangeFunction filteredExchange = filter.apply(exchange);
 		ClientResponse result = filteredExchange.exchange(request).block();
 		assertEquals(response, result);
-		assertTrue(filterInvoked[0]);
+		assertThat(filterInvoked[0]).isTrue();
 	}
 
 	@Test
@@ -105,8 +105,8 @@ public class ExchangeFilterFunctionsTests {
 		ClientResponse response = mock(ClientResponse.class);
 
 		ExchangeFunction exchange = r -> {
-			assertTrue(r.headers().containsKey(HttpHeaders.AUTHORIZATION));
-			assertTrue(r.headers().getFirst(HttpHeaders.AUTHORIZATION).startsWith("Basic "));
+			assertThat(r.headers().containsKey(HttpHeaders.AUTHORIZATION)).isTrue();
+			assertThat(r.headers().getFirst(HttpHeaders.AUTHORIZATION).startsWith("Basic ")).isTrue();
 			return Mono.just(response);
 		};
 
@@ -135,8 +135,8 @@ public class ExchangeFilterFunctionsTests {
 		ClientResponse response = mock(ClientResponse.class);
 
 		ExchangeFunction exchange = r -> {
-			assertTrue(r.headers().containsKey(HttpHeaders.AUTHORIZATION));
-			assertTrue(r.headers().getFirst(HttpHeaders.AUTHORIZATION).startsWith("Basic "));
+			assertThat(r.headers().containsKey(HttpHeaders.AUTHORIZATION)).isTrue();
+			assertThat(r.headers().getFirst(HttpHeaders.AUTHORIZATION).startsWith("Basic ")).isTrue();
 			return Mono.just(response);
 		};
 

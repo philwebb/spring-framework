@@ -28,12 +28,12 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -123,9 +123,9 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 		CacheMethodDetails<CacheResult> methodDetails = create(CacheResult.class,
 				SampleObject.class, "fullGetConfig", Long.class);
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
-		assertTrue(operation.isAlwaysInvoked());
+		assertThat(operation.isAlwaysInvoked()).isTrue();
 		assertNotNull(operation.getExceptionTypeFilter());
-		assertTrue(operation.getExceptionTypeFilter().match(IOException.class));
+		assertThat(operation.getExceptionTypeFilter().match(IOException.class)).isTrue();
 		assertFalse(operation.getExceptionTypeFilter().match(NullPointerException.class));
 	}
 

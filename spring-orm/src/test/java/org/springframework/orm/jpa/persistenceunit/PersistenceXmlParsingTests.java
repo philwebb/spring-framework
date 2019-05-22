@@ -36,13 +36,13 @@ import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.jdbc.datasource.lookup.MapDataSourceLookup;
 import org.springframework.tests.mock.jndi.SimpleNamingContextBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit and integration tests for the JPA XML resource parsing support.
@@ -149,7 +149,7 @@ public class PersistenceXmlParsingTests {
 		assertEquals("com.acme.Customer", info[0].getManagedClassNames().get(1));
 		assertEquals("com.acme.Item", info[0].getManagedClassNames().get(2));
 
-		assertTrue("Exclude unlisted should be true when no value.", info[0].excludeUnlistedClasses());
+		assertThat(info[0].excludeUnlistedClasses()).as("Exclude unlisted should be true when no value.").isTrue();
 
 		assertSame(PersistenceUnitTransactionType.RESOURCE_LOCAL, info[0].getTransactionType());
 		assertEquals(0, info[0].getProperties().keySet().size());
@@ -237,12 +237,12 @@ public class PersistenceXmlParsingTests {
 		// assertEquals(1, pu2.getJarFileUrls().size());
 		// assertEquals(new ClassPathResource("order-supplemental.jar").getURL(), pu2.getJarFileUrls().get(0));
 
-		assertTrue(pu2.excludeUnlistedClasses());
+		assertThat(pu2.excludeUnlistedClasses()).isTrue();
 
 		assertNull(pu2.getJtaDataSource());
 		assertEquals(ds, pu2.getNonJtaDataSource());
 
-		assertTrue("Exclude unlisted should be true when no value.", pu2.excludeUnlistedClasses());
+		assertThat(pu2.excludeUnlistedClasses()).as("Exclude unlisted should be true when no value.").isTrue();
 	}
 
 	@Test
@@ -284,7 +284,7 @@ public class PersistenceXmlParsingTests {
 		assertNull(url);
 
 		url = PersistenceUnitReader.determinePersistenceUnitRootUrl(new ClassPathResource("/org/springframework/orm/jpa/META-INF/persistence.xml"));
-		assertTrue("the containing folder should have been returned", url.toString().endsWith("/org/springframework/orm/jpa"));
+		assertThat(url.toString().endsWith("/org/springframework/orm/jpa")).as("the containing folder should have been returned").isTrue();
 	}
 
 	@Test
@@ -293,9 +293,9 @@ public class PersistenceXmlParsingTests {
 		String newRoot = "jar:" + archive.getURL().toExternalForm() + "!/META-INF/persist.xml";
 		Resource insideArchive = new UrlResource(newRoot);
 		// make sure the location actually exists
-		assertTrue(insideArchive.exists());
+		assertThat(insideArchive.exists()).isTrue();
 		URL url = PersistenceUnitReader.determinePersistenceUnitRootUrl(insideArchive);
-		assertTrue("the archive location should have been returned", archive.getURL().sameFile(url));
+		assertThat(archive.getURL().sameFile(url)).as("the archive location should have been returned").isTrue();
 	}
 
 	@Test
@@ -316,12 +316,12 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo emptyExclude = info[1];
 		assertNotNull("emptyExclude should not be null.", emptyExclude);
 		assertEquals("emptyExclude name is not correct.", "EmptyExcludeElement", emptyExclude.getPersistenceUnitName());
-		assertTrue("emptyExclude should be true.", emptyExclude.excludeUnlistedClasses());
+		assertThat(emptyExclude.excludeUnlistedClasses()).as("emptyExclude should be true.").isTrue();
 
 		PersistenceUnitInfo trueExclude = info[2];
 		assertNotNull("trueExclude should not be null.", trueExclude);
 		assertEquals("trueExclude name is not correct.", "TrueExcludeElement", trueExclude.getPersistenceUnitName());
-		assertTrue("trueExclude should be true.", trueExclude.excludeUnlistedClasses());
+		assertThat(trueExclude.excludeUnlistedClasses()).as("trueExclude should be true.").isTrue();
 
 		PersistenceUnitInfo falseExclude = info[3];
 		assertNotNull("falseExclude should not be null.", falseExclude);
@@ -347,12 +347,12 @@ public class PersistenceXmlParsingTests {
 		PersistenceUnitInfo emptyExclude = info[1];
 		assertNotNull("emptyExclude should not be null.", emptyExclude);
 		assertEquals("emptyExclude name is not correct.", "EmptyExcludeElement", emptyExclude.getPersistenceUnitName());
-		assertTrue("emptyExclude should be true.", emptyExclude.excludeUnlistedClasses());
+		assertThat(emptyExclude.excludeUnlistedClasses()).as("emptyExclude should be true.").isTrue();
 
 		PersistenceUnitInfo trueExclude = info[2];
 		assertNotNull("trueExclude should not be null.", trueExclude);
 		assertEquals("trueExclude name is not correct.", "TrueExcludeElement", trueExclude.getPersistenceUnitName());
-		assertTrue("trueExclude should be true.", trueExclude.excludeUnlistedClasses());
+		assertThat(trueExclude.excludeUnlistedClasses()).as("trueExclude should be true.").isTrue();
 
 		PersistenceUnitInfo falseExclude = info[3];
 		assertNotNull("falseExclude should not be null.", falseExclude);

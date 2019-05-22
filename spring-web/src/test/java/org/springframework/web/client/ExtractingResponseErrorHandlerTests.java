@@ -35,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -65,10 +64,10 @@ public class ExtractingResponseErrorHandlerTests {
 	@Test
 	public void hasError() throws Exception {
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.I_AM_A_TEAPOT.value());
-		assertTrue(this.errorHandler.hasError(this.response));
+		assertThat(this.errorHandler.hasError(this.response)).isTrue();
 
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.INTERNAL_SERVER_ERROR.value());
-		assertTrue(this.errorHandler.hasError(this.response));
+		assertThat(this.errorHandler.hasError(this.response)).isTrue();
 
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.OK.value());
 		assertFalse(this.errorHandler.hasError(this.response));
@@ -80,7 +79,7 @@ public class ExtractingResponseErrorHandlerTests {
 				.singletonMap(HttpStatus.Series.CLIENT_ERROR, null));
 
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.I_AM_A_TEAPOT.value());
-		assertTrue(this.errorHandler.hasError(this.response));
+		assertThat(this.errorHandler.hasError(this.response)).isTrue();
 
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
 		assertFalse(this.errorHandler.hasError(this.response));

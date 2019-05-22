@@ -52,7 +52,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link TypeDescriptor}.
@@ -73,7 +72,7 @@ public class TypeDescriptorTests {
 		assertEquals(Integer.class, desc.getObjectType());
 		assertEquals("int", desc.getName());
 		assertEquals("int", desc.toString());
-		assertTrue(desc.isPrimitive());
+		assertThat(desc.isPrimitive()).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
 		assertFalse(desc.isCollection());
 		assertFalse(desc.isMap());
@@ -86,7 +85,8 @@ public class TypeDescriptorTests {
 		assertEquals(String.class, desc.getObjectType());
 		assertEquals("java.lang.String", desc.getName());
 		assertEquals("java.lang.String", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
 		assertFalse(desc.isCollection());
 		assertFalse(desc.isArray());
@@ -101,9 +101,10 @@ public class TypeDescriptorTests {
 		assertEquals(List.class, desc.getObjectType());
 		assertEquals("java.util.List", desc.getName());
 		assertEquals("java.util.List<java.util.List<java.util.Map<java.lang.Integer, java.lang.Enum<?>>>>", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
-		assertTrue(desc.isCollection());
+		assertThat(desc.isCollection()).isTrue();
 		assertFalse(desc.isArray());
 		assertEquals(List.class, desc.getElementTypeDescriptor().getType());
 		assertEquals(TypeDescriptor.nested(methodParameter, 1), desc.getElementTypeDescriptor());
@@ -122,9 +123,10 @@ public class TypeDescriptorTests {
 		assertEquals(List.class, desc.getObjectType());
 		assertEquals("java.util.List", desc.getName());
 		assertEquals("java.util.List<?>", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
-		assertTrue(desc.isCollection());
+		assertThat(desc.isCollection()).isTrue();
 		assertFalse(desc.isArray());
 		assertNull(desc.getElementTypeDescriptor());
 		assertFalse(desc.isMap());
@@ -138,10 +140,11 @@ public class TypeDescriptorTests {
 		assertEquals(Integer[].class, desc.getObjectType());
 		assertEquals("java.lang.Integer[]", desc.getName());
 		assertEquals("java.lang.Integer[]", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
 		assertFalse(desc.isCollection());
-		assertTrue(desc.isArray());
+		assertThat(desc.isArray()).isTrue();
 		assertEquals(Integer.class, desc.getElementTypeDescriptor().getType());
 		assertEquals(TypeDescriptor.valueOf(Integer.class), desc.getElementTypeDescriptor());
 		assertFalse(desc.isMap());
@@ -155,11 +158,12 @@ public class TypeDescriptorTests {
 		assertEquals(Map.class, desc.getObjectType());
 		assertEquals("java.util.Map", desc.getName());
 		assertEquals("java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
 		assertFalse(desc.isCollection());
 		assertFalse(desc.isArray());
-		assertTrue(desc.isMap());
+		assertThat(desc.isMap()).isTrue();
 		assertEquals(TypeDescriptor.nested(methodParameter, 1), desc.getMapValueTypeDescriptor());
 		assertEquals(TypeDescriptor.nested(methodParameter, 2), desc.getMapValueTypeDescriptor().getElementTypeDescriptor());
 		assertEquals(Integer.class, desc.getMapKeyTypeDescriptor().getType());
@@ -173,7 +177,7 @@ public class TypeDescriptorTests {
 		assertEquals(String.class, t1.getType());
 		assertEquals(1, t1.getAnnotations().length);
 		assertNotNull(t1.getAnnotation(ParameterAnnotation.class));
-		assertTrue(t1.hasAnnotation(ParameterAnnotation.class));
+		assertThat(t1.hasAnnotation(ParameterAnnotation.class)).isTrue();
 		assertEquals(123, t1.getAnnotation(ParameterAnnotation.class).value());
 	}
 
@@ -230,7 +234,7 @@ public class TypeDescriptorTests {
 		assertEquals(List.class, desc.getType());
 		assertEquals(Integer.class, desc.getElementTypeDescriptor().getType());
 		assertNotNull(desc.getAnnotation(MethodAnnotation1.class));
-		assertTrue(desc.hasAnnotation(MethodAnnotation1.class));
+		assertThat(desc.hasAnnotation(MethodAnnotation1.class)).isTrue();
 	}
 
 	@Test
@@ -310,7 +314,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void fieldArray() throws Exception {
 		TypeDescriptor typeDescriptor = new TypeDescriptor(TypeDescriptorTests.class.getDeclaredField("intArray"));
-		assertTrue(typeDescriptor.isArray());
+		assertThat(typeDescriptor.isArray()).isTrue();
 		assertEquals(Integer.TYPE,typeDescriptor.getElementTypeDescriptor().getType());
 		assertEquals("int[]",typeDescriptor.toString());
 	}
@@ -318,7 +322,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void fieldComplexTypeDescriptor() throws Exception {
 		TypeDescriptor typeDescriptor = new TypeDescriptor(TypeDescriptorTests.class.getDeclaredField("arrayOfListOfString"));
-		assertTrue(typeDescriptor.isArray());
+		assertThat(typeDescriptor.isArray()).isTrue();
 		assertEquals(List.class,typeDescriptor.getElementTypeDescriptor().getType());
 		assertEquals(String.class, typeDescriptor.getElementTypeDescriptor().getElementTypeDescriptor().getType());
 		assertEquals("java.util.List<java.lang.String>[]",typeDescriptor.toString());
@@ -327,7 +331,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void fieldComplexTypeDescriptor2() throws Exception {
 		TypeDescriptor typeDescriptor = new TypeDescriptor(TypeDescriptorTests.class.getDeclaredField("nestedMapField"));
-		assertTrue(typeDescriptor.isMap());
+		assertThat(typeDescriptor.isMap()).isTrue();
 		assertEquals(String.class,typeDescriptor.getMapKeyTypeDescriptor().getType());
 		assertEquals(List.class, typeDescriptor.getMapValueTypeDescriptor().getType());
 		assertEquals(Integer.class, typeDescriptor.getMapValueTypeDescriptor().getElementTypeDescriptor().getType());
@@ -337,7 +341,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void fieldMap() throws Exception {
 		TypeDescriptor desc = new TypeDescriptor(TypeDescriptorTests.class.getField("fieldMap"));
-		assertTrue(desc.isMap());
+		assertThat(desc.isMap()).isTrue();
 		assertEquals(Integer.class, desc.getMapKeyTypeDescriptor().getElementTypeDescriptor().getType());
 		assertEquals(Long.class, desc.getMapValueTypeDescriptor().getElementTypeDescriptor().getType());
 	}
@@ -363,7 +367,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void valueOfPrimitive() {
 		TypeDescriptor typeDescriptor = TypeDescriptor.valueOf(int.class);
-		assertTrue(typeDescriptor.isPrimitive());
+		assertThat(typeDescriptor.isPrimitive()).isTrue();
 		assertFalse(typeDescriptor.isArray());
 		assertFalse(typeDescriptor.isCollection());
 		assertFalse(typeDescriptor.isMap());
@@ -374,7 +378,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void valueOfArray() throws Exception {
 		TypeDescriptor typeDescriptor = TypeDescriptor.valueOf(int[].class);
-		assertTrue(typeDescriptor.isArray());
+		assertThat(typeDescriptor.isArray()).isTrue();
 		assertFalse(typeDescriptor.isCollection());
 		assertFalse(typeDescriptor.isMap());
 		assertEquals(Integer.TYPE, typeDescriptor.getElementTypeDescriptor().getType());
@@ -383,7 +387,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void valueOfCollection() throws Exception {
 		TypeDescriptor typeDescriptor = TypeDescriptor.valueOf(Collection.class);
-		assertTrue(typeDescriptor.isCollection());
+		assertThat(typeDescriptor.isCollection()).isTrue();
 		assertFalse(typeDescriptor.isArray());
 		assertFalse(typeDescriptor.isMap());
 		assertNull(typeDescriptor.getElementTypeDescriptor());
@@ -472,9 +476,10 @@ public class TypeDescriptorTests {
 		assertEquals(List.class, desc.getObjectType());
 		assertEquals("java.util.List", desc.getName());
 		assertEquals("java.util.List<java.lang.Integer>", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
-		assertTrue(desc.isCollection());
+		assertThat(desc.isCollection()).isTrue();
 		assertFalse(desc.isArray());
 		assertEquals(Integer.class, desc.getElementTypeDescriptor().getType());
 		assertEquals(TypeDescriptor.valueOf(Integer.class), desc.getElementTypeDescriptor());
@@ -488,9 +493,10 @@ public class TypeDescriptorTests {
 		assertEquals(List.class, desc.getObjectType());
 		assertEquals("java.util.List", desc.getName());
 		assertEquals("java.util.List<java.util.List<java.lang.Integer>>", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
-		assertTrue(desc.isCollection());
+		assertThat(desc.isCollection()).isTrue();
 		assertFalse(desc.isArray());
 		assertEquals(List.class, desc.getElementTypeDescriptor().getType());
 		assertEquals(TypeDescriptor.valueOf(Integer.class), desc.getElementTypeDescriptor().getElementTypeDescriptor());
@@ -504,11 +510,12 @@ public class TypeDescriptorTests {
 		assertEquals(Map.class, desc.getObjectType());
 		assertEquals("java.util.Map", desc.getName());
 		assertEquals("java.util.Map<java.lang.String, java.lang.Integer>", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
 		assertFalse(desc.isCollection());
 		assertFalse(desc.isArray());
-		assertTrue(desc.isMap());
+		assertThat(desc.isMap()).isTrue();
 		assertEquals(String.class, desc.getMapKeyTypeDescriptor().getType());
 		assertEquals(Integer.class, desc.getMapValueTypeDescriptor().getType());
 	}
@@ -521,11 +528,12 @@ public class TypeDescriptorTests {
 		assertEquals(Map.class, desc.getObjectType());
 		assertEquals("java.util.Map", desc.getName());
 		assertEquals("java.util.Map<java.lang.String, java.util.Map<java.lang.String, java.lang.Integer>>", desc.toString());
-		assertTrue(!desc.isPrimitive());
+		boolean condition = !desc.isPrimitive();
+		assertThat(condition).isTrue();
 		assertEquals(0, desc.getAnnotations().length);
 		assertFalse(desc.isCollection());
 		assertFalse(desc.isArray());
-		assertTrue(desc.isMap());
+		assertThat(desc.isMap()).isTrue();
 		assertEquals(String.class, desc.getMapKeyTypeDescriptor().getType());
 		assertEquals(String.class, desc.getMapValueTypeDescriptor().getMapKeyTypeDescriptor().getType());
 		assertEquals(Integer.class, desc.getMapValueTypeDescriptor().getMapValueTypeDescriptor().getType());
@@ -632,33 +640,33 @@ public class TypeDescriptorTests {
 
 	@Test
 	public void isAssignableTypes() {
-		assertTrue(TypeDescriptor.valueOf(Integer.class).isAssignableTo(TypeDescriptor.valueOf(Number.class)));
+		assertThat(TypeDescriptor.valueOf(Integer.class).isAssignableTo(TypeDescriptor.valueOf(Number.class))).isTrue();
 		assertFalse(TypeDescriptor.valueOf(Number.class).isAssignableTo(TypeDescriptor.valueOf(Integer.class)));
 		assertFalse(TypeDescriptor.valueOf(String.class).isAssignableTo(TypeDescriptor.valueOf(String[].class)));
 	}
 
 	@Test
 	public void isAssignableElementTypes() throws Exception {
-		assertTrue(new TypeDescriptor(getClass().getField("listField")).isAssignableTo(new TypeDescriptor(getClass().getField("listField"))));
-		assertTrue(new TypeDescriptor(getClass().getField("notGenericList")).isAssignableTo(new TypeDescriptor(getClass().getField("listField"))));
-		assertTrue(new TypeDescriptor(getClass().getField("listField")).isAssignableTo(new TypeDescriptor(getClass().getField("notGenericList"))));
+		assertThat(new TypeDescriptor(getClass().getField("listField")).isAssignableTo(new TypeDescriptor(getClass().getField("listField")))).isTrue();
+		assertThat(new TypeDescriptor(getClass().getField("notGenericList")).isAssignableTo(new TypeDescriptor(getClass().getField("listField")))).isTrue();
+		assertThat(new TypeDescriptor(getClass().getField("listField")).isAssignableTo(new TypeDescriptor(getClass().getField("notGenericList")))).isTrue();
 		assertFalse(new TypeDescriptor(getClass().getField("isAssignableElementTypes")).isAssignableTo(new TypeDescriptor(getClass().getField("listField"))));
-		assertTrue(TypeDescriptor.valueOf(List.class).isAssignableTo(new TypeDescriptor(getClass().getField("listField"))));
+		assertThat(TypeDescriptor.valueOf(List.class).isAssignableTo(new TypeDescriptor(getClass().getField("listField")))).isTrue();
 	}
 
 	@Test
 	public void isAssignableMapKeyValueTypes() throws Exception {
-		assertTrue(new TypeDescriptor(getClass().getField("mapField")).isAssignableTo(new TypeDescriptor(getClass().getField("mapField"))));
-		assertTrue(new TypeDescriptor(getClass().getField("notGenericMap")).isAssignableTo(new TypeDescriptor(getClass().getField("mapField"))));
-		assertTrue(new TypeDescriptor(getClass().getField("mapField")).isAssignableTo(new TypeDescriptor(getClass().getField("notGenericMap"))));
+		assertThat(new TypeDescriptor(getClass().getField("mapField")).isAssignableTo(new TypeDescriptor(getClass().getField("mapField")))).isTrue();
+		assertThat(new TypeDescriptor(getClass().getField("notGenericMap")).isAssignableTo(new TypeDescriptor(getClass().getField("mapField")))).isTrue();
+		assertThat(new TypeDescriptor(getClass().getField("mapField")).isAssignableTo(new TypeDescriptor(getClass().getField("notGenericMap")))).isTrue();
 		assertFalse(new TypeDescriptor(getClass().getField("isAssignableMapKeyValueTypes")).isAssignableTo(new TypeDescriptor(getClass().getField("mapField"))));
-		assertTrue(TypeDescriptor.valueOf(Map.class).isAssignableTo(new TypeDescriptor(getClass().getField("mapField"))));
+		assertThat(TypeDescriptor.valueOf(Map.class).isAssignableTo(new TypeDescriptor(getClass().getField("mapField")))).isTrue();
 	}
 
 	@Test
 	public void multiValueMap() throws Exception {
 		TypeDescriptor td = new TypeDescriptor(getClass().getField("multiValueMap"));
-		assertTrue(td.isMap());
+		assertThat(td.isMap()).isTrue();
 		assertEquals(String.class, td.getMapKeyTypeDescriptor().getType());
 		assertEquals(List.class, td.getMapValueTypeDescriptor().getType());
 		assertEquals(Integer.class,
@@ -679,7 +687,7 @@ public class TypeDescriptorTests {
 				getClass().getMethod("setProperty", Map.class));
 		TypeDescriptor typeDescriptor = new TypeDescriptor(property);
 		TypeDescriptor upCast = typeDescriptor.upcast(Object.class);
-		assertTrue(upCast.getAnnotation(MethodAnnotation1.class) != null);
+		assertThat(upCast.getAnnotation(MethodAnnotation1.class) != null).isTrue();
 	}
 
 	@Test

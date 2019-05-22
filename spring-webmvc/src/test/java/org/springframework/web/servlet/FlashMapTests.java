@@ -21,9 +21,9 @@ import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link FlashMap} tests.
@@ -40,7 +40,7 @@ public class FlashMapTests {
 		flashMap.startExpirationPeriod(0);
 		Thread.sleep(100);
 
-		assertTrue(flashMap.isExpired());
+		assertThat(flashMap.isExpired()).isTrue();
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class FlashMapTests {
 		flashMap.addTargetRequestParam(" ", "abc");
 		flashMap.addTargetRequestParam(null, "abc");
 
-		assertTrue(flashMap.getTargetRequestParams().isEmpty());
+		assertThat(flashMap.getTargetRequestParams().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class FlashMapTests {
 		FlashMap flashMap = new FlashMap();
 		flashMap.addTargetRequestParams(params);
 
-		assertTrue(flashMap.getTargetRequestParams().isEmpty());
+		assertThat(flashMap.getTargetRequestParams().isEmpty()).isTrue();
 	}
 
 }

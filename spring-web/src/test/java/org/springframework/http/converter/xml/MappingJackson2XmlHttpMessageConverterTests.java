@@ -37,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Jackson 2.x XML converter tests.
@@ -52,16 +51,16 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(MyBean.class, new MediaType("application", "xml")));
-		assertTrue(converter.canRead(MyBean.class, new MediaType("text", "xml")));
-		assertTrue(converter.canRead(MyBean.class, new MediaType("application", "soap+xml")));
+		assertThat(converter.canRead(MyBean.class, new MediaType("application", "xml"))).isTrue();
+		assertThat(converter.canRead(MyBean.class, new MediaType("text", "xml"))).isTrue();
+		assertThat(converter.canRead(MyBean.class, new MediaType("application", "soap+xml"))).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("application", "xml")));
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("text", "xml")));
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("application", "soap+xml")));
+		assertThat(converter.canWrite(MyBean.class, new MediaType("application", "xml"))).isTrue();
+		assertThat(converter.canWrite(MyBean.class, new MediaType("text", "xml"))).isTrue();
+		assertThat(converter.canWrite(MyBean.class, new MediaType("application", "soap+xml"))).isTrue();
 	}
 
 	@Test
@@ -81,7 +80,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[]{"Foo", "Bar"}, result.getArray());
-		assertTrue(result.isBool());
+		assertThat(result.isBool()).isTrue();
 		assertArrayEquals(new byte[]{0x1, 0x2}, result.getBytes());
 	}
 
@@ -97,12 +96,12 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		body.setBytes(new byte[]{0x1, 0x2});
 		converter.write(body, null, outputMessage);
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
-		assertTrue(result.contains("<string>Foo</string>"));
-		assertTrue(result.contains("<number>42</number>"));
-		assertTrue(result.contains("<fraction>42.0</fraction>"));
-		assertTrue(result.contains("<array><array>Foo</array><array>Bar</array></array>"));
-		assertTrue(result.contains("<bool>true</bool>"));
-		assertTrue(result.contains("<bytes>AQI=</bytes>"));
+		assertThat(result.contains("<string>Foo</string>")).isTrue();
+		assertThat(result.contains("<number>42</number>")).isTrue();
+		assertThat(result.contains("<fraction>42.0</fraction>")).isTrue();
+		assertThat(result.contains("<array><array>Foo</array><array>Bar</array></array>")).isTrue();
+		assertThat(result.contains("<bool>true</bool>")).isTrue();
+		assertThat(result.contains("<bytes>AQI=</bytes>")).isTrue();
 		assertEquals("Invalid content-type", new MediaType("application", "xml", StandardCharsets.UTF_8),
 				outputMessage.getHeaders().getContentType());
 	}

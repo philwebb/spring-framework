@@ -26,8 +26,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Colin Sampaleanu
@@ -56,10 +56,10 @@ public class DelegatingPhaseListenerTests {
 		PhaseEvent event = new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, new MockLifecycle());
 
 		delPhaseListener.beforePhase(event);
-		assertTrue(target.beforeCalled);
+		assertThat(target.beforeCalled).isTrue();
 
 		delPhaseListener.afterPhase(event);
-		assertTrue(target.afterCalled);
+		assertThat(target.afterCalled).isTrue();
 	}
 
 	@Test
@@ -73,12 +73,12 @@ public class DelegatingPhaseListenerTests {
 		PhaseEvent event = new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, new MockLifecycle());
 
 		delPhaseListener.beforePhase(event);
-		assertTrue(target1.beforeCalled);
-		assertTrue(target2.beforeCalled);
+		assertThat(target1.beforeCalled).isTrue();
+		assertThat(target2.beforeCalled).isTrue();
 
 		delPhaseListener.afterPhase(event);
-		assertTrue(target1.afterCalled);
-		assertTrue(target2.afterCalled);
+		assertThat(target1.afterCalled).isTrue();
+		assertThat(target2.afterCalled).isTrue();
 	}
 
 

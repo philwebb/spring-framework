@@ -35,8 +35,8 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -54,7 +54,7 @@ public class DefaultMultipartMessageReaderTests extends AbstractDataBufferAlloca
 
 	@Test
 	public void canRead() {
-		assertTrue(this.reader.canRead(forClass(Part.class), MediaType.MULTIPART_FORM_DATA));
+		assertThat(this.reader.canRead(forClass(Part.class), MediaType.MULTIPART_FORM_DATA)).isTrue();
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class DefaultMultipartMessageReaderTests extends AbstractDataBufferAlloca
 
 		StepVerifier.create(result)
 				.consumeNextWith(part -> {
-					assertTrue(part.headers().isEmpty());
+					assertThat(part.headers().isEmpty()).isTrue();
 					part.content().subscribe(DataBufferUtils::release);
 				})
 				.verifyComplete();
@@ -129,7 +129,8 @@ public class DefaultMultipartMessageReaderTests extends AbstractDataBufferAlloca
 	}
 
 	private static void testBrowserFormField(Part part, String name, String value) {
-		assertTrue(part instanceof FormFieldPart);
+		boolean condition = part instanceof FormFieldPart;
+		assertThat(condition).isTrue();
 		assertEquals(name, part.name());
 		FormFieldPart formField = (FormFieldPart) part;
 		assertEquals(value, formField.value());
@@ -137,7 +138,8 @@ public class DefaultMultipartMessageReaderTests extends AbstractDataBufferAlloca
 
 	private static void testBrowserFile(Part part, String name, String filename, String contents) {
 		try {
-			assertTrue(part instanceof FilePart);
+			boolean condition = part instanceof FilePart;
+			assertThat(condition).isTrue();
 			assertEquals(name, part.name());
 			FilePart file = (FilePart) part;
 			assertEquals(filename, file.filename());

@@ -39,9 +39,9 @@ import org.springframework.http.codec.xml.jaxb.XmlType;
 import org.springframework.http.codec.xml.jaxb.XmlTypeWithName;
 import org.springframework.http.codec.xml.jaxb.XmlTypeWithNameAndNamespace;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Sebastien Deleuze
@@ -75,14 +75,14 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 
 	@Test
 	public void canDecode() {
-		assertTrue(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
-				MediaType.APPLICATION_XML));
-		assertTrue(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
-				MediaType.TEXT_XML));
+		assertThat(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
+				MediaType.APPLICATION_XML)).isTrue();
+		assertThat(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
+				MediaType.TEXT_XML)).isTrue();
 		assertFalse(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
 				MediaType.APPLICATION_JSON));
-		assertTrue(this.decoder.canDecode(ResolvableType.forClass(TypePojo.class),
-				MediaType.APPLICATION_XML));
+		assertThat(this.decoder.canDecode(ResolvableType.forClass(TypePojo.class),
+				MediaType.APPLICATION_XML)).isTrue();
 		assertFalse(this.decoder.canDecode(ResolvableType.forClass(getClass()),
 				MediaType.APPLICATION_XML));
 	}
@@ -144,17 +144,17 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 	}
 
 	private static void assertStartElement(XMLEvent event, String expectedLocalName) {
-		assertTrue(event.isStartElement());
+		assertThat(event.isStartElement()).isTrue();
 		assertEquals(expectedLocalName, event.asStartElement().getName().getLocalPart());
 	}
 
 	private static void assertEndElement(XMLEvent event, String expectedLocalName) {
-		assertTrue(event.isEndElement());
+		assertThat(event.isEndElement()).isTrue();
 		assertEquals(expectedLocalName, event.asEndElement().getName().getLocalPart());
 	}
 
 	private static void assertCharacters(XMLEvent event, String expectedData) {
-		assertTrue(event.isCharacters());
+		assertThat(event.isCharacters()).isTrue();
 		assertEquals(expectedData, event.asCharacters().getData());
 	}
 

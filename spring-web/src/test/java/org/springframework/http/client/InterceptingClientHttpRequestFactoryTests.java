@@ -34,10 +34,10 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.support.HttpRequestWrapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -65,10 +65,10 @@ public class InterceptingClientHttpRequestFactoryTests {
 		ClientHttpRequest request = requestFactory.createRequest(new URI("https://example.com"), HttpMethod.GET);
 		ClientHttpResponse response = request.execute();
 
-		assertTrue(((NoOpInterceptor) interceptors.get(0)).invoked);
-		assertTrue(((NoOpInterceptor) interceptors.get(1)).invoked);
-		assertTrue(((NoOpInterceptor) interceptors.get(2)).invoked);
-		assertTrue(requestMock.executed);
+		assertThat(((NoOpInterceptor) interceptors.get(0)).invoked).isTrue();
+		assertThat(((NoOpInterceptor) interceptors.get(1)).invoked).isTrue();
+		assertThat(((NoOpInterceptor) interceptors.get(2)).invoked).isTrue();
+		assertThat(requestMock.executed).isTrue();
 		assertSame(responseMock, response);
 	}
 
@@ -212,7 +212,7 @@ public class InterceptingClientHttpRequestFactoryTests {
 
 		ClientHttpRequest request = requestFactory.createRequest(new URI("https://example.com"), HttpMethod.GET);
 		request.execute();
-		assertTrue(Arrays.equals(changedBody, requestMock.body.toByteArray()));
+		assertThat(Arrays.equals(changedBody, requestMock.body.toByteArray())).isTrue();
 	}
 
 

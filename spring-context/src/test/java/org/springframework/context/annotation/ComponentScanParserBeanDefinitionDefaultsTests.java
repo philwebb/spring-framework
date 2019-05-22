@@ -23,12 +23,12 @@ import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -62,7 +62,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		GenericApplicationContext context = new GenericApplicationContext();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultLazyInitTrueTests.xml");
-		assertTrue("lazy-init should be true", context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit());
+		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be true").isTrue();
 		assertEquals("initCount should be 0", 0, DefaultsTestBean.INIT_COUNT);
 		context.refresh();
 		assertEquals("bean should not have been instantiated yet", 0, DefaultsTestBean.INIT_COUNT);
@@ -171,9 +171,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultInitAndDestroyMethodsTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertTrue("bean should have been initialized", bean.isInitialized());
+		assertThat(bean.isInitialized()).as("bean should have been initialized").isTrue();
 		context.close();
-		assertTrue("bean should have been destroyed", bean.isDestroyed());
+		assertThat(bean.isDestroyed()).as("bean should have been destroyed").isTrue();
 	}
 
 	@Test

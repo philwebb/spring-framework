@@ -48,8 +48,8 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.validation.DataBinder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Keith Donald
@@ -247,8 +247,8 @@ public class DateTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
-		assertTrue(value.startsWith("10/31/09"));
-		assertTrue(value.endsWith("12:00 PM"));
+		assertThat(value.startsWith("10/31/09")).isTrue();
+		assertThat(value.endsWith("12:00 PM")).isTrue();
 	}
 
 	@Test
@@ -258,8 +258,8 @@ public class DateTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("localDateTimeAnnotated").toString();
-		assertTrue(value.startsWith("Oct 31, 2009"));
-		assertTrue(value.endsWith("12:00:00 PM"));
+		assertThat(value.startsWith("Oct 31, 2009")).isTrue();
+		assertThat(value.endsWith("12:00:00 PM")).isTrue();
 	}
 
 	@Test
@@ -269,8 +269,8 @@ public class DateTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
-		assertTrue(value.startsWith("10/31/09"));
-		assertTrue(value.endsWith("12:00 PM"));
+		assertThat(value.startsWith("10/31/09")).isTrue();
+		assertThat(value.endsWith("12:00 PM")).isTrue();
 	}
 
 	@Test
@@ -283,8 +283,8 @@ public class DateTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
-		assertTrue(value.startsWith("Oct 31, 2009"));
-		assertTrue(value.endsWith("12:00:00 PM"));
+		assertThat(value.startsWith("Oct 31, 2009")).isTrue();
+		assertThat(value.endsWith("12:00:00 PM")).isTrue();
 	}
 
 	@Test
@@ -355,7 +355,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("instant", "2009-10-31T12:00:00.000Z");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31T12:00"));
+		assertThat(binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31T12:00")).isTrue();
 	}
 
 	@Test
@@ -368,7 +368,7 @@ public class DateTimeFormattingTests {
 			propertyValues.add("instant", new Date(109, 9, 31, 12, 0));
 			binder.bind(propertyValues);
 			assertEquals(0, binder.getBindingResult().getErrorCount());
-			assertTrue(binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31"));
+			assertThat(binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31")).isTrue();
 		}
 		finally {
 			TimeZone.setDefault(defaultZone);
@@ -381,7 +381,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("period", "P6Y3M1D");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("period").toString().equals("P6Y3M1D"));
+		assertThat(binder.getBindingResult().getFieldValue("period").toString().equals("P6Y3M1D")).isTrue();
 	}
 
 	@Test
@@ -390,7 +390,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("duration", "PT8H6M12.345S");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("duration").toString().equals("PT8H6M12.345S"));
+		assertThat(binder.getBindingResult().getFieldValue("duration").toString().equals("PT8H6M12.345S")).isTrue();
 	}
 
 	@Test
@@ -399,7 +399,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("year", "2007");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("year").toString().equals("2007"));
+		assertThat(binder.getBindingResult().getFieldValue("year").toString().equals("2007")).isTrue();
 	}
 
 	@Test
@@ -408,7 +408,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("month", "JULY");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("month").toString().equals("JULY"));
+		assertThat(binder.getBindingResult().getFieldValue("month").toString().equals("JULY")).isTrue();
 	}
 
 	@Test
@@ -417,7 +417,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("month", "July");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("month").toString().equals("JULY"));
+		assertThat(binder.getBindingResult().getFieldValue("month").toString().equals("JULY")).isTrue();
 	}
 
 	@Test
@@ -426,7 +426,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("yearMonth", "2007-12");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("yearMonth").toString().equals("2007-12"));
+		assertThat(binder.getBindingResult().getFieldValue("yearMonth").toString().equals("2007-12")).isTrue();
 	}
 
 	@Test
@@ -435,7 +435,7 @@ public class DateTimeFormattingTests {
 		propertyValues.add("monthDay", "--12-03");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("monthDay").toString().equals("--12-03"));
+		assertThat(binder.getBindingResult().getFieldValue("monthDay").toString().equals("--12-03")).isTrue();
 	}
 
 

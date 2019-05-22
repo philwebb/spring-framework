@@ -32,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests set value expressions.
@@ -101,7 +100,7 @@ public class SetValueTests extends AbstractExpressionTests {
 		// VARIABLE
 		// the variable does not exist (but that is OK, we should be writable)
 		Expression e3 = parser.parseExpression("#madeup1");
-		assertTrue("Should be writable!",e3.isWritable(lContext));
+		assertThat(e3.isWritable(lContext)).as("Should be writable!").isTrue();
 
 		Expression e4 = parser.parseExpression("#madeup2.bar"); // compound expression
 		assertFalse("Should not be writable!",e4.isWritable(lContext));
@@ -248,7 +247,7 @@ public class SetValueTests extends AbstractExpressionTests {
 				SpelUtilities.printAbstractSyntaxTree(System.out, e);
 			}
 			StandardEvaluationContext lContext = TestScenarioCreator.getTestEvaluationContext();
-			assertTrue("Expression is not writeable but should be", e.isWritable(lContext));
+			assertThat(e.isWritable(lContext)).as("Expression is not writeable but should be").isTrue();
 			e.setValue(lContext, value);
 			assertEquals("Retrieved value was not equal to set value", value, e.getValue(lContext,value.getClass()));
 		}
@@ -269,7 +268,7 @@ public class SetValueTests extends AbstractExpressionTests {
 				SpelUtilities.printAbstractSyntaxTree(System.out, e);
 			}
 			StandardEvaluationContext lContext = TestScenarioCreator.getTestEvaluationContext();
-			assertTrue("Expression is not writeable but should be", e.isWritable(lContext));
+			assertThat(e.isWritable(lContext)).as("Expression is not writeable but should be").isTrue();
 			e.setValue(lContext, value);
 			Object a = expectedValue;
 			Object b = e.getValue(lContext);

@@ -29,12 +29,10 @@ import org.springframework.orm.jpa.domain.DriversLicense;
 import org.springframework.orm.jpa.domain.Person;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for LocalContainerEntityManagerFactoryBean.
@@ -48,7 +46,8 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests
 
 	@Test
 	public void testEntityManagerFactoryImplementsEntityManagerFactoryInfo() {
-		assertTrue("Must have introduced config interface", entityManagerFactory instanceof EntityManagerFactoryInfo);
+		boolean condition = entityManagerFactory instanceof EntityManagerFactoryInfo;
+		assertThat(condition).as("Must have introduced config interface").isTrue();
 		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
 		assertEquals("Person", emfi.getPersistenceUnitName());
 		assertNotNull("PersistenceUnitInfo must be available", emfi.getPersistenceUnitInfo());
@@ -84,13 +83,13 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testEntityManagerProxyIsProxy() {
-		assertTrue(Proxy.isProxyClass(sharedEntityManager.getClass()));
+		assertThat(Proxy.isProxyClass(sharedEntityManager.getClass())).isTrue();
 		Query q = sharedEntityManager.createQuery("select p from Person as p");
 		q.getResultList();
 
-		assertTrue("Should be open to start with", sharedEntityManager.isOpen());
+		assertThat(sharedEntityManager.isOpen()).as("Should be open to start with").isTrue();
 		sharedEntityManager.close();
-		assertTrue("Close should have been silently ignored", sharedEntityManager.isOpen());
+		assertThat(sharedEntityManager.isOpen()).as("Close should have been silently ignored").isTrue();
 	}
 
 	@Test
@@ -146,7 +145,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests
 		String firstName = "Tony";
 		insertPerson(firstName);
 
-		assertTrue(Proxy.isProxyClass(sharedEntityManager.getClass()));
+		assertThat(Proxy.isProxyClass(sharedEntityManager.getClass())).isTrue();
 		Query q = sharedEntityManager.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
 

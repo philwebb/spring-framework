@@ -31,11 +31,11 @@ import org.springframework.tests.context.SimpleMapScope;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Pollack
@@ -82,8 +82,9 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		assertNotSame(tb2, tb);
 
 		Object bean = context.getBean("requestScopedInstance"); //5
-		assertTrue(AopUtils.isCglibProxy(bean));
-		assertTrue(bean instanceof ScopedObject);
+		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
+		boolean condition = bean instanceof ScopedObject;
+		assertThat(condition).isTrue();
 
 		QualifiedClientBean clientBean = context.getBean("clientBean", QualifiedClientBean.class);
 		assertSame(context.getBean("publicInstance"), clientBean.testBean);

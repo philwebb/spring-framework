@@ -41,10 +41,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -91,7 +91,7 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("prototype");
 		assertNotNull(bean);
-		assertTrue(context.isPrototype("prototype"));
+		assertThat(context.isPrototype("prototype")).isTrue();
 		assertFalse(context.isSingleton("prototype"));
 	}
 
@@ -100,7 +100,7 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 		RequestContextHolder.setRequestAttributes(oldRequestAttributes);
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("singleton");
-		assertTrue(context.isSingleton("singleton"));
+		assertThat(context.isSingleton("singleton")).isTrue();
 		assertFalse(context.isPrototype("singleton"));
 
 		// should not be a proxy
@@ -188,8 +188,9 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("request");
 
 		// should be dynamic proxy, implementing both interfaces
-		assertTrue(AopUtils.isJdkDynamicProxy(bean));
-		assertTrue(bean instanceof AnotherScopeTestInterface);
+		assertThat(AopUtils.isJdkDynamicProxy(bean)).isTrue();
+		boolean condition = bean instanceof AnotherScopeTestInterface;
+		assertThat(condition).isTrue();
 
 		assertEquals(DEFAULT_NAME, bean.getName());
 		bean.setName(MODIFIED_NAME);
@@ -209,8 +210,9 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("request");
 
 		// should be a class-based proxy
-		assertTrue(AopUtils.isCglibProxy(bean));
-		assertTrue(bean instanceof RequestScopedTestBean);
+		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
+		boolean condition = bean instanceof RequestScopedTestBean;
+		assertThat(condition).isTrue();
 
 		assertEquals(DEFAULT_NAME, bean.getName());
 		bean.setName(MODIFIED_NAME);
@@ -251,8 +253,9 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("session");
 
 		// should be dynamic proxy, implementing both interfaces
-		assertTrue(AopUtils.isJdkDynamicProxy(bean));
-		assertTrue(bean instanceof AnotherScopeTestInterface);
+		assertThat(AopUtils.isJdkDynamicProxy(bean)).isTrue();
+		boolean condition = bean instanceof AnotherScopeTestInterface;
+		assertThat(condition).isTrue();
 
 		assertEquals(DEFAULT_NAME, bean.getName());
 		bean.setName(MODIFIED_NAME);
@@ -278,9 +281,11 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 		IScopedTestBean bean = (IScopedTestBean) context.getBean("session");
 
 		// should be a class-based proxy
-		assertTrue(AopUtils.isCglibProxy(bean));
-		assertTrue(bean instanceof ScopedTestBean);
-		assertTrue(bean instanceof SessionScopedTestBean);
+		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
+		boolean condition1 = bean instanceof ScopedTestBean;
+		assertThat(condition1).isTrue();
+		boolean condition = bean instanceof SessionScopedTestBean;
+		assertThat(condition).isTrue();
 
 		assertEquals(DEFAULT_NAME, bean.getName());
 		bean.setName(MODIFIED_NAME);

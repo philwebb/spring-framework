@@ -44,10 +44,10 @@ import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
 import static java.util.Collections.singletonMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
@@ -68,12 +68,12 @@ public class Jackson2JsonEncoderTests extends AbstractEncoderTestCase<Jackson2Js
 	@Test
 	public void canEncode() {
 		ResolvableType pojoType = ResolvableType.forClass(Pojo.class);
-		assertTrue(this.encoder.canEncode(pojoType, APPLICATION_JSON));
-		assertTrue(this.encoder.canEncode(pojoType, APPLICATION_STREAM_JSON));
-		assertTrue(this.encoder.canEncode(pojoType, null));
+		assertThat(this.encoder.canEncode(pojoType, APPLICATION_JSON)).isTrue();
+		assertThat(this.encoder.canEncode(pojoType, APPLICATION_STREAM_JSON)).isTrue();
+		assertThat(this.encoder.canEncode(pojoType, null)).isTrue();
 
 		// SPR-15464
-		assertTrue(this.encoder.canEncode(ResolvableType.NONE, null));
+		assertThat(this.encoder.canEncode(ResolvableType.NONE, null)).isTrue();
 
 		// SPR-15910
 		assertFalse(this.encoder.canEncode(ResolvableType.forClass(Object.class), APPLICATION_OCTET_STREAM));

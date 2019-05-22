@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.HandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link PathVariableMapMethodArgumentResolver}.
@@ -70,7 +70,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(paramMap));
+		assertThat(resolver.supportsParameter(paramMap)).isTrue();
 		assertFalse(resolver.supportsParameter(paramNamedMap));
 		assertFalse(resolver.supportsParameter(paramMapNoAnnot));
 		assertThatIllegalStateException().isThrownBy(() ->

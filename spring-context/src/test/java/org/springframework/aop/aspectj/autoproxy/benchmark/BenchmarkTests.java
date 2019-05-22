@@ -36,8 +36,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.util.StopWatch;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for AspectJ auto proxying. Includes mixing with Spring AOP
@@ -108,7 +108,7 @@ public class BenchmarkTests {
 		sw.start(howmany + " repeated around advice invocations with " + technology);
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 
-		assertTrue(AopUtils.isAopProxy(adrian));
+		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		assertEquals(68, adrian.getAge());
 
 		for (int i = 0; i < howmany; i++) {
@@ -127,9 +127,9 @@ public class BenchmarkTests {
 		sw.start(howmany + " repeated before advice invocations with " + technology);
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 
-		assertTrue(AopUtils.isAopProxy(adrian));
+		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		Advised a = (Advised) adrian;
-		assertTrue(a.getAdvisors().length >= 3);
+		assertThat(a.getAdvisors().length >= 3).isTrue();
 		assertEquals("adrian", adrian.getName());
 
 		for (int i = 0; i < howmany; i++) {
@@ -148,9 +148,9 @@ public class BenchmarkTests {
 		sw.start(howmany + " repeated after returning advice invocations with " + technology);
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 
-		assertTrue(AopUtils.isAopProxy(adrian));
+		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		Advised a = (Advised) adrian;
-		assertTrue(a.getAdvisors().length >= 3);
+		assertThat(a.getAdvisors().length >= 3).isTrue();
 		// Hits joinpoint
 		adrian.setAge(25);
 
@@ -170,9 +170,9 @@ public class BenchmarkTests {
 		sw.start(howmany + " repeated mixed invocations with " + technology);
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 
-		assertTrue(AopUtils.isAopProxy(adrian));
+		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		Advised a = (Advised) adrian;
-		assertTrue(a.getAdvisors().length >= 3);
+		assertThat(a.getAdvisors().length >= 3).isTrue();
 
 		for (int i = 0; i < howmany; i++) {
 			// Hit all 3 joinpoints

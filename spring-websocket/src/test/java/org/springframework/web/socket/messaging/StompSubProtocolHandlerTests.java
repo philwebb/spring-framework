@@ -66,7 +66,6 @@ import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -262,7 +261,7 @@ public class StompSubProtocolHandlerTests {
 
 		assertEquals(1, this.session.getSentMessages().size());
 		WebSocketMessage<?> textMessage = this.session.getSentMessages().get(0);
-		assertTrue(((String) textMessage.getPayload()).contains("destination:/user/queue/foo\n"));
+		assertThat(((String) textMessage.getPayload()).contains("destination:/user/queue/foo\n")).isTrue();
 		assertFalse(((String) textMessage.getPayload()).contains(SimpMessageHeaderAccessor.ORIGINAL_DESTINATION));
 	}
 
@@ -285,7 +284,8 @@ public class StompSubProtocolHandlerTests {
 
 		assertEquals(1, this.session.getSentMessages().size());
 		WebSocketMessage<?> webSocketMessage = this.session.getSentMessages().get(0);
-		assertTrue(webSocketMessage instanceof BinaryMessage);
+		boolean condition1 = webSocketMessage instanceof BinaryMessage;
+		assertThat(condition1).isTrue();
 
 		// Empty payload
 
@@ -295,7 +295,8 @@ public class StompSubProtocolHandlerTests {
 
 		assertEquals(2, this.session.getSentMessages().size());
 		webSocketMessage = this.session.getSentMessages().get(1);
-		assertTrue(webSocketMessage instanceof TextMessage);
+		boolean condition = webSocketMessage instanceof TextMessage;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -346,7 +347,7 @@ public class StompSubProtocolHandlerTests {
 		TextMessage message = StompTextMessageBuilder.create(StompCommand.CONNECT).build();
 		handler.handleMessageFromClient(this.session, message, channel);
 		assertNotNull(mutable.get());
-		assertTrue(mutable.get());
+		assertThat((boolean) mutable.get()).isTrue();
 	}
 
 	@Test
@@ -403,7 +404,7 @@ public class StompSubProtocolHandlerTests {
 		verifyZeroInteractions(this.channel);
 		assertEquals(1, this.session.getSentMessages().size());
 		TextMessage actual = (TextMessage) this.session.getSentMessages().get(0);
-		assertTrue(actual.getPayload().startsWith("ERROR"));
+		assertThat(actual.getPayload().startsWith("ERROR")).isTrue();
 	}
 
 	@Test

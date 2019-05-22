@@ -36,10 +36,10 @@ import org.springframework.web.socket.sockjs.transport.TransportType;
 import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService;
 import org.springframework.web.socket.sockjs.transport.handler.WebSocketTransportHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for
@@ -159,7 +159,7 @@ public class WebSocketHandlerRegistrationTests {
 		assertEquals(handler, mapping.webSocketHandler);
 		assertEquals("/foo/**", mapping.path);
 		assertNotNull(mapping.sockJsService);
-		assertTrue(mapping.sockJsService.getAllowedOrigins().contains("https://mydomain1.com"));
+		assertThat(mapping.sockJsService.getAllowedOrigins().contains("https://mydomain1.com")).isTrue();
 		List<HandshakeInterceptor> interceptors = mapping.sockJsService.getHandshakeInterceptors();
 		assertEquals(interceptor, interceptors.get(0));
 		assertEquals(OriginHandshakeInterceptor.class, interceptors.get(1).getClass());

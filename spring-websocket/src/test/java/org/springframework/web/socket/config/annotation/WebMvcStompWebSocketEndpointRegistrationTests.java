@@ -39,11 +39,11 @@ import org.springframework.web.socket.sockjs.transport.TransportType;
 import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService;
 import org.springframework.web.socket.sockjs.transport.handler.WebSocketTransportHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -124,7 +124,7 @@ public class WebMvcStompWebSocketEndpointRegistrationTests {
 		SockJsHttpRequestHandler requestHandler = (SockJsHttpRequestHandler)mappings.entrySet().iterator().next().getKey();
 		assertNotNull(requestHandler.getSockJsService());
 		DefaultSockJsService sockJsService = (DefaultSockJsService)requestHandler.getSockJsService();
-		assertTrue(sockJsService.getAllowedOrigins().contains(origin));
+		assertThat(sockJsService.getAllowedOrigins().contains(origin)).isTrue();
 		assertFalse(sockJsService.shouldSuppressCors());
 
 		registration =
@@ -135,7 +135,7 @@ public class WebMvcStompWebSocketEndpointRegistrationTests {
 		requestHandler = (SockJsHttpRequestHandler)mappings.entrySet().iterator().next().getKey();
 		assertNotNull(requestHandler.getSockJsService());
 		sockJsService = (DefaultSockJsService)requestHandler.getSockJsService();
-		assertTrue(sockJsService.getAllowedOrigins().contains(origin));
+		assertThat(sockJsService.getAllowedOrigins().contains(origin)).isTrue();
 		assertFalse(sockJsService.shouldSuppressCors());
 	}
 
@@ -151,7 +151,7 @@ public class WebMvcStompWebSocketEndpointRegistrationTests {
 		SockJsHttpRequestHandler requestHandler = (SockJsHttpRequestHandler)mappings.entrySet().iterator().next().getKey();
 		assertNotNull(requestHandler.getSockJsService());
 		DefaultSockJsService sockJsService = (DefaultSockJsService)requestHandler.getSockJsService();
-		assertTrue(sockJsService.shouldSuppressCors());
+		assertThat(sockJsService.shouldSuppressCors()).isTrue();
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class WebMvcStompWebSocketEndpointRegistrationTests {
 		assertEquals(interceptor, sockJsService.getHandshakeInterceptors().get(0));
 		assertEquals(OriginHandshakeInterceptor.class,
 				sockJsService.getHandshakeInterceptors().get(1).getClass());
-		assertTrue(sockJsService.getAllowedOrigins().contains(origin));
+		assertThat(sockJsService.getAllowedOrigins().contains(origin)).isTrue();
 	}
 
 }

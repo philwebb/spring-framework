@@ -21,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -55,7 +54,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ResourceHandlerRegistry}.
@@ -129,7 +127,7 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void hasMappingForPattern() {
-		assertTrue(this.registry.hasMappingForPattern("/resources/**"));
+		assertThat(this.registry.hasMappingForPattern("/resources/**")).isTrue();
 		assertFalse(this.registry.hasMappingForPattern("/whatever"));
 	}
 

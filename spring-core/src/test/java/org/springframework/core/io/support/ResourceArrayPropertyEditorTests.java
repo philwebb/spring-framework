@@ -23,10 +23,10 @@ import org.junit.Test;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.Resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Dave Syer
@@ -40,7 +40,7 @@ public class ResourceArrayPropertyEditorTests {
 		editor.setAsText("classpath:org/springframework/core/io/support/ResourceArrayPropertyEditor.class");
 		Resource[] resources = (Resource[]) editor.getValue();
 		assertNotNull(resources);
-		assertTrue(resources[0].exists());
+		assertThat(resources[0].exists()).isTrue();
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class ResourceArrayPropertyEditorTests {
 		editor.setAsText("classpath*:org/springframework/core/io/support/Resource*Editor.class");
 		Resource[] resources = (Resource[]) editor.getValue();
 		assertNotNull(resources);
-		assertTrue(resources[0].exists());
+		assertThat(resources[0].exists()).isTrue();
 	}
 
 	@Test

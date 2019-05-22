@@ -22,10 +22,10 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests that serve as regression tests for the bugs described in SPR-6888
@@ -113,18 +113,18 @@ public class ClassPathResourceTests {
 	@Test
 	public void directoryNotReadable() {
 		Resource fileDir = new ClassPathResource("org/springframework/core");
-		assertTrue(fileDir.exists());
+		assertThat(fileDir.exists()).isTrue();
 		assertFalse(fileDir.isReadable());
 
 		Resource jarDir = new ClassPathResource("reactor/core");
-		assertTrue(jarDir.exists());
+		assertThat(jarDir.exists()).isTrue();
 		assertFalse(jarDir.isReadable());
 	}
 
 
 	private void assertDescriptionContainsExpectedPath(ClassPathResource resource, String expectedPath) {
 		Matcher matcher = DESCRIPTION_PATTERN.matcher(resource.getDescription());
-		assertTrue(matcher.matches());
+		assertThat(matcher.matches()).isTrue();
 		assertEquals(1, matcher.groupCount());
 		String match = matcher.group(1);
 

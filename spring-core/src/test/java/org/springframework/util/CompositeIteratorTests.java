@@ -23,12 +23,9 @@ import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 
 /**
@@ -52,7 +49,7 @@ public class CompositeIteratorTests {
 		CompositeIterator<String> it = new CompositeIterator<>();
 		it.add(Arrays.asList("0", "1").iterator());
 		for (int i = 0; i < 2; i++) {
-			assertTrue(it.hasNext());
+			assertThat(it.hasNext()).isTrue();
 			assertEquals(String.valueOf(i), it.next());
 		}
 		assertFalse(it.hasNext());
@@ -67,7 +64,7 @@ public class CompositeIteratorTests {
 		it.add(Arrays.asList("2").iterator());
 		it.add(Arrays.asList("3", "4").iterator());
 		for (int i = 0; i < 5; i++) {
-			assertTrue(it.hasNext());
+			assertThat(it.hasNext()).isTrue();
 			assertEquals(String.valueOf(i), it.next());
 		}
 		assertFalse(it.hasNext());

@@ -21,8 +21,8 @@ import org.junit.Test;
 
 import org.springframework.ui.ModelMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link ModelAndViewContainer}.
@@ -73,7 +73,7 @@ public class ModelAndViewContainerTests {
 		this.mavContainer.addAttribute("name", "value");
 		this.mavContainer.setRedirectModelScenario(true);
 
-		assertTrue(this.mavContainer.getModel().isEmpty());
+		assertThat(this.mavContainer.getModel().isEmpty()).isTrue();
 	}
 
 	@Test  // SPR-14045

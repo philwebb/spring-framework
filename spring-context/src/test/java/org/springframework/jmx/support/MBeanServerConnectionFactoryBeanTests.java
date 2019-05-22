@@ -28,10 +28,10 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.jmx.AbstractMBeanServerTests;
 import org.springframework.util.SocketUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -92,7 +92,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 		bean.afterPropertiesSet();
 
 		MBeanServerConnection connection = bean.getObject();
-		assertTrue(AopUtils.isAopProxy(connection));
+		assertThat(AopUtils.isAopProxy(connection)).isTrue();
 
 		JMXConnectorServer connector = null;
 		try {
@@ -116,7 +116,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 		bean.afterPropertiesSet();
 
 		MBeanServerConnection connection = bean.getObject();
-		assertTrue(AopUtils.isAopProxy(connection));
+		assertThat(AopUtils.isAopProxy(connection)).isTrue();
 		bean.destroy();
 	}
 

@@ -41,10 +41,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.SqlParameterValue;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
@@ -233,8 +233,8 @@ public class NamedParameterJdbcTemplateTests {
 					return cust1;
 				});
 
-		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
-		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
+		assertThat(cust.getId() == 1).as("Customer id was assigned correctly").isTrue();
+		assertThat(cust.getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
 		verify(preparedStatement).setString(2, "UK");
@@ -257,8 +257,8 @@ public class NamedParameterJdbcTemplateTests {
 					return cust1;
 				});
 
-		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
-		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
+		assertThat(cust.getId() == 1).as("Customer id was assigned correctly").isTrue();
+		assertThat(cust.getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
 		verify(preparedStatement).close();
 		verify(connection).close();
@@ -281,8 +281,8 @@ public class NamedParameterJdbcTemplateTests {
 		});
 
 		assertEquals(1, customers.size());
-		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
-		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
+		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
+		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
 		verify(preparedStatement).setString(2, "UK");
@@ -305,8 +305,8 @@ public class NamedParameterJdbcTemplateTests {
 		});
 
 		assertEquals(1, customers.size());
-		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
-		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
+		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
+		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
 		verify(preparedStatement).close();
 		verify(connection).close();
@@ -328,8 +328,8 @@ public class NamedParameterJdbcTemplateTests {
 					return cust;
 				});
 		assertEquals(1, customers.size());
-		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
-		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
+		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
+		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
 		verify(preparedStatement).setString(2, "UK");
@@ -351,8 +351,8 @@ public class NamedParameterJdbcTemplateTests {
 					return cust;
 				});
 		assertEquals(1, customers.size());
-		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
-		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
+		assertThat(customers.get(0).getId() == 1).as("Customer id was assigned correctly").isTrue();
+		assertThat(customers.get(0).getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
 		verify(preparedStatement).close();
 		verify(connection).close();
@@ -373,8 +373,8 @@ public class NamedParameterJdbcTemplateTests {
 					cust1.setForename(rs.getString(COLUMN_NAMES[1]));
 					return cust1;
 				});
-		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
-		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
+		assertThat(cust.getId() == 1).as("Customer id was assigned correctly").isTrue();
+		assertThat(cust.getForename().equals("rod")).as("Customer forename was assigned correctly").isTrue();
 		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
 		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
 		verify(preparedStatement).setString(2, "UK");
@@ -428,7 +428,7 @@ public class NamedParameterJdbcTemplateTests {
 
 		int[] actualRowsAffected = namedParameterTemplate.batchUpdate(
 				"UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
-		assertTrue("executed 2 updates", actualRowsAffected.length == 2);
+		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
 		assertEquals(rowsAffected[0], actualRowsAffected[0]);
 		assertEquals(rowsAffected[1], actualRowsAffected[1]);
 		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
@@ -447,7 +447,7 @@ public class NamedParameterJdbcTemplateTests {
 
 		int[] actualRowsAffected = namedParameterTemplate.batchUpdate(
 				"UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
-		assertTrue("executed 0 updates", actualRowsAffected.length == 0);
+		assertThat(actualRowsAffected.length == 0).as("executed 0 updates").isTrue();
 	}
 
 	@Test
@@ -463,7 +463,7 @@ public class NamedParameterJdbcTemplateTests {
 
 		int[] actualRowsAffected = namedParameterTemplate.batchUpdate(
 				"UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
-		assertTrue("executed 2 updates", actualRowsAffected.length == 2);
+		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
 		assertEquals(rowsAffected[0], actualRowsAffected[0]);
 		assertEquals(rowsAffected[1], actualRowsAffected[1]);
 		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
@@ -522,7 +522,7 @@ public class NamedParameterJdbcTemplateTests {
 
 		int[] actualRowsAffected = namedParameterTemplate.batchUpdate(
 				"UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
-		assertTrue("executed 2 updates", actualRowsAffected.length == 2);
+		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
 		assertEquals(rowsAffected[0], actualRowsAffected[0]);
 		assertEquals(rowsAffected[1], actualRowsAffected[1]);
 		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");

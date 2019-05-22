@@ -41,13 +41,13 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -89,7 +89,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() throws Exception {
-		assertTrue(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 0)));
+		assertThat(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 0))).isTrue();
 		assertFalse(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, -1)));
 	}
 
@@ -142,7 +142,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 		actual = testResolveArgument(param, factory);
 		assertNotNull(actual);
 		assertEquals(Optional.class, actual.getClass());
-		assertTrue(((Optional<?>) actual).isPresent());
+		assertThat(((Optional<?>) actual).isPresent()).isTrue();
 		assertSame(foo, ((Optional<?>) actual).get());
 	}
 

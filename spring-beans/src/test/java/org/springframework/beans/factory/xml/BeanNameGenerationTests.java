@@ -23,9 +23,9 @@ import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -58,11 +58,11 @@ public class BeanNameGenerationTests {
 
 		GeneratedNameBean child1 = topLevel1.getChild();
 		assertNotNull(child1.getBeanName());
-		assertTrue(child1.getBeanName().startsWith(className));
+		assertThat(child1.getBeanName().startsWith(className)).isTrue();
 
 		GeneratedNameBean child2 = topLevel2.getChild();
 		assertNotNull(child2.getBeanName());
-		assertTrue(child2.getBeanName().startsWith(className));
+		assertThat(child2.getBeanName().startsWith(className)).isTrue();
 
 		assertFalse(child1.getBeanName().equals(child2.getBeanName()));
 	}

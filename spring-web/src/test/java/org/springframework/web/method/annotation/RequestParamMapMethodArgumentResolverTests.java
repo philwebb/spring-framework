@@ -36,9 +36,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
 
 /**
@@ -62,10 +62,10 @@ public class RequestParamMapMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class, String.class, String.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotPresent(RequestParam.class).arg(MultiValueMap.class, String.class, String.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().name("name")).arg(Map.class, String.class, String.class);
 		assertFalse(resolver.supportsParameter(param));
@@ -84,7 +84,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class, String.class, String.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertTrue(result instanceof Map);
+		boolean condition = result instanceof Map;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -102,7 +103,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annotPresent(RequestParam.class).arg(MultiValueMap.class, String.class, String.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertTrue(result instanceof MultiValueMap);
+		boolean condition = result instanceof MultiValueMap;
+		assertThat(condition).isTrue();
 		assertEquals("Invalid result", expected, result);
 	}
 
@@ -119,7 +121,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class, String.class, MultipartFile.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertTrue(result instanceof Map);
+		boolean condition = result instanceof Map;
+		assertThat(condition).isTrue();
 		Map<String, MultipartFile> resultMap = (Map<String, MultipartFile>) result;
 		assertEquals(2, resultMap.size());
 		assertEquals(expected1, resultMap.get("mfile"));
@@ -141,7 +144,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(MultiValueMap.class, String.class, MultipartFile.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertTrue(result instanceof MultiValueMap);
+		boolean condition = result instanceof MultiValueMap;
+		assertThat(condition).isTrue();
 		MultiValueMap<String, MultipartFile> resultMap = (MultiValueMap<String, MultipartFile>) result;
 		assertEquals(2, resultMap.size());
 		assertEquals(2, resultMap.get("mfilelist").size());
@@ -165,7 +169,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class, String.class, Part.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertTrue(result instanceof Map);
+		boolean condition = result instanceof Map;
+		assertThat(condition).isTrue();
 		Map<String, Part> resultMap = (Map<String, Part>) result;
 		assertEquals(2, resultMap.size());
 		assertEquals(expected1, resultMap.get("mfile"));
@@ -188,7 +193,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(MultiValueMap.class, String.class, Part.class);
 		Object result = resolver.resolveArgument(param, null, webRequest, null);
 
-		assertTrue(result instanceof MultiValueMap);
+		boolean condition = result instanceof MultiValueMap;
+		assertThat(condition).isTrue();
 		MultiValueMap<String, Part> resultMap = (MultiValueMap<String, Part>) result;
 		assertEquals(2, resultMap.size());
 		assertEquals(2, resultMap.get("mfilelist").size());

@@ -47,10 +47,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 
 /**
@@ -71,13 +71,13 @@ public class PayloadMethodArgumentResolverTests {
 		boolean useDefaultResolution = true;
 		PayloadMethodArgumentResolver resolver = createResolver(null, useDefaultResolution);
 
-		assertTrue(resolver.supportsParameter(this.testMethod.annotPresent(Payload.class).arg()));
-		assertTrue(resolver.supportsParameter(this.testMethod.annotNotPresent(Payload.class).arg(String.class)));
+		assertThat(resolver.supportsParameter(this.testMethod.annotPresent(Payload.class).arg())).isTrue();
+		assertThat(resolver.supportsParameter(this.testMethod.annotNotPresent(Payload.class).arg(String.class))).isTrue();
 
 		useDefaultResolution = false;
 		resolver = createResolver(null, useDefaultResolution);
 
-		assertTrue(resolver.supportsParameter(this.testMethod.annotPresent(Payload.class).arg()));
+		assertThat(resolver.supportsParameter(this.testMethod.annotPresent(Payload.class).arg())).isTrue();
 		assertFalse(resolver.supportsParameter(this.testMethod.annotNotPresent(Payload.class).arg(String.class)));
 	}
 
@@ -89,7 +89,7 @@ public class PayloadMethodArgumentResolverTests {
 		StepVerifier.create(mono)
 				.consumeErrorWith(ex -> {
 					assertEquals(MethodArgumentResolutionException.class, ex.getClass());
-					assertTrue(ex.getMessage(), ex.getMessage().contains("Payload content is missing"));
+					assertThat(ex.getMessage().contains("Payload content is missing")).as(ex.getMessage()).isTrue();
 				})
 				.verify();
 	}
@@ -173,7 +173,7 @@ public class PayloadMethodArgumentResolverTests {
 		Object value = result.block(Duration.ofSeconds(5));
 		if (value != null) {
 			Class<?> expectedType = param.getParameterType();
-			assertTrue("Unexpected return value type: " + value, expectedType.isAssignableFrom(value.getClass()));
+			assertThat(expectedType.isAssignableFrom(value.getClass())).as("Unexpected return value type: " + value).isTrue();
 		}
 		return (T) value;
 	}

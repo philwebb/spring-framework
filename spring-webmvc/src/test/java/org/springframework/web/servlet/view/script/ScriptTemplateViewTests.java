@@ -42,13 +42,11 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -162,7 +160,7 @@ public class ScriptTemplateViewTests {
 		}
 		assertEquals(iterations, results.size());
 		for (int i = 0; i < iterations; i++) {
-			assertTrue(results.get(i).get());
+			assertThat((boolean) results.get(i).get()).isTrue();
 		}
 		executor.shutdown();
 	}

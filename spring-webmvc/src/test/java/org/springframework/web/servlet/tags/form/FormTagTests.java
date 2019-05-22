@@ -25,11 +25,11 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.servlet.support.RequestDataValueProcessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 /**
@@ -382,11 +382,11 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 
 
 	private static void assertFormTagOpened(String output) {
-		assertTrue(output.startsWith("<form "));
+		assertThat(output.startsWith("<form ")).isTrue();
 	}
 
 	private static void assertFormTagClosed(String output) {
-		assertTrue(output.endsWith("</form>"));
+		assertThat(output.endsWith("</form>")).isTrue();
 	}
 
 }

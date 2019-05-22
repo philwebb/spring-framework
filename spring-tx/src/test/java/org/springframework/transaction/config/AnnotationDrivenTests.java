@@ -31,9 +31,9 @@ import org.springframework.tests.transaction.CallCountingTransactionManager;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -68,7 +68,7 @@ public class AnnotationDrivenTests {
 		CallCountingTransactionManager tm1 = context.getBean("transactionManager1", CallCountingTransactionManager.class);
 		CallCountingTransactionManager tm2 = context.getBean("transactionManager2", CallCountingTransactionManager.class);
 		TransactionalService service = context.getBean("service", TransactionalService.class);
-		assertTrue(AopUtils.isCglibProxy(service));
+		assertThat(AopUtils.isCglibProxy(service)).isTrue();
 		service.setSomething("someName");
 		assertEquals(1, tm1.commits);
 		assertEquals(0, tm2.commits);
@@ -109,8 +109,8 @@ public class AnnotationDrivenTests {
 		@Override
 		public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 			if (methodInvocation.getMethod().getName().equals("setSomething")) {
-				assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
-				assertTrue(TransactionSynchronizationManager.isSynchronizationActive());
+				assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
+				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 			}
 			else {
 				assertFalse(TransactionSynchronizationManager.isActualTransactionActive());

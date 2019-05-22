@@ -20,9 +20,9 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -47,7 +47,7 @@ public class AttributeAccessorSupportTests {
 	public void setAndHas() throws Exception {
 		assertFalse(this.attributeAccessor.hasAttribute(NAME));
 		this.attributeAccessor.setAttribute(NAME, VALUE);
-		assertTrue(this.attributeAccessor.hasAttribute(NAME));
+		assertThat(this.attributeAccessor.hasAttribute(NAME)).isTrue();
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public class AttributeAccessorSupportTests {
 		this.attributeAccessor.setAttribute("abc", "123");
 		String[] attributeNames = this.attributeAccessor.attributeNames();
 		Arrays.sort(attributeNames);
-		assertTrue(Arrays.binarySearch(attributeNames, NAME) > -1);
-		assertTrue(Arrays.binarySearch(attributeNames, "abc") > -1);
+		assertThat(Arrays.binarySearch(attributeNames, NAME) > -1).isTrue();
+		assertThat(Arrays.binarySearch(attributeNames, "abc") > -1).isTrue();
 	}
 
 	@SuppressWarnings("serial")

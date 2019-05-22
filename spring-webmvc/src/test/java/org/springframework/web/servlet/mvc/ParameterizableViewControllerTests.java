@@ -26,9 +26,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with a ParameterizableViewController.
@@ -54,14 +54,14 @@ public class ParameterizableViewControllerTests {
 		this.controller.setViewName(viewName);
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
 		assertEquals(viewName, mav.getViewName());
-		assertTrue(mav.getModel().isEmpty());
+		assertThat(mav.getModel().isEmpty()).isTrue();
 	}
 
 	@Test
 	public void handleRequestWithoutViewName() throws Exception {
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
 		assertNull(mav.getViewName());
-		assertTrue(mav.getModel().isEmpty());
+		assertThat(mav.getModel().isEmpty()).isTrue();
 	}
 
 	@Test

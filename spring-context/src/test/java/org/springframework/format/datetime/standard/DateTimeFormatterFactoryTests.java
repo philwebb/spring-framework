@@ -30,12 +30,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
-
-
-import static temp.XAssert.assertTrue;
-
 /**
  * @author Phillip Webb
  * @author Sam Brannen
@@ -84,8 +78,8 @@ public class DateTimeFormatterFactoryTests {
 	public void createDateTimeFormatterInOrderOfPropertyPriority() {
 		factory.setStylePattern("SS");
 		String value = applyLocale(factory.createDateTimeFormatter()).format(dateTime);
-		assertTrue(value.startsWith("10/21/09"));
-		assertTrue(value.endsWith("12:10 PM"));
+		assertThat(value.startsWith("10/21/09")).isTrue();
+		assertThat(value.endsWith("12:10 PM")).isTrue();
 
 		factory.setIso(ISO.DATE);
 		assertThat(applyLocale(factory.createDateTimeFormatter()).format(dateTime)).isEqualTo("2009-10-21");

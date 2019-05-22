@@ -34,10 +34,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.SimpleTransactionStatus;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
@@ -256,7 +256,7 @@ public class TransactionalTestExecutionListenerTests {
 		listener.beforeTestMethod(testContext);
 		assertFalse("callback should not have been invoked", instance.invoked());
 		listener.afterTestMethod(testContext);
-		assertTrue("callback should have been invoked", instance.invoked());
+		assertThat(instance.invoked()).as("callback should have been invoked").isTrue();
 	}
 
 	private void assertAfterTestMethodWithNonTransactionalTestMethod(Class<? extends Invocable> clazz) throws Exception {

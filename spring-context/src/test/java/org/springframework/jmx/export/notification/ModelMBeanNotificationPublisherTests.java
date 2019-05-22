@@ -27,10 +27,10 @@ import org.junit.Test;
 
 import org.springframework.jmx.export.SpringModelMBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans
@@ -86,7 +86,8 @@ public class ModelMBeanNotificationPublisherTests {
 		publisher.sendNotification(notification);
 
 		assertNotNull(mbean.getActualNotification());
-		assertTrue(mbean.getActualNotification() instanceof AttributeChangeNotification);
+		boolean condition = mbean.getActualNotification() instanceof AttributeChangeNotification;
+		assertThat(condition).isTrue();
 		assertSame("The exact same Notification is not being passed through from the publisher to the mbean.", notification, mbean.getActualNotification());
 		assertSame("The 'source' property of the Notification is not being set to the ObjectName of the associated MBean.", objectName, mbean.getActualNotification().getSource());
 	}
@@ -100,7 +101,8 @@ public class ModelMBeanNotificationPublisherTests {
 		publisher.sendNotification(notification);
 
 		assertNotNull(mbean.getActualNotification());
-		assertTrue(mbean.getActualNotification() instanceof AttributeChangeNotification);
+		boolean condition = mbean.getActualNotification() instanceof AttributeChangeNotification;
+		assertThat(condition).isTrue();
 		assertSame("The exact same Notification is not being passed through from the publisher to the mbean.", notification, mbean.getActualNotification());
 		assertSame("The 'source' property of the Notification is *wrongly* being set to the ObjectName of the associated MBean.", this, mbean.getActualNotification().getSource());
 	}

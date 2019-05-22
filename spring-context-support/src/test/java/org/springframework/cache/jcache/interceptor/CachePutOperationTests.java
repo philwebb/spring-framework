@@ -23,12 +23,10 @@ import javax.cache.annotation.CachePut;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -87,9 +85,9 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "fullPutConfig", Long.class, SampleObject.class);
 		CachePutOperation operation = createDefaultOperation(methodDetails);
-		assertTrue(operation.isEarlyPut());
+		assertThat(operation.isEarlyPut()).isTrue();
 		assertNotNull(operation.getExceptionTypeFilter());
-		assertTrue(operation.getExceptionTypeFilter().match(IOException.class));
+		assertThat(operation.getExceptionTypeFilter().match(IOException.class)).isTrue();
 		assertFalse(operation.getExceptionTypeFilter().match(NullPointerException.class));
 	}
 

@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -92,7 +91,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * A test fixture with a controller with all supported method signature styles
@@ -218,7 +216,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
 		assertSame(modelAttrByConvention, bindingResult.getTarget());
 
-		assertTrue(model.get("customArg") instanceof Color);
+		boolean condition = model.get("customArg") instanceof Color;
+		assertThat(condition).isTrue();
 		assertEquals(User.class, model.get("user").getClass());
 		assertEquals(OtherUser.class, model.get("otherUser").getClass());
 
@@ -299,7 +298,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
 		assertSame(modelAttrByConvention, bindingResult.getTarget());
 
-		assertTrue(model.get("customArg") instanceof Color);
+		boolean condition = model.get("customArg") instanceof Color;
+		assertThat(condition).isTrue();
 		assertEquals(User.class, model.get("user").getClass());
 		assertEquals(OtherUser.class, model.get("otherUser").getClass());
 

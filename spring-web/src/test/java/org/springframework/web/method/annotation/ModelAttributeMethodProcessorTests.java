@@ -45,11 +45,11 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
@@ -108,8 +108,8 @@ public class ModelAttributeMethodProcessorTests {
 
 	@Test
 	public void supportedParameters() throws Exception {
-		assertTrue(this.processor.supportsParameter(this.paramNamedValidModelAttr));
-		assertTrue(this.processor.supportsParameter(this.paramModelAttr));
+		assertThat(this.processor.supportsParameter(this.paramNamedValidModelAttr)).isTrue();
+		assertThat(this.processor.supportsParameter(this.paramModelAttr)).isTrue();
 
 		assertFalse(this.processor.supportsParameter(this.paramErrors));
 		assertFalse(this.processor.supportsParameter(this.paramInt));
@@ -121,10 +121,10 @@ public class ModelAttributeMethodProcessorTests {
 		processor = new ModelAttributeMethodProcessor(true);
 
 		// Only non-simple types, even if not annotated
-		assertTrue(this.processor.supportsParameter(this.paramNamedValidModelAttr));
-		assertTrue(this.processor.supportsParameter(this.paramErrors));
-		assertTrue(this.processor.supportsParameter(this.paramModelAttr));
-		assertTrue(this.processor.supportsParameter(this.paramNonSimpleType));
+		assertThat(this.processor.supportsParameter(this.paramNamedValidModelAttr)).isTrue();
+		assertThat(this.processor.supportsParameter(this.paramErrors)).isTrue();
+		assertThat(this.processor.supportsParameter(this.paramModelAttr)).isTrue();
+		assertThat(this.processor.supportsParameter(this.paramNonSimpleType)).isTrue();
 
 		assertFalse(this.processor.supportsParameter(this.paramInt));
 	}
@@ -132,20 +132,20 @@ public class ModelAttributeMethodProcessorTests {
 	@Test
 	public void supportedReturnTypes() throws Exception {
 		processor = new ModelAttributeMethodProcessor(false);
-		assertTrue(this.processor.supportsReturnType(returnParamNamedModelAttr));
+		assertThat(this.processor.supportsReturnType(returnParamNamedModelAttr)).isTrue();
 		assertFalse(this.processor.supportsReturnType(returnParamNonSimpleType));
 	}
 
 	@Test
 	public void supportedReturnTypesInDefaultResolutionMode() throws Exception {
 		processor = new ModelAttributeMethodProcessor(true);
-		assertTrue(this.processor.supportsReturnType(returnParamNamedModelAttr));
-		assertTrue(this.processor.supportsReturnType(returnParamNonSimpleType));
+		assertThat(this.processor.supportsReturnType(returnParamNamedModelAttr)).isTrue();
+		assertThat(this.processor.supportsReturnType(returnParamNonSimpleType)).isTrue();
 	}
 
 	@Test
 	public void bindExceptionRequired() throws Exception {
-		assertTrue(this.processor.isBindExceptionRequired(null, this.paramNonSimpleType));
+		assertThat(this.processor.isBindExceptionRequired(null, this.paramNonSimpleType)).isTrue();
 		assertFalse(this.processor.isBindExceptionRequired(null, this.paramNamedValidModelAttr));
 	}
 
@@ -178,8 +178,8 @@ public class ModelAttributeMethodProcessorTests {
 
 		this.processor.resolveArgument(this.paramNamedValidModelAttr, this.container, this.request, factory);
 
-		assertTrue(dataBinder.isBindInvoked());
-		assertTrue(dataBinder.isValidateInvoked());
+		assertThat(dataBinder.isBindInvoked()).isTrue();
+		assertThat(dataBinder.isValidateInvoked()).isTrue();
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class ModelAttributeMethodProcessorTests {
 		this.processor.resolveArgument(this.paramNamedValidModelAttr, this.container, this.request, factory);
 
 		assertFalse(dataBinder.isBindInvoked());
-		assertTrue(dataBinder.isValidateInvoked());
+		assertThat(dataBinder.isValidateInvoked()).isTrue();
 	}
 
 	@Test
@@ -214,7 +214,7 @@ public class ModelAttributeMethodProcessorTests {
 		this.processor.resolveArgument(this.paramBindingDisabledAttr, this.container, this.request, factory);
 
 		assertFalse(dataBinder.isBindInvoked());
-		assertTrue(dataBinder.isValidateInvoked());
+		assertThat(dataBinder.isValidateInvoked()).isTrue();
 	}
 
 	@Test

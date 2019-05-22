@@ -23,11 +23,11 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.servlet.mvc.condition.ParamsRequestCondition.ParamExpression;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ParamsRequestCondition}.
@@ -100,10 +100,10 @@ public class ParamsRequestConditionTests {
 		ParamsRequestCondition condition2 = new ParamsRequestCondition("foo=a", "bar");
 
 		int result = condition1.compareTo(condition2, request);
-		assertTrue("Invalid comparison result: " + result, result < 0);
+		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = condition2.compareTo(condition1, request);
-		assertTrue("Invalid comparison result: " + result, result > 0);
+		assertThat(result > 0).as("Invalid comparison result: " + result).isTrue();
 	}
 
 	@Test // SPR-16674
@@ -114,7 +114,7 @@ public class ParamsRequestConditionTests {
 		ParamsRequestCondition condition2 = new ParamsRequestCondition("response_type");
 
 		int result = condition1.compareTo(condition2, request);
-		assertTrue("Invalid comparison result: " + result, result < 0);
+		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 	}
 
 	@Test

@@ -22,11 +22,9 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the {@link TagUtils} class.
@@ -87,7 +85,7 @@ public class TagUtilsTests {
 		a.setParent(b);
 		b.setParent(c);
 
-		assertTrue(TagUtils.hasAncestorOfType(a, TagC.class));
+		assertThat(TagUtils.hasAncestorOfType(a, TagC.class)).isTrue();
 	}
 
 	@Test

@@ -35,9 +35,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link Jaxb2CollectionHttpMessageConverter}.
@@ -70,9 +70,9 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(rootElementListType, null, null));
-		assertTrue(converter.canRead(rootElementSetType, null, null));
-		assertTrue(converter.canRead(typeSetType, null, null));
+		assertThat(converter.canRead(rootElementListType, null, null)).isTrue();
+		assertThat(converter.canRead(rootElementSetType, null, null)).isTrue();
+		assertThat(converter.canRead(typeSetType, null, null)).isTrue();
 	}
 
 	@Test
@@ -95,8 +95,8 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 		Set<RootElement> result = (Set<RootElement>) converter.read(rootElementSetType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
-		assertTrue("Invalid result", result.contains(new RootElement("1")));
-		assertTrue("Invalid result", result.contains(new RootElement("2")));
+		assertThat(result.contains(new RootElement("1"))).as("Invalid result").isTrue();
+		assertThat(result.contains(new RootElement("2"))).as("Invalid result").isTrue();
 	}
 
 	@Test
@@ -119,8 +119,8 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 		Set<TestType> result = (Set<TestType>) converter.read(typeSetType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
-		assertTrue("Invalid result", result.contains(new TestType("1")));
-		assertTrue("Invalid result", result.contains(new TestType("2")));
+		assertThat(result.contains(new TestType("1"))).as("Invalid result").isTrue();
+		assertThat(result.contains(new TestType("2"))).as("Invalid result").isTrue();
 	}
 
 	@Test

@@ -54,13 +54,13 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.junit.Assume.assumeFalse;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -275,9 +275,9 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		bean.setWithout("without");
 		HttpEntity<MySampleBean> entity = new HttpEntity<>(bean, entityHeaders);
 		String s = template.postForObject(baseUrl + "/jsonpost", entity, String.class);
-		assertTrue(s.contains("\"with1\":\"with\""));
-		assertTrue(s.contains("\"with2\":\"with\""));
-		assertTrue(s.contains("\"without\":\"without\""));
+		assertThat(s.contains("\"with1\":\"with\"")).isTrue();
+		assertThat(s.contains("\"with2\":\"with\"")).isTrue();
+		assertThat(s.contains("\"without\":\"without\"")).isTrue();
 	}
 
 	@Test
@@ -289,7 +289,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		jacksonValue.setSerializationView(MyJacksonView1.class);
 		HttpEntity<MappingJacksonValue> entity = new HttpEntity<>(jacksonValue, entityHeaders);
 		String s = template.postForObject(baseUrl + "/jsonpost", entity, String.class);
-		assertTrue(s.contains("\"with1\":\"with\""));
+		assertThat(s.contains("\"with1\":\"with\"")).isTrue();
 		assertFalse(s.contains("\"with2\":\"with\""));
 		assertFalse(s.contains("\"without\":\"without\""));
 	}
@@ -311,8 +311,8 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 				.contentType(new MediaType("application", "json", StandardCharsets.UTF_8))
 				.body(list, typeReference.getType());
 		String content = template.exchange(entity, String.class).getBody();
-		assertTrue(content.contains("\"type\":\"foo\""));
-		assertTrue(content.contains("\"type\":\"bar\""));
+		assertThat(content.contains("\"type\":\"foo\"")).isTrue();
+		assertThat(content.contains("\"type\":\"bar\"")).isTrue();
 	}
 
 	@Test  // SPR-15015

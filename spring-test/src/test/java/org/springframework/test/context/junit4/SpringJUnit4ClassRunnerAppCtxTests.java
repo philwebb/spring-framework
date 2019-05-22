@@ -37,11 +37,11 @@ import org.springframework.test.context.support.GenericXmlContextLoader;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * SpringJUnit4ClassRunnerAppCtxTests serves as a <em>proof of concept</em>
@@ -168,8 +168,7 @@ public class SpringJUnit4ClassRunnerAppCtxTests implements ApplicationContextAwa
 
 	@Test
 	public void verifyBeanNameSet() {
-		assertTrue("The bean name of this test instance should have been set due to BeanNameAware semantics.",
-				this.beanName.startsWith(getClass().getName()));
+		assertThat(this.beanName.startsWith(getClass().getName())).as("The bean name of this test instance should have been set due to BeanNameAware semantics.").isTrue();
 	}
 
 	@Test
@@ -180,8 +179,7 @@ public class SpringJUnit4ClassRunnerAppCtxTests implements ApplicationContextAwa
 
 	@Test
 	public void verifyBeanInitialized() {
-		assertTrue("This test bean should have been initialized due to InitializingBean semantics.",
-				this.beanInitialized);
+		assertThat(this.beanInitialized).as("This test bean should have been initialized due to InitializingBean semantics.").isTrue();
 	}
 
 	@Test

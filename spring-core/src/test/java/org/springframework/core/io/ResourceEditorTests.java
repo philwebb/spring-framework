@@ -22,10 +22,10 @@ import org.junit.Test;
 
 import org.springframework.core.env.StandardEnvironment;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the {@link ResourceEditor} class.
@@ -42,7 +42,7 @@ public class ResourceEditorTests {
 		editor.setAsText("classpath:org/springframework/core/io/ResourceEditorTests.class");
 		Resource resource = (Resource) editor.getValue();
 		assertNotNull(resource);
-		assertTrue(resource.exists());
+		assertThat(resource.exists()).isTrue();
 	}
 
 	@Test

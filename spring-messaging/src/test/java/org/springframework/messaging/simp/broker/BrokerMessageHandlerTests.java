@@ -32,9 +32,9 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.support.GenericMessage;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -58,14 +58,14 @@ public class BrokerMessageHandlerTests {
 	public void startShouldUpdateIsRunning() {
 		assertFalse(this.handler.isRunning());
 		this.handler.start();
-		assertTrue(this.handler.isRunning());
+		assertThat(this.handler.isRunning()).isTrue();
 	}
 
 	@Test
 	public void stopShouldUpdateIsRunning() {
 
 		this.handler.start();
-		assertTrue(this.handler.isRunning());
+		assertThat(this.handler.isRunning()).isTrue();
 
 		this.handler.stop();
 		assertFalse(this.handler.isRunning());
@@ -92,7 +92,7 @@ public class BrokerMessageHandlerTests {
 
 		this.handler.publishBrokerAvailableEvent();
 
-		assertTrue(this.handler.isBrokerAvailable());
+		assertThat(this.handler.isBrokerAvailable()).isTrue();
 		assertEquals(Arrays.asList(true), this.handler.availabilityEvents);
 	}
 
@@ -109,7 +109,7 @@ public class BrokerMessageHandlerTests {
 	public void publishBrokerUnavailableEvent() {
 
 		this.handler.publishBrokerAvailableEvent();
-		assertTrue(this.handler.isBrokerAvailable());
+		assertThat(this.handler.isBrokerAvailable()).isTrue();
 
 		this.handler.publishBrokerUnavailableEvent();
 		assertFalse(this.handler.isBrokerAvailable());

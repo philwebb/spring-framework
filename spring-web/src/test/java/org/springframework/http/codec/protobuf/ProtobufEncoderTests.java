@@ -33,9 +33,9 @@ import org.springframework.protobuf.Msg;
 import org.springframework.protobuf.SecondMsg;
 import org.springframework.util.MimeType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -61,9 +61,9 @@ public class ProtobufEncoderTests extends AbstractEncoderTestCase<ProtobufEncode
 	@Override
 	@Test
 	public void canEncode() {
-		assertTrue(this.encoder.canEncode(forClass(Msg.class), null));
-		assertTrue(this.encoder.canEncode(forClass(Msg.class), PROTOBUF_MIME_TYPE));
-		assertTrue(this.encoder.canEncode(forClass(Msg.class), MediaType.APPLICATION_OCTET_STREAM));
+		assertThat(this.encoder.canEncode(forClass(Msg.class), null)).isTrue();
+		assertThat(this.encoder.canEncode(forClass(Msg.class), PROTOBUF_MIME_TYPE)).isTrue();
+		assertThat(this.encoder.canEncode(forClass(Msg.class), MediaType.APPLICATION_OCTET_STREAM)).isTrue();
 		assertFalse(this.encoder.canEncode(forClass(Msg.class), MediaType.APPLICATION_JSON));
 		assertFalse(this.encoder.canEncode(forClass(Object.class), PROTOBUF_MIME_TYPE));
 	}

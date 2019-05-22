@@ -35,12 +35,12 @@ import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -137,7 +137,7 @@ public class SessionScopeTests {
 
 		requestAttributes.requestCompleted();
 		session.invalidate();
-		assertTrue(bean.wasDestroyed());
+		assertThat(bean.wasDestroyed()).isTrue();
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class SessionScopeTests {
 
 		requestAttributes.requestCompleted();
 		session.invalidate();
-		assertTrue(bean.wasDestroyed());
+		assertThat(bean.wasDestroyed()).isTrue();
 
 		if (beanNameReset) {
 			assertNull(bean.getBeanName());

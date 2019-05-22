@@ -26,10 +26,10 @@ import org.springframework.aop.SpringProxy;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -43,8 +43,8 @@ public class AopProxyUtilsTests {
 		Class<?>[] completedInterfaces = AopProxyUtils.completeProxiedInterfaces(as);
 		assertEquals(2, completedInterfaces.length);
 		List<?> ifaces = Arrays.asList(completedInterfaces);
-		assertTrue(ifaces.contains(Advised.class));
-		assertTrue(ifaces.contains(SpringProxy.class));
+		assertThat(ifaces.contains(Advised.class)).isTrue();
+		assertThat(ifaces.contains(SpringProxy.class)).isTrue();
 	}
 
 	@Test
@@ -65,9 +65,9 @@ public class AopProxyUtilsTests {
 
 		// Can't assume ordering for others, so use a list
 		List<?> l = Arrays.asList(completedInterfaces);
-		assertTrue(l.contains(Advised.class));
-		assertTrue(l.contains(ITestBean.class));
-		assertTrue(l.contains(Comparable.class));
+		assertThat(l.contains(Advised.class)).isTrue();
+		assertThat(l.contains(ITestBean.class)).isTrue();
+		assertThat(l.contains(Comparable.class)).isTrue();
 	}
 
 	@Test
@@ -81,9 +81,9 @@ public class AopProxyUtilsTests {
 
 		// Can't assume ordering for others, so use a list
 		List<?> l = Arrays.asList(completedInterfaces);
-		assertTrue(l.contains(Advised.class));
-		assertTrue(l.contains(ITestBean.class));
-		assertTrue(l.contains(Comparable.class));
+		assertThat(l.contains(Advised.class)).isTrue();
+		assertThat(l.contains(ITestBean.class)).isTrue();
+		assertThat(l.contains(Comparable.class)).isTrue();
 	}
 
 	@Test
@@ -98,8 +98,8 @@ public class AopProxyUtilsTests {
 		// Can't assume ordering for others, so use a list
 		List<?> l = Arrays.asList(completedInterfaces);
 		assertFalse(l.contains(Advised.class));
-		assertTrue(l.contains(ITestBean.class));
-		assertTrue(l.contains(Comparable.class));
+		assertThat(l.contains(ITestBean.class)).isTrue();
+		assertThat(l.contains(Comparable.class)).isTrue();
 	}
 
 	@Test

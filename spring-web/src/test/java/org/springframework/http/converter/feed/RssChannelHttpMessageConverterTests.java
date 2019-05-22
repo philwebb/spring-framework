@@ -28,7 +28,6 @@ import com.rometools.rome.feed.rss.Item;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-import org.xmlunit.matchers.CompareMatcher;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
@@ -38,7 +37,6 @@ import org.springframework.tests.XmlContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -56,14 +54,14 @@ public class RssChannelHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(Channel.class, new MediaType("application", "rss+xml")));
-		assertTrue(converter.canRead(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
+		assertThat(converter.canRead(Channel.class, new MediaType("application", "rss+xml"))).isTrue();
+		assertThat(converter.canRead(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8))).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(Channel.class, new MediaType("application", "rss+xml")));
-		assertTrue(converter.canWrite(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
+		assertThat(converter.canWrite(Channel.class, new MediaType("application", "rss+xml"))).isTrue();
+		assertThat(converter.canWrite(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8))).isTrue();
 	}
 
 	@Test

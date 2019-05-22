@@ -24,10 +24,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -52,8 +52,9 @@ public class PropertyPathFactoryBeanTests {
 		assertEquals(ITestBean.class, xbf.getType("otb.spouse"));
 		Object result1 = xbf.getBean("otb.spouse");
 		Object result2 = xbf.getBean("otb.spouse");
-		assertTrue(result1 instanceof TestBean);
-		assertTrue(result1 == result2);
+		boolean condition = result1 instanceof TestBean;
+		assertThat(condition).isTrue();
+		assertThat(result1 == result2).isTrue();
 		assertEquals(99, ((TestBean) result1).getAge());
 	}
 
@@ -66,15 +67,18 @@ public class PropertyPathFactoryBeanTests {
 		Object result1 = xbf.getBean("tb.spouse");
 		Object result2 = xbf.getBean("propertyPath3");
 		Object result3 = xbf.getBean("propertyPath3");
-		assertTrue(result1 instanceof TestBean);
-		assertTrue(result2 instanceof TestBean);
-		assertTrue(result3 instanceof TestBean);
+		boolean condition2 = result1 instanceof TestBean;
+		assertThat(condition2).isTrue();
+		boolean condition1 = result2 instanceof TestBean;
+		assertThat(condition1).isTrue();
+		boolean condition = result3 instanceof TestBean;
+		assertThat(condition).isTrue();
 		assertEquals(11, ((TestBean) result1).getAge());
 		assertEquals(11, ((TestBean) result2).getAge());
 		assertEquals(11, ((TestBean) result3).getAge());
-		assertTrue(result1 != result2);
-		assertTrue(result1 != result3);
-		assertTrue(result2 != result3);
+		assertThat(result1 != result2).isTrue();
+		assertThat(result1 != result3).isTrue();
+		assertThat(result2 != result3).isTrue();
 	}
 
 	@Test
@@ -92,7 +96,8 @@ public class PropertyPathFactoryBeanTests {
 		TestBean spouse = (TestBean) xbf.getBean("otb.spouse");
 		TestBean tbWithInner = (TestBean) xbf.getBean("tbWithInner");
 		assertSame(spouse, tbWithInner.getSpouse());
-		assertTrue(!tbWithInner.getFriends().isEmpty());
+		boolean condition = !tbWithInner.getFriends().isEmpty();
+		assertThat(condition).isTrue();
 		assertSame(spouse, tbWithInner.getFriends().iterator().next());
 	}
 

@@ -44,12 +44,12 @@ import org.springframework.tests.sample.beans.IndexedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
@@ -280,7 +280,7 @@ public class PropertyResourceConfigurerTests {
 			}
 			catch (BeanInitializationException ex) {
 				// prove that the processor chokes on the invalid key
-				assertTrue(ex.getMessage().toLowerCase().contains("argh"));
+				assertThat(ex.getMessage().toLowerCase().contains("argh")).isTrue();
 			}
 		}
 	}
@@ -416,9 +416,9 @@ public class PropertyResourceConfigurerTests {
 		assertEquals("na98me", tb2.getFriends().iterator().next());
 		assertEquals(tb2, tb2.getFriends().toArray()[1]);
 		assertEquals(3, tb2.getSomeSet().size());
-		assertTrue(tb2.getSomeSet().contains("na98me"));
-		assertTrue(tb2.getSomeSet().contains(tb2));
-		assertTrue(tb2.getSomeSet().contains(new Integer(98)));
+		assertThat(tb2.getSomeSet().contains("na98me")).isTrue();
+		assertThat(tb2.getSomeSet().contains(tb2)).isTrue();
+		assertThat(tb2.getSomeSet().contains(new Integer(98))).isTrue();
 		assertEquals(6, tb2.getSomeMap().size());
 		assertEquals("98", tb2.getSomeMap().get("key98"));
 		assertEquals(tb2, tb2.getSomeMap().get("key98ref"));

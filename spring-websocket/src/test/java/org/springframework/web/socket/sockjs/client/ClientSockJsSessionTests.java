@@ -40,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -80,7 +79,7 @@ public class ClientSockJsSessionTests {
 		assertThat(this.session.isOpen()).isFalse();
 		this.session.handleFrame(SockJsFrame.openFrame().getContent());
 		assertThat(this.session.isOpen()).isTrue();
-		assertTrue(this.connectFuture.isDone());
+		assertThat(this.connectFuture.isDone()).isTrue();
 		assertThat(this.connectFuture.get()).isSameAs(this.session);
 		verify(this.handler).afterConnectionEstablished(this.session);
 		verifyNoMoreInteractions(this.handler);

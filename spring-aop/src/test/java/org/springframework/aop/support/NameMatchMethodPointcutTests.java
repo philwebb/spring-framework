@@ -27,9 +27,9 @@ import org.springframework.tests.sample.beans.Person;
 import org.springframework.tests.sample.beans.SerializablePerson;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -60,12 +60,12 @@ public class NameMatchMethodPointcutTests {
 	@Test
 	public void testMatchingOnly() {
 		// Can't do exact matching through isMatch
-		assertTrue(pc.isMatch("echo", "ech*"));
-		assertTrue(pc.isMatch("setName", "setN*"));
-		assertTrue(pc.isMatch("setName", "set*"));
+		assertThat(pc.isMatch("echo", "ech*")).isTrue();
+		assertThat(pc.isMatch("setName", "setN*")).isTrue();
+		assertThat(pc.isMatch("setName", "set*")).isTrue();
 		assertFalse(pc.isMatch("getName", "set*"));
 		assertFalse(pc.isMatch("setName", "set"));
-		assertTrue(pc.isMatch("testing", "*ing"));
+		assertThat(pc.isMatch("testing", "*ing")).isTrue();
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class NameMatchMethodPointcutTests {
 
 		pc1.setMappedName(foo);
 		assertFalse(pc1.equals(pc2));
-		assertTrue(pc1.hashCode() != pc2.hashCode());
+		assertThat(pc1.hashCode() != pc2.hashCode()).isTrue();
 
 		pc2.setMappedName(foo);
 		assertEquals(pc1, pc2);

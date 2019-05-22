@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -42,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test cases for {@link ResourceRegionHttpMessageConverter} class.
@@ -63,16 +61,16 @@ public class ResourceRegionHttpMessageConverterTests {
 
 	@Test
 	public void canWriteResource() {
-		assertTrue(converter.canWrite(ResourceRegion.class, null, MediaType.APPLICATION_OCTET_STREAM));
-		assertTrue(converter.canWrite(ResourceRegion.class, null, MediaType.ALL));
+		assertThat(converter.canWrite(ResourceRegion.class, null, MediaType.APPLICATION_OCTET_STREAM)).isTrue();
+		assertThat(converter.canWrite(ResourceRegion.class, null, MediaType.ALL)).isTrue();
 		assertFalse(converter.canWrite(Object.class, null, MediaType.ALL));
 	}
 
 	@Test
 	public void canWriteResourceCollection() {
 		Type resourceRegionList = new ParameterizedTypeReference<List<ResourceRegion>>() {}.getType();
-		assertTrue(converter.canWrite(resourceRegionList, null, MediaType.APPLICATION_OCTET_STREAM));
-		assertTrue(converter.canWrite(resourceRegionList, null, MediaType.ALL));
+		assertThat(converter.canWrite(resourceRegionList, null, MediaType.APPLICATION_OCTET_STREAM)).isTrue();
+		assertThat(converter.canWrite(resourceRegionList, null, MediaType.ALL)).isTrue();
 
 		assertFalse(converter.canWrite(List.class, MediaType.APPLICATION_OCTET_STREAM));
 		assertFalse(converter.canWrite(List.class, MediaType.ALL));

@@ -41,8 +41,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -136,7 +136,7 @@ public class JmsListenerContainerFactoryIntegrationTests {
 	}
 
 	private void assertListenerMethodInvocation(String methodName) {
-		assertTrue("Method " + methodName + " should have been invoked", sample.invocations.get(methodName));
+		assertThat((boolean) sample.invocations.get(methodName)).as("Method " + methodName + " should have been invoked").isTrue();
 	}
 
 	private MethodJmsListenerEndpoint createMethodJmsEndpoint(DefaultMessageHandlerMethodFactory factory, Method method) {

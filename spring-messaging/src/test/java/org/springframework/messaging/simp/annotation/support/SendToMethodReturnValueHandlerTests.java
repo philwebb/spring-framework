@@ -54,11 +54,11 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MimeType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -136,18 +136,18 @@ public class SendToMethodReturnValueHandlerTests {
 
 	@Test
 	public void supportsReturnType() throws Exception {
-		assertTrue(this.handler.supportsReturnType(this.sendToReturnType));
-		assertTrue(this.handler.supportsReturnType(this.sendToUserReturnType));
+		assertThat(this.handler.supportsReturnType(this.sendToReturnType)).isTrue();
+		assertThat(this.handler.supportsReturnType(this.sendToUserReturnType)).isTrue();
 		assertFalse(this.handler.supportsReturnType(this.noAnnotationsReturnType));
-		assertTrue(this.handlerAnnotationNotRequired.supportsReturnType(this.noAnnotationsReturnType));
+		assertThat(this.handlerAnnotationNotRequired.supportsReturnType(this.noAnnotationsReturnType)).isTrue();
 
-		assertTrue(this.handler.supportsReturnType(this.defaultNoAnnotation));
-		assertTrue(this.handler.supportsReturnType(this.defaultEmptyAnnotation));
-		assertTrue(this.handler.supportsReturnType(this.defaultOverrideAnnotation));
+		assertThat(this.handler.supportsReturnType(this.defaultNoAnnotation)).isTrue();
+		assertThat(this.handler.supportsReturnType(this.defaultEmptyAnnotation)).isTrue();
+		assertThat(this.handler.supportsReturnType(this.defaultOverrideAnnotation)).isTrue();
 
-		assertTrue(this.handler.supportsReturnType(this.userDefaultNoAnnotation));
-		assertTrue(this.handler.supportsReturnType(this.userDefaultEmptyAnnotation));
-		assertTrue(this.handler.supportsReturnType(this.userDefaultOverrideAnnotation));
+		assertThat(this.handler.supportsReturnType(this.userDefaultNoAnnotation)).isTrue();
+		assertThat(this.handler.supportsReturnType(this.userDefaultEmptyAnnotation)).isTrue();
+		assertThat(this.handler.supportsReturnType(this.userDefaultOverrideAnnotation)).isTrue();
 	}
 
 	@Test
@@ -335,7 +335,7 @@ public class SendToMethodReturnValueHandlerTests {
 		SimpMessageHeaderAccessor accessor =
 				MessageHeaderAccessor.getAccessor(headers, SimpMessageHeaderAccessor.class);
 		assertNotNull(accessor);
-		assertTrue(accessor.isMutable());
+		assertThat(accessor.isMutable()).isTrue();
 		assertEquals("sess1", accessor.getSessionId());
 		assertNull("Subscription id should not be copied", accessor.getSubscriptionId());
 		assertEquals(this.noAnnotationsReturnType,

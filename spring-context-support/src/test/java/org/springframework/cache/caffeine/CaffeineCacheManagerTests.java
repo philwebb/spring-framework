@@ -24,12 +24,12 @@ import org.junit.Test;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -43,15 +43,18 @@ public class CaffeineCacheManagerTests {
 	public void testDynamicMode() {
 		CacheManager cm = new CaffeineCacheManager();
 		Cache cache1 = cm.getCache("c1");
-		assertTrue(cache1 instanceof CaffeineCache);
+		boolean condition2 = cache1 instanceof CaffeineCache;
+		assertThat(condition2).isTrue();
 		Cache cache1again = cm.getCache("c1");
 		assertSame(cache1again, cache1);
 		Cache cache2 = cm.getCache("c2");
-		assertTrue(cache2 instanceof CaffeineCache);
+		boolean condition1 = cache2 instanceof CaffeineCache;
+		assertThat(condition1).isTrue();
 		Cache cache2again = cm.getCache("c2");
 		assertSame(cache2again, cache2);
 		Cache cache3 = cm.getCache("c3");
-		assertTrue(cache3 instanceof CaffeineCache);
+		boolean condition = cache3 instanceof CaffeineCache;
+		assertThat(condition).isTrue();
 		Cache cache3again = cm.getCache("c3");
 		assertSame(cache3again, cache3);
 
@@ -69,11 +72,13 @@ public class CaffeineCacheManagerTests {
 	public void testStaticMode() {
 		CaffeineCacheManager cm = new CaffeineCacheManager("c1", "c2");
 		Cache cache1 = cm.getCache("c1");
-		assertTrue(cache1 instanceof CaffeineCache);
+		boolean condition3 = cache1 instanceof CaffeineCache;
+		assertThat(condition3).isTrue();
 		Cache cache1again = cm.getCache("c1");
 		assertSame(cache1again, cache1);
 		Cache cache2 = cm.getCache("c2");
-		assertTrue(cache2 instanceof CaffeineCache);
+		boolean condition2 = cache2 instanceof CaffeineCache;
+		assertThat(condition2).isTrue();
 		Cache cache2again = cm.getCache("c2");
 		assertSame(cache2again, cache2);
 		Cache cache3 = cm.getCache("c3");
@@ -90,11 +95,13 @@ public class CaffeineCacheManagerTests {
 
 		cm.setAllowNullValues(false);
 		Cache cache1x = cm.getCache("c1");
-		assertTrue(cache1x instanceof CaffeineCache);
-		assertTrue(cache1x != cache1);
+		boolean condition1 = cache1x instanceof CaffeineCache;
+		assertThat(condition1).isTrue();
+		assertThat(cache1x != cache1).isTrue();
 		Cache cache2x = cm.getCache("c2");
-		assertTrue(cache2x instanceof CaffeineCache);
-		assertTrue(cache2x != cache2);
+		boolean condition = cache2x instanceof CaffeineCache;
+		assertThat(condition).isTrue();
+		assertThat(cache2x != cache2).isTrue();
 		Cache cache3x = cm.getCache("c3");
 		assertNull(cache3x);
 
@@ -120,7 +127,7 @@ public class CaffeineCacheManagerTests {
 		Caffeine<Object, Object> caffeine = Caffeine.newBuilder().maximumSize(10);
 		cm.setCaffeine(caffeine);
 		Cache cache1x = cm.getCache("c1");
-		assertTrue(cache1x != cache1);
+		assertThat(cache1x != cache1).isTrue();
 
 		cm.setCaffeine(caffeine); // Set same instance
 		Cache cache1xx = cm.getCache("c1");
@@ -134,7 +141,7 @@ public class CaffeineCacheManagerTests {
 
 		cm.setCaffeineSpec(CaffeineSpec.parse("maximumSize=10"));
 		Cache cache1x = cm.getCache("c1");
-		assertTrue(cache1x != cache1);
+		assertThat(cache1x != cache1).isTrue();
 	}
 
 	@Test
@@ -144,7 +151,7 @@ public class CaffeineCacheManagerTests {
 
 		cm.setCacheSpecification("maximumSize=10");
 		Cache cache1x = cm.getCache("c1");
-		assertTrue(cache1x != cache1);
+		assertThat(cache1x != cache1).isTrue();
 	}
 
 	@Test
@@ -155,7 +162,7 @@ public class CaffeineCacheManagerTests {
 		CacheLoader<Object, Object> loader = mockCacheLoader();
 		cm.setCacheLoader(loader);
 		Cache cache1x = cm.getCache("c1");
-		assertTrue(cache1x != cache1);
+		assertThat(cache1x != cache1).isTrue();
 
 		cm.setCacheLoader(loader); // Set same instance
 		Cache cache1xx = cm.getCache("c1");

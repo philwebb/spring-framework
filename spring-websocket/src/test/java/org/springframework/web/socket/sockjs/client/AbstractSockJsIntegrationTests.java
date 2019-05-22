@@ -68,9 +68,9 @@ import org.springframework.web.socket.server.HandshakeHandler;
 import org.springframework.web.socket.server.RequestUpgradeStrategy;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -235,7 +235,7 @@ public abstract class AbstractSockJsIntegrationTests {
 					}
 				}
 		);
-		assertTrue(latch.await(5000, TimeUnit.MILLISECONDS));
+		assertThat(latch.await(5000, TimeUnit.MILLISECONDS)).isTrue();
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		}
 		handler.awaitMessageCount(messageCount, 5000);
 		for (TextMessage message : messages) {
-			assertTrue("Message not received: " + message, handler.receivedMessages.remove(message));
+			assertThat(handler.receivedMessages.remove(message)).as("Message not received: " + message).isTrue();
 		}
 		assertEquals("Remaining messages: " + handler.receivedMessages, 0, handler.receivedMessages.size());
 		session.close();

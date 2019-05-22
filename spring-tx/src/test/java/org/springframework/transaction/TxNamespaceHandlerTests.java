@@ -30,10 +30,10 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -59,7 +59,7 @@ public class TxNamespaceHandlerTests {
 	@Test
 	public void isProxy() {
 		ITestBean bean = getTestBean();
-		assertTrue("testBean is not a proxy", AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).as("testBean is not a proxy").isTrue();
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class TxNamespaceHandlerTests {
 		// try with transactional
 		assertEquals("Should not have any started transactions", 0, ptm.begun);
 		testBean.getName();
-		assertTrue(ptm.lastDefinition.isReadOnly());
+		assertThat(ptm.lastDefinition.isReadOnly()).isTrue();
 		assertEquals("Should have 1 started transaction", 1, ptm.begun);
 		assertEquals("Should have 1 committed transaction", 1, ptm.commits);
 
@@ -90,7 +90,7 @@ public class TxNamespaceHandlerTests {
 		TransactionInterceptor txInterceptor = (TransactionInterceptor) context.getBean("txRollbackAdvice");
 		TransactionAttributeSource txAttrSource = txInterceptor.getTransactionAttributeSource();
 		TransactionAttribute txAttr = txAttrSource.getTransactionAttribute(getAgeMethod,ITestBean.class);
-		assertTrue("should be configured to rollback on Exception",txAttr.rollbackOn(new Exception()));
+		assertThat(txAttr.rollbackOn(new Exception())).as("should be configured to rollback on Exception").isTrue();
 
 		txAttr = txAttrSource.getTransactionAttribute(setAgeMethod, ITestBean.class);
 		assertFalse("should not rollback on RuntimeException",txAttr.rollbackOn(new RuntimeException()));

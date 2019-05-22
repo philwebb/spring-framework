@@ -18,11 +18,9 @@ package org.springframework.util;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -45,7 +43,7 @@ public class StopWatchTests {
 		assertFalse(sw.isRunning());
 		sw.start(name1);
 		Thread.sleep(int1);
-		assertTrue(sw.isRunning());
+		assertThat(sw.isRunning()).isTrue();
 		assertEquals(name1, sw.currentTaskName());
 		sw.stop();
 
@@ -65,20 +63,20 @@ public class StopWatchTests {
 		// assertTrue("Unexpected timing " + sw.getTotalTime(), sw.getTotalTime() <= int1
 		// + int2 + fudgeFactor);
 
-		assertTrue(sw.getTaskCount() == 2);
+		assertThat(sw.getTaskCount() == 2).isTrue();
 		String pp = sw.prettyPrint();
-		assertTrue(pp.contains(name1));
-		assertTrue(pp.contains(name2));
+		assertThat(pp.contains(name1)).isTrue();
+		assertThat(pp.contains(name2)).isTrue();
 
 		StopWatch.TaskInfo[] tasks = sw.getTaskInfo();
-		assertTrue(tasks.length == 2);
-		assertTrue(tasks[0].getTaskName().equals(name1));
-		assertTrue(tasks[1].getTaskName().equals(name2));
+		assertThat(tasks.length == 2).isTrue();
+		assertThat(tasks[0].getTaskName().equals(name1)).isTrue();
+		assertThat(tasks[1].getTaskName().equals(name2)).isTrue();
 
 		String toString = sw.toString();
-		assertTrue(toString.contains(id));
-		assertTrue(toString.contains(name1));
-		assertTrue(toString.contains(name2));
+		assertThat(toString.contains(id)).isTrue();
+		assertThat(toString.contains(name1)).isTrue();
+		assertThat(toString.contains(name2)).isTrue();
 
 		assertEquals(id, sw.getId());
 	}
@@ -94,7 +92,7 @@ public class StopWatchTests {
 		assertFalse(sw.isRunning());
 		sw.start(name1);
 		Thread.sleep(int1);
-		assertTrue(sw.isRunning());
+		assertThat(sw.isRunning()).isTrue();
 		sw.stop();
 
 		// TODO are timings off in JUnit? Why do these assertions sometimes fail
@@ -113,9 +111,9 @@ public class StopWatchTests {
 		// assertTrue("Unexpected timing " + sw.getTotalTime(), sw.getTotalTime() <= int1
 		// + int2 + fudgeFactor);
 
-		assertTrue(sw.getTaskCount() == 2);
+		assertThat(sw.getTaskCount() == 2).isTrue();
 		String pp = sw.prettyPrint();
-		assertTrue(pp.contains("kept"));
+		assertThat(pp.contains("kept")).isTrue();
 
 		String toString = sw.toString();
 		assertFalse(toString.contains(name1));
@@ -142,7 +140,7 @@ public class StopWatchTests {
 		sw.start("");
 		sw.stop();
 		sw.start("");
-		assertTrue(sw.isRunning());
+		assertThat(sw.isRunning()).isTrue();
 		assertThatIllegalStateException().isThrownBy(() ->
 				sw.start(""));
 	}

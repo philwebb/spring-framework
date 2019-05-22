@@ -51,7 +51,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Keith Donald
@@ -239,8 +238,8 @@ public class JodaTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
-		assertTrue(value.startsWith("10/31/09"));
-		assertTrue(value.endsWith("12:00 PM"));
+		assertThat(value.startsWith("10/31/09")).isTrue();
+		assertThat(value.endsWith("12:00 PM")).isTrue();
 	}
 
 	@Test
@@ -250,8 +249,8 @@ public class JodaTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("localDateTimeAnnotated").toString();
-		assertTrue(value.startsWith("Oct 31, 2009"));
-		assertTrue(value.endsWith("12:00 PM"));
+		assertThat(value.startsWith("Oct 31, 2009")).isTrue();
+		assertThat(value.endsWith("12:00 PM")).isTrue();
 	}
 
 	@Test
@@ -261,7 +260,7 @@ public class JodaTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("dateTime").toString();
-		assertTrue(value.startsWith("10/31/09"));
+		assertThat(value.startsWith("10/31/09")).isTrue();
 	}
 
 	@Test
@@ -274,8 +273,8 @@ public class JodaTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
-		assertTrue(value.startsWith("Oct 31, 2009"));
-		assertTrue(value.endsWith("12:00:00 PM"));
+		assertThat(value.startsWith("Oct 31, 2009")).isTrue();
+		assertThat(value.endsWith("12:00:00 PM")).isTrue();
 	}
 
 	@Test
@@ -309,7 +308,7 @@ public class JodaTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("dateTimeAnnotated").toString();
-		assertTrue(value.startsWith("Oct 31, 2009"));
+		assertThat(value.startsWith("Oct 31, 2009")).isTrue();
 	}
 
 	@Test
@@ -336,7 +335,7 @@ public class JodaTimeFormattingTests {
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
 		String value = binder.getBindingResult().getFieldValue("dateTimeAnnotatedDefault").toString();
-		assertTrue(value.startsWith("10/31/09"));
+		assertThat(value.startsWith("10/31/09")).isTrue();
 	}
 
 	@Test
@@ -476,7 +475,7 @@ public class JodaTimeFormattingTests {
 		propertyValues.add("period", "P6Y3M1D");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("period").toString().equals("P6Y3M1D"));
+		assertThat(binder.getBindingResult().getFieldValue("period").toString().equals("P6Y3M1D")).isTrue();
 	}
 
 	@Test
@@ -485,7 +484,7 @@ public class JodaTimeFormattingTests {
 		propertyValues.add("duration", "PT72.345S");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("duration").toString().equals("PT72.345S"));
+		assertThat(binder.getBindingResult().getFieldValue("duration").toString().equals("PT72.345S")).isTrue();
 	}
 
 	@Test
@@ -494,7 +493,7 @@ public class JodaTimeFormattingTests {
 		propertyValues.add("yearMonth", "2007-12");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("yearMonth").toString().equals("2007-12"));
+		assertThat(binder.getBindingResult().getFieldValue("yearMonth").toString().equals("2007-12")).isTrue();
 	}
 
 	@Test
@@ -503,7 +502,7 @@ public class JodaTimeFormattingTests {
 		propertyValues.add("monthDay", "--12-03");
 		binder.bind(propertyValues);
 		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("monthDay").toString().equals("--12-03"));
+		assertThat(binder.getBindingResult().getFieldValue("monthDay").toString().equals("--12-03")).isTrue();
 	}
 
 

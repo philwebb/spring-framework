@@ -50,11 +50,11 @@ import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -75,7 +75,7 @@ public class RequestMappingHandlerMappingTests {
 
 	@Test
 	public void useRegisteredSuffixPatternMatch() {
-		assertTrue(this.handlerMapping.useSuffixPatternMatch());
+		assertThat(this.handlerMapping.useSuffixPatternMatch()).isTrue();
 		assertFalse(this.handlerMapping.useRegisteredSuffixPatternMatch());
 
 		Map<String, MediaType> fileExtensions = Collections.singletonMap("json", MediaType.APPLICATION_JSON);
@@ -86,8 +86,8 @@ public class RequestMappingHandlerMappingTests {
 		this.handlerMapping.setUseRegisteredSuffixPatternMatch(true);
 		this.handlerMapping.afterPropertiesSet();
 
-		assertTrue(this.handlerMapping.useSuffixPatternMatch());
-		assertTrue(this.handlerMapping.useRegisteredSuffixPatternMatch());
+		assertThat(this.handlerMapping.useSuffixPatternMatch()).isTrue();
+		assertThat(this.handlerMapping.useRegisteredSuffixPatternMatch()).isTrue();
 		assertEquals(Arrays.asList("json"), this.handlerMapping.getFileExtensions());
 	}
 
@@ -120,7 +120,7 @@ public class RequestMappingHandlerMappingTests {
 
 	@Test
 	public void useSuffixPatternMatch() {
-		assertTrue(this.handlerMapping.useSuffixPatternMatch());
+		assertThat(this.handlerMapping.useSuffixPatternMatch()).isTrue();
 
 		this.handlerMapping.setUseSuffixPatternMatch(false);
 		assertFalse(this.handlerMapping.useSuffixPatternMatch());
@@ -130,8 +130,7 @@ public class RequestMappingHandlerMappingTests {
 				this.handlerMapping.useSuffixPatternMatch());
 
 		this.handlerMapping.setUseRegisteredSuffixPatternMatch(true);
-		assertTrue("'true' registeredSuffixPatternMatch should enable suffixPatternMatch",
-				this.handlerMapping.useSuffixPatternMatch());
+		assertThat(this.handlerMapping.useSuffixPatternMatch()).as("'true' registeredSuffixPatternMatch should enable suffixPatternMatch").isTrue();
 	}
 
 	@Test

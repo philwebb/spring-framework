@@ -59,7 +59,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -83,9 +82,11 @@ public class ValidatorFactoryTests {
 		}
 
 		Validator nativeValidator = validator.unwrap(Validator.class);
-		assertTrue(nativeValidator.getClass().getName().startsWith("org.hibernate"));
-		assertTrue(validator.unwrap(ValidatorFactory.class) instanceof HibernateValidatorFactory);
-		assertTrue(validator.unwrap(HibernateValidatorFactory.class) instanceof HibernateValidatorFactory);
+		assertThat(nativeValidator.getClass().getName().startsWith("org.hibernate")).isTrue();
+		boolean condition1 = validator.unwrap(ValidatorFactory.class) instanceof HibernateValidatorFactory;
+		assertThat(condition1).isTrue();
+		boolean condition = validator.unwrap(HibernateValidatorFactory.class) instanceof HibernateValidatorFactory;
+		assertThat(condition).isTrue();
 
 		validator.destroy();
 	}
@@ -107,9 +108,11 @@ public class ValidatorFactoryTests {
 		}
 
 		Validator nativeValidator = validator.unwrap(Validator.class);
-		assertTrue(nativeValidator.getClass().getName().startsWith("org.hibernate"));
-		assertTrue(validator.unwrap(ValidatorFactory.class) instanceof HibernateValidatorFactory);
-		assertTrue(validator.unwrap(HibernateValidatorFactory.class) instanceof HibernateValidatorFactory);
+		assertThat(nativeValidator.getClass().getName().startsWith("org.hibernate")).isTrue();
+		boolean condition1 = validator.unwrap(ValidatorFactory.class) instanceof HibernateValidatorFactory;
+		assertThat(condition1).isTrue();
+		boolean condition = validator.unwrap(HibernateValidatorFactory.class) instanceof HibernateValidatorFactory;
+		assertThat(condition).isTrue();
 
 		validator.destroy();
 	}
@@ -127,7 +130,8 @@ public class ValidatorFactoryTests {
 		Iterator<ConstraintViolation<ValidPerson>> iterator = result.iterator();
 		ConstraintViolation<?> cv = iterator.next();
 		assertEquals("", cv.getPropertyPath().toString());
-		assertTrue(cv.getConstraintDescriptor().getAnnotation() instanceof NameAddressValid);
+		boolean condition = cv.getConstraintDescriptor().getAnnotation() instanceof NameAddressValid;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -157,19 +161,19 @@ public class ValidatorFactoryTests {
 		assertEquals("name", fieldError.getField());
 		List<String> errorCodes = Arrays.asList(fieldError.getCodes());
 		assertEquals(4, errorCodes.size());
-		assertTrue(errorCodes.contains("NotNull.person.name"));
-		assertTrue(errorCodes.contains("NotNull.name"));
-		assertTrue(errorCodes.contains("NotNull.java.lang.String"));
-		assertTrue(errorCodes.contains("NotNull"));
+		assertThat(errorCodes.contains("NotNull.person.name")).isTrue();
+		assertThat(errorCodes.contains("NotNull.name")).isTrue();
+		assertThat(errorCodes.contains("NotNull.java.lang.String")).isTrue();
+		assertThat(errorCodes.contains("NotNull")).isTrue();
 		fieldError = result.getFieldError("address.street");
 		assertEquals("address.street", fieldError.getField());
 		errorCodes = Arrays.asList(fieldError.getCodes());
 		assertEquals(5, errorCodes.size());
-		assertTrue(errorCodes.contains("NotNull.person.address.street"));
-		assertTrue(errorCodes.contains("NotNull.address.street"));
-		assertTrue(errorCodes.contains("NotNull.street"));
-		assertTrue(errorCodes.contains("NotNull.java.lang.String"));
-		assertTrue(errorCodes.contains("NotNull"));
+		assertThat(errorCodes.contains("NotNull.person.address.street")).isTrue();
+		assertThat(errorCodes.contains("NotNull.address.street")).isTrue();
+		assertThat(errorCodes.contains("NotNull.street")).isTrue();
+		assertThat(errorCodes.contains("NotNull.java.lang.String")).isTrue();
+		assertThat(errorCodes.contains("NotNull")).isTrue();
 	}
 
 	@Test
@@ -186,8 +190,8 @@ public class ValidatorFactoryTests {
 		ObjectError globalError = result.getGlobalError();
 		List<String> errorCodes = Arrays.asList(globalError.getCodes());
 		assertEquals(2, errorCodes.size());
-		assertTrue(errorCodes.contains("NameAddressValid.person"));
-		assertTrue(errorCodes.contains("NameAddressValid"));
+		assertThat(errorCodes.contains("NameAddressValid.person")).isTrue();
+		assertThat(errorCodes.contains("NameAddressValid")).isTrue();
 	}
 
 	@Test
@@ -206,8 +210,8 @@ public class ValidatorFactoryTests {
 		ObjectError globalError = result.getGlobalError();
 		List<String> errorCodes = Arrays.asList(globalError.getCodes());
 		assertEquals(2, errorCodes.size());
-		assertTrue(errorCodes.contains("NameAddressValid.person"));
-		assertTrue(errorCodes.contains("NameAddressValid"));
+		assertThat(errorCodes.contains("NameAddressValid.person")).isTrue();
+		assertThat(errorCodes.contains("NameAddressValid")).isTrue();
 		ctx.close();
 	}
 

@@ -26,10 +26,10 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Martin Kersten
@@ -51,15 +51,14 @@ public class HtmlCharacterEntityReferencesTests {
 						HtmlCharacterEntityReferences.REFERENCE_START +
 						referenceName +
 						HtmlCharacterEntityReferences.REFERENCE_END;
-				assertTrue("The unicode character " + character + " should be mapped to a reference",
-						entityReferences.isMappedToReference((char) character));
+				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should be mapped to a reference").isTrue();
 				assertEquals("The reference of unicode character " + character + " should be entity " + referenceName,
 						fullReference, entityReferences.convertToReference((char) character));
 				assertEquals("The entity reference [" + referenceName + "] should be mapped to unicode character " +
 						character, (char) character, entityReferences.convertToCharacter(referenceName));
 			}
 			else if (character == 39) {
-				assertTrue(entityReferences.isMappedToReference((char) character));
+				assertThat(entityReferences.isMappedToReference((char) character)).isTrue();
 				assertEquals("&#39;", entityReferences.convertToReference((char) character));
 			}
 			else {

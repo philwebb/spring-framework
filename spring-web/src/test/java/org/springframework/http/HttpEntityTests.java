@@ -23,10 +23,10 @@ import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -38,7 +38,7 @@ public class HttpEntityTests {
 		String body = "foo";
 		HttpEntity<String> entity = new HttpEntity<>(body);
 		assertSame(body, entity.getBody());
-		assertTrue(entity.getHeaders().isEmpty());
+		assertThat(entity.getHeaders().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -71,18 +71,18 @@ public class HttpEntityTests {
 		MultiValueMap<String, String> map2 = new LinkedMultiValueMap<>();
 		map2.set("Content-Type", "application/json");
 
-		assertTrue(new HttpEntity<>().equals(new HttpEntity<Object>()));
+		assertThat(new HttpEntity<>().equals(new HttpEntity<Object>())).isTrue();
 		assertFalse(new HttpEntity<>(map1).equals(new HttpEntity<Object>()));
 		assertFalse(new HttpEntity<>().equals(new HttpEntity<Object>(map2)));
 
-		assertTrue(new HttpEntity<>(map1).equals(new HttpEntity<Object>(map1)));
+		assertThat(new HttpEntity<>(map1).equals(new HttpEntity<Object>(map1))).isTrue();
 		assertFalse(new HttpEntity<>(map1).equals(new HttpEntity<Object>(map2)));
 
-		assertTrue(new HttpEntity<String>(null, null).equals(new HttpEntity<String>(null, null)));
+		assertThat(new HttpEntity<String>(null, null).equals(new HttpEntity<String>(null, null))).isTrue();
 		assertFalse(new HttpEntity<>("foo", null).equals(new HttpEntity<String>(null, null)));
 		assertFalse(new HttpEntity<String>(null, null).equals(new HttpEntity<>("bar", null)));
 
-		assertTrue(new HttpEntity<>("foo", map1).equals(new HttpEntity<String>("foo", map1)));
+		assertThat(new HttpEntity<>("foo", map1).equals(new HttpEntity<String>("foo", map1))).isTrue();
 		assertFalse(new HttpEntity<>("foo", map1).equals(new HttpEntity<String>("bar", map1)));
 	}
 
@@ -102,8 +102,8 @@ public class HttpEntityTests {
 
 		assertFalse(httpEntity.equals(responseEntity));
 		assertFalse(responseEntity.equals(httpEntity));
-		assertTrue(responseEntity.equals(responseEntity2));
-		assertTrue(responseEntity2.equals(responseEntity));
+		assertThat(responseEntity.equals(responseEntity2)).isTrue();
+		assertThat(responseEntity2.equals(responseEntity)).isTrue();
 	}
 
 	@Test
@@ -122,8 +122,8 @@ public class HttpEntityTests {
 
 		assertFalse(httpEntity.equals(requestEntity));
 		assertFalse(requestEntity.equals(httpEntity));
-		assertTrue(requestEntity.equals(requestEntity2));
-		assertTrue(requestEntity2.equals(requestEntity));
+		assertThat(requestEntity.equals(requestEntity2)).isTrue();
+		assertThat(requestEntity2.equals(requestEntity)).isTrue();
 	}
 
 }

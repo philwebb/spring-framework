@@ -25,8 +25,8 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -45,7 +45,8 @@ public class SimpleConfigTests {
 		assertEquals("bar", value);
 
 		Future<?> future = fooService.asyncFoo(1);
-		assertTrue(future instanceof FutureTask);
+		boolean condition = future instanceof FutureTask;
+		assertThat(condition).isTrue();
 		assertEquals("bar", future.get());
 
 		assertEquals(2, serviceInvocationCounter.getCount());

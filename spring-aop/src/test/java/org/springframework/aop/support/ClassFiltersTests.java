@@ -23,8 +23,8 @@ import org.springframework.core.NestedRuntimeException;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -40,23 +40,23 @@ public class ClassFiltersTests {
 
 	@Test
 	public void testUnion() {
-		assertTrue(exceptionFilter.matches(RuntimeException.class));
+		assertThat(exceptionFilter.matches(RuntimeException.class)).isTrue();
 		assertFalse(exceptionFilter.matches(TestBean.class));
 		assertFalse(itbFilter.matches(Exception.class));
-		assertTrue(itbFilter.matches(TestBean.class));
+		assertThat(itbFilter.matches(TestBean.class)).isTrue();
 		ClassFilter union = ClassFilters.union(exceptionFilter, itbFilter);
-		assertTrue(union.matches(RuntimeException.class));
-		assertTrue(union.matches(TestBean.class));
+		assertThat(union.matches(RuntimeException.class)).isTrue();
+		assertThat(union.matches(TestBean.class)).isTrue();
 	}
 
 	@Test
 	public void testIntersection() {
-		assertTrue(exceptionFilter.matches(RuntimeException.class));
-		assertTrue(hasRootCauseFilter.matches(NestedRuntimeException.class));
+		assertThat(exceptionFilter.matches(RuntimeException.class)).isTrue();
+		assertThat(hasRootCauseFilter.matches(NestedRuntimeException.class)).isTrue();
 		ClassFilter intersection = ClassFilters.intersection(exceptionFilter, hasRootCauseFilter);
 		assertFalse(intersection.matches(RuntimeException.class));
 		assertFalse(intersection.matches(TestBean.class));
-		assertTrue(intersection.matches(NestedRuntimeException.class));
+		assertThat(intersection.matches(NestedRuntimeException.class)).isTrue();
 	}
 
 }

@@ -31,8 +31,8 @@ import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for BufferedImageHttpMessageConverter.
@@ -50,15 +50,15 @@ public class BufferedImageHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue("Image not supported", converter.canRead(BufferedImage.class, null));
-		assertTrue("Image not supported", converter.canRead(BufferedImage.class, new MediaType("image", "png")));
+		assertThat(converter.canRead(BufferedImage.class, null)).as("Image not supported").isTrue();
+		assertThat(converter.canRead(BufferedImage.class, new MediaType("image", "png"))).as("Image not supported").isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue("Image not supported", converter.canWrite(BufferedImage.class, null));
-		assertTrue("Image not supported", converter.canWrite(BufferedImage.class, new MediaType("image", "png")));
-		assertTrue("Image not supported", converter.canWrite(BufferedImage.class, new MediaType("*", "*")));
+		assertThat(converter.canWrite(BufferedImage.class, null)).as("Image not supported").isTrue();
+		assertThat(converter.canWrite(BufferedImage.class, new MediaType("image", "png"))).as("Image not supported").isTrue();
+		assertThat(converter.canWrite(BufferedImage.class, new MediaType("*", "*"))).as("Image not supported").isTrue();
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class BufferedImageHttpMessageConverterTests {
 		MediaType contentType = new MediaType("image", "png");
 		converter.write(body, contentType, outputMessage);
 		assertEquals("Invalid content type", contentType, outputMessage.getWrittenHeaders().getContentType());
-		assertTrue("Invalid size", outputMessage.getBodyAsBytes().length > 0);
+		assertThat(outputMessage.getBodyAsBytes().length > 0).as("Invalid size").isTrue();
 		BufferedImage result = ImageIO.read(new ByteArrayInputStream(outputMessage.getBodyAsBytes()));
 		assertEquals("Invalid height", 500, result.getHeight());
 		assertEquals("Invalid width", 750, result.getWidth());
@@ -95,7 +95,7 @@ public class BufferedImageHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(body, new MediaType("*", "*"), outputMessage);
 		assertEquals("Invalid content type", contentType, outputMessage.getWrittenHeaders().getContentType());
-		assertTrue("Invalid size", outputMessage.getBodyAsBytes().length > 0);
+		assertThat(outputMessage.getBodyAsBytes().length > 0).as("Invalid size").isTrue();
 		BufferedImage result = ImageIO.read(new ByteArrayInputStream(outputMessage.getBodyAsBytes()));
 		assertEquals("Invalid height", 500, result.getHeight());
 		assertEquals("Invalid width", 750, result.getWidth());

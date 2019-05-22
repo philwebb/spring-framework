@@ -25,9 +25,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /** @author Arjen Poutsma */
 public class ByteArrayHttpMessageConverterTests {
@@ -41,13 +41,13 @@ public class ByteArrayHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(byte[].class, new MediaType("application", "octet-stream")));
+		assertThat(converter.canRead(byte[].class, new MediaType("application", "octet-stream"))).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(byte[].class, new MediaType("application", "octet-stream")));
-		assertTrue(converter.canWrite(byte[].class, MediaType.ALL));
+		assertThat(converter.canWrite(byte[].class, new MediaType("application", "octet-stream"))).isTrue();
+		assertThat(converter.canWrite(byte[].class, MediaType.ALL)).isTrue();
 	}
 
 	@Test

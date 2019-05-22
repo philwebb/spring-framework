@@ -39,7 +39,6 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.tiles.definition.UnresolvingLocaleDefinitionsFactory;
-import org.hamcrest.Matchers;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -152,7 +151,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests loading actual MVC namespace configuration.
@@ -201,7 +199,7 @@ public class MvcNamespaceTests {
 		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
 		assertEquals(0, mapping.getOrder());
-		assertTrue(mapping.getUrlPathHelper().shouldRemoveSemicolonContent());
+		assertThat(mapping.getUrlPathHelper().shouldRemoveSemicolonContent()).isTrue();
 		mapping.setDefaultHandler(handlerMethod);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo.json");
@@ -214,7 +212,7 @@ public class MvcNamespaceTests {
 		assertEquals(false, new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect"));
 
 		List<HttpMessageConverter<?>> converters = adapter.getMessageConverters();
-		assertTrue(converters.size() > 0);
+		assertThat(converters.size() > 0).isTrue();
 		for (HttpMessageConverter<?> converter : converters) {
 			if (converter instanceof AbstractJackson2HttpMessageConverter) {
 				ObjectMapper objectMapper = ((AbstractJackson2HttpMessageConverter) converter).getObjectMapper();
@@ -240,13 +238,14 @@ public class MvcNamespaceTests {
 
 		HandlerExecutionChain chain = mapping.getHandler(request);
 		assertEquals(1, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor);
+		boolean condition = chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition).isTrue();
 		ConversionServiceExposingInterceptor interceptor = (ConversionServiceExposingInterceptor) chain.getInterceptors()[0];
 		interceptor.preHandle(request, response, handlerMethod);
 		assertSame(appContext.getBean(ConversionService.class), request.getAttribute(ConversionService.class.getName()));
 
 		adapter.handle(request, response, handlerMethod);
-		assertTrue(handler.recordedValidationError);
+		assertThat(handler.recordedValidationError).isTrue();
 		assertEquals(LocalDate.parse("2009-10-31").toDate(), handler.date);
 		assertEquals(Double.valueOf(0.9999), handler.percent);
 
@@ -280,7 +279,8 @@ public class MvcNamespaceTests {
 
 		HandlerExecutionChain chain = mapping.getHandler(request);
 		assertEquals(1, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor);
+		boolean condition = chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition).isTrue();
 		ConversionServiceExposingInterceptor interceptor = (ConversionServiceExposingInterceptor) chain.getInterceptors()[0];
 		interceptor.preHandle(request, response, handler);
 		assertSame(appContext.getBean("conversionService"), request.getAttribute(ConversionService.class.getName()));
@@ -313,7 +313,7 @@ public class MvcNamespaceTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		adapter.handle(request, response, handlerMethod);
 
-		assertTrue(appContext.getBean(TestValidator.class).validatorInvoked);
+		assertThat(appContext.getBean(TestValidator.class).validatorInvoked).isTrue();
 		assertFalse(handler.recordedValidationError);
 	}
 
@@ -332,10 +332,14 @@ public class MvcNamespaceTests {
 
 		HandlerExecutionChain chain = mapping.getHandler(request);
 		assertEquals(4, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[1] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof ThemeChangeInterceptor);
-		assertTrue(chain.getInterceptors()[3] instanceof UserRoleAuthorizationInterceptor);
+		boolean condition3 = chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition3).isTrue();
+		boolean condition2 = chain.getInterceptors()[1] instanceof LocaleChangeInterceptor;
+		assertThat(condition2).isTrue();
+		boolean condition1 = chain.getInterceptors()[2] instanceof ThemeChangeInterceptor;
+		assertThat(condition1).isTrue();
+		boolean condition = chain.getInterceptors()[3] instanceof UserRoleAuthorizationInterceptor;
+		assertThat(condition).isTrue();
 
 		request.setRequestURI("/admin/users");
 		chain = mapping.getHandler(request);
@@ -389,7 +393,8 @@ public class MvcNamespaceTests {
 
 		HandlerExecutionChain chain = resourceMapping.getHandler(request);
 		assertNotNull(chain);
-		assertTrue(chain.getHandler() instanceof ResourceHttpRequestHandler);
+		boolean condition = chain.getHandler() instanceof ResourceHttpRequestHandler;
+		assertThat(condition).isTrue();
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		for (HandlerInterceptor interceptor : chain.getInterceptors()) {
@@ -512,7 +517,8 @@ public class MvcNamespaceTests {
 		request.setMethod("GET");
 
 		HandlerExecutionChain chain = mapping.getHandler(request);
-		assertTrue(chain.getHandler() instanceof DefaultServletHttpRequestHandler);
+		boolean condition = chain.getHandler() instanceof DefaultServletHttpRequestHandler;
+		assertThat(condition).isTrue();
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
@@ -538,7 +544,8 @@ public class MvcNamespaceTests {
 		request.setMethod("GET");
 
 		HandlerExecutionChain chain = mapping.getHandler(request);
-		assertTrue(chain.getHandler() instanceof DefaultServletHttpRequestHandler);
+		boolean condition = chain.getHandler() instanceof DefaultServletHttpRequestHandler;
+		assertThat(condition).isTrue();
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
@@ -557,9 +564,12 @@ public class MvcNamespaceTests {
 
 		HandlerExecutionChain chain = mapping.getHandler(request);
 		assertEquals(3, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[1] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof ThemeChangeInterceptor);
+		boolean condition2 = chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition2).isTrue();
+		boolean condition1 = chain.getInterceptors()[1] instanceof LocaleChangeInterceptor;
+		assertThat(condition1).isTrue();
+		boolean condition = chain.getInterceptors()[2] instanceof ThemeChangeInterceptor;
+		assertThat(condition).isTrue();
 		LocaleChangeInterceptor interceptor = (LocaleChangeInterceptor) chain.getInterceptors()[1];
 		assertEquals("lang", interceptor.getParamName());
 		ThemeChangeInterceptor interceptor2 = (ThemeChangeInterceptor) chain.getInterceptors()[2];
@@ -583,9 +593,12 @@ public class MvcNamespaceTests {
 
 		HandlerExecutionChain chain = mapping.getHandler(request);
 		assertEquals(3, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[1] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof ThemeChangeInterceptor);
+		boolean condition11 = chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition11).isTrue();
+		boolean condition10 = chain.getInterceptors()[1] instanceof LocaleChangeInterceptor;
+		assertThat(condition10).isTrue();
+		boolean condition9 = chain.getInterceptors()[2] instanceof ThemeChangeInterceptor;
+		assertThat(condition9).isTrue();
 
 		SimpleUrlHandlerMapping mapping2 = appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(mapping2);
@@ -596,9 +609,12 @@ public class MvcNamespaceTests {
 		request = new MockHttpServletRequest("GET", "/foo");
 		chain = mapping2.getHandler(request);
 		assertEquals(4, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor);
+		boolean condition8 = chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition8).isTrue();
+		boolean condition7 = chain.getInterceptors()[2] instanceof LocaleChangeInterceptor;
+		assertThat(condition7).isTrue();
+		boolean condition6 = chain.getInterceptors()[3] instanceof ThemeChangeInterceptor;
+		assertThat(condition6).isTrue();
 		ModelAndView mv = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 		assertNull(mv.getViewName());
 
@@ -607,9 +623,12 @@ public class MvcNamespaceTests {
 		request.setServletPath("/app");
 		chain = mapping2.getHandler(request);
 		assertEquals(4, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor);
+		boolean condition5 = chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition5).isTrue();
+		boolean condition4 = chain.getInterceptors()[2] instanceof LocaleChangeInterceptor;
+		assertThat(condition4).isTrue();
+		boolean condition3 = chain.getInterceptors()[3] instanceof ThemeChangeInterceptor;
+		assertThat(condition3).isTrue();
 		mv = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 		assertEquals("baz", mv.getViewName());
 
@@ -618,9 +637,12 @@ public class MvcNamespaceTests {
 		request.setServletPath("/app");
 		chain = mapping2.getHandler(request);
 		assertEquals(4, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor);
+		boolean condition2 = chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition2).isTrue();
+		boolean condition1 = chain.getInterceptors()[2] instanceof LocaleChangeInterceptor;
+		assertThat(condition1).isTrue();
+		boolean condition = chain.getInterceptors()[3] instanceof ThemeChangeInterceptor;
+		assertThat(condition).isTrue();
 		mv = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 		assertEquals("root", mv.getViewName());
 
@@ -662,9 +684,12 @@ public class MvcNamespaceTests {
 		request.setAttribute("com.ibm.websphere.servlet.uri_non_decoded", "/myapp/app/bar");
 		HandlerExecutionChain chain = mapping2.getHandler(request);
 		assertEquals(4, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor);
+		boolean condition8 = chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition8).isTrue();
+		boolean condition7 = chain.getInterceptors()[2] instanceof LocaleChangeInterceptor;
+		assertThat(condition7).isTrue();
+		boolean condition6 = chain.getInterceptors()[3] instanceof ThemeChangeInterceptor;
+		assertThat(condition6).isTrue();
 		ModelAndView mv2 = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 		assertEquals("baz", mv2.getViewName());
 
@@ -673,9 +698,12 @@ public class MvcNamespaceTests {
 		request.setServletPath("/app/");
 		chain = mapping2.getHandler(request);
 		assertEquals(4, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor);
+		boolean condition5 = chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition5).isTrue();
+		boolean condition4 = chain.getInterceptors()[2] instanceof LocaleChangeInterceptor;
+		assertThat(condition4).isTrue();
+		boolean condition3 = chain.getInterceptors()[3] instanceof ThemeChangeInterceptor;
+		assertThat(condition3).isTrue();
 		ModelAndView mv3 = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 		assertEquals("root", mv3.getViewName());
 
@@ -684,9 +712,12 @@ public class MvcNamespaceTests {
 		request.setServletPath("/");
 		chain = mapping2.getHandler(request);
 		assertEquals(4, chain.getInterceptors().length);
-		assertTrue(chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor);
-		assertTrue(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor);
-		assertTrue(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor);
+		boolean condition2 = chain.getInterceptors()[1] instanceof ConversionServiceExposingInterceptor;
+		assertThat(condition2).isTrue();
+		boolean condition1 = chain.getInterceptors()[2] instanceof LocaleChangeInterceptor;
+		assertThat(condition1).isTrue();
+		boolean condition = chain.getInterceptors()[3] instanceof ThemeChangeInterceptor;
+		assertThat(condition).isTrue();
 		mv3 = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 		assertEquals("root", mv3.getViewName());
 	}
@@ -808,7 +839,7 @@ public class MvcNamespaceTests {
 		};
 		accessor = new DirectFieldAccessor(tilesConfigurer);
 		assertArrayEquals(definitions, (String[]) accessor.getPropertyValue("definitions"));
-		assertTrue((boolean) accessor.getPropertyValue("checkRefresh"));
+		assertThat((boolean) accessor.getPropertyValue("checkRefresh")).isTrue();
 		assertEquals(UnresolvingLocaleDefinitionsFactory.class, accessor.getPropertyValue("definitionsFactoryClass"));
 		assertEquals(SpringBeanPreparerFactory.class, accessor.getPropertyValue("preparerFactoryClass"));
 
@@ -820,7 +851,7 @@ public class MvcNamespaceTests {
 		GroovyMarkupConfigurer groovyMarkupConfigurer = appContext.getBean(GroovyMarkupConfigurer.class);
 		assertNotNull(groovyMarkupConfigurer);
 		assertEquals("/test", groovyMarkupConfigurer.getResourceLoaderPath());
-		assertTrue(groovyMarkupConfigurer.isAutoIndent());
+		assertThat(groovyMarkupConfigurer.isAutoIndent()).isTrue();
 		assertFalse(groovyMarkupConfigurer.isCacheTemplates());
 
 		ScriptTemplateConfigurer scriptTemplateConfigurer = appContext.getBean(ScriptTemplateConfigurer.class);
@@ -849,7 +880,7 @@ public class MvcNamespaceTests {
 		ContentNegotiatingViewResolver cnvr = (ContentNegotiatingViewResolver) resolvers.get(0);
 		assertEquals(6, cnvr.getViewResolvers().size());
 		assertEquals(1, cnvr.getDefaultViews().size());
-		assertTrue(cnvr.isUseNotAcceptableStatusCode());
+		assertThat(cnvr.isUseNotAcceptableStatusCode()).isTrue();
 
 		String beanName = "contentNegotiationManager";
 		DirectFieldAccessor accessor = new DirectFieldAccessor(cnvr);

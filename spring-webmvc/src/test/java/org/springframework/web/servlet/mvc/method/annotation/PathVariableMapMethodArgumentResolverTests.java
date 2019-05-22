@@ -32,9 +32,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.HandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link PathVariableMapMethodArgumentResolver}.
@@ -72,7 +72,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(paramMap));
+		assertThat(resolver.supportsParameter(paramMap)).isTrue();
 		assertFalse(resolver.supportsParameter(paramNamedMap));
 		assertFalse(resolver.supportsParameter(paramMapNoAnnot));
 	}

@@ -23,9 +23,9 @@ import org.springframework.beans.factory.NamedBean;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -70,7 +70,8 @@ public class ExposeBeanNameAdvisorsTests {
 		pf.addAdvisor(ExposeBeanNameAdvisors.createAdvisorIntroducingNamedBean(beanName));
 		ITestBean proxy = (ITestBean) pf.getProxy();
 
-		assertTrue("Introduction was made", proxy instanceof NamedBean);
+		boolean condition = proxy instanceof NamedBean;
+		assertThat(condition).as("Introduction was made").isTrue();
 		// Requires binding
 		proxy.getAge();
 

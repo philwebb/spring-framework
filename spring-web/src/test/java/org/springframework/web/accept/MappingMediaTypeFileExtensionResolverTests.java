@@ -23,8 +23,8 @@ import org.junit.Test;
 
 import org.springframework.http.MediaType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link MappingMediaTypeFileExtensionResolver}.
@@ -50,7 +50,7 @@ public class MappingMediaTypeFileExtensionResolverTests {
 		MappingMediaTypeFileExtensionResolver resolver = new MappingMediaTypeFileExtensionResolver(mapping);
 		List<String> extensions = resolver.resolveFileExtensions(MediaType.TEXT_HTML);
 
-		assertTrue(extensions.isEmpty());
+		assertThat(extensions.isEmpty()).isTrue();
 	}
 
 	/**

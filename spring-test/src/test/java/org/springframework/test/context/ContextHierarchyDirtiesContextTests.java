@@ -39,7 +39,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests that verify proper behavior of {@link DirtiesContext @DirtiesContext}
@@ -94,7 +93,7 @@ public class ContextHierarchyDirtiesContextTests {
 
 		JUnitCore jUnitCore = new JUnitCore();
 		Result result = jUnitCore.run(testClass);
-		assertTrue("all tests passed", result.wasSuccessful());
+		assertThat(result.wasSuccessful()).as("all tests passed").isTrue();
 
 		assertThat(ContextHierarchyDirtiesContextTests.context).isNotNull();
 

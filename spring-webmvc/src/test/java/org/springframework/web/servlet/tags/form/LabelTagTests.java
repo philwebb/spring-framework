@@ -25,8 +25,8 @@ import org.springframework.mock.web.test.MockPageContext;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.servlet.tags.NestedPathTag;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -78,8 +78,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		assertAttributeNotPresent(output, "name");
 		// id attribute is supported, but we don't want it
 		assertAttributeNotPresent(output, "id");
-		assertTrue(output.startsWith("<label "));
-		assertTrue(output.endsWith("</label>"));
+		assertThat(output.startsWith("<label ")).isTrue();
+		assertThat(output.endsWith("</label>")).isTrue();
 	}
 
 	@Test
@@ -106,8 +106,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		assertAttributeNotPresent(output, "name");
 		// id attribute is supported, but we don't want it
 		assertAttributeNotPresent(output, "id");
-		assertTrue(output.startsWith("<label "));
-		assertTrue(output.endsWith("</label>"));
+		assertThat(output.startsWith("<label ")).isTrue();
+		assertThat(output.endsWith("</label>")).isTrue();
 	}
 
 	@Test
@@ -126,8 +126,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		assertAttributeNotPresent(output, "name");
 		// id attribute is supported, but we don't want it
 		assertAttributeNotPresent(output, "id");
-		assertTrue(output.startsWith("<label "));
-		assertTrue(output.endsWith("</label>"));
+		assertThat(output.startsWith("<label ")).isTrue();
+		assertThat(output.endsWith("</label>")).isTrue();
 	}
 
 	@Test
@@ -146,8 +146,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		assertAttributeNotPresent(output, "name");
 		// id attribute is supported, but we don't want it
 		assertAttributeNotPresent(output, "id");
-		assertTrue(output.startsWith("<label "));
-		assertTrue(output.endsWith("</label>"));
+		assertThat(output.startsWith("<label ")).isTrue();
+		assertThat(output.endsWith("</label>")).isTrue();
 	}
 
 

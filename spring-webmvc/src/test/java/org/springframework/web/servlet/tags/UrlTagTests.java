@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Scott Andrews
@@ -381,7 +380,7 @@ public class UrlTagTests extends AbstractTagTests {
 		String uri = tag.replaceUriTemplateParams("url/{name}", params, usedParams);
 		assertEquals("url/value", uri);
 		assertEquals(1, usedParams.size());
-		assertTrue(usedParams.contains("name"));
+		assertThat(usedParams.contains("name")).isTrue();
 	}
 
 	@Test
@@ -397,7 +396,7 @@ public class UrlTagTests extends AbstractTagTests {
 		String uri = tag.replaceUriTemplateParams("url/{n me}", params, usedParams);
 		assertEquals("url/value", uri);
 		assertEquals(1, usedParams.size());
-		assertTrue(usedParams.contains("n me"));
+		assertThat(usedParams.contains("n me")).isTrue();
 	}
 
 	@Test
@@ -415,7 +414,7 @@ public class UrlTagTests extends AbstractTagTests {
 
 		assertEquals("url/v%20lue", uri);
 		assertEquals(1, usedParams.size());
-		assertTrue(usedParams.contains("name"));
+		assertThat(usedParams.contains("name")).isTrue();
 	}
 
 	@Test  // SPR-11401
@@ -432,7 +431,7 @@ public class UrlTagTests extends AbstractTagTests {
 
 		assertEquals("url/my%2FId", uri);
 		assertEquals(1, usedParams.size());
-		assertTrue(usedParams.contains("name"));
+		assertThat(usedParams.contains("name")).isTrue();
 	}
 
 	@Test
@@ -448,7 +447,7 @@ public class UrlTagTests extends AbstractTagTests {
 		String uri = tag.replaceUriTemplateParams("url/{name}", params, usedParams);
 		assertEquals("url/my/Id", uri);
 		assertEquals(1, usedParams.size());
-		assertTrue(usedParams.contains("name"));
+		assertThat(usedParams.contains("name")).isTrue();
 	}
 
 	@Test

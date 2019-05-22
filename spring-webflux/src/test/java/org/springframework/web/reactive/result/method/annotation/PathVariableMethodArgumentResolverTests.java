@@ -39,10 +39,10 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.server.ServerErrorException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link PathVariableMethodArgumentResolver}.
@@ -78,7 +78,7 @@ public class PathVariableMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.paramNamedString));
+		assertThat(this.resolver.supportsParameter(this.paramNamedString)).isTrue();
 		assertFalse(this.resolver.supportsParameter(this.paramString));
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.paramMono))
@@ -151,7 +151,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		StepVerifier.create(mono)
 				.consumeNextWith(value -> {
-					assertTrue(value instanceof Optional);
+					boolean condition = value instanceof Optional;
+					assertThat(condition).isTrue();
 					assertFalse(((Optional<?>) value).isPresent());
 				})
 				.expectComplete()

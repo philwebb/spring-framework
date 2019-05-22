@@ -34,8 +34,8 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.metadata.CallMetaDataContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -95,9 +95,10 @@ public class CallMetaDataContextTests {
 
 		Map<String, Object> inParameters = context.matchInParameterValuesWithCallParameters(parameterSource);
 		assertEquals("Wrong number of matched in parameter values", 2, inParameters.size());
-		assertTrue("in parameter value missing", inParameters.containsKey("id"));
-		assertTrue("in out parameter value missing", inParameters.containsKey("name"));
-		assertTrue("out parameter value matched", !inParameters.containsKey("customer_no"));
+		assertThat(inParameters.containsKey("id")).as("in parameter value missing").isTrue();
+		assertThat(inParameters.containsKey("name")).as("in out parameter value missing").isTrue();
+		boolean condition = !inParameters.containsKey("customer_no");
+		assertThat(condition).as("out parameter value matched").isTrue();
 
 		List<String> names = context.getOutParameterNames();
 		assertEquals("Wrong number of out parameters", 2, names.size());

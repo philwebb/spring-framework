@@ -28,9 +28,9 @@ import test.aop.PerThisAspect;
 
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -89,9 +89,9 @@ public class AspectProxyFactoryTests {
 		AspectJProxyFactory proxyFactory = new AspectJProxyFactory(new TestBean());
 		proxyFactory.addAspect(LoggingAspectOnVarargs.class);
 		ITestBean proxy = proxyFactory.getProxy();
-		assertTrue(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C));
+		assertThat(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C)).isTrue();
 		ITestBean tb = (ITestBean) SerializationTestUtils.serializeAndDeserialize(proxy);
-		assertTrue(tb.doWithVarargs(MyEnum.A, MyOtherEnum.C));
+		assertThat(tb.doWithVarargs(MyEnum.A, MyOtherEnum.C)).isTrue();
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class AspectProxyFactoryTests {
 		AspectJProxyFactory proxyFactory = new AspectJProxyFactory(new TestBean());
 		proxyFactory.addAspect(LoggingAspectOnVarargs.class);
 		ITestBean proxy = proxyFactory.getProxy();
-		assertTrue(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C));
+		assertThat(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C)).isTrue();
 	}
 
 	@Test  // SPR-13328
@@ -136,7 +136,7 @@ public class AspectProxyFactoryTests {
 		AspectJProxyFactory proxyFactory = new AspectJProxyFactory(new TestBean());
 		proxyFactory.addAspect(LoggingAspectOnSetter.class);
 		ITestBean proxy = proxyFactory.getProxy();
-		assertTrue(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C));
+		assertThat(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C)).isTrue();
 	}
 
 

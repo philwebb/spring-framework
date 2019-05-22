@@ -21,10 +21,10 @@ import javax.resource.spi.ManagedConnectionFactory;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -46,7 +46,7 @@ public class LocalConnectionFactoryBeanTests {
 	@Test
 	public void testIsSingleton() throws Exception {
 		LocalConnectionFactoryBean factory = new LocalConnectionFactoryBean();
-		assertTrue(factory.isSingleton());
+		assertThat(factory.isSingleton()).isTrue();
 	}
 
 	@Test

@@ -58,8 +58,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link RequestMappingHandlerAdapter}.
@@ -115,7 +115,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod);
-		assertTrue(response.getHeader("Cache-Control").contains("max-age"));
+		assertThat(response.getHeader("Cache-Control").contains("max-age")).isTrue();
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class RequestMappingHandlerAdapterTests {
 		HandlerMethod handlerMethod = handlerMethod(new RedirectAttributeController(), "handle", Model.class);
 		ModelAndView mav = this.handlerAdapter.handle(request, response, handlerMethod);
 
-		assertTrue("Without RedirectAttributes arg, model should be empty", mav.getModel().isEmpty());
+		assertThat(mav.getModel().isEmpty()).as("Without RedirectAttributes arg, model should be empty").isTrue();
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.setCustomArgumentResolvers(Collections.singletonList(resolver));
 		this.handlerAdapter.afterPropertiesSet();
 
-		assertTrue(this.handlerAdapter.getArgumentResolvers().contains(resolver));
+		assertThat(this.handlerAdapter.getArgumentResolvers().contains(resolver)).isTrue();
 		assertMethodProcessorCount(RESOLVER_COUNT + 1, INIT_BINDER_RESOLVER_COUNT + 1, HANDLER_COUNT);
 	}
 
@@ -181,7 +181,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.setCustomReturnValueHandlers(Collections.singletonList(handler));
 		this.handlerAdapter.afterPropertiesSet();
 
-		assertTrue(this.handlerAdapter.getReturnValueHandlers().contains(handler));
+		assertThat(this.handlerAdapter.getReturnValueHandlers().contains(handler)).isTrue();
 		assertMethodProcessorCount(RESOLVER_COUNT, INIT_BINDER_RESOLVER_COUNT, HANDLER_COUNT + 1);
 	}
 

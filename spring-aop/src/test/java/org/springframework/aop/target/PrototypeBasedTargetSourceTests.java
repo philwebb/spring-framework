@@ -26,8 +26,8 @@ import org.springframework.tests.sample.beans.SerializablePerson;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests relating to the abstract {@link AbstractPrototypeBasedTargetSource}
@@ -56,8 +56,8 @@ public class PrototypeBasedTargetSourceTests {
 
 		TestTargetSource cpts = (TestTargetSource) bf.getBean("ts");
 		TargetSource serialized = (TargetSource) SerializationTestUtils.serializeAndDeserialize(cpts);
-		assertTrue("Changed to SingletonTargetSource on deserialization",
-				serialized instanceof SingletonTargetSource);
+		boolean condition = serialized instanceof SingletonTargetSource;
+		assertThat(condition).as("Changed to SingletonTargetSource on deserialization").isTrue();
 		SingletonTargetSource sts = (SingletonTargetSource) serialized;
 		assertNotNull(sts.getTarget());
 	}

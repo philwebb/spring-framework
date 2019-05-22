@@ -46,12 +46,10 @@ import org.springframework.remoting.support.RemoteInvocationResult;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -105,19 +103,19 @@ public class HttpInvokerTests {
 		proxy.setAge(50);
 		assertEquals(50, proxy.getAge());
 		proxy.setStringArray(new String[] {"str1", "str2"});
-		assertTrue(Arrays.equals(new String[] {"str1", "str2"}, proxy.getStringArray()));
+		assertThat(Arrays.equals(new String[] {"str1", "str2"}, proxy.getStringArray())).isTrue();
 		proxy.setSomeIntegerArray(new Integer[] {1, 2, 3});
-		assertTrue(Arrays.equals(new Integer[] {1, 2, 3}, proxy.getSomeIntegerArray()));
+		assertThat(Arrays.equals(new Integer[] {1, 2, 3}, proxy.getSomeIntegerArray())).isTrue();
 		proxy.setNestedIntegerArray(new Integer[][] {{1, 2, 3}, {4, 5, 6}});
 		Integer[][] integerArray = proxy.getNestedIntegerArray();
-		assertTrue(Arrays.equals(new Integer[] {1, 2, 3}, integerArray[0]));
-		assertTrue(Arrays.equals(new Integer[] {4, 5, 6}, integerArray[1]));
+		assertThat(Arrays.equals(new Integer[] {1, 2, 3}, integerArray[0])).isTrue();
+		assertThat(Arrays.equals(new Integer[] {4, 5, 6}, integerArray[1])).isTrue();
 		proxy.setSomeIntArray(new int[] {1, 2, 3});
-		assertTrue(Arrays.equals(new int[] {1, 2, 3}, proxy.getSomeIntArray()));
+		assertThat(Arrays.equals(new int[] {1, 2, 3}, proxy.getSomeIntArray())).isTrue();
 		proxy.setNestedIntArray(new int[][] {{1, 2, 3}, {4, 5, 6}});
 		int[][] intArray = proxy.getNestedIntArray();
-		assertTrue(Arrays.equals(new int[] {1, 2, 3}, intArray[0]));
-		assertTrue(Arrays.equals(new int[] {4, 5, 6}, intArray[1]));
+		assertThat(Arrays.equals(new int[] {1, 2, 3}, intArray[0])).isTrue();
+		assertThat(Arrays.equals(new int[] {4, 5, 6}, intArray[1])).isTrue();
 
 		assertThatIllegalStateException().isThrownBy(() ->
 				proxy.exceptional(new IllegalStateException()));
@@ -367,7 +365,8 @@ public class HttpInvokerTests {
 			@Override
 			public Object invoke(RemoteInvocation invocation, Object targetObject)
 					throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-				assertTrue(invocation instanceof TestRemoteInvocation);
+				boolean condition = invocation instanceof TestRemoteInvocation;
+				assertThat(condition).isTrue();
 				assertNull(invocation.getAttributes());
 				assertNull(invocation.getAttribute("myKey"));
 				return super.invoke(invocation, targetObject);
@@ -427,10 +426,10 @@ public class HttpInvokerTests {
 		ITestBean proxy = (ITestBean) pfb.getObject();
 
 		// shouldn't go through to remote service
-		assertTrue(proxy.toString().contains("HTTP invoker"));
-		assertTrue(proxy.toString().contains(serviceUrl));
+		assertThat(proxy.toString().contains("HTTP invoker")).isTrue();
+		assertThat(proxy.toString().contains(serviceUrl)).isTrue();
 		assertEquals(proxy.hashCode(), proxy.hashCode());
-		assertTrue(proxy.equals(proxy));
+		assertThat(proxy.equals(proxy)).isTrue();
 
 		// should go through
 

@@ -26,11 +26,11 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -47,7 +47,7 @@ public class ShallowEtagHeaderFilterTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/hotels");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		assertTrue(filter.isEligibleForEtag(request, response, 200, StreamUtils.emptyInput()));
+		assertThat(filter.isEligibleForEtag(request, response, 200, StreamUtils.emptyInput())).isTrue();
 		assertFalse(filter.isEligibleForEtag(request, response, 300, StreamUtils.emptyInput()));
 
 		request = new MockHttpServletRequest("HEAD", "/hotels");
@@ -76,7 +76,7 @@ public class ShallowEtagHeaderFilterTests {
 
 		assertEquals("Invalid status", 200, response.getStatus());
 		assertEquals("Invalid ETag header", "\"0b10a8db164e0754105b7a99be72e3fe5\"", response.getHeader("ETag"));
-		assertTrue("Invalid Content-Length header", response.getContentLength() > 0);
+		assertThat(response.getContentLength() > 0).as("Invalid Content-Length header").isTrue();
 		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
 	}
 
@@ -96,7 +96,7 @@ public class ShallowEtagHeaderFilterTests {
 
 		assertEquals("Invalid status", 200, response.getStatus());
 		assertEquals("Invalid ETag header", "W/\"0b10a8db164e0754105b7a99be72e3fe5\"", response.getHeader("ETag"));
-		assertTrue("Invalid Content-Length header", response.getContentLength() > 0);
+		assertThat(response.getContentLength() > 0).as("Invalid Content-Length header").isTrue();
 		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
 	}
 
@@ -262,7 +262,7 @@ public class ShallowEtagHeaderFilterTests {
 
 		assertEquals("Invalid status", 200, response.getStatus());
 		assertEquals("Invalid ETag header", "\"0b10a8db164e0754105b7a99be72e3fe5\"", response.getHeader("ETag"));
-		assertTrue("Invalid Content-Length header", response.getContentLength() > 0);
+		assertThat(response.getContentLength() > 0).as("Invalid Content-Length header").isTrue();
 		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
 	}
 

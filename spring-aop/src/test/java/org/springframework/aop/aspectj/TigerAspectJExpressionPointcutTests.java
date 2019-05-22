@@ -29,8 +29,8 @@ import test.annotation.transaction.Tx;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Java 5 specific {@link AspectJExpressionPointcutTests}.
@@ -66,8 +66,8 @@ public class TigerAspectJExpressionPointcutTests {
 		//assertFalse(ajexp.matches(TestBean.class));
 
 		Method takesGenericList = methodsOnHasGeneric.get("setFriends");
-		assertTrue(ajexp.matches(takesGenericList, HasGeneric.class));
-		assertTrue(ajexp.matches(methodsOnHasGeneric.get("setEnemies"), HasGeneric.class));
+		assertThat(ajexp.matches(takesGenericList, HasGeneric.class)).isTrue();
+		assertThat(ajexp.matches(methodsOnHasGeneric.get("setEnemies"), HasGeneric.class)).isTrue();
 		assertFalse(ajexp.matches(methodsOnHasGeneric.get("setPartners"), HasGeneric.class));
 		assertFalse(ajexp.matches(methodsOnHasGeneric.get("setPhoneNumbers"), HasGeneric.class));
 
@@ -88,9 +88,9 @@ public class TigerAspectJExpressionPointcutTests {
 		AspectJExpressionPointcut jdbcVarArgs = new AspectJExpressionPointcut();
 		jdbcVarArgs.setExpression(expression);
 
-		assertTrue(jdbcVarArgs.matches(
+		assertThat(jdbcVarArgs.matches(
 				MyTemplate.class.getMethod("queryForInt", String.class, Object[].class),
-				MyTemplate.class));
+				MyTemplate.class)).isTrue();
 
 		Method takesGenericList = methodsOnHasGeneric.get("setFriends");
 		assertFalse(jdbcVarArgs.matches(takesGenericList, HasGeneric.class));
@@ -117,7 +117,7 @@ public class TigerAspectJExpressionPointcutTests {
 		String expression = "within(@(test.annotation..*) *)";
 		AspectJExpressionPointcut springAnnotatedPc = testMatchAnnotationOnClass(expression);
 		assertFalse(springAnnotatedPc.matches(TestBean.class.getMethod("setName", String.class), TestBean.class));
-		assertTrue(springAnnotatedPc.matches(SpringAnnotated.class.getMethod("foo"), SpringAnnotated.class));
+		assertThat(springAnnotatedPc.matches(SpringAnnotated.class.getMethod("foo"), SpringAnnotated.class)).isTrue();
 
 		expression = "within(@(test.annotation.transaction..*) *)";
 		AspectJExpressionPointcut springTxAnnotatedPc = testMatchAnnotationOnClass(expression);
@@ -135,9 +135,9 @@ public class TigerAspectJExpressionPointcutTests {
 		ajexp.setExpression(expression);
 
 		assertFalse(ajexp.matches(getAge, TestBean.class));
-		assertTrue(ajexp.matches(HasTransactionalAnnotation.class.getMethod("foo"), HasTransactionalAnnotation.class));
-		assertTrue(ajexp.matches(HasTransactionalAnnotation.class.getMethod("bar", String.class), HasTransactionalAnnotation.class));
-		assertTrue(ajexp.matches(BeanB.class.getMethod("setName", String.class), BeanB.class));
+		assertThat(ajexp.matches(HasTransactionalAnnotation.class.getMethod("foo"), HasTransactionalAnnotation.class)).isTrue();
+		assertThat(ajexp.matches(HasTransactionalAnnotation.class.getMethod("bar", String.class), HasTransactionalAnnotation.class)).isTrue();
+		assertThat(ajexp.matches(BeanB.class.getMethod("setName", String.class), BeanB.class)).isTrue();
 		assertFalse(ajexp.matches(BeanA.class.getMethod("setName", String.class), BeanA.class));
 		return ajexp;
 	}
@@ -152,7 +152,7 @@ public class TigerAspectJExpressionPointcutTests {
 		assertFalse(ajexp.matches(HasTransactionalAnnotation.class.getMethod("foo"), HasTransactionalAnnotation.class));
 		assertFalse(ajexp.matches(HasTransactionalAnnotation.class.getMethod("bar", String.class), HasTransactionalAnnotation.class));
 		assertFalse(ajexp.matches(BeanA.class.getMethod("setName", String.class), BeanA.class));
-		assertTrue(ajexp.matches(BeanA.class.getMethod("getAge"), BeanA.class));
+		assertThat(ajexp.matches(BeanA.class.getMethod("getAge"), BeanA.class)).isTrue();
 		assertFalse(ajexp.matches(BeanA.class.getMethod("setName", String.class), BeanA.class));
 	}
 
@@ -165,7 +165,7 @@ public class TigerAspectJExpressionPointcutTests {
 		ProxyFactory factory = new ProxyFactory(new BeanA());
 		factory.setProxyTargetClass(true);
 		BeanA proxy = (BeanA) factory.getProxy();
-		assertTrue(ajexp.matches(BeanA.class.getMethod("getAge"), proxy.getClass()));
+		assertThat(ajexp.matches(BeanA.class.getMethod("getAge"), proxy.getClass())).isTrue();
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class TigerAspectJExpressionPointcutTests {
 		ProxyFactory factory = new ProxyFactory(new BeanA());
 		factory.setProxyTargetClass(false);
 		IBeanA proxy = (IBeanA) factory.getProxy();
-		assertTrue(ajexp.matches(IBeanA.class.getMethod("getAge"), proxy.getClass()));
+		assertThat(ajexp.matches(IBeanA.class.getMethod("getAge"), proxy.getClass())).isTrue();
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class TigerAspectJExpressionPointcutTests {
 		assertFalse(anySpringMethodAnnotation.matches(
 				HasTransactionalAnnotation.class.getMethod("bar", String.class), HasTransactionalAnnotation.class));
 		assertFalse(anySpringMethodAnnotation.matches(BeanA.class.getMethod("setName", String.class), BeanA.class));
-		assertTrue(anySpringMethodAnnotation.matches(BeanA.class.getMethod("getAge"), BeanA.class));
+		assertThat(anySpringMethodAnnotation.matches(BeanA.class.getMethod("getAge"), BeanA.class)).isTrue();
 		assertFalse(anySpringMethodAnnotation.matches(BeanA.class.getMethod("setName", String.class), BeanA.class));
 	}
 
@@ -211,14 +211,14 @@ public class TigerAspectJExpressionPointcutTests {
 		assertFalse(takesSpringAnnotatedArgument2.matches(BeanA.class.getMethod("getAge"), BeanA.class));
 		assertFalse(takesSpringAnnotatedArgument2.matches(BeanA.class.getMethod("setName", String.class), BeanA.class));
 
-		assertTrue(takesSpringAnnotatedArgument2.matches(
+		assertThat(takesSpringAnnotatedArgument2.matches(
 				ProcessesSpringAnnotatedParameters.class.getMethod("takesAnnotatedParameters", TestBean.class, SpringAnnotated.class),
-				ProcessesSpringAnnotatedParameters.class));
+				ProcessesSpringAnnotatedParameters.class)).isTrue();
 
 		// True because it maybeMatches with potential argument subtypes
-		assertTrue(takesSpringAnnotatedArgument2.matches(
+		assertThat(takesSpringAnnotatedArgument2.matches(
 				ProcessesSpringAnnotatedParameters.class.getMethod("takesNoAnnotatedParameters", TestBean.class, BeanA.class),
-				ProcessesSpringAnnotatedParameters.class));
+				ProcessesSpringAnnotatedParameters.class)).isTrue();
 
 		assertFalse(takesSpringAnnotatedArgument2.matches(
 				ProcessesSpringAnnotatedParameters.class.getMethod("takesNoAnnotatedParameters", TestBean.class, BeanA.class),
@@ -241,9 +241,9 @@ public class TigerAspectJExpressionPointcutTests {
 		assertFalse(takesSpringAnnotatedArgument2.matches(BeanA.class.getMethod("getAge"), BeanA.class));
 		assertFalse(takesSpringAnnotatedArgument2.matches(BeanA.class.getMethod("setName", String.class), BeanA.class));
 
-		assertTrue(takesSpringAnnotatedArgument2.matches(
+		assertThat(takesSpringAnnotatedArgument2.matches(
 				ProcessesSpringAnnotatedParameters.class.getMethod("takesAnnotatedParameters", TestBean.class, SpringAnnotated.class),
-				ProcessesSpringAnnotatedParameters.class));
+				ProcessesSpringAnnotatedParameters.class)).isTrue();
 		assertFalse(takesSpringAnnotatedArgument2.matches(
 				ProcessesSpringAnnotatedParameters.class.getMethod("takesNoAnnotatedParameters", TestBean.class, BeanA.class),
 				ProcessesSpringAnnotatedParameters.class));

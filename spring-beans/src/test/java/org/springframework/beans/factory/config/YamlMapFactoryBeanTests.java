@@ -28,10 +28,8 @@ import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link YamlMapFactoryBean}.
@@ -98,12 +96,13 @@ public class YamlMapFactoryBeanTests {
 		Map<String, Object> map = this.factory.getObject();
 
 		assertEquals(1, map.size());
-		assertTrue(map.containsKey("foo"));
+		assertThat(map.containsKey("foo")).isTrue();
 		Object object = map.get("foo");
-		assertTrue(object instanceof LinkedHashMap);
+		boolean condition = object instanceof LinkedHashMap;
+		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> sub = (Map<String, Object>) object;
-		assertTrue(sub.containsKey("key1.key2"));
+		assertThat(sub.containsKey("key1.key2")).isTrue();
 		assertEquals("value", sub.get("key1.key2"));
 	}
 
@@ -113,9 +112,10 @@ public class YamlMapFactoryBeanTests {
 		Map<String, Object> map = this.factory.getObject();
 
 		assertEquals(1, map.size());
-		assertTrue(map.containsKey("foo"));
+		assertThat(map.containsKey("foo")).isTrue();
 		Object object = map.get("foo");
-		assertTrue(object instanceof LinkedHashMap);
+		boolean condition = object instanceof LinkedHashMap;
+		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> sub = (Map<String, Object>) object;
 		assertEquals(1, sub.size());

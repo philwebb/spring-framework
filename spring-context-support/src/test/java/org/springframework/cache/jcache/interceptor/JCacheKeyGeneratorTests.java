@@ -38,9 +38,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -151,9 +151,8 @@ public class JCacheKeyGeneratorTests {
 
 		@Override
 		public Object generate(Object target, Method method, Object... params) {
-			assertTrue("Unexpected parameters: expected: "
-							+ Arrays.toString(this.expectedParams) + " but got: " + Arrays.toString(params),
-					Arrays.equals(expectedParams, params));
+			assertThat(Arrays.equals(expectedParams, params)).as("Unexpected parameters: expected: "
+								+ Arrays.toString(this.expectedParams) + " but got: " + Arrays.toString(params)).isTrue();
 			return new SimpleKey(params);
 		}
 	}

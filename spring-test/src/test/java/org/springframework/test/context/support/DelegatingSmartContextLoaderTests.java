@@ -27,13 +27,10 @@ import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.ObjectUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link DelegatingSmartContextLoader}.
@@ -50,7 +47,7 @@ public class DelegatingSmartContextLoaderTests {
 
 
 	private static void assertEmpty(Object[] array) {
-		assertTrue(ObjectUtils.isEmpty(array));
+		assertThat(ObjectUtils.isEmpty(array)).isTrue();
 	}
 
 	// --- SmartContextLoader - processContextConfiguration() ------------------
@@ -140,7 +137,8 @@ public class DelegatingSmartContextLoaderTests {
 		ApplicationContext applicationContext = loader.loadContext(mergedConfig);
 		assertNotNull(applicationContext);
 		assertEquals("foo", applicationContext.getBean(String.class));
-		assertTrue(applicationContext instanceof ConfigurableApplicationContext);
+		boolean condition = applicationContext instanceof ConfigurableApplicationContext;
+		assertThat(condition).isTrue();
 		((ConfigurableApplicationContext) applicationContext).close();
 	}
 

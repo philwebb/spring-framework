@@ -40,9 +40,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
@@ -139,7 +139,7 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 	@Test
 	public void commitTxAndStartNewTx() {
 		assertInTransaction(true);
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isTrue();
 		assertUsers("Dilbert");
 		deleteFromTables("user");
 		assertUsers();
@@ -157,13 +157,13 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 
 		TestTransaction.start();
 		assertInTransaction(true);
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isTrue();
 	}
 
 	@Test
 	public void commitTxButDoNotStartNewTx() {
 		assertInTransaction(true);
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isTrue();
 		assertUsers("Dilbert");
 		deleteFromTables("user");
 		assertUsers();
@@ -183,13 +183,13 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 	@Test
 	public void rollbackTxAndStartNewTx() {
 		assertInTransaction(true);
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isTrue();
 		assertUsers("Dilbert");
 		deleteFromTables("user");
 		assertUsers();
 
 		// Rollback (automatically)
-		assertTrue(TestTransaction.isFlaggedForRollback());
+		assertThat(TestTransaction.isFlaggedForRollback()).isTrue();
 		TestTransaction.end();
 		assertFalse(TestTransaction.isActive());
 		assertInTransaction(false);
@@ -198,8 +198,8 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 		// Start new transaction with default rollback semantics
 		TestTransaction.start();
 		assertInTransaction(true);
-		assertTrue(TestTransaction.isFlaggedForRollback());
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isFlaggedForRollback()).isTrue();
+		assertThat(TestTransaction.isActive()).isTrue();
 
 		executeSqlScript("classpath:/org/springframework/test/context/jdbc/data-add-dogbert.sql", false);
 		assertUsers("Dilbert", "Dogbert");
@@ -208,13 +208,13 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 	@Test
 	public void rollbackTxButDoNotStartNewTx() {
 		assertInTransaction(true);
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isTrue();
 		assertUsers("Dilbert");
 		deleteFromTables("user");
 		assertUsers();
 
 		// Rollback (automatically)
-		assertTrue(TestTransaction.isFlaggedForRollback());
+		assertThat(TestTransaction.isFlaggedForRollback()).isTrue();
 		TestTransaction.end();
 		assertFalse(TestTransaction.isActive());
 		assertInTransaction(false);
@@ -225,14 +225,14 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 	@Commit
 	public void rollbackTxAndStartNewTxWithDefaultCommitSemantics() {
 		assertInTransaction(true);
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isTrue();
 		assertUsers("Dilbert");
 		deleteFromTables("user");
 		assertUsers();
 
 		// Rollback
 		TestTransaction.flagForRollback();
-		assertTrue(TestTransaction.isFlaggedForRollback());
+		assertThat(TestTransaction.isFlaggedForRollback()).isTrue();
 		TestTransaction.end();
 		assertFalse(TestTransaction.isActive());
 		assertInTransaction(false);
@@ -242,7 +242,7 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 		TestTransaction.start();
 		assertInTransaction(true);
 		assertFalse(TestTransaction.isFlaggedForRollback());
-		assertTrue(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isTrue();
 
 		executeSqlScript("classpath:/org/springframework/test/context/jdbc/data-add-dogbert.sql", false);
 		assertUsers("Dilbert", "Dogbert");

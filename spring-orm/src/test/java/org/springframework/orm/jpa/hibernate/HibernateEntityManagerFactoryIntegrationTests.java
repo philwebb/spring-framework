@@ -29,9 +29,9 @@ import org.springframework.orm.jpa.AbstractContainerEntityManagerFactoryIntegrat
 import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.orm.jpa.EntityManagerProxy;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Hibernate-specific JPA tests.
@@ -52,23 +52,30 @@ public class HibernateEntityManagerFactoryIntegrationTests extends AbstractConta
 	@Test
 	public void testCanCastNativeEntityManagerFactoryToHibernateEntityManagerFactoryImpl() {
 		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
-		assertTrue(emfi.getNativeEntityManagerFactory() instanceof org.hibernate.jpa.HibernateEntityManagerFactory);
-		assertTrue(emfi.getNativeEntityManagerFactory() instanceof SessionFactory);  // as of Hibernate 5.2
+		boolean condition1 = emfi.getNativeEntityManagerFactory() instanceof org.hibernate.jpa.HibernateEntityManagerFactory;
+		assertThat(condition1).isTrue();
+		// as of Hibernate 5.2
+		boolean condition = emfi.getNativeEntityManagerFactory() instanceof SessionFactory;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
 	public void testCanCastSharedEntityManagerProxyToHibernateEntityManager() {
-		assertTrue(sharedEntityManager instanceof org.hibernate.jpa.HibernateEntityManager);
-		assertTrue(((EntityManagerProxy) sharedEntityManager).getTargetEntityManager() instanceof Session);  // as of Hibernate 5.2
+		boolean condition1 = sharedEntityManager instanceof org.hibernate.jpa.HibernateEntityManager;
+		assertThat(condition1).isTrue();
+		// as of Hibernate 5.2
+		boolean condition = ((EntityManagerProxy) sharedEntityManager).getTargetEntityManager() instanceof Session;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
 	public void testCanUnwrapAopProxy() {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		EntityManager proxy = ProxyFactory.getProxy(EntityManager.class, new SingletonTargetSource(em));
-		assertTrue(em instanceof org.hibernate.jpa.HibernateEntityManager);
+		boolean condition = em instanceof org.hibernate.jpa.HibernateEntityManager;
+		assertThat(condition).isTrue();
 		assertFalse(proxy instanceof org.hibernate.jpa.HibernateEntityManager);
-		assertTrue(proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class) != null);
+		assertThat(proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class) != null).isTrue();
 		assertSame(em, proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class));
 		assertSame(em.getDelegate(), proxy.getDelegate());
 	}
@@ -82,7 +89,7 @@ public class HibernateEntityManagerFactoryIntegrationTests extends AbstractConta
 		this.transactionDefinition.setReadOnly(true);
 		startNewTransaction();
 		assertSame(FlushMode.MANUAL, sharedEntityManager.unwrap(Session.class).getHibernateFlushMode());
-		assertTrue(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly());
+		assertThat(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly()).isTrue();
 	}
 
 }

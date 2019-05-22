@@ -30,10 +30,10 @@ import org.junit.Test;
 
 import org.springframework.http.HttpMethod;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
@@ -69,8 +69,7 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 
 		Object config = request.getHttpContext().getAttribute(HttpClientContext.REQUEST_CONFIG);
 		assertNotNull("Request config should be set", config);
-		assertTrue("Wrong request config type" + config.getClass().getName(),
-				RequestConfig.class.isInstance(config));
+		assertThat(RequestConfig.class.isInstance(config)).as("Wrong request config type" + config.getClass().getName()).isTrue();
 		RequestConfig requestConfig = (RequestConfig) config;
 		assertEquals("Wrong custom connection timeout", 1234, requestConfig.getConnectTimeout());
 		assertEquals("Wrong custom connection request timeout", 4321, requestConfig.getConnectionRequestTimeout());

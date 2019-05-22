@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Keith Donald
@@ -35,7 +35,7 @@ public class ConversionServiceContextConfigTests {
 		assertEquals(2, client.getBars().size());
 		assertEquals("value1", client.getBars().get(0).getValue());
 		assertEquals("value2", client.getBars().get(1).getValue());
-		assertTrue(client.isBool());
+		assertThat(client.isBool()).isTrue();
 	}
 
 }

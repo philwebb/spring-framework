@@ -44,11 +44,11 @@ import org.springframework.messaging.rsocket.RSocketRequester.ResponseSpec;
 import org.springframework.util.MimeTypeUtils;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link DefaultRSocketRequester}.
@@ -166,7 +166,7 @@ public class DefaultRSocketRequesterTests {
 		this.rsocket.setPayloadMonoToReturn(mono);
 		this.requester.route("").data("").retrieveMono(Void.class).block(Duration.ofSeconds(5));
 
-		assertTrue(consumed.get());
+		assertThat(consumed.get()).isTrue();
 		assertEquals("requestResponse", this.rsocket.getSavedMethodName());
 	}
 
@@ -188,7 +188,7 @@ public class DefaultRSocketRequesterTests {
 		this.rsocket.setPayloadFluxToReturn(flux);
 		this.requester.route("").data("").retrieveFlux(Void.class).blockLast(Duration.ofSeconds(5));
 
-		assertTrue(consumed.get());
+		assertThat(consumed.get()).isTrue();
 		assertEquals("requestStream", this.rsocket.getSavedMethodName());
 	}
 

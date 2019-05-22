@@ -72,7 +72,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @since 13.03.2003
@@ -113,25 +112,25 @@ public class ProxyFactoryBeanTests {
 	@Test
 	public void testIsDynamicProxyWhenInterfaceSpecified() {
 		ITestBean test1 = (ITestBean) factory.getBean("test1");
-		assertTrue("test1 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
+		assertThat(Proxy.isProxyClass(test1.getClass())).as("test1 is a dynamic proxy").isTrue();
 	}
 
 	@Test
 	public void testIsDynamicProxyWhenInterfaceSpecifiedForPrototype() {
 		ITestBean test1 = (ITestBean) factory.getBean("test2");
-		assertTrue("test2 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
+		assertThat(Proxy.isProxyClass(test1.getClass())).as("test2 is a dynamic proxy").isTrue();
 	}
 
 	@Test
 	public void testIsDynamicProxyWhenAutodetectingInterfaces() {
 		ITestBean test1 = (ITestBean) factory.getBean("test3");
-		assertTrue("test3 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
+		assertThat(Proxy.isProxyClass(test1.getClass())).as("test3 is a dynamic proxy").isTrue();
 	}
 
 	@Test
 	public void testIsDynamicProxyWhenAutodetectingInterfacesForPrototype() {
 		ITestBean test1 = (ITestBean) factory.getBean("test4");
-		assertTrue("test4 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
+		assertThat(Proxy.isProxyClass(test1.getClass())).as("test4 is a dynamic proxy").isTrue();
 	}
 
 	/**
@@ -174,11 +173,11 @@ public class ProxyFactoryBeanTests {
 		assertEquals(0, cba.getCalls());
 
 		ITestBean tb = (ITestBean) bf.getBean("directTarget");
-		assertTrue(tb.getName().equals("Adam"));
+		assertThat(tb.getName().equals("Adam")).isTrue();
 		assertEquals(1, cba.getCalls());
 
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&directTarget");
-		assertTrue("Has correct object type", TestBean.class.isAssignableFrom(pfb.getObjectType()));
+		assertThat(TestBean.class.isAssignableFrom(pfb.getObjectType())).as("Has correct object type").isTrue();
 	}
 
 	@Test
@@ -186,9 +185,9 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(TARGETSOURCE_CONTEXT, CLASS));
 		ITestBean tb = (ITestBean) bf.getBean("viaTargetSource");
-		assertTrue(tb.getName().equals("Adam"));
+		assertThat(tb.getName().equals("Adam")).isTrue();
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&viaTargetSource");
-		assertTrue("Has correct object type", TestBean.class.isAssignableFrom(pfb.getObjectType()));
+		assertThat(TestBean.class.isAssignableFrom(pfb.getObjectType())).as("Has correct object type").isTrue();
 	}
 
 	@Test
@@ -201,7 +200,7 @@ public class ProxyFactoryBeanTests {
 				tb.getName())
 			.withMessage("getName");
 		FactoryBean<?> pfb = (ProxyFactoryBean) bf.getBean("&noTarget");
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(pfb.getObjectType()));
+		assertThat(ITestBean.class.isAssignableFrom(pfb.getObjectType())).as("Has correct object type").isTrue();
 	}
 
 	/**
@@ -234,12 +233,12 @@ public class ProxyFactoryBeanTests {
 
 	@Test
 	public void testPrototypeInstancesAreNotEqual() {
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("prototype")));
+		assertThat(ITestBean.class.isAssignableFrom(factory.getType("prototype"))).as("Has correct object type").isTrue();
 		ITestBean test2 = (ITestBean) factory.getBean("prototype");
 		ITestBean test2_1 = (ITestBean) factory.getBean("prototype");
-		assertTrue("Prototype instances !=", test2 != test2_1);
-		assertTrue("Prototype instances equal", test2.equals(test2_1));
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("prototype")));
+		assertThat(test2 != test2_1).as("Prototype instances !=").isTrue();
+		assertThat(test2.equals(test2_1)).as("Prototype instances equal").isTrue();
+		assertThat(ITestBean.class.isAssignableFrom(factory.getType("prototype"))).as("Has correct object type").isTrue();
 	}
 
 	/**
@@ -279,7 +278,7 @@ public class ProxyFactoryBeanTests {
 	@Test
 	public void testCglibPrototypeInstance() {
 		Object prototype = testPrototypeInstancesAreIndependent("cglibPrototype");
-		assertTrue("It's a cglib proxy", AopUtils.isCglibProxy(prototype));
+		assertThat(AopUtils.isCglibProxy(prototype)).as("It's a cglib proxy").isTrue();
 		assertFalse("It's not a dynamic proxy", AopUtils.isJdkDynamicProxy(prototype));
 	}
 
@@ -292,19 +291,19 @@ public class ProxyFactoryBeanTests {
 		TestBean target = (TestBean) factory.getBean("test");
 		target.setName(name);
 		ITestBean autoInvoker = (ITestBean) factory.getBean("autoInvoker");
-		assertTrue(autoInvoker.getName().equals(name));
+		assertThat(autoInvoker.getName().equals(name)).isTrue();
 	}
 
 	@Test
 	public void testCanGetFactoryReferenceAndManipulate() {
 		ProxyFactoryBean config = (ProxyFactoryBean) factory.getBean("&test1");
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(config.getObjectType()));
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("test1")));
+		assertThat(ITestBean.class.isAssignableFrom(config.getObjectType())).as("Has correct object type").isTrue();
+		assertThat(ITestBean.class.isAssignableFrom(factory.getType("test1"))).as("Has correct object type").isTrue();
 		// Trigger lazy initialization.
 		config.getObject();
 		assertEquals("Have one advisors", 1, config.getAdvisors().length);
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(config.getObjectType()));
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("test1")));
+		assertThat(ITestBean.class.isAssignableFrom(config.getObjectType())).as("Has correct object type").isTrue();
+		assertThat(ITestBean.class.isAssignableFrom(factory.getType("test1"))).as("Has correct object type").isTrue();
 
 		ITestBean tb = (ITestBean) factory.getBean("test1");
 		// no exception
@@ -358,31 +357,31 @@ public class ProxyFactoryBeanTests {
 		// Add to head of interceptor chain
 		int oldCount = config.getAdvisors().length;
 		config.addAdvisor(0, new DefaultIntroductionAdvisor(ti, TimeStamped.class));
-		assertTrue(config.getAdvisors().length == oldCount + 1);
+		assertThat(config.getAdvisors().length == oldCount + 1).isTrue();
 
 		TimeStamped ts = (TimeStamped) factory.getBean("test2");
 		assertEquals(time, ts.getTimeStamp());
 
 		// Can remove
 		config.removeAdvice(ti);
-		assertTrue(config.getAdvisors().length == oldCount);
+		assertThat(config.getAdvisors().length == oldCount).isTrue();
 
 		// Check no change on existing object reference
-		assertTrue(ts.getTimeStamp() == time);
+		assertThat(ts.getTimeStamp() == time).isTrue();
 
 		assertThat(factory.getBean("test2")).as("Should no longer implement TimeStamped")
 				.isNotInstanceOf(TimeStamped.class);
 
 		// Now check non-effect of removing interceptor that isn't there
 		config.removeAdvice(new DebugInterceptor());
-		assertTrue(config.getAdvisors().length == oldCount);
+		assertThat(config.getAdvisors().length == oldCount).isTrue();
 
 		ITestBean it = (ITestBean) ts;
 		DebugInterceptor debugInterceptor = new DebugInterceptor();
 		config.addAdvice(0, debugInterceptor);
 		it.getSpouse();
 		// Won't affect existing reference
-		assertTrue(debugInterceptor.getCount() == 0);
+		assertThat(debugInterceptor.getCount() == 0).isTrue();
 		it = (ITestBean) factory.getBean("test2");
 		it.getSpouse();
 		assertEquals(1, debugInterceptor.getCount());
@@ -422,16 +421,16 @@ public class ProxyFactoryBeanTests {
 	public void testMethodPointcuts() {
 		ITestBean tb = (ITestBean) factory.getBean("pointcuts");
 		PointcutForVoid.reset();
-		assertTrue("No methods intercepted", PointcutForVoid.methodNames.isEmpty());
+		assertThat(PointcutForVoid.methodNames.isEmpty()).as("No methods intercepted").isTrue();
 		tb.getAge();
-		assertTrue("Not void: shouldn't have intercepted", PointcutForVoid.methodNames.isEmpty());
+		assertThat(PointcutForVoid.methodNames.isEmpty()).as("Not void: shouldn't have intercepted").isTrue();
 		tb.setAge(1);
 		tb.getAge();
 		tb.setName("Tristan");
 		tb.toString();
 		assertEquals("Recorded wrong number of invocations", 2, PointcutForVoid.methodNames.size());
-		assertTrue(PointcutForVoid.methodNames.get(0).equals("setAge"));
-		assertTrue(PointcutForVoid.methodNames.get(1).equals("setName"));
+		assertThat(PointcutForVoid.methodNames.get(0).equals("setAge")).isTrue();
+		assertThat(PointcutForVoid.methodNames.get(1).equals("setName")).isTrue();
 	}
 
 	@Test
@@ -509,7 +508,7 @@ public class ProxyFactoryBeanTests {
 	@Test
 	public void testGlobalsCanAddAspectInterfaces() {
 		AddedGlobalInterface agi = (AddedGlobalInterface) factory.getBean("autoInvoker");
-		assertTrue(agi.globalsAdded() == -1);
+		assertThat(agi.globalsAdded() == -1).isTrue();
 
 		ProxyFactoryBean pfb = (ProxyFactoryBean) factory.getBean("&validGlobals");
 		// Trigger lazy initialization.
@@ -519,7 +518,7 @@ public class ProxyFactoryBeanTests {
 
 		ApplicationListener<?> l = (ApplicationListener<?>) factory.getBean("validGlobals");
 		agi = (AddedGlobalInterface) l;
-		assertTrue(agi.globalsAdded() == -1);
+		assertThat(agi.globalsAdded() == -1).isTrue();
 
 		assertThat(factory.getBean("test1")).as("Aspect interface should't be implemeneted without globals")
 				.isNotInstanceOf(AddedGlobalInterface.class);
@@ -544,8 +543,8 @@ public class ProxyFactoryBeanTests {
 		assertFalse("Not serializable because an interceptor isn't serializable", SerializationTestUtils.isSerializable(p));
 
 		// Remove offending interceptor...
-		assertTrue(((Advised) p).removeAdvice(nop));
-		assertTrue("Serializable again because offending interceptor was removed", SerializationTestUtils.isSerializable(p));
+		assertThat(((Advised) p).removeAdvice(nop)).isTrue();
+		assertThat(SerializationTestUtils.isSerializable(p)).as("Serializable again because offending interceptor was removed").isTrue();
 	}
 
 	@Test
@@ -642,7 +641,7 @@ public class ProxyFactoryBeanTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(FROZEN_CONTEXT, CLASS));
 
 		Advised advised = (Advised)bf.getBean("frozen");
-		assertTrue("The proxy should be frozen", advised.isFrozen());
+		assertThat(advised.isFrozen()).as("The proxy should be frozen").isTrue();
 	}
 
 	@Test
@@ -652,7 +651,7 @@ public class ProxyFactoryBeanTests {
 		fb.addAdvice(new DebugInterceptor());
 		fb.setBeanFactory(new DefaultListableBeanFactory());
 		ITestBean proxy = (ITestBean) fb.getObject();
-		assertTrue(AopUtils.isJdkDynamicProxy(proxy));
+		assertThat(AopUtils.isJdkDynamicProxy(proxy)).isTrue();
 	}
 
 

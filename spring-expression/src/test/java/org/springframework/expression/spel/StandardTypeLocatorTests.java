@@ -26,7 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for type comparison
@@ -43,7 +42,7 @@ public class StandardTypeLocatorTests {
 
 		List<String> prefixes = locator.getImportPrefixes();
 		assertEquals(1,prefixes.size());
-		assertTrue(prefixes.contains("java.lang"));
+		assertThat(prefixes.contains("java.lang")).isTrue();
 		assertFalse(prefixes.contains("java.util"));
 
 		assertEquals(Boolean.class,locator.findType("Boolean"));

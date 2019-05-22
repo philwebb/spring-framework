@@ -30,9 +30,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -43,10 +43,10 @@ public class CollectionUtilsTests {
 
 	@Test
 	public void testIsEmpty() {
-		assertTrue(CollectionUtils.isEmpty((Set<Object>) null));
-		assertTrue(CollectionUtils.isEmpty((Map<String, String>) null));
-		assertTrue(CollectionUtils.isEmpty(new HashMap<String, String>()));
-		assertTrue(CollectionUtils.isEmpty(new HashSet<>()));
+		assertThat(CollectionUtils.isEmpty((Set<Object>) null)).isTrue();
+		assertThat(CollectionUtils.isEmpty((Map<String, String>) null)).isTrue();
+		assertThat(CollectionUtils.isEmpty(new HashMap<String, String>())).isTrue();
+		assertThat(CollectionUtils.isEmpty(new HashSet<>())).isTrue();
 
 		List<Object> list = new LinkedList<>();
 		list.add(new Object());
@@ -108,11 +108,11 @@ public class CollectionUtilsTests {
 
 		List<String> list = new LinkedList<>();
 		list.add("myElement");
-		assertTrue(CollectionUtils.contains(list.iterator(), "myElement"));
+		assertThat(CollectionUtils.contains(list.iterator(), "myElement")).isTrue();
 
 		Hashtable<String, String> ht = new Hashtable<>();
 		ht.put("myElement", "myValue");
-		assertTrue(CollectionUtils.contains(ht.keys(), "myElement"));
+		assertThat(CollectionUtils.contains(ht.keys(), "myElement")).isTrue();
 	}
 
 	@Test
@@ -127,9 +127,9 @@ public class CollectionUtilsTests {
 		candidates.add("def");
 		candidates.add("abc");
 
-		assertTrue(CollectionUtils.containsAny(source, candidates));
+		assertThat(CollectionUtils.containsAny(source, candidates)).isTrue();
 		candidates.remove("def");
-		assertTrue(CollectionUtils.containsAny(source, candidates));
+		assertThat(CollectionUtils.containsAny(source, candidates)).isTrue();
 		candidates.remove("abc");
 		assertFalse(CollectionUtils.containsAny(source, candidates));
 	}
@@ -154,8 +154,7 @@ public class CollectionUtilsTests {
 		list.add(new Instance("apple"));
 		Instance instance = new Instance("fiona");
 		list.add(instance);
-		assertTrue("Must return true if instance is in the supplied Collection argument",
-				CollectionUtils.containsInstance(list, instance));
+		assertThat(CollectionUtils.containsInstance(list, instance)).as("Must return true if instance is in the supplied Collection argument").isTrue();
 	}
 
 	@Test
@@ -191,7 +190,7 @@ public class CollectionUtilsTests {
 
 		list = new LinkedList<>();
 		list.add("myElement");
-		assertTrue(CollectionUtils.hasUniqueObject(list));
+		assertThat(CollectionUtils.hasUniqueObject(list)).isTrue();
 
 		list = new LinkedList<>();
 		list.add("myElement");
@@ -206,11 +205,11 @@ public class CollectionUtilsTests {
 		list = new LinkedList<>();
 		list.add(null);
 		list.add(null);
-		assertTrue(CollectionUtils.hasUniqueObject(list));
+		assertThat(CollectionUtils.hasUniqueObject(list)).isTrue();
 
 		list = new LinkedList<>();
 		list.add(null);
-		assertTrue(CollectionUtils.hasUniqueObject(list));
+		assertThat(CollectionUtils.hasUniqueObject(list)).isTrue();
 
 		list = new LinkedList<>();
 		assertFalse(CollectionUtils.hasUniqueObject(list));

@@ -52,7 +52,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests the evaluation of real expressions in a real context.
@@ -469,27 +468,27 @@ public class EvaluationTests extends AbstractExpressionTests {
 		EvaluationContext ctx = new StandardEvaluationContext();
 		ctx.setVariable("a", (short) 3);
 		ctx.setVariable("b", (short) 6);
-		assertTrue(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 		ctx.setVariable("b", (byte) 6);
-		assertTrue(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 		ctx.setVariable("a", (byte) 9);
 		ctx.setVariable("b", (byte) 6);
 		assertFalse(e.getValue(ctx, Boolean.class));
 		ctx.setVariable("a", 10L);
 		ctx.setVariable("b", (short) 30);
-		assertTrue(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 		ctx.setVariable("a", (byte) 3);
 		ctx.setVariable("b", (short) 30);
-		assertTrue(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 		ctx.setVariable("a", (byte) 3);
 		ctx.setVariable("b", 30L);
-		assertTrue(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 		ctx.setVariable("a", (byte) 3);
 		ctx.setVariable("b", 30f);
-		assertTrue(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 		ctx.setVariable("a", new BigInteger("10"));
 		ctx.setVariable("b", new BigInteger("20"));
-		assertTrue(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 	}
 
 	@Test
@@ -542,7 +541,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		EvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
 		boolean trueValue = parser.parseExpression("T(java.util.Date) == Birthdate.Class").getValue(
 				context, Boolean.class);
-		assertTrue(trueValue);
+		assertThat(trueValue).isTrue();
 	}
 
 	@Test
@@ -551,7 +550,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		assertThatExceptionOfType(EvaluationException.class).isThrownBy(() ->
 				parser.parseExpression("T(List)!=null").getValue(context, Boolean.class));
 		((StandardTypeLocator) context.getTypeLocator()).registerImport("java.util");
-		assertTrue(parser.parseExpression("T(List)!=null").getValue(context, Boolean.class));
+		assertThat(parser.parseExpression("T(List)!=null").getValue(context, Boolean.class)).isTrue();
 	}
 
 	@Test
@@ -705,10 +704,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// BigDecimal
 		e = parser.parseExpression("bd++");
-		assertTrue(new BigDecimal("2").equals(helper.bd));
+		assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
 		BigDecimal return_bd = e.getValue(ctx, BigDecimal.class);
-		assertTrue(new BigDecimal("2").equals(return_bd));
-		assertTrue(new BigDecimal("3").equals(helper.bd));
+		assertThat(new BigDecimal("2").equals(return_bd)).isTrue();
+		assertThat(new BigDecimal("3").equals(helper.bd)).isTrue();
 
 		// double
 		e = parser.parseExpression("ddd++");
@@ -759,10 +758,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// BigDecimal
 		e = parser.parseExpression("++bd");
-		assertTrue(new BigDecimal("2").equals(helper.bd));
+		assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
 		BigDecimal return_bd = e.getValue(ctx, BigDecimal.class);
-		assertTrue(new BigDecimal("3").equals(return_bd));
-		assertTrue(new BigDecimal("3").equals(helper.bd));
+		assertThat(new BigDecimal("3").equals(return_bd)).isTrue();
+		assertThat(new BigDecimal("3").equals(helper.bd)).isTrue();
 
 		// double
 		e = parser.parseExpression("++ddd");
@@ -856,10 +855,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// BigDecimal
 		e = parser.parseExpression("bd--");
-		assertTrue(new BigDecimal("2").equals(helper.bd));
+		assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
 		BigDecimal return_bd = e.getValue(ctx,BigDecimal.class);
-		assertTrue(new BigDecimal("2").equals(return_bd));
-		assertTrue(new BigDecimal("1").equals(helper.bd));
+		assertThat(new BigDecimal("2").equals(return_bd)).isTrue();
+		assertThat(new BigDecimal("1").equals(helper.bd)).isTrue();
 
 		// double
 		e = parser.parseExpression("ddd--");
@@ -909,10 +908,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// BigDecimal
 		e = parser.parseExpression("--bd");
-		assertTrue(new BigDecimal("2").equals(helper.bd));
+		assertThat(new BigDecimal("2").equals(helper.bd)).isTrue();
 		BigDecimal return_bd = e.getValue(ctx,BigDecimal.class);
-		assertTrue(new BigDecimal("1").equals(return_bd));
-		assertTrue(new BigDecimal("1").equals(helper.bd));
+		assertThat(new BigDecimal("1").equals(return_bd)).isTrue();
+		assertThat(new BigDecimal("1").equals(helper.bd)).isTrue();
 
 		// double
 		e = parser.parseExpression("--ddd");

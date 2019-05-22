@@ -47,10 +47,10 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link HttpEntityMethodProcessor} delegating to
@@ -182,8 +182,8 @@ public class HttpEntityMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.mavContainer, this.webRequest);
 
 		String content = this.servletResponse.getContentAsString();
-		assertTrue(content.contains("\"type\":\"foo\""));
-		assertTrue(content.contains("\"type\":\"bar\""));
+		assertThat(content.contains("\"type\":\"foo\"")).isTrue();
+		assertThat(content.contains("\"type\":\"bar\"")).isTrue();
 	}
 
 	@Test  // SPR-13423

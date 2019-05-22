@@ -34,13 +34,13 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test cases for {@link ObjectToStringHttpMessageConverter} class.
@@ -72,8 +72,8 @@ public class ObjectToStringHttpMessageConverterTests {
 		assertFalse(this.converter.canRead(Math.class, null));
 		assertFalse(this.converter.canRead(Resource.class, null));
 
-		assertTrue(this.converter.canRead(Locale.class, null));
-		assertTrue(this.converter.canRead(BigInteger.class, null));
+		assertThat(this.converter.canRead(Locale.class, null)).isTrue();
+		assertThat(this.converter.canRead(BigInteger.class, null)).isTrue();
 
 		assertFalse(this.converter.canRead(BigInteger.class, MediaType.TEXT_HTML));
 		assertFalse(this.converter.canRead(BigInteger.class, MediaType.TEXT_XML));
@@ -85,14 +85,14 @@ public class ObjectToStringHttpMessageConverterTests {
 		assertFalse(this.converter.canWrite(Math.class, null));
 		assertFalse(this.converter.canWrite(Resource.class, null));
 
-		assertTrue(this.converter.canWrite(Locale.class, null));
-		assertTrue(this.converter.canWrite(Double.class, null));
+		assertThat(this.converter.canWrite(Locale.class, null)).isTrue();
+		assertThat(this.converter.canWrite(Double.class, null)).isTrue();
 
 		assertFalse(this.converter.canWrite(BigInteger.class, MediaType.TEXT_HTML));
 		assertFalse(this.converter.canWrite(BigInteger.class, MediaType.TEXT_XML));
 		assertFalse(this.converter.canWrite(BigInteger.class, MediaType.APPLICATION_XML));
 
-		assertTrue(this.converter.canWrite(BigInteger.class, MediaType.valueOf("text/*")));
+		assertThat(this.converter.canWrite(BigInteger.class, MediaType.valueOf("text/*"))).isTrue();
 	}
 
 	@Test
@@ -155,7 +155,7 @@ public class ObjectToStringHttpMessageConverterTests {
 		this.converter.write((byte) -8, null, this.response);
 
 		assertEquals("ISO-8859-1", this.servletResponse.getCharacterEncoding());
-		assertTrue(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE));
+		assertThat(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE)).isTrue();
 		assertEquals(2, this.servletResponse.getContentLength());
 		assertArrayEquals(new byte[] { '-', '8' }, this.servletResponse.getContentAsByteArray());
 	}
@@ -166,7 +166,7 @@ public class ObjectToStringHttpMessageConverterTests {
 		this.converter.write(Integer.valueOf(958), contentType, this.response);
 
 		assertEquals("UTF-16", this.servletResponse.getCharacterEncoding());
-		assertTrue(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE));
+		assertThat(this.servletResponse.getContentType().startsWith(MediaType.TEXT_PLAIN_VALUE)).isTrue();
 		assertEquals(8, this.servletResponse.getContentLength());
 		// First two bytes: byte order mark
 		assertArrayEquals(new byte[] { -2, -1, 0, '9', 0, '5', 0, '8' }, this.servletResponse.getContentAsByteArray());

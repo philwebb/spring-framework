@@ -22,10 +22,10 @@ import org.junit.Test;
 
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the {@link InputStreamEditor} class.
@@ -51,9 +51,10 @@ public class InputStreamEditorTests {
 			editor.setAsText(resource);
 			Object value = editor.getValue();
 			assertNotNull(value);
-			assertTrue(value instanceof InputStream);
+			boolean condition = value instanceof InputStream;
+			assertThat(condition).isTrue();
 			stream = (InputStream) value;
-			assertTrue(stream.available() > 0);
+			assertThat(stream.available() > 0).isTrue();
 		}
 		finally {
 			if (stream != null) {

@@ -30,9 +30,9 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit and integration tests for the collection merging support.
@@ -69,7 +69,8 @@ public class CollectionMergingTests {
 		assertNotNull(list);
 		assertEquals(3, list.size());
 		assertNotNull(list.get(2));
-		assertTrue(list.get(2) instanceof TestBean);
+		boolean condition = list.get(2) instanceof TestBean;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -77,8 +78,8 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSet");
 		Set set = bean.getSomeSet();
 		assertEquals("Incorrect size", 2, set.size());
-		assertTrue(set.contains("Rob Harrop"));
-		assertTrue(set.contains("Sally Greenwood"));
+		assertThat(set.contains("Rob Harrop")).isTrue();
+		assertThat(set.contains("Sally Greenwood")).isTrue();
 	}
 
 	@Test
@@ -91,7 +92,8 @@ public class CollectionMergingTests {
 		it.next();
 		Object o = it.next();
 		assertNotNull(o);
-		assertTrue(o instanceof TestBean);
+		boolean condition = o instanceof TestBean;
+		assertThat(condition).isTrue();
 		assertEquals("Sally", ((TestBean) o).getName());
 	}
 
@@ -112,7 +114,8 @@ public class CollectionMergingTests {
 		assertNotNull(map);
 		assertEquals(2, map.size());
 		assertNotNull(map.get("Rob"));
-		assertTrue(map.get("Rob") instanceof TestBean);
+		boolean condition = map.get("Rob") instanceof TestBean;
+		assertThat(condition).isTrue();
 		assertEquals("Sally", ((TestBean) map.get("Rob")).getName());
 	}
 
@@ -143,7 +146,8 @@ public class CollectionMergingTests {
 		assertNotNull(list);
 		assertEquals(3, list.size());
 		assertNotNull(list.get(2));
-		assertTrue(list.get(2) instanceof TestBean);
+		boolean condition = list.get(2) instanceof TestBean;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -151,8 +155,8 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetInConstructor");
 		Set set = bean.getSomeSet();
 		assertEquals("Incorrect size", 2, set.size());
-		assertTrue(set.contains("Rob Harrop"));
-		assertTrue(set.contains("Sally Greenwood"));
+		assertThat(set.contains("Rob Harrop")).isTrue();
+		assertThat(set.contains("Sally Greenwood")).isTrue();
 	}
 
 	@Test
@@ -165,7 +169,8 @@ public class CollectionMergingTests {
 		it.next();
 		Object o = it.next();
 		assertNotNull(o);
-		assertTrue(o instanceof TestBean);
+		boolean condition = o instanceof TestBean;
+		assertThat(condition).isTrue();
 		assertEquals("Sally", ((TestBean) o).getName());
 	}
 
@@ -186,7 +191,8 @@ public class CollectionMergingTests {
 		assertNotNull(map);
 		assertEquals(2, map.size());
 		assertNotNull(map.get("Rob"));
-		assertTrue(map.get("Rob") instanceof TestBean);
+		boolean condition = map.get("Rob") instanceof TestBean;
+		assertThat(condition).isTrue();
 		assertEquals("Sally", ((TestBean) map.get("Rob")).getName());
 	}
 

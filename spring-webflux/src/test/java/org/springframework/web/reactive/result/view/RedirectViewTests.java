@@ -30,10 +30,10 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.reactive.HandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for redirect view, and query string construction.
@@ -105,7 +105,7 @@ public class RedirectViewTests {
 
 		assertFalse(view.isRemoteHost("https://url.somewhere.com"));
 		assertFalse(view.isRemoteHost("/path"));
-		assertTrue(view.isRemoteHost("http://url.somewhereelse.com"));
+		assertThat(view.isRemoteHost("http://url.somewhereelse.com")).isTrue();
 	}
 
 	@Test

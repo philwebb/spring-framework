@@ -50,7 +50,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Also tests AdvisedSupport and ProxyCreatorSupport superclasses.
@@ -91,7 +90,7 @@ public class ProxyFactoryTests {
 		proxied.setAge(5);
 		assertEquals(1, cba.getCalls());
 		assertEquals(1, nop.getCount());
-		assertTrue(pf.removeAdvisor(advisor));
+		assertThat(pf.removeAdvisor(advisor)).isTrue();
 		assertEquals(5, proxied.getAge());
 		assertEquals(1, cba.getCalls());
 		assertEquals(2, nop.getCount());
@@ -166,7 +165,7 @@ public class ProxyFactoryTests {
 		assertEquals(0, cba2.getCalls());
 		assertEquals(1, nop.getCount());
 		assertFalse(advised.replaceAdvisor(new DefaultPointcutAdvisor(new NopInterceptor()), advisor2));
-		assertTrue(advised.replaceAdvisor(advisor1, advisor2));
+		assertThat(advised.replaceAdvisor(advisor1, advisor2)).isTrue();
 		assertEquals(advisor2, pf.getAdvisors()[0]);
 		assertEquals(5, proxied.getAge());
 		assertEquals(1, cba1.getCalls());
@@ -207,7 +206,7 @@ public class ProxyFactoryTests {
 		ITestBean tb = (ITestBean) factory.getProxy();
 		assertThat(tb).as("Picked up secondary interface").isInstanceOf(IOther.class);
 		raw.setAge(25);
-		assertTrue(tb.getAge() == raw.getAge());
+		assertThat(tb.getAge() == raw.getAge()).isTrue();
 
 		long t = 555555L;
 		TimestampIntroductionInterceptor ti = new TimestampIntroductionInterceptor(t);
@@ -220,7 +219,7 @@ public class ProxyFactoryTests {
 		assertEquals("Advisor proxies one more interface after introduction", oldProxiedInterfaces.length + 1, newProxiedInterfaces.length);
 
 		TimeStamped ts = (TimeStamped) factory.getProxy();
-		assertTrue(ts.getTimeStamp() == t);
+		assertThat(ts.getTimeStamp() == t).isTrue();
 		// Shouldn't fail;
 		((IOther) ts).absquatulate();
 	}
@@ -239,14 +238,15 @@ public class ProxyFactoryTests {
 		ProxyFactory factory = new ProxyFactory(new TestBean());
 		factory.addAdvice(0, di);
 		assertThat(factory.getProxy()).isInstanceOf(ITestBean.class);
-		assertTrue(factory.adviceIncluded(di));
-		assertTrue(!factory.adviceIncluded(diUnused));
-		assertTrue(factory.countAdvicesOfType(NopInterceptor.class) == 1);
-		assertTrue(factory.countAdvicesOfType(MyInterceptor.class) == 0);
+		assertThat(factory.adviceIncluded(di)).isTrue();
+		boolean condition = !factory.adviceIncluded(diUnused);
+		assertThat(condition).isTrue();
+		assertThat(factory.countAdvicesOfType(NopInterceptor.class) == 1).isTrue();
+		assertThat(factory.countAdvicesOfType(MyInterceptor.class) == 0).isTrue();
 
 		factory.addAdvice(0, diUnused);
-		assertTrue(factory.adviceIncluded(diUnused));
-		assertTrue(factory.countAdvicesOfType(NopInterceptor.class) == 2);
+		assertThat(factory.adviceIncluded(diUnused)).isTrue();
+		assertThat(factory.countAdvicesOfType(NopInterceptor.class) == 2).isTrue();
 	}
 
 	/**
@@ -267,15 +267,15 @@ public class ProxyFactoryTests {
 		int oldCount = config.getAdvisors().length;
 		config.addAdvisor(0, new DefaultIntroductionAdvisor(ti, TimeStamped.class));
 
-		assertTrue(config.getAdvisors().length == oldCount + 1);
+		assertThat(config.getAdvisors().length == oldCount + 1).isTrue();
 
 		TimeStamped ts = (TimeStamped) config.getProxy();
-		assertTrue(ts.getTimeStamp() == time);
+		assertThat(ts.getTimeStamp() == time).isTrue();
 
 		// Can remove
 		config.removeAdvice(ti);
 
-		assertTrue(config.getAdvisors().length == oldCount);
+		assertThat(config.getAdvisors().length == oldCount).isTrue();
 
 		assertThatExceptionOfType(RuntimeException.class)
 				.as("Existing object won't implement this interface any more")
@@ -287,7 +287,7 @@ public class ProxyFactoryTests {
 		// Now check non-effect of removing interceptor that isn't there
 		config.removeAdvice(new DebugInterceptor());
 
-		assertTrue(config.getAdvisors().length == oldCount);
+		assertThat(config.getAdvisors().length == oldCount).isTrue();
 
 		ITestBean it = (ITestBean) ts;
 		DebugInterceptor debugInterceptor = new DebugInterceptor();
@@ -297,7 +297,7 @@ public class ProxyFactoryTests {
 		config.removeAdvice(debugInterceptor);
 		it.getSpouse();
 		// not invoked again
-		assertTrue(debugInterceptor.getCount() == 1);
+		assertThat(debugInterceptor.getCount() == 1).isTrue();
 	}
 
 	@Test
@@ -305,14 +305,16 @@ public class ProxyFactoryTests {
 		ProxyFactory pf = new ProxyFactory();
 		pf.setTargetClass(ITestBean.class);
 		Object proxy = pf.getProxy();
-		assertTrue("Proxy is a JDK proxy", AopUtils.isJdkDynamicProxy(proxy));
-		assertTrue(proxy instanceof ITestBean);
+		assertThat(AopUtils.isJdkDynamicProxy(proxy)).as("Proxy is a JDK proxy").isTrue();
+		boolean condition1 = proxy instanceof ITestBean;
+		assertThat(condition1).isTrue();
 		assertEquals(ITestBean.class, AopProxyUtils.ultimateTargetClass(proxy));
 
 		ProxyFactory pf2 = new ProxyFactory(proxy);
 		Object proxy2 = pf2.getProxy();
-		assertTrue("Proxy is a JDK proxy", AopUtils.isJdkDynamicProxy(proxy2));
-		assertTrue(proxy2 instanceof ITestBean);
+		assertThat(AopUtils.isJdkDynamicProxy(proxy2)).as("Proxy is a JDK proxy").isTrue();
+		boolean condition = proxy2 instanceof ITestBean;
+		assertThat(condition).isTrue();
 		assertEquals(ITestBean.class, AopProxyUtils.ultimateTargetClass(proxy2));
 	}
 
@@ -321,15 +323,17 @@ public class ProxyFactoryTests {
 		ProxyFactory pf = new ProxyFactory();
 		pf.setTargetClass(TestBean.class);
 		Object proxy = pf.getProxy();
-		assertTrue("Proxy is a CGLIB proxy", AopUtils.isCglibProxy(proxy));
-		assertTrue(proxy instanceof TestBean);
+		assertThat(AopUtils.isCglibProxy(proxy)).as("Proxy is a CGLIB proxy").isTrue();
+		boolean condition1 = proxy instanceof TestBean;
+		assertThat(condition1).isTrue();
 		assertEquals(TestBean.class, AopProxyUtils.ultimateTargetClass(proxy));
 
 		ProxyFactory pf2 = new ProxyFactory(proxy);
 		pf2.setProxyTargetClass(true);
 		Object proxy2 = pf2.getProxy();
-		assertTrue("Proxy is a CGLIB proxy", AopUtils.isCglibProxy(proxy2));
-		assertTrue(proxy2 instanceof TestBean);
+		assertThat(AopUtils.isCglibProxy(proxy2)).as("Proxy is a CGLIB proxy").isTrue();
+		boolean condition = proxy2 instanceof TestBean;
+		assertThat(condition).isTrue();
 		assertEquals(TestBean.class, AopProxyUtils.ultimateTargetClass(proxy2));
 	}
 
@@ -339,8 +343,10 @@ public class ProxyFactoryTests {
 		JFrame frame = new JFrame();
 		ProxyFactory proxyFactory = new ProxyFactory(frame);
 		Object proxy = proxyFactory.getProxy();
-		assertTrue(proxy instanceof RootPaneContainer);
-		assertTrue(proxy instanceof Accessible);
+		boolean condition1 = proxy instanceof RootPaneContainer;
+		assertThat(condition1).isTrue();
+		boolean condition = proxy instanceof Accessible;
+		assertThat(condition).isTrue();
 	}
 
 	@Test

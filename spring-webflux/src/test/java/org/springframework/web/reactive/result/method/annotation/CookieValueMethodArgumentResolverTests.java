@@ -35,10 +35,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebInputException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link CookieValueMethodArgumentResolver}.
@@ -77,8 +77,8 @@ public class CookieValueMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.cookieParameter));
-		assertTrue(this.resolver.supportsParameter(this.cookieStringParameter));
+		assertThat(this.resolver.supportsParameter(this.cookieParameter)).isTrue();
+		assertThat(this.resolver.supportsParameter(this.cookieStringParameter)).isTrue();
 	}
 
 	@Test
@@ -116,7 +116,8 @@ public class CookieValueMethodArgumentResolverTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
 		Object result = this.resolver.resolveArgument(this.cookieStringParameter, this.bindingContext, exchange).block();
 
-		assertTrue(result instanceof String);
+		boolean condition = result instanceof String;
+		assertThat(condition).isTrue();
 		assertEquals("bar", result);
 	}
 

@@ -27,8 +27,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -52,13 +52,13 @@ public class StringHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(this.converter.canRead(String.class, MediaType.TEXT_PLAIN));
+		assertThat(this.converter.canRead(String.class, MediaType.TEXT_PLAIN)).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(this.converter.canWrite(String.class, MediaType.TEXT_PLAIN));
-		assertTrue(this.converter.canWrite(String.class, MediaType.ALL));
+		assertThat(this.converter.canWrite(String.class, MediaType.TEXT_PLAIN)).isTrue();
+		assertThat(this.converter.canWrite(String.class, MediaType.ALL)).isTrue();
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class StringHttpMessageConverterTests {
 		assertEquals(body, this.outputMessage.getBodyAsString(StandardCharsets.ISO_8859_1));
 		assertEquals(new MediaType("text", "plain", StandardCharsets.ISO_8859_1), headers.getContentType());
 		assertEquals(body.getBytes(StandardCharsets.ISO_8859_1).length, headers.getContentLength());
-		assertTrue(headers.getAcceptCharset().isEmpty());
+		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class StringHttpMessageConverterTests {
 		assertEquals(body, this.outputMessage.getBodyAsString(StandardCharsets.UTF_8));
 		assertEquals(TEXT_PLAIN_UTF_8, headers.getContentType());
 		assertEquals(body.getBytes(StandardCharsets.UTF_8).length, headers.getContentLength());
-		assertTrue(headers.getAcceptCharset().isEmpty());
+		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
 
 	@Test  // SPR-8867
@@ -107,7 +107,7 @@ public class StringHttpMessageConverterTests {
 		assertEquals(body, this.outputMessage.getBodyAsString(StandardCharsets.UTF_8));
 		assertEquals(TEXT_PLAIN_UTF_8, headers.getContentType());
 		assertEquals(body.getBytes(StandardCharsets.UTF_8).length, headers.getContentLength());
-		assertTrue(headers.getAcceptCharset().isEmpty());
+		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
 
 }

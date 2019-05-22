@@ -23,9 +23,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -41,8 +41,8 @@ public class ScopedProxyAutowireTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(
 				qualifiedResource(ScopedProxyAutowireTests.class, "scopedAutowireFalse.xml"));
 
-		assertTrue(Arrays.asList(bf.getBeanNamesForType(TestBean.class, false, false)).contains("scoped"));
-		assertTrue(Arrays.asList(bf.getBeanNamesForType(TestBean.class, true, false)).contains("scoped"));
+		assertThat(Arrays.asList(bf.getBeanNamesForType(TestBean.class, false, false)).contains("scoped")).isTrue();
+		assertThat(Arrays.asList(bf.getBeanNamesForType(TestBean.class, true, false)).contains("scoped")).isTrue();
 		assertFalse(bf.containsSingleton("scoped"));
 		TestBean autowired = (TestBean) bf.getBean("autowired");
 		TestBean unscoped = (TestBean) bf.getBean("unscoped");
@@ -55,8 +55,8 @@ public class ScopedProxyAutowireTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(
 				qualifiedResource(ScopedProxyAutowireTests.class, "scopedAutowireTrue.xml"));
 
-		assertTrue(Arrays.asList(bf.getBeanNamesForType(TestBean.class, true, false)).contains("scoped"));
-		assertTrue(Arrays.asList(bf.getBeanNamesForType(TestBean.class, false, false)).contains("scoped"));
+		assertThat(Arrays.asList(bf.getBeanNamesForType(TestBean.class, true, false)).contains("scoped")).isTrue();
+		assertThat(Arrays.asList(bf.getBeanNamesForType(TestBean.class, false, false)).contains("scoped")).isTrue();
 		assertFalse(bf.containsSingleton("scoped"));
 		TestBean autowired = (TestBean) bf.getBean("autowired");
 		TestBean scoped = (TestBean) bf.getBean("scoped");

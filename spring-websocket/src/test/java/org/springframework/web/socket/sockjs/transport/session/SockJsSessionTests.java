@@ -35,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
@@ -62,19 +61,19 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		Thread.sleep(1);
 
 		long time1 = this.session.getTimeSinceLastActive();
-		assertTrue(time1 > 0);
+		assertThat(time1 > 0).isTrue();
 
 		Thread.sleep(1);
 
 		long time2 = this.session.getTimeSinceLastActive();
-		assertTrue(time2 > time1);
+		assertThat(time2 > time1).isTrue();
 
 		this.session.delegateConnectionEstablished();
 
 		Thread.sleep(1);
 
 		this.session.setActive(false);
-		assertTrue(this.session.getTimeSinceLastActive() > 0);
+		assertThat(this.session.getTimeSinceLastActive() > 0).isTrue();
 
 		this.session.setActive(true);
 		assertEquals(0, this.session.getTimeSinceLastActive());
@@ -180,7 +179,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		assertEquals(SockJsFrame.closeFrameGoAway(), this.session.getSockJsFramesWritten().get(0));
 
 		assertEquals(1, this.session.getNumberOfLastActiveTimeUpdates());
-		assertTrue(this.session.didCancelHeartbeat());
+		assertThat(this.session.didCancelHeartbeat()).isTrue();
 
 		assertEquals(new CloseStatus(3000, "Go away!"), this.session.getCloseStatus());
 		assertClosed();

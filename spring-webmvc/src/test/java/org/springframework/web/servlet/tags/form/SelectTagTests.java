@@ -48,12 +48,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.support.BindStatus;
 import org.springframework.web.servlet.tags.TransformTag;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -236,9 +236,9 @@ public class SelectTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + "testBean", bindingResult);
 		this.tag.doStartTag();
 		String output = getOutput();
-		assertTrue(output.startsWith("<select "));
-		assertTrue(output.endsWith("</select>"));
-		assertTrue(output.contains("option value=\"AT\" selected=\"selected\">Austria"));
+		assertThat(output.startsWith("<select ")).isTrue();
+		assertThat(output.endsWith("</select>")).isTrue();
+		assertThat(output.contains("option value=\"AT\" selected=\"selected\">Austria")).isTrue();
 	}
 
 	@Test
@@ -274,8 +274,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + "testBean", bindingResult);
 		this.tag.doStartTag();
 		String output = getOutput();
-		assertTrue(output.startsWith("<select "));
-		assertTrue(output.endsWith("</select>"));
+		assertThat(output.startsWith("<select ")).isTrue();
+		assertThat(output.endsWith("</select>")).isTrue();
 		assertFalse(output.contains("selected=\"selected\""));
 		assertFalse(output.contains("multiple=\"multiple\""));
 	}
@@ -302,9 +302,9 @@ public class SelectTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + "testBean", bindingResult);
 		this.tag.doStartTag();
 		String output = getOutput();
-		assertTrue(output.startsWith("<select "));
-		assertTrue(output.endsWith("</select>"));
-		assertTrue(output.contains("option value=\"AT\" selected=\"selected\">Austria"));
+		assertThat(output.startsWith("<select ")).isTrue();
+		assertThat(output.endsWith("</select>")).isTrue();
+		assertThat(output.contains("option value=\"AT\" selected=\"selected\">Austria")).isTrue();
 	}
 
 	@Test
@@ -333,8 +333,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + "testBean", bindingResult);
 		this.tag.doStartTag();
 		String output = getOutput();
-		assertTrue(output.startsWith("<select "));
-		assertTrue(output.endsWith("</select>"));
+		assertThat(output.startsWith("<select ")).isTrue();
+		assertThat(output.endsWith("</select>")).isTrue();
 		assertFalse(output.contains("selected=\"selected\""));
 	}
 
@@ -371,8 +371,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.doFinally();
 
 		String output = getOutput();
-		assertTrue(output.startsWith("<select "));
-		assertTrue(output.endsWith("</select>"));
+		assertThat(output.startsWith("<select ")).isTrue();
+		assertThat(output.endsWith("</select>")).isTrue();
 		assertContainsAttribute(output, "name", "country");
 	}
 
@@ -443,8 +443,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(Tag.SKIP_BODY, result);
 
 		String output = getOutput();
-		assertTrue(output.startsWith("<select "));
-		assertTrue(output.endsWith("</select>"));
+		assertThat(output.startsWith("<select ")).isTrue();
+		assertThat(output.endsWith("</select>")).isTrue();
 
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
@@ -938,8 +938,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertEquals(Tag.SKIP_BODY, result);
 
 		String output = getOutput();
-		assertTrue(output.startsWith("<select "));
-		assertTrue(output.endsWith("</select>"));
+		assertThat(output.startsWith("<select ")).isTrue();
+		assertThat(output.endsWith("</select>")).isTrue();
 
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
@@ -1003,7 +1003,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		Element e = (Element) rootElement.selectSingleNode("option[@value = 'UK']");
 		Attribute selectedAttr = e.attribute("selected");
 		if (selected) {
-			assertTrue(selectedAttr != null && "selected".equals(selectedAttr.getValue()));
+			assertThat(selectedAttr != null && "selected".equals(selectedAttr.getValue())).isTrue();
 		}
 		else {
 			assertNull(selectedAttr);

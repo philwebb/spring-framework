@@ -63,10 +63,10 @@ import org.springframework.mock.http.client.reactive.test.MockClientHttpResponse
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.http.codec.json.Jackson2CodecSupport.JSON_VIEW_HINT;
 
 /**
@@ -376,20 +376,23 @@ public class BodyExtractorsTests {
 		StepVerifier.create(result)
 				.consumeNextWith(part -> {
 					assertEquals("text", part.name());
-					assertTrue(part instanceof FormFieldPart);
+					boolean condition = part instanceof FormFieldPart;
+					assertThat(condition).isTrue();
 					FormFieldPart formFieldPart = (FormFieldPart) part;
 					assertEquals("text default", formFieldPart.value());
 				})
 				.consumeNextWith(part -> {
 					assertEquals("file1", part.name());
-					assertTrue(part instanceof FilePart);
+					boolean condition = part instanceof FilePart;
+					assertThat(condition).isTrue();
 					FilePart filePart = (FilePart) part;
 					assertEquals("a.txt", filePart.filename());
 					assertEquals(MediaType.TEXT_PLAIN, filePart.headers().getContentType());
 				})
 				.consumeNextWith(part -> {
 					assertEquals("file2", part.name());
-					assertTrue(part instanceof FilePart);
+					boolean condition = part instanceof FilePart;
+					assertThat(condition).isTrue();
 					FilePart filePart = (FilePart) part;
 					assertEquals("a.html", filePart.filename());
 					assertEquals(MediaType.TEXT_HTML, filePart.headers().getContentType());
@@ -433,7 +436,8 @@ public class BodyExtractorsTests {
 					body.emit(buffer);
 				})
 				.expectErrorSatisfies(throwable -> {
-					assertTrue(throwable instanceof UnsupportedMediaTypeException);
+					boolean condition = throwable instanceof UnsupportedMediaTypeException;
+					assertThat(condition).isTrue();
 					assertThatExceptionOfType(IllegalReferenceCountException.class).isThrownBy(
 							buffer::release);
 					body.assertCancelled();

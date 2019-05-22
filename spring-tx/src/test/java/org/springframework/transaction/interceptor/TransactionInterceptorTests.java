@@ -31,12 +31,12 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -96,7 +96,8 @@ public class TransactionInterceptorTests extends AbstractTransactionAspectTests 
 
 		// Check that logger survived deserialization
 		assertNotNull(ti.logger);
-		assertTrue(ti.getTransactionManager() instanceof SerializableTransactionManager);
+		boolean condition = ti.getTransactionManager() instanceof SerializableTransactionManager;
+		assertThat(condition).isTrue();
 		assertNotNull(ti.getTransactionAttributeSource());
 	}
 
@@ -118,11 +119,15 @@ public class TransactionInterceptorTests extends AbstractTransactionAspectTests 
 		ti.setTransactionManager(ptm);
 		ti = (TransactionInterceptor) SerializationTestUtils.serializeAndDeserialize(ti);
 
-		assertTrue(ti.getTransactionManager() instanceof SerializableTransactionManager);
-		assertTrue(ti.getTransactionAttributeSource() instanceof CompositeTransactionAttributeSource);
+		boolean condition3 = ti.getTransactionManager() instanceof SerializableTransactionManager;
+		assertThat(condition3).isTrue();
+		boolean condition2 = ti.getTransactionAttributeSource() instanceof CompositeTransactionAttributeSource;
+		assertThat(condition2).isTrue();
 		CompositeTransactionAttributeSource ctas = (CompositeTransactionAttributeSource) ti.getTransactionAttributeSource();
-		assertTrue(ctas.getTransactionAttributeSources()[0] instanceof NameMatchTransactionAttributeSource);
-		assertTrue(ctas.getTransactionAttributeSources()[1] instanceof NameMatchTransactionAttributeSource);
+		boolean condition1 = ctas.getTransactionAttributeSources()[0] instanceof NameMatchTransactionAttributeSource;
+		assertThat(condition1).isTrue();
+		boolean condition = ctas.getTransactionAttributeSources()[1] instanceof NameMatchTransactionAttributeSource;
+		assertThat(condition).isTrue();
 	}
 
 	@Test

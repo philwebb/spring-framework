@@ -29,9 +29,9 @@ import org.springframework.jdbc.LobRetrievalFailureException;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -66,7 +66,7 @@ public class LobSupportTests {
 		};
 
 		assertEquals(Integer.valueOf(3), psc.doInPreparedStatement(ps));
-		assertTrue(svc.b);
+		assertThat(svc.b).isTrue();
 		verify(creator).close();
 		verify(handler).getLobCreator();
 		verify(ps).executeUpdate();

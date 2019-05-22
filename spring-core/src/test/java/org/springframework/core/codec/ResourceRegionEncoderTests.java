@@ -39,9 +39,9 @@ import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test cases for {@link ResourceRegionEncoder} class.
@@ -67,8 +67,8 @@ public class ResourceRegionEncoderTests  {
 		assertFalse(this.encoder.canEncode(ResolvableType.forClass(Resource.class),
 				MimeTypeUtils.APPLICATION_OCTET_STREAM));
 		assertFalse(this.encoder.canEncode(ResolvableType.forClass(Resource.class), allMimeType));
-		assertTrue(this.encoder.canEncode(resourceRegion, MimeTypeUtils.APPLICATION_OCTET_STREAM));
-		assertTrue(this.encoder.canEncode(resourceRegion, allMimeType));
+		assertThat(this.encoder.canEncode(resourceRegion, MimeTypeUtils.APPLICATION_OCTET_STREAM)).isTrue();
+		assertThat(this.encoder.canEncode(resourceRegion, allMimeType)).isTrue();
 
 		// SPR-15464
 		assertFalse(this.encoder.canEncode(ResolvableType.NONE, null));

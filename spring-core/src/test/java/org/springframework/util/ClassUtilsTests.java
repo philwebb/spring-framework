@@ -37,11 +37,11 @@ import org.springframework.tests.sample.objects.ITestInterface;
 import org.springframework.tests.sample.objects.ITestObject;
 import org.springframework.tests.sample.objects.TestObject;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Colin Sampaleanu
@@ -64,7 +64,7 @@ public class ClassUtilsTests {
 
 	@Test
 	public void testIsPresent() {
-		assertTrue(ClassUtils.isPresent("java.lang.String", classLoader));
+		assertThat(ClassUtils.isPresent("java.lang.String", classLoader)).isTrue();
 		assertFalse(ClassUtils.isPresent("java.lang.MySpecialString", classLoader));
 	}
 
@@ -133,21 +133,21 @@ public class ClassUtilsTests {
 		Class<?> composite = ClassUtils.createCompositeInterface(
 				new Class<?>[] {Serializable.class, Externalizable.class}, childLoader1);
 
-		assertTrue(ClassUtils.isCacheSafe(String.class, null));
-		assertTrue(ClassUtils.isCacheSafe(String.class, classLoader));
-		assertTrue(ClassUtils.isCacheSafe(String.class, childLoader1));
-		assertTrue(ClassUtils.isCacheSafe(String.class, childLoader2));
-		assertTrue(ClassUtils.isCacheSafe(String.class, childLoader3));
+		assertThat(ClassUtils.isCacheSafe(String.class, null)).isTrue();
+		assertThat(ClassUtils.isCacheSafe(String.class, classLoader)).isTrue();
+		assertThat(ClassUtils.isCacheSafe(String.class, childLoader1)).isTrue();
+		assertThat(ClassUtils.isCacheSafe(String.class, childLoader2)).isTrue();
+		assertThat(ClassUtils.isCacheSafe(String.class, childLoader3)).isTrue();
 		assertFalse(ClassUtils.isCacheSafe(InnerClass.class, null));
-		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, classLoader));
-		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, childLoader1));
-		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, childLoader2));
-		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, childLoader3));
+		assertThat(ClassUtils.isCacheSafe(InnerClass.class, classLoader)).isTrue();
+		assertThat(ClassUtils.isCacheSafe(InnerClass.class, childLoader1)).isTrue();
+		assertThat(ClassUtils.isCacheSafe(InnerClass.class, childLoader2)).isTrue();
+		assertThat(ClassUtils.isCacheSafe(InnerClass.class, childLoader3)).isTrue();
 		assertFalse(ClassUtils.isCacheSafe(composite, null));
 		assertFalse(ClassUtils.isCacheSafe(composite, classLoader));
-		assertTrue(ClassUtils.isCacheSafe(composite, childLoader1));
+		assertThat(ClassUtils.isCacheSafe(composite, childLoader1)).isTrue();
 		assertFalse(ClassUtils.isCacheSafe(composite, childLoader2));
-		assertTrue(ClassUtils.isCacheSafe(composite, childLoader3));
+		assertThat(ClassUtils.isCacheSafe(composite, childLoader3)).isTrue();
 	}
 
 	@Test
@@ -236,8 +236,8 @@ public class ClassUtilsTests {
 
 	@Test
 	public void testHasMethod() {
-		assertTrue(ClassUtils.hasMethod(Collection.class, "size"));
-		assertTrue(ClassUtils.hasMethod(Collection.class, "remove", Object.class));
+		assertThat(ClassUtils.hasMethod(Collection.class, "size")).isTrue();
+		assertThat(ClassUtils.hasMethod(Collection.class, "remove", Object.class)).isTrue();
 		assertFalse(ClassUtils.hasMethod(Collection.class, "remove"));
 		assertFalse(ClassUtils.hasMethod(Collection.class, "someOtherMethod"));
 	}
@@ -268,43 +268,42 @@ public class ClassUtilsTests {
 	public void testCountOverloadedMethods() {
 		assertFalse(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "foobar"));
 		// no args
-		assertTrue(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "hashCode"));
+		assertThat(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "hashCode")).isTrue();
 		// matches although it takes an arg
-		assertTrue(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "setAge"));
+		assertThat(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "setAge")).isTrue();
 	}
 
 	@Test
 	public void testNoArgsStaticMethod() throws IllegalAccessException, InvocationTargetException {
 		Method method = ClassUtils.getStaticMethod(InnerClass.class, "staticMethod");
 		method.invoke(null, (Object[]) null);
-		assertTrue("no argument method was not invoked.",
-				InnerClass.noArgCalled);
+		assertThat(InnerClass.noArgCalled).as("no argument method was not invoked.").isTrue();
 	}
 
 	@Test
 	public void testArgsStaticMethod() throws IllegalAccessException, InvocationTargetException {
 		Method method = ClassUtils.getStaticMethod(InnerClass.class, "argStaticMethod", String.class);
 		method.invoke(null, "test");
-		assertTrue("argument method was not invoked.", InnerClass.argCalled);
+		assertThat(InnerClass.argCalled).as("argument method was not invoked.").isTrue();
 	}
 
 	@Test
 	public void testOverloadedStaticMethod() throws IllegalAccessException, InvocationTargetException {
 		Method method = ClassUtils.getStaticMethod(InnerClass.class, "staticMethod", String.class);
 		method.invoke(null, "test");
-		assertTrue("argument method was not invoked.", InnerClass.overloadedCalled);
+		assertThat(InnerClass.overloadedCalled).as("argument method was not invoked.").isTrue();
 	}
 
 	@Test
 	public void testIsAssignable() {
-		assertTrue(ClassUtils.isAssignable(Object.class, Object.class));
-		assertTrue(ClassUtils.isAssignable(String.class, String.class));
-		assertTrue(ClassUtils.isAssignable(Object.class, String.class));
-		assertTrue(ClassUtils.isAssignable(Object.class, Integer.class));
-		assertTrue(ClassUtils.isAssignable(Number.class, Integer.class));
-		assertTrue(ClassUtils.isAssignable(Number.class, int.class));
-		assertTrue(ClassUtils.isAssignable(Integer.class, int.class));
-		assertTrue(ClassUtils.isAssignable(int.class, Integer.class));
+		assertThat(ClassUtils.isAssignable(Object.class, Object.class)).isTrue();
+		assertThat(ClassUtils.isAssignable(String.class, String.class)).isTrue();
+		assertThat(ClassUtils.isAssignable(Object.class, String.class)).isTrue();
+		assertThat(ClassUtils.isAssignable(Object.class, Integer.class)).isTrue();
+		assertThat(ClassUtils.isAssignable(Number.class, Integer.class)).isTrue();
+		assertThat(ClassUtils.isAssignable(Number.class, int.class)).isTrue();
+		assertThat(ClassUtils.isAssignable(Integer.class, int.class)).isTrue();
+		assertThat(ClassUtils.isAssignable(int.class, Integer.class)).isTrue();
 		assertFalse(ClassUtils.isAssignable(String.class, Object.class));
 		assertFalse(ClassUtils.isAssignable(Integer.class, Number.class));
 		assertFalse(ClassUtils.isAssignable(Integer.class, double.class));
@@ -332,9 +331,9 @@ public class ClassUtilsTests {
 		DerivedTestObject testBean = new DerivedTestObject();
 		List<Class<?>> ifcs = Arrays.asList(ClassUtils.getAllInterfaces(testBean));
 		assertEquals("Correct number of interfaces", 4, ifcs.size());
-		assertTrue("Contains Serializable", ifcs.contains(Serializable.class));
-		assertTrue("Contains ITestBean", ifcs.contains(ITestObject.class));
-		assertTrue("Contains IOther", ifcs.contains(ITestInterface.class));
+		assertThat(ifcs.contains(Serializable.class)).as("Contains Serializable").isTrue();
+		assertThat(ifcs.contains(ITestObject.class)).as("Contains ITestBean").isTrue();
+		assertThat(ifcs.contains(ITestInterface.class)).as("Contains IOther").isTrue();
 	}
 
 	@Test

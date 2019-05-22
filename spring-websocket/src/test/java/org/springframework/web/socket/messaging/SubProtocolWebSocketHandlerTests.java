@@ -32,12 +32,12 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator;
 import org.springframework.web.socket.handler.TestWebSocketSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -184,7 +184,7 @@ public class SubProtocolWebSocketHandlerTests {
 		this.webSocketHandler.start();
 		this.webSocketHandler.handleMessage(session1, new TextMessage("foo"));
 
-		assertTrue(session1.isOpen());
+		assertThat(session1.isOpen()).isTrue();
 		assertNull(session1.getCloseStatus());
 
 		assertFalse(session2.isOpen());

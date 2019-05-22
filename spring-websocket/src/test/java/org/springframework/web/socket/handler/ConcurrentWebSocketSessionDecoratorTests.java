@@ -33,7 +33,6 @@ import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorato
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ConcurrentWebSocketSessionDecorator}.
@@ -59,7 +58,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 
 		assertEquals(0, decorator.getBufferSize());
 		assertEquals(0, decorator.getTimeSinceSendStarted());
-		assertTrue(session.isOpen());
+		assertThat(session.isOpen()).isTrue();
 	}
 
 	@Test
@@ -74,16 +73,16 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		sendBlockingMessage(decorator);
 
 		Thread.sleep(50);
-		assertTrue(decorator.getTimeSinceSendStarted() > 0);
+		assertThat(decorator.getTimeSinceSendStarted() > 0).isTrue();
 
 		TextMessage payload = new TextMessage("payload");
 		for (int i = 0; i < 5; i++) {
 			decorator.sendMessage(payload);
 		}
 
-		assertTrue(decorator.getTimeSinceSendStarted() > 0);
+		assertThat(decorator.getTimeSinceSendStarted() > 0).isTrue();
 		assertEquals(5 * payload.getPayloadLength(), decorator.getBufferSize());
-		assertTrue(session.isOpen());
+		assertThat(session.isOpen()).isTrue();
 	}
 
 	@Test
@@ -129,7 +128,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		decorator.sendMessage(message);
 
 		assertEquals(1023, decorator.getBufferSize());
-		assertTrue(session.isOpen());
+		assertThat(session.isOpen()).isTrue();
 
 		assertThatExceptionOfType(SessionLimitExceededException.class).isThrownBy(() ->
 				decorator.sendMessage(message))
@@ -160,7 +159,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		}
 
 		assertEquals(1023, decorator.getBufferSize());
-		assertTrue(session.isOpen());
+		assertThat(session.isOpen()).isTrue();
 
 	}
 
@@ -202,7 +201,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			}
 		});
 
-		assertTrue(sentMessageLatch.await(5, TimeUnit.SECONDS));
+		assertThat(sentMessageLatch.await(5, TimeUnit.SECONDS)).isTrue();
 
 		// ensure some send time elapses
 		Thread.sleep(sendTimeLimit + 100);
@@ -224,7 +223,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			}
 		});
 		BlockingSession delegate = (BlockingSession) session.getDelegate();
-		assertTrue(delegate.getSentMessageLatch().await(5, TimeUnit.SECONDS));
+		assertThat(delegate.getSentMessageLatch().await(5, TimeUnit.SECONDS)).isTrue();
 	}
 
 

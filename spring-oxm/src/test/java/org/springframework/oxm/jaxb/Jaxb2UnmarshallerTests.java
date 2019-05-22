@@ -37,9 +37,9 @@ import org.springframework.oxm.jaxb.test.Flights;
 import org.springframework.oxm.mime.MimeContainer;
 import org.springframework.util.xml.StaxUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -102,10 +102,11 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 
 		StringReader reader = new StringReader(content);
 		Object result = unmarshaller.unmarshal(new StreamSource(reader), mimeContainer);
-		assertTrue("Result is not a BinaryObject", result instanceof BinaryObject);
+		boolean condition = result instanceof BinaryObject;
+		assertThat(condition).as("Result is not a BinaryObject").isTrue();
 		BinaryObject object = (BinaryObject) result;
 		assertNotNull("bytes property not set", object.getBytes());
-		assertTrue("bytes property not set", object.getBytes().length > 0);
+		assertThat(object.getBytes().length > 0).as("bytes property not set").isTrue();
 		assertNotNull("datahandler property not set", object.getSwaDataHandler());
 	}
 

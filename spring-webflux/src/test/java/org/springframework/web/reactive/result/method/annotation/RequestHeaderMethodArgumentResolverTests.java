@@ -41,11 +41,11 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link RequestHeaderMethodArgumentResolver}.
@@ -96,8 +96,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("String parameter not supported", resolver.supportsParameter(paramNamedDefaultValueStringHeader));
-		assertTrue("String array parameter not supported", resolver.supportsParameter(paramNamedValueStringArray));
+		assertThat(resolver.supportsParameter(paramNamedDefaultValueStringHeader)).as("String parameter not supported").isTrue();
+		assertThat(resolver.supportsParameter(paramNamedValueStringArray)).as("String array parameter not supported").isTrue();
 		assertFalse("non-@RequestParam parameter supported", resolver.supportsParameter(paramNamedValueMap));
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.paramMono))
@@ -113,7 +113,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 				this.paramNamedDefaultValueStringHeader, this.bindingContext, exchange);
 
 		Object result = mono.block();
-		assertTrue(result instanceof String);
+		boolean condition = result instanceof String;
+		assertThat(condition).isTrue();
 		assertEquals(expected, result);
 	}
 
@@ -126,7 +127,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 				this.paramNamedValueStringArray, this.bindingContext, exchange);
 
 		Object result = mono.block();
-		assertTrue(result instanceof String[]);
+		boolean condition = result instanceof String[];
+		assertThat(condition).isTrue();
 		assertArrayEquals(new String[] {"foo", "bar"}, (String[]) result);
 	}
 
@@ -137,7 +139,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 				this.paramNamedDefaultValueStringHeader, this.bindingContext, exchange);
 
 		Object result = mono.block();
-		assertTrue(result instanceof String);
+		boolean condition = result instanceof String;
+		assertThat(condition).isTrue();
 		assertEquals("bar", result);
 	}
 
@@ -150,7 +153,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 					MockServerWebExchange.from(MockServerHttpRequest.get("/")));
 
 			Object result = mono.block();
-			assertTrue(result instanceof String);
+			boolean condition = result instanceof String;
+			assertThat(condition).isTrue();
 			assertEquals("bar", result);
 		}
 		finally {
@@ -170,7 +174,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 					this.paramResolvedNameWithExpression, this.bindingContext, exchange);
 
 			Object result = mono.block();
-			assertTrue(result instanceof String);
+			boolean condition = result instanceof String;
+			assertThat(condition).isTrue();
 			assertEquals(expected, result);
 		}
 		finally {
@@ -190,7 +195,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 					this.paramResolvedNameWithPlaceholder, this.bindingContext, exchange);
 
 			Object result = mono.block();
-			assertTrue(result instanceof String);
+			boolean condition = result instanceof String;
+			assertThat(condition).isTrue();
 			assertEquals(expected, result);
 		}
 		finally {
@@ -220,7 +226,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramDate, this.bindingContext, exchange);
 		Object result = mono.block();
 
-		assertTrue(result instanceof Date);
+		boolean condition = result instanceof Date;
+		assertThat(condition).isTrue();
 		assertEquals(new Date(rfc1123val), result);
 	}
 
@@ -233,7 +240,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramInstant, this.bindingContext, exchange);
 		Object result = mono.block();
 
-		assertTrue(result instanceof Instant);
+		boolean condition = result instanceof Instant;
+		assertThat(condition).isTrue();
 		assertEquals(Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(rfc1123val)), result);
 	}
 

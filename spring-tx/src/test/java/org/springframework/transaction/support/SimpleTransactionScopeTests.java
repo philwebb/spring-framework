@@ -28,11 +28,11 @@ import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.tests.transaction.CallCountingTransactionManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -80,7 +80,7 @@ public class SimpleTransactionScopeTests {
 			assertSame(bean2, context.getBean(DerivedTestBean.class));
 			context.getBeanFactory().destroyScopedBean("txScopedObject2");
 			assertFalse(TransactionSynchronizationManager.hasResource("txScopedObject2"));
-			assertTrue(bean2.wasDestroyed());
+			assertThat(bean2.wasDestroyed()).isTrue();
 
 			bean2a = context.getBean(DerivedTestBean.class);
 			assertSame(bean2a, context.getBean(DerivedTestBean.class));
@@ -100,8 +100,8 @@ public class SimpleTransactionScopeTests {
 		}
 
 		assertFalse(bean2a.wasDestroyed());
-		assertTrue(bean2b.wasDestroyed());
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(bean2b.wasDestroyed()).isTrue();
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				context.getBean(TestBean.class))
@@ -142,7 +142,7 @@ public class SimpleTransactionScopeTests {
 				assertSame(bean2, context.getBean(DerivedTestBean.class));
 				context.getBeanFactory().destroyScopedBean("txScopedObject2");
 				assertFalse(TransactionSynchronizationManager.hasResource("txScopedObject2"));
-				assertTrue(bean2.wasDestroyed());
+				assertThat(bean2.wasDestroyed()).isTrue();
 
 				DerivedTestBean bean2a = context.getBean(DerivedTestBean.class);
 				assertSame(bean2a, context.getBean(DerivedTestBean.class));
@@ -169,13 +169,13 @@ public class SimpleTransactionScopeTests {
 					assertNotSame(bean2b, bean2c);
 					return null;
 				});
-				assertTrue(immediatelyDestroy.iterator().next().wasDestroyed());
+				assertThat(immediatelyDestroy.iterator().next().wasDestroyed()).isTrue();
 				assertFalse(bean2b.wasDestroyed());
 
 				return null;
 			});
 
-			assertTrue(finallyDestroy.iterator().next().wasDestroyed());
+			assertThat(finallyDestroy.iterator().next().wasDestroyed()).isTrue();
 		}
 	}
 

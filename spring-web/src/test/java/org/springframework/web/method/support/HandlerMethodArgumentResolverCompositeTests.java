@@ -23,10 +23,10 @@ import org.junit.Test;
 
 import org.springframework.core.MethodParameter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link HandlerMethodArgumentResolverComposite}.
@@ -56,7 +56,7 @@ public class HandlerMethodArgumentResolverCompositeTests {
 	public void supportsParameter() {
 		this.resolverComposite.addResolver(new StubArgumentResolver(Integer.class));
 
-		assertTrue(this.resolverComposite.supportsParameter(paramInt));
+		assertThat(this.resolverComposite.supportsParameter(paramInt)).isTrue();
 		assertFalse(this.resolverComposite.supportsParameter(paramStr));
 	}
 

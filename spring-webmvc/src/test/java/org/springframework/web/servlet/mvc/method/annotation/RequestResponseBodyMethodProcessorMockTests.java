@@ -59,7 +59,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -144,13 +143,13 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("RequestBody parameter not supported", processor.supportsParameter(paramRequestBodyString));
+		assertThat(processor.supportsParameter(paramRequestBodyString)).as("RequestBody parameter not supported").isTrue();
 		assertFalse("non-RequestBody parameter supported", processor.supportsParameter(paramInt));
 	}
 
 	@Test
 	public void supportsReturnType() {
-		assertTrue("ResponseBody return type not supported", processor.supportsReturnType(returnTypeString));
+		assertThat(processor.supportsReturnType(returnTypeString)).as("ResponseBody return type not supported").isTrue();
 		assertFalse("non-ResponseBody return type supported", processor.supportsReturnType(returnTypeInt));
 	}
 
@@ -319,7 +318,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		processor.handleReturnValue(body, returnTypeString, mavContainer, webRequest);
 
-		assertTrue("The requestHandled flag wasn't set", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag wasn't set").isTrue();
 		verify(stringMessageConverter).write(eq(body), eq(accepted), isA(HttpOutputMessage.class));
 	}
 
@@ -335,7 +334,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		processor.handleReturnValue(body, returnTypeStringProduces, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringMessageConverter).write(eq(body), eq(MediaType.TEXT_HTML), isA(HttpOutputMessage.class));
 	}
 
@@ -396,7 +395,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		processor.handleReturnValue(body, returnTypeStringProduces, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringMessageConverter).write(eq(body), eq(accepted), isA(HttpOutputMessage.class));
 	}
 

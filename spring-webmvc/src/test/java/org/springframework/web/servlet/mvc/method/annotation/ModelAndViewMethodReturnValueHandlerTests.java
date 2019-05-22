@@ -30,11 +30,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.RedirectView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link ModelAndViewMethodReturnValueHandler}.
@@ -63,7 +63,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 
 	@Test
 	public void supportsReturnType() throws Exception {
-		assertTrue(handler.supportsReturnType(returnParamModelAndView));
+		assertThat(handler.supportsReturnType(returnParamModelAndView)).isTrue();
 		assertFalse(handler.supportsReturnType(getReturnValueParam("viewName")));
 	}
 
@@ -89,7 +89,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 	public void handleNull() throws Exception {
 		handler.handleReturnValue(null, returnParamModelAndView, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 
 		ModelMap model = mavContainer.getModel();
 		assertEquals(null, mavContainer.getView());
-		assertTrue(mavContainer.getModel().isEmpty());
+		assertThat(mavContainer.getModel().isEmpty()).isTrue();
 		assertNotSame("RedirectAttributes should not be used if controller doesn't redirect", redirectAttributes, model);
 	}
 

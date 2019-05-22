@@ -18,11 +18,11 @@ package org.springframework.messaging.simp.stomp;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link StompClientSupport}.
@@ -53,7 +53,7 @@ public class StompClientSupportTests {
 	@Test
 	public void isDefaultHeartbeatEnabled() throws Exception {
 		assertArrayEquals(new long[] {10000, 10000}, this.stompClient.getDefaultHeartbeat());
-		assertTrue(this.stompClient.isDefaultHeartbeatEnabled());
+		assertThat(this.stompClient.isDefaultHeartbeatEnabled()).isTrue();
 
 		this.stompClient.setDefaultHeartbeat(new long[] {0, 0});
 		assertFalse(this.stompClient.isDefaultHeartbeatEnabled());

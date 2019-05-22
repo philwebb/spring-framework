@@ -38,7 +38,6 @@ import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -396,7 +395,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		service.removeAll();
 
-		assertTrue(isEmpty(cache));
+		assertThat(isEmpty(cache)).isTrue();
 	}
 
 	@Test
@@ -409,7 +408,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				service.removeAllWithException(true));
 
-		assertTrue(isEmpty(cache));
+		assertThat(isEmpty(cache)).isTrue();
 	}
 
 	@Test
@@ -433,7 +432,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		service.earlyRemoveAll();
 
-		assertTrue(isEmpty(cache));
+		assertThat(isEmpty(cache)).isTrue();
 	}
 
 	@Test
@@ -445,7 +444,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				service.earlyRemoveAllWithException(true));
-		assertTrue(isEmpty(cache));
+		assertThat(isEmpty(cache)).isTrue();
 	}
 
 	@Test
@@ -458,7 +457,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		assertThatNullPointerException().isThrownBy(() ->
 				service.earlyRemoveAllWithException(false));
 		// This will be remove anyway as the earlyRemove has removed the cache before
-		assertTrue(isEmpty(cache));
+		assertThat(isEmpty(cache)).isTrue();
 	}
 
 	protected boolean isEmpty(Cache cache) {

@@ -22,10 +22,10 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.context.ApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -95,7 +95,7 @@ public class Spr15275Tests {
 
 		@Bean
 		public Bar bar() throws Exception {
-			assertTrue(foo().isSingleton());
+			assertThat(foo().isSingleton()).isTrue();
 			return new Bar(foo().getObject());
 		}
 	}
@@ -120,7 +120,7 @@ public class Spr15275Tests {
 
 		@Bean
 		public Bar bar() throws Exception {
-			assertTrue(foo().isSingleton());
+			assertThat(foo().isSingleton()).isTrue();
 			return new Bar(foo().getObject());
 		}
 	}
@@ -145,7 +145,7 @@ public class Spr15275Tests {
 
 		@Bean
 		public Bar bar() throws Exception {
-			assertTrue(foo().isSingleton());
+			assertThat(foo().isSingleton()).isTrue();
 			return new Bar(foo().getObject());
 		}
 	}
@@ -170,7 +170,7 @@ public class Spr15275Tests {
 
 		@Bean
 		public Bar bar() throws Exception {
-			assertTrue(foo().isSingleton());
+			assertThat(foo().isSingleton()).isTrue();
 			return new Bar(foo().getObject());
 		}
 	}
@@ -186,7 +186,7 @@ public class Spr15275Tests {
 
 		@Bean
 		public Bar bar() throws Exception {
-			assertTrue(foo().isSingleton());
+			assertThat(foo().isSingleton()).isTrue();
 			return new Bar(foo().getObject());
 		}
 	}
@@ -202,7 +202,7 @@ public class Spr15275Tests {
 
 		@Bean
 		public Bar bar() throws Exception {
-			assertTrue(foo().isSingleton());
+			assertThat(foo().isSingleton()).isTrue();
 			return new Bar(foo().getObject());
 		}
 	}

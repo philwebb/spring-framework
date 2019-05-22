@@ -32,10 +32,10 @@ import org.springframework.tests.aop.interceptor.NopInterceptor;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -81,11 +81,12 @@ public class BeanNameAutoProxyCreatorTests {
 		ITestBean tb = (ITestBean) beanFactory.getBean("introductionUsingJdk");
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("introductionNopInterceptor");
 		assertEquals(0, nop.getCount());
-		assertTrue(AopUtils.isJdkDynamicProxy(tb));
+		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
 		assertEquals(age, tb.getAge());
-		assertTrue("Introduction was made", tb instanceof TimeStamped);
+		boolean condition = tb instanceof TimeStamped;
+		assertThat(condition).as("Introduction was made").isTrue();
 		assertEquals(0, ((TimeStamped) tb).getTimeStamp());
 		assertEquals(3, nop.getCount());
 		assertEquals("introductionUsingJdk", tb.getName());
@@ -100,7 +101,7 @@ public class BeanNameAutoProxyCreatorTests {
 		tb.setAge(65);
 		assertEquals(65, tb.getAge());
 		lockable1.lock();
-		assertTrue(lockable1.locked());
+		assertThat(lockable1.locked()).isTrue();
 		// Shouldn't affect second
 		assertFalse(lockable2.locked());
 		// Can still mod second object
@@ -115,11 +116,12 @@ public class BeanNameAutoProxyCreatorTests {
 		ITestBean tb = (ITestBean) beanFactory.getBean("factory-introductionUsingJdk");
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("introductionNopInterceptor");
 		assertEquals("NOP should not have done any work yet", 0, nop.getCount());
-		assertTrue(AopUtils.isJdkDynamicProxy(tb));
+		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
 		assertEquals(age, tb.getAge());
-		assertTrue("Introduction was made", tb instanceof TimeStamped);
+		boolean condition = tb instanceof TimeStamped;
+		assertThat(condition).as("Introduction was made").isTrue();
 		assertEquals(0, ((TimeStamped) tb).getTimeStamp());
 		assertEquals(3, nop.getCount());
 
@@ -133,7 +135,7 @@ public class BeanNameAutoProxyCreatorTests {
 		tb.setAge(65);
 		assertEquals(65, tb.getAge());
 		lockable1.lock();
-		assertTrue(lockable1.locked());
+		assertThat(lockable1.locked()).isTrue();
 		// Shouldn't affect second
 		assertFalse(lockable2.locked());
 		// Can still mod second object
@@ -160,14 +162,14 @@ public class BeanNameAutoProxyCreatorTests {
 	@Test
 	public void testWithFrozenProxy() {
 		ITestBean testBean = (ITestBean) beanFactory.getBean("frozenBean");
-		assertTrue(((Advised)testBean).isFrozen());
+		assertThat(((Advised)testBean).isFrozen()).isTrue();
 	}
 
 
 	private void jdkAssertions(ITestBean tb, int nopInterceptorCount)  {
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("nopInterceptor");
 		assertEquals(0, nop.getCount());
-		assertTrue(AopUtils.isJdkDynamicProxy(tb));
+		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
 		assertEquals(age, tb.getAge());
@@ -182,7 +184,7 @@ public class BeanNameAutoProxyCreatorTests {
 		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("nopInterceptor");
 		assertEquals(0, cba.getCalls());
 		assertEquals(0, nop.getCount());
-		assertTrue(AopUtils.isCglibProxy(tb));
+		assertThat(AopUtils.isCglibProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
 		assertEquals(age, tb.getAge());

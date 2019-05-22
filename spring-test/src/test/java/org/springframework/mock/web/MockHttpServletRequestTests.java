@@ -35,13 +35,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MockHttpServletRequest}.
@@ -508,7 +506,7 @@ public class MockHttpServletRequestTests {
 		assertFalse(request.isSecure());
 		request.setScheme("http");
 		request.setSecure(true);
-		assertTrue(request.isSecure());
+		assertThat(request.isSecure()).isTrue();
 	}
 
 	@Test
@@ -516,7 +514,7 @@ public class MockHttpServletRequestTests {
 		assertFalse(request.isSecure());
 		request.setScheme("https");
 		request.setSecure(false);
-		assertTrue(request.isSecure());
+		assertThat(request.isSecure()).isTrue();
 	}
 
 	@Test
@@ -524,7 +522,7 @@ public class MockHttpServletRequestTests {
 		assertFalse(request.isSecure());
 		request.setScheme("https");
 		request.setSecure(true);
-		assertTrue(request.isSecure());
+		assertThat(request.isSecure()).isTrue();
 	}
 
 	@Test
@@ -569,7 +567,7 @@ public class MockHttpServletRequestTests {
 	private void assertEqualEnumerations(Enumeration<?> enum1, Enumeration<?> enum2) {
 		int count = 0;
 		while (enum1.hasMoreElements()) {
-			assertTrue("enumerations must be equal in length", enum2.hasMoreElements());
+			assertThat(enum2.hasMoreElements()).as("enumerations must be equal in length").isTrue();
 			assertEquals("enumeration element #" + ++count, enum1.nextElement(), enum2.nextElement());
 		}
 	}

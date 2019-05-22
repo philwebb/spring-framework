@@ -25,10 +25,10 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -123,7 +123,7 @@ public class UriTemplateTests {
 	@Test
 	public void matches() throws Exception {
 		UriTemplate template = new UriTemplate("/hotels/{hotel}/bookings/{booking}");
-		assertTrue("UriTemplate does not match", template.matches("/hotels/1/bookings/42"));
+		assertThat(template.matches("/hotels/1/bookings/42")).as("UriTemplate does not match").isTrue();
 		assertFalse("UriTemplate matches", template.matches("/hotels/bookings"));
 		assertFalse("UriTemplate matches", template.matches(""));
 		assertFalse("UriTemplate matches", template.matches(null));
@@ -132,7 +132,7 @@ public class UriTemplateTests {
 	@Test
 	public void matchesCustomRegex() throws Exception {
 		UriTemplate template = new UriTemplate("/hotels/{hotel:\\d+}");
-		assertTrue("UriTemplate does not match", template.matches("/hotels/42"));
+		assertThat(template.matches("/hotels/42")).as("UriTemplate does not match").isTrue();
 		assertFalse("UriTemplate matches", template.matches("/hotels/foo"));
 	}
 
@@ -192,22 +192,22 @@ public class UriTemplateTests {
 	@Test
 	public void queryVariables() throws Exception {
 		UriTemplate template = new UriTemplate("/search?q={query}");
-		assertTrue(template.matches("/search?q=foo"));
+		assertThat(template.matches("/search?q=foo")).isTrue();
 	}
 
 	@Test
 	public void fragments() throws Exception {
 		UriTemplate template = new UriTemplate("/search#{fragment}");
-		assertTrue(template.matches("/search#foo"));
+		assertThat(template.matches("/search#foo")).isTrue();
 
 		template = new UriTemplate("/search?query={query}#{fragment}");
-		assertTrue(template.matches("/search?query=foo#bar"));
+		assertThat(template.matches("/search?query=foo#bar")).isTrue();
 	}
 
 	@Test // SPR-13705
 	public void matchesWithSlashAtTheEnd() {
 		UriTemplate uriTemplate = new UriTemplate("/test/");
-		assertTrue(uriTemplate.matches("/test/"));
+		assertThat(uriTemplate.matches("/test/")).isTrue();
 	}
 
 	@Test

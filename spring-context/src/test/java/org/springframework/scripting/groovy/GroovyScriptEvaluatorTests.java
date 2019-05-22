@@ -28,8 +28,8 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.scripting.support.StandardScriptEvaluator;
 import org.springframework.scripting.support.StaticScriptSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -67,7 +67,7 @@ public class GroovyScriptEvaluatorTests {
 		evaluator.getCompilerConfiguration().setBytecodePostprocessor(processor);
 		Object result = evaluator.evaluate(new StaticScriptSource("return 3 * 2"));
 		assertEquals(6, result);
-		assertTrue(processor.processed.contains("Script1"));
+		assertThat(processor.processed.contains("Script1")).isTrue();
 	}
 
 	@Test

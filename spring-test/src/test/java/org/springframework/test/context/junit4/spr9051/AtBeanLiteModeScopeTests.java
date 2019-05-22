@@ -27,11 +27,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests that verify proper scoping of beans created in
@@ -81,11 +81,11 @@ public class AtBeanLiteModeScopeTests {
 	@Test
 	public void singletonLiteBean() {
 		assertNotNull(injectedSingletonBean);
-		assertTrue(injectedSingletonBean.isInitialized());
+		assertThat(injectedSingletonBean.isInitialized()).isTrue();
 
 		LifecycleBean retrievedSingletonBean = applicationContext.getBean("singleton", LifecycleBean.class);
 		assertNotNull(retrievedSingletonBean);
-		assertTrue(retrievedSingletonBean.isInitialized());
+		assertThat(retrievedSingletonBean.isInitialized()).isTrue();
 
 		assertSame(injectedSingletonBean, retrievedSingletonBean);
 	}
@@ -93,11 +93,11 @@ public class AtBeanLiteModeScopeTests {
 	@Test
 	public void prototypeLiteBean() {
 		assertNotNull(injectedPrototypeBean);
-		assertTrue(injectedPrototypeBean.isInitialized());
+		assertThat(injectedPrototypeBean.isInitialized()).isTrue();
 
 		LifecycleBean retrievedPrototypeBean = applicationContext.getBean("prototype", LifecycleBean.class);
 		assertNotNull(retrievedPrototypeBean);
-		assertTrue(retrievedPrototypeBean.isInitialized());
+		assertThat(retrievedPrototypeBean.isInitialized()).isTrue();
 
 		assertNotSame(injectedPrototypeBean, retrievedPrototypeBean);
 	}

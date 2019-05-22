@@ -36,10 +36,10 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Sebastien Deleuze
@@ -51,13 +51,13 @@ public class FormHttpMessageReaderTests extends AbstractLeakCheckingTestCase {
 
 	@Test
 	public void canRead() {
-		assertTrue(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isTrue();
 
-		assertTrue(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				ResolvableType.forInstance(new LinkedMultiValueMap<String, String>()),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isTrue();
 
 		assertFalse(this.reader.canRead(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, Object.class),

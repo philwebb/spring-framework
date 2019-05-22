@@ -20,9 +20,9 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link LinkedCaseInsensitiveMap}.
@@ -44,12 +44,12 @@ public class LinkedCaseInsensitiveMapTests {
 		assertEquals("value3", map.get("key"));
 		assertEquals("value3", map.get("KEY"));
 		assertEquals("value3", map.get("Key"));
-		assertTrue(map.containsKey("key"));
-		assertTrue(map.containsKey("KEY"));
-		assertTrue(map.containsKey("Key"));
-		assertTrue(map.keySet().contains("key"));
-		assertTrue(map.keySet().contains("KEY"));
-		assertTrue(map.keySet().contains("Key"));
+		assertThat(map.containsKey("key")).isTrue();
+		assertThat(map.containsKey("KEY")).isTrue();
+		assertThat(map.containsKey("Key")).isTrue();
+		assertThat(map.keySet().contains("key")).isTrue();
+		assertThat(map.keySet().contains("KEY")).isTrue();
+		assertThat(map.keySet().contains("Key")).isTrue();
 	}
 
 	@Test
@@ -61,12 +61,12 @@ public class LinkedCaseInsensitiveMapTests {
 		assertEquals("value3", map.get("key"));
 		assertEquals("value3", map.get("KEY"));
 		assertEquals("value3", map.get("Key"));
-		assertTrue(map.containsKey("key"));
-		assertTrue(map.containsKey("KEY"));
-		assertTrue(map.containsKey("Key"));
-		assertTrue(map.keySet().contains("key"));
-		assertTrue(map.keySet().contains("KEY"));
-		assertTrue(map.keySet().contains("Key"));
+		assertThat(map.containsKey("key")).isTrue();
+		assertThat(map.containsKey("KEY")).isTrue();
+		assertThat(map.containsKey("Key")).isTrue();
+		assertThat(map.keySet().contains("key")).isTrue();
+		assertThat(map.keySet().contains("KEY")).isTrue();
+		assertThat(map.keySet().contains("Key")).isTrue();
 	}
 
 	@Test

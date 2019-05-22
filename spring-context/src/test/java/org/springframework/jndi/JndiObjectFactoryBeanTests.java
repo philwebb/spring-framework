@@ -27,12 +27,9 @@ import org.springframework.tests.sample.beans.DerivedTestBean;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -59,7 +56,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("java:comp/env/foo");
 		jof.setResourceRef(true);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() == o);
+		assertThat(jof.getObject() == o).isTrue();
 	}
 
 	@Test
@@ -70,7 +67,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("java:comp/env/foo");
 		jof.setResourceRef(false);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() == o);
+		assertThat(jof.getObject() == o).isTrue();
 	}
 
 	@Test
@@ -81,7 +78,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("java:foo");
 		jof.setResourceRef(true);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() == o);
+		assertThat(jof.getObject() == o).isTrue();
 	}
 
 	@Test
@@ -92,7 +89,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("java:foo");
 		jof.setResourceRef(false);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() == o);
+		assertThat(jof.getObject() == o).isTrue();
 	}
 
 	@Test
@@ -103,7 +100,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("foo");
 		jof.setResourceRef(true);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() == o);
+		assertThat(jof.getObject() == o).isTrue();
 	}
 
 	@Test
@@ -124,7 +121,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("foo");
 		jof.setResourceRef(false);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() == o);
+		assertThat(jof.getObject() == o).isTrue();
 	}
 
 	@Test
@@ -135,7 +132,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("foo");
 		jof.setExpectedType(String.class);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() == s);
+		assertThat(jof.getObject() == s).isTrue();
 	}
 
 	@Test
@@ -212,7 +209,8 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("foo");
 		jof.setProxyInterface(ITestBean.class);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() instanceof ITestBean);
+		boolean condition = jof.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertEquals(0, tb.getAge());
 		proxy.setAge(99);
@@ -248,7 +246,8 @@ public class JndiObjectFactoryBeanTests {
 		jof.setProxyInterface(ITestBean.class);
 		jof.setLookupOnStartup(false);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() instanceof ITestBean);
+		boolean condition = jof.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertNull(tb.getName());
 		assertEquals(0, tb.getAge());
@@ -276,7 +275,8 @@ public class JndiObjectFactoryBeanTests {
 		jof.setProxyInterface(ITestBean.class);
 		jof.setCache(false);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() instanceof ITestBean);
+		boolean condition = jof.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertEquals("tb", tb.getName());
 		assertEquals(1, tb.getAge());
@@ -306,7 +306,8 @@ public class JndiObjectFactoryBeanTests {
 		jof.setLookupOnStartup(false);
 		jof.setCache(false);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() instanceof ITestBean);
+		boolean condition = jof.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertNull(tb.getName());
 		assertEquals(0, tb.getAge());
@@ -345,7 +346,8 @@ public class JndiObjectFactoryBeanTests {
 		jof.setExpectedType(TestBean.class);
 		jof.setProxyInterface(ITestBean.class);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() instanceof ITestBean);
+		boolean condition = jof.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertEquals(0, tb.getAge());
 		proxy.setAge(99);
@@ -381,7 +383,8 @@ public class JndiObjectFactoryBeanTests {
 		jof.setProxyInterface(ITestBean.class);
 		jof.setExposeAccessContext(true);
 		jof.afterPropertiesSet();
-		assertTrue(jof.getObject() instanceof ITestBean);
+		boolean condition = jof.getObject() instanceof ITestBean;
+		assertThat(condition).isTrue();
 		ITestBean proxy = (ITestBean) jof.getObject();
 		assertEquals(0, tb.getAge());
 		proxy.setAge(99);

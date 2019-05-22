@@ -23,10 +23,10 @@ import org.junit.Test;
 
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -50,7 +50,7 @@ public class RouterFunctionsTests {
 		assertNotNull(result);
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
-		assertTrue(resultHandlerFunction.isPresent());
+		assertThat(resultHandlerFunction.isPresent()).isTrue();
 		assertEquals(handlerFunction, resultHandlerFunction.get());
 	}
 
@@ -84,7 +84,7 @@ public class RouterFunctionsTests {
 		assertNotNull(result);
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
-		assertTrue(resultHandlerFunction.isPresent());
+		assertThat(resultHandlerFunction.isPresent()).isTrue();
 		assertEquals(handlerFunction, resultHandlerFunction.get());
 	}
 

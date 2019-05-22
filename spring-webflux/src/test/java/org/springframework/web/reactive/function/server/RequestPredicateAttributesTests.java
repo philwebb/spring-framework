@@ -26,9 +26,9 @@ import org.springframework.http.codec.DecoderHttpMessageReader;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -54,7 +54,7 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new AddAttributePredicate(false, "predicate", "baz").negate();
 
 		boolean result = predicate.test(this.request);
-		assertTrue(result);
+		assertThat(result).isTrue();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
 		assertEquals("baz", this.request.attributes().get("predicate"));
@@ -78,7 +78,7 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.AndRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertTrue(result);
+		assertThat(result).isTrue();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
 		assertEquals("baz", this.request.attributes().get("left"));
@@ -134,7 +134,7 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.OrRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertTrue(result);
+		assertThat(result).isTrue();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
 		assertEquals("baz", this.request.attributes().get("left"));
@@ -148,7 +148,7 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.OrRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertTrue(result);
+		assertThat(result).isTrue();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
 		assertEquals("baz", this.request.attributes().get("left"));
@@ -162,7 +162,7 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.OrRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertTrue(result);
+		assertThat(result).isTrue();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
 		assertFalse(this.request.attributes().containsKey("left"));

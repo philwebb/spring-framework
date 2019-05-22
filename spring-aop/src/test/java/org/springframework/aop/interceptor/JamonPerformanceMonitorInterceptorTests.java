@@ -23,9 +23,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -59,9 +59,8 @@ public class JamonPerformanceMonitorInterceptorTests {
 
 		interceptor.invokeUnderTrace(mi, log);
 
-		assertTrue("jamon must track the method being invoked", MonitorFactory.getNumRows() > 0);
-		assertTrue("The jamon report must contain the toString method that was invoked",
-				MonitorFactory.getReport().contains("toString"));
+		assertThat(MonitorFactory.getNumRows() > 0).as("jamon must track the method being invoked").isTrue();
+		assertThat(MonitorFactory.getReport().contains("toString")).as("The jamon report must contain the toString method that was invoked").isTrue();
 	}
 
 	@Test
@@ -74,12 +73,9 @@ public class JamonPerformanceMonitorInterceptorTests {
 
 		assertEquals("Monitors must exist for the method invocation and 2 exceptions",
 				3, MonitorFactory.getNumRows());
-		assertTrue("The jamon report must contain the toString method that was invoked",
-				MonitorFactory.getReport().contains("toString"));
-		assertTrue("The jamon report must contain the generic exception: " + MonitorFactory.EXCEPTIONS_LABEL,
-				MonitorFactory.getReport().contains(MonitorFactory.EXCEPTIONS_LABEL));
-		assertTrue("The jamon report must contain the specific exception: IllegalArgumentException'",
-				MonitorFactory.getReport().contains("IllegalArgumentException"));
+		assertThat(MonitorFactory.getReport().contains("toString")).as("The jamon report must contain the toString method that was invoked").isTrue();
+		assertThat(MonitorFactory.getReport().contains(MonitorFactory.EXCEPTIONS_LABEL)).as("The jamon report must contain the generic exception: " + MonitorFactory.EXCEPTIONS_LABEL).isTrue();
+		assertThat(MonitorFactory.getReport().contains("IllegalArgumentException")).as("The jamon report must contain the specific exception: IllegalArgumentException'").isTrue();
 	}
 
 }

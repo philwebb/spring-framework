@@ -42,7 +42,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -101,7 +100,7 @@ public class AspectJExpressionPointcutTests {
 
 		assertFalse("Should not be a runtime match", methodMatcher.isRuntime());
 		assertMatchesGetAge(methodMatcher);
-		assertTrue("Expression should match setAge(int) method", methodMatcher.matches(setAge, TestBean.class));
+		assertThat(methodMatcher.matches(setAge, TestBean.class)).as("Expression should match setAge(int) method").isTrue();
 	}
 
 
@@ -128,9 +127,9 @@ public class AspectJExpressionPointcutTests {
 		AspectJExpressionPointcut iOtherPc = new AspectJExpressionPointcut();
 		iOtherPc.setExpression(matchesIOther);
 
-		assertTrue(testBeanPc.matches(TestBean.class));
-		assertTrue(testBeanPc.matches(getAge, TestBean.class));
-		assertTrue(iOtherPc.matches(OtherIOther.class.getMethod("absquatulate"), OtherIOther.class));
+		assertThat(testBeanPc.matches(TestBean.class)).isTrue();
+		assertThat(testBeanPc.matches(getAge, TestBean.class)).isTrue();
+		assertThat(iOtherPc.matches(OtherIOther.class.getMethod("absquatulate"), OtherIOther.class)).isTrue();
 		assertFalse(testBeanPc.matches(OtherIOther.class.getMethod("absquatulate"), OtherIOther.class));
 	}
 
@@ -154,8 +153,8 @@ public class AspectJExpressionPointcutTests {
 		AspectJExpressionPointcut withinBeansPc = new AspectJExpressionPointcut();
 		withinBeansPc.setExpression(withinBeansPackage);
 
-		assertTrue(withinBeansPc.matches(TestBean.class));
-		assertTrue(withinBeansPc.matches(getAge, TestBean.class));
+		assertThat(withinBeansPc.matches(TestBean.class)).isTrue();
+		assertThat(withinBeansPc.matches(getAge, TestBean.class)).isTrue();
 		assertEquals(matchSubpackages, withinBeansPc.matches(DeepBean.class));
 		assertEquals(matchSubpackages, withinBeansPc.matches(
 				DeepBean.class.getMethod("aMethod", String.class), DeepBean.class));
@@ -201,12 +200,11 @@ public class AspectJExpressionPointcutTests {
 		// not currently testable in a reliable fashion
 		//assertDoesNotMatchStringClass(classFilter);
 
-		assertTrue("Should match with setSomeNumber with Double input",
-				methodMatcher.matches(setSomeNumber, TestBean.class, new Double(12)));
+		assertThat(methodMatcher.matches(setSomeNumber, TestBean.class, new Double(12))).as("Should match with setSomeNumber with Double input").isTrue();
 		assertFalse("Should not match setSomeNumber with Integer input",
 				methodMatcher.matches(setSomeNumber, TestBean.class, new Integer(11)));
 		assertFalse("Should not match getAge", methodMatcher.matches(getAge, TestBean.class));
-		assertTrue("Should be a runtime match", methodMatcher.isRuntime());
+		assertThat(methodMatcher.isRuntime()).as("Should be a runtime match").isTrue();
 	}
 
 	@Test
@@ -260,11 +258,11 @@ public class AspectJExpressionPointcutTests {
 	}
 
 	private void assertMatchesGetAge(MethodMatcher methodMatcher) {
-		assertTrue("Expression should match getAge() method", methodMatcher.matches(getAge, TestBean.class));
+		assertThat(methodMatcher.matches(getAge, TestBean.class)).as("Expression should match getAge() method").isTrue();
 	}
 
 	private void assertMatchesTestBeanClass(ClassFilter classFilter) {
-		assertTrue("Expression should match TestBean class", classFilter.matches(TestBean.class));
+		assertThat(classFilter.matches(TestBean.class)).as("Expression should match TestBean class").isTrue();
 	}
 
 	@Test

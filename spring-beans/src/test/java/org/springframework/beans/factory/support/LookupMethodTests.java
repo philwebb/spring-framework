@@ -23,10 +23,10 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Karl Pietrzak
@@ -96,7 +96,7 @@ public class LookupMethodTests {
 		TestBean expected = bean.getOneArgument("haha");
 		assertEquals(TestBean.class, expected.getClass());
 		assertEquals("haha", expected.getName());
-		assertTrue(expected.isJedi());
+		assertThat(expected.isJedi()).isTrue();
 	}
 
 

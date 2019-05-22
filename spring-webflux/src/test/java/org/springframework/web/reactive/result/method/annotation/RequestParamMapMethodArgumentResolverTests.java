@@ -33,10 +33,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
 
 /**
@@ -55,10 +55,10 @@ public class RequestParamMapMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 		MethodParameter param = this.testMethod.annot(requestParam().name("")).arg(Map.class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotPresent(RequestParam.class).arg(MultiValueMap.class);
-		assertTrue(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().name("name")).arg(Map.class);
 		assertFalse(this.resolver.supportsParameter(param));
@@ -75,7 +75,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 	public void resolveMapArgumentWithQueryString() {
 		MethodParameter param = this.testMethod.annot(requestParam().name("")).arg(Map.class);
 		Object result= resolve(param, MockServerWebExchange.from(MockServerHttpRequest.get("/path?foo=bar")));
-		assertTrue(result instanceof Map);
+		boolean condition = result instanceof Map;
+		assertThat(condition).isTrue();
 		assertEquals(Collections.singletonMap("foo", "bar"), result);
 	}
 
@@ -85,7 +86,8 @@ public class RequestParamMapMethodArgumentResolverTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/path?foo=bar&foo=baz"));
 		Object result= resolve(param, exchange);
 
-		assertTrue(result instanceof MultiValueMap);
+		boolean condition = result instanceof MultiValueMap;
+		assertThat(condition).isTrue();
 		assertEquals(Collections.singletonMap("foo", Arrays.asList("bar", "baz")), result);
 	}
 

@@ -36,9 +36,9 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -283,7 +283,7 @@ public class RouterFunctionsTests {
 		result.handle(httpRequest, httpResponse).block();
 		assertEquals(HttpStatus.ACCEPTED, httpResponse.getStatusCode());
 
-		assertTrue(filterInvoked.get());
+		assertThat(filterInvoked.get()).isTrue();
 	}
 
 }

@@ -34,9 +34,9 @@ import org.springframework.web.context.request.async.StandardServletAsyncWebRequ
 import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.method.ResolvableMethod.on;
 
 /**
@@ -68,14 +68,14 @@ public class DeferredResultReturnValueHandlerTests {
 
 	@Test
 	public void supportsReturnType() throws Exception {
-		assertTrue(this.handler.supportsReturnType(
-				on(TestController.class).resolveReturnType(DeferredResult.class, String.class)));
+		assertThat(this.handler.supportsReturnType(
+				on(TestController.class).resolveReturnType(DeferredResult.class, String.class))).isTrue();
 
-		assertTrue(this.handler.supportsReturnType(
-				on(TestController.class).resolveReturnType(ListenableFuture.class, String.class)));
+		assertThat(this.handler.supportsReturnType(
+				on(TestController.class).resolveReturnType(ListenableFuture.class, String.class))).isTrue();
 
-		assertTrue(this.handler.supportsReturnType(
-				on(TestController.class).resolveReturnType(CompletableFuture.class, String.class)));
+		assertThat(this.handler.supportsReturnType(
+				on(TestController.class).resolveReturnType(CompletableFuture.class, String.class))).isTrue();
 	}
 
 	@Test
@@ -130,12 +130,12 @@ public class DeferredResultReturnValueHandlerTests {
 		MethodParameter returnType = on(TestController.class).resolveReturnType(asyncType, String.class);
 		this.handler.handleReturnValue(returnValue, returnType, mavContainer, this.webRequest);
 
-		assertTrue(this.request.isAsyncStarted());
+		assertThat(this.request.isAsyncStarted()).isTrue();
 		assertFalse(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult());
 
 		setResultTask.run();
 
-		assertTrue(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult());
+		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult()).isTrue();
 		assertEquals(expectedValue, WebAsyncUtils.getAsyncManager(this.webRequest).getConcurrentResult());
 	}
 

@@ -54,10 +54,10 @@ import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.HandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.web.method.ResolvableMethod.on;
 
@@ -99,9 +99,9 @@ public class ReactiveTypeHandlerTests {
 
 	@Test
 	public void supportsType() throws Exception {
-		assertTrue(this.handler.isReactiveType(Mono.class));
-		assertTrue(this.handler.isReactiveType(Single.class));
-		assertTrue(this.handler.isReactiveType(io.reactivex.Single.class));
+		assertThat(this.handler.isReactiveType(Mono.class)).isTrue();
+		assertThat(this.handler.isReactiveType(Single.class)).isTrue();
+		assertThat(this.handler.isReactiveType(io.reactivex.Single.class)).isTrue();
 	}
 
 	@Test
@@ -317,12 +317,12 @@ public class ReactiveTypeHandlerTests {
 		ResponseBodyEmitter emitter = handleValue(returnValue, asyncType, elementType);
 		assertNull(emitter);
 
-		assertTrue(this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).isTrue();
 		assertFalse(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult());
 
 		produceTask.run();
 
-		assertTrue(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult());
+		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult()).isTrue();
 		assertEquals(expected, WebAsyncUtils.getAsyncManager(this.webRequest).getConcurrentResult());
 
 		resetRequest();

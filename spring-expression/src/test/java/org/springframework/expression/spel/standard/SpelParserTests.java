@@ -35,7 +35,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Andy Clement
@@ -305,7 +304,7 @@ public class SpelParserTests {
 
 		tk = TokenKind.LITERAL_STRING;
 		assertEquals("LITERAL_STRING", tk.toString());
-		assertTrue(tk.hasPayload());
+		assertThat(tk.hasPayload()).isTrue();
 	}
 
 	@Test

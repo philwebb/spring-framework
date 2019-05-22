@@ -37,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -75,7 +74,7 @@ public class EnableAspectJAutoProxyTests {
 
 		assertEquals(0, counter.getCount());
 
-		assertTrue(fooService.isInitCalled());
+		assertThat(fooService.isInitCalled()).isTrue();
 		assertEquals(1, counter.getCount());
 
 		String value = fooService.foo(1);

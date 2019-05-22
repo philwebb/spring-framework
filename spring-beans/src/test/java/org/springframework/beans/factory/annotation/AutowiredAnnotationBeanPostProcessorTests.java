@@ -84,7 +84,6 @@ import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -194,7 +193,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		bf.destroySingleton("testBean");
 		assertFalse(bf.containsSingleton("testBean"));
 		assertFalse(bf.containsSingleton("annotatedBean"));
-		assertTrue(bean.destroyed);
+		assertThat(bean.destroyed).isTrue();
 		assertSame(0, bf.getDependenciesForBean("annotatedBean").length);
 	}
 
@@ -234,8 +233,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		assertSame(tb, bean.getTestBean4());
 		assertSame(ntb, bean.getNestedTestBean());
 		assertNull(bean.getBeanFactory());
-		assertTrue(bean.baseInjected);
-		assertTrue(bean.subInjected);
+		assertThat(bean.baseInjected).isTrue();
+		assertThat(bean.subInjected).isTrue();
 	}
 
 	@Test
@@ -254,8 +253,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		assertSame(tb, bean.getTestBean4());
 		assertSame(ntb, bean.getNestedTestBean());
 		assertNull(bean.getBeanFactory());
-		assertTrue(bean.baseInjected);
-		assertTrue(bean.subInjected);
+		assertThat(bean.baseInjected).isTrue();
+		assertThat(bean.subInjected).isTrue();
 	}
 
 	@Test
@@ -726,7 +725,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		SingleConstructorVarargBean bean = (SingleConstructorVarargBean) bf.getBean("annotatedBean");
 		assertSame(tb, bean.getTestBean());
 		assertNotNull(bean.getNestedTestBeans());
-		assertTrue(bean.getNestedTestBeans().isEmpty());
+		assertThat(bean.getNestedTestBeans().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -755,7 +754,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		SingleConstructorRequiredCollectionBean bean = (SingleConstructorRequiredCollectionBean) bf.getBean("annotatedBean");
 		assertSame(tb, bean.getTestBean());
 		assertNotNull(bean.getNestedTestBeans());
-		assertTrue(bean.getNestedTestBeans().isEmpty());
+		assertThat(bean.getNestedTestBeans().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -857,17 +856,17 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		MapFieldInjectionBean bean = (MapFieldInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(2, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean2"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb1));
-		assertTrue(bean.getTestBeanMap().values().contains(tb2));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 
 		bean = (MapFieldInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(2, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean2"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb1));
-		assertTrue(bean.getTestBeanMap().values().contains(tb2));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 	}
 
 	@Test
@@ -880,14 +879,14 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		MapMethodInjectionBean bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(1, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
 		assertSame(tb, bean.getTestBean());
 
 		bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
 		assertEquals(1, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
 		assertSame(tb, bean.getTestBean());
 	}
 
@@ -912,8 +911,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		MapMethodInjectionBean bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
 		TestBean tb = (TestBean) bf.getBean("testBean1");
 		assertEquals(1, bean.getTestBeanMap().size());
-		assertTrue(bean.getTestBeanMap().keySet().contains("testBean1"));
-		assertTrue(bean.getTestBeanMap().values().contains(tb));
+		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
+		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
 		assertSame(tb, bean.getTestBean());
 	}
 
@@ -1166,16 +1165,16 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		List<?> testBeans = bean.iterateTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 		testBeans = bean.forEachTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 		testBeans = bean.streamTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 		testBeans = bean.sortedTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 	}
 
 	@Test
@@ -1194,16 +1193,16 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		List<?> testBeans = bean.iterateTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 		testBeans = bean.forEachTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 		testBeans = bean.streamTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 		testBeans = bean.sortedTestBeans();
 		assertEquals(1, testBeans.size());
-		assertTrue(testBeans.contains(bf.getBean("testBean")));
+		assertThat(testBeans.contains(bf.getBean("testBean"))).isTrue();
 	}
 
 	@Test
@@ -1221,13 +1220,13 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		assertNull(bean.consumeUniqueTestBean());
 
 		List<?> testBeans = bean.iterateTestBeans();
-		assertTrue(testBeans.isEmpty());
+		assertThat(testBeans.isEmpty()).isTrue();
 		testBeans = bean.forEachTestBeans();
-		assertTrue(testBeans.isEmpty());
+		assertThat(testBeans.isEmpty()).isTrue();
 		testBeans = bean.streamTestBeans();
-		assertTrue(testBeans.isEmpty());
+		assertThat(testBeans.isEmpty()).isTrue();
 		testBeans = bean.sortedTestBeans();
-		assertTrue(testBeans.isEmpty());
+		assertThat(testBeans.isEmpty()).isTrue();
 	}
 
 	@Test

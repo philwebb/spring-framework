@@ -35,8 +35,8 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -112,7 +112,7 @@ public class CustomEditorConfigurerTests {
 		bf.registerBeanDefinition("tb", bd);
 
 		TestBean tb = (TestBean) bf.getBean("tb");
-		assertTrue(tb.getStringArray() != null && tb.getStringArray().length == 1);
+		assertThat(tb.getStringArray() != null && tb.getStringArray().length == 1).isTrue();
 		assertEquals("test", tb.getStringArray()[0]);
 	}
 

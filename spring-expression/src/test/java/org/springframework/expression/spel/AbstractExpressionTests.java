@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Common superclass for expression tests.
@@ -139,8 +138,8 @@ public abstract class AbstractExpressionTests {
 		else {
 			assertEquals("Did not get expected value for expression '" + expression + "'.", expectedValue, value);
 		}
-		assertTrue("Type of the result was not as expected.  Expected '" + expectedClassOfResult +
-				"' but result was of type '" + resultType + "'", expectedClassOfResult.equals(resultType));
+		assertThat(expectedClassOfResult.equals(resultType)).as("Type of the result was not as expected.  Expected '" + expectedClassOfResult +
+				"' but result was of type '" + resultType + "'").isTrue();
 
 		assertThat(expr.isWritable(context)).as("isWritable").isEqualTo(shouldBeWritable);
 	}

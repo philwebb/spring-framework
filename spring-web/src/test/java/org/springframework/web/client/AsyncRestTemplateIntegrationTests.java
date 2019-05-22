@@ -44,6 +44,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
@@ -51,7 +52,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -159,7 +159,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void headForHeaders() throws Exception {
 		Future<HttpHeaders> headersFuture = template.headForHeaders(baseUrl + "/get");
 		HttpHeaders headers = headersFuture.get();
-		assertTrue("No Content-Type header", headers.containsKey("Content-Type"));
+		assertThat(headers.containsKey("Content-Type")).as("No Content-Type header").isTrue();
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		headersFuture.addCallback(new ListenableFutureCallback<HttpHeaders>() {
 			@Override
 			public void onSuccess(HttpHeaders result) {
-				assertTrue("No Content-Type header", result.containsKey("Content-Type"));
+				assertThat(result.containsKey("Content-Type")).as("No Content-Type header").isTrue();
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -181,8 +181,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void headForHeadersCallbackWithLambdas() throws Exception {
 		ListenableFuture<HttpHeaders> headersFuture = template.headForHeaders(baseUrl + "/get");
-		headersFuture.addCallback(result -> assertTrue("No Content-Type header",
-				result.containsKey("Content-Type")), ex -> fail(ex.getMessage()));
+		headersFuture.addCallback(result -> assertThat(result.containsKey("Content-Type")).as("No Content-Type header").isTrue(), ex -> fail(ex.getMessage()));
 		waitTillDone(headersFuture);
 	}
 
@@ -332,7 +331,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			}
 			@Override
 			public void onFailure(Throwable ex) {
-				assertTrue(ex instanceof HttpClientErrorException);
+				boolean condition = ex instanceof HttpClientErrorException;
+				assertThat(condition).isTrue();
 				callbackException[0] = (HttpClientErrorException) ex;
 				latch.countDown();
 			}
@@ -344,7 +344,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		}
 		catch (ExecutionException ex) {
 			Throwable cause = ex.getCause();
-			assertTrue(cause instanceof HttpClientErrorException);
+			boolean condition = cause instanceof HttpClientErrorException;
+			assertThat(condition).isTrue();
 			latch.await(5, TimeUnit.SECONDS);
 			assertSame(callbackException[0], cause);
 		}
@@ -375,7 +376,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			}
 			@Override
 			public void onFailure(Throwable t) {
-				assertTrue(t instanceof HttpClientErrorException);
+				boolean condition = t instanceof HttpClientErrorException;
+				assertThat(condition).isTrue();
 				HttpClientErrorException ex = (HttpClientErrorException) t;
 				assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
 				assertNotNull(ex.getStatusText());
@@ -389,8 +391,9 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void notFoundCallbackWithLambdas() throws Exception {
 		ListenableFuture<?> future = template.execute(baseUrl + "/status/notfound", HttpMethod.GET, null, null);
 		future.addCallback(result -> fail("onSuccess not expected"), ex -> {
-				assertTrue(ex instanceof HttpClientErrorException);
-				HttpClientErrorException hcex = (HttpClientErrorException) ex;
+			boolean condition = ex instanceof HttpClientErrorException;
+			assertThat(condition).isTrue();
+			HttpClientErrorException hcex = (HttpClientErrorException) ex;
 				assertEquals(HttpStatus.NOT_FOUND, hcex.getStatusCode());
 				assertNotNull(hcex.getStatusText());
 				assertNotNull(hcex.getResponseBodyAsString());
@@ -406,7 +409,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			fail("HttpServerErrorException expected");
 		}
 		catch (ExecutionException ex) {
-			assertTrue(ex.getCause() instanceof HttpServerErrorException);
+			boolean condition = ex.getCause() instanceof HttpServerErrorException;
+			assertThat(condition).isTrue();
 			HttpServerErrorException cause = (HttpServerErrorException)ex.getCause();
 
 			assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, cause.getStatusCode());
@@ -425,7 +429,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			}
 			@Override
 			public void onFailure(Throwable ex) {
-				assertTrue(ex instanceof HttpServerErrorException);
+				boolean condition = ex instanceof HttpServerErrorException;
+				assertThat(condition).isTrue();
 				HttpServerErrorException hsex = (HttpServerErrorException) ex;
 				assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, hsex.getStatusCode());
 				assertNotNull(hsex.getStatusText());
@@ -439,8 +444,9 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void serverErrorCallbackWithLambdas() throws Exception {
 		ListenableFuture<Void> future = template.execute(baseUrl + "/status/server", HttpMethod.GET, null, null);
 		future.addCallback(result -> fail("onSuccess not expected"), ex -> {
-				assertTrue(ex instanceof HttpServerErrorException);
-				HttpServerErrorException hsex = (HttpServerErrorException) ex;
+			boolean condition = ex instanceof HttpServerErrorException;
+			assertThat(condition).isTrue();
+			HttpServerErrorException hsex = (HttpServerErrorException) ex;
 				assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, hsex.getStatusCode());
 				assertNotNull(hsex.getStatusText());
 				assertNotNull(hsex.getResponseBodyAsString());

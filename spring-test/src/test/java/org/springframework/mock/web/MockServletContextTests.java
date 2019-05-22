@@ -26,11 +26,11 @@ import org.junit.Test;
 
 import org.springframework.http.MediaType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -47,14 +47,14 @@ public class MockServletContextTests {
 	public void listFiles() {
 		Set<String> paths = sc.getResourcePaths("/web");
 		assertNotNull(paths);
-		assertTrue(paths.contains("/web/MockServletContextTests.class"));
+		assertThat(paths.contains("/web/MockServletContextTests.class")).isTrue();
 	}
 
 	@Test
 	public void listSubdirectories() {
 		Set<String> paths = sc.getResourcePaths("/");
 		assertNotNull(paths);
-		assertTrue(paths.contains("/web/"));
+		assertThat(paths.contains("/web/")).isTrue();
 	}
 
 	@Test

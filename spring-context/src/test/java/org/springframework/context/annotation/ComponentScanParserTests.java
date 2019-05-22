@@ -39,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -57,8 +56,8 @@ public class ComponentScanParserTests {
 	@Test
 	public void aspectjTypeFilter() {
 		ClassPathXmlApplicationContext context = loadContext("aspectjTypeFilterTests.xml");
-		assertTrue(context.containsBean("fooServiceImpl"));
-		assertTrue(context.containsBean("stubFooDao"));
+		assertThat(context.containsBean("fooServiceImpl")).isTrue();
+		assertThat(context.containsBean("stubFooDao")).isTrue();
 		assertFalse(context.containsBean("scopedProxyTestBean"));
 		context.close();
 	}
@@ -70,8 +69,8 @@ public class ComponentScanParserTests {
 		System.setProperty("scanExclude", "example..Scoped*Test*");
 		try {
 			ClassPathXmlApplicationContext context = loadContext("aspectjTypeFilterTestsWithPlaceholders.xml");
-			assertTrue(context.containsBean("fooServiceImpl"));
-			assertTrue(context.containsBean("stubFooDao"));
+			assertThat(context.containsBean("fooServiceImpl")).isTrue();
+			assertThat(context.containsBean("stubFooDao")).isTrue();
 			assertFalse(context.containsBean("scopedProxyTestBean"));
 			context.close();
 		}
@@ -92,7 +91,7 @@ public class ComponentScanParserTests {
 	@Test
 	public void matchingResourcePattern() {
 		ClassPathXmlApplicationContext context = loadContext("matchingResourcePatternTests.xml");
-		assertTrue(context.containsBean("fooServiceImpl"));
+		assertThat(context.containsBean("fooServiceImpl")).isTrue();
 		context.close();
 	}
 
@@ -100,7 +99,7 @@ public class ComponentScanParserTests {
 	public void componentScanWithAutowiredQualifier() {
 		ClassPathXmlApplicationContext context = loadContext("componentScanWithAutowiredQualifierTests.xml");
 		AutowiredQualifierFooService fooService = (AutowiredQualifierFooService) context.getBean("fooService");
-		assertTrue(fooService.isInitCalled());
+		assertThat(fooService.isInitCalled()).isTrue();
 		assertEquals("bar", fooService.foo(123));
 		context.close();
 	}

@@ -25,9 +25,9 @@ import org.junit.Before;
 
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -49,17 +49,17 @@ public abstract class AbstractEntityManagerFactoryBeanTests {
 
 	@After
 	public void tearDown() throws Exception {
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 		assertFalse(TransactionSynchronizationManager.isSynchronizationActive());
 		assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
 		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
 	}
 
 	protected void checkInvariants(AbstractEntityManagerFactoryBean demf) {
-		assertTrue(EntityManagerFactory.class.isAssignableFrom(demf.getObjectType()));
+		assertThat(EntityManagerFactory.class.isAssignableFrom(demf.getObjectType())).isTrue();
 		Object gotObject = demf.getObject();
-		assertTrue("Object created by factory implements EntityManagerFactoryInfo",
-				gotObject instanceof EntityManagerFactoryInfo);
+		boolean condition = gotObject instanceof EntityManagerFactoryInfo;
+		assertThat(condition).as("Object created by factory implements EntityManagerFactoryInfo").isTrue();
 		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) demf.getObject();
 		assertSame("Successive invocations of getObject() return same object", emfi, demf.getObject());
 		assertSame(emfi, demf.getObject());

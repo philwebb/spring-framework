@@ -21,11 +21,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -48,7 +46,7 @@ public class ConstantsTests {
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->
 				c.asNumber("bogus"));
 
-		assertTrue(c.asString("S1").equals(A.S1));
+		assertThat(c.asString("S1").equals(A.S1)).isTrue();
 		assertThatExceptionOfType(Constants.ConstantException.class).as("wrong type").isThrownBy(() ->
 				c.asNumber("S1"));
 	}
@@ -59,17 +57,17 @@ public class ConstantsTests {
 
 		Set<?> names = c.getNames("");
 		assertEquals(c.getSize(), names.size());
-		assertTrue(names.contains("DOG"));
-		assertTrue(names.contains("CAT"));
-		assertTrue(names.contains("S1"));
+		assertThat(names.contains("DOG")).isTrue();
+		assertThat(names.contains("CAT")).isTrue();
+		assertThat(names.contains("S1")).isTrue();
 
 		names = c.getNames("D");
 		assertEquals(1, names.size());
-		assertTrue(names.contains("DOG"));
+		assertThat(names.contains("DOG")).isTrue();
 
 		names = c.getNames("d");
 		assertEquals(1, names.size());
-		assertTrue(names.contains("DOG"));
+		assertThat(names.contains("DOG")).isTrue();
 	}
 
 	@Test
@@ -78,23 +76,23 @@ public class ConstantsTests {
 
 		Set<?> values = c.getValues("");
 		assertEquals(7, values.size());
-		assertTrue(values.contains(Integer.valueOf(0)));
-		assertTrue(values.contains(Integer.valueOf(66)));
-		assertTrue(values.contains(""));
+		assertThat(values.contains(Integer.valueOf(0))).isTrue();
+		assertThat(values.contains(Integer.valueOf(66))).isTrue();
+		assertThat(values.contains("")).isTrue();
 
 		values = c.getValues("D");
 		assertEquals(1, values.size());
-		assertTrue(values.contains(Integer.valueOf(0)));
+		assertThat(values.contains(Integer.valueOf(0))).isTrue();
 
 		values = c.getValues("prefix");
 		assertEquals(2, values.size());
-		assertTrue(values.contains(Integer.valueOf(1)));
-		assertTrue(values.contains(Integer.valueOf(2)));
+		assertThat(values.contains(Integer.valueOf(1))).isTrue();
+		assertThat(values.contains(Integer.valueOf(2))).isTrue();
 
 		values = c.getValuesForProperty("myProperty");
 		assertEquals(2, values.size());
-		assertTrue(values.contains(Integer.valueOf(1)));
-		assertTrue(values.contains(Integer.valueOf(2)));
+		assertThat(values.contains(Integer.valueOf(1))).isTrue();
+		assertThat(values.contains(Integer.valueOf(2))).isTrue();
 	}
 
 	@Test
@@ -106,23 +104,23 @@ public class ConstantsTests {
 
 			Set<?> values = c.getValues("");
 			assertEquals(7, values.size());
-			assertTrue(values.contains(Integer.valueOf(0)));
-			assertTrue(values.contains(Integer.valueOf(66)));
-			assertTrue(values.contains(""));
+			assertThat(values.contains(Integer.valueOf(0))).isTrue();
+			assertThat(values.contains(Integer.valueOf(66))).isTrue();
+			assertThat(values.contains("")).isTrue();
 
 			values = c.getValues("D");
 			assertEquals(1, values.size());
-			assertTrue(values.contains(Integer.valueOf(0)));
+			assertThat(values.contains(Integer.valueOf(0))).isTrue();
 
 			values = c.getValues("prefix");
 			assertEquals(2, values.size());
-			assertTrue(values.contains(Integer.valueOf(1)));
-			assertTrue(values.contains(Integer.valueOf(2)));
+			assertThat(values.contains(Integer.valueOf(1))).isTrue();
+			assertThat(values.contains(Integer.valueOf(2))).isTrue();
 
 			values = c.getValuesForProperty("myProperty");
 			assertEquals(2, values.size());
-			assertTrue(values.contains(Integer.valueOf(1)));
-			assertTrue(values.contains(Integer.valueOf(2)));
+			assertThat(values.contains(Integer.valueOf(1))).isTrue();
+			assertThat(values.contains(Integer.valueOf(2))).isTrue();
 		}
 		finally {
 			Locale.setDefault(oldLocale);
@@ -135,13 +133,13 @@ public class ConstantsTests {
 
 		Set<?> names = c.getNamesForSuffix("_PROPERTY");
 		assertEquals(2, names.size());
-		assertTrue(names.contains("NO_PROPERTY"));
-		assertTrue(names.contains("YES_PROPERTY"));
+		assertThat(names.contains("NO_PROPERTY")).isTrue();
+		assertThat(names.contains("YES_PROPERTY")).isTrue();
 
 		Set<?> values = c.getValuesForSuffix("_PROPERTY");
 		assertEquals(2, values.size());
-		assertTrue(values.contains(Integer.valueOf(3)));
-		assertTrue(values.contains(Integer.valueOf(4)));
+		assertThat(values.contains(Integer.valueOf(3))).isTrue();
+		assertThat(values.contains(Integer.valueOf(4))).isTrue();
 	}
 
 	@Test

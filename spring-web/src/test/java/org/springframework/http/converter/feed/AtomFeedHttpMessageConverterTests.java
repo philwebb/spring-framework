@@ -40,8 +40,6 @@ import org.springframework.tests.XmlContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma
@@ -59,14 +57,14 @@ public class AtomFeedHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(Feed.class, new MediaType("application", "atom+xml")));
-		assertTrue(converter.canRead(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8)));
+		assertThat(converter.canRead(Feed.class, new MediaType("application", "atom+xml"))).isTrue();
+		assertThat(converter.canRead(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8))).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(Feed.class, new MediaType("application", "atom+xml")));
-		assertTrue(converter.canWrite(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8)));
+		assertThat(converter.canWrite(Feed.class, new MediaType("application", "atom+xml"))).isTrue();
+		assertThat(converter.canWrite(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8))).isTrue();
 	}
 
 	@Test

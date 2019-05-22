@@ -25,8 +25,8 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -82,16 +82,15 @@ public class CollectionsWithDefaultTypesTests {
 	@SuppressWarnings("rawtypes")
 	public void testBuildCollectionFromMixtureOfReferencesAndValues() throws Exception {
 		MixedCollectionBean jumble = (MixedCollectionBean) this.beanFactory.getBean("jumble");
-		assertTrue("Expected 3 elements, not " + jumble.getJumble().size(),
-				jumble.getJumble().size() == 3);
+		assertThat(jumble.getJumble().size() == 3).as("Expected 3 elements, not " + jumble.getJumble().size()).isTrue();
 		List l = (List) jumble.getJumble();
-		assertTrue(l.get(0).equals("literal"));
+		assertThat(l.get(0).equals("literal")).isTrue();
 		Integer[] array1 = (Integer[]) l.get(1);
-		assertTrue(array1[0].equals(new Integer(2)));
-		assertTrue(array1[1].equals(new Integer(4)));
+		assertThat(array1[0].equals(new Integer(2))).isTrue();
+		assertThat(array1[1].equals(new Integer(4))).isTrue();
 		int[] array2 = (int[]) l.get(2);
-		assertTrue(array2[0] == 3);
-		assertTrue(array2[1] == 5);
+		assertThat(array2[0] == 3).isTrue();
+		assertThat(array2[1] == 5).isTrue();
 	}
 
 }

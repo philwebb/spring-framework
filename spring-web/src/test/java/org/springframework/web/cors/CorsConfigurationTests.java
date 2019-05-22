@@ -24,11 +24,11 @@ import org.junit.Test;
 
 import org.springframework.http.HttpMethod;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link CorsConfiguration}.
@@ -68,7 +68,7 @@ public class CorsConfigurationTests {
 		config.addExposedHeader("header2");
 		assertEquals(Arrays.asList("header1", "header2"), config.getExposedHeaders());
 		config.setAllowCredentials(true);
-		assertTrue(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isTrue();
 		config.setMaxAge(123L);
 		assertEquals(new Long(123), config.getMaxAge());
 	}
@@ -111,7 +111,7 @@ public class CorsConfigurationTests {
 		assertEquals(Arrays.asList("header3"), config.getExposedHeaders());
 		assertEquals(Arrays.asList(HttpMethod.GET.name()), config.getAllowedMethods());
 		assertEquals(new Long(123), config.getMaxAge());
-		assertTrue(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isTrue();
 	}
 
 	@Test  // SPR-15772

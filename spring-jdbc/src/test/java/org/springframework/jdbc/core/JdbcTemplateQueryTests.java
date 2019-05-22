@@ -33,10 +33,10 @@ import org.junit.Test;
 
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -165,7 +165,8 @@ public class JdbcTemplateQueryTests {
 				return rs.getInt(1);
 			}
 		});
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(this.resultSet).close();
 		verify(this.statement).close();
 	}
@@ -347,7 +348,8 @@ public class JdbcTemplateQueryTests {
 				return rs.getInt(1);
 			}
 		});
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(this.preparedStatement).setObject(1, 3);
 		verify(this.resultSet).close();
 		verify(this.preparedStatement).close();
@@ -359,7 +361,8 @@ public class JdbcTemplateQueryTests {
 		given(this.resultSet.next()).willReturn(true, false);
 		given(this.resultSet.getInt(1)).willReturn(22);
 		Object o = this.template.queryForObject(sql, new Object[] {3}, Integer.class);
-		assertTrue("Correct result type", o instanceof Integer);
+		boolean condition = o instanceof Integer;
+		assertThat(condition).as("Correct result type").isTrue();
 		verify(this.preparedStatement).setObject(1, 3);
 		verify(this.resultSet).close();
 		verify(this.preparedStatement).close();

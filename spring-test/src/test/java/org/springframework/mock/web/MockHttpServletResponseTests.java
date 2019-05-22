@@ -27,12 +27,12 @@ import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MockHttpServletResponse}.
@@ -185,7 +185,7 @@ public class MockHttpServletResponseTests {
 		assertFalse(response.isCommitted());
 		int size = response.getBufferSize();
 		response.getOutputStream().write(new byte[size]);
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 		assertEquals(size + 1, response.getContentAsByteArray().length);
 	}
 
@@ -195,7 +195,7 @@ public class MockHttpServletResponseTests {
 		response.getOutputStream().write('X');
 		assertFalse(response.isCommitted());
 		response.flushBuffer();
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);
 	}
 
@@ -208,7 +208,7 @@ public class MockHttpServletResponseTests {
 		char[] data = new char[size];
 		Arrays.fill(data, 'p');
 		response.getWriter().write(data);
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 		assertEquals(size + 1, response.getContentAsByteArray().length);
 	}
 
@@ -218,7 +218,7 @@ public class MockHttpServletResponseTests {
 		response.getOutputStream().write('X');
 		assertFalse(response.isCommitted());
 		response.getOutputStream().flush();
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);
 	}
 
@@ -228,7 +228,7 @@ public class MockHttpServletResponseTests {
 		response.getWriter().write("X");
 		assertFalse(response.isCommitted());
 		response.getWriter().flush();
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);
 	}
 
@@ -238,7 +238,7 @@ public class MockHttpServletResponseTests {
 		response.getWriter().write("X");
 		assertFalse(response.isCommitted());
 		response.getWriter().close();
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);
 	}
 
@@ -267,7 +267,7 @@ public class MockHttpServletResponseTests {
 		assertEquals(HttpServletResponse.SC_MOVED_TEMPORARILY, response.getStatus());
 		assertEquals(redirectUrl, response.getHeader("Location"));
 		assertEquals(redirectUrl, response.getRedirectedUrl());
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 	}
 
 	@Test
@@ -333,12 +333,13 @@ public class MockHttpServletResponseTests {
 		response.addHeader(HttpHeaders.SET_COOKIE, "SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax");
 		Cookie cookie = response.getCookie("SESSION");
 		assertNotNull(cookie);
-		assertTrue(cookie instanceof MockCookie);
+		boolean condition = cookie instanceof MockCookie;
+		assertThat(condition).isTrue();
 		assertEquals("SESSION", cookie.getName());
 		assertEquals("123", cookie.getValue());
 		assertEquals("/", cookie.getPath());
-		assertTrue(cookie.getSecure());
-		assertTrue(cookie.isHttpOnly());
+		assertThat(cookie.getSecure()).isTrue();
+		assertThat(cookie.isHttpOnly()).isTrue();
 		assertEquals("Lax", ((MockCookie) cookie).getSameSite());
 	}
 

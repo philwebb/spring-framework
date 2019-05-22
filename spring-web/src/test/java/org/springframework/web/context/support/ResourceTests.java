@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.MockServletContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Chris Beams
@@ -50,16 +50,16 @@ public class ResourceTests {
 
 	private void doTestResource(Resource resource) throws IOException {
 		assertEquals("Resource.class", resource.getFilename());
-		assertTrue(resource.getURL().getFile().endsWith("Resource.class"));
+		assertThat(resource.getURL().getFile().endsWith("Resource.class")).isTrue();
 
 		Resource relative1 = resource.createRelative("ClassPathResource.class");
 		assertEquals("ClassPathResource.class", relative1.getFilename());
-		assertTrue(relative1.getURL().getFile().endsWith("ClassPathResource.class"));
-		assertTrue(relative1.exists());
+		assertThat(relative1.getURL().getFile().endsWith("ClassPathResource.class")).isTrue();
+		assertThat(relative1.exists()).isTrue();
 
 		Resource relative2 = resource.createRelative("support/ResourcePatternResolver.class");
 		assertEquals("ResourcePatternResolver.class", relative2.getFilename());
-		assertTrue(relative2.getURL().getFile().endsWith("ResourcePatternResolver.class"));
-		assertTrue(relative2.exists());
+		assertThat(relative2.getURL().getFile().endsWith("ResourcePatternResolver.class")).isTrue();
+		assertThat(relative2.exists()).isTrue();
 	}
 }

@@ -52,8 +52,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
-import static temp.XAssert.assertTrue;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma
@@ -81,15 +79,15 @@ public class SourceHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(Source.class, new MediaType("application", "xml")));
-		assertTrue(converter.canRead(Source.class, new MediaType("application", "soap+xml")));
+		assertThat(converter.canRead(Source.class, new MediaType("application", "xml"))).isTrue();
+		assertThat(converter.canRead(Source.class, new MediaType("application", "soap+xml"))).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(Source.class, new MediaType("application", "xml")));
-		assertTrue(converter.canWrite(Source.class, new MediaType("application", "soap+xml")));
-		assertTrue(converter.canWrite(Source.class, MediaType.ALL));
+		assertThat(converter.canWrite(Source.class, new MediaType("application", "xml"))).isTrue();
+		assertThat(converter.canWrite(Source.class, new MediaType("application", "soap+xml"))).isTrue();
+		assertThat(converter.canWrite(Source.class, MediaType.ALL)).isTrue();
 	}
 
 	@Test
@@ -202,7 +200,7 @@ public class SourceHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 		StAXSource result = (StAXSource) converter.read(StAXSource.class, inputMessage);
 		XMLStreamReader streamReader = result.getXMLStreamReader();
-		assertTrue(streamReader.hasNext());
+		assertThat(streamReader.hasNext()).isTrue();
 		streamReader.nextTag();
 		String s = streamReader.getLocalName();
 		assertEquals("root", s);
@@ -218,7 +216,7 @@ public class SourceHttpMessageConverterTests {
 		converter.setSupportDtd(true);
 		StAXSource result = (StAXSource) converter.read(StAXSource.class, inputMessage);
 		XMLStreamReader streamReader = result.getXMLStreamReader();
-		assertTrue(streamReader.hasNext());
+		assertThat(streamReader.hasNext()).isTrue();
 		streamReader.next();
 		streamReader.next();
 		String s = streamReader.getLocalName();
@@ -256,7 +254,7 @@ public class SourceHttpMessageConverterTests {
 		StAXSource result = (StAXSource) this.converter.read(StAXSource.class, inputMessage);
 
 		XMLStreamReader streamReader = result.getXMLStreamReader();
-		assertTrue(streamReader.hasNext());
+		assertThat(streamReader.hasNext()).isTrue();
 		streamReader.next();
 		streamReader.next();
 		String s = streamReader.getLocalName();

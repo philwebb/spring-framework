@@ -28,11 +28,11 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -71,7 +71,7 @@ public class FactoryMethodTests {
 		assertSame(fm, fm2);
 
 		xbf.destroySingletons();
-		assertTrue(tb.wasDestroyed());
+		assertThat(tb.wasDestroyed()).isTrue();
 	}
 
 	@Test
@@ -201,8 +201,8 @@ public class FactoryMethodTests {
 		assertEquals(TestBean.class, xbf.getType("externalFactoryMethodWithoutArgs"));
 		assertEquals(TestBean.class, xbf.getType("externalFactoryMethodWithArgs"));
 		String[] names = xbf.getBeanNamesForType(TestBean.class);
-		assertTrue(Arrays.asList(names).contains("externalFactoryMethodWithoutArgs"));
-		assertTrue(Arrays.asList(names).contains("externalFactoryMethodWithArgs"));
+		assertThat(Arrays.asList(names).contains("externalFactoryMethodWithoutArgs")).isTrue();
+		assertThat(Arrays.asList(names).contains("externalFactoryMethodWithArgs")).isTrue();
 
 		TestBean tb = (TestBean) xbf.getBean("externalFactoryMethodWithoutArgs");
 		assertEquals(2, tb.getAge());
@@ -214,8 +214,8 @@ public class FactoryMethodTests {
 		assertEquals(TestBean.class, xbf.getType("externalFactoryMethodWithoutArgs"));
 		assertEquals(TestBean.class, xbf.getType("externalFactoryMethodWithArgs"));
 		names = xbf.getBeanNamesForType(TestBean.class);
-		assertTrue(Arrays.asList(names).contains("externalFactoryMethodWithoutArgs"));
-		assertTrue(Arrays.asList(names).contains("externalFactoryMethodWithArgs"));
+		assertThat(Arrays.asList(names).contains("externalFactoryMethodWithoutArgs")).isTrue();
+		assertThat(Arrays.asList(names).contains("externalFactoryMethodWithArgs")).isTrue();
 	}
 
 	@Test
@@ -337,18 +337,20 @@ public class FactoryMethodTests {
 		reader.loadBeanDefinitions(new ClassPathResource("factory-methods.xml", getClass()));
 
 		// Check that listInstance is not considered a bean of type FactoryMethods.
-		assertTrue(List.class.isAssignableFrom(xbf.getType("listInstance")));
+		assertThat(List.class.isAssignableFrom(xbf.getType("listInstance"))).isTrue();
 		String[] names = xbf.getBeanNamesForType(FactoryMethods.class);
-		assertTrue(!Arrays.asList(names).contains("listInstance"));
+		boolean condition1 = !Arrays.asList(names).contains("listInstance");
+		assertThat(condition1).isTrue();
 		names = xbf.getBeanNamesForType(List.class);
-		assertTrue(Arrays.asList(names).contains("listInstance"));
+		assertThat(Arrays.asList(names).contains("listInstance")).isTrue();
 
 		xbf.preInstantiateSingletons();
-		assertTrue(List.class.isAssignableFrom(xbf.getType("listInstance")));
+		assertThat(List.class.isAssignableFrom(xbf.getType("listInstance"))).isTrue();
 		names = xbf.getBeanNamesForType(FactoryMethods.class);
-		assertTrue(!Arrays.asList(names).contains("listInstance"));
+		boolean condition = !Arrays.asList(names).contains("listInstance");
+		assertThat(condition).isTrue();
 		names = xbf.getBeanNamesForType(List.class);
-		assertTrue(Arrays.asList(names).contains("listInstance"));
+		assertThat(Arrays.asList(names).contains("listInstance")).isTrue();
 		List<?> list = (List<?>) xbf.getBean("listInstance");
 		assertEquals(Collections.EMPTY_LIST, list);
 	}

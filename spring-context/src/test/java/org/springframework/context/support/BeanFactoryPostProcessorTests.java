@@ -36,9 +36,9 @@ import org.springframework.core.PriorityOrdered;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.Assert;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests the interaction between {@link ApplicationContext} implementations and
@@ -62,7 +62,7 @@ public class BeanFactoryPostProcessorTests {
 		ac.addBeanFactoryPostProcessor(bfpp);
 		assertFalse(bfpp.wasCalled);
 		ac.refresh();
-		assertTrue(bfpp.wasCalled);
+		assertThat(bfpp.wasCalled).isTrue();
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class BeanFactoryPostProcessorTests {
 		ac.registerSingleton("bfpp", TestBeanFactoryPostProcessor.class);
 		ac.refresh();
 		TestBeanFactoryPostProcessor bfpp = (TestBeanFactoryPostProcessor) ac.getBean("bfpp");
-		assertTrue(bfpp.wasCalled);
+		assertThat(bfpp.wasCalled).isTrue();
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class BeanFactoryPostProcessorTests {
 		ac.refresh();
 		TestBeanFactoryPostProcessor bfpp = (TestBeanFactoryPostProcessor) ac.getBean("bfpp1");
 		assertEquals("value", bfpp.initValue);
-		assertTrue(bfpp.wasCalled);
+		assertThat(bfpp.wasCalled).isTrue();
 	}
 
 	@Test
@@ -113,9 +113,9 @@ public class BeanFactoryPostProcessorTests {
 		ac.addBeanFactoryPostProcessor(bdrpp);
 		assertFalse(bdrpp.wasCalled);
 		ac.refresh();
-		assertTrue(bdrpp.wasCalled);
-		assertTrue(ac.getBean("bfpp1", TestBeanFactoryPostProcessor.class).wasCalled);
-		assertTrue(ac.getBean("bfpp2", TestBeanFactoryPostProcessor.class).wasCalled);
+		assertThat(bdrpp.wasCalled).isTrue();
+		assertThat(ac.getBean("bfpp1", TestBeanFactoryPostProcessor.class).wasCalled).isTrue();
+		assertThat(ac.getBean("bfpp2", TestBeanFactoryPostProcessor.class).wasCalled).isTrue();
 	}
 
 	@Test
@@ -125,8 +125,8 @@ public class BeanFactoryPostProcessorTests {
 		ac.registerSingleton("tb2", TestBean.class);
 		ac.registerBeanDefinition("bdrpp2", new RootBeanDefinition(OuterBeanDefinitionRegistryPostProcessor.class));
 		ac.refresh();
-		assertTrue(ac.getBean("bfpp1", TestBeanFactoryPostProcessor.class).wasCalled);
-		assertTrue(ac.getBean("bfpp2", TestBeanFactoryPostProcessor.class).wasCalled);
+		assertThat(ac.getBean("bfpp1", TestBeanFactoryPostProcessor.class).wasCalled).isTrue();
+		assertThat(ac.getBean("bfpp2", TestBeanFactoryPostProcessor.class).wasCalled).isTrue();
 	}
 
 	@Test
@@ -136,8 +136,8 @@ public class BeanFactoryPostProcessorTests {
 		ac.registerSingleton("tb2", TestBean.class);
 		ac.registerBeanDefinition("bdrpp2", new RootBeanDefinition(PrioritizedOuterBeanDefinitionRegistryPostProcessor.class));
 		ac.refresh();
-		assertTrue(ac.getBean("bfpp1", TestBeanFactoryPostProcessor.class).wasCalled);
-		assertTrue(ac.getBean("bfpp2", TestBeanFactoryPostProcessor.class).wasCalled);
+		assertThat(ac.getBean("bfpp1", TestBeanFactoryPostProcessor.class).wasCalled).isTrue();
+		assertThat(ac.getBean("bfpp2", TestBeanFactoryPostProcessor.class).wasCalled).isTrue();
 	}
 
 	@Test
@@ -145,7 +145,8 @@ public class BeanFactoryPostProcessorTests {
 		StaticApplicationContext ac = new StaticApplicationContext();
 		ac.registerBeanDefinition("bfpp", new RootBeanDefinition(ListeningBeanFactoryPostProcessor.class));
 		ac.refresh();
-		assertTrue(ac.getBean(ListeningBeanFactoryPostProcessor.class).received instanceof ContextRefreshedEvent);
+		boolean condition = ac.getBean(ListeningBeanFactoryPostProcessor.class).received instanceof ContextRefreshedEvent;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -155,7 +156,8 @@ public class BeanFactoryPostProcessorTests {
 		rbd.getPropertyValues().add("listeningBean", new RootBeanDefinition(ListeningBean.class));
 		ac.registerBeanDefinition("bfpp", rbd);
 		ac.refresh();
-		assertTrue(ac.getBean(NestingBeanFactoryPostProcessor.class).getListeningBean().received instanceof ContextRefreshedEvent);
+		boolean condition = ac.getBean(NestingBeanFactoryPostProcessor.class).getListeningBean().received instanceof ContextRefreshedEvent;
+		assertThat(condition).isTrue();
 	}
 
 
@@ -200,7 +202,7 @@ public class BeanFactoryPostProcessorTests {
 
 		@Override
 		public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-			assertTrue(registry.containsBeanDefinition("bfpp1"));
+			assertThat(registry.containsBeanDefinition("bfpp1")).isTrue();
 			registry.registerBeanDefinition("bfpp2", new RootBeanDefinition(TestBeanFactoryPostProcessor.class));
 		}
 

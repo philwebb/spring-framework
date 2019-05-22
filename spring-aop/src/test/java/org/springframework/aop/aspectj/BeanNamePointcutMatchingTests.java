@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for matching of bean() pointcut designator.
@@ -80,8 +80,7 @@ public class BeanNamePointcutMatchingTests {
 
 
 	private void assertMatch(String beanName, String pcExpression) {
-		assertTrue("Unexpected mismatch for bean \"" + beanName + "\" for pcExpression \"" + pcExpression + "\"",
-				matches(beanName, pcExpression));
+		assertThat(matches(beanName, pcExpression)).as("Unexpected mismatch for bean \"" + beanName + "\" for pcExpression \"" + pcExpression + "\"").isTrue();
 	}
 
 	private void assertMisMatch(String beanName, String pcExpression) {

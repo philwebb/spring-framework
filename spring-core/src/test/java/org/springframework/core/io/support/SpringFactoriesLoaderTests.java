@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link SpringFactoriesLoader}.
@@ -39,8 +39,10 @@ public class SpringFactoriesLoaderTests {
 	public void loadFactoriesInCorrectOrder() {
 		List<DummyFactory> factories = SpringFactoriesLoader.loadFactories(DummyFactory.class, null);
 		assertEquals(2, factories.size());
-		assertTrue(factories.get(0) instanceof MyDummyFactory1);
-		assertTrue(factories.get(1) instanceof MyDummyFactory2);
+		boolean condition1 = factories.get(0) instanceof MyDummyFactory1;
+		assertThat(condition1).isTrue();
+		boolean condition = factories.get(1) instanceof MyDummyFactory2;
+		assertThat(condition).isTrue();
 	}
 
 	@Test

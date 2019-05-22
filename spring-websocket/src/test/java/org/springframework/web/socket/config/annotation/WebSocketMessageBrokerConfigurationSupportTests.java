@@ -60,11 +60,11 @@ import org.springframework.web.socket.messaging.SubProtocolHandler;
 import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -119,7 +119,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		assertEquals(ImmutableMessageChannelInterceptor.class, interceptors.get(interceptors.size()-1).getClass());
 
 		assertEquals(1, handlers.size());
-		assertTrue(handlers.contains(config.getBean(SubProtocolWebSocketHandler.class)));
+		assertThat(handlers.contains(config.getBean(SubProtocolWebSocketHandler.class))).isTrue();
 	}
 
 	@Test
@@ -132,8 +132,8 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		assertEquals(ImmutableMessageChannelInterceptor.class, interceptors.get(interceptors.size()-1).getClass());
 
 		assertEquals(2, handlers.size());
-		assertTrue(handlers.contains(config.getBean(SimpleBrokerMessageHandler.class)));
-		assertTrue(handlers.contains(config.getBean(UserDestinationMessageHandler.class)));
+		assertThat(handlers.contains(config.getBean(SimpleBrokerMessageHandler.class))).isTrue();
+		assertThat(handlers.contains(config.getBean(UserDestinationMessageHandler.class))).isTrue();
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		ThreadPoolTaskScheduler taskScheduler = config.getBean(name, ThreadPoolTaskScheduler.class);
 		ScheduledThreadPoolExecutor executor = taskScheduler.getScheduledThreadPoolExecutor();
 		assertEquals(Runtime.getRuntime().availableProcessors(), executor.getCorePoolSize());
-		assertTrue(executor.getRemoveOnCancelPolicy());
+		assertThat(executor.getRemoveOnCancelPolicy()).isTrue();
 
 		SimpleBrokerMessageHandler handler = config.getBean(SimpleBrokerMessageHandler.class);
 		assertNotNull(handler.getTaskScheduler());
@@ -179,7 +179,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 				"outboundChannel\\[pool size = \\d, active threads = \\d, queued tasks = \\d, completed tasks = \\d\\], " +
 				"sockJsScheduler\\[pool size = \\d, active threads = \\d, queued tasks = \\d, completed tasks = \\d\\]";
 
-		assertTrue("\nExpected: " + expected.replace("\\", "") + "\n  Actual: " + actual, actual.matches(expected));
+		assertThat(actual.matches(expected)).as("\nExpected: " + expected.replace("\\", "") + "\n  Actual: " + actual).isTrue();
 	}
 
 	@Test

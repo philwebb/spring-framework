@@ -48,10 +48,10 @@ import org.springframework.tests.mock.jndi.ExpectedLookupTemplate;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -191,7 +191,7 @@ public class PersistenceInjectionTests extends AbstractEntityManagerFactoryBeanT
 
 		SimpleMapScope serialized = (SimpleMapScope) SerializationTestUtils.serializeAndDeserialize(myScope);
 		serialized.close();
-		assertTrue(DummyInvocationHandler.closed);
+		assertThat(DummyInvocationHandler.closed).isTrue();
 		DummyInvocationHandler.closed = false;
 	}
 

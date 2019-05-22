@@ -40,9 +40,9 @@ import org.springframework.web.servlet.handler.WebRequestHandlerInterceptorAdapt
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -202,9 +202,10 @@ public class InterceptorRegistryTests {
 	private void verifyWebInterceptor(HandlerInterceptor interceptor,
 			TestWebRequestInterceptor webInterceptor) throws Exception {
 
-		assertTrue(interceptor instanceof WebRequestHandlerInterceptorAdapter);
+		boolean condition = interceptor instanceof WebRequestHandlerInterceptorAdapter;
+		assertThat(condition).isTrue();
 		interceptor.preHandle(this.request, this.response, null);
-		assertTrue(webInterceptor.preHandleInvoked);
+		assertThat(webInterceptor.preHandleInvoked).isTrue();
 	}
 
 

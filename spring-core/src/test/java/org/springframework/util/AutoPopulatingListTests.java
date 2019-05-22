@@ -22,10 +22,10 @@ import org.junit.Test;
 
 import org.springframework.tests.sample.objects.TestObject;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -58,7 +58,8 @@ public class AutoPopulatingListTests {
 		for (int x = 0; x < 10; x++) {
 			Object element = list.get(x);
 			assertNotNull("Element is null", list.get(x));
-			assertTrue("Element is incorrect type", element instanceof TestObject);
+			boolean condition = element instanceof TestObject;
+			assertThat(condition).as("Element is incorrect type").isTrue();
 			assertNotSame(lastElement, element);
 			lastElement = element;
 		}
@@ -68,10 +69,14 @@ public class AutoPopulatingListTests {
 		list.add(11, helloWorld);
 		assertEquals(helloWorld, list.get(11));
 
-		assertTrue(list.get(10) instanceof TestObject);
-		assertTrue(list.get(12) instanceof TestObject);
-		assertTrue(list.get(13) instanceof TestObject);
-		assertTrue(list.get(20) instanceof TestObject);
+		boolean condition3 = list.get(10) instanceof TestObject;
+		assertThat(condition3).isTrue();
+		boolean condition2 = list.get(12) instanceof TestObject;
+		assertThat(condition2).isTrue();
+		boolean condition1 = list.get(13) instanceof TestObject;
+		assertThat(condition1).isTrue();
+		boolean condition = list.get(20) instanceof TestObject;
+		assertThat(condition).isTrue();
 	}
 
 	private void doTestWithElementFactory(AutoPopulatingList<Object> list) {

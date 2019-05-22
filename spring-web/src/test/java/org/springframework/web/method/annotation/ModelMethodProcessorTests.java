@@ -29,9 +29,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link org.springframework.web.method.annotation.ModelMethodProcessor}.
@@ -64,12 +64,12 @@ public class ModelMethodProcessorTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(processor.supportsParameter(paramModel));
+		assertThat(processor.supportsParameter(paramModel)).isTrue();
 	}
 
 	@Test
 	public void supportsReturnType() {
-		assertTrue(processor.supportsReturnType(returnParamModel));
+		assertThat(processor.supportsReturnType(returnParamModel)).isTrue();
 	}
 
 	@Test

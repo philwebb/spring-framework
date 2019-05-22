@@ -38,10 +38,10 @@ import org.springframework.tests.sample.beans.CustomEnum;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -114,7 +114,7 @@ public class UtilNamespaceHandlerTests {
 		Map map = (Map) this.beanFactory.getBean("simpleMap");
 		assertEquals("bar", map.get("foo"));
 		Map map2 = (Map) this.beanFactory.getBean("simpleMap");
-		assertTrue(map == map2);
+		assertThat(map == map2).isTrue();
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class UtilNamespaceHandlerTests {
 		assertEquals("bar", map.get("foo"));
 		Map map2 = (Map) this.beanFactory.getBean("scopedMap");
 		assertEquals("bar", map2.get("foo"));
-		assertTrue(map != map2);
+		assertThat(map != map2).isTrue();
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class UtilNamespaceHandlerTests {
 		List list = (List) this.beanFactory.getBean("simpleList");
 		assertEquals("Rob Harrop", list.get(0));
 		List list2 = (List) this.beanFactory.getBean("simpleList");
-		assertTrue(list == list2);
+		assertThat(list == list2).isTrue();
 	}
 
 	@Test
@@ -140,37 +140,39 @@ public class UtilNamespaceHandlerTests {
 		assertEquals("Rob Harrop", list.get(0));
 		List list2 = (List) this.beanFactory.getBean("scopedList");
 		assertEquals("Rob Harrop", list2.get(0));
-		assertTrue(list != list2);
+		assertThat(list != list2).isTrue();
 	}
 
 	@Test
 	public void testSimpleSet() {
 		Set set = (Set) this.beanFactory.getBean("simpleSet");
-		assertTrue(set.contains("Rob Harrop"));
+		assertThat(set.contains("Rob Harrop")).isTrue();
 		Set set2 = (Set) this.beanFactory.getBean("simpleSet");
-		assertTrue(set == set2);
+		assertThat(set == set2).isTrue();
 	}
 
 	@Test
 	public void testScopedSet() {
 		Set set = (Set) this.beanFactory.getBean("scopedSet");
-		assertTrue(set.contains("Rob Harrop"));
+		assertThat(set.contains("Rob Harrop")).isTrue();
 		Set set2 = (Set) this.beanFactory.getBean("scopedSet");
-		assertTrue(set2.contains("Rob Harrop"));
-		assertTrue(set != set2);
+		assertThat(set2.contains("Rob Harrop")).isTrue();
+		assertThat(set != set2).isTrue();
 	}
 
 	@Test
 	public void testMapWithRef() {
 		Map map = (Map) this.beanFactory.getBean("mapWithRef");
-		assertTrue(map instanceof TreeMap);
+		boolean condition = map instanceof TreeMap;
+		assertThat(condition).isTrue();
 		assertEquals(this.beanFactory.getBean("testBean"), map.get("bean"));
 	}
 
 	@Test
 	public void testMapWithTypes() {
 		Map map = (Map) this.beanFactory.getBean("mapWithTypes");
-		assertTrue(map instanceof LinkedCaseInsensitiveMap);
+		boolean condition = map instanceof LinkedCaseInsensitiveMap;
+		assertThat(condition).isTrue();
 		assertEquals(this.beanFactory.getBean("testBean"), map.get("bean"));
 	}
 
@@ -184,14 +186,15 @@ public class UtilNamespaceHandlerTests {
 
 		Set set = bean.getSomeSet();
 		assertEquals(1, set.size());
-		assertTrue(set.contains("bar"));
+		assertThat(set.contains("bar")).isTrue();
 
 		Map map = bean.getSomeMap();
 		assertEquals(1, map.size());
-		assertTrue(map.get("foo") instanceof Set);
+		boolean condition = map.get("foo") instanceof Set;
+		assertThat(condition).isTrue();
 		Set innerSet = (Set) map.get("foo");
 		assertEquals(1, innerSet.size());
-		assertTrue(innerSet.contains("bar"));
+		assertThat(innerSet.contains("bar")).isTrue();
 
 		TestBean bean2 = (TestBean) this.beanFactory.getBean("nestedCollectionsBean");
 		assertEquals(list, bean2.getSomeList());
@@ -215,10 +218,10 @@ public class UtilNamespaceHandlerTests {
 
 		Set set = bean.getSomeSet();
 		assertEquals(1, set.size());
-		assertTrue(set.contains("bar"));
+		assertThat(set.contains("bar")).isTrue();
 
 		TestBean bean2 = (TestBean) this.beanFactory.getBean("nestedShortcutCollections");
-		assertTrue(Arrays.equals(bean.getStringArray(), bean2.getStringArray()));
+		assertThat(Arrays.equals(bean.getStringArray(), bean2.getStringArray())).isTrue();
 		assertFalse(bean.getStringArray() == bean2.getStringArray());
 		assertEquals(list, bean2.getSomeList());
 		assertEquals(set, bean2.getSomeSet());
@@ -236,8 +239,8 @@ public class UtilNamespaceHandlerTests {
 
 		Set set = bean.getSomeSet();
 		assertEquals(2, set.size());
-		assertTrue(set.contains(Thread.State.NEW));
-		assertTrue(set.contains(Thread.State.RUNNABLE));
+		assertThat(set.contains(Thread.State.NEW)).isTrue();
+		assertThat(set.contains(Thread.State.RUNNABLE)).isTrue();
 
 		Map map = bean.getSomeMap();
 		assertEquals(1, map.size());
@@ -262,7 +265,7 @@ public class UtilNamespaceHandlerTests {
 
 		Set set = bean.getSomeSet();
 		assertEquals(1, set.size());
-		assertTrue(set.contains(bean));
+		assertThat(set.contains(bean)).isTrue();
 
 		Map map = bean.getSomeMap();
 		assertEquals(1, map.size());
@@ -275,14 +278,14 @@ public class UtilNamespaceHandlerTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("circularCollectionBeansBean");
 
 		List list = bean.getSomeList();
-		assertTrue(Proxy.isProxyClass(list.getClass()));
+		assertThat(Proxy.isProxyClass(list.getClass())).isTrue();
 		assertEquals(1, list.size());
 		assertEquals(bean, list.get(0));
 
 		Set set = bean.getSomeSet();
 		assertFalse(Proxy.isProxyClass(set.getClass()));
 		assertEquals(1, set.size());
-		assertTrue(set.contains(bean));
+		assertThat(set.contains(bean)).isTrue();
 
 		Map map = bean.getSomeMap();
 		assertFalse(Proxy.isProxyClass(map.getClass()));
@@ -301,9 +304,9 @@ public class UtilNamespaceHandlerTests {
 		assertEquals(bean, list.get(0));
 
 		Set set = bean.getSomeSet();
-		assertTrue(Proxy.isProxyClass(set.getClass()));
+		assertThat(Proxy.isProxyClass(set.getClass())).isTrue();
 		assertEquals(1, set.size());
-		assertTrue(set.contains(bean));
+		assertThat(set.contains(bean)).isTrue();
 
 		Map map = bean.getSomeMap();
 		assertFalse(Proxy.isProxyClass(map.getClass()));
@@ -324,10 +327,10 @@ public class UtilNamespaceHandlerTests {
 		Set set = bean.getSomeSet();
 		assertFalse(Proxy.isProxyClass(set.getClass()));
 		assertEquals(1, set.size());
-		assertTrue(set.contains(bean));
+		assertThat(set.contains(bean)).isTrue();
 
 		Map map = bean.getSomeMap();
-		assertTrue(Proxy.isProxyClass(map.getClass()));
+		assertThat(Proxy.isProxyClass(map.getClass())).isTrue();
 		assertEquals(1, map.size());
 		assertEquals(bean, map.get("foo"));
 	}
@@ -344,7 +347,7 @@ public class UtilNamespaceHandlerTests {
 		assertEquals("Incorrect property value", "bar", props.get("foo"));
 		assertEquals("Incorrect property value", null, props.get("foo2"));
 		Properties props2 = (Properties) this.beanFactory.getBean("myProperties");
-		assertTrue(props == props2);
+		assertThat(props == props2).isTrue();
 	}
 
 	@Test
@@ -355,7 +358,7 @@ public class UtilNamespaceHandlerTests {
 		Properties props2 = (Properties) this.beanFactory.getBean("myScopedProperties");
 		assertEquals("Incorrect property value", "bar", props.get("foo"));
 		assertEquals("Incorrect property value", null, props.get("foo2"));
-		assertTrue(props != props2);
+		assertThat(props != props2).isTrue();
 	}
 
 	@Test

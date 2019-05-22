@@ -28,13 +28,11 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 
 import static java.util.Collections.singletonMap;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MimeType}.
@@ -113,7 +111,7 @@ public class MimeTypeTests {
 	@Test
 	public void withConversionService() {
 		ConversionService conversionService = new DefaultConversionService();
-		assertTrue(conversionService.canConvert(String.class, MimeType.class));
+		assertThat(conversionService.canConvert(String.class, MimeType.class)).isTrue();
 		MimeType mimeType = MimeType.valueOf("application/xml");
 		assertEquals(mimeType, conversionService.convert("application/xml", MimeType.class));
 	}
@@ -121,27 +119,27 @@ public class MimeTypeTests {
 	@Test
 	public void includes() {
 		MimeType textPlain = MimeTypeUtils.TEXT_PLAIN;
-		assertTrue("Equal types is not inclusive", textPlain.includes(textPlain));
+		assertThat(textPlain.includes(textPlain)).as("Equal types is not inclusive").isTrue();
 		MimeType allText = new MimeType("text");
 
-		assertTrue("All subtypes is not inclusive", allText.includes(textPlain));
+		assertThat(allText.includes(textPlain)).as("All subtypes is not inclusive").isTrue();
 		assertFalse("All subtypes is inclusive", textPlain.includes(allText));
 
-		assertTrue("All types is not inclusive", MimeTypeUtils.ALL.includes(textPlain));
+		assertThat(MimeTypeUtils.ALL.includes(textPlain)).as("All types is not inclusive").isTrue();
 		assertFalse("All types is inclusive", textPlain.includes(MimeTypeUtils.ALL));
 
-		assertTrue("All types is not inclusive", MimeTypeUtils.ALL.includes(textPlain));
+		assertThat(MimeTypeUtils.ALL.includes(textPlain)).as("All types is not inclusive").isTrue();
 		assertFalse("All types is inclusive", textPlain.includes(MimeTypeUtils.ALL));
 
 		MimeType applicationSoapXml = new MimeType("application", "soap+xml");
 		MimeType applicationWildcardXml = new MimeType("application", "*+xml");
 		MimeType suffixXml = new MimeType("application", "x.y+z+xml"); // SPR-15795
 
-		assertTrue(applicationSoapXml.includes(applicationSoapXml));
-		assertTrue(applicationWildcardXml.includes(applicationWildcardXml));
-		assertTrue(applicationWildcardXml.includes(suffixXml));
+		assertThat(applicationSoapXml.includes(applicationSoapXml)).isTrue();
+		assertThat(applicationWildcardXml.includes(applicationWildcardXml)).isTrue();
+		assertThat(applicationWildcardXml.includes(suffixXml)).isTrue();
 
-		assertTrue(applicationWildcardXml.includes(applicationSoapXml));
+		assertThat(applicationWildcardXml.includes(applicationSoapXml)).isTrue();
 		assertFalse(applicationSoapXml.includes(applicationWildcardXml));
 		assertFalse(suffixXml.includes(applicationWildcardXml));
 
@@ -151,29 +149,29 @@ public class MimeTypeTests {
 	@Test
 	public void isCompatible() {
 		MimeType textPlain = MimeTypeUtils.TEXT_PLAIN;
-		assertTrue("Equal types is not compatible", textPlain.isCompatibleWith(textPlain));
+		assertThat(textPlain.isCompatibleWith(textPlain)).as("Equal types is not compatible").isTrue();
 		MimeType allText = new MimeType("text");
 
-		assertTrue("All subtypes is not compatible", allText.isCompatibleWith(textPlain));
-		assertTrue("All subtypes is not compatible", textPlain.isCompatibleWith(allText));
+		assertThat(allText.isCompatibleWith(textPlain)).as("All subtypes is not compatible").isTrue();
+		assertThat(textPlain.isCompatibleWith(allText)).as("All subtypes is not compatible").isTrue();
 
-		assertTrue("All types is not compatible", MimeTypeUtils.ALL.isCompatibleWith(textPlain));
-		assertTrue("All types is not compatible", textPlain.isCompatibleWith(MimeTypeUtils.ALL));
+		assertThat(MimeTypeUtils.ALL.isCompatibleWith(textPlain)).as("All types is not compatible").isTrue();
+		assertThat(textPlain.isCompatibleWith(MimeTypeUtils.ALL)).as("All types is not compatible").isTrue();
 
-		assertTrue("All types is not compatible", MimeTypeUtils.ALL.isCompatibleWith(textPlain));
-		assertTrue("All types is compatible", textPlain.isCompatibleWith(MimeTypeUtils.ALL));
+		assertThat(MimeTypeUtils.ALL.isCompatibleWith(textPlain)).as("All types is not compatible").isTrue();
+		assertThat(textPlain.isCompatibleWith(MimeTypeUtils.ALL)).as("All types is compatible").isTrue();
 
 		MimeType applicationSoapXml = new MimeType("application", "soap+xml");
 		MimeType applicationWildcardXml = new MimeType("application", "*+xml");
 		MimeType suffixXml = new MimeType("application", "x.y+z+xml"); // SPR-15795
 
-		assertTrue(applicationSoapXml.isCompatibleWith(applicationSoapXml));
-		assertTrue(applicationWildcardXml.isCompatibleWith(applicationWildcardXml));
-		assertTrue(applicationWildcardXml.isCompatibleWith(suffixXml));
+		assertThat(applicationSoapXml.isCompatibleWith(applicationSoapXml)).isTrue();
+		assertThat(applicationWildcardXml.isCompatibleWith(applicationWildcardXml)).isTrue();
+		assertThat(applicationWildcardXml.isCompatibleWith(suffixXml)).isTrue();
 
-		assertTrue(applicationWildcardXml.isCompatibleWith(applicationSoapXml));
-		assertTrue(applicationSoapXml.isCompatibleWith(applicationWildcardXml));
-		assertTrue(suffixXml.isCompatibleWith(applicationWildcardXml));
+		assertThat(applicationWildcardXml.isCompatibleWith(applicationSoapXml)).isTrue();
+		assertThat(applicationSoapXml.isCompatibleWith(applicationWildcardXml)).isTrue();
+		assertThat(suffixXml.isCompatibleWith(applicationWildcardXml)).isTrue();
 
 		assertFalse(applicationWildcardXml.isCompatibleWith(MimeTypeUtils.APPLICATION_JSON));
 	}
@@ -332,7 +330,7 @@ public class MimeTypeTests {
 		assertEquals("Invalid comparison result", 0, audio.compareTo(audio));
 		assertEquals("Invalid comparison result", 0, audioBasicLevel.compareTo(audioBasicLevel));
 
-		assertTrue("Invalid comparison result", audioBasicLevel.compareTo(audio) > 0);
+		assertThat(audioBasicLevel.compareTo(audio) > 0).as("Invalid comparison result").isTrue();
 
 		List<MimeType> expected = new ArrayList<>();
 		expected.add(audio);
@@ -367,8 +365,8 @@ public class MimeTypeTests {
 
 		m1 = new MimeType("audio", "basic", singletonMap("foo", "bar"));
 		m2 = new MimeType("audio", "basic", singletonMap("foo", "Bar"));
-		assertTrue("Invalid comparison result", m1.compareTo(m2) != 0);
-		assertTrue("Invalid comparison result", m2.compareTo(m1) != 0);
+		assertThat(m1.compareTo(m2) != 0).as("Invalid comparison result").isTrue();
+		assertThat(m2.compareTo(m1) != 0).as("Invalid comparison result").isTrue();
 	}
 
 	/**

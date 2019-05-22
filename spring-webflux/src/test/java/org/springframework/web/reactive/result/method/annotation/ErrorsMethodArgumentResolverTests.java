@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ErrorsMethodArgumentResolver}.
@@ -60,13 +60,13 @@ public class ErrorsMethodArgumentResolverTests {
 	@Test
 	public void supports() {
 		MethodParameter parameter = this.testMethod.arg(Errors.class);
-		assertTrue(this.resolver.supportsParameter(parameter));
+		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
 
 		parameter = this.testMethod.arg(BindingResult.class);
-		assertTrue(this.resolver.supportsParameter(parameter));
+		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
 
 		parameter = this.testMethod.arg(ResolvableType.forClassWithGenerics(Mono.class, Errors.class));
-		assertTrue(this.resolver.supportsParameter(parameter));
+		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
 
 		parameter = this.testMethod.arg(String.class);
 		assertFalse(this.resolver.supportsParameter(parameter));

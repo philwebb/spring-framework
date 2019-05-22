@@ -37,11 +37,11 @@ import org.springframework.web.socket.AbstractHttpRequestTests;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.sockjs.SockJsException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -210,7 +210,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS, "Last-Modified");
 		resetResponseAndHandleRequest("OPTIONS", "/echo/info", HttpStatus.FORBIDDEN);
 		CorsConfiguration corsConfiguration = this.service.getCorsConfiguration(this.servletRequest);
-		assertTrue(corsConfiguration.getAllowedOrigins().isEmpty());
+		assertThat(corsConfiguration.getAllowedOrigins().isEmpty()).isTrue();
 
 		this.service.setAllowedOrigins(Collections.singletonList("https://mydomain1.com"));
 		resetResponseAndHandleRequest("OPTIONS", "/echo/info", HttpStatus.FORBIDDEN);
@@ -242,7 +242,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 		resetResponseAndHandleRequest("GET", "/echo/iframe.html", HttpStatus.OK);
 
 		assertEquals("text/html;charset=UTF-8", this.servletResponse.getContentType());
-		assertTrue(this.servletResponse.getContentAsString().startsWith("<!DOCTYPE html>\n"));
+		assertThat(this.servletResponse.getContentAsString().startsWith("<!DOCTYPE html>\n")).isTrue();
 		assertEquals(490, this.servletResponse.getContentLength());
 		assertEquals("no-store, no-cache, must-revalidate, max-age=0", this.response.getHeaders().getCacheControl());
 		assertEquals("\"0096cbd37f2a5218c33bb0826a7c74cbf\"", this.response.getHeaders().getETag());

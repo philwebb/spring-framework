@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -44,11 +44,11 @@ public class DefaultLifecycleMethodsTests {
 	@Test
 	public void lifecycleMethodsInvoked() {
 		LifecycleAwareBean bean = (LifecycleAwareBean) this.beanFactory.getBean("lifecycleAware");
-		assertTrue("Bean not initialized", bean.isInitCalled());
+		assertThat(bean.isInitCalled()).as("Bean not initialized").isTrue();
 		assertFalse("Custom init method called incorrectly", bean.isCustomInitCalled());
 		assertFalse("Bean destroyed too early", bean.isDestroyCalled());
 		this.beanFactory.destroySingletons();
-		assertTrue("Bean not destroyed", bean.isDestroyCalled());
+		assertThat(bean.isDestroyCalled()).as("Bean not destroyed").isTrue();
 		assertFalse("Custom destroy method called incorrectly", bean.isCustomDestroyCalled());
 	}
 
@@ -75,20 +75,20 @@ public class DefaultLifecycleMethodsTests {
 	public void overrideDefaultLifecycleMethods() throws Exception {
 		LifecycleAwareBean bean = (LifecycleAwareBean) this.beanFactory.getBean("overrideLifecycleMethods");
 		assertFalse("Default init method called incorrectly", bean.isInitCalled());
-		assertTrue("Custom init method not called", bean.isCustomInitCalled());
+		assertThat(bean.isCustomInitCalled()).as("Custom init method not called").isTrue();
 		this.beanFactory.destroySingletons();
 		assertFalse("Default destroy method called incorrectly", bean.isDestroyCalled());
-		assertTrue("Custom destroy method not called", bean.isCustomDestroyCalled());
+		assertThat(bean.isCustomDestroyCalled()).as("Custom destroy method not called").isTrue();
 	}
 
 	@Test
 	public void childWithDefaultLifecycleMethods() throws Exception {
 		LifecycleAwareBean bean = (LifecycleAwareBean) this.beanFactory.getBean("childWithDefaultLifecycleMethods");
-		assertTrue("Bean not initialized", bean.isInitCalled());
+		assertThat(bean.isInitCalled()).as("Bean not initialized").isTrue();
 		assertFalse("Custom init method called incorrectly", bean.isCustomInitCalled());
 		assertFalse("Bean destroyed too early", bean.isDestroyCalled());
 		this.beanFactory.destroySingletons();
-		assertTrue("Bean not destroyed", bean.isDestroyCalled());
+		assertThat(bean.isDestroyCalled()).as("Bean not destroyed").isTrue();
 		assertFalse("Custom destroy method called incorrectly", bean.isCustomDestroyCalled());
 	}
 

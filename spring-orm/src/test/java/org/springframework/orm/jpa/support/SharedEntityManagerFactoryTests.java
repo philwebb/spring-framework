@@ -25,10 +25,10 @@ import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.orm.jpa.EntityManagerProxy;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -54,14 +54,15 @@ public class SharedEntityManagerFactoryTests {
 		proxyFactoryBean.setEntityManagerFactory(mockEmf);
 		proxyFactoryBean.afterPropertiesSet();
 
-		assertTrue(EntityManager.class.isAssignableFrom(proxyFactoryBean.getObjectType()));
-		assertTrue(proxyFactoryBean.isSingleton());
+		assertThat(EntityManager.class.isAssignableFrom(proxyFactoryBean.getObjectType())).isTrue();
+		assertThat(proxyFactoryBean.isSingleton()).isTrue();
 
 		EntityManager proxy = proxyFactoryBean.getObject();
 		assertSame(proxy, proxyFactoryBean.getObject());
 		assertFalse(proxy.contains(o));
 
-		assertTrue(proxy instanceof EntityManagerProxy);
+		boolean condition = proxy instanceof EntityManagerProxy;
+		assertThat(condition).isTrue();
 		EntityManagerProxy emProxy = (EntityManagerProxy) proxy;
 		assertThatIllegalStateException().as("outside of transaction").isThrownBy(
 				emProxy::getTargetEntityManager);
@@ -74,7 +75,7 @@ public class SharedEntityManagerFactoryTests {
 			TransactionSynchronizationManager.unbindResource(mockEmf);
 		}
 
-		assertTrue(TransactionSynchronizationManager.getResourceMap().isEmpty());
+		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 		verify(mockEm).contains(o);
 		verify(mockEm).close();
 	}

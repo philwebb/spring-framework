@@ -42,10 +42,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -169,7 +169,7 @@ public class DefaultEntityResponseBuilderTests {
 		EntityResponse<String> result =
 				EntityResponse.fromObject("foo").cookie(cookie)
 						.build();
-		assertTrue(result.cookies().get("name").contains(cookie));
+		assertThat(result.cookies().get("name").contains(cookie)).isTrue();
 	}
 
 	@Test

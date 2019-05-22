@@ -49,10 +49,10 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.tests.sample.beans.factory.DummyFactory;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -86,8 +86,8 @@ public class AutoProxyCreatorTests {
 		MessageSource messageSource = (MessageSource) sac.getBean("messageSource");
 		ITestBean singletonToBeProxied = (ITestBean) sac.getBean("singletonToBeProxied");
 		assertFalse(Proxy.isProxyClass(messageSource.getClass()));
-		assertTrue(Proxy.isProxyClass(singletonToBeProxied.getClass()));
-		assertTrue(Proxy.isProxyClass(singletonToBeProxied.getSpouse().getClass()));
+		assertThat(Proxy.isProxyClass(singletonToBeProxied.getClass())).isTrue();
+		assertThat(Proxy.isProxyClass(singletonToBeProxied.getSpouse().getClass())).isTrue();
 
 		// test whether autowiring succeeded with auto proxy creation
 		assertEquals(sac.getBean("autowiredIndexedTestBean"), singletonToBeProxied.getNestedIndexedBean());
@@ -100,7 +100,7 @@ public class AutoProxyCreatorTests {
 		assertEquals(5, ti.nrOfInvocations);
 
 		ITestBean tb = (ITestBean) sac.getBean("singletonFactoryToBeProxied");
-		assertTrue(AopUtils.isJdkDynamicProxy(tb));
+		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		assertEquals(5, ti.nrOfInvocations);
 		tb.getAge();
 		assertEquals(6, ti.nrOfInvocations);
@@ -130,7 +130,7 @@ public class AutoProxyCreatorTests {
 		sac.refresh();
 
 		ITestBean singletonToBeProxied = (ITestBean) sac.getBean("singletonToBeProxied");
-		assertTrue(Proxy.isProxyClass(singletonToBeProxied.getClass()));
+		assertThat(Proxy.isProxyClass(singletonToBeProxied.getClass())).isTrue();
 
 		TestInterceptor ti = (TestInterceptor) sac.getBean("testInterceptor");
 		int initialNr = ti.nrOfInvocations;
@@ -138,7 +138,7 @@ public class AutoProxyCreatorTests {
 		assertEquals(initialNr + 1, ti.nrOfInvocations);
 
 		FactoryBean<?> factory = (FactoryBean<?>) sac.getBean("&singletonFactoryToBeProxied");
-		assertTrue(Proxy.isProxyClass(factory.getClass()));
+		assertThat(Proxy.isProxyClass(factory.getClass())).isTrue();
 		TestBean tb = (TestBean) sac.getBean("singletonFactoryToBeProxied");
 		assertFalse(AopUtils.isAopProxy(tb));
 		assertEquals(initialNr + 3, ti.nrOfInvocations);
@@ -165,11 +165,11 @@ public class AutoProxyCreatorTests {
 		ITestBean singletonToBeProxied = (ITestBean) sac.getBean("singletonToBeProxied");
 		ITestBean prototypeToBeProxied = (ITestBean) sac.getBean("prototypeToBeProxied");
 		assertFalse(AopUtils.isCglibProxy(messageSource));
-		assertTrue(AopUtils.isCglibProxy(noInterfaces));
-		assertTrue(AopUtils.isCglibProxy(containerCallbackInterfacesOnly));
-		assertTrue(AopUtils.isCglibProxy(singletonNoInterceptor));
-		assertTrue(AopUtils.isCglibProxy(singletonToBeProxied));
-		assertTrue(AopUtils.isCglibProxy(prototypeToBeProxied));
+		assertThat(AopUtils.isCglibProxy(noInterfaces)).isTrue();
+		assertThat(AopUtils.isCglibProxy(containerCallbackInterfacesOnly)).isTrue();
+		assertThat(AopUtils.isCglibProxy(singletonNoInterceptor)).isTrue();
+		assertThat(AopUtils.isCglibProxy(singletonToBeProxied)).isTrue();
+		assertThat(AopUtils.isCglibProxy(prototypeToBeProxied)).isTrue();
 
 		TestAutoProxyCreator tapc = (TestAutoProxyCreator) sac.getBean("testAutoProxyCreator");
 		assertEquals(0, tapc.testInterceptor.nrOfInvocations);
@@ -200,8 +200,8 @@ public class AutoProxyCreatorTests {
 		ITestBean singletonToBeProxied = (ITestBean) sac.getBean("singletonToBeProxied");
 		ITestBean prototypeToBeProxied = (ITestBean) sac.getBean("prototypeToBeProxied");
 		assertFalse(AopUtils.isCglibProxy(messageSource));
-		assertTrue(AopUtils.isCglibProxy(noInterfaces));
-		assertTrue(AopUtils.isCglibProxy(containerCallbackInterfacesOnly));
+		assertThat(AopUtils.isCglibProxy(noInterfaces)).isTrue();
+		assertThat(AopUtils.isCglibProxy(containerCallbackInterfacesOnly)).isTrue();
 		assertFalse(AopUtils.isCglibProxy(singletonNoInterceptor));
 		assertFalse(AopUtils.isCglibProxy(singletonToBeProxied));
 		assertFalse(AopUtils.isCglibProxy(prototypeToBeProxied));
@@ -240,8 +240,8 @@ public class AutoProxyCreatorTests {
 		ITestBean singletonToBeProxied = (ITestBean) sac.getBean("singletonToBeProxied");
 		ITestBean prototypeToBeProxied = (ITestBean) sac.getBean("prototypeToBeProxied");
 		assertFalse(AopUtils.isCglibProxy(messageSource));
-		assertTrue(AopUtils.isCglibProxy(noInterfaces));
-		assertTrue(AopUtils.isCglibProxy(containerCallbackInterfacesOnly));
+		assertThat(AopUtils.isCglibProxy(noInterfaces)).isTrue();
+		assertThat(AopUtils.isCglibProxy(containerCallbackInterfacesOnly)).isTrue();
 		assertFalse(AopUtils.isCglibProxy(singletonNoInterceptor));
 		assertFalse(AopUtils.isCglibProxy(singletonToBeProxied));
 		assertFalse(AopUtils.isCglibProxy(prototypeToBeProxied));
@@ -267,7 +267,7 @@ public class AutoProxyCreatorTests {
 		tapc.testInterceptor.nrOfInvocations = 0;
 
 		PackageVisibleMethod tb = (PackageVisibleMethod) sac.getBean("packageVisibleMethodToBeProxied");
-		assertTrue(AopUtils.isCglibProxy(tb));
+		assertThat(AopUtils.isCglibProxy(tb)).isTrue();
 		assertEquals(0, tapc.testInterceptor.nrOfInvocations);
 		tb.doSomething();
 		assertEquals(1, tapc.testInterceptor.nrOfInvocations);
@@ -284,10 +284,10 @@ public class AutoProxyCreatorTests {
 		tapc.testInterceptor.nrOfInvocations = 0;
 
 		FactoryBean<?> factory = (FactoryBean<?>) sac.getBean("&singletonFactoryToBeProxied");
-		assertTrue(AopUtils.isCglibProxy(factory));
+		assertThat(AopUtils.isCglibProxy(factory)).isTrue();
 
 		TestBean tb = (TestBean) sac.getBean("singletonFactoryToBeProxied");
-		assertTrue(AopUtils.isCglibProxy(tb));
+		assertThat(AopUtils.isCglibProxy(tb)).isTrue();
 		assertEquals(2, tapc.testInterceptor.nrOfInvocations);
 		tb.getAge();
 		assertEquals(3, tapc.testInterceptor.nrOfInvocations);
@@ -308,9 +308,9 @@ public class AutoProxyCreatorTests {
 		tapc.testInterceptor.nrOfInvocations = 0;
 
 		FactoryBean<?> prototypeFactory = (FactoryBean<?>) sac.getBean("&prototypeFactoryToBeProxied");
-		assertTrue(AopUtils.isCglibProxy(prototypeFactory));
+		assertThat(AopUtils.isCglibProxy(prototypeFactory)).isTrue();
 		TestBean tb = (TestBean) sac.getBean("prototypeFactoryToBeProxied");
-		assertTrue(AopUtils.isCglibProxy(tb));
+		assertThat(AopUtils.isCglibProxy(tb)).isTrue();
 
 		assertEquals(2, tapc.testInterceptor.nrOfInvocations);
 		tb.getAge();
@@ -336,7 +336,7 @@ public class AutoProxyCreatorTests {
 		assertFalse(AopUtils.isAopProxy(factory));
 
 		TestBean tb = (TestBean) sac.getBean("singletonFactoryToBeProxied");
-		assertTrue(AopUtils.isCglibProxy(tb));
+		assertThat(AopUtils.isCglibProxy(tb)).isTrue();
 		assertEquals(0, tapc.testInterceptor.nrOfInvocations);
 		tb.getAge();
 		assertEquals(1, tapc.testInterceptor.nrOfInvocations);
@@ -366,7 +366,7 @@ public class AutoProxyCreatorTests {
 		tapc.testInterceptor.nrOfInvocations = 0;
 
 		FactoryBean<?> prototypeFactory = (FactoryBean<?>) sac.getBean("&prototypeFactoryToBeProxied");
-		assertTrue(AopUtils.isCglibProxy(prototypeFactory));
+		assertThat(AopUtils.isCglibProxy(prototypeFactory)).isTrue();
 		TestBean tb = (TestBean) sac.getBean("prototypeFactoryToBeProxied");
 		assertFalse(AopUtils.isCglibProxy(tb));
 

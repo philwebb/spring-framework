@@ -23,9 +23,9 @@ import java.net.URLStreamHandler;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -34,10 +34,10 @@ public class ResourceUtilsTests {
 
 	@Test
 	public void isJarURL() throws Exception {
-		assertTrue(ResourceUtils.isJarURL(new URL("jar:file:myjar.jar!/mypath")));
-		assertTrue(ResourceUtils.isJarURL(new URL(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler())));
-		assertTrue(ResourceUtils.isJarURL(new URL(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler())));
-		assertTrue(ResourceUtils.isJarURL(new URL(null, "jar:war:file:mywar.war*/myjar.jar!/mypath", new DummyURLStreamHandler())));
+		assertThat(ResourceUtils.isJarURL(new URL("jar:file:myjar.jar!/mypath"))).isTrue();
+		assertThat(ResourceUtils.isJarURL(new URL(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
+		assertThat(ResourceUtils.isJarURL(new URL(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
+		assertThat(ResourceUtils.isJarURL(new URL(null, "jar:war:file:mywar.war*/myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
 		assertFalse(ResourceUtils.isJarURL(new URL("file:myjar.jar")));
 		assertFalse(ResourceUtils.isJarURL(new URL("http:myserver/myjar.jar")));
 	}

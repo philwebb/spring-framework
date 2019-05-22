@@ -18,8 +18,8 @@ package org.springframework.web.reactive.function.client;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -29,8 +29,8 @@ public class ExchangeStrategiesTests {
 	@Test
 	public void empty() {
 		ExchangeStrategies strategies = ExchangeStrategies.empty().build();
-		assertTrue(strategies.messageReaders().isEmpty());
-		assertTrue(strategies.messageWriters().isEmpty());
+		assertThat(strategies.messageReaders().isEmpty()).isTrue();
+		assertThat(strategies.messageWriters().isEmpty()).isTrue();
 	}
 
 	@Test

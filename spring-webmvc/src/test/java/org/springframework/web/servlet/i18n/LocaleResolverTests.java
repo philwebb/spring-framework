@@ -34,7 +34,6 @@ import org.springframework.web.servlet.LocaleResolver;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -95,7 +94,8 @@ public class LocaleResolverTests {
 			else {
 				assertEquals(Locale.UK, localeContext.getLocale());
 			}
-			assertTrue(localeContext instanceof TimeZoneAwareLocaleContext);
+			boolean condition2 = localeContext instanceof TimeZoneAwareLocaleContext;
+			assertThat(condition2).isTrue();
 			assertNull(((TimeZoneAwareLocaleContext) localeContext).getTimeZone());
 
 			if (localeContextResolver instanceof AbstractLocaleContextResolver) {
@@ -121,14 +121,16 @@ public class LocaleResolverTests {
 						new SimpleTimeZoneAwareLocaleContext(Locale.GERMANY, TimeZone.getTimeZone("GMT+2")));
 				localeContext = localeContextResolver.resolveLocaleContext(request);
 				assertEquals(Locale.GERMANY, localeContext.getLocale());
-				assertTrue(localeContext instanceof TimeZoneAwareLocaleContext);
+				boolean condition1 = localeContext instanceof TimeZoneAwareLocaleContext;
+				assertThat(condition1).isTrue();
 				assertEquals(((TimeZoneAwareLocaleContext) localeContext).getTimeZone(), TimeZone.getTimeZone("GMT+2"));
 
 				localeContextResolver.setLocaleContext(request, response,
 						new SimpleTimeZoneAwareLocaleContext(null, TimeZone.getTimeZone("GMT+3")));
 				localeContext = localeContextResolver.resolveLocaleContext(request);
 				assertEquals(Locale.UK, localeContext.getLocale());
-				assertTrue(localeContext instanceof TimeZoneAwareLocaleContext);
+				boolean condition = localeContext instanceof TimeZoneAwareLocaleContext;
+				assertThat(condition).isTrue();
 				assertEquals(((TimeZoneAwareLocaleContext) localeContext).getTimeZone(), TimeZone.getTimeZone("GMT+3"));
 
 				if (localeContextResolver instanceof AbstractLocaleContextResolver) {

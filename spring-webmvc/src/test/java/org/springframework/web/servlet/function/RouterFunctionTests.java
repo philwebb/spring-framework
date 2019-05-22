@@ -23,9 +23,9 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -46,7 +46,7 @@ public class RouterFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
-		assertTrue(resultHandlerFunction.isPresent());
+		assertThat(resultHandlerFunction.isPresent()).isTrue();
 		assertEquals(handlerFunction, resultHandlerFunction.get());
 	}
 
@@ -64,7 +64,7 @@ public class RouterFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 
 		Optional<? extends HandlerFunction<?>> resultHandlerFunction = result.route(request);
-		assertTrue(resultHandlerFunction.isPresent());
+		assertThat(resultHandlerFunction.isPresent()).isTrue();
 		assertEquals(handlerFunction, resultHandlerFunction.get());
 	}
 
@@ -81,7 +81,7 @@ public class RouterFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 
 		Optional<? extends HandlerFunction<?>> resultHandlerFunction = result.route(request);
-		assertTrue(resultHandlerFunction.isPresent());
+		assertThat(resultHandlerFunction.isPresent()).isTrue();
 	}
 
 
@@ -115,7 +115,7 @@ public class RouterFunctionTests {
 						throw new AssertionError(ex.getMessage(), ex);
 					}
 				});
-		assertTrue(resultHandlerFunction.isPresent());
+		assertThat(resultHandlerFunction.isPresent()).isTrue();
 		assertEquals(42, (int)resultHandlerFunction.get().entity());
 	}
 

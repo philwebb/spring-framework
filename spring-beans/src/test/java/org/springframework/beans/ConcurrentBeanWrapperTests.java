@@ -28,8 +28,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Guillaume Poirier
@@ -83,7 +83,7 @@ public class ConcurrentBeanWrapperTests {
 
 		Properties p = (Properties) System.getProperties().clone();
 
-		assertTrue("The System properties must not be empty", p.size() != 0);
+		assertThat(p.size() != 0).as("The System properties must not be empty").isTrue();
 
 		for (Iterator<?> i = p.entrySet().iterator(); i.hasNext();) {
 			i.next();

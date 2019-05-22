@@ -58,10 +58,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -290,7 +290,8 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		assertEquals("0 0 0-4,6-23 * * ?", task.getExpression());
 		Trigger trigger = task.getTrigger();
 		assertNotNull(trigger);
-		assertTrue(trigger instanceof CronTrigger);
+		boolean condition = trigger instanceof CronTrigger;
+		assertThat(condition).isTrue();
 		CronTrigger cronTrigger = (CronTrigger) trigger;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+10"));
 		cal.clear();
@@ -484,7 +485,7 @@ public class ScheduledAnnotationBeanPostProcessorTests {
 		context.refresh();
 
 		ScheduledTaskHolder postProcessor = context.getBean("postProcessor", ScheduledTaskHolder.class);
-		assertTrue(postProcessor.getScheduledTasks().isEmpty());
+		assertThat(postProcessor.getScheduledTasks().isEmpty()).isTrue();
 	}
 
 	@Test

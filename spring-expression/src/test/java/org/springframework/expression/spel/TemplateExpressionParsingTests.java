@@ -32,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Andy Clement
@@ -231,17 +230,17 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		TemplateParserContext tpc = new TemplateParserContext("abc","def");
 		assertEquals("abc", tpc.getExpressionPrefix());
 		assertEquals("def", tpc.getExpressionSuffix());
-		assertTrue(tpc.isTemplate());
+		assertThat(tpc.isTemplate()).isTrue();
 
 		tpc = new TemplateParserContext();
 		assertEquals("#{", tpc.getExpressionPrefix());
 		assertEquals("}", tpc.getExpressionSuffix());
-		assertTrue(tpc.isTemplate());
+		assertThat(tpc.isTemplate()).isTrue();
 
 		ParserContext pc = ParserContext.TEMPLATE_EXPRESSION;
 		assertEquals("#{", pc.getExpressionPrefix());
 		assertEquals("}", pc.getExpressionSuffix());
-		assertTrue(pc.isTemplate());
+		assertThat(pc.isTemplate()).isTrue();
 	}
 
 }

@@ -28,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -47,8 +46,10 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B());
 		list.add(new A());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof A);
-		assertTrue(list.get(1) instanceof B);
+		boolean condition1 = list.get(0) instanceof A;
+		assertThat(condition1).isTrue();
+		boolean condition = list.get(1) instanceof B;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -57,8 +58,10 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B2());
 		list.add(new A2());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof A2);
-		assertTrue(list.get(1) instanceof B2);
+		boolean condition1 = list.get(0) instanceof A2;
+		assertThat(condition1).isTrue();
+		boolean condition = list.get(1) instanceof B2;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -67,8 +70,10 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B());
 		list.add(new A2());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof A2);
-		assertTrue(list.get(1) instanceof B);
+		boolean condition1 = list.get(0) instanceof A2;
+		assertThat(condition1).isTrue();
+		boolean condition = list.get(1) instanceof B;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -77,8 +82,10 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B());
 		list.add(new C());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof C);
-		assertTrue(list.get(1) instanceof B);
+		boolean condition1 = list.get(0) instanceof C;
+		assertThat(condition1).isTrue();
+		boolean condition = list.get(1) instanceof B;
+		assertThat(condition).isTrue();
 	}
 
 	@Test

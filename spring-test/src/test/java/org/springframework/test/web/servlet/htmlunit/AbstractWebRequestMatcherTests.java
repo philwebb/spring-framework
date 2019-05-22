@@ -21,8 +21,8 @@ import java.net.URL;
 
 import com.gargoylesoftware.htmlunit.WebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Abstract base class for testing {@link WebRequestMatcher} implementations.
@@ -33,7 +33,7 @@ import static temp.XAssert.assertTrue;
 public class AbstractWebRequestMatcherTests {
 
 	protected void assertMatches(WebRequestMatcher matcher, String url) throws MalformedURLException {
-		assertTrue(matcher.matches(new WebRequest(new URL(url))));
+		assertThat(matcher.matches(new WebRequest(new URL(url)))).isTrue();
 	}
 
 	protected void assertDoesNotMatch(WebRequestMatcher matcher, String url) throws MalformedURLException {

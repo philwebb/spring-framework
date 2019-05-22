@@ -36,10 +36,8 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 @SuppressWarnings("deprecation")
 public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMockWebServerTestCase {
@@ -136,11 +134,11 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 		ClientHttpResponse response = futureResponse.get();
 		try {
 			assertEquals("Invalid status code", HttpStatus.OK, response.getStatusCode());
-			assertTrue("Header not found", response.getHeaders().containsKey(headerName));
+			assertThat(response.getHeaders().containsKey(headerName)).as("Header not found").isTrue();
 			assertEquals("Header value not found", Arrays.asList(headerValue1, headerValue2),
 					response.getHeaders().get(headerName));
 			byte[] result = FileCopyUtils.copyToByteArray(response.getBody());
-			assertTrue("Invalid body", Arrays.equals(body, result));
+			assertThat(Arrays.equals(body, result)).as("Invalid body").isTrue();
 		}
 		finally {
 			response.close();
@@ -225,7 +223,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 		AsyncClientHttpRequest request = this.factory.createAsyncRequest(uri, HttpMethod.GET);
 		Future<ClientHttpResponse> futureResponse = request.executeAsync();
 		futureResponse.cancel(true);
-		assertTrue(futureResponse.isCancelled());
+		assertThat(futureResponse.isCancelled()).isTrue();
 	}
 
 

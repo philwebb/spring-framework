@@ -35,9 +35,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@link ResponseStatusExceptionResolver}.
@@ -132,10 +132,10 @@ public class ResponseStatusExceptionResolverTests {
 
 
 	private void assertResolved(ModelAndView mav, int status, String reason) {
-		assertTrue("No Empty ModelAndView returned", mav != null && mav.isEmpty());
+		assertThat(mav != null && mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
 		assertEquals(status, response.getStatus());
 		assertEquals(reason, response.getErrorMessage());
-		assertTrue(response.isCommitted());
+		assertThat(response.isCommitted()).isTrue();
 	}
 
 

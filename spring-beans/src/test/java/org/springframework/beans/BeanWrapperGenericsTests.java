@@ -39,9 +39,9 @@ import org.springframework.tests.sample.beans.GenericIntegerBean;
 import org.springframework.tests.sample.beans.GenericSetOfIntegerBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -58,8 +58,8 @@ public class BeanWrapperGenericsTests {
 		input.add("4");
 		input.add("5");
 		bw.setPropertyValue("integerSet", input);
-		assertTrue(gb.getIntegerSet().contains(new Integer(4)));
-		assertTrue(gb.getIntegerSet().contains(new Integer(5)));
+		assertThat(gb.getIntegerSet().contains(new Integer(4))).isTrue();
+		assertThat(gb.getIntegerSet().contains(new Integer(5))).isTrue();
 	}
 
 	@Test
@@ -71,8 +71,8 @@ public class BeanWrapperGenericsTests {
 		input.add("4");
 		input.add("5");
 		bw.setPropertyValue("numberSet", input);
-		assertTrue(gb.getNumberSet().contains(new Integer(4)));
-		assertTrue(gb.getNumberSet().contains(new Integer(5)));
+		assertThat(gb.getNumberSet().contains(new Integer(4))).isTrue();
+		assertThat(gb.getNumberSet().contains(new Integer(5))).isTrue();
 	}
 
 	@Test
@@ -164,8 +164,10 @@ public class BeanWrapperGenericsTests {
 		value2.add(Boolean.TRUE);
 		input.put("2", value2);
 		bw.setPropertyValue("collectionMap", input);
-		assertTrue(gb.getCollectionMap().get(new Integer(1)) instanceof HashSet);
-		assertTrue(gb.getCollectionMap().get(new Integer(2)) instanceof ArrayList);
+		boolean condition1 = gb.getCollectionMap().get(new Integer(1)) instanceof HashSet;
+		assertThat(condition1).isTrue();
+		boolean condition = gb.getCollectionMap().get(new Integer(2)) instanceof ArrayList;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -177,7 +179,8 @@ public class BeanWrapperGenericsTests {
 		HashSet<Integer> value1 = new HashSet<>();
 		value1.add(new Integer(1));
 		bw.setPropertyValue("collectionMap[1]", value1);
-		assertTrue(gb.getCollectionMap().get(new Integer(1)) instanceof HashSet);
+		boolean condition = gb.getCollectionMap().get(new Integer(1)) instanceof HashSet;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -323,7 +326,8 @@ public class BeanWrapperGenericsTests {
 		bw.setPropertyValue("mapOfInteger", map);
 
 		Object obj = gb.getMapOfInteger().get("testKey");
-		assertTrue(obj instanceof Integer);
+		boolean condition = obj instanceof Integer;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -337,7 +341,8 @@ public class BeanWrapperGenericsTests {
 		bw.setPropertyValue("mapOfListOfInteger", map);
 
 		Object obj = gb.getMapOfListOfInteger().get("testKey").get(0);
-		assertTrue(obj instanceof Integer);
+		boolean condition = obj instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(1, ((Integer) obj).intValue());
 	}
 
@@ -353,7 +358,8 @@ public class BeanWrapperGenericsTests {
 		bw.setPropertyValue("listOfMapOfInteger", list);
 
 		Object obj = gb.getListOfMapOfInteger().get(0).get("testKey");
-		assertTrue(obj instanceof Integer);
+		boolean condition = obj instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(5, ((Integer) obj).intValue());
 	}
 
@@ -368,7 +374,8 @@ public class BeanWrapperGenericsTests {
 		bw.setPropertyValue("mapOfListOfListOfInteger", map);
 
 		Object obj = gb.getMapOfListOfListOfInteger().get("testKey").get(0).get(0);
-		assertTrue(obj instanceof Integer);
+		boolean condition = obj instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(1, ((Integer) obj).intValue());
 	}
 

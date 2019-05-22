@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -63,7 +62,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -174,17 +172,17 @@ public class HttpEntityMethodProcessorMockTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("HttpEntity parameter not supported", processor.supportsParameter(paramHttpEntity));
-		assertTrue("RequestEntity parameter not supported", processor.supportsParameter(paramRequestEntity));
+		assertThat(processor.supportsParameter(paramHttpEntity)).as("HttpEntity parameter not supported").isTrue();
+		assertThat(processor.supportsParameter(paramRequestEntity)).as("RequestEntity parameter not supported").isTrue();
 		assertFalse("ResponseEntity parameter supported", processor.supportsParameter(paramResponseEntity));
 		assertFalse("non-entity parameter supported", processor.supportsParameter(paramInt));
 	}
 
 	@Test
 	public void supportsReturnType() {
-		assertTrue("ResponseEntity return type not supported", processor.supportsReturnType(returnTypeResponseEntity));
-		assertTrue("HttpEntity return type not supported", processor.supportsReturnType(returnTypeHttpEntity));
-		assertTrue("Custom HttpEntity subclass not supported", processor.supportsReturnType(returnTypeHttpEntitySubclass));
+		assertThat(processor.supportsReturnType(returnTypeResponseEntity)).as("ResponseEntity return type not supported").isTrue();
+		assertThat(processor.supportsReturnType(returnTypeHttpEntity)).as("HttpEntity return type not supported").isTrue();
+		assertThat(processor.supportsReturnType(returnTypeHttpEntitySubclass)).as("Custom HttpEntity subclass not supported").isTrue();
 		assertFalse("RequestEntity parameter supported",
 				processor.supportsReturnType(paramRequestEntity));
 		assertFalse("non-ResponseBody return type supported", processor.supportsReturnType(returnTypeInt));
@@ -203,7 +201,8 @@ public class HttpEntityMethodProcessorMockTests {
 
 		Object result = processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null);
 
-		assertTrue(result instanceof HttpEntity);
+		boolean condition = result instanceof HttpEntity;
+		assertThat(condition).isTrue();
 		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
 		assertEquals("Invalid argument", body, ((HttpEntity<?>) result).getBody());
 	}
@@ -225,7 +224,8 @@ public class HttpEntityMethodProcessorMockTests {
 
 		Object result = processor.resolveArgument(paramRequestEntity, mavContainer, webRequest, null);
 
-		assertTrue(result instanceof RequestEntity);
+		boolean condition = result instanceof RequestEntity;
+		assertThat(condition).isTrue();
 		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
 		RequestEntity<?> requestEntity = (RequestEntity<?>) result;
 		assertEquals("Invalid method", HttpMethod.GET, requestEntity.getMethod());
@@ -266,7 +266,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringHttpMessageConverter).write(eq(body), eq(accepted), isA(HttpOutputMessage.class));
 	}
 
@@ -280,7 +280,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityProduces, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringHttpMessageConverter).write(eq(body), eq(MediaType.TEXT_HTML), isA(HttpOutputMessage.class));
 	}
 
@@ -302,7 +302,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringHttpMessageConverter).write(eq("Foo"), eq(MediaType.TEXT_HTML), isA(HttpOutputMessage.class));
 	}
 
@@ -354,7 +354,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		assertEquals("headerValue", servletResponse.getHeader("headerName"));
 	}
 
@@ -369,7 +369,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		ArgumentCaptor<HttpOutputMessage> outputMessage = ArgumentCaptor.forClass(HttpOutputMessage.class);
 		verify(stringHttpMessageConverter).write(eq("body"), eq(TEXT_PLAIN), outputMessage.capture());
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		assertEquals("headerValue", outputMessage.getValue().getHeaders().get("header").get(0));
 	}
 
@@ -672,7 +672,7 @@ public class HttpEntityMethodProcessorMockTests {
 		initStringMessageConversion(TEXT_PLAIN);
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		assertEquals(Arrays.asList(expected), servletResponse.getHeaders("Vary"));
 		verify(stringHttpMessageConverter).write(eq("Foo"), eq(TEXT_PLAIN), isA(HttpOutputMessage.class));
 	}
@@ -692,7 +692,7 @@ public class HttpEntityMethodProcessorMockTests {
 			throws IOException {
 
 		assertEquals(status.value(), servletResponse.getStatus());
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		if (body != null) {
 			assertResponseBody(body);
 		}

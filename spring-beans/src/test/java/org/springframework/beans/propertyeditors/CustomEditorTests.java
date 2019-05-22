@@ -56,7 +56,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the various PropertyEditors in Spring.
@@ -84,9 +83,8 @@ public class CustomEditorTests {
 		pvs.addPropertyValue(new PropertyValue("touchy", "valid"));
 		pvs.addPropertyValue(new PropertyValue("spouse", tbString));
 		bw.setPropertyValues(pvs);
-		assertTrue("spouse is non-null", tb.getSpouse() != null);
-		assertTrue("spouse name is Kerry and age is 34",
-				tb.getSpouse().getName().equals("Kerry") && tb.getSpouse().getAge() == 34);
+		assertThat(tb.getSpouse() != null).as("spouse is non-null").isTrue();
+		assertThat(tb.getSpouse().getName().equals("Kerry") && tb.getSpouse().getAge() == 34).as("spouse name is Kerry and age is 34").isTrue();
 	}
 
 	@Test
@@ -105,9 +103,8 @@ public class CustomEditorTests {
 		pvs.addPropertyValue(new PropertyValue("spouse", tbString));
 
 		bw.setPropertyValues(pvs);
-		assertTrue("spouse is non-null", tb.getSpouse() != null);
-		assertTrue("spouse name is Kerry and age is 34",
-				tb.getSpouse().getName().equals("Kerry") && tb.getSpouse().getAge() == 34);
+		assertThat(tb.getSpouse() != null).as("spouse is non-null").isTrue();
+		assertThat(tb.getSpouse().getName().equals("Kerry") && tb.getSpouse().getAge() == 34).as("spouse name is Kerry and age is 34").isTrue();
 		ITestBean spouse = tb.getSpouse();
 
 		bw.setPropertyValues(pvs);
@@ -194,36 +191,41 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(tb);
 
 		bw.setPropertyValue("bool1", "true");
-		assertTrue("Correct bool1 value", Boolean.TRUE.equals(bw.getPropertyValue("bool1")));
-		assertTrue("Correct bool1 value", tb.isBool1());
+		assertThat(Boolean.TRUE.equals(bw.getPropertyValue("bool1"))).as("Correct bool1 value").isTrue();
+		assertThat(tb.isBool1()).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "false");
-		assertTrue("Correct bool1 value", Boolean.FALSE.equals(bw.getPropertyValue("bool1")));
-		assertTrue("Correct bool1 value", !tb.isBool1());
+		assertThat(Boolean.FALSE.equals(bw.getPropertyValue("bool1"))).as("Correct bool1 value").isTrue();
+		boolean condition4 = !tb.isBool1();
+		assertThat(condition4).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "  true  ");
-		assertTrue("Correct bool1 value", tb.isBool1());
+		assertThat(tb.isBool1()).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "  false  ");
-		assertTrue("Correct bool1 value", !tb.isBool1());
+		boolean condition3 = !tb.isBool1();
+		assertThat(condition3).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "on");
-		assertTrue("Correct bool1 value", tb.isBool1());
+		assertThat(tb.isBool1()).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "off");
-		assertTrue("Correct bool1 value", !tb.isBool1());
+		boolean condition2 = !tb.isBool1();
+		assertThat(condition2).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "yes");
-		assertTrue("Correct bool1 value", tb.isBool1());
+		assertThat(tb.isBool1()).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "no");
-		assertTrue("Correct bool1 value", !tb.isBool1());
+		boolean condition1 = !tb.isBool1();
+		assertThat(condition1).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "1");
-		assertTrue("Correct bool1 value", tb.isBool1());
+		assertThat(tb.isBool1()).as("Correct bool1 value").isTrue();
 
 		bw.setPropertyValue("bool1", "0");
-		assertTrue("Correct bool1 value", !tb.isBool1());
+		boolean condition = !tb.isBool1();
+		assertThat(condition).as("Correct bool1 value").isTrue();
 
 		assertThatExceptionOfType(BeansException.class).isThrownBy(() ->
 				bw.setPropertyValue("bool1", "argh"));
@@ -235,30 +237,34 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(tb);
 
 		bw.setPropertyValue("bool2", "true");
-		assertTrue("Correct bool2 value", Boolean.TRUE.equals(bw.getPropertyValue("bool2")));
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(Boolean.TRUE.equals(bw.getPropertyValue("bool2"))).as("Correct bool2 value").isTrue();
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "false");
-		assertTrue("Correct bool2 value", Boolean.FALSE.equals(bw.getPropertyValue("bool2")));
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		assertThat(Boolean.FALSE.equals(bw.getPropertyValue("bool2"))).as("Correct bool2 value").isTrue();
+		boolean condition3 = !tb.getBool2().booleanValue();
+		assertThat(condition3).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "on");
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "off");
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		boolean condition2 = !tb.getBool2().booleanValue();
+		assertThat(condition2).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "yes");
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "no");
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		boolean condition1 = !tb.getBool2().booleanValue();
+		assertThat(condition1).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "1");
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "0");
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		boolean condition = !tb.getBool2().booleanValue();
+		assertThat(condition).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "");
 		assertNull("Correct bool2 value", tb.getBool2());
@@ -271,34 +277,38 @@ public class CustomEditorTests {
 		bw.registerCustomEditor(Boolean.class, new CustomBooleanEditor(true));
 
 		bw.setPropertyValue("bool2", "true");
-		assertTrue("Correct bool2 value", Boolean.TRUE.equals(bw.getPropertyValue("bool2")));
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(Boolean.TRUE.equals(bw.getPropertyValue("bool2"))).as("Correct bool2 value").isTrue();
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "false");
-		assertTrue("Correct bool2 value", Boolean.FALSE.equals(bw.getPropertyValue("bool2")));
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		assertThat(Boolean.FALSE.equals(bw.getPropertyValue("bool2"))).as("Correct bool2 value").isTrue();
+		boolean condition3 = !tb.getBool2().booleanValue();
+		assertThat(condition3).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "on");
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "off");
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		boolean condition2 = !tb.getBool2().booleanValue();
+		assertThat(condition2).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "yes");
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "no");
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		boolean condition1 = !tb.getBool2().booleanValue();
+		assertThat(condition1).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "1");
-		assertTrue("Correct bool2 value", tb.getBool2().booleanValue());
+		assertThat(tb.getBool2().booleanValue()).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "0");
-		assertTrue("Correct bool2 value", !tb.getBool2().booleanValue());
+		boolean condition = !tb.getBool2().booleanValue();
+		assertThat(condition).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "");
-		assertTrue("Correct bool2 value", bw.getPropertyValue("bool2") == null);
-		assertTrue("Correct bool2 value", tb.getBool2() == null);
+		assertThat(bw.getPropertyValue("bool2") == null).as("Correct bool2 value").isTrue();
+		assertThat(tb.getBool2() == null).as("Correct bool2 value").isTrue();
 	}
 
 	@Test
@@ -309,14 +319,14 @@ public class CustomEditorTests {
 		CustomBooleanEditor editor = new CustomBooleanEditor(trueString, falseString, false);
 
 		editor.setAsText(trueString);
-		assertTrue(((Boolean) editor.getValue()).booleanValue());
+		assertThat(((Boolean) editor.getValue()).booleanValue()).isTrue();
 		assertEquals(trueString, editor.getAsText());
 		editor.setAsText(falseString);
 		assertFalse(((Boolean) editor.getValue()).booleanValue());
 		assertEquals(falseString, editor.getAsText());
 
 		editor.setAsText(trueString.toUpperCase());
-		assertTrue(((Boolean) editor.getValue()).booleanValue());
+		assertThat(((Boolean) editor.getValue()).booleanValue()).isTrue();
 		assertEquals(trueString, editor.getAsText());
 		editor.setAsText(falseString.toUpperCase());
 		assertFalse(((Boolean) editor.getValue()).booleanValue());
@@ -343,30 +353,30 @@ public class CustomEditorTests {
 		bw.setPropertyValue("double2", "6.1");
 		bw.setPropertyValue("bigDecimal", "4.5");
 
-		assertTrue("Correct short1 value", new Short("1").equals(bw.getPropertyValue("short1")));
-		assertTrue("Correct short1 value", tb.getShort1() == 1);
-		assertTrue("Correct short2 value", new Short("2").equals(bw.getPropertyValue("short2")));
-		assertTrue("Correct short2 value", new Short("2").equals(tb.getShort2()));
-		assertTrue("Correct int1 value", new Integer("7").equals(bw.getPropertyValue("int1")));
-		assertTrue("Correct int1 value", tb.getInt1() == 7);
-		assertTrue("Correct int2 value", new Integer("8").equals(bw.getPropertyValue("int2")));
-		assertTrue("Correct int2 value", new Integer("8").equals(tb.getInt2()));
-		assertTrue("Correct long1 value", new Long("5").equals(bw.getPropertyValue("long1")));
-		assertTrue("Correct long1 value", tb.getLong1() == 5);
-		assertTrue("Correct long2 value", new Long("6").equals(bw.getPropertyValue("long2")));
-		assertTrue("Correct long2 value", new Long("6").equals(tb.getLong2()));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(bw.getPropertyValue("bigInteger")));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(tb.getBigInteger()));
-		assertTrue("Correct float1 value", new Float("7.1").equals(bw.getPropertyValue("float1")));
-		assertTrue("Correct float1 value", new Float("7.1").equals(new Float(tb.getFloat1())));
-		assertTrue("Correct float2 value", new Float("8.1").equals(bw.getPropertyValue("float2")));
-		assertTrue("Correct float2 value", new Float("8.1").equals(tb.getFloat2()));
-		assertTrue("Correct double1 value", new Double("5.1").equals(bw.getPropertyValue("double1")));
-		assertTrue("Correct double1 value", tb.getDouble1() == 5.1);
-		assertTrue("Correct double2 value", new Double("6.1").equals(bw.getPropertyValue("double2")));
-		assertTrue("Correct double2 value", new Double("6.1").equals(tb.getDouble2()));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.5").equals(bw.getPropertyValue("bigDecimal")));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.5").equals(tb.getBigDecimal()));
+		assertThat(new Short("1").equals(bw.getPropertyValue("short1"))).as("Correct short1 value").isTrue();
+		assertThat(tb.getShort1() == 1).as("Correct short1 value").isTrue();
+		assertThat(new Short("2").equals(bw.getPropertyValue("short2"))).as("Correct short2 value").isTrue();
+		assertThat(new Short("2").equals(tb.getShort2())).as("Correct short2 value").isTrue();
+		assertThat(new Integer("7").equals(bw.getPropertyValue("int1"))).as("Correct int1 value").isTrue();
+		assertThat(tb.getInt1() == 7).as("Correct int1 value").isTrue();
+		assertThat(new Integer("8").equals(bw.getPropertyValue("int2"))).as("Correct int2 value").isTrue();
+		assertThat(new Integer("8").equals(tb.getInt2())).as("Correct int2 value").isTrue();
+		assertThat(new Long("5").equals(bw.getPropertyValue("long1"))).as("Correct long1 value").isTrue();
+		assertThat(tb.getLong1() == 5).as("Correct long1 value").isTrue();
+		assertThat(new Long("6").equals(bw.getPropertyValue("long2"))).as("Correct long2 value").isTrue();
+		assertThat(new Long("6").equals(tb.getLong2())).as("Correct long2 value").isTrue();
+		assertThat(new BigInteger("3").equals(bw.getPropertyValue("bigInteger"))).as("Correct bigInteger value").isTrue();
+		assertThat(new BigInteger("3").equals(tb.getBigInteger())).as("Correct bigInteger value").isTrue();
+		assertThat(new Float("7.1").equals(bw.getPropertyValue("float1"))).as("Correct float1 value").isTrue();
+		assertThat(new Float("7.1").equals(new Float(tb.getFloat1()))).as("Correct float1 value").isTrue();
+		assertThat(new Float("8.1").equals(bw.getPropertyValue("float2"))).as("Correct float2 value").isTrue();
+		assertThat(new Float("8.1").equals(tb.getFloat2())).as("Correct float2 value").isTrue();
+		assertThat(new Double("5.1").equals(bw.getPropertyValue("double1"))).as("Correct double1 value").isTrue();
+		assertThat(tb.getDouble1() == 5.1).as("Correct double1 value").isTrue();
+		assertThat(new Double("6.1").equals(bw.getPropertyValue("double2"))).as("Correct double2 value").isTrue();
+		assertThat(new Double("6.1").equals(tb.getDouble2())).as("Correct double2 value").isTrue();
+		assertThat(new BigDecimal("4.5").equals(bw.getPropertyValue("bigDecimal"))).as("Correct bigDecimal value").isTrue();
+		assertThat(new BigDecimal("4.5").equals(tb.getBigDecimal())).as("Correct bigDecimal value").isTrue();
 	}
 
 	@Test
@@ -400,30 +410,30 @@ public class CustomEditorTests {
 		bw.setPropertyValue("double2", "6,1");
 		bw.setPropertyValue("bigDecimal", "4,5");
 
-		assertTrue("Correct short1 value", new Short("1").equals(bw.getPropertyValue("short1")));
-		assertTrue("Correct short1 value", tb.getShort1() == 1);
-		assertTrue("Correct short2 value", new Short("2").equals(bw.getPropertyValue("short2")));
-		assertTrue("Correct short2 value", new Short("2").equals(tb.getShort2()));
-		assertTrue("Correct int1 value", new Integer("7").equals(bw.getPropertyValue("int1")));
-		assertTrue("Correct int1 value", tb.getInt1() == 7);
-		assertTrue("Correct int2 value", new Integer("8").equals(bw.getPropertyValue("int2")));
-		assertTrue("Correct int2 value", new Integer("8").equals(tb.getInt2()));
-		assertTrue("Correct long1 value", new Long("5").equals(bw.getPropertyValue("long1")));
-		assertTrue("Correct long1 value", tb.getLong1() == 5);
-		assertTrue("Correct long2 value", new Long("6").equals(bw.getPropertyValue("long2")));
-		assertTrue("Correct long2 value", new Long("6").equals(tb.getLong2()));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(bw.getPropertyValue("bigInteger")));
-		assertTrue("Correct bigInteger value", new BigInteger("3").equals(tb.getBigInteger()));
-		assertTrue("Correct float1 value", new Float("7.1").equals(bw.getPropertyValue("float1")));
-		assertTrue("Correct float1 value", new Float("7.1").equals(new Float(tb.getFloat1())));
-		assertTrue("Correct float2 value", new Float("8.1").equals(bw.getPropertyValue("float2")));
-		assertTrue("Correct float2 value", new Float("8.1").equals(tb.getFloat2()));
-		assertTrue("Correct double1 value", new Double("5.1").equals(bw.getPropertyValue("double1")));
-		assertTrue("Correct double1 value", tb.getDouble1() == 5.1);
-		assertTrue("Correct double2 value", new Double("6.1").equals(bw.getPropertyValue("double2")));
-		assertTrue("Correct double2 value", new Double("6.1").equals(tb.getDouble2()));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.5").equals(bw.getPropertyValue("bigDecimal")));
-		assertTrue("Correct bigDecimal value", new BigDecimal("4.5").equals(tb.getBigDecimal()));
+		assertThat(new Short("1").equals(bw.getPropertyValue("short1"))).as("Correct short1 value").isTrue();
+		assertThat(tb.getShort1() == 1).as("Correct short1 value").isTrue();
+		assertThat(new Short("2").equals(bw.getPropertyValue("short2"))).as("Correct short2 value").isTrue();
+		assertThat(new Short("2").equals(tb.getShort2())).as("Correct short2 value").isTrue();
+		assertThat(new Integer("7").equals(bw.getPropertyValue("int1"))).as("Correct int1 value").isTrue();
+		assertThat(tb.getInt1() == 7).as("Correct int1 value").isTrue();
+		assertThat(new Integer("8").equals(bw.getPropertyValue("int2"))).as("Correct int2 value").isTrue();
+		assertThat(new Integer("8").equals(tb.getInt2())).as("Correct int2 value").isTrue();
+		assertThat(new Long("5").equals(bw.getPropertyValue("long1"))).as("Correct long1 value").isTrue();
+		assertThat(tb.getLong1() == 5).as("Correct long1 value").isTrue();
+		assertThat(new Long("6").equals(bw.getPropertyValue("long2"))).as("Correct long2 value").isTrue();
+		assertThat(new Long("6").equals(tb.getLong2())).as("Correct long2 value").isTrue();
+		assertThat(new BigInteger("3").equals(bw.getPropertyValue("bigInteger"))).as("Correct bigInteger value").isTrue();
+		assertThat(new BigInteger("3").equals(tb.getBigInteger())).as("Correct bigInteger value").isTrue();
+		assertThat(new Float("7.1").equals(bw.getPropertyValue("float1"))).as("Correct float1 value").isTrue();
+		assertThat(new Float("7.1").equals(new Float(tb.getFloat1()))).as("Correct float1 value").isTrue();
+		assertThat(new Float("8.1").equals(bw.getPropertyValue("float2"))).as("Correct float2 value").isTrue();
+		assertThat(new Float("8.1").equals(tb.getFloat2())).as("Correct float2 value").isTrue();
+		assertThat(new Double("5.1").equals(bw.getPropertyValue("double1"))).as("Correct double1 value").isTrue();
+		assertThat(tb.getDouble1() == 5.1).as("Correct double1 value").isTrue();
+		assertThat(new Double("6.1").equals(bw.getPropertyValue("double2"))).as("Correct double2 value").isTrue();
+		assertThat(new Double("6.1").equals(tb.getDouble2())).as("Correct double2 value").isTrue();
+		assertThat(new BigDecimal("4.5").equals(bw.getPropertyValue("bigDecimal"))).as("Correct bigDecimal value").isTrue();
+		assertThat(new BigDecimal("4.5").equals(tb.getBigDecimal())).as("Correct bigDecimal value").isTrue();
 	}
 
 	@Test
@@ -436,14 +446,14 @@ public class CustomEditorTests {
 
 		bw.setPropertyValue("long1", "5");
 		bw.setPropertyValue("long2", "6");
-		assertTrue("Correct long1 value", new Long("5").equals(bw.getPropertyValue("long1")));
-		assertTrue("Correct long1 value", tb.getLong1() == 5);
-		assertTrue("Correct long2 value", new Long("6").equals(bw.getPropertyValue("long2")));
-		assertTrue("Correct long2 value", new Long("6").equals(tb.getLong2()));
+		assertThat(new Long("5").equals(bw.getPropertyValue("long1"))).as("Correct long1 value").isTrue();
+		assertThat(tb.getLong1() == 5).as("Correct long1 value").isTrue();
+		assertThat(new Long("6").equals(bw.getPropertyValue("long2"))).as("Correct long2 value").isTrue();
+		assertThat(new Long("6").equals(tb.getLong2())).as("Correct long2 value").isTrue();
 
 		bw.setPropertyValue("long2", "");
-		assertTrue("Correct long2 value", bw.getPropertyValue("long2") == null);
-		assertTrue("Correct long2 value", tb.getLong2() == null);
+		assertThat(bw.getPropertyValue("long2") == null).as("Correct long2 value").isTrue();
+		assertThat(tb.getLong2() == null).as("Correct long2 value").isTrue();
 		assertThatExceptionOfType(BeansException.class).isThrownBy(() ->
 				bw.setPropertyValue("long1", ""));
 		assertThat(bw.getPropertyValue("long1")).isEqualTo(5L);
@@ -732,7 +742,7 @@ public class CustomEditorTests {
 		String validDate = "01/01/2005";
 		String invalidDate = "01/01/05";
 
-		assertTrue(validDate.length() == maxLength);
+		assertThat(validDate.length() == maxLength).isTrue();
 		assertFalse(invalidDate.length() == maxLength);
 
 		CustomDateEditor editor = new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true, maxLength);

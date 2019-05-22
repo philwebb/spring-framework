@@ -21,8 +21,8 @@ import org.junit.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link StompEncoder}.
@@ -51,9 +51,8 @@ public class StompEncoderTests {
 		Message<byte[]> frame = MessageBuilder.createMessage(new byte[0], headers.getMessageHeaders());
 		String frameString = new String(encoder.encode(frame));
 
-		assertTrue(
-				"CONNECT\naccept-version:1.2\nhost:github.org\n\n\0".equals(frameString) ||
-				"CONNECT\nhost:github.org\naccept-version:1.2\n\n\0".equals(frameString));
+		assertThat("CONNECT\naccept-version:1.2\nhost:github.org\n\n\0".equals(frameString) ||
+				"CONNECT\nhost:github.org\naccept-version:1.2\n\n\0".equals(frameString)).isTrue();
 	}
 
 	@Test

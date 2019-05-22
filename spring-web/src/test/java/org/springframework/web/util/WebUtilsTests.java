@@ -34,10 +34,10 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -95,26 +95,26 @@ public class WebUtilsTests {
 	@Test
 	public void isValidOrigin() {
 		List<String> allowed = Collections.emptyList();
-		assertTrue(checkValidOrigin("mydomain1.com", -1, "http://mydomain1.com", allowed));
+		assertThat(checkValidOrigin("mydomain1.com", -1, "http://mydomain1.com", allowed)).isTrue();
 		assertFalse(checkValidOrigin("mydomain1.com", -1, "http://mydomain2.com", allowed));
 
 		allowed = Collections.singletonList("*");
-		assertTrue(checkValidOrigin("mydomain1.com", -1, "http://mydomain2.com", allowed));
+		assertThat(checkValidOrigin("mydomain1.com", -1, "http://mydomain2.com", allowed)).isTrue();
 
 		allowed = Collections.singletonList("http://mydomain1.com");
-		assertTrue(checkValidOrigin("mydomain2.com", -1, "http://mydomain1.com", allowed));
+		assertThat(checkValidOrigin("mydomain2.com", -1, "http://mydomain1.com", allowed)).isTrue();
 		assertFalse(checkValidOrigin("mydomain2.com", -1, "http://mydomain3.com", allowed));
 	}
 
 	@Test
 	public void isSameOrigin() {
-		assertTrue(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com"));
-		assertTrue(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80"));
-		assertTrue(checkSameOrigin("https", "mydomain1.com", 443, "https://mydomain1.com"));
-		assertTrue(checkSameOrigin("https", "mydomain1.com", 443, "https://mydomain1.com:443"));
-		assertTrue(checkSameOrigin("http", "mydomain1.com", 123, "http://mydomain1.com:123"));
-		assertTrue(checkSameOrigin("ws", "mydomain1.com", -1, "ws://mydomain1.com"));
-		assertTrue(checkSameOrigin("wss", "mydomain1.com", 443, "wss://mydomain1.com"));
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com")).isTrue();
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80")).isTrue();
+		assertThat(checkSameOrigin("https", "mydomain1.com", 443, "https://mydomain1.com")).isTrue();
+		assertThat(checkSameOrigin("https", "mydomain1.com", 443, "https://mydomain1.com:443")).isTrue();
+		assertThat(checkSameOrigin("http", "mydomain1.com", 123, "http://mydomain1.com:123")).isTrue();
+		assertThat(checkSameOrigin("ws", "mydomain1.com", -1, "ws://mydomain1.com")).isTrue();
+		assertThat(checkSameOrigin("wss", "mydomain1.com", 443, "wss://mydomain1.com")).isTrue();
 
 		assertFalse(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain2.com"));
 		assertFalse(checkSameOrigin("http", "mydomain1.com", -1, "https://mydomain1.com"));
@@ -122,24 +122,24 @@ public class WebUtilsTests {
 		assertFalse(checkSameOrigin("https", "mydomain1.com", -1, "http://mydomain1.com"));
 
 		// Handling of invalid origins as described in SPR-13478
-		assertTrue(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com/"));
-		assertTrue(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80/"));
-		assertTrue(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com/path"));
-		assertTrue(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80/path"));
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com/")).isTrue();
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80/")).isTrue();
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com/path")).isTrue();
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80/path")).isTrue();
 		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com/"));
 		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com:80/"));
 		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com/path"));
 		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com:80/path"));
 
 		// Handling of IPv6 hosts as described in SPR-13525
-		assertTrue(checkSameOrigin("http", "[::1]", -1, "http://[::1]"));
-		assertTrue(checkSameOrigin("http", "[::1]", 8080, "http://[::1]:8080"));
-		assertTrue(checkSameOrigin("http",
+		assertThat(checkSameOrigin("http", "[::1]", -1, "http://[::1]")).isTrue();
+		assertThat(checkSameOrigin("http", "[::1]", 8080, "http://[::1]:8080")).isTrue();
+		assertThat(checkSameOrigin("http",
 				"[2001:0db8:0000:85a3:0000:0000:ac1f:8001]", -1,
-				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]"));
-		assertTrue(checkSameOrigin("http",
+				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]")).isTrue();
+		assertThat(checkSameOrigin("http",
 				"[2001:0db8:0000:85a3:0000:0000:ac1f:8001]", 8080,
-				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]:8080"));
+				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]:8080")).isTrue();
 		assertFalse(checkSameOrigin("http", "[::1]", -1, "http://[::1]:8080"));
 		assertFalse(checkSameOrigin("http", "[::1]", 8080,
 				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]:8080"));
@@ -213,7 +213,7 @@ public class WebUtilsTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(request);
 		ServerHttpRequest httpRequest = new ServletServerHttpRequest(requestToUse);
 
-		assertTrue(WebUtils.isSameOrigin(httpRequest));
+		assertThat(WebUtils.isSameOrigin(httpRequest)).isTrue();
 	}
 
 	private void testWithForwardedHeader(String serverName, int port, String forwardedHeader,
@@ -230,7 +230,7 @@ public class WebUtilsTests {
 		HttpServletRequest requestToUse = adaptFromForwardedHeaders(request);
 		ServerHttpRequest httpRequest = new ServletServerHttpRequest(requestToUse);
 
-		assertTrue(WebUtils.isSameOrigin(httpRequest));
+		assertThat(WebUtils.isSameOrigin(httpRequest)).isTrue();
 	}
 
 	// SPR-16668

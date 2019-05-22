@@ -28,9 +28,9 @@ import org.springframework.web.context.ContextCleanupListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -63,7 +63,7 @@ public class WebApplicationContextScopeTests {
 			assertSame(bean, request.getAttribute(NAME));
 			assertSame(bean, ac.getBean(NAME));
 			requestAttributes.requestCompleted();
-			assertTrue(bean.wasDestroyed());
+			assertThat(bean.wasDestroyed()).isTrue();
 		}
 		finally {
 			RequestContextHolder.setRequestAttributes(null);
@@ -82,7 +82,7 @@ public class WebApplicationContextScopeTests {
 			assertSame(bean, request.getSession().getAttribute(NAME));
 			assertSame(bean, ac.getBean(NAME));
 			request.getSession().invalidate();
-			assertTrue(bean.wasDestroyed());
+			assertThat(bean.wasDestroyed()).isTrue();
 		}
 		finally {
 			RequestContextHolder.setRequestAttributes(null);
@@ -97,7 +97,7 @@ public class WebApplicationContextScopeTests {
 		assertSame(bean, ac.getServletContext().getAttribute(NAME));
 		assertSame(bean, ac.getBean(NAME));
 		new ContextCleanupListener().contextDestroyed(new ServletContextEvent(ac.getServletContext()));
-		assertTrue(bean.wasDestroyed());
+		assertThat(bean.wasDestroyed()).isTrue();
 	}
 
 }

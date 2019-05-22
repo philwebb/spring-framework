@@ -31,9 +31,9 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -53,10 +53,10 @@ public class ResourceDecoderTests extends AbstractDecoderTestCase<ResourceDecode
 	@Override
 	@Test
 	public void canDecode() {
-		assertTrue(this.decoder.canDecode(forClass(InputStreamResource.class), MimeTypeUtils.TEXT_PLAIN));
-		assertTrue(this.decoder.canDecode(forClass(ByteArrayResource.class), MimeTypeUtils.TEXT_PLAIN));
-		assertTrue(this.decoder.canDecode(forClass(Resource.class), MimeTypeUtils.TEXT_PLAIN));
-		assertTrue(this.decoder.canDecode(forClass(InputStreamResource.class), MimeTypeUtils.APPLICATION_JSON));
+		assertThat(this.decoder.canDecode(forClass(InputStreamResource.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
+		assertThat(this.decoder.canDecode(forClass(ByteArrayResource.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
+		assertThat(this.decoder.canDecode(forClass(Resource.class), MimeTypeUtils.TEXT_PLAIN)).isTrue();
+		assertThat(this.decoder.canDecode(forClass(InputStreamResource.class), MimeTypeUtils.APPLICATION_JSON)).isTrue();
 		assertFalse(this.decoder.canDecode(forClass(Object.class), MimeTypeUtils.APPLICATION_JSON));
 	}
 

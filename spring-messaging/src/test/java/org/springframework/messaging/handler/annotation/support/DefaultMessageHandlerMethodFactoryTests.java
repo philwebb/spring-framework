@@ -46,11 +46,11 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -189,7 +189,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 
 	private void assertMethodInvocation(SampleBean bean, String methodName) {
-		assertTrue("Method " + methodName + " should have been invoked", bean.invocations.get(methodName));
+		assertThat((boolean) bean.invocations.get(methodName)).as("Method " + methodName + " should have been invoked").isTrue();
 	}
 
 	private InvocableHandlerMethod createInvocableHandlerMethod(

@@ -35,12 +35,12 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.util.LinkedMultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link org.springframework.messaging.simp.SimpMessagingTemplate}.
@@ -164,12 +164,12 @@ public class SimpMessagingTemplateTests {
 		Map<String, Object> map = this.messagingTemplate.processHeadersToSend(null);
 
 		assertNotNull(map);
-		assertTrue("Actual: " + map.getClass().toString(), MessageHeaders.class.isAssignableFrom(map.getClass()));
+		assertThat(MessageHeaders.class.isAssignableFrom(map.getClass())).as("Actual: " + map.getClass().toString()).isTrue();
 
 		SimpMessageHeaderAccessor headerAccessor =
 				MessageHeaderAccessor.getAccessor((MessageHeaders) map, SimpMessageHeaderAccessor.class);
 
-		assertTrue(headerAccessor.isMutable());
+		assertThat(headerAccessor.isMutable()).isTrue();
 		assertEquals(SimpMessageType.MESSAGE, headerAccessor.getMessageType());
 	}
 

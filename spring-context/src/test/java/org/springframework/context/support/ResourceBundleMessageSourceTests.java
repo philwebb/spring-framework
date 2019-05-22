@@ -29,10 +29,10 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -421,10 +421,10 @@ public class ResourceBundleMessageSourceTests {
 		ms.setBasename("org/springframework/context/support/messages");
 		MessageSourceResourceBundle rbe = new MessageSourceResourceBundle(ms, Locale.ENGLISH);
 		assertEquals("message1", rbe.getString("code1"));
-		assertTrue(rbe.containsKey("code1"));
+		assertThat(rbe.containsKey("code1")).isTrue();
 		MessageSourceResourceBundle rbg = new MessageSourceResourceBundle(ms, Locale.GERMAN);
 		assertEquals("nachricht2", rbg.getString("code2"));
-		assertTrue(rbg.containsKey("code2"));
+		assertThat(rbg.containsKey("code2")).isTrue();
 	}
 
 

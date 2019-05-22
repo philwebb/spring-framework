@@ -23,10 +23,10 @@ import org.junit.Test;
 
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans
@@ -45,7 +45,8 @@ public class URLEditorTests {
 		PropertyEditor urlEditor = new URLEditor();
 		urlEditor.setAsText("mailto:juergen.hoeller@interface21.com");
 		Object value = urlEditor.getValue();
-		assertTrue(value instanceof URL);
+		boolean condition = value instanceof URL;
+		assertThat(condition).isTrue();
 		URL url = (URL) value;
 		assertEquals(url.toExternalForm(), urlEditor.getAsText());
 	}
@@ -55,7 +56,8 @@ public class URLEditorTests {
 		PropertyEditor urlEditor = new URLEditor();
 		urlEditor.setAsText("https://www.springframework.org");
 		Object value = urlEditor.getValue();
-		assertTrue(value instanceof URL);
+		boolean condition = value instanceof URL;
+		assertThat(condition).isTrue();
 		URL url = (URL) value;
 		assertEquals(url.toExternalForm(), urlEditor.getAsText());
 	}
@@ -66,10 +68,12 @@ public class URLEditorTests {
 		urlEditor.setAsText("classpath:" + ClassUtils.classPackageAsResourcePath(getClass()) +
 				"/" + ClassUtils.getShortName(getClass()) + ".class");
 		Object value = urlEditor.getValue();
-		assertTrue(value instanceof URL);
+		boolean condition1 = value instanceof URL;
+		assertThat(condition1).isTrue();
 		URL url = (URL) value;
 		assertEquals(url.toExternalForm(), urlEditor.getAsText());
-		assertTrue(!url.getProtocol().startsWith("classpath"));
+		boolean condition = !url.getProtocol().startsWith("classpath");
+		assertThat(condition).isTrue();
 	}
 
 	@Test

@@ -25,11 +25,11 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.util.MetaAnnotationUtils.AnnotationDescriptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.test.util.MetaAnnotationUtils.findAnnotationDescriptor;
 
 /**
@@ -120,7 +120,7 @@ public class OverriddenMetaAnnotationAttributesTests {
 		// overridden attributes:
 		AnnotationAttributes attributes = descriptor.getAnnotationAttributes();
 		assertArrayEquals(new String[] { "bar.xml" }, attributes.getStringArray("locations"));
-		assertTrue(attributes.getBoolean("inheritLocations"));
+		assertThat(attributes.getBoolean("inheritLocations")).isTrue();
 	}
 
 

@@ -62,7 +62,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests use of @EnableAsync on @Configuration classes.
@@ -168,7 +167,7 @@ public class EnableAsyncTests {
 		ctx.refresh();
 
 		Object bean = ctx.getBean(CustomAsyncBean.class);
-		assertTrue(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		boolean isAsyncAdvised = false;
 		for (Advisor advisor : ((Advised) bean).getAdvisors()) {
 			if (advisor instanceof AsyncAnnotationAdvisor) {
@@ -176,7 +175,7 @@ public class EnableAsyncTests {
 				break;
 			}
 		}
-		assertTrue("bean was not async advised as expected", isAsyncAdvised);
+		assertThat(isAsyncAdvised).as("bean was not async advised as expected").isTrue();
 
 		ctx.close();
 	}

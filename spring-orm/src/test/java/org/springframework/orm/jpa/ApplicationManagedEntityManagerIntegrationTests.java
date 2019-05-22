@@ -26,11 +26,11 @@ import org.junit.Test;
 
 import org.springframework.orm.jpa.domain.Person;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * An application-managed entity manager can join an existing transaction,
@@ -46,12 +46,12 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 	@SuppressWarnings("unchecked")
 	public void testEntityManagerProxyIsProxy() {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		assertTrue(Proxy.isProxyClass(em.getClass()));
+		assertThat(Proxy.isProxyClass(em.getClass())).isTrue();
 		Query q = em.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
 		assertNotNull(people);
 
-		assertTrue("Should be open to start with", em.isOpen());
+		assertThat(em.isOpen()).as("Should be open to start with").isTrue();
 		em.close();
 		assertFalse("Close should work on application managed EM", em.isOpen());
 	}
@@ -117,7 +117,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 		assertFalse(em.getTransaction().isActive());
 		em.joinTransaction();
 
-		assertTrue(em.getTransaction().isActive());
+		assertThat(em.getTransaction().isActive()).isTrue();
 
 		doInstantiateAndSave(em);
 		setComplete();

@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans
@@ -42,7 +41,7 @@ public class SimpleAsyncTaskExecutorTests {
 	public void cannotExecuteWhenConcurrencyIsSwitchedOff() throws Exception {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
 		executor.setConcurrencyLimit(ConcurrencyThrottleSupport.NO_CONCURRENCY);
-		assertTrue(executor.isThrottleActive());
+		assertThat(executor.isThrottleActive()).isTrue();
 		assertThatIllegalStateException().isThrownBy(() ->
 				executor.execute(new NoOpRunnable()));
 	}

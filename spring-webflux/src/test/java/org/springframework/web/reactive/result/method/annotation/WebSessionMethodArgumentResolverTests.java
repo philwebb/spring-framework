@@ -28,9 +28,9 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -48,9 +48,9 @@ public class WebSessionMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(WebSession.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(Mono.class, WebSession.class)));
-		assertTrue(this.resolver.supportsParameter(this.testMethod.arg(Single.class, WebSession.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(WebSession.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(Mono.class, WebSession.class))).isTrue();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(Single.class, WebSession.class))).isTrue();
 	}
 
 
@@ -69,13 +69,13 @@ public class WebSessionMethodArgumentResolverTests {
 		param = this.testMethod.arg(Mono.class, WebSession.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
 		assertNotNull(actual);
-		assertTrue(Mono.class.isAssignableFrom(actual.getClass()));
+		assertThat(Mono.class.isAssignableFrom(actual.getClass())).isTrue();
 		assertSame(session, ((Mono<?>) actual).block());
 
 		param = this.testMethod.arg(Single.class, WebSession.class);
 		actual = this.resolver.resolveArgument(param, context, exchange).block();
 		assertNotNull(actual);
-		assertTrue(Single.class.isAssignableFrom(actual.getClass()));
+		assertThat(Single.class.isAssignableFrom(actual.getClass())).isTrue();
 		assertSame(session, ((Single<?>) actual).blockingGet());
 	}
 

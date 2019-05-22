@@ -30,10 +30,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ContextPathCompositeHandler}.
@@ -101,7 +101,7 @@ public class ContextPathCompositeHandlerTests {
 
 		new ContextPathCompositeHandler(map).handle(request, new MockServerHttpResponse());
 
-		assertTrue(handler.wasInvoked());
+		assertThat(handler.wasInvoked()).isTrue();
 		assertEquals("/yet/another/path", handler.getRequest().getPath().contextPath().value());
 	}
 
@@ -139,7 +139,7 @@ public class ContextPathCompositeHandlerTests {
 
 		assertNotInvoked(handler);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-		assertTrue(commitInvoked.get());
+		assertThat(commitInvoked.get()).isTrue();
 	}
 
 
@@ -151,7 +151,7 @@ public class ContextPathCompositeHandlerTests {
 	}
 
 	private void assertInvoked(TestHttpHandler handler, String contextPath) {
-		assertTrue(handler.wasInvoked());
+		assertThat(handler.wasInvoked()).isTrue();
 		assertEquals(contextPath, handler.getRequest().getPath().contextPath().value());
 	}
 

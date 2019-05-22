@@ -29,8 +29,8 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -85,7 +85,7 @@ public class WebAsyncManagerTimeoutTests {
 		this.asyncWebRequest.onTimeout(ASYNC_EVENT);
 		this.asyncWebRequest.onComplete(ASYNC_EVENT);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(AsyncRequestTimeoutException.class, this.asyncManager.getConcurrentResult().getClass());
 
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, callable);
@@ -108,7 +108,7 @@ public class WebAsyncManagerTimeoutTests {
 
 		this.asyncWebRequest.onTimeout(ASYNC_EVENT);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(7, this.asyncManager.getConcurrentResult());
 		assertEquals("/test", ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath());
 	}
@@ -126,7 +126,7 @@ public class WebAsyncManagerTimeoutTests {
 
 		this.asyncWebRequest.onTimeout(ASYNC_EVENT);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(22, this.asyncManager.getConcurrentResult());
 		assertEquals("/test", ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath());
 
@@ -147,7 +147,7 @@ public class WebAsyncManagerTimeoutTests {
 
 		this.asyncWebRequest.onTimeout(ASYNC_EVENT);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(exception, this.asyncManager.getConcurrentResult());
 		assertEquals("/test", ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath());
 
@@ -169,7 +169,7 @@ public class WebAsyncManagerTimeoutTests {
 
 		this.asyncWebRequest.onTimeout(ASYNC_EVENT);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 
 		verify(future).cancel(true);
 		verifyNoMoreInteractions(future);
@@ -189,7 +189,7 @@ public class WebAsyncManagerTimeoutTests {
 		this.asyncWebRequest.onTimeout(ASYNC_EVENT);
 		this.asyncWebRequest.onComplete(ASYNC_EVENT);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(AsyncRequestTimeoutException.class, this.asyncManager.getConcurrentResult().getClass());
 
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, deferredResult);
@@ -206,7 +206,7 @@ public class WebAsyncManagerTimeoutTests {
 		AsyncEvent event = null;
 		this.asyncWebRequest.onTimeout(event);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(23, this.asyncManager.getConcurrentResult());
 		assertEquals("/test", ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath());
 	}
@@ -227,7 +227,7 @@ public class WebAsyncManagerTimeoutTests {
 		AsyncEvent event = null;
 		this.asyncWebRequest.onTimeout(event);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(23, this.asyncManager.getConcurrentResult());
 		assertEquals("/test", ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath());
 	}
@@ -251,7 +251,7 @@ public class WebAsyncManagerTimeoutTests {
 		AsyncEvent event = null;
 		this.asyncWebRequest.onTimeout(event);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(23, this.asyncManager.getConcurrentResult());
 		assertEquals("/test", ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath());
 	}
@@ -275,7 +275,7 @@ public class WebAsyncManagerTimeoutTests {
 		AsyncEvent event = null;
 		this.asyncWebRequest.onTimeout(event);
 
-		assertTrue(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isTrue();
 		assertEquals(exception, this.asyncManager.getConcurrentResult());
 		assertEquals("/test", ((MockAsyncContext) this.servletRequest.getAsyncContext()).getDispatchedPath());
 	}

@@ -26,8 +26,8 @@ import org.junit.Test;
 
 import org.springframework.jdbc.core.SqlParameter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -88,16 +88,16 @@ public class BatchSqlUpdateTests {
 		assertEquals(0, update.getQueueCount());
 
 		if (flushThroughBatchSize) {
-			assertTrue("flush did not execute updates", actualRowsAffected.length == 0);
+			assertThat(actualRowsAffected.length == 0).as("flush did not execute updates").isTrue();
 		}
 		else {
-			assertTrue("executed 2 updates", actualRowsAffected.length == 2);
+			assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
 			assertEquals(rowsAffected[0], actualRowsAffected[0]);
 			assertEquals(rowsAffected[1], actualRowsAffected[1]);
 		}
 
 		actualRowsAffected = update.getRowsAffected();
-		assertTrue("executed 2 updates", actualRowsAffected.length == 2);
+		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
 		assertEquals(rowsAffected[0], actualRowsAffected[0]);
 		assertEquals(rowsAffected[1], actualRowsAffected[1]);
 

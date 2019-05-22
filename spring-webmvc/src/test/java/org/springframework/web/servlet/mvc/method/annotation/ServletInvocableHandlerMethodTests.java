@@ -52,10 +52,10 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandlerCom
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.view.RedirectView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link ServletInvocableHandlerMethod}.
@@ -89,8 +89,7 @@ public class ServletInvocableHandlerMethodTests {
 		ServletInvocableHandlerMethod handlerMethod = getHandlerMethod(new Handler(), "responseStatus");
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertTrue("Null return value + @ResponseStatus should result in 'request handled'",
-				this.mavContainer.isRequestHandled());
+		assertThat(this.mavContainer.isRequestHandled()).as("Null return value + @ResponseStatus should result in 'request handled'").isTrue();
 		assertEquals(HttpStatus.BAD_REQUEST.value(), this.response.getStatus());
 	}
 
@@ -99,8 +98,7 @@ public class ServletInvocableHandlerMethodTests {
 		ServletInvocableHandlerMethod handlerMethod = getHandlerMethod(new Handler(), "composedResponseStatus");
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertTrue("Null return value + @ComposedResponseStatus should result in 'request handled'",
-				this.mavContainer.isRequestHandled());
+		assertThat(this.mavContainer.isRequestHandled()).as("Null return value + @ComposedResponseStatus should result in 'request handled'").isTrue();
 		assertEquals(HttpStatus.BAD_REQUEST.value(), this.response.getStatus());
 	}
 
@@ -109,7 +107,7 @@ public class ServletInvocableHandlerMethodTests {
 		ServletInvocableHandlerMethod handlerMethod = getHandlerMethod(new ResponseStatusHandler(), "handle");
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertTrue(this.mavContainer.isRequestHandled());
+		assertThat(this.mavContainer.isRequestHandled()).isTrue();
 		assertEquals(HttpStatus.BAD_REQUEST.value(), this.response.getStatus());
 	}
 
@@ -121,8 +119,7 @@ public class ServletInvocableHandlerMethodTests {
 				getHandlerMethod(new Handler(), "httpServletResponse", HttpServletResponse.class);
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertTrue("Null return value + HttpServletResponse arg should result in 'request handled'",
-				this.mavContainer.isRequestHandled());
+		assertThat(this.mavContainer.isRequestHandled()).as("Null return value + HttpServletResponse arg should result in 'request handled'").isTrue();
 	}
 
 	@Test
@@ -134,8 +131,7 @@ public class ServletInvocableHandlerMethodTests {
 		ServletInvocableHandlerMethod handlerMethod = getHandlerMethod(new Handler(), "notModified");
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertTrue("Null return value + 'not modified' request should result in 'request handled'",
-				this.mavContainer.isRequestHandled());
+		assertThat(this.mavContainer.isRequestHandled()).as("Null return value + 'not modified' request should result in 'request handled'").isTrue();
 	}
 
 	@Test  // SPR-9159
@@ -143,7 +139,7 @@ public class ServletInvocableHandlerMethodTests {
 		ServletInvocableHandlerMethod handlerMethod = getHandlerMethod(new Handler(), "responseStatusWithReason");
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
-		assertTrue("When a status reason w/ used, the request is handled", this.mavContainer.isRequestHandled());
+		assertThat(this.mavContainer.isRequestHandled()).as("When a status reason w/ used, the request is handled").isTrue();
 		assertEquals(HttpStatus.BAD_REQUEST.value(), this.response.getStatus());
 		assertEquals("400 Bad Request", this.response.getErrorMessage());
 	}

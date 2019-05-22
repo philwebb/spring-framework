@@ -61,10 +61,10 @@ import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.multipart.support.StringMultipartFileEditor;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -99,14 +99,14 @@ public class CommonsMultipartResolverTests {
 		assertEquals(1000, resolver.getFileUpload().getSizeMax());
 		assertEquals(100, resolver.getFileItemFactory().getSizeThreshold());
 		assertEquals("enc", resolver.getFileUpload().getHeaderEncoding());
-		assertTrue(resolver.getFileItemFactory().getRepository().getAbsolutePath().endsWith("mytemp"));
+		assertThat(resolver.getFileItemFactory().getRepository().getAbsolutePath().endsWith("mytemp")).isTrue();
 
 		MockHttpServletRequest originalRequest = new MockHttpServletRequest();
 		originalRequest.setMethod("POST");
 		originalRequest.setContentType("multipart/form-data");
 		originalRequest.addHeader("Content-type", "multipart/form-data");
 		originalRequest.addParameter("getField", "getValue");
-		assertTrue(resolver.isMultipart(originalRequest));
+		assertThat(resolver.isMultipart(originalRequest)).isTrue();
 		MultipartHttpServletRequest request = resolver.resolveMultipart(originalRequest);
 
 		doTestParameters(request);
@@ -125,18 +125,18 @@ public class CommonsMultipartResolverTests {
 			parameterNames.add(parameterEnum.nextElement());
 		}
 		assertEquals(3, parameterNames.size());
-		assertTrue(parameterNames.contains("field3"));
-		assertTrue(parameterNames.contains("field4"));
-		assertTrue(parameterNames.contains("getField"));
+		assertThat(parameterNames.contains("field3")).isTrue();
+		assertThat(parameterNames.contains("field4")).isTrue();
+		assertThat(parameterNames.contains("getField")).isTrue();
 		assertEquals("value3", request.getParameter("field3"));
 		List<String> parameterValues = Arrays.asList(request.getParameterValues("field3"));
 		assertEquals(1, parameterValues.size());
-		assertTrue(parameterValues.contains("value3"));
+		assertThat(parameterValues.contains("value3")).isTrue();
 		assertEquals("value4", request.getParameter("field4"));
 		parameterValues = Arrays.asList(request.getParameterValues("field4"));
 		assertEquals(2, parameterValues.size());
-		assertTrue(parameterValues.contains("value4"));
-		assertTrue(parameterValues.contains("value5"));
+		assertThat(parameterValues.contains("value4")).isTrue();
+		assertThat(parameterValues.contains("value5")).isTrue();
 		assertEquals("value4", request.getParameter("field4"));
 		assertEquals("getValue", request.getParameter("getField"));
 
@@ -152,19 +152,19 @@ public class CommonsMultipartResolverTests {
 		int field3Index = parameterMapKeys.indexOf("field3");
 		int field4Index = parameterMapKeys.indexOf("field4");
 		int getFieldIndex = parameterMapKeys.indexOf("getField");
-		assertTrue(field3Index != -1);
-		assertTrue(field4Index != -1);
-		assertTrue(getFieldIndex != -1);
+		assertThat(field3Index != -1).isTrue();
+		assertThat(field4Index != -1).isTrue();
+		assertThat(getFieldIndex != -1).isTrue();
 		parameterValues = Arrays.asList((String[]) parameterMapValues.get(field3Index));
 		assertEquals(1, parameterValues.size());
-		assertTrue(parameterValues.contains("value3"));
+		assertThat(parameterValues.contains("value3")).isTrue();
 		parameterValues = Arrays.asList((String[]) parameterMapValues.get(field4Index));
 		assertEquals(2, parameterValues.size());
-		assertTrue(parameterValues.contains("value4"));
-		assertTrue(parameterValues.contains("value5"));
+		assertThat(parameterValues.contains("value4")).isTrue();
+		assertThat(parameterValues.contains("value5")).isTrue();
 		parameterValues = Arrays.asList((String[]) parameterMapValues.get(getFieldIndex));
 		assertEquals(1, parameterValues.size());
-		assertTrue(parameterValues.contains("getValue"));
+		assertThat(parameterValues.contains("getValue")).isTrue();
 	}
 
 	private void doTestFiles(MultipartHttpServletRequest request) throws IOException {
@@ -174,30 +174,30 @@ public class CommonsMultipartResolverTests {
 			fileNames.add(fileIter.next());
 		}
 		assertEquals(3, fileNames.size());
-		assertTrue(fileNames.contains("field1"));
-		assertTrue(fileNames.contains("field2"));
-		assertTrue(fileNames.contains("field2x"));
+		assertThat(fileNames.contains("field1")).isTrue();
+		assertThat(fileNames.contains("field2")).isTrue();
+		assertThat(fileNames.contains("field2x")).isTrue();
 		CommonsMultipartFile file1 = (CommonsMultipartFile) request.getFile("field1");
 		CommonsMultipartFile file2 = (CommonsMultipartFile) request.getFile("field2");
 		CommonsMultipartFile file2x = (CommonsMultipartFile) request.getFile("field2x");
 
 		Map<String, MultipartFile> fileMap = request.getFileMap();
 		assertEquals(3, fileMap.size());
-		assertTrue(fileMap.containsKey("field1"));
-		assertTrue(fileMap.containsKey("field2"));
-		assertTrue(fileMap.containsKey("field2x"));
+		assertThat(fileMap.containsKey("field1")).isTrue();
+		assertThat(fileMap.containsKey("field2")).isTrue();
+		assertThat(fileMap.containsKey("field2x")).isTrue();
 		assertEquals(file1, fileMap.get("field1"));
 		assertEquals(file2, fileMap.get("field2"));
 		assertEquals(file2x, fileMap.get("field2x"));
 
 		MultiValueMap<String, MultipartFile> multiFileMap = request.getMultiFileMap();
 		assertEquals(3, multiFileMap.size());
-		assertTrue(multiFileMap.containsKey("field1"));
-		assertTrue(multiFileMap.containsKey("field2"));
-		assertTrue(multiFileMap.containsKey("field2x"));
+		assertThat(multiFileMap.containsKey("field1")).isTrue();
+		assertThat(multiFileMap.containsKey("field2")).isTrue();
+		assertThat(multiFileMap.containsKey("field2x")).isTrue();
 		List<MultipartFile> field1Files = multiFileMap.get("field1");
 		assertEquals(2, field1Files.size());
-		assertTrue(field1Files.contains(file1));
+		assertThat(field1Files.contains(file1)).isTrue();
 		assertEquals(file1, multiFileMap.getFirst("field1"));
 		assertEquals(file2, multiFileMap.getFirst("field2"));
 		assertEquals(file2x, multiFileMap.getFirst("field2x"));
@@ -212,8 +212,10 @@ public class CommonsMultipartResolverTests {
 		assertEquals("text2", new String(file2.getBytes()));
 		assertEquals(5, file1.getSize());
 		assertEquals(5, file2.getSize());
-		assertTrue(file1.getInputStream() instanceof ByteArrayInputStream);
-		assertTrue(file2.getInputStream() instanceof ByteArrayInputStream);
+		boolean condition1 = file1.getInputStream() instanceof ByteArrayInputStream;
+		assertThat(condition1).isTrue();
+		boolean condition = file2.getInputStream() instanceof ByteArrayInputStream;
+		assertThat(condition).isTrue();
 		File transfer1 = new File("C:/transfer1");
 		file1.transferTo(transfer1);
 		File transfer2 = new File("C:/transfer2");
@@ -252,9 +254,9 @@ public class CommonsMultipartResolverTests {
 		assertEquals(new String(file2.getBytes(), "UTF-16"), mtb2.getField2());
 
 		resolver.cleanupMultipart(request);
-		assertTrue(((MockFileItem) file1a.getFileItem()).deleted);
-		assertTrue(((MockFileItem) file1b.getFileItem()).deleted);
-		assertTrue(((MockFileItem) file2.getFileItem()).deleted);
+		assertThat(((MockFileItem) file1a.getFileItem()).deleted).isTrue();
+		assertThat(((MockFileItem) file1b.getFileItem()).deleted).isTrue();
+		assertThat(((MockFileItem) file2.getFileItem()).deleted).isTrue();
 
 		resolver.setEmpty(true);
 		request = resolver.resolveMultipart(originalRequest);
@@ -267,7 +269,7 @@ public class CommonsMultipartResolverTests {
 		request = resolver.resolveMultipart(originalRequest);
 		binder.setBindEmptyMultipartFiles(true);
 		binder.bind(request);
-		assertTrue(mtb2.getField2().isEmpty());
+		assertThat(mtb2.getField2().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -279,7 +281,7 @@ public class CommonsMultipartResolverTests {
 		wac.refresh();
 		wac.getServletContext().setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver(wac.getServletContext());
-		assertTrue(resolver.getFileItemFactory().getRepository().getAbsolutePath().endsWith("mytemp"));
+		assertThat(resolver.getFileItemFactory().getRepository().getAbsolutePath().endsWith("mytemp")).isTrue();
 
 		MockFilterConfig filterConfig = new MockFilterConfig(wac.getServletContext(), "filter");
 		filterConfig.addInitParameter("class", "notWritable");
@@ -307,8 +309,8 @@ public class CommonsMultipartResolverTests {
 
 		CommonsMultipartFile file1 = (CommonsMultipartFile) files.get(0);
 		CommonsMultipartFile file2 = (CommonsMultipartFile) files.get(1);
-		assertTrue(((MockFileItem) file1.getFileItem()).deleted);
-		assertTrue(((MockFileItem) file2.getFileItem()).deleted);
+		assertThat(((MockFileItem) file1.getFileItem()).deleted).isTrue();
+		assertThat(((MockFileItem) file2.getFileItem()).deleted).isTrue();
 	}
 
 	@Test
@@ -320,7 +322,7 @@ public class CommonsMultipartResolverTests {
 		wac.getServletContext().setAttribute(WebUtils.TEMP_DIR_CONTEXT_ATTRIBUTE, new File("mytemp"));
 		wac.getServletContext().setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver(wac.getServletContext());
-		assertTrue(resolver.getFileItemFactory().getRepository().getAbsolutePath().endsWith("mytemp"));
+		assertThat(resolver.getFileItemFactory().getRepository().getAbsolutePath().endsWith("mytemp")).isTrue();
 
 		MockFilterConfig filterConfig = new MockFilterConfig(wac.getServletContext(), "filter");
 		filterConfig.addInitParameter("multipartResolverBeanName", "myMultipartResolver");
@@ -359,8 +361,8 @@ public class CommonsMultipartResolverTests {
 		filter.doFilter(originalRequest, response, filterChain);
 		CommonsMultipartFile file1 = (CommonsMultipartFile) files.get(0);
 		CommonsMultipartFile file2 = (CommonsMultipartFile) files.get(1);
-		assertTrue(((MockFileItem) file1.getFileItem()).deleted);
-		assertTrue(((MockFileItem) file2.getFileItem()).deleted);
+		assertThat(((MockFileItem) file1.getFileItem()).deleted).isTrue();
+		assertThat(((MockFileItem) file2.getFileItem()).deleted).isTrue();
 	}
 
 

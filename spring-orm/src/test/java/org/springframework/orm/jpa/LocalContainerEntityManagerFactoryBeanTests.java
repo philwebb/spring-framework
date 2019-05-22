@@ -39,15 +39,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -94,7 +92,7 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		assertSame("EntityManagerFactory reference must be cached after init", emf, cefb.getObject());
 
 		assertNotSame("EMF must be proxied", mockEmf, emf);
-		assertTrue(emf.equals(emf));
+		assertThat(emf.equals(emf)).isTrue();
 
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		bf.setSerializationId("emf-bf");

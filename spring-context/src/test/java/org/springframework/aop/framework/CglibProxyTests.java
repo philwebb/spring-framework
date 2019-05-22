@@ -44,7 +44,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Additional and overridden tests for CGLIB proxies.
@@ -66,7 +65,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	protected Object createProxy(ProxyCreatorSupport as) {
 		as.setProxyTargetClass(true);
 		Object proxy = as.createAopProxy().getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 		return proxy;
 	}
 
@@ -109,7 +108,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		ProtectedMethodTestBean proxy = (ProtectedMethodTestBean) aop.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 		assertEquals(proxy.getClass().getClassLoader(), bean.getClass().getClassLoader());
 		assertEquals("foo", proxy.getString());
 	}
@@ -126,7 +125,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		PackageMethodTestBean proxy = (PackageMethodTestBean) aop.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 		assertEquals(proxy.getClass().getClassLoader(), bean.getClass().getClassLoader());
 		assertEquals("foo", proxy.getString());
 	}
@@ -141,9 +140,11 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(pc);
 
 		Object proxy = aop.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
-		assertTrue(proxy instanceof ITestBean);
-		assertTrue(proxy instanceof TestBean);
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
+		boolean condition1 = proxy instanceof ITestBean;
+		assertThat(condition1).isTrue();
+		boolean condition = proxy instanceof TestBean;
+		assertThat(condition).isTrue();
 
 		TestBean tb = (TestBean) proxy;
 		assertEquals(32, tb.getAge());
@@ -318,7 +319,8 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		cglib = new CglibAopProxy(as);
 
 		ITestBean proxy2 = (ITestBean) cglib.getProxy();
-		assertTrue(proxy2 instanceof Serializable);
+		boolean condition = proxy2 instanceof Serializable;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -337,11 +339,12 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 			proxy.doTest();
 		}
 		catch (Exception ex) {
-			assertTrue("Invalid exception class", ex instanceof ApplicationContextException);
+			boolean condition = ex instanceof ApplicationContextException;
+			assertThat(condition).as("Invalid exception class").isTrue();
 		}
 
-		assertTrue("Catch was not invoked", proxy.isCatchInvoked());
-		assertTrue("Finally was not invoked", proxy.isFinallyInvoked());
+		assertThat(proxy.isCatchInvoked()).as("Catch was not invoked").isTrue();
+		assertThat(proxy.isFinallyInvoked()).as("Finally was not invoked").isTrue();
 	}
 
 	@Test
@@ -363,7 +366,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		pf.setProxyTargetClass(true);
 
 		TestBean proxy = (TestBean) pf.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 
 		proxy.getAge();
 		assertEquals(0, cba.getCalls());
@@ -396,7 +399,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	public void testVarargsWithEnumArray() {
 		ProxyFactory proxyFactory = new ProxyFactory(new MyBean());
 		MyBean proxy = (MyBean) proxyFactory.getProxy();
-		assertTrue(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C));
+		assertThat(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C)).isTrue();
 	}
 
 

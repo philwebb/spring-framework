@@ -31,11 +31,11 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.util.UrlPathHelper;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -118,7 +118,7 @@ public class PathResourceResolverTests {
 		ServletContextResource resource = new ServletContextResource(context, "/webjars/webjar-foo/1.0/foo.js");
 
 		assertFalse(this.resolver.checkResource(resource, classpathLocation));
-		assertTrue(this.resolver.checkResource(resource, servletContextLocation));
+		assertThat(this.resolver.checkResource(resource, servletContextLocation)).isTrue();
 	}
 
 	// SPR-12624
@@ -134,7 +134,7 @@ public class PathResourceResolverTests {
 	@Test
 	public void checkFileLocation() throws Exception {
 		Resource resource = getResource("main.css");
-		assertTrue(this.resolver.checkResource(resource, resource));
+		assertThat(this.resolver.checkResource(resource, resource)).isTrue();
 	}
 
 	// SPR-13241

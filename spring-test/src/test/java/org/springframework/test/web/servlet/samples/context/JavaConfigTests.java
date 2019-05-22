@@ -46,9 +46,9 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -120,7 +120,8 @@ public class JavaConfigTests {
 
 		ApplicationContext parent = wac.getParent();
 		assertNotNull(parent);
-		assertTrue(parent instanceof WebApplicationContext);
+		boolean condition = parent instanceof WebApplicationContext;
+		assertThat(condition).isTrue();
 		WebApplicationContext root = (WebApplicationContext) parent;
 
 		ServletContext childServletContext = wac.getServletContext();

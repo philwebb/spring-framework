@@ -47,12 +47,12 @@ import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.post;
@@ -95,7 +95,7 @@ public class HttpEntityMethodArgumentResolverTests {
 	}
 
 	private void testSupports(MethodParameter parameter) {
-		assertTrue(this.resolver.supportsParameter(parameter));
+		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
 	}
 
 	@Test
@@ -314,8 +314,7 @@ public class HttpEntityMethodArgumentResolverTests {
 		Object value = result.block(Duration.ofSeconds(5));
 
 		assertNotNull(value);
-		assertTrue("Unexpected return value type: " + value.getClass(),
-				param.getParameterType().isAssignableFrom(value.getClass()));
+		assertThat(param.getParameterType().isAssignableFrom(value.getClass())).as("Unexpected return value type: " + value.getClass()).isTrue();
 
 		return (T) value;
 	}

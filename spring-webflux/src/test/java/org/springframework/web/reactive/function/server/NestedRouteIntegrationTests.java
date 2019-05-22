@@ -29,8 +29,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.pattern.PathPattern;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.all;
 import static org.springframework.web.reactive.function.server.RequestPredicates.method;
@@ -134,8 +134,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 			Map<String, String> pathVariables = request.pathVariables();
 			Map<String, String> attributePathVariables =
 					(Map<String, String>) request.attributes().get(RouterFunctions.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-			assertTrue( (pathVariables.equals(attributePathVariables))
-					|| (pathVariables.isEmpty() && (attributePathVariables == null)));
+			assertThat((pathVariables.equals(attributePathVariables))
+						|| (pathVariables.isEmpty() && (attributePathVariables == null))).isTrue();
 
 			PathPattern pathPattern = matchingPattern(request);
 			String pattern = pathPattern != null ? pathPattern.getPatternString() : "";

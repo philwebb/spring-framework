@@ -23,9 +23,9 @@ import org.junit.Test;
 
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Thomas Risberg
@@ -40,9 +40,10 @@ public class FileEditorTests {
 		fileEditor.setAsText("classpath:" + ClassUtils.classPackageAsResourcePath(getClass()) + "/" +
 				ClassUtils.getShortName(getClass()) + ".class");
 		Object value = fileEditor.getValue();
-		assertTrue(value instanceof File);
+		boolean condition = value instanceof File;
+		assertThat(condition).isTrue();
 		File file = (File) value;
-		assertTrue(file.exists());
+		assertThat(file.exists()).isTrue();
 	}
 
 	@Test
@@ -57,9 +58,11 @@ public class FileEditorTests {
 		PropertyEditor fileEditor = new FileEditor();
 		fileEditor.setAsText("file:no_way_this_file_is_found.doc");
 		Object value = fileEditor.getValue();
-		assertTrue(value instanceof File);
+		boolean condition1 = value instanceof File;
+		assertThat(condition1).isTrue();
 		File file = (File) value;
-		assertTrue(!file.exists());
+		boolean condition = !file.exists();
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -67,9 +70,11 @@ public class FileEditorTests {
 		PropertyEditor fileEditor = new FileEditor();
 		fileEditor.setAsText("/no_way_this_file_is_found.doc");
 		Object value = fileEditor.getValue();
-		assertTrue(value instanceof File);
+		boolean condition1 = value instanceof File;
+		assertThat(condition1).isTrue();
 		File file = (File) value;
-		assertTrue(!file.exists());
+		boolean condition = !file.exists();
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -79,11 +84,12 @@ public class FileEditorTests {
 				ClassUtils.getShortName(getClass()) + ".class";
 		fileEditor.setAsText(fileName);
 		Object value = fileEditor.getValue();
-		assertTrue(value instanceof File);
+		boolean condition = value instanceof File;
+		assertThat(condition).isTrue();
 		File file = (File) value;
-		assertTrue(file.exists());
+		assertThat(file.exists()).isTrue();
 		String absolutePath = file.getAbsolutePath().replace('\\', '/');
-		assertTrue(absolutePath.endsWith(fileName));
+		assertThat(absolutePath.endsWith(fileName)).isTrue();
 	}
 
 	@Test
@@ -93,11 +99,12 @@ public class FileEditorTests {
 				ClassUtils.getShortName(getClass()) + ".clazz";
 		fileEditor.setAsText(fileName);
 		Object value = fileEditor.getValue();
-		assertTrue(value instanceof File);
+		boolean condition = value instanceof File;
+		assertThat(condition).isTrue();
 		File file = (File) value;
 		assertFalse(file.exists());
 		String absolutePath = file.getAbsolutePath().replace('\\', '/');
-		assertTrue(absolutePath.endsWith(fileName));
+		assertThat(absolutePath.endsWith(fileName)).isTrue();
 	}
 
 }

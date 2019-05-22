@@ -27,8 +27,8 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -51,7 +51,8 @@ public class SpringBeanAutowiringSupportTests {
 
 		InjectionTarget target = new InjectionTarget();
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(target, sc);
-		assertTrue(target.testBean instanceof TestBean);
+		boolean condition = target.testBean instanceof TestBean;
+		assertThat(condition).isTrue();
 		assertEquals("tb", target.name);
 	}
 

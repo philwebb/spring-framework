@@ -29,10 +29,10 @@ import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link org.springframework.http.RequestEntity}.
@@ -54,7 +54,7 @@ public class RequestEntityTests {
 
 		assertNotNull(requestEntity);
 		assertEquals(HttpMethod.GET, requestEntity.getMethod());
-		assertTrue(requestEntity.getHeaders().containsKey(headerName));
+		assertThat(requestEntity.getHeaders().containsKey(headerName)).isTrue();
 		assertEquals(headerValue, requestEntity.getHeaders().getFirst(headerName));
 		assertEquals(entity, requestEntity.getBody());
 	}
@@ -89,7 +89,7 @@ public class RequestEntityTests {
 
 		assertNotNull(requestEntity);
 		assertEquals(HttpMethod.GET, requestEntity.getMethod());
-		assertTrue(requestEntity.getHeaders().containsKey("Accept"));
+		assertThat(requestEntity.getHeaders().containsKey("Accept")).isTrue();
 		assertEquals("image/gif, image/jpeg, image/png", requestEntity.getHeaders().getFirst("Accept"));
 		assertNull(requestEntity.getBody());
 	}

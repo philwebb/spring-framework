@@ -47,9 +47,9 @@ import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.theme.FixedThemeResolver;
 import org.springframework.web.servlet.view.DummyMacroRequestContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static temp.XAssert.fail;
 
 /**
@@ -101,7 +101,8 @@ public class FreeMarkerMacroTests {
 			protected void processTemplate(Template template, SimpleHash fmModel, HttpServletResponse response)
 					throws TemplateException {
 				Map model = fmModel.toMap();
-				assertTrue(model.get(FreeMarkerView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE) instanceof RequestContext);
+				boolean condition = model.get(FreeMarkerView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE) instanceof RequestContext;
+				assertThat(condition).isTrue();
 				RequestContext rc = (RequestContext) model.get(FreeMarkerView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE);
 				BindStatus status = rc.getBindStatus("tb.name");
 				assertEquals("name", status.getExpression());
@@ -138,8 +139,9 @@ public class FreeMarkerMacroTests {
 			fv.render(model, request, response);
 		}
 		catch (Exception ex) {
-			assertTrue(ex instanceof ServletException);
-			assertTrue(ex.getMessage().contains(FreeMarkerView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE));
+			boolean condition = ex instanceof ServletException;
+			assertThat(condition).isTrue();
+			assertThat(ex.getMessage().contains(FreeMarkerView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE)).isTrue();
 		}
 	}
 
@@ -256,17 +258,17 @@ public class FreeMarkerMacroTests {
 	@Test
 	public void testForm15() throws Exception {
 		String output = getMacroOutput("FORM15");
-		assertTrue("Wrong output: " + output, output.startsWith("<input type=\"hidden\" name=\"_name\" value=\"on\"/>"));
-		assertTrue("Wrong output: " + output, output.contains("<input type=\"checkbox\" id=\"name\" name=\"name\" />"));
+		assertThat(output.startsWith("<input type=\"hidden\" name=\"_name\" value=\"on\"/>")).as("Wrong output: " + output).isTrue();
+		assertThat(output.contains("<input type=\"checkbox\" id=\"name\" name=\"name\" />")).as("Wrong output: " + output).isTrue();
 	}
 
 	@Test
 	public void testForm16() throws Exception {
 		String output = getMacroOutput("FORM16");
-		assertTrue("Wrong output: " + output, output.startsWith(
-				"<input type=\"hidden\" name=\"_jedi\" value=\"on\"/>"));
-		assertTrue("Wrong output: " + output, output.contains(
-				"<input type=\"checkbox\" id=\"jedi\" name=\"jedi\" checked=\"checked\" />"));
+		assertThat(output.startsWith(
+				"<input type=\"hidden\" name=\"_jedi\" value=\"on\"/>")).as("Wrong output: " + output).isTrue();
+		assertThat(output.contains(
+				"<input type=\"checkbox\" id=\"jedi\" name=\"jedi\" checked=\"checked\" />")).as("Wrong output: " + output).isTrue();
 	}
 
 	@Test
@@ -279,10 +281,10 @@ public class FreeMarkerMacroTests {
 	@Test
 	public void testForm18() throws Exception {
 		String output = getMacroOutput("FORM18");
-		assertTrue("Wrong output: " + output, output.startsWith(
-				"<input type=\"hidden\" name=\"_spouses[0].jedi\" value=\"on\"/>"));
-		assertTrue("Wrong output: " + output, output.contains(
-				"<input type=\"checkbox\" id=\"spouses0.jedi\" name=\"spouses[0].jedi\" checked=\"checked\" />"));
+		assertThat(output.startsWith(
+				"<input type=\"hidden\" name=\"_spouses[0].jedi\" value=\"on\"/>")).as("Wrong output: " + output).isTrue();
+		assertThat(output.contains(
+				"<input type=\"checkbox\" id=\"spouses0.jedi\" name=\"spouses[0].jedi\" checked=\"checked\" />")).as("Wrong output: " + output).isTrue();
 	}
 
 
@@ -343,7 +345,7 @@ public class FreeMarkerMacroTests {
 
 	private String fetchMacro(String name) throws Exception {
 		ClassPathResource resource = new ClassPathResource("test.ftl", getClass());
-		assertTrue(resource.exists());
+		assertThat(resource.exists()).isTrue();
 		String all = FileCopyUtils.copyToString(new InputStreamReader(resource.getInputStream()));
 		all = all.replace("\r\n", "\n");
 		String[] macros = StringUtils.delimitedListToStringArray(all, "\n\n");

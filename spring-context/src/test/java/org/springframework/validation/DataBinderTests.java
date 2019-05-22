@@ -74,7 +74,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -88,7 +87,7 @@ public class DataBinderTests {
 	public void testBindingNoErrors() throws BindException {
 		TestBean rod = new TestBean();
 		DataBinder binder = new DataBinder(rod, "person");
-		assertTrue(binder.isIgnoreUnknownFields());
+		assertThat(binder.isIgnoreUnknownFields()).isTrue();
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.add("name", "Rod");
 		pvs.add("age", "032");
@@ -97,13 +96,13 @@ public class DataBinderTests {
 		binder.bind(pvs);
 		binder.close();
 
-		assertTrue("changed name correctly", rod.getName().equals("Rod"));
-		assertTrue("changed age correctly", rod.getAge() == 32);
+		assertThat(rod.getName().equals("Rod")).as("changed name correctly").isTrue();
+		assertThat(rod.getAge() == 32).as("changed age correctly").isTrue();
 
 		Map<?, ?> map = binder.getBindingResult().getModel();
-		assertTrue("There is one element in map", map.size() == 2);
+		assertThat(map.size() == 2).as("There is one element in map").isTrue();
 		TestBean tb = (TestBean) map.get("person");
-		assertTrue("Same object", tb.equals(rod));
+		assertThat(tb.equals(rod)).as("Same object").isTrue();
 
 		BindingResult other = new BeanPropertyBindingResult(rod, "person");
 		assertEquals(other, binder.getBindingResult());
@@ -115,14 +114,15 @@ public class DataBinderTests {
 		assertEquals(binder.getBindingResult(), ex);
 
 		other.reject("xxx");
-		assertTrue(!other.equals(binder.getBindingResult()));
+		boolean condition = !other.equals(binder.getBindingResult());
+		assertThat(condition).isTrue();
 	}
 
 	@Test
 	public void testBindingWithDefaultConversionNoErrors() throws BindException {
 		TestBean rod = new TestBean();
 		DataBinder binder = new DataBinder(rod, "person");
-		assertTrue(binder.isIgnoreUnknownFields());
+		assertThat(binder.isIgnoreUnknownFields()).isTrue();
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.add("name", "Rod");
 		pvs.add("jedi", "on");
@@ -131,14 +131,14 @@ public class DataBinderTests {
 		binder.close();
 
 		assertEquals("Rod", rod.getName());
-		assertTrue(rod.isJedi());
+		assertThat(rod.isJedi()).isTrue();
 	}
 
 	@Test
 	public void testNestedBindingWithDefaultConversionNoErrors() throws BindException {
 		TestBean rod = new TestBean(new TestBean());
 		DataBinder binder = new DataBinder(rod, "person");
-		assertTrue(binder.isIgnoreUnknownFields());
+		assertThat(binder.isIgnoreUnknownFields()).isTrue();
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.add("spouse.name", "Kerry");
 		pvs.add("spouse.jedi", "on");
@@ -147,7 +147,7 @@ public class DataBinderTests {
 		binder.close();
 
 		assertEquals("Kerry", rod.getSpouse().getName());
-		assertTrue(((TestBean) rod.getSpouse()).isJedi());
+		assertThat(((TestBean) rod.getSpouse()).isJedi()).isTrue();
 	}
 
 	@Test
@@ -387,7 +387,7 @@ public class DataBinderTests {
 			binder.bind(pvs);
 			assertEquals(new Float(0.0), tb.getMyFloat());
 			assertEquals("1x2", binder.getBindingResult().getFieldValue("myFloat"));
-			assertTrue(binder.getBindingResult().hasFieldErrors("myFloat"));
+			assertThat(binder.getBindingResult().hasFieldErrors("myFloat")).isTrue();
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -417,7 +417,7 @@ public class DataBinderTests {
 		pvs.add("name", "test");
 
 		binder.bind(pvs);
-		assertTrue(binder.getBindingResult().hasFieldErrors("name"));
+		assertThat(binder.getBindingResult().hasFieldErrors("name")).isTrue();
 		assertEquals("typeMismatch", binder.getBindingResult().getFieldError("name").getCode());
 		assertEquals("test", binder.getBindingResult().getFieldValue("name"));
 	}
@@ -445,7 +445,7 @@ public class DataBinderTests {
 		pvs.add("name", "test");
 
 		binder.bind(pvs);
-		assertTrue(binder.getBindingResult().hasFieldErrors("name"));
+		assertThat(binder.getBindingResult().hasFieldErrors("name")).isTrue();
 		assertEquals("typeMismatch", binder.getBindingResult().getFieldError("name").getCode());
 		assertEquals("test", binder.getBindingResult().getFieldValue("name"));
 	}
@@ -486,9 +486,9 @@ public class DataBinderTests {
 		LocaleContextHolder.setLocale(Locale.GERMAN);
 		try {
 			binder.bind(pvs);
-			assertTrue(tb.getIntegerList().isEmpty());
+			assertThat(tb.getIntegerList().isEmpty()).isTrue();
 			assertEquals("1x2", binder.getBindingResult().getFieldValue("integerList[0]"));
-			assertTrue(binder.getBindingResult().hasFieldErrors("integerList[0]"));
+			assertThat(binder.getBindingResult().hasFieldErrors("integerList[0]")).isTrue();
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -545,7 +545,7 @@ public class DataBinderTests {
 			binder.bind(pvs);
 			assertEquals(new Float(0.0), tb.getMyFloat());
 			assertEquals("1x2", binder.getBindingResult().getFieldValue("myFloat"));
-			assertTrue(binder.getBindingResult().hasFieldErrors("myFloat"));
+			assertThat(binder.getBindingResult().hasFieldErrors("myFloat")).isTrue();
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -574,7 +574,7 @@ public class DataBinderTests {
 			editor = binder.getBindingResult().findEditor("myFloat", null);
 			assertNotNull(editor);
 			editor.setAsText("1,6");
-			assertTrue(((Number) editor.getValue()).floatValue() == 1.6f);
+			assertThat(((Number) editor.getValue()).floatValue() == 1.6f).isTrue();
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -594,7 +594,7 @@ public class DataBinderTests {
 			binder.bind(pvs);
 			assertEquals(new Float(0.0), tb.getMyFloat());
 			assertEquals("1x2", binder.getBindingResult().getFieldValue("myFloat"));
-			assertTrue(binder.getBindingResult().hasFieldErrors("myFloat"));
+			assertThat(binder.getBindingResult().hasFieldErrors("myFloat")).isTrue();
 			assertEquals("typeMismatch", binder.getBindingResult().getFieldError("myFloat").getCode());
 		}
 		finally {
@@ -622,7 +622,7 @@ public class DataBinderTests {
 		pvs.add("name", "test");
 
 		binder.bind(pvs);
-		assertTrue(binder.getBindingResult().hasFieldErrors("name"));
+		assertThat(binder.getBindingResult().hasFieldErrors("name")).isTrue();
 		assertEquals("test", binder.getBindingResult().getFieldValue("name"));
 		assertEquals("typeMismatch", binder.getBindingResult().getFieldError("name").getCode());
 	}
@@ -647,7 +647,7 @@ public class DataBinderTests {
 		pvs.add("name", "test");
 
 		binder.bind(pvs);
-		assertTrue(binder.getBindingResult().hasFieldErrors("name"));
+		assertThat(binder.getBindingResult().hasFieldErrors("name")).isTrue();
 		assertEquals("test", binder.getBindingResult().getFieldValue("name"));
 		assertEquals("typeMismatch", binder.getBindingResult().getFieldError("name").getCode());
 	}
@@ -676,8 +676,8 @@ public class DataBinderTests {
 
 		binder.bind(pvs);
 		binder.close();
-		assertTrue("changed name correctly", rod.getName().equals("Rod"));
-		assertTrue("did not change age", rod.getAge() == 0);
+		assertThat(rod.getName().equals("Rod")).as("changed name correctly").isTrue();
+		assertThat(rod.getAge() == 0).as("did not change age").isTrue();
 	}
 
 	@Test
@@ -691,8 +691,8 @@ public class DataBinderTests {
 
 		binder.bind(pvs);
 		binder.close();
-		assertTrue("changed name correctly", rod.getName().equals("Rod"));
-		assertTrue("did not change age", rod.getAge() == 0);
+		assertThat(rod.getName().equals("Rod")).as("changed name correctly").isTrue();
+		assertThat(rod.getAge() == 0).as("did not change age").isTrue();
 		String[] disallowedFields = binder.getBindingResult().getSuppressedFields();
 		assertEquals(1, disallowedFields.length);
 		assertEquals("age", disallowedFields[0]);
@@ -710,8 +710,8 @@ public class DataBinderTests {
 
 		binder.bind(pvs);
 		binder.close();
-		assertTrue("changed name correctly", rod.getName().equals("Rod"));
-		assertTrue("did not change age", rod.getAge() == 0);
+		assertThat(rod.getName().equals("Rod")).as("changed name correctly").isTrue();
+		assertThat(rod.getAge() == 0).as("did not change age").isTrue();
 		String[] disallowedFields = binder.getBindingResult().getSuppressedFields();
 		assertEquals(1, disallowedFields.length);
 		assertEquals("age", disallowedFields[0]);
@@ -729,8 +729,8 @@ public class DataBinderTests {
 
 		binder.bind(pvs);
 		binder.close();
-		assertTrue("changed name correctly", rod.getName().equals("Rod"));
-		assertTrue("did not change age", rod.getAge() == 0);
+		assertThat(rod.getName().equals("Rod")).as("changed name correctly").isTrue();
+		assertThat(rod.getAge() == 0).as("did not change age").isTrue();
 		String[] disallowedFields = binder.getBindingResult().getSuppressedFields();
 		assertEquals(1, disallowedFields.length);
 		assertEquals("age", disallowedFields[0]);
@@ -750,17 +750,17 @@ public class DataBinderTests {
 		binder.bind(pvs);
 		binder.close();
 
-		assertTrue("changed name correctly", "Rod".equals(rod.getName()));
-		assertTrue("changed touchy correctly", "Rod".equals(rod.getTouchy()));
-		assertTrue("did not change age", rod.getAge() == 0);
+		assertThat("Rod".equals(rod.getName())).as("changed name correctly").isTrue();
+		assertThat("Rod".equals(rod.getTouchy())).as("changed touchy correctly").isTrue();
+		assertThat(rod.getAge() == 0).as("did not change age").isTrue();
 		String[] disallowedFields = binder.getBindingResult().getSuppressedFields();
 		assertEquals(1, disallowedFields.length);
 		assertEquals("age", disallowedFields[0]);
 
 		Map<?,?> m = binder.getBindingResult().getModel();
-		assertTrue("There is one element in map", m.size() == 2);
+		assertThat(m.size() == 2).as("There is one element in map").isTrue();
 		TestBean tb = (TestBean) m.get("person");
-		assertTrue("Same object", tb.equals(rod));
+		assertThat(tb.equals(rod)).as("Same object").isTrue();
 	}
 
 	@Test
@@ -784,8 +784,8 @@ public class DataBinderTests {
 		assertNull(rod.getSomeMap().get("key4"));
 		String[] disallowedFields = binder.getBindingResult().getSuppressedFields();
 		assertEquals(2, disallowedFields.length);
-		assertTrue(ObjectUtils.containsElement(disallowedFields, "someMap[key3]"));
-		assertTrue(ObjectUtils.containsElement(disallowedFields, "someMap[key4]"));
+		assertThat(ObjectUtils.containsElement(disallowedFields, "someMap[key3]")).isTrue();
+		assertThat(ObjectUtils.containsElement(disallowedFields, "someMap[key4]")).isTrue();
 	}
 
 	/**
@@ -923,7 +923,7 @@ public class DataBinderTests {
 		assertEquals("value", binder.getBindingResult().getFieldError("touchy").getRejectedValue());
 		assertEquals("value", tb.getTouchy());
 
-		assertTrue(binder.getBindingResult().hasFieldErrors("spouse.*"));
+		assertThat(binder.getBindingResult().hasFieldErrors("spouse.*")).isTrue();
 		assertEquals(1, binder.getBindingResult().getFieldErrorCount("spouse.*"));
 		assertEquals("spouse.name", binder.getBindingResult().getFieldError("spouse.*").getField());
 	}
@@ -1019,7 +1019,7 @@ public class DataBinderTests {
 		assertEquals("value", binder.getBindingResult().getFieldError("touchy").getRejectedValue());
 		assertEquals("value", tb.getTouchy());
 
-		assertTrue(binder.getBindingResult().hasFieldErrors("spouse.*"));
+		assertThat(binder.getBindingResult().hasFieldErrors("spouse.*")).isTrue();
 		assertEquals(1, binder.getBindingResult().getFieldErrorCount("spouse.*"));
 		assertEquals("spouse.name", binder.getBindingResult().getFieldError("spouse.*").getField());
 	}
@@ -1179,9 +1179,11 @@ public class DataBinderTests {
 		assertEquals("spouse.", errors.getNestedPath());
 
 		assertEquals(1, errors.getErrorCount());
-		assertTrue(!errors.hasGlobalErrors());
+		boolean condition1 = !errors.hasGlobalErrors();
+		assertThat(condition1).isTrue();
 		assertEquals(1, errors.getFieldErrorCount("age"));
-		assertTrue(!errors.hasFieldErrors("name"));
+		boolean condition = !errors.hasFieldErrors("name");
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -1200,7 +1202,7 @@ public class DataBinderTests {
 		spouseValidator.validate(tb.getSpouse(), errors);
 
 		errors.setNestedPath("");
-		assertTrue(errors.hasErrors());
+		assertThat(errors.hasErrors()).isTrue();
 		assertEquals(6, errors.getErrorCount());
 
 		assertEquals(2, errors.getGlobalErrorCount());
@@ -1215,7 +1217,7 @@ public class DataBinderTests {
 		assertEquals("msg", (errors.getGlobalErrors().get(1)).getDefaultMessage());
 		assertEquals("arg", (errors.getGlobalErrors().get(1)).getArguments()[0]);
 
-		assertTrue(errors.hasFieldErrors());
+		assertThat(errors.hasFieldErrors()).isTrue();
 		assertEquals(4, errors.getFieldErrorCount());
 		assertEquals("TOO_YOUNG", errors.getFieldError().getCode());
 		assertEquals("TOO_YOUNG", (errors.getFieldErrors().get(0)).getCode());
@@ -1227,7 +1229,7 @@ public class DataBinderTests {
 		assertEquals("TOO_YOUNG", (errors.getFieldErrors().get(3)).getCode());
 		assertEquals("spouse.age", (errors.getFieldErrors().get(3)).getField());
 
-		assertTrue(errors.hasFieldErrors("age"));
+		assertThat(errors.hasFieldErrors("age")).isTrue();
 		assertEquals(2, errors.getFieldErrorCount("age"));
 		assertEquals("TOO_YOUNG", errors.getFieldError("age").getCode());
 		assertEquals("TOO_YOUNG", (errors.getFieldErrors("age").get(0)).getCode());
@@ -1236,7 +1238,7 @@ public class DataBinderTests {
 		assertEquals(new Integer(0), (errors.getFieldErrors("age").get(0)).getRejectedValue());
 		assertEquals("AGE_NOT_ODD", (errors.getFieldErrors("age").get(1)).getCode());
 
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals(1, errors.getFieldErrorCount("name"));
 		assertEquals("NOT_ROD", errors.getFieldError("name").getCode());
 		assertEquals("NOT_ROD.tb.name", errors.getFieldError("name").getCodes()[0]);
@@ -1246,7 +1248,7 @@ public class DataBinderTests {
 		assertEquals("name", (errors.getFieldErrors("name").get(0)).getField());
 		assertEquals(null, (errors.getFieldErrors("name").get(0)).getRejectedValue());
 
-		assertTrue(errors.hasFieldErrors("spouse.age"));
+		assertThat(errors.hasFieldErrors("spouse.age")).isTrue();
 		assertEquals(1, errors.getFieldErrorCount("spouse.age"));
 		assertEquals("TOO_YOUNG", errors.getFieldError("spouse.age").getCode());
 		assertEquals("tb", (errors.getFieldErrors("spouse.age").get(0)).getObjectName());
@@ -1272,7 +1274,7 @@ public class DataBinderTests {
 		spouseValidator.validate(tb.getSpouse(), errors);
 
 		errors.setNestedPath("");
-		assertTrue(errors.hasErrors());
+		assertThat(errors.hasErrors()).isTrue();
 		assertEquals(6, errors.getErrorCount());
 
 		assertEquals(2, errors.getGlobalErrorCount());
@@ -1287,7 +1289,7 @@ public class DataBinderTests {
 		assertEquals("msg", (errors.getGlobalErrors().get(1)).getDefaultMessage());
 		assertEquals("arg", (errors.getGlobalErrors().get(1)).getArguments()[0]);
 
-		assertTrue(errors.hasFieldErrors());
+		assertThat(errors.hasFieldErrors()).isTrue();
 		assertEquals(4, errors.getFieldErrorCount());
 		assertEquals("validation.TOO_YOUNG", errors.getFieldError().getCode());
 		assertEquals("validation.TOO_YOUNG", (errors.getFieldErrors().get(0)).getCode());
@@ -1299,7 +1301,7 @@ public class DataBinderTests {
 		assertEquals("validation.TOO_YOUNG", (errors.getFieldErrors().get(3)).getCode());
 		assertEquals("spouse.age", (errors.getFieldErrors().get(3)).getField());
 
-		assertTrue(errors.hasFieldErrors("age"));
+		assertThat(errors.hasFieldErrors("age")).isTrue();
 		assertEquals(2, errors.getFieldErrorCount("age"));
 		assertEquals("validation.TOO_YOUNG", errors.getFieldError("age").getCode());
 		assertEquals("validation.TOO_YOUNG", (errors.getFieldErrors("age").get(0)).getCode());
@@ -1308,7 +1310,7 @@ public class DataBinderTests {
 		assertEquals(new Integer(0), (errors.getFieldErrors("age").get(0)).getRejectedValue());
 		assertEquals("validation.AGE_NOT_ODD", (errors.getFieldErrors("age").get(1)).getCode());
 
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals(1, errors.getFieldErrorCount("name"));
 		assertEquals("validation.NOT_ROD", errors.getFieldError("name").getCode());
 		assertEquals("validation.NOT_ROD.tb.name", errors.getFieldError("name").getCodes()[0]);
@@ -1318,7 +1320,7 @@ public class DataBinderTests {
 		assertEquals("name", (errors.getFieldErrors("name").get(0)).getField());
 		assertEquals(null, (errors.getFieldErrors("name").get(0)).getRejectedValue());
 
-		assertTrue(errors.hasFieldErrors("spouse.age"));
+		assertThat(errors.hasFieldErrors("spouse.age")).isTrue();
 		assertEquals(1, errors.getFieldErrorCount("spouse.age"));
 		assertEquals("validation.TOO_YOUNG", errors.getFieldError("spouse.age").getCode());
 		assertEquals("tb", (errors.getFieldErrors("spouse.age").get(0)).getObjectName());
@@ -1337,7 +1339,7 @@ public class DataBinderTests {
 		spouseValidator.validate(tb.getSpouse(), errors);
 		errors.setNestedPath("");
 
-		assertTrue(errors.hasFieldErrors("spouse"));
+		assertThat(errors.hasFieldErrors("spouse")).isTrue();
 		assertEquals(1, errors.getFieldErrorCount("spouse"));
 		assertEquals("SPOUSE_NOT_AVAILABLE", errors.getFieldError("spouse").getCode());
 		assertEquals("tb", (errors.getFieldErrors("spouse").get(0)).getObjectName());
@@ -1352,7 +1354,7 @@ public class DataBinderTests {
 		Validator spouseValidator = new SpouseValidator();
 		spouseValidator.validate(tb, errors);
 
-		assertTrue(errors.hasGlobalErrors());
+		assertThat(errors.hasGlobalErrors()).isTrue();
 		assertEquals(1, errors.getGlobalErrorCount());
 		assertEquals("SPOUSE_NOT_AVAILABLE", errors.getGlobalError().getCode());
 		assertEquals("tb", (errors.getGlobalErrors().get(0)).getObjectName());
@@ -1373,11 +1375,12 @@ public class DataBinderTests {
 		binder.bind(pvs);
 
 		assertEquals(tb.getSet(), binder.getBindingResult().getFieldValue("set"));
-		assertTrue(tb.getSet() instanceof TreeSet);
+		boolean condition = tb.getSet() instanceof TreeSet;
+		assertThat(condition).isTrue();
 		assertEquals(3, tb.getSet().size());
-		assertTrue(tb.getSet().contains(new Integer(10)));
-		assertTrue(tb.getSet().contains(new Integer(20)));
-		assertTrue(tb.getSet().contains(new Integer(30)));
+		assertThat(tb.getSet().contains(new Integer(10))).isTrue();
+		assertThat(tb.getSet().contains(new Integer(20))).isTrue();
+		assertThat(tb.getSet().contains(new Integer(30))).isTrue();
 
 		pvs = new MutablePropertyValues();
 		pvs.add("set", null);
@@ -1395,8 +1398,9 @@ public class DataBinderTests {
 		pvs.add("set", null);
 		binder.bind(pvs);
 
-		assertTrue(tb.getSet() instanceof TreeSet);
-		assertTrue(tb.getSet().isEmpty());
+		boolean condition = tb.getSet() instanceof TreeSet;
+		assertThat(condition).isTrue();
+		assertThat(tb.getSet().isEmpty()).isTrue();
 	}
 
 	@Test
@@ -1716,7 +1720,8 @@ public class DataBinderTests {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.add("stringArray", "a1-b2");
 		binder.bind(pvs);
-		assertTrue(!binder.getBindingResult().hasErrors());
+		boolean condition = !binder.getBindingResult().hasErrors();
+		assertThat(condition).isTrue();
 		assertEquals(2, tb.getStringArray().length);
 		assertEquals("a1", tb.getStringArray()[0]);
 		assertEquals("b2", tb.getStringArray()[1]);
@@ -1735,7 +1740,8 @@ public class DataBinderTests {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.add("stringArray", new String[] {"a1", "b2"});
 		binder.bind(pvs);
-		assertTrue(!binder.getBindingResult().hasErrors());
+		boolean condition = !binder.getBindingResult().hasErrors();
+		assertThat(condition).isTrue();
 		assertEquals(2, tb.getStringArray().length);
 		assertEquals("Xa1", tb.getStringArray()[0]);
 		assertEquals("Xb2", tb.getStringArray()[1]);
@@ -1840,14 +1846,14 @@ public class DataBinderTests {
 		ObjectInputStream ois = new ObjectInputStream(bais);
 
 		BindException ex2 = (BindException) ois.readObject();
-		assertTrue(ex2.hasGlobalErrors());
+		assertThat(ex2.hasGlobalErrors()).isTrue();
 		assertEquals("invalid", ex2.getGlobalError().getCode());
-		assertTrue(ex2.hasFieldErrors("age"));
+		assertThat(ex2.hasFieldErrors("age")).isTrue();
 		assertEquals("invalidField", ex2.getFieldError("age").getCode());
 		assertEquals(new Integer(99), ex2.getFieldValue("age"));
 
 		ex2.rejectValue("name", "invalidField", "someMessage");
-		assertTrue(ex2.hasFieldErrors("name"));
+		assertThat(ex2.hasFieldErrors("name")).isTrue();
 		assertEquals("invalidField", ex2.getFieldError("name").getCode());
 		assertEquals("myName", ex2.getFieldValue("name"));
 	}

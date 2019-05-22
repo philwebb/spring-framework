@@ -42,8 +42,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link PrintingResultHandler}.
@@ -170,8 +170,8 @@ public class PrintingResultHandlerTests {
 		List<String> cookieValues = this.response.getHeaders("Set-Cookie");
 		assertEquals(2, cookieValues.size());
 		assertEquals("cookie=cookieValue", cookieValues.get(0));
-		assertTrue("Actual: " + cookieValues.get(1), cookieValues.get(1).startsWith(
-				"enigma=42; Path=/crumbs; Domain=.example.com; Max-Age=1234; Expires="));
+		assertThat(cookieValues.get(1).startsWith(
+				"enigma=42; Path=/crumbs; Domain=.example.com; Max-Age=1234; Expires=")).as("Actual: " + cookieValues.get(1)).isTrue();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("header", "headerValue");
@@ -193,14 +193,14 @@ public class PrintingResultHandlerTests {
 		assertEquals(2, cookies.length);
 		String cookie1 = cookies[0];
 		String cookie2 = cookies[1];
-		assertTrue(cookie1.startsWith("[" + Cookie.class.getSimpleName()));
-		assertTrue(cookie1.contains("name = 'cookie', value = 'cookieValue'"));
-		assertTrue(cookie1.endsWith("]"));
-		assertTrue(cookie2.startsWith("[" + Cookie.class.getSimpleName()));
-		assertTrue(cookie2.contains("name = 'enigma', value = '42', " +
+		assertThat(cookie1.startsWith("[" + Cookie.class.getSimpleName())).isTrue();
+		assertThat(cookie1.contains("name = 'cookie', value = 'cookieValue'")).isTrue();
+		assertThat(cookie1.endsWith("]")).isTrue();
+		assertThat(cookie2.startsWith("[" + Cookie.class.getSimpleName())).isTrue();
+		assertThat(cookie2.contains("name = 'enigma', value = '42', " +
 				"comment = 'This is a comment', domain = '.example.com', maxAge = 1234, " +
-				"path = '/crumbs', secure = true, version = 0, httpOnly = true"));
-		assertTrue(cookie2.endsWith("]"));
+				"path = '/crumbs', secure = true, version = 0, httpOnly = true")).isTrue();
+		assertThat(cookie2.endsWith("]")).isTrue();
 	}
 
 	@Test
@@ -338,7 +338,7 @@ public class PrintingResultHandlerTests {
 
 	private void assertValue(String heading, String label, Object value) {
 		Map<String, Map<String, Object>> printedValues = this.handler.getPrinter().printedValues;
-		assertTrue("Heading '" + heading + "' not printed", printedValues.containsKey(heading));
+		assertThat(printedValues.containsKey(heading)).as("Heading '" + heading + "' not printed").isTrue();
 		assertEquals("For label '" + label + "' under heading '" + heading + "' =>", value,
 				printedValues.get(heading).get(label));
 	}

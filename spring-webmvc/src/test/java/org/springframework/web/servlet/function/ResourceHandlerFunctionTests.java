@@ -37,10 +37,10 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -75,7 +75,8 @@ public class ResourceHandlerFunctionTests {
 
 		ServerResponse response = this.handlerFunction.handle(request);
 		assertEquals(HttpStatus.OK, response.statusCode());
-		assertTrue(response instanceof EntityResponse);
+		boolean condition = response instanceof EntityResponse;
+		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
 		assertEquals(this.resource, entityResponse.entity());
@@ -99,7 +100,8 @@ public class ResourceHandlerFunctionTests {
 
 		ServerResponse response = this.handlerFunction.handle(request);
 		assertEquals(HttpStatus.OK, response.statusCode());
-		assertTrue(response instanceof EntityResponse);
+		boolean condition = response instanceof EntityResponse;
+		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
 		assertEquals(this.resource.getFilename(), entityResponse.entity().getFilename());

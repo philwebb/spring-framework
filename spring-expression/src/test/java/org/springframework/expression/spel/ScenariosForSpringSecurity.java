@@ -35,8 +35,8 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.ReflectionHelper;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 ///CLOVER:OFF
 /**
@@ -58,7 +58,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 
 		ctx.setRootObject(new Manager("Luke"));
 		value = expr.getValue(ctx,Boolean.class);
-		assertTrue(value);
+		assertThat((boolean) value).isTrue();
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 
 		ctx.setRootObject(new Person("Andy"));
 		Boolean value = expr.getValue(ctx,Boolean.class);
-		assertTrue(value);
+		assertThat((boolean) value).isTrue();
 
 		ctx.setRootObject(new Person("Christian"));
 		value = expr.getValue(ctx,Boolean.class);
@@ -89,7 +89,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 
 		pAccessor.setPerson(new Person("Andy"));
 		value = expr.getValue(ctx,Boolean.class);
-		assertTrue(value);
+		assertThat((boolean) value).isTrue();
 
 		pAccessor.setPerson(new Person("Christian"));
 		value = expr.getValue(ctx,Boolean.class);
@@ -110,7 +110,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 		ctx.setVariable("a",1.0d); // referenced as #a in the expression
 		ctx.setRootObject(new Supervisor("Ben")); // so non-qualified references 'hasRole()' 'hasIpAddress()' are invoked against it
 		value = expr.getValue(ctx,Boolean.class);
-		assertTrue(value);
+		assertThat((boolean) value).isTrue();
 
 		ctx.setRootObject(new Manager("Luke"));
 		ctx.setVariable("a",1.043d);
@@ -136,7 +136,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 
 		ctx.setVariable("a",1.0d); // referenced as #a in the expression
 		value = expr.getValue(ctx,Boolean.class);
-		assertTrue(value);
+		assertThat((boolean) value).isTrue();
 
 //			ctx.setRootObject(new Manager("Luke"));
 //			ctx.setVariable("a",1.043d);

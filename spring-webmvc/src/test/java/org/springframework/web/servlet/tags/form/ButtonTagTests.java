@@ -23,8 +23,8 @@ import org.junit.Test;
 
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rossen Stoyanchev
@@ -79,11 +79,11 @@ public class ButtonTagTests extends AbstractFormTagTests {
 	}
 
 	protected final void assertTagClosed(String output) {
-		assertTrue("Tag not closed properly", output.endsWith("</button>"));
+		assertThat(output.endsWith("</button>")).as("Tag not closed properly").isTrue();
 	}
 
 	protected final void assertTagOpened(String output) {
-		assertTrue("Tag not opened properly", output.startsWith("<button "));
+		assertThat(output.startsWith("<button ")).as("Tag not opened properly").isTrue();
 	}
 
 	@SuppressWarnings("serial")

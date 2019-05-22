@@ -26,8 +26,8 @@ import org.springframework.expression.spel.standard.SpelCompiler;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for compilation of {@link MapAccessor}.
@@ -46,27 +46,27 @@ public class MapAccessorTests {
 		// basic
 		Expression ex = sep.parseExpression("foo");
 		assertEquals("bar",ex.getValue(sec,testMap));
-		assertTrue(SpelCompiler.compile(ex));
+		assertThat(SpelCompiler.compile(ex)).isTrue();
 		assertEquals("bar",ex.getValue(sec,testMap));
 
 		// compound expression
 		ex = sep.parseExpression("foo.toUpperCase()");
 		assertEquals("BAR",ex.getValue(sec,testMap));
-		assertTrue(SpelCompiler.compile(ex));
+		assertThat(SpelCompiler.compile(ex)).isTrue();
 		assertEquals("BAR",ex.getValue(sec,testMap));
 
 		// nested map
 		Map<String,Map<String,Object>> nestedMap = getNestedTestMap();
 		ex = sep.parseExpression("aaa.foo.toUpperCase()");
 		assertEquals("BAR",ex.getValue(sec,nestedMap));
-		assertTrue(SpelCompiler.compile(ex));
+		assertThat(SpelCompiler.compile(ex)).isTrue();
 		assertEquals("BAR",ex.getValue(sec,nestedMap));
 
 		// avoiding inserting checkcast because first part of expression returns a Map
 		ex = sep.parseExpression("getMap().foo");
 		MapGetter mapGetter = new MapGetter();
 		assertEquals("bar",ex.getValue(sec,mapGetter));
-		assertTrue(SpelCompiler.compile(ex));
+		assertThat(SpelCompiler.compile(ex)).isTrue();
 		assertEquals("bar",ex.getValue(sec,mapGetter));
 	}
 

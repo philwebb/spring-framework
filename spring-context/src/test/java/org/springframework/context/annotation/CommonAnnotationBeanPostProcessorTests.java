@@ -44,12 +44,12 @@ import org.springframework.tests.sample.beans.NestedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -64,9 +64,9 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(AnnotatedInitDestroyBean.class));
 
 		AnnotatedInitDestroyBean bean = (AnnotatedInitDestroyBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
+		assertThat(bean.initCalled).isTrue();
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
+		assertThat(bean.destroyCalled).isTrue();
 	}
 
 	@Test
@@ -77,9 +77,9 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(AnnotatedInitDestroyBean.class));
 
 		AnnotatedInitDestroyBean bean = (AnnotatedInitDestroyBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
+		assertThat(bean.initCalled).isTrue();
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
+		assertThat(bean.destroyCalled).isTrue();
 	}
 
 	@Test
@@ -91,9 +91,9 @@ public class CommonAnnotationBeanPostProcessorTests {
 		ctx.refresh();
 
 		AnnotatedInitDestroyBean bean = (AnnotatedInitDestroyBean) ctx.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
+		assertThat(bean.initCalled).isTrue();
 		ctx.close();
-		assertTrue(bean.destroyCalled);
+		assertThat(bean.destroyCalled).isTrue();
 	}
 
 	@Test
@@ -106,9 +106,9 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(AnnotatedInitDestroyBean.class));
 
 		AnnotatedInitDestroyBean bean = (AnnotatedInitDestroyBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
+		assertThat(bean.initCalled).isTrue();
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
+		assertThat(bean.destroyCalled).isTrue();
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		AnnotatedInitDestroyBean bean = new AnnotatedInitDestroyBean();
 		bpp2.postProcessBeforeDestruction(bean, "annotatedBean");
-		assertTrue(bean.destroyCalled);
+		assertThat(bean.destroyCalled).isTrue();
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		AnnotatedInitDestroyBean bean = new AnnotatedInitDestroyBean();
 		bpp2.postProcessBeforeDestruction(bean, "annotatedBean");
-		assertTrue(bean.destroyCalled);
+		assertThat(bean.destroyCalled).isTrue();
 	}
 
 	@Test
@@ -160,15 +160,15 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean2", tb2);
 
 		ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
-		assertTrue(bean.init2Called);
-		assertTrue(bean.init3Called);
+		assertThat(bean.initCalled).isTrue();
+		assertThat(bean.init2Called).isTrue();
+		assertThat(bean.init3Called).isTrue();
 		assertSame(tb, bean.getTestBean());
 		assertSame(tb2, bean.getTestBean2());
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
-		assertTrue(bean.destroy2Called);
-		assertTrue(bean.destroy3Called);
+		assertThat(bean.destroyCalled).isTrue();
+		assertThat(bean.destroy2Called).isTrue();
+		assertThat(bean.destroy3Called).isTrue();
 	}
 
 	@Test
@@ -188,9 +188,9 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean2", tbd2);
 
 		ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
-		assertTrue(bean.init2Called);
-		assertTrue(bean.init3Called);
+		assertThat(bean.initCalled).isTrue();
+		assertThat(bean.init2Called).isTrue();
+		assertThat(bean.init3Called).isTrue();
 
 		TestBean tb = bean.getTestBean();
 		TestBean tb2 = bean.getTestBean2();
@@ -203,9 +203,9 @@ public class CommonAnnotationBeanPostProcessorTests {
 		assertNotSame(anotherBean.getTestBean2(), tb2);
 
 		bf.destroyBean("annotatedBean", bean);
-		assertTrue(bean.destroyCalled);
-		assertTrue(bean.destroy2Called);
-		assertTrue(bean.destroy3Called);
+		assertThat(bean.destroyCalled).isTrue();
+		assertThat(bean.destroy2Called).isTrue();
+		assertThat(bean.destroy3Called).isTrue();
 	}
 
 	@Test
@@ -284,13 +284,13 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean2", tb2);
 
 		ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
-		assertTrue(bean.init2Called);
+		assertThat(bean.initCalled).isTrue();
+		assertThat(bean.init2Called).isTrue();
 		assertSame(tb, bean.getTestBean());
 		assertSame(tb2, bean.getTestBean2());
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
-		assertTrue(bean.destroy2Called);
+		assertThat(bean.destroyCalled).isTrue();
+		assertThat(bean.destroy2Called).isTrue();
 	}
 
 	@Test
@@ -309,13 +309,13 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(ResourceInjectionBean.class));
 
 		ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
-		assertTrue(bean.init2Called);
+		assertThat(bean.initCalled).isTrue();
+		assertThat(bean.init2Called).isTrue();
 		assertSame(tb, bean.getTestBean());
 		assertSame(tb2, bean.getTestBean2());
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
-		assertTrue(bean.destroy2Called);
+		assertThat(bean.destroyCalled).isTrue();
+		assertThat(bean.destroy2Called).isTrue();
 	}
 
 	@Test
@@ -349,8 +349,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerAlias("xy", "testBean9");
 
 		ExtendedResourceInjectionBean bean = (ExtendedResourceInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
-		assertTrue(bean.init2Called);
+		assertThat(bean.initCalled).isTrue();
+		assertThat(bean.init2Called).isTrue();
 		assertSame(tb, bean.getTestBean());
 		assertSame(tb2, bean.getTestBean2());
 		assertSame(tb4, bean.getTestBean3());
@@ -366,8 +366,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		assertSame(5, bean3.value);
 
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
-		assertTrue(bean.destroy2Called);
+		assertThat(bean.destroyCalled).isTrue();
+		assertThat(bean.destroy2Called).isTrue();
 	}
 
 	@Test
@@ -401,8 +401,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("xy", tb6);
 
 		ExtendedResourceInjectionBean bean = (ExtendedResourceInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
-		assertTrue(bean.init2Called);
+		assertThat(bean.initCalled).isTrue();
+		assertThat(bean.init2Called).isTrue();
 		assertSame(tb, bean.getTestBean());
 		assertSame(tb5, bean.getTestBean2());
 		assertSame(tb4, bean.getTestBean3());
@@ -415,14 +415,15 @@ public class CommonAnnotationBeanPostProcessorTests {
 			bf.getBean("annotatedBean2");
 		}
 		catch (BeanCreationException ex) {
-			assertTrue(ex.getRootCause() instanceof NoSuchBeanDefinitionException);
+			boolean condition = ex.getRootCause() instanceof NoSuchBeanDefinitionException;
+			assertThat(condition).isTrue();
 			NoSuchBeanDefinitionException innerEx = (NoSuchBeanDefinitionException) ex.getRootCause();
 			assertEquals("testBean9", innerEx.getBeanName());
 		}
 
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
-		assertTrue(bean.destroy2Called);
+		assertThat(bean.destroyCalled).isTrue();
+		assertThat(bean.destroy2Called).isTrue();
 	}
 
 	@Test
@@ -447,8 +448,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerAlias("xy", "testBean9");
 
 		ExtendedEjbInjectionBean bean = (ExtendedEjbInjectionBean) bf.getBean("annotatedBean");
-		assertTrue(bean.initCalled);
-		assertTrue(bean.init2Called);
+		assertThat(bean.initCalled).isTrue();
+		assertThat(bean.init2Called).isTrue();
 		assertSame(tb, bean.getTestBean());
 		assertSame(tb2, bean.getTestBean2());
 		assertSame(tb4, bean.getTestBean3());
@@ -458,8 +459,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		assertSame(bf, bean.beanFactory);
 
 		bf.destroySingletons();
-		assertTrue(bean.destroyCalled);
-		assertTrue(bean.destroy2Called);
+		assertThat(bean.destroyCalled).isTrue();
+		assertThat(bean.destroy2Called).isTrue();
 	}
 
 	@Test
@@ -475,7 +476,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		LazyResourceFieldInjectionBean bean = (LazyResourceFieldInjectionBean) bf.getBean("annotatedBean");
 		assertFalse(bf.containsSingleton("testBean"));
 		bean.testBean.setName("notLazyAnymore");
-		assertTrue(bf.containsSingleton("testBean"));
+		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
 		assertEquals("notLazyAnymore", tb.getName());
 	}
@@ -493,7 +494,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		LazyResourceMethodInjectionBean bean = (LazyResourceMethodInjectionBean) bf.getBean("annotatedBean");
 		assertFalse(bf.containsSingleton("testBean"));
 		bean.testBean.setName("notLazyAnymore");
-		assertTrue(bf.containsSingleton("testBean"));
+		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
 		assertEquals("notLazyAnymore", tb.getName());
 	}
@@ -511,7 +512,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		LazyResourceCglibInjectionBean bean = (LazyResourceCglibInjectionBean) bf.getBean("annotatedBean");
 		assertFalse(bf.containsSingleton("testBean"));
 		bean.testBean.setName("notLazyAnymore");
-		assertTrue(bf.containsSingleton("testBean"));
+		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
 		assertEquals("notLazyAnymore", tb.getName());
 	}
@@ -554,7 +555,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		@Override
 		public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 			if (bean instanceof AnnotatedInitDestroyBean) {
-				assertTrue(((AnnotatedInitDestroyBean) bean).initCalled);
+				assertThat(((AnnotatedInitDestroyBean) bean).initCalled).isTrue();
 			}
 			return bean;
 		}

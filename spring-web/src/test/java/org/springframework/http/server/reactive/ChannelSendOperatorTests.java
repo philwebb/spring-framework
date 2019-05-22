@@ -38,10 +38,10 @@ import reactor.test.StepVerifier;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.LeakAwareDataBufferFactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rossen Stoyanchev
@@ -74,10 +74,10 @@ public class ChannelSendOperatorTests {
 		Signal<Void> signal = completion.materialize().block();
 
 		assertNotNull(signal);
-		assertTrue("Unexpected signal: " + signal, signal.isOnComplete());
+		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
 		assertEquals(0, this.writer.items.size());
-		assertTrue(this.writer.completed);
+		assertThat(this.writer.completed).isTrue();
 	}
 
 	@Test
@@ -86,11 +86,11 @@ public class ChannelSendOperatorTests {
 		Signal<Void> signal = completion.materialize().block();
 
 		assertNotNull(signal);
-		assertTrue("Unexpected signal: " + signal, signal.isOnComplete());
+		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
 		assertEquals(1, this.writer.items.size());
 		assertEquals("one", this.writer.items.get(0));
-		assertTrue(this.writer.completed);
+		assertThat(this.writer.completed).isTrue();
 	}
 
 
@@ -101,13 +101,13 @@ public class ChannelSendOperatorTests {
 		Signal<Void> signal = completion.materialize().block();
 
 		assertNotNull(signal);
-		assertTrue("Unexpected signal: " + signal, signal.isOnComplete());
+		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
 		assertEquals(3, this.writer.items.size());
 		assertEquals("one", this.writer.items.get(0));
 		assertEquals("two", this.writer.items.get(1));
 		assertEquals("three", this.writer.items.get(2));
-		assertTrue(this.writer.completed);
+		assertThat(this.writer.completed).isTrue();
 	}
 
 	@Test

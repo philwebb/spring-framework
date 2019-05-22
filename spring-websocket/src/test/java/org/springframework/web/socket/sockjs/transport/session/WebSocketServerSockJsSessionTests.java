@@ -35,9 +35,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.sockjs.transport.SockJsServiceConfig;
 import org.springframework.web.socket.sockjs.transport.session.WebSocketServerSockJsSessionTests.TestWebSocketServerSockJsSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
@@ -71,7 +71,7 @@ public class WebSocketServerSockJsSessionTests extends AbstractSockJsSessionTest
 		assertFalse(this.session.isActive());
 
 		this.session.initializeDelegateSession(this.webSocketSession);
-		assertTrue(this.session.isActive());
+		assertThat(this.session.isActive()).isTrue();
 
 		this.webSocketSession.setOpen(false);
 		assertFalse(this.session.isActive());

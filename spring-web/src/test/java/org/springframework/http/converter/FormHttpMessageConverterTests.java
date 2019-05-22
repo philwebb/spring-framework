@@ -30,7 +30,6 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.core.io.ClassPathResource;
@@ -53,7 +52,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -68,21 +66,21 @@ public class FormHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(this.converter.canRead(MultiValueMap.class,
-				new MediaType("application", "x-www-form-urlencoded")));
+		assertThat(this.converter.canRead(MultiValueMap.class,
+				new MediaType("application", "x-www-form-urlencoded"))).isTrue();
 		assertFalse(this.converter.canRead(MultiValueMap.class,
 				new MediaType("multipart", "form-data")));
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(this.converter.canWrite(MultiValueMap.class,
-				new MediaType("application", "x-www-form-urlencoded")));
-		assertTrue(this.converter.canWrite(MultiValueMap.class,
-				new MediaType("multipart", "form-data")));
-		assertTrue(this.converter.canWrite(MultiValueMap.class,
-				new MediaType("multipart", "form-data", StandardCharsets.UTF_8)));
-		assertTrue(this.converter.canWrite(MultiValueMap.class, MediaType.ALL));
+		assertThat(this.converter.canWrite(MultiValueMap.class,
+				new MediaType("application", "x-www-form-urlencoded"))).isTrue();
+		assertThat(this.converter.canWrite(MultiValueMap.class,
+				new MediaType("multipart", "form-data"))).isTrue();
+		assertThat(this.converter.canWrite(MultiValueMap.class,
+				new MediaType("multipart", "form-data", StandardCharsets.UTF_8))).isTrue();
+		assertThat(this.converter.canWrite(MultiValueMap.class, MediaType.ALL)).isTrue();
 	}
 
 	@Test
@@ -160,17 +158,17 @@ public class FormHttpMessageConverterTests {
 		List<FileItem> items = fileUpload.parseRequest(requestContext);
 		assertEquals(6, items.size());
 		FileItem item = items.get(0);
-		assertTrue(item.isFormField());
+		assertThat(item.isFormField()).isTrue();
 		assertEquals("name 1", item.getFieldName());
 		assertEquals("value 1", item.getString());
 
 		item = items.get(1);
-		assertTrue(item.isFormField());
+		assertThat(item.isFormField()).isTrue();
 		assertEquals("name 2", item.getFieldName());
 		assertEquals("value 2+1", item.getString());
 
 		item = items.get(2);
-		assertTrue(item.isFormField());
+		assertThat(item.isFormField()).isTrue();
 		assertEquals("name 2", item.getFieldName());
 		assertEquals("value 2+2", item.getString());
 
@@ -224,12 +222,12 @@ public class FormHttpMessageConverterTests {
 		assertEquals(2, items.size());
 
 		FileItem item = items.get(0);
-		assertTrue(item.isFormField());
+		assertThat(item.isFormField()).isTrue();
 		assertEquals("part1", item.getFieldName());
 		assertEquals("{\"string\":\"foo\"}", item.getString());
 
 		item = items.get(1);
-		assertTrue(item.isFormField());
+		assertThat(item.isFormField()).isTrue();
 		assertEquals("part2", item.getFieldName());
 
 		// With developer builds we get: <MyBean><string>foo</string></MyBean>

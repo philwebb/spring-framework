@@ -48,11 +48,11 @@ import org.springframework.util.ErrorHandler;
 import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.FixedBackOff;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -121,7 +121,7 @@ public class JmsNamespaceHandlerTests {
 	public void testJcaContainerConfiguration() throws Exception {
 		Map<String, JmsMessageEndpointManager> containers = context.getBeansOfType(JmsMessageEndpointManager.class);
 
-		assertTrue("listener3 not found", containers.containsKey("listener3"));
+		assertThat(containers.containsKey("listener3")).as("listener3 not found").isTrue();
 		JmsMessageEndpointManager listener3 = containers.get("listener3");
 		assertEquals("Wrong resource adapter",
 				context.getBean("testResourceAdapter"), listener3.getResourceAdapter());
@@ -307,24 +307,16 @@ public class JmsNamespaceHandlerTests {
 
 	@Test
 	public void testComponentRegistration() {
-		assertTrue("Parser should have registered a component named 'listener1'",
-				context.containsComponentDefinition("listener1"));
-		assertTrue("Parser should have registered a component named 'listener2'",
-				context.containsComponentDefinition("listener2"));
-		assertTrue("Parser should have registered a component named 'listener3'",
-				context.containsComponentDefinition("listener3"));
-		assertTrue("Parser should have registered a component named '"
-				+ DefaultMessageListenerContainer.class.getName() + "#0'",
-				context.containsComponentDefinition(DefaultMessageListenerContainer.class.getName() + "#0"));
-		assertTrue("Parser should have registered a component named '"
-				+ JmsMessageEndpointManager.class.getName() + "#0'",
-				context.containsComponentDefinition(JmsMessageEndpointManager.class.getName() + "#0"));
-		assertTrue("Parser should have registered a component named 'testJmsFactory",
-				context.containsComponentDefinition("testJmsFactory"));
-		assertTrue("Parser should have registered a component named 'testJcaFactory",
-				context.containsComponentDefinition("testJcaFactory"));
-		assertTrue("Parser should have registered a component named 'testJcaFactory",
-				context.containsComponentDefinition("onlyJmsFactory"));
+		assertThat(context.containsComponentDefinition("listener1")).as("Parser should have registered a component named 'listener1'").isTrue();
+		assertThat(context.containsComponentDefinition("listener2")).as("Parser should have registered a component named 'listener2'").isTrue();
+		assertThat(context.containsComponentDefinition("listener3")).as("Parser should have registered a component named 'listener3'").isTrue();
+		assertThat(context.containsComponentDefinition(DefaultMessageListenerContainer.class.getName() + "#0")).as("Parser should have registered a component named '"
+				+ DefaultMessageListenerContainer.class.getName() + "#0'").isTrue();
+		assertThat(context.containsComponentDefinition(JmsMessageEndpointManager.class.getName() + "#0")).as("Parser should have registered a component named '"
+				+ JmsMessageEndpointManager.class.getName() + "#0'").isTrue();
+		assertThat(context.containsComponentDefinition("testJmsFactory")).as("Parser should have registered a component named 'testJmsFactory").isTrue();
+		assertThat(context.containsComponentDefinition("testJcaFactory")).as("Parser should have registered a component named 'testJcaFactory").isTrue();
+		assertThat(context.containsComponentDefinition("onlyJmsFactory")).as("Parser should have registered a component named 'testJcaFactory").isTrue();
 	}
 
 	@Test

@@ -26,9 +26,9 @@ import org.springframework.aop.target.dynamic.AbstractRefreshableTargetSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -60,14 +60,14 @@ public class ScriptingDefaultsTests {
 	public void defaultInitMethod() {
 		ApplicationContext context = new ClassPathXmlApplicationContext(CONFIG);
 		ITestBean testBean = (ITestBean) context.getBean("testBean");
-		assertTrue(testBean.isInitialized());
+		assertThat(testBean.isInitialized()).isTrue();
 	}
 
 	@Test
 	public void nameAsAlias() {
 		ApplicationContext context = new ClassPathXmlApplicationContext(CONFIG);
 		ITestBean testBean = (ITestBean) context.getBean("/url");
-		assertTrue(testBean.isInitialized());
+		assertThat(testBean.isInitialized()).isTrue();
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class ScriptingDefaultsTests {
 		ITestBean testBean = (ITestBean) context.getBean("nonRefreshableTestBean");
 		assertFalse(testBean.isDestroyed());
 		context.close();
-		assertTrue(testBean.isDestroyed());
+		assertThat(testBean.isDestroyed()).isTrue();
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class ScriptingDefaultsTests {
 	public void defaultProxyTargetClass() {
 		ApplicationContext context = new ClassPathXmlApplicationContext(PROXY_CONFIG);
 		Object testBean = context.getBean("testBean");
-		assertTrue(AopUtils.isCglibProxy(testBean));
+		assertThat(AopUtils.isCglibProxy(testBean)).isTrue();
 	}
 
 }

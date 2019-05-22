@@ -57,9 +57,9 @@ import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.ResponseEntity.notFound;
@@ -111,24 +111,24 @@ public class ResponseEntityResultHandlerTests {
 		Object value = null;
 
 		MethodParameter returnType = on(TestController.class).resolveReturnType(entity(String.class));
-		assertTrue(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isTrue();
 
 		returnType = on(TestController.class).resolveReturnType(Mono.class, entity(String.class));
-		assertTrue(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isTrue();
 
 		returnType = on(TestController.class).resolveReturnType(Single.class, entity(String.class));
-		assertTrue(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isTrue();
 
 		returnType = on(TestController.class).resolveReturnType(CompletableFuture.class, entity(String.class));
-		assertTrue(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isTrue();
 
 		returnType = on(TestController.class).resolveReturnType(HttpHeaders.class);
-		assertTrue(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isTrue();
 
 		// SPR-15785
 		value = ResponseEntity.ok("testing");
 		returnType = on(TestController.class).resolveReturnType(Object.class);
-		assertTrue(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isTrue();
 	}
 
 	@Test

@@ -33,8 +33,8 @@ import org.springframework.expression.TypedValue;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -48,7 +48,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.?[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ListTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof List);
+		boolean condition = value instanceof List;
+		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals(5, list.size());
 		assertEquals(0, list.get(0));
@@ -63,7 +64,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.^[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ListTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(0, value);
 	}
 
@@ -72,7 +74,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.$[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ListTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(4, value);
 	}
 
@@ -81,7 +84,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.?[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new SetTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof List);
+		boolean condition = value instanceof List;
+		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals(5, list.size());
 		assertEquals(0, list.get(0));
@@ -96,7 +100,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.^[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new SetTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(0, value);
 	}
 
@@ -105,7 +110,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.$[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new SetTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(4, value);
 	}
 
@@ -114,7 +120,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.?[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new IterableTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof List);
+		boolean condition = value instanceof List;
+		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals(5, list.size());
 		assertEquals(0, list.get(0));
@@ -129,7 +136,7 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.?[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ArrayTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value.getClass().isArray());
+		assertThat(value.getClass().isArray()).isTrue();
 		TypedValue typedValue = new TypedValue(value);
 		assertEquals(Integer.class, typedValue.getTypeDescriptor().getElementTypeDescriptor().getType());
 		Integer[] array = (Integer[]) value;
@@ -146,7 +153,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.^[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ArrayTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(0, value);
 	}
 
@@ -155,7 +163,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("integers.$[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ArrayTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(4, value);
 	}
 
@@ -164,7 +173,7 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("ints.?[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ArrayTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value.getClass().isArray());
+		assertThat(value.getClass().isArray()).isTrue();
 		TypedValue typedValue = new TypedValue(value);
 		assertEquals(Integer.class, typedValue.getTypeDescriptor().getElementTypeDescriptor().getType());
 		Integer[] array = (Integer[]) value;
@@ -181,7 +190,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("ints.^[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ArrayTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(0, value);
 	}
 
@@ -190,7 +200,8 @@ public class SelectionAndProjectionTests {
 		Expression expression = new SpelExpressionParser().parseRaw("ints.$[#this<5]");
 		EvaluationContext context = new StandardEvaluationContext(new ArrayTestBean());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof Integer);
+		boolean condition = value instanceof Integer;
+		assertThat(condition).isTrue();
 		assertEquals(4, value);
 	}
 
@@ -203,9 +214,9 @@ public class SelectionAndProjectionTests {
 
 		Map<String, String> colorsMap = (Map<String, String>) exp.getValue(context);
 		assertEquals(3, colorsMap.size());
-		assertTrue(colorsMap.containsKey("beige"));
-		assertTrue(colorsMap.containsKey("blue"));
-		assertTrue(colorsMap.containsKey("brown"));
+		assertThat(colorsMap.containsKey("beige")).isTrue();
+		assertThat(colorsMap.containsKey("blue")).isTrue();
+		assertThat(colorsMap.containsKey("brown")).isTrue();
 	}
 
 	@Test
@@ -238,7 +249,8 @@ public class SelectionAndProjectionTests {
 		EvaluationContext context = new StandardEvaluationContext();
 		context.setVariable("testList", IntegerTestBean.createList());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof List);
+		boolean condition = value instanceof List;
+		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals(3, list.size());
 		assertEquals(5, list.get(0));
@@ -252,7 +264,8 @@ public class SelectionAndProjectionTests {
 		EvaluationContext context = new StandardEvaluationContext();
 		context.setVariable("testList", IntegerTestBean.createSet());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof List);
+		boolean condition = value instanceof List;
+		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals(3, list.size());
 		assertEquals(5, list.get(0));
@@ -266,7 +279,8 @@ public class SelectionAndProjectionTests {
 		EvaluationContext context = new StandardEvaluationContext();
 		context.setVariable("testList", IntegerTestBean.createIterable());
 		Object value = expression.getValue(context);
-		assertTrue(value instanceof List);
+		boolean condition = value instanceof List;
+		assertThat(condition).isTrue();
 		List<?> list = (List<?>) value;
 		assertEquals(3, list.size());
 		assertEquals(5, list.get(0));
@@ -280,7 +294,7 @@ public class SelectionAndProjectionTests {
 		EvaluationContext context = new StandardEvaluationContext();
 		context.setVariable("testArray", IntegerTestBean.createArray());
 		Object value = expression.getValue(context);
-		assertTrue(value.getClass().isArray());
+		assertThat(value.getClass().isArray()).isTrue();
 		TypedValue typedValue = new TypedValue(value);
 		assertEquals(Number.class, typedValue.getTypeDescriptor().getElementTypeDescriptor().getType());
 		Number[] array = (Number[]) value;

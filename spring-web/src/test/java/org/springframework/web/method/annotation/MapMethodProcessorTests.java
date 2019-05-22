@@ -31,10 +31,10 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with
@@ -64,15 +64,15 @@ public class MapMethodProcessorTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.processor.supportsParameter(
-				this.resolvable.annotNotPresent().arg(Map.class, String.class, Object.class)));
+		assertThat(this.processor.supportsParameter(
+				this.resolvable.annotNotPresent().arg(Map.class, String.class, Object.class))).isTrue();
 		assertFalse(this.processor.supportsParameter(
 				this.resolvable.annotPresent(RequestBody.class).arg(Map.class, String.class, Object.class)));
 	}
 
 	@Test
 	public void supportsReturnType() {
-		assertTrue(this.processor.supportsReturnType(this.resolvable.returnType()));
+		assertThat(this.processor.supportsReturnType(this.resolvable.returnType())).isTrue();
 	}
 
 	@Test

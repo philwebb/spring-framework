@@ -34,11 +34,11 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -56,9 +56,9 @@ public class ControllerTests {
 		pvc.setViewName(viewName);
 		// We don't care about the params.
 		ModelAndView mv = pvc.handleRequest(new MockHttpServletRequest("GET", "foo.html"), new MockHttpServletResponse());
-		assertTrue("model has no data", mv.getModel().size() == 0);
-		assertTrue("model has correct viewname", mv.getViewName().equals(viewName));
-		assertTrue("getViewName matches", pvc.getViewName().equals(viewName));
+		assertThat(mv.getModel().size() == 0).as("model has no data").isTrue();
+		assertThat(mv.getViewName().equals(viewName)).as("model has correct viewname").isTrue();
+		assertThat(pvc.getViewName().equals(viewName)).as("getViewName matches").isTrue();
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class ControllerTests {
 		assertFalse(TestServlet.destroyed);
 
 		swc.destroy();
-		assertTrue(TestServlet.destroyed);
+		assertThat(TestServlet.destroyed).isTrue();
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class ControllerTests {
 		assertFalse(TestServlet.destroyed);
 
 		swc.destroy();
-		assertTrue(TestServlet.destroyed);
+		assertThat(TestServlet.destroyed).isTrue();
 	}
 
 

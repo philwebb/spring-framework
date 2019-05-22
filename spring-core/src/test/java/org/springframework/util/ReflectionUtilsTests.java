@@ -24,7 +24,6 @@ import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -42,7 +41,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -58,19 +56,19 @@ public class ReflectionUtilsTests {
 		assertNotNull(field);
 		assertEquals("publicField", field.getName());
 		assertEquals(String.class, field.getType());
-		assertTrue("Field should be public.", Modifier.isPublic(field.getModifiers()));
+		assertThat(Modifier.isPublic(field.getModifiers())).as("Field should be public.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "prot", String.class);
 		assertNotNull(field);
 		assertEquals("prot", field.getName());
 		assertEquals(String.class, field.getType());
-		assertTrue("Field should be protected.", Modifier.isProtected(field.getModifiers()));
+		assertThat(Modifier.isProtected(field.getModifiers())).as("Field should be protected.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "name", String.class);
 		assertNotNull(field);
 		assertEquals("name", field.getName());
 		assertEquals(String.class, field.getType());
-		assertTrue("Field should be private.", Modifier.isPrivate(field.getModifiers()));
+		assertThat(Modifier.isPrivate(field.getModifiers())).as("Field should be private.").isTrue();
 	}
 
 	@Test
@@ -109,14 +107,14 @@ public class ReflectionUtilsTests {
 	@Test
 	public void declaresException() throws Exception {
 		Method remoteExMethod = A.class.getDeclaredMethod("foo", Integer.class);
-		assertTrue(ReflectionUtils.declaresException(remoteExMethod, RemoteException.class));
-		assertTrue(ReflectionUtils.declaresException(remoteExMethod, ConnectException.class));
+		assertThat(ReflectionUtils.declaresException(remoteExMethod, RemoteException.class)).isTrue();
+		assertThat(ReflectionUtils.declaresException(remoteExMethod, ConnectException.class)).isTrue();
 		assertFalse(ReflectionUtils.declaresException(remoteExMethod, NoSuchMethodException.class));
 		assertFalse(ReflectionUtils.declaresException(remoteExMethod, Exception.class));
 
 		Method illegalExMethod = B.class.getDeclaredMethod("bar", String.class);
-		assertTrue(ReflectionUtils.declaresException(illegalExMethod, IllegalArgumentException.class));
-		assertTrue(ReflectionUtils.declaresException(illegalExMethod, NumberFormatException.class));
+		assertThat(ReflectionUtils.declaresException(illegalExMethod, IllegalArgumentException.class)).isTrue();
+		assertThat(ReflectionUtils.declaresException(illegalExMethod, NumberFormatException.class)).isTrue();
 		assertFalse(ReflectionUtils.declaresException(illegalExMethod, IllegalStateException.class));
 		assertFalse(ReflectionUtils.declaresException(illegalExMethod, Exception.class));
 	}
@@ -205,8 +203,8 @@ public class ReflectionUtilsTests {
 			}
 		});
 		assertFalse(mc.getMethodNames().isEmpty());
-		assertTrue("Must find protected method on Object", mc.getMethodNames().contains("clone"));
-		assertTrue("Must find protected method on Object", mc.getMethodNames().contains("finalize"));
+		assertThat(mc.getMethodNames().contains("clone")).as("Must find protected method on Object").isTrue();
+		assertThat(mc.getMethodNames().contains("finalize")).as("Must find protected method on Object").isTrue();
 		assertFalse("Public, not protected", mc.getMethodNames().contains("hashCode"));
 		assertFalse("Public, not protected", mc.getMethodNames().contains("absquatulate"));
 	}
@@ -265,8 +263,8 @@ public class ReflectionUtilsTests {
 			public void m1$1() {
 			}
 		}
-		assertTrue(ReflectionUtils.isCglibRenamedMethod(C.class.getMethod("CGLIB$m1$123")));
-		assertTrue(ReflectionUtils.isCglibRenamedMethod(C.class.getMethod("CGLIB$m1$0")));
+		assertThat(ReflectionUtils.isCglibRenamedMethod(C.class.getMethod("CGLIB$m1$123"))).isTrue();
+		assertThat(ReflectionUtils.isCglibRenamedMethod(C.class.getMethod("CGLIB$m1$0"))).isTrue();
 		assertFalse(ReflectionUtils.isCglibRenamedMethod(C.class.getMethod("CGLIB$$0")));
 		assertFalse(ReflectionUtils.isCglibRenamedMethod(C.class.getMethod("CGLIB$m1$")));
 		assertFalse(ReflectionUtils.isCglibRenamedMethod(C.class.getMethod("CGLIB$m1")));
@@ -331,7 +329,7 @@ public class ReflectionUtilsTests {
 			}
 		}
 		assertThat(m1MethodCount).isEqualTo(1);
-		assertTrue(ObjectUtils.containsElement(methods, Leaf.class.getMethod("m1")));
+		assertThat(ObjectUtils.containsElement(methods, Leaf.class.getMethod("m1"))).isTrue();
 		assertFalse(ObjectUtils.containsElement(methods, Parent.class.getMethod("m1")));
 	}
 

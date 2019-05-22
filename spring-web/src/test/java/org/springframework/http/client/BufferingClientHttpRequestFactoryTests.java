@@ -25,8 +25,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 public class BufferingClientHttpRequestFactoryTests extends AbstractHttpRequestFactoryTestCase {
 
@@ -52,8 +52,8 @@ public class BufferingClientHttpRequestFactoryTests extends AbstractHttpRequestF
 			assertEquals("Invalid status code", HttpStatus.OK, response.getStatusCode());
 			assertEquals("Invalid status code", HttpStatus.OK, response.getStatusCode());
 
-			assertTrue("Header not found", response.getHeaders().containsKey(headerName));
-			assertTrue("Header not found", response.getHeaders().containsKey(headerName));
+			assertThat(response.getHeaders().containsKey(headerName)).as("Header not found").isTrue();
+			assertThat(response.getHeaders().containsKey(headerName)).as("Header not found").isTrue();
 
 			assertEquals("Header value not found", Arrays.asList(headerValue1, headerValue2),
 					response.getHeaders().get(headerName));
@@ -61,9 +61,9 @@ public class BufferingClientHttpRequestFactoryTests extends AbstractHttpRequestF
 					response.getHeaders().get(headerName));
 
 			byte[] result = FileCopyUtils.copyToByteArray(response.getBody());
-			assertTrue("Invalid body", Arrays.equals(body, result));
+			assertThat(Arrays.equals(body, result)).as("Invalid body").isTrue();
 			FileCopyUtils.copyToByteArray(response.getBody());
-			assertTrue("Invalid body", Arrays.equals(body, result));
+			assertThat(Arrays.equals(body, result)).as("Invalid body").isTrue();
 		}
 		finally {
 			response.close();

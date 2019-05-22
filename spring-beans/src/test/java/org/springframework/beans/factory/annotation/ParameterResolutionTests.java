@@ -27,10 +27,10 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.BDDMockito.given;
@@ -67,7 +67,7 @@ public class ParameterResolutionTests {
 	@Test
 	public void annotatedParametersInInnerClassConstructorAreCandidatesForAutowiring() throws Exception {
 		Class<?> innerClass = AutowirableClass.InnerAutowirableClass.class;
-		assertTrue(ClassUtils.isInnerClass(innerClass));
+		assertThat(ClassUtils.isInnerClass(innerClass)).isTrue();
 		Constructor<?> constructor = innerClass.getConstructor(AutowirableClass.class, String.class, String.class);
 		assertAutowirableParameters(constructor);
 	}
@@ -78,8 +78,7 @@ public class ParameterResolutionTests {
 		Parameter[] parameters = executable.getParameters();
 		for (int parameterIndex = startIndex; parameterIndex < parameters.length; parameterIndex++) {
 			Parameter parameter = parameters[parameterIndex];
-			assertTrue("Parameter " + parameter + " must be autowirable",
-					ParameterResolutionDelegate.isAutowirable(parameter, parameterIndex));
+			assertThat(ParameterResolutionDelegate.isAutowirable(parameter, parameterIndex)).as("Parameter " + parameter + " must be autowirable").isTrue();
 		}
 	}
 

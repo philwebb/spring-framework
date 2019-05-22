@@ -35,10 +35,10 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.StaticApplicationContext;
 
 import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.util.ClassUtils.convertClassNameToResourcePath;
 
 /**
@@ -111,7 +111,7 @@ public class QualifierAnnotationTests {
 		QualifiedByBeanNameTestBean testBean = (QualifiedByBeanNameTestBean) context.getBean("testBean");
 		Person person = testBean.getLarry();
 		assertEquals("LarryBean", person.getName());
-		assertTrue(testBean.myProps != null && testBean.myProps.isEmpty());
+		assertThat(testBean.myProps != null && testBean.myProps.isEmpty()).isTrue();
 	}
 
 	@Test

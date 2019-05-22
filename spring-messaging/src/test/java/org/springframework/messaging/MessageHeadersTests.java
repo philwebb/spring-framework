@@ -27,13 +27,13 @@ import org.junit.Test;
 
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link MessageHeaders}.
@@ -159,8 +159,8 @@ public class MessageHeadersTests {
 		map.put("key2", new Integer(123));
 		MessageHeaders headers = new MessageHeaders(map);
 		Set<String> keys = headers.keySet();
-		assertTrue(keys.contains("key1"));
-		assertTrue(keys.contains("key2"));
+		assertThat(keys.contains("key1")).isTrue();
+		assertThat(keys.contains("key2")).isTrue();
 	}
 
 	@Test

@@ -38,12 +38,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link PayloadMethodArgumentResolver}.
@@ -91,13 +89,13 @@ public class PayloadMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(this.paramAnnotated));
-		assertTrue(this.resolver.supportsParameter(this.paramNotAnnotated));
+		assertThat(this.resolver.supportsParameter(this.paramAnnotated)).isTrue();
+		assertThat(this.resolver.supportsParameter(this.paramNotAnnotated)).isTrue();
 
 		PayloadMethodArgumentResolver strictResolver = new PayloadMethodArgumentResolver(
 				new StringMessageConverter(), testValidator(), false);
 
-		assertTrue(strictResolver.supportsParameter(this.paramAnnotated));
+		assertThat(strictResolver.supportsParameter(this.paramAnnotated)).isTrue();
 		assertFalse(strictResolver.supportsParameter(this.paramNotAnnotated));
 	}
 

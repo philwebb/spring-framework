@@ -27,9 +27,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -49,7 +49,7 @@ public class PathResourceLookupFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, Collections.emptyList());
 
 		Optional<Resource> result = function.apply(request);
-		assertTrue(result.isPresent());
+		assertThat(result.isPresent()).isTrue();
 
 		File expected = new ClassPathResource("response.txt", getClass()).getFile();
 		assertEquals(expected, result.get().getFile());
@@ -68,7 +68,7 @@ public class PathResourceLookupFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, Collections.emptyList());
 
 		Optional<Resource> result = function.apply(request);
-		assertTrue(result.isPresent());
+		assertThat(result.isPresent()).isTrue();
 
 		File expected =
 				new ClassPathResource("org/springframework/web/servlet/function/child/response.txt")
@@ -114,7 +114,7 @@ public class PathResourceLookupFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, Collections.emptyList());
 
 		Optional<Resource> result = customLookupFunction.apply(request);
-		assertTrue(result.isPresent());
+		assertThat(result.isPresent()).isTrue();
 
 		assertEquals(defaultResource.getFile(), result.get().getFile());
 	}

@@ -43,10 +43,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -96,7 +96,7 @@ public class AspectJEnableCachingIsolatedTests {
 			load(MultiCacheManagerConfig.class);
 		}
 		catch (IllegalStateException ex) {
-			assertTrue(ex.getMessage().contains("bean of type CacheManager"));
+			assertThat(ex.getMessage().contains("bean of type CacheManager")).isTrue();
 		}
 	}
 
@@ -112,8 +112,9 @@ public class AspectJEnableCachingIsolatedTests {
 		}
 		catch (BeanCreationException ex) {
 			Throwable root = ex.getRootCause();
-			assertTrue(root instanceof IllegalStateException);
-			assertTrue(ex.getMessage().contains("implementations of CachingConfigurer"));
+			boolean condition = root instanceof IllegalStateException;
+			assertThat(condition).isTrue();
+			assertThat(ex.getMessage().contains("implementations of CachingConfigurer")).isTrue();
 		}
 	}
 
@@ -123,7 +124,7 @@ public class AspectJEnableCachingIsolatedTests {
 			load(EmptyConfig.class);
 		}
 		catch (IllegalStateException ex) {
-			assertTrue(ex.getMessage().contains("no bean of type CacheManager"));
+			assertThat(ex.getMessage().contains("no bean of type CacheManager")).isTrue();
 		}
 	}
 

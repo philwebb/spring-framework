@@ -22,8 +22,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StopWatch;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -40,8 +40,8 @@ public class QuartzSchedulerLifecycleTests {
 		sw.start("lazyScheduler");
 		context.close();
 		sw.stop();
-		assertTrue("Quartz Scheduler with lazy-init is hanging on destruction: " +
-				sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 500);
+		assertThat(sw.getTotalTimeMillis() < 500).as("Quartz Scheduler with lazy-init is hanging on destruction: " +
+				sw.getTotalTimeMillis()).isTrue();
 	}
 
 	@Test  // SPR-6354
@@ -53,8 +53,8 @@ public class QuartzSchedulerLifecycleTests {
 		sw.start("lazyScheduler");
 		context.close();
 		sw.stop();
-		assertTrue("Quartz Scheduler with lazy-init is hanging on destruction: " +
-				sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 500);
+		assertThat(sw.getTotalTimeMillis() < 500).as("Quartz Scheduler with lazy-init is hanging on destruction: " +
+				sw.getTotalTimeMillis()).isTrue();
 	}
 
 }

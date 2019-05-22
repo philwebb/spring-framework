@@ -32,10 +32,10 @@ import org.springframework.oxm.MarshallingFailureException;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -62,7 +62,7 @@ public class MarshallingHttpMessageConverterTests {
 
 		assertFalse(converter.canRead(Boolean.class, MediaType.TEXT_PLAIN));
 		assertFalse(converter.canRead(Integer.class, MediaType.TEXT_XML));
-		assertTrue(converter.canRead(String.class, MediaType.TEXT_XML));
+		assertThat(converter.canRead(String.class, MediaType.TEXT_XML)).isTrue();
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class MarshallingHttpMessageConverterTests {
 
 		assertFalse(converter.canWrite(Boolean.class, MediaType.TEXT_PLAIN));
 		assertFalse(converter.canWrite(Integer.class, MediaType.TEXT_XML));
-		assertTrue(converter.canWrite(String.class, MediaType.TEXT_XML));
+		assertThat(converter.canWrite(String.class, MediaType.TEXT_XML)).isTrue();
 	}
 
 	@Test

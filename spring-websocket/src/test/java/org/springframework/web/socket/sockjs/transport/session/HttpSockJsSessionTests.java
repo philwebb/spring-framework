@@ -35,8 +35,8 @@ import org.springframework.web.socket.sockjs.frame.SockJsFrameFormat;
 import org.springframework.web.socket.sockjs.transport.SockJsServiceConfig;
 import org.springframework.web.socket.sockjs.transport.session.HttpSockJsSessionTests.TestAbstractHttpSockJsSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -84,7 +84,7 @@ public class HttpSockJsSessionTests extends AbstractSockJsSessionTests<TestAbstr
 		this.session.handleInitialRequest(this.request, this.response, this.frameFormat);
 
 		assertEquals("hhh\no", this.servletResponse.getContentAsString());
-		assertTrue(this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).isTrue();
 
 		verify(this.webSocketHandler).afterConnectionEstablished(this.session);
 	}
@@ -95,9 +95,9 @@ public class HttpSockJsSessionTests extends AbstractSockJsSessionTests<TestAbstr
 		this.session.getMessageCache().add("x");
 		this.session.handleSuccessiveRequest(this.request, this.response, this.frameFormat);
 
-		assertTrue(this.servletRequest.isAsyncStarted());
-		assertTrue(this.session.wasHeartbeatScheduled());
-		assertTrue(this.session.wasCacheFlushed());
+		assertThat(this.servletRequest.isAsyncStarted()).isTrue();
+		assertThat(this.session.wasHeartbeatScheduled()).isTrue();
+		assertThat(this.session.wasCacheFlushed()).isTrue();
 		assertEquals("hhh\n", this.servletResponse.getContentAsString());
 
 		verifyNoMoreInteractions(this.webSocketHandler);

@@ -41,11 +41,11 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.server.WebSession;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -79,7 +79,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 0)));
+		assertThat(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 0))).isTrue();
 		assertFalse(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 4)));
 	}
 
@@ -135,7 +135,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 		actual = (Optional<Object>) this.resolver.resolveArgument(param, bindingContext, this.exchange).block();
 
 		assertNotNull(actual);
-		assertTrue(actual.isPresent());
+		assertThat(actual.isPresent()).isTrue();
 		assertSame(foo, actual.get());
 	}
 

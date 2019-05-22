@@ -45,10 +45,10 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 import org.springframework.web.util.UrlPathHelper;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -113,7 +113,8 @@ public class DelegatingWebMvcConfigurationTests {
 
 		assertNotNull(initializer);
 		assertSame(conversionService.getValue(), initializer.getConversionService());
-		assertTrue(initializer.getValidator() instanceof LocalValidatorFactoryBean);
+		boolean condition = initializer.getValidator() instanceof LocalValidatorFactoryBean;
+		assertThat(condition).isTrue();
 		assertEquals(0, resolvers.getValue().size());
 		assertEquals(0, handlers.getValue().size());
 		assertEquals(converters.getValue(), adapter.getMessageConverters());
@@ -177,10 +178,13 @@ public class DelegatingWebMvcConfigurationTests {
 		verify(webMvcConfigurer).configureHandlerExceptionResolvers(exceptionResolvers.capture());
 
 		assertEquals(3, exceptionResolvers.getValue().size());
-		assertTrue(exceptionResolvers.getValue().get(0) instanceof ExceptionHandlerExceptionResolver);
-		assertTrue(exceptionResolvers.getValue().get(1) instanceof ResponseStatusExceptionResolver);
-		assertTrue(exceptionResolvers.getValue().get(2) instanceof DefaultHandlerExceptionResolver);
-		assertTrue(converters.getValue().size() > 0);
+		boolean condition2 = exceptionResolvers.getValue().get(0) instanceof ExceptionHandlerExceptionResolver;
+		assertThat(condition2).isTrue();
+		boolean condition1 = exceptionResolvers.getValue().get(1) instanceof ResponseStatusExceptionResolver;
+		assertThat(condition1).isTrue();
+		boolean condition = exceptionResolvers.getValue().get(2) instanceof DefaultHandlerExceptionResolver;
+		assertThat(condition).isTrue();
+		assertThat(converters.getValue().size() > 0).isTrue();
 	}
 
 	@Test

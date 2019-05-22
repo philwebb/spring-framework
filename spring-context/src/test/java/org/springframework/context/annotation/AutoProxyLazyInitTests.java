@@ -27,9 +27,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -46,7 +46,7 @@ public class AutoProxyLazyInitTests {
 
 		assertFalse(MyBeanImpl.initialized);
 		bean.doIt();
-		assertTrue(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isTrue();
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class AutoProxyLazyInitTests {
 
 		assertFalse(MyBeanImpl.initialized);
 		bean.doIt();
-		assertTrue(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isTrue();
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class AutoProxyLazyInitTests {
 
 		assertFalse(MyBeanImpl.initialized);
 		bean.doIt();
-		assertTrue(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isTrue();
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class AutoProxyLazyInitTests {
 
 		assertFalse(MyBeanImpl.initialized);
 		bean.doIt();
-		assertTrue(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isTrue();
 	}
 
 

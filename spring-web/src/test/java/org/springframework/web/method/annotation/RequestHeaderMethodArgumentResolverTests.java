@@ -41,11 +41,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture with {@link RequestHeaderMethodArgumentResolver}.
@@ -105,8 +105,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("String parameter not supported", resolver.supportsParameter(paramNamedDefaultValueStringHeader));
-		assertTrue("String array parameter not supported", resolver.supportsParameter(paramNamedValueStringArray));
+		assertThat(resolver.supportsParameter(paramNamedDefaultValueStringHeader)).as("String parameter not supported").isTrue();
+		assertThat(resolver.supportsParameter(paramNamedValueStringArray)).as("String array parameter not supported").isTrue();
 		assertFalse("non-@RequestParam parameter supported", resolver.supportsParameter(paramNamedValueMap));
 	}
 
@@ -116,7 +116,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		servletRequest.addHeader("name", expected);
 
 		Object result = resolver.resolveArgument(paramNamedDefaultValueStringHeader, null, webRequest, null);
-		assertTrue(result instanceof String);
+		boolean condition = result instanceof String;
+		assertThat(condition).isTrue();
 		assertEquals(expected, result);
 	}
 
@@ -126,14 +127,16 @@ public class RequestHeaderMethodArgumentResolverTests {
 		servletRequest.addHeader("name", expected);
 
 		Object result = resolver.resolveArgument(paramNamedValueStringArray, null, webRequest, null);
-		assertTrue(result instanceof String[]);
+		boolean condition = result instanceof String[];
+		assertThat(condition).isTrue();
 		assertArrayEquals(expected, (String[]) result);
 	}
 
 	@Test
 	public void resolveDefaultValue() throws Exception {
 		Object result = resolver.resolveArgument(paramNamedDefaultValueStringHeader, null, webRequest, null);
-		assertTrue(result instanceof String);
+		boolean condition = result instanceof String;
+		assertThat(condition).isTrue();
 		assertEquals("bar", result);
 	}
 
@@ -142,7 +145,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		System.setProperty("systemProperty", "bar");
 		try {
 			Object result = resolver.resolveArgument(paramSystemProperty, null, webRequest, null);
-			assertTrue(result instanceof String);
+			boolean condition = result instanceof String;
+			assertThat(condition).isTrue();
 			assertEquals("bar", result);
 		}
 		finally {
@@ -158,7 +162,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		System.setProperty("systemProperty", "bar");
 		try {
 			Object result = resolver.resolveArgument(paramResolvedNameWithExpression, null, webRequest, null);
-			assertTrue(result instanceof String);
+			boolean condition = result instanceof String;
+			assertThat(condition).isTrue();
 			assertEquals(expected, result);
 		}
 		finally {
@@ -174,7 +179,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		System.setProperty("systemProperty", "bar");
 		try {
 			Object result = resolver.resolveArgument(paramResolvedNameWithPlaceholder, null, webRequest, null);
-			assertTrue(result instanceof String);
+			boolean condition = result instanceof String;
+			assertThat(condition).isTrue();
 			assertEquals(expected, result);
 		}
 		finally {
@@ -187,7 +193,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		servletRequest.setContextPath("/bar");
 
 		Object result = resolver.resolveArgument(paramContextPath, null, webRequest, null);
-		assertTrue(result instanceof String);
+		boolean condition = result instanceof String;
+		assertThat(condition).isTrue();
 		assertEquals("/bar", result);
 	}
 
@@ -208,7 +215,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Object result = resolver.resolveArgument(paramDate, null, webRequest,
 				new DefaultDataBinderFactory(bindingInitializer));
 
-		assertTrue(result instanceof Date);
+		boolean condition = result instanceof Date;
+		assertThat(condition).isTrue();
 		assertEquals(new Date(rfc1123val), result);
 	}
 
@@ -222,7 +230,8 @@ public class RequestHeaderMethodArgumentResolverTests {
 		Object result = resolver.resolveArgument(paramInstant, null, webRequest,
 				new DefaultDataBinderFactory(bindingInitializer));
 
-		assertTrue(result instanceof Instant);
+		boolean condition = result instanceof Instant;
+		assertThat(condition).isTrue();
 		assertEquals(Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(rfc1123val)), result);
 	}
 

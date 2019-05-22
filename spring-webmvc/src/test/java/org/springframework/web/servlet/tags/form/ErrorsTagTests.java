@@ -36,11 +36,11 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -350,7 +350,8 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		int result = this.tag.doStartTag();
 		assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
 		assertNotNull(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
-		assertTrue(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE) instanceof List);
+		boolean condition = getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE) instanceof List;
+		assertThat(condition).isTrue();
 		String bodyContent = "Foo";
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
@@ -373,7 +374,8 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		int result = this.tag.doStartTag();
 		assertEquals(BodyTag.EVAL_BODY_BUFFERED, result);
 		assertNotNull(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
-		assertTrue(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE) instanceof List);
+		boolean condition = getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE) instanceof List;
+		assertThat(condition).isTrue();
 		String bodyContent = "Foo";
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		this.tag.doEndTag();
@@ -429,8 +431,8 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		assertNotNull(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
 		this.tag.doEndTag();
 		String output = getOutput();
-		assertTrue(output.contains("id=\"testBean.errors\""));
-		assertTrue(output.contains("object error"));
+		assertThat(output.contains("id=\"testBean.errors\"")).isTrue();
+		assertThat(output.contains("object error")).isTrue();
 		assertFalse(output.contains("field error"));
 	}
 
@@ -445,9 +447,9 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		assertNotNull(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
 		this.tag.doEndTag();
 		String output = getOutput();
-		assertTrue(output.contains("id=\"name.errors\""));
+		assertThat(output.contains("id=\"name.errors\"")).isTrue();
 		assertFalse(output.contains("object error"));
-		assertTrue(output.contains("field error"));
+		assertThat(output.contains("field error")).isTrue();
 	}
 
 	@Test
@@ -461,9 +463,9 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		assertNotNull(getPageContext().getAttribute(ErrorsTag.MESSAGES_ATTRIBUTE));
 		this.tag.doEndTag();
 		String output = getOutput();
-		assertTrue(output.contains("id=\"testBean.errors\""));
-		assertTrue(output.contains("object error"));
-		assertTrue(output.contains("field error"));
+		assertThat(output.contains("id=\"testBean.errors\"")).isTrue();
+		assertThat(output.contains("object error")).isTrue();
+		assertThat(output.contains("field error")).isTrue();
 	}
 
 	@Override
@@ -479,11 +481,11 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 	}
 
 	private void assertElementTagOpened(String output) {
-		assertTrue(output.startsWith("<" + this.tag.getElement() + " "));
+		assertThat(output.startsWith("<" + this.tag.getElement() + " ")).isTrue();
 	}
 
 	private void assertElementTagClosed(String output) {
-		assertTrue(output.endsWith("</" + this.tag.getElement() + ">"));
+		assertThat(output.endsWith("</" + this.tag.getElement() + ">")).isTrue();
 	}
 
 	private void assertWhenNoErrorsExistingMessagesInScopeAreNotClobbered(int scope) throws JspException {

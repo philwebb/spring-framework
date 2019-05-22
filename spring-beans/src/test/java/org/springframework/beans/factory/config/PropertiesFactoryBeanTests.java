@@ -22,8 +22,8 @@ import org.junit.Test;
 
 import org.springframework.core.io.Resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -139,7 +139,7 @@ public class PropertiesFactoryBeanTests {
 		assertEquals("99", props.getProperty("tb.array[0].age"));
 		assertEquals("value2", props.getProperty("key2"));
 		Properties newProps = pfb.getObject();
-		assertTrue(props != newProps);
+		assertThat(props != newProps).isTrue();
 		assertEquals("99", newProps.getProperty("tb.array[0].age"));
 		assertEquals("value2", newProps.getProperty("key2"));
 	}

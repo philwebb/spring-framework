@@ -34,12 +34,12 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans
@@ -60,7 +60,7 @@ public class ModelMapTests {
 	public void testAddNullObjectWithExplicitKey() throws Exception {
 		ModelMap model = new ModelMap();
 		model.addAttribute("foo", null);
-		assertTrue(model.containsKey("foo"));
+		assertThat(model.containsKey("foo")).isTrue();
 		assertNull(model.get("foo"));
 	}
 
@@ -70,7 +70,7 @@ public class ModelMapTests {
 	@Test
 	public void testAddNullObjectViaCtorWithExplicitKey() throws Exception {
 		ModelMap model = new ModelMap("foo", null);
-		assertTrue(model.containsKey("foo"));
+		assertThat(model.containsKey("foo")).isTrue();
 		assertNull(model.get("foo"));
 	}
 
@@ -177,7 +177,7 @@ public class ModelMapTests {
 		model.addAttribute(map);
 		assertEquals(1, model.size());
 		String key = StringUtils.uncapitalize(ClassUtils.getShortName(map.getClass()));
-		assertTrue(model.containsKey(key));
+		assertThat(model.containsKey(key)).isTrue();
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class ModelMapTests {
 		factory.setTarget(val);
 		factory.setProxyTargetClass(true);
 		map.addAttribute(factory.getProxy());
-		assertTrue(map.containsKey("someInnerClass"));
+		assertThat(map.containsKey("someInnerClass")).isTrue();
 		assertEquals(val, map.get("someInnerClass"));
 	}
 

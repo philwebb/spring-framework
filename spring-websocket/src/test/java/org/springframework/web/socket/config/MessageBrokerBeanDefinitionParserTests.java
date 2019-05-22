@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import org.springframework.beans.DirectFieldAccessor;
@@ -100,7 +99,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link MessageBrokerBeanDefinitionParser}.
@@ -132,7 +130,8 @@ public class MessageBrokerBeanDefinitionParserTests {
 		WebSocketHttpRequestHandler wsHttpRequestHandler = (WebSocketHttpRequestHandler) httpRequestHandler;
 		HandshakeHandler handshakeHandler = wsHttpRequestHandler.getHandshakeHandler();
 		assertNotNull(handshakeHandler);
-		assertTrue(handshakeHandler instanceof TestHandshakeHandler);
+		boolean condition = handshakeHandler instanceof TestHandshakeHandler;
+		assertThat(condition).isTrue();
 		List<HandshakeInterceptor> interceptors = wsHttpRequestHandler.getHandshakeInterceptors();
 		assertThat(interceptors).extracting("class").containsExactly(FooTestInterceptor.class,
 				BarTestInterceptor.class, OriginHandshakeInterceptor.class);
@@ -187,13 +186,13 @@ public class MessageBrokerBeanDefinitionParserTests {
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) defaultSockJsService.getTaskScheduler();
 		ScheduledThreadPoolExecutor executor = scheduler.getScheduledThreadPoolExecutor();
 		assertEquals(Runtime.getRuntime().availableProcessors(), executor.getCorePoolSize());
-		assertTrue(executor.getRemoveOnCancelPolicy());
+		assertThat(executor.getRemoveOnCancelPolicy()).isTrue();
 
 		interceptors = defaultSockJsService.getHandshakeInterceptors();
 		assertThat(interceptors).extracting("class").containsExactly(FooTestInterceptor.class,
 				BarTestInterceptor.class, OriginHandshakeInterceptor.class);
-		assertTrue(defaultSockJsService.getAllowedOrigins().contains("https://mydomain3.com"));
-		assertTrue(defaultSockJsService.getAllowedOrigins().contains("https://mydomain4.com"));
+		assertThat(defaultSockJsService.getAllowedOrigins().contains("https://mydomain3.com")).isTrue();
+		assertThat(defaultSockJsService.getAllowedOrigins().contains("https://mydomain4.com")).isTrue();
 
 		SimpUserRegistry userRegistry = this.appContext.getBean(SimpUserRegistry.class);
 		assertNotNull(userRegistry);
@@ -216,7 +215,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertEquals("my-selector", registry.getSelectorHeaderName());
 		assertNotNull(brokerMessageHandler.getTaskScheduler());
 		assertArrayEquals(new long[] {15000, 15000}, brokerMessageHandler.getHeartbeatValue());
-		assertTrue(brokerMessageHandler.isPreservePublishOrder());
+		assertThat(brokerMessageHandler.isPreservePublishOrder()).isTrue();
 
 		List<Class<? extends MessageHandler>> subscriberTypes = Arrays.asList(SimpAnnotationMethodMessageHandler.class,
 						UserDestinationMessageHandler.class, SimpleBrokerMessageHandler.class);
@@ -279,7 +278,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertEquals(5000, messageBroker.getSystemHeartbeatReceiveInterval());
 		assertEquals(5000, messageBroker.getSystemHeartbeatSendInterval());
 		assertThat(messageBroker.getDestinationPrefixes()).containsExactlyInAnyOrder("/topic","/queue");
-		assertTrue(messageBroker.isPreservePublishOrder());
+		assertThat(messageBroker.isPreservePublishOrder()).isTrue();
 
 		List<Class<? extends MessageHandler>> subscriberTypes = Arrays.asList(SimpAnnotationMethodMessageHandler.class,
 				UserDestinationMessageHandler.class, StompBrokerRelayMessageHandler.class);
@@ -325,7 +324,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 				"sockJsScheduler\\[pool size = \\d, active threads = \\d, queued tasks = \\d, " +
 				"completed tasks = \\d\\]";
 
-		assertTrue("\nExpected: " + expected.replace("\\", "") + "\n  Actual: " + actual, actual.matches(expected));
+		assertThat(actual.matches(expected)).as("\nExpected: " + expected.replace("\\", "") + "\n  Actual: " + actual).isTrue();
 	}
 
 	@Test
@@ -338,7 +337,8 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertNotNull(annotationMethodMessageHandler);
 		MessageConverter messageConverter = annotationMethodMessageHandler.getMessageConverter();
 		assertNotNull(messageConverter);
-		assertTrue(messageConverter instanceof CompositeMessageConverter);
+		boolean condition = messageConverter instanceof CompositeMessageConverter;
+		assertThat(condition).isTrue();
 
 		String name = MessageBrokerBeanDefinitionParser.MESSAGE_CONVERTER_BEAN_NAME;
 		CompositeMessageConverter compositeMessageConverter = this.appContext.getBean(name, CompositeMessageConverter.class);
@@ -410,13 +410,13 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		List<HandlerMethodArgumentResolver> customResolvers = handler.getCustomArgumentResolvers();
 		assertEquals(2, customResolvers.size());
-		assertTrue(handler.getArgumentResolvers().contains(customResolvers.get(0)));
-		assertTrue(handler.getArgumentResolvers().contains(customResolvers.get(1)));
+		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(0))).isTrue();
+		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(1))).isTrue();
 
 		List<HandlerMethodReturnValueHandler> customHandlers = handler.getCustomReturnValueHandlers();
 		assertEquals(2, customHandlers.size());
-		assertTrue(handler.getReturnValueHandlers().contains(customHandlers.get(0)));
-		assertTrue(handler.getReturnValueHandlers().contains(customHandlers.get(1)));
+		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(0))).isTrue();
+		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(1))).isTrue();
 	}
 
 	@Test
@@ -449,7 +449,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		for (Class<? extends  MessageHandler> subscriberType : subscriberTypes) {
 			MessageHandler subscriber = this.appContext.getBean(subscriberType);
 			assertNotNull("No subscription for " + subscriberType, subscriber);
-			assertTrue(channel.hasSubscription(subscriber));
+			assertThat(channel.hasSubscription(subscriber)).isTrue();
 		}
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();
 		assertEquals(interceptorCount, interceptors.size());

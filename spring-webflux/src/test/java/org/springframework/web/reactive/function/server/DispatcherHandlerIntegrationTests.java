@@ -42,9 +42,9 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 import org.springframework.web.util.pattern.PathPattern;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
 import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -174,8 +174,8 @@ public class DispatcherHandlerIntegrationTests extends AbstractHttpHandlerIntegr
 
 		@SuppressWarnings("unchecked")
 		public Mono<ServerResponse> attributes(ServerRequest request) {
-			assertTrue(request.attributes().containsKey(RouterFunctions.REQUEST_ATTRIBUTE));
-			assertTrue(request.attributes().containsKey(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE));
+			assertThat(request.attributes().containsKey(RouterFunctions.REQUEST_ATTRIBUTE)).isTrue();
+			assertThat(request.attributes().containsKey(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE)).isTrue();
 
 			Map<String, String> pathVariables =
 					(Map<String, String>) request.attributes().get(RouterFunctions.URI_TEMPLATE_VARIABLES_ATTRIBUTE);

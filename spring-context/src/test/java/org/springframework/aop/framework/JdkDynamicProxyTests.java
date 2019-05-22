@@ -28,11 +28,11 @@ import org.springframework.tests.sample.beans.IOther;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -47,7 +47,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 	protected Object createProxy(ProxyCreatorSupport as) {
 		assertFalse("Not forcible CGLIB", as.isProxyTargetClass());
 		Object proxy = as.createAopProxy().getProxy();
-		assertTrue("Should be a JDK proxy: " + proxy.getClass(), AopUtils.isJdkDynamicProxy(proxy));
+		assertThat(AopUtils.isJdkDynamicProxy(proxy)).as("Should be a JDK proxy: " + proxy.getClass()).isTrue();
 		return proxy;
 	}
 
@@ -72,7 +72,8 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		JdkDynamicAopProxy aop = new JdkDynamicAopProxy(pc);
 
 		Object proxy = aop.getProxy();
-		assertTrue(proxy instanceof ITestBean);
+		boolean condition = proxy instanceof ITestBean;
+		assertThat(condition).isTrue();
 		assertFalse(proxy instanceof TestBean);
 	}
 
@@ -146,7 +147,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 	public void testVarargsWithEnumArray() {
 		ProxyFactory proxyFactory = new ProxyFactory(new VarargTestBean());
 		VarargTestInterface proxy = (VarargTestInterface) proxyFactory.getProxy();
-		assertTrue(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C));
+		assertThat(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C)).isTrue();
 	}
 
 

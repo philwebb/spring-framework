@@ -25,8 +25,8 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -63,7 +63,8 @@ public class TilesViewResolverTests {
 		given(this.renderer.isRenderable(eq("/template.test"), isA(Request.class))).willReturn(true);
 		given(this.renderer.isRenderable(eq("/nonexistent.test"), isA(Request.class))).willReturn(false);
 
-		assertTrue(this.viewResolver.resolveViewName("/template.test", Locale.ITALY) instanceof TilesView);
+		boolean condition = this.viewResolver.resolveViewName("/template.test", Locale.ITALY) instanceof TilesView;
+		assertThat(condition).isTrue();
 		assertNull(this.viewResolver.resolveViewName("/nonexistent.test", Locale.ITALY));
 
 		verify(this.renderer).isRenderable(eq("/template.test"), isA(Request.class));

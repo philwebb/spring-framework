@@ -33,9 +33,9 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.TypeConverter;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Expression evaluation where the TypeConverter plugged in is the
@@ -120,8 +120,8 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 		TypeDescriptor collectionType = new TypeDescriptor(new MethodParameter(TestTarget.class.getDeclaredMethod(
 				"sum", Collection.class), 0));
 		// The type conversion is possible
-		assertTrue(evaluationContext.getTypeConverter()
-				.canConvert(TypeDescriptor.valueOf(String.class), collectionType));
+		assertThat(evaluationContext.getTypeConverter()
+				.canConvert(TypeDescriptor.valueOf(String.class), collectionType)).isTrue();
 		// ... and it can be done successfully
 		assertEquals("[1, 2, 3, 4]", evaluationContext.getTypeConverter().convertValue("1,2,3,4", TypeDescriptor.valueOf(String.class), collectionType).toString());
 

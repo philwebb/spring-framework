@@ -39,9 +39,9 @@ import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -70,14 +70,14 @@ public class ServerSentEventHttpMessageWriterTests extends AbstractDataBufferAll
 
 	@Test
 	public void canWrite() {
-		assertTrue(this.messageWriter.canWrite(forClass(Object.class), null));
+		assertThat(this.messageWriter.canWrite(forClass(Object.class), null)).isTrue();
 		assertFalse(this.messageWriter.canWrite(forClass(Object.class), new MediaType("foo", "bar")));
 
-		assertTrue(this.messageWriter.canWrite(null, MediaType.TEXT_EVENT_STREAM));
-		assertTrue(this.messageWriter.canWrite(forClass(ServerSentEvent.class), new MediaType("foo", "bar")));
+		assertThat(this.messageWriter.canWrite(null, MediaType.TEXT_EVENT_STREAM)).isTrue();
+		assertThat(this.messageWriter.canWrite(forClass(ServerSentEvent.class), new MediaType("foo", "bar"))).isTrue();
 
 		// SPR-15464
-		assertTrue(this.messageWriter.canWrite(ResolvableType.NONE, MediaType.TEXT_EVENT_STREAM));
+		assertThat(this.messageWriter.canWrite(ResolvableType.NONE, MediaType.TEXT_EVENT_STREAM)).isTrue();
 		assertFalse(this.messageWriter.canWrite(ResolvableType.NONE, new MediaType("foo", "bar")));
 	}
 

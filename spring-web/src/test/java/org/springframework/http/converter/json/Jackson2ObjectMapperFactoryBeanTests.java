@@ -73,7 +73,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test cases for {@link Jackson2ObjectMapperFactoryBean}.
@@ -117,7 +116,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		assertFalse(objectMapper.getDeserializationConfig().isEnabled(MapperFeature.AUTO_DETECT_SETTERS));
 		assertFalse(objectMapper.getDeserializationConfig().isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION));
 		assertFalse(objectMapper.getSerializationConfig().isEnabled(SerializationFeature.FAIL_ON_EMPTY_BEANS));
-		assertTrue(objectMapper.getSerializationConfig().isEnabled(SerializationFeature.INDENT_OUTPUT));
+		assertThat(objectMapper.getSerializationConfig().isEnabled(SerializationFeature.INDENT_OUTPUT)).isTrue();
 		assertSame(Include.ALWAYS, objectMapper.getSerializationConfig().getSerializationInclusion());
 	}
 
@@ -251,7 +250,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.afterPropertiesSet();
 
 		assertNotNull(this.factory.getObject());
-		assertTrue(this.factory.isSingleton());
+		assertThat(this.factory.isSingleton()).isTrue();
 		assertEquals(ObjectMapper.class, this.factory.getObjectType());
 	}
 
@@ -312,7 +311,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		this.factory.setObjectMapper(objectMapper);
-		assertTrue(this.factory.isSingleton());
+		assertThat(this.factory.isSingleton()).isTrue();
 		assertEquals(ObjectMapper.class, this.factory.getObjectType());
 
 		Map<Class<?>, JsonDeserializer<?>> deserializers = new HashMap<>();
@@ -345,8 +344,8 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.afterPropertiesSet();
 
 		assertSame(objectMapper, this.factory.getObject());
-		assertTrue(getSerializerFactoryConfig(objectMapper).hasSerializers());
-		assertTrue(getDeserializerFactoryConfig(objectMapper).hasDeserializers());
+		assertThat(getSerializerFactoryConfig(objectMapper).hasSerializers()).isTrue();
+		assertThat(getDeserializerFactoryConfig(objectMapper).hasDeserializers()).isTrue();
 
 		Serializers serializers = getSerializerFactoryConfig(objectMapper).serializers().iterator().next();
 		assertSame(serializer1, serializers.findSerializer(null, SimpleType.construct(Class.class), null));
@@ -356,10 +355,10 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		assertSame(annotationIntrospector, objectMapper.getSerializationConfig().getAnnotationIntrospector());
 		assertSame(annotationIntrospector, objectMapper.getDeserializationConfig().getAnnotationIntrospector());
 
-		assertTrue(objectMapper.getSerializationConfig().isEnabled(SerializationFeature.FAIL_ON_EMPTY_BEANS));
-		assertTrue(objectMapper.getDeserializationConfig().isEnabled(DeserializationFeature.UNWRAP_ROOT_VALUE));
-		assertTrue(objectMapper.getFactory().isEnabled(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER));
-		assertTrue(objectMapper.getFactory().isEnabled(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS));
+		assertThat(objectMapper.getSerializationConfig().isEnabled(SerializationFeature.FAIL_ON_EMPTY_BEANS)).isTrue();
+		assertThat(objectMapper.getDeserializationConfig().isEnabled(DeserializationFeature.UNWRAP_ROOT_VALUE)).isTrue();
+		assertThat(objectMapper.getFactory().isEnabled(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER)).isTrue();
+		assertThat(objectMapper.getFactory().isEnabled(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS)).isTrue();
 
 		assertFalse(objectMapper.getSerializationConfig().isEnabled(MapperFeature.AUTO_DETECT_GETTERS));
 		assertFalse(objectMapper.getDeserializationConfig().isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION));
@@ -376,7 +375,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.afterPropertiesSet();
 
 		assertNotNull(this.factory.getObject());
-		assertTrue(this.factory.isSingleton());
+		assertThat(this.factory.isSingleton()).isTrue();
 		assertEquals(XmlMapper.class, this.factory.getObjectType());
 	}
 
@@ -386,7 +385,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.afterPropertiesSet();
 
 		assertNotNull(this.factory.getObject());
-		assertTrue(this.factory.isSingleton());
+		assertThat(this.factory.isSingleton()).isTrue();
 		assertEquals(XmlMapper.class, this.factory.getObjectType());
 	}
 
@@ -396,7 +395,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.afterPropertiesSet();
 
 		assertNotNull(this.factory.getObject());
-		assertTrue(this.factory.isSingleton());
+		assertThat(this.factory.isSingleton()).isTrue();
 		assertEquals(SmileFactory.class, this.factory.getObject().getFactory().getClass());
 	}
 

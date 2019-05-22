@@ -29,8 +29,8 @@ import org.springframework.tests.aop.advice.CountingBeforeAdvice;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for aop namespace.
@@ -57,13 +57,13 @@ public class AopNamespaceHandlerTests {
 	public void testIsProxy() throws Exception {
 		ITestBean bean = getTestBean();
 
-		assertTrue("Bean is not a proxy", AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).as("Bean is not a proxy").isTrue();
 
 		// check the advice details
 		Advised advised = (Advised) bean;
 		Advisor[] advisors = advised.getAdvisors();
 
-		assertTrue("Advisors should not be empty", advisors.length > 0);
+		assertThat(advisors.length > 0).as("Advisors should not be empty").isTrue();
 	}
 
 	@Test

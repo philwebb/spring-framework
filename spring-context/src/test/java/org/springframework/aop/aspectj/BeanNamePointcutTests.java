@@ -29,9 +29,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.ITestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test for correct application of the bean() PCD for XML-based AspectJ aspects.
@@ -77,7 +77,8 @@ public class BeanNamePointcutTests {
 
 	@Test
 	public void testMatchingBeanName() {
-		assertTrue("Matching bean must be advised (proxied)", this.testBean1 instanceof Advised);
+		boolean condition = this.testBean1 instanceof Advised;
+		assertThat(condition).as("Matching bean must be advised (proxied)").isTrue();
 		// Call two methods to test for SPR-3953-like condition
 		this.testBean1.setAge(20);
 		this.testBean1.setName("");
@@ -98,27 +99,32 @@ public class BeanNamePointcutTests {
 
 	@Test
 	public void testMatchingFactoryBeanObject() {
-		assertTrue("Matching bean must be advised (proxied)", this.testFactoryBean1 instanceof Advised);
+		boolean condition1 = this.testFactoryBean1 instanceof Advised;
+		assertThat(condition1).as("Matching bean must be advised (proxied)").isTrue();
 		assertEquals("myValue", this.testFactoryBean1.get("myKey"));
 		assertEquals("myValue", this.testFactoryBean1.get("myKey"));
 		assertEquals("Advice not executed: must have been", 2, this.counterAspect.getCount());
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean1");
-		assertTrue("FactoryBean itself must *not* be advised", !(fb instanceof Advised));
+		boolean condition = !(fb instanceof Advised);
+		assertThat(condition).as("FactoryBean itself must *not* be advised").isTrue();
 	}
 
 	@Test
 	public void testMatchingFactoryBeanItself() {
-		assertTrue("Matching bean must *not* be advised (proxied)", !(this.testFactoryBean2 instanceof Advised));
+		boolean condition1 = !(this.testFactoryBean2 instanceof Advised);
+		assertThat(condition1).as("Matching bean must *not* be advised (proxied)").isTrue();
 		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean2");
-		assertTrue("FactoryBean itself must be advised", fb instanceof Advised);
-		assertTrue(Map.class.isAssignableFrom(fb.getObjectType()));
-		assertTrue(Map.class.isAssignableFrom(fb.getObjectType()));
+		boolean condition = fb instanceof Advised;
+		assertThat(condition).as("FactoryBean itself must be advised").isTrue();
+		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
+		assertThat(Map.class.isAssignableFrom(fb.getObjectType())).isTrue();
 		assertEquals("Advice not executed: must have been", 2, this.counterAspect.getCount());
 	}
 
 	@Test
 	public void testPointcutAdvisorCombination() {
-		assertTrue("Matching bean must be advised (proxied)", this.interceptThis instanceof Advised);
+		boolean condition = this.interceptThis instanceof Advised;
+		assertThat(condition).as("Matching bean must be advised (proxied)").isTrue();
 		assertFalse("Non-matching bean must *not* be advised (proxied)", this.dontInterceptThis instanceof Advised);
 		interceptThis.setAge(20);
 		assertEquals(1, testInterceptor.interceptionCount);

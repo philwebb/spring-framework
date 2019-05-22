@@ -42,7 +42,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -56,8 +55,9 @@ public class RmiSupportTests {
 		factory.setServiceInterface(IRemoteBean.class);
 		factory.setServiceUrl("rmi://localhost:1090/test");
 		factory.afterPropertiesSet();
-		assertTrue("Correct singleton value", factory.isSingleton());
-		assertTrue(factory.getObject() instanceof IRemoteBean);
+		assertThat(factory.isSingleton()).as("Correct singleton value").isTrue();
+		boolean condition = factory.getObject() instanceof IRemoteBean;
+		assertThat(condition).isTrue();
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		proxy.setName("myName");
 		assertEquals("myName", RemoteBean.name);
@@ -109,7 +109,8 @@ public class RmiSupportTests {
 		factory.setServiceInterface(IRemoteBean.class);
 		factory.setServiceUrl("rmi://localhost:1090/test");
 		factory.afterPropertiesSet();
-		assertTrue(factory.getObject() instanceof IRemoteBean);
+		boolean condition = factory.getObject() instanceof IRemoteBean;
+		assertThat(condition).isTrue();
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
@@ -147,7 +148,8 @@ public class RmiSupportTests {
 		factory.setServiceUrl("rmi://localhost:1090/test");
 		factory.setRefreshStubOnConnectFailure(true);
 		factory.afterPropertiesSet();
-		assertTrue(factory.getObject() instanceof IRemoteBean);
+		boolean condition = factory.getObject() instanceof IRemoteBean;
+		assertThat(condition).isTrue();
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
@@ -160,7 +162,8 @@ public class RmiSupportTests {
 		factory.setServiceInterface(IBusinessBean.class);
 		factory.setServiceUrl("rmi://localhost:1090/test");
 		factory.afterPropertiesSet();
-		assertTrue(factory.getObject() instanceof IBusinessBean);
+		boolean condition = factory.getObject() instanceof IBusinessBean;
+		assertThat(condition).isTrue();
 		IBusinessBean proxy = (IBusinessBean) factory.getObject();
 		assertFalse(proxy instanceof IRemoteBean);
 		proxy.setName("myName");
@@ -174,7 +177,8 @@ public class RmiSupportTests {
 		factory.setServiceInterface(IWrongBusinessBean.class);
 		factory.setServiceUrl("rmi://localhost:1090/test");
 		factory.afterPropertiesSet();
-		assertTrue(factory.getObject() instanceof IWrongBusinessBean);
+		boolean condition = factory.getObject() instanceof IWrongBusinessBean;
+		assertThat(condition).isTrue();
 		IWrongBusinessBean proxy = (IWrongBusinessBean) factory.getObject();
 		assertFalse(proxy instanceof IRemoteBean);
 		assertThatExceptionOfType(RemoteProxyFailureException.class).isThrownBy(() ->
@@ -228,7 +232,8 @@ public class RmiSupportTests {
 		factory.setServiceInterface(IBusinessBean.class);
 		factory.setServiceUrl("rmi://localhost:1090/test");
 		factory.afterPropertiesSet();
-		assertTrue(factory.getObject() instanceof IBusinessBean);
+		boolean condition = factory.getObject() instanceof IBusinessBean;
+		assertThat(condition).isTrue();
 		IBusinessBean proxy = (IBusinessBean) factory.getObject();
 		assertFalse(proxy instanceof IRemoteBean);
 		assertThatExceptionOfType(springExceptionClass).isThrownBy(() ->
@@ -280,7 +285,8 @@ public class RmiSupportTests {
 		factory.setServiceUrl("rmi://localhost:1090/test");
 		factory.setRefreshStubOnConnectFailure(true);
 		factory.afterPropertiesSet();
-		assertTrue(factory.getObject() instanceof IBusinessBean);
+		boolean condition = factory.getObject() instanceof IBusinessBean;
+		assertThat(condition).isTrue();
 		IBusinessBean proxy = (IBusinessBean) factory.getObject();
 		assertFalse(proxy instanceof IRemoteBean);
 		assertThatExceptionOfType(springExceptionClass).isThrownBy(() ->
@@ -371,10 +377,10 @@ public class RmiSupportTests {
 		IBusinessBean proxy = (IBusinessBean) factory.getObject();
 
 		// shouldn't go through to remote service
-		assertTrue(proxy.toString().contains("RMI invoker"));
-		assertTrue(proxy.toString().contains(serviceUrl));
+		assertThat(proxy.toString().contains("RMI invoker")).isTrue();
+		assertThat(proxy.toString().contains(serviceUrl)).isTrue();
 		assertEquals(proxy.hashCode(), proxy.hashCode());
-		assertTrue(proxy.equals(proxy));
+		assertThat(proxy.equals(proxy)).isTrue();
 
 		// should go through
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->

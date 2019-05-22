@@ -24,8 +24,8 @@ import org.junit.Test;
 
 import org.springframework.tests.sample.objects.TestObject;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 public class PrioritizedParameterNameDiscovererTests {
 
@@ -72,22 +72,22 @@ public class PrioritizedParameterNameDiscovererTests {
 	public void orderedParameterDiscoverers1() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		pnd.addDiscoverer(returnsFooBar);
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
+		assertThat(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod))).isTrue();
+		assertThat(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null))).isTrue();
 		pnd.addDiscoverer(returnsSomethingElse);
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
+		assertThat(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod))).isTrue();
+		assertThat(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null))).isTrue();
 	}
 
 	@Test
 	public void orderedParameterDiscoverers2() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		pnd.addDiscoverer(returnsSomethingElse);
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
+		assertThat(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod))).isTrue();
+		assertThat(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null))).isTrue();
 		pnd.addDiscoverer(returnsFooBar);
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
+		assertThat(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod))).isTrue();
+		assertThat(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null))).isTrue();
 	}
 
 }

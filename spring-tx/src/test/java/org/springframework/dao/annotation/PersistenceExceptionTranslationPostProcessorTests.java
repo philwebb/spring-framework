@@ -40,7 +40,6 @@ import org.springframework.stereotype.Repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson
@@ -70,13 +69,13 @@ public class PersistenceExceptionTranslationPostProcessorTests {
 		RepositoryInterface shouldNotBeProxied = (RepositoryInterface) gac.getBean("notProxied");
 		assertFalse(AopUtils.isAopProxy(shouldNotBeProxied));
 		RepositoryInterface shouldBeProxied = (RepositoryInterface) gac.getBean("proxied");
-		assertTrue(AopUtils.isAopProxy(shouldBeProxied));
+		assertThat(AopUtils.isAopProxy(shouldBeProxied)).isTrue();
 		RepositoryWithoutInterface rwi = (RepositoryWithoutInterface) gac.getBean("classProxied");
-		assertTrue(AopUtils.isAopProxy(rwi));
+		assertThat(AopUtils.isAopProxy(rwi)).isTrue();
 		checkWillTranslateExceptions(rwi);
 
 		Additional rwi2 = (Additional) gac.getBean("classProxiedAndAdvised");
-		assertTrue(AopUtils.isAopProxy(rwi2));
+		assertThat(AopUtils.isAopProxy(rwi2)).isTrue();
 		rwi2.additionalMethod(false);
 		checkWillTranslateExceptions(rwi2);
 		assertThatExceptionOfType(DataAccessResourceFailureException.class).isThrownBy(() ->

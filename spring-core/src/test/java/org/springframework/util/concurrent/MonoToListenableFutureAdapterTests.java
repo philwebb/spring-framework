@@ -22,9 +22,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MonoToListenableFutureAdapter}.
@@ -57,8 +57,8 @@ public class MonoToListenableFutureAdapterTests {
 		Mono<Long> mono = Mono.delay(Duration.ofSeconds(60));
 		Future<Long> future = new MonoToListenableFutureAdapter<>(mono);
 
-		assertTrue(future.cancel(true));
-		assertTrue(future.isCancelled());
+		assertThat(future.cancel(true)).isTrue();
+		assertThat(future.isCancelled()).isTrue();
 	}
 
 	@Test

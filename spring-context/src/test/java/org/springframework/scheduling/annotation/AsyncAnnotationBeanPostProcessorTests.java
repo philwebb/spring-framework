@@ -42,10 +42,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Mark Fisher
@@ -59,7 +59,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		ConfigurableApplicationContext context = initContext(
 				new RootBeanDefinition(AsyncAnnotationBeanPostProcessor.class));
 		Object target = context.getBean("target");
-		assertTrue(AopUtils.isAopProxy(target));
+		assertThat(AopUtils.isAopProxy(target)).isTrue();
 		context.close();
 	}
 
@@ -109,7 +109,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		testBean.test();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertTrue(asyncThread.getName().startsWith("testExecutor"));
+		assertThat(asyncThread.getName().startsWith("testExecutor")).isTrue();
 		context.close();
 	}
 
@@ -134,7 +134,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		testBean.test();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertTrue(asyncThread.getName().startsWith("testExecutor"));
+		assertThat(asyncThread.getName().startsWith("testExecutor")).isTrue();
 		context.close();
 	}
 
@@ -163,7 +163,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		testBean.test();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertTrue(asyncThread.getName().startsWith("testExecutor2"));
+		assertThat(asyncThread.getName().startsWith("testExecutor2")).isTrue();
 		context.close();
 	}
 
@@ -176,7 +176,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		testBean.test();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertTrue(asyncThread.getName().startsWith("testExecutor"));
+		assertThat(asyncThread.getName().startsWith("testExecutor")).isTrue();
 
 		TestableAsyncUncaughtExceptionHandler exceptionHandler =
 				context.getBean("exceptionHandler", TestableAsyncUncaughtExceptionHandler.class);

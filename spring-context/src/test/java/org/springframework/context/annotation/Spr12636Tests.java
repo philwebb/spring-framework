@@ -29,8 +29,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll
@@ -64,8 +64,8 @@ public class Spr12636Tests {
 		// Validate those beans are indeed wrapped by a proxy
 		UserService serviceOne = this.context.getBean("serviceOne", UserService.class);
 		UserService serviceTwo = this.context.getBean("serviceTwo", UserService.class);
-		assertTrue(AopUtils.isAopProxy(serviceOne));
-		assertTrue(AopUtils.isAopProxy(serviceTwo));
+		assertThat(AopUtils.isAopProxy(serviceOne)).isTrue();
+		assertThat(AopUtils.isAopProxy(serviceTwo)).isTrue();
 
 		UserServiceCollector bean = this.context.getBean(UserServiceCollector.class);
 		assertSame(serviceOne, bean.userServices.get(0));

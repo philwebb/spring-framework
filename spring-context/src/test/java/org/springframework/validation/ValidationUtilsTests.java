@@ -21,10 +21,10 @@ import org.junit.Test;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ValidationUtils}.
@@ -56,7 +56,7 @@ public class ValidationUtilsTests {
 		TestBean tb = new TestBean();
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.invokeValidator(new EmptyValidator(), tb, errors);
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY", errors.getFieldError("name").getCode());
 	}
 
@@ -82,7 +82,7 @@ public class ValidationUtilsTests {
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		Validator testValidator = new EmptyValidator();
 		testValidator.validate(tb, errors);
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY", errors.getFieldError("name").getCode());
 	}
 
@@ -92,7 +92,7 @@ public class ValidationUtilsTests {
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		Validator testValidator = new EmptyValidator();
 		testValidator.validate(tb, errors);
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY", errors.getFieldError("name").getCode());
 	}
 
@@ -102,13 +102,13 @@ public class ValidationUtilsTests {
 
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmpty(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"});
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY_OR_WHITESPACE", errors.getFieldError("name").getCode());
 		assertEquals("arg", errors.getFieldError("name").getArguments()[0]);
 
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmpty(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"}, "msg");
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY_OR_WHITESPACE", errors.getFieldError("name").getCode());
 		assertEquals("arg", errors.getFieldError("name").getArguments()[0]);
 		assertEquals("msg", errors.getFieldError("name").getDefaultMessage());
@@ -122,21 +122,21 @@ public class ValidationUtilsTests {
 		// Test null
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY_OR_WHITESPACE", errors.getFieldError("name").getCode());
 
 		// Test empty String
 		tb.setName("");
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY_OR_WHITESPACE", errors.getFieldError("name").getCode());
 
 		// Test whitespace String
 		tb.setName(" ");
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY_OR_WHITESPACE", errors.getFieldError("name").getCode());
 
 		// Test OK
@@ -153,13 +153,13 @@ public class ValidationUtilsTests {
 
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"});
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY_OR_WHITESPACE", errors.getFieldError("name").getCode());
 		assertEquals("arg", errors.getFieldError("name").getArguments()[0]);
 
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "EMPTY_OR_WHITESPACE", new Object[] {"arg"}, "msg");
-		assertTrue(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isTrue();
 		assertEquals("EMPTY_OR_WHITESPACE", errors.getFieldError("name").getCode());
 		assertEquals("arg", errors.getFieldError("name").getArguments()[0]);
 		assertEquals("msg", errors.getFieldError("name").getDefaultMessage());

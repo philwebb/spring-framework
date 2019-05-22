@@ -40,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests proving that @Qualifier annotations work when used
@@ -75,7 +74,8 @@ public class BeanMethodQualificationTests {
 	public void testScopedProxy() {
 		AnnotationConfigApplicationContext ctx =
 				new AnnotationConfigApplicationContext(ScopedProxyConfig.class, StandardPojo.class);
-		assertTrue(ctx.getBeanFactory().containsSingleton("testBean1"));  // a shared scoped proxy
+		// a shared scoped proxy
+		assertThat(ctx.getBeanFactory().containsSingleton("testBean1")).isTrue();
 		StandardPojo pojo = ctx.getBean(StandardPojo.class);
 		assertThat(pojo.testBean.getName()).isEqualTo("interesting");
 		assertThat(pojo.testBean2.getName()).isEqualTo("boring");
@@ -87,8 +87,8 @@ public class BeanMethodQualificationTests {
 				new AnnotationConfigApplicationContext(CustomConfig.class, CustomPojo.class);
 		assertFalse(ctx.getBeanFactory().containsSingleton("testBean1"));
 		assertFalse(ctx.getBeanFactory().containsSingleton("testBean2"));
-		assertTrue(BeanFactoryAnnotationUtils.isQualifierMatch(value -> value.equals("boring"),
-				"testBean2", ctx.getDefaultListableBeanFactory()));
+		assertThat(BeanFactoryAnnotationUtils.isQualifierMatch(value -> value.equals("boring"),
+				"testBean2", ctx.getDefaultListableBeanFactory())).isTrue();
 		CustomPojo pojo = ctx.getBean(CustomPojo.class);
 		assertThat(pojo.testBean.getName()).isEqualTo("interesting");
 		TestBean testBean2 = BeanFactoryAnnotationUtils.qualifiedBeanOfType(
@@ -104,8 +104,8 @@ public class BeanMethodQualificationTests {
 		assertFalse(ctx.getBeanFactory().containsSingleton("testBean1"));
 		assertFalse(ctx.getBeanFactory().containsSingleton("testBean2"));
 		ctx.getBean("testBean2");
-		assertTrue(BeanFactoryAnnotationUtils.isQualifierMatch(value -> value.equals("boring"),
-				"testBean2", ctx.getDefaultListableBeanFactory()));
+		assertThat(BeanFactoryAnnotationUtils.isQualifierMatch(value -> value.equals("boring"),
+				"testBean2", ctx.getDefaultListableBeanFactory())).isTrue();
 		CustomPojo pojo = ctx.getBean(CustomPojo.class);
 		assertThat(pojo.testBean.getName()).isEqualTo("interesting");
 	}

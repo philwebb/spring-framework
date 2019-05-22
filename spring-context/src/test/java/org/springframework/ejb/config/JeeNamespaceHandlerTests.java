@@ -30,9 +30,9 @@ import org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBe
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.tests.sample.beans.ITestBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop
@@ -136,11 +136,11 @@ public class JeeNamespaceHandlerTests {
 	@Test
 	public void testLazyInitJndiLookup() throws Exception {
 		BeanDefinition definition = this.beanFactory.getMergedBeanDefinition("lazyDataSource");
-		assertTrue(definition.isLazyInit());
+		assertThat(definition.isLazyInit()).isTrue();
 		definition = this.beanFactory.getMergedBeanDefinition("lazyLocalBean");
-		assertTrue(definition.isLazyInit());
+		assertThat(definition.isLazyInit()).isTrue();
 		definition = this.beanFactory.getMergedBeanDefinition("lazyRemoteBean");
-		assertTrue(definition.isLazyInit());
+		assertThat(definition.isLazyInit()).isTrue();
 	}
 
 	private void assertPropertyValue(BeanDefinition beanDefinition, String propertyName, Object expectedValue) {

@@ -78,7 +78,6 @@ import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Miscellaneous tests for XML bean definitions.
@@ -152,12 +151,12 @@ public class XmlBeanFactoryTests {
 		TestBean georgia = (TestBean) xbf.getBean("georgia");
 		ITestBean emmasJenks = emma.getSpouse();
 		ITestBean georgiasJenks = georgia.getSpouse();
-		assertTrue("Emma and georgia think they have a different boyfriend", emmasJenks != georgiasJenks);
-		assertTrue("Emmas jenks has right name", emmasJenks.getName().equals("Andrew"));
-		assertTrue("Emmas doesn't equal new ref", emmasJenks != xbf.getBean("jenks"));
-		assertTrue("Georgias jenks has right name", emmasJenks.getName().equals("Andrew"));
-		assertTrue("They are object equal", emmasJenks.equals(georgiasJenks));
-		assertTrue("They object equal direct ref", emmasJenks.equals(xbf.getBean("jenks")));
+		assertThat(emmasJenks != georgiasJenks).as("Emma and georgia think they have a different boyfriend").isTrue();
+		assertThat(emmasJenks.getName().equals("Andrew")).as("Emmas jenks has right name").isTrue();
+		assertThat(emmasJenks != xbf.getBean("jenks")).as("Emmas doesn't equal new ref").isTrue();
+		assertThat(emmasJenks.getName().equals("Andrew")).as("Georgias jenks has right name").isTrue();
+		assertThat(emmasJenks.equals(georgiasJenks)).as("They are object equal").isTrue();
+		assertThat(emmasJenks.equals(xbf.getBean("jenks"))).as("They object equal direct ref").isTrue();
 	}
 
 	@Test
@@ -172,8 +171,8 @@ public class XmlBeanFactoryTests {
 		TestBean jenks = (TestBean) xbf.getBean("jenks");
 		ITestBean davesJen = dave.getSpouse();
 		ITestBean jenksJen = jenks.getSpouse();
-		assertTrue("1 jen instance", davesJen == jenksJen);
-		assertTrue("1 jen instance", davesJen == jen);
+		assertThat(davesJen == jenksJen).as("1 jen instance").isTrue();
+		assertThat(davesJen == jen).as("1 jen instance").isTrue();
 	}
 
 	@Test
@@ -208,7 +207,7 @@ public class XmlBeanFactoryTests {
 		assertEquals(3, friends.length);
 		DerivedTestBean inner2 = (DerivedTestBean) friends[0];
 		assertEquals("inner2", inner2.getName());
-		assertTrue(inner2.getBeanName().startsWith(DerivedTestBean.class.getName()));
+		assertThat(inner2.getBeanName().startsWith(DerivedTestBean.class.getName())).isTrue();
 		assertFalse(xbf.containsBean("innerBean#1"));
 		assertNotNull(inner2);
 		assertEquals(7, inner2.getAge());
@@ -248,10 +247,10 @@ public class XmlBeanFactoryTests {
 		assertEquals(6, innerForConstructor.getAge());
 
 		xbf.destroySingletons();
-		assertTrue(inner1.wasDestroyed());
-		assertTrue(inner2.wasDestroyed());
-		assertTrue(innerFactory.getName() == null);
-		assertTrue(inner5.wasDestroyed());
+		assertThat(inner1.wasDestroyed()).isTrue();
+		assertThat(inner2.wasDestroyed()).isTrue();
+		assertThat(innerFactory.getName() == null).isTrue();
+		assertThat(inner5.wasDestroyed()).isTrue();
 	}
 
 	@Test
@@ -270,7 +269,7 @@ public class XmlBeanFactoryTests {
 		assertEquals(5, hasInnerBeans.getAge());
 		TestBean inner1 = (TestBean) hasInnerBeans.getSpouse();
 		assertNotNull(inner1);
-		assertTrue(inner1.getBeanName().startsWith("innerBean"));
+		assertThat(inner1.getBeanName().startsWith("innerBean")).isTrue();
 		assertEquals("inner1", inner1.getName());
 		assertEquals(6, inner1.getAge());
 
@@ -279,13 +278,13 @@ public class XmlBeanFactoryTests {
 		assertEquals(3, friends.length);
 		DerivedTestBean inner2 = (DerivedTestBean) friends[0];
 		assertEquals("inner2", inner2.getName());
-		assertTrue(inner2.getBeanName().startsWith(DerivedTestBean.class.getName()));
+		assertThat(inner2.getBeanName().startsWith(DerivedTestBean.class.getName())).isTrue();
 		assertNotNull(inner2);
 		assertEquals(7, inner2.getAge());
 		TestBean innerFactory = (TestBean) friends[1];
 		assertEquals(DummyFactory.SINGLETON_NAME, innerFactory.getName());
 		TestBean inner5 = (TestBean) friends[2];
-		assertTrue(inner5.getBeanName().startsWith("innerBean"));
+		assertThat(inner5.getBeanName().startsWith("innerBean")).isTrue();
 	}
 
 	@Test
@@ -301,8 +300,8 @@ public class XmlBeanFactoryTests {
 		catch (BeanCreationException ex) {
 			// Check whether message contains outer bean name.
 			ex.printStackTrace();
-			assertTrue(ex.getMessage().contains("failsOnInnerBean"));
-			assertTrue(ex.getMessage().contains("someMap"));
+			assertThat(ex.getMessage().contains("failsOnInnerBean")).isTrue();
+			assertThat(ex.getMessage().contains("someMap")).isTrue();
 		}
 
 		try {
@@ -311,8 +310,8 @@ public class XmlBeanFactoryTests {
 		catch (BeanCreationException ex) {
 			// Check whether message contains outer bean name.
 			ex.printStackTrace();
-			assertTrue(ex.getMessage().contains("failsOnInnerBeanForConstructor"));
-			assertTrue(ex.getMessage().contains("constructor argument"));
+			assertThat(ex.getMessage().contains("failsOnInnerBeanForConstructor")).isTrue();
+			assertThat(ex.getMessage().contains("constructor argument")).isTrue();
 		}
 	}
 
@@ -325,9 +324,9 @@ public class XmlBeanFactoryTests {
 		assertEquals(TestBean.class, child.getType("inheritsFromParentFactory"));
 		TestBean inherits = (TestBean) child.getBean("inheritsFromParentFactory");
 		// Name property value is overridden
-		assertTrue(inherits.getName().equals("override"));
+		assertThat(inherits.getName().equals("override")).isTrue();
 		// Age property is inherited from bean in parent factory
-		assertTrue(inherits.getAge() == 1);
+		assertThat(inherits.getAge() == 1).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("inheritsFromParentFactory");
 		assertFalse(inherits2 == inherits);
 	}
@@ -341,10 +340,10 @@ public class XmlBeanFactoryTests {
 		assertEquals(DerivedTestBean.class, child.getType("inheritsWithClass"));
 		DerivedTestBean inherits = (DerivedTestBean) child.getBean("inheritsWithDifferentClass");
 		// Name property value is overridden
-		assertTrue(inherits.getName().equals("override"));
+		assertThat(inherits.getName().equals("override")).isTrue();
 		// Age property is inherited from bean in parent factory
-		assertTrue(inherits.getAge() == 1);
-		assertTrue(inherits.wasInitialized());
+		assertThat(inherits.getAge() == 1).isTrue();
+		assertThat(inherits.wasInitialized()).isTrue();
 	}
 
 	@Test
@@ -356,10 +355,10 @@ public class XmlBeanFactoryTests {
 		assertEquals(DerivedTestBean.class, child.getType("inheritsWithClass"));
 		DerivedTestBean inherits = (DerivedTestBean) child.getBean("inheritsWithClass");
 		// Name property value is overridden
-		assertTrue(inherits.getName().equals("override"));
+		assertThat(inherits.getName().equals("override")).isTrue();
 		// Age property is inherited from bean in parent factory
-		assertTrue(inherits.getAge() == 1);
-		assertTrue(inherits.wasInitialized());
+		assertThat(inherits.getAge() == 1).isTrue();
+		assertThat(inherits.wasInitialized()).isTrue();
 	}
 
 	@Test
@@ -371,15 +370,15 @@ public class XmlBeanFactoryTests {
 		assertEquals(TestBean.class, child.getType("prototypeInheritsFromParentFactoryPrototype"));
 		TestBean inherits = (TestBean) child.getBean("prototypeInheritsFromParentFactoryPrototype");
 		// Name property value is overridden
-		assertTrue(inherits.getName().equals("prototype-override"));
+		assertThat(inherits.getName().equals("prototype-override")).isTrue();
 		// Age property is inherited from bean in parent factory
-		assertTrue(inherits.getAge() == 2);
+		assertThat(inherits.getAge() == 2).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("prototypeInheritsFromParentFactoryPrototype");
 		assertFalse(inherits2 == inherits);
 		inherits2.setAge(13);
-		assertTrue(inherits2.getAge() == 13);
+		assertThat(inherits2.getAge() == 13).isTrue();
 		// Shouldn't have changed first instance
-		assertTrue(inherits.getAge() == 2);
+		assertThat(inherits.getAge() == 2).isTrue();
 	}
 
 	@Test
@@ -390,15 +389,15 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(child).loadBeanDefinitions(CHILD_CONTEXT);
 		TestBean inherits = (TestBean) child.getBean("protoypeInheritsFromParentFactorySingleton");
 		// Name property value is overridden
-		assertTrue(inherits.getName().equals("prototypeOverridesInheritedSingleton"));
+		assertThat(inherits.getName().equals("prototypeOverridesInheritedSingleton")).isTrue();
 		// Age property is inherited from bean in parent factory
-		assertTrue(inherits.getAge() == 1);
+		assertThat(inherits.getAge() == 1).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("protoypeInheritsFromParentFactorySingleton");
 		assertFalse(inherits2 == inherits);
 		inherits2.setAge(13);
-		assertTrue(inherits2.getAge() == 13);
+		assertThat(inherits2.getAge() == 13).isTrue();
 		// Shouldn't have changed first instance
-		assertTrue(inherits.getAge() == 1);
+		assertThat(inherits.getAge() == 1).isTrue();
 	}
 
 	@Test
@@ -421,20 +420,21 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory parent = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(parent).loadBeanDefinitions(PARENT_CONTEXT);
 		parent.preInstantiateSingletons();
-		assertTrue(parent.isSingleton("inheritedTestBeanWithoutClass"));
+		assertThat(parent.isSingleton("inheritedTestBeanWithoutClass")).isTrue();
 
 		// abstract beans should not match
 		Map<?, ?> tbs = parent.getBeansOfType(TestBean.class);
 		assertEquals(2, tbs.size());
-		assertTrue(tbs.containsKey("inheritedTestBeanPrototype"));
-		assertTrue(tbs.containsKey("inheritedTestBeanSingleton"));
+		assertThat(tbs.containsKey("inheritedTestBeanPrototype")).isTrue();
+		assertThat(tbs.containsKey("inheritedTestBeanSingleton")).isTrue();
 
 		// abstract bean should throw exception on creation attempt
 		assertThatExceptionOfType(BeanIsAbstractException.class).isThrownBy(() ->
 				parent.getBean("inheritedTestBeanWithoutClass"));
 
 		// non-abstract bean should work, even if it serves as parent
-		assertTrue(parent.getBean("inheritedTestBeanPrototype") instanceof TestBean);
+		boolean condition = parent.getBean("inheritedTestBeanPrototype") instanceof TestBean;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -453,7 +453,7 @@ public class XmlBeanFactoryTests {
 		DummyBoImpl bos = (DummyBoImpl) xbf.getBean("boSingleton");
 		DummyBoImpl bop = (DummyBoImpl) xbf.getBean("boPrototype");
 		assertNotSame(bos, bop);
-		assertTrue(bos.dao == bop.dao);
+		assertThat(bos.dao == bop.dao).isTrue();
 	}
 
 	@Test
@@ -464,11 +464,11 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(child).loadBeanDefinitions(CHILD_CONTEXT);
 		TestBean inherits = (TestBean) child.getBean("inheritedTestBean");
 		// Name property value is overridden
-		assertTrue(inherits.getName().equals("overrideParentBean"));
+		assertThat(inherits.getName().equals("overrideParentBean")).isTrue();
 		// Age property is inherited from bean in parent factory
-		assertTrue(inherits.getAge() == 1);
+		assertThat(inherits.getAge() == 1).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("inheritedTestBean");
-		assertTrue(inherits2 != inherits);
+		assertThat(inherits2 != inherits).isTrue();
 	}
 
 	/**
@@ -500,11 +500,11 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(child).loadBeanDefinitions(CHILD_CONTEXT);
 		TestBean inherits = (TestBean) child.getBean("singletonInheritsFromParentFactoryPrototype");
 		// Name property value is overridden
-		assertTrue(inherits.getName().equals("prototype-override"));
+		assertThat(inherits.getName().equals("prototype-override")).isTrue();
 		// Age property is inherited from bean in parent factory
-		assertTrue(inherits.getAge() == 2);
+		assertThat(inherits.getAge() == 2).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("singletonInheritsFromParentFactoryPrototype");
-		assertTrue(inherits2 == inherits);
+		assertThat(inherits2 == inherits).isTrue();
 	}
 
 	@Test
@@ -515,7 +515,7 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory child = new DefaultListableBeanFactory(parent);
 		new XmlBeanDefinitionReader(child).loadBeanDefinitions(CHILD_CONTEXT);
 		TestBean beanFromChild = (TestBean) child.getBean("inheritedTestBeanSingleton");
-		assertTrue("singleton from parent and child is the same", beanFromParent == beanFromChild);
+		assertThat(beanFromParent == beanFromChild).as("singleton from parent and child is the same").isTrue();
 	}
 
 	@Test
@@ -539,11 +539,11 @@ public class XmlBeanFactoryTests {
 		TestBean ego = (TestBean) xbf.getBean("ego");
 		TestBean complexInnerEgo = (TestBean) xbf.getBean("complexInnerEgo");
 		TestBean complexEgo = (TestBean) xbf.getBean("complexEgo");
-		assertTrue("Correct circular reference", jenny.getSpouse() == david);
-		assertTrue("Correct circular reference", david.getSpouse() == jenny);
-		assertTrue("Correct circular reference", ego.getSpouse() == ego);
-		assertTrue("Correct circular reference", complexInnerEgo.getSpouse().getSpouse() == complexInnerEgo);
-		assertTrue("Correct circular reference", complexEgo.getSpouse().getSpouse() == complexEgo);
+		assertThat(jenny.getSpouse() == david).as("Correct circular reference").isTrue();
+		assertThat(david.getSpouse() == jenny).as("Correct circular reference").isTrue();
+		assertThat(ego.getSpouse() == ego).as("Correct circular reference").isTrue();
+		assertThat(complexInnerEgo.getSpouse().getSpouse() == complexInnerEgo).as("Correct circular reference").isTrue();
+		assertThat(complexEgo.getSpouse().getSpouse() == complexEgo).as("Correct circular reference").isTrue();
 	}
 
 	@Test
@@ -554,7 +554,7 @@ public class XmlBeanFactoryTests {
 		reader.loadBeanDefinitions(REFTYPES_CONTEXT);
 		xbf.getBean("egoBridge");
 		TestBean complexEgo = (TestBean) xbf.getBean("complexEgo");
-		assertTrue("Correct circular reference", complexEgo.getSpouse().getSpouse() == complexEgo);
+		assertThat(complexEgo.getSpouse().getSpouse() == complexEgo).as("Correct circular reference").isTrue();
 	}
 
 	@Test
@@ -564,9 +564,9 @@ public class XmlBeanFactoryTests {
 		reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
 		reader.loadBeanDefinitions(REFTYPES_CONTEXT);
 		TestBean ego1 = (TestBean) xbf.getBean("ego1");
-		assertTrue("Correct circular reference", ego1.getSpouse().getSpouse() == ego1);
+		assertThat(ego1.getSpouse().getSpouse() == ego1).as("Correct circular reference").isTrue();
 		TestBean ego3 = (TestBean) xbf.getBean("ego3");
-		assertTrue("Correct circular reference", ego3.getSpouse().getSpouse() == ego3);
+		assertThat(ego3.getSpouse().getSpouse() == ego3).as("Correct circular reference").isTrue();
 	}
 
 	@Test
@@ -604,14 +604,15 @@ public class XmlBeanFactoryTests {
 
 		ITestBean jenny = (ITestBean) xbf.getBean("jenny");
 		ITestBean david = (ITestBean) xbf.getBean("david");
-		assertTrue(AopUtils.isAopProxy(jenny));
-		assertTrue(AopUtils.isAopProxy(david));
+		assertThat(AopUtils.isAopProxy(jenny)).isTrue();
+		assertThat(AopUtils.isAopProxy(david)).isTrue();
 		assertSame(david, jenny.getSpouse());
 		assertNotSame(jenny, david.getSpouse());
 		assertEquals("Jenny", david.getSpouse().getName());
 		assertSame(david, david.getSpouse().getSpouse());
-		assertTrue(AopUtils.isAopProxy(jenny.getSpouse()));
-		assertTrue(!AopUtils.isAopProxy(david.getSpouse()));
+		assertThat(AopUtils.isAopProxy(jenny.getSpouse())).isTrue();
+		boolean condition = !AopUtils.isAopProxy(david.getSpouse());
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -620,7 +621,7 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(FACTORY_CIRCLE_CONTEXT);
 		TestBean tb = (TestBean) xbf.getBean("singletonFactory");
 		DummyFactory db = (DummyFactory) xbf.getBean("&singletonFactory");
-		assertTrue(tb == db.getOtherTestBean());
+		assertThat(tb == db.getOtherTestBean()).isTrue();
 	}
 
 	@Test
@@ -698,13 +699,14 @@ public class XmlBeanFactoryTests {
 		xbf.preInstantiateSingletons();
 		assertFalse(InitAndIB.constructed);
 		InitAndIB iib = (InitAndIB) xbf.getBean("init-and-ib");
-		assertTrue(InitAndIB.constructed);
-		assertTrue(iib.afterPropertiesSetInvoked && iib.initMethodInvoked);
-		assertTrue(!iib.destroyed && !iib.customDestroyed);
+		assertThat(InitAndIB.constructed).isTrue();
+		assertThat(iib.afterPropertiesSetInvoked && iib.initMethodInvoked).isTrue();
+		boolean condition = !iib.destroyed && !iib.customDestroyed;
+		assertThat(condition).isTrue();
 		xbf.destroySingletons();
-		assertTrue(iib.destroyed && iib.customDestroyed);
+		assertThat(iib.destroyed && iib.customDestroyed).isTrue();
 		xbf.destroySingletons();
-		assertTrue(iib.destroyed && iib.customDestroyed);
+		assertThat(iib.destroyed && iib.customDestroyed).isTrue();
 	}
 
 	/**
@@ -719,13 +721,17 @@ public class XmlBeanFactoryTests {
 		xbf.preInstantiateSingletons();
 		assertFalse(InitAndIB.constructed);
 		InitAndIB iib = (InitAndIB) xbf.getBean("ib-same-init");
-		assertTrue(InitAndIB.constructed);
-		assertTrue(iib.afterPropertiesSetInvoked && !iib.initMethodInvoked);
-		assertTrue(!iib.destroyed && !iib.customDestroyed);
+		assertThat(InitAndIB.constructed).isTrue();
+		boolean condition3 = iib.afterPropertiesSetInvoked && !iib.initMethodInvoked;
+		assertThat(condition3).isTrue();
+		boolean condition2 = !iib.destroyed && !iib.customDestroyed;
+		assertThat(condition2).isTrue();
 		xbf.destroySingletons();
-		assertTrue(iib.destroyed && !iib.customDestroyed);
+		boolean condition1 = iib.destroyed && !iib.customDestroyed;
+		assertThat(condition1).isTrue();
 		xbf.destroySingletons();
-		assertTrue(iib.destroyed && !iib.customDestroyed);
+		boolean condition = iib.destroyed && !iib.customDestroyed;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -735,12 +741,13 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(DEFAULT_LAZY_CONTEXT);
 		assertFalse(InitAndIB.constructed);
 		xbf.preInstantiateSingletons();
-		assertTrue(InitAndIB.constructed);
+		assertThat(InitAndIB.constructed).isTrue();
 		try {
 			xbf.getBean("lazy-and-bad");
 		}
 		catch (BeanCreationException ex) {
-			assertTrue(ex.getCause() instanceof IOException);
+			boolean condition = ex.getCause() instanceof IOException;
+			assertThat(condition).isTrue();
 		}
 	}
 
@@ -820,8 +827,8 @@ public class XmlBeanFactoryTests {
 		assertNull(rod5.getSpouse());
 
 		BeanFactory appCtx = (BeanFactory) xbf.getBean("childAppCtx");
-		assertTrue(appCtx.containsBean("rod1"));
-		assertTrue(appCtx.containsBean("jenny"));
+		assertThat(appCtx.containsBean("rod1")).isTrue();
+		assertThat(appCtx.containsBean("jenny")).isTrue();
 	}
 
 	@Test
@@ -832,12 +839,12 @@ public class XmlBeanFactoryTests {
 		DependenciesBean rod1 = (DependenciesBean) xbf.getBean("rod1");
 		// should have been autowired
 		assertNotNull(rod1.getSpouse());
-		assertTrue(rod1.getSpouse().getName().equals("Kerry"));
+		assertThat(rod1.getSpouse().getName().equals("Kerry")).isTrue();
 
 		DependenciesBean rod2 = (DependenciesBean) xbf.getBean("rod2");
 		// should have been autowired
 		assertNotNull(rod2.getSpouse());
-		assertTrue(rod2.getSpouse().getName().equals("Kerry"));
+		assertThat(rod2.getSpouse().getName().equals("Kerry")).isTrue();
 	}
 
 	@Test
@@ -896,8 +903,9 @@ public class XmlBeanFactoryTests {
 
 		DerivedConstructorDependenciesBean rod6 = (DerivedConstructorDependenciesBean) xbf.getBean("rod6");
 		// should have been autowired
-		assertTrue(rod6.initialized);
-		assertTrue(!rod6.destroyed);
+		assertThat(rod6.initialized).isTrue();
+		boolean condition = !rod6.destroyed;
+		assertThat(condition).isTrue();
 		assertEquals(kerry2, rod6.getSpouse1());
 		assertEquals(kerry1, rod6.getSpouse2());
 		assertEquals(other, rod6.getOther());
@@ -905,7 +913,7 @@ public class XmlBeanFactoryTests {
 		assertEquals(null, rod6.getName());
 
 		xbf.destroySingletons();
-		assertTrue(rod6.destroyed);
+		assertThat(rod6.destroyed).isTrue();
 	}
 
 	@Test
@@ -917,7 +925,7 @@ public class XmlBeanFactoryTests {
 			xbf.getBean("rod2Accessor");
 		}
 		catch (BeanCreationException ex) {
-			assertTrue(ex.toString().contains("touchy"));
+			assertThat(ex.toString().contains("touchy")).isTrue();
 			ex.printStackTrace();
 			assertNull(ex.getRelatedCauses());
 		}
@@ -1073,10 +1081,10 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(resource);
 		xbf.preInstantiateSingletons();
 		xbf.destroySingletons();
-		assertTrue(PreparingBean1.prepared);
-		assertTrue(PreparingBean1.destroyed);
-		assertTrue(PreparingBean2.prepared);
-		assertTrue(PreparingBean2.destroyed);
+		assertThat(PreparingBean1.prepared).isTrue();
+		assertThat(PreparingBean1.destroyed).isTrue();
+		assertThat(PreparingBean2.prepared).isTrue();
+		assertThat(PreparingBean2.destroyed).isTrue();
 		assertEquals(nrOfHoldingBeans, DependingBean.destroyCount);
 		if (!xbf.getBeansOfType(HoldingBean.class, false, false).isEmpty()) {
 			assertEquals(nrOfHoldingBeans, HoldingBean.destroyCount);
@@ -1119,7 +1127,8 @@ public class XmlBeanFactoryTests {
 		// comes from "resource.xml"
 		ResourceTestBean resource2 = (ResourceTestBean) xbf.getBean("resource2");
 
-		assertTrue(resource1.getResource() instanceof ClassPathResource);
+		boolean condition = resource1.getResource() instanceof ClassPathResource;
+		assertThat(condition).isTrue();
 		StringWriter writer = new StringWriter();
 		FileCopyUtils.copy(new InputStreamReader(resource1.getResource().getInputStream()), writer);
 		assertEquals("test", writer.toString());
@@ -1187,8 +1196,7 @@ public class XmlBeanFactoryTests {
 			new XmlBeanDefinitionReader(bf).loadBeanDefinitions(OVERRIDES_CONTEXT);
 
 			final Class<?> currentClass = bf.getBean("overrideOneMethod").getClass();
-			assertTrue("Method injected bean class [" + currentClass + "] must be a CGLIB enhanced subclass.",
-				ClassUtils.isCglibProxyClass(currentClass));
+			assertThat(ClassUtils.isCglibProxyClass(currentClass)).as("Method injected bean class [" + currentClass + "] must be a CGLIB enhanced subclass.").isTrue();
 
 			if (firstClass == null) {
 				firstClass = currentClass;
@@ -1221,7 +1229,7 @@ public class XmlBeanFactoryTests {
 		sw.stop();
 		// System.out.println(sw);
 		if (!LogFactory.getLog(DefaultListableBeanFactory.class).isDebugEnabled()) {
-			assertTrue(sw.getTotalTimeMillis() < 2000);
+			assertThat(sw.getTotalTimeMillis() < 2000).isTrue();
 		}
 
 		// Now test distinct bean with swapped value in factory, to ensure the two are independent
@@ -1282,7 +1290,8 @@ public class XmlBeanFactoryTests {
 		assertNotSame(jenny1, jenny2);
 
 		TestBean notJenny = oom.getPrototypeDependency("someParam");
-		assertTrue(!"Jenny".equals(notJenny.getName()));
+		boolean condition = !"Jenny".equals(notJenny.getName());
+		assertThat(condition).isTrue();
 
 		// Now try protected method, and singleton
 		TestBean dave1 = oom.protectedOverrideSingleton();
@@ -1372,12 +1381,14 @@ public class XmlBeanFactoryTests {
 		TestBean jenny1 = (TestBean) xbf.getBean("jennyChild");
 		assertEquals(1, jenny1.getFriends().size());
 		Object friend1 = jenny1.getFriends().iterator().next();
-		assertTrue(friend1 instanceof TestBean);
+		boolean condition1 = friend1 instanceof TestBean;
+		assertThat(condition1).isTrue();
 
 		TestBean jenny2 = (TestBean) xbf.getBean("jennyChild");
 		assertEquals(1, jenny2.getFriends().size());
 		Object friend2 = jenny2.getFriends().iterator().next();
-		assertTrue(friend2 instanceof TestBean);
+		boolean condition = friend2 instanceof TestBean;
+		assertThat(condition).isTrue();
 
 		assertNotSame(jenny1, jenny2);
 		assertNotSame(friend1, friend2);
@@ -1389,10 +1400,10 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONSTRUCTOR_ARG_CONTEXT);
 
 		SingleSimpleTypeConstructorBean bean = (SingleSimpleTypeConstructorBean) xbf.getBean("beanWithBoolean");
-		assertTrue(bean.isSingleBoolean());
+		assertThat(bean.isSingleBoolean()).isTrue();
 
 		SingleSimpleTypeConstructorBean bean2 = (SingleSimpleTypeConstructorBean) xbf.getBean("beanWithBoolean2");
-		assertTrue(bean2.isSingleBoolean());
+		assertThat(bean2.isSingleBoolean()).isTrue();
 	}
 
 	@Test
@@ -1401,11 +1412,11 @@ public class XmlBeanFactoryTests {
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONSTRUCTOR_ARG_CONTEXT);
 
 		SingleSimpleTypeConstructorBean bean = (SingleSimpleTypeConstructorBean) xbf.getBean("beanWithBooleanAndString");
-		assertTrue(bean.isSecondBoolean());
+		assertThat(bean.isSecondBoolean()).isTrue();
 		assertEquals("A String", bean.getTestString());
 
 		SingleSimpleTypeConstructorBean bean2 = (SingleSimpleTypeConstructorBean) xbf.getBean("beanWithBooleanAndString2");
-		assertTrue(bean2.isSecondBoolean());
+		assertThat(bean2.isSecondBoolean()).isTrue();
 		assertEquals("A String", bean2.getTestString());
 	}
 
@@ -1432,7 +1443,8 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONSTRUCTOR_ARG_CONTEXT);
 		LenientDependencyTestBean bean = (LenientDependencyTestBean) xbf.getBean("lenientDependencyTestBean");
-		assertTrue(bean.tb instanceof DerivedTestBean);
+		boolean condition = bean.tb instanceof DerivedTestBean;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -1440,7 +1452,8 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONSTRUCTOR_ARG_CONTEXT);
 		LenientDependencyTestBean bean = (LenientDependencyTestBean) xbf.getBean("lenientDependencyTestBeanFactoryMethod");
-		assertTrue(bean.tb instanceof DerivedTestBean);
+		boolean condition = bean.tb instanceof DerivedTestBean;
+		assertThat(condition).isTrue();
 	}
 
 	@Test
@@ -1490,7 +1503,8 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONSTRUCTOR_ARG_CONTEXT);
 		ConstructorArrayTestBean bean = (ConstructorArrayTestBean) xbf.getBean("constructorArray");
-		assertTrue(bean.array instanceof int[]);
+		boolean condition = bean.array instanceof int[];
+		assertThat(condition).isTrue();
 		assertEquals(1, ((int[]) bean.array).length);
 		assertEquals(1, ((int[]) bean.array)[0]);
 	}
@@ -1500,7 +1514,8 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONSTRUCTOR_ARG_CONTEXT);
 		ConstructorArrayTestBean bean = (ConstructorArrayTestBean) xbf.getBean("indexedConstructorArray");
-		assertTrue(bean.array instanceof int[]);
+		boolean condition = bean.array instanceof int[];
+		assertThat(condition).isTrue();
 		assertEquals(1, ((int[]) bean.array).length);
 		assertEquals(1, ((int[]) bean.array)[0]);
 	}
@@ -1510,7 +1525,8 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(CONSTRUCTOR_ARG_CONTEXT);
 		ConstructorArrayTestBean bean = (ConstructorArrayTestBean) xbf.getBean("constructorArrayNoType");
-		assertTrue(bean.array instanceof String[]);
+		boolean condition = bean.array instanceof String[];
+		assertThat(condition).isTrue();
 		assertEquals(0, ((String[]) bean.array).length);
 	}
 
@@ -1521,7 +1537,8 @@ public class XmlBeanFactoryTests {
 		AbstractBeanDefinition bd = (AbstractBeanDefinition) xbf.getBeanDefinition("constructorArrayNoType");
 		bd.setLenientConstructorResolution(false);
 		ConstructorArrayTestBean bean = (ConstructorArrayTestBean) xbf.getBean("constructorArrayNoType");
-		assertTrue(bean.array instanceof String[]);
+		boolean condition = bean.array instanceof String[];
+		assertThat(condition).isTrue();
 		assertEquals(0, ((String[]) bean.array).length);
 	}
 
