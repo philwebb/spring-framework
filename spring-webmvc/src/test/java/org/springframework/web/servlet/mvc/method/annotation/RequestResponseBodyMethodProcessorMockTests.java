@@ -57,7 +57,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
@@ -144,13 +143,13 @@ public class RequestResponseBodyMethodProcessorMockTests {
 	@Test
 	public void supportsParameter() {
 		assertThat(processor.supportsParameter(paramRequestBodyString)).as("RequestBody parameter not supported").isTrue();
-		assertFalse("non-RequestBody parameter supported", processor.supportsParameter(paramInt));
+		assertThat(processor.supportsParameter(paramInt)).as("non-RequestBody parameter supported").isFalse();
 	}
 
 	@Test
 	public void supportsReturnType() {
 		assertThat(processor.supportsReturnType(returnTypeString)).as("ResponseBody return type not supported").isTrue();
-		assertFalse("non-ResponseBody return type supported", processor.supportsReturnType(returnTypeInt));
+		assertThat(processor.supportsReturnType(returnTypeInt)).as("non-ResponseBody return type supported").isFalse();
 	}
 
 	@Test
@@ -168,7 +167,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 				webRequest, new ValidatingBinderFactory());
 
 		assertEquals("Invalid argument", body, result);
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
 	@Test

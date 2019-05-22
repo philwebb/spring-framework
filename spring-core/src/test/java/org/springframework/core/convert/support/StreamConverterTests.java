@@ -30,7 +30,6 @@ import org.springframework.core.convert.converter.Converter;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -171,9 +170,9 @@ public class StreamConverterTests {
 
 	@Test
 	public void doesNotMatchIfNoStream() throws NoSuchFieldException {
-		assertFalse("Should not match non stream type", this.streamConverter.matches(
+		assertThat(this.streamConverter.matches(
 				new TypeDescriptor(Types.class.getField("listOfStrings")),
-				new TypeDescriptor(Types.class.getField("arrayOfLongs"))));
+				new TypeDescriptor(Types.class.getField("arrayOfLongs")))).as("Should not match non stream type").isFalse();
 	}
 
 	@Test

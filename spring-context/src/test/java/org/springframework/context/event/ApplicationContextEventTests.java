@@ -51,7 +51,6 @@ import org.springframework.util.ReflectionUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -272,12 +271,12 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 		listener2.setLazyInit(true);
 		context.registerBeanDefinition("listener2", listener2);
 		context.refresh();
-		assertFalse(context.getDefaultListableBeanFactory().containsSingleton("listener2"));
+		assertThat(context.getDefaultListableBeanFactory().containsSingleton("listener2")).isFalse();
 
 		MyOrderedListener1 listener1 = context.getBean("listener1", MyOrderedListener1.class);
 		MyOtherEvent event1 = new MyOtherEvent(context);
 		context.publishEvent(event1);
-		assertFalse(context.getDefaultListableBeanFactory().containsSingleton("listener2"));
+		assertThat(context.getDefaultListableBeanFactory().containsSingleton("listener2")).isFalse();
 		MyEvent event2 = new MyEvent(context);
 		context.publishEvent(event2);
 		assertThat(context.getDefaultListableBeanFactory().containsSingleton("listener2")).isTrue();
@@ -348,7 +347,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 		SimpleApplicationEventMulticaster multicaster = context.getBean(
 				AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
 				SimpleApplicationEventMulticaster.class);
-		assertFalse(multicaster.getApplicationListeners().isEmpty());
+		assertThat(multicaster.getApplicationListeners().isEmpty()).isFalse();
 
 		context.close();
 		assertThat(multicaster.getApplicationListeners().isEmpty()).isTrue();

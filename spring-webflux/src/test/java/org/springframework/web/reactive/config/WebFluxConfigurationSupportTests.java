@@ -78,7 +78,6 @@ import org.springframework.web.util.pattern.PathPatternParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -137,7 +136,7 @@ public class WebFluxConfigurationSupportTests {
 		PathPatternParser patternParser = mapping.getPathPatternParser();
 		assertNotNull(patternParser);
 		boolean matchOptionalTrailingSlash = (boolean) ReflectionUtils.getField(field, patternParser);
-		assertFalse(matchOptionalTrailingSlash);
+		assertThat(matchOptionalTrailingSlash).isFalse();
 
 		Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
 		assertEquals(1, map.size());

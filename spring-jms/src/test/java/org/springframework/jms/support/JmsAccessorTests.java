@@ -20,9 +20,9 @@ import javax.jms.Session;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for the {@link JmsAccessor} class.
@@ -42,10 +42,9 @@ public class JmsAccessorTests {
 	@Test
 	public void testSessionTransactedModeReallyDoesDefaultToFalse() throws Exception {
 		JmsAccessor accessor = new StubJmsAccessor();
-		assertFalse("The [sessionTransacted] property of JmsAccessor must default to " +
+		assertThat(accessor.isSessionTransacted()).as("The [sessionTransacted] property of JmsAccessor must default to " +
 				"false. Change this test (and the attendant Javadoc) if you have " +
-				"changed the default.",
-				accessor.isSessionTransacted());
+				"changed the default.").isFalse();
 	}
 
 	@Test

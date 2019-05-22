@@ -25,7 +25,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -78,7 +77,7 @@ public class DefaultSingletonBeanRegistryTests {
 		String[] names = beanRegistry.getSingletonNames();
 		assertEquals(1, names.length);
 		assertEquals("tb", names[0]);
-		assertFalse(tb.wasDestroyed());
+		assertThat(tb.wasDestroyed()).isFalse();
 
 		beanRegistry.destroySingletons();
 		assertEquals(0, beanRegistry.getSingletonCount());
@@ -97,9 +96,9 @@ public class DefaultSingletonBeanRegistryTests {
 		assertThat(beanRegistry.isDependent("b", "c")).isTrue();
 		assertThat(beanRegistry.isDependent("c", "b")).isTrue();
 		assertThat(beanRegistry.isDependent("a", "c")).isTrue();
-		assertFalse(beanRegistry.isDependent("c", "a"));
-		assertFalse(beanRegistry.isDependent("b", "a"));
-		assertFalse(beanRegistry.isDependent("a", "a"));
+		assertThat(beanRegistry.isDependent("c", "a")).isFalse();
+		assertThat(beanRegistry.isDependent("b", "a")).isFalse();
+		assertThat(beanRegistry.isDependent("a", "a")).isFalse();
 		assertThat(beanRegistry.isDependent("b", "b")).isTrue();
 		assertThat(beanRegistry.isDependent("c", "c")).isTrue();
 	}

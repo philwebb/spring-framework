@@ -41,8 +41,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertFalse;
-
 /**
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -150,7 +148,7 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 
 	@Test
 	public void initializingBeanAndInitMethod() throws Exception {
-		assertFalse(InitAndIB.constructed);
+		assertThat(InitAndIB.constructed).isFalse();
 		InitAndIB iib = (InitAndIB) this.applicationContext.getBean("init-and-ib");
 		assertThat(InitAndIB.constructed).isTrue();
 		assertThat(iib.afterPropertiesSetInvoked && iib.initMethodInvoked).isTrue();

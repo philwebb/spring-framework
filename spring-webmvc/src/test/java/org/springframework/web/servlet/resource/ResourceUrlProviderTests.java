@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +36,6 @@ import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -150,7 +148,7 @@ public class ResourceUrlProviderTests {
 
 		ResourceUrlProvider urlProviderBean = context.getBean(ResourceUrlProvider.class);
 		assertThat(urlProviderBean.getHandlerMap()).containsKey("/resources/**");
-		assertFalse(urlProviderBean.isAutodetect());
+		assertThat(urlProviderBean.isAutodetect()).isFalse();
 	}
 
 	@Test // SPR-16296

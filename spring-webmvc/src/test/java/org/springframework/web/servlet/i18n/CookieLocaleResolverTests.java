@@ -34,7 +34,6 @@ import org.springframework.web.util.WebUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -163,7 +162,7 @@ public class CookieLocaleResolverTests {
 		assertEquals(CookieLocaleResolver.DEFAULT_COOKIE_NAME, cookie.getName());
 		assertEquals(null, cookie.getDomain());
 		assertEquals(CookieLocaleResolver.DEFAULT_COOKIE_PATH, cookie.getPath());
-		assertFalse(cookie.getSecure());
+		assertThat(cookie.getSecure()).isFalse();
 
 		request = new MockHttpServletRequest();
 		request.setCookies(cookie);
@@ -249,7 +248,7 @@ public class CookieLocaleResolverTests {
 		assertEquals(CookieLocaleResolver.DEFAULT_COOKIE_NAME, cookie.getName());
 		assertEquals(null, cookie.getDomain());
 		assertEquals(CookieLocaleResolver.DEFAULT_COOKIE_PATH, cookie.getPath());
-		assertFalse(cookie.getSecure());
+		assertThat(cookie.getSecure()).isFalse();
 		assertEquals("de-AT", cookie.getValue());
 
 		request = new MockHttpServletRequest();
@@ -275,7 +274,7 @@ public class CookieLocaleResolverTests {
 		assertEquals(CookieLocaleResolver.DEFAULT_COOKIE_NAME, cookie.getName());
 		assertEquals(null, cookie.getDomain());
 		assertEquals(CookieLocaleResolver.DEFAULT_COOKIE_PATH, cookie.getPath());
-		assertFalse(cookie.getSecure());
+		assertThat(cookie.getSecure()).isFalse();
 		assertEquals("de_AT", cookie.getValue());
 
 		request = new MockHttpServletRequest();

@@ -31,7 +31,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -50,7 +49,7 @@ public class AopUtilsTests {
 		}
 
 		Pointcut no = new TestPointcut();
-		assertFalse(AopUtils.canApply(no, Object.class));
+		assertThat(AopUtils.canApply(no, Object.class)).isFalse();
 	}
 
 	@Test

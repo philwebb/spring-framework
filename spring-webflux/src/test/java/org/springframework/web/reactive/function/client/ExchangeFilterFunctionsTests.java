@@ -36,7 +36,6 @@ import org.springframework.web.reactive.function.BodyExtractors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -58,15 +57,15 @@ public class ExchangeFilterFunctionsTests {
 
 		boolean[] filtersInvoked = new boolean[2];
 		ExchangeFilterFunction filter1 = (r, n) -> {
-			assertFalse(filtersInvoked[0]);
-			assertFalse(filtersInvoked[1]);
+			assertThat(filtersInvoked[0]).isFalse();
+			assertThat(filtersInvoked[1]).isFalse();
 			filtersInvoked[0] = true;
-			assertFalse(filtersInvoked[1]);
+			assertThat(filtersInvoked[1]).isFalse();
 			return n.exchange(r);
 		};
 		ExchangeFilterFunction filter2 = (r, n) -> {
 			assertThat(filtersInvoked[0]).isTrue();
-			assertFalse(filtersInvoked[1]);
+			assertThat(filtersInvoked[1]).isFalse();
 			filtersInvoked[1] = true;
 			return n.exchange(r);
 		};
@@ -88,7 +87,7 @@ public class ExchangeFilterFunctionsTests {
 
 		boolean[] filterInvoked = new boolean[1];
 		ExchangeFilterFunction filter = (r, n) -> {
-			assertFalse(filterInvoked[0]);
+			assertThat(filterInvoked[0]).isFalse();
 			filterInvoked[0] = true;
 			return n.exchange(r);
 		};
@@ -111,7 +110,7 @@ public class ExchangeFilterFunctionsTests {
 		};
 
 		ExchangeFilterFunction auth = ExchangeFilterFunctions.basicAuthentication("foo", "bar");
-		assertFalse(request.headers().containsKey(HttpHeaders.AUTHORIZATION));
+		assertThat(request.headers().containsKey(HttpHeaders.AUTHORIZATION)).isFalse();
 		ClientResponse result = auth.filter(request, exchange).block();
 		assertEquals(response, result);
 	}
@@ -141,7 +140,7 @@ public class ExchangeFilterFunctionsTests {
 		};
 
 		ExchangeFilterFunction auth = ExchangeFilterFunctions.basicAuthentication();
-		assertFalse(request.headers().containsKey(HttpHeaders.AUTHORIZATION));
+		assertThat(request.headers().containsKey(HttpHeaders.AUTHORIZATION)).isFalse();
 		ClientResponse result = auth.filter(request, exchange).block();
 		assertEquals(response, result);
 	}
@@ -153,12 +152,12 @@ public class ExchangeFilterFunctionsTests {
 		ClientResponse response = mock(ClientResponse.class);
 
 		ExchangeFunction exchange = r -> {
-			assertFalse(r.headers().containsKey(HttpHeaders.AUTHORIZATION));
+			assertThat(r.headers().containsKey(HttpHeaders.AUTHORIZATION)).isFalse();
 			return Mono.just(response);
 		};
 
 		ExchangeFilterFunction auth = ExchangeFilterFunctions.basicAuthentication();
-		assertFalse(request.headers().containsKey(HttpHeaders.AUTHORIZATION));
+		assertThat(request.headers().containsKey(HttpHeaders.AUTHORIZATION)).isFalse();
 		ClientResponse result = auth.filter(request, exchange).block();
 		assertEquals(response, result);
 	}

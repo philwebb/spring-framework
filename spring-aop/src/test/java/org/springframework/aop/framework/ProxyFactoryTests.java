@@ -47,7 +47,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
@@ -94,7 +93,7 @@ public class ProxyFactoryTests {
 		assertEquals(5, proxied.getAge());
 		assertEquals(1, cba.getCalls());
 		assertEquals(2, nop.getCount());
-		assertFalse(pf.removeAdvisor(new DefaultPointcutAdvisor(null)));
+		assertThat(pf.removeAdvisor(new DefaultPointcutAdvisor(null))).isFalse();
 	}
 
 	@Test
@@ -164,14 +163,14 @@ public class ProxyFactoryTests {
 		assertEquals(1, cba1.getCalls());
 		assertEquals(0, cba2.getCalls());
 		assertEquals(1, nop.getCount());
-		assertFalse(advised.replaceAdvisor(new DefaultPointcutAdvisor(new NopInterceptor()), advisor2));
+		assertThat(advised.replaceAdvisor(new DefaultPointcutAdvisor(new NopInterceptor()), advisor2)).isFalse();
 		assertThat(advised.replaceAdvisor(advisor1, advisor2)).isTrue();
 		assertEquals(advisor2, pf.getAdvisors()[0]);
 		assertEquals(5, proxied.getAge());
 		assertEquals(1, cba1.getCalls());
 		assertEquals(2, nop.getCount());
 		assertEquals(1, cba2.getCalls());
-		assertFalse(pf.replaceAdvisor(new DefaultPointcutAdvisor(null), advisor1));
+		assertThat(pf.replaceAdvisor(new DefaultPointcutAdvisor(null), advisor1)).isFalse();
 	}
 
 	@Test
@@ -256,8 +255,8 @@ public class ProxyFactoryTests {
 	public void testCanAddAndRemoveAspectInterfacesOnSingleton() {
 		ProxyFactory config = new ProxyFactory(new TestBean());
 
-		assertFalse("Shouldn't implement TimeStamped before manipulation",
-				config.getProxy() instanceof TimeStamped);
+		boolean condition1 = config.getProxy() instanceof TimeStamped;
+		assertThat(condition1).as("Shouldn't implement TimeStamped before manipulation").isFalse();
 
 		long time = 666L;
 		TimestampIntroductionInterceptor ti = new TimestampIntroductionInterceptor();
@@ -281,8 +280,8 @@ public class ProxyFactoryTests {
 				.as("Existing object won't implement this interface any more")
 				.isThrownBy(ts::getTimeStamp); // Existing reference will fail
 
-		assertFalse("Should no longer implement TimeStamped",
-				config.getProxy() instanceof TimeStamped);
+		boolean condition = config.getProxy() instanceof TimeStamped;
+		assertThat(condition).as("Should no longer implement TimeStamped").isFalse();
 
 		// Now check non-effect of removing interceptor that isn't there
 		config.removeAdvice(new DebugInterceptor());

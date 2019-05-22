@@ -57,7 +57,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test class for {@link SpringHandlerInstantiatorTests}.
@@ -102,7 +101,7 @@ public class SpringHandlerInstantiatorTests {
 		String json = "{\"credentials\":{\"bob\":\"admin\"}}";
 		SecurityRegistry registry = this.objectMapper.readValue(json, SecurityRegistry.class);
 		assertThat(registry.getCredentials().keySet().contains("BOB")).isTrue();
-		assertFalse(registry.getCredentials().keySet().contains("bob"));
+		assertThat(registry.getCredentials().keySet().contains("bob")).isFalse();
 	}
 
 	@Test

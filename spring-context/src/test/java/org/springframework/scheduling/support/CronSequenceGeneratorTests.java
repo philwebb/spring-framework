@@ -23,7 +23,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -91,22 +90,22 @@ public class CronSequenceGeneratorTests {
 
 	@Test
 	public void invalidExpressionWithLength() {
-		assertFalse(CronSequenceGenerator.isValidExpression("0 */2 1-4 * * * *"));
+		assertThat(CronSequenceGenerator.isValidExpression("0 */2 1-4 * * * *")).isFalse();
 	}
 
 	@Test
 	public void invalidExpressionWithSeconds() {
-		assertFalse(CronSequenceGenerator.isValidExpression("100 */2 1-4 * * *"));
+		assertThat(CronSequenceGenerator.isValidExpression("100 */2 1-4 * * *")).isFalse();
 	}
 
 	@Test
 	public void invalidExpressionWithMonths() {
-		assertFalse(CronSequenceGenerator.isValidExpression("0 */2 1-4 * INVALID *"));
+		assertThat(CronSequenceGenerator.isValidExpression("0 */2 1-4 * INVALID *")).isFalse();
 	}
 
 	@Test
 	public void nullExpression() {
-		assertFalse(CronSequenceGenerator.isValidExpression(null));
+		assertThat(CronSequenceGenerator.isValidExpression(null)).isFalse();
 	}
 
 }

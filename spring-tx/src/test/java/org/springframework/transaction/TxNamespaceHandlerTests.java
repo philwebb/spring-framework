@@ -33,7 +33,6 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -93,7 +92,7 @@ public class TxNamespaceHandlerTests {
 		assertThat(txAttr.rollbackOn(new Exception())).as("should be configured to rollback on Exception").isTrue();
 
 		txAttr = txAttrSource.getTransactionAttribute(setAgeMethod, ITestBean.class);
-		assertFalse("should not rollback on RuntimeException",txAttr.rollbackOn(new RuntimeException()));
+		assertThat(txAttr.rollbackOn(new RuntimeException())).as("should not rollback on RuntimeException").isFalse();
 	}
 
 	private ITestBean getTestBean() {

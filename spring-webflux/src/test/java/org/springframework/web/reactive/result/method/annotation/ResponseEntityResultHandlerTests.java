@@ -59,7 +59,6 @@ import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuild
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.ResponseEntity.notFound;
@@ -136,14 +135,14 @@ public class ResponseEntityResultHandlerTests {
 		Object value = null;
 
 		MethodParameter returnType = on(TestController.class).resolveReturnType(String.class);
-		assertFalse(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isFalse();
 
 		returnType = on(TestController.class).resolveReturnType(Completable.class);
-		assertFalse(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isFalse();
 
 		// SPR-15464
 		returnType = on(TestController.class).resolveReturnType(Flux.class);
-		assertFalse(this.resultHandler.supports(handlerResult(value, returnType)));
+		assertThat(this.resultHandler.supports(handlerResult(value, returnType))).isFalse();
 	}
 
 	@Test

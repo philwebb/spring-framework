@@ -26,7 +26,6 @@ import org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactoryT
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -46,7 +45,7 @@ public class AspectMetadataTests {
 	@Test
 	public void testSingletonAspect() {
 		AspectMetadata am = new AspectMetadata(ExceptionAspect.class,"someBean");
-		assertFalse(am.isPerThisOrPerTarget());
+		assertThat(am.isPerThisOrPerTarget()).isFalse();
 		assertSame(Pointcut.TRUE, am.getPerClausePointcut());
 		assertEquals(PerClauseKind.SINGLETON, am.getAjType().getPerClause().getKind());
 	}

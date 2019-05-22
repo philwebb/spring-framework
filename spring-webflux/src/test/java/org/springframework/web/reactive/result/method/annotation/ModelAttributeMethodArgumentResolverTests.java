@@ -45,7 +45,6 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -84,10 +83,10 @@ public class ModelAttributeMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Foo.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 
 		param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Mono.class, Foo.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 	}
 
 	@Test
@@ -102,10 +101,10 @@ public class ModelAttributeMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(String.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 
 		param = this.testMethod.annotNotPresent(ModelAttribute.class).arg(Mono.class, String.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 	}
 
 	@Test

@@ -36,7 +36,6 @@ import org.springframework.util.MimeType;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.core.io.buffer.DataBufferUtils.release;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 
@@ -79,11 +78,11 @@ public class Jackson2CborEncoderTests extends AbstractLeakCheckingTestCase {
 
 	@Test
 	public void canNotEncode() {
-		assertFalse(this.encoder.canEncode(ResolvableType.forClass(String.class), null));
-		assertFalse(this.encoder.canEncode(ResolvableType.forClass(Pojo.class), APPLICATION_XML));
+		assertThat(this.encoder.canEncode(ResolvableType.forClass(String.class), null)).isFalse();
+		assertThat(this.encoder.canEncode(ResolvableType.forClass(Pojo.class), APPLICATION_XML)).isFalse();
 
 		ResolvableType sseType = ResolvableType.forClass(ServerSentEvent.class);
-		assertFalse(this.encoder.canEncode(sseType, CBOR_MIME_TYPE));
+		assertThat(this.encoder.canEncode(sseType, CBOR_MIME_TYPE)).isFalse();
 	}
 
 	@Test

@@ -59,7 +59,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
@@ -81,7 +80,7 @@ public class GenericConversionServiceTests {
 
 	@Test
 	public void canConvert() {
-		assertFalse(conversionService.canConvert(String.class, Integer.class));
+		assertThat(conversionService.canConvert(String.class, Integer.class)).isFalse();
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(String.class, Integer.class)).isTrue();
 	}
@@ -161,12 +160,12 @@ public class GenericConversionServiceTests {
 
 	@Test
 	public void sourceTypeIsVoid() {
-		assertFalse(conversionService.canConvert(void.class, String.class));
+		assertThat(conversionService.canConvert(void.class, String.class)).isFalse();
 	}
 
 	@Test
 	public void targetTypeIsVoid() {
-		assertFalse(conversionService.canConvert(String.class, void.class));
+		assertThat(conversionService.canConvert(String.class, void.class)).isFalse();
 	}
 
 	@Test
@@ -221,7 +220,7 @@ public class GenericConversionServiceTests {
 
 	@Test
 	public void convertObjectToPrimitive() {
-		assertFalse(conversionService.canConvert(String.class, boolean.class));
+		assertThat(conversionService.canConvert(String.class, boolean.class)).isFalse();
 		conversionService.addConverter(new StringToBooleanConverter());
 		assertThat(conversionService.canConvert(String.class, boolean.class)).isTrue();
 		Boolean b = conversionService.convert("true", boolean.class);
@@ -233,7 +232,7 @@ public class GenericConversionServiceTests {
 
 	@Test
 	public void convertObjectToPrimitiveViaConverterFactory() {
-		assertFalse(conversionService.canConvert(String.class, int.class));
+		assertThat(conversionService.canConvert(String.class, int.class)).isFalse();
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(String.class, int.class)).isTrue();
 		Integer three = conversionService.convert("3", int.class);
@@ -243,7 +242,7 @@ public class GenericConversionServiceTests {
 	@Test
 	public void genericConverterDelegatingBackToConversionServiceConverterNotFound() {
 		conversionService.addConverter(new ObjectToArrayConverter(conversionService));
-		assertFalse(conversionService.canConvert(String.class, Integer[].class));
+		assertThat(conversionService.canConvert(String.class, Integer[].class)).isFalse();
 		assertThatExceptionOfType(ConverterNotFoundException.class).isThrownBy(() ->
 				conversionService.convert("3,4,5", Integer[].class));
 	}
@@ -422,7 +421,7 @@ public class GenericConversionServiceTests {
 	@Test
 	public void stringToArrayCanConvert() {
 		conversionService.addConverter(new StringToArrayConverter(conversionService));
-		assertFalse(conversionService.canConvert(String.class, Integer[].class));
+		assertThat(conversionService.canConvert(String.class, Integer[].class)).isFalse();
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(String.class, Integer[].class)).isTrue();
 	}
@@ -432,7 +431,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new StringToCollectionConverter(conversionService));
 		assertThat(conversionService.canConvert(String.class, Collection.class)).isTrue();
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("integerCollection"));
-		assertFalse(conversionService.canConvert(TypeDescriptor.valueOf(String.class), targetType));
+		assertThat(conversionService.canConvert(TypeDescriptor.valueOf(String.class), targetType)).isFalse();
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(TypeDescriptor.valueOf(String.class), targetType)).isTrue();
 	}
@@ -456,8 +455,8 @@ public class GenericConversionServiceTests {
 	public void testConvertiblePairDifferentEqualsAndHash() {
 		GenericConverter.ConvertiblePair pair = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		GenericConverter.ConvertiblePair pairOpposite = new GenericConverter.ConvertiblePair(String.class, Number.class);
-		assertFalse(pair.equals(pairOpposite));
-		assertFalse(pair.hashCode() == pairOpposite.hashCode());
+		assertThat(pair.equals(pairOpposite)).isFalse();
+		assertThat(pair.hashCode() == pairOpposite.hashCode()).isFalse();
 	}
 
 	@Test
@@ -477,7 +476,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new ColorConverter());
 		assertThat(conversionService.canConvert(String.class, Color.class)).isTrue();
 		conversionService.removeConvertible(String.class, Color.class);
-		assertFalse(conversionService.canConvert(String.class, Color.class));
+		assertThat(conversionService.canConvert(String.class, Color.class)).isFalse();
 	}
 
 	@Test

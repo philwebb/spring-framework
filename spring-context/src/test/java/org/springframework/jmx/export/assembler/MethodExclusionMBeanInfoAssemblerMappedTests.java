@@ -24,7 +24,6 @@ import javax.management.modelmbean.ModelMBeanInfo;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -40,7 +39,7 @@ public class MethodExclusionMBeanInfoAssemblerMappedTests extends AbstractJmxAss
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = info.getAttribute(AGE_ATTRIBUTE);
 		assertThat(attr.isReadable()).as("Age is not readable").isTrue();
-		assertFalse("Age is not writable", attr.isWritable());
+		assertThat(attr.isWritable()).as("Age is not writable").isFalse();
 	}
 
 	@Test

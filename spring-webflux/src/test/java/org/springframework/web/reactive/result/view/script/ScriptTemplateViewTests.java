@@ -35,7 +35,6 @@ import org.springframework.context.support.StaticApplicationContext;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
@@ -72,7 +71,7 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.configurer.setRenderFunction("render");
 		this.view.setApplicationContext(this.context);
-		assertFalse(this.view.checkResourceExists(Locale.ENGLISH));
+		assertThat(this.view.checkResourceExists(Locale.ENGLISH)).isFalse();
 	}
 
 	@Test

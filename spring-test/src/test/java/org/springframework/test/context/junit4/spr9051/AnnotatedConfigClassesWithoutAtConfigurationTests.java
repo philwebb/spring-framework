@@ -31,7 +31,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -78,7 +77,7 @@ public class AnnotatedConfigClassesWithoutAtConfigurationTests {
 			// enigma() method, not a CGLIB proxied version, since these methods
 			// are essentially factory bean methods.
 			LifecycleBean bean = new LifecycleBean(enigma());
-			assertFalse(bean.isInitialized());
+			assertThat(bean.isInitialized()).isFalse();
 			return bean;
 		}
 	}

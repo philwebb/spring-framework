@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -64,7 +63,7 @@ public class MethodNameBasedMBeanInfoAssemblerTests extends AbstractJmxAssembler
 		ModelMBeanAttributeInfo attr = info.getAttribute(AGE_ATTRIBUTE);
 
 		assertThat(attr.isReadable()).isTrue();
-		assertFalse(attr.isWritable());
+		assertThat(attr.isWritable()).isFalse();
 	}
 
 	@Test

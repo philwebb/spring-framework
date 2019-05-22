@@ -40,8 +40,8 @@ import org.springframework.jmx.export.notification.NotificationPublisher;
 import org.springframework.jmx.export.notification.NotificationPublisherAware;
 import org.springframework.jmx.support.ObjectNameManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -111,7 +111,7 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 	public void testLazyInit() throws Exception {
 		// start the MBeanExporter
 		ConfigurableApplicationContext ctx = loadContext("org/springframework/jmx/export/notificationPublisherLazyTests.xml");
-		assertFalse("Should not have instantiated the bean yet", ctx.getBeanFactory().containsSingleton("publisher"));
+		assertThat(ctx.getBeanFactory().containsSingleton("publisher")).as("Should not have instantiated the bean yet").isFalse();
 
 		// need to touch the MBean proxy
 		server.getAttribute(ObjectNameManager.getInstance("spring:type=Publisher"), "Name");

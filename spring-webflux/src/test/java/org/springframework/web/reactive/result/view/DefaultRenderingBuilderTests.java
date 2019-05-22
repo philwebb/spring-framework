@@ -26,7 +26,6 @@ import org.springframework.http.HttpHeaders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -54,7 +53,7 @@ public class DefaultRenderingBuilderTests {
 		assertEquals(RedirectView.class, view.getClass());
 		assertEquals("abc", ((RedirectView) view).getUrl());
 		assertThat(((RedirectView) view).isContextRelative()).isTrue();
-		assertFalse(((RedirectView) view).isPropagateQuery());
+		assertThat(((RedirectView) view).isPropagateQuery()).isFalse();
 	}
 
 
@@ -117,7 +116,7 @@ public class DefaultRenderingBuilderTests {
 
 		Object view = rendering.view();
 		assertEquals(RedirectView.class, view.getClass());
-		assertFalse(((RedirectView) view).isContextRelative());
+		assertThat(((RedirectView) view).isContextRelative()).isFalse();
 	}
 
 	@Test

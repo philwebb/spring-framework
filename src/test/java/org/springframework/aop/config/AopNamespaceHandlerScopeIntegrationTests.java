@@ -35,7 +35,6 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -93,7 +92,8 @@ public class AopNamespaceHandlerScopeIntegrationTests {
 
 		ITestBean testBean = (ITestBean) this.context.getBean("testBean");
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();
-		assertFalse("Regular bean should be JDK proxy", testBean instanceof TestBean);
+		boolean condition1 = testBean instanceof TestBean;
+		assertThat(condition1).as("Regular bean should be JDK proxy").isFalse();
 
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";
@@ -119,14 +119,16 @@ public class AopNamespaceHandlerScopeIntegrationTests {
 
 		ITestBean scoped = (ITestBean) this.context.getBean("sessionScoped");
 		assertThat(AopUtils.isAopProxy(scoped)).as("Should be AOP proxy").isTrue();
-		assertFalse("Should not be target class proxy", scoped instanceof TestBean);
+		boolean condition1 = scoped instanceof TestBean;
+		assertThat(condition1).as("Should not be target class proxy").isFalse();
 
 		ITestBean scopedAlias = (ITestBean) this.context.getBean("sessionScopedAlias");
 		assertSame(scoped, scopedAlias);
 
 		ITestBean testBean = (ITestBean) this.context.getBean("testBean");
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();
-		assertFalse("Regular bean should be JDK proxy", testBean instanceof TestBean);
+		boolean condition = testBean instanceof TestBean;
+		assertThat(condition).as("Regular bean should be JDK proxy").isFalse();
 
 		String rob = "Rob Harrop";
 		String bram = "Bram Smeets";

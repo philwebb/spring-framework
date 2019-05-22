@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link RequestHeaderMapMethodArgumentResolver}.
@@ -75,7 +74,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(paramMap)).as("Map parameter not supported").isTrue();
 		assertThat(resolver.supportsParameter(paramMultiValueMap)).as("MultiValueMap parameter not supported").isTrue();
 		assertThat(resolver.supportsParameter(paramHttpHeaders)).as("HttpHeaders parameter not supported").isTrue();
-		assertFalse("non-@RequestParam map supported", resolver.supportsParameter(paramUnsupported));
+		assertThat(resolver.supportsParameter(paramUnsupported)).as("non-@RequestParam map supported").isFalse();
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.paramAlsoUnsupported))
 			.withMessageStartingWith("RequestHeaderMapMethodArgumentResolver does not support reactive type wrapper");

@@ -37,7 +37,6 @@ import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.messaging.handler.annotation.MessagingPredicates.header;
 import static org.springframework.messaging.handler.annotation.MessagingPredicates.headerPlain;
 
@@ -63,7 +62,7 @@ public class HeaderMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 		assertThat(this.resolver.supportsParameter(this.resolvable.annot(headerPlain()).arg())).isTrue();
-		assertFalse(this.resolver.supportsParameter(this.resolvable.annotNotPresent(Header.class).arg()));
+		assertThat(this.resolver.supportsParameter(this.resolvable.annotNotPresent(Header.class).arg())).isFalse();
 	}
 
 	@Test

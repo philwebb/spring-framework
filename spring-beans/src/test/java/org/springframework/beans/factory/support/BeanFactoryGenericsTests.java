@@ -59,7 +59,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -777,8 +776,8 @@ public class BeanFactoryGenericsTests {
 		rbd.getConstructorArgumentValues().addGenericArgumentValue("x");
 		bf.registerBeanDefinition("mock", rbd);
 
-		assertFalse(bf.isTypeMatch("mock", Runnable.class));
-		assertFalse(bf.isTypeMatch("mock", Runnable.class));
+		assertThat(bf.isTypeMatch("mock", Runnable.class)).isFalse();
+		assertThat(bf.isTypeMatch("mock", Runnable.class)).isFalse();
 		assertNull(bf.getType("mock"));
 		assertNull(bf.getType("mock"));
 		Map<String, Runnable> beans = bf.getBeansOfType(Runnable.class);

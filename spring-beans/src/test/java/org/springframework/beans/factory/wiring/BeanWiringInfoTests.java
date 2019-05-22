@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for the BeanWiringInfo class.
@@ -69,7 +68,7 @@ public class BeanWiringInfoTests {
 	@Test
 	public void usingBeanNameCtorDoesNotIndicateAutowiring() throws Exception {
 		BeanWiringInfo info = new BeanWiringInfo("fooService");
-		assertFalse(info.indicatesAutowiring());
+		assertThat(info.indicatesAutowiring()).isFalse();
 	}
 
 	@Test
@@ -81,7 +80,7 @@ public class BeanWiringInfoTests {
 	@Test
 	public void dependencyCheckValueIsPreserved() throws Exception {
 		BeanWiringInfo info = new BeanWiringInfo(BeanWiringInfo.AUTOWIRE_BY_TYPE, false);
-		assertFalse(info.getDependencyCheck());
+		assertThat(info.getDependencyCheck()).isFalse();
 	}
 
 }

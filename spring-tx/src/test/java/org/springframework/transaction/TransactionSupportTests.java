@@ -27,7 +27,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertSame;
 
@@ -42,7 +41,7 @@ public class TransactionSupportTests {
 		PlatformTransactionManager tm = new TestTransactionManager(false, true);
 		DefaultTransactionStatus status1 = (DefaultTransactionStatus)
 				tm.getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_SUPPORTS));
-		assertFalse("Must not have transaction", status1.hasTransaction());
+		assertThat(status1.hasTransaction()).as("Must not have transaction").isFalse();
 
 		DefaultTransactionStatus status2 = (DefaultTransactionStatus)
 				tm.getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED));
@@ -83,8 +82,8 @@ public class TransactionSupportTests {
 
 		assertThat(tm.begin).as("triggered begin").isTrue();
 		assertThat(tm.commit).as("triggered commit").isTrue();
-		assertFalse("no rollback", tm.rollback);
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.rollback).as("no rollback").isFalse();
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@Test
@@ -94,9 +93,9 @@ public class TransactionSupportTests {
 		tm.rollback(status);
 
 		assertThat(tm.begin).as("triggered begin").isTrue();
-		assertFalse("no commit", tm.commit);
+		assertThat(tm.commit).as("no commit").isFalse();
 		assertThat(tm.rollback).as("triggered rollback").isTrue();
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@Test
@@ -107,9 +106,9 @@ public class TransactionSupportTests {
 		tm.commit(status);
 
 		assertThat(tm.begin).as("triggered begin").isTrue();
-		assertFalse("no commit", tm.commit);
+		assertThat(tm.commit).as("no commit").isFalse();
 		assertThat(tm.rollback).as("triggered rollback").isTrue();
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@Test
@@ -118,10 +117,10 @@ public class TransactionSupportTests {
 		TransactionStatus status = tm.getTransaction(null);
 		tm.commit(status);
 
-		assertFalse("no begin", tm.begin);
-		assertFalse("no commit", tm.commit);
-		assertFalse("no rollback", tm.rollback);
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.begin).as("no begin").isFalse();
+		assertThat(tm.commit).as("no commit").isFalse();
+		assertThat(tm.rollback).as("no rollback").isFalse();
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@Test
@@ -130,9 +129,9 @@ public class TransactionSupportTests {
 		TransactionStatus status = tm.getTransaction(null);
 		tm.rollback(status);
 
-		assertFalse("no begin", tm.begin);
-		assertFalse("no commit", tm.commit);
-		assertFalse("no rollback", tm.rollback);
+		assertThat(tm.begin).as("no begin").isFalse();
+		assertThat(tm.commit).as("no commit").isFalse();
+		assertThat(tm.rollback).as("no rollback").isFalse();
 		assertThat(tm.rollbackOnly).as("triggered rollbackOnly").isTrue();
 	}
 
@@ -143,9 +142,9 @@ public class TransactionSupportTests {
 		status.setRollbackOnly();
 		tm.commit(status);
 
-		assertFalse("no begin", tm.begin);
-		assertFalse("no commit", tm.commit);
-		assertFalse("no rollback", tm.rollback);
+		assertThat(tm.begin).as("no begin").isFalse();
+		assertThat(tm.commit).as("no commit").isFalse();
+		assertThat(tm.rollback).as("no rollback").isFalse();
 		assertThat(tm.rollbackOnly).as("triggered rollbackOnly").isTrue();
 	}
 
@@ -161,8 +160,8 @@ public class TransactionSupportTests {
 
 		assertThat(tm.begin).as("triggered begin").isTrue();
 		assertThat(tm.commit).as("triggered commit").isTrue();
-		assertFalse("no rollback", tm.rollback);
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.rollback).as("no rollback").isFalse();
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@Test
@@ -176,7 +175,7 @@ public class TransactionSupportTests {
 		});
 
 		assertSame(template, ptm.getDefinition());
-		assertFalse(ptm.getStatus().isRollbackOnly());
+		assertThat(ptm.getStatus().isRollbackOnly()).isFalse();
 	}
 
 	@Test
@@ -193,9 +192,9 @@ public class TransactionSupportTests {
 				}))
 			.isSameAs(ex);
 		assertThat(tm.begin).as("triggered begin").isTrue();
-		assertFalse("no commit", tm.commit);
+		assertThat(tm.commit).as("no commit").isFalse();
 		assertThat(tm.rollback).as("triggered rollback").isTrue();
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@SuppressWarnings("serial")
@@ -220,9 +219,9 @@ public class TransactionSupportTests {
 				}))
 			.isSameAs(tex);
 		assertThat(tm.begin).as("triggered begin").isTrue();
-		assertFalse("no commit", tm.commit);
+		assertThat(tm.commit).as("no commit").isFalse();
 		assertThat(tm.rollback).as("triggered rollback").isTrue();
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@Test
@@ -237,9 +236,9 @@ public class TransactionSupportTests {
 					}
 				}));
 		assertThat(tm.begin).as("triggered begin").isTrue();
-		assertFalse("no commit", tm.commit);
+		assertThat(tm.commit).as("no commit").isFalse();
 		assertThat(tm.rollback).as("triggered rollback").isTrue();
-		assertFalse("no rollbackOnly", tm.rollbackOnly);
+		assertThat(tm.rollbackOnly).as("no rollbackOnly").isFalse();
 	}
 
 	@Test
@@ -288,7 +287,7 @@ public class TransactionSupportTests {
 	@After
 	public void clear() {
 		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
-		assertFalse(TransactionSynchronizationManager.isSynchronizationActive());
+		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 	}
 
 }

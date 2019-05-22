@@ -34,7 +34,6 @@ import org.springframework.web.socket.WebSocketSession;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -111,7 +110,7 @@ public class XhrTransportTests {
 		assertEquals(1, transport.actualHandshakeHeaders.size());
 		assertEquals("foo", transport.actualHandshakeHeaders.getOrigin());
 
-		assertFalse(transport.actualSession.isDisconnected());
+		assertThat(transport.actualSession.isDisconnected()).isFalse();
 		captor.getValue().run();
 		assertThat(transport.actualSession.isDisconnected()).isTrue();
 	}

@@ -31,7 +31,6 @@ import org.springframework.orm.jpa.domain.Person;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -58,7 +57,8 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 
 	@Test
 	public void testEntityManagerFactoryImplementsEntityManagerFactoryInfo() {
-		assertFalse("Must not have introduced config interface", entityManagerFactory instanceof EntityManagerFactoryInfo);
+		boolean condition = entityManagerFactory instanceof EntityManagerFactoryInfo;
+		assertThat(condition).as("Must not have introduced config interface").isFalse();
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 	@Test  // SPR-16956
 	public void testReadOnly() {
 		assertSame(FlushMode.AUTO, sessionFactory.getCurrentSession().getHibernateFlushMode());
-		assertFalse(sessionFactory.getCurrentSession().isDefaultReadOnly());
+		assertThat(sessionFactory.getCurrentSession().isDefaultReadOnly()).isFalse();
 		endTransaction();
 
 		this.transactionDefinition.setReadOnly(true);

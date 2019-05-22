@@ -28,8 +28,8 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -212,7 +212,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/plain").produces("text/plain")
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(GET, RequestMethod.POST)
@@ -220,7 +220,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/plain").produces("text/plain")
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(GET)
@@ -228,7 +228,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/plain").produces("text/plain")
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(GET)
@@ -236,7 +236,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/plain").produces("text/plain")
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(GET)
@@ -244,7 +244,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/NOOOOOO").produces("text/plain")
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(GET)
@@ -252,7 +252,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/plain").produces("text/NOOOOOO")
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(GET)
@@ -260,7 +260,7 @@ public class RequestMappingInfoTests {
 				.consumes("text/plain").produces("text/plain")
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 	}
 

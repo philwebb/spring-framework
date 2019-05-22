@@ -31,7 +31,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test usage of inline maps.
@@ -132,7 +131,7 @@ public class MapTests extends AbstractExpressionTests {
 			assertThat(inlineMap.isConstant()).isTrue();
 		}
 		else {
-			assertFalse(inlineMap.isConstant());
+			assertThat(inlineMap.isConstant()).isFalse();
 		}
 	}
 

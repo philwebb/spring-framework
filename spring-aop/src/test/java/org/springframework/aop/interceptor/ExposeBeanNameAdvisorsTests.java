@@ -25,7 +25,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -56,7 +55,8 @@ public class ExposeBeanNameAdvisorsTests {
 		pf.addAdvisor(ExposeBeanNameAdvisors.createAdvisorWithoutIntroduction(beanName));
 		ITestBean proxy = (ITestBean) pf.getProxy();
 
-		assertFalse("No introduction", proxy instanceof NamedBean);
+		boolean condition = proxy instanceof NamedBean;
+		assertThat(condition).as("No introduction").isFalse();
 		// Requires binding
 		proxy.getAge();
 	}

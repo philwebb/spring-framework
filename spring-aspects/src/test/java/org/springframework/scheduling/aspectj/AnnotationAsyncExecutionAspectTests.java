@@ -43,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link AnnotationAsyncExecutionAspect}.
@@ -157,7 +156,7 @@ public class AnnotationAsyncExecutionAspectTests {
 		TestableAsyncUncaughtExceptionHandler exceptionHandler = new TestableAsyncUncaughtExceptionHandler();
 		AnnotationAsyncExecutionAspect.aspectOf().setExceptionHandler(exceptionHandler);
 		try {
-			assertFalse("Handler should not have been called", exceptionHandler.isCalled());
+			assertThat(exceptionHandler.isCalled()).as("Handler should not have been called").isFalse();
 			ClassWithException obj = new ClassWithException();
 			obj.failWithVoid();
 			exceptionHandler.await(3000);
@@ -174,7 +173,7 @@ public class AnnotationAsyncExecutionAspectTests {
 		TestableAsyncUncaughtExceptionHandler exceptionHandler = new TestableAsyncUncaughtExceptionHandler(true);
 		AnnotationAsyncExecutionAspect.aspectOf().setExceptionHandler(exceptionHandler);
 		try {
-			assertFalse("Handler should not have been called", exceptionHandler.isCalled());
+			assertThat(exceptionHandler.isCalled()).as("Handler should not have been called").isFalse();
 			ClassWithException obj = new ClassWithException();
 			obj.failWithVoid();
 			exceptionHandler.await(3000);

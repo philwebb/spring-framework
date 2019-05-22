@@ -24,7 +24,6 @@ import org.springframework.expression.spel.standard.SpelCompiler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.fail;
 
 /**
@@ -311,7 +310,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		reportPerformance("complex expression",iTotal, cTotal);
 
 		// Verify the result
-		assertFalse(b);
+		assertThat(b).isFalse();
 
 		// Verify the same result for compiled vs interpreted
 		assertEquals(b, bc);

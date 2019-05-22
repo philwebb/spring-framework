@@ -68,7 +68,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -237,8 +236,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 	public void propertyAccessOnNullTarget_SPR5663() throws AccessException {
 		PropertyAccessor accessor = new ReflectivePropertyAccessor();
 		EvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
-		assertFalse(accessor.canRead(context, null, "abc"));
-		assertFalse(accessor.canWrite(context, null, "abc"));
+		assertThat(accessor.canRead(context, null, "abc")).isFalse();
+		assertThat(accessor.canWrite(context, null, "abc")).isFalse();
 		assertThatIllegalStateException().isThrownBy(() ->
 				accessor.read(context, null, "abc"));
 		assertThatIllegalStateException().isThrownBy(() ->

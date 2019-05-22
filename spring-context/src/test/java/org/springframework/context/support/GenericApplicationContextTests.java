@@ -27,7 +27,6 @@ import org.springframework.util.ObjectUtils;
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -153,7 +152,7 @@ public class GenericApplicationContextTests {
 		context.registerBean(BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertFalse(context.getBeanFactory().containsSingleton(BeanA.class.getName()));
+		assertThat(context.getBeanFactory().containsSingleton(BeanA.class.getName())).isFalse();
 		assertSame(context.getBean(BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
 		assertSame(context, context.getBean(BeanB.class).applicationContext);
@@ -184,7 +183,7 @@ public class GenericApplicationContextTests {
 		context.registerBean("c", BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertFalse(context.getBeanFactory().containsSingleton("a"));
+		assertThat(context.getBeanFactory().containsSingleton("a")).isFalse();
 		assertSame(context.getBean("b", BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean("c"), context.getBean("a", BeanA.class).c);
 		assertSame(context, context.getBean("b", BeanB.class).applicationContext);

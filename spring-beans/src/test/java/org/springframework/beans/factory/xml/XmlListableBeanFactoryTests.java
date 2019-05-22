@@ -38,7 +38,6 @@ import org.springframework.tests.sample.beans.factory.DummyFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -143,8 +142,8 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertThat(tb1Aliases.contains("myalias")).isTrue();
 		assertThat(tb1Aliases.contains("youralias")).isTrue();
 		assertThat(beanNames.contains("aliased")).isTrue();
-		assertFalse(beanNames.contains("myalias"));
-		assertFalse(beanNames.contains("youralias"));
+		assertThat(beanNames.contains("myalias")).isFalse();
+		assertThat(beanNames.contains("youralias")).isFalse();
 
 		TestBean tb2 = (TestBean) getBeanFactory().getBean("multiAliased");
 		TestBean alias2 = (TestBean) getBeanFactory().getBean("alias1");
@@ -163,10 +162,10 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertThat(tb2Aliases.contains("alias3")).isTrue();
 		assertThat(tb2Aliases.contains("alias4")).isTrue();
 		assertThat(beanNames.contains("multiAliased")).isTrue();
-		assertFalse(beanNames.contains("alias1"));
-		assertFalse(beanNames.contains("alias2"));
-		assertFalse(beanNames.contains("alias3"));
-		assertFalse(beanNames.contains("alias4"));
+		assertThat(beanNames.contains("alias1")).isFalse();
+		assertThat(beanNames.contains("alias2")).isFalse();
+		assertThat(beanNames.contains("alias3")).isFalse();
+		assertThat(beanNames.contains("alias4")).isFalse();
 
 		TestBean tb3 = (TestBean) getBeanFactory().getBean("aliasWithoutId1");
 		TestBean alias4 = (TestBean) getBeanFactory().getBean("aliasWithoutId2");
@@ -178,8 +177,8 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertThat(tb3Aliases.contains("aliasWithoutId2")).isTrue();
 		assertThat(tb3Aliases.contains("aliasWithoutId3")).isTrue();
 		assertThat(beanNames.contains("aliasWithoutId1")).isTrue();
-		assertFalse(beanNames.contains("aliasWithoutId2"));
-		assertFalse(beanNames.contains("aliasWithoutId3"));
+		assertThat(beanNames.contains("aliasWithoutId2")).isFalse();
+		assertThat(beanNames.contains("aliasWithoutId3")).isFalse();
 
 		TestBean tb4 = (TestBean) getBeanFactory().getBean(TestBean.class.getName() + "#0");
 		assertEquals(null, tb4.getName());

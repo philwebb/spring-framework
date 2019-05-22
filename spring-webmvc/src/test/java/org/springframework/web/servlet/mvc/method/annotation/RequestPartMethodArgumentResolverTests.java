@@ -59,7 +59,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
@@ -161,12 +160,12 @@ public class RequestPartMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(paramMultipartFile)).isTrue();
 		assertThat(resolver.supportsParameter(paramMultipartFileList)).isTrue();
 		assertThat(resolver.supportsParameter(paramMultipartFileArray)).isTrue();
-		assertFalse(resolver.supportsParameter(paramInt));
+		assertThat(resolver.supportsParameter(paramInt)).isFalse();
 		assertThat(resolver.supportsParameter(paramMultipartFileNotAnnot)).isTrue();
 		assertThat(resolver.supportsParameter(paramPart)).isTrue();
 		assertThat(resolver.supportsParameter(paramPartList)).isTrue();
 		assertThat(resolver.supportsParameter(paramPartArray)).isTrue();
-		assertFalse(resolver.supportsParameter(paramRequestParamAnnot));
+		assertThat(resolver.supportsParameter(paramRequestParamAnnot)).isFalse();
 		assertThat(resolver.supportsParameter(optionalMultipartFile)).isTrue();
 		assertThat(resolver.supportsParameter(optionalMultipartFileList)).isTrue();
 		assertThat(resolver.supportsParameter(optionalPart)).isTrue();
@@ -515,11 +514,11 @@ public class RequestPartMethodArgumentResolverTests {
 		Object actualValue = resolver.resolveArgument(
 				optionalRequestPart, mavContainer, webRequest, new ValidatingBinderFactory());
 		assertEquals("Invalid argument value", Optional.of(simpleBean), actualValue);
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 
 		actualValue = resolver.resolveArgument(optionalRequestPart, mavContainer, webRequest, new ValidatingBinderFactory());
 		assertEquals("Invalid argument value", Optional.of(simpleBean), actualValue);
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
 	@Test
@@ -556,7 +555,7 @@ public class RequestPartMethodArgumentResolverTests {
 
 		Object actualValue = resolver.resolveArgument(parameter, mavContainer, webRequest, new ValidatingBinderFactory());
 		assertEquals("Invalid argument value", argValue, actualValue);
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
 

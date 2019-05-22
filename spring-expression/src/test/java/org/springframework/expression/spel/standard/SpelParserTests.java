@@ -32,7 +32,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -295,11 +294,11 @@ public class SpelParserTests {
 	@Test
 	public void tokenKind() {
 		TokenKind tk = TokenKind.NOT;
-		assertFalse(tk.hasPayload());
+		assertThat(tk.hasPayload()).isFalse();
 		assertEquals("NOT(!)", tk.toString());
 
 		tk = TokenKind.MINUS;
-		assertFalse(tk.hasPayload());
+		assertThat(tk.hasPayload()).isFalse();
 		assertEquals("MINUS(-)", tk.toString());
 
 		tk = TokenKind.LITERAL_STRING;

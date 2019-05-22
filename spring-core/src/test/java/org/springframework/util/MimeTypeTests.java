@@ -30,7 +30,6 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -123,13 +122,13 @@ public class MimeTypeTests {
 		MimeType allText = new MimeType("text");
 
 		assertThat(allText.includes(textPlain)).as("All subtypes is not inclusive").isTrue();
-		assertFalse("All subtypes is inclusive", textPlain.includes(allText));
+		assertThat(textPlain.includes(allText)).as("All subtypes is inclusive").isFalse();
 
 		assertThat(MimeTypeUtils.ALL.includes(textPlain)).as("All types is not inclusive").isTrue();
-		assertFalse("All types is inclusive", textPlain.includes(MimeTypeUtils.ALL));
+		assertThat(textPlain.includes(MimeTypeUtils.ALL)).as("All types is inclusive").isFalse();
 
 		assertThat(MimeTypeUtils.ALL.includes(textPlain)).as("All types is not inclusive").isTrue();
-		assertFalse("All types is inclusive", textPlain.includes(MimeTypeUtils.ALL));
+		assertThat(textPlain.includes(MimeTypeUtils.ALL)).as("All types is inclusive").isFalse();
 
 		MimeType applicationSoapXml = new MimeType("application", "soap+xml");
 		MimeType applicationWildcardXml = new MimeType("application", "*+xml");
@@ -140,10 +139,10 @@ public class MimeTypeTests {
 		assertThat(applicationWildcardXml.includes(suffixXml)).isTrue();
 
 		assertThat(applicationWildcardXml.includes(applicationSoapXml)).isTrue();
-		assertFalse(applicationSoapXml.includes(applicationWildcardXml));
-		assertFalse(suffixXml.includes(applicationWildcardXml));
+		assertThat(applicationSoapXml.includes(applicationWildcardXml)).isFalse();
+		assertThat(suffixXml.includes(applicationWildcardXml)).isFalse();
 
-		assertFalse(applicationWildcardXml.includes(MimeTypeUtils.APPLICATION_JSON));
+		assertThat(applicationWildcardXml.includes(MimeTypeUtils.APPLICATION_JSON)).isFalse();
 	}
 
 	@Test
@@ -173,7 +172,7 @@ public class MimeTypeTests {
 		assertThat(applicationSoapXml.isCompatibleWith(applicationWildcardXml)).isTrue();
 		assertThat(suffixXml.isCompatibleWith(applicationWildcardXml)).isTrue();
 
-		assertFalse(applicationWildcardXml.isCompatibleWith(MimeTypeUtils.APPLICATION_JSON));
+		assertThat(applicationWildcardXml.isCompatibleWith(MimeTypeUtils.APPLICATION_JSON)).isFalse();
 	}
 
 	@Test

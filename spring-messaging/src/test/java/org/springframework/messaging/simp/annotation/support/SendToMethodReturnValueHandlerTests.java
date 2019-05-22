@@ -56,7 +56,6 @@ import org.springframework.util.MimeType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -138,7 +137,7 @@ public class SendToMethodReturnValueHandlerTests {
 	public void supportsReturnType() throws Exception {
 		assertThat(this.handler.supportsReturnType(this.sendToReturnType)).isTrue();
 		assertThat(this.handler.supportsReturnType(this.sendToUserReturnType)).isTrue();
-		assertFalse(this.handler.supportsReturnType(this.noAnnotationsReturnType));
+		assertThat(this.handler.supportsReturnType(this.noAnnotationsReturnType)).isFalse();
 		assertThat(this.handlerAnnotationNotRequired.supportsReturnType(this.noAnnotationsReturnType)).isTrue();
 
 		assertThat(this.handler.supportsReturnType(this.defaultNoAnnotation)).isTrue();

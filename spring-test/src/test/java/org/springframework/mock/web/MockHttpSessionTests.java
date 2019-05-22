@@ -25,7 +25,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link MockHttpSession}.
@@ -41,7 +40,7 @@ public class MockHttpSessionTests {
 
 	@Test
 	public void invalidateOnce() {
-		assertFalse(session.isInvalid());
+		assertThat(session.isInvalid()).isFalse();
 		session.invalidate();
 		assertThat(session.isInvalid()).isTrue();
 	}

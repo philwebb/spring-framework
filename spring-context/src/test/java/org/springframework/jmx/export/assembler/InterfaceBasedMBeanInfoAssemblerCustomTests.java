@@ -22,7 +22,6 @@ import javax.management.modelmbean.ModelMBeanInfo;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -61,7 +60,7 @@ public class InterfaceBasedMBeanInfoAssemblerCustomTests extends AbstractJmxAsse
 		ModelMBeanAttributeInfo attr = info.getAttribute(AGE_ATTRIBUTE);
 
 		assertThat(attr.isReadable()).isTrue();
-		assertFalse(attr.isWritable());
+		assertThat(attr.isWritable()).isFalse();
 	}
 
 	@Override

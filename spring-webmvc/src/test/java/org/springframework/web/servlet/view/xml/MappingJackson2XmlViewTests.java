@@ -48,7 +48,6 @@ import org.springframework.web.servlet.View;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.mock;
@@ -196,9 +195,9 @@ public class MappingJackson2XmlViewTests {
 
 		String result = response.getContentAsString();
 		assertThat(result.length() > 0).isTrue();
-		assertFalse(result.contains("foo"));
+		assertThat(result.contains("foo")).isFalse();
 		assertThat(result.contains("bar")).isTrue();
-		assertFalse(result.contains("baz"));
+		assertThat(result.contains("baz")).isFalse();
 
 		validateResult();
 	}
@@ -228,8 +227,8 @@ public class MappingJackson2XmlViewTests {
 		assertThat(content.length() > 0).isTrue();
 		assertEquals(content.length(), response.getContentLength());
 		assertThat(content.contains("foo")).isTrue();
-		assertFalse(content.contains("boo"));
-		assertFalse(content.contains(JsonView.class.getName()));
+		assertThat(content.contains("boo")).isFalse();
+		assertThat(content.contains(JsonView.class.getName())).isFalse();
 	}
 
 	private void validateResult() throws Exception {

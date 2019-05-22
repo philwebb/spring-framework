@@ -31,7 +31,6 @@ import org.springframework.messaging.MessagingException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -85,7 +84,7 @@ public class ChannelInterceptorTests {
 		assertEquals(1, interceptor2.getCounter().get());
 		assertEquals(0, this.messageHandler.getMessages().size());
 		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
-		assertFalse(interceptor2.wasAfterCompletionInvoked());
+		assertThat(interceptor2.wasAfterCompletionInvoked()).isFalse();
 	}
 
 	@Test
@@ -140,7 +139,7 @@ public class ChannelInterceptorTests {
 				assertNotNull(message);
 				assertNotNull(channel);
 				assertSame(testChannel, channel);
-				assertFalse(sent);
+				assertThat(sent).isFalse();
 			}
 		});
 		testChannel.send(MessageBuilder.withPayload("test").build());
@@ -184,7 +183,7 @@ public class ChannelInterceptorTests {
 			assertEquals("Simulated exception", ex.getCause().getMessage());
 		}
 		assertThat(interceptor1.wasAfterCompletionInvoked()).isTrue();
-		assertFalse(interceptor2.wasAfterCompletionInvoked());
+		assertThat(interceptor2.wasAfterCompletionInvoked()).isFalse();
 	}
 
 

@@ -30,7 +30,6 @@ import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.orm.jpa.EntityManagerProxy;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -74,7 +73,8 @@ public class HibernateEntityManagerFactoryIntegrationTests extends AbstractConta
 		EntityManager proxy = ProxyFactory.getProxy(EntityManager.class, new SingletonTargetSource(em));
 		boolean condition = em instanceof org.hibernate.jpa.HibernateEntityManager;
 		assertThat(condition).isTrue();
-		assertFalse(proxy instanceof org.hibernate.jpa.HibernateEntityManager);
+		boolean condition1 = proxy instanceof org.hibernate.jpa.HibernateEntityManager;
+		assertThat(condition1).isFalse();
 		assertThat(proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class) != null).isTrue();
 		assertSame(em, proxy.unwrap(org.hibernate.jpa.HibernateEntityManager.class));
 		assertSame(em.getDelegate(), proxy.getDelegate());
@@ -83,7 +83,7 @@ public class HibernateEntityManagerFactoryIntegrationTests extends AbstractConta
 	@Test  // SPR-16956
 	public void testReadOnly() {
 		assertSame(FlushMode.AUTO, sharedEntityManager.unwrap(Session.class).getHibernateFlushMode());
-		assertFalse(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly());
+		assertThat(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly()).isFalse();
 		endTransaction();
 
 		this.transactionDefinition.setReadOnly(true);

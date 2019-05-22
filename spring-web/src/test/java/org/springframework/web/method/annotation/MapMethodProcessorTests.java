@@ -33,7 +33,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -66,8 +65,8 @@ public class MapMethodProcessorTests {
 	public void supportsParameter() {
 		assertThat(this.processor.supportsParameter(
 				this.resolvable.annotNotPresent().arg(Map.class, String.class, Object.class))).isTrue();
-		assertFalse(this.processor.supportsParameter(
-				this.resolvable.annotPresent(RequestBody.class).arg(Map.class, String.class, Object.class)));
+		assertThat(this.processor.supportsParameter(
+				this.resolvable.annotPresent(RequestBody.class).arg(Map.class, String.class, Object.class))).isFalse();
 	}
 
 	@Test

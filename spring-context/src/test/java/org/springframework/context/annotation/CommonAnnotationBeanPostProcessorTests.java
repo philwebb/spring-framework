@@ -46,7 +46,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
@@ -474,7 +473,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		LazyResourceFieldInjectionBean bean = (LazyResourceFieldInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bf.containsSingleton("testBean"));
+		assertThat(bf.containsSingleton("testBean")).isFalse();
 		bean.testBean.setName("notLazyAnymore");
 		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
@@ -492,7 +491,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		LazyResourceMethodInjectionBean bean = (LazyResourceMethodInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bf.containsSingleton("testBean"));
+		assertThat(bf.containsSingleton("testBean")).isFalse();
 		bean.testBean.setName("notLazyAnymore");
 		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
@@ -510,7 +509,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		LazyResourceCglibInjectionBean bean = (LazyResourceCglibInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bf.containsSingleton("testBean"));
+		assertThat(bf.containsSingleton("testBean")).isFalse();
 		bean.testBean.setName("notLazyAnymore");
 		assertThat(bf.containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) bf.getBean("testBean");
@@ -547,7 +546,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		@Override
 		public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 			if (bean instanceof AnnotatedInitDestroyBean) {
-				assertFalse(((AnnotatedInitDestroyBean) bean).initCalled);
+				assertThat(((AnnotatedInitDestroyBean) bean).initCalled).isFalse();
 			}
 			return bean;
 		}
@@ -563,7 +562,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 		@Override
 		public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
 			if (bean instanceof AnnotatedInitDestroyBean) {
-				assertFalse(((AnnotatedInitDestroyBean) bean).destroyCalled);
+				assertThat(((AnnotatedInitDestroyBean) bean).destroyCalled).isFalse();
 			}
 		}
 

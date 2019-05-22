@@ -30,7 +30,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -89,7 +88,7 @@ public class SetValueTests extends AbstractExpressionTests {
 		// PROPERTYORFIELDREFERENCE
 		// Non existent field (or property):
 		Expression e1 = parser.parseExpression("arrayContainer.wibble");
-		assertFalse("Should not be writable!", e1.isWritable(lContext));
+		assertThat(e1.isWritable(lContext)).as("Should not be writable!").isFalse();
 
 		Expression e2 = parser.parseExpression("arrayContainer.wibble.foo");
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
@@ -103,7 +102,7 @@ public class SetValueTests extends AbstractExpressionTests {
 		assertThat(e3.isWritable(lContext)).as("Should be writable!").isTrue();
 
 		Expression e4 = parser.parseExpression("#madeup2.bar"); // compound expression
-		assertFalse("Should not be writable!",e4.isWritable(lContext));
+		assertThat(e4.isWritable(lContext)).as("Should not be writable!").isFalse();
 
 		// INDEXER
 		// non existent indexer (wibble made up)
@@ -187,7 +186,7 @@ public class SetValueTests extends AbstractExpressionTests {
 	public void testAssign() throws Exception {
 		StandardEvaluationContext eContext = TestScenarioCreator.getTestEvaluationContext();
 		Expression e = parse("publicName='Andy'");
-		assertFalse(e.isWritable(eContext));
+		assertThat(e.isWritable(eContext)).isFalse();
 		assertEquals("Andy",e.getValue(eContext));
 	}
 

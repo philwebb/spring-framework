@@ -29,7 +29,6 @@ import org.springframework.http.MockHttpOutputMessage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Jackson 2.x Smile converter tests.
@@ -45,15 +44,15 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 	@Test
 	public void canRead() {
 		assertThat(converter.canRead(MyBean.class, new MediaType("application", "x-jackson-smile"))).isTrue();
-		assertFalse(converter.canRead(MyBean.class, new MediaType("application", "json")));
-		assertFalse(converter.canRead(MyBean.class, new MediaType("application", "xml")));
+		assertThat(converter.canRead(MyBean.class, new MediaType("application", "json"))).isFalse();
+		assertThat(converter.canRead(MyBean.class, new MediaType("application", "xml"))).isFalse();
 	}
 
 	@Test
 	public void canWrite() {
 		assertThat(converter.canWrite(MyBean.class, new MediaType("application", "x-jackson-smile"))).isTrue();
-		assertFalse(converter.canWrite(MyBean.class, new MediaType("application", "json")));
-		assertFalse(converter.canWrite(MyBean.class, new MediaType("application", "xml")));
+		assertThat(converter.canWrite(MyBean.class, new MediaType("application", "json"))).isFalse();
+		assertThat(converter.canWrite(MyBean.class, new MediaType("application", "xml"))).isFalse();
 	}
 
 	@Test

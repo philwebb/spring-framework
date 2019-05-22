@@ -31,7 +31,6 @@ import org.springframework.util.StreamUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -58,7 +57,7 @@ public class DefaultResponseErrorHandlerTests {
 	@Test
 	public void hasErrorFalse() throws Exception {
 		given(response.getRawStatusCode()).willReturn(HttpStatus.OK.value());
-		assertFalse(handler.hasError(response));
+		assertThat(handler.hasError(response)).isFalse();
 	}
 
 	@Test
@@ -112,7 +111,7 @@ public class DefaultResponseErrorHandlerTests {
 		given(response.getStatusText()).willReturn("Custom status code");
 		given(response.getHeaders()).willReturn(headers);
 
-		assertFalse(handler.hasError(response));
+		assertThat(handler.hasError(response)).isFalse();
 	}
 
 	@Test // SPR-9406
@@ -189,8 +188,8 @@ public class DefaultResponseErrorHandlerTests {
 		given(response.getHeaders()).willReturn(headers);
 		given(response.getBody()).willReturn(body);
 
-		assertFalse(handler.hasError(response));
-		assertFalse(body.isClosed());
+		assertThat(handler.hasError(response)).isFalse();
+		assertThat(body.isClosed()).isFalse();
 		assertEquals("Hello World", StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8));
 	}
 

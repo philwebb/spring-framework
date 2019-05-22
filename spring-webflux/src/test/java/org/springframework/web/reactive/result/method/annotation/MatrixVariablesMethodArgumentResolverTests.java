@@ -40,7 +40,6 @@ import org.springframework.web.server.ServerWebInputException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.web.method.MvcAnnotationPredicates.matrixAttribute;
 
 /**
@@ -67,7 +66,7 @@ public class MatrixVariablesMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 
-		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(String.class))).isFalse();
 
 		assertThat(this.resolver.supportsParameter(this.testMethod
 				.annot(matrixAttribute().noName()).arg(List.class, String.class))).isTrue();

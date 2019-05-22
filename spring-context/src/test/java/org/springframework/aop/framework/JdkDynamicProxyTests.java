@@ -31,7 +31,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -45,7 +44,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 
 	@Override
 	protected Object createProxy(ProxyCreatorSupport as) {
-		assertFalse("Not forcible CGLIB", as.isProxyTargetClass());
+		assertThat(as.isProxyTargetClass()).as("Not forcible CGLIB").isFalse();
 		Object proxy = as.createAopProxy().getProxy();
 		assertThat(AopUtils.isJdkDynamicProxy(proxy)).as("Should be a JDK proxy: " + proxy.getClass()).isTrue();
 		return proxy;
@@ -74,7 +73,8 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		Object proxy = aop.getProxy();
 		boolean condition = proxy instanceof ITestBean;
 		assertThat(condition).isTrue();
-		assertFalse(proxy instanceof TestBean);
+		boolean condition1 = proxy instanceof TestBean;
+		assertThat(condition1).isFalse();
 	}
 
 	@Test

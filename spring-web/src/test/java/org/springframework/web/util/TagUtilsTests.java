@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for the {@link TagUtils} class.
@@ -97,12 +96,12 @@ public class TagUtilsTests {
 		a.setParent(b);
 		b.setParent(anotherB);
 
-		assertFalse(TagUtils.hasAncestorOfType(a, TagC.class));
+		assertThat(TagUtils.hasAncestorOfType(a, TagC.class)).isFalse();
 	}
 
 	@Test
 	public void hasAncestorOfTypeWhenTagHasNoParent() throws Exception {
-		assertFalse(TagUtils.hasAncestorOfType(new TagA(), TagC.class));
+		assertThat(TagUtils.hasAncestorOfType(new TagA(), TagC.class)).isFalse();
 	}
 
 	@Test

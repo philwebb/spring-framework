@@ -28,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rick Evans
@@ -49,7 +48,7 @@ public class SimpleAsyncTaskExecutorTests {
 	@Test
 	public void throttleIsNotActiveByDefault() throws Exception {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
-		assertFalse("Concurrency throttle must not default to being active (on)", executor.isThrottleActive());
+		assertThat(executor.isThrottleActive()).as("Concurrency throttle must not default to being active (on)").isFalse();
 	}
 
 	@Test

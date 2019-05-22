@@ -23,9 +23,9 @@ import org.junit.Test;
 
 import org.springframework.core.MethodParameter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 
 /**
@@ -58,12 +58,12 @@ public class SynthesizingMethodParameterTests {
 		assertEquals(longParameter, longParameter);
 		assertEquals(intReturnType, intReturnType);
 
-		assertFalse(stringParameter.equals(longParameter));
-		assertFalse(stringParameter.equals(intReturnType));
-		assertFalse(longParameter.equals(stringParameter));
-		assertFalse(longParameter.equals(intReturnType));
-		assertFalse(intReturnType.equals(stringParameter));
-		assertFalse(intReturnType.equals(longParameter));
+		assertThat(stringParameter.equals(longParameter)).isFalse();
+		assertThat(stringParameter.equals(intReturnType)).isFalse();
+		assertThat(longParameter.equals(stringParameter)).isFalse();
+		assertThat(longParameter.equals(intReturnType)).isFalse();
+		assertThat(intReturnType.equals(stringParameter)).isFalse();
+		assertThat(intReturnType.equals(longParameter)).isFalse();
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new SynthesizingMethodParameter(method, 0);

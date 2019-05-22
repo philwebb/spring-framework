@@ -33,7 +33,6 @@ import org.springframework.protobuf.SecondMsg;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,7 +95,7 @@ public class ProtobufHttpMessageConverterTests {
 		assertThat(this.converter.canRead(Msg.class, MediaType.TEXT_PLAIN)).isTrue();
 
 		// only supported as an output format
-		assertFalse(this.converter.canRead(Msg.class, MediaType.TEXT_HTML));
+		assertThat(this.converter.canRead(Msg.class, MediaType.TEXT_HTML)).isFalse();
 	}
 
 	@Test
@@ -156,7 +155,7 @@ public class ProtobufHttpMessageConverterTests {
 		assertEquals(contentType, outputMessage.getHeaders().getContentType());
 
 		final String body = outputMessage.getBodyAsString(Charset.forName("UTF-8"));
-		assertFalse("body is empty", body.isEmpty());
+		assertThat(body.isEmpty()).as("body is empty").isFalse();
 
 		Msg.Builder builder = Msg.newBuilder();
 		JsonFormat.parser().merge(body, builder);
@@ -180,7 +179,7 @@ public class ProtobufHttpMessageConverterTests {
 		assertEquals(contentType, outputMessage.getHeaders().getContentType());
 
 		final String body = outputMessage.getBodyAsString(Charset.forName("UTF-8"));
-		assertFalse("body is empty", body.isEmpty());
+		assertThat(body.isEmpty()).as("body is empty").isFalse();
 
 		Msg.Builder builder = Msg.newBuilder();
 		JsonFormat.parser().merge(body, builder);

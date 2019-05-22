@@ -24,7 +24,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 
 /**
@@ -43,7 +42,7 @@ public class NestedConfigurationClassTests {
 		ctx.register(L0Config.L1Config.class);
 		ctx.refresh();
 
-		assertFalse(ctx.containsBean("l0Bean"));
+		assertThat(ctx.containsBean("l0Bean")).isFalse();
 
 		ctx.getBean(L0Config.L1Config.class);
 		ctx.getBean("l1Bean");
@@ -61,7 +60,7 @@ public class NestedConfigurationClassTests {
 		ctx.register(L0Config.class);
 		ctx.refresh();
 
-		assertFalse(ctx.getBeanFactory().containsSingleton("nestedConfigurationClassTests.L0Config"));
+		assertThat(ctx.getBeanFactory().containsSingleton("nestedConfigurationClassTests.L0Config")).isFalse();
 		ctx.getBean(L0Config.class);
 		ctx.getBean("l0Bean");
 
@@ -69,7 +68,7 @@ public class NestedConfigurationClassTests {
 		ctx.getBean(L0Config.L1Config.class);
 		ctx.getBean("l1Bean");
 
-		assertFalse(ctx.getBeanFactory().containsSingleton(L0Config.L1Config.L2Config.class.getName()));
+		assertThat(ctx.getBeanFactory().containsSingleton(L0Config.L1Config.L2Config.class.getName())).isFalse();
 		ctx.getBean(L0Config.L1Config.L2Config.class);
 		ctx.getBean("l2Bean");
 
@@ -83,7 +82,7 @@ public class NestedConfigurationClassTests {
 		ctx.register(L0ConfigLight.class);
 		ctx.refresh();
 
-		assertFalse(ctx.getBeanFactory().containsSingleton("nestedConfigurationClassTests.L0ConfigLight"));
+		assertThat(ctx.getBeanFactory().containsSingleton("nestedConfigurationClassTests.L0ConfigLight")).isFalse();
 		ctx.getBean(L0ConfigLight.class);
 		ctx.getBean("l0Bean");
 
@@ -91,7 +90,7 @@ public class NestedConfigurationClassTests {
 		ctx.getBean(L0ConfigLight.L1ConfigLight.class);
 		ctx.getBean("l1Bean");
 
-		assertFalse(ctx.getBeanFactory().containsSingleton(L0ConfigLight.L1ConfigLight.L2ConfigLight.class.getName()));
+		assertThat(ctx.getBeanFactory().containsSingleton(L0ConfigLight.L1ConfigLight.L2ConfigLight.class.getName())).isFalse();
 		ctx.getBean(L0ConfigLight.L1ConfigLight.L2ConfigLight.class);
 		ctx.getBean("l2Bean");
 
@@ -189,7 +188,7 @@ public class NestedConfigurationClassTests {
 		ctx.register(L0ConfigEmpty.class);
 		ctx.refresh();
 
-		assertFalse(ctx.getBeanFactory().containsSingleton("l0ConfigEmpty"));
+		assertThat(ctx.getBeanFactory().containsSingleton("l0ConfigEmpty")).isFalse();
 		Object l0i1 = ctx.getBean(L0ConfigEmpty.class);
 		Object l0i2 = ctx.getBean(L0ConfigEmpty.class);
 		assertThat(l0i1 == l0i2).isTrue();
@@ -210,7 +209,7 @@ public class NestedConfigurationClassTests {
 		ctx.register(L0ConfigConcrete.class);
 		ctx.refresh();
 
-		assertFalse(ctx.getBeanFactory().containsSingleton("l0ConfigConcrete"));
+		assertThat(ctx.getBeanFactory().containsSingleton("l0ConfigConcrete")).isFalse();
 		Object l0i1 = ctx.getBean(L0ConfigConcrete.class);
 		Object l0i2 = ctx.getBean(L0ConfigConcrete.class);
 		assertThat(l0i1 == l0i2).isTrue();

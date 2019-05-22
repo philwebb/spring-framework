@@ -34,8 +34,8 @@ import org.springframework.web.server.WebSession;
 import org.springframework.web.server.adapter.DefaultServerWebExchange;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,8 +97,8 @@ public class DefaultWebSessionManagerTests {
 		this.exchange.getResponse().setComplete().block();
 
 		assertSame(this.createSession, session);
-		assertFalse(session.isStarted());
-		assertFalse(session.isExpired());
+		assertThat(session.isStarted()).isFalse();
+		assertThat(session.isExpired()).isFalse();
 		verify(this.createSession, never()).save();
 		verify(this.sessionIdResolver, never()).setSessionId(any(), any());
 	}

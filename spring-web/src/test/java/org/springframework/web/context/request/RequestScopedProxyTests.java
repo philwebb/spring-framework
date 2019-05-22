@@ -33,7 +33,6 @@ import org.springframework.tests.sample.beans.factory.DummyFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -156,7 +155,7 @@ public class RequestScopedProxyTests {
 	@Test
 	public void testGetInnerBeanFromScope() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("outerBean");
-		assertFalse(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isFalse();
 		assertThat(AopUtils.isCglibProxy(bean.getSpouse())).isTrue();
 
 		String name = "scopedInnerBean";
@@ -180,7 +179,7 @@ public class RequestScopedProxyTests {
 	@Test
 	public void testGetAnonymousInnerBeanFromScope() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("outerBean");
-		assertFalse(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isFalse();
 		assertThat(AopUtils.isCglibProxy(bean.getSpouse())).isTrue();
 
 		BeanDefinition beanDef = this.beanFactory.getBeanDefinition("outerBean");

@@ -43,7 +43,6 @@ import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuild
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.web.method.ResolvableMethod.on;
 
 /**
@@ -85,7 +84,7 @@ public class ResponseBodyResultHandlerTests {
 
 		method = on(TestController.class).annotNotPresent(ResponseBody.class).resolveMethod("doWork");
 		HandlerResult handlerResult = getHandlerResult(controller, method);
-		assertFalse(this.resultHandler.supports(handlerResult));
+		assertThat(this.resultHandler.supports(handlerResult)).isFalse();
 	}
 
 	@Test

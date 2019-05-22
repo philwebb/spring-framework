@@ -34,7 +34,6 @@ import org.springframework.util.MimeTypeUtils;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -61,7 +60,7 @@ public class ResourceEncoderTests extends AbstractEncoderTestCase<ResourceEncode
 				MimeTypeUtils.APPLICATION_JSON)).isTrue();
 
 		// SPR-15464
-		assertFalse(this.encoder.canEncode(ResolvableType.NONE, null));
+		assertThat(this.encoder.canEncode(ResolvableType.NONE, null)).isFalse();
 	}
 
 	@Override

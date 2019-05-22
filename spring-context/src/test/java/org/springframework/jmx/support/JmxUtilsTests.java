@@ -35,7 +35,6 @@ import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -63,7 +62,7 @@ public class JmxUtilsTests {
 
 	@Test
 	public void testNotAnMBean() throws Exception {
-		assertFalse("Object incorrectly identified as an MBean", JmxUtils.isMBean(Object.class));
+		assertThat(JmxUtils.isMBean(Object.class)).as("Object incorrectly identified as an MBean").isFalse();
 	}
 
 	@Test
@@ -132,10 +131,10 @@ public class JmxUtilsTests {
 		assertThat(JmxUtils.isMBean(JmxClass.class)).isTrue();
 
 		// Correctly returns false since JmxUtils won't navigate to the extended interface
-		assertFalse(JmxUtils.isMBean(SpecializedJmxInterface.class));
+		assertThat(JmxUtils.isMBean(SpecializedJmxInterface.class)).isFalse();
 
 		// Incorrectly returns true since it doesn't detect that this is an interface
-		assertFalse(JmxUtils.isMBean(JmxInterface.class));
+		assertThat(JmxUtils.isMBean(JmxInterface.class)).isFalse();
 	}
 
 

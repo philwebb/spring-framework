@@ -36,7 +36,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -80,7 +79,7 @@ public class WebSocketConnectionManagerTests {
 		assertThat(client.isRunning()).isTrue();
 
 		manager.stopInternal();
-		assertFalse(client.isRunning());
+		assertThat(client.isRunning()).isFalse();
 	}
 
 

@@ -39,7 +39,6 @@ import org.springframework.expression.spel.testresources.Person;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -86,7 +85,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				expr.getValue(context))
 			.satisfies(ex -> assertThat(ex.getMessageCode()).isEqualTo(SpelMessage.PROPERTY_OR_FIELD_NOT_READABLE_ON_NULL));
-		assertFalse(expr.isWritable(context));
+		assertThat(expr.isWritable(context)).isFalse();
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				expr.setValue(context, "abc"))
 			.satisfies(ex -> assertThat(ex.getMessageCode()).isEqualTo(SpelMessage.PROPERTY_OR_FIELD_NOT_WRITABLE_ON_NULL));
@@ -139,7 +138,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		List<PropertyAccessor> copy = new ArrayList<>();
 		copy.addAll(ctx.getPropertyAccessors());
 		assertThat(ctx.removePropertyAccessor(spa)).isTrue();
-		assertFalse(ctx.removePropertyAccessor(spa));
+		assertThat(ctx.removePropertyAccessor(spa)).isFalse();
 		assertEquals(1,ctx.getPropertyAccessors().size());
 
 		ctx.setPropertyAccessors(copy);

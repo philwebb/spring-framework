@@ -24,7 +24,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -41,8 +40,8 @@ public class ClassFiltersTests {
 	@Test
 	public void testUnion() {
 		assertThat(exceptionFilter.matches(RuntimeException.class)).isTrue();
-		assertFalse(exceptionFilter.matches(TestBean.class));
-		assertFalse(itbFilter.matches(Exception.class));
+		assertThat(exceptionFilter.matches(TestBean.class)).isFalse();
+		assertThat(itbFilter.matches(Exception.class)).isFalse();
 		assertThat(itbFilter.matches(TestBean.class)).isTrue();
 		ClassFilter union = ClassFilters.union(exceptionFilter, itbFilter);
 		assertThat(union.matches(RuntimeException.class)).isTrue();
@@ -54,8 +53,8 @@ public class ClassFiltersTests {
 		assertThat(exceptionFilter.matches(RuntimeException.class)).isTrue();
 		assertThat(hasRootCauseFilter.matches(NestedRuntimeException.class)).isTrue();
 		ClassFilter intersection = ClassFilters.intersection(exceptionFilter, hasRootCauseFilter);
-		assertFalse(intersection.matches(RuntimeException.class));
-		assertFalse(intersection.matches(TestBean.class));
+		assertThat(intersection.matches(RuntimeException.class)).isFalse();
+		assertThat(intersection.matches(TestBean.class)).isFalse();
 		assertThat(intersection.matches(NestedRuntimeException.class)).isTrue();
 	}
 

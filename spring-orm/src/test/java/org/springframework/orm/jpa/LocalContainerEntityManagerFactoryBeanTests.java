@@ -41,7 +41,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -115,7 +114,7 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 
 		assertNotSame("EMF must be proxied", mockEmf, emf);
 		EntityManager em = emf.createEntityManager();
-		assertFalse(em.contains(testEntity));
+		assertThat(em.contains(testEntity)).isFalse();
 
 		cefb.destroy();
 
@@ -151,7 +150,7 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		assertNotSame("EMF must be proxied", mockEmf, emf);
 		EntityManager em = emf.createEntityManager();
 		em.joinTransaction();
-		assertFalse(em.contains(testEntity));
+		assertThat(em.contains(testEntity)).isFalse();
 
 		jpatm.commit(txStatus);
 
@@ -193,7 +192,7 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		assertNotSame("EMF must be proxied", mockEmf, emf);
 		EntityManager em = emf.createEntityManager();
 		em.joinTransaction();
-		assertFalse(em.contains(testEntity));
+		assertThat(em.contains(testEntity)).isFalse();
 
 		assertThatExceptionOfType(OptimisticLockingFailureException.class).isThrownBy(() ->
 				jpatm.commit(txStatus));
@@ -233,7 +232,7 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		assertNotSame("EMF must be proxied", mockEmf, emf);
 		EntityManager em = emf.createEntityManager();
 		em.joinTransaction();
-		assertFalse(em.contains(testEntity));
+		assertThat(em.contains(testEntity)).isFalse();
 
 		jpatm.commit(txStatus);
 

@@ -50,7 +50,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -187,7 +186,7 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findMethodAnnotationOnBridgedMethod() throws Exception {
 		Method bridgedMethod = SimpleFoo.class.getMethod("something", String.class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		assertNull(bridgedMethod.getAnnotation(Order.class));
 		assertNull(getAnnotation(bridgedMethod, Order.class));
@@ -419,41 +418,41 @@ public class AnnotationUtilsTests {
 	@Test
 	public void isAnnotationDeclaredLocallyForAllScenarios() {
 		// no class-level annotation
-		assertFalse(isAnnotationDeclaredLocally(Transactional.class, NonAnnotatedInterface.class));
-		assertFalse(isAnnotationDeclaredLocally(Transactional.class, NonAnnotatedClass.class));
+		assertThat(isAnnotationDeclaredLocally(Transactional.class, NonAnnotatedInterface.class)).isFalse();
+		assertThat(isAnnotationDeclaredLocally(Transactional.class, NonAnnotatedClass.class)).isFalse();
 
 		// inherited class-level annotation; note: @Transactional is inherited
 		assertThat(isAnnotationDeclaredLocally(Transactional.class, InheritedAnnotationInterface.class)).isTrue();
-		assertFalse(isAnnotationDeclaredLocally(Transactional.class, SubInheritedAnnotationInterface.class));
+		assertThat(isAnnotationDeclaredLocally(Transactional.class, SubInheritedAnnotationInterface.class)).isFalse();
 		assertThat(isAnnotationDeclaredLocally(Transactional.class, InheritedAnnotationClass.class)).isTrue();
-		assertFalse(isAnnotationDeclaredLocally(Transactional.class, SubInheritedAnnotationClass.class));
+		assertThat(isAnnotationDeclaredLocally(Transactional.class, SubInheritedAnnotationClass.class)).isFalse();
 
 		// non-inherited class-level annotation; note: @Order is not inherited
 		assertThat(isAnnotationDeclaredLocally(Order.class, NonInheritedAnnotationInterface.class)).isTrue();
-		assertFalse(isAnnotationDeclaredLocally(Order.class, SubNonInheritedAnnotationInterface.class));
+		assertThat(isAnnotationDeclaredLocally(Order.class, SubNonInheritedAnnotationInterface.class)).isFalse();
 		assertThat(isAnnotationDeclaredLocally(Order.class, NonInheritedAnnotationClass.class)).isTrue();
-		assertFalse(isAnnotationDeclaredLocally(Order.class, SubNonInheritedAnnotationClass.class));
+		assertThat(isAnnotationDeclaredLocally(Order.class, SubNonInheritedAnnotationClass.class)).isFalse();
 	}
 
 	@Test
 	public void isAnnotationInheritedForAllScenarios() {
 		// no class-level annotation
-		assertFalse(isAnnotationInherited(Transactional.class, NonAnnotatedInterface.class));
-		assertFalse(isAnnotationInherited(Transactional.class, NonAnnotatedClass.class));
+		assertThat(isAnnotationInherited(Transactional.class, NonAnnotatedInterface.class)).isFalse();
+		assertThat(isAnnotationInherited(Transactional.class, NonAnnotatedClass.class)).isFalse();
 
 		// inherited class-level annotation; note: @Transactional is inherited
-		assertFalse(isAnnotationInherited(Transactional.class, InheritedAnnotationInterface.class));
+		assertThat(isAnnotationInherited(Transactional.class, InheritedAnnotationInterface.class)).isFalse();
 		// isAnnotationInherited() does not currently traverse interface hierarchies.
 		// Thus the following, though perhaps counter intuitive, must be false:
-		assertFalse(isAnnotationInherited(Transactional.class, SubInheritedAnnotationInterface.class));
-		assertFalse(isAnnotationInherited(Transactional.class, InheritedAnnotationClass.class));
+		assertThat(isAnnotationInherited(Transactional.class, SubInheritedAnnotationInterface.class)).isFalse();
+		assertThat(isAnnotationInherited(Transactional.class, InheritedAnnotationClass.class)).isFalse();
 		assertThat(isAnnotationInherited(Transactional.class, SubInheritedAnnotationClass.class)).isTrue();
 
 		// non-inherited class-level annotation; note: @Order is not inherited
-		assertFalse(isAnnotationInherited(Order.class, NonInheritedAnnotationInterface.class));
-		assertFalse(isAnnotationInherited(Order.class, SubNonInheritedAnnotationInterface.class));
-		assertFalse(isAnnotationInherited(Order.class, NonInheritedAnnotationClass.class));
-		assertFalse(isAnnotationInherited(Order.class, SubNonInheritedAnnotationClass.class));
+		assertThat(isAnnotationInherited(Order.class, NonInheritedAnnotationInterface.class)).isFalse();
+		assertThat(isAnnotationInherited(Order.class, SubNonInheritedAnnotationInterface.class)).isFalse();
+		assertThat(isAnnotationInherited(Order.class, NonInheritedAnnotationClass.class)).isFalse();
+		assertThat(isAnnotationInherited(Order.class, SubNonInheritedAnnotationClass.class)).isFalse();
 	}
 
 	@Test

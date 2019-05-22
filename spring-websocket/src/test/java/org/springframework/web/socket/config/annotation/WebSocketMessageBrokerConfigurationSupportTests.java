@@ -63,7 +63,6 @@ import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
@@ -104,7 +103,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		Message<?> message = channel.messages.get(0);
 		StompHeaderAccessor accessor = StompHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 		assertNotNull(accessor);
-		assertFalse(accessor.isMutable());
+		assertThat(accessor.isMutable()).isFalse();
 		assertEquals(SimpMessageType.MESSAGE, accessor.getMessageType());
 		assertEquals("/foo", accessor.getDestination());
 	}

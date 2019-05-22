@@ -26,7 +26,6 @@ import org.springframework.transaction.TransactionDefinition;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 
@@ -103,9 +102,9 @@ public class TransactionAttributeEditorTests {
 		assertEquals(TransactionDefinition.PROPAGATION_MANDATORY, ta.getPropagationBehavior());
 		assertEquals(TransactionDefinition.ISOLATION_REPEATABLE_READ, ta.getIsolationLevel());
 		assertEquals(10, ta.getTimeout());
-		assertFalse(ta.isReadOnly());
+		assertThat(ta.isReadOnly()).isFalse();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
-		assertFalse(ta.rollbackOn(new Exception()));
+		assertThat(ta.rollbackOn(new Exception())).isFalse();
 		// Check for our bizarre customized rollback rules
 		assertThat(ta.rollbackOn(new IOException())).isTrue();
 		boolean condition = !ta.rollbackOn(new MyRuntimeException(""));
@@ -123,9 +122,9 @@ public class TransactionAttributeEditorTests {
 		assertEquals(TransactionDefinition.TIMEOUT_DEFAULT, ta.getTimeout());
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
-		assertFalse(ta.rollbackOn(new Exception()));
+		assertThat(ta.rollbackOn(new Exception())).isFalse();
 		// Check for our bizarre customized rollback rules
-		assertFalse(ta.rollbackOn(new IOException()));
+		assertThat(ta.rollbackOn(new IOException())).isFalse();
 		assertThat(ta.rollbackOn(new MyRuntimeException(""))).isTrue();
 	}
 
@@ -146,7 +145,7 @@ public class TransactionAttributeEditorTests {
 		assertEquals(10, ta.getTimeout());
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
-		assertFalse(ta.rollbackOn(new Exception()));
+		assertThat(ta.rollbackOn(new Exception())).isFalse();
 
 		source.setTimeout(9);
 		assertNotSame(ta, source);
@@ -173,7 +172,7 @@ public class TransactionAttributeEditorTests {
 		assertEquals(10, ta.getTimeout());
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new IllegalArgumentException())).isTrue();
-		assertFalse(ta.rollbackOn(new IllegalStateException()));
+		assertThat(ta.rollbackOn(new IllegalStateException())).isFalse();
 
 		source.getRollbackRules().clear();
 		assertNotSame(ta, source);

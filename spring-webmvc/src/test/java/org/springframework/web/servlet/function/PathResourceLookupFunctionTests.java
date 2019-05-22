@@ -29,7 +29,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -89,7 +88,7 @@ public class PathResourceLookupFunctionTests {
 		ServerRequest request = new DefaultServerRequest(servletRequest, Collections.emptyList());
 
 		Optional<Resource> result = function.apply(request);
-		assertFalse(result.isPresent());
+		assertThat(result.isPresent()).isFalse();
 	}
 
 	@Test

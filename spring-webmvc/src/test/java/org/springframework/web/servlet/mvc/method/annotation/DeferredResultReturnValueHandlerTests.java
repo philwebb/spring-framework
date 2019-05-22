@@ -36,7 +36,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.web.method.ResolvableMethod.on;
 
 /**
@@ -80,7 +79,7 @@ public class DeferredResultReturnValueHandlerTests {
 
 	@Test
 	public void doesNotSupportReturnType() throws Exception {
-		assertFalse(this.handler.supportsReturnType(on(TestController.class).resolveReturnType(String.class)));
+		assertThat(this.handler.supportsReturnType(on(TestController.class).resolveReturnType(String.class))).isFalse();
 	}
 
 	@Test
@@ -131,7 +130,7 @@ public class DeferredResultReturnValueHandlerTests {
 		this.handler.handleReturnValue(returnValue, returnType, mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertFalse(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult());
+		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult()).isFalse();
 
 		setResultTask.run();
 

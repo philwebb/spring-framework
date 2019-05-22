@@ -35,7 +35,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -93,7 +92,7 @@ public class ControllerIntegrationTests {
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isTrue();
 		WebApplicationContext root = (WebApplicationContext) parent;
-		assertFalse(root.getBeansOfType(String.class).containsKey("bar"));
+		assertThat(root.getBeansOfType(String.class).containsKey("bar")).isFalse();
 
 		ServletContext childServletContext = wac.getServletContext();
 		assertNotNull(childServletContext);

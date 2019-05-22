@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.springframework.jmx.support.JmxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -32,7 +31,7 @@ public class JmxUtilsAnnotationTests {
 
 	@Test
 	public void notMXBean() throws Exception {
-		assertFalse("MXBean annotation not detected correctly", JmxUtils.isMBean(FooNotX.class));
+		assertThat(JmxUtils.isMBean(FooNotX.class)).as("MXBean annotation not detected correctly").isFalse();
 	}
 
 	@Test

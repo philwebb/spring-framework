@@ -34,7 +34,6 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -50,8 +49,8 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractLeakCheckingT
 
 	@Test
 	public void cantRead() {
-		assertFalse(messageReader.canRead(ResolvableType.forClass(Object.class), new MediaType("foo", "bar")));
-		assertFalse(messageReader.canRead(ResolvableType.forClass(Object.class), null));
+		assertThat(messageReader.canRead(ResolvableType.forClass(Object.class), new MediaType("foo", "bar"))).isFalse();
+		assertThat(messageReader.canRead(ResolvableType.forClass(Object.class), null)).isFalse();
 	}
 
 	@Test

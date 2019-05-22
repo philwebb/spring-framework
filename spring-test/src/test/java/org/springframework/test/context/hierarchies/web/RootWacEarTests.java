@@ -28,8 +28,8 @@ import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -73,7 +73,8 @@ public class RootWacEarTests extends EarTests {
 	public void verifyRootWacConfig() {
 		ApplicationContext parent = wac.getParent();
 		assertNotNull(parent);
-		assertFalse(parent instanceof WebApplicationContext);
+		boolean condition = parent instanceof WebApplicationContext;
+		assertThat(condition).isFalse();
 		assertEquals("ear", ear);
 		assertEquals("root", root);
 	}

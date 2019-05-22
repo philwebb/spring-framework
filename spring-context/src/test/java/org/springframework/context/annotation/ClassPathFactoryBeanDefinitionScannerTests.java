@@ -33,7 +33,6 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -58,7 +57,7 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		context.refresh();
 
 		FactoryMethodComponent fmc = context.getBean("factoryMethodComponent", FactoryMethodComponent.class);
-		assertFalse(fmc.getClass().getName().contains(ClassUtils.CGLIB_CLASS_SEPARATOR));
+		assertThat(fmc.getClass().getName().contains(ClassUtils.CGLIB_CLASS_SEPARATOR)).isFalse();
 
 		TestBean tb = (TestBean) context.getBean("publicInstance"); //2
 		assertEquals("publicInstance", tb.getName());

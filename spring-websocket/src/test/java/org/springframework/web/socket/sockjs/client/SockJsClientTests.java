@@ -36,7 +36,6 @@ import org.springframework.web.socket.sockjs.client.TestTransport.XhrTestTranspo
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -98,7 +97,7 @@ public class SockJsClientTests {
 	public void connectWebSocketDisabled() throws URISyntaxException {
 		setupInfoRequest(false);
 		this.sockJsClient.doHandshake(handler, URL);
-		assertFalse(this.webSocketTransport.invoked());
+		assertThat(this.webSocketTransport.invoked()).isFalse();
 		assertThat(this.xhrTransport.invoked()).isTrue();
 		assertThat(this.xhrTransport.getRequest().getTransportUrl().toString().endsWith("xhr_streaming")).isTrue();
 	}
@@ -108,7 +107,7 @@ public class SockJsClientTests {
 		setupInfoRequest(false);
 		this.xhrTransport.setStreamingDisabled(true);
 		this.sockJsClient.doHandshake(handler, URL).addCallback(this.connectCallback);
-		assertFalse(this.webSocketTransport.invoked());
+		assertThat(this.webSocketTransport.invoked()).isFalse();
 		assertThat(this.xhrTransport.invoked()).isTrue();
 		assertThat(this.xhrTransport.getRequest().getTransportUrl().toString().endsWith("xhr")).isTrue();
 	}
@@ -175,8 +174,8 @@ public class SockJsClientTests {
 		given(this.infoReceiver.executeInfoRequest(any(), any())).willThrow(exception);
 		this.sockJsClient.doHandshake(handler, URL).addCallback(this.connectCallback);
 		verify(this.connectCallback).onFailure(exception);
-		assertFalse(this.webSocketTransport.invoked());
-		assertFalse(this.xhrTransport.invoked());
+		assertThat(this.webSocketTransport.invoked()).isFalse();
+		assertThat(this.xhrTransport.invoked()).isFalse();
 	}
 
 	private ArgumentCaptor<HttpHeaders> setupInfoRequest(boolean webSocketEnabled) {

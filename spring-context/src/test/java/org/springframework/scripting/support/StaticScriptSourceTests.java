@@ -21,7 +21,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for the StaticScriptSource class.
@@ -62,7 +61,7 @@ public class StaticScriptSourceTests {
 	@Test
 	public void gettingScriptTogglesIsModified() throws Exception {
 		source.getScriptAsString();
-		assertFalse("Script must be flagged as 'not modified' after script is read.", source.isModified());
+		assertThat(source.isModified()).as("Script must be flagged as 'not modified' after script is read.").isFalse();
 	}
 
 	@Test
@@ -81,7 +80,7 @@ public class StaticScriptSourceTests {
 	@Test
 	public void isModifiedNotToggledWhenSameScriptIsSet() throws Exception {
 		source.setScript(SCRIPT_TEXT);
-		assertFalse("Script must not be flagged as 'modified' when same script is passed in.", source.isModified());
+		assertThat(source.isModified()).as("Script must not be flagged as 'modified' when same script is passed in.").isFalse();
 	}
 
 }

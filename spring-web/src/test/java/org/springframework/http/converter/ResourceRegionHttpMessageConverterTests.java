@@ -39,9 +39,6 @@ import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import static temp.XAssert.assertFalse;
-
 /**
  * Test cases for {@link ResourceRegionHttpMessageConverter} class.
  *
@@ -53,17 +50,17 @@ public class ResourceRegionHttpMessageConverterTests {
 
 	@Test
 	public void canReadResource() {
-		assertFalse(converter.canRead(Resource.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canRead(Resource.class, MediaType.ALL));
-		assertFalse(converter.canRead(List.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canRead(List.class, MediaType.ALL));
+		assertThat(converter.canRead(Resource.class, MediaType.APPLICATION_OCTET_STREAM)).isFalse();
+		assertThat(converter.canRead(Resource.class, MediaType.ALL)).isFalse();
+		assertThat(converter.canRead(List.class, MediaType.APPLICATION_OCTET_STREAM)).isFalse();
+		assertThat(converter.canRead(List.class, MediaType.ALL)).isFalse();
 	}
 
 	@Test
 	public void canWriteResource() {
 		assertThat(converter.canWrite(ResourceRegion.class, null, MediaType.APPLICATION_OCTET_STREAM)).isTrue();
 		assertThat(converter.canWrite(ResourceRegion.class, null, MediaType.ALL)).isTrue();
-		assertFalse(converter.canWrite(Object.class, null, MediaType.ALL));
+		assertThat(converter.canWrite(Object.class, null, MediaType.ALL)).isFalse();
 	}
 
 	@Test
@@ -72,10 +69,10 @@ public class ResourceRegionHttpMessageConverterTests {
 		assertThat(converter.canWrite(resourceRegionList, null, MediaType.APPLICATION_OCTET_STREAM)).isTrue();
 		assertThat(converter.canWrite(resourceRegionList, null, MediaType.ALL)).isTrue();
 
-		assertFalse(converter.canWrite(List.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canWrite(List.class, MediaType.ALL));
+		assertThat(converter.canWrite(List.class, MediaType.APPLICATION_OCTET_STREAM)).isFalse();
+		assertThat(converter.canWrite(List.class, MediaType.ALL)).isFalse();
 		Type resourceObjectList = new ParameterizedTypeReference<List<Object>>() {}.getType();
-		assertFalse(converter.canWrite(resourceObjectList, null, MediaType.ALL));
+		assertThat(converter.canWrite(resourceObjectList, null, MediaType.ALL)).isFalse();
 	}
 
 	@Test

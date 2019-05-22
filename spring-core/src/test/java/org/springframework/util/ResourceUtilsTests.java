@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -38,8 +37,8 @@ public class ResourceUtilsTests {
 		assertThat(ResourceUtils.isJarURL(new URL(null, "zip:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
 		assertThat(ResourceUtils.isJarURL(new URL(null, "wsjar:file:myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
 		assertThat(ResourceUtils.isJarURL(new URL(null, "jar:war:file:mywar.war*/myjar.jar!/mypath", new DummyURLStreamHandler()))).isTrue();
-		assertFalse(ResourceUtils.isJarURL(new URL("file:myjar.jar")));
-		assertFalse(ResourceUtils.isJarURL(new URL("http:myserver/myjar.jar")));
+		assertThat(ResourceUtils.isJarURL(new URL("file:myjar.jar"))).isFalse();
+		assertThat(ResourceUtils.isJarURL(new URL("http:myserver/myjar.jar"))).isFalse();
 	}
 
 	@Test

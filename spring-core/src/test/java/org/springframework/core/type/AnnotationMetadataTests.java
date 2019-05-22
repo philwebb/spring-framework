@@ -46,7 +46,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests demonstrating that the reflection-based {@link StandardAnnotationMetadata}
@@ -242,7 +241,7 @@ public class AnnotationMetadataTests {
 	@Test
 	public void inheritedAnnotationWithMetaAnnotationsWithIdenticalAttributeNamesUsingStandardAnnotationMetadata() {
 		AnnotationMetadata metadata = AnnotationMetadata.introspect(NamedComposedAnnotationExtended.class);
-		assertFalse(metadata.hasAnnotation(NamedComposedAnnotation.class.getName()));
+		assertThat(metadata.hasAnnotation(NamedComposedAnnotation.class.getName())).isFalse();
 	}
 
 	@Test
@@ -250,7 +249,7 @@ public class AnnotationMetadataTests {
 		MetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory();
 		MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(NamedComposedAnnotationExtended.class.getName());
 		AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
-		assertFalse(metadata.hasAnnotation(NamedComposedAnnotation.class.getName()));
+		assertThat(metadata.hasAnnotation(NamedComposedAnnotation.class.getName())).isFalse();
 	}
 
 

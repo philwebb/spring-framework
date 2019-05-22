@@ -28,7 +28,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -74,7 +73,7 @@ public class MethodMatchersTests {
 		defaultMm = MethodMatchers.intersection(defaultMm, new StartsWithMatcher("get"));
 
 		assertThat(defaultMm.matches(EXCEPTION_GETMESSAGE, Exception.class)).isTrue();
-		assertFalse(defaultMm.matches(ITESTBEAN_SETAGE, TestBean.class));
+		assertThat(defaultMm.matches(ITESTBEAN_SETAGE, TestBean.class)).isFalse();
 	}
 
 
@@ -90,7 +89,7 @@ public class MethodMatchersTests {
 		intersection = MethodMatchers.intersection(intersection, new TestDynamicMethodMatcherWhichDoesNotMatch());
 		assertThat(intersection.isRuntime()).as("Intersection is a dynamic matcher").isTrue();
 		assertThat(intersection.matches(ITESTBEAN_SETAGE, TestBean.class)).as("2Matched setAge method").isTrue();
-		assertFalse("3 - not Matched setAge method", intersection.matches(ITESTBEAN_SETAGE, TestBean.class, new Integer(5)));
+		assertThat(intersection.matches(ITESTBEAN_SETAGE, TestBean.class, new Integer(5))).as("3 - not Matched setAge method").isFalse();
 	}
 
 	@Test
@@ -99,10 +98,10 @@ public class MethodMatchersTests {
 		MethodMatcher setterMatcher = new StartsWithMatcher("set");
 		MethodMatcher union = MethodMatchers.union(getterMatcher, setterMatcher);
 
-		assertFalse("Union is a static matcher", union.isRuntime());
+		assertThat(union.isRuntime()).as("Union is a static matcher").isFalse();
 		assertThat(union.matches(ITESTBEAN_SETAGE, TestBean.class)).as("Matched setAge method").isTrue();
 		assertThat(union.matches(ITESTBEAN_GETAGE, TestBean.class)).as("Matched getAge method").isTrue();
-		assertFalse("Didn't matched absquatulate method", union.matches(IOTHER_ABSQUATULATE, TestBean.class));
+		assertThat(union.matches(IOTHER_ABSQUATULATE, TestBean.class)).as("Didn't matched absquatulate method").isFalse();
 	}
 
 	@Test

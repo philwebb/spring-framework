@@ -26,7 +26,6 @@ import org.springframework.util.StopWatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -236,8 +235,8 @@ public class ServletRequestUtilsTests {
 		assertThat(ServletRequestUtils.getBooleanParameter(request, "param1", false)).isTrue();
 		assertThat(ServletRequestUtils.getRequiredBooleanParameter(request, "param1")).isTrue();
 
-		assertFalse(ServletRequestUtils.getBooleanParameter(request, "param2", true));
-		assertFalse(ServletRequestUtils.getRequiredBooleanParameter(request, "param2"));
+		assertThat(ServletRequestUtils.getBooleanParameter(request, "param2", true)).isFalse();
+		assertThat(ServletRequestUtils.getRequiredBooleanParameter(request, "param2")).isFalse();
 
 		assertThat(ServletRequestUtils.getBooleanParameter(request, "param3") == null).isTrue();
 		assertThat(ServletRequestUtils.getBooleanParameter(request, "param3", true)).isTrue();
@@ -249,7 +248,7 @@ public class ServletRequestUtilsTests {
 
 		assertThat(ServletRequestUtils.getBooleanParameter(request, "param5", false)).isTrue();
 		assertThat(ServletRequestUtils.getRequiredBooleanParameter(request, "param5")).isTrue();
-		assertFalse(ServletRequestUtils.getRequiredBooleanParameter(request, "paramEmpty"));
+		assertThat(ServletRequestUtils.getRequiredBooleanParameter(request, "paramEmpty")).isFalse();
 	}
 
 	@Test

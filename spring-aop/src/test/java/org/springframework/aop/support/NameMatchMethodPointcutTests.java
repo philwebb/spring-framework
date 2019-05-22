@@ -29,7 +29,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -63,8 +62,8 @@ public class NameMatchMethodPointcutTests {
 		assertThat(pc.isMatch("echo", "ech*")).isTrue();
 		assertThat(pc.isMatch("setName", "setN*")).isTrue();
 		assertThat(pc.isMatch("setName", "set*")).isTrue();
-		assertFalse(pc.isMatch("getName", "set*"));
-		assertFalse(pc.isMatch("setName", "set"));
+		assertThat(pc.isMatch("getName", "set*")).isFalse();
+		assertThat(pc.isMatch("setName", "set")).isFalse();
 		assertThat(pc.isMatch("testing", "*ing")).isTrue();
 	}
 
@@ -130,7 +129,7 @@ public class NameMatchMethodPointcutTests {
 		assertEquals(pc1.hashCode(), pc2.hashCode());
 
 		pc1.setMappedName(foo);
-		assertFalse(pc1.equals(pc2));
+		assertThat(pc1.equals(pc2)).isFalse();
 		assertThat(pc1.hashCode() != pc2.hashCode()).isTrue();
 
 		pc2.setMappedName(foo);

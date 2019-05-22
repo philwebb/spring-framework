@@ -26,7 +26,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -347,12 +346,12 @@ public class AnnotationTransactionInterceptorTests {
 
 		public void doSomething() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 
 		public void doSomethingElse() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 	}
 
@@ -362,7 +361,7 @@ public class AnnotationTransactionInterceptorTests {
 
 		public void doSomething() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 
 		@Transactional(readOnly = true)
@@ -373,7 +372,7 @@ public class AnnotationTransactionInterceptorTests {
 
 		public void doSomethingCompletelyElse() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 	}
 
@@ -384,7 +383,7 @@ public class AnnotationTransactionInterceptorTests {
 		@Transactional
 		public void doSomething() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 
 		public void doSomethingElse() {
@@ -416,7 +415,7 @@ public class AnnotationTransactionInterceptorTests {
 
 		public void doSomethingCompletelyElse() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 	}
 
@@ -426,27 +425,27 @@ public class AnnotationTransactionInterceptorTests {
 
 		public void doSomethingErroneous() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			throw new IllegalStateException();
 		}
 
 		public void doSomethingElseErroneous() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			throw new IllegalArgumentException();
 		}
 
 		@Transactional
 		public void doSomethingElseWithCheckedException() throws Exception {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			throw new Exception();
 		}
 
 		@Transactional(rollbackFor = Exception.class)
 		public void doSomethingElseWithCheckedExceptionAndRollbackRule() throws Exception {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			throw new Exception();
 		}
 	}
@@ -457,26 +456,26 @@ public class AnnotationTransactionInterceptorTests {
 
 		public Try<String> doSomething() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			return Try.success("ok");
 		}
 
 		public Try<String> doSomethingErroneous() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			return Try.failure(new IllegalStateException());
 		}
 
 		public Try<String> doSomethingErroneousWithCheckedException() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			return Try.failure(new Exception());
 		}
 
 		@Transactional(rollbackFor = Exception.class)
 		public Try<String> doSomethingErroneousWithCheckedExceptionAndRollbackRule() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 			return Try.failure(new Exception());
 		}
 	}
@@ -496,7 +495,7 @@ public class AnnotationTransactionInterceptorTests {
 
 		default void doSomethingDefault() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 	}
 
@@ -506,7 +505,7 @@ public class AnnotationTransactionInterceptorTests {
 		@Override
 		public void doSomething() {
 			assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isTrue();
-			assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+			assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		}
 
 		@Override

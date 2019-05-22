@@ -37,7 +37,6 @@ import org.springframework.core.type.filter.TypeFilter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -58,7 +57,7 @@ public class ComponentScanParserTests {
 		ClassPathXmlApplicationContext context = loadContext("aspectjTypeFilterTests.xml");
 		assertThat(context.containsBean("fooServiceImpl")).isTrue();
 		assertThat(context.containsBean("stubFooDao")).isTrue();
-		assertFalse(context.containsBean("scopedProxyTestBean"));
+		assertThat(context.containsBean("scopedProxyTestBean")).isFalse();
 		context.close();
 	}
 
@@ -71,7 +70,7 @@ public class ComponentScanParserTests {
 			ClassPathXmlApplicationContext context = loadContext("aspectjTypeFilterTestsWithPlaceholders.xml");
 			assertThat(context.containsBean("fooServiceImpl")).isTrue();
 			assertThat(context.containsBean("stubFooDao")).isTrue();
-			assertFalse(context.containsBean("scopedProxyTestBean"));
+			assertThat(context.containsBean("scopedProxyTestBean")).isFalse();
 			context.close();
 		}
 		finally {
@@ -84,7 +83,7 @@ public class ComponentScanParserTests {
 	@Test
 	public void nonMatchingResourcePattern() {
 		ClassPathXmlApplicationContext context = loadContext("nonMatchingResourcePatternTests.xml");
-		assertFalse(context.containsBean("fooServiceImpl"));
+		assertThat(context.containsBean("fooServiceImpl")).isFalse();
 		context.close();
 	}
 

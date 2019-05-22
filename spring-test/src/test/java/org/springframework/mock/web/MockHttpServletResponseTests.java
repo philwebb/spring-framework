@@ -30,7 +30,6 @@ import org.springframework.web.util.WebUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -180,9 +179,9 @@ public class MockHttpServletResponseTests {
 
 	@Test
 	public void servletOutputStreamCommittedWhenBufferSizeExceeded() throws IOException {
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getOutputStream().write('X');
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		int size = response.getBufferSize();
 		response.getOutputStream().write(new byte[size]);
 		assertThat(response.isCommitted()).isTrue();
@@ -191,9 +190,9 @@ public class MockHttpServletResponseTests {
 
 	@Test
 	public void servletOutputStreamCommittedOnFlushBuffer() throws IOException {
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getOutputStream().write('X');
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.flushBuffer();
 		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);
@@ -201,9 +200,9 @@ public class MockHttpServletResponseTests {
 
 	@Test
 	public void servletWriterCommittedWhenBufferSizeExceeded() throws IOException {
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().write("X");
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		int size = response.getBufferSize();
 		char[] data = new char[size];
 		Arrays.fill(data, 'p');
@@ -214,9 +213,9 @@ public class MockHttpServletResponseTests {
 
 	@Test
 	public void servletOutputStreamCommittedOnOutputStreamFlush() throws IOException {
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getOutputStream().write('X');
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getOutputStream().flush();
 		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);
@@ -224,9 +223,9 @@ public class MockHttpServletResponseTests {
 
 	@Test
 	public void servletWriterCommittedOnWriterFlush() throws IOException {
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().write("X");
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().flush();
 		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);
@@ -234,9 +233,9 @@ public class MockHttpServletResponseTests {
 
 	@Test // SPR-16683
 	public void servletWriterCommittedOnWriterClose() throws IOException {
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().write("X");
-		assertFalse(response.isCommitted());
+		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().close();
 		assertThat(response.isCommitted()).isTrue();
 		assertEquals(1, response.getContentAsByteArray().length);

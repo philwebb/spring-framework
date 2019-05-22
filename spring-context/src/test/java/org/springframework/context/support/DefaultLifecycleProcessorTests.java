@@ -32,7 +32,6 @@ import org.springframework.tests.TestGroup;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -73,11 +72,11 @@ public class DefaultLifecycleProcessorTests {
 		bean.setAutoStartup(true);
 		StaticApplicationContext context = new StaticApplicationContext();
 		context.getBeanFactory().registerSingleton("bean", bean);
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 		context.refresh();
 		assertThat(bean.isRunning()).isTrue();
 		context.stop();
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 		assertEquals(1, startedBeans.size());
 	}
 
@@ -91,7 +90,7 @@ public class DefaultLifecycleProcessorTests {
 		DummySmartLifecycleBean bean = context.getBean("bean", DummySmartLifecycleBean.class);
 		assertThat(bean.isRunning()).isTrue();
 		context.stop();
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 	}
 
 	@Test
@@ -104,7 +103,7 @@ public class DefaultLifecycleProcessorTests {
 		DummySmartLifecycleFactoryBean bean = context.getBean("&bean", DummySmartLifecycleFactoryBean.class);
 		assertThat(bean.isRunning()).isTrue();
 		context.stop();
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 	}
 
 	@Test
@@ -114,9 +113,9 @@ public class DefaultLifecycleProcessorTests {
 		bean.setAutoStartup(false);
 		StaticApplicationContext context = new StaticApplicationContext();
 		context.getBeanFactory().registerSingleton("bean", bean);
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 		context.refresh();
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 		assertEquals(0, startedBeans.size());
 		context.start();
 		assertThat(bean.isRunning()).isTrue();
@@ -135,14 +134,14 @@ public class DefaultLifecycleProcessorTests {
 		context.getBeanFactory().registerSingleton("bean", bean);
 		context.getBeanFactory().registerSingleton("dependency", dependency);
 		context.getBeanFactory().registerDependentBean("dependency", "bean");
-		assertFalse(bean.isRunning());
-		assertFalse(dependency.isRunning());
+		assertThat(bean.isRunning()).isFalse();
+		assertThat(dependency.isRunning()).isFalse();
 		context.refresh();
 		assertThat(bean.isRunning()).isTrue();
-		assertFalse(dependency.isRunning());
+		assertThat(dependency.isRunning()).isFalse();
 		context.stop();
-		assertFalse(bean.isRunning());
-		assertFalse(dependency.isRunning());
+		assertThat(bean.isRunning()).isFalse();
+		assertThat(dependency.isRunning()).isFalse();
 		assertEquals(1, startedBeans.size());
 	}
 
@@ -160,11 +159,11 @@ public class DefaultLifecycleProcessorTests {
 		context.getBeanFactory().registerSingleton("bean2", bean2);
 		context.getBeanFactory().registerSingleton("beanMax", beanMax);
 		context.getBeanFactory().registerSingleton("bean1", bean1);
-		assertFalse(beanMin.isRunning());
-		assertFalse(bean1.isRunning());
-		assertFalse(bean2.isRunning());
-		assertFalse(bean3.isRunning());
-		assertFalse(beanMax.isRunning());
+		assertThat(beanMin.isRunning()).isFalse();
+		assertThat(bean1.isRunning()).isFalse();
+		assertThat(bean2.isRunning()).isFalse();
+		assertThat(bean3.isRunning()).isFalse();
+		assertThat(beanMax.isRunning()).isFalse();
 		context.refresh();
 		assertThat(beanMin.isRunning()).isTrue();
 		assertThat(bean1.isRunning()).isTrue();
@@ -192,15 +191,15 @@ public class DefaultLifecycleProcessorTests {
 		context.getBeanFactory().registerSingleton("smartBean1", smartBean1);
 		context.getBeanFactory().registerSingleton("simpleBean2", simpleBean2);
 		context.getBeanFactory().registerSingleton("smartBean2", smartBean2);
-		assertFalse(simpleBean1.isRunning());
-		assertFalse(simpleBean2.isRunning());
-		assertFalse(smartBean1.isRunning());
-		assertFalse(smartBean2.isRunning());
+		assertThat(simpleBean1.isRunning()).isFalse();
+		assertThat(simpleBean2.isRunning()).isFalse();
+		assertThat(smartBean1.isRunning()).isFalse();
+		assertThat(smartBean2.isRunning()).isFalse();
 		context.refresh();
 		assertThat(smartBean1.isRunning()).isTrue();
 		assertThat(smartBean2.isRunning()).isTrue();
-		assertFalse(simpleBean1.isRunning());
-		assertFalse(simpleBean2.isRunning());
+		assertThat(simpleBean1.isRunning()).isFalse();
+		assertThat(simpleBean2.isRunning()).isFalse();
 		assertEquals(2, startedBeans.size());
 		assertEquals(-3, getPhase(startedBeans.get(0)));
 		assertEquals(5, getPhase(startedBeans.get(1)));
@@ -226,23 +225,23 @@ public class DefaultLifecycleProcessorTests {
 		context.getBeanFactory().registerSingleton("smartBean1", smartBean1);
 		context.getBeanFactory().registerSingleton("simpleBean2", simpleBean2);
 		context.getBeanFactory().registerSingleton("smartBean2", smartBean2);
-		assertFalse(simpleBean1.isRunning());
-		assertFalse(simpleBean2.isRunning());
-		assertFalse(smartBean1.isRunning());
-		assertFalse(smartBean2.isRunning());
+		assertThat(simpleBean1.isRunning()).isFalse();
+		assertThat(simpleBean2.isRunning()).isFalse();
+		assertThat(smartBean1.isRunning()).isFalse();
+		assertThat(smartBean2.isRunning()).isFalse();
 		context.refresh();
 		assertThat(smartBean1.isRunning()).isTrue();
 		assertThat(smartBean2.isRunning()).isTrue();
-		assertFalse(simpleBean1.isRunning());
-		assertFalse(simpleBean2.isRunning());
+		assertThat(simpleBean1.isRunning()).isFalse();
+		assertThat(simpleBean2.isRunning()).isFalse();
 		assertEquals(2, startedBeans.size());
 		assertEquals(-3, getPhase(startedBeans.get(0)));
 		assertEquals(5, getPhase(startedBeans.get(1)));
 		context.stop();
-		assertFalse(simpleBean1.isRunning());
-		assertFalse(simpleBean2.isRunning());
-		assertFalse(smartBean1.isRunning());
-		assertFalse(smartBean2.isRunning());
+		assertThat(simpleBean1.isRunning()).isFalse();
+		assertThat(simpleBean2.isRunning()).isFalse();
+		assertThat(smartBean1.isRunning()).isFalse();
+		assertThat(smartBean2.isRunning()).isFalse();
 		context.start();
 		assertThat(smartBean1.isRunning()).isTrue();
 		assertThat(smartBean2.isRunning()).isTrue();
@@ -298,7 +297,7 @@ public class DefaultLifecycleProcessorTests {
 		assertThat(bean.isRunning()).isTrue();
 		context.stop();
 		assertEquals(1, stoppedBeans.size());
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 		assertEquals(bean, stoppedBeans.get(0));
 	}
 
@@ -309,12 +308,12 @@ public class DefaultLifecycleProcessorTests {
 		StaticApplicationContext context = new StaticApplicationContext();
 		context.getBeanFactory().registerSingleton("bean", bean);
 		context.refresh();
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 		bean.start();
 		assertThat(bean.isRunning()).isTrue();
 		context.stop();
 		assertEquals(1, stoppedBeans.size());
-		assertFalse(bean.isRunning());
+		assertThat(bean.isRunning()).isFalse();
 		assertEquals(bean, stoppedBeans.get(0));
 	}
 
@@ -342,20 +341,20 @@ public class DefaultLifecycleProcessorTests {
 		assertThat(bean5.isRunning()).isTrue();
 		assertThat(bean6.isRunning()).isTrue();
 		assertThat(bean7.isRunning()).isTrue();
-		assertFalse(bean1.isRunning());
-		assertFalse(bean4.isRunning());
+		assertThat(bean1.isRunning()).isFalse();
+		assertThat(bean4.isRunning()).isFalse();
 		bean1.start();
 		bean4.start();
 		assertThat(bean1.isRunning()).isTrue();
 		assertThat(bean4.isRunning()).isTrue();
 		context.stop();
-		assertFalse(bean1.isRunning());
-		assertFalse(bean2.isRunning());
-		assertFalse(bean3.isRunning());
-		assertFalse(bean4.isRunning());
-		assertFalse(bean5.isRunning());
-		assertFalse(bean6.isRunning());
-		assertFalse(bean7.isRunning());
+		assertThat(bean1.isRunning()).isFalse();
+		assertThat(bean2.isRunning()).isFalse();
+		assertThat(bean3.isRunning()).isFalse();
+		assertThat(bean4.isRunning()).isFalse();
+		assertThat(bean5.isRunning()).isFalse();
+		assertThat(bean6.isRunning()).isFalse();
+		assertThat(bean7.isRunning()).isFalse();
 		assertEquals(7, stoppedBeans.size());
 		assertEquals(Integer.MAX_VALUE, getPhase(stoppedBeans.get(0)));
 		assertEquals(500, getPhase(stoppedBeans.get(1)));
@@ -421,12 +420,12 @@ public class DefaultLifecycleProcessorTests {
 		assertThat(bean99.isRunning()).isTrue();
 		assertThat(beanMax.isRunning()).isTrue();
 		context.stop();
-		assertFalse(beanMin.isRunning());
-		assertFalse(bean1.isRunning());
-		assertFalse(bean2.isRunning());
-		assertFalse(bean7.isRunning());
-		assertFalse(bean99.isRunning());
-		assertFalse(beanMax.isRunning());
+		assertThat(beanMin.isRunning()).isFalse();
+		assertThat(bean1.isRunning()).isFalse();
+		assertThat(bean2.isRunning()).isFalse();
+		assertThat(bean7.isRunning()).isFalse();
+		assertThat(bean99.isRunning()).isFalse();
+		assertThat(beanMax.isRunning()).isFalse();
 		assertEquals(6, stoppedBeans.size());
 		assertEquals(Integer.MAX_VALUE, getPhase(stoppedBeans.get(0)));
 		assertEquals(2, getPhase(stoppedBeans.get(1)));
@@ -496,12 +495,12 @@ public class DefaultLifecycleProcessorTests {
 		// should start since it's a dependency of an auto-started bean
 		assertThat(simpleBean.isRunning()).isTrue();
 		context.stop();
-		assertFalse(beanMin.isRunning());
-		assertFalse(beanNegative.isRunning());
-		assertFalse(bean1.isRunning());
-		assertFalse(bean2.isRunning());
-		assertFalse(bean7.isRunning());
-		assertFalse(simpleBean.isRunning());
+		assertThat(beanMin.isRunning()).isFalse();
+		assertThat(beanNegative.isRunning()).isFalse();
+		assertThat(bean1.isRunning()).isFalse();
+		assertThat(bean2.isRunning()).isFalse();
+		assertThat(bean7.isRunning()).isFalse();
+		assertThat(simpleBean.isRunning()).isFalse();
 		assertEquals(6, stoppedBeans.size());
 		assertEquals(7, getPhase(stoppedBeans.get(0)));
 		assertEquals(2, getPhase(stoppedBeans.get(1)));
@@ -555,15 +554,15 @@ public class DefaultLifecycleProcessorTests {
 		assertThat(bean1.isRunning()).isTrue();
 		assertThat(bean2.isRunning()).isTrue();
 		assertThat(bean7.isRunning()).isTrue();
-		assertFalse(simpleBean.isRunning());
+		assertThat(simpleBean.isRunning()).isFalse();
 		simpleBean.start();
 		assertThat(simpleBean.isRunning()).isTrue();
 		context.stop();
-		assertFalse(beanMin.isRunning());
-		assertFalse(bean1.isRunning());
-		assertFalse(bean2.isRunning());
-		assertFalse(bean7.isRunning());
-		assertFalse(simpleBean.isRunning());
+		assertThat(beanMin.isRunning()).isFalse();
+		assertThat(bean1.isRunning()).isFalse();
+		assertThat(bean2.isRunning()).isFalse();
+		assertThat(bean7.isRunning()).isFalse();
+		assertThat(simpleBean.isRunning()).isFalse();
 		assertEquals(5, stoppedBeans.size());
 		assertEquals(7, getPhase(stoppedBeans.get(0)));
 		assertEquals(0, getPhase(stoppedBeans.get(1)));

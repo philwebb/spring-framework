@@ -35,7 +35,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests invocation of constructors.
@@ -167,7 +166,7 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 		List<ConstructorResolver> copy = new ArrayList<>();
 		copy.addAll(ctx.getConstructorResolvers());
 		assertThat(ctx.removeConstructorResolver(dummy)).isTrue();
-		assertFalse(ctx.removeConstructorResolver(dummy));
+		assertThat(ctx.removeConstructorResolver(dummy)).isFalse();
 		assertEquals(1, ctx.getConstructorResolvers().size());
 
 		ctx.setConstructorResolvers(copy);

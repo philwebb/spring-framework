@@ -44,7 +44,6 @@ import org.springframework.web.server.ServerWebExchange;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
@@ -90,7 +89,7 @@ public class WebExchangeDataBinderTests {
 
 		formData.remove("postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertFalse(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -105,7 +104,7 @@ public class WebExchangeDataBinderTests {
 
 		formData.remove("postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertFalse(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -118,7 +117,7 @@ public class WebExchangeDataBinderTests {
 
 		formData.remove("postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertFalse(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -136,7 +135,7 @@ public class WebExchangeDataBinderTests {
 
 		formData.remove("!postProcessed");
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
-		assertFalse(this.testBean.isPostProcessed());
+		assertThat(this.testBean.isPostProcessed()).isFalse();
 	}
 
 	@Test

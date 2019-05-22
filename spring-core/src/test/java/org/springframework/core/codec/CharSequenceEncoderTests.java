@@ -30,7 +30,6 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.nio.charset.StandardCharsets.UTF_16;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Sebastien Deleuze
@@ -55,13 +54,13 @@ public class CharSequenceEncoderTests
 				MimeTypeUtils.TEXT_PLAIN)).isTrue();
 		assertThat(this.encoder.canEncode(ResolvableType.forClass(StringBuffer.class),
 				MimeTypeUtils.TEXT_PLAIN)).isTrue();
-		assertFalse(this.encoder.canEncode(ResolvableType.forClass(Integer.class),
-				MimeTypeUtils.TEXT_PLAIN));
-		assertFalse(this.encoder.canEncode(ResolvableType.forClass(String.class),
-				MimeTypeUtils.APPLICATION_JSON));
+		assertThat(this.encoder.canEncode(ResolvableType.forClass(Integer.class),
+				MimeTypeUtils.TEXT_PLAIN)).isFalse();
+		assertThat(this.encoder.canEncode(ResolvableType.forClass(String.class),
+				MimeTypeUtils.APPLICATION_JSON)).isFalse();
 
 		// SPR-15464
-		assertFalse(this.encoder.canEncode(ResolvableType.NONE, null));
+		assertThat(this.encoder.canEncode(ResolvableType.NONE, null)).isFalse();
 	}
 
 	@Override

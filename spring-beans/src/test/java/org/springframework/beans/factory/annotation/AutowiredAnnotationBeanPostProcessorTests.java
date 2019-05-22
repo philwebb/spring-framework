@@ -79,7 +79,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -191,8 +190,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		assertArrayEquals(new String[] {"testBean", "nestedTestBean"}, bf.getDependenciesForBean("annotatedBean"));
 		bf.destroySingleton("testBean");
-		assertFalse(bf.containsSingleton("testBean"));
-		assertFalse(bf.containsSingleton("annotatedBean"));
+		assertThat(bf.containsSingleton("testBean")).isFalse();
+		assertThat(bf.containsSingleton("annotatedBean")).isFalse();
 		assertThat(bean.destroyed).isTrue();
 		assertSame(0, bf.getDependenciesForBean("annotatedBean").length);
 	}
@@ -1278,7 +1277,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		assertSame(bf.getBean("testBean1"), bean.consumeOptionalTestBean());
 		assertSame(bf.getBean("testBean1"), bean.getUniqueTestBean());
 		assertSame(bf.getBean("testBean1"), bean.consumeUniqueTestBean());
-		assertFalse(bf.containsSingleton("testBean2"));
+		assertThat(bf.containsSingleton("testBean2")).isFalse();
 
 		List<?> testBeans = bean.iterateTestBeans();
 		assertEquals(2, testBeans.size());

@@ -22,7 +22,6 @@ import org.junit.After;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -47,10 +46,10 @@ public class FileSystemUtilsTests {
 
 		FileSystemUtils.deleteRecursively(root);
 
-		assertFalse(root.exists());
-		assertFalse(child.exists());
-		assertFalse(grandchild.exists());
-		assertFalse(bar.exists());
+		assertThat(root.exists()).isFalse();
+		assertThat(child.exists()).isFalse();
+		assertThat(grandchild.exists()).isFalse();
+		assertThat(bar.exists()).isFalse();
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class FileSystemUtilsTests {
 		assertThat(new File(dest, child.getName()).exists()).isTrue();
 
 		FileSystemUtils.deleteRecursively(src);
-		assertFalse(src.exists());
+		assertThat(src.exists()).isFalse();
 	}
 
 

@@ -28,7 +28,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
@@ -52,7 +51,7 @@ public class AtBeanLiteModeScopeTests {
 		@Bean
 		public LifecycleBean singleton() {
 			LifecycleBean bean = new LifecycleBean("singleton");
-			assertFalse(bean.isInitialized());
+			assertThat(bean.isInitialized()).isFalse();
 			return bean;
 		}
 
@@ -60,7 +59,7 @@ public class AtBeanLiteModeScopeTests {
 		@Scope("prototype")
 		public LifecycleBean prototype() {
 			LifecycleBean bean = new LifecycleBean("prototype");
-			assertFalse(bean.isInitialized());
+			assertThat(bean.isInitialized()).isFalse();
 			return bean;
 		}
 	}

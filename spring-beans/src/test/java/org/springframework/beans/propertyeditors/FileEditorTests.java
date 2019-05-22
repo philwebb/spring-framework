@@ -25,7 +25,6 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Thomas Risberg
@@ -102,7 +101,7 @@ public class FileEditorTests {
 		boolean condition = value instanceof File;
 		assertThat(condition).isTrue();
 		File file = (File) value;
-		assertFalse(file.exists());
+		assertThat(file.exists()).isFalse();
 		String absolutePath = file.getAbsolutePath().replace('\\', '/');
 		assertThat(absolutePath.endsWith(fileName)).isTrue();
 	}

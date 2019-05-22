@@ -33,7 +33,6 @@ import org.springframework.util.MimeType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -62,8 +61,8 @@ public class Jackson2CborDecoderTests extends AbstractDecoderTestCase<Jackson2Cb
 		assertThat(decoder.canDecode(forClass(Pojo.class), CBOR_MIME_TYPE)).isTrue();
 		assertThat(decoder.canDecode(forClass(Pojo.class), null)).isTrue();
 
-		assertFalse(decoder.canDecode(forClass(String.class), null));
-		assertFalse(decoder.canDecode(forClass(Pojo.class), APPLICATION_JSON));
+		assertThat(decoder.canDecode(forClass(String.class), null)).isFalse();
+		assertThat(decoder.canDecode(forClass(Pojo.class), APPLICATION_JSON)).isFalse();
 	}
 
 	@Override

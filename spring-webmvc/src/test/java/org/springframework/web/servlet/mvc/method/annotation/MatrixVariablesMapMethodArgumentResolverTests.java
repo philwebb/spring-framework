@@ -37,7 +37,6 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.web.method.MvcAnnotationPredicates.matrixAttribute;
 
 /**
@@ -73,7 +72,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 
-		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(String.class))).isFalse();
 
 		assertThat(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().noName())
 				.arg(Map.class, String.class, String.class))).isTrue();
@@ -84,8 +83,8 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		assertThat(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().pathVar("cars"))
 				.arg(MultiValueMap.class, String.class, String.class))).isTrue();
 
-		assertFalse(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().name("name"))
-				.arg(Map.class, String.class, String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.annot(matrixAttribute().name("name"))
+				.arg(Map.class, String.class, String.class))).isFalse();
 	}
 
 	@Test

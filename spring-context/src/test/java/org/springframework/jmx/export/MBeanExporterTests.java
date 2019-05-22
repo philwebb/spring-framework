@@ -59,7 +59,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -140,7 +139,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			start(exporter);
 			Object name = server.getAttribute(ObjectNameManager.getInstance("spring:name=dynBean"), "Name");
 			assertEquals("The name attribute is incorrect", "Rob Harrop", name);
-			assertFalse("Assembler should not have been invoked", asm.invoked);
+			assertThat(asm.invoked).as("Assembler should not have been invoked").isFalse();
 		}
 		finally {
 			exporter.destroy();

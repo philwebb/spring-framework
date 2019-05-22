@@ -29,8 +29,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -136,7 +136,7 @@ public class SimpleJmsHeaderMapperTests {
 		assertEquals(0, jmsMessage.getJMSExpiration());
 		assertNull(jmsMessage.getJMSMessageID());
 		assertEquals(javax.jms.Message.DEFAULT_PRIORITY, jmsMessage.getJMSPriority());
-		assertFalse(jmsMessage.getJMSRedelivered());
+		assertThat(jmsMessage.getJMSRedelivered()).isFalse();
 		assertEquals(0, jmsMessage.getJMSTimestamp());
 	}
 

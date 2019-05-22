@@ -41,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -59,8 +58,8 @@ public class MappingJackson2MessageConverterTests {
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
 		assertThat(converter.getSupportedMimeTypes())
 				.contains(new MimeType("application", "json"));
-		assertFalse(converter.getObjectMapper().getDeserializationConfig()
-				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+		assertThat(converter.getObjectMapper().getDeserializationConfig()
+				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 	}
 
 	@Test  // SPR-12724
@@ -68,8 +67,8 @@ public class MappingJackson2MessageConverterTests {
 		MimeType mimetype = new MimeType("application", "xml", StandardCharsets.UTF_8);
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter(mimetype);
 		assertThat(converter.getSupportedMimeTypes()).contains(mimetype);
-		assertFalse(converter.getObjectMapper().getDeserializationConfig()
-				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+		assertThat(converter.getObjectMapper().getDeserializationConfig()
+				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 	}
 
 	@Test  // SPR-12724
@@ -78,8 +77,8 @@ public class MappingJackson2MessageConverterTests {
 		MimeType xmlMimetype = new MimeType("application", "xml", StandardCharsets.UTF_8);
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter(jsonMimetype, xmlMimetype);
 		assertThat(converter.getSupportedMimeTypes()).contains(jsonMimetype, xmlMimetype);
-		assertFalse(converter.getObjectMapper().getDeserializationConfig()
-				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+		assertThat(converter.getObjectMapper().getDeserializationConfig()
+				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 	}
 
 	@Test

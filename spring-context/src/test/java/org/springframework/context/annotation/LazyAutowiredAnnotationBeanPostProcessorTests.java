@@ -31,7 +31,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -53,7 +52,7 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		ac.refresh();
 
 		TestBeanHolder bean = ac.getBean("annotatedBean", TestBeanHolder.class);
-		assertFalse(ac.getBeanFactory().containsSingleton("testBean"));
+		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isFalse();
 		assertNotNull(bean.getTestBean());
 		assertNull(bean.getTestBean().getName());
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
@@ -76,8 +75,8 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		ac.refresh();
 
 		FieldResourceInjectionBean bean = ac.getBean("annotatedBean", FieldResourceInjectionBean.class);
-		assertFalse(ac.getBeanFactory().containsSingleton("testBean"));
-		assertFalse(bean.getTestBeans().isEmpty());
+		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isFalse();
+		assertThat(bean.getTestBeans().isEmpty()).isFalse();
 		assertNull(bean.getTestBeans().get(0).getName());
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) ac.getBean("testBean");

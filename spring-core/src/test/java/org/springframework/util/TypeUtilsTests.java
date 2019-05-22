@@ -26,7 +26,6 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link TypeUtils}.
@@ -61,11 +60,11 @@ public class TypeUtilsTests {
 	public void withClasses() {
 		assertThat(TypeUtils.isAssignable(Object.class, Object.class)).isTrue();
 		assertThat(TypeUtils.isAssignable(Object.class, String.class)).isTrue();
-		assertFalse(TypeUtils.isAssignable(String.class, Object.class));
+		assertThat(TypeUtils.isAssignable(String.class, Object.class)).isFalse();
 		assertThat(TypeUtils.isAssignable(List.class, List.class)).isTrue();
 		assertThat(TypeUtils.isAssignable(List.class, LinkedList.class)).isTrue();
-		assertFalse(TypeUtils.isAssignable(List.class, Collection.class));
-		assertFalse(TypeUtils.isAssignable(List.class, HashSet.class));
+		assertThat(TypeUtils.isAssignable(List.class, Collection.class)).isFalse();
+		assertThat(TypeUtils.isAssignable(List.class, HashSet.class)).isFalse();
 	}
 
 	@Test
@@ -87,8 +86,8 @@ public class TypeUtilsTests {
 		assertThat(TypeUtils.isAssignable(stringsType, stringsType)).isTrue();
 		assertThat(TypeUtils.isAssignable(openObjectsType, objectsType)).isTrue();
 		assertThat(TypeUtils.isAssignable(openObjectsType, stringsType)).isTrue();
-		assertFalse(TypeUtils.isAssignable(stringsType, objectsType));
-		assertFalse(TypeUtils.isAssignable(objectsType, stringsType));
+		assertThat(TypeUtils.isAssignable(stringsType, objectsType)).isFalse();
+		assertThat(TypeUtils.isAssignable(objectsType, stringsType)).isFalse();
 	}
 
 	@Test
@@ -106,8 +105,8 @@ public class TypeUtilsTests {
 
 		assertThat(TypeUtils.isAssignable(openWildcard, objectType)).isTrue();
 		assertThat(TypeUtils.isAssignable(openNumbersWildcard, numberType)).isTrue();
-		assertFalse(TypeUtils.isAssignable(openNumbersWildcard, stringType));
-		assertFalse(TypeUtils.isAssignable(storableObjectListType, openObjectsType));
+		assertThat(TypeUtils.isAssignable(openNumbersWildcard, stringType)).isFalse();
+		assertThat(TypeUtils.isAssignable(storableObjectListType, openObjectsType)).isFalse();
 	}
 
 	@Test

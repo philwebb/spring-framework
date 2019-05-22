@@ -32,7 +32,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -70,7 +69,7 @@ public class ViewControllerRegistryTests {
 
 		assertEquals("viewName", controller.getViewName());
 		assertNull(controller.getStatusCode());
-		assertFalse(controller.isStatusOnly());
+		assertThat(controller.isStatusOnly()).isFalse();
 		assertNotNull(controller.getApplicationContext());
 	}
 
@@ -81,7 +80,7 @@ public class ViewControllerRegistryTests {
 
 		assertNull(controller.getViewName());
 		assertNull(controller.getStatusCode());
-		assertFalse(controller.isStatusOnly());
+		assertThat(controller.isStatusOnly()).isFalse();
 		assertNotNull(controller.getApplicationContext());
 	}
 

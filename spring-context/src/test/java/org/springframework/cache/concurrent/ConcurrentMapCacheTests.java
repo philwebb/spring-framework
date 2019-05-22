@@ -31,7 +31,6 @@ import org.springframework.core.serializer.support.SerializationDelegate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Costin Leau
@@ -77,7 +76,7 @@ public class ConcurrentMapCacheTests
 
 	@Test
 	public void testIsStoreByReferenceByDefault() {
-		assertFalse(this.cache.isStoreByValue());
+		assertThat(this.cache.isStoreByValue()).isFalse();
 	}
 
 	@SuppressWarnings("unchecked")

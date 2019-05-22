@@ -28,9 +28,9 @@ import org.springframework.expression.TypeComparator;
 import org.springframework.expression.TypeConverter;
 import org.springframework.expression.TypeLocator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 public class StandardComponentsTests {
@@ -52,7 +52,7 @@ public class StandardComponentsTests {
 	@Test
 	public void testStandardOperatorOverloader() throws EvaluationException {
 		OperatorOverloader oo = new StandardOperatorOverloader();
-		assertFalse(oo.overridesOperation(Operation.ADD, null, null));
+		assertThat(oo.overridesOperation(Operation.ADD, null, null)).isFalse();
 		assertThatExceptionOfType(EvaluationException.class).isThrownBy(() ->
 				oo.operate(Operation.ADD, 2, 3));
 	}

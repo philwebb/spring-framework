@@ -32,7 +32,6 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -118,7 +117,7 @@ public class EhCacheSupportTests {
 			CacheManager cm = cacheManagerFb.getObject();
 			assertThat(cm.getCacheNames().length == 1).as("Correct number of caches loaded").isTrue();
 			Cache myCache1 = cm.getCache("myCache1");
-			assertFalse("myCache1 is not eternal", myCache1.getCacheConfiguration().isEternal());
+			assertThat(myCache1.getCacheConfiguration().isEternal()).as("myCache1 is not eternal").isFalse();
 			assertThat(myCache1.getCacheConfiguration().getMaxEntriesLocalHeap() == 300).as("myCache1.maxElements == 300").isTrue();
 		}
 		finally {
@@ -179,7 +178,7 @@ public class EhCacheSupportTests {
 			config = cache.getCacheConfiguration();
 			assertEquals("undefinedCache", cache.getName());
 			assertThat(config.getMaxEntriesLocalHeap() == 10000).as("default maxElements is correct").isTrue();
-			assertFalse("default eternal is correct", config.isEternal());
+			assertThat(config.isEternal()).as("default eternal is correct").isFalse();
 			assertThat(config.getTimeToLiveSeconds() == 120).as("default timeToLive is correct").isTrue();
 			assertThat(config.getTimeToIdleSeconds() == 120).as("default timeToIdle is correct").isTrue();
 			assertThat(config.getDiskExpiryThreadIntervalSeconds() == 120).as("default diskExpiryThreadIntervalSeconds is correct").isTrue();

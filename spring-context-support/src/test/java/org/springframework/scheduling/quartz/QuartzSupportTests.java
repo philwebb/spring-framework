@@ -44,7 +44,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
@@ -374,7 +373,7 @@ public class QuartzSupportTests {
 		StaticApplicationContext context = new StaticApplicationContext();
 		context.registerBeanDefinition("scheduler", new RootBeanDefinition(SchedulerFactoryBean.class));
 		Scheduler bean = context.getBean("scheduler", Scheduler.class);
-		assertFalse(bean.isStarted());
+		assertThat(bean.isStarted()).isFalse();
 		context.refresh();
 		assertThat(bean.isStarted()).isTrue();
 	}
@@ -387,9 +386,9 @@ public class QuartzSupportTests {
 				.addPropertyValue("autoStartup", false).getBeanDefinition();
 		context.registerBeanDefinition("scheduler", beanDefinition);
 		Scheduler bean = context.getBean("scheduler", Scheduler.class);
-		assertFalse(bean.isStarted());
+		assertThat(bean.isStarted()).isFalse();
 		context.refresh();
-		assertFalse(bean.isStarted());
+		assertThat(bean.isStarted()).isFalse();
 	}
 
 	@Test
@@ -412,7 +411,7 @@ public class QuartzSupportTests {
 
 		ClassPathXmlApplicationContext ctx = context("databasePersistence.xml");
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ctx.getBean(DataSource.class));
-		assertFalse("No triggers were persisted", jdbcTemplate.queryForList("SELECT * FROM qrtz_triggers").isEmpty());
+		assertThat(jdbcTemplate.queryForList("SELECT * FROM qrtz_triggers").isEmpty()).as("No triggers were persisted").isFalse();
 
 		/*
 		Thread.sleep(3000);

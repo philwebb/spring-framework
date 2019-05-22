@@ -38,7 +38,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
 
 /**
@@ -68,10 +67,10 @@ public class RequestParamMapMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().name("name")).arg(Map.class, String.class, String.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 
 		param = this.testMethod.annotNotPresent(RequestParam.class).arg(Map.class, String.class, String.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 	}
 
 	@Test

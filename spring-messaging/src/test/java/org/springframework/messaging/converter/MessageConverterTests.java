@@ -36,7 +36,6 @@ import org.springframework.util.MimeTypeUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -97,7 +96,7 @@ public class MessageConverterTests {
 		this.converter.setStrictContentTypeMatch(true);
 
 		Message<String> message = MessageBuilder.withPayload("ABC").build();
-		assertFalse(this.converter.canConvertFrom(message, String.class));
+		assertThat(this.converter.canConvertFrom(message, String.class)).isFalse();
 
 		message = MessageBuilder.withPayload("ABC")
 				.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.TEXT_PLAIN).build();

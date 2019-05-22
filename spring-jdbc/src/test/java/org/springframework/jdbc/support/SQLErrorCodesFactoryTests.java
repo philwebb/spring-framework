@@ -31,7 +31,6 @@ import org.springframework.core.io.Resource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -72,7 +71,7 @@ public class SQLErrorCodesFactoryTests {
 		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "942") >= 0).isTrue();
 		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "6550") >= 0).isTrue();
 		// This had better NOT be
-		assertFalse(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "9xx42") >= 0);
+		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "9xx42") >= 0).isFalse();
 	}
 
 	private void assertIsSQLServer(SQLErrorCodes sec) {
@@ -85,7 +84,7 @@ public class SQLErrorCodesFactoryTests {
 		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "207") >= 0).isTrue();
 		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "208") >= 0).isTrue();
 		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "209") >= 0).isTrue();
-		assertFalse(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "9xx42") >= 0);
+		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "9xx42") >= 0).isFalse();
 
 		assertThat(sec.getPermissionDeniedCodes().length > 0).isTrue();
 		assertThat(Arrays.binarySearch(sec.getPermissionDeniedCodes(), "229") >= 0).isTrue();
@@ -115,14 +114,14 @@ public class SQLErrorCodesFactoryTests {
 		// This had better be a Bad SQL Grammar code
 		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "-22") >= 0).isTrue();
 		// This had better NOT be
-		assertFalse(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "-9") >= 0);
+		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "-9") >= 0).isFalse();
 	}
 
 	private void assertIsDB2(SQLErrorCodes sec) {
 		assertThat(sec.getBadSqlGrammarCodes().length > 0).isTrue();
 		assertThat(sec.getDataIntegrityViolationCodes().length > 0).isTrue();
 
-		assertFalse(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "942") >= 0);
+		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "942") >= 0).isFalse();
 		// This had better NOT be
 		assertThat(Arrays.binarySearch(sec.getBadSqlGrammarCodes(), "-204") >= 0).isTrue();
 	}

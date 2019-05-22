@@ -42,7 +42,6 @@ import org.springframework.web.server.ServerErrorException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link PathVariableMethodArgumentResolver}.
@@ -79,7 +78,7 @@ public class PathVariableMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 		assertThat(this.resolver.supportsParameter(this.paramNamedString)).isTrue();
-		assertFalse(this.resolver.supportsParameter(this.paramString));
+		assertThat(this.resolver.supportsParameter(this.paramString)).isFalse();
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.paramMono))
 			.withMessageStartingWith("PathVariableMethodArgumentResolver does not support reactive type wrapper");
@@ -153,7 +152,7 @@ public class PathVariableMethodArgumentResolverTests {
 				.consumeNextWith(value -> {
 					boolean condition = value instanceof Optional;
 					assertThat(condition).isTrue();
-					assertFalse(((Optional<?>) value).isPresent());
+					assertThat(((Optional<?>) value).isPresent()).isFalse();
 				})
 				.expectComplete()
 				.verify();

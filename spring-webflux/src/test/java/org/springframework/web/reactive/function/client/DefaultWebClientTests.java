@@ -34,9 +34,9 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -264,7 +264,7 @@ public class DefaultWebClientTests {
 		assertNull(actual.get("foo"));
 
 		ClientRequest request = verifyAndGetRequest();
-		assertFalse(request.attribute("foo").isPresent());
+		assertThat(request.attribute("foo").isPresent()).isFalse();
 	}
 
 	@Test

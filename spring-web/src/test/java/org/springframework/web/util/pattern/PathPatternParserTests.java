@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.fail;
 
@@ -109,11 +108,11 @@ public class PathPatternParserTests {
 		assertEquals(pp1, pp2);
 		assertEquals(pp1.hashCode(), pp2.hashCode());
 		assertNotEquals(pp1, pp3);
-		assertFalse(pp1.equals("abc"));
+		assertThat(pp1.equals("abc")).isFalse();
 
 		pp1 = caseInsensitiveParser.parse("/abc");
 		pp2 = caseSensitiveParser.parse("/abc");
-		assertFalse(pp1.equals(pp2));
+		assertThat(pp1.equals(pp2)).isFalse();
 		assertNotEquals(pp1.hashCode(), pp2.hashCode());
 	}
 
@@ -399,7 +398,7 @@ public class PathPatternParserTests {
 		p3 = parse("/this/that/theother");
 		assertThat(p1.isCatchAll()).isTrue();
 		assertThat(p2.isCatchAll()).isTrue();
-		assertFalse(p3.isCatchAll());
+		assertThat(p3.isCatchAll()).isFalse();
 		patterns = new ArrayList<>();
 		patterns.add(p2);
 		patterns.add(p3);
@@ -460,7 +459,7 @@ public class PathPatternParserTests {
 	}
 
 	private void assertNoMatch(PathPattern pp, String path) {
-		assertFalse(pp.matches(PathPatternTests.toPathContainer(path)));
+		assertThat(pp.matches(PathPatternTests.toPathContainer(path))).isFalse();
 	}
 
 	private PathPattern.PathMatchInfo matchAndExtract(PathPattern pp, String path) {

@@ -35,7 +35,6 @@ import org.springframework.web.socket.sockjs.transport.TransportType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -90,7 +89,7 @@ public class DefaultTransportRequestTests {
 
 		// Transport error => fallback
 		this.webSocketTransport.getConnectCallback().onFailure(new IOException("Fake exception 1"));
-		assertFalse(this.connectFuture.isDone());
+		assertThat(this.connectFuture.isDone()).isFalse();
 		assertThat(this.xhrTransport.invoked()).isTrue();
 
 		// Transport error => no more fallback
@@ -113,7 +112,7 @@ public class DefaultTransportRequestTests {
 		request1.connect(null, this.connectFuture);
 
 		assertThat(this.webSocketTransport.invoked()).isTrue();
-		assertFalse(this.xhrTransport.invoked());
+		assertThat(this.xhrTransport.invoked()).isFalse();
 
 		// Get and invoke the scheduled timeout task
 		ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);

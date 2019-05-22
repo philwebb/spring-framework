@@ -37,7 +37,6 @@ import org.springframework.expression.spel.support.ReflectionHelper.ArgumentsMat
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -339,7 +338,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 
 		PropertyAccessor property = reflective.createOptimalAccessor(ctx, tester, "property");
 		assertThat(property.canRead(ctx, tester, "property")).isTrue();
-		assertFalse(property.canRead(ctx, tester, "property2"));
+		assertThat(property.canRead(ctx, tester, "property2")).isFalse();
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				property.canWrite(ctx, tester, "property"));
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
@@ -353,7 +352,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 
 		PropertyAccessor field = reflective.createOptimalAccessor(ctx, tester, "field");
 		assertThat(field.canRead(ctx, tester, "field")).isTrue();
-		assertFalse(field.canRead(ctx, tester, "field2"));
+		assertThat(field.canRead(ctx, tester, "field2")).isFalse();
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				field.canWrite(ctx, tester, "field"));
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->

@@ -44,7 +44,6 @@ import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link EncodedResourceResolver}.
@@ -158,7 +157,8 @@ public class EncodedResourceResolverTests {
 
 		assertEquals(getResource(file).getDescription(), resolved.getDescription());
 		assertEquals(getResource(file).getFilename(), resolved.getFilename());
-		assertFalse(resolved instanceof HttpResource);
+		boolean condition1 = resolved instanceof HttpResource;
+		assertThat(condition1).isFalse();
 	}
 
 	@Test  // SPR-13149

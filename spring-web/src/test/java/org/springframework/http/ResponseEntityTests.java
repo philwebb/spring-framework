@@ -27,7 +27,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -245,7 +244,7 @@ public class ResponseEntityTests {
 
 		assertNotNull(responseEntity);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertFalse(responseEntity.getHeaders().containsKey(HttpHeaders.CACHE_CONTROL));
+		assertThat(responseEntity.getHeaders().containsKey(HttpHeaders.CACHE_CONTROL)).isFalse();
 		assertEquals(entity, responseEntity.getBody());
 	}
 

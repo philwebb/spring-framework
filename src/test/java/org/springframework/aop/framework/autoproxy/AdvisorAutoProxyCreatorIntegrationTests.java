@@ -39,7 +39,6 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Integration tests for auto proxy creation by advisor recognition working in
@@ -71,7 +70,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 	public void testDefaultExclusionPrefix() throws Exception {
 		DefaultAdvisorAutoProxyCreator aapc = (DefaultAdvisorAutoProxyCreator) getBeanFactory().getBean(ADVISOR_APC_BEAN_NAME);
 		assertEquals(ADVISOR_APC_BEAN_NAME + DefaultAdvisorAutoProxyCreator.SEPARATOR, aapc.getAdvisorBeanNamePrefix());
-		assertFalse(aapc.isUsePrefix());
+		assertThat(aapc.isUsePrefix()).isFalse();
 	}
 
 	/**
@@ -81,7 +80,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 	public void testNoProxy() throws Exception {
 		BeanFactory bf = getBeanFactory();
 		Object o = bf.getBean("noSetters");
-		assertFalse(AopUtils.isAopProxy(o));
+		assertThat(AopUtils.isAopProxy(o)).isFalse();
 	}
 
 	@Test

@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -78,7 +77,7 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
-		assertFalse(map.equals(result));
+		assertThat(map.equals(result)).isFalse();
 		assertEquals((Integer) 9, result.get(1));
 		assertEquals((Integer) 37, result.get(2));
 	}
@@ -114,7 +113,7 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
-		assertFalse(map.equals(result));
+		assertThat(map.equals(result)).isFalse();
 		assertEquals((Integer) 9, result.get(1));
 		assertEquals((Integer) 37, result.get(2));
 	}
@@ -141,7 +140,7 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
-		assertFalse(map.equals(result));
+		assertThat(map.equals(result)).isFalse();
 		assertEquals(Arrays.asList(9, 12), result.get(1));
 		assertEquals(Arrays.asList(37, 23), result.get(2));
 	}
@@ -154,7 +153,7 @@ public class MapToMapConverterTests {
 		TypeDescriptor sourceType = new TypeDescriptor(getClass().getField("sourceCollectionMapTarget"));
 		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("collectionMapTarget"));
 
-		assertFalse(conversionService.canConvert(sourceType, targetType));
+		assertThat(conversionService.canConvert(sourceType, targetType)).isFalse();
 		assertThatExceptionOfType(ConverterNotFoundException.class).isThrownBy(() ->
 				conversionService.convert(map, sourceType, targetType));
 
@@ -163,7 +162,7 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
-		assertFalse(map.equals(result));
+		assertThat(map.equals(result)).isFalse();
 		assertEquals(Arrays.asList(9, 12), result.get(1));
 		assertEquals(Arrays.asList(37, 23), result.get(2));
 	}

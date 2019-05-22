@@ -53,7 +53,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -89,8 +88,8 @@ public class ContextLoaderTests {
 		assertThat(context.containsBean("kerry")).as("Has kerry").isTrue();
 		boolean condition = !lb.isDestroyed();
 		assertThat(condition).as("Not destroyed").isTrue();
-		assertFalse(context.containsBean("beans1.bean1"));
-		assertFalse(context.containsBean("beans1.bean2"));
+		assertThat(context.containsBean("beans1.bean1")).isFalse();
+		assertThat(context.containsBean("beans1.bean2")).isFalse();
 		listener.contextDestroyed(event);
 		assertThat(lb.isDestroyed()).as("Destroyed").isTrue();
 		assertNull(sc.getAttribute(contextAttr));
@@ -115,7 +114,7 @@ public class ContextLoaderTests {
 			protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
 				assertNotNull("The ServletContext should not be null.", sc);
 				assertEquals("Verifying that we received the expected ServletContext.", sc, sc);
-				assertFalse("The ApplicationContext should not yet have been refreshed.", wac.isActive());
+				assertThat(wac.isActive()).as("The ApplicationContext should not yet have been refreshed.").isFalse();
 				buffer.append(expectedContents);
 			}
 		};
@@ -315,7 +314,7 @@ public class ContextLoaderTests {
 				"/org/springframework/web/context/WEB-INF/applicationContext.xml");
 		assertThat(context.containsBean("father")).as("Has father").isTrue();
 		assertThat(context.containsBean("rod")).as("Has rod").isTrue();
-		assertFalse("Hasn't kerry", context.containsBean("kerry"));
+		assertThat(context.containsBean("kerry")).as("Hasn't kerry").isFalse();
 		assertThat(((TestBean) context.getBean("rod")).getSpouse() == null).as("Doesn't have spouse").isTrue();
 		assertThat("Roderick".equals(((TestBean) context.getBean("rod")).getName())).as("myinit not evaluated").isTrue();
 

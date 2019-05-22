@@ -42,7 +42,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -157,7 +156,8 @@ public class ScopingTests {
 		// get hidden bean
 		Object bean = ctx.getBean("scopedTarget." + beanName);
 
-		assertFalse(bean instanceof ScopedObject);
+		boolean condition = bean instanceof ScopedObject;
+		assertThat(condition).isFalse();
 	}
 
 	@Test

@@ -49,7 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -100,7 +99,7 @@ public class DefaultStompSessionTests {
 
 	@Test
 	public void afterConnected() {
-		assertFalse(this.session.isConnected());
+		assertThat(this.session.isConnected()).isFalse();
 		this.connectHeaders.setHost("my-host");
 		this.connectHeaders.setHeartbeat(new long[] {11, 12});
 
@@ -117,7 +116,7 @@ public class DefaultStompSessionTests {
 
 	@Test // SPR-16844
 	public void afterConnectedWithSpecificVersion() {
-		assertFalse(this.session.isConnected());
+		assertThat(this.session.isConnected()).isFalse();
 		this.connectHeaders.setAcceptVersion(new String[] {"1.1"});
 
 		this.session.afterConnected(this.connection);
@@ -636,7 +635,7 @@ public class DefaultStompSessionTests {
 		assertThat(this.session.isConnected()).isTrue();
 
 		this.session.disconnect();
-		assertFalse(this.session.isConnected());
+		assertThat(this.session.isConnected()).isFalse();
 		verifyNoMoreInteractions(this.sessionHandler);
 	}
 

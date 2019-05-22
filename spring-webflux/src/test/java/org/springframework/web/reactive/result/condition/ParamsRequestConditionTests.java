@@ -25,7 +25,6 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
@@ -39,10 +38,10 @@ public class ParamsRequestConditionTests {
 	@Test
 	public void paramEquals() {
 		assertEquals(new ParamsRequestCondition("foo"), new ParamsRequestCondition("foo"));
-		assertFalse(new ParamsRequestCondition("foo").equals(new ParamsRequestCondition("bar")));
-		assertFalse(new ParamsRequestCondition("foo").equals(new ParamsRequestCondition("FOO")));
+		assertThat(new ParamsRequestCondition("foo").equals(new ParamsRequestCondition("bar"))).isFalse();
+		assertThat(new ParamsRequestCondition("foo").equals(new ParamsRequestCondition("FOO"))).isFalse();
 		assertEquals(new ParamsRequestCondition("foo=bar"), new ParamsRequestCondition("foo=bar"));
-		assertFalse(new ParamsRequestCondition("foo=bar").equals(new ParamsRequestCondition("FOO=bar")));
+		assertThat(new ParamsRequestCondition("foo=bar").equals(new ParamsRequestCondition("FOO=bar"))).isFalse();
 	}
 
 	@Test

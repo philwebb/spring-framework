@@ -52,7 +52,6 @@ import org.springframework.web.util.NestedServletException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -161,7 +160,7 @@ public class ExceptionHandlerExceptionResolverTests {
 		ModelAndView mav = this.resolver.resolveException(this.request, this.response, handlerMethod, ex);
 
 		assertNotNull(mav);
-		assertFalse(mav.isEmpty());
+		assertThat(mav.isEmpty()).isFalse();
 		assertEquals("errorView", mav.getViewName());
 		assertEquals("Bad argument", mav.getModel().get("detail"));
 	}

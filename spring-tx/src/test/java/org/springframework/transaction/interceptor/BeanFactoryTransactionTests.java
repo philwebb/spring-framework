@@ -45,7 +45,6 @@ import org.springframework.transaction.TransactionStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -74,7 +73,8 @@ public class BeanFactoryTransactionTests {
 	public void testGetsAreNotTransactionalWithProxyFactory1() {
 		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory1");
 		assertThat(Proxy.isProxyClass(testBean.getClass())).as("testBean is a dynamic proxy").isTrue();
-		assertFalse(testBean instanceof TransactionalProxy);
+		boolean condition = testBean instanceof TransactionalProxy;
+		assertThat(condition).isFalse();
 		doTestGetsAreNotTransactional(testBean);
 	}
 
@@ -100,7 +100,7 @@ public class BeanFactoryTransactionTests {
 	@Test
 	public void testProxyFactory2Lazy() {
 		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory2Lazy");
-		assertFalse(factory.containsSingleton("target"));
+		assertThat(factory.containsSingleton("target")).isFalse();
 		assertEquals(666, testBean.getAge());
 		assertThat(factory.containsSingleton("target")).isTrue();
 	}

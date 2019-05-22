@@ -37,7 +37,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -174,7 +173,7 @@ public class SessionScopeTests {
 
 		requestAttributes.requestCompleted();
 		serializedState = session.serializeState();
-		assertFalse(bean.wasDestroyed());
+		assertThat(bean.wasDestroyed()).isFalse();
 
 		serializedState = (Serializable) SerializationTestUtils.serializeAndDeserialize(serializedState);
 

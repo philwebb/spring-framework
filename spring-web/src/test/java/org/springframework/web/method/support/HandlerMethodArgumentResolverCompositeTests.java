@@ -26,7 +26,6 @@ import org.springframework.core.MethodParameter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture with {@link HandlerMethodArgumentResolverComposite}.
@@ -57,7 +56,7 @@ public class HandlerMethodArgumentResolverCompositeTests {
 		this.resolverComposite.addResolver(new StubArgumentResolver(Integer.class));
 
 		assertThat(this.resolverComposite.supportsParameter(paramInt)).isTrue();
-		assertFalse(this.resolverComposite.supportsParameter(paramStr));
+		assertThat(this.resolverComposite.supportsParameter(paramStr)).isFalse();
 	}
 
 	@Test

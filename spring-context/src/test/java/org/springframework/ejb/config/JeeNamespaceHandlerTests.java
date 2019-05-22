@@ -32,7 +32,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -87,7 +86,7 @@ public class JeeNamespaceHandlerTests {
 	public void testWithReferencedEnvironment() throws Exception {
 		BeanDefinition beanDefinition = this.beanFactory.getMergedBeanDefinition("withReferencedEnvironment");
 		assertPropertyValue(beanDefinition, "jndiEnvironment", new RuntimeBeanReference("myEnvironment"));
-		assertFalse(beanDefinition.getPropertyValues().contains("environmentRef"));
+		assertThat(beanDefinition.getPropertyValues().contains("environmentRef")).isFalse();
 	}
 
 	@Test

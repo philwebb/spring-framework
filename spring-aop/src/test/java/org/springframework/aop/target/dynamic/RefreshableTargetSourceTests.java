@@ -21,8 +21,8 @@ import org.junit.Test;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
@@ -100,7 +100,7 @@ public class RefreshableTargetSourceTests {
 
 		Object d = ts.getTarget();
 		assertNotNull("D should not be null", d);
-		assertFalse("A and D should not be equal", a.equals(d));
+		assertThat(a.equals(d)).as("A and D should not be equal").isFalse();
 
 		Object e = ts.getTarget();
 		assertEquals("D and E should be equal", d, e);
@@ -108,7 +108,7 @@ public class RefreshableTargetSourceTests {
 		Thread.sleep(110);
 
 		Object f = ts.getTarget();
-		assertFalse("E and F should be different", e.equals(f));
+		assertThat(e.equals(f)).as("E and F should be different").isFalse();
 	}
 
 

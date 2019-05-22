@@ -47,7 +47,6 @@ import org.springframework.util.MimeType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -114,8 +113,8 @@ public class SubscriptionMethodReturnValueHandlerTests {
 	@Test
 	public void supportsReturnType() throws Exception {
 		assertThat(this.handler.supportsReturnType(this.subscribeEventReturnType)).isTrue();
-		assertFalse(this.handler.supportsReturnType(this.subscribeEventSendToReturnType));
-		assertFalse(this.handler.supportsReturnType(this.messageMappingReturnType));
+		assertThat(this.handler.supportsReturnType(this.subscribeEventSendToReturnType)).isFalse();
+		assertThat(this.handler.supportsReturnType(this.messageMappingReturnType)).isFalse();
 	}
 
 	@Test

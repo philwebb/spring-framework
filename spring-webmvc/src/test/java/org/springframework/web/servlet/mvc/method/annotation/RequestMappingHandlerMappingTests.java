@@ -53,7 +53,6 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
@@ -76,7 +75,7 @@ public class RequestMappingHandlerMappingTests {
 	@Test
 	public void useRegisteredSuffixPatternMatch() {
 		assertThat(this.handlerMapping.useSuffixPatternMatch()).isTrue();
-		assertFalse(this.handlerMapping.useRegisteredSuffixPatternMatch());
+		assertThat(this.handlerMapping.useRegisteredSuffixPatternMatch()).isFalse();
 
 		Map<String, MediaType> fileExtensions = Collections.singletonMap("json", MediaType.APPLICATION_JSON);
 		PathExtensionContentNegotiationStrategy strategy = new PathExtensionContentNegotiationStrategy(fileExtensions);
@@ -123,11 +122,10 @@ public class RequestMappingHandlerMappingTests {
 		assertThat(this.handlerMapping.useSuffixPatternMatch()).isTrue();
 
 		this.handlerMapping.setUseSuffixPatternMatch(false);
-		assertFalse(this.handlerMapping.useSuffixPatternMatch());
+		assertThat(this.handlerMapping.useSuffixPatternMatch()).isFalse();
 
 		this.handlerMapping.setUseRegisteredSuffixPatternMatch(false);
-		assertFalse("'false' registeredSuffixPatternMatch shouldn't impact suffixPatternMatch",
-				this.handlerMapping.useSuffixPatternMatch());
+		assertThat(this.handlerMapping.useSuffixPatternMatch()).as("'false' registeredSuffixPatternMatch shouldn't impact suffixPatternMatch").isFalse();
 
 		this.handlerMapping.setUseRegisteredSuffixPatternMatch(true);
 		assertThat(this.handlerMapping.useSuffixPatternMatch()).as("'true' registeredSuffixPatternMatch should enable suffixPatternMatch").isTrue();
@@ -186,7 +184,7 @@ public class RequestMappingHandlerMappingTests {
 				.findFirst()
 				.orElseThrow(() -> new AssertionError("No /post"));
 
-		assertFalse(info.getConsumesCondition().isBodyRequired());
+		assertThat(info.getConsumesCondition().isBodyRequired()).isFalse();
 	}
 
 	@Test

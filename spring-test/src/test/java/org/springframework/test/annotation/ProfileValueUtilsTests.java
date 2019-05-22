@@ -24,7 +24,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ProfileValueUtils}.
@@ -52,8 +51,7 @@ public class ProfileValueUtilsTests {
 	}
 
 	private void assertClassIsDisabled(Class<?> testClass) throws Exception {
-		assertFalse("Test class [" + testClass + "] should be disabled.",
-			ProfileValueUtils.isTestEnabledInThisEnvironment(testClass));
+		assertThat(ProfileValueUtils.isTestEnabledInThisEnvironment(testClass)).as("Test class [" + testClass + "] should be disabled.").isFalse();
 	}
 
 	private void assertMethodIsEnabled(String methodName, Class<?> testClass) throws Exception {
@@ -63,8 +61,7 @@ public class ProfileValueUtilsTests {
 
 	private void assertMethodIsDisabled(String methodName, Class<?> testClass) throws Exception {
 		Method testMethod = testClass.getMethod(methodName);
-		assertFalse("Test method [" + testMethod + "] should be disabled.",
-			ProfileValueUtils.isTestEnabledInThisEnvironment(testMethod, testClass));
+		assertThat(ProfileValueUtils.isTestEnabledInThisEnvironment(testMethod, testClass)).as("Test method [" + testMethod + "] should be disabled.").isFalse();
 	}
 
 	private void assertMethodIsEnabled(ProfileValueSource profileValueSource, String methodName, Class<?> testClass)
@@ -77,8 +74,8 @@ public class ProfileValueUtilsTests {
 	private void assertMethodIsDisabled(ProfileValueSource profileValueSource, String methodName, Class<?> testClass)
 			throws Exception {
 		Method testMethod = testClass.getMethod(methodName);
-		assertFalse("Test method [" + testMethod + "] should be disabled for ProfileValueSource [" + profileValueSource
-				+ "].", ProfileValueUtils.isTestEnabledInThisEnvironment(profileValueSource, testMethod, testClass));
+		assertThat(ProfileValueUtils.isTestEnabledInThisEnvironment(profileValueSource, testMethod, testClass)).as("Test method [" + testMethod + "] should be disabled for ProfileValueSource [" + profileValueSource
+				+ "].").isFalse();
 	}
 
 	// -------------------------------------------------------------------

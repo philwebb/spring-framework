@@ -33,7 +33,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -113,8 +112,8 @@ public class AnnotationDrivenTests {
 				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isTrue();
 			}
 			else {
-				assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
-				assertFalse(TransactionSynchronizationManager.isSynchronizationActive());
+				assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
+				assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
 			}
 			return methodInvocation.proceed();
 		}

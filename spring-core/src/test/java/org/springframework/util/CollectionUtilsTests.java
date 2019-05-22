@@ -32,7 +32,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -50,11 +49,11 @@ public class CollectionUtilsTests {
 
 		List<Object> list = new LinkedList<>();
 		list.add(new Object());
-		assertFalse(CollectionUtils.isEmpty(list));
+		assertThat(CollectionUtils.isEmpty(list)).isFalse();
 
 		Map<String, String> map = new HashMap<>();
 		map.put("foo", "bar");
-		assertFalse(CollectionUtils.isEmpty(map));
+		assertThat(CollectionUtils.isEmpty(map)).isFalse();
 	}
 
 	@Test
@@ -101,10 +100,10 @@ public class CollectionUtilsTests {
 
 	@Test
 	public void testContains() {
-		assertFalse(CollectionUtils.contains((Iterator<String>) null, "myElement"));
-		assertFalse(CollectionUtils.contains((Enumeration<String>) null, "myElement"));
-		assertFalse(CollectionUtils.contains(new LinkedList<String>().iterator(), "myElement"));
-		assertFalse(CollectionUtils.contains(new Hashtable<String, Object>().keys(), "myElement"));
+		assertThat(CollectionUtils.contains((Iterator<String>) null, "myElement")).isFalse();
+		assertThat(CollectionUtils.contains((Enumeration<String>) null, "myElement")).isFalse();
+		assertThat(CollectionUtils.contains(new LinkedList<String>().iterator(), "myElement")).isFalse();
+		assertThat(CollectionUtils.contains(new Hashtable<String, Object>().keys(), "myElement")).isFalse();
 
 		List<String> list = new LinkedList<>();
 		list.add("myElement");
@@ -131,21 +130,19 @@ public class CollectionUtilsTests {
 		candidates.remove("def");
 		assertThat(CollectionUtils.containsAny(source, candidates)).isTrue();
 		candidates.remove("abc");
-		assertFalse(CollectionUtils.containsAny(source, candidates));
+		assertThat(CollectionUtils.containsAny(source, candidates)).isFalse();
 	}
 
 	@Test
 	public void testContainsInstanceWithNullCollection() throws Exception {
-		assertFalse("Must return false if supplied Collection argument is null",
-				CollectionUtils.containsInstance(null, this));
+		assertThat(CollectionUtils.containsInstance(null, this)).as("Must return false if supplied Collection argument is null").isFalse();
 	}
 
 	@Test
 	public void testContainsInstanceWithInstancesThatAreEqualButDistinct() throws Exception {
 		List<Instance> list = new ArrayList<>();
 		list.add(new Instance("fiona"));
-		assertFalse("Must return false if instance is not in the supplied Collection argument",
-				CollectionUtils.containsInstance(list, new Instance("fiona")));
+		assertThat(CollectionUtils.containsInstance(list, new Instance("fiona"))).as("Must return false if instance is not in the supplied Collection argument").isFalse();
 	}
 
 	@Test
@@ -162,8 +159,7 @@ public class CollectionUtilsTests {
 		List<Instance> list = new ArrayList<>();
 		list.add(new Instance("apple"));
 		list.add(new Instance("fiona"));
-		assertFalse("Must return false if null instance is supplied",
-				CollectionUtils.containsInstance(list, null));
+		assertThat(CollectionUtils.containsInstance(list, null)).as("Must return false if null instance is supplied").isFalse();
 	}
 
 	@Test
@@ -186,7 +182,7 @@ public class CollectionUtilsTests {
 		List<String> list = new LinkedList<>();
 		list.add("myElement");
 		list.add("myOtherElement");
-		assertFalse(CollectionUtils.hasUniqueObject(list));
+		assertThat(CollectionUtils.hasUniqueObject(list)).isFalse();
 
 		list = new LinkedList<>();
 		list.add("myElement");
@@ -195,12 +191,12 @@ public class CollectionUtilsTests {
 		list = new LinkedList<>();
 		list.add("myElement");
 		list.add(null);
-		assertFalse(CollectionUtils.hasUniqueObject(list));
+		assertThat(CollectionUtils.hasUniqueObject(list)).isFalse();
 
 		list = new LinkedList<>();
 		list.add(null);
 		list.add("myElement");
-		assertFalse(CollectionUtils.hasUniqueObject(list));
+		assertThat(CollectionUtils.hasUniqueObject(list)).isFalse();
 
 		list = new LinkedList<>();
 		list.add(null);
@@ -212,7 +208,7 @@ public class CollectionUtilsTests {
 		assertThat(CollectionUtils.hasUniqueObject(list)).isTrue();
 
 		list = new LinkedList<>();
-		assertFalse(CollectionUtils.hasUniqueObject(list));
+		assertThat(CollectionUtils.hasUniqueObject(list)).isFalse();
 	}
 
 

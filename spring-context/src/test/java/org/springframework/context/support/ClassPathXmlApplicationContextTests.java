@@ -46,7 +46,6 @@ import org.springframework.util.ObjectUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -148,7 +147,7 @@ public class ClassPathXmlApplicationContextTests {
 				assertThat(ex.toString()).contains("someMessageSource", "useCodeAsDefaultMessage");
 				checkExceptionFromInvalidValueType(ex);
 				checkExceptionFromInvalidValueType(new ExceptionInInitializerError(ex));
-				assertFalse(context.isActive());
+				assertThat(context.isActive()).isFalse();
 			});
 	}
 

@@ -33,7 +33,6 @@ import org.springframework.context.annotation.Primary;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests proving that the various attributes available via the {@link Bean}
@@ -65,8 +64,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean(autowireCandidate=false) Object foo() { return null; }
 		}
 
-		assertFalse("autowire candidate flag was not propagated",
-				beanDef(Config.class).isAutowireCandidate());
+		assertThat(beanDef(Config.class).isAutowireCandidate()).as("autowire candidate flag was not propagated").isFalse();
 	}
 
 	@Test
@@ -115,8 +113,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean Object foo() { return null; }
 		}
 
-		assertFalse("@Bean methods should be non-primary by default",
-				beanDef(Config.class).isPrimary());
+		assertThat(beanDef(Config.class).isPrimary()).as("@Bean methods should be non-primary by default").isFalse();
 	}
 
 	@Test
@@ -135,8 +132,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean Object foo() { return null; }
 		}
 
-		assertFalse("@Bean methods should be non-lazy by default",
-				beanDef(Config.class).isLazyInit());
+		assertThat(beanDef(Config.class).isLazyInit()).as("@Bean methods should be non-lazy by default").isFalse();
 	}
 
 	@Test
@@ -154,8 +150,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Lazy(false) @Bean Object foo() { return null; }
 		}
 
-		assertFalse("@Lazy(false) @Bean methods declared in a @Lazy @Configuration should be eagerly instantiated",
-				beanDef(Config.class).isLazyInit());
+		assertThat(beanDef(Config.class).isLazyInit()).as("@Lazy(false) @Bean methods declared in a @Lazy @Configuration should be eagerly instantiated").isFalse();
 	}
 
 	@Test
@@ -164,8 +159,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean Object foo() { return null; }
 		}
 
-		assertFalse("@Lazy(false) @Configuration should produce eager bean definitions",
-				beanDef(Config.class).isLazyInit());
+		assertThat(beanDef(Config.class).isLazyInit()).as("@Lazy(false) @Configuration should produce eager bean definitions").isFalse();
 	}
 
 	private AbstractBeanDefinition beanDef(Class<?> configClass) {

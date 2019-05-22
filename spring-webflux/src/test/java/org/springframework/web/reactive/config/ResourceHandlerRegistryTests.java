@@ -51,7 +51,6 @@ import org.springframework.web.reactive.resource.WebJarsResourceResolver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -116,7 +115,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void hasMappingForPattern() {
 		assertThat(this.registry.hasMappingForPattern("/resources/**")).isTrue();
-		assertFalse(this.registry.hasMappingForPattern("/whatever"));
+		assertThat(this.registry.hasMappingForPattern("/whatever")).isFalse();
 	}
 
 	@Test

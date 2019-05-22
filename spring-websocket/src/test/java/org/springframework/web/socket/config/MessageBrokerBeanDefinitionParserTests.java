@@ -96,7 +96,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -181,7 +180,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 				.getTransportHandlers().get(TransportType.WEBSOCKET);
 		assertNotNull(wsTransportHandler.getHandshakeHandler());
 		assertThat(wsTransportHandler.getHandshakeHandler()).isInstanceOf(TestHandshakeHandler.class);
-		assertFalse(defaultSockJsService.shouldSuppressCors());
+		assertThat(defaultSockJsService.shouldSuppressCors()).isFalse();
 
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) defaultSockJsService.getTaskScheduler();
 		ScheduledThreadPoolExecutor executor = scheduler.getScheduledThreadPoolExecutor();
@@ -399,7 +398,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		testExecutor("clientInboundChannel", Runtime.getRuntime().availableProcessors() * 2, Integer.MAX_VALUE, 60);
 		testExecutor("clientOutboundChannel", Runtime.getRuntime().availableProcessors() * 2, Integer.MAX_VALUE, 60);
-		assertFalse(this.appContext.containsBean("brokerChannelExecutor"));
+		assertThat(this.appContext.containsBean("brokerChannelExecutor")).isFalse();
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test-case for AbstractHttpMessageConverter.
@@ -42,8 +41,8 @@ public class HttpMessageConverterTests {
 		HttpMessageConverter<MyType> converter = new MyHttpMessageConverter<>(mediaType);
 
 		assertThat(converter.canRead(MyType.class, mediaType)).isTrue();
-		assertFalse(converter.canRead(MyType.class, new MediaType("foo", "*")));
-		assertFalse(converter.canRead(MyType.class, MediaType.ALL));
+		assertThat(converter.canRead(MyType.class, new MediaType("foo", "*"))).isFalse();
+		assertThat(converter.canRead(MyType.class, MediaType.ALL)).isFalse();
 	}
 
 	@Test
@@ -53,7 +52,7 @@ public class HttpMessageConverterTests {
 
 		assertThat(converter.canRead(MyType.class, new MediaType("foo", "bar"))).isTrue();
 		assertThat(converter.canRead(MyType.class, new MediaType("foo", "*"))).isTrue();
-		assertFalse(converter.canRead(MyType.class, MediaType.ALL));
+		assertThat(converter.canRead(MyType.class, MediaType.ALL)).isFalse();
 	}
 
 	@Test

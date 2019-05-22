@@ -29,7 +29,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -60,7 +59,7 @@ public class StandardServletAsyncWebRequestTests {
 
 	@Test
 	public void isAsyncStarted() throws Exception {
-		assertFalse(this.asyncRequest.isAsyncStarted());
+		assertThat(this.asyncRequest.isAsyncStarted()).isFalse();
 		this.asyncRequest.startAsync();
 		assertThat(this.asyncRequest.isAsyncStarted()).isTrue();
 	}

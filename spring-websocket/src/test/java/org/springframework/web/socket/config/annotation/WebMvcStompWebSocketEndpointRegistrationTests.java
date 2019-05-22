@@ -41,7 +41,6 @@ import org.springframework.web.socket.sockjs.transport.handler.WebSocketTranspor
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -125,7 +124,7 @@ public class WebMvcStompWebSocketEndpointRegistrationTests {
 		assertNotNull(requestHandler.getSockJsService());
 		DefaultSockJsService sockJsService = (DefaultSockJsService)requestHandler.getSockJsService();
 		assertThat(sockJsService.getAllowedOrigins().contains(origin)).isTrue();
-		assertFalse(sockJsService.shouldSuppressCors());
+		assertThat(sockJsService.shouldSuppressCors()).isFalse();
 
 		registration =
 				new WebMvcStompWebSocketEndpointRegistration(new String[] {"/foo"}, this.handler, this.scheduler);
@@ -136,7 +135,7 @@ public class WebMvcStompWebSocketEndpointRegistrationTests {
 		assertNotNull(requestHandler.getSockJsService());
 		sockJsService = (DefaultSockJsService)requestHandler.getSockJsService();
 		assertThat(sockJsService.getAllowedOrigins().contains(origin)).isTrue();
-		assertFalse(sockJsService.shouldSuppressCors());
+		assertThat(sockJsService.shouldSuppressCors()).isFalse();
 	}
 
 	@Test  // SPR-12283

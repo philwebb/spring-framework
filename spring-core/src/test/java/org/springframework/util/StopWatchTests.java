@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -40,7 +39,7 @@ public class StopWatchTests {
 		String name1 = "Task 1";
 		String name2 = "Task 2";
 
-		assertFalse(sw.isRunning());
+		assertThat(sw.isRunning()).isFalse();
 		sw.start(name1);
 		Thread.sleep(int1);
 		assertThat(sw.isRunning()).isTrue();
@@ -89,7 +88,7 @@ public class StopWatchTests {
 		String name1 = "Task 1";
 		String name2 = "Task 2";
 
-		assertFalse(sw.isRunning());
+		assertThat(sw.isRunning()).isFalse();
 		sw.start(name1);
 		Thread.sleep(int1);
 		assertThat(sw.isRunning()).isTrue();
@@ -116,8 +115,8 @@ public class StopWatchTests {
 		assertThat(pp.contains("kept")).isTrue();
 
 		String toString = sw.toString();
-		assertFalse(toString.contains(name1));
-		assertFalse(toString.contains(name2));
+		assertThat(toString.contains(name1)).isFalse();
+		assertThat(toString.contains(name2)).isFalse();
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
 				sw::getTaskInfo);

@@ -43,7 +43,6 @@ import org.springframework.web.servlet.View;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -87,7 +86,7 @@ public class PathVariableMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 		assertThat(resolver.supportsParameter(paramNamedString)).as("Parameter with @PathVariable annotation").isTrue();
-		assertFalse("Parameter without @PathVariable annotation", resolver.supportsParameter(paramString));
+		assertThat(resolver.supportsParameter(paramString)).as("Parameter without @PathVariable annotation").isFalse();
 	}
 
 	@Test

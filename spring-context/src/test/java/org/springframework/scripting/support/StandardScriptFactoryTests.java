@@ -28,7 +28,6 @@ import org.springframework.scripting.Messenger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * {@link StandardScriptFactory} (lang:std) tests for JavaScript.
@@ -43,7 +42,7 @@ public class StandardScriptFactoryTests {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("jsr223-with-xsd.xml", getClass());
 		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("messengerWithInterface")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("messengerWithInterface");
-		assertFalse(AopUtils.isAopProxy(messenger));
+		assertThat(AopUtils.isAopProxy(messenger)).isFalse();
 		assertEquals("Hello World!", messenger.getMessage());
 	}
 
@@ -63,7 +62,7 @@ public class StandardScriptFactoryTests {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("jsr223-with-xsd.xml", getClass());
 		assertThat(Arrays.asList(ctx.getBeanNamesForType(Messenger.class)).contains("inlineMessengerWithInterface")).isTrue();
 		Messenger messenger = (Messenger) ctx.getBean("inlineMessengerWithInterface");
-		assertFalse(AopUtils.isAopProxy(messenger));
+		assertThat(AopUtils.isAopProxy(messenger)).isFalse();
 		assertEquals("Hello World!", messenger.getMessage());
 	}
 

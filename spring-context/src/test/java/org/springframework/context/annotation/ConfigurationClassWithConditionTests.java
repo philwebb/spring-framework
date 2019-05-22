@@ -35,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test for {@link Conditional} beans.
@@ -52,8 +51,8 @@ public class ConfigurationClassWithConditionTests {
 		ctx.register(BeanOneConfiguration.class, BeanTwoConfiguration.class);
 		ctx.refresh();
 		assertThat(ctx.containsBean("bean1")).isTrue();
-		assertFalse(ctx.containsBean("bean2"));
-		assertFalse(ctx.containsBean("configurationClassWithConditionTests.BeanTwoConfiguration"));
+		assertThat(ctx.containsBean("bean2")).isFalse();
+		assertThat(ctx.containsBean("configurationClassWithConditionTests.BeanTwoConfiguration")).isFalse();
 	}
 
 	@Test
@@ -61,7 +60,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(BeanTwoConfiguration.class);
 		ctx.refresh();
-		assertFalse(ctx.containsBean("bean1"));
+		assertThat(ctx.containsBean("bean1")).isFalse();
 		assertThat(ctx.containsBean("bean2")).isTrue();
 		assertThat(ctx.containsBean("configurationClassWithConditionTests.BeanTwoConfiguration")).isTrue();
 	}
@@ -80,8 +79,8 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(BeanThreeConfiguration.class);
 		ctx.refresh();
-		assertFalse(ctx.containsBean("bean1"));
-		assertFalse(ctx.containsBean("bean3"));
+		assertThat(ctx.containsBean("bean1")).isFalse();
+		assertThat(ctx.containsBean("bean3")).isFalse();
 	}
 
 	@Test
@@ -105,7 +104,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(NonConfigurationClass.class);
 		ctx.refresh();
-		assertFalse(ctx.containsBean("bean1"));
+		assertThat(ctx.containsBean("bean1")).isFalse();
 	}
 
 	@Test
@@ -113,7 +112,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.registerBeanDefinition("config", new RootBeanDefinition(NonConfigurationClass.class.getName()));
 		ctx.refresh();
-		assertFalse(ctx.containsBean("bean1"));
+		assertThat(ctx.containsBean("bean1")).isFalse();
 	}
 
 	@Test
@@ -121,7 +120,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ConditionOnMethodConfiguration.class);
 		ctx.refresh();
-		assertFalse(ctx.containsBean("bean1"));
+		assertThat(ctx.containsBean("bean1")).isFalse();
 	}
 
 	@Test
@@ -129,7 +128,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.registerBeanDefinition("config", new RootBeanDefinition(ConditionOnMethodConfiguration.class.getName()));
 		ctx.refresh();
-		assertFalse(ctx.containsBean("bean1"));
+		assertThat(ctx.containsBean("bean1")).isFalse();
 	}
 
 	@Test

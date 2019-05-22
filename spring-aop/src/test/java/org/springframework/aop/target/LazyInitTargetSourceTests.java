@@ -27,7 +27,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -51,7 +50,7 @@ public class LazyInitTargetSourceTests {
 		bf.preInstantiateSingletons();
 
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
-		assertFalse(bf.containsSingleton("target"));
+		assertThat(bf.containsSingleton("target")).isFalse();
 		assertEquals(10, tb.getAge());
 		assertThat(bf.containsSingleton("target")).isTrue();
 	}
@@ -63,7 +62,7 @@ public class LazyInitTargetSourceTests {
 		bf.preInstantiateSingletons();
 
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
-		assertFalse(bf.containsSingleton("target"));
+		assertThat(bf.containsSingleton("target")).isFalse();
 		assertEquals("Rob Harrop", tb.getName());
 		assertThat(bf.containsSingleton("target")).isTrue();
 	}
@@ -75,12 +74,12 @@ public class LazyInitTargetSourceTests {
 		bf.preInstantiateSingletons();
 
 		Set<?> set1 = (Set<?>) bf.getBean("proxy1");
-		assertFalse(bf.containsSingleton("target1"));
+		assertThat(bf.containsSingleton("target1")).isFalse();
 		assertThat(set1.contains("10")).isTrue();
 		assertThat(bf.containsSingleton("target1")).isTrue();
 
 		Set<?> set2 = (Set<?>) bf.getBean("proxy2");
-		assertFalse(bf.containsSingleton("target2"));
+		assertThat(bf.containsSingleton("target2")).isFalse();
 		assertThat(set2.contains("20")).isTrue();
 		assertThat(bf.containsSingleton("target2")).isTrue();
 	}

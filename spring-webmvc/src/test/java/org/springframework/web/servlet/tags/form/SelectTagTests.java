@@ -51,7 +51,6 @@ import org.springframework.web.servlet.tags.TransformTag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -276,8 +275,8 @@ public class SelectTagTests extends AbstractFormTagTests {
 		String output = getOutput();
 		assertThat(output.startsWith("<select ")).isTrue();
 		assertThat(output.endsWith("</select>")).isTrue();
-		assertFalse(output.contains("selected=\"selected\""));
-		assertFalse(output.contains("multiple=\"multiple\""));
+		assertThat(output.contains("selected=\"selected\"")).isFalse();
+		assertThat(output.contains("multiple=\"multiple\"")).isFalse();
 	}
 
 	@Test
@@ -335,7 +334,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		String output = getOutput();
 		assertThat(output.startsWith("<select ")).isTrue();
 		assertThat(output.endsWith("</select>")).isTrue();
-		assertFalse(output.contains("selected=\"selected\""));
+		assertThat(output.contains("selected=\"selected\"")).isFalse();
 	}
 
 	@Test

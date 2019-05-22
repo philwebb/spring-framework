@@ -26,7 +26,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Andy Clement
@@ -46,9 +45,9 @@ public class LiteralExpressionTests {
 		assertThat(lEx.getValue(ctx, new Rooty())).isInstanceOf(String.class).isEqualTo("somevalue");
 		assertThat(lEx.getValue(ctx, new Rooty(),String.class)).isInstanceOf(String.class).isEqualTo("somevalue");
 		assertEquals("somevalue", lEx.getExpressionString());
-		assertFalse(lEx.isWritable(new StandardEvaluationContext()));
-		assertFalse(lEx.isWritable(new Rooty()));
-		assertFalse(lEx.isWritable(new StandardEvaluationContext(), new Rooty()));
+		assertThat(lEx.isWritable(new StandardEvaluationContext())).isFalse();
+		assertThat(lEx.isWritable(new Rooty())).isFalse();
+		assertThat(lEx.isWritable(new StandardEvaluationContext(), new Rooty())).isFalse();
 	}
 
 	static class Rooty {}

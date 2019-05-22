@@ -52,7 +52,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
@@ -439,7 +438,7 @@ public class RestTemplateTests {
 		given(converter.read(String.class, response)).willReturn(null);
 
 		ResponseEntity<String> result = template.postForEntity("https://example.com", null, String.class);
-		assertFalse("Invalid POST result", result.hasBody());
+		assertThat(result.hasBody()).as("Invalid POST result").isFalse();
 		assertEquals("Invalid Content-Type", MediaType.TEXT_PLAIN, result.getHeaders().getContentType());
 		assertEquals("Invalid content length", 0, requestHeaders.getContentLength());
 		assertEquals("Invalid status code", HttpStatus.OK, result.getStatusCode());

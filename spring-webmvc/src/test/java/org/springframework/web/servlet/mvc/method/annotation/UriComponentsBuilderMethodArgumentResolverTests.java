@@ -30,7 +30,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -69,7 +68,7 @@ public class UriComponentsBuilderMethodArgumentResolverTests {
 	public void supportsParameter() throws Exception {
 		assertThat(this.resolver.supportsParameter(this.builderParam)).isTrue();
 		assertThat(this.resolver.supportsParameter(this.servletBuilderParam)).isTrue();
-		assertFalse(this.resolver.supportsParameter(this.intParam));
+		assertThat(this.resolver.supportsParameter(this.intParam)).isFalse();
 	}
 
 	@Test

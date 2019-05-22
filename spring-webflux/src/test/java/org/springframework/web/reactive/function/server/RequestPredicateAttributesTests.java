@@ -28,7 +28,6 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -65,10 +64,10 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new AddAttributePredicate(true, "predicate", "baz").negate();
 
 		boolean result = predicate.test(this.request);
-		assertFalse(result);
+		assertThat(result).isFalse();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertFalse(this.request.attributes().containsKey("baz"));
+		assertThat(this.request.attributes().containsKey("baz")).isFalse();
 	}
 
 	@Test
@@ -92,11 +91,11 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.AndRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertFalse(result);
+		assertThat(result).isFalse();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertFalse(this.request.attributes().containsKey("left"));
-		assertFalse(this.request.attributes().containsKey("right"));
+		assertThat(this.request.attributes().containsKey("left")).isFalse();
+		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
 
 	@Test
@@ -106,11 +105,11 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.AndRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertFalse(result);
+		assertThat(result).isFalse();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertFalse(this.request.attributes().containsKey("left"));
-		assertFalse(this.request.attributes().containsKey("right"));
+		assertThat(this.request.attributes().containsKey("left")).isFalse();
+		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
 
 	@Test
@@ -120,11 +119,11 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.AndRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertFalse(result);
+		assertThat(result).isFalse();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertFalse(this.request.attributes().containsKey("left"));
-		assertFalse(this.request.attributes().containsKey("right"));
+		assertThat(this.request.attributes().containsKey("left")).isFalse();
+		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
 
 	@Test
@@ -138,7 +137,7 @@ public class RequestPredicateAttributesTests {
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
 		assertEquals("baz", this.request.attributes().get("left"));
-		assertFalse(this.request.attributes().containsKey("right"));
+		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
 
 	@Test
@@ -152,7 +151,7 @@ public class RequestPredicateAttributesTests {
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
 		assertEquals("baz", this.request.attributes().get("left"));
-		assertFalse(this.request.attributes().containsKey("right"));
+		assertThat(this.request.attributes().containsKey("right")).isFalse();
 	}
 
 	@Test
@@ -165,7 +164,7 @@ public class RequestPredicateAttributesTests {
 		assertThat(result).isTrue();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertFalse(this.request.attributes().containsKey("left"));
+		assertThat(this.request.attributes().containsKey("left")).isFalse();
 		assertEquals("qux", this.request.attributes().get("right"));
 	}
 
@@ -176,11 +175,11 @@ public class RequestPredicateAttributesTests {
 		RequestPredicate predicate = new RequestPredicates.OrRequestPredicate(left, right);
 
 		boolean result = predicate.test(this.request);
-		assertFalse(result);
+		assertThat(result).isFalse();
 
 		assertEquals("bar", this.request.attributes().get("exchange"));
-		assertFalse(this.request.attributes().containsKey("baz"));
-		assertFalse(this.request.attributes().containsKey("quux"));
+		assertThat(this.request.attributes().containsKey("baz")).isFalse();
+		assertThat(this.request.attributes().containsKey("quux")).isFalse();
 	}
 
 

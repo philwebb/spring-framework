@@ -27,7 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -49,7 +48,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		request = MockServerRequest.builder().method(HttpMethod.POST).build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -62,7 +61,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		request = MockServerRequest.builder().method(HttpMethod.POST).build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -106,7 +105,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		request = MockServerRequest.builder().build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -117,7 +116,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		request = MockServerRequest.builder().build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -143,7 +142,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		request = MockServerRequest.builder().build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -154,7 +153,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		request = MockServerRequest.builder().build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -165,7 +164,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		request = MockServerRequest.builder().header("Accept", MediaType.TEXT_XML_VALUE).build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -181,11 +180,11 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.pathExtension("bar");
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 
 		uri = URI.create("http://localhost/file.foo");
 		request = MockServerRequest.builder().uri(uri).build();
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 	@Test
@@ -195,7 +194,7 @@ public class RequestPredicatesTests {
 		assertThat(predicate.test(request)).isTrue();
 
 		predicate = RequestPredicates.queryParam("foo", s -> s.equals("baz"));
-		assertFalse(predicate.test(request));
+		assertThat(predicate.test(request)).isFalse();
 	}
 
 }

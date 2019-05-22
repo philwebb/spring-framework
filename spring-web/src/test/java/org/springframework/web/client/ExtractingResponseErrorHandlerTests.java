@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -70,7 +69,7 @@ public class ExtractingResponseErrorHandlerTests {
 		assertThat(this.errorHandler.hasError(this.response)).isTrue();
 
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.OK.value());
-		assertFalse(this.errorHandler.hasError(this.response));
+		assertThat(this.errorHandler.hasError(this.response)).isFalse();
 	}
 
 	@Test
@@ -82,10 +81,10 @@ public class ExtractingResponseErrorHandlerTests {
 		assertThat(this.errorHandler.hasError(this.response)).isTrue();
 
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
-		assertFalse(this.errorHandler.hasError(this.response));
+		assertThat(this.errorHandler.hasError(this.response)).isFalse();
 
 		given(this.response.getRawStatusCode()).willReturn(HttpStatus.OK.value());
-		assertFalse(this.errorHandler.hasError(this.response));
+		assertThat(this.errorHandler.hasError(this.response)).isFalse();
 	}
 
 	@Test

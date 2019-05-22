@@ -72,7 +72,6 @@ import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -444,9 +443,9 @@ public class RequestResponseBodyMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
 		String content = this.servletResponse.getContentAsString();
-		assertFalse(content.contains("\"withView1\":\"with\""));
+		assertThat(content.contains("\"withView1\":\"with\"")).isFalse();
 		assertThat(content.contains("\"withView2\":\"with\"")).isTrue();
-		assertFalse(content.contains("\"withoutView\":\"without\""));
+		assertThat(content.contains("\"withoutView\":\"without\"")).isFalse();
 	}
 
 	@Test
@@ -465,9 +464,9 @@ public class RequestResponseBodyMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
 		String content = this.servletResponse.getContentAsString();
-		assertFalse(content.contains("\"withView1\":\"with\""));
+		assertThat(content.contains("\"withView1\":\"with\"")).isFalse();
 		assertThat(content.contains("\"withView2\":\"with\"")).isTrue();
-		assertFalse(content.contains("\"withoutView\":\"without\""));
+		assertThat(content.contains("\"withoutView\":\"without\"")).isFalse();
 	}
 
 	@Test  // SPR-12149
@@ -486,9 +485,9 @@ public class RequestResponseBodyMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
 		String content = this.servletResponse.getContentAsString();
-		assertFalse(content.contains("<withView1>with</withView1>"));
+		assertThat(content.contains("<withView1>with</withView1>")).isFalse();
 		assertThat(content.contains("<withView2>with</withView2>")).isTrue();
-		assertFalse(content.contains("<withoutView>without</withoutView>"));
+		assertThat(content.contains("<withoutView>without</withoutView>")).isFalse();
 	}
 
 	@Test  // SPR-12149
@@ -507,9 +506,9 @@ public class RequestResponseBodyMethodProcessorTests {
 		processor.handleReturnValue(returnValue, methodReturnType, this.container, this.request);
 
 		String content = this.servletResponse.getContentAsString();
-		assertFalse(content.contains("<withView1>with</withView1>"));
+		assertThat(content.contains("<withView1>with</withView1>")).isFalse();
 		assertThat(content.contains("<withView2>with</withView2>")).isTrue();
-		assertFalse(content.contains("<withoutView>without</withoutView>"));
+		assertThat(content.contains("<withoutView>without</withoutView>")).isFalse();
 	}
 
 	@Test  // SPR-12501

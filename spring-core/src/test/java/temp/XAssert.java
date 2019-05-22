@@ -29,14 +29,6 @@ import static org.assertj.core.api.Assertions.within;
  */
 public class XAssert {
 
-	public static void assertFalse(String message, boolean condition) {
-		assertThat(condition).as(message).isFalse();
-	}
-
-	public static void assertFalse(boolean condition) {
-		assertThat(condition).isFalse();
-	}
-
 	public static void assertEquals(String message, Object expected, Object actual) {
 		assertThat(actual).as(message).isEqualTo(expected);
 	}

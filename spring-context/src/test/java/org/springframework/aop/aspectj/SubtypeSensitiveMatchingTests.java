@@ -25,7 +25,6 @@ import org.springframework.aop.framework.Advised;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Adrian Colyer
@@ -58,8 +57,8 @@ public class SubtypeSensitiveMatchingTests {
 
 	@Test
 	public void testBeansThatDoNotMatchBasedSolelyOnRuntimeTypeAreNotProxied() {
-		assertFalse("bean with non-serializable type should not be proxied",
-				this.nonSerializableBean instanceof Advised);
+		boolean condition = this.nonSerializableBean instanceof Advised;
+		assertThat(condition).as("bean with non-serializable type should not be proxied").isFalse();
 	}
 
 	@Test

@@ -44,7 +44,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -90,7 +89,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 	@Test
 	public void supportsParameter() throws Exception {
 		assertThat(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 0))).isTrue();
-		assertFalse(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, -1)));
+		assertThat(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, -1))).isFalse();
 	}
 
 	@Test
@@ -134,7 +133,7 @@ public abstract class AbstractRequestAttributesArgumentResolverTests {
 		Object actual = testResolveArgument(param, factory);
 		assertNotNull(actual);
 		assertEquals(Optional.class, actual.getClass());
-		assertFalse(((Optional<?>) actual).isPresent());
+		assertThat(((Optional<?>) actual).isPresent()).isFalse();
 
 		Foo foo = new Foo();
 		this.webRequest.setAttribute("foo", foo, getScope());

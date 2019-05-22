@@ -42,7 +42,6 @@ import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.server.WebSession;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -80,7 +79,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 	@Test
 	public void supportsParameter() {
 		assertThat(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 0))).isTrue();
-		assertFalse(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 4)));
+		assertThat(this.resolver.supportsParameter(new MethodParameter(this.handleMethod, 4))).isFalse();
 	}
 
 	@Test
@@ -124,7 +123,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 				.resolveArgument(param, new BindingContext(), this.exchange).block();
 
 		assertNotNull(actual);
-		assertFalse(actual.isPresent());
+		assertThat(actual.isPresent()).isFalse();
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultFormattingConversionService());

@@ -27,7 +27,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -51,7 +50,7 @@ public class AspectJPointcutAdvisorTests {
 				1, "someBean");
 
 		assertSame(Pointcut.TRUE, ajpa.getAspectMetadata().getPerClausePointcut());
-		assertFalse(ajpa.isPerInstance());
+		assertThat(ajpa.isPerInstance()).isFalse();
 	}
 
 	@Test
@@ -70,8 +69,8 @@ public class AspectJPointcutAdvisorTests {
 		assertThat(ajpa.isPerInstance()).isTrue();
 
 		assertThat(ajpa.getAspectMetadata().getPerClausePointcut().getClassFilter().matches(TestBean.class)).isTrue();
-		assertFalse(ajpa.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(
-				TestBean.class.getMethod("getAge"), TestBean.class));
+		assertThat(ajpa.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(
+				TestBean.class.getMethod("getAge"), TestBean.class)).isFalse();
 
 		assertThat(ajpa.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(
 				TestBean.class.getMethod("getSpouse"), TestBean.class)).isTrue();

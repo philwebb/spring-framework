@@ -38,7 +38,6 @@ import org.springframework.web.server.ServerWebInputException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture with {@link CookieValueMethodArgumentResolver}.
@@ -83,7 +82,7 @@ public class CookieValueMethodArgumentResolverTests {
 
 	@Test
 	public void doesNotSupportParameter() {
-		assertFalse(this.resolver.supportsParameter(this.stringParameter));
+		assertThat(this.resolver.supportsParameter(this.stringParameter)).isFalse();
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.cookieMonoParameter))
 			.withMessageStartingWith("CookieValueMethodArgumentResolver does not support reactive type wrapper");

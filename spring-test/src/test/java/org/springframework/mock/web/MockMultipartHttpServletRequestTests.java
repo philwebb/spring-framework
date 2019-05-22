@@ -34,7 +34,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -45,7 +44,7 @@ public class MockMultipartHttpServletRequestTests {
 	@Test
 	public void mockMultipartHttpServletRequestWithByteArray() throws IOException {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-		assertFalse(request.getFileNames().hasNext());
+		assertThat(request.getFileNames().hasNext()).isFalse();
 		assertNull(request.getFile("file1"));
 		assertNull(request.getFile("file2"));
 		assertThat(request.getFileMap().isEmpty()).isTrue();

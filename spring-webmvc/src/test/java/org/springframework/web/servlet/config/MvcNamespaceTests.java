@@ -147,7 +147,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -216,9 +215,9 @@ public class MvcNamespaceTests {
 		for (HttpMessageConverter<?> converter : converters) {
 			if (converter instanceof AbstractJackson2HttpMessageConverter) {
 				ObjectMapper objectMapper = ((AbstractJackson2HttpMessageConverter) converter).getObjectMapper();
-				assertFalse(objectMapper.getDeserializationConfig().isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION));
-				assertFalse(objectMapper.getSerializationConfig().isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION));
-				assertFalse(objectMapper.getDeserializationConfig().isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+				assertThat(objectMapper.getDeserializationConfig().isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION)).isFalse();
+				assertThat(objectMapper.getSerializationConfig().isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION)).isFalse();
+				assertThat(objectMapper.getDeserializationConfig().isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 				if (converter instanceof MappingJackson2XmlHttpMessageConverter) {
 					assertEquals(XmlMapper.class, objectMapper.getClass());
 				}
@@ -301,7 +300,7 @@ public class MvcNamespaceTests {
 
 		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
-		assertFalse(mapping.getUrlPathHelper().shouldRemoveSemicolonContent());
+		assertThat(mapping.getUrlPathHelper().shouldRemoveSemicolonContent()).isFalse();
 
 		RequestMappingHandlerAdapter adapter = appContext.getBean(RequestMappingHandlerAdapter.class);
 		assertNotNull(adapter);
@@ -314,7 +313,7 @@ public class MvcNamespaceTests {
 		adapter.handle(request, response, handlerMethod);
 
 		assertThat(appContext.getBean(TestValidator.class).validatorInvoked).isTrue();
-		assertFalse(handler.recordedValidationError);
+		assertThat(handler.recordedValidationError).isFalse();
 	}
 
 	@Test
@@ -852,7 +851,7 @@ public class MvcNamespaceTests {
 		assertNotNull(groovyMarkupConfigurer);
 		assertEquals("/test", groovyMarkupConfigurer.getResourceLoaderPath());
 		assertThat(groovyMarkupConfigurer.isAutoIndent()).isTrue();
-		assertFalse(groovyMarkupConfigurer.isCacheTemplates());
+		assertThat(groovyMarkupConfigurer.isCacheTemplates()).isFalse();
 
 		ScriptTemplateConfigurer scriptTemplateConfigurer = appContext.getBean(ScriptTemplateConfigurer.class);
 		assertNotNull(scriptTemplateConfigurer);
@@ -860,7 +859,7 @@ public class MvcNamespaceTests {
 		assertEquals(MediaType.TEXT_PLAIN_VALUE, scriptTemplateConfigurer.getContentType());
 		assertEquals(StandardCharsets.ISO_8859_1, scriptTemplateConfigurer.getCharset());
 		assertEquals("classpath:", scriptTemplateConfigurer.getResourceLoaderPath());
-		assertFalse(scriptTemplateConfigurer.isSharedEngine());
+		assertThat((boolean) scriptTemplateConfigurer.isSharedEngine()).isFalse();
 		String[] scripts = { "org/springframework/web/servlet/view/script/nashorn/render.js" };
 		accessor = new DirectFieldAccessor(scriptTemplateConfigurer);
 		assertArrayEquals(scripts, (String[]) accessor.getPropertyValue("scripts"));
@@ -966,7 +965,7 @@ public class MvcNamespaceTests {
 			assertArrayEquals(new String[]{"GET", "PUT"}, config.getAllowedMethods().toArray());
 			assertArrayEquals(new String[]{"header1", "header2", "header3"}, config.getAllowedHeaders().toArray());
 			assertArrayEquals(new String[]{"header1", "header2"}, config.getExposedHeaders().toArray());
-			assertFalse(config.getAllowCredentials());
+			assertThat((boolean) config.getAllowCredentials()).isFalse();
 			assertEquals(Long.valueOf(123), config.getMaxAge());
 			config = configs.get("/resources/**");
 			assertArrayEquals(new String[]{"https://domain1.com"}, config.getAllowedOrigins().toArray());

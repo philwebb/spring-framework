@@ -24,7 +24,6 @@ import org.springframework.cache.support.NoOpCacheManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -61,7 +60,7 @@ public class NoOpCacheManagerTests {
 	@Test
 	public void testCacheName() throws Exception {
 		String name = "bucket";
-		assertFalse(this.manager.getCacheNames().contains(name));
+		assertThat(this.manager.getCacheNames().contains(name)).isFalse();
 		this.manager.getCache(name);
 		assertThat(this.manager.getCacheNames().contains(name)).isTrue();
 	}

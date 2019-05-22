@@ -65,7 +65,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 
 /**
@@ -118,7 +117,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		InstantiationModelAwarePointcutAdvisorImpl imapa = (InstantiationModelAwarePointcutAdvisorImpl) advised.getAdvisors()[3];
 		LazySingletonAspectInstanceFactoryDecorator maaif =
 				(LazySingletonAspectInstanceFactoryDecorator) imapa.getAspectInstanceFactory();
-		assertFalse(maaif.isMaterialized());
+		assertThat(maaif.isMaterialized()).isFalse();
 
 		// Check that the perclause pointcut is valid
 		assertThat(maaif.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
@@ -206,7 +205,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		InstantiationModelAwarePointcutAdvisorImpl imapa = (InstantiationModelAwarePointcutAdvisorImpl) advised.getAdvisors()[2];
 		LazySingletonAspectInstanceFactoryDecorator maaif =
 				(LazySingletonAspectInstanceFactoryDecorator) imapa.getAspectInstanceFactory();
-		assertFalse(maaif.isMaterialized());
+		assertThat(maaif.isMaterialized()).isFalse();
 
 		// Check that the perclause pointcut is valid
 		assertThat(maaif.getAspectMetadata().getPerClausePointcut().getMethodMatcher().matches(TestBean.class.getMethod("getSpouse"), null)).isTrue();
@@ -337,7 +336,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@Test
 	public void testIntroductionOnTargetNotImplementingInterface() {
 		NotLockable notLockableTarget = new NotLockable();
-		assertFalse(notLockableTarget instanceof Lockable);
+		boolean condition2 = notLockableTarget instanceof Lockable;
+		assertThat(condition2).isFalse();
 		NotLockable notLockable1 = (NotLockable) createProxy(notLockableTarget,
 				getFixture().getAdvisors(
 						new SingletonMetadataAwareAspectInstanceFactory(new MakeLockable(), "someBean")),
@@ -345,7 +345,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		boolean condition1 = notLockable1 instanceof Lockable;
 		assertThat(condition1).isTrue();
 		Lockable lockable = (Lockable) notLockable1;
-		assertFalse(lockable.locked());
+		assertThat(lockable.locked()).isFalse();
 		lockable.lock();
 		assertThat(lockable.locked()).isTrue();
 
@@ -357,7 +357,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		boolean condition = notLockable2 instanceof Lockable;
 		assertThat(condition).isTrue();
 		Lockable lockable2 = (Lockable) notLockable2;
-		assertFalse(lockable2.locked());
+		assertThat(lockable2.locked()).isFalse();
 		notLockable2.setIntValue(1);
 		lockable2.lock();
 		assertThatIllegalStateException().isThrownBy(() ->
@@ -404,7 +404,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 						List.class
 				),
 				List.class);
-		assertFalse("Type pattern must have excluded mixin", proxy instanceof Lockable);
+		boolean condition = proxy instanceof Lockable;
+		assertThat(condition).as("Type pattern must have excluded mixin").isFalse();
 	}
 
 	@Test
@@ -434,17 +435,17 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		Modifiable modifiable = (Modifiable) createProxy(target, advisors, ITestBean.class);
 		assertThat(modifiable).isInstanceOf(Modifiable.class);
 		Lockable lockable = (Lockable) modifiable;
-		assertFalse(lockable.locked());
+		assertThat(lockable.locked()).isFalse();
 
 		ITestBean itb = (ITestBean) modifiable;
-		assertFalse(modifiable.isModified());
+		assertThat(modifiable.isModified()).isFalse();
 		int oldAge = itb.getAge();
 		itb.setAge(oldAge + 1);
 		assertThat(modifiable.isModified()).isTrue();
 		modifiable.acceptChanges();
-		assertFalse(modifiable.isModified());
+		assertThat(modifiable.isModified()).isFalse();
 		itb.setAge(itb.getAge());
-		assertFalse("Setting same value does not modify", modifiable.isModified());
+		assertThat(modifiable.isModified()).as("Setting same value does not modify").isFalse();
 		itb.setName("And now for something completely different");
 		assertThat(modifiable.isModified()).isTrue();
 

@@ -45,7 +45,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -136,10 +135,10 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 		initializer.onStartup(servletContext);
 
 		MockServletRegistration servletRegistration = servletRegistrations.get(SERVLET_NAME);
-		assertFalse(servletRegistration.isAsyncSupported());
+		assertThat(servletRegistration.isAsyncSupported()).isFalse();
 
 		for (MockFilterRegistration filterRegistration : filterRegistrations.values()) {
-			assertFalse(filterRegistration.isAsyncSupported());
+			assertThat(filterRegistration.isAsyncSupported()).isFalse();
 			assertEquals(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE),
 					filterRegistration.getMappings().get(SERVLET_NAME));
 		}

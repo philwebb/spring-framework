@@ -29,7 +29,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -97,7 +96,7 @@ public class AopProxyUtilsTests {
 
 		// Can't assume ordering for others, so use a list
 		List<?> l = Arrays.asList(completedInterfaces);
-		assertFalse(l.contains(Advised.class));
+		assertThat(l.contains(Advised.class)).isFalse();
 		assertThat(l.contains(ITestBean.class)).isTrue();
 		assertThat(l.contains(Comparable.class)).isTrue();
 	}

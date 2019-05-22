@@ -49,9 +49,9 @@ import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
@@ -128,7 +128,7 @@ public class RequestMappingHandlerMappingTests {
 				.findFirst()
 				.orElseThrow(() -> new AssertionError("No /post"));
 
-		assertFalse(info.getConsumesCondition().isBodyRequired());
+		assertThat(info.getConsumesCondition().isBodyRequired()).isFalse();
 	}
 
 	@Test

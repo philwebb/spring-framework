@@ -62,7 +62,6 @@ import org.springframework.web.socket.sockjs.transport.handler.XhrStreamingTrans
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -100,7 +99,7 @@ public class HandlersBeanDefinitionParserTests {
 				assertNotNull(handshakeHandler);
 				boolean condition1 = handshakeHandler instanceof DefaultHandshakeHandler;
 				assertThat(condition1).isTrue();
-				assertFalse(handler.getHandshakeInterceptors().isEmpty());
+				assertThat(handler.getHandshakeInterceptors().isEmpty()).isFalse();
 				boolean condition = handler.getHandshakeInterceptors().get(0) instanceof OriginHandshakeInterceptor;
 				assertThat(condition).isTrue();
 			}
@@ -113,7 +112,7 @@ public class HandlersBeanDefinitionParserTests {
 				assertNotNull(handshakeHandler);
 				boolean condition1 = handshakeHandler instanceof DefaultHandshakeHandler;
 				assertThat(condition1).isTrue();
-				assertFalse(handler.getHandshakeInterceptors().isEmpty());
+				assertThat(handler.getHandshakeInterceptors().isEmpty()).isFalse();
 				boolean condition = handler.getHandshakeInterceptors().get(0) instanceof OriginHandshakeInterceptor;
 				assertThat(condition).isTrue();
 			}
@@ -180,7 +179,7 @@ public class HandlersBeanDefinitionParserTests {
 		assertThat(sockJsService).isInstanceOf(DefaultSockJsService.class);
 		DefaultSockJsService defaultSockJsService = (DefaultSockJsService) sockJsService;
 		assertThat(defaultSockJsService.getTaskScheduler()).isInstanceOf(ThreadPoolTaskScheduler.class);
-		assertFalse(defaultSockJsService.shouldSuppressCors());
+		assertThat(defaultSockJsService.shouldSuppressCors()).isFalse();
 
 		Map<TransportType, TransportHandler> handlerMap = defaultSockJsService.getTransportHandlers();
 		assertThat(handlerMap.values()).extracting("class")
@@ -221,8 +220,8 @@ public class HandlersBeanDefinitionParserTests {
 				.containsExactlyInAnyOrder(XhrPollingTransportHandler.class, XhrStreamingTransportHandler.class);
 
 		assertEquals("testSockJsService", transportService.getName());
-		assertFalse(transportService.isWebSocketEnabled());
-		assertFalse(transportService.isSessionCookieNeeded());
+		assertThat(transportService.isWebSocketEnabled()).isFalse();
+		assertThat(transportService.isSessionCookieNeeded()).isFalse();
 		assertEquals(2048, transportService.getStreamBytesLimit());
 		assertEquals(256, transportService.getDisconnectDelay());
 		assertEquals(1024, transportService.getHttpMessageCacheSize());

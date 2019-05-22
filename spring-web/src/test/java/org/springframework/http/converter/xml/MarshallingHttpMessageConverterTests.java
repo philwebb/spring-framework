@@ -35,7 +35,6 @@ import org.springframework.oxm.UnmarshallingFailureException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -60,8 +59,8 @@ public class MarshallingHttpMessageConverterTests {
 		MarshallingHttpMessageConverter converter = new MarshallingHttpMessageConverter();
 		converter.setUnmarshaller(unmarshaller);
 
-		assertFalse(converter.canRead(Boolean.class, MediaType.TEXT_PLAIN));
-		assertFalse(converter.canRead(Integer.class, MediaType.TEXT_XML));
+		assertThat(converter.canRead(Boolean.class, MediaType.TEXT_PLAIN)).isFalse();
+		assertThat(converter.canRead(Integer.class, MediaType.TEXT_XML)).isFalse();
 		assertThat(converter.canRead(String.class, MediaType.TEXT_XML)).isTrue();
 	}
 
@@ -75,8 +74,8 @@ public class MarshallingHttpMessageConverterTests {
 		MarshallingHttpMessageConverter converter = new MarshallingHttpMessageConverter();
 		converter.setMarshaller(marshaller);
 
-		assertFalse(converter.canWrite(Boolean.class, MediaType.TEXT_PLAIN));
-		assertFalse(converter.canWrite(Integer.class, MediaType.TEXT_XML));
+		assertThat(converter.canWrite(Boolean.class, MediaType.TEXT_PLAIN)).isFalse();
+		assertThat(converter.canWrite(Integer.class, MediaType.TEXT_XML)).isFalse();
 		assertThat(converter.canWrite(String.class, MediaType.TEXT_XML)).isTrue();
 	}
 

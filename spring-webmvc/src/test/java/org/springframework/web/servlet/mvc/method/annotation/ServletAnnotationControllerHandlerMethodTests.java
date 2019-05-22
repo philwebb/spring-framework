@@ -155,7 +155,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -2660,7 +2659,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 			assertNull(testBean);
 			assertNotNull(modelPrinc);
 			assertNotNull(requestPrinc);
-			assertFalse(errors.hasErrors());
+			assertThat(errors.hasErrors()).isFalse();
 			errors.reject("myCode");
 			writer.write("myView");
 		}
@@ -3785,7 +3784,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		public String handle(Optional<DataClass> optionalData, BindingResult result) {
 			if (result.hasErrors()) {
 				assertNotNull(optionalData);
-				assertFalse(optionalData.isPresent());
+				assertThat(optionalData.isPresent()).isFalse();
 				return result.getFieldValue("param1") + "-" + result.getFieldValue("param2") + "-" +
 						result.getFieldValue("param3");
 			}

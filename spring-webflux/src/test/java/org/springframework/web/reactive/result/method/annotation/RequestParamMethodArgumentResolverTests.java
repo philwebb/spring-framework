@@ -41,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestParam;
@@ -85,7 +84,7 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().name("")).arg(Map.class);
-		assertFalse(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isFalse();
 
 		param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
 		assertThat(this.resolver.supportsParameter(param)).isTrue();
@@ -104,7 +103,7 @@ public class RequestParamMethodArgumentResolverTests {
 		this.resolver = new RequestParamMethodArgumentResolver(null, adapterRegistry, false);
 
 		MethodParameter param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
-		assertFalse(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isFalse();
 	}
 
 	@Test

@@ -36,7 +36,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Text fixture with {@link RequestHeaderMapMethodArgumentResolver}.
@@ -81,7 +80,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(paramMap)).as("Map parameter not supported").isTrue();
 		assertThat(resolver.supportsParameter(paramMultiValueMap)).as("MultiValueMap parameter not supported").isTrue();
 		assertThat(resolver.supportsParameter(paramHttpHeaders)).as("HttpHeaders parameter not supported").isTrue();
-		assertFalse("non-@RequestParam map supported", resolver.supportsParameter(paramUnsupported));
+		assertThat(resolver.supportsParameter(paramUnsupported)).as("non-@RequestParam map supported").isFalse();
 	}
 
 	@Test

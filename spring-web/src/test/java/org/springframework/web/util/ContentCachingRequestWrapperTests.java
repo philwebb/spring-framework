@@ -21,10 +21,10 @@ import org.junit.Test;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Brian Clozel
@@ -89,7 +89,7 @@ public class ContentCachingRequestWrapperTests {
 
 		ContentCachingRequestWrapper wrapper = new ContentCachingRequestWrapper(this.request);
 		// getting request parameters will consume the request body
-		assertFalse(wrapper.getParameterMap().isEmpty());
+		assertThat(wrapper.getParameterMap().isEmpty()).isFalse();
 		assertEquals("first=value&second=foo&second=bar", new String(wrapper.getContentAsByteArray()));
 		// SPR-12810 : inputstream body should be consumed
 		assertEquals("", new String(FileCopyUtils.copyToByteArray(wrapper.getInputStream())));

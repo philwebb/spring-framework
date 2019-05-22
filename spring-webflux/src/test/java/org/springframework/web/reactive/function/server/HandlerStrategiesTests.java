@@ -19,7 +19,6 @@ package org.springframework.web.reactive.function.server;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -37,8 +36,8 @@ public class HandlerStrategiesTests {
 	@Test
 	public void withDefaults() {
 		HandlerStrategies strategies = HandlerStrategies.withDefaults();
-		assertFalse(strategies.messageReaders().isEmpty());
-		assertFalse(strategies.messageWriters().isEmpty());
+		assertThat(strategies.messageReaders().isEmpty()).isFalse();
+		assertThat(strategies.messageWriters().isEmpty()).isFalse();
 		assertThat(strategies.viewResolvers().isEmpty()).isTrue();
 	}
 

@@ -24,7 +24,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests for {@link SpringFactoriesLoader}.
@@ -50,7 +49,7 @@ public class SpringFactoriesLoaderTests {
 		List<DummyPackagePrivateFactory> factories =
 				SpringFactoriesLoader.loadFactories(DummyPackagePrivateFactory.class, null);
 		assertEquals(1, factories.size());
-		assertFalse(Modifier.isPublic(factories.get(0).getClass().getModifiers()));
+		assertThat(Modifier.isPublic(factories.get(0).getClass().getModifiers())).isFalse();
 	}
 
 	@Test

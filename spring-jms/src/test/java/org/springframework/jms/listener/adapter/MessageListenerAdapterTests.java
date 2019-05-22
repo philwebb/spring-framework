@@ -40,7 +40,6 @@ import org.springframework.jms.support.converter.SimpleMessageConverter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.any;
@@ -163,7 +162,7 @@ public class MessageListenerAdapterTests {
 		StubMessageListenerAdapter adapter = new StubMessageListenerAdapter();
 		adapter.setDefaultListenerMethod("walnutsRock");
 		adapter.onMessage(textMessage);
-		assertFalse(adapter.wasCalled());
+		assertThat(adapter.wasCalled()).isFalse();
 	}
 
 	@Test

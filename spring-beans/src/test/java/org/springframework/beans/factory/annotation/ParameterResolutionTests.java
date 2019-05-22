@@ -30,7 +30,6 @@ import org.springframework.util.ClassUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.BDDMockito.given;
@@ -89,8 +88,7 @@ public class ParameterResolutionTests {
 		Parameter[] parameters = notAutowirableConstructor.getParameters();
 		for (int parameterIndex = 0; parameterIndex < parameters.length; parameterIndex++) {
 			Parameter parameter = parameters[parameterIndex];
-			assertFalse("Parameter " + parameter + " must not be autowirable",
-					ParameterResolutionDelegate.isAutowirable(parameter, parameterIndex));
+			assertThat(ParameterResolutionDelegate.isAutowirable(parameter, parameterIndex)).as("Parameter " + parameter + " must not be autowirable").isFalse();
 		}
 	}
 

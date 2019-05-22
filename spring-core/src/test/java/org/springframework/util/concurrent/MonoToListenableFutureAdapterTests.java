@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link MonoToListenableFutureAdapter}.
@@ -65,8 +64,8 @@ public class MonoToListenableFutureAdapterTests {
 	public void cancellationAfterTerminated() {
 		Future<Void> future = new MonoToListenableFutureAdapter<>(Mono.empty());
 
-		assertFalse("Should return false if task already completed", future.cancel(true));
-		assertFalse(future.isCancelled());
+		assertThat(future.cancel(true)).as("Should return false if task already completed").isFalse();
+		assertThat(future.isCancelled()).isFalse();
 	}
 
 }

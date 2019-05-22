@@ -44,9 +44,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -311,14 +311,14 @@ public class DefaultServerResponseBuilderTests {
 				.cookie(ResponseCookie.from("foo", "bar").build())
 				.syncBody("body");
 
-		assertFalse(serverResponse.block().cookies().isEmpty());
+		assertThat(serverResponse.block().cookies().isEmpty()).isFalse();
 
 		serverResponse = ServerResponse.ok()
 				.cookie(ResponseCookie.from("foo", "bar").build())
 				.body(BodyInserters.fromObject("body"));
 
 
-		assertFalse(serverResponse.block().cookies().isEmpty());
+		assertThat(serverResponse.block().cookies().isEmpty()).isFalse();
 	}
 
 

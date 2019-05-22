@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jmx.support.ObjectNameManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -36,8 +36,8 @@ public class LazyInitMBeanTests {
 	@Test
 	public void invokeOnLazyInitBean() throws Exception {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("org/springframework/jmx/export/lazyInit.xml");
-		assertFalse(ctx.getBeanFactory().containsSingleton("testBean"));
-		assertFalse(ctx.getBeanFactory().containsSingleton("testBean2"));
+		assertThat(ctx.getBeanFactory().containsSingleton("testBean")).isFalse();
+		assertThat(ctx.getBeanFactory().containsSingleton("testBean2")).isFalse();
 		try {
 			MBeanServer server = (MBeanServer) ctx.getBean("server");
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean2");

@@ -30,7 +30,6 @@ import org.springframework.tests.transaction.CallCountingTransactionManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -79,15 +78,15 @@ public class SimpleTransactionScopeTests {
 			bean2 = context.getBean(DerivedTestBean.class);
 			assertSame(bean2, context.getBean(DerivedTestBean.class));
 			context.getBeanFactory().destroyScopedBean("txScopedObject2");
-			assertFalse(TransactionSynchronizationManager.hasResource("txScopedObject2"));
+			assertThat(TransactionSynchronizationManager.hasResource("txScopedObject2")).isFalse();
 			assertThat(bean2.wasDestroyed()).isTrue();
 
 			bean2a = context.getBean(DerivedTestBean.class);
 			assertSame(bean2a, context.getBean(DerivedTestBean.class));
 			assertNotSame(bean2, bean2a);
 			context.getBeanFactory().getRegisteredScope("tx").remove("txScopedObject2");
-			assertFalse(TransactionSynchronizationManager.hasResource("txScopedObject2"));
-			assertFalse(bean2a.wasDestroyed());
+			assertThat(TransactionSynchronizationManager.hasResource("txScopedObject2")).isFalse();
+			assertThat(bean2a.wasDestroyed()).isFalse();
 
 			bean2b = context.getBean(DerivedTestBean.class);
 			assertSame(bean2b, context.getBean(DerivedTestBean.class));
@@ -99,7 +98,7 @@ public class SimpleTransactionScopeTests {
 			TransactionSynchronizationManager.clearSynchronization();
 		}
 
-		assertFalse(bean2a.wasDestroyed());
+		assertThat(bean2a.wasDestroyed()).isFalse();
 		assertThat(bean2b.wasDestroyed()).isTrue();
 		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 
@@ -141,15 +140,15 @@ public class SimpleTransactionScopeTests {
 				DerivedTestBean bean2 = context.getBean(DerivedTestBean.class);
 				assertSame(bean2, context.getBean(DerivedTestBean.class));
 				context.getBeanFactory().destroyScopedBean("txScopedObject2");
-				assertFalse(TransactionSynchronizationManager.hasResource("txScopedObject2"));
+				assertThat(TransactionSynchronizationManager.hasResource("txScopedObject2")).isFalse();
 				assertThat(bean2.wasDestroyed()).isTrue();
 
 				DerivedTestBean bean2a = context.getBean(DerivedTestBean.class);
 				assertSame(bean2a, context.getBean(DerivedTestBean.class));
 				assertNotSame(bean2, bean2a);
 				context.getBeanFactory().getRegisteredScope("tx").remove("txScopedObject2");
-				assertFalse(TransactionSynchronizationManager.hasResource("txScopedObject2"));
-				assertFalse(bean2a.wasDestroyed());
+				assertThat(TransactionSynchronizationManager.hasResource("txScopedObject2")).isFalse();
+				assertThat(bean2a.wasDestroyed()).isFalse();
 
 				DerivedTestBean bean2b = context.getBean(DerivedTestBean.class);
 				finallyDestroy.add(bean2b);
@@ -170,7 +169,7 @@ public class SimpleTransactionScopeTests {
 					return null;
 				});
 				assertThat(immediatelyDestroy.iterator().next().wasDestroyed()).isTrue();
-				assertFalse(bean2b.wasDestroyed());
+				assertThat(bean2b.wasDestroyed()).isFalse();
 
 				return null;
 			});

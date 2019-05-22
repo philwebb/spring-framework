@@ -35,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -63,7 +62,7 @@ public class PathPatternTests {
 		assertThat(parser.parse("/foo/**/bar").hasPatternSyntax()).isTrue();
 		assertThat(parser.parse("/f?o").hasPatternSyntax()).isTrue();
 		assertThat(parser.parse("/foo/{bar}/baz").hasPatternSyntax()).isTrue();
-		assertFalse(parser.parse("/foo/bar").hasPatternSyntax());
+		assertThat(parser.parse("/foo/bar").hasPatternSyntax()).isFalse();
 	}
 
 	@Test
@@ -100,7 +99,7 @@ public class PathPatternTests {
 	}
 
 	private void assertNoMatch(PathPattern pp, String path) {
-		assertFalse(pp.matches(toPathContainer(path)));
+		assertThat(pp.matches(toPathContainer(path))).isFalse();
 	}
 
 	@Test
@@ -463,7 +462,7 @@ public class PathPatternTests {
 		checkMatches("a/*", "a/a/"); // trailing slash, so is allowed
 		PathPatternParser ppp = new PathPatternParser();
 		ppp.setMatchOptionalTrailingSeparator(false);
-		assertFalse(ppp.parse("a/*").matches(toPathContainer("a//")));
+		assertThat(ppp.parse("a/*").matches(toPathContainer("a//"))).isFalse();
 		checkMatches("a/*", "a/a");
 		checkMatches("a/*", "a/a/"); // trailing slash is optional
 		checkMatches("/resource/**", "/resource");
@@ -763,12 +762,12 @@ public class PathPatternTests {
 		assertMatches(pp,"//");
 
 		// Confirming AntPathMatcher behaviour:
-		assertFalse(new AntPathMatcher().match("/{foo}", "/"));
+		assertThat(new AntPathMatcher().match("/{foo}", "/")).isFalse();
 		assertThat(new AntPathMatcher().match("/{foo}", "/a")).isTrue();
 		assertThat(new AntPathMatcher().match("/{foo}{bar}", "/a")).isTrue();
-		assertFalse(new AntPathMatcher().match("/{foo}*", "/"));
+		assertThat(new AntPathMatcher().match("/{foo}*", "/")).isFalse();
 		assertThat(new AntPathMatcher().match("/*", "/")).isTrue();
-		assertFalse(new AntPathMatcher().match("/*{foo}", "/"));
+		assertThat(new AntPathMatcher().match("/*{foo}", "/")).isFalse();
 		Map<String, String> vars = new AntPathMatcher().extractUriTemplateVariables("/{foo}{bar}", "/a");
 		assertEquals("a",vars.get("foo"));
 		assertEquals("",vars.get("bar"));
@@ -1166,7 +1165,7 @@ public class PathPatternTests {
 		PathPatternParser p = new PathPatternParser();
 		PathPattern pattern = p.parse(uriTemplate);
 		PathContainer PathContainer = toPathContainer(path);
-		assertFalse(pattern.matches(PathContainer));
+		assertThat(pattern.matches(PathContainer)).isFalse();
 	}
 
 	private PathPattern.PathMatchInfo checkCapture(String uriTemplate, String path, String... keyValues) {

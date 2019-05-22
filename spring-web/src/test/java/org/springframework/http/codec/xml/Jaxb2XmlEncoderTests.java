@@ -37,7 +37,6 @@ import org.springframework.tests.XmlContent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertFalse;
 import static org.springframework.core.io.buffer.DataBufferUtils.release;
 
 /**
@@ -57,18 +56,18 @@ public class Jaxb2XmlEncoderTests extends AbstractEncoderTestCase<Jaxb2XmlEncode
 				MediaType.APPLICATION_XML)).isTrue();
 		assertThat(this.encoder.canEncode(ResolvableType.forClass(Pojo.class),
 				MediaType.TEXT_XML)).isTrue();
-		assertFalse(this.encoder.canEncode(ResolvableType.forClass(Pojo.class),
-				MediaType.APPLICATION_JSON));
+		assertThat(this.encoder.canEncode(ResolvableType.forClass(Pojo.class),
+				MediaType.APPLICATION_JSON)).isFalse();
 
 		assertThat(this.encoder.canEncode(
 				ResolvableType.forClass(Jaxb2XmlDecoderTests.TypePojo.class),
 				MediaType.APPLICATION_XML)).isTrue();
 
-		assertFalse(this.encoder.canEncode(ResolvableType.forClass(getClass()),
-				MediaType.APPLICATION_XML));
+		assertThat(this.encoder.canEncode(ResolvableType.forClass(getClass()),
+				MediaType.APPLICATION_XML)).isFalse();
 
 		// SPR-15464
-		assertFalse(this.encoder.canEncode(ResolvableType.NONE, null));
+		assertThat(this.encoder.canEncode(ResolvableType.NONE, null)).isFalse();
 	}
 
 	@Override

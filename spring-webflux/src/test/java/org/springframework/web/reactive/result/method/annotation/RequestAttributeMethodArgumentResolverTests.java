@@ -39,7 +39,6 @@ import org.springframework.web.server.ServerWebInputException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -79,8 +78,8 @@ public class RequestAttributeMethodArgumentResolverTests {
 		assertThat(this.resolver.supportsParameter(
 				this.testMethod.annotPresent(RequestAttribute.class).arg(Mono.class, Foo.class))).isTrue();
 
-		assertFalse(this.resolver.supportsParameter(
-				this.testMethod.annotNotPresent(RequestAttribute.class).arg()));
+		assertThat(this.resolver.supportsParameter(
+				this.testMethod.annotNotPresent(RequestAttribute.class).arg())).isFalse();
 	}
 
 	@Test
@@ -126,7 +125,7 @@ public class RequestAttributeMethodArgumentResolverTests {
 
 		assertNotNull(mono.block());
 		assertEquals(Optional.class, mono.block().getClass());
-		assertFalse(((Optional<?>) mono.block()).isPresent());
+		assertThat(((Optional<?>) mono.block()).isPresent()).isFalse();
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultFormattingConversionService());

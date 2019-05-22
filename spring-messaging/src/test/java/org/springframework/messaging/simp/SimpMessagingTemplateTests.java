@@ -37,7 +37,6 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -156,7 +155,7 @@ public class SimpMessagingTemplateTests {
 		Message<byte[]> message = messages.get(0);
 
 		assertSame(headers, message.getHeaders());
-		assertFalse(accessor.isMutable());
+		assertThat(accessor.isMutable()).isFalse();
 	}
 
 	@Test
@@ -188,7 +187,7 @@ public class SimpMessagingTemplateTests {
 		Message<byte[]> sentMessage = messages.get(0);
 
 		assertSame(message, sentMessage);
-		assertFalse(accessor.isMutable());
+		assertThat(accessor.isMutable()).isFalse();
 	}
 
 	@Test

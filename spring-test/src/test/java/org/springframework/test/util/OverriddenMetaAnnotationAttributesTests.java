@@ -28,7 +28,6 @@ import org.springframework.test.util.MetaAnnotationUtils.AnnotationDescriptor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.test.util.MetaAnnotationUtils.findAnnotationDescriptor;
 
@@ -98,7 +97,7 @@ public class OverriddenMetaAnnotationAttributesTests {
 
 		// direct access to annotation attributes:
 		assertArrayEquals(new String[] { "foo.xml" }, descriptor.getAnnotation().locations());
-		assertFalse(descriptor.getAnnotation().inheritLocations());
+		assertThat(descriptor.getAnnotation().inheritLocations()).isFalse();
 	}
 
 	@Test
@@ -115,7 +114,7 @@ public class OverriddenMetaAnnotationAttributesTests {
 
 		// direct access to annotation attributes:
 		assertArrayEquals(new String[] { "foo.xml" }, descriptor.getAnnotation().locations());
-		assertFalse(descriptor.getAnnotation().inheritLocations());
+		assertThat(descriptor.getAnnotation().inheritLocations()).isFalse();
 
 		// overridden attributes:
 		AnnotationAttributes attributes = descriptor.getAnnotationAttributes();

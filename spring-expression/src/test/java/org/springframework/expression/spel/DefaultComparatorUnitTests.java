@@ -24,7 +24,6 @@ import org.springframework.expression.TypeComparator;
 import org.springframework.expression.spel.support.StandardTypeComparator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for type comparison
@@ -117,7 +116,7 @@ public class DefaultComparatorUnitTests {
 		assertThat(comparator.canCompare(2,1)).isTrue();
 		assertThat(comparator.canCompare("abc","def")).isTrue();
 		assertThat(comparator.canCompare("abc",3)).isTrue();
-		assertFalse(comparator.canCompare(String.class,3));
+		assertThat(comparator.canCompare(String.class,3)).isFalse();
 	}
 
 }

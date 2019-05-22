@@ -38,7 +38,6 @@ import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests the interaction between {@link ApplicationContext} implementations and
@@ -60,7 +59,7 @@ public class BeanFactoryPostProcessorTests {
 		ac.registerSingleton("tb2", TestBean.class);
 		TestBeanFactoryPostProcessor bfpp = new TestBeanFactoryPostProcessor();
 		ac.addBeanFactoryPostProcessor(bfpp);
-		assertFalse(bfpp.wasCalled);
+		assertThat(bfpp.wasCalled).isFalse();
 		ac.refresh();
 		assertThat(bfpp.wasCalled).isTrue();
 	}
@@ -100,7 +99,7 @@ public class BeanFactoryPostProcessorTests {
 		bf.registerBeanDefinition("tb2", new RootBeanDefinition(TestBean.class));
 		bf.registerBeanDefinition("bfpp", new RootBeanDefinition(TestBeanFactoryPostProcessor.class));
 		TestBeanFactoryPostProcessor bfpp = (TestBeanFactoryPostProcessor) bf.getBean("bfpp");
-		assertFalse(bfpp.wasCalled);
+		assertThat(bfpp.wasCalled).isFalse();
 	}
 
 	@Test
@@ -111,7 +110,7 @@ public class BeanFactoryPostProcessorTests {
 		ac.addBeanFactoryPostProcessor(new PrioritizedBeanDefinitionRegistryPostProcessor());
 		TestBeanDefinitionRegistryPostProcessor bdrpp = new TestBeanDefinitionRegistryPostProcessor();
 		ac.addBeanFactoryPostProcessor(bdrpp);
-		assertFalse(bdrpp.wasCalled);
+		assertThat(bdrpp.wasCalled).isFalse();
 		ac.refresh();
 		assertThat(bdrpp.wasCalled).isTrue();
 		assertThat(ac.getBean("bfpp1", TestBeanFactoryPostProcessor.class).wasCalled).isTrue();

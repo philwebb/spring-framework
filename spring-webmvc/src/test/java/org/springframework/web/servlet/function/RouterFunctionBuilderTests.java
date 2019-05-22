@@ -30,7 +30,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.springframework.web.servlet.function.RequestPredicates.HEAD;
 
 /**
@@ -85,7 +84,7 @@ public class RouterFunctionBuilderTests {
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
 
-		assertFalse(responseStatus.isPresent());
+		assertThat(responseStatus.isPresent()).isFalse();
 
 	}
 
@@ -125,7 +124,7 @@ public class RouterFunctionBuilderTests {
 				.map(handlerFunction -> handle(handlerFunction, invalidRequest))
 				.map(ServerResponse::statusCode)
 				.map(HttpStatus::value);
-		assertFalse(responseStatus.isPresent());
+		assertThat(responseStatus.isPresent()).isFalse();
 	}
 
 	@Test

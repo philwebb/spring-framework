@@ -29,7 +29,6 @@ import org.springframework.context.event.ApplicationContextEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -44,7 +43,7 @@ public class AutoProxyLazyInitTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithStatic.class);
 		MyBean bean = ctx.getBean("myBean", MyBean.class);
 
-		assertFalse(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isFalse();
 		bean.doIt();
 		assertThat(MyBeanImpl.initialized).isTrue();
 	}
@@ -56,7 +55,7 @@ public class AutoProxyLazyInitTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithStaticAndInterface.class);
 		MyBean bean = ctx.getBean("myBean", MyBean.class);
 
-		assertFalse(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isFalse();
 		bean.doIt();
 		assertThat(MyBeanImpl.initialized).isTrue();
 	}
@@ -68,7 +67,7 @@ public class AutoProxyLazyInitTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithNonStatic.class);
 		MyBean bean = ctx.getBean("myBean", MyBean.class);
 
-		assertFalse(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isFalse();
 		bean.doIt();
 		assertThat(MyBeanImpl.initialized).isTrue();
 	}
@@ -80,7 +79,7 @@ public class AutoProxyLazyInitTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithNonStaticAndInterface.class);
 		MyBean bean = ctx.getBean("myBean", MyBean.class);
 
-		assertFalse(MyBeanImpl.initialized);
+		assertThat(MyBeanImpl.initialized).isFalse();
 		bean.doIt();
 		assertThat(MyBeanImpl.initialized).isTrue();
 	}

@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import org.springframework.context.support.GenericApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit test which verifies that extensions of
@@ -47,7 +47,7 @@ public class CustomizedGenericXmlContextLoaderTests {
 
 			@Override
 			protected void customizeContext(GenericApplicationContext context) {
-				assertFalse("The context should not yet have been refreshed.", context.isActive());
+				assertThat(context.isActive()).as("The context should not yet have been refreshed.").isFalse();
 				builder.append(expectedContents);
 			}
 		}.loadContext("classpath:/org/springframework/test/context/support/CustomizedGenericXmlContextLoaderTests-context.xml");

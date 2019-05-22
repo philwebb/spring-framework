@@ -64,7 +64,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -262,7 +261,7 @@ public class StompSubProtocolHandlerTests {
 		assertEquals(1, this.session.getSentMessages().size());
 		WebSocketMessage<?> textMessage = this.session.getSentMessages().get(0);
 		assertThat(((String) textMessage.getPayload()).contains("destination:/user/queue/foo\n")).isTrue();
-		assertFalse(((String) textMessage.getPayload()).contains(SimpMessageHeaderAccessor.ORIGINAL_DESTINATION));
+		assertThat(((String) textMessage.getPayload()).contains(SimpMessageHeaderAccessor.ORIGINAL_DESTINATION)).isFalse();
 	}
 
 	// SPR-12475
@@ -368,7 +367,7 @@ public class StompSubProtocolHandlerTests {
 		TextMessage message = StompTextMessageBuilder.create(StompCommand.CONNECT).build();
 		handler.handleMessageFromClient(this.session, message, channel);
 		assertNotNull(mutable.get());
-		assertFalse(mutable.get());
+		assertThat((boolean) mutable.get()).isFalse();
 	}
 
 	@Test // SPR-14690

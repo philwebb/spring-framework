@@ -51,7 +51,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -108,7 +107,7 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestParam().noName()).arg(Map.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 
 		param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
 		assertThat(resolver.supportsParameter(param)).isTrue();
@@ -123,7 +122,7 @@ public class RequestParamMethodArgumentResolverTests {
 		assertThat(resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annot(requestPart()).arg(MultipartFile.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 
 		param = this.testMethod.annot(requestParam()).arg(String.class);
 		assertThat(resolver.supportsParameter(param)).isTrue();
@@ -140,10 +139,10 @@ public class RequestParamMethodArgumentResolverTests {
 		resolver = new RequestParamMethodArgumentResolver(null, false);
 
 		param = this.testMethod.annotNotPresent(RequestParam.class).arg(String.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 
 		param = this.testMethod.annotPresent(RequestPart.class).arg(MultipartFile.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertThat(resolver.supportsParameter(param)).isFalse();
 	}
 
 	@Test
@@ -490,7 +489,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertEquals(Optional.class, result.getClass());
-		assertFalse(((Optional) result).isPresent());
+		assertThat(((Optional) result).isPresent()).isFalse();
 	}
 
 	@Test
@@ -523,7 +522,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertEquals(Optional.class, result.getClass());
-		assertFalse(((Optional) result).isPresent());
+		assertThat(((Optional) result).isPresent()).isFalse();
 	}
 
 	@Test
@@ -556,7 +555,7 @@ public class RequestParamMethodArgumentResolverTests {
 
 		result = resolver.resolveArgument(param, null, webRequest, binderFactory);
 		assertEquals(Optional.class, result.getClass());
-		assertFalse(((Optional) result).isPresent());
+		assertThat(((Optional) result).isPresent()).isFalse();
 	}
 
 	@Test

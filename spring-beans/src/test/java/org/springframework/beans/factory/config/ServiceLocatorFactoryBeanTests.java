@@ -28,7 +28,6 @@ import org.springframework.core.NestedCheckedException;
 import org.springframework.core.NestedRuntimeException;
 
 import static org.assertj.core.api.Assertions.*;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static org.mockito.Mockito.mock;
@@ -199,9 +198,12 @@ public class ServiceLocatorFactoryBeanTests {
 		assertNotSame(testBean2, testBean3);
 		assertNotSame(testBean2, testBean4);
 		assertNotSame(testBean3, testBean4);
-		assertFalse(testBean1 instanceof ExtendedTestService);
-		assertFalse(testBean2 instanceof ExtendedTestService);
-		assertFalse(testBean3 instanceof ExtendedTestService);
+		boolean condition3 = testBean1 instanceof ExtendedTestService;
+		assertThat(condition3).isFalse();
+		boolean condition2 = testBean2 instanceof ExtendedTestService;
+		assertThat(condition2).isFalse();
+		boolean condition1 = testBean3 instanceof ExtendedTestService;
+		assertThat(condition1).isFalse();
 		boolean condition = testBean4 instanceof ExtendedTestService;
 		assertThat(condition).isTrue();
 	}

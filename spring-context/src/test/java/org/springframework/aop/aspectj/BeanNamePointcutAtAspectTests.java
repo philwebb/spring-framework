@@ -28,7 +28,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test for correct application of the bean() PCD for &#64;AspectJ-based aspects.
@@ -70,7 +69,8 @@ public class BeanNamePointcutAtAspectTests {
 
 	@Test
 	public void testNonMatchingBeanName() {
-		assertFalse("Didn't expect a proxy", testBean3 instanceof Advised);
+		boolean condition = testBean3 instanceof Advised;
+		assertThat(condition).as("Didn't expect a proxy").isFalse();
 
 		testBean3.setAge(20);
 		assertEquals(0, counterAspect.count);

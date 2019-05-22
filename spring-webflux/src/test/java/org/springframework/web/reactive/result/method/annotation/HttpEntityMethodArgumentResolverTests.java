@@ -50,7 +50,6 @@ import org.springframework.web.server.ServerWebInputException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
@@ -100,8 +99,8 @@ public class HttpEntityMethodArgumentResolverTests {
 
 	@Test
 	public void doesNotSupport() {
-		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(Mono.class, String.class)));
-		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(Mono.class, String.class))).isFalse();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(String.class))).isFalse();
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.testMethod.arg(Mono.class, httpEntityType(String.class))))
 			.withMessageStartingWith("HttpEntityMethodArgumentResolver does not support reactive type wrapper");

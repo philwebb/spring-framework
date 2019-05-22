@@ -41,7 +41,6 @@ import org.springframework.util.MultiValueMap;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.core.ResolvableType.forClassWithGenerics;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -65,21 +64,21 @@ public class SynchronossPartHttpMessageReaderTests {
 				forClassWithGenerics(MultiValueMap.class, String.class, Part.class),
 				MediaType.MULTIPART_FORM_DATA)).isTrue();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				forClassWithGenerics(MultiValueMap.class, String.class, Object.class),
-				MediaType.MULTIPART_FORM_DATA));
+				MediaType.MULTIPART_FORM_DATA)).isFalse();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				forClassWithGenerics(MultiValueMap.class, String.class, String.class),
-				MediaType.MULTIPART_FORM_DATA));
+				MediaType.MULTIPART_FORM_DATA)).isFalse();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				forClassWithGenerics(Map.class, String.class, String.class),
-				MediaType.MULTIPART_FORM_DATA));
+				MediaType.MULTIPART_FORM_DATA)).isFalse();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				forClassWithGenerics(MultiValueMap.class, String.class, Part.class),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isFalse();
 	}
 
 	@Test

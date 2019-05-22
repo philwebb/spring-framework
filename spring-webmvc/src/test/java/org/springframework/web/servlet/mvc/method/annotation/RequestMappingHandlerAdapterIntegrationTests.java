@@ -87,7 +87,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -406,7 +405,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleAndCompleteSession", SessionStatus.class);
 		handlerAdapter.handle(request, response, handlerMethod);
 
-		assertFalse(request.getSession().getAttributeNames().hasMoreElements());
+		assertThat(request.getSession().getAttributeNames().hasMoreElements()).isFalse();
 	}
 
 	private HandlerMethod handlerMethod(String methodName, Class<?>... paramTypes) throws Exception {

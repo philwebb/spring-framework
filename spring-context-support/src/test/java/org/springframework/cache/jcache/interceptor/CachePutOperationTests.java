@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -88,7 +87,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		assertThat(operation.isEarlyPut()).isTrue();
 		assertNotNull(operation.getExceptionTypeFilter());
 		assertThat(operation.getExceptionTypeFilter().match(IOException.class)).isTrue();
-		assertFalse(operation.getExceptionTypeFilter().match(NullPointerException.class));
+		assertThat(operation.getExceptionTypeFilter().match(NullPointerException.class)).isFalse();
 	}
 
 	private CachePutOperation createDefaultOperation(CacheMethodDetails<CachePut> methodDetails) {

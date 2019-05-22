@@ -53,7 +53,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
@@ -322,14 +321,14 @@ public class CustomEditorTests {
 		assertThat(((Boolean) editor.getValue()).booleanValue()).isTrue();
 		assertEquals(trueString, editor.getAsText());
 		editor.setAsText(falseString);
-		assertFalse(((Boolean) editor.getValue()).booleanValue());
+		assertThat(((Boolean) editor.getValue()).booleanValue()).isFalse();
 		assertEquals(falseString, editor.getAsText());
 
 		editor.setAsText(trueString.toUpperCase());
 		assertThat(((Boolean) editor.getValue()).booleanValue()).isTrue();
 		assertEquals(trueString, editor.getAsText());
 		editor.setAsText(falseString.toUpperCase());
-		assertFalse(((Boolean) editor.getValue()).booleanValue());
+		assertThat(((Boolean) editor.getValue()).booleanValue()).isFalse();
 		assertEquals(falseString, editor.getAsText());
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				editor.setAsText(null));
@@ -743,7 +742,7 @@ public class CustomEditorTests {
 		String invalidDate = "01/01/05";
 
 		assertThat(validDate.length() == maxLength).isTrue();
-		assertFalse(invalidDate.length() == maxLength);
+		assertThat(invalidDate.length() == maxLength).isFalse();
 
 		CustomDateEditor editor = new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true, maxLength);
 		editor.setAsText(validDate);

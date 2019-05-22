@@ -40,7 +40,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -71,8 +70,8 @@ public class ServerWebExchangeMethodArgumentResolverTests {
 		assertThat(this.resolver.supportsParameter(this.testMethod.arg(UriComponentsBuilder.class))).isTrue();
 		assertThat(this.resolver.supportsParameter(this.testMethod.arg(UriBuilder.class))).isTrue();
 
-		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(WebSession.class)));
-		assertFalse(this.resolver.supportsParameter(this.testMethod.arg(String.class)));
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(WebSession.class))).isFalse();
+		assertThat(this.resolver.supportsParameter(this.testMethod.arg(String.class))).isFalse();
 		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.supportsParameter(this.testMethod.arg(Mono.class, ServerWebExchange.class)))
 			.withMessageStartingWith("ServerWebExchangeMethodArgumentResolver does not support reactive type wrapper");

@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 
 /**
@@ -39,7 +38,7 @@ public class CompositeIteratorTests {
 	@Test
 	public void testNoIterators() {
 		CompositeIterator<String> it = new CompositeIterator<>();
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(
 				it::next);
 	}
@@ -52,7 +51,7 @@ public class CompositeIteratorTests {
 			assertThat(it.hasNext()).isTrue();
 			assertEquals(String.valueOf(i), it.next());
 		}
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(
 				it::next);
 	}
@@ -67,7 +66,7 @@ public class CompositeIteratorTests {
 			assertThat(it.hasNext()).isTrue();
 			assertEquals(String.valueOf(i), it.next());
 		}
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 
 		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(
 				it::next);

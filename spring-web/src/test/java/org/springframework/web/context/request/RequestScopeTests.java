@@ -34,7 +34,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -163,7 +162,7 @@ public class RequestScopeTests {
 		assertSame(inner1, outer2.getSpouse());
 		requestAttributes.requestCompleted();
 		assertThat(inner1.wasDestroyed()).isTrue();
-		assertFalse(outer1.wasDestroyed());
+		assertThat(outer1.wasDestroyed()).isFalse();
 	}
 
 }

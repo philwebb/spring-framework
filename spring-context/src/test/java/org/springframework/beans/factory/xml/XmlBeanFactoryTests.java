@@ -73,7 +73,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -208,7 +207,7 @@ public class XmlBeanFactoryTests {
 		DerivedTestBean inner2 = (DerivedTestBean) friends[0];
 		assertEquals("inner2", inner2.getName());
 		assertThat(inner2.getBeanName().startsWith(DerivedTestBean.class.getName())).isTrue();
-		assertFalse(xbf.containsBean("innerBean#1"));
+		assertThat(xbf.containsBean("innerBean#1")).isFalse();
 		assertNotNull(inner2);
 		assertEquals(7, inner2.getAge());
 		TestBean innerFactory = (TestBean) friends[1];
@@ -328,7 +327,7 @@ public class XmlBeanFactoryTests {
 		// Age property is inherited from bean in parent factory
 		assertThat(inherits.getAge() == 1).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("inheritsFromParentFactory");
-		assertFalse(inherits2 == inherits);
+		assertThat(inherits2 == inherits).isFalse();
 	}
 
 	@Test
@@ -374,7 +373,7 @@ public class XmlBeanFactoryTests {
 		// Age property is inherited from bean in parent factory
 		assertThat(inherits.getAge() == 2).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("prototypeInheritsFromParentFactoryPrototype");
-		assertFalse(inherits2 == inherits);
+		assertThat(inherits2 == inherits).isFalse();
 		inherits2.setAge(13);
 		assertThat(inherits2.getAge() == 13).isTrue();
 		// Shouldn't have changed first instance
@@ -393,7 +392,7 @@ public class XmlBeanFactoryTests {
 		// Age property is inherited from bean in parent factory
 		assertThat(inherits.getAge() == 1).isTrue();
 		TestBean inherits2 = (TestBean) child.getBean("protoypeInheritsFromParentFactorySingleton");
-		assertFalse(inherits2 == inherits);
+		assertThat(inherits2 == inherits).isFalse();
 		inherits2.setAge(13);
 		assertThat(inherits2.getAge() == 13).isTrue();
 		// Shouldn't have changed first instance
@@ -695,9 +694,9 @@ public class XmlBeanFactoryTests {
 		InitAndIB.constructed = false;
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(INITIALIZERS_CONTEXT);
-		assertFalse(InitAndIB.constructed);
+		assertThat(InitAndIB.constructed).isFalse();
 		xbf.preInstantiateSingletons();
-		assertFalse(InitAndIB.constructed);
+		assertThat(InitAndIB.constructed).isFalse();
 		InitAndIB iib = (InitAndIB) xbf.getBean("init-and-ib");
 		assertThat(InitAndIB.constructed).isTrue();
 		assertThat(iib.afterPropertiesSetInvoked && iib.initMethodInvoked).isTrue();
@@ -717,9 +716,9 @@ public class XmlBeanFactoryTests {
 		InitAndIB.constructed = false;
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(INITIALIZERS_CONTEXT);
-		assertFalse(InitAndIB.constructed);
+		assertThat(InitAndIB.constructed).isFalse();
 		xbf.preInstantiateSingletons();
-		assertFalse(InitAndIB.constructed);
+		assertThat(InitAndIB.constructed).isFalse();
 		InitAndIB iib = (InitAndIB) xbf.getBean("ib-same-init");
 		assertThat(InitAndIB.constructed).isTrue();
 		boolean condition3 = iib.afterPropertiesSetInvoked && !iib.initMethodInvoked;
@@ -739,7 +738,7 @@ public class XmlBeanFactoryTests {
 		InitAndIB.constructed = false;
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(DEFAULT_LAZY_CONTEXT);
-		assertFalse(InitAndIB.constructed);
+		assertThat(InitAndIB.constructed).isFalse();
 		xbf.preInstantiateSingletons();
 		assertThat(InitAndIB.constructed).isTrue();
 		try {
@@ -1367,9 +1366,7 @@ public class XmlBeanFactoryTests {
 		String backwards = new StringBuffer(forwards).reverse().toString();
 		assertEquals(backwards, s.replaceMe(forwards));
 		// SPR-356: lookup methods & method replacers are not serializable.
-		assertFalse(
-				"Lookup methods and method replacers are not meant to be serializable.",
-				SerializationTestUtils.isSerializable(s));
+		assertThat(SerializationTestUtils.isSerializable(s)).as("Lookup methods and method replacers are not meant to be serializable.").isFalse();
 	}
 
 	@Test

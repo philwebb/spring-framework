@@ -29,7 +29,6 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
@@ -81,7 +80,7 @@ public class WebAsyncManagerTests {
 	public void isConcurrentHandlingStarted() {
 		given(this.asyncWebRequest.isAsyncStarted()).willReturn(false);
 
-		assertFalse(this.asyncManager.isConcurrentHandlingStarted());
+		assertThat(this.asyncManager.isConcurrentHandlingStarted()).isFalse();
 
 		reset(this.asyncWebRequest);
 		given(this.asyncWebRequest.isAsyncStarted()).willReturn(true);
@@ -154,7 +153,7 @@ public class WebAsyncManagerTests {
 				this.asyncManager.startCallableProcessing(task))
 			.isEqualTo(exception);
 
-		assertFalse(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isFalse();
 
 		verify(this.asyncWebRequest).addTimeoutHandler(notNull());
 		verify(this.asyncWebRequest).addErrorHandler(notNull());
@@ -287,7 +286,7 @@ public class WebAsyncManagerTests {
 				this.asyncManager.startDeferredResultProcessing(deferredResult))
 			.isEqualTo(exception);
 
-		assertFalse(this.asyncManager.hasConcurrentResult());
+		assertThat(this.asyncManager.hasConcurrentResult()).isFalse();
 
 		verify(this.asyncWebRequest).addTimeoutHandler(notNull());
 		verify(this.asyncWebRequest).addErrorHandler(notNull());

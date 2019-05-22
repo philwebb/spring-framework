@@ -32,7 +32,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 
@@ -64,7 +63,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 	@Test
 	public void supportsReturnType() throws Exception {
 		assertThat(handler.supportsReturnType(returnParamModelAndView)).isTrue();
-		assertFalse(handler.supportsReturnType(getReturnValueParam("viewName")));
+		assertThat(handler.supportsReturnType(getReturnValueParam("viewName"))).isFalse();
 	}
 
 	@Test

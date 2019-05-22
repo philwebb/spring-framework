@@ -37,7 +37,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -256,7 +255,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		assertThat(result).isTrue();
 		// evaluates to false
 		result = parser.parseExpression("2 < -5.0").getValue(Boolean.class);
-		assertFalse(result);
+		assertThat(result).isFalse();
 
 		// evaluates to true
 		result = parser.parseExpression("'black' < 'block'").getValue(Boolean.class);
@@ -267,7 +266,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	public void testOtherOperators() throws Exception {
 		// evaluates to false
 		boolean falseValue = parser.parseExpression("'xyz' instanceof T(int)").getValue(Boolean.class);
-		assertFalse(falseValue);
+		assertThat(falseValue).isFalse();
 
 		// evaluates to true
 		boolean trueValue = parser.parseExpression("'5.00' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
@@ -275,7 +274,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		//evaluates to false
 		falseValue = parser.parseExpression("'5.0067' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
-		assertFalse(falseValue);
+		assertThat(falseValue).isFalse();
 	}
 
 	// 7.5.4.2
@@ -290,7 +289,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		// evaluates to false
 		boolean falseValue = parser.parseExpression("true and false").getValue(Boolean.class);
-		assertFalse(falseValue);
+		assertThat(falseValue).isFalse();
 		// evaluates to true
 		String expression =  "isMember('Nikola Tesla') and isMember('Mihajlo Pupin')";
 		boolean trueValue = parser.parseExpression(expression).getValue(societyContext, Boolean.class);
@@ -310,13 +309,13 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		// evaluates to false
 		falseValue = parser.parseExpression("!true").getValue(Boolean.class);
-		assertFalse(falseValue);
+		assertThat(falseValue).isFalse();
 
 
 		// -- AND and NOT --
 		expression =  "isMember('Nikola Tesla') and !isMember('Mihajlo Pupin')";
 		falseValue = parser.parseExpression(expression).getValue(societyContext, Boolean.class);
-		assertFalse(falseValue);
+		assertThat(falseValue).isFalse();
 	}
 
 	// 7.5.4.3

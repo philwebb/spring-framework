@@ -27,7 +27,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test usage of inline lists.
@@ -154,7 +153,7 @@ public class ListTests extends AbstractExpressionTests {
 			assertThat(inlineList.isConstant()).isTrue();
 		}
 		else {
-			assertFalse(inlineList.isConstant());
+			assertThat(inlineList.isConstant()).isFalse();
 		}
 	}
 

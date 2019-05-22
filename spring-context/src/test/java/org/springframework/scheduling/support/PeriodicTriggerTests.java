@@ -26,7 +26,6 @@ import org.springframework.util.NumberUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Mark Fisher
@@ -179,26 +178,26 @@ public class PeriodicTriggerTests {
 	public void equalsVerification() {
 		PeriodicTrigger trigger1 = new PeriodicTrigger(3000);
 		PeriodicTrigger trigger2 = new PeriodicTrigger(3000);
-		assertFalse(trigger1.equals(new String("not a trigger")));
-		assertFalse(trigger1.equals(null));
+		assertThat(trigger1.equals(new String("not a trigger"))).isFalse();
+		assertThat(trigger1.equals(null)).isFalse();
 		assertEquals(trigger1, trigger1);
 		assertEquals(trigger2, trigger2);
 		assertEquals(trigger1, trigger2);
 		trigger2.setInitialDelay(1234);
-		assertFalse(trigger1.equals(trigger2));
-		assertFalse(trigger2.equals(trigger1));
+		assertThat(trigger1.equals(trigger2)).isFalse();
+		assertThat(trigger2.equals(trigger1)).isFalse();
 		trigger1.setInitialDelay(1234);
 		assertEquals(trigger1, trigger2);
 		trigger2.setFixedRate(true);
-		assertFalse(trigger1.equals(trigger2));
-		assertFalse(trigger2.equals(trigger1));
+		assertThat(trigger1.equals(trigger2)).isFalse();
+		assertThat(trigger2.equals(trigger1)).isFalse();
 		trigger1.setFixedRate(true);
 		assertEquals(trigger1, trigger2);
 		PeriodicTrigger trigger3 = new PeriodicTrigger(3, TimeUnit.SECONDS);
 		trigger3.setInitialDelay(7);
 		trigger3.setFixedRate(true);
-		assertFalse(trigger1.equals(trigger3));
-		assertFalse(trigger3.equals(trigger1));
+		assertThat(trigger1.equals(trigger3)).isFalse();
+		assertThat(trigger3.equals(trigger1)).isFalse();
 		trigger1.setInitialDelay(7000);
 		assertEquals(trigger1, trigger3);
 	}

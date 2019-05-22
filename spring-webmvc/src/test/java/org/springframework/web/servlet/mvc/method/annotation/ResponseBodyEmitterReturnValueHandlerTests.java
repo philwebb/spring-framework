@@ -46,7 +46,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -114,15 +113,15 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 	@Test
 	public void doesNotSupportReturnTypes() throws Exception {
 
-		assertFalse(this.handler.supportsReturnType(
-				on(TestController.class).resolveReturnType(ResponseEntity.class, String.class)));
+		assertThat(this.handler.supportsReturnType(
+				on(TestController.class).resolveReturnType(ResponseEntity.class, String.class))).isFalse();
 
-		assertFalse(this.handler.supportsReturnType(
+		assertThat(this.handler.supportsReturnType(
 				on(TestController.class).resolveReturnType(forClassWithGenerics(ResponseEntity.class,
-						forClassWithGenerics(AtomicReference.class, String.class)))));
+						forClassWithGenerics(AtomicReference.class, String.class))))).isFalse();
 
-		assertFalse(this.handler.supportsReturnType(
-				on(TestController.class).resolveReturnType(ResponseEntity.class)));
+		assertThat(this.handler.supportsReturnType(
+				on(TestController.class).resolveReturnType(ResponseEntity.class))).isFalse();
 	}
 
 	@Test
@@ -289,7 +288,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		ResponseEntity<?> entity = ResponseEntity.noContent().header("foo", "bar").build();
 		this.handler.handleReturnValue(entity, type, this.mavContainer, this.webRequest);
 
-		assertFalse(this.request.isAsyncStarted());
+		assertThat(this.request.isAsyncStarted()).isFalse();
 		assertEquals(204, this.response.getStatus());
 		assertEquals(Collections.singletonList("bar"), this.response.getHeaders("foo"));
 	}
@@ -327,7 +326,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		assertThat(this.request.isAsyncStarted()).isTrue();
 		assertEquals(200, this.response.getStatus());
 		assertEquals("bar", this.response.getHeader("x-foo"));
-		assertFalse(this.response.isCommitted());
+		assertThat(this.response.isCommitted()).isFalse();
 	}
 
 

@@ -28,7 +28,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -53,9 +52,9 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match("/test", "/test")).isTrue();
 		// SPR-14141
 		assertThat(pathMatcher.match("https://example.org", "https://example.org")).isTrue();
-		assertFalse(pathMatcher.match("/test.jpg", "test.jpg"));
-		assertFalse(pathMatcher.match("test", "/test"));
-		assertFalse(pathMatcher.match("/test", "test"));
+		assertThat(pathMatcher.match("/test.jpg", "test.jpg")).isFalse();
+		assertThat(pathMatcher.match("test", "/test")).isFalse();
+		assertThat(pathMatcher.match("/test", "test")).isFalse();
 
 		// test matching with ?'s
 		assertThat(pathMatcher.match("t?st", "test")).isTrue();
@@ -63,9 +62,9 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match("tes?", "test")).isTrue();
 		assertThat(pathMatcher.match("te??", "test")).isTrue();
 		assertThat(pathMatcher.match("?es?", "test")).isTrue();
-		assertFalse(pathMatcher.match("tes?", "tes"));
-		assertFalse(pathMatcher.match("tes?", "testt"));
-		assertFalse(pathMatcher.match("tes?", "tsst"));
+		assertThat(pathMatcher.match("tes?", "tes")).isFalse();
+		assertThat(pathMatcher.match("tes?", "testt")).isFalse();
+		assertThat(pathMatcher.match("tes?", "tsst")).isFalse();
 
 		// test matching with *'s
 		assertThat(pathMatcher.match("*", "test")).isTrue();
@@ -80,16 +79,16 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match("*.*", "test.test")).isTrue();
 		assertThat(pathMatcher.match("*.*", "test.test.test")).isTrue();
 		assertThat(pathMatcher.match("test*aaa", "testblaaaa")).isTrue();
-		assertFalse(pathMatcher.match("test*", "tst"));
-		assertFalse(pathMatcher.match("test*", "tsttest"));
-		assertFalse(pathMatcher.match("test*", "test/"));
-		assertFalse(pathMatcher.match("test*", "test/t"));
-		assertFalse(pathMatcher.match("test/*", "test"));
-		assertFalse(pathMatcher.match("*test*", "tsttst"));
-		assertFalse(pathMatcher.match("*test", "tsttst"));
-		assertFalse(pathMatcher.match("*.*", "tsttst"));
-		assertFalse(pathMatcher.match("test*aaa", "test"));
-		assertFalse(pathMatcher.match("test*aaa", "testblaaab"));
+		assertThat(pathMatcher.match("test*", "tst")).isFalse();
+		assertThat(pathMatcher.match("test*", "tsttest")).isFalse();
+		assertThat(pathMatcher.match("test*", "test/")).isFalse();
+		assertThat(pathMatcher.match("test*", "test/t")).isFalse();
+		assertThat(pathMatcher.match("test/*", "test")).isFalse();
+		assertThat(pathMatcher.match("*test*", "tsttst")).isFalse();
+		assertThat(pathMatcher.match("*test", "tsttst")).isFalse();
+		assertThat(pathMatcher.match("*.*", "tsttst")).isFalse();
+		assertThat(pathMatcher.match("test*aaa", "test")).isFalse();
+		assertThat(pathMatcher.match("test*aaa", "testblaaab")).isFalse();
 
 		// test matching with ?'s and /'s
 		assertThat(pathMatcher.match("/?", "/a")).isTrue();
@@ -109,12 +108,12 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match("/bla/**/**/bla", "/bla/bla/bla/bla/bla/bla")).isTrue();
 		assertThat(pathMatcher.match("/bla*bla/test", "/blaXXXbla/test")).isTrue();
 		assertThat(pathMatcher.match("/*bla/test", "/XXXbla/test")).isTrue();
-		assertFalse(pathMatcher.match("/bla*bla/test", "/blaXXXbl/test"));
-		assertFalse(pathMatcher.match("/*bla/test", "XXXblab/test"));
-		assertFalse(pathMatcher.match("/*bla/test", "XXXbl/test"));
+		assertThat(pathMatcher.match("/bla*bla/test", "/blaXXXbl/test")).isFalse();
+		assertThat(pathMatcher.match("/*bla/test", "XXXblab/test")).isFalse();
+		assertThat(pathMatcher.match("/*bla/test", "XXXbl/test")).isFalse();
 
-		assertFalse(pathMatcher.match("/????", "/bala/bla"));
-		assertFalse(pathMatcher.match("/**/*bla", "/bla/bla/bla/bbb"));
+		assertThat(pathMatcher.match("/????", "/bala/bla")).isFalse();
+		assertThat(pathMatcher.match("/**/*bla", "/bla/bla/bla/bbb")).isFalse();
 
 		assertThat(pathMatcher.match("/*bla*/**/bla/**", "/XXXblaXXXX/testing/testing/bla/testing/testing/")).isTrue();
 		assertThat(pathMatcher.match("/*bla*/**/bla/*", "/XXXblaXXXX/testing/testing/bla/testing")).isTrue();
@@ -124,9 +123,9 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match("*bla*/**/bla/**", "XXXblaXXXX/testing/testing/bla/testing/testing/")).isTrue();
 		assertThat(pathMatcher.match("*bla*/**/bla/*", "XXXblaXXXX/testing/testing/bla/testing")).isTrue();
 		assertThat(pathMatcher.match("*bla*/**/bla/**", "XXXblaXXXX/testing/testing/bla/testing/testing")).isTrue();
-		assertFalse(pathMatcher.match("*bla*/**/bla/*", "XXXblaXXXX/testing/testing/bla/testing/testing"));
+		assertThat(pathMatcher.match("*bla*/**/bla/*", "XXXblaXXXX/testing/testing/bla/testing/testing")).isFalse();
 
-		assertFalse(pathMatcher.match("/x/x/**/bla", "/x/x/x/"));
+		assertThat(pathMatcher.match("/x/x/**/bla", "/x/x/x/")).isFalse();
 
 		assertThat(pathMatcher.match("/foo/bar/**", "/foo/bar")).isTrue();
 
@@ -148,9 +147,9 @@ public class AntPathMatcherTests {
 		// test exact matching
 		assertThat(pathMatcher.matchStart("test", "test")).isTrue();
 		assertThat(pathMatcher.matchStart("/test", "/test")).isTrue();
-		assertFalse(pathMatcher.matchStart("/test.jpg", "test.jpg"));
-		assertFalse(pathMatcher.matchStart("test", "/test"));
-		assertFalse(pathMatcher.matchStart("/test", "test"));
+		assertThat(pathMatcher.matchStart("/test.jpg", "test.jpg")).isFalse();
+		assertThat(pathMatcher.matchStart("test", "/test")).isFalse();
+		assertThat(pathMatcher.matchStart("/test", "test")).isFalse();
 
 		// test matching with ?'s
 		assertThat(pathMatcher.matchStart("t?st", "test")).isTrue();
@@ -158,9 +157,9 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.matchStart("tes?", "test")).isTrue();
 		assertThat(pathMatcher.matchStart("te??", "test")).isTrue();
 		assertThat(pathMatcher.matchStart("?es?", "test")).isTrue();
-		assertFalse(pathMatcher.matchStart("tes?", "tes"));
-		assertFalse(pathMatcher.matchStart("tes?", "testt"));
-		assertFalse(pathMatcher.matchStart("tes?", "tsst"));
+		assertThat(pathMatcher.matchStart("tes?", "tes")).isFalse();
+		assertThat(pathMatcher.matchStart("tes?", "testt")).isFalse();
+		assertThat(pathMatcher.matchStart("tes?", "tsst")).isFalse();
 
 		// test matching with *'s
 		assertThat(pathMatcher.matchStart("*", "test")).isTrue();
@@ -175,18 +174,18 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.matchStart("*.*", "test.test")).isTrue();
 		assertThat(pathMatcher.matchStart("*.*", "test.test.test")).isTrue();
 		assertThat(pathMatcher.matchStart("test*aaa", "testblaaaa")).isTrue();
-		assertFalse(pathMatcher.matchStart("test*", "tst"));
-		assertFalse(pathMatcher.matchStart("test*", "test/"));
-		assertFalse(pathMatcher.matchStart("test*", "tsttest"));
-		assertFalse(pathMatcher.matchStart("test*", "test/"));
-		assertFalse(pathMatcher.matchStart("test*", "test/t"));
+		assertThat(pathMatcher.matchStart("test*", "tst")).isFalse();
+		assertThat(pathMatcher.matchStart("test*", "test/")).isFalse();
+		assertThat(pathMatcher.matchStart("test*", "tsttest")).isFalse();
+		assertThat(pathMatcher.matchStart("test*", "test/")).isFalse();
+		assertThat(pathMatcher.matchStart("test*", "test/t")).isFalse();
 		assertThat(pathMatcher.matchStart("test/*", "test")).isTrue();
 		assertThat(pathMatcher.matchStart("test/t*.txt", "test")).isTrue();
-		assertFalse(pathMatcher.matchStart("*test*", "tsttst"));
-		assertFalse(pathMatcher.matchStart("*test", "tsttst"));
-		assertFalse(pathMatcher.matchStart("*.*", "tsttst"));
-		assertFalse(pathMatcher.matchStart("test*aaa", "test"));
-		assertFalse(pathMatcher.matchStart("test*aaa", "testblaaab"));
+		assertThat(pathMatcher.matchStart("*test*", "tsttst")).isFalse();
+		assertThat(pathMatcher.matchStart("*test", "tsttst")).isFalse();
+		assertThat(pathMatcher.matchStart("*.*", "tsttst")).isFalse();
+		assertThat(pathMatcher.matchStart("test*aaa", "test")).isFalse();
+		assertThat(pathMatcher.matchStart("test*aaa", "testblaaab")).isFalse();
 
 		// test matching with ?'s and /'s
 		assertThat(pathMatcher.matchStart("/?", "/a")).isTrue();
@@ -208,11 +207,11 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.matchStart("/bla/**/**/bla", "/bla/bla/bla/bla/bla/bla")).isTrue();
 		assertThat(pathMatcher.matchStart("/bla*bla/test", "/blaXXXbla/test")).isTrue();
 		assertThat(pathMatcher.matchStart("/*bla/test", "/XXXbla/test")).isTrue();
-		assertFalse(pathMatcher.matchStart("/bla*bla/test", "/blaXXXbl/test"));
-		assertFalse(pathMatcher.matchStart("/*bla/test", "XXXblab/test"));
-		assertFalse(pathMatcher.matchStart("/*bla/test", "XXXbl/test"));
+		assertThat(pathMatcher.matchStart("/bla*bla/test", "/blaXXXbl/test")).isFalse();
+		assertThat(pathMatcher.matchStart("/*bla/test", "XXXblab/test")).isFalse();
+		assertThat(pathMatcher.matchStart("/*bla/test", "XXXbl/test")).isFalse();
 
-		assertFalse(pathMatcher.matchStart("/????", "/bala/bla"));
+		assertThat(pathMatcher.matchStart("/????", "/bala/bla")).isFalse();
 		assertThat(pathMatcher.matchStart("/**/*bla", "/bla/bla/bla/bbb")).isTrue();
 
 		assertThat(pathMatcher.matchStart("/*bla*/**/bla/**", "/XXXblaXXXX/testing/testing/bla/testing/testing/")).isTrue();
@@ -237,9 +236,9 @@ public class AntPathMatcherTests {
 		// test exact matching
 		assertThat(pathMatcher.match("test", "test")).isTrue();
 		assertThat(pathMatcher.match(".test", ".test")).isTrue();
-		assertFalse(pathMatcher.match(".test/jpg", "test/jpg"));
-		assertFalse(pathMatcher.match("test", ".test"));
-		assertFalse(pathMatcher.match(".test", "test"));
+		assertThat(pathMatcher.match(".test/jpg", "test/jpg")).isFalse();
+		assertThat(pathMatcher.match("test", ".test")).isFalse();
+		assertThat(pathMatcher.match(".test", "test")).isFalse();
 
 		// test matching with ?'s
 		assertThat(pathMatcher.match("t?st", "test")).isTrue();
@@ -247,9 +246,9 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match("tes?", "test")).isTrue();
 		assertThat(pathMatcher.match("te??", "test")).isTrue();
 		assertThat(pathMatcher.match("?es?", "test")).isTrue();
-		assertFalse(pathMatcher.match("tes?", "tes"));
-		assertFalse(pathMatcher.match("tes?", "testt"));
-		assertFalse(pathMatcher.match("tes?", "tsst"));
+		assertThat(pathMatcher.match("tes?", "tes")).isFalse();
+		assertThat(pathMatcher.match("tes?", "testt")).isFalse();
+		assertThat(pathMatcher.match("tes?", "tsst")).isFalse();
 
 		// test matching with *'s
 		assertThat(pathMatcher.match("*", "test")).isTrue();
@@ -261,13 +260,13 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match("*/*", "test/test")).isTrue();
 		assertThat(pathMatcher.match("*/*", "test/test/test")).isTrue();
 		assertThat(pathMatcher.match("test*aaa", "testblaaaa")).isTrue();
-		assertFalse(pathMatcher.match("test*", "tst"));
-		assertFalse(pathMatcher.match("test*", "tsttest"));
-		assertFalse(pathMatcher.match("*test*", "tsttst"));
-		assertFalse(pathMatcher.match("*test", "tsttst"));
-		assertFalse(pathMatcher.match("*/*", "tsttst"));
-		assertFalse(pathMatcher.match("test*aaa", "test"));
-		assertFalse(pathMatcher.match("test*aaa", "testblaaab"));
+		assertThat(pathMatcher.match("test*", "tst")).isFalse();
+		assertThat(pathMatcher.match("test*", "tsttest")).isFalse();
+		assertThat(pathMatcher.match("*test*", "tsttst")).isFalse();
+		assertThat(pathMatcher.match("*test", "tsttst")).isFalse();
+		assertThat(pathMatcher.match("*/*", "tsttst")).isFalse();
+		assertThat(pathMatcher.match("test*aaa", "test")).isFalse();
+		assertThat(pathMatcher.match("test*aaa", "testblaaab")).isFalse();
 
 		// test matching with ?'s and .'s
 		assertThat(pathMatcher.match(".?", ".a")).isTrue();
@@ -287,9 +286,9 @@ public class AntPathMatcherTests {
 		assertThat(pathMatcher.match(".bla.**.**.bla", ".bla.bla.bla.bla.bla.bla")).isTrue();
 		assertThat(pathMatcher.match(".bla*bla.test", ".blaXXXbla.test")).isTrue();
 		assertThat(pathMatcher.match(".*bla.test", ".XXXbla.test")).isTrue();
-		assertFalse(pathMatcher.match(".bla*bla.test", ".blaXXXbl.test"));
-		assertFalse(pathMatcher.match(".*bla.test", "XXXblab.test"));
-		assertFalse(pathMatcher.match(".*bla.test", "XXXbl.test"));
+		assertThat(pathMatcher.match(".bla*bla.test", ".blaXXXbl.test")).isFalse();
+		assertThat(pathMatcher.match(".*bla.test", "XXXblab.test")).isFalse();
+		assertThat(pathMatcher.match(".*bla.test", "XXXbl.test")).isFalse();
 	}
 
 	@Test
@@ -597,7 +596,7 @@ public class AntPathMatcherTests {
 
 		assertThat(pathMatcher.match("/group/{groupName}/members", "/group/sales/members")).isTrue();
 		assertThat(pathMatcher.match("/group/{groupName}/members", "/group/  sales/members")).isTrue();
-		assertFalse(pathMatcher.match("/group/{groupName}/members", "/Group/  Sales/Members"));
+		assertThat(pathMatcher.match("/group/{groupName}/members", "/Group/  Sales/Members")).isFalse();
 	}
 
 	@Test  // SPR-13286

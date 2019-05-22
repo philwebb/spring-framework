@@ -36,8 +36,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.HandlerMapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -172,7 +172,7 @@ public class ServletModelAttributeMethodProcessorTests {
 
 		Optional<TestBean> testBean = (Optional<TestBean>) processor.resolveArgument(
 				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
-		assertFalse(testBean.isPresent());
+		assertThat(testBean.isPresent()).isFalse();
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class ServletModelAttributeMethodProcessorTests {
 
 		Optional<TestBean> testBean =(Optional<TestBean>) processor.resolveArgument(
 				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
-		assertFalse(testBean.isPresent());
+		assertThat(testBean.isPresent()).isFalse();
 	}
 
 

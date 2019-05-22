@@ -38,7 +38,6 @@ import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -433,7 +432,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		String output = getOutput();
 		assertThat(output.contains("id=\"testBean.errors\"")).isTrue();
 		assertThat(output.contains("object error")).isTrue();
-		assertFalse(output.contains("field error"));
+		assertThat(output.contains("field error")).isFalse();
 	}
 
 	@Test
@@ -448,7 +447,7 @@ public class ErrorsTagTests extends AbstractFormTagTests {
 		this.tag.doEndTag();
 		String output = getOutput();
 		assertThat(output.contains("id=\"name.errors\"")).isTrue();
-		assertFalse(output.contains("object error"));
+		assertThat(output.contains("object error")).isFalse();
 		assertThat(output.contains("field error")).isTrue();
 	}
 

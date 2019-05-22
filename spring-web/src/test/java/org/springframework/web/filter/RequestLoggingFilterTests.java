@@ -36,7 +36,6 @@ import org.springframework.web.util.WebUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -62,11 +61,11 @@ public class RequestLoggingFilterTests {
 
 		assertNotNull(filter.beforeRequestMessage);
 		assertThat(filter.beforeRequestMessage.contains("uri=/hotel")).isTrue();
-		assertFalse(filter.beforeRequestMessage.contains("booking=42"));
+		assertThat(filter.beforeRequestMessage.contains("booking=42")).isFalse();
 
 		assertNotNull(filter.afterRequestMessage);
 		assertThat(filter.afterRequestMessage.contains("uri=/hotel")).isTrue();
-		assertFalse(filter.afterRequestMessage.contains("booking=42"));
+		assertThat(filter.afterRequestMessage.contains("booking=42")).isFalse();
 	}
 
 	@Test
@@ -194,7 +193,7 @@ public class RequestLoggingFilterTests {
 
 		assertNotNull(filter.afterRequestMessage);
 		assertThat(filter.afterRequestMessage.contains("Hel")).isTrue();
-		assertFalse(filter.afterRequestMessage.contains("Hello World"));
+		assertThat(filter.afterRequestMessage.contains("Hello World")).isFalse();
 	}
 
 

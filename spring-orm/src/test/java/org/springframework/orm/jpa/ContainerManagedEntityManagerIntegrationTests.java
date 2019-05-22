@@ -32,7 +32,6 @@ import org.springframework.orm.jpa.domain.Person;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -136,7 +135,7 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 
 		startNewTransaction();
 		// Call any method: should cause automatic tx invocation
-		assertFalse(em.contains(new Person()));
+		assertThat(em.contains(new Person())).isFalse();
 		//assertTrue(em.getTransaction().isActive());
 
 		doInstantiateAndSave(em);

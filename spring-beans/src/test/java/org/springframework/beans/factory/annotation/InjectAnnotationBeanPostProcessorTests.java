@@ -48,7 +48,6 @@ import org.springframework.util.SerializationTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -531,7 +530,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(OptionalFieldInjectionBean.class));
 
 		OptionalFieldInjectionBean bean = (OptionalFieldInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isFalse();
 	}
 
 	@Test
@@ -549,7 +548,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(OptionalMethodInjectionBean.class));
 
 		OptionalMethodInjectionBean bean = (OptionalMethodInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isFalse();
 	}
 
 	@Test
@@ -567,7 +566,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(OptionalListFieldInjectionBean.class));
 
 		OptionalListFieldInjectionBean bean = (OptionalListFieldInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isFalse();
 	}
 
 	@Test
@@ -585,7 +584,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(OptionalListMethodInjectionBean.class));
 
 		OptionalListMethodInjectionBean bean = (OptionalListMethodInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isFalse();
 	}
 
 	@Test
@@ -603,7 +602,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(ProviderOfOptionalFieldInjectionBean.class));
 
 		ProviderOfOptionalFieldInjectionBean bean = (ProviderOfOptionalFieldInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isFalse();
 	}
 
 	@Test
@@ -621,7 +620,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(ProviderOfOptionalMethodInjectionBean.class));
 
 		ProviderOfOptionalMethodInjectionBean bean = (ProviderOfOptionalMethodInjectionBean) bf.getBean("annotatedBean");
-		assertFalse(bean.getTestBean().isPresent());
+		assertThat(bean.getTestBean().isPresent()).isFalse();
 	}
 
 	@Test

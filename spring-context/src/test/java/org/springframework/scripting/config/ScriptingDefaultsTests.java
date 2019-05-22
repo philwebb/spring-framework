@@ -28,7 +28,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Mark Fisher
@@ -74,7 +73,7 @@ public class ScriptingDefaultsTests {
 	public void defaultDestroyMethod() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(CONFIG);
 		ITestBean testBean = (ITestBean) context.getBean("nonRefreshableTestBean");
-		assertFalse(testBean.isDestroyed());
+		assertThat(testBean.isDestroyed()).isFalse();
 		context.close();
 		assertThat(testBean.isDestroyed()).isTrue();
 	}

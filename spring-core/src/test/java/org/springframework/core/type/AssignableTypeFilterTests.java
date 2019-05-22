@@ -24,7 +24,6 @@ import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Ramnivas Laddad
@@ -40,7 +39,7 @@ public class AssignableTypeFilterTests {
 
 		AssignableTypeFilter matchingFilter = new AssignableTypeFilter(TestNonInheritingClass.class);
 		AssignableTypeFilter notMatchingFilter = new AssignableTypeFilter(TestInterface.class);
-		assertFalse(notMatchingFilter.match(metadataReader, metadataReaderFactory));
+		assertThat(notMatchingFilter.match(metadataReader, metadataReaderFactory)).isFalse();
 		assertThat(matchingFilter.match(metadataReader, metadataReaderFactory)).isTrue();
 	}
 

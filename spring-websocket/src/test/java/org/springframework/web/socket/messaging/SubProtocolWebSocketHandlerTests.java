@@ -35,7 +35,6 @@ import org.springframework.web.socket.handler.TestWebSocketSession;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.eq;
@@ -187,7 +186,7 @@ public class SubProtocolWebSocketHandlerTests {
 		assertThat(session1.isOpen()).isTrue();
 		assertNull(session1.getCloseStatus());
 
-		assertFalse(session2.isOpen());
+		assertThat(session2.isOpen()).isFalse();
 		assertEquals(CloseStatus.SESSION_NOT_RELIABLE, session2.getCloseStatus());
 
 		assertNotEquals("lastSessionCheckTime not updated", sixtyOneSecondsAgo,

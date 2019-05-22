@@ -60,7 +60,6 @@ import org.springframework.stereotype.Service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Mark Fisher
@@ -305,9 +304,9 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		assertThat(containsBeanClass(candidates, NamedComponent.class)).isTrue();
 		assertThat(containsBeanClass(candidates, ServiceInvocationCounter.class)).isTrue();
 		assertThat(containsBeanClass(candidates, BarComponent.class)).isTrue();
-		assertFalse(containsBeanClass(candidates, FooServiceImpl.class));
-		assertFalse(containsBeanClass(candidates, StubFooDao.class));
-		assertFalse(containsBeanClass(candidates, NamedStubDao.class));
+		assertThat(containsBeanClass(candidates, FooServiceImpl.class)).isFalse();
+		assertThat(containsBeanClass(candidates, StubFooDao.class)).isFalse();
+		assertThat(containsBeanClass(candidates, NamedStubDao.class)).isFalse();
 	}
 
 	@Test
@@ -361,7 +360,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		assertThat(containsBeanClass(candidates, NamedComponent.class)).isTrue();
 		assertThat(containsBeanClass(candidates, ServiceInvocationCounter.class)).isTrue();
 		assertThat(containsBeanClass(candidates, BarComponent.class)).isTrue();
-		assertFalse(containsBeanClass(candidates, FooServiceImpl.class));
+		assertThat(containsBeanClass(candidates, FooServiceImpl.class)).isFalse();
 	}
 
 	@Test

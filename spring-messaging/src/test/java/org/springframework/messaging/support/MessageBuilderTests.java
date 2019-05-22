@@ -27,10 +27,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.IdGenerator;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -127,7 +125,7 @@ public class MessageBuilderTests {
 		Message<Integer> message2 = MessageBuilder.fromMessage(message1)
 			.removeHeader("foo")
 			.build();
-		assertFalse(message2.getHeaders().containsKey("foo"));
+		assertThat(message2.getHeaders().containsKey("foo")).isFalse();
 	}
 
 	@Test
@@ -137,7 +135,7 @@ public class MessageBuilderTests {
 		Message<Integer> message2 = MessageBuilder.fromMessage(message1)
 			.setHeader("foo", null)
 			.build();
-		assertFalse(message2.getHeaders().containsKey("foo"));
+		assertThat(message2.getHeaders().containsKey("foo")).isFalse();
 	}
 
 	@Test

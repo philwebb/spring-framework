@@ -25,7 +25,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests that serve as regression tests for the bugs described in SPR-6888
@@ -114,11 +113,11 @@ public class ClassPathResourceTests {
 	public void directoryNotReadable() {
 		Resource fileDir = new ClassPathResource("org/springframework/core");
 		assertThat(fileDir.exists()).isTrue();
-		assertFalse(fileDir.isReadable());
+		assertThat(fileDir.isReadable()).isFalse();
 
 		Resource jarDir = new ClassPathResource("reactor/core");
 		assertThat(jarDir.exists()).isTrue();
-		assertFalse(jarDir.isReadable());
+		assertThat(jarDir.isReadable()).isFalse();
 	}
 
 

@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 
 /**
@@ -45,7 +45,7 @@ public class EncodedResourceTests {
 
 	@Test
 	public void equalsWithNullOtherObject() {
-		assertFalse(new EncodedResource(resource).equals(null));
+		assertThat(new EncodedResource(resource).equals(null)).isFalse();
 	}
 
 	@Test

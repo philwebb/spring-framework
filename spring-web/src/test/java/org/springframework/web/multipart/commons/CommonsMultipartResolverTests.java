@@ -64,7 +64,6 @@ import org.springframework.web.util.WebUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -263,7 +262,7 @@ public class CommonsMultipartResolverTests {
 		binder.setBindEmptyMultipartFiles(false);
 		String firstBound = mtb2.getField2();
 		binder.bind(request);
-		assertFalse(mtb2.getField2().isEmpty());
+		assertThat(mtb2.getField2().isEmpty()).isFalse();
 		assertEquals(firstBound, mtb2.getField2());
 
 		request = resolver.resolveMultipart(originalRequest);

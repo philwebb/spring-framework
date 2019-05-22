@@ -45,7 +45,6 @@ import org.springframework.web.util.WebUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -208,14 +207,14 @@ public class RedirectViewTests {
 	public void remoteHost() throws Exception {
 		RedirectView rv = new RedirectView();
 
-		assertFalse(rv.isRemoteHost("https://url.somewhere.com"));
-		assertFalse(rv.isRemoteHost("/path"));
-		assertFalse(rv.isRemoteHost("http://url.somewhereelse.com"));
+		assertThat(rv.isRemoteHost("https://url.somewhere.com")).isFalse();
+		assertThat(rv.isRemoteHost("/path")).isFalse();
+		assertThat(rv.isRemoteHost("http://url.somewhereelse.com")).isFalse();
 
 		rv.setHosts(new String[] {"url.somewhere.com"});
 
-		assertFalse(rv.isRemoteHost("https://url.somewhere.com"));
-		assertFalse(rv.isRemoteHost("/path"));
+		assertThat(rv.isRemoteHost("https://url.somewhere.com")).isFalse();
+		assertThat(rv.isRemoteHost("/path")).isFalse();
 		assertThat(rv.isRemoteHost("http://url.somewhereelse.com")).isTrue();
 
 	}

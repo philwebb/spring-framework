@@ -27,7 +27,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -59,7 +58,7 @@ public class SharedEntityManagerFactoryTests {
 
 		EntityManager proxy = proxyFactoryBean.getObject();
 		assertSame(proxy, proxyFactoryBean.getObject());
-		assertFalse(proxy.contains(o));
+		assertThat(proxy.contains(o)).isFalse();
 
 		boolean condition = proxy instanceof EntityManagerProxy;
 		assertThat(condition).isTrue();

@@ -23,7 +23,6 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.resources.LoopResources;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -52,7 +51,7 @@ public class ReactorResourceFactoryTests {
 		HttpResources globalResources = HttpResources.get();
 		assertSame(globalResources, this.resourceFactory.getConnectionProvider());
 		assertSame(globalResources, this.resourceFactory.getLoopResources());
-		assertFalse(globalResources.isDisposed());
+		assertThat(globalResources.isDisposed()).isFalse();
 
 		this.resourceFactory.destroy();
 
@@ -85,7 +84,7 @@ public class ReactorResourceFactoryTests {
 
 		// The below does not work since ConnectionPoolProvider simply checks if pool is empty.
 		// assertFalse(connectionProvider.isDisposed());
-		assertFalse(loopResources.isDisposed());
+		assertThat(loopResources.isDisposed()).isFalse();
 
 		this.resourceFactory.destroy();
 

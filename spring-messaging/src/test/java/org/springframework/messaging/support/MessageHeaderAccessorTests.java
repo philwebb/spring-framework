@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -95,7 +94,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor(message);
 		accessor.removeHeader("foo");
 		Map<String, Object> headers = accessor.toMap();
-		assertFalse(headers.containsKey("foo"));
+		assertThat(headers.containsKey("foo")).isFalse();
 	}
 
 	@Test
@@ -104,7 +103,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor(message);
 		accessor.removeHeader("foo");
 		Map<String, Object> headers = accessor.toMap();
-		assertFalse(headers.containsKey("foo"));
+		assertThat(headers.containsKey("foo")).isFalse();
 	}
 
 	@Test

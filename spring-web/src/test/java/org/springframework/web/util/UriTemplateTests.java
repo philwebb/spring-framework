@@ -28,7 +28,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -124,16 +123,16 @@ public class UriTemplateTests {
 	public void matches() throws Exception {
 		UriTemplate template = new UriTemplate("/hotels/{hotel}/bookings/{booking}");
 		assertThat(template.matches("/hotels/1/bookings/42")).as("UriTemplate does not match").isTrue();
-		assertFalse("UriTemplate matches", template.matches("/hotels/bookings"));
-		assertFalse("UriTemplate matches", template.matches(""));
-		assertFalse("UriTemplate matches", template.matches(null));
+		assertThat(template.matches("/hotels/bookings")).as("UriTemplate matches").isFalse();
+		assertThat(template.matches("")).as("UriTemplate matches").isFalse();
+		assertThat(template.matches(null)).as("UriTemplate matches").isFalse();
 	}
 
 	@Test
 	public void matchesCustomRegex() throws Exception {
 		UriTemplate template = new UriTemplate("/hotels/{hotel:\\d+}");
 		assertThat(template.matches("/hotels/42")).as("UriTemplate does not match").isTrue();
-		assertFalse("UriTemplate matches", template.matches("/hotels/foo"));
+		assertThat(template.matches("/hotels/foo")).as("UriTemplate matches").isFalse();
 	}
 
 	@Test
@@ -186,7 +185,7 @@ public class UriTemplateTests {
 	@Test // SPR-16169
 	public void matchWithMultipleSegmentsAtTheEnd() {
 		UriTemplate template = new UriTemplate("/account/{accountId}");
-		assertFalse(template.matches("/account/15/alias/5"));
+		assertThat(template.matches("/account/15/alias/5")).isFalse();
 	}
 
 	@Test

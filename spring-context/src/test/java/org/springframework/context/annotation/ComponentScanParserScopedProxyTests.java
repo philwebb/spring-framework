@@ -29,7 +29,6 @@ import org.springframework.util.SerializationTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -47,7 +46,7 @@ public class ComponentScanParserScopedProxyTests {
 
 		ScopedProxyTestBean bean = (ScopedProxyTestBean) context.getBean("scopedProxyTestBean");
 		// should not be a proxy
-		assertFalse(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isFalse();
 		context.close();
 	}
 
@@ -59,7 +58,7 @@ public class ComponentScanParserScopedProxyTests {
 
 		ScopedProxyTestBean bean = (ScopedProxyTestBean) context.getBean("scopedProxyTestBean");
 		// should not be a proxy
-		assertFalse(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isFalse();
 		context.close();
 	}
 

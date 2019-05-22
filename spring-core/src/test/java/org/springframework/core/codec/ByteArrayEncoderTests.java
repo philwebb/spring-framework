@@ -25,7 +25,6 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.MimeTypeUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -46,13 +45,13 @@ public class ByteArrayEncoderTests extends AbstractEncoderTestCase<ByteArrayEnco
 	public void canEncode() {
 		assertThat(this.encoder.canEncode(ResolvableType.forClass(byte[].class),
 				MimeTypeUtils.TEXT_PLAIN)).isTrue();
-		assertFalse(this.encoder.canEncode(ResolvableType.forClass(Integer.class),
-				MimeTypeUtils.TEXT_PLAIN));
+		assertThat(this.encoder.canEncode(ResolvableType.forClass(Integer.class),
+				MimeTypeUtils.TEXT_PLAIN)).isFalse();
 		assertThat(this.encoder.canEncode(ResolvableType.forClass(byte[].class),
 				MimeTypeUtils.APPLICATION_JSON)).isTrue();
 
 		// SPR-15464
-		assertFalse(this.encoder.canEncode(ResolvableType.NONE, null));
+		assertThat(this.encoder.canEncode(ResolvableType.NONE, null)).isFalse();
 	}
 
 	@Override

@@ -40,7 +40,6 @@ import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -96,7 +95,7 @@ public class PayloadMethodArgumentResolverTests {
 				new StringMessageConverter(), testValidator(), false);
 
 		assertThat(strictResolver.supportsParameter(this.paramAnnotated)).isTrue();
-		assertFalse(strictResolver.supportsParameter(this.paramNotAnnotated));
+		assertThat(strictResolver.supportsParameter(this.paramNotAnnotated)).isFalse();
 	}
 
 	@Test

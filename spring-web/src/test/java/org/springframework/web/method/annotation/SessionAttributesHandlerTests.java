@@ -33,7 +33,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -56,7 +55,7 @@ public class SessionAttributesHandlerTests {
 		assertThat(sessionAttributesHandler.isHandlerSessionAttribute("attr1", String.class)).isTrue();
 		assertThat(sessionAttributesHandler.isHandlerSessionAttribute("attr2", String.class)).isTrue();
 		assertThat(sessionAttributesHandler.isHandlerSessionAttribute("simple", TestBean.class)).isTrue();
-		assertFalse(sessionAttributesHandler.isHandlerSessionAttribute("simple", String.class));
+		assertThat(sessionAttributesHandler.isHandlerSessionAttribute("simple", String.class)).isFalse();
 	}
 
 	@Test

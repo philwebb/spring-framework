@@ -32,7 +32,6 @@ import org.springframework.web.socket.sockjs.transport.session.StubSockJsService
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -76,7 +75,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 
 		assertEquals("application/javascript;charset=UTF-8", this.response.getHeaders().getContentType().toString());
 		assertEquals("o\n", this.servletResponse.getContentAsString());
-		assertFalse("Polling request should complete after open frame", this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).as("Polling request should complete after open frame").isFalse();
 		verify(this.webSocketHandler).afterConnectionEstablished(session);
 
 		resetRequestAndResponse();
@@ -88,7 +87,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 		resetRequestAndResponse();
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertFalse("Request should have been rejected", this.servletRequest.isAsyncStarted());
+		assertThat(this.servletRequest.isAsyncStarted()).as("Request should have been rejected").isFalse();
 		assertEquals("c[2010,\"Another connection still open\"]\n", this.servletResponse.getContentAsString());
 	}
 

@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rick Evans
@@ -74,7 +73,7 @@ public class BeanPropertySqlParameterSourceTests {
 	@Test
 	public void hasValueWhereTheUnderlyingBeanHasNoSuchProperty() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean());
-		assertFalse(source.hasValue("thisPropertyDoesNotExist"));
+		assertThat(source.hasValue("thisPropertyDoesNotExist")).isFalse();
 	}
 
 	@Test
@@ -87,7 +86,7 @@ public class BeanPropertySqlParameterSourceTests {
 	@Test
 	public void hasValueWhereTheUnderlyingBeanPropertyIsNotReadable() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new NoReadableProperties());
-		assertFalse(source.hasValue("noOp"));
+		assertThat(source.hasValue("noOp")).isFalse();
 	}
 
 	@Test

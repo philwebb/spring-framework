@@ -27,9 +27,9 @@ import java.util.concurrent.Callable;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -65,12 +65,12 @@ public class MethodParameterTests {
 		assertEquals(longParameter, longParameter);
 		assertEquals(intReturnType, intReturnType);
 
-		assertFalse(stringParameter.equals(longParameter));
-		assertFalse(stringParameter.equals(intReturnType));
-		assertFalse(longParameter.equals(stringParameter));
-		assertFalse(longParameter.equals(intReturnType));
-		assertFalse(intReturnType.equals(stringParameter));
-		assertFalse(intReturnType.equals(longParameter));
+		assertThat(stringParameter.equals(longParameter)).isFalse();
+		assertThat(stringParameter.equals(intReturnType)).isFalse();
+		assertThat(longParameter.equals(stringParameter)).isFalse();
+		assertThat(longParameter.equals(intReturnType)).isFalse();
+		assertThat(intReturnType.equals(stringParameter)).isFalse();
+		assertThat(intReturnType.equals(longParameter)).isFalse();
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new MethodParameter(method, 0);

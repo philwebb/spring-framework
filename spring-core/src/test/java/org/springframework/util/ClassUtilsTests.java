@@ -39,7 +39,6 @@ import org.springframework.tests.sample.objects.TestObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -65,7 +64,7 @@ public class ClassUtilsTests {
 	@Test
 	public void testIsPresent() {
 		assertThat(ClassUtils.isPresent("java.lang.String", classLoader)).isTrue();
-		assertFalse(ClassUtils.isPresent("java.lang.MySpecialString", classLoader));
+		assertThat(ClassUtils.isPresent("java.lang.MySpecialString", classLoader)).isFalse();
 	}
 
 	@Test
@@ -138,15 +137,15 @@ public class ClassUtilsTests {
 		assertThat(ClassUtils.isCacheSafe(String.class, childLoader1)).isTrue();
 		assertThat(ClassUtils.isCacheSafe(String.class, childLoader2)).isTrue();
 		assertThat(ClassUtils.isCacheSafe(String.class, childLoader3)).isTrue();
-		assertFalse(ClassUtils.isCacheSafe(InnerClass.class, null));
+		assertThat(ClassUtils.isCacheSafe(InnerClass.class, null)).isFalse();
 		assertThat(ClassUtils.isCacheSafe(InnerClass.class, classLoader)).isTrue();
 		assertThat(ClassUtils.isCacheSafe(InnerClass.class, childLoader1)).isTrue();
 		assertThat(ClassUtils.isCacheSafe(InnerClass.class, childLoader2)).isTrue();
 		assertThat(ClassUtils.isCacheSafe(InnerClass.class, childLoader3)).isTrue();
-		assertFalse(ClassUtils.isCacheSafe(composite, null));
-		assertFalse(ClassUtils.isCacheSafe(composite, classLoader));
+		assertThat(ClassUtils.isCacheSafe(composite, null)).isFalse();
+		assertThat(ClassUtils.isCacheSafe(composite, classLoader)).isFalse();
 		assertThat(ClassUtils.isCacheSafe(composite, childLoader1)).isTrue();
-		assertFalse(ClassUtils.isCacheSafe(composite, childLoader2));
+		assertThat(ClassUtils.isCacheSafe(composite, childLoader2)).isFalse();
 		assertThat(ClassUtils.isCacheSafe(composite, childLoader3)).isTrue();
 	}
 
@@ -238,8 +237,8 @@ public class ClassUtilsTests {
 	public void testHasMethod() {
 		assertThat(ClassUtils.hasMethod(Collection.class, "size")).isTrue();
 		assertThat(ClassUtils.hasMethod(Collection.class, "remove", Object.class)).isTrue();
-		assertFalse(ClassUtils.hasMethod(Collection.class, "remove"));
-		assertFalse(ClassUtils.hasMethod(Collection.class, "someOtherMethod"));
+		assertThat(ClassUtils.hasMethod(Collection.class, "remove")).isFalse();
+		assertThat(ClassUtils.hasMethod(Collection.class, "someOtherMethod")).isFalse();
 	}
 
 	@Test
@@ -266,7 +265,7 @@ public class ClassUtilsTests {
 
 	@Test
 	public void testCountOverloadedMethods() {
-		assertFalse(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "foobar"));
+		assertThat(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "foobar")).isFalse();
 		// no args
 		assertThat(ClassUtils.hasAtLeastOneMethodWithName(TestObject.class, "hashCode")).isTrue();
 		// matches although it takes an arg
@@ -304,10 +303,10 @@ public class ClassUtilsTests {
 		assertThat(ClassUtils.isAssignable(Number.class, int.class)).isTrue();
 		assertThat(ClassUtils.isAssignable(Integer.class, int.class)).isTrue();
 		assertThat(ClassUtils.isAssignable(int.class, Integer.class)).isTrue();
-		assertFalse(ClassUtils.isAssignable(String.class, Object.class));
-		assertFalse(ClassUtils.isAssignable(Integer.class, Number.class));
-		assertFalse(ClassUtils.isAssignable(Integer.class, double.class));
-		assertFalse(ClassUtils.isAssignable(double.class, Integer.class));
+		assertThat(ClassUtils.isAssignable(String.class, Object.class)).isFalse();
+		assertThat(ClassUtils.isAssignable(Integer.class, Number.class)).isFalse();
+		assertThat(ClassUtils.isAssignable(Integer.class, double.class)).isFalse();
+		assertThat(ClassUtils.isAssignable(double.class, Integer.class)).isFalse();
 	}
 
 	@Test

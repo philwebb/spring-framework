@@ -21,7 +21,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -56,7 +55,7 @@ public class StompClientSupportTests {
 		assertThat(this.stompClient.isDefaultHeartbeatEnabled()).isTrue();
 
 		this.stompClient.setDefaultHeartbeat(new long[] {0, 0});
-		assertFalse(this.stompClient.isDefaultHeartbeatEnabled());
+		assertThat(this.stompClient.isDefaultHeartbeatEnabled()).isFalse();
 	}
 
 	@Test

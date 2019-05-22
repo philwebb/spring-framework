@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Stephane Nicoll
@@ -70,7 +69,7 @@ public class InstanceFilterTests {
 	}
 
 	private <T> void doNotMatch(InstanceFilter<T> filter, T candidate) {
-		assertFalse("filter '" + filter + "' should not match " + candidate, filter.match(candidate));
+		assertThat(filter.match(candidate)).as("filter '" + filter + "' should not match " + candidate).isFalse();
 	}
 
 }

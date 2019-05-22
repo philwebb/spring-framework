@@ -35,8 +35,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.protobuf.Msg;
 import org.springframework.web.reactive.protobuf.SecondMsg;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Integration tests for Protobuf support.
@@ -73,7 +73,7 @@ public class ProtobufIntegrationTests extends AbstractRequestMappingIntegrationT
 				.uri("/message")
 				.exchange()
 				.doOnNext(response -> {
-					assertFalse(response.headers().contentType().get().getParameters().containsKey("delimited"));
+					assertThat(response.headers().contentType().get().getParameters().containsKey("delimited")).isFalse();
 					assertEquals("sample.proto", response.headers().header("X-Protobuf-Schema").get(0));
 					assertEquals("Msg", response.headers().header("X-Protobuf-Message").get(0));
 				})

@@ -44,7 +44,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -84,7 +83,7 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.configurer.setRenderFunction("render");
 		this.view.setApplicationContext(this.wac);
-		assertFalse(this.view.checkResource(Locale.ENGLISH));
+		assertThat(this.view.checkResource(Locale.ENGLISH)).isFalse();
 	}
 
 	@Test

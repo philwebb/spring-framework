@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.springframework.jmx.JmxTestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -71,7 +70,7 @@ public class MethodExclusionMBeanInfoAssemblerTests extends AbstractJmxAssembler
 		ModelMBeanAttributeInfo attr = info.getAttribute("Superman");
 
 		assertThat(attr.isReadable()).isTrue();
-		assertFalse(attr.isWritable());
+		assertThat(attr.isWritable()).isFalse();
 	}
 
 	/*
@@ -85,7 +84,7 @@ public class MethodExclusionMBeanInfoAssemblerTests extends AbstractJmxAssembler
 		ignored.setProperty(beanKey, "dontExposeMe,setSuperman");
 		assembler.setIgnoredMethodMappings(ignored);
 		Method method = JmxTestBean.class.getMethod("dontExposeMe");
-		assertFalse(assembler.isNotIgnored(method, beanKey));
+		assertThat(assembler.isNotIgnored(method, beanKey)).isFalse();
 		// this bean does not have any ignored methods on it, so must obviously not be ignored...
 		assertThat(assembler.isNotIgnored(method, "someOtherBeanKey")).isTrue();
 	}

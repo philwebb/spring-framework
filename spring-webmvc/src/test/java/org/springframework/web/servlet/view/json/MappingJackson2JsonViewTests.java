@@ -57,7 +57,6 @@ import org.springframework.web.servlet.View;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -192,7 +191,7 @@ public class MappingJackson2JsonViewTests {
 	public void renderSimpleBeanNotPrefixed() throws Exception {
 		view.setPrefixJson(false);
 		renderSimpleBean();
-		assertFalse(response.getContentAsString().startsWith(")]}', "));
+		assertThat(response.getContentAsString().startsWith(")]}', ")).isFalse();
 	}
 
 	@Test
@@ -301,8 +300,8 @@ public class MappingJackson2JsonViewTests {
 		assertThat(content.length() > 0).isTrue();
 		assertEquals(content.length(), response.getContentLength());
 		assertThat(content.contains("foo")).isTrue();
-		assertFalse(content.contains("boo"));
-		assertFalse(content.contains(JsonView.class.getName()));
+		assertThat(content.contains("boo")).isFalse();
+		assertThat(content.contains(JsonView.class.getName())).isFalse();
 	}
 
 	@Test
@@ -325,7 +324,7 @@ public class MappingJackson2JsonViewTests {
 		assertEquals(content.length(), response.getContentLength());
 		assertThat(content).contains("\"property1\":\"value\"");
 		assertThat(content).doesNotContain("\"property2\":\"value\"");
-		assertFalse(content.contains(FilterProvider.class.getName()));
+		assertThat(content.contains(FilterProvider.class.getName())).isFalse();
 	}
 
 	private void validateResult() throws Exception {

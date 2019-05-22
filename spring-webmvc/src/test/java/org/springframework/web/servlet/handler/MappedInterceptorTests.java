@@ -30,7 +30,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -62,7 +61,7 @@ public class MappedInterceptorTests {
 		MappedInterceptor mappedInterceptor = new MappedInterceptor(new String[] { "/foo/*" }, this.interceptor);
 
 		assertThat(mappedInterceptor.matches("/foo/bar", pathMatcher)).isTrue();
-		assertFalse(mappedInterceptor.matches("/bar/foo", pathMatcher));
+		assertThat(mappedInterceptor.matches("/bar/foo", pathMatcher)).isFalse();
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class MappedInterceptorTests {
 		MappedInterceptor mappedInterceptor = new MappedInterceptor(null, new String[] { "/admin/**" }, this.interceptor);
 
 		assertThat(mappedInterceptor.matches("/foo", pathMatcher)).isTrue();
-		assertFalse(mappedInterceptor.matches("/admin/foo", pathMatcher));
+		assertThat(mappedInterceptor.matches("/admin/foo", pathMatcher)).isFalse();
 	}
 
 	@Test
@@ -85,7 +84,7 @@ public class MappedInterceptorTests {
 				new String[] { "/**" }, new String[] { "/admin/**" }, this.interceptor);
 
 		assertThat(mappedInterceptor.matches("/foo", pathMatcher)).isTrue();
-		assertFalse(mappedInterceptor.matches("/admin/foo", pathMatcher));
+		assertThat(mappedInterceptor.matches("/admin/foo", pathMatcher)).isFalse();
 	}
 
 	@Test
@@ -94,7 +93,7 @@ public class MappedInterceptorTests {
 		mappedInterceptor.setPathMatcher(new TestPathMatcher());
 
 		assertThat(mappedInterceptor.matches("/foo/123", pathMatcher)).isTrue();
-		assertFalse(mappedInterceptor.matches("/foo/bar", pathMatcher));
+		assertThat(mappedInterceptor.matches("/foo/bar", pathMatcher)).isFalse();
 	}
 
 	@Test

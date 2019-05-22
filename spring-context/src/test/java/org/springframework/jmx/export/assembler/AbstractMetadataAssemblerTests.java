@@ -37,7 +37,6 @@ import org.springframework.tests.aop.interceptor.NopInterceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -81,7 +80,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	public void testReadOnlyAttribute() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute(AGE_ATTRIBUTE);
-		assertFalse("The age attribute should not be writable", attr.isWritable());
+		assertThat(attr.isWritable()).as("The age attribute should not be writable").isFalse();
 	}
 
 	@Test

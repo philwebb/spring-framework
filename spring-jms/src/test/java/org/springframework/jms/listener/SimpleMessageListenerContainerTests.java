@@ -37,7 +37,6 @@ import org.springframework.util.ErrorHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 import static temp.XAssert.fail;
@@ -76,10 +75,9 @@ public class SimpleMessageListenerContainerTests {
 
 	@Test
 	public void testSessionTransactedModeReallyDoesDefaultToFalse() {
-		assertFalse("The [pubSubLocal] property of SimpleMessageListenerContainer " +
+		assertThat(this.container.isPubSubNoLocal()).as("The [pubSubLocal] property of SimpleMessageListenerContainer " +
 				"must default to false. Change this test (and the " +
-				"attendant Javadoc) if you have changed the default.",
-				this.container.isPubSubNoLocal());
+				"attendant Javadoc) if you have changed the default.").isFalse();
 	}
 
 	@Test
@@ -238,7 +236,7 @@ public class SimpleMessageListenerContainerTests {
 			@Override
 			public void execute(Runnable task) {
 				listener.executorInvoked = true;
-				assertFalse(listener.listenerInvoked);
+				assertThat(listener.listenerInvoked).isFalse();
 				task.run();
 				assertThat(listener.listenerInvoked).isTrue();
 			}

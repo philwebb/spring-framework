@@ -26,7 +26,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -56,8 +55,8 @@ public abstract class AbstractRegexpMethodPointcutTests {
 	}
 
 	protected void noPatternSuppliedTests(AbstractRegexpMethodPointcut rpc) throws Exception {
-		assertFalse(rpc.matches(Object.class.getMethod("hashCode"), String.class));
-		assertFalse(rpc.matches(Object.class.getMethod("wait"), Object.class));
+		assertThat(rpc.matches(Object.class.getMethod("hashCode"), String.class)).isFalse();
+		assertThat(rpc.matches(Object.class.getMethod("wait"), Object.class)).isFalse();
 		assertEquals(0, rpc.getPatterns().length);
 	}
 
@@ -73,21 +72,21 @@ public abstract class AbstractRegexpMethodPointcutTests {
 		// assumes rpc.setPattern("java.lang.Object.hashCode");
 		assertThat(rpc.matches(Object.class.getMethod("hashCode"), String.class)).isTrue();
 		assertThat(rpc.matches(Object.class.getMethod("hashCode"), Object.class)).isTrue();
-		assertFalse(rpc.matches(Object.class.getMethod("wait"), Object.class));
+		assertThat(rpc.matches(Object.class.getMethod("wait"), Object.class)).isFalse();
 	}
 
 	@Test
 	public void testSpecificMatch() throws Exception {
 		rpc.setPattern("java.lang.String.hashCode");
 		assertThat(rpc.matches(Object.class.getMethod("hashCode"), String.class)).isTrue();
-		assertFalse(rpc.matches(Object.class.getMethod("hashCode"), Object.class));
+		assertThat(rpc.matches(Object.class.getMethod("hashCode"), Object.class)).isFalse();
 	}
 
 	@Test
 	public void testWildcard() throws Exception {
 		rpc.setPattern(".*Object.hashCode");
 		assertThat(rpc.matches(Object.class.getMethod("hashCode"), Object.class)).isTrue();
-		assertFalse(rpc.matches(Object.class.getMethod("wait"), Object.class));
+		assertThat(rpc.matches(Object.class.getMethod("wait"), Object.class)).isFalse();
 	}
 
 	@Test
@@ -102,7 +101,7 @@ public abstract class AbstractRegexpMethodPointcutTests {
 		rpc.setPattern("java.lang.Object.*");
 		assertThat(rpc.matches(Exception.class.getMethod("hashCode"), IOException.class)).isTrue();
 		// Doesn't match a method from Throwable
-		assertFalse(rpc.matches(Exception.class.getMethod("getMessage"), Exception.class));
+		assertThat(rpc.matches(Exception.class.getMethod("getMessage"), Exception.class)).isFalse();
 	}
 
 	@Test
@@ -110,7 +109,7 @@ public abstract class AbstractRegexpMethodPointcutTests {
 		this.rpc.setPattern(".*get.*");
 		this.rpc.setExcludedPattern(".*Age.*");
 		assertThat(this.rpc.matches(TestBean.class.getMethod("getName"), TestBean.class)).isTrue();
-		assertFalse(this.rpc.matches(TestBean.class.getMethod("getAge"), TestBean.class));
+		assertThat(this.rpc.matches(TestBean.class.getMethod("getAge"), TestBean.class)).isFalse();
 	}
 
 }

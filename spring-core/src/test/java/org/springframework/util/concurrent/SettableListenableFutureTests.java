@@ -28,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,8 +46,8 @@ public class SettableListenableFutureTests {
 
 	@Test
 	public void validateInitialValues() {
-		assertFalse(settableListenableFuture.isCancelled());
-		assertFalse(settableListenableFuture.isDone());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
+		assertThat(settableListenableFuture.isDone()).isFalse();
 	}
 
 	@Test
@@ -56,7 +55,7 @@ public class SettableListenableFutureTests {
 		String string = "hello";
 		assertThat(settableListenableFuture.set(string)).isTrue();
 		assertThat(settableListenableFuture.get()).isEqualTo(string);
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -66,14 +65,14 @@ public class SettableListenableFutureTests {
 		assertThat(settableListenableFuture.set(string)).isTrue();
 		Future<String> completable = settableListenableFuture.completable();
 		assertThat(completable.get()).isEqualTo(string);
-		assertFalse(completable.isCancelled());
+		assertThat(completable.isCancelled()).isFalse();
 		assertThat(completable.isDone()).isTrue();
 	}
 
 	@Test
 	public void setValueUpdatesDoneStatus() {
 		settableListenableFuture.set("hello");
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -86,7 +85,7 @@ public class SettableListenableFutureTests {
 				settableListenableFuture::get)
 			.withCause(exception);
 
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -100,7 +99,7 @@ public class SettableListenableFutureTests {
 				completable::get)
 			.withCause(exception);
 
-		assertFalse(completable.isCancelled());
+		assertThat(completable.isCancelled()).isFalse();
 		assertThat(completable.isDone()).isTrue();
 	}
 
@@ -113,7 +112,7 @@ public class SettableListenableFutureTests {
 				settableListenableFuture::get)
 			.withCause(exception);
 
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -127,7 +126,7 @@ public class SettableListenableFutureTests {
 				completable::get)
 			.withCause(exception);
 
-		assertFalse(completable.isCancelled());
+		assertThat(completable.isCancelled()).isFalse();
 		assertThat(completable.isDone()).isTrue();
 	}
 
@@ -149,7 +148,7 @@ public class SettableListenableFutureTests {
 
 		settableListenableFuture.set(string);
 		assertThat(callbackHolder[0]).isEqualTo(string);
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -170,9 +169,9 @@ public class SettableListenableFutureTests {
 		});
 
 		settableListenableFuture.set(string);
-		assertFalse(settableListenableFuture.set("good bye"));
+		assertThat(settableListenableFuture.set("good bye")).isFalse();
 		assertThat(callbackHolder[0]).isEqualTo(string);
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -194,7 +193,7 @@ public class SettableListenableFutureTests {
 
 		settableListenableFuture.setException(exception);
 		assertThat(callbackHolder[0]).isEqualTo(exception);
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -215,9 +214,9 @@ public class SettableListenableFutureTests {
 		});
 
 		settableListenableFuture.setException(exception);
-		assertFalse(settableListenableFuture.setException(new IllegalArgumentException()));
+		assertThat(settableListenableFuture.setException(new IllegalArgumentException())).isFalse();
 		assertThat(callbackHolder[0]).isEqualTo(exception);
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -225,7 +224,7 @@ public class SettableListenableFutureTests {
 	public void nullIsAcceptedAsValueToSet() throws ExecutionException, InterruptedException {
 		settableListenableFuture.set(null);
 		assertNull(settableListenableFuture.get());
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -248,7 +247,7 @@ public class SettableListenableFutureTests {
 
 		String value = settableListenableFuture.get();
 		assertThat(value).isEqualTo(string);
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
@@ -277,14 +276,14 @@ public class SettableListenableFutureTests {
 
 		String value = settableListenableFuture.get(500L, TimeUnit.MILLISECONDS);
 		assertThat(value).isEqualTo(string);
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
 	@Test
 	public void cancelPreventsValueFromBeingSet() {
 		assertThat(settableListenableFuture.cancel(true)).isTrue();
-		assertFalse(settableListenableFuture.set("hello"));
+		assertThat(settableListenableFuture.set("hello")).isFalse();
 		assertThat(settableListenableFuture.isCancelled()).isTrue();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
@@ -309,7 +308,7 @@ public class SettableListenableFutureTests {
 	public void cancelWithMayInterruptIfRunningFalseDoesNotCallOverriddenMethod() {
 		InterruptibleSettableListenableFuture interruptibleFuture = new InterruptibleSettableListenableFuture();
 		assertThat(interruptibleFuture.cancel(false)).isTrue();
-		assertFalse(interruptibleFuture.calledInterruptTask());
+		assertThat(interruptibleFuture.calledInterruptTask()).isFalse();
 		assertThat(interruptibleFuture.isCancelled()).isTrue();
 		assertThat(interruptibleFuture.isDone()).isTrue();
 	}
@@ -317,15 +316,15 @@ public class SettableListenableFutureTests {
 	@Test
 	public void setPreventsCancel() {
 		assertThat(settableListenableFuture.set("hello")).isTrue();
-		assertFalse(settableListenableFuture.cancel(true));
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.cancel(true)).isFalse();
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 
 	@Test
 	public void cancelPreventsExceptionFromBeingSet() {
 		assertThat(settableListenableFuture.cancel(true)).isTrue();
-		assertFalse(settableListenableFuture.setException(new RuntimeException()));
+		assertThat(settableListenableFuture.setException(new RuntimeException())).isFalse();
 		assertThat(settableListenableFuture.isCancelled()).isTrue();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
@@ -333,8 +332,8 @@ public class SettableListenableFutureTests {
 	@Test
 	public void setExceptionPreventsCancel() {
 		assertThat(settableListenableFuture.setException(new RuntimeException())).isTrue();
-		assertFalse(settableListenableFuture.cancel(true));
-		assertFalse(settableListenableFuture.isCancelled());
+		assertThat(settableListenableFuture.cancel(true)).isFalse();
+		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}
 

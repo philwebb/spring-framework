@@ -46,8 +46,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertFalse;
-
 /**
  * Integration tests for {@link MockMvcHtmlUnitDriverBuilder}.
  *
@@ -114,7 +112,7 @@ public class MockMvcHtmlUnitDriverBuilderTests {
 	@Test
 	public void javaScriptDisabled() {
 		this.driver = MockMvcHtmlUnitDriverBuilder.mockMvcSetup(this.mockMvc).javascriptEnabled(false).build();
-		assertFalse(this.driver.isJavascriptEnabled());
+		assertThat(this.driver.isJavascriptEnabled()).isFalse();
 	}
 
 	@Test // SPR-14066

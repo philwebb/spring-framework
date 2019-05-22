@@ -71,7 +71,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -1115,7 +1114,7 @@ public class DataBinderTests {
 		pvs.add("name", null);
 		binder.bind(pvs);
 		assertEquals("1", bean.getId());
-		assertFalse(bean.getName().isPresent());
+		assertThat(bean.getName().isPresent()).isFalse();
 
 		pvs = new MutablePropertyValues();
 		pvs.add("id", "2");
@@ -1936,7 +1935,7 @@ public class DataBinderTests {
 		mpv.add("f[list][0]", "firstValue");
 		mpv.add("f[list][1]", "secondValue");
 		binder.bind(mpv);
-		assertFalse(binder.getBindingResult().hasErrors());
+		assertThat(binder.getBindingResult().hasErrors()).isFalse();
 		@SuppressWarnings("unchecked")
 		List<Object> list = (List<Object>) form.getF().get("list");
 		assertEquals("firstValue", list.get(0));

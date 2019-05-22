@@ -26,7 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -57,10 +56,10 @@ public class StringUtilsTests {
 
 	@Test
 	public void testContainsWhitespace() {
-		assertFalse(StringUtils.containsWhitespace(null));
-		assertFalse(StringUtils.containsWhitespace(""));
-		assertFalse(StringUtils.containsWhitespace("a"));
-		assertFalse(StringUtils.containsWhitespace("abc"));
+		assertThat(StringUtils.containsWhitespace(null)).isFalse();
+		assertThat(StringUtils.containsWhitespace("")).isFalse();
+		assertThat(StringUtils.containsWhitespace("a")).isFalse();
+		assertThat(StringUtils.containsWhitespace("abc")).isFalse();
 		assertThat(StringUtils.containsWhitespace(" ")).isTrue();
 		assertThat(StringUtils.containsWhitespace(" a")).isTrue();
 		assertThat(StringUtils.containsWhitespace("abc ")).isTrue();
@@ -157,11 +156,11 @@ public class StringUtilsTests {
 		assertThat(StringUtils.startsWithIgnoreCase("foObar", prefix)).isTrue();
 		assertThat(StringUtils.startsWithIgnoreCase("FOObar", prefix)).isTrue();
 		assertThat(StringUtils.startsWithIgnoreCase("fOobar", prefix)).isTrue();
-		assertFalse(StringUtils.startsWithIgnoreCase(null, prefix));
-		assertFalse(StringUtils.startsWithIgnoreCase("fOobar", null));
-		assertFalse(StringUtils.startsWithIgnoreCase("b", prefix));
-		assertFalse(StringUtils.startsWithIgnoreCase("barfoo", prefix));
-		assertFalse(StringUtils.startsWithIgnoreCase("barfoobar", prefix));
+		assertThat(StringUtils.startsWithIgnoreCase(null, prefix)).isFalse();
+		assertThat(StringUtils.startsWithIgnoreCase("fOobar", null)).isFalse();
+		assertThat(StringUtils.startsWithIgnoreCase("b", prefix)).isFalse();
+		assertThat(StringUtils.startsWithIgnoreCase("barfoo", prefix)).isFalse();
+		assertThat(StringUtils.startsWithIgnoreCase("barfoobar", prefix)).isFalse();
 	}
 
 	@Test
@@ -176,11 +175,11 @@ public class StringUtilsTests {
 		assertThat(StringUtils.endsWithIgnoreCase("barfoO", suffix)).isTrue();
 		assertThat(StringUtils.endsWithIgnoreCase("barFOO", suffix)).isTrue();
 		assertThat(StringUtils.endsWithIgnoreCase("barfOo", suffix)).isTrue();
-		assertFalse(StringUtils.endsWithIgnoreCase(null, suffix));
-		assertFalse(StringUtils.endsWithIgnoreCase("barfOo", null));
-		assertFalse(StringUtils.endsWithIgnoreCase("b", suffix));
-		assertFalse(StringUtils.endsWithIgnoreCase("foobar", suffix));
-		assertFalse(StringUtils.endsWithIgnoreCase("barfoobar", suffix));
+		assertThat(StringUtils.endsWithIgnoreCase(null, suffix)).isFalse();
+		assertThat(StringUtils.endsWithIgnoreCase("barfOo", null)).isFalse();
+		assertThat(StringUtils.endsWithIgnoreCase("b", suffix)).isFalse();
+		assertThat(StringUtils.endsWithIgnoreCase("foobar", suffix)).isFalse();
+		assertThat(StringUtils.endsWithIgnoreCase("barfoobar", suffix)).isFalse();
 	}
 
 	@Test
@@ -188,15 +187,15 @@ public class StringUtilsTests {
 		assertThat(StringUtils.substringMatch("foo", 0, "foo")).isTrue();
 		assertThat(StringUtils.substringMatch("foo", 1, "oo")).isTrue();
 		assertThat(StringUtils.substringMatch("foo", 2, "o")).isTrue();
-		assertFalse(StringUtils.substringMatch("foo", 0, "fOo"));
-		assertFalse(StringUtils.substringMatch("foo", 1, "fOo"));
-		assertFalse(StringUtils.substringMatch("foo", 2, "fOo"));
-		assertFalse(StringUtils.substringMatch("foo", 3, "fOo"));
-		assertFalse(StringUtils.substringMatch("foo", 1, "Oo"));
-		assertFalse(StringUtils.substringMatch("foo", 2, "Oo"));
-		assertFalse(StringUtils.substringMatch("foo", 3, "Oo"));
-		assertFalse(StringUtils.substringMatch("foo", 2, "O"));
-		assertFalse(StringUtils.substringMatch("foo", 3, "O"));
+		assertThat(StringUtils.substringMatch("foo", 0, "fOo")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 1, "fOo")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 2, "fOo")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 3, "fOo")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 1, "Oo")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 2, "Oo")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 3, "Oo")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 2, "O")).isFalse();
+		assertThat(StringUtils.substringMatch("foo", 3, "O")).isFalse();
 	}
 
 	@Test
@@ -408,16 +407,11 @@ public class StringUtilsTests {
 		assertThat(StringUtils.pathEquals("/dummy1/bin/tmp/../../dummy2/dummy3", "/dummy1/dummy2/dummy3")).as("Must be true for double top paths on 1").isTrue();
 		assertThat(StringUtils.pathEquals("/dummy1/dummy2/dummy3", "/dummy1/dum/dum/../../dummy2/dummy3")).as("Must be true for double top paths on 2 with similarity").isTrue();
 		assertThat(StringUtils.pathEquals("./dummy1/dummy2/dummy3", "dummy1/dum/./dum/../../dummy2/dummy3")).as("Must be true for current paths").isTrue();
-		assertFalse("Must be false for relative/absolute paths",
-				StringUtils.pathEquals("./dummy1/dummy2/dummy3", "/dummy1/dum/./dum/../../dummy2/dummy3"));
-		assertFalse("Must be false for different strings",
-				StringUtils.pathEquals("/dummy1/dummy2/dummy3", "/dummy1/dummy4/dummy3"));
-		assertFalse("Must be false for one false path on 1",
-				StringUtils.pathEquals("/dummy1/bin/tmp/../dummy2/dummy3", "/dummy1/dummy2/dummy3"));
-		assertFalse("Must be false for one false win top path on 2",
-				StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\bin\\tmp\\..\\dummy2\\dummy3"));
-		assertFalse("Must be false for top path on 1 + difference",
-				StringUtils.pathEquals("/dummy1/bin/../dummy2/dummy3", "/dummy1/dummy2/dummy4"));
+		assertThat(StringUtils.pathEquals("./dummy1/dummy2/dummy3", "/dummy1/dum/./dum/../../dummy2/dummy3")).as("Must be false for relative/absolute paths").isFalse();
+		assertThat(StringUtils.pathEquals("/dummy1/dummy2/dummy3", "/dummy1/dummy4/dummy3")).as("Must be false for different strings").isFalse();
+		assertThat(StringUtils.pathEquals("/dummy1/bin/tmp/../dummy2/dummy3", "/dummy1/dummy2/dummy3")).as("Must be false for one false path on 1").isFalse();
+		assertThat(StringUtils.pathEquals("C:\\dummy1\\dummy2\\dummy3", "C:\\dummy1\\bin\\tmp\\..\\dummy2\\dummy3")).as("Must be false for one false win top path on 2").isFalse();
+		assertThat(StringUtils.pathEquals("/dummy1/bin/../dummy2/dummy3", "/dummy1/dummy2/dummy4")).as("Must be false for top path on 1 + difference").isFalse();
 	}
 
 	@Test

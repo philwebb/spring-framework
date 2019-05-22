@@ -32,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -51,8 +50,8 @@ public class ObjectUtilsTests {
 		assertThat(ObjectUtils.isCheckedException(new Exception())).isTrue();
 		assertThat(ObjectUtils.isCheckedException(new SQLException())).isTrue();
 
-		assertFalse(ObjectUtils.isCheckedException(new RuntimeException()));
-		assertFalse(ObjectUtils.isCheckedException(new IllegalArgumentException("")));
+		assertThat(ObjectUtils.isCheckedException(new RuntimeException())).isFalse();
+		assertThat(ObjectUtils.isCheckedException(new IllegalArgumentException(""))).isFalse();
 
 		// Any Throwable other than RuntimeException and Error
 		// has to be considered checked according to the JLS.
@@ -72,22 +71,22 @@ public class ObjectUtilsTests {
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), sqlAndIO)).isTrue();
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new RuntimeException(), throwable)).isTrue();
 
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Exception()));
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), empty));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Exception())).isFalse();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), empty)).isFalse();
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), exception)).isTrue();
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), sqlAndIO));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), sqlAndIO)).isFalse();
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Exception(), throwable)).isTrue();
 
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new SQLException()));
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), empty));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException())).isFalse();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), empty)).isFalse();
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), exception)).isTrue();
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), sqlAndIO)).isTrue();
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new SQLException(), throwable)).isTrue();
 
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable()));
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), empty));
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), exception));
-		assertFalse(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), sqlAndIO));
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Throwable())).isFalse();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), empty)).isFalse();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), exception)).isFalse();
+		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), sqlAndIO)).isFalse();
 		assertThat(ObjectUtils.isCompatibleWithThrowsClause(new Throwable(), throwable)).isTrue();
 	}
 
@@ -105,8 +104,8 @@ public class ObjectUtilsTests {
 		boolean condition = isEmpty(new Integer[0]);
 		assertThat(condition).isTrue();
 
-		assertFalse(isEmpty(new int[] {42}));
-		assertFalse(isEmpty(new Integer[] {42}));
+		assertThat(isEmpty(new int[] {42})).isFalse();
+		assertThat(isEmpty(new Integer[] {42})).isFalse();
 	}
 
 	@Test
@@ -116,8 +115,8 @@ public class ObjectUtilsTests {
 
 		Set<String> set = new HashSet<>();
 		set.add("foo");
-		assertFalse(isEmpty(set));
-		assertFalse(isEmpty(Arrays.asList("foo")));
+		assertThat(isEmpty(set)).isFalse();
+		assertThat(isEmpty(Arrays.asList("foo"))).isFalse();
 	}
 
 	@Test
@@ -126,7 +125,7 @@ public class ObjectUtilsTests {
 
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("foo", 42L);
-		assertFalse(isEmpty(map));
+		assertThat(isEmpty(map)).isFalse();
 	}
 
 	@Test
@@ -134,16 +133,16 @@ public class ObjectUtilsTests {
 		assertThat(isEmpty(new StringBuilder())).isTrue();
 		assertThat(isEmpty("")).isTrue();
 
-		assertFalse(isEmpty(new StringBuilder("foo")));
-		assertFalse(isEmpty("   "));
-		assertFalse(isEmpty("\t"));
-		assertFalse(isEmpty("foo"));
+		assertThat(isEmpty(new StringBuilder("foo"))).isFalse();
+		assertThat(isEmpty("   ")).isFalse();
+		assertThat(isEmpty("\t")).isFalse();
+		assertThat(isEmpty("foo")).isFalse();
 	}
 
 	@Test
 	public void isEmptyUnsupportedObjectType() {
-		assertFalse(isEmpty(42L));
-		assertFalse(isEmpty(new Object()));
+		assertThat(isEmpty(42L)).isFalse();
+		assertThat(isEmpty(new Object())).isFalse();
 	}
 
 	@Test
@@ -300,12 +299,12 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isArrayOfPrimitivesWithObjectArray() {
-		assertFalse(ClassUtils.isPrimitiveArray(Object[].class));
+		assertThat(ClassUtils.isPrimitiveArray(Object[].class)).isFalse();
 	}
 
 	@Test
 	public void isArrayOfPrimitivesWithNonArray() {
-		assertFalse(ClassUtils.isPrimitiveArray(String.class));
+		assertThat(ClassUtils.isPrimitiveArray(String.class)).isFalse();
 	}
 
 	@Test
@@ -380,7 +379,7 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void isPrimitiveOrWrapperWithNonPrimitiveOrWrapperClass() {
-		assertFalse(ClassUtils.isPrimitiveOrWrapper(Object.class));
+		assertThat(ClassUtils.isPrimitiveOrWrapper(Object.class)).isFalse();
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -44,7 +43,7 @@ public class BeanDefinitionBuilderTests {
 		}
 
 		RootBeanDefinition rbd = (RootBeanDefinition) bdb.getBeanDefinition();
-		assertFalse(rbd.isSingleton());
+		assertThat(rbd.isSingleton()).isFalse();
 		assertEquals(TestBean.class, rbd.getBeanClass());
 		assertThat(Arrays.equals(dependsOn, rbd.getDependsOn())).as("Depends on was added").isTrue();
 		assertThat(rbd.getPropertyValues().contains("age")).isTrue();
@@ -63,7 +62,7 @@ public class BeanDefinitionBuilderTests {
 	public void beanClassName() {
 		BeanDefinitionBuilder bdb = BeanDefinitionBuilder.rootBeanDefinition(TestBean.class.getName());
 		RootBeanDefinition rbd = (RootBeanDefinition) bdb.getBeanDefinition();
-		assertFalse(rbd.hasBeanClass());
+		assertThat(rbd.hasBeanClass()).isFalse();
 		assertEquals(TestBean.class.getName(), rbd.getBeanClassName());
 	}
 
@@ -71,7 +70,7 @@ public class BeanDefinitionBuilderTests {
 	public void beanClassNameWithFactoryMethod() {
 		BeanDefinitionBuilder bdb = BeanDefinitionBuilder.rootBeanDefinition(TestBean.class.getName(), "create");
 		RootBeanDefinition rbd = (RootBeanDefinition) bdb.getBeanDefinition();
-		assertFalse(rbd.hasBeanClass());
+		assertThat(rbd.hasBeanClass()).isFalse();
 		assertEquals(TestBean.class.getName(), rbd.getBeanClassName());
 		assertEquals("create", rbd.getFactoryMethodName());
 	}

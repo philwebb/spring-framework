@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop
@@ -45,17 +44,17 @@ public class AttributeAccessorSupportTests {
 
 	@Test
 	public void setAndHas() throws Exception {
-		assertFalse(this.attributeAccessor.hasAttribute(NAME));
+		assertThat(this.attributeAccessor.hasAttribute(NAME)).isFalse();
 		this.attributeAccessor.setAttribute(NAME, VALUE);
 		assertThat(this.attributeAccessor.hasAttribute(NAME)).isTrue();
 	}
 
 	@Test
 	public void remove() throws Exception {
-		assertFalse(this.attributeAccessor.hasAttribute(NAME));
+		assertThat(this.attributeAccessor.hasAttribute(NAME)).isFalse();
 		this.attributeAccessor.setAttribute(NAME, VALUE);
 		assertEquals(VALUE, this.attributeAccessor.removeAttribute(NAME));
-		assertFalse(this.attributeAccessor.hasAttribute(NAME));
+		assertThat(this.attributeAccessor.hasAttribute(NAME)).isFalse();
 	}
 
 	@Test

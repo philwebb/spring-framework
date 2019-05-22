@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link TestConstructorUtils}.
@@ -74,7 +73,7 @@ public class TestConstructorUtilsTests {
 
 	private void assertNotAutowirable(Class<?> testClass) throws NoSuchMethodException {
 		Constructor<?> constructor = testClass.getDeclaredConstructor();
-		assertFalse(TestConstructorUtils.isAutowirableConstructor(constructor, testClass));
+		assertThat(TestConstructorUtils.isAutowirableConstructor(constructor, testClass)).isFalse();
 	}
 
 	private void setGlobalFlag() {

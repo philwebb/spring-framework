@@ -34,7 +34,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture with {@link org.springframework.web.method.annotation.AbstractCookieValueMethodArgumentResolver}.
@@ -75,7 +74,7 @@ public class CookieValueMethodArgumentResolverTests {
 	public void supportsParameter() {
 		assertThat(resolver.supportsParameter(paramNamedCookie)).as("Cookie parameter not supported").isTrue();
 		assertThat(resolver.supportsParameter(paramNamedDefaultValueString)).as("Cookie string parameter not supported").isTrue();
-		assertFalse("non-@CookieValue parameter supported", resolver.supportsParameter(paramString));
+		assertThat(resolver.supportsParameter(paramString)).as("non-@CookieValue parameter supported").isFalse();
 	}
 
 	@Test

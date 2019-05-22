@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -69,28 +68,28 @@ public class ObjectToStringHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertFalse(this.converter.canRead(Math.class, null));
-		assertFalse(this.converter.canRead(Resource.class, null));
+		assertThat(this.converter.canRead(Math.class, null)).isFalse();
+		assertThat(this.converter.canRead(Resource.class, null)).isFalse();
 
 		assertThat(this.converter.canRead(Locale.class, null)).isTrue();
 		assertThat(this.converter.canRead(BigInteger.class, null)).isTrue();
 
-		assertFalse(this.converter.canRead(BigInteger.class, MediaType.TEXT_HTML));
-		assertFalse(this.converter.canRead(BigInteger.class, MediaType.TEXT_XML));
-		assertFalse(this.converter.canRead(BigInteger.class, MediaType.APPLICATION_XML));
+		assertThat(this.converter.canRead(BigInteger.class, MediaType.TEXT_HTML)).isFalse();
+		assertThat(this.converter.canRead(BigInteger.class, MediaType.TEXT_XML)).isFalse();
+		assertThat(this.converter.canRead(BigInteger.class, MediaType.APPLICATION_XML)).isFalse();
 	}
 
 	@Test
 	public void canWrite() {
-		assertFalse(this.converter.canWrite(Math.class, null));
-		assertFalse(this.converter.canWrite(Resource.class, null));
+		assertThat(this.converter.canWrite(Math.class, null)).isFalse();
+		assertThat(this.converter.canWrite(Resource.class, null)).isFalse();
 
 		assertThat(this.converter.canWrite(Locale.class, null)).isTrue();
 		assertThat(this.converter.canWrite(Double.class, null)).isTrue();
 
-		assertFalse(this.converter.canWrite(BigInteger.class, MediaType.TEXT_HTML));
-		assertFalse(this.converter.canWrite(BigInteger.class, MediaType.TEXT_XML));
-		assertFalse(this.converter.canWrite(BigInteger.class, MediaType.APPLICATION_XML));
+		assertThat(this.converter.canWrite(BigInteger.class, MediaType.TEXT_HTML)).isFalse();
+		assertThat(this.converter.canWrite(BigInteger.class, MediaType.TEXT_XML)).isFalse();
+		assertThat(this.converter.canWrite(BigInteger.class, MediaType.APPLICATION_XML)).isFalse();
 
 		assertThat(this.converter.canWrite(BigInteger.class, MediaType.valueOf("text/*"))).isTrue();
 	}

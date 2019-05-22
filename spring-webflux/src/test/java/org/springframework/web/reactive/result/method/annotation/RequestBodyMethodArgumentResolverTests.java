@@ -48,7 +48,6 @@ import org.springframework.web.server.ServerWebInputException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.springframework.web.method.MvcAnnotationPredicates.requestBody;
@@ -83,7 +82,7 @@ public class RequestBodyMethodArgumentResolverTests {
 		assertThat(this.resolver.supportsParameter(param)).isTrue();
 
 		param = this.testMethod.annotNotPresent(RequestBody.class).arg(String.class);
-		assertFalse(this.resolver.supportsParameter(param));
+		assertThat(this.resolver.supportsParameter(param)).isFalse();
 	}
 
 	@Test

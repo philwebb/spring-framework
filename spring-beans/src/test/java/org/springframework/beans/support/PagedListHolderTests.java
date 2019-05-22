@@ -27,7 +27,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -76,7 +75,7 @@ public class PagedListHolderTests {
 		assertThat(holder.getPageSize() == 2).as("Correct page size").isTrue();
 		assertThat(holder.getPage() == 0).as("Correct page number").isTrue();
 		assertThat(holder.isFirstPage()).as("First page").isTrue();
-		assertFalse("Last page", holder.isLastPage());
+		assertThat(holder.isLastPage()).as("Last page").isFalse();
 		assertThat(holder.getFirstElementOnPage() == 0).as("Correct first element").isTrue();
 		assertThat(holder.getLastElementOnPage() == 1).as("Correct last element").isTrue();
 		assertThat(holder.getPageList().size() == 2).as("Correct page list size").isTrue();
@@ -85,7 +84,7 @@ public class PagedListHolderTests {
 
 		holder.setPage(1);
 		assertThat(holder.getPage() == 1).as("Correct page number").isTrue();
-		assertFalse("First page", holder.isFirstPage());
+		assertThat(holder.isFirstPage()).as("First page").isFalse();
 		assertThat(holder.isLastPage()).as("Last page").isTrue();
 		assertThat(holder.getFirstElementOnPage() == 2).as("Correct first element").isTrue();
 		assertThat(holder.getLastElementOnPage() == 2).as("Correct last element").isTrue();
@@ -106,7 +105,7 @@ public class PagedListHolderTests {
 		assertThat(holder.getPageCount() == 2).as("Correct number of pages").isTrue();
 		assertThat(holder.getPageSize() == 2).as("Correct page size").isTrue();
 		assertThat(holder.getPage() == 1).as("Correct page number").isTrue();
-		assertFalse("First page", holder.isFirstPage());
+		assertThat(holder.isFirstPage()).as("First page").isFalse();
 		assertThat(holder.isLastPage()).as("Last page").isTrue();
 		assertThat(holder.getFirstElementOnPage() == 2).as("Correct first element").isTrue();
 		assertThat(holder.getLastElementOnPage() == 2).as("Correct last element").isTrue();
@@ -122,7 +121,7 @@ public class PagedListHolderTests {
 		assertThat(holder.getPageSize() == 2).as("Correct page size").isTrue();
 		assertThat(holder.getPage() == 0).as("Correct page number").isTrue();
 		assertThat(holder.isFirstPage()).as("First page").isTrue();
-		assertFalse("Last page", holder.isLastPage());
+		assertThat(holder.isLastPage()).as("Last page").isFalse();
 		assertThat(holder.getFirstElementOnPage() == 0).as("Correct first element").isTrue();
 		assertThat(holder.getLastElementOnPage() == 1).as("Correct last element").isTrue();
 		assertThat(holder.getPageList().size() == 2).as("Correct page list size").isTrue();

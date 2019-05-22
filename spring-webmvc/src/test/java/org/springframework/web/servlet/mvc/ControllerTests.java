@@ -36,7 +36,6 @@ import org.springframework.web.util.WebUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.given;
@@ -129,12 +128,12 @@ public class ControllerTests {
 		assertEquals("action", TestServlet.config.getServletName());
 		assertEquals("myValue", TestServlet.config.getInitParameter("config"));
 		assertNull(TestServlet.request);
-		assertFalse(TestServlet.destroyed);
+		assertThat(TestServlet.destroyed).isFalse();
 
 		assertNull(swc.handleRequest(request, response));
 		assertEquals(request, TestServlet.request);
 		assertEquals(response, TestServlet.response);
-		assertFalse(TestServlet.destroyed);
+		assertThat(TestServlet.destroyed).isFalse();
 
 		swc.destroy();
 		assertThat(TestServlet.destroyed).isTrue();
@@ -153,12 +152,12 @@ public class ControllerTests {
 		assertNotNull(TestServlet.config);
 		assertEquals("action", TestServlet.config.getServletName());
 		assertNull(TestServlet.request);
-		assertFalse(TestServlet.destroyed);
+		assertThat(TestServlet.destroyed).isFalse();
 
 		assertNull(swc.handleRequest(request, response));
 		assertEquals(request, TestServlet.request);
 		assertEquals(response, TestServlet.response);
-		assertFalse(TestServlet.destroyed);
+		assertThat(TestServlet.destroyed).isFalse();
 
 		swc.destroy();
 		assertThat(TestServlet.destroyed).isTrue();

@@ -19,7 +19,6 @@ package org.springframework.web.reactive.function.server;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -35,7 +34,7 @@ public class RequestPredicateTests {
 		MockServerRequest request = MockServerRequest.builder().build();
 		assertThat(predicate1.and(predicate2).test(request)).isTrue();
 		assertThat(predicate2.and(predicate1).test(request)).isTrue();
-		assertFalse(predicate1.and(predicate3).test(request));
+		assertThat(predicate1.and(predicate3).test(request)).isFalse();
 	}
 
 	@Test
@@ -49,7 +48,7 @@ public class RequestPredicateTests {
 		predicate = request -> true;
 		negated = predicate.negate();
 
-		assertFalse(negated.test(mockRequest));
+		assertThat(negated.test(mockRequest)).isFalse();
 	}
 
 	@Test
@@ -61,7 +60,7 @@ public class RequestPredicateTests {
 		MockServerRequest request = MockServerRequest.builder().build();
 		assertThat(predicate1.or(predicate2).test(request)).isTrue();
 		assertThat(predicate2.or(predicate1).test(request)).isTrue();
-		assertFalse(predicate2.or(predicate3).test(request));
+		assertThat(predicate2.or(predicate3).test(request)).isFalse();
 	}
 
 }

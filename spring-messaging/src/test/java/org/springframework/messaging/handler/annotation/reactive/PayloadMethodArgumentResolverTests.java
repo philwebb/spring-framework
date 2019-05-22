@@ -49,7 +49,6 @@ import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 
@@ -78,7 +77,7 @@ public class PayloadMethodArgumentResolverTests {
 		resolver = createResolver(null, useDefaultResolution);
 
 		assertThat(resolver.supportsParameter(this.testMethod.annotPresent(Payload.class).arg())).isTrue();
-		assertFalse(resolver.supportsParameter(this.testMethod.annotNotPresent(Payload.class).arg(String.class)));
+		assertThat(resolver.supportsParameter(this.testMethod.annotNotPresent(Payload.class).arg(String.class))).isFalse();
 	}
 
 	@Test

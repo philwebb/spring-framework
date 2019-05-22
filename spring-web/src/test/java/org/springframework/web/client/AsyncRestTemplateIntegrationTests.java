@@ -48,7 +48,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -70,7 +69,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		Future<ResponseEntity<String>> future = template.getForEntity(baseUrl + "/{method}", String.class, "get");
 		ResponseEntity<String> entity = future.get();
 		assertEquals("Invalid content", helloWorld, entity.getBody());
-		assertFalse("No headers", entity.getHeaders().isEmpty());
+		assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
 		assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
 		assertEquals("Invalid status code", HttpStatus.OK, entity.getStatusCode());
 	}
@@ -80,7 +79,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<ResponseEntity<String>> future = template.getForEntity(baseUrl + "/{method}", String.class, "get");
 		ResponseEntity<String> entity = future.completable().get();
 		assertEquals("Invalid content", helloWorld, entity.getBody());
-		assertFalse("No headers", entity.getHeaders().isEmpty());
+		assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
 		assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
 		assertEquals("Invalid status code", HttpStatus.OK, entity.getStatusCode());
 	}
@@ -100,7 +99,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			@Override
 			public void onSuccess(ResponseEntity<String> entity) {
 				assertEquals("Invalid content", helloWorld, entity.getBody());
-				assertFalse("No headers", entity.getHeaders().isEmpty());
+				assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
 				assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
 				assertEquals("Invalid status code", HttpStatus.OK, entity.getStatusCode());
 			}
@@ -118,7 +117,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 				template.getForEntity(baseUrl + "/{method}", String.class, "get");
 		futureEntity.addCallback(entity -> {
 			assertEquals("Invalid content", helloWorld, entity.getBody());
-			assertFalse("No headers", entity.getHeaders().isEmpty());
+			assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
 			assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
 			assertEquals("Invalid status code", HttpStatus.OK, entity.getStatusCode());
 		}, ex -> fail(ex.getMessage()));
@@ -545,7 +544,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ResponseEntity<Void> result = resultFuture.get();
 		assertEquals("Invalid location", new URI(baseUrl + "/post/1"),
 				result.getHeaders().getLocation());
-		assertFalse(result.hasBody());
+		assertThat(result.hasBody()).isFalse();
 	}
 
 	@Test
@@ -561,7 +560,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			@Override
 			public void onSuccess(ResponseEntity<Void> result) {
 				assertEquals("Invalid location", expected, result.getHeaders().getLocation());
-				assertFalse(result.hasBody());
+				assertThat(result.hasBody()).isFalse();
 			}
 			@Override
 			public void onFailure(Throwable ex) {
@@ -582,8 +581,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		final URI expected =new URI(baseUrl + "/post/1");
 		resultFuture.addCallback(result -> {
 			assertEquals("Invalid location", expected, result.getHeaders().getLocation());
-			assertFalse(result.hasBody());
-			}, ex -> fail(ex.getMessage()));
+			assertThat(result.hasBody()).isFalse();
+		}, ex -> fail(ex.getMessage()));
 		waitTillDone(resultFuture);
 	}
 

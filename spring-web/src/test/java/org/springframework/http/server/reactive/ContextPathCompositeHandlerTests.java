@@ -33,7 +33,6 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ContextPathCompositeHandler}.
@@ -156,7 +155,7 @@ public class ContextPathCompositeHandlerTests {
 	}
 
 	private void assertNotInvoked(TestHttpHandler... handlers) {
-		Arrays.stream(handlers).forEach(handler -> assertFalse(handler.wasInvoked()));
+		Arrays.stream(handlers).forEach(handler -> assertThat(handler.wasInvoked()).isFalse());
 	}
 
 

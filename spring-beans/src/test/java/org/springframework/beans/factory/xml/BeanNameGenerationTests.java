@@ -24,7 +24,6 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -64,7 +63,7 @@ public class BeanNameGenerationTests {
 		assertNotNull(child2.getBeanName());
 		assertThat(child2.getBeanName().startsWith(className)).isTrue();
 
-		assertFalse(child1.getBeanName().equals(child2.getBeanName()));
+		assertThat(child1.getBeanName().equals(child2.getBeanName())).isFalse();
 	}
 
 }

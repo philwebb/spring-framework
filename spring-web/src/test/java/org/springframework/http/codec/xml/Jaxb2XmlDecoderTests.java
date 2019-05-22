@@ -41,7 +41,6 @@ import org.springframework.http.codec.xml.jaxb.XmlTypeWithNameAndNamespace;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Sebastien Deleuze
@@ -79,12 +78,12 @@ public class Jaxb2XmlDecoderTests extends AbstractLeakCheckingTestCase {
 				MediaType.APPLICATION_XML)).isTrue();
 		assertThat(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
 				MediaType.TEXT_XML)).isTrue();
-		assertFalse(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
-				MediaType.APPLICATION_JSON));
+		assertThat(this.decoder.canDecode(ResolvableType.forClass(Pojo.class),
+				MediaType.APPLICATION_JSON)).isFalse();
 		assertThat(this.decoder.canDecode(ResolvableType.forClass(TypePojo.class),
 				MediaType.APPLICATION_XML)).isTrue();
-		assertFalse(this.decoder.canDecode(ResolvableType.forClass(getClass()),
-				MediaType.APPLICATION_XML));
+		assertThat(this.decoder.canDecode(ResolvableType.forClass(getClass()),
+				MediaType.APPLICATION_XML)).isFalse();
 	}
 
 	@Test

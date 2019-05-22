@@ -90,7 +90,6 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 import static com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -128,9 +127,9 @@ public class WebMvcConfigurationSupportTests {
 		ApplicationContext context = initContext(WebConfig.class);
 
 		Map<String, HandlerMapping> handlerMappings = context.getBeansOfType(HandlerMapping.class);
-		assertFalse(handlerMappings.containsKey("viewControllerHandlerMapping"));
-		assertFalse(handlerMappings.containsKey("resourceHandlerMapping"));
-		assertFalse(handlerMappings.containsKey("defaultServletHandlerMapping"));
+		assertThat(handlerMappings.containsKey("viewControllerHandlerMapping")).isFalse();
+		assertThat(handlerMappings.containsKey("resourceHandlerMapping")).isFalse();
+		assertThat(handlerMappings.containsKey("defaultServletHandlerMapping")).isFalse();
 
 		Object nullBean = context.getBean("viewControllerHandlerMapping");
 		assertThat(nullBean.equals(null)).isTrue();
@@ -168,9 +167,9 @@ public class WebMvcConfigurationSupportTests {
 				.filter(converter -> converter instanceof AbstractJackson2HttpMessageConverter)
 				.forEach(converter -> {
 					ObjectMapper mapper = ((AbstractJackson2HttpMessageConverter) converter).getObjectMapper();
-					assertFalse(mapper.getDeserializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION));
-					assertFalse(mapper.getSerializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION));
-					assertFalse(mapper.getDeserializationConfig().isEnabled(FAIL_ON_UNKNOWN_PROPERTIES));
+					assertThat(mapper.getDeserializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION)).isFalse();
+					assertThat(mapper.getSerializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION)).isFalse();
+					assertThat(mapper.getDeserializationConfig().isEnabled(FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 					if (converter instanceof MappingJackson2XmlHttpMessageConverter) {
 						assertEquals(XmlMapper.class, mapper.getClass());
 					}

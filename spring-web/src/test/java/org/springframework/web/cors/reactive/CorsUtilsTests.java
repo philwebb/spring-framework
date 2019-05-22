@@ -27,7 +27,6 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.options;
 
@@ -47,7 +46,7 @@ public class CorsUtilsTests {
 	@Test
 	public void isNotCorsRequest() {
 		ServerHttpRequest request = get("/").build();
-		assertFalse(CorsUtils.isCorsRequest(request));
+		assertThat(CorsUtils.isCorsRequest(request)).isFalse();
 	}
 
 	@Test
@@ -62,10 +61,10 @@ public class CorsUtilsTests {
 	@Test
 	public void isNotPreFlightRequest() {
 		ServerHttpRequest request = get("/").build();
-		assertFalse(CorsUtils.isPreFlightRequest(request));
+		assertThat(CorsUtils.isPreFlightRequest(request)).isFalse();
 
 		request = options("/").header(HttpHeaders.ORIGIN, "https://domain.com").build();
-		assertFalse(CorsUtils.isPreFlightRequest(request));
+		assertThat(CorsUtils.isPreFlightRequest(request)).isFalse();
 	}
 
 	@Test  // SPR-16262
@@ -97,7 +96,7 @@ public class CorsUtilsTests {
 				.get("http://mydomain1.com")
 				.header(HttpHeaders.ORIGIN, "https://mydomain1.com")
 				.build();
-		assertFalse(CorsUtils.isSameOrigin(request));
+		assertThat(CorsUtils.isSameOrigin(request)).isFalse();
 	}
 
 	@SuppressWarnings("deprecation")

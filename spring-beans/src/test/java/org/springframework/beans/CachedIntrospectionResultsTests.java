@@ -29,8 +29,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.assertFalse;
-
 /**
  * @author Juergen Hoeller
  * @author Chris Beams
@@ -47,14 +45,14 @@ public class CachedIntrospectionResultsTests {
 
 		ClassLoader child = new OverridingClassLoader(getClass().getClassLoader());
 		Class<?> tbClass = child.loadClass("org.springframework.tests.sample.beans.TestBean");
-		assertFalse(CachedIntrospectionResults.strongClassCache.containsKey(tbClass));
+		assertThat(CachedIntrospectionResults.strongClassCache.containsKey(tbClass)).isFalse();
 		CachedIntrospectionResults.acceptClassLoader(child);
 		bw = new BeanWrapperImpl(tbClass);
 		assertThat(bw.isWritableProperty("name")).isTrue();
 		assertThat(bw.isWritableProperty("age")).isTrue();
 		assertThat(CachedIntrospectionResults.strongClassCache.containsKey(tbClass)).isTrue();
 		CachedIntrospectionResults.clearClassLoader(child);
-		assertFalse(CachedIntrospectionResults.strongClassCache.containsKey(tbClass));
+		assertThat(CachedIntrospectionResults.strongClassCache.containsKey(tbClass)).isFalse();
 
 		assertThat(CachedIntrospectionResults.strongClassCache.containsKey(TestBean.class)).isTrue();
 	}
@@ -64,7 +62,7 @@ public class CachedIntrospectionResultsTests {
 		BeanUtils.getPropertyDescriptors(ArrayList.class);
 		assertThat(CachedIntrospectionResults.strongClassCache.containsKey(ArrayList.class)).isTrue();
 		CachedIntrospectionResults.clearClassLoader(ArrayList.class.getClassLoader());
-		assertFalse(CachedIntrospectionResults.strongClassCache.containsKey(ArrayList.class));
+		assertThat(CachedIntrospectionResults.strongClassCache.containsKey(ArrayList.class)).isFalse();
 	}
 
 	@Test

@@ -34,7 +34,6 @@ import org.springframework.web.reactive.result.view.script.ScriptTemplateViewRes
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -65,7 +64,7 @@ public class ViewResolverRegistryTests {
 
 	@Test
 	public void hasRegistrations() {
-		assertFalse(this.registry.hasRegistrations());
+		assertThat(this.registry.hasRegistrations()).isFalse();
 
 		this.registry.freeMarker();
 		assertThat(this.registry.hasRegistrations()).isTrue();
@@ -75,7 +74,7 @@ public class ViewResolverRegistryTests {
 	public void noResolvers() {
 		assertNotNull(this.registry.getViewResolvers());
 		assertEquals(0, this.registry.getViewResolvers().size());
-		assertFalse(this.registry.hasRegistrations());
+		assertThat(this.registry.hasRegistrations()).isFalse();
 	}
 
 	@Test

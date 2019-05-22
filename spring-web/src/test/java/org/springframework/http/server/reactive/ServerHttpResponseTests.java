@@ -34,7 +34,6 @@ import org.springframework.http.ResponseCookie;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -79,10 +78,10 @@ public class ServerHttpResponseTests {
 		IllegalStateException error = new IllegalStateException("boo");
 		response.writeWith(Flux.error(error)).onErrorResume(ex -> Mono.empty()).block();
 
-		assertFalse(response.statusCodeWritten);
-		assertFalse(response.headersWritten);
-		assertFalse(response.cookiesWritten);
-		assertFalse(response.getHeaders().containsKey(HttpHeaders.CONTENT_LENGTH));
+		assertThat(response.statusCodeWritten).isFalse();
+		assertThat(response.headersWritten).isFalse();
+		assertThat(response.cookiesWritten).isFalse();
+		assertThat(response.getHeaders().containsKey(HttpHeaders.CONTENT_LENGTH)).isFalse();
 		assertThat(response.body.isEmpty()).isTrue();
 	}
 
@@ -160,19 +159,19 @@ public class ServerHttpResponseTests {
 
 		@Override
 		public void applyStatusCode() {
-			assertFalse(this.statusCodeWritten);
+			assertThat(this.statusCodeWritten).isFalse();
 			this.statusCodeWritten = true;
 		}
 
 		@Override
 		protected void applyHeaders() {
-			assertFalse(this.headersWritten);
+			assertThat(this.headersWritten).isFalse();
 			this.headersWritten = true;
 		}
 
 		@Override
 		protected void applyCookies() {
-			assertFalse(this.cookiesWritten);
+			assertThat(this.cookiesWritten).isFalse();
 			this.cookiesWritten = true;
 		}
 

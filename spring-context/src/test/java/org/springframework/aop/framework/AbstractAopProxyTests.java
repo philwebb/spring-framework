@@ -81,7 +81,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -196,14 +195,14 @@ public abstract class AbstractAopProxyTests {
 	@Test
 	public void testSerializationAdviceAndTargetNotSerializable() throws Exception {
 		TestBean tb = new TestBean();
-		assertFalse(SerializationTestUtils.isSerializable(tb));
+		assertThat(SerializationTestUtils.isSerializable(tb)).isFalse();
 
 		ProxyFactory pf = new ProxyFactory(tb);
 
 		pf.addAdvice(new NopInterceptor());
 		ITestBean proxy = (ITestBean) createAopProxy(pf).getProxy();
 
-		assertFalse(SerializationTestUtils.isSerializable(proxy));
+		assertThat(SerializationTestUtils.isSerializable(proxy)).isFalse();
 	}
 
 	@Test
@@ -216,10 +215,10 @@ public abstract class AbstractAopProxyTests {
 		// This isn't serializable
 		Advice i = new NopInterceptor();
 		pf.addAdvice(i);
-		assertFalse(SerializationTestUtils.isSerializable(i));
+		assertThat(SerializationTestUtils.isSerializable(i)).isFalse();
 		Object proxy = createAopProxy(pf).getProxy();
 
-		assertFalse(SerializationTestUtils.isSerializable(proxy));
+		assertThat(SerializationTestUtils.isSerializable(proxy)).isFalse();
 	}
 
 	@Test
@@ -386,7 +385,7 @@ public abstract class AbstractAopProxyTests {
 	public void testTargetCantGetProxyByDefault() {
 		NeedsToSeeProxy et = new NeedsToSeeProxy();
 		ProxyFactory pf1 = new ProxyFactory(et);
-		assertFalse(pf1.isExposeProxy());
+		assertThat(pf1.isExposeProxy()).isFalse();
 		INeedsToSeeProxy proxied = (INeedsToSeeProxy) createProxy(pf1);
 		assertThatIllegalStateException().isThrownBy(() ->
 				proxied.incrementViaProxy());
@@ -615,7 +614,7 @@ public abstract class AbstractAopProxyTests {
 		assertEquals(newAge, itb.getAge());
 
 		Lockable lockable = (Lockable) itb;
-		assertFalse(lockable.locked());
+		assertThat(lockable.locked()).isFalse();
 		lockable.lock();
 
 		assertEquals(newAge, itb.getAge());
@@ -803,7 +802,7 @@ public abstract class AbstractAopProxyTests {
 		TestBean target = new TestBean();
 		target.setAge(21);
 		ProxyFactory pc = new ProxyFactory(target);
-		assertFalse(pc.isFrozen());
+		assertThat(pc.isFrozen()).isFalse();
 		pc.addAdvice(new NopInterceptor());
 		ITestBean proxied = (ITestBean) createProxy(pc);
 		pc.setFrozen(true);
@@ -823,7 +822,7 @@ public abstract class AbstractAopProxyTests {
 		TestBean target = new TestBean();
 		target.setAge(21);
 		ProxyFactory pc = new ProxyFactory(target);
-		assertFalse(pc.isFrozen());
+		assertThat(pc.isFrozen()).isFalse();
 		pc.addAdvice(new NopInterceptor());
 		ITestBean proxied = (ITestBean) createProxy(pc);
 		pc.setFrozen(true);
@@ -843,7 +842,7 @@ public abstract class AbstractAopProxyTests {
 		TestBean target = new TestBean();
 		target.setAge(21);
 		ProxyFactory pc = new ProxyFactory(target);
-		assertFalse(pc.isFrozen());
+		assertThat(pc.isFrozen()).isFalse();
 		pc.addAdvice(new NopInterceptor());
 		ITestBean proxied = (ITestBean) createProxy(pc);
 		pc.setFrozen(true);
@@ -913,7 +912,7 @@ public abstract class AbstractAopProxyTests {
 		CountingBeforeAdvice mba = new CountingBeforeAdvice();
 		Advisor advisor = new DefaultPointcutAdvisor(new NameMatchMethodPointcut().addMethodName("setAge"), mba);
 		pc.addAdvisor(advisor);
-		assertFalse("Opaque defaults to false", pc.isOpaque());
+		assertThat(pc.isOpaque()).as("Opaque defaults to false").isFalse();
 		pc.setOpaque(true);
 		assertThat(pc.isOpaque()).as("Opaque now true for this config").isTrue();
 		ITestBean proxied = (ITestBean) createProxy(pc);
@@ -921,7 +920,8 @@ public abstract class AbstractAopProxyTests {
 		assertEquals(10, proxied.getAge());
 		assertEquals(1, mba.getCalls());
 
-		assertFalse("Cannot be cast to Advised", proxied instanceof Advised);
+		boolean condition = proxied instanceof Advised;
+		assertThat(condition).as("Cannot be cast to Advised").isFalse();
 	}
 
 	@Test
@@ -935,7 +935,7 @@ public abstract class AbstractAopProxyTests {
 		RefreshCountingAdvisorChainFactory acf = new RefreshCountingAdvisorChainFactory();
 		// Should be automatically added as a listener
 		pc.addListener(acf);
-		assertFalse(pc.isActive());
+		assertThat(pc.isActive()).isFalse();
 		assertEquals(0, l.activates);
 		assertEquals(0, acf.refreshes);
 		ITestBean proxied = (ITestBean) createProxy(pc);
@@ -1247,7 +1247,7 @@ public abstract class AbstractAopProxyTests {
 		assertEquals(i1, i2);
 		assertEquals(proxyA, proxyB);
 		assertEquals(proxyA.hashCode(), proxyB.hashCode());
-		assertFalse(proxyA.equals(a));
+		assertThat(proxyA.equals(a)).isFalse();
 
 		// Equality checks were handled by the proxy
 		assertEquals(0, i1.getCount());
@@ -1256,7 +1256,7 @@ public abstract class AbstractAopProxyTests {
 		// and won't think it's equal to B's NopInterceptor
 		proxyA.absquatulate();
 		assertEquals(1, i1.getCount());
-		assertFalse(proxyA.equals(proxyB));
+		assertThat(proxyA.equals(proxyB)).isFalse();
 	}
 
 	@Test

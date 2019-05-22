@@ -21,7 +21,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -42,8 +41,8 @@ public class MockCookieTests {
 		assertNull(cookie.getDomain());
 		assertEquals(-1, cookie.getMaxAge());
 		assertNull(cookie.getPath());
-		assertFalse(cookie.isHttpOnly());
-		assertFalse(cookie.getSecure());
+		assertThat(cookie.isHttpOnly()).isFalse();
+		assertThat(cookie.getSecure()).isFalse();
 		assertNull(cookie.getSameSite());
 	}
 

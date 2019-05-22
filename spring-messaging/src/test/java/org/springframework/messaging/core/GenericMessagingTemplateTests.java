@@ -40,7 +40,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -91,8 +90,8 @@ public class GenericMessagingTemplateTests {
 		this.template.send(channel, message);
 		verify(channel).send(any(Message.class), eq(30_000L));
 		assertNotNull(sent.get());
-		assertFalse(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER));
-		assertFalse(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER));
+		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER)).isFalse();
+		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER)).isFalse();
 	}
 
 	@Test
@@ -110,8 +109,8 @@ public class GenericMessagingTemplateTests {
 		this.template.send(channel, message);
 		verify(channel).send(any(Message.class), eq(30_000L));
 		assertNotNull(sent.get());
-		assertFalse(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER));
-		assertFalse(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER));
+		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER)).isFalse();
+		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER)).isFalse();
 	}
 
 	@Test
@@ -255,7 +254,7 @@ public class GenericMessagingTemplateTests {
 		Message<byte[]> message = messages.get(0);
 
 		assertSame(headers, message.getHeaders());
-		assertFalse(accessor.isMutable());
+		assertThat(accessor.isMutable()).isFalse();
 	}
 
 

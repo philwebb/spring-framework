@@ -61,7 +61,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -160,7 +159,7 @@ public class ConfigurationClassProcessingTests {
 	public void configWithObjectReturnType() {
 		BeanFactory factory = initBeanFactory(ConfigWithNonSpecificReturnTypes.class);
 		assertEquals(Object.class, factory.getType("stringBean"));
-		assertFalse(factory.isTypeMatch("stringBean", String.class));
+		assertThat(factory.isTypeMatch("stringBean", String.class)).isFalse();
 		String stringBean = factory.getBean("stringBean", String.class);
 		assertEquals("foo", stringBean);
 	}
@@ -172,8 +171,8 @@ public class ConfigurationClassProcessingTests {
 		assertThat(factory.isTypeMatch("factoryBean", List.class)).isTrue();
 		assertEquals(FactoryBean.class, factory.getType("&factoryBean"));
 		assertThat(factory.isTypeMatch("&factoryBean", FactoryBean.class)).isTrue();
-		assertFalse(factory.isTypeMatch("&factoryBean", BeanClassLoaderAware.class));
-		assertFalse(factory.isTypeMatch("&factoryBean", ListFactoryBean.class));
+		assertThat(factory.isTypeMatch("&factoryBean", BeanClassLoaderAware.class)).isFalse();
+		assertThat(factory.isTypeMatch("&factoryBean", ListFactoryBean.class)).isFalse();
 		boolean condition = factory.getBean("factoryBean") instanceof List;
 		assertThat(condition).isTrue();
 

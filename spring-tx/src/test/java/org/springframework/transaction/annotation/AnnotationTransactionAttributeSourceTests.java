@@ -40,7 +40,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -173,7 +172,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
 		assertThat(actual.rollbackOn(new Exception())).isTrue();
-		assertFalse(actual.rollbackOn(new IOException()));
+		assertThat(actual.rollbackOn(new IOException())).isFalse();
 
 		actual = atas.getTransactionAttribute(method, method.getDeclaringClass());
 
@@ -183,7 +182,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		assertEquals(rbta.getRollbackRules(), ((RuleBasedTransactionAttribute) actual).getRollbackRules());
 		assertThat(actual.rollbackOn(new Exception())).isTrue();
-		assertFalse(actual.rollbackOn(new IOException()));
+		assertThat(actual.rollbackOn(new IOException())).isFalse();
 	}
 
 	/**

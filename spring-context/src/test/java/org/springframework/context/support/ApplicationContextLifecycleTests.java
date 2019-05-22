@@ -19,7 +19,6 @@ package org.springframework.context.support;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Mark Fisher
@@ -57,10 +56,10 @@ public class ApplicationContextLifecycleTests {
 		assertThat(bean4.isRunning()).as(startError).isTrue();
 		context.stop();
 		String stopError = "bean was not stopped";
-		assertFalse(stopError, bean1.isRunning());
-		assertFalse(stopError, bean2.isRunning());
-		assertFalse(stopError, bean3.isRunning());
-		assertFalse(stopError, bean4.isRunning());
+		assertThat(bean1.isRunning()).as(stopError).isFalse();
+		assertThat(bean2.isRunning()).as(stopError).isFalse();
+		assertThat(bean3.isRunning()).as(stopError).isFalse();
+		assertThat(bean4.isRunning()).as(stopError).isFalse();
 	}
 
 	@Test

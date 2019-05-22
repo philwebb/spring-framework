@@ -39,7 +39,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests for auto proxy creation by advisor recognition.
@@ -90,15 +89,15 @@ public class AdvisorAutoProxyCreatorTests {
 		Lockable lockable2 = (Lockable) test2;
 
 		// Locking should be independent; nop is shared
-		assertFalse(lockable1.locked());
-		assertFalse(lockable2.locked());
+		assertThat(lockable1.locked()).isFalse();
+		assertThat(lockable2.locked()).isFalse();
 		// equals 2 calls on shared nop, because it's first and sees calls
 		// against the Lockable interface introduced by the specific advisor
 		assertEquals(2, nop1.getCount());
 		assertEquals(0, nop2.getCount());
 		lockable1.lock();
 		assertThat(lockable1.locked()).isTrue();
-		assertFalse(lockable2.locked());
+		assertThat(lockable2.locked()).isFalse();
 		assertEquals(5, nop1.getCount());
 		assertEquals(0, nop2.getCount());
 
@@ -114,7 +113,7 @@ public class AdvisorAutoProxyCreatorTests {
 		lockable3.lock();
 		assertThat(lockable3.locked()).isTrue();
 		lockable3.unlock();
-		assertFalse(lockable3.locked());
+		assertThat(lockable3.locked()).isFalse();
 	}
 
 	/**
@@ -125,7 +124,7 @@ public class AdvisorAutoProxyCreatorTests {
 	public void testCustomTargetSourceNoMatch() throws Exception {
 		BeanFactory bf = new ClassPathXmlApplicationContext(CUSTOM_TARGETSOURCE_CONTEXT, CLASS);
 		ITestBean test = (ITestBean) bf.getBean("test");
-		assertFalse(AopUtils.isAopProxy(test));
+		assertThat(AopUtils.isAopProxy(test)).isFalse();
 		assertEquals("Rod", test.getName());
 		assertEquals("Kerry", test.getSpouse().getName());
 	}
@@ -167,7 +166,7 @@ public class AdvisorAutoProxyCreatorTests {
 		ClassPathXmlApplicationContext bf =
 				new ClassPathXmlApplicationContext(QUICK_TARGETSOURCE_CONTEXT, CLASS);
 		ITestBean test = (ITestBean) bf.getBean("test");
-		assertFalse(AopUtils.isAopProxy(test));
+		assertThat(AopUtils.isAopProxy(test)).isFalse();
 		assertEquals("Rod", test.getName());
 		// Check that references survived pooling
 		assertEquals("Kerry", test.getSpouse().getName());
@@ -204,7 +203,7 @@ public class AdvisorAutoProxyCreatorTests {
 
 
 		ITestBean test2 = (ITestBean) bf.getBean("!test");
-		assertFalse("Prototypes cannot be the same object", test == test2);
+		assertThat(test == test2).as("Prototypes cannot be the same object").isFalse();
 		assertEquals("Rod", test2.getName());
 		assertEquals("Kerry", test2.getSpouse().getName());
 		bf.close();

@@ -43,7 +43,6 @@ import org.springframework.core.io.Resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -81,7 +80,7 @@ public class CollectionToCollectionConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		List<Integer> result = (List<Integer>) conversionService.convert(list, sourceType, targetType);
-		assertFalse(list.equals(result));
+		assertThat(list.equals(result)).isFalse();
 		assertEquals(9, result.get(0).intValue());
 		assertEquals(37, result.get(1).intValue());
 	}

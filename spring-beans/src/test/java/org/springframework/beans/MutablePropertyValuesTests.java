@@ -26,7 +26,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests for {@link MutablePropertyValues}.
@@ -121,14 +120,14 @@ public class MutablePropertyValuesTests extends AbstractPropertyValuesTests {
 		assertEquals("foo", pv.getName());
 		assertEquals("bar", pv.getValue());
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(it::remove);
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 	}
 
 	@Test
 	public void iteratorIsEmptyForEmptyValues() {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		Iterator<PropertyValue> it = pvs.iterator();
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 	}
 
 	@Test

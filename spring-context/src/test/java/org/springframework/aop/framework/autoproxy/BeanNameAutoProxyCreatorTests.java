@@ -35,7 +35,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -58,7 +57,7 @@ public class BeanNameAutoProxyCreatorTests {
 	@Test
 	public void testNoProxy() {
 		TestBean tb = (TestBean) beanFactory.getBean("noproxy");
-		assertFalse(AopUtils.isAopProxy(tb));
+		assertThat(AopUtils.isAopProxy(tb)).isFalse();
 		assertEquals("noproxy", tb.getName());
 	}
 
@@ -96,14 +95,14 @@ public class BeanNameAutoProxyCreatorTests {
 		// Check two per-instance mixins were distinct
 		Lockable lockable1 = (Lockable) tb;
 		Lockable lockable2 = (Lockable) tb2;
-		assertFalse(lockable1.locked());
-		assertFalse(lockable2.locked());
+		assertThat(lockable1.locked()).isFalse();
+		assertThat(lockable2.locked()).isFalse();
 		tb.setAge(65);
 		assertEquals(65, tb.getAge());
 		lockable1.lock();
 		assertThat(lockable1.locked()).isTrue();
 		// Shouldn't affect second
-		assertFalse(lockable2.locked());
+		assertThat(lockable2.locked()).isFalse();
 		// Can still mod second object
 		tb2.setAge(12);
 		// But can't mod first
@@ -130,14 +129,14 @@ public class BeanNameAutoProxyCreatorTests {
 		// Check two per-instance mixins were distinct
 		Lockable lockable1 = (Lockable) tb;
 		Lockable lockable2 = (Lockable) tb2;
-		assertFalse(lockable1.locked());
-		assertFalse(lockable2.locked());
+		assertThat(lockable1.locked()).isFalse();
+		assertThat(lockable2.locked()).isFalse();
 		tb.setAge(65);
 		assertEquals(65, tb.getAge());
 		lockable1.lock();
 		assertThat(lockable1.locked()).isTrue();
 		// Shouldn't affect second
-		assertFalse(lockable2.locked());
+		assertThat(lockable2.locked()).isFalse();
 		// Can still mod second object
 		tb2.setAge(12);
 		// But can't mod first

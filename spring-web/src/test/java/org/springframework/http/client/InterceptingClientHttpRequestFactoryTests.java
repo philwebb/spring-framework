@@ -36,7 +36,6 @@ import org.springframework.http.client.support.HttpRequestWrapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -89,8 +88,8 @@ public class InterceptingClientHttpRequestFactoryTests {
 		ClientHttpRequest request = requestFactory.createRequest(new URI("https://example.com"), HttpMethod.GET);
 		ClientHttpResponse response = request.execute();
 
-		assertFalse(((NoOpInterceptor) interceptors.get(1)).invoked);
-		assertFalse(requestMock.executed);
+		assertThat(((NoOpInterceptor) interceptors.get(1)).invoked).isFalse();
+		assertThat(requestMock.executed).isFalse();
 		assertSame(responseMock, response);
 	}
 

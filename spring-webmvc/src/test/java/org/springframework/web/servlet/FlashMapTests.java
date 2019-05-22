@@ -23,7 +23,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture for {@link FlashMap} tests.
@@ -34,7 +33,7 @@ public class FlashMapTests {
 
 	@Test
 	public void isExpired() throws InterruptedException {
-		assertFalse(new FlashMap().isExpired());
+		assertThat(new FlashMap().isExpired()).isFalse();
 
 		FlashMap flashMap = new FlashMap();
 		flashMap.startExpirationPeriod(0);
@@ -49,7 +48,7 @@ public class FlashMapTests {
 		flashMap.startExpirationPeriod(10);
 		Thread.sleep(100);
 
-		assertFalse(flashMap.isExpired());
+		assertThat(flashMap.isExpired()).isFalse();
 	}
 
 	@Test

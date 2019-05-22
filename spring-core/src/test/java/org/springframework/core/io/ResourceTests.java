@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for various {@link Resource} implementations.
@@ -54,7 +53,7 @@ public class ResourceTests {
 	public void testByteArrayResource() throws IOException {
 		Resource resource = new ByteArrayResource("testString".getBytes());
 		assertThat(resource.exists()).isTrue();
-		assertFalse(resource.isOpen());
+		assertThat(resource.isOpen()).isFalse();
 		String content = FileCopyUtils.copyToString(new InputStreamReader(resource.getInputStream()));
 		assertEquals("testString", content);
 		assertEquals(resource, new ByteArrayResource("testString".getBytes()));
@@ -64,7 +63,7 @@ public class ResourceTests {
 	public void testByteArrayResourceWithDescription() throws IOException {
 		Resource resource = new ByteArrayResource("testString".getBytes(), "my description");
 		assertThat(resource.exists()).isTrue();
-		assertFalse(resource.isOpen());
+		assertThat(resource.isOpen()).isFalse();
 		String content = FileCopyUtils.copyToString(new InputStreamReader(resource.getInputStream()));
 		assertEquals("testString", content);
 		assertThat(resource.getDescription().contains("my description")).isTrue();
@@ -195,8 +194,8 @@ public class ResourceTests {
 		assertThat(relative3.lastModified() > 0).isTrue();
 
 		Resource relative4 = resource.createRelative("X.class");
-		assertFalse(relative4.exists());
-		assertFalse(relative4.isReadable());
+		assertThat(relative4.exists()).isFalse();
+		assertThat(relative4.isReadable()).isFalse();
 		assertThatExceptionOfType(FileNotFoundException.class).isThrownBy(
 				relative4::contentLength);
 		assertThatExceptionOfType(FileNotFoundException.class).isThrownBy(

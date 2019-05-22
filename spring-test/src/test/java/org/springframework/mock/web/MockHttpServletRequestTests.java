@@ -37,7 +37,6 @@ import org.springframework.util.StreamUtils;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
@@ -305,7 +304,7 @@ public class MockHttpServletRequestTests {
 			Locale.setDefault(newDefaultLocale);
 			// Create the request after changing the default locale.
 			MockHttpServletRequest request = new MockHttpServletRequest();
-			assertFalse(newDefaultLocale.equals(request.getLocale()));
+			assertThat(newDefaultLocale.equals(request.getLocale())).isFalse();
 			assertEquals(Locale.ENGLISH, request.getLocale());
 		}
 		finally {
@@ -495,15 +494,15 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void isSecureWithHttpSchemeAndSecureFlagIsFalse() {
-		assertFalse(request.isSecure());
+		assertThat(request.isSecure()).isFalse();
 		request.setScheme("http");
 		request.setSecure(false);
-		assertFalse(request.isSecure());
+		assertThat(request.isSecure()).isFalse();
 	}
 
 	@Test
 	public void isSecureWithHttpSchemeAndSecureFlagIsTrue() {
-		assertFalse(request.isSecure());
+		assertThat(request.isSecure()).isFalse();
 		request.setScheme("http");
 		request.setSecure(true);
 		assertThat(request.isSecure()).isTrue();
@@ -511,7 +510,7 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void isSecureWithHttpsSchemeAndSecureFlagIsFalse() {
-		assertFalse(request.isSecure());
+		assertThat(request.isSecure()).isFalse();
 		request.setScheme("https");
 		request.setSecure(false);
 		assertThat(request.isSecure()).isTrue();
@@ -519,7 +518,7 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void isSecureWithHttpsSchemeAndSecureFlagIsTrue() {
-		assertFalse(request.isSecure());
+		assertThat(request.isSecure()).isFalse();
 		request.setScheme("https");
 		request.setSecure(true);
 		assertThat(request.isSecure()).isTrue();

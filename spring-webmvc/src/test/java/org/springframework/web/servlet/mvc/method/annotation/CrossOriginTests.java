@@ -57,7 +57,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -145,7 +144,7 @@ public class CrossOriginTests {
 		assertArrayEquals(new String[] {"header1", "header2"}, config.getAllowedHeaders().toArray());
 		assertArrayEquals(new String[] {"header3", "header4"}, config.getExposedHeaders().toArray());
 		assertEquals(new Long(123), config.getMaxAge());
-		assertFalse(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isFalse();
 	}
 
 	@Test
@@ -188,7 +187,7 @@ public class CrossOriginTests {
 		assertNotNull(config);
 		assertArrayEquals(new String[] {"GET"}, config.getAllowedMethods().toArray());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedOrigins().toArray());
-		assertFalse(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isFalse();
 
 		this.request.setRequestURI("/bar");
 		chain = this.handlerMapping.getHandler(request);
@@ -196,7 +195,7 @@ public class CrossOriginTests {
 		assertNotNull(config);
 		assertArrayEquals(new String[] {"GET"}, config.getAllowedMethods().toArray());
 		assertArrayEquals(new String[] {"*"}, config.getAllowedOrigins().toArray());
-		assertFalse(config.getAllowCredentials());
+		assertThat((boolean) config.getAllowCredentials()).isFalse();
 
 		this.request.setRequestURI("/baz");
 		chain = this.handlerMapping.getHandler(request);

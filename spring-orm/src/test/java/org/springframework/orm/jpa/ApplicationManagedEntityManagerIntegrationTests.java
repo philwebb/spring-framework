@@ -29,7 +29,6 @@ import org.springframework.orm.jpa.domain.Person;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -53,7 +52,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 
 		assertThat(em.isOpen()).as("Should be open to start with").isTrue();
 		em.close();
-		assertFalse("Close should work on application managed EM", em.isOpen());
+		assertThat(em.isOpen()).as("Close should work on application managed EM").isFalse();
 	}
 
 	@Test
@@ -108,13 +107,13 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 		doInstantiateAndSave(em);
 		endTransaction();
 
-		assertFalse(em.getTransaction().isActive());
+		assertThat(em.getTransaction().isActive()).isFalse();
 
 		startNewTransaction();
 		// Call any method: should cause automatic tx invocation
-		assertFalse(em.contains(new Person()));
+		assertThat(em.contains(new Person())).isFalse();
 
-		assertFalse(em.getTransaction().isActive());
+		assertThat(em.getTransaction().isActive()).isFalse();
 		em.joinTransaction();
 
 		assertThat(em.getTransaction().isActive()).isTrue();

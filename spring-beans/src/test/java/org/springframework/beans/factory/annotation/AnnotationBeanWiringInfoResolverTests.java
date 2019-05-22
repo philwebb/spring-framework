@@ -20,9 +20,9 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.wiring.BeanWiringInfo;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -57,7 +57,7 @@ public class AnnotationBeanWiringInfoResolverTests {
 		AnnotationBeanWiringInfoResolver resolver = new AnnotationBeanWiringInfoResolver();
 		BeanWiringInfo info = resolver.resolveWiringInfo(new WirelessSoap());
 		assertNotNull("Must *not* be returning null for an @Configurable class instance even when autowiring is NO", info);
-		assertFalse(info.indicatesAutowiring());
+		assertThat(info.indicatesAutowiring()).isFalse();
 		assertEquals(WirelessSoap.class.getName(), info.getBeanName());
 	}
 
@@ -66,7 +66,7 @@ public class AnnotationBeanWiringInfoResolverTests {
 		AnnotationBeanWiringInfoResolver resolver = new AnnotationBeanWiringInfoResolver();
 		BeanWiringInfo info = resolver.resolveWiringInfo(new NamedWirelessSoap());
 		assertNotNull("Must *not* be returning null for an @Configurable class instance even when autowiring is NO", info);
-		assertFalse(info.indicatesAutowiring());
+		assertThat(info.indicatesAutowiring()).isFalse();
 		assertEquals("DerBigStick", info.getBeanName());
 	}
 

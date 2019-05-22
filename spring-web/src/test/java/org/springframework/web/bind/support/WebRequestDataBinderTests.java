@@ -41,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -98,7 +97,7 @@ public class WebRequestDataBinderTests {
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -115,7 +114,7 @@ public class WebRequestDataBinderTests {
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -131,7 +130,7 @@ public class WebRequestDataBinderTests {
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	// SPR-13502
@@ -172,7 +171,7 @@ public class WebRequestDataBinderTests {
 
 		request.removeParameter("!postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -194,7 +193,7 @@ public class WebRequestDataBinderTests {
 
 		request.removeParameter("!spouse.postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(((TestBean) target.getSpouse()).isPostProcessed());
+		assertThat(((TestBean) target.getSpouse()).isPostProcessed()).isFalse();
 	}
 
 	@Test

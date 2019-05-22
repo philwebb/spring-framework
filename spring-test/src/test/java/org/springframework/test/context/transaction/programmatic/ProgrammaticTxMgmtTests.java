@@ -49,7 +49,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.fail;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
@@ -116,7 +115,7 @@ public class ProgrammaticTxMgmtTests {
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public void isActiveWithNonExistentTransactionContext() {
-		assertFalse(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isFalse();
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -164,10 +163,10 @@ public class ProgrammaticTxMgmtTests {
 
 		// Commit
 		TestTransaction.flagForCommit();
-		assertFalse(TestTransaction.isFlaggedForRollback());
+		assertThat(TestTransaction.isFlaggedForRollback()).isFalse();
 		TestTransaction.end();
 		assertInTransaction(false);
-		assertFalse(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isFalse();
 		assertUsers();
 
 		executeSqlScript("classpath:/org/springframework/test/context/jdbc/data-add-dogbert.sql", false);
@@ -188,9 +187,9 @@ public class ProgrammaticTxMgmtTests {
 
 		// Commit
 		TestTransaction.flagForCommit();
-		assertFalse(TestTransaction.isFlaggedForRollback());
+		assertThat(TestTransaction.isFlaggedForRollback()).isFalse();
 		TestTransaction.end();
-		assertFalse(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isFalse();
 		assertInTransaction(false);
 		assertUsers();
 
@@ -209,7 +208,7 @@ public class ProgrammaticTxMgmtTests {
 		// Rollback (automatically)
 		assertThat(TestTransaction.isFlaggedForRollback()).isTrue();
 		TestTransaction.end();
-		assertFalse(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isFalse();
 		assertInTransaction(false);
 		assertUsers("Dilbert");
 
@@ -234,7 +233,7 @@ public class ProgrammaticTxMgmtTests {
 		// Rollback (automatically)
 		assertThat(TestTransaction.isFlaggedForRollback()).isTrue();
 		TestTransaction.end();
-		assertFalse(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isFalse();
 		assertInTransaction(false);
 		assertUsers("Dilbert");
 	}
@@ -252,14 +251,14 @@ public class ProgrammaticTxMgmtTests {
 		TestTransaction.flagForRollback();
 		assertThat(TestTransaction.isFlaggedForRollback()).isTrue();
 		TestTransaction.end();
-		assertFalse(TestTransaction.isActive());
+		assertThat(TestTransaction.isActive()).isFalse();
 		assertInTransaction(false);
 		assertUsers("Dilbert");
 
 		// Start new transaction with default commit semantics
 		TestTransaction.start();
 		assertInTransaction(true);
-		assertFalse(TestTransaction.isFlaggedForRollback());
+		assertThat(TestTransaction.isFlaggedForRollback()).isFalse();
 		assertThat(TestTransaction.isActive()).isTrue();
 
 		executeSqlScript("classpath:/org/springframework/test/context/jdbc/data-add-dogbert.sql", false);

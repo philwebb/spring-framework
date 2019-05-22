@@ -31,7 +31,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -76,7 +75,7 @@ public class ServletRequestDataBinderTests {
 
 		request.removeParameter("postProcessed");
 		binder.bind(request);
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -93,7 +92,7 @@ public class ServletRequestDataBinderTests {
 
 		request.removeParameter("postProcessed");
 		binder.bind(request);
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -109,7 +108,7 @@ public class ServletRequestDataBinderTests {
 
 		request.removeParameter("postProcessed");
 		binder.bind(request);
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -130,7 +129,7 @@ public class ServletRequestDataBinderTests {
 
 		request.removeParameter("!postProcessed");
 		binder.bind(request);
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test

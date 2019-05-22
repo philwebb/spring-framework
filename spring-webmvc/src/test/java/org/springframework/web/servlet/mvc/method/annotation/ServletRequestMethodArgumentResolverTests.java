@@ -45,7 +45,6 @@ import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
@@ -88,7 +87,7 @@ public class ServletRequestMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(servletRequestParameter, mavContainer, webRequest, null);
 		assertSame("Invalid result", servletRequest, result);
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
 	@Test
@@ -101,7 +100,7 @@ public class ServletRequestMethodArgumentResolverTests {
 
 		Object result = resolver.resolveArgument(sessionParameter, mavContainer, webRequest, null);
 		assertSame("Invalid result", session, result);
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 	}
 
 	@Test

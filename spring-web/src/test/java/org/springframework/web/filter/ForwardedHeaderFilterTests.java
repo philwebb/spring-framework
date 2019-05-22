@@ -35,7 +35,6 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.mock;
@@ -233,7 +232,7 @@ public class ForwardedHeaderFilterTests {
 	private void testShouldFilter(String headerName) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader(headerName, "1");
-		assertFalse(this.filter.shouldNotFilter(request));
+		assertThat(this.filter.shouldNotFilter(request)).isFalse();
 	}
 
 	@Test
@@ -281,7 +280,7 @@ public class ForwardedHeaderFilterTests {
 		assertEquals("http", actual.getScheme());
 		assertEquals("localhost", actual.getServerName());
 		assertEquals(80, actual.getServerPort());
-		assertFalse(actual.isSecure());
+		assertThat(actual.isSecure()).isFalse();
 
 		assertNull(actual.getHeader(X_FORWARDED_PROTO));
 		assertNull(actual.getHeader(X_FORWARDED_HOST));

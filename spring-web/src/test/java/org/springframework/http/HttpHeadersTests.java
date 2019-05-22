@@ -41,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -388,9 +387,9 @@ public class HttpHeadersTests {
 
 	@Test
 	public void accessControlAllowCredentials() {
-		assertFalse(headers.getAccessControlAllowCredentials());
+		assertThat(headers.getAccessControlAllowCredentials()).isFalse();
 		headers.setAccessControlAllowCredentials(false);
-		assertFalse(headers.getAccessControlAllowCredentials());
+		assertThat(headers.getAccessControlAllowCredentials()).isFalse();
 		headers.setAccessControlAllowCredentials(true);
 		assertThat(headers.getAccessControlAllowCredentials()).isTrue();
 	}

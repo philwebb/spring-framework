@@ -33,7 +33,6 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture with {@link ExpressionValueMethodArgumentResolver}.
@@ -79,7 +78,7 @@ public class ExpressionValueMethodArgumentResolverTests {
 	public void supportsParameter() throws Exception {
 		assertThat(resolver.supportsParameter(paramSystemProperty)).isTrue();
 		assertThat(resolver.supportsParameter(paramContextPath)).isTrue();
-		assertFalse(resolver.supportsParameter(paramNotSupported));
+		assertThat(resolver.supportsParameter(paramNotSupported)).isFalse();
 	}
 
 	@Test

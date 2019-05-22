@@ -33,7 +33,6 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.fail;
@@ -117,7 +116,7 @@ public class PathResourceResolverTests {
 		ServletContextResource servletContextLocation = new ServletContextResource(context, "/webjars/");
 		ServletContextResource resource = new ServletContextResource(context, "/webjars/webjar-foo/1.0/foo.js");
 
-		assertFalse(this.resolver.checkResource(resource, classpathLocation));
+		assertThat(this.resolver.checkResource(resource, classpathLocation)).isFalse();
 		assertThat(this.resolver.checkResource(resource, servletContextLocation)).isTrue();
 	}
 

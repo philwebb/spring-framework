@@ -39,7 +39,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
@@ -64,8 +63,10 @@ public class BshScriptFactoryTests {
 		Calculator calc = (Calculator) ctx.getBean("calculator");
 		Messenger messenger = (Messenger) ctx.getBean("messenger");
 
-		assertFalse("Scripted object should not be instance of Refreshable", calc instanceof Refreshable);
-		assertFalse("Scripted object should not be instance of Refreshable", messenger instanceof Refreshable);
+		boolean condition3 = calc instanceof Refreshable;
+		assertThat(condition3).as("Scripted object should not be instance of Refreshable").isFalse();
+		boolean condition2 = messenger instanceof Refreshable;
+		assertThat(condition2).as("Scripted object should not be instance of Refreshable").isFalse();
 
 		assertEquals(calc, calc);
 		assertEquals(messenger, messenger);
@@ -143,8 +144,9 @@ public class BshScriptFactoryTests {
 		ConfigurableMessenger messenger = (ConfigurableMessenger) ctx.getBean("messengerPrototype");
 		ConfigurableMessenger messenger2 = (ConfigurableMessenger) ctx.getBean("messengerPrototype");
 
-		assertFalse("Shouldn't get proxy when refresh is disabled", AopUtils.isAopProxy(messenger));
-		assertFalse("Scripted object should not be instance of Refreshable", messenger instanceof Refreshable);
+		assertThat(AopUtils.isAopProxy(messenger)).as("Shouldn't get proxy when refresh is disabled").isFalse();
+		boolean condition = messenger instanceof Refreshable;
+		assertThat(condition).as("Scripted object should not be instance of Refreshable").isFalse();
 
 		assertNotSame(messenger, messenger2);
 		assertSame(messenger.getClass(), messenger2.getClass());
@@ -251,7 +253,8 @@ public class BshScriptFactoryTests {
 
 		Messenger messenger = (Messenger) ctx.getBean("messenger");
 		assertEquals("Hello World!", messenger.getMessage());
-		assertFalse(messenger instanceof Refreshable);
+		boolean condition = messenger instanceof Refreshable;
+		assertThat(condition).isFalse();
 
 		Messenger messengerImpl = (Messenger) ctx.getBean("messengerImpl");
 		assertEquals("Hello World!", messengerImpl.getMessage());
@@ -299,7 +302,8 @@ public class BshScriptFactoryTests {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("bsh-with-xsd.xml", getClass());
 		Calculator calculator = (Calculator) ctx.getBean("calculator");
 		assertNotNull(calculator);
-		assertFalse(calculator instanceof Refreshable);
+		boolean condition = calculator instanceof Refreshable;
+		assertThat(condition).isFalse();
 	}
 
 	@Test

@@ -32,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -160,14 +159,14 @@ public class MutablePropertySourcesTests {
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
 				it::remove);
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 	}
 
 	@Test
 	public void iteratorIsEmptyForEmptySources() {
 		MutablePropertySources sources = new MutablePropertySources();
 		Iterator<PropertySource<?>> it = sources.iterator();
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 	}
 
 	@Test

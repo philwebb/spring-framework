@@ -40,7 +40,6 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -200,9 +199,9 @@ public class UtilNamespaceHandlerTests {
 		assertEquals(list, bean2.getSomeList());
 		assertEquals(set, bean2.getSomeSet());
 		assertEquals(map, bean2.getSomeMap());
-		assertFalse(list == bean2.getSomeList());
-		assertFalse(set == bean2.getSomeSet());
-		assertFalse(map == bean2.getSomeMap());
+		assertThat(list == bean2.getSomeList()).isFalse();
+		assertThat(set == bean2.getSomeSet()).isFalse();
+		assertThat(map == bean2.getSomeMap()).isFalse();
 	}
 
 	@Test
@@ -222,11 +221,11 @@ public class UtilNamespaceHandlerTests {
 
 		TestBean bean2 = (TestBean) this.beanFactory.getBean("nestedShortcutCollections");
 		assertThat(Arrays.equals(bean.getStringArray(), bean2.getStringArray())).isTrue();
-		assertFalse(bean.getStringArray() == bean2.getStringArray());
+		assertThat(bean.getStringArray() == bean2.getStringArray()).isFalse();
 		assertEquals(list, bean2.getSomeList());
 		assertEquals(set, bean2.getSomeSet());
-		assertFalse(list == bean2.getSomeList());
-		assertFalse(set == bean2.getSomeSet());
+		assertThat(list == bean2.getSomeList()).isFalse();
+		assertThat(set == bean2.getSomeSet()).isFalse();
 	}
 
 	@Test
@@ -250,9 +249,9 @@ public class UtilNamespaceHandlerTests {
 		assertEquals(list, bean2.getSomeList());
 		assertEquals(set, bean2.getSomeSet());
 		assertEquals(map, bean2.getSomeMap());
-		assertFalse(list == bean2.getSomeList());
-		assertFalse(set == bean2.getSomeSet());
-		assertFalse(map == bean2.getSomeMap());
+		assertThat(list == bean2.getSomeList()).isFalse();
+		assertThat(set == bean2.getSomeSet()).isFalse();
+		assertThat(map == bean2.getSomeMap()).isFalse();
 	}
 
 	@Test
@@ -283,12 +282,12 @@ public class UtilNamespaceHandlerTests {
 		assertEquals(bean, list.get(0));
 
 		Set set = bean.getSomeSet();
-		assertFalse(Proxy.isProxyClass(set.getClass()));
+		assertThat(Proxy.isProxyClass(set.getClass())).isFalse();
 		assertEquals(1, set.size());
 		assertThat(set.contains(bean)).isTrue();
 
 		Map map = bean.getSomeMap();
-		assertFalse(Proxy.isProxyClass(map.getClass()));
+		assertThat(Proxy.isProxyClass(map.getClass())).isFalse();
 		assertEquals(1, map.size());
 		assertEquals(bean, map.get("foo"));
 	}
@@ -299,7 +298,7 @@ public class UtilNamespaceHandlerTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("circularCollectionBeansBean");
 
 		List list = bean.getSomeList();
-		assertFalse(Proxy.isProxyClass(list.getClass()));
+		assertThat(Proxy.isProxyClass(list.getClass())).isFalse();
 		assertEquals(1, list.size());
 		assertEquals(bean, list.get(0));
 
@@ -309,7 +308,7 @@ public class UtilNamespaceHandlerTests {
 		assertThat(set.contains(bean)).isTrue();
 
 		Map map = bean.getSomeMap();
-		assertFalse(Proxy.isProxyClass(map.getClass()));
+		assertThat(Proxy.isProxyClass(map.getClass())).isFalse();
 		assertEquals(1, map.size());
 		assertEquals(bean, map.get("foo"));
 	}
@@ -320,12 +319,12 @@ public class UtilNamespaceHandlerTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("circularCollectionBeansBean");
 
 		List list = bean.getSomeList();
-		assertFalse(Proxy.isProxyClass(list.getClass()));
+		assertThat(Proxy.isProxyClass(list.getClass())).isFalse();
 		assertEquals(1, list.size());
 		assertEquals(bean, list.get(0));
 
 		Set set = bean.getSomeSet();
-		assertFalse(Proxy.isProxyClass(set.getClass()));
+		assertThat(Proxy.isProxyClass(set.getClass())).isFalse();
 		assertEquals(1, set.size());
 		assertThat(set.contains(bean)).isTrue();
 

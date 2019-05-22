@@ -29,7 +29,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -79,7 +78,7 @@ public class WebArgumentResolverAdapterTests {
 	public void supportsParameterUnresolved() throws Exception {
 		given(adaptee.resolveArgument(parameter, webRequest)).willReturn(WebArgumentResolver.UNRESOLVED);
 
-		assertFalse("Parameter supported", adapter.supportsParameter(parameter));
+		assertThat(adapter.supportsParameter(parameter)).as("Parameter supported").isFalse();
 
 		verify(adaptee).resolveArgument(parameter, webRequest);
 	}
@@ -88,7 +87,7 @@ public class WebArgumentResolverAdapterTests {
 	public void supportsParameterWrongType() throws Exception {
 		given(adaptee.resolveArgument(parameter, webRequest)).willReturn("Foo");
 
-		assertFalse("Parameter supported", adapter.supportsParameter(parameter));
+		assertThat(adapter.supportsParameter(parameter)).as("Parameter supported").isFalse();
 
 		verify(adaptee).resolveArgument(parameter, webRequest);
 	}
@@ -97,7 +96,7 @@ public class WebArgumentResolverAdapterTests {
 	public void supportsParameterThrowsException() throws Exception {
 		given(adaptee.resolveArgument(parameter, webRequest)).willThrow(new Exception());
 
-		assertFalse("Parameter supported", adapter.supportsParameter(parameter));
+		assertThat(adapter.supportsParameter(parameter)).as("Parameter supported").isFalse();
 
 		verify(adaptee).resolveArgument(parameter, webRequest);
 	}

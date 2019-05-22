@@ -41,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -165,7 +164,8 @@ public class RmiSupportTests {
 		boolean condition = factory.getObject() instanceof IBusinessBean;
 		assertThat(condition).isTrue();
 		IBusinessBean proxy = (IBusinessBean) factory.getObject();
-		assertFalse(proxy instanceof IRemoteBean);
+		boolean condition1 = proxy instanceof IRemoteBean;
+		assertThat(condition1).isFalse();
 		proxy.setName("myName");
 		assertEquals("myName", RemoteBean.name);
 		assertEquals(1, factory.counter);
@@ -180,7 +180,8 @@ public class RmiSupportTests {
 		boolean condition = factory.getObject() instanceof IWrongBusinessBean;
 		assertThat(condition).isTrue();
 		IWrongBusinessBean proxy = (IWrongBusinessBean) factory.getObject();
-		assertFalse(proxy instanceof IRemoteBean);
+		boolean condition1 = proxy instanceof IRemoteBean;
+		assertThat(condition1).isFalse();
 		assertThatExceptionOfType(RemoteProxyFailureException.class).isThrownBy(() ->
 				proxy.setOtherName("name"))
 			.withCauseInstanceOf(NoSuchMethodException.class)
@@ -235,7 +236,8 @@ public class RmiSupportTests {
 		boolean condition = factory.getObject() instanceof IBusinessBean;
 		assertThat(condition).isTrue();
 		IBusinessBean proxy = (IBusinessBean) factory.getObject();
-		assertFalse(proxy instanceof IRemoteBean);
+		boolean condition1 = proxy instanceof IRemoteBean;
+		assertThat(condition1).isFalse();
 		assertThatExceptionOfType(springExceptionClass).isThrownBy(() ->
 				proxy.setName(rmiExceptionClass.getName()));
 		assertEquals(1, factory.counter);
@@ -288,7 +290,8 @@ public class RmiSupportTests {
 		boolean condition = factory.getObject() instanceof IBusinessBean;
 		assertThat(condition).isTrue();
 		IBusinessBean proxy = (IBusinessBean) factory.getObject();
-		assertFalse(proxy instanceof IRemoteBean);
+		boolean condition1 = proxy instanceof IRemoteBean;
+		assertThat(condition1).isFalse();
 		assertThatExceptionOfType(springExceptionClass).isThrownBy(() ->
 				proxy.setName(rmiExceptionClass.getName()));
 		boolean isRemoteConnectFaiure = RemoteConnectFailureException.class.isAssignableFrom(springExceptionClass);

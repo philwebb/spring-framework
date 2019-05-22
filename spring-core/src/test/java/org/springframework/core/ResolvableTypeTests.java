@@ -56,7 +56,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
@@ -107,7 +106,7 @@ public class ResolvableTypeTests {
 		assertThat(type.getType()).isEqualTo(ExtendsList.class);
 		assertThat(type.getRawClass()).isEqualTo(ExtendsList.class);
 		assertThat(type.isAssignableFrom(ExtendsList.class)).isTrue();
-		assertFalse(type.isAssignableFrom(ArrayList.class));
+		assertThat(type.isAssignableFrom(ArrayList.class)).isFalse();
 	}
 
 	@Test
@@ -125,7 +124,7 @@ public class ResolvableTypeTests {
 		assertThat(type.getType()).isEqualTo(ExtendsList.class);
 		assertThat(type.getRawClass()).isEqualTo(ExtendsList.class);
 		assertThat(type.isAssignableFrom(ExtendsList.class)).isTrue();
-		assertFalse(type.isAssignableFrom(ArrayList.class));
+		assertThat(type.isAssignableFrom(ArrayList.class)).isFalse();
 	}
 
 	@Test
@@ -990,14 +989,14 @@ public class ResolvableTypeTests {
 		assertThat(charSequenceType.isAssignableFrom(String.class)).isTrue();
 		assertThat(charSequenceType.isAssignableFrom(StringBuilder.class)).isTrue();
 		assertThat(stringType.isAssignableFrom(String.class)).isTrue();
-		assertFalse(stringType.isAssignableFrom(StringBuilder.class));
+		assertThat(stringType.isAssignableFrom(StringBuilder.class)).isFalse();
 
 		assertThat(objectType.isInstance("a String")).isTrue();
 		assertThat(objectType.isInstance(new StringBuilder("a StringBuilder"))).isTrue();
 		assertThat(charSequenceType.isInstance("a String")).isTrue();
 		assertThat(charSequenceType.isInstance(new StringBuilder("a StringBuilder"))).isTrue();
 		assertThat(stringType.isInstance("a String")).isTrue();
-		assertFalse(stringType.isInstance(new StringBuilder("a StringBuilder")));
+		assertThat(stringType.isInstance(new StringBuilder("a StringBuilder"))).isFalse();
 	}
 
 	@Test

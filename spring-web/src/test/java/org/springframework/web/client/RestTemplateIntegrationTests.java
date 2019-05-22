@@ -58,7 +58,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.junit.Assume.assumeFalse;
@@ -104,7 +103,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	public void getEntity() {
 		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/{method}", String.class, "get");
 		assertEquals("Invalid content", helloWorld, entity.getBody());
-		assertFalse("No headers", entity.getHeaders().isEmpty());
+		assertThat(entity.getHeaders().isEmpty()).as("No headers").isFalse();
 		assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
 		assertEquals("Invalid status code", HttpStatus.OK, entity.getStatusCode());
 	}
@@ -262,7 +261,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, requestHeaders);
 		HttpEntity<Void> result = template.exchange(baseUrl + "/{method}", POST, entity, Void.class, "post");
 		assertEquals("Invalid location", new URI(baseUrl + "/post/1"), result.getHeaders().getLocation());
-		assertFalse(result.hasBody());
+		assertThat(result.hasBody()).isFalse();
 	}
 
 	@Test
@@ -290,8 +289,8 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		HttpEntity<MappingJacksonValue> entity = new HttpEntity<>(jacksonValue, entityHeaders);
 		String s = template.postForObject(baseUrl + "/jsonpost", entity, String.class);
 		assertThat(s.contains("\"with1\":\"with\"")).isTrue();
-		assertFalse(s.contains("\"with2\":\"with\""));
-		assertFalse(s.contains("\"without\":\"without\""));
+		assertThat(s.contains("\"with2\":\"with\"")).isFalse();
+		assertThat(s.contains("\"without\":\"without\"")).isFalse();
 	}
 
 	@Test  // SPR-12123

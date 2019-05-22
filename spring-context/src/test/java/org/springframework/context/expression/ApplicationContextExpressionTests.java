@@ -61,7 +61,6 @@ import org.springframework.util.StopWatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -184,7 +183,7 @@ public class ApplicationContextExpressionTests {
 			assertEquals("123 UK", tb3.countryFactory.getObject());
 			assertEquals("123", tb3.optionalValue1.get());
 			assertEquals("123", tb3.optionalValue2.get());
-			assertFalse(tb3.optionalValue3.isPresent());
+			assertThat(tb3.optionalValue3.isPresent()).isFalse();
 			assertSame(tb0, tb3.tb);
 
 			tb3 = (ValueTestBean) SerializationTestUtils.serializeAndDeserialize(tb3);

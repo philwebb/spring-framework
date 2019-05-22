@@ -29,7 +29,6 @@ import org.springframework.core.convert.support.DefaultConversionService;
 
 import static org.assertj.core.api.Assertions.*;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -449,8 +448,8 @@ public class MediaTypeTests {
 	@Test
 	public void isConcrete() {
 		assertThat(MediaType.TEXT_PLAIN.isConcrete()).as("text/plain not concrete").isTrue();
-		assertFalse("*/* concrete", MediaType.ALL.isConcrete());
-		assertFalse("text/* concrete", new MediaType("text", "*").isConcrete());
+		assertThat(MediaType.ALL.isConcrete()).as("*/* concrete").isFalse();
+		assertThat(new MediaType("text", "*").isConcrete()).as("text/* concrete").isFalse();
 	}
 
 }

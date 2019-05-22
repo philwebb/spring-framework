@@ -23,7 +23,6 @@ import org.springframework.cache.CacheManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
@@ -128,11 +127,11 @@ public class ConcurrentMapCacheManagerTests {
 	@Test
 	public void testChangeStoreByValue() {
 		ConcurrentMapCacheManager cm = new ConcurrentMapCacheManager("c1", "c2");
-		assertFalse(cm.isStoreByValue());
+		assertThat(cm.isStoreByValue()).isFalse();
 		Cache cache1 = cm.getCache("c1");
 		boolean condition1 = cache1 instanceof ConcurrentMapCache;
 		assertThat(condition1).isTrue();
-		assertFalse(((ConcurrentMapCache)cache1).isStoreByValue());
+		assertThat(((ConcurrentMapCache)cache1).isStoreByValue()).isFalse();
 		cache1.put("key", "value");
 
 		cm.setStoreByValue(true);

@@ -36,7 +36,6 @@ import org.springframework.web.reactive.BindingContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -69,7 +68,7 @@ public class ErrorsMethodArgumentResolverTests {
 		assertThat(this.resolver.supportsParameter(parameter)).isTrue();
 
 		parameter = this.testMethod.arg(String.class);
-		assertFalse(this.resolver.supportsParameter(parameter));
+		assertThat(this.resolver.supportsParameter(parameter)).isFalse();
 	}
 
 	@Test

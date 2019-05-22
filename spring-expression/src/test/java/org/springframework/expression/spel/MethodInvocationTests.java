@@ -42,7 +42,6 @@ import org.springframework.expression.spel.testresources.PlaceOfBirth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -205,7 +204,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		expr = (SpelExpression) parser.parseExpression("charAt(0)");
 		result = expr.getValue(context, String.class);
 		assertEquals("a", result);
-		assertFalse(filter.filterCalled);
+		assertThat(filter.filterCalled).isFalse();
 
 		// check de-registration works
 		filter.filterCalled = false;
@@ -214,7 +213,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		expr = (SpelExpression) parser.parseExpression("doit(1)");
 		result = expr.getValue(context, String.class);
 		assertEquals("1", result);
-		assertFalse(filter.filterCalled);
+		assertThat(filter.filterCalled).isFalse();
 	}
 
 	@Test
@@ -232,7 +231,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		List<MethodResolver> copy = new ArrayList<>();
 		copy.addAll(ctx.getMethodResolvers());
 		assertThat(ctx.removeMethodResolver(dummy)).isTrue();
-		assertFalse(ctx.removeMethodResolver(dummy));
+		assertThat(ctx.removeMethodResolver(dummy)).isFalse();
 		assertEquals(1, ctx.getMethodResolvers().size());
 
 		ctx.setMethodResolvers(copy);

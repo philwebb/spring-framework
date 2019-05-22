@@ -28,7 +28,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -62,8 +61,7 @@ public class HtmlCharacterEntityReferencesTests {
 				assertEquals("&#39;", entityReferences.convertToReference((char) character));
 			}
 			else {
-				assertFalse("The unicode character " + character + " should not be mapped to a reference",
-						entityReferences.isMappedToReference((char) character));
+				assertThat(entityReferences.isMappedToReference((char) character)).as("The unicode character " + character + " should not be mapped to a reference").isFalse();
 				assertNull("No entity reference of unicode character " + character + " should exist",
 						entityReferences.convertToReference((char) character));
 			}

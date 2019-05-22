@@ -24,8 +24,8 @@ import org.junit.rules.TestName;
 
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Stephane Nicoll
@@ -66,7 +66,7 @@ public class AnnotatedElementKeyTests {
 		AnnotatedElementKey first = new AnnotatedElementKey(m, getClass());
 		AnnotatedElementKey second = new AnnotatedElementKey(m, null);
 
-		assertFalse(first.equals(second));
+		assertThat(first.equals(second)).isFalse();
 	}
 
 	protected void assertKeyEquals(AnnotatedElementKey first, AnnotatedElementKey second) {

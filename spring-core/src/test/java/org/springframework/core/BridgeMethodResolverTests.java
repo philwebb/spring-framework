@@ -34,7 +34,6 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 
@@ -61,7 +60,7 @@ public class BridgeMethodResolverTests {
 	public void testFindBridgedMethod() throws Exception {
 		Method unbridged = MyFoo.class.getDeclaredMethod("someMethod", String.class, Object.class);
 		Method bridged = MyFoo.class.getDeclaredMethod("someMethod", Serializable.class, Object.class);
-		assertFalse(unbridged.isBridge());
+		assertThat(unbridged.isBridge()).isFalse();
 		assertThat(bridged.isBridge()).isTrue();
 
 		assertEquals("Unbridged method not returned directly", unbridged, BridgeMethodResolver.findBridgedMethod(unbridged));
@@ -72,7 +71,7 @@ public class BridgeMethodResolverTests {
 	public void testFindBridgedVarargMethod() throws Exception {
 		Method unbridged = MyFoo.class.getDeclaredMethod("someVarargMethod", String.class, Object[].class);
 		Method bridged = MyFoo.class.getDeclaredMethod("someVarargMethod", Serializable.class, Object[].class);
-		assertFalse(unbridged.isBridge());
+		assertThat(unbridged.isBridge()).isFalse();
 		assertThat(bridged.isBridge()).isTrue();
 
 		assertEquals("Unbridged method not returned directly", unbridged, BridgeMethodResolver.findBridgedMethod(unbridged));
@@ -84,7 +83,7 @@ public class BridgeMethodResolverTests {
 		Method bridgeMethod = DateAdder.class.getMethod("add", Object.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
 		Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(bridgeMethod);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 		assertEquals("add", bridgedMethod.getName());
 		assertEquals(1, bridgedMethod.getParameterCount());
 		assertEquals(Date.class, bridgedMethod.getParameterTypes()[0]);
@@ -97,7 +96,7 @@ public class BridgeMethodResolverTests {
 		Method bridge = MyBar.class.getDeclaredMethod("someMethod", Object.class, Object.class);
 
 		assertThat(BridgeMethodResolver.isBridgeMethodFor(bridge, bridged, MyBar.class)).as("Should be bridge method").isTrue();
-		assertFalse("Should not be bridge method", BridgeMethodResolver.isBridgeMethodFor(bridge, other, MyBar.class));
+		assertThat(BridgeMethodResolver.isBridgeMethodFor(bridge, other, MyBar.class)).as("Should not be bridge method").isFalse();
 	}
 
 	@Test
@@ -132,7 +131,7 @@ public class BridgeMethodResolverTests {
 		assertThat(loadFromParentBridge.isBridge()).isTrue();
 
 		Method loadFromParent = AbstractDaoImpl.class.getMethod("loadFromParent");
-		assertFalse(loadFromParent.isBridge());
+		assertThat(loadFromParent.isBridge()).isFalse();
 
 		assertEquals(loadFromParent, BridgeMethodResolver.findBridgedMethod(loadFromParentBridge));
 	}
@@ -142,7 +141,7 @@ public class BridgeMethodResolverTests {
 		Method bridgeMethod = DelayQueue.class.getMethod("add", Object.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
 		Method actualMethod = DelayQueue.class.getMethod("add", Delayed.class);
-		assertFalse(actualMethod.isBridge());
+		assertThat(actualMethod.isBridge()).isFalse();
 		assertEquals(actualMethod, BridgeMethodResolver.findBridgedMethod(bridgeMethod));
 	}
 
@@ -151,7 +150,7 @@ public class BridgeMethodResolverTests {
 		Method bridgeMethod = SerializableBounded.class.getMethod("boundedOperation", Object.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
 		Method actualMethod = SerializableBounded.class.getMethod("boundedOperation", HashMap.class);
-		assertFalse(actualMethod.isBridge());
+		assertThat(actualMethod.isBridge()).isFalse();
 		assertEquals(actualMethod, BridgeMethodResolver.findBridgedMethod(bridgeMethod));
 	}
 
@@ -187,14 +186,14 @@ public class BridgeMethodResolverTests {
 	@Test
 	public void testSPR2583() throws Exception {
 		Method bridgedMethod = MessageBroadcasterImpl.class.getMethod("receive", MessageEvent.class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 		Method bridgeMethod = MessageBroadcasterImpl.class.getMethod("receive", Event.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
 
 		Method otherMethod = MessageBroadcasterImpl.class.getMethod("receive", NewMessageEvent.class);
-		assertFalse(otherMethod.isBridge());
+		assertThat(otherMethod.isBridge()).isFalse();
 
-		assertFalse("Match identified incorrectly", BridgeMethodResolver.isBridgeMethodFor(bridgeMethod, otherMethod, MessageBroadcasterImpl.class));
+		assertThat(BridgeMethodResolver.isBridgeMethodFor(bridgeMethod, otherMethod, MessageBroadcasterImpl.class)).as("Match identified incorrectly").isFalse();
 		assertThat(BridgeMethodResolver.isBridgeMethodFor(bridgeMethod, bridgedMethod, MessageBroadcasterImpl.class)).as("Match not found correctly").isTrue();
 
 		assertEquals(bridgedMethod, BridgeMethodResolver.findBridgedMethod(bridgeMethod));
@@ -214,14 +213,14 @@ public class BridgeMethodResolverTests {
 		Method bridgeMethod = ReflectionUtils.findMethod(GenericSqlMapIntegerDao.class, "saveOrUpdate", Object.class);
 		assertThat(bridgeMethod != null && bridgeMethod.isBridge()).isTrue();
 		Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(bridgeMethod);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 		assertEquals("saveOrUpdate", bridgedMethod.getName());
 	}
 
 	@Test
 	public void testSPR2763() throws Exception {
 		Method bridgedMethod = AbstractDao.class.getDeclaredMethod("save", Object.class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		Method bridgeMethod = UserDaoImpl.class.getDeclaredMethod("save", User.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
@@ -232,7 +231,7 @@ public class BridgeMethodResolverTests {
 	@Test
 	public void testSPR3041() throws Exception {
 		Method bridgedMethod = BusinessDao.class.getDeclaredMethod("save", Business.class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		Method bridgeMethod = BusinessDao.class.getDeclaredMethod("save", Object.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
@@ -243,7 +242,7 @@ public class BridgeMethodResolverTests {
 	@Test
 	public void testSPR3173() throws Exception {
 		Method bridgedMethod = UserDaoImpl.class.getDeclaredMethod("saveVararg", User.class, Object[].class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		Method bridgeMethod = UserDaoImpl.class.getDeclaredMethod("saveVararg", Object.class, Object[].class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
@@ -254,7 +253,7 @@ public class BridgeMethodResolverTests {
 	@Test
 	public void testSPR3304() throws Exception {
 		Method bridgedMethod = MegaMessageProducerImpl.class.getDeclaredMethod("receive", MegaMessageEvent.class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		Method bridgeMethod  = MegaMessageProducerImpl.class.getDeclaredMethod("receive", MegaEvent.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
@@ -265,7 +264,7 @@ public class BridgeMethodResolverTests {
 	@Test
 	public void testSPR3324() throws Exception {
 		Method bridgedMethod = BusinessDao.class.getDeclaredMethod("get", Long.class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		Method bridgeMethod = BusinessDao.class.getDeclaredMethod("get", Object.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
@@ -277,7 +276,7 @@ public class BridgeMethodResolverTests {
 	public void testSPR3357() throws Exception {
 		Method bridgedMethod = ExtendsAbstractImplementsInterface.class.getDeclaredMethod(
 				"doSomething", DomainObjectExtendsSuper.class, Object.class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		Method bridgeMethod = ExtendsAbstractImplementsInterface.class.getDeclaredMethod(
 				"doSomething", DomainObjectSuper.class, Object.class);
@@ -290,7 +289,7 @@ public class BridgeMethodResolverTests {
 	public void testSPR3485() throws Exception {
 		Method bridgedMethod = DomainObject.class.getDeclaredMethod(
 				"method2", ParameterType.class, byte[].class);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 
 		Method bridgeMethod = DomainObject.class.getDeclaredMethod(
 				"method2", Serializable.class, Object.class);
@@ -304,7 +303,7 @@ public class BridgeMethodResolverTests {
 		Method bridgeMethod = ReflectionUtils.findMethod(TestEmailProvider.class, "findBy", Object.class);
 		assertThat(bridgeMethod != null && bridgeMethod.isBridge()).isTrue();
 		Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(bridgeMethod);
-		assertFalse(bridgedMethod.isBridge());
+		assertThat(bridgedMethod.isBridge()).isFalse();
 		assertEquals("findBy", bridgedMethod.getName());
 	}
 

@@ -33,7 +33,6 @@ import org.springframework.web.reactive.HandlerMapping;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests for redirect view, and query string construction.
@@ -97,14 +96,14 @@ public class RedirectViewTests {
 	public void remoteHost() {
 		RedirectView view = new RedirectView("");
 
-		assertFalse(view.isRemoteHost("https://url.somewhere.com"));
-		assertFalse(view.isRemoteHost("/path"));
-		assertFalse(view.isRemoteHost("http://url.somewhereelse.com"));
+		assertThat(view.isRemoteHost("https://url.somewhere.com")).isFalse();
+		assertThat(view.isRemoteHost("/path")).isFalse();
+		assertThat(view.isRemoteHost("http://url.somewhereelse.com")).isFalse();
 
 		view.setHosts("url.somewhere.com");
 
-		assertFalse(view.isRemoteHost("https://url.somewhere.com"));
-		assertFalse(view.isRemoteHost("/path"));
+		assertThat(view.isRemoteHost("https://url.somewhere.com")).isFalse();
+		assertThat(view.isRemoteHost("/path")).isFalse();
 		assertThat(view.isRemoteHost("http://url.somewhereelse.com")).isTrue();
 	}
 

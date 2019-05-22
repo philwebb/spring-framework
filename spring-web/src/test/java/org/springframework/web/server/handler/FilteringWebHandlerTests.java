@@ -38,7 +38,6 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -94,8 +93,8 @@ public class FilteringWebHandlerTests {
 
 		assertThat(filter1.invoked()).isTrue();
 		assertThat(filter2.invoked()).isTrue();
-		assertFalse(filter3.invoked());
-		assertFalse(targetHandler.invoked());
+		assertThat(filter3.invoked()).isFalse();
+		assertThat(targetHandler.invoked()).isFalse();
 	}
 
 	@Test

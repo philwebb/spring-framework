@@ -21,7 +21,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests for {@link DataSize}.
@@ -187,12 +186,12 @@ public class DataSizeTests {
 
 	@Test
 	public void isNegativeWithPositive() {
-		assertFalse(DataSize.ofBytes(50).isNegative());
+		assertThat(DataSize.ofBytes(50).isNegative()).isFalse();
 	}
 
 	@Test
 	public void isNegativeWithZero() {
-		assertFalse(DataSize.ofBytes(0).isNegative());
+		assertThat(DataSize.ofBytes(0).isNegative()).isFalse();
 	}
 
 	@Test

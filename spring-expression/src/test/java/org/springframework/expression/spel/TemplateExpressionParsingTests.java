@@ -31,7 +31,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Andy Clement
@@ -133,9 +132,9 @@ public class TemplateExpressionParsingTests extends AbstractExpressionTests {
 		assertThat(ex.getValue(ctx, new Rooty(), String.class)).isInstanceOf(String.class).isEqualTo("hello world");
 		assertThat(ex.getValue(ctx, new Rooty(), String.class)).isInstanceOf(String.class).isEqualTo("hello world");
 		assertEquals("hello ${'world'}", ex.getExpressionString());
-		assertFalse(ex.isWritable(new StandardEvaluationContext()));
-		assertFalse(ex.isWritable(new Rooty()));
-		assertFalse(ex.isWritable(new StandardEvaluationContext(), new Rooty()));
+		assertThat(ex.isWritable(new StandardEvaluationContext())).isFalse();
+		assertThat(ex.isWritable(new Rooty())).isFalse();
+		assertThat(ex.isWritable(new StandardEvaluationContext(), new Rooty())).isFalse();
 
 		assertEquals(String.class,ex.getValueType());
 		assertEquals(String.class,ex.getValueType(ctx));

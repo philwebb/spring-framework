@@ -24,7 +24,6 @@ import org.springframework.web.context.request.async.DeferredResult.DeferredResu
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -55,7 +54,7 @@ public class DeferredResultTests {
 		result.setResultHandler(handler);
 
 		assertThat(result.setResult("hello")).isTrue();
-		assertFalse(result.setResult("hi"));
+		assertThat(result.setResult("hi")).isFalse();
 
 		verify(handler).handleResult("hello");
 	}
@@ -67,7 +66,7 @@ public class DeferredResultTests {
 		DeferredResult<String> result = new DeferredResult<>();
 		result.setResultHandler(handler);
 
-		assertFalse(result.isSetOrExpired());
+		assertThat(result.isSetOrExpired()).isFalse();
 
 		result.setResult("hello");
 
@@ -83,7 +82,7 @@ public class DeferredResultTests {
 		DeferredResult<String> result = new DeferredResult<>();
 		result.setResultHandler(handler);
 
-		assertFalse(result.hasResult());
+		assertThat(result.hasResult()).isFalse();
 		assertNull(result.getResult());
 
 		result.setResult("hello");
@@ -127,7 +126,7 @@ public class DeferredResultTests {
 		result.getInterceptor().handleTimeout(null, null);
 
 		assertEquals("timeout event", sb.toString());
-		assertFalse("Should not be able to set result a second time", result.setResult("hello"));
+		assertThat(result.setResult("hello")).as("Should not be able to set result a second time").isFalse();
 		verify(handler).handleResult("timeout result");
 	}
 
@@ -150,7 +149,7 @@ public class DeferredResultTests {
 		result.getInterceptor().handleError(null, null, e);
 
 		assertEquals("error event", sb.toString());
-		assertFalse("Should not be able to set result a second time", result.setResult("hello"));
+		assertThat(result.setResult("hello")).as("Should not be able to set result a second time").isFalse();
 		verify(handler).handleResult(e);
 	}
 

@@ -36,9 +36,9 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import org.springframework.web.util.pattern.PatternParseException;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
@@ -219,7 +219,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=customBar"))
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(RequestMethod.GET, RequestMethod.POST)
@@ -228,7 +228,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=customBar"))
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(RequestMethod.GET)
@@ -237,7 +237,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=customBar"))
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(RequestMethod.GET)
@@ -246,7 +246,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=customBar"))
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(RequestMethod.GET)
@@ -255,7 +255,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=customBar"))
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(RequestMethod.GET)
@@ -264,7 +264,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=customBar"))
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 
 		info2 = paths("/foo").methods(RequestMethod.GET)
@@ -273,7 +273,7 @@ public class RequestMappingInfoTests {
 				.customCondition(new ParamsRequestCondition("customFoo=NOOOOOO"))
 				.build();
 
-		assertFalse(info1.equals(info2));
+		assertThat(info1.equals(info2)).isFalse();
 		assertNotEquals(info1.hashCode(), info2.hashCode());
 	}
 

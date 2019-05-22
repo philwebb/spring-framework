@@ -38,7 +38,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -59,21 +58,21 @@ public class FormHttpMessageReaderTests extends AbstractLeakCheckingTestCase {
 				ResolvableType.forInstance(new LinkedMultiValueMap<String, String>()),
 				MediaType.APPLICATION_FORM_URLENCODED)).isTrue();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, Object.class),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isFalse();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, Object.class, String.class),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isFalse();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				ResolvableType.forClassWithGenerics(Map.class, String.class, String.class),
-				MediaType.APPLICATION_FORM_URLENCODED));
+				MediaType.APPLICATION_FORM_URLENCODED)).isFalse();
 
-		assertFalse(this.reader.canRead(
+		assertThat(this.reader.canRead(
 				ResolvableType.forClassWithGenerics(MultiValueMap.class, String.class, String.class),
-				MediaType.MULTIPART_FORM_DATA));
+				MediaType.MULTIPART_FORM_DATA)).isFalse();
 	}
 
 	@Test

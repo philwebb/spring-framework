@@ -36,7 +36,6 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -96,14 +95,14 @@ public class WebUtilsTests {
 	public void isValidOrigin() {
 		List<String> allowed = Collections.emptyList();
 		assertThat(checkValidOrigin("mydomain1.com", -1, "http://mydomain1.com", allowed)).isTrue();
-		assertFalse(checkValidOrigin("mydomain1.com", -1, "http://mydomain2.com", allowed));
+		assertThat(checkValidOrigin("mydomain1.com", -1, "http://mydomain2.com", allowed)).isFalse();
 
 		allowed = Collections.singletonList("*");
 		assertThat(checkValidOrigin("mydomain1.com", -1, "http://mydomain2.com", allowed)).isTrue();
 
 		allowed = Collections.singletonList("http://mydomain1.com");
 		assertThat(checkValidOrigin("mydomain2.com", -1, "http://mydomain1.com", allowed)).isTrue();
-		assertFalse(checkValidOrigin("mydomain2.com", -1, "http://mydomain3.com", allowed));
+		assertThat(checkValidOrigin("mydomain2.com", -1, "http://mydomain3.com", allowed)).isFalse();
 	}
 
 	@Test
@@ -116,20 +115,20 @@ public class WebUtilsTests {
 		assertThat(checkSameOrigin("ws", "mydomain1.com", -1, "ws://mydomain1.com")).isTrue();
 		assertThat(checkSameOrigin("wss", "mydomain1.com", 443, "wss://mydomain1.com")).isTrue();
 
-		assertFalse(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain2.com"));
-		assertFalse(checkSameOrigin("http", "mydomain1.com", -1, "https://mydomain1.com"));
-		assertFalse(checkSameOrigin("http", "mydomain1.com", -1, "invalid-origin"));
-		assertFalse(checkSameOrigin("https", "mydomain1.com", -1, "http://mydomain1.com"));
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain2.com")).isFalse();
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "https://mydomain1.com")).isFalse();
+		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "invalid-origin")).isFalse();
+		assertThat(checkSameOrigin("https", "mydomain1.com", -1, "http://mydomain1.com")).isFalse();
 
 		// Handling of invalid origins as described in SPR-13478
 		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com/")).isTrue();
 		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80/")).isTrue();
 		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com/path")).isTrue();
 		assertThat(checkSameOrigin("http", "mydomain1.com", -1, "http://mydomain1.com:80/path")).isTrue();
-		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com/"));
-		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com:80/"));
-		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com/path"));
-		assertFalse(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com:80/path"));
+		assertThat(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com/")).isFalse();
+		assertThat(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com:80/")).isFalse();
+		assertThat(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com/path")).isFalse();
+		assertThat(checkSameOrigin("http", "mydomain2.com", -1, "http://mydomain1.com:80/path")).isFalse();
 
 		// Handling of IPv6 hosts as described in SPR-13525
 		assertThat(checkSameOrigin("http", "[::1]", -1, "http://[::1]")).isTrue();
@@ -140,9 +139,9 @@ public class WebUtilsTests {
 		assertThat(checkSameOrigin("http",
 				"[2001:0db8:0000:85a3:0000:0000:ac1f:8001]", 8080,
 				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]:8080")).isTrue();
-		assertFalse(checkSameOrigin("http", "[::1]", -1, "http://[::1]:8080"));
-		assertFalse(checkSameOrigin("http", "[::1]", 8080,
-				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]:8080"));
+		assertThat(checkSameOrigin("http", "[::1]", -1, "http://[::1]:8080")).isFalse();
+		assertThat(checkSameOrigin("http", "[::1]", 8080,
+				"http://[2001:0db8:0000:85a3:0000:0000:ac1f:8001]:8080")).isFalse();
 	}
 
 	@Test  // SPR-16262

@@ -88,8 +88,8 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSION;
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -218,9 +218,9 @@ public class WebMvcConfigurationSupportExtensionTests {
 		assertEquals(StringHttpMessageConverter.class, converters.get(0).getClass());
 		assertEquals(MappingJackson2HttpMessageConverter.class, converters.get(1).getClass());
 		ObjectMapper objectMapper = ((MappingJackson2HttpMessageConverter) converters.get(1)).getObjectMapper();
-		assertFalse(objectMapper.getDeserializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION));
-		assertFalse(objectMapper.getSerializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION));
-		assertFalse(objectMapper.getDeserializationConfig().isEnabled(FAIL_ON_UNKNOWN_PROPERTIES));
+		assertThat(objectMapper.getDeserializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION)).isFalse();
+		assertThat(objectMapper.getSerializationConfig().isEnabled(DEFAULT_VIEW_INCLUSION)).isFalse();
+		assertThat(objectMapper.getDeserializationConfig().isEnabled(FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 
 		DirectFieldAccessor fieldAccessor = new DirectFieldAccessor(adapter);
 
@@ -326,7 +326,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 		DirectFieldAccessor accessor = new DirectFieldAccessor(viewResolvers.get(0));
 		assertEquals(1, viewResolvers.size());
 		assertEquals(ContentNegotiatingViewResolver.class, viewResolvers.get(0).getClass());
-		assertFalse((Boolean) accessor.getPropertyValue("useNotAcceptableStatusCode"));
+		assertThat((boolean) (Boolean) accessor.getPropertyValue("useNotAcceptableStatusCode")).isFalse();
 		assertNotNull(accessor.getPropertyValue("contentNegotiationManager"));
 
 		List<View> defaultViews = (List<View>) accessor.getPropertyValue("defaultViews");

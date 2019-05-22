@@ -26,7 +26,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Mark Fisher
@@ -46,7 +45,7 @@ public class ComponentScanParserWithUserDefinedStrategiesTests {
 				"org/springframework/context/annotation/customScopeResolverTests.xml");
 		BeanDefinition bd = context.getBeanFactory().getBeanDefinition("fooServiceImpl");
 		assertEquals("myCustomScope", bd.getScope());
-		assertFalse(bd.isSingleton());
+		assertThat(bd.isSingleton()).isFalse();
 	}
 
 	@Test

@@ -49,7 +49,6 @@ import org.springframework.validation.annotation.Validated;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -87,8 +86,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 	public void customConversionServiceFailure() throws Exception {
 		DefaultMessageHandlerMethodFactory instance = createInstance();
 		GenericConversionService conversionService = new GenericConversionService();
-		assertFalse("conversion service should fail to convert payload",
-				conversionService.canConvert(Integer.class, String.class));
+		assertThat(conversionService.canConvert(Integer.class, String.class)).as("conversion service should fail to convert payload").isFalse();
 		instance.setConversionService(conversionService);
 		instance.afterPropertiesSet();
 

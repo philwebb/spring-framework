@@ -26,7 +26,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -51,7 +50,7 @@ public class DeclareParentsTests {
 	@Test
 	public void testIntroductionWasMade() {
 		assertThat(AopUtils.isAopProxy(testBeanProxy)).isTrue();
-		assertFalse("Introduction should not be proxied", AopUtils.isAopProxy(introductionObject));
+		assertThat(AopUtils.isAopProxy(introductionObject)).as("Introduction should not be proxied").isFalse();
 		boolean condition = testBeanProxy instanceof Lockable;
 		assertThat(condition).as("Introduction must have been made").isTrue();
 	}
@@ -63,7 +62,7 @@ public class DeclareParentsTests {
 	@Test
 	public void testLockingWorks() {
 		Lockable lockable = (Lockable) testBeanProxy;
-		assertFalse(lockable.locked());
+		assertThat(lockable.locked()).isFalse();
 
 		// Invoke a non-advised method
 		testBeanProxy.getAge();

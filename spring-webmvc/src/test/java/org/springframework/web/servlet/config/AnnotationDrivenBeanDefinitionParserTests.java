@@ -52,7 +52,6 @@ import org.springframework.web.util.UrlPathHelper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 
@@ -87,7 +86,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		RequestMappingHandlerMapping hm = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(hm);
 		assertThat(hm.useSuffixPatternMatch()).isTrue();
-		assertFalse(hm.useTrailingSlashMatch());
+		assertThat(hm.useTrailingSlashMatch()).isFalse();
 		assertThat(hm.useRegisteredSuffixPatternMatch()).isTrue();
 		assertThat(hm.getUrlPathHelper()).isInstanceOf(TestPathHelper.class);
 		assertThat(hm.getPathMatcher()).isInstanceOf(TestPathMatcher.class);

@@ -61,7 +61,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 
 /**
@@ -148,7 +147,7 @@ public class AspectJAutoProxyCreatorTests {
 		for (int i = 0; i < 100000; i++) {
 			INestedTestBean shouldNotBeWeaved = (INestedTestBean) ac.getBean("i21");
 			if (i < 10) {
-				assertFalse(AopUtils.isAopProxy(shouldNotBeWeaved));
+				assertThat(AopUtils.isAopProxy(shouldNotBeWeaved)).isFalse();
 			}
 		}
 		sw.stop();

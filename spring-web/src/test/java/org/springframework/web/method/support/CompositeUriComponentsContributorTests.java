@@ -30,7 +30,6 @@ import org.springframework.web.method.annotation.RequestHeaderMethodArgumentReso
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for
@@ -54,7 +53,7 @@ public class CompositeUriComponentsContributorTests {
 		CompositeUriComponentsContributor contributor = new CompositeUriComponentsContributor(resolvers);
 		assertThat(contributor.supportsParameter(new MethodParameter(method, 0))).isTrue();
 		assertThat(contributor.supportsParameter(new MethodParameter(method, 1))).isTrue();
-		assertFalse(contributor.supportsParameter(new MethodParameter(method, 2)));
+		assertThat(contributor.supportsParameter(new MethodParameter(method, 2))).isFalse();
 	}
 
 

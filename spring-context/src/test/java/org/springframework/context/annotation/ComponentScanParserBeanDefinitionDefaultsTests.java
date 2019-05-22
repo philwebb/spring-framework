@@ -26,7 +26,6 @@ import org.springframework.context.support.GenericApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 
@@ -51,7 +50,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		GenericApplicationContext context = new GenericApplicationContext();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultWithNoOverridesTests.xml");
-		assertFalse("lazy-init should be false", context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit());
+		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be false").isFalse();
 		assertEquals("initCount should be 0", 0, DefaultsTestBean.INIT_COUNT);
 		context.refresh();
 		assertEquals("bean should have been instantiated", 1, DefaultsTestBean.INIT_COUNT);
@@ -75,7 +74,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		GenericApplicationContext context = new GenericApplicationContext();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultLazyInitFalseTests.xml");
-		assertFalse("lazy-init should be false", context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit());
+		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be false").isFalse();
 		assertEquals("initCount should be 0", 0, DefaultsTestBean.INIT_COUNT);
 		context.refresh();
 		assertEquals("bean should have been instantiated", 1, DefaultsTestBean.INIT_COUNT);
@@ -159,9 +158,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultWithNoOverridesTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertFalse("bean should not have been initialized", bean.isInitialized());
+		assertThat(bean.isInitialized()).as("bean should not have been initialized").isFalse();
 		context.close();
-		assertFalse("bean should not have been destroyed", bean.isDestroyed());
+		assertThat(bean.isDestroyed()).as("bean should not have been destroyed").isFalse();
 	}
 
 	@Test
@@ -183,9 +182,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultNonExistingInitAndDestroyMethodsTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertFalse("bean should not have been initialized", bean.isInitialized());
+		assertThat(bean.isInitialized()).as("bean should not have been initialized").isFalse();
 		context.close();
-		assertFalse("bean should not have been destroyed", bean.isDestroyed());
+		assertThat(bean.isDestroyed()).as("bean should not have been destroyed").isFalse();
 	}
 
 

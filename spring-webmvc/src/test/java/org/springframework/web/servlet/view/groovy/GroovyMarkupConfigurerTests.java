@@ -18,13 +18,11 @@ package org.springframework.web.servlet.view.groovy;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Arrays;
 import java.util.Locale;
 
 import groovy.text.TemplateEngine;
 import groovy.text.markup.MarkupTemplateEngine;
 import groovy.text.markup.TemplateConfiguration;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +33,6 @@ import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -101,7 +98,7 @@ public class GroovyMarkupConfigurerTests {
 		MarkupTemplateEngine markupEngine = (MarkupTemplateEngine) engine;
 		TemplateConfiguration configuration = markupEngine.getTemplateConfiguration();
 		assertNotNull(configuration);
-		assertFalse(configuration.isCacheTemplates());
+		assertThat(configuration.isCacheTemplates()).isFalse();
 	}
 
 	@Test

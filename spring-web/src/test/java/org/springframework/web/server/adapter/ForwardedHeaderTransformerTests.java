@@ -25,8 +25,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ForwardedHeaderTransformer}.
@@ -125,7 +125,7 @@ public class ForwardedHeaderTransformerTests {
 
 	private void assertForwardedHeadersRemoved(ServerHttpRequest request) {
 		ForwardedHeaderTransformer.FORWARDED_HEADER_NAMES
-				.forEach(name -> assertFalse(request.getHeaders().containsKey(name)));
+				.forEach(name -> assertThat(request.getHeaders().containsKey(name)).isFalse());
 	}
 
 }

@@ -39,7 +39,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 
 /**
@@ -80,8 +79,8 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 	public void supportsReturnType() throws Exception {
 		assertThat(this.handler.supportsReturnType(returnType(TestController.class, "handle"))).isTrue();
 		assertThat(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntity"))).isTrue();
-		assertFalse(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntityString")));
-		assertFalse(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntityParameterized")));
+		assertThat(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntityString"))).isFalse();
+		assertThat(this.handler.supportsReturnType(returnType(TestController.class, "handleResponseEntityParameterized"))).isFalse();
 	}
 
 	@Test
@@ -128,7 +127,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		ResponseEntity<?> emitter = ResponseEntity.noContent().build();
 		this.handler.handleReturnValue(emitter, returnType, this.mavContainer, this.webRequest);
 
-		assertFalse(this.request.isAsyncStarted());
+		assertThat(this.request.isAsyncStarted()).isFalse();
 		assertEquals(204, this.response.getStatus());
 	}
 

@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -180,7 +179,7 @@ public abstract class AbstractBeanFactoryTests {
 
 	@Test
 	public void notThere() {
-		assertFalse(getBeanFactory().containsBean("Mr Squiggle"));
+		assertThat(getBeanFactory().containsBean("Mr Squiggle")).isFalse();
 		assertThatExceptionOfType(BeansException.class).isThrownBy(() ->
 				getBeanFactory().getBean("Mr Squiggle"));
 	}
@@ -228,7 +227,7 @@ public abstract class AbstractBeanFactoryTests {
 	@Test
 	public void factoryPrototype() throws Exception {
 		assertThat(getBeanFactory().isSingleton("&prototypeFactory")).isTrue();
-		assertFalse(getBeanFactory().isSingleton("prototypeFactory"));
+		assertThat(getBeanFactory().isSingleton("prototypeFactory")).isFalse();
 		TestBean tb = (TestBean) getBeanFactory().getBean("prototypeFactory");
 		boolean condition = !tb.getName().equals(DummyFactory.SINGLETON_NAME);
 		assertThat(condition).isTrue();

@@ -68,7 +68,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
 /**
@@ -105,7 +104,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadablePropertyNotReadable() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		assertFalse(accessor.isReadableProperty("age"));
+		assertThat(accessor.isReadableProperty("age")).isFalse();
 	}
 
 	/**
@@ -115,7 +114,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadablePropertyNoSuchProperty() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		assertFalse(accessor.isReadableProperty("xxxxx"));
+		assertThat(accessor.isReadableProperty("xxxxx")).isFalse();
 	}
 
 	@Test
@@ -145,7 +144,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isWritablePropertyNoSuchProperty() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		assertFalse(accessor.isWritableProperty("xxxxx"));
+		assertThat(accessor.isWritableProperty("xxxxx")).isFalse();
 	}
 
 	@Test
@@ -157,13 +156,13 @@ public abstract class AbstractPropertyAccessorTests {
 		assertThat(accessor.isReadableProperty("list")).isTrue();
 		assertThat(accessor.isReadableProperty("set")).isTrue();
 		assertThat(accessor.isReadableProperty("map")).isTrue();
-		assertFalse(accessor.isReadableProperty("xxx"));
+		assertThat(accessor.isReadableProperty("xxx")).isFalse();
 
 		assertThat(accessor.isWritableProperty("array")).isTrue();
 		assertThat(accessor.isWritableProperty("list")).isTrue();
 		assertThat(accessor.isWritableProperty("set")).isTrue();
 		assertThat(accessor.isWritableProperty("map")).isTrue();
-		assertFalse(accessor.isWritableProperty("xxx"));
+		assertThat(accessor.isWritableProperty("xxx")).isFalse();
 
 		assertThat(accessor.isReadableProperty("array[0]")).isTrue();
 		assertThat(accessor.isReadableProperty("array[0].name")).isTrue();
@@ -177,7 +176,7 @@ public abstract class AbstractPropertyAccessorTests {
 		assertThat(accessor.isReadableProperty("map[key4][0].name")).isTrue();
 		assertThat(accessor.isReadableProperty("map[key4][1]")).isTrue();
 		assertThat(accessor.isReadableProperty("map[key4][1].name")).isTrue();
-		assertFalse(accessor.isReadableProperty("array[key1]"));
+		assertThat(accessor.isReadableProperty("array[key1]")).isFalse();
 
 		assertThat(accessor.isWritableProperty("array[0]")).isTrue();
 		assertThat(accessor.isWritableProperty("array[0].name")).isTrue();
@@ -191,7 +190,7 @@ public abstract class AbstractPropertyAccessorTests {
 		assertThat(accessor.isWritableProperty("map[key4][0].name")).isTrue();
 		assertThat(accessor.isWritableProperty("map[key4][1]")).isTrue();
 		assertThat(accessor.isWritableProperty("map[key4][1].name")).isTrue();
-		assertFalse(accessor.isWritableProperty("array[key1]"));
+		assertThat(accessor.isWritableProperty("array[key1]")).isFalse();
 	}
 
 	@Test
@@ -1410,7 +1409,7 @@ public abstract class AbstractPropertyAccessorTests {
 		pvs.add("map", readOnlyMap);
 		accessor.setPropertyValues(pvs);
 		assertSame(readOnlyMap, target.getMap());
-		assertFalse(readOnlyMap.isAccessed());
+		assertThat(readOnlyMap.isAccessed()).isFalse();
 	}
 
 	@Test

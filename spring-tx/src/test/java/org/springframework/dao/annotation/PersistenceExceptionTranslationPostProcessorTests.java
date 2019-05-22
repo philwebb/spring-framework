@@ -39,7 +39,6 @@ import org.springframework.stereotype.Repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -67,7 +66,7 @@ public class PersistenceExceptionTranslationPostProcessorTests {
 		gac.refresh();
 
 		RepositoryInterface shouldNotBeProxied = (RepositoryInterface) gac.getBean("notProxied");
-		assertFalse(AopUtils.isAopProxy(shouldNotBeProxied));
+		assertThat(AopUtils.isAopProxy(shouldNotBeProxied)).isFalse();
 		RepositoryInterface shouldBeProxied = (RepositoryInterface) gac.getBean("proxied");
 		assertThat(AopUtils.isAopProxy(shouldBeProxied)).isTrue();
 		RepositoryWithoutInterface rwi = (RepositoryWithoutInterface) gac.getBean("classProxied");

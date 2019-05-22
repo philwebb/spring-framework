@@ -37,7 +37,6 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport.Tran
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 import static temp.XAssert.fail;
 import static org.mockito.BDDMockito.given;
@@ -142,7 +141,7 @@ public abstract class AbstractTransactionAspectTests {
 		checkTransactionStatus(false);
 
 		assertSame(txatt, ptm.getDefinition());
-		assertFalse(ptm.getStatus().isRollbackOnly());
+		assertThat(ptm.getStatus().isRollbackOnly()).isFalse();
 	}
 
 	@Test
@@ -163,7 +162,7 @@ public abstract class AbstractTransactionAspectTests {
 		checkTransactionStatus(false);
 
 		assertSame(txatt, ptm.getDefinition());
-		assertFalse(ptm.getStatus().isRollbackOnly());
+		assertThat(ptm.getStatus().isRollbackOnly()).isFalse();
 	}
 
 	/**
@@ -248,7 +247,7 @@ public abstract class AbstractTransactionAspectTests {
 			public String getName() {
 				// Assert that we're in the inner proxy
 				TransactionInfo ti = TransactionAspectSupport.currentTransactionInfo();
-				assertFalse(ti.hasTransaction());
+				assertThat(ti.hasTransaction()).isFalse();
 				return spouseName;
 			}
 		};

@@ -24,7 +24,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ValidationUtils}.
@@ -68,12 +67,12 @@ public class ValidationUtilsTests {
 		tb.setName(" ");
 		Errors errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
-		assertFalse(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isFalse();
 
 		tb.setName("Roddy");
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
-		assertFalse(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isFalse();
 	}
 
 	@Test
@@ -143,7 +142,7 @@ public class ValidationUtilsTests {
 		tb.setName("Roddy");
 		errors = new BeanPropertyBindingResult(tb, "tb");
 		testValidator.validate(tb, errors);
-		assertFalse(errors.hasFieldErrors("name"));
+		assertThat(errors.hasFieldErrors("name")).isFalse();
 	}
 
 	@Test

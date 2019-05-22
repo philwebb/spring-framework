@@ -44,7 +44,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -114,7 +113,7 @@ public class GroovyMarkupViewTests {
 	@Test
 	public void checkMissingResource() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("missing.tpl");
-		assertFalse(view.checkResource(Locale.US));
+		assertThat(view.checkResource(Locale.US)).isFalse();
 	}
 
 	@Test

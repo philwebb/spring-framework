@@ -49,7 +49,6 @@ import org.springframework.util.MultiValueMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.never;
@@ -68,8 +67,8 @@ public class FormHttpMessageConverterTests {
 	public void canRead() {
 		assertThat(this.converter.canRead(MultiValueMap.class,
 				new MediaType("application", "x-www-form-urlencoded"))).isTrue();
-		assertFalse(this.converter.canRead(MultiValueMap.class,
-				new MediaType("multipart", "form-data")));
+		assertThat(this.converter.canRead(MultiValueMap.class,
+				new MediaType("multipart", "form-data"))).isFalse();
 	}
 
 	@Test
@@ -173,14 +172,14 @@ public class FormHttpMessageConverterTests {
 		assertEquals("value 2+2", item.getString());
 
 		item = items.get(3);
-		assertFalse(item.isFormField());
+		assertThat(item.isFormField()).isFalse();
 		assertEquals("logo", item.getFieldName());
 		assertEquals("logo.jpg", item.getName());
 		assertEquals("image/jpeg", item.getContentType());
 		assertEquals(logo.getFile().length(), item.getSize());
 
 		item = items.get(4);
-		assertFalse(item.isFormField());
+		assertThat(item.isFormField()).isFalse();
 		assertEquals("utf8", item.getFieldName());
 		assertEquals("Hall\u00F6le.jpg", item.getName());
 		assertEquals("image/jpeg", item.getContentType());

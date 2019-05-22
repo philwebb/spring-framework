@@ -34,7 +34,6 @@ import org.springframework.messaging.support.GenericMessage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -56,7 +55,7 @@ public class BrokerMessageHandlerTests {
 
 	@Test
 	public void startShouldUpdateIsRunning() {
-		assertFalse(this.handler.isRunning());
+		assertThat(this.handler.isRunning()).isFalse();
 		this.handler.start();
 		assertThat(this.handler.isRunning()).isTrue();
 	}
@@ -68,7 +67,7 @@ public class BrokerMessageHandlerTests {
 		assertThat(this.handler.isRunning()).isTrue();
 
 		this.handler.stop();
-		assertFalse(this.handler.isRunning());
+		assertThat(this.handler.isRunning()).isFalse();
 	}
 
 	@Test
@@ -87,7 +86,7 @@ public class BrokerMessageHandlerTests {
 	@Test
 	public void publishBrokerAvailableEvent() {
 
-		assertFalse(this.handler.isBrokerAvailable());
+		assertThat(this.handler.isBrokerAvailable()).isFalse();
 		assertEquals(Collections.emptyList(), this.handler.availabilityEvents);
 
 		this.handler.publishBrokerAvailableEvent();
@@ -112,7 +111,7 @@ public class BrokerMessageHandlerTests {
 		assertThat(this.handler.isBrokerAvailable()).isTrue();
 
 		this.handler.publishBrokerUnavailableEvent();
-		assertFalse(this.handler.isBrokerAvailable());
+		assertThat(this.handler.isBrokerAvailable()).isFalse();
 
 		assertEquals(Arrays.asList(true, false), this.handler.availabilityEvents);
 	}

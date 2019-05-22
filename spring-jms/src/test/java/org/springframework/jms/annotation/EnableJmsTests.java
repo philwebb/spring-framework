@@ -48,7 +48,6 @@ import org.springframework.stereotype.Component;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNull;
 
 /**
@@ -122,8 +121,8 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 		JmsListenerContainerTestFactory factory =
 				context.getBean(JmsListenerContainerTestFactory.class);
 		MessageListenerTestContainer container = factory.getListenerContainers().get(0);
-		assertFalse(container.isAutoStartup());
-		assertFalse(container.isStarted());
+		assertThat(container.isAutoStartup()).isFalse();
+		assertThat(container.isStarted()).isFalse();
 		JmsListenerEndpointRegistry registry = context.getBean(JmsListenerEndpointRegistry.class);
 		registry.start();
 		assertThat(container.isStarted()).isTrue();

@@ -56,7 +56,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static org.springframework.core.annotation.AnnotatedElementUtils.findAllMergedAnnotations;
@@ -117,12 +116,12 @@ public class AnnotatedElementUtilsTests {
 
 	@Test
 	public void hasMetaAnnotationTypesOnNonAnnotatedClass() {
-		assertFalse(hasMetaAnnotationTypes(NonAnnotatedClass.class, TX_NAME));
+		assertThat(hasMetaAnnotationTypes(NonAnnotatedClass.class, TX_NAME)).isFalse();
 	}
 
 	@Test
 	public void hasMetaAnnotationTypesOnClassWithMetaDepth0() {
-		assertFalse(hasMetaAnnotationTypes(TransactionalComponentClass.class, TransactionalComponent.class.getName()));
+		assertThat(hasMetaAnnotationTypes(TransactionalComponentClass.class, TransactionalComponent.class.getName())).isFalse();
 	}
 
 	@Test
@@ -135,19 +134,18 @@ public class AnnotatedElementUtilsTests {
 	public void hasMetaAnnotationTypesOnClassWithMetaDepth2() {
 		assertThat(hasMetaAnnotationTypes(ComposedTransactionalComponentClass.class, TX_NAME)).isTrue();
 		assertThat(hasMetaAnnotationTypes(ComposedTransactionalComponentClass.class, Component.class.getName())).isTrue();
-		assertFalse(hasMetaAnnotationTypes(ComposedTransactionalComponentClass.class, ComposedTransactionalComponent.class.getName()));
+		assertThat(hasMetaAnnotationTypes(ComposedTransactionalComponentClass.class, ComposedTransactionalComponent.class.getName())).isFalse();
 	}
 
 	@Test
 	public void isAnnotatedOnNonAnnotatedClass() {
-		assertFalse(isAnnotated(NonAnnotatedClass.class, Transactional.class));
+		assertThat(isAnnotated(NonAnnotatedClass.class, Transactional.class)).isFalse();
 	}
 
 	@Test
 	public void isAnnotatedOnClassWithMetaDepth() {
 		assertThat(isAnnotated(TransactionalComponentClass.class, TransactionalComponent.class)).isTrue();
-		assertFalse("isAnnotated() does not search the class hierarchy.",
-				isAnnotated(SubTransactionalComponentClass.class, TransactionalComponent.class));
+		assertThat(isAnnotated(SubTransactionalComponentClass.class, TransactionalComponent.class)).as("isAnnotated() does not search the class hierarchy.").isFalse();
 		assertThat(isAnnotated(TransactionalComponentClass.class, Transactional.class)).isTrue();
 		assertThat(isAnnotated(TransactionalComponentClass.class, Component.class)).isTrue();
 		assertThat(isAnnotated(ComposedTransactionalComponentClass.class, Transactional.class)).isTrue();
@@ -165,14 +163,13 @@ public class AnnotatedElementUtilsTests {
 
 	@Test
 	public void isAnnotatedWithNameOnNonAnnotatedClass() {
-		assertFalse(isAnnotated(NonAnnotatedClass.class, TX_NAME));
+		assertThat(isAnnotated(NonAnnotatedClass.class, TX_NAME)).isFalse();
 	}
 
 	@Test
 	public void isAnnotatedWithNameOnClassWithMetaDepth() {
 		assertThat(isAnnotated(TransactionalComponentClass.class, TransactionalComponent.class.getName())).isTrue();
-		assertFalse("isAnnotated() does not search the class hierarchy.",
-				isAnnotated(SubTransactionalComponentClass.class, TransactionalComponent.class.getName()));
+		assertThat(isAnnotated(SubTransactionalComponentClass.class, TransactionalComponent.class.getName())).as("isAnnotated() does not search the class hierarchy.").isFalse();
 		assertThat(isAnnotated(TransactionalComponentClass.class, TX_NAME)).isTrue();
 		assertThat(isAnnotated(TransactionalComponentClass.class, Component.class.getName())).isTrue();
 		assertThat(isAnnotated(ComposedTransactionalComponentClass.class, TX_NAME)).isTrue();
@@ -182,7 +179,7 @@ public class AnnotatedElementUtilsTests {
 
 	@Test
 	public void hasAnnotationOnNonAnnotatedClass() {
-		assertFalse(hasAnnotation(NonAnnotatedClass.class, Transactional.class));
+		assertThat(hasAnnotation(NonAnnotatedClass.class, Transactional.class)).isFalse();
 	}
 
 	@Test
@@ -327,7 +324,7 @@ public class AnnotatedElementUtilsTests {
 		assertNotNull("AnnotationAttributes for @Transactional on SubSubClassWithInheritedAnnotation", attributes);
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
-		assertFalse("readOnly flag for SubSubClassWithInheritedAnnotation.", attributes.getBoolean("readOnly"));
+		assertThat(attributes.getBoolean("readOnly")).as("readOnly flag for SubSubClassWithInheritedAnnotation.").isFalse();
 	}
 
 	@Test
@@ -338,7 +335,7 @@ public class AnnotatedElementUtilsTests {
 		assertNotNull("AnnotationAttributes for @Transactional on SubSubClassWithInheritedComposedAnnotation.", attributes);
 		// Verify contracts between utility methods:
 		assertThat(isAnnotated(element, name)).isTrue();
-		assertFalse("readOnly flag for SubSubClassWithInheritedComposedAnnotation.", attributes.getBoolean("readOnly"));
+		assertThat(attributes.getBoolean("readOnly")).as("readOnly flag for SubSubClassWithInheritedComposedAnnotation.").isFalse();
 	}
 
 	@Test
@@ -348,7 +345,7 @@ public class AnnotatedElementUtilsTests {
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(element, name);
 		assertNull("Should not find @Transactional on ConcreteClassWithInheritedAnnotation", attributes);
 		// Verify contracts between utility methods:
-		assertFalse(isAnnotated(element, name));
+		assertThat(isAnnotated(element, name)).isFalse();
 	}
 
 	@Test

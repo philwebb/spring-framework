@@ -26,7 +26,6 @@ import org.springframework.util.StreamUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -67,7 +66,7 @@ public class ResourceScriptSourceTests {
 		ResourceScriptSource scriptSource = new ResourceScriptSource(resource);
 		assertThat(scriptSource.isModified()).as("ResourceScriptSource must start off in the 'isModified' state (it obviously isn't).").isTrue();
 		scriptSource.getScriptAsString();
-		assertFalse("ResourceScriptSource must not report back as being modified if the underlying File resource is not reporting a changed lastModified time.", scriptSource.isModified());
+		assertThat(scriptSource.isModified()).as("ResourceScriptSource must not report back as being modified if the underlying File resource is not reporting a changed lastModified time.").isFalse();
 		// Must now report back as having been modified
 		assertThat(scriptSource.isModified()).as("ResourceScriptSource must report back as being modified if the underlying File resource is reporting a changed lastModified time.").isTrue();
 	}
@@ -78,9 +77,9 @@ public class ResourceScriptSourceTests {
 		ResourceScriptSource scriptSource = new ResourceScriptSource(resource);
 		assertThat(scriptSource.isModified()).as("ResourceScriptSource must start off in the 'isModified' state (it obviously isn't).").isTrue();
 		scriptSource.getScriptAsString();
-		assertFalse("ResourceScriptSource must not report back as being modified if the underlying File resource is not reporting a changed lastModified time.", scriptSource.isModified());
+		assertThat(scriptSource.isModified()).as("ResourceScriptSource must not report back as being modified if the underlying File resource is not reporting a changed lastModified time.").isFalse();
 		// Must now continue to report back as not having been modified 'cos the Resource does not support access as a File (and so the lastModified date cannot be determined).
-		assertFalse("ResourceScriptSource must not report back as being modified if the underlying File resource is not reporting a changed lastModified time.", scriptSource.isModified());
+		assertThat(scriptSource.isModified()).as("ResourceScriptSource must not report back as being modified if the underlying File resource is not reporting a changed lastModified time.").isFalse();
 	}
 
 }
