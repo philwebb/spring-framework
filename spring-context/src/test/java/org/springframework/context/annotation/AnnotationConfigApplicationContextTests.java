@@ -36,13 +36,8 @@ import org.springframework.util.ObjectUtils;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.springframework.util.StringUtils.uncapitalize;
 
 /**
@@ -62,7 +57,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.getBean(uncapitalize(ComponentForScanning.class.getSimpleName()));
 		context.getBean(uncapitalize(Jsr330NamedForScanning.class.getSimpleName()));
 		Map<String, Object> beans = context.getBeansWithAnnotation(Configuration.class);
-		assertEquals(1, beans.size());
+		assertThat(beans.size()).isEqualTo(1);
 	}
 
 	@Test
@@ -74,7 +69,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.getBean("testBean");
 		context.getBean("name");
 		Map<String, Object> beans = context.getBeansWithAnnotation(Configuration.class);
-		assertEquals(2, beans.size());
+		assertThat(beans.size()).isEqualTo(2);
 	}
 
 	@Test
@@ -86,7 +81,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.getBean("testBean");
 		context.getBean("name");
 		Map<String, Object> beans = context.getBeansWithAnnotation(Configuration.class);
-		assertEquals(2, beans.size());
+		assertThat(beans.size()).isEqualTo(2);
 	}
 
 	@Test

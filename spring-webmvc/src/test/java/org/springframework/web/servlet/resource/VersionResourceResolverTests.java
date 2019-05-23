@@ -73,7 +73,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(null, file, this.locations, this.chain);
-		assertEquals(expected, actual);
+		assertThat(actual).isEqualTo(expected);
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 		verify(this.versionStrategy, never()).extractVersion(file);
 	}
@@ -152,10 +152,10 @@ public class VersionResourceResolverTests {
 		this.resolver
 				.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(request, versionFile, this.locations, this.chain);
-		assertEquals(expected.getFilename(), actual.getFilename());
+		assertThat(actual.getFilename()).isEqualTo(expected.getFilename());
 		verify(this.versionStrategy, times(1)).getResourceVersion(expected);
 		assertThat(actual).isInstanceOf(HttpResource.class);
-		assertEquals("\"" + version + "\"", ((HttpResource)actual).getResponseHeaders().getETag());
+		assertThat(((HttpResource)actual).getResponseHeaders().getETag()).isEqualTo("\"" + version + "\"");
 	}
 
 	@Test
@@ -167,10 +167,10 @@ public class VersionResourceResolverTests {
 		strategies.put("/**/*.js", jsStrategy);
 		this.resolver.setStrategyMap(strategies);
 
-		assertEquals(catchAllStrategy, this.resolver.getStrategyForPath("foo.css"));
-		assertEquals(catchAllStrategy, this.resolver.getStrategyForPath("foo-js.css"));
-		assertEquals(jsStrategy, this.resolver.getStrategyForPath("foo.js"));
-		assertEquals(jsStrategy, this.resolver.getStrategyForPath("bar/foo.js"));
+		assertThat(this.resolver.getStrategyForPath("foo.css")).isEqualTo(catchAllStrategy);
+		assertThat(this.resolver.getStrategyForPath("foo-js.css")).isEqualTo(catchAllStrategy);
+		assertThat(this.resolver.getStrategyForPath("foo.js")).isEqualTo(jsStrategy);
+		assertThat(this.resolver.getStrategyForPath("bar/foo.js")).isEqualTo(jsStrategy);
 	}
 
 	// SPR-13883

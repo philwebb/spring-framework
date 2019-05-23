@@ -73,18 +73,18 @@ public class AtomFeedHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(is);
 		inputMessage.getHeaders().setContentType(new MediaType("application", "atom+xml", StandardCharsets.UTF_8));
 		Feed result = converter.read(Feed.class, inputMessage);
-		assertEquals("title", result.getTitle());
-		assertEquals("subtitle", result.getSubtitle().getValue());
+		assertThat(result.getTitle()).isEqualTo("title");
+		assertThat(result.getSubtitle().getValue()).isEqualTo("subtitle");
 		List<?> entries = result.getEntries();
-		assertEquals(2, entries.size());
+		assertThat(entries.size()).isEqualTo(2);
 
 		Entry entry1 = (Entry) entries.get(0);
-		assertEquals("id1", entry1.getId());
-		assertEquals("title1", entry1.getTitle());
+		assertThat(entry1.getId()).isEqualTo("id1");
+		assertThat(entry1.getTitle()).isEqualTo("title1");
 
 		Entry entry2 = (Entry) entries.get(1);
-		assertEquals("id2", entry2.getId());
-		assertEquals("title2", entry2.getTitle());
+		assertThat(entry2.getId()).isEqualTo("id2");
+		assertThat(entry2.getTitle()).isEqualTo("title2");
 	}
 
 	@Test

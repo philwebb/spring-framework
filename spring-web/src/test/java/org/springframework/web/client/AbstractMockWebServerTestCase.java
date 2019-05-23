@@ -87,7 +87,7 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse postRequest(RecordedRequest request, String expectedRequestContent,
 			String location, String contentType, byte[] responseBody) {
 
-		assertEquals(1, request.getHeaders().values("Content-Length").size());
+		assertThat(request.getHeaders().values("Content-Length").size()).isEqualTo(1);
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
 		assertNotNull("No content-type", requestContentType);

@@ -75,7 +75,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertEquals("Foo", result.getString());
-		assertEquals(42, result.getNumber());
+		assertThat(result.getNumber()).isEqualTo(42);
 		assertEquals(42F, result.getFraction(), 0F);
 		assertArrayEquals(new String[]{"Foo", "Bar"}, result.getArray());
 		assertThat(result.isBool()).isTrue();

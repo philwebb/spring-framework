@@ -645,7 +645,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		// Compiler chooses getX(Number i) when passing Integer
 		final int compiler = target.getX(INTEGER);
 		// Fails!
-		assertEquals(compiler, actual);
+		assertThat(actual).isEqualTo(compiler);
 
 		ConversionPriority2 target2 = new ConversionPriority2();
 		MethodExecutor me2 = new ReflectiveMethodResolver(true).resolve(emptyEvalContext, target2, "getX", args);
@@ -654,7 +654,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		// Compiler chooses getX(Number i) when passing Integer
 		int compiler2 = target2.getX(INTEGER);
 		// Fails!
-		assertEquals(compiler2, actual2);
+		assertThat(actual2).isEqualTo(compiler2);
 
 	}
 
@@ -682,7 +682,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		final int actual = (Integer) me.execute(emptyEvalContext, target, INTEGER_VALUE).getValue();
 
 		final int compiler = target.getX(INTEGER_VALUE);
-		assertEquals(compiler, actual);
+		assertThat(actual).isEqualTo(compiler);
 	}
 
 	@Test
@@ -873,7 +873,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		Expression expression = parser.parseExpression("parseInt('-FF', 16)");
 
 		Integer result = expression.getValue(context, "", Integer.class);
-		assertEquals(-255, result.intValue());
+		assertThat(result.intValue()).isEqualTo(-255);
 	}
 
 	@Test

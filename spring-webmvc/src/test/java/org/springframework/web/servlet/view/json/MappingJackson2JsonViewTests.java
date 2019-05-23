@@ -112,7 +112,7 @@ public class MappingJackson2JsonViewTests {
 
 		String jsonResult = response.getContentAsString();
 		assertThat(jsonResult.length() > 0).isTrue();
-		assertEquals(jsonResult.length(), response.getContentLength());
+		assertThat(response.getContentLength()).isEqualTo(jsonResult.length());
 
 		validateResult();
 	}
@@ -161,7 +161,7 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		assertThat(response.getContentAsString().length() > 0).isTrue();
-		assertEquals(response.getContentAsString().length(), response.getContentLength());
+		assertThat(response.getContentLength()).isEqualTo(response.getContentAsString().length());
 
 		validateResult();
 	}
@@ -296,7 +296,7 @@ public class MappingJackson2JsonViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertEquals(content.length(), response.getContentLength());
+		assertThat(response.getContentLength()).isEqualTo(content.length());
 		assertThat(content.contains("foo")).isTrue();
 		assertThat(content.contains("boo")).isFalse();
 		assertThat(content.contains(JsonView.class.getName())).isFalse();
@@ -319,7 +319,7 @@ public class MappingJackson2JsonViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertEquals(content.length(), response.getContentLength());
+		assertThat(response.getContentLength()).isEqualTo(content.length());
 		assertThat(content).contains("\"property1\":\"value\"");
 		assertThat(content).doesNotContain("\"property2\":\"value\"");
 		assertThat(content.contains(FilterProvider.class.getName())).isFalse();

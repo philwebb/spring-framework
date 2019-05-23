@@ -129,7 +129,7 @@ public class ResourceHttpMessageConverterTests {
 		given(resource.getInputStream()).willThrow(FileNotFoundException.class);
 		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
-		assertEquals(0, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo(0);
 	}
 
 	@Test  // SPR-12999
@@ -142,7 +142,7 @@ public class ResourceHttpMessageConverterTests {
 		willThrow(new NullPointerException()).given(inputStream).close();
 		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
-		assertEquals(0, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo(0);
 	}
 
 	@Test  // SPR-13620
@@ -155,7 +155,7 @@ public class ResourceHttpMessageConverterTests {
 		given(in.read(any())).willThrow(NullPointerException.class);
 		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
-		assertEquals(0, outputMessage.getHeaders().getContentLength());
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo(0);
 	}
 
 }

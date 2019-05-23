@@ -157,7 +157,7 @@ public class ReflectionUtilsTests {
 		testValidCopy(src, dest);
 
 		// Check subclass fields were copied
-		assertEquals(src.magic, dest.magic);
+		assertThat(dest.magic).isEqualTo(src.magic);
 		assertEquals(src.prot, dest.prot);
 	}
 
@@ -168,7 +168,7 @@ public class ReflectionUtilsTests {
 		dest.magic = 11;
 		testValidCopy(src, dest);
 		// Should have left this one alone
-		assertEquals(11, dest.magic);
+		assertThat(dest.magic).isEqualTo(11);
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class ReflectionUtilsTests {
 		assertThat(src.getAge() == dest.getAge()).isFalse();
 
 		ReflectionUtils.shallowCopyFieldState(src, dest);
-		assertEquals(src.getAge(), dest.getAge());
+		assertThat(dest.getAge()).isEqualTo(src.getAge());
 		assertEquals(src.getSpouse(), dest.getSpouse());
 	}
 

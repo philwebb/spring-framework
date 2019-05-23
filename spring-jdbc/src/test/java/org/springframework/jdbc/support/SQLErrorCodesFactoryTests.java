@@ -155,7 +155,7 @@ public class SQLErrorCodesFactoryTests {
 				}
 				else {
 					// Should have only one more lookup
-					assertEquals(2, lookups);
+					assertThat(lookups).isEqualTo(2);
 					assertEquals(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH, path);
 					return null;
 				}
@@ -186,7 +186,7 @@ public class SQLErrorCodesFactoryTests {
 		// Should have loaded without error
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
 		assertThat(sf.getErrorCodes("XX").getBadSqlGrammarCodes().length == 0).isTrue();
-		assertEquals(2, sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length);
+		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length).isEqualTo(2);
 		assertEquals("1", sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]);
 		assertEquals("2", sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]);
 	}
@@ -207,7 +207,7 @@ public class SQLErrorCodesFactoryTests {
 		// Should have failed to load without error
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
 		assertThat(sf.getErrorCodes("XX").getBadSqlGrammarCodes().length == 0).isTrue();
-		assertEquals(0, sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length);
+		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length).isEqualTo(0);
 	}
 
 	/**
@@ -227,11 +227,11 @@ public class SQLErrorCodesFactoryTests {
 
 		// Should have loaded without error
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
-		assertEquals(1, sf.getErrorCodes("Oracle").getCustomTranslations().length);
+		assertThat(sf.getErrorCodes("Oracle").getCustomTranslations().length).isEqualTo(1);
 		CustomSQLErrorCodesTranslation translation =
 				sf.getErrorCodes("Oracle").getCustomTranslations()[0];
 		assertEquals(CustomErrorCodeException.class, translation.getExceptionClass());
-		assertEquals(1, translation.getErrorCodes().length);
+		assertThat(translation.getErrorCodes().length).isEqualTo(1);
 	}
 
 	@Test
@@ -259,8 +259,8 @@ public class SQLErrorCodesFactoryTests {
 
 	private void assertIsEmpty(SQLErrorCodes sec) {
 		// Codes should be empty
-		assertEquals(0, sec.getBadSqlGrammarCodes().length);
-		assertEquals(0, sec.getDataIntegrityViolationCodes().length);
+		assertThat(sec.getBadSqlGrammarCodes().length).isEqualTo(0);
+		assertThat(sec.getDataIntegrityViolationCodes().length).isEqualTo(0);
 	}
 
 	private SQLErrorCodes getErrorCodesFromDataSource(String productName, SQLErrorCodesFactory factory) throws Exception {

@@ -237,7 +237,7 @@ public class WebClientIntegrationTests {
 				.consumeNextWith(entity -> {
 					assertEquals(HttpStatus.OK, entity.getStatusCode());
 					assertEquals(MediaType.APPLICATION_JSON, entity.getHeaders().getContentType());
-					assertEquals(31, entity.getHeaders().getContentLength());
+					assertThat(entity.getHeaders().getContentLength()).isEqualTo(31);
 					assertEquals(content, entity.getBody());
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
@@ -511,7 +511,7 @@ public class WebClientIntegrationTests {
 					assertThat(throwable instanceof WebClientResponseException).isTrue();
 					WebClientResponseException ex = (WebClientResponseException) throwable;
 					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getStatusCode());
-					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getRawStatusCode());
+					assertThat(ex.getRawStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
 					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
 							ex.getStatusText());
 					assertEquals(MediaType.TEXT_PLAIN, ex.getHeaders().getContentType());
@@ -764,7 +764,7 @@ public class WebClientIntegrationTests {
 	}
 
 	private void expectRequestCount(int count) {
-		assertEquals(count, this.server.getRequestCount());
+		assertThat(this.server.getRequestCount()).isEqualTo(count);
 	}
 
 

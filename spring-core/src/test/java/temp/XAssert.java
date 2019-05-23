@@ -105,18 +105,7 @@ public class XAssert  {
         return expected.equals(actual);
     }
 
-    /**
-     * Asserts that two objects are equal. If they are not, an
-     * {@link AssertionError} without a message is thrown. If
-     * <code>expected</code> and <code>actual</code> are <code>null</code>,
-     * they are considered equal.
-     *
-     * @param expected expected value
-     * @param actual the value to check against <code>expected</code>
-     */
-    public static void assertEquals(Object expected, Object actual) {
-        assertEquals(null, expected, actual);
-    }
+
 
     /**
      * Asserts that two objects are <b>not</b> equals. If they are, an
@@ -594,16 +583,6 @@ public class XAssert  {
         return true;
     }
 
-    /**
-     * Asserts that two longs are equal. If they are not, an
-     * {@link AssertionError} is thrown.
-     *
-     * @param expected expected long value.
-     * @param actual actual long value
-     */
-    public static void assertEquals(long expected, long actual) {
-        assertEquals(null, expected, actual);
-    }
 
     /**
      * Asserts that two longs are equal. If they are not, an
@@ -620,15 +599,6 @@ public class XAssert  {
         }
     }
 
-    /**
-     * @deprecated Use
-     *             <code>assertEquals(double expected, double actual, double delta)</code>
-     *             instead
-     */
-    @Deprecated
-    public static void assertEquals(double expected, double actual) {
-        assertEquals(null, expected, actual);
-    }
 
     /**
      * @deprecated Use

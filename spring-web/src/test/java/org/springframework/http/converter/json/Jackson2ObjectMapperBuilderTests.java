@@ -341,14 +341,14 @@ public class Jackson2ObjectMapperBuilderTests {
 		barModule.addSerializer(new BarSerializer());
 		builder.modulesToInstall(fooModule, barModule);
 		ObjectMapper objectMapper = builder.build();
-		assertEquals(1, StreamSupport
-				.stream(getSerializerFactoryConfig(objectMapper).serializers().spliterator(), false)
-				.filter(s -> s.findSerializer(null, SimpleType.construct(Foo.class), null) != null)
-				.count());
-		assertEquals(1, StreamSupport
-				.stream(getSerializerFactoryConfig(objectMapper).serializers().spliterator(), false)
-				.filter(s -> s.findSerializer(null, SimpleType.construct(Bar.class), null) != null)
-				.count());
+		assertThat(StreamSupport
+		.stream(getSerializerFactoryConfig(objectMapper).serializers().spliterator(), false)
+		.filter(s -> s.findSerializer(null, SimpleType.construct(Foo.class), null) != null)
+		.count()).isEqualTo(1);
+		assertThat(StreamSupport
+		.stream(getSerializerFactoryConfig(objectMapper).serializers().spliterator(), false)
+		.filter(s -> s.findSerializer(null, SimpleType.construct(Bar.class), null) != null)
+		.count()).isEqualTo(1);
 	}
 
 	private static SerializerFactoryConfig getSerializerFactoryConfig(ObjectMapper objectMapper) {
@@ -400,7 +400,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modules().mixIn(target, mixInSource)
 				.build();
 
-		assertEquals(1, objectMapper.mixInCount());
+		assertThat(objectMapper.mixInCount()).isEqualTo(1);
 		assertSame(mixInSource, objectMapper.findMixInClassFor(target));
 	}
 
@@ -415,7 +415,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modules().mixIns(mixIns)
 				.build();
 
-		assertEquals(1, objectMapper.mixInCount());
+		assertThat(objectMapper.mixInCount()).isEqualTo(1);
 		assertSame(mixInSource, objectMapper.findMixInClassFor(target));
 	}
 

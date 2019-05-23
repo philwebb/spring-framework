@@ -125,7 +125,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertThat(value instanceof List).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodArgumentResolver> resolvers = (List<HandlerMethodArgumentResolver>) value;
-		assertEquals(3, resolvers.size());
+		assertThat(resolvers.size()).isEqualTo(3);
 		assertThat(resolvers.get(0) instanceof ServletWebArgumentResolverAdapter).isTrue();
 		assertThat(resolvers.get(1) instanceof TestHandlerMethodArgumentResolver).isTrue();
 		assertThat(resolvers.get(2) instanceof TestHandlerMethodArgumentResolver).isTrue();
@@ -146,7 +146,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertThat(value instanceof List).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodReturnValueHandler> handlers = (List<HandlerMethodReturnValueHandler>) value;
-		assertEquals(2, handlers.size());
+		assertThat(handlers.size()).isEqualTo(2);
 		assertEquals(TestHandlerMethodReturnValueHandler.class, handlers.get(0).getClass());
 		assertEquals(TestHandlerMethodReturnValueHandler.class, handlers.get(1).getClass());
 		assertNotSame(handlers.get(0), handlers.get(1));
@@ -157,7 +157,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		loadBeanDefinitions("mvc-config.xml");
 		BeanNameUrlHandlerMapping mapping = this.appContext.getBean(BeanNameUrlHandlerMapping.class);
 		assertThat(mapping).isNotNull();
-		assertEquals(2, mapping.getOrder());
+		assertThat(mapping.getOrder()).isEqualTo(2);
 	}
 
 	private void loadBeanDefinitions(String fileName) {

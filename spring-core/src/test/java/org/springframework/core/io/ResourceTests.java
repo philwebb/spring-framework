@@ -105,7 +105,7 @@ public class ResourceTests {
 		HashSet<Resource> resources = new HashSet<>();
 		resources.add(resource);
 		resources.add(resource2);
-		assertEquals(1, resources.size());
+		assertThat(resources.size()).isEqualTo(1);
 	}
 
 	@Test

@@ -81,7 +81,7 @@ public class HandlerMethodMappingTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get(key));
 		Mono<Object> result = this.mapping.getHandler(exchange);
 
-		assertEquals(this.method1, ((HandlerMethod) result.block()).getMethod());
+		assertThat(((HandlerMethod) result.block()).getMethod()).isEqualTo(this.method1);
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class HandlerMethodMappingTests {
 
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/foo"));
 		Mono<Object> result = this.mapping.getHandler(exchange);
-		assertEquals(this.method1, ((HandlerMethod) result.block()).getMethod());
+		assertThat(((HandlerMethod) result.block()).getMethod()).isEqualTo(this.method1);
 	}
 
 	@Test

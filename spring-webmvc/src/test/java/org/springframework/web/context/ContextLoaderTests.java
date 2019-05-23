@@ -335,7 +335,7 @@ public class ContextLoaderTests {
 						}
 						catch (BeanCreationException ex) {
 							DefaultListableBeanFactory factory = (DefaultListableBeanFactory) getBeanFactory();
-							assertEquals(0, factory.getSingletonCount());
+							assertThat(factory.getSingletonCount()).isEqualTo(0);
 							throw ex;
 						}
 					}
