@@ -55,9 +55,6 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Kazuki Shimizu
@@ -84,7 +81,7 @@ public class SpringValidatorAdapterTests {
 	@Test
 	public void testUnwrap() {
 		Validator nativeValidator = validatorAdapter.unwrap(Validator.class);
-		assertSame(this.nativeValidator, nativeValidator);
+		assertThat((Object) nativeValidator).isSameAs(this.nativeValidator);
 	}
 
 	@Test  // SPR-13406

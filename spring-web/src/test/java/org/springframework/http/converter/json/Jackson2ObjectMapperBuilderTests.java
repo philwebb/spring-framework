@@ -87,7 +87,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertSame;
 
 /**
  * Test class for {@link Jackson2ObjectMapperBuilder}.
@@ -162,25 +161,25 @@ public class Jackson2ObjectMapperBuilderTests {
 	@Test
 	public void setNotNullSerializationInclusion() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-		assertSame(JsonInclude.Include.ALWAYS, objectMapper.getSerializationConfig().getSerializationInclusion());
+		assertThat((Object) objectMapper.getSerializationConfig().getSerializationInclusion()).isSameAs(JsonInclude.Include.ALWAYS);
 		objectMapper = Jackson2ObjectMapperBuilder.json().serializationInclusion(JsonInclude.Include.NON_NULL).build();
-		assertSame(JsonInclude.Include.NON_NULL, objectMapper.getSerializationConfig().getSerializationInclusion());
+		assertThat((Object) objectMapper.getSerializationConfig().getSerializationInclusion()).isSameAs(JsonInclude.Include.NON_NULL);
 	}
 
 	@Test
 	public void setNotDefaultSerializationInclusion() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-		assertSame(JsonInclude.Include.ALWAYS, objectMapper.getSerializationConfig().getSerializationInclusion());
+		assertThat((Object) objectMapper.getSerializationConfig().getSerializationInclusion()).isSameAs(JsonInclude.Include.ALWAYS);
 		objectMapper = Jackson2ObjectMapperBuilder.json().serializationInclusion(JsonInclude.Include.NON_DEFAULT).build();
-		assertSame(JsonInclude.Include.NON_DEFAULT, objectMapper.getSerializationConfig().getSerializationInclusion());
+		assertThat((Object) objectMapper.getSerializationConfig().getSerializationInclusion()).isSameAs(JsonInclude.Include.NON_DEFAULT);
 	}
 
 	@Test
 	public void setNotEmptySerializationInclusion() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-		assertSame(JsonInclude.Include.ALWAYS, objectMapper.getSerializationConfig().getSerializationInclusion());
+		assertThat((Object) objectMapper.getSerializationConfig().getSerializationInclusion()).isSameAs(JsonInclude.Include.ALWAYS);
 		objectMapper = Jackson2ObjectMapperBuilder.json().serializationInclusion(JsonInclude.Include.NON_EMPTY).build();
-		assertSame(JsonInclude.Include.NON_EMPTY, objectMapper.getSerializationConfig().getSerializationInclusion());
+		assertThat((Object) objectMapper.getSerializationConfig().getSerializationInclusion()).isSameAs(JsonInclude.Include.NON_EMPTY);
 	}
 
 	@Test
@@ -237,7 +236,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		module.addSerializer(Integer.class, serializer1);
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().modules(module).build();
 		Serializers serializers = getSerializerFactoryConfig(objectMapper).serializers().iterator().next();
-		assertSame(serializer1, serializers.findSerializer(null, SimpleType.construct(Integer.class), null));
+		assertThat((Object) serializers.findSerializer(null, SimpleType.construct(Integer.class), null)).isSameAs(serializer1);
 	}
 
 	@Test
@@ -247,8 +246,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modulesToInstall(CustomIntegerModule.class)
 				.build();
 		Serializers serializers = getSerializerFactoryConfig(objectMapper).serializers().iterator().next();
-		assertSame(CustomIntegerSerializer.class,
-				serializers.findSerializer(null, SimpleType.construct(Integer.class), null).getClass());
+		assertThat((Object) serializers.findSerializer(null, SimpleType.construct(Integer.class), null).getClass()).isSameAs(CustomIntegerSerializer.class);
 	}
 
 	@Test
@@ -257,8 +255,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.modulesToInstall(new CustomIntegerModule())
 				.build();
 		Serializers serializers = getSerializerFactoryConfig(objectMapper).serializers().iterator().next();
-		assertSame(CustomIntegerSerializer.class,
-				serializers.findSerializer(null, SimpleType.construct(Integer.class), null).getClass());
+		assertThat((Object) serializers.findSerializer(null, SimpleType.construct(Integer.class), null).getClass()).isSameAs(CustomIntegerSerializer.class);
 	}
 
 	@Test
@@ -359,8 +356,8 @@ public class Jackson2ObjectMapperBuilderTests {
 	public void propertyNamingStrategy() {
 		PropertyNamingStrategy strategy = new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy();
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().propertyNamingStrategy(strategy).build();
-		assertSame(strategy, objectMapper.getSerializationConfig().getPropertyNamingStrategy());
-		assertSame(strategy, objectMapper.getDeserializationConfig().getPropertyNamingStrategy());
+		assertThat((Object) objectMapper.getSerializationConfig().getPropertyNamingStrategy()).isSameAs(strategy);
+		assertThat((Object) objectMapper.getDeserializationConfig().getPropertyNamingStrategy()).isSameAs(strategy);
 	}
 
 	@Test
@@ -372,7 +369,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.build();
 		assertThat(getSerializerFactoryConfig(objectMapper).hasSerializers()).isTrue();
 		Serializers serializers = getSerializerFactoryConfig(objectMapper).serializers().iterator().next();
-		assertSame(serializer, serializers.findSerializer(null, SimpleType.construct(Boolean.class), null));
+		assertThat((Object) serializers.findSerializer(null, SimpleType.construct(Boolean.class), null)).isSameAs(serializer);
 	}
 
 	@Test
@@ -384,7 +381,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.build();
 		assertThat(getDeserializerFactoryConfig(objectMapper).hasDeserializers()).isTrue();
 		Deserializers deserializers = getDeserializerFactoryConfig(objectMapper).deserializers().iterator().next();
-		assertSame(deserializer, deserializers.findBeanDeserializer(SimpleType.construct(Date.class), null, null));
+		assertThat((Object) deserializers.findBeanDeserializer(SimpleType.construct(Date.class), null, null)).isSameAs(deserializer);
 	}
 
 	@Test
@@ -397,7 +394,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.build();
 
 		assertThat(objectMapper.mixInCount()).isEqualTo(1);
-		assertSame(mixInSource, objectMapper.findMixInClassFor(target));
+		assertThat((Object) objectMapper.findMixInClassFor(target)).isSameAs(mixInSource);
 	}
 
 	@Test
@@ -412,7 +409,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.build();
 
 		assertThat(objectMapper.mixInCount()).isEqualTo(1);
-		assertSame(mixInSource, objectMapper.findMixInClassFor(target));
+		assertThat((Object) objectMapper.findMixInClassFor(target)).isSameAs(mixInSource);
 	}
 
 	@Test
@@ -467,15 +464,15 @@ public class Jackson2ObjectMapperBuilderTests {
 		assertThat(getDeserializerFactoryConfig(mapper).hasDeserializers()).isTrue();
 
 		Serializers serializers = getSerializerFactoryConfig(mapper).serializers().iterator().next();
-		assertSame(serializer1, serializers.findSerializer(null, SimpleType.construct(Class.class), null));
-		assertSame(serializer2, serializers.findSerializer(null, SimpleType.construct(Boolean.class), null));
+		assertThat((Object) serializers.findSerializer(null, SimpleType.construct(Class.class), null)).isSameAs(serializer1);
+		assertThat((Object) serializers.findSerializer(null, SimpleType.construct(Boolean.class), null)).isSameAs(serializer2);
 		assertThat(serializers.findSerializer(null, SimpleType.construct(Number.class), null)).isNotNull();
 
 		Deserializers deserializers = getDeserializerFactoryConfig(mapper).deserializers().iterator().next();
-		assertSame(deserializer, deserializers.findBeanDeserializer(SimpleType.construct(Date.class), null, null));
+		assertThat((Object) deserializers.findBeanDeserializer(SimpleType.construct(Date.class), null, null)).isSameAs(deserializer);
 
-		assertSame(annotationIntrospector, mapper.getSerializationConfig().getAnnotationIntrospector());
-		assertSame(annotationIntrospector, mapper.getDeserializationConfig().getAnnotationIntrospector());
+		assertThat((Object) mapper.getSerializationConfig().getAnnotationIntrospector()).isSameAs(annotationIntrospector);
+		assertThat((Object) mapper.getDeserializationConfig().getAnnotationIntrospector()).isSameAs(annotationIntrospector);
 
 		assertThat(mapper.getSerializationConfig().isEnabled(SerializationFeature.FAIL_ON_EMPTY_BEANS)).isTrue();
 		assertThat(mapper.getDeserializationConfig().isEnabled(DeserializationFeature.UNWRAP_ROOT_VALUE)).isTrue();
@@ -488,7 +485,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		assertThat(mapper.getDeserializationConfig().isEnabled(MapperFeature.AUTO_DETECT_FIELDS)).isFalse();
 		assertThat(mapper.getFactory().isEnabled(JsonParser.Feature.AUTO_CLOSE_SOURCE)).isFalse();
 		assertThat(mapper.getFactory().isEnabled(JsonGenerator.Feature.QUOTE_FIELD_NAMES)).isFalse();
-		assertSame(JsonInclude.Include.NON_NULL, mapper.getSerializationConfig().getSerializationInclusion());
+		assertThat((Object) mapper.getSerializationConfig().getSerializationInclusion()).isSameAs(JsonInclude.Include.NON_NULL);
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll
@@ -46,7 +45,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 
 	@Test
 	public void testNativeCache() throws Exception {
-		assertSame(getNativeCache(), getCache().getNativeCache());
+		assertThat(getCache().getNativeCache()).isSameAs(getNativeCache());
 	}
 
 	@Test

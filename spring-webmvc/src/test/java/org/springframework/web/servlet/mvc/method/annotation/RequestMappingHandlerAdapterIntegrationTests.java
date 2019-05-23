@@ -86,7 +86,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertSame;
 
 /**
  * A test fixture with a controller with all supported method signature styles
@@ -197,27 +196,27 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
 		assertThat(modelAttr.getAge()).isEqualTo(25);
 		assertThat((Object) modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
-		assertSame(modelAttr, request.getSession().getAttribute("modelAttr"));
+		assertThat(request.getSession().getAttribute("modelAttr")).isSameAs(modelAttr);
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
-		assertSame(modelAttr, bindingResult.getTarget());
+		assertThat(bindingResult.getTarget()).isSameAs(modelAttr);
 		assertThat(bindingResult.getErrorCount()).isEqualTo(1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
 		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
 		assertThat((Object) modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
-		assertSame(modelAttrByConvention, request.getSession().getAttribute(conventionAttrName));
+		assertThat(request.getSession().getAttribute(conventionAttrName)).isSameAs(modelAttrByConvention);
 
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
-		assertSame(modelAttrByConvention, bindingResult.getTarget());
+		assertThat(bindingResult.getTarget()).isSameAs(modelAttrByConvention);
 
 		assertThat(model.get("customArg") instanceof Color).isTrue();
 		assertThat((Object) model.get("user").getClass()).isEqualTo(User.class);
 		assertThat((Object) model.get("otherUser").getClass()).isEqualTo(OtherUser.class);
 
-		assertSame(sessionAttribute, model.get("sessionAttribute"));
-		assertSame(requestAttribute, model.get("requestAttribute"));
+		assertThat(model.get("sessionAttribute")).isSameAs(sessionAttribute);
+		assertThat(model.get("requestAttribute")).isSameAs(requestAttribute);
 
 		assertThat(model.get("url")).isEqualTo(new URI("http://localhost/contextPath/main/path"));
 	}
@@ -278,27 +277,27 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
 		assertThat(modelAttr.getAge()).isEqualTo(25);
 		assertThat((Object) modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
-		assertSame(modelAttr, request.getSession().getAttribute("modelAttr"));
+		assertThat(request.getSession().getAttribute("modelAttr")).isSameAs(modelAttr);
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
-		assertSame(modelAttr, bindingResult.getTarget());
+		assertThat(bindingResult.getTarget()).isSameAs(modelAttr);
 		assertThat(bindingResult.getErrorCount()).isEqualTo(1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
 		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
 		assertThat((Object) modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
-		assertSame(modelAttrByConvention, request.getSession().getAttribute(conventionAttrName));
+		assertThat(request.getSession().getAttribute(conventionAttrName)).isSameAs(modelAttrByConvention);
 
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
-		assertSame(modelAttrByConvention, bindingResult.getTarget());
+		assertThat(bindingResult.getTarget()).isSameAs(modelAttrByConvention);
 
 		assertThat(model.get("customArg") instanceof Color).isTrue();
 		assertThat((Object) model.get("user").getClass()).isEqualTo(User.class);
 		assertThat((Object) model.get("otherUser").getClass()).isEqualTo(OtherUser.class);
 
-		assertSame(sessionAttribute, model.get("sessionAttribute"));
-		assertSame(requestAttribute, model.get("requestAttribute"));
+		assertThat(model.get("sessionAttribute")).isSameAs(sessionAttribute);
+		assertThat(model.get("requestAttribute")).isSameAs(requestAttribute);
 
 		assertThat(model.get("url")).isEqualTo(new URI("http://localhost/contextPath/main/path"));
 	}

@@ -34,7 +34,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertSame;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -128,7 +127,7 @@ public class ResourceBundleViewResolverTests {
 
 		View v1 = rb.resolveViewName("debugView", Locale.ENGLISH);
 		View v2 = rb.resolveViewName("debugView", Locale.UK);
-		assertSame(v1, v2);
+		assertThat((Object) v2).isSameAs(v1);
 	}
 
 	@Test

@@ -60,7 +60,6 @@ import org.springframework.web.util.pattern.PathPattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.method;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.post;
@@ -258,7 +257,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		assertThat((Object) bestMatch.getPatternString()).isEqualTo("/{path1}/2");
 
 		HandlerMethod mapped = (HandlerMethod) exchange.getAttributes().get(BEST_MATCHING_HANDLER_ATTRIBUTE);
-		assertSame(handlerMethod, mapped);
+		assertThat((Object) mapped).isSameAs(handlerMethod);
 	}
 
 	@Test // gh-22543

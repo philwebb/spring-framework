@@ -71,7 +71,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -600,10 +599,10 @@ public class XmlBeanFactoryTests {
 		ITestBean david = (ITestBean) xbf.getBean("david");
 		assertThat(AopUtils.isAopProxy(jenny)).isTrue();
 		assertThat(AopUtils.isAopProxy(david)).isTrue();
-		assertSame(david, jenny.getSpouse());
+		assertThat((Object) jenny.getSpouse()).isSameAs(david);
 		assertNotSame(jenny, david.getSpouse());
 		assertThat((Object) david.getSpouse().getName()).isEqualTo("Jenny");
-		assertSame(david, david.getSpouse().getSpouse());
+		assertThat((Object) david.getSpouse().getSpouse()).isSameAs(david);
 		assertThat(AopUtils.isAopProxy(jenny.getSpouse())).isTrue();
 		assertThat(!AopUtils.isAopProxy(david.getSpouse())).isTrue();
 	}
@@ -1232,7 +1231,7 @@ public class XmlBeanFactoryTests {
 		OverrideOneMethod oom = (OverrideOneMethod) xbf.getBean(beanName);
 
 		if (singleton) {
-			assertSame(oom, xbf.getBean(beanName));
+			assertThat(xbf.getBean(beanName)).isSameAs(oom);
 		}
 		else {
 			assertNotSame(oom, xbf.getBean(beanName));
@@ -1257,7 +1256,7 @@ public class XmlBeanFactoryTests {
 		assertThat((Object) dave1.getName()).isEqualTo("David");
 		TestBean dave2 = oom.protectedOverrideSingleton();
 		assertThat((Object) dave2.getName()).isEqualTo("David");
-		assertSame(dave1, dave2);
+		assertThat((Object) dave2).isSameAs(dave1);
 	}
 
 	@Test
@@ -1283,7 +1282,7 @@ public class XmlBeanFactoryTests {
 		assertThat((Object) dave1.getName()).isEqualTo("David");
 		TestBean dave2 = oom.protectedOverrideSingleton();
 		assertThat((Object) dave2.getName()).isEqualTo("David");
-		assertSame(dave1, dave2);
+		assertThat((Object) dave2).isSameAs(dave1);
 
 		// Check unadvised behaviour
 		String str = "woierowijeiowiej";
@@ -1322,13 +1321,12 @@ public class XmlBeanFactoryTests {
 
 		// Jenny is a singleton
 		TestBean jenny = (TestBean) xbf.getBean("jenny");
-		assertSame(jenny, cio.getTestBean());
-		assertSame(jenny, cio.getTestBean());
+		assertThat((Object) cio.getTestBean()).isSameAs(jenny);
+		assertThat((Object) cio.getTestBean()).isSameAs(jenny);
 		FactoryMethods fm1 = cio.createFactoryMethods();
 		FactoryMethods fm2 = cio.createFactoryMethods();
 		assertNotSame("FactoryMethods reference is to a prototype", fm1, fm2);
-		assertSame("The two prototypes hold the same singleton reference",
-				fm1.getTestBean(), fm2.getTestBean());
+		assertThat((Object) fm2.getTestBean()).as("The two prototypes hold the same singleton reference").isSameAs(fm1.getTestBean());
 	}
 
 	@Test

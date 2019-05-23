@@ -63,10 +63,7 @@ import org.springframework.util.SerializationTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * @since 13.03.2003
@@ -332,7 +329,7 @@ public class ProxyFactoryBeanTests {
 		assertThat((Object) itb.getName()).isEqualTo("innerBeanTarget");
 		assertThat((Object) bf.getBeanDefinitionCount()).as("Only have proxy and interceptor: no target").isEqualTo(3);
 		DependsOnITestBean doit = (DependsOnITestBean) bf.getBean("autowireCheck");
-		assertSame(itb, doit.tb);
+		assertThat((Object) doit.tb).isSameAs(itb);
 	}
 
 	/**
@@ -524,7 +521,7 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
 		Person p = (Person) bf.getBean("serializableSingleton");
-		assertSame("Should be a Singleton", p, bf.getBean("serializableSingleton"));
+		assertThat(bf.getBean("serializableSingleton")).as("Should be a Singleton").isSameAs(p);
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		assertThat((Object) p2).isEqualTo(p);
 		assertNotSame(p, p2);

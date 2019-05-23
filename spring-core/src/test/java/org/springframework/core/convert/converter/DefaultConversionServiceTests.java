@@ -61,7 +61,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link DefaultConversionService}.
@@ -314,7 +313,7 @@ public class DefaultConversionServiceTests {
 	@Test
 	public void testStringToString() {
 		String str = "test";
-		assertSame(str, conversionService.convert(str, String.class));
+		assertThat(conversionService.convert(str, String.class)).isSameAs(str);
 	}
 
 	@Test
@@ -582,7 +581,7 @@ public class DefaultConversionServiceTests {
 		source.add("B");
 		conversionService.addConverter(List.class, ListWrapper.class, ListWrapper::new);
 		ListWrapper result = conversionService.convert(source, ListWrapper.class);
-		assertSame(source, result.getList());
+		assertThat((Object) result.getList()).isSameAs(source);
 	}
 
 	@Test
@@ -958,16 +957,16 @@ public class DefaultConversionServiceTests {
 
 	@Test
 	public void convertObjectToOptionalNull() {
-		assertSame(Optional.empty(), conversionService.convert(null, TypeDescriptor.valueOf(Object.class),
-				TypeDescriptor.valueOf(Optional.class)));
-		assertSame(Optional.empty(), conversionService.convert(null, Optional.class));
+		assertThat(conversionService.convert(null, TypeDescriptor.valueOf(Object.class),
+				TypeDescriptor.valueOf(Optional.class))).isSameAs(Optional.empty());
+		assertThat(conversionService.convert(null, Optional.class)).isSameAs(Optional.empty());
 	}
 
 	@Test
 	public void convertExistingOptional() {
-		assertSame(Optional.empty(), conversionService.convert(Optional.empty(), TypeDescriptor.valueOf(Object.class),
-				TypeDescriptor.valueOf(Optional.class)));
-		assertSame(Optional.empty(), conversionService.convert(Optional.empty(), Optional.class));
+		assertThat(conversionService.convert(Optional.empty(), TypeDescriptor.valueOf(Object.class),
+				TypeDescriptor.valueOf(Optional.class))).isSameAs(Optional.empty());
+		assertThat(conversionService.convert(Optional.empty(), Optional.class)).isSameAs(Optional.empty());
 	}
 
 	@Test

@@ -44,7 +44,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -406,8 +405,8 @@ public class ResourceHttpRequestHandlerTests {
 	@Test
 	public void processPath() {
 		// Unchanged
-		assertSame("/foo/bar", this.handler.processPath("/foo/bar"));
-		assertSame("foo/bar", this.handler.processPath("foo/bar"));
+		assertThat((Object) this.handler.processPath("/foo/bar")).isSameAs("/foo/bar");
+		assertThat((Object) this.handler.processPath("foo/bar")).isSameAs("foo/bar");
 
 		// leading whitespace control characters (00-1F)
 		assertThat(this.handler.processPath("  /foo/bar")).isEqualTo("/foo/bar");

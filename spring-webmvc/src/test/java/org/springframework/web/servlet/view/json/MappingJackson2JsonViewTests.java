@@ -55,7 +55,6 @@ import org.springframework.web.servlet.View;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -260,7 +259,7 @@ public class MappingJackson2JsonViewTests {
 
 		Object actual = view.filterModel(model);
 
-		assertSame(bean, actual);
+		assertThat(actual).isSameAs(bean);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -277,8 +276,8 @@ public class MappingJackson2JsonViewTests {
 		Object actual = view.filterModel(model);
 
 		assertThat(actual instanceof Map).isTrue();
-		assertSame(bean1, ((Map) actual).get("foo1"));
-		assertSame(bean2, ((Map) actual).get("foo2"));
+		assertThat(((Map) actual).get("foo1")).isSameAs(bean1);
+		assertThat(((Map) actual).get("foo2")).isSameAs(bean2);
 	}
 
 	@Test

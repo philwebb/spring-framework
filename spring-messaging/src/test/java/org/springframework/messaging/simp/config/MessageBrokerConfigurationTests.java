@@ -78,7 +78,6 @@ import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBea
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotEquals;
-import static temp.XAssert.assertSame;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -384,7 +383,7 @@ public class MessageBrokerConfigurationTests {
 			}
 		};
 
-		assertSame(validator, config.simpValidator());
+		assertThat((Object) config.simpValidator()).isSameAs(validator);
 	}
 
 	@Test
@@ -460,8 +459,8 @@ public class MessageBrokerConfigurationTests {
 		StompBrokerRelayMessageHandler relay = context.getBean(StompBrokerRelayMessageHandler.class);
 		assertThat(relay.getSystemSubscriptions()).isNotNull();
 		assertThat(relay.getSystemSubscriptions().size()).isEqualTo(2);
-		assertSame(handler1, relay.getSystemSubscriptions().get("/topic/unresolved-user-destination"));
-		assertSame(handler2, relay.getSystemSubscriptions().get("/topic/simp-user-registry"));
+		assertThat((Object) relay.getSystemSubscriptions().get("/topic/unresolved-user-destination")).isSameAs(handler1);
+		assertThat((Object) relay.getSystemSubscriptions().get("/topic/simp-user-registry")).isSameAs(handler2);
 	}
 
 	@Test

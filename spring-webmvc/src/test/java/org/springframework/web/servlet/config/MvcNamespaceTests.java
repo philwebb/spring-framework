@@ -144,7 +144,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertSame;
 
 /**
  * Tests loading actual MVC namespace configuration.
@@ -235,7 +234,7 @@ public class MvcNamespaceTests {
 		assertThat(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor).isTrue();
 		ConversionServiceExposingInterceptor interceptor = (ConversionServiceExposingInterceptor) chain.getInterceptors()[0];
 		interceptor.preHandle(request, response, handlerMethod);
-		assertSame(appContext.getBean(ConversionService.class), request.getAttribute(ConversionService.class.getName()));
+		assertThat(request.getAttribute(ConversionService.class.getName())).isSameAs(appContext.getBean(ConversionService.class));
 
 		adapter.handle(request, response, handlerMethod);
 		assertThat(handler.recordedValidationError).isTrue();
@@ -252,7 +251,7 @@ public class MvcNamespaceTests {
 		HandlerMappingIntrospector introspector = this.appContext.getBean(name, HandlerMappingIntrospector.class);
 		assertThat(introspector).isNotNull();
 		assertThat(introspector.getHandlerMappings().size()).isEqualTo(2);
-		assertSame(mapping, introspector.getHandlerMappings().get(0));
+		assertThat((Object) introspector.getHandlerMappings().get(0)).isSameAs(mapping);
 		assertThat((Object) introspector.getHandlerMappings().get(1).getClass()).isEqualTo(BeanNameUrlHandlerMapping.class);
 	}
 
@@ -275,7 +274,7 @@ public class MvcNamespaceTests {
 		assertThat(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor).isTrue();
 		ConversionServiceExposingInterceptor interceptor = (ConversionServiceExposingInterceptor) chain.getInterceptors()[0];
 		interceptor.preHandle(request, response, handler);
-		assertSame(appContext.getBean("conversionService"), request.getAttribute(ConversionService.class.getName()));
+		assertThat(request.getAttribute(ConversionService.class.getName())).isSameAs(appContext.getBean("conversionService"));
 
 		RequestMappingHandlerAdapter adapter = appContext.getBean(RequestMappingHandlerAdapter.class);
 		assertThat(adapter).isNotNull();
@@ -355,7 +354,7 @@ public class MvcNamespaceTests {
 
 		ResourceHttpRequestHandler handler = appContext.getBean(ResourceHttpRequestHandler.class);
 		assertThat(handler).isNotNull();
-		assertSame(manager, handler.getContentNegotiationManager());
+		assertThat((Object) handler.getContentNegotiationManager()).isSameAs(manager);
 
 		SimpleUrlHandlerMapping resourceMapping = appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertThat(resourceMapping).isNotNull();
@@ -724,7 +723,7 @@ public class MvcNamespaceTests {
 		ViewResolver resolver = compositeResolver.getViewResolvers().get(0);
 		assertThat((Object) resolver.getClass()).isEqualTo(ContentNegotiatingViewResolver.class);
 		ContentNegotiatingViewResolver cnvr = (ContentNegotiatingViewResolver) resolver;
-		assertSame(manager, cnvr.getContentNegotiationManager());
+		assertThat((Object) cnvr.getContentNegotiationManager()).isSameAs(manager);
 	}
 
 	@Test
@@ -846,8 +845,8 @@ public class MvcNamespaceTests {
 		DirectFieldAccessor accessor = new DirectFieldAccessor(cnvr);
 		ContentNegotiationManager manager = (ContentNegotiationManager) accessor.getPropertyValue(beanName);
 		assertThat(manager).isNotNull();
-		assertSame(manager, this.appContext.getBean(ContentNegotiationManager.class));
-		assertSame(manager, this.appContext.getBean("mvcContentNegotiationManager"));
+		assertThat(this.appContext.getBean(ContentNegotiationManager.class)).isSameAs(manager);
+		assertThat(this.appContext.getBean("mvcContentNegotiationManager")).isSameAs(manager);
 	}
 
 	@Test

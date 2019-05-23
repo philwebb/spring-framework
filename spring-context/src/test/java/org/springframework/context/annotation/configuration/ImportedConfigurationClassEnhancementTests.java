@@ -28,7 +28,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -82,7 +81,7 @@ public class ImportedConfigurationClassEnhancementTests {
 	public void importingNonConfigurationClassCausesBeanDefinitionParsingException() {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigThatImportsNonConfigClass.class);
 		ConfigThatImportsNonConfigClass config = ctx.getBean(ConfigThatImportsNonConfigClass.class);
-		assertSame(ctx.getBean(TestBean.class), config.testBean);
+		assertThat((Object) config.testBean).isSameAs(ctx.getBean(TestBean.class));
 	}
 
 

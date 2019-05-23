@@ -40,7 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Additional and overridden tests for CGLIB proxies.
@@ -197,7 +196,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		ITestBean proxy1 = getAdvisedProxy(target);
 		ITestBean proxy2 = getAdvisedProxy(target2);
-		assertSame(proxy1.getClass(), proxy2.getClass());
+		assertThat((Object) proxy2.getClass()).isSameAs(proxy1.getClass());
 		assertThat(proxy1.getAge()).isEqualTo(target.getAge());
 		assertThat(proxy2.getAge()).isEqualTo(target2.getAge());
 	}
@@ -243,7 +242,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		ITestBean proxy1 = getIntroductionAdvisorProxy(target1);
 		ITestBean proxy2 = getIntroductionAdvisorProxy(target2);
-		assertSame("Incorrect duplicate creation of proxy classes", proxy1.getClass(), proxy2.getClass());
+		assertThat((Object) proxy2.getClass()).as("Incorrect duplicate creation of proxy classes").isSameAs(proxy1.getClass());
 	}
 
 	private ITestBean getIntroductionAdvisorProxy(TestBean target) {

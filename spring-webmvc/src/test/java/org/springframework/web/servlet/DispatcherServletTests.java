@@ -63,7 +63,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -630,7 +629,7 @@ public class DispatcherServletTests {
 
 		assertThat(request.getAttribute("test1")).isEqualTo("value1");
 		assertThat(request.getAttribute("test2")).isEqualTo("value2");
-		assertSame(wac, request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE));
+		assertThat(request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(wac);
 	}
 
 	@Test
@@ -651,7 +650,7 @@ public class DispatcherServletTests {
 
 		assertThat(request.getAttribute("test1")).isEqualTo("value1");
 		assertThat(request.getAttribute("test2")).isEqualTo("value2");
-		assertSame(wac, request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE));
+		assertThat(request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(wac);
 	}
 
 	@Test
@@ -712,8 +711,8 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean.getServletConfig());
+		assertThat((Object) contextBean.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean.getServletConfig()).isSameAs(servlet.getServletConfig());
 		MultipartResolver multipartResolver = servlet.getMultipartResolver();
 		assertThat(multipartResolver).isNotNull();
 
@@ -723,8 +722,8 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean2 =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean2.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean2.getServletConfig());
+		assertThat((Object) contextBean2.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean2.getServletConfig()).isSameAs(servlet.getServletConfig());
 		assertNotSame(contextBean, contextBean2);
 		assertNotSame(configBean, configBean2);
 		MultipartResolver multipartResolver2 = servlet.getMultipartResolver();
@@ -743,8 +742,8 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean.getServletConfig());
+		assertThat((Object) contextBean.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean.getServletConfig()).isSameAs(servlet.getServletConfig());
 		MultipartResolver multipartResolver = servlet.getMultipartResolver();
 		assertThat(multipartResolver).isNotNull();
 
@@ -754,8 +753,8 @@ public class DispatcherServletTests {
 				(ServletContextAwareBean) servlet.getWebApplicationContext().getBean("servletContextAwareBean");
 		ServletConfigAwareBean configBean2 =
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
-		assertSame(servletContext, contextBean2.getServletContext());
-		assertSame(servlet.getServletConfig(), configBean2.getServletConfig());
+		assertThat((Object) contextBean2.getServletContext()).isSameAs(servletContext);
+		assertThat((Object) configBean2.getServletConfig()).isSameAs(servlet.getServletConfig());
 		assertThat(contextBean != contextBean2).isTrue();
 		assertThat(configBean != configBean2).isTrue();
 		MultipartResolver multipartResolver2 = servlet.getMultipartResolver();

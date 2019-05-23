@@ -52,7 +52,6 @@ import org.springframework.web.server.handler.ExceptionHandlingWebHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertNotSame;
-import static temp.XAssert.assertSame;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 /**
@@ -102,7 +101,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertSame(EXCEPTION, error))
+				.consumeErrorWith(error -> assertThat((Object) error).isSameAs(EXCEPTION))
 				.verify();
 	}
 
@@ -112,7 +111,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertSame(EXCEPTION, error))
+				.consumeErrorWith(error -> assertThat((Object) error).isSameAs(EXCEPTION))
 				.verify();
 	}
 
@@ -149,7 +148,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertSame(EXCEPTION, error))
+				.consumeErrorWith(error -> assertThat((Object) error).isSameAs(EXCEPTION))
 				.verify();
 	}
 

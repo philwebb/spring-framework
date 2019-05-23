@@ -29,7 +29,6 @@ import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -283,7 +282,7 @@ public class SQLErrorCodesFactoryTests {
 
 
 		SQLErrorCodes sec2 = secf.getErrorCodes(dataSource);
-		assertSame("Cached per DataSource", sec2, sec);
+		assertThat((Object) sec).as("Cached per DataSource").isSameAs(sec2);
 
 		verify(connection).close();
 		return sec;

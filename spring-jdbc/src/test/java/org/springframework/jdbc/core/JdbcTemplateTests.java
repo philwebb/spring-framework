@@ -55,7 +55,6 @@ import org.springframework.util.StringUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -272,7 +271,7 @@ public class JdbcTemplateTests {
 			@Override
 			public String doInConnection(Connection con) {
 				assertThat(con instanceof ConnectionProxy).isTrue();
-				assertSame(JdbcTemplateTests.this.connection, ((ConnectionProxy) con).getTargetConnection());
+				assertThat((Object) ((ConnectionProxy) con).getTargetConnection()).isSameAs(JdbcTemplateTests.this.connection);
 				return "test";
 			}
 		});

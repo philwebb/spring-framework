@@ -33,7 +33,6 @@ import org.springframework.messaging.MessageHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -181,7 +180,7 @@ public class ExecutorSubscribableChannelTests {
 			this.channel.send(this.message);
 		}
 		catch (MessageDeliveryException actual) {
-			assertSame(expected, actual.getCause());
+			assertThat((Object) actual.getCause()).isSameAs(expected);
 		}
 		verify(this.handler).handleMessage(this.message);
 		assertThat(interceptor.getCounter().get()).isEqualTo(1);

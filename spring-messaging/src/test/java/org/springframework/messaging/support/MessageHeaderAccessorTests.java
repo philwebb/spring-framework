@@ -33,7 +33,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link MessageHeaderAccessor}.
@@ -197,7 +196,7 @@ public class MessageHeaderAccessorTests {
 		accessor.setHeader("foo", "baz");
 
 		assertThat(headers.get("foo")).isEqualTo("baz");
-		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
+		assertThat(MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class)).isSameAs(accessor);
 	}
 
 	@Test
@@ -216,14 +215,14 @@ public class MessageHeaderAccessorTests {
 			.withMessageContaining("Already immutable");
 
 		assertThat(headers.get("foo")).isEqualTo("bar");
-		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
+		assertThat(MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class)).isSameAs(accessor);
 	}
 
 	@Test
 	public void getAccessor() {
 		MessageHeaderAccessor expected = new MessageHeaderAccessor();
 		Message<?> message = MessageBuilder.createMessage("payload", expected.getMessageHeaders());
-		assertSame(expected, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
+		assertThat(MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class)).isSameAs(expected);
 	}
 
 	@Test
@@ -235,7 +234,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertThat(actual).isNotNull();
 		assertThat(actual.isMutable()).isTrue();
-		assertSame(expected, actual);
+		assertThat((Object) actual).isSameAs(expected);
 	}
 
 	@Test
@@ -276,7 +275,7 @@ public class MessageHeaderAccessorTests {
 		final UUID id = new UUID(0L, 23L);
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor();
 		accessor.setIdGenerator(() -> id);
-		assertSame(id, accessor.getMessageHeaders().getId());
+		assertThat((Object) accessor.getMessageHeaders().getId()).isSameAs(id);
 	}
 
 	@Test
@@ -302,7 +301,7 @@ public class MessageHeaderAccessorTests {
 		accessor.setEnableTimestamp(true);
 		accessor.setImmutable();
 
-		assertSame(id, accessor.getMessageHeaders().getId());
+		assertThat((Object) accessor.getMessageHeaders().getId()).isSameAs(id);
 		assertThat(headers.getTimestamp()).isNotNull();
 	}
 

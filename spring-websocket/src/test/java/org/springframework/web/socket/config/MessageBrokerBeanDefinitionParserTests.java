@@ -94,7 +94,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link MessageBrokerBeanDefinitionParser}.
@@ -143,7 +142,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertThat(wsHandler).isInstanceOf(TestWebSocketHandlerDecorator.class);
 		wsHandler = ((TestWebSocketHandlerDecorator) wsHandler).getDelegate();
 		assertThat(wsHandler).isInstanceOf(SubProtocolWebSocketHandler.class);
-		assertSame(wsHandler, this.appContext.getBean(MessageBrokerBeanDefinitionParser.WEB_SOCKET_HANDLER_BEAN_NAME));
+		assertThat(this.appContext.getBean(MessageBrokerBeanDefinitionParser.WEB_SOCKET_HANDLER_BEAN_NAME)).isSameAs(wsHandler);
 
 		SubProtocolWebSocketHandler subProtocolWsHandler = (SubProtocolWebSocketHandler) wsHandler;
 		assertThat((Object) subProtocolWsHandler.getSubProtocols()).isEqualTo(Arrays.asList("v10.stomp", "v11.stomp", "v12.stomp"));
@@ -293,13 +292,13 @@ public class MessageBrokerBeanDefinitionParserTests {
 		UserDestinationMessageHandler userDestHandler = this.appContext.getBean(UserDestinationMessageHandler.class);
 		assertThat((Object) userDestHandler.getBroadcastDestination()).isEqualTo(destination);
 		assertThat(messageBroker.getSystemSubscriptions()).isNotNull();
-		assertSame(userDestHandler, messageBroker.getSystemSubscriptions().get(destination));
+		assertThat((Object) messageBroker.getSystemSubscriptions().get(destination)).isSameAs(userDestHandler);
 
 		destination = "/topic/simp-user-registry";
 		UserRegistryMessageHandler userRegistryHandler = this.appContext.getBean(UserRegistryMessageHandler.class);
 		assertThat((Object) userRegistryHandler.getBroadcastDestination()).isEqualTo(destination);
 		assertThat(messageBroker.getSystemSubscriptions()).isNotNull();
-		assertSame(userRegistryHandler, messageBroker.getSystemSubscriptions().get(destination));
+		assertThat((Object) messageBroker.getSystemSubscriptions().get(destination)).isSameAs(userRegistryHandler);
 
 		SimpUserRegistry userRegistry = this.appContext.getBean(SimpUserRegistry.class);
 		assertThat((Object) userRegistry.getClass()).isEqualTo(MultiServerUserRegistry.class);
@@ -367,7 +366,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		Validator validator = annotationMethodMessageHandler.getValidator();
 		assertThat(validator).isNotNull();
-		assertSame(this.appContext.getBean("myValidator"), validator);
+		assertThat((Object) validator).isSameAs(this.appContext.getBean("myValidator"));
 		assertThat(validator).isInstanceOf(TestValidator.class);
 
 		List<Class<? extends MessageHandler>> subscriberTypes = Arrays.asList(SimpAnnotationMethodMessageHandler.class,

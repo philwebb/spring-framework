@@ -57,7 +57,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link GenericConversionService}.
@@ -250,7 +249,7 @@ public class GenericConversionServiceTests {
 		raw.add("one");
 		raw.add("two");
 		Object converted = conversionService.convert(raw, Iterable.class);
-		assertSame(raw, converted);
+		assertThat(converted).isSameAs(raw);
 	}
 
 	@Test
@@ -259,7 +258,7 @@ public class GenericConversionServiceTests {
 		raw.add("one");
 		raw.add("two");
 		Object converted = conversionService.convert(raw, Object.class);
-		assertSame(raw, converted);
+		assertThat(converted).isSameAs(raw);
 	}
 
 	@Test
@@ -267,7 +266,7 @@ public class GenericConversionServiceTests {
 		Map<Object, Object> raw = new HashMap<>();
 		raw.put("key", "value");
 		Object converted = conversionService.convert(raw, Object.class);
-		assertSame(raw, converted);
+		assertThat(converted).isSameAs(raw);
 	}
 
 	@Test
@@ -328,21 +327,21 @@ public class GenericConversionServiceTests {
 	public void testStringToString() {
 		String value = "myValue";
 		String result = conversionService.convert(value, String.class);
-		assertSame(value, result);
+		assertThat((Object) result).isSameAs(value);
 	}
 
 	@Test
 	public void testStringToObject() {
 		String value = "myValue";
 		Object result = conversionService.convert(value, Object.class);
-		assertSame(value, result);
+		assertThat(result).isSameAs(value);
 	}
 
 	@Test
 	public void testIgnoreCopyConstructor() {
 		WithCopyConstructor value = new WithCopyConstructor();
 		Object result = conversionService.convert(value, WithCopyConstructor.class);
-		assertSame(value, result);
+		assertThat(result).isSameAs(value);
 	}
 
 	@Test
@@ -532,7 +531,7 @@ public class GenericConversionServiceTests {
 		// SPR-9566
 		byte[] byteArray = new byte[] { 1, 2, 3 };
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
-		assertSame(byteArray, converted);
+		assertThat((Object) converted).isSameAs(byteArray);
 	}
 
 	@Test

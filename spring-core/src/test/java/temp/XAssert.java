@@ -568,34 +568,7 @@ public class XAssert  {
         fail(formatted + "expected null, but was:<" + actual + ">");
     }
 
-    /**
-     * Asserts that two objects refer to the same object. If they are not, an
-     * {@link AssertionError} is thrown with the given message.
-     *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     * okay)
-     * @param expected the expected object
-     * @param actual the object to compare to <code>expected</code>
-     */
-    public static void assertSame(String message, Object expected, Object actual) {
-        if (expected == actual) {
-            return;
-        }
-        failNotSame(message, expected, actual);
-    }
-
-    /**
-     * Asserts that two objects refer to the same object. If they are not the
-     * same, an {@link AssertionError} without a message is thrown.
-     *
-     * @param expected the expected object
-     * @param actual the object to compare to <code>expected</code>
-     */
-    public static void assertSame(Object expected, Object actual) {
-        assertSame(null, expected, actual);
-    }
-
-    /**
+	/**
      * Asserts that two objects do not refer to the same object. If they do
      * refer to the same object, an {@link AssertionError} is thrown with the
      * given message.

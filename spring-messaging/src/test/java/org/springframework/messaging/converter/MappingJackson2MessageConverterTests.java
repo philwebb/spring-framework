@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link MappingJackson2MessageConverter}.
@@ -119,7 +118,7 @@ public class MappingJackson2MessageConverterTests {
 		MyBean myBean = new MyBean();
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
 		Message<?> message = MessageBuilder.withPayload(myBean).build();
-		assertSame(myBean, converter.fromMessage(message, MyBean.class));
+		assertThat(converter.fromMessage(message, MyBean.class)).isSameAs(myBean);
 	}
 
 	@Test

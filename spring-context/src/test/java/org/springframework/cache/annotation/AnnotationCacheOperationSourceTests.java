@@ -36,7 +36,6 @@ import org.springframework.core.annotation.AliasFor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertSame;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -252,7 +251,7 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void cacheAnnotationOverride() {
 		Collection<CacheOperation> ops = getOps(InterfaceCacheConfig.class, "interfaceCacheableOverride");
-		assertSame(1, ops.size());
+		assertThat((Object) ops.size()).isSameAs(1);
 		CacheOperation cacheOperation = ops.iterator().next();
 		assertThat(cacheOperation instanceof CacheableOperation).isTrue();
 	}
