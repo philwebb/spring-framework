@@ -195,26 +195,26 @@ public class XmlBeanFactoryTests {
 		TestBean hasInnerBeans = (TestBean) xbf.getBean("hasInnerBeans");
 		assertEquals(5, hasInnerBeans.getAge());
 		TestBean inner1 = (TestBean) hasInnerBeans.getSpouse();
-		assertNotNull(inner1);
+		assertThat(inner1).isNotNull();
 		assertEquals("innerBean#1", inner1.getBeanName());
 		assertEquals("inner1", inner1.getName());
 		assertEquals(6, inner1.getAge());
 
-		assertNotNull(hasInnerBeans.getFriends());
+		assertThat(hasInnerBeans.getFriends()).isNotNull();
 		Object[] friends = hasInnerBeans.getFriends().toArray();
 		assertEquals(3, friends.length);
 		DerivedTestBean inner2 = (DerivedTestBean) friends[0];
 		assertEquals("inner2", inner2.getName());
 		assertTrue(inner2.getBeanName().startsWith(DerivedTestBean.class.getName()));
 		assertFalse(xbf.containsBean("innerBean#1"));
-		assertNotNull(inner2);
+		assertThat(inner2).isNotNull();
 		assertEquals(7, inner2.getAge());
 		TestBean innerFactory = (TestBean) friends[1];
 		assertEquals(DummyFactory.SINGLETON_NAME, innerFactory.getName());
 		TestBean inner5 = (TestBean) friends[2];
 		assertEquals("innerBean#2", inner5.getBeanName());
 
-		assertNotNull(hasInnerBeans.getSomeMap());
+		assertThat(hasInnerBeans.getSomeMap()).isNotNull();
 		assertEquals(2, hasInnerBeans.getSomeMap().size());
 		TestBean inner3 = (TestBean) hasInnerBeans.getSomeMap().get("someKey");
 		assertEquals("Jenny", inner3.getName());
@@ -225,21 +225,21 @@ public class XmlBeanFactoryTests {
 
 		TestBean hasInnerBeansForConstructor = (TestBean) xbf.getBean("hasInnerBeansForConstructor");
 		TestBean innerForConstructor = (TestBean) hasInnerBeansForConstructor.getSpouse();
-		assertNotNull(innerForConstructor);
+		assertThat(innerForConstructor).isNotNull();
 		assertEquals("innerBean#3", innerForConstructor.getBeanName());
 		assertEquals("inner1", innerForConstructor.getName());
 		assertEquals(6, innerForConstructor.getAge());
 
 		hasInnerBeansForConstructor = (TestBean) xbf.getBean("hasInnerBeansAsPrototype");
 		innerForConstructor = (TestBean) hasInnerBeansForConstructor.getSpouse();
-		assertNotNull(innerForConstructor);
+		assertThat(innerForConstructor).isNotNull();
 		assertEquals("innerBean", innerForConstructor.getBeanName());
 		assertEquals("inner1", innerForConstructor.getName());
 		assertEquals(6, innerForConstructor.getAge());
 
 		hasInnerBeansForConstructor = (TestBean) xbf.getBean("hasInnerBeansAsPrototype");
 		innerForConstructor = (TestBean) hasInnerBeansForConstructor.getSpouse();
-		assertNotNull(innerForConstructor);
+		assertThat(innerForConstructor).isNotNull();
 		assertEquals("innerBean", innerForConstructor.getBeanName());
 		assertEquals("inner1", innerForConstructor.getName());
 		assertEquals(6, innerForConstructor.getAge());
@@ -266,18 +266,18 @@ public class XmlBeanFactoryTests {
 		TestBean hasInnerBeans = (TestBean) xbf.getBean("hasInnerBeansWithoutDestroy");
 		assertEquals(5, hasInnerBeans.getAge());
 		TestBean inner1 = (TestBean) hasInnerBeans.getSpouse();
-		assertNotNull(inner1);
+		assertThat(inner1).isNotNull();
 		assertTrue(inner1.getBeanName().startsWith("innerBean"));
 		assertEquals("inner1", inner1.getName());
 		assertEquals(6, inner1.getAge());
 
-		assertNotNull(hasInnerBeans.getFriends());
+		assertThat(hasInnerBeans.getFriends()).isNotNull();
 		Object[] friends = hasInnerBeans.getFriends().toArray();
 		assertEquals(3, friends.length);
 		DerivedTestBean inner2 = (DerivedTestBean) friends[0];
 		assertEquals("inner2", inner2.getName());
 		assertTrue(inner2.getBeanName().startsWith(DerivedTestBean.class.getName()));
-		assertNotNull(inner2);
+		assertThat(inner2).isNotNull();
 		assertEquals(7, inner2.getAge());
 		TestBean innerFactory = (TestBean) friends[1];
 		assertEquals(DummyFactory.SINGLETON_NAME, innerFactory.getName());
@@ -406,7 +406,7 @@ public class XmlBeanFactoryTests {
 
 		TestBean david = (TestBean) xbf.getBean("magicDavid");
 		// the parent bean is autowiring
-		assertNotNull(david.getSpouse());
+		assertThat(david.getSpouse()).isNotNull();
 
 		TestBean derivedDavid = (TestBean) xbf.getBean("magicDavidDerived");
 		// this fails while it inherits from the child bean
@@ -828,12 +828,12 @@ public class XmlBeanFactoryTests {
 
 		DependenciesBean rod1 = (DependenciesBean) xbf.getBean("rod1");
 		// should have been autowired
-		assertNotNull(rod1.getSpouse());
+		assertThat(rod1.getSpouse()).isNotNull();
 		assertTrue(rod1.getSpouse().getName().equals("Kerry"));
 
 		DependenciesBean rod2 = (DependenciesBean) xbf.getBean("rod2");
 		// should have been autowired
-		assertNotNull(rod2.getSpouse());
+		assertThat(rod2.getSpouse()).isNotNull();
 		assertTrue(rod2.getSpouse().getName().equals("Kerry"));
 	}
 

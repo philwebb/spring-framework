@@ -235,7 +235,7 @@ public class DispatcherServletTests {
 		complexDispatcherServlet.service(multipartRequest, response);
 		multipartResolver.cleanupMultipart(multipartRequest);
 		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
-		assertNotNull(request.getAttribute("cleanedUp"));
+		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
 	@Test
@@ -251,7 +251,7 @@ public class DispatcherServletTests {
 		complexDispatcherServlet.service(new HttpServletRequestWrapper(multipartRequest), response);
 		multipartResolver.cleanupMultipart(multipartRequest);
 		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
-		assertNotNull(request.getAttribute("cleanedUp"));
+		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
 	@Test
@@ -722,7 +722,7 @@ public class DispatcherServletTests {
 		assertSame(servletContext, contextBean.getServletContext());
 		assertSame(servlet.getServletConfig(), configBean.getServletConfig());
 		MultipartResolver multipartResolver = servlet.getMultipartResolver();
-		assertNotNull(multipartResolver);
+		assertThat(multipartResolver).isNotNull();
 
 		servlet.refresh();
 
@@ -753,7 +753,7 @@ public class DispatcherServletTests {
 		assertSame(servletContext, contextBean.getServletContext());
 		assertSame(servlet.getServletConfig(), configBean.getServletConfig());
 		MultipartResolver multipartResolver = servlet.getMultipartResolver();
-		assertNotNull(multipartResolver);
+		assertThat(multipartResolver).isNotNull();
 
 		((ConfigurableApplicationContext) servlet.getWebApplicationContext()).refresh();
 

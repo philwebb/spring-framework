@@ -64,7 +64,7 @@ public class WebRequestDataBinderTests {
 		request.addParameter("spouse.name", "test");
 		binder.bind(new ServletWebRequest(request));
 
-		assertNotNull(tb.getSpouse());
+		assertThat(tb.getSpouse()).isNotNull();
 		assertEquals("test", tb.getSpouse().getName());
 	}
 
@@ -79,7 +79,7 @@ public class WebRequestDataBinderTests {
 		request.addParameter("concreteSpouse.name", "test");
 		binder.bind(new ServletWebRequest(request));
 
-		assertNotNull(tb.getSpouse());
+		assertThat(tb.getSpouse()).isNotNull();
 		assertEquals("test", tb.getSpouse().getName());
 	}
 

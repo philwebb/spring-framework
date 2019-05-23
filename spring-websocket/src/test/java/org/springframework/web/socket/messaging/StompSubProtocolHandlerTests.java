@@ -307,13 +307,13 @@ public class StompSubProtocolHandlerTests {
 
 		verify(this.channel).send(this.messageCaptor.capture());
 		Message<?> actual = this.messageCaptor.getValue();
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 
 		assertEquals("s1", SimpMessageHeaderAccessor.getSessionId(actual.getHeaders()));
-		assertNotNull(SimpMessageHeaderAccessor.getSessionAttributes(actual.getHeaders()));
-		assertNotNull(SimpMessageHeaderAccessor.getUser(actual.getHeaders()));
+		assertThat(SimpMessageHeaderAccessor.getSessionAttributes(actual.getHeaders())).isNotNull();
+		assertThat(SimpMessageHeaderAccessor.getUser(actual.getHeaders())).isNotNull();
 		assertEquals("joe", SimpMessageHeaderAccessor.getUser(actual.getHeaders()).getName());
-		assertNotNull(SimpMessageHeaderAccessor.getHeartbeat(actual.getHeaders()));
+		assertThat(SimpMessageHeaderAccessor.getHeartbeat(actual.getHeaders())).isNotNull();
 		assertArrayEquals(new long[] {10000, 10000}, SimpMessageHeaderAccessor.getHeartbeat(actual.getHeaders()));
 
 		StompHeaderAccessor stompAccessor = StompHeaderAccessor.wrap(actual);
@@ -343,7 +343,7 @@ public class StompSubProtocolHandlerTests {
 
 		TextMessage message = StompTextMessageBuilder.create(StompCommand.CONNECT).build();
 		handler.handleMessageFromClient(this.session, message, channel);
-		assertNotNull(mutable.get());
+		assertThat(mutable.get()).isNotNull();
 		assertTrue(mutable.get());
 	}
 
@@ -364,7 +364,7 @@ public class StompSubProtocolHandlerTests {
 
 		TextMessage message = StompTextMessageBuilder.create(StompCommand.CONNECT).build();
 		handler.handleMessageFromClient(this.session, message, channel);
-		assertNotNull(mutable.get());
+		assertThat(mutable.get()).isNotNull();
 		assertFalse(mutable.get());
 	}
 
@@ -386,7 +386,7 @@ public class StompSubProtocolHandlerTests {
 		assertEquals(1, messageHandler.getMessages().size());
 		Message<?> message = messageHandler.getMessages().get(0);
 		Principal user = SimpMessageHeaderAccessor.getUser(message.getHeaders());
-		assertNotNull(user);
+		assertThat(user).isNotNull();
 		assertEquals("__pete__@gmail.com", user.getName());
 	}
 
@@ -456,7 +456,7 @@ public class StompSubProtocolHandlerTests {
 
 		verify(this.channel).send(this.messageCaptor.capture());
 		Message<?> actual = this.messageCaptor.getValue();
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertEquals(StompCommand.CONNECT, StompHeaderAccessor.wrap(actual).getCommand());
 		reset(this.channel);
 
@@ -472,7 +472,7 @@ public class StompSubProtocolHandlerTests {
 
 		verify(this.channel).send(this.messageCaptor.capture());
 		actual = this.messageCaptor.getValue();
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(actual);
 		assertEquals(StompCommand.DISCONNECT, accessor.getCommand());
 		assertEquals("s1", accessor.getSessionId());

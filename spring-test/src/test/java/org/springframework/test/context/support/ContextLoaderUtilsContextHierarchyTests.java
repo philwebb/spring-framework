@@ -91,7 +91,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		assertEquals(1, hierarchyAttributes.size());
 
 		List<ContextConfigurationAttributes> configAttributesList = hierarchyAttributes.get(0);
-		assertNotNull(configAttributesList);
+		assertThat(configAttributesList).isNotNull();
 		assertEquals(1, configAttributesList.size());
 		debugConfigAttributes(configAttributesList);
 		assertAttributes(configAttributesList.get(0), testClass, new String[] { "A.xml" }, EMPTY_CLASS_ARRAY,
@@ -105,7 +105,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		assertEquals(1, hierarchyAttributes.size());
 
 		List<ContextConfigurationAttributes> configAttributesList = hierarchyAttributes.get(0);
-		assertNotNull(configAttributesList);
+		assertThat(configAttributesList).isNotNull();
 		assertEquals(3, configAttributesList.size());
 		debugConfigAttributes(configAttributesList);
 		assertAttributes(configAttributesList.get(0), testClass, new String[] { "A.xml" }, EMPTY_CLASS_ARRAY,

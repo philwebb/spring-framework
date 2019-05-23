@@ -280,7 +280,7 @@ public class ValidatorFactoryTests {
 		validator.validate(listContainer, errors);
 
 		FieldError fieldError = errors.getFieldError("list[1]");
-		assertNotNull(fieldError);
+		assertThat(fieldError).isNotNull();
 		assertEquals("X", fieldError.getRejectedValue());
 		assertEquals("X", errors.getFieldValue("list[1]"));
 	}
@@ -377,7 +377,7 @@ public class ValidatorFactoryTests {
 		@Override
 		public boolean isValid(ValidPerson value, ConstraintValidatorContext context) {
 			if (value.expectsAutowiredValidator) {
-				assertNotNull(this.environment);
+				assertThat(this.environment).isNotNull();
 			}
 			boolean valid = (value.name == null || !value.address.street.contains(value.name));
 			if (!valid && "Phil".equals(value.name)) {

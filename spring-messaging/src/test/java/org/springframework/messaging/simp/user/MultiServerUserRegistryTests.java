@@ -89,11 +89,11 @@ public class MultiServerUserRegistryTests {
 
 		assertEquals(1, this.registry.getUserCount());
 		SimpUser user = this.registry.getUser("joe");
-		assertNotNull(user);
+		assertThat(user).isNotNull();
 		assertTrue(user.hasSessions());
 		assertEquals(1, user.getSessions().size());
 		SimpSession session = user.getSession("remote-sess");
-		assertNotNull(session);
+		assertThat(session).isNotNull();
 		assertEquals("remote-sess", session.getId());
 		assertSame(user, session.getUser());
 		assertEquals(1, session.getSubscriptions().size());

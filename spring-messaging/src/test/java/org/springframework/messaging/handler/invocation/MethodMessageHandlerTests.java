@@ -86,7 +86,7 @@ public class MethodMessageHandlerTests {
 
 		Map<String, HandlerMethod> handlerMethods = this.messageHandler.getHandlerMethods();
 
-		assertNotNull(handlerMethods);
+		assertThat(handlerMethods).isNotNull();
 		assertThat(handlerMethods).hasSize(3);
 	}
 
@@ -121,7 +121,7 @@ public class MethodMessageHandlerTests {
 		this.messageHandler.handleMessage(toDestination("/test/handlerArgumentResolver"));
 
 		assertEquals("handlerArgumentResolver", this.testController.method);
-		assertNotNull(this.testController.arguments.get("message"));
+		assertThat(this.testController.arguments.get("message")).isNotNull();
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class MethodMessageHandlerTests {
 		this.messageHandler.handleMessage(toDestination("/test/handlerThrowsExc"));
 
 		assertEquals("illegalStateException", this.testController.method);
-		assertNotNull(this.testController.arguments.get("exception"));
+		assertThat(this.testController.arguments.get("exception")).isNotNull();
 	}
 
 	private Message<?> toDestination(String destination) {

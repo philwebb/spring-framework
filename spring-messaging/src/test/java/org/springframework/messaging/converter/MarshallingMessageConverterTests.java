@@ -62,7 +62,7 @@ public class MarshallingMessageConverterTests {
 		Message<?> message = MessageBuilder.withPayload(payload.getBytes(StandardCharsets.UTF_8)).build();
 		MyBean actual = (MyBean) this.converter.fromMessage(message, MyBean.class);
 
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertEquals("Foo", actual.getName());
 	}
 
@@ -88,7 +88,7 @@ public class MarshallingMessageConverterTests {
 		payload.setName("Foo");
 
 		Message<?> message = this.converter.toMessage(payload, null);
-		assertNotNull(message);
+		assertThat(message).isNotNull();
 		String actual = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
 
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));

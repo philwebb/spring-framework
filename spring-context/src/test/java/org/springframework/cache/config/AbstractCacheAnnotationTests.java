@@ -319,7 +319,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertSame(r1, service.name(key));
 		Cache cache = this.cm.getCache("testCache");
 		// assert the method name is used
-		assertNotNull(cache.get(keyName));
+		assertThat(cache.get(keyName)).isNotNull();
 	}
 
 	public void testRootVars(CacheableService<?> service) {
@@ -329,7 +329,7 @@ public abstract class AbstractCacheAnnotationTests {
 		Cache cache = this.cm.getCache("testCache");
 		// assert the method name is used
 		String expectedKey = "rootVarsrootVars" + AopProxyUtils.ultimateTargetClass(service) + service;
-		assertNotNull(cache.get(expectedKey));
+		assertThat(cache.get(expectedKey)).isNotNull();
 	}
 
 	public void testCheckedThrowable(CacheableService<?> service) throws Exception {
@@ -681,7 +681,7 @@ public abstract class AbstractCacheAnnotationTests {
 		Cache cache = this.cm.getCache("testCache");
 		// Checks that the custom keyGenerator was used
 		Object expectedKey = SomeCustomKeyGenerator.generateKey("customKeyGenerator", param);
-		assertNotNull(cache.get(expectedKey));
+		assertThat(cache.get(expectedKey)).isNotNull();
 	}
 
 	@Test
@@ -699,7 +699,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertSame(r1, this.cs.customCacheManager(key));
 
 		Cache cache = customCm.getCache("testCache");
-		assertNotNull(cache.get(key));
+		assertThat(cache.get(key)).isNotNull();
 	}
 
 	@Test

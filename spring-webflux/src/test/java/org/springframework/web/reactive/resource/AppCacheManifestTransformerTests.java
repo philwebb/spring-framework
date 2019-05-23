@@ -99,7 +99,7 @@ public class AppCacheManifestTransformerTests {
 		Resource resource = getResource("test.appcache");
 		Resource actual = this.transformer.transform(exchange, resource, this.chain).block(TIMEOUT);
 
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		byte[] bytes = FileCopyUtils.copyToByteArray(actual.getInputStream());
 		String content = new String(bytes, "UTF-8");
 

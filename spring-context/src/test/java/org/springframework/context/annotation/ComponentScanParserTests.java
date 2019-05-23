@@ -107,7 +107,7 @@ public class ComponentScanParserTests {
 	public void customAnnotationUsedForBothComponentScanAndQualifier() {
 		ClassPathXmlApplicationContext context = loadContext("customAnnotationUsedForBothComponentScanAndQualifierTests.xml");
 		KustomAnnotationAutowiredBean testBean = (KustomAnnotationAutowiredBean) context.getBean("testBean");
-		assertNotNull(testBean.getDependency());
+		assertThat(testBean.getDependency()).isNotNull();
 		context.close();
 	}
 
@@ -115,7 +115,7 @@ public class ComponentScanParserTests {
 	public void customTypeFilter() {
 		ClassPathXmlApplicationContext context = loadContext("customTypeFilterTests.xml");
 		KustomAnnotationAutowiredBean testBean = (KustomAnnotationAutowiredBean) context.getBean("testBean");
-		assertNotNull(testBean.getDependency());
+		assertThat(testBean.getDependency()).isNotNull();
 		context.close();
 	}
 

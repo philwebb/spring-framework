@@ -153,7 +153,7 @@ public class MappingJackson2MessageConverterTests {
 		MethodParameter param = new MethodParameter(method, 0);
 		Object actual = converter.fromMessage(message, List.class, param);
 
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertEquals(Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L), actual);
 	}
 

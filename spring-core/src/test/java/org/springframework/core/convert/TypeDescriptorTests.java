@@ -169,7 +169,7 @@ public class TypeDescriptorTests {
 		TypeDescriptor t1 = new TypeDescriptor(new MethodParameter(getClass().getMethod("testAnnotatedMethod", String.class), 0));
 		assertEquals(String.class, t1.getType());
 		assertEquals(1, t1.getAnnotations().length);
-		assertNotNull(t1.getAnnotation(ParameterAnnotation.class));
+		assertThat(t1.getAnnotation(ParameterAnnotation.class)).isNotNull();
 		assertTrue(t1.hasAnnotation(ParameterAnnotation.class));
 		assertEquals(123, t1.getAnnotation(ParameterAnnotation.class).value());
 	}
@@ -178,7 +178,7 @@ public class TypeDescriptorTests {
 	public void getAnnotationsReturnsClonedArray() throws Exception {
 		TypeDescriptor t = new TypeDescriptor(new MethodParameter(getClass().getMethod("testAnnotatedMethod", String.class), 0));
 		t.getAnnotations()[0] = null;
-		assertNotNull(t.getAnnotations()[0]);
+		assertThat(t.getAnnotations()[0]).isNotNull();
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class TypeDescriptorTests {
 		TypeDescriptor desc = new TypeDescriptor(property);
 		assertEquals(List.class, desc.getType());
 		assertEquals(Integer.class, desc.getElementTypeDescriptor().getType());
-		assertNotNull(desc.getAnnotation(MethodAnnotation1.class));
+		assertThat(desc.getAnnotation(MethodAnnotation1.class)).isNotNull();
 		assertTrue(desc.hasAnnotation(MethodAnnotation1.class));
 	}
 
@@ -238,9 +238,9 @@ public class TypeDescriptorTests {
 		assertEquals(Map.class, desc.getType());
 		assertEquals(Integer.class, desc.getMapKeyTypeDescriptor().getElementTypeDescriptor().getType());
 		assertEquals(Long.class, desc.getMapValueTypeDescriptor().getElementTypeDescriptor().getType());
-		assertNotNull(desc.getAnnotation(MethodAnnotation1.class));
-		assertNotNull(desc.getAnnotation(MethodAnnotation2.class));
-		assertNotNull(desc.getAnnotation(MethodAnnotation3.class));
+		assertThat(desc.getAnnotation(MethodAnnotation1.class)).isNotNull();
+		assertThat(desc.getAnnotation(MethodAnnotation2.class)).isNotNull();
+		assertThat(desc.getAnnotation(MethodAnnotation3.class)).isNotNull();
 	}
 
 	@Test
@@ -343,7 +343,7 @@ public class TypeDescriptorTests {
 	public void fieldAnnotated() throws Exception {
 		TypeDescriptor typeDescriptor = new TypeDescriptor(getClass().getField("fieldAnnotated"));
 		assertEquals(1, typeDescriptor.getAnnotations().length);
-		assertNotNull(typeDescriptor.getAnnotation(FieldAnnotation.class));
+		assertThat(typeDescriptor.getAnnotation(FieldAnnotation.class)).isNotNull();
 	}
 
 	@Test
@@ -551,7 +551,7 @@ public class TypeDescriptorTests {
 		List<Integer> value = new ArrayList<>(3);
 		desc = desc.elementTypeDescriptor(value);
 		assertEquals(Integer.class, desc.getElementTypeDescriptor().getType());
-		assertNotNull(desc.getAnnotation(FieldAnnotation.class));
+		assertThat(desc.getAnnotation(FieldAnnotation.class)).isNotNull();
 	}
 
 	@Test
@@ -569,7 +569,7 @@ public class TypeDescriptorTests {
 		List<Integer> value = new ArrayList<>(3);
 		desc = desc.getMapKeyTypeDescriptor(value);
 		assertEquals(Integer.class, desc.getElementTypeDescriptor().getType());
-		assertNotNull(desc.getAnnotation(FieldAnnotation.class));
+		assertThat(desc.getAnnotation(FieldAnnotation.class)).isNotNull();
 	}
 
 	@Test
@@ -587,7 +587,7 @@ public class TypeDescriptorTests {
 		List<Integer> value = new ArrayList<>(3);
 		desc = desc.getMapValueTypeDescriptor(value);
 		assertEquals(Integer.class, desc.getElementTypeDescriptor().getType());
-		assertNotNull(desc.getAnnotation(FieldAnnotation.class));
+		assertThat(desc.getAnnotation(FieldAnnotation.class)).isNotNull();
 	}
 
 	@Test

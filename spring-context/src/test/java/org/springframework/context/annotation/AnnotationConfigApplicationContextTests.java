@@ -93,7 +93,7 @@ public class AnnotationConfigApplicationContextTests {
 	public void getBeanByType() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		TestBean testBean = context.getBean(TestBean.class);
-		assertNotNull(testBean);
+		assertThat(testBean).isNotNull();
 		assertThat(testBean.name).isEqualTo("foo");
 	}
 
@@ -128,7 +128,7 @@ public class AnnotationConfigApplicationContextTests {
 
 		// attempt to retrieve the instance by its generated bean name
 		Config configObject = (Config) context.getBean("annotationConfigApplicationContextTests.Config");
-		assertNotNull(configObject);
+		assertThat(configObject).isNotNull();
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class AnnotationConfigApplicationContextTests {
 
 		// attempt to retrieve the instance by its specified name
 		ConfigWithCustomName configObject = (ConfigWithCustomName) context.getBean("customConfigBeanName");
-		assertNotNull(configObject);
+		assertThat(configObject).isNotNull();
 	}
 
 	@Test

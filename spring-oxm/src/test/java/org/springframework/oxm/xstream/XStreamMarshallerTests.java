@@ -364,7 +364,7 @@ public class XStreamMarshallerTests {
 	}
 
 	private static int count(Iterable<Node> nodes) {
-		assertNotNull(nodes);
+		assertThat(nodes).isNotNull();
 		AtomicInteger count = new AtomicInteger();
 		nodes.forEach(n -> count.incrementAndGet());
 		return count.get();

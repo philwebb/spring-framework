@@ -237,7 +237,7 @@ public class MessageHeaderAccessorTests {
 		Message<?> message = MessageBuilder.createMessage("payload", expected.getMessageHeaders());
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(actual.isMutable()).isTrue();
 		assertSame(expected, actual);
 	}
@@ -247,7 +247,7 @@ public class MessageHeaderAccessorTests {
 		Message<?> message = MessageBuilder.withPayload("payload").build();
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(actual.isMutable()).isTrue();
 	}
 
@@ -257,7 +257,7 @@ public class MessageHeaderAccessorTests {
 		Message<?> message = MessageBuilder.createMessage("payload", expected.getMessageHeaders());
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
-		assertNotNull(actual);
+		assertThat(actual).isNotNull();
 		assertThat(actual.isMutable()).isTrue();
 		assertEquals(TestMessageHeaderAccessor.class, actual.getClass());
 	}
@@ -266,7 +266,7 @@ public class MessageHeaderAccessorTests {
 	public void timestampEnabled() {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor();
 		accessor.setEnableTimestamp(true);
-		assertNotNull(accessor.getMessageHeaders().getTimestamp());
+		assertThat(accessor.getMessageHeaders().getTimestamp()).isNotNull();
 	}
 
 	@Test
@@ -286,7 +286,7 @@ public class MessageHeaderAccessorTests {
 	@Test
 	public void idGeneratorDefaultBehavior() {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor();
-		assertNotNull(accessor.getMessageHeaders().getId());
+		assertThat(accessor.getMessageHeaders().getId()).isNotNull();
 	}
 
 
@@ -307,7 +307,7 @@ public class MessageHeaderAccessorTests {
 		accessor.setImmutable();
 
 		assertSame(id, accessor.getMessageHeaders().getId());
-		assertNotNull(headers.getTimestamp());
+		assertThat(headers.getTimestamp()).isNotNull();
 	}
 
 	@Test
@@ -394,7 +394,7 @@ public class MessageHeaderAccessorTests {
 		Message<?> output = (Message<?>) SerializationTestUtils.serializeAndDeserialize(message);
 		assertEquals("test", output.getPayload());
 		assertEquals("bar", output.getHeaders().get("foo"));
-		assertNotNull(output.getHeaders().get(MessageHeaders.CONTENT_TYPE));
+		assertThat(output.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isNotNull();
 	}
 
 

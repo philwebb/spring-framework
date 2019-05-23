@@ -230,7 +230,7 @@ public class DateFormattingTests {
 		// This is a format that cannot be parsed by new Date(String)
 		String string = "2009-06-01T14:23:05.003+00:00";
 		Date date = this.conversionService.convert(string, Date.class);
-		assertNotNull(date);
+		assertThat(date).isNotNull();
 	}
 
 

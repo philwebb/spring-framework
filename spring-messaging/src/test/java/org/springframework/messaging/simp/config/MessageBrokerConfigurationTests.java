@@ -426,7 +426,7 @@ public class MessageBrokerConfigurationTests {
 		assertEquals("a.a", pathMatcher.combine("a", "a"));
 
 		DefaultUserDestinationResolver resolver = context.getBean(DefaultUserDestinationResolver.class);
-		assertNotNull(resolver);
+		assertThat(resolver).isNotNull();
 		assertEquals(false, resolver.isRemoveLeadingSlash());
 	}
 
@@ -462,7 +462,7 @@ public class MessageBrokerConfigurationTests {
 		assertEquals("/topic/simp-user-registry", handler2.getBroadcastDestination());
 
 		StompBrokerRelayMessageHandler relay = context.getBean(StompBrokerRelayMessageHandler.class);
-		assertNotNull(relay.getSystemSubscriptions());
+		assertThat(relay.getSystemSubscriptions()).isNotNull();
 		assertEquals(2, relay.getSystemSubscriptions().size());
 		assertSame(handler1, relay.getSystemSubscriptions().get("/topic/unresolved-user-destination"));
 		assertSame(handler2, relay.getSystemSubscriptions().get("/topic/simp-user-registry"));
@@ -473,7 +473,7 @@ public class MessageBrokerConfigurationTests {
 		ApplicationContext context = loadConfig(SimpleBrokerConfig.class);
 
 		SimpUserRegistry registry = context.getBean(SimpUserRegistry.class);
-		assertNotNull(registry);
+		assertThat(registry).isNotNull();
 		assertNotEquals(MultiServerUserRegistry.class, registry.getClass());
 
 		UserDestinationMessageHandler handler = context.getBean(UserDestinationMessageHandler.class);

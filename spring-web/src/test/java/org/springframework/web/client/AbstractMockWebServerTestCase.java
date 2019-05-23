@@ -163,7 +163,7 @@ public class AbstractMockWebServerTestCase {
 		assertTrue(buffer.readUtf8Line().startsWith("Content-Type: "+contentType));
 		assertTrue(buffer.readUtf8Line().startsWith("Content-Length: "));
 		assertTrue(buffer.readUtf8Line().equals(""));
-		assertNotNull(buffer.readUtf8Line());
+		assertThat(buffer.readUtf8Line()).isNotNull();
 	}
 
 	private MockResponse formRequest(RecordedRequest request) {

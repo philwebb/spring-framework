@@ -383,7 +383,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleRequestPart", String.class, Model.class);
 		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
 
-		assertNotNull(mav);
+		assertThat(mav).isNotNull();
 		assertEquals("content", mav.getModelMap().get("requestPart"));
 	}
 
@@ -395,7 +395,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleAndValidateRequestPart", String.class, Errors.class, Model.class);
 		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
 
-		assertNotNull(mav);
+		assertThat(mav).isNotNull();
 		assertEquals(1, mav.getModelMap().get("error count"));
 	}
 
@@ -495,8 +495,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 					.addAttribute("requestAttribute", requestAttribute)
 					.addAttribute("url", builder.path("/path").build().toUri());
 
-			assertNotNull(request);
-			assertNotNull(response);
+			assertThat(request).isNotNull();
+			assertThat(response).isNotNull();
 
 			return "viewName";
 		}
@@ -534,8 +534,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 					.addAttribute("requestAttribute", requestAttribute)
 					.addAttribute("url", builder.path("/path").build().toUri());
 
-			assertNotNull(request);
-			assertNotNull(response);
+			assertThat(request).isNotNull();
+			assertThat(response).isNotNull();
 
 			return "viewName";
 		}

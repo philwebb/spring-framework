@@ -272,7 +272,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		aop.setConstructorArguments(new Object[] {"Rob Harrop", 22}, new Class<?>[] {String.class, int.class});
 
 		NoArgCtorTestBean proxy = (NoArgCtorTestBean) aop.getProxy();
-		assertNotNull(proxy);
+		assertThat(proxy).isNotNull();
 	}
 
 	@Test

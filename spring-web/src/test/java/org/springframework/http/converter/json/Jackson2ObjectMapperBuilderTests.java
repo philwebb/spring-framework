@@ -116,7 +116,7 @@ public class Jackson2ObjectMapperBuilderTests {
 	@Test
 	public void defaultProperties() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertFalse(objectMapper.isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION));
 		assertFalse(objectMapper.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
 		assertTrue(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_FIELDS));
@@ -132,7 +132,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().autoDetectFields(false)
 				.defaultViewInclusion(true).failOnUnknownProperties(true).failOnEmptyBeans(false)
 				.autoDetectGettersSetters(false).indentOutput(true).build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertTrue(objectMapper.isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION));
 		assertTrue(objectMapper.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
 		assertFalse(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_FIELDS));
@@ -153,7 +153,7 @@ public class Jackson2ObjectMapperBuilderTests {
 						MapperFeature.AUTO_DETECT_GETTERS,
 						MapperFeature.AUTO_DETECT_SETTERS,
 						SerializationFeature.FAIL_ON_EMPTY_BEANS).build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertTrue(objectMapper.isEnabled(MapperFeature.DEFAULT_VIEW_INCLUSION));
 		assertTrue(objectMapper.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
 		assertFalse(objectMapper.isEnabled(MapperFeature.AUTO_DETECT_FIELDS));
@@ -329,7 +329,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		ObjectMapper objectMapper =  builder.build();
 		DemoPojo demoPojo = objectMapper.readValue(DATA, DemoPojo.class);
-		assertNotNull(demoPojo.getOffsetDateTime());
+		assertThat(demoPojo.getOffsetDateTime()).isNotNull();
 	}
 
 	@Test  // gh-22740
@@ -498,14 +498,14 @@ public class Jackson2ObjectMapperBuilderTests {
 	@Test
 	public void xmlMapper() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml().build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertEquals(XmlMapper.class, objectMapper.getClass());
 	}
 
 	@Test  // gh-22428
 	public void xmlMapperAndCustomFactory() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml().factory(new MyXmlFactory()).build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertEquals(XmlMapper.class, objectMapper.getClass());
 		assertEquals(MyXmlFactory.class, objectMapper.getFactory().getClass());
 	}
@@ -523,7 +523,7 @@ public class Jackson2ObjectMapperBuilderTests {
 	@Test  // SPR-13975
 	public void defaultUseWrapper() throws JsonProcessingException {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.xml().defaultUseWrapper(false).build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertEquals(XmlMapper.class, objectMapper.getClass());
 		ListContainer<String> container = new ListContainer<>(Arrays.asList("foo", "bar"));
 		String output = objectMapper.writeValueAsString(container);
@@ -533,21 +533,21 @@ public class Jackson2ObjectMapperBuilderTests {
 	@Test  // SPR-14435
 	public void smile() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.smile().build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertEquals(SmileFactory.class, objectMapper.getFactory().getClass());
 	}
 
 	@Test  // SPR-14435
 	public void cbor() {
 		ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.cbor().build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertEquals(CBORFactory.class, objectMapper.getFactory().getClass());
 	}
 
 	@Test  // SPR-14435
 	public void factory() {
 		ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder().factory(new SmileFactory()).build();
-		assertNotNull(objectMapper);
+		assertThat(objectMapper).isNotNull();
 		assertEquals(SmileFactory.class, objectMapper.getFactory().getClass());
 	}
 

@@ -55,7 +55,7 @@ public class ImportAwareTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ImportingConfig.class);
 		ctx.refresh();
-		assertNotNull(ctx.getBean("importedConfigBean"));
+		assertThat(ctx.getBean("importedConfigBean")).isNotNull();
 
 		ImportedConfig importAwareConfig = ctx.getBean(ImportedConfig.class);
 		AnnotationMetadata importMetadata = importAwareConfig.importMetadata;
@@ -71,7 +71,7 @@ public class ImportAwareTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(IndirectlyImportingConfig.class);
 		ctx.refresh();
-		assertNotNull(ctx.getBean("importedConfigBean"));
+		assertThat(ctx.getBean("importedConfigBean")).isNotNull();
 
 		ImportedConfig importAwareConfig = ctx.getBean(ImportedConfig.class);
 		AnnotationMetadata importMetadata = importAwareConfig.importMetadata;
@@ -87,7 +87,7 @@ public class ImportAwareTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ImportingConfigLite.class);
 		ctx.refresh();
-		assertNotNull(ctx.getBean("importedConfigBean"));
+		assertThat(ctx.getBean("importedConfigBean")).isNotNull();
 
 		ImportedConfigLite importAwareConfig = ctx.getBean(ImportedConfigLite.class);
 		AnnotationMetadata importMetadata = importAwareConfig.importMetadata;
@@ -104,8 +104,8 @@ public class ImportAwareTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ImportingRegistrarConfig.class);
 		ctx.refresh();
-		assertNotNull(ctx.getBean("registrarImportedBean"));
-		assertNotNull(ctx.getBean("otherImportedConfigBean"));
+		assertThat(ctx.getBean("registrarImportedBean")).isNotNull();
+		assertThat(ctx.getBean("otherImportedConfigBean")).isNotNull();
 	}
 
 	@Test
@@ -114,10 +114,10 @@ public class ImportAwareTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ImportingRegistrarConfigWithImport.class);
 		ctx.refresh();
-		assertNotNull(ctx.getBean("registrarImportedBean"));
-		assertNotNull(ctx.getBean("otherImportedConfigBean"));
-		assertNotNull(ctx.getBean("importedConfigBean"));
-		assertNotNull(ctx.getBean(ImportedConfig.class));
+		assertThat(ctx.getBean("registrarImportedBean")).isNotNull();
+		assertThat(ctx.getBean("otherImportedConfigBean")).isNotNull();
+		assertThat(ctx.getBean("importedConfigBean")).isNotNull();
+		assertThat(ctx.getBean(ImportedConfig.class)).isNotNull();
 	}
 
 	@Test

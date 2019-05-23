@@ -155,14 +155,14 @@ public class ObjectUtilsTests {
 	@Test
 	public void toObjectArrayWithNull() {
 		Object[] objects = ObjectUtils.toObjectArray(null);
-		assertNotNull(objects);
+		assertThat(objects).isNotNull();
 		assertEquals(0, objects.length);
 	}
 
 	@Test
 	public void toObjectArrayWithEmptyPrimitiveArray() {
 		Object[] objects = ObjectUtils.toObjectArray(new byte[] {});
-		assertNotNull(objects);
+		assertThat(objects).isNotNull();
 		assertEquals(0, objects.length);
 	}
 

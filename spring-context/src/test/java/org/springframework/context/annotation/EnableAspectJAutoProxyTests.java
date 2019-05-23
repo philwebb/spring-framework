@@ -130,7 +130,7 @@ public class EnableAspectJAutoProxyTests {
 			return new FooServiceImpl() {
 				@Override
 				public String foo(int id) {
-					assertNotNull(AopContext.currentProxy());
+					assertThat(AopContext.currentProxy()).isNotNull();
 					return super.foo(id);
 				}
 				@Override

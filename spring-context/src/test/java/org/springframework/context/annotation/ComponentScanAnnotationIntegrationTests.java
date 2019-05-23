@@ -315,10 +315,10 @@ public class ComponentScanAnnotationIntegrationTests {
 		@Override
 		public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) {
 			((ConfigurableEnvironment) this.environment).addActiveProfile("the-filter-ran");
-			assertNotNull(this.beanFactory);
-			assertNotNull(this.classLoader);
-			assertNotNull(this.resourceLoader);
-			assertNotNull(this.environment);
+			assertThat(this.beanFactory).isNotNull();
+			assertThat(this.classLoader).isNotNull();
+			assertThat(this.resourceLoader).isNotNull();
+			assertThat(this.environment).isNotNull();
 			return false;
 		}
 

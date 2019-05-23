@@ -62,7 +62,7 @@ public class HandshakeWebSocketServiceTests {
 		service.handleRequest(exchange, mock(WebSocketHandler.class)).block();
 
 		HandshakeInfo info = upgradeStrategy.handshakeInfo;
-		assertNotNull(info);
+		assertThat(info).isNotNull();
 
 		Map<String, Object> attributes = info.getAttributes();
 		assertThat(attributes)

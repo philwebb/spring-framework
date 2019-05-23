@@ -465,7 +465,7 @@ public class JodaTimeFormattingTests {
 		// This is a format that cannot be parsed by new Date(String)
 		String string = "2009-10-31T07:00:00.000-05:00";
 		Date date = this.conversionService.convert(string, Date.class);
-		assertNotNull(date);
+		assertThat(date).isNotNull();
 	}
 
 	@Test

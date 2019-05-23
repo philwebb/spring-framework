@@ -92,7 +92,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		Object o = parser.parseExpression("map['a']").getValue(ctx);
 		assertNull(o);
 		o = parser.parseExpression("map").getValue(ctx);
-		assertNotNull(o);
+		assertThat(o).isNotNull();
 
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				parser.parseExpression("map2['a']").getValue(ctx));
@@ -109,7 +109,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		Object o = parser.parseExpression("wibble.bar").getValue(ctx);
 		assertEquals("hello", o);
 		o = parser.parseExpression("wibble").getValue(ctx);
-		assertNotNull(o);
+		assertThat(o).isNotNull();
 
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				parser.parseExpression("wibble2.bar").getValue(ctx));

@@ -109,7 +109,7 @@ public class StompHeaderAccessorTests {
 
 		assertEquals(StompCommand.STOMP, headerAccessor.getCommand());
 		assertEquals(SimpMessageType.CONNECT, headerAccessor.getMessageType());
-		assertNotNull(headerAccessor.getHeader("stompCredentials"));
+		assertThat(headerAccessor.getHeader("stompCredentials")).isNotNull();
 		assertEquals("joe", headerAccessor.getLogin());
 		assertEquals("joe123", headerAccessor.getPasscode());
 		assertThat(headerAccessor.toString()).contains("passcode=[PROTECTED]");
@@ -222,8 +222,8 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.SEND);
 		headerInitializer.initHeaders(headerAccessor);
 
-		assertNotNull(headerAccessor.getMessageHeaders().getId());
-		assertNotNull(headerAccessor.getMessageHeaders().getTimestamp());
+		assertThat(headerAccessor.getMessageHeaders().getId()).isNotNull();
+		assertThat(headerAccessor.getMessageHeaders().getTimestamp()).isNotNull();
 	}
 
 	@Test

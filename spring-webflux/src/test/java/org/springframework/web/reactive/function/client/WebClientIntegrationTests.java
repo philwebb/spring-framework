@@ -210,7 +210,7 @@ public class WebClientIntegrationTests {
 		StepVerifier.create(result)
 				.assertNext(valueContainer -> {
 					Foo foo = valueContainer.getContainerValue();
-					assertNotNull(foo);
+					assertThat(foo).isNotNull();
 					assertEquals("bar", foo.getFooValue());
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
@@ -520,7 +520,7 @@ public class WebClientIntegrationTests {
 					HttpRequest request = ex.getRequest();
 					assertEquals(HttpMethod.GET, request.getMethod());
 					assertEquals(URI.create(this.server.url(path).toString()), request.getURI());
-					assertNotNull(request.getHeaders());
+					assertThat(request.getHeaders()).isNotNull();
 				})
 				.verify(Duration.ofSeconds(3));
 

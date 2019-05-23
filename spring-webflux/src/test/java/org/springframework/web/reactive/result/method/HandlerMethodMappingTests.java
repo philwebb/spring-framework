@@ -134,7 +134,7 @@ public class HandlerMethodMappingTests {
 		this.mapping.registerMapping(key, this.handler, this.method1);
 		Mono<Object> result = this.mapping.getHandler(MockServerWebExchange.from(MockServerHttpRequest.get(key)));
 
-		assertNotNull(result.block());
+		assertThat(result.block()).isNotNull();
 
 		this.mapping.unregisterMapping(key);
 		result = this.mapping.getHandler(MockServerWebExchange.from(MockServerHttpRequest.get(key)));

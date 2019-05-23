@@ -234,7 +234,7 @@ public class ResourceHandlerRegistryTests {
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		UrlResource resource = (UrlResource) handler.getLocations().get(1);
 		assertEquals("file:/tmp", resource.getURL().toString());
-		assertNotNull(handler.getUrlPathHelper());
+		assertThat(handler.getUrlPathHelper()).isNotNull();
 
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
 		PathResourceResolver resolver = (PathResourceResolver) resolvers.get(resolvers.size()-1);

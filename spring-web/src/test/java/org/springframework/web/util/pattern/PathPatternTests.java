@@ -345,17 +345,17 @@ public class PathPatternTests {
 
 		PathPattern.PathRemainingMatchInfo pri = parse("/aaa/{bbb}/c?d/e*f/*/g")
 				.matchStartOfPath(toPathContainer("/aaa/b/ccd/ef/x/g/i"));
-		assertNotNull(pri);
+		assertThat(pri).isNotNull();
 		assertEquals("/i",pri.getPathRemaining().value());
 		assertEquals("b",pri.getUriVariables().get("bbb"));
 
 		pri = parse("/aaa/{bbb}/c?d/e*f/*/g/").matchStartOfPath(toPathContainer("/aaa/b/ccd/ef/x/g/i"));
-		assertNotNull(pri);
+		assertThat(pri).isNotNull();
 		assertEquals("i",pri.getPathRemaining().value());
 		assertEquals("b",pri.getUriVariables().get("bbb"));
 
 		pri = parse("/{aaa}_{bbb}/e*f/{x}/g").matchStartOfPath(toPathContainer("/aa_bb/ef/x/g/i"));
-		assertNotNull(pri);
+		assertThat(pri).isNotNull();
 		assertEquals("/i",pri.getPathRemaining().value());
 		assertEquals("aa",pri.getUriVariables().get("aaa"));
 		assertEquals("bb",pri.getUriVariables().get("bbb"));
@@ -1131,9 +1131,9 @@ public class PathPatternTests {
 		assertNull(result.getMatrixVariables().get("var"));
 
 		result = matchAndExtract("","");
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 		result = matchAndExtract("","/");
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 	}
 
 	private PathPattern.PathMatchInfo matchAndExtract(String pattern, String path) {

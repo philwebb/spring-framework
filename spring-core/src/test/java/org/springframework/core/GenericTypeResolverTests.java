@@ -174,7 +174,7 @@ public class GenericTypeResolverTests {
 	@Test  // SPR-11763
 	public void resolveIncompleteTypeVariables() {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(IdFixingRepository.class, Repository.class);
-		assertNotNull(resolved);
+		assertThat(resolved).isNotNull();
 		assertEquals(2, resolved.length);
 		assertEquals(Object.class, resolved[0]);
 		assertEquals(Long.class, resolved[1]);

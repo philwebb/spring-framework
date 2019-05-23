@@ -211,8 +211,8 @@ public class DefaultStompSessionTests {
 
 		Runnable writeTask = writeTaskCaptor.getValue();
 		Runnable readTask = readTaskCaptor.getValue();
-		assertNotNull(writeTask);
-		assertNotNull(readTask);
+		assertThat(writeTask).isNotNull();
+		assertThat(readTask).isNotNull();
 
 		writeTask.run();
 		StompHeaderAccessor accessor = StompHeaderAccessor.createForHeartbeat();
@@ -383,7 +383,7 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertNotNull(accessor.getReceipt());
+		assertThat(accessor.getReceipt()).isNotNull();
 
 		StompHeaders stompHeaders = new StompHeaders();
 		stompHeaders.setDestination("/topic/foo");
@@ -570,7 +570,7 @@ public class DefaultStompSessionTests {
 		accessor.setLeaveMutable(true);
 		this.session.handleMessage(MessageBuilder.createMessage(new byte[0], accessor.getMessageHeaders()));
 
-		assertNotNull(received.get());
+		assertThat(received.get()).isNotNull();
 		assertTrue(received.get());
 	}
 
@@ -593,7 +593,7 @@ public class DefaultStompSessionTests {
 
 		subscription.addReceiptTask(() -> received.set(true));
 
-		assertNotNull(received.get());
+		assertThat(received.get()).isNotNull();
 		assertTrue(received.get());
 	}
 
@@ -619,7 +619,7 @@ public class DefaultStompSessionTests {
 		ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
 		verify(taskScheduler).schedule(taskCaptor.capture(), (Date) notNull());
 		Runnable scheduledTask = taskCaptor.getValue();
-		assertNotNull(scheduledTask);
+		assertThat(scheduledTask).isNotNull();
 
 		assertNull(notReceived.get());
 

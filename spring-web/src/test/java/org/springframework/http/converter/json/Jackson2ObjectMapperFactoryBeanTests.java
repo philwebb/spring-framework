@@ -248,7 +248,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 	public void simpleSetup() {
 		this.factory.afterPropertiesSet();
 
-		assertNotNull(this.factory.getObject());
+		assertThat(this.factory.getObject()).isNotNull();
 		assertTrue(this.factory.isSingleton());
 		assertEquals(ObjectMapper.class, this.factory.getObjectType());
 	}
@@ -373,7 +373,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.setObjectMapper(new XmlMapper());
 		this.factory.afterPropertiesSet();
 
-		assertNotNull(this.factory.getObject());
+		assertThat(this.factory.getObject()).isNotNull();
 		assertTrue(this.factory.isSingleton());
 		assertEquals(XmlMapper.class, this.factory.getObjectType());
 	}
@@ -383,7 +383,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.setCreateXmlMapper(true);
 		this.factory.afterPropertiesSet();
 
-		assertNotNull(this.factory.getObject());
+		assertThat(this.factory.getObject()).isNotNull();
 		assertTrue(this.factory.isSingleton());
 		assertEquals(XmlMapper.class, this.factory.getObjectType());
 	}
@@ -393,7 +393,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		this.factory.setFactory(new SmileFactory());
 		this.factory.afterPropertiesSet();
 
-		assertNotNull(this.factory.getObject());
+		assertThat(this.factory.getObject()).isNotNull();
 		assertTrue(this.factory.isSingleton());
 		assertEquals(SmileFactory.class, this.factory.getObject().getFactory().getClass());
 	}

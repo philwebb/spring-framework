@@ -208,7 +208,7 @@ public class ExecutorSubscribableChannelTests {
 
 		@Override
 		public Message<?> beforeHandle(Message<?> message, MessageChannel channel, MessageHandler handler) {
-			assertNotNull(message);
+			assertThat(message).isNotNull();
 			counter.incrementAndGet();
 			return message;
 		}

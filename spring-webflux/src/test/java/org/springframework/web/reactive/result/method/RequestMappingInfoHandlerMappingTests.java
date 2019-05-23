@@ -228,7 +228,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		String name = HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE;
 		Map<String, String> uriVariables = (Map<String, String>) exchange.getAttributes().get(name);
 
-		assertNotNull(uriVariables);
+		assertThat(uriVariables).isNotNull();
 		assertEquals("1", uriVariables.get("path1"));
 		assertEquals("2", uriVariables.get("path2"));
 	}
@@ -245,7 +245,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		@SuppressWarnings("unchecked")
 		Map<String, String> uriVariables = (Map<String, String>) exchange.getAttributes().get(name);
 
-		assertNotNull(uriVariables);
+		assertThat(uriVariables).isNotNull();
 		assertEquals("group", uriVariables.get("group"));
 		assertEquals("a/b", uriVariables.get("identifier"));
 	}
@@ -282,7 +282,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		matrixVariables = getMatrixVariables(exchange, "cars");
 		uriVariables = getUriTemplateVariables(exchange);
 
-		assertNotNull(matrixVariables);
+		assertThat(matrixVariables).isNotNull();
 		assertEquals(Arrays.asList("red", "blue", "green"), matrixVariables.get("colors"));
 		assertEquals("2012", matrixVariables.getFirst("year"));
 		assertEquals("cars", uriVariables.get("cars"));
@@ -298,7 +298,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		// "/foo/{ids}" and URL "/foo/id=1;id=2;id=3" where the whole path
 		// segment is a sequence of name-value pairs.
 
-		assertNotNull(matrixVariables);
+		assertThat(matrixVariables).isNotNull();
 		assertEquals(1, matrixVariables.size());
 		assertEquals("c", matrixVariables.getFirst("b"));
 		assertEquals("a=42", uriVariables.get("foo"));
@@ -313,7 +313,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		MultiValueMap<String, String> matrixVariables = getMatrixVariables(exchange, "cars");
 		Map<String, String> uriVariables = getUriTemplateVariables(exchange);
 
-		assertNotNull(matrixVariables);
+		assertThat(matrixVariables).isNotNull();
 		assertEquals(Collections.singletonList("a/b"), matrixVariables.get("mvar"));
 		assertEquals("cars", uriVariables.get("cars"));
 	}
@@ -349,10 +349,10 @@ public class RequestMappingInfoHandlerMappingTests {
 		Mono<HandlerResult> mono = invocable.invoke(exchange, bindingContext);
 
 		HandlerResult result = mono.block();
-		assertNotNull(result);
+		assertThat(result).isNotNull();
 
 		Object value = result.getReturnValue();
-		assertNotNull(value);
+		assertThat(value).isNotNull();
 		assertEquals(HttpHeaders.class, value.getClass());
 		assertEquals(allowedMethods, ((HttpHeaders) value).getAllow());
 	}

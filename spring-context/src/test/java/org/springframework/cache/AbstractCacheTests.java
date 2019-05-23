@@ -70,7 +70,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		assertEquals(value, cache.get(key, (Class<?>) null));
 
 		cache.put(key, null);
-		assertNotNull(cache.get(key));
+		assertThat(cache.get(key)).isNotNull();
 		assertNull(cache.get(key).get());
 		assertNull(cache.get(key, String.class));
 		assertNull(cache.get(key, Object.class));
@@ -170,7 +170,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 			});
 		}
 		catch (Cache.ValueRetrievalException ex) {
-			assertNotNull(ex.getCause());
+			assertThat(ex.getCause()).isNotNull();
 			assertEquals(UnsupportedOperationException.class, ex.getCause().getClass());
 		}
 	}
