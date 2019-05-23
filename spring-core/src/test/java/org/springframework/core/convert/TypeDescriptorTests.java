@@ -46,7 +46,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Tests for {@link TypeDescriptor}.
@@ -257,8 +256,7 @@ public class TypeDescriptorTests {
 
 	private void assertAnnotationFoundOnMethod(Class<? extends Annotation> annotationType, String methodName) throws Exception {
 		TypeDescriptor typeDescriptor = new TypeDescriptor(new MethodParameter(getClass().getMethod(methodName), -1));
-		assertNotNull("Should have found @" + annotationType.getSimpleName() + " on " + methodName + ".",
-				typeDescriptor.getAnnotation(annotationType));
+		assertThat(typeDescriptor.getAnnotation(annotationType)).as("Should have found @" + annotationType.getSimpleName() + " on " + methodName + ".").isNotNull();
 	}
 
 	@Test

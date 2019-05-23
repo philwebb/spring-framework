@@ -45,8 +45,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -92,7 +90,7 @@ public class FormHttpMessageConverterTests {
 		assertThat((Object) values.size()).as("Invalid result").isEqualTo(2);
 		assertThat((Object) values.get(0)).as("Invalid result").isEqualTo("value 2+1");
 		assertThat((Object) values.get(1)).as("Invalid result").isEqualTo("value 2+2");
-		assertNull("Invalid result", result.getFirst("name 3"));
+		assertThat((Object) result.getFirst("name 3")).as("Invalid result").isNull();
 	}
 
 	@Test
@@ -204,7 +202,7 @@ public class FormHttpMessageConverterTests {
 		this.converter.write(parts, new MediaType("multipart", "form-data", StandardCharsets.UTF_8), outputMessage);
 
 		final MediaType contentType = outputMessage.getHeaders().getContentType();
-		assertNotNull("No boundary found", contentType.getParameter("boundary"));
+		assertThat((Object) contentType.getParameter("boundary")).as("No boundary found").isNotNull();
 
 		// see if Commons FileUpload can read what we wrote
 		FileItemFactory fileItemFactory = new DiskFileItemFactory();

@@ -24,8 +24,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Shared tests for {@link CacheManager} that inherit from

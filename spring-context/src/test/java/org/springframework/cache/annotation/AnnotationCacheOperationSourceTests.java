@@ -35,7 +35,6 @@ import org.springframework.core.annotation.AliasFor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -223,7 +222,7 @@ public class AnnotationCacheOperationSourceTests {
 		// Valid as a CacheResolver might return the cache names to use with other info
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "noCacheNameSpecified");
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertNotNull("cache names set must not be null", cacheOperation.getCacheNames());
+		assertThat((Object) cacheOperation.getCacheNames()).as("cache names set must not be null").isNotNull();
 		assertThat((Object) cacheOperation.getCacheNames().size()).as("no cache names specified").isEqualTo(0);
 	}
 

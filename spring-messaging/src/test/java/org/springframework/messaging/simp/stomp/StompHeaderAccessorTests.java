@@ -37,7 +37,6 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link StompHeaderAccessor}.
@@ -154,7 +153,7 @@ public class StompHeaderAccessorTests {
 		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_SUBSCRIPTION_HEADER).get(0)).isEqualTo("s1");
 		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
 		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_CONTENT_TYPE_HEADER).get(0)).isEqualTo("application/json");
-		assertNotNull("message-id was not created", actual.get(StompHeaderAccessor.STOMP_MESSAGE_ID_HEADER).get(0));
+		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_MESSAGE_ID_HEADER).get(0)).as("message-id was not created").isNotNull();
 	}
 
 	@Test
@@ -198,7 +197,7 @@ public class StompHeaderAccessorTests {
 
 		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0)).isEqualTo("s1");
 		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
-		assertNotNull("abc123", actual.get("accountId").get(0));
+		assertThat((Object) actual.get("accountId").get(0)).as("abc123").isNotNull();
 	}
 
 	@Test

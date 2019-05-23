@@ -36,7 +36,6 @@ import org.springframework.util.StringUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertNotEquals;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link UriComponentsBuilder}.
@@ -679,7 +678,7 @@ public class UriComponentsBuilderTests {
 		builder.replaceQueryParam("baz");
 		result = builder.build();
 
-		assertNull("Query param should have been deleted", result.getQuery());
+		assertThat((Object) result.getQuery()).as("Query param should have been deleted").isNull();
 	}
 
 	@Test

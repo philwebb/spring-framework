@@ -48,7 +48,6 @@ import org.springframework.web.servlet.SimpleWebApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -104,7 +103,7 @@ public class ContextLoaderTests {
 		ServletContextListener listener = new ContextLoaderListener() {
 			@Override
 			protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
-				assertNotNull("The ServletContext should not be null.", sc);
+				assertThat((Object) sc).as("The ServletContext should not be null.").isNotNull();
 				assertThat((Object) sc).as("Verifying that we received the expected ServletContext.").isEqualTo(sc);
 				assertThat(wac.isActive()).as("The ApplicationContext should not yet have been refreshed.").isFalse();
 				buffer.append(expectedContents);

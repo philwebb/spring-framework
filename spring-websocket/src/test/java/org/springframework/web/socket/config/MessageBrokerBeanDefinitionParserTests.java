@@ -93,7 +93,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test fixture for {@link MessageBrokerBeanDefinitionParser}.
@@ -441,7 +440,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		AbstractSubscribableChannel channel = this.appContext.getBean(channelName, AbstractSubscribableChannel.class);
 		for (Class<? extends  MessageHandler> subscriberType : subscriberTypes) {
 			MessageHandler subscriber = this.appContext.getBean(subscriberType);
-			assertNotNull("No subscription for " + subscriberType, subscriber);
+			assertThat((Object) subscriber).as("No subscription for " + subscriberType).isNotNull();
 			assertThat(channel.hasSubscription(subscriber)).isTrue();
 		}
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();

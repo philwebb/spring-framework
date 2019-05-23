@@ -69,7 +69,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -405,7 +404,7 @@ public class XmlBeanFactoryTests {
 
 		TestBean derivedDavid = (TestBean) xbf.getBean("magicDavidDerived");
 		// this fails while it inherits from the child bean
-		assertNull("autowiring not propagated along child relationships", derivedDavid.getSpouse());
+		assertThat((Object) derivedDavid.getSpouse()).as("autowiring not propagated along child relationships").isNull();
 	}
 
 	@Test

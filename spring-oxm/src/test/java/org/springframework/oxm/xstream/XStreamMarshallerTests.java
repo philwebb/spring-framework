@@ -60,7 +60,6 @@ import org.springframework.tests.XmlContent;
 import org.springframework.util.xml.StaxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.inOrder;
@@ -316,7 +315,7 @@ public class XStreamMarshallerTests {
 		Object o = marshaller.unmarshal(new StreamSource(new StringReader(writer.toString())));
 		assertThat(o instanceof Flight).as("Unmarshalled object is not Flights").isTrue();
 		Flight unflight = (Flight) o;
-		assertNotNull("Flight is null", unflight);
+		assertThat((Object) unflight).as("Flight is null").isNotNull();
 		assertThat((Object) unflight.getFlightNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 

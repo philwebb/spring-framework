@@ -54,7 +54,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -331,7 +330,7 @@ public class MappingJackson2JsonViewTests {
 		}
 		Object jsResult =
 				jsContext.evaluateString(jsScope, "(" + json + ")", "JSON Stream", 1, null);
-		assertNotNull("Json Result did not eval as valid JavaScript", jsResult);
+		assertThat(jsResult).as("Json Result did not eval as valid JavaScript").isNotNull();
 		assertThat((Object) response.getContentType()).isEqualTo("application/json");
 	}
 

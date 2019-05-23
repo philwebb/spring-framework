@@ -54,7 +54,6 @@ import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -1066,8 +1065,8 @@ public class JdbcTemplateTests {
 				conn -> conn.prepareCall("my query"), Collections.singletonList(new SqlOutParameter("a", 12)));
 
 		assertThat(out).isInstanceOf(LinkedCaseInsensitiveMap.class);
-		assertNotNull("we should have gotten the result with upper case", out.get("A"));
-		assertNotNull("we should have gotten the result with lower case", out.get("a"));
+		assertThat(out.get("A")).as("we should have gotten the result with upper case").isNotNull();
+		assertThat(out.get("a")).as("we should have gotten the result with lower case").isNotNull();
 		verify(this.callableStatement).close();
 		verify(this.connection).close();
 	}

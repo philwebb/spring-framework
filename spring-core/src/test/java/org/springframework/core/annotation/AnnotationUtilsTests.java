@@ -48,8 +48,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static org.springframework.core.annotation.AnnotationUtils.VALUE;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotationDeclaringClass;
@@ -256,14 +254,14 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findClassAnnotationOnMetaMetaAnnotatedClass() {
 		Component component = findAnnotation(MetaMetaAnnotatedClass.class, Component.class);
-		assertNotNull("Should find meta-annotation on composed annotation on class", component);
+		assertThat((Object) component).as("Should find meta-annotation on composed annotation on class").isNotNull();
 		assertThat((Object) component.value()).isEqualTo("meta2");
 	}
 
 	@Test
 	public void findClassAnnotationOnMetaMetaMetaAnnotatedClass() {
 		Component component = findAnnotation(MetaMetaMetaAnnotatedClass.class, Component.class);
-		assertNotNull("Should find meta-annotation on meta-annotation on composed annotation on class", component);
+		assertThat((Object) component).as("Should find meta-annotation on meta-annotation on composed annotation on class").isNotNull();
 		assertThat((Object) component.value()).isEqualTo("meta2");
 	}
 
@@ -271,55 +269,55 @@ public class AnnotationUtilsTests {
 	public void findClassAnnotationOnAnnotatedClassWithMissingTargetMetaAnnotation() {
 		// TransactionalClass is NOT annotated or meta-annotated with @Component
 		Component component = findAnnotation(TransactionalClass.class, Component.class);
-		assertNull("Should not find @Component on TransactionalClass", component);
+		assertThat((Object) component).as("Should not find @Component on TransactionalClass").isNull();
 	}
 
 	@Test
 	public void findClassAnnotationOnMetaCycleAnnotatedClassWithMissingTargetMetaAnnotation() {
 		Component component = findAnnotation(MetaCycleAnnotatedClass.class, Component.class);
-		assertNull("Should not find @Component on MetaCycleAnnotatedClass", component);
+		assertThat((Object) component).as("Should not find @Component on MetaCycleAnnotatedClass").isNull();
 	}
 
 	// @since 4.2
 	@Test
 	public void findClassAnnotationOnInheritedAnnotationInterface() {
 		Transactional tx = findAnnotation(InheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on InheritedAnnotationInterface", tx);
+		assertThat((Object) tx).as("Should find @Transactional on InheritedAnnotationInterface").isNotNull();
 	}
 
 	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubInheritedAnnotationInterface() {
 		Transactional tx = findAnnotation(SubInheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on SubInheritedAnnotationInterface", tx);
+		assertThat((Object) tx).as("Should find @Transactional on SubInheritedAnnotationInterface").isNotNull();
 	}
 
 	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubSubInheritedAnnotationInterface() {
 		Transactional tx = findAnnotation(SubSubInheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on SubSubInheritedAnnotationInterface", tx);
+		assertThat((Object) tx).as("Should find @Transactional on SubSubInheritedAnnotationInterface").isNotNull();
 	}
 
 	// @since 4.2
 	@Test
 	public void findClassAnnotationOnNonInheritedAnnotationInterface() {
 		Order order = findAnnotation(NonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on NonInheritedAnnotationInterface", order);
+		assertThat((Object) order).as("Should find @Order on NonInheritedAnnotationInterface").isNotNull();
 	}
 
 	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubNonInheritedAnnotationInterface() {
 		Order order = findAnnotation(SubNonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on SubNonInheritedAnnotationInterface", order);
+		assertThat((Object) order).as("Should find @Order on SubNonInheritedAnnotationInterface").isNotNull();
 	}
 
 	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubSubNonInheritedAnnotationInterface() {
 		Order order = findAnnotation(SubSubNonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on SubSubNonInheritedAnnotationInterface", order);
+		assertThat((Object) order).as("Should find @Order on SubSubNonInheritedAnnotationInterface").isNotNull();
 	}
 
 	@Test

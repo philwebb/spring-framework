@@ -39,7 +39,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Additional and overridden tests for CGLIB proxies.
@@ -183,7 +182,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		CglibAopProxy aop = new CglibAopProxy(pc);
 		CglibTestBean proxy = (CglibTestBean) aop.getProxy();
-		assertNotNull("Proxy should not be null", proxy);
+		assertThat((Object) proxy).as("Proxy should not be null").isNotNull();
 		assertThat((Object) proxy.getName()).as("Constructor overrode the value of name").isEqualTo("Rob Harrop");
 	}
 

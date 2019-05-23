@@ -50,7 +50,6 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -348,7 +347,7 @@ public class RestTemplateTests {
 		mockResponseStatus(HttpStatus.OK);
 
 		URI result = template.postForLocation("https://example.com", "Hello World");
-		assertNull("Invalid POST result", result);
+		assertThat((Object) result).as("Invalid POST result").isNull();
 
 		verify(response).close();
 	}
@@ -413,7 +412,7 @@ public class RestTemplateTests {
 		given(converter.read(String.class, response)).willReturn(null);
 
 		String result = template.postForObject("https://example.com", null, String.class);
-		assertNull("Invalid POST result", result);
+		assertThat((Object) result).as("Invalid POST result").isNull();
 		assertThat((Object) requestHeaders.getContentLength()).as("Invalid content length").isEqualTo(0);
 
 		verify(response).close();
@@ -493,7 +492,7 @@ public class RestTemplateTests {
 		given(response.getBody()).willReturn(StreamUtils.emptyInput());
 
 		String result = template.patchForObject("https://example.com", null, String.class);
-		assertNull("Invalid POST result", result);
+		assertThat((Object) result).as("Invalid POST result").isNull();
 		assertThat((Object) requestHeaders.getContentLength()).as("Invalid content length").isEqualTo(0);
 
 		verify(response).close();

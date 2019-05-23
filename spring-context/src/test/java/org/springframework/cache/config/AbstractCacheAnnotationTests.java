@@ -32,7 +32,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static temp.XAssert.assertNull;
 
 /**
  * Abstract cache annotation tests (containing several reusable methods).
@@ -103,7 +102,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertThat(r3).isSameAs(r1);
 
 		assertThat(this.cm.getCache("testCache").get(o1).get()).isEqualTo(r3);
-		assertNull("Cached value should be null", r3);
+		assertThat(r3).as("Cached value should be null").isNull();
 	}
 
 	public void testCacheableSync(CacheableService<?> service) throws Exception {
@@ -129,7 +128,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertThat(r3).isSameAs(r1);
 
 		assertThat(this.cm.getCache("testCache").get(o1).get()).isEqualTo(r3);
-		assertNull("Cached value should be null", r3);
+		assertThat(r3).as("Cached value should be null").isNull();
 	}
 
 	public void testEvict(CacheableService<?> service) throws Exception {
