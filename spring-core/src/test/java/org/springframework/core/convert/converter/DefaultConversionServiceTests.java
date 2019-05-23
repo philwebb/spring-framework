@@ -78,7 +78,7 @@ public class DefaultConversionServiceTests {
 
 	@Test
 	public void testStringToCharacter() {
-		assertThat(conversionService.convert("1", Character.class)).isEqualTo((int) Character.valueOf('1'));
+		assertThat(conversionService.convert("1", Character.class)).isEqualTo(Character.valueOf('1'));
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class DefaultConversionServiceTests {
 
 	@Test
 	public void testStringToByte() {
-		assertThat(conversionService.convert("1", Byte.class)).isEqualTo((int) Byte.valueOf("1"));
+		assertThat(conversionService.convert("1", Byte.class)).isEqualTo((byte) 1);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class DefaultConversionServiceTests {
 
 	@Test
 	public void testStringToShort() {
-		assertThat(conversionService.convert("1", Short.class)).isEqualTo((int) Short.valueOf("1"));
+		assertThat(conversionService.convert("1", Short.class)).isEqualTo((short) 1);
 	}
 
 	@Test
@@ -334,12 +334,12 @@ public class DefaultConversionServiceTests {
 
 	@Test
 	public void testNumberToCharacter() {
-		assertThat(conversionService.convert(65, Character.class)).isEqualTo((int) Character.valueOf('A'));
+		assertThat(conversionService.convert(65, Character.class)).isEqualTo(Character.valueOf('A'));
 	}
 
 	@Test
 	public void testCharacterToNumber() {
-		assertThat(conversionService.convert('A', Integer.class)).isEqualTo((int) Integer.valueOf(65));
+		assertThat(conversionService.convert('A', Integer.class)).isEqualTo(65);
 	}
 
 	// collection conversion

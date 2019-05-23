@@ -87,7 +87,7 @@ public class CollectionUtilsTests {
 		props.setProperty("prop2", "value2");
 		props.put("prop3", Integer.valueOf(3));
 
-		Map<String, String> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("prop4", "value4");
 
 		CollectionUtils.mergePropertiesIntoMap(props, map);

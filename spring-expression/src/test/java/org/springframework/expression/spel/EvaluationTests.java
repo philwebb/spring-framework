@@ -736,10 +736,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("sss++");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		short return_sss = e.getValue(ctx, Short.TYPE);
-		assertThat(return_sss).isEqualTo(15);
-		assertThat(helper.sss).isEqualTo(16);
+		assertThat(return_sss).isEqualTo((short) 15);
+		assertThat(helper.sss).isEqualTo((short) 16);
 	}
 
 	@Test
@@ -790,10 +790,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("++sss");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		int return_sss = (Integer) e.getValue(ctx);
-		assertThat(return_sss).isEqualTo(16);
-		assertThat(helper.sss).isEqualTo(16);
+		assertThat(return_sss).isEqualTo((short) 16);
+		assertThat(helper.sss).isEqualTo((short) 16);
 	}
 
 	@Test
@@ -887,10 +887,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("sss--");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		short return_sss = e.getValue(ctx, Short.TYPE);
-		assertThat(return_sss).isEqualTo(15);
-		assertThat(helper.sss).isEqualTo(14);
+		assertThat(return_sss).isEqualTo((short) 15);
+		assertThat(helper.sss).isEqualTo((short) 14);
 	}
 
 	@Test
@@ -940,10 +940,10 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 		// short
 		e = parser.parseExpression("--sss");
-		assertThat(helper.sss).isEqualTo(15);
+		assertThat(helper.sss).isEqualTo((short) 15);
 		int return_sss = (Integer)e.getValue(ctx);
 		assertThat(return_sss).isEqualTo(14);
-		assertThat(helper.sss).isEqualTo(14);
+		assertThat(helper.sss).isEqualTo((short) 14);
 	}
 
 	@Test
