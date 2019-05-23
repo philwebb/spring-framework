@@ -948,7 +948,7 @@ public class UriComponentsBuilderTests {
 
 		assertThat(uri1.getPathSegments().isEmpty()).isTrue();
 		assertThat(uri2.getPathSegments().isEmpty()).isTrue();
-		assertNotEquals(uri1, uri2);
+		assertThat((Object) uri2).isNotEqualTo(uri1);
 	}
 
 	@Test  // SPR-17256

@@ -69,7 +69,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertTrue;
 
 /**
  * Miscellaneous tests for XML bean definitions.
@@ -143,12 +142,12 @@ public class XmlBeanFactoryTests {
 		TestBean georgia = (TestBean) xbf.getBean("georgia");
 		ITestBean emmasJenks = emma.getSpouse();
 		ITestBean georgiasJenks = georgia.getSpouse();
-		assertTrue("Emma and georgia think they have a different boyfriend", emmasJenks != georgiasJenks);
-		assertTrue("Emmas jenks has right name", emmasJenks.getName().equals("Andrew"));
-		assertTrue("Emmas doesn't equal new ref", emmasJenks != xbf.getBean("jenks"));
-		assertTrue("Georgias jenks has right name", emmasJenks.getName().equals("Andrew"));
-		assertTrue("They are object equal", emmasJenks.equals(georgiasJenks));
-		assertTrue("They object equal direct ref", emmasJenks.equals(xbf.getBean("jenks")));
+		assertThat(emmasJenks != georgiasJenks).as("Emma and georgia think they have a different boyfriend").isTrue();
+		assertThat(emmasJenks.getName().equals("Andrew")).as("Emmas jenks has right name").isTrue();
+		assertThat(emmasJenks != xbf.getBean("jenks")).as("Emmas doesn't equal new ref").isTrue();
+		assertThat(emmasJenks.getName().equals("Andrew")).as("Georgias jenks has right name").isTrue();
+		assertThat(emmasJenks.equals(georgiasJenks)).as("They are object equal").isTrue();
+		assertThat(emmasJenks.equals(xbf.getBean("jenks"))).as("They object equal direct ref").isTrue();
 	}
 
 	@Test
@@ -163,8 +162,8 @@ public class XmlBeanFactoryTests {
 		TestBean jenks = (TestBean) xbf.getBean("jenks");
 		ITestBean davesJen = dave.getSpouse();
 		ITestBean jenksJen = jenks.getSpouse();
-		assertTrue("1 jen instance", davesJen == jenksJen);
-		assertTrue("1 jen instance", davesJen == jen);
+		assertThat(davesJen == jenksJen).as("1 jen instance").isTrue();
+		assertThat(davesJen == jen).as("1 jen instance").isTrue();
 	}
 
 	@Test
@@ -506,7 +505,7 @@ public class XmlBeanFactoryTests {
 		DefaultListableBeanFactory child = new DefaultListableBeanFactory(parent);
 		new XmlBeanDefinitionReader(child).loadBeanDefinitions(CHILD_CONTEXT);
 		TestBean beanFromChild = (TestBean) child.getBean("inheritedTestBeanSingleton");
-		assertTrue("singleton from parent and child is the same", beanFromParent == beanFromChild);
+		assertThat(beanFromParent == beanFromChild).as("singleton from parent and child is the same").isTrue();
 	}
 
 	@Test
@@ -530,11 +529,11 @@ public class XmlBeanFactoryTests {
 		TestBean ego = (TestBean) xbf.getBean("ego");
 		TestBean complexInnerEgo = (TestBean) xbf.getBean("complexInnerEgo");
 		TestBean complexEgo = (TestBean) xbf.getBean("complexEgo");
-		assertTrue("Correct circular reference", jenny.getSpouse() == david);
-		assertTrue("Correct circular reference", david.getSpouse() == jenny);
-		assertTrue("Correct circular reference", ego.getSpouse() == ego);
-		assertTrue("Correct circular reference", complexInnerEgo.getSpouse().getSpouse() == complexInnerEgo);
-		assertTrue("Correct circular reference", complexEgo.getSpouse().getSpouse() == complexEgo);
+		assertThat(jenny.getSpouse() == david).as("Correct circular reference").isTrue();
+		assertThat(david.getSpouse() == jenny).as("Correct circular reference").isTrue();
+		assertThat(ego.getSpouse() == ego).as("Correct circular reference").isTrue();
+		assertThat(complexInnerEgo.getSpouse().getSpouse() == complexInnerEgo).as("Correct circular reference").isTrue();
+		assertThat(complexEgo.getSpouse().getSpouse() == complexEgo).as("Correct circular reference").isTrue();
 	}
 
 	@Test
@@ -545,7 +544,7 @@ public class XmlBeanFactoryTests {
 		reader.loadBeanDefinitions(REFTYPES_CONTEXT);
 		xbf.getBean("egoBridge");
 		TestBean complexEgo = (TestBean) xbf.getBean("complexEgo");
-		assertTrue("Correct circular reference", complexEgo.getSpouse().getSpouse() == complexEgo);
+		assertThat(complexEgo.getSpouse().getSpouse() == complexEgo).as("Correct circular reference").isTrue();
 	}
 
 	@Test
@@ -555,9 +554,9 @@ public class XmlBeanFactoryTests {
 		reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
 		reader.loadBeanDefinitions(REFTYPES_CONTEXT);
 		TestBean ego1 = (TestBean) xbf.getBean("ego1");
-		assertTrue("Correct circular reference", ego1.getSpouse().getSpouse() == ego1);
+		assertThat(ego1.getSpouse().getSpouse() == ego1).as("Correct circular reference").isTrue();
 		TestBean ego3 = (TestBean) xbf.getBean("ego3");
-		assertTrue("Correct circular reference", ego3.getSpouse().getSpouse() == ego3);
+		assertThat(ego3.getSpouse().getSpouse() == ego3).as("Correct circular reference").isTrue();
 	}
 
 	@Test
@@ -1178,8 +1177,7 @@ public class XmlBeanFactoryTests {
 			new XmlBeanDefinitionReader(bf).loadBeanDefinitions(OVERRIDES_CONTEXT);
 
 			final Class<?> currentClass = bf.getBean("overrideOneMethod").getClass();
-			assertTrue("Method injected bean class [" + currentClass + "] must be a CGLIB enhanced subclass.",
-				ClassUtils.isCglibProxyClass(currentClass));
+			assertThat(ClassUtils.isCglibProxyClass(currentClass)).as("Method injected bean class [" + currentClass + "] must be a CGLIB enhanced subclass.").isTrue();
 
 			if (firstClass == null) {
 				firstClass = currentClass;

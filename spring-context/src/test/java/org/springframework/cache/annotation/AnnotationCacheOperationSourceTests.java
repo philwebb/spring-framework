@@ -35,7 +35,6 @@ import org.springframework.core.annotation.AliasFor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Costin Leau
@@ -300,9 +299,7 @@ public class AnnotationCacheOperationSourceTests {
 		assertThat((Object) actual.getCacheManager()).as("Wrong cache manager").isEqualTo(cacheManager);
 		assertThat((Object) actual.getCacheResolver()).as("Wrong cache resolver").isEqualTo(cacheResolver);
 		assertThat((Object) actual.getCacheNames().size()).as("Wrong number of cache names").isEqualTo(cacheNames.length);
-		Arrays.stream(cacheNames).forEach(cacheName ->
-				assertTrue("Cache '" + cacheName + "' not found in " + actual.getCacheNames(),
-						actual.getCacheNames().contains(cacheName)));
+		Arrays.stream(cacheNames).forEach(cacheName -> assertThat(actual.getCacheNames().contains(cacheName)).as("Cache '" + cacheName + "' not found in " + actual.getCacheNames()).isTrue());
 	}
 
 

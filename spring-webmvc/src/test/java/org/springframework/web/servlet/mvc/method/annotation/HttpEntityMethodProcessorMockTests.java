@@ -59,8 +59,6 @@ import static java.time.Instant.ofEpochMilli;
 import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -171,17 +169,17 @@ public class HttpEntityMethodProcessorMockTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("HttpEntity parameter not supported", processor.supportsParameter(paramHttpEntity));
-		assertTrue("RequestEntity parameter not supported", processor.supportsParameter(paramRequestEntity));
+		assertThat(processor.supportsParameter(paramHttpEntity)).as("HttpEntity parameter not supported").isTrue();
+		assertThat(processor.supportsParameter(paramRequestEntity)).as("RequestEntity parameter not supported").isTrue();
 		assertThat(processor.supportsParameter(paramResponseEntity)).as("ResponseEntity parameter supported").isFalse();
 		assertThat(processor.supportsParameter(paramInt)).as("non-entity parameter supported").isFalse();
 	}
 
 	@Test
 	public void supportsReturnType() {
-		assertTrue("ResponseEntity return type not supported", processor.supportsReturnType(returnTypeResponseEntity));
-		assertTrue("HttpEntity return type not supported", processor.supportsReturnType(returnTypeHttpEntity));
-		assertTrue("Custom HttpEntity subclass not supported", processor.supportsReturnType(returnTypeHttpEntitySubclass));
+		assertThat(processor.supportsReturnType(returnTypeResponseEntity)).as("ResponseEntity return type not supported").isTrue();
+		assertThat(processor.supportsReturnType(returnTypeHttpEntity)).as("HttpEntity return type not supported").isTrue();
+		assertThat(processor.supportsReturnType(returnTypeHttpEntitySubclass)).as("Custom HttpEntity subclass not supported").isTrue();
 		assertThat(processor.supportsReturnType(paramRequestEntity)).as("RequestEntity parameter supported").isFalse();
 		assertThat(processor.supportsReturnType(returnTypeInt)).as("non-ResponseBody return type supported").isFalse();
 	}

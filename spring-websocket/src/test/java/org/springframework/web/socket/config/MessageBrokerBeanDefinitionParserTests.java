@@ -91,8 +91,6 @@ import org.springframework.web.socket.sockjs.transport.handler.WebSocketTranspor
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture for {@link MessageBrokerBeanDefinitionParser}.
@@ -207,7 +205,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		DefaultSubscriptionRegistry registry = (DefaultSubscriptionRegistry) brokerMessageHandler.getSubscriptionRegistry();
 		assertThat((Object) registry.getSelectorHeaderName()).isEqualTo("my-selector");
 		assertThat(brokerMessageHandler.getTaskScheduler()).isNotNull();
-		assertArrayEquals(new long[] {15000, 15000}, brokerMessageHandler.getHeartbeatValue());
+		assertThat((Object) brokerMessageHandler.getHeartbeatValue()).isEqualTo(new long[] {15000, 15000});
 		assertThat(brokerMessageHandler.isPreservePublishOrder()).isTrue();
 
 		List<Class<? extends MessageHandler>> subscriberTypes = Arrays.asList(SimpAnnotationMethodMessageHandler.class,

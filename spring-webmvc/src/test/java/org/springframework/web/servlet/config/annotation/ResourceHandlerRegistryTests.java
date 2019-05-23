@@ -49,7 +49,6 @@ import org.springframework.web.servlet.resource.WebJarsResourceResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ResourceHandlerRegistry}.

@@ -31,7 +31,6 @@ import org.springframework.context.support.StaticApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for

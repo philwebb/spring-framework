@@ -31,7 +31,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotEquals;
 
 /**
@@ -78,7 +77,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaders actual = accessor.getMessageHeaders();
 
 		assertThat(actual.size()).isEqualTo(3);
-		assertNotEquals(message.getHeaders().getId(), actual.getId());
+		assertThat((Object) actual.getId()).isNotEqualTo(message.getHeaders().getId());
 		assertThat(actual.get("foo")).isEqualTo("BAR");
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}

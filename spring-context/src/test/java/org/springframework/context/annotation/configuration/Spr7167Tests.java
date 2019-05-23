@@ -29,7 +29,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertTrue;
 
 public class Spr7167Tests {
 

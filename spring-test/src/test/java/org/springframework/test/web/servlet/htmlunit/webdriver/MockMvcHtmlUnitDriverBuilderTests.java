@@ -17,6 +17,7 @@
 package org.springframework.test.web.servlet.htmlunit.webdriver;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.gargoylesoftware.htmlunit.util.Cookie;
@@ -42,8 +43,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@link MockMvcHtmlUnitDriverBuilder}.

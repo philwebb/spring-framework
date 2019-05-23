@@ -16,13 +16,7 @@
 
 package temp;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.MatcherAssert;
-import org.junit.ComparisonFailure;
-import org.junit.function.ThrowingRunnable;
 import org.junit.internal.ArrayComparisonFailure;
-import org.junit.internal.ExactComparisonCriteria;
-import org.junit.internal.InexactComparisonCriteria;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,18 +28,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class XAssert  {
 
-    public static void assertTrue(String message, boolean condition) {
-    	assertThat(condition).as(message).isTrue();
-    }
-
-    public static void assertNotEquals(String message, Object unexpected,
+	public static void assertNotEquals(String message, Object unexpected,
             Object actual) {
     }
 
-    public static void assertNotEquals(Object unexpected, Object actual) {
-    }
-
-    public static void assertNotEquals(String message, double unexpected,
+	public static void assertNotEquals(String message, double unexpected,
             double actual, double delta) {
     }
 
@@ -59,10 +46,7 @@ public class XAssert  {
             Object actuals) throws ArrayComparisonFailure {
     }
 
-    public static void assertArrayEquals(Object expecteds, Object actuals) {
-    }
-
-    public static void assertEquals(float expected, float actual, float delta) {
+	public static void assertEquals(float expected, float actual, float delta) {
 
     }
 

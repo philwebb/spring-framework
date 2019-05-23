@@ -17,6 +17,7 @@
 package org.springframework.web.context;
 
 import java.util.Locale;
+
 import javax.servlet.ServletException;
 
 import org.junit.Test;
@@ -38,8 +39,6 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson

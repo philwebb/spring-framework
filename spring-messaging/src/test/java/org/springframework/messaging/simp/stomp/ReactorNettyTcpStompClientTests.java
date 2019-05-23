@@ -41,7 +41,6 @@ import org.springframework.util.SocketUtils;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@link ReactorNettyTcpStompClient}.

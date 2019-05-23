@@ -55,8 +55,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link GenericConversionService}.
@@ -305,14 +303,14 @@ public class GenericConversionServiceTests {
 	public void testStringArrayToIntegerArray() {
 		conversionService.addConverter(new MyStringArrayToIntegerArrayConverter());
 		Integer[] converted = conversionService.convert(new String[] {"x1", "z3"}, Integer[].class);
-		assertArrayEquals(new Integer[] { 1, 3 }, converted);
+		assertThat((Object) converted).isEqualTo(new Integer[] { 1, 3 });
 	}
 
 	@Test
 	public void testStringToIntegerArray() {
 		conversionService.addConverter(new MyStringToIntegerArrayConverter());
 		Integer[] converted = conversionService.convert("x1,z3", Integer[].class);
-		assertArrayEquals(new Integer[] { 1, 3 }, converted);
+		assertThat((Object) converted).isEqualTo(new Integer[] { 1, 3 });
 	}
 
 	@Test

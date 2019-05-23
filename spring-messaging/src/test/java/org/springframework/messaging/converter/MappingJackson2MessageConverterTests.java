@@ -35,9 +35,7 @@ import org.springframework.util.MimeType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture for {@link MappingJackson2MessageConverter}.
@@ -93,7 +91,7 @@ public class MappingJackson2MessageConverterTests {
 		assertEquals(42F, actual.getFraction(), 0F);
 		assertThat(actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(actual.isBool()).isTrue();
-		assertArrayEquals(new byte[]{0x1, 0x2}, actual.getBytes());
+		assertThat((Object) actual.getBytes()).isEqualTo(new byte[]{0x1, 0x2});
 	}
 
 	@Test

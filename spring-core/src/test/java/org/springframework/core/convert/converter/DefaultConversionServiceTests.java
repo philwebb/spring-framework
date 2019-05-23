@@ -58,8 +58,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link DefaultConversionService}.
@@ -470,7 +468,7 @@ public class DefaultConversionServiceTests {
 	public void convertArrayToObjectAssignableTargetType() {
 		Long[] array = new Long[] {3L};
 		Long[] result = (Long[]) conversionService.convert(array, Object.class);
-		assertArrayEquals(array, result);
+		assertThat((Object) result).isEqualTo(array);
 	}
 
 	@Test
@@ -931,7 +929,7 @@ public class DefaultConversionServiceTests {
 				new String[] {"9", "10", "11", "12"}};
 		List<String[]> converted = conversionService.convert(grid, List.class);
 		String[][] convertedBack = conversionService.convert(converted, String[][].class);
-		assertArrayEquals(grid, convertedBack);
+		assertThat((Object) convertedBack).isEqualTo(grid);
 	}
 
 	@Test
@@ -940,7 +938,7 @@ public class DefaultConversionServiceTests {
 		byte[] byteArray = new byte[] {1, 2, 3};
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
 		assertThat((Object) converted).isNotSameAs(byteArray);
-		assertArrayEquals(new byte[]{2, 3, 4}, converted);
+		assertThat((Object) converted).isEqualTo(new byte[]{2, 3, 4});
 	}
 
 	@Test

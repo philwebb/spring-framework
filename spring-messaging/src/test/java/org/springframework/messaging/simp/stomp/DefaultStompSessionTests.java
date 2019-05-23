@@ -45,8 +45,6 @@ import org.springframework.util.concurrent.SettableListenableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
@@ -107,7 +105,7 @@ public class DefaultStompSessionTests {
 		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.CONNECT);
 		assertThat((Object) accessor.getHost()).isEqualTo("my-host");
 		assertThat(accessor.getAcceptVersion()).containsExactly("1.1", "1.2");
-		assertArrayEquals(new long[] {11, 12}, accessor.getHeartbeat());
+		assertThat((Object) accessor.getHeartbeat()).isEqualTo(new long[] {11, 12});
 	}
 
 	@Test // SPR-16844

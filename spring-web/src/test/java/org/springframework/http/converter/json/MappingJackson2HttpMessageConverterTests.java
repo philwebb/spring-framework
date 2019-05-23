@@ -44,7 +44,6 @@ import org.springframework.lang.Nullable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -96,7 +95,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 	}
 
 	@Test
@@ -225,7 +224,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(results, new MediaType("application", "json"), outputMessage);
@@ -256,7 +255,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(results, beansList.getType(), new MediaType("application", "json"), outputMessage);
@@ -288,7 +287,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(results, baseList.getType(), new MediaType("application", "json"), outputMessage);

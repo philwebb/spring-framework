@@ -39,8 +39,6 @@ import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.stereotype.Component;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests demonstrating that the reflection-based {@link StandardAnnotationMetadata}
@@ -311,30 +309,30 @@ public class AnnotationMetadataTests {
 			AnnotationAttributes nestedAnno = specialAttrs.getAnnotation("nestedAnno");
 			assertThat("na").isEqualTo(nestedAnno.getString("value"));
 			assertThat(nestedAnno.getEnum("anEnum").equals(SomeEnum.LABEL1)).isTrue();
-			assertArrayEquals(new Class<?>[] {String.class}, (Class<?>[]) nestedAnno.get("classArray"));
+			assertThat((Class<?>[]) nestedAnno.get("classArray")).isEqualTo(new Class<?>[] {String.class});
 
 			AnnotationAttributes[] nestedAnnoArray = specialAttrs.getAnnotationArray("nestedAnnoArray");
 			assertThat(nestedAnnoArray.length).isEqualTo(2);
 			assertThat(nestedAnnoArray[0].getString("value")).isEqualTo("default");
 			assertThat(nestedAnnoArray[0].getEnum("anEnum").equals(SomeEnum.DEFAULT)).isTrue();
-			assertArrayEquals(new Class<?>[] {Void.class}, (Class<?>[]) nestedAnnoArray[0].get("classArray"));
+			assertThat((Class<?>[]) nestedAnnoArray[0].get("classArray")).isEqualTo(new Class<?>[] {Void.class});
 			assertThat(nestedAnnoArray[1].getString("value")).isEqualTo("na1");
 			assertThat(nestedAnnoArray[1].getEnum("anEnum").equals(SomeEnum.LABEL2)).isTrue();
-			assertArrayEquals(new Class<?>[] {Number.class}, (Class<?>[]) nestedAnnoArray[1].get("classArray"));
-			assertArrayEquals(new Class<?>[] {Number.class}, nestedAnnoArray[1].getClassArray("classArray"));
+			assertThat((Class<?>[]) nestedAnnoArray[1].get("classArray")).isEqualTo(new Class<?>[] {Number.class});
+			assertThat((Object) nestedAnnoArray[1].getClassArray("classArray")).isEqualTo(new Class<?>[] {Number.class});
 
 			AnnotationAttributes optional = specialAttrs.getAnnotation("optional");
 			assertThat(optional.getString("value")).isEqualTo("optional");
 			assertThat(optional.getEnum("anEnum").equals(SomeEnum.DEFAULT)).isTrue();
-			assertArrayEquals(new Class<?>[] {Void.class}, (Class<?>[]) optional.get("classArray"));
-			assertArrayEquals(new Class<?>[] {Void.class}, optional.getClassArray("classArray"));
+			assertThat((Class<?>[]) optional.get("classArray")).isEqualTo(new Class<?>[] {Void.class});
+			assertThat((Object) optional.getClassArray("classArray")).isEqualTo(new Class<?>[] {Void.class});
 
 			AnnotationAttributes[] optionalArray = specialAttrs.getAnnotationArray("optionalArray");
 			assertThat(optionalArray.length).isEqualTo(1);
 			assertThat(optionalArray[0].getString("value")).isEqualTo("optional");
 			assertThat(optionalArray[0].getEnum("anEnum").equals(SomeEnum.DEFAULT)).isTrue();
-			assertArrayEquals(new Class<?>[] {Void.class}, (Class<?>[]) optionalArray[0].get("classArray"));
-			assertArrayEquals(new Class<?>[] {Void.class}, optionalArray[0].getClassArray("classArray"));
+			assertThat((Class<?>[]) optionalArray[0].get("classArray")).isEqualTo(new Class<?>[] {Void.class});
+			assertThat((Object) optionalArray[0].getClassArray("classArray")).isEqualTo(new Class<?>[] {Void.class});
 
 			assertThat(metadata.getAnnotationAttributes(DirectAnnotation.class.getName()).get("value")).isEqualTo("direct");
 			allMeta = metadata.getAllAnnotationAttributes(DirectAnnotation.class.getName()).get("value");
@@ -352,22 +350,22 @@ public class AnnotationMetadataTests {
 			assertThat(specialAttrs.getString("clazz")).isEqualTo(String.class.getName());
 
 			AnnotationAttributes nestedAnno = specialAttrs.getAnnotation("nestedAnno");
-			assertArrayEquals(new String[] { String.class.getName() }, nestedAnno.getStringArray("classArray"));
-			assertArrayEquals(new String[] { String.class.getName() }, nestedAnno.getStringArray("classArray"));
+			assertThat((Object) nestedAnno.getStringArray("classArray")).isEqualTo(new String[] { String.class.getName() });
+			assertThat((Object) nestedAnno.getStringArray("classArray")).isEqualTo(new String[] { String.class.getName() });
 
 			AnnotationAttributes[] nestedAnnoArray = specialAttrs.getAnnotationArray("nestedAnnoArray");
-			assertArrayEquals(new String[] { Void.class.getName() }, (String[]) nestedAnnoArray[0].get("classArray"));
-			assertArrayEquals(new String[] { Void.class.getName() }, nestedAnnoArray[0].getStringArray("classArray"));
-			assertArrayEquals(new String[] { Number.class.getName() }, (String[]) nestedAnnoArray[1].get("classArray"));
-			assertArrayEquals(new String[] { Number.class.getName() }, nestedAnnoArray[1].getStringArray("classArray"));
+			assertThat((String[]) nestedAnnoArray[0].get("classArray")).isEqualTo(new String[] { Void.class.getName() });
+			assertThat((Object) nestedAnnoArray[0].getStringArray("classArray")).isEqualTo(new String[] { Void.class.getName() });
+			assertThat((String[]) nestedAnnoArray[1].get("classArray")).isEqualTo(new String[] { Number.class.getName() });
+			assertThat((Object) nestedAnnoArray[1].getStringArray("classArray")).isEqualTo(new String[] { Number.class.getName() });
 
 			AnnotationAttributes optional = specialAttrs.getAnnotation("optional");
-			assertArrayEquals(new String[] { Void.class.getName() }, (String[]) optional.get("classArray"));
-			assertArrayEquals(new String[] { Void.class.getName() }, optional.getStringArray("classArray"));
+			assertThat((String[]) optional.get("classArray")).isEqualTo(new String[] { Void.class.getName() });
+			assertThat((Object) optional.getStringArray("classArray")).isEqualTo(new String[] { Void.class.getName() });
 
 			AnnotationAttributes[] optionalArray = specialAttrs.getAnnotationArray("optionalArray");
-			assertArrayEquals(new String[] { Void.class.getName() }, (String[]) optionalArray[0].get("classArray"));
-			assertArrayEquals(new String[] { Void.class.getName() }, optionalArray[0].getStringArray("classArray"));
+			assertThat((String[]) optionalArray[0].get("classArray")).isEqualTo(new String[] { Void.class.getName() });
+			assertThat((Object) optionalArray[0].getStringArray("classArray")).isEqualTo(new String[] { Void.class.getName() });
 
 			assertThat(metadata.getAnnotationAttributes(DirectAnnotation.class.getName()).get("value")).isEqualTo("direct");
 			allMeta = metadata.getAllAnnotationAttributes(DirectAnnotation.class.getName()).get("value");

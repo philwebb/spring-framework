@@ -17,6 +17,7 @@
 package org.springframework.oxm.jibx;
 
 import java.io.StringWriter;
+
 import javax.xml.transform.stream.StreamResult;
 
 import org.junit.BeforeClass;
@@ -27,8 +28,6 @@ import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 /**

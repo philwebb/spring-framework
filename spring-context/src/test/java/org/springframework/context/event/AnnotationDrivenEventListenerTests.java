@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
 import javax.annotation.PostConstruct;
 
 import org.junit.After;
@@ -731,7 +732,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertNotEquals(event.content, Thread.currentThread().getName());
+			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
 			collectEvent(event);
 			this.countDownLatch.countDown();
 		}
@@ -778,7 +779,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertNotEquals(event.content, Thread.currentThread().getName());
+			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}
@@ -804,7 +805,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertNotEquals(event.content, Thread.currentThread().getName());
+			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}

@@ -18,6 +18,7 @@ package org.springframework.oxm;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventWriter;
@@ -39,7 +40,6 @@ import org.springframework.tests.XmlContent;
 import org.springframework.util.xml.StaxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma
@@ -95,7 +95,8 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 		DOMResult domResult = new DOMResult();
 		marshaller.marshal(flights, domResult);
-		assertTrue("DOMResult does not contain a Document", domResult.getNode() instanceof Document);
+		boolean condition = domResult.getNode() instanceof Document;
+		assertThat(condition).as("DOMResult does not contain a Document").isTrue();
 		Document result = (Document) domResult.getNode();
 		Document expected = builder.newDocument();
 		Element flightsElement = expected.createElementNS("http://samples.springframework.org/flight", "tns:flights");

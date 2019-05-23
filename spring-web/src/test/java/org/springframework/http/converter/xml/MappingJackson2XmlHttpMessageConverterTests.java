@@ -32,7 +32,6 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 
 /**
@@ -76,9 +75,9 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		assertThat((Object) result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
 		assertEquals(42F, result.getFraction(), 0F);
-		assertArrayEquals(new String[]{"Foo", "Bar"}, result.getArray());
+		assertThat((Object) result.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[]{0x1, 0x2}, result.getBytes());
+		assertThat((Object) result.getBytes()).isEqualTo(new byte[]{0x1, 0x2});
 	}
 
 	@Test

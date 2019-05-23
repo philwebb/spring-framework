@@ -33,7 +33,6 @@ import org.springframework.test.context.ContextLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertArrayEquals;
 import static org.springframework.test.context.support.ContextLoaderUtils.GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX;
 import static org.springframework.test.context.support.ContextLoaderUtils.buildContextHierarchyMap;
 import static org.springframework.test.context.support.ContextLoaderUtils.resolveContextHierarchyAttributes;
@@ -127,8 +126,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel2);
 		assertThat(configAttributesListClassLevel2.size()).isEqualTo(1);
-		assertArrayEquals(new String[] { "two-A.xml", "two-B.xml" },
-			configAttributesListClassLevel2.get(0).getLocations());
+		assertThat((Object) configAttributesListClassLevel2.get(0).getLocations()).isEqualTo(new String[] { "two-A.xml", "two-B.xml" });
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel3 = hierarchyAttributes.get(2);
 		debugConfigAttributes(configAttributesListClassLevel3);
@@ -152,8 +150,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel2);
 		assertThat(configAttributesListClassLevel2.size()).isEqualTo(1);
-		assertArrayEquals(new String[] { "B-one.xml", "B-two.xml" },
-			configAttributesListClassLevel2.get(0).getLocations());
+		assertThat((Object) configAttributesListClassLevel2.get(0).getLocations()).isEqualTo(new String[] { "B-one.xml", "B-two.xml" });
 		assertAttributes(configAttributesListClassLevel2.get(0),
 			TestClass2WithSingleLevelContextHierarchyFromMetaAnnotation.class,
 			new String[] { "B-one.xml",

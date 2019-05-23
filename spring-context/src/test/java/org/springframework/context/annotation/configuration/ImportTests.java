@@ -30,7 +30,6 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertTrue;
 
 /**
  * System tests for {@link Import} annotation support.

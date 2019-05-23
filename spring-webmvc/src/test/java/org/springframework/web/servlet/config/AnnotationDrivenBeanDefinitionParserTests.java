@@ -50,8 +50,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletWebArgumentR
 import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for the configuration in mvc-config-annotation-driven.xml.
@@ -172,10 +170,10 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertThat(value instanceof List).isTrue();
 		List<HttpMessageConverter<?>> converters = (List<HttpMessageConverter<?>>) value;
 		if (hasDefaultRegistrations) {
-			assertTrue("Default and custom converter expected", converters.size() > 2);
+			assertThat(converters.size() > 2).as("Default and custom converter expected").isTrue();
 		}
 		else {
-			assertTrue("Only custom converters expected", converters.size() == 2);
+			assertThat(converters.size() == 2).as("Only custom converters expected").isTrue();
 		}
 		assertThat(converters.get(0) instanceof StringHttpMessageConverter).isTrue();
 		assertThat(converters.get(1) instanceof ResourceHttpMessageConverter).isTrue();

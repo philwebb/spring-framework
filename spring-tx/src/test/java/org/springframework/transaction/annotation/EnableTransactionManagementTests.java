@@ -40,7 +40,6 @@ import org.springframework.transaction.event.TransactionalEventListenerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests demonstrating use of @EnableTransactionManagement @Configuration classes.
@@ -58,9 +57,9 @@ public class EnableTransactionManagementTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
 				EnableTxConfig.class, TxManagerConfig.class);
 		TransactionalTestBean bean = ctx.getBean(TransactionalTestBean.class);
-		assertTrue("testBean is not a proxy", AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).as("testBean is not a proxy").isTrue();
 		Map<?,?> services = ctx.getBeansWithAnnotation(Service.class);
-		assertTrue("Stereotype annotation not visible", services.containsKey("testBean"));
+		assertThat(services.containsKey("testBean")).as("Stereotype annotation not visible").isTrue();
 		ctx.close();
 	}
 
@@ -69,9 +68,9 @@ public class EnableTransactionManagementTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
 				InheritedEnableTxConfig.class, TxManagerConfig.class);
 		TransactionalTestBean bean = ctx.getBean(TransactionalTestBean.class);
-		assertTrue("testBean is not a proxy", AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).as("testBean is not a proxy").isTrue();
 		Map<?,?> services = ctx.getBeansWithAnnotation(Service.class);
-		assertTrue("Stereotype annotation not visible", services.containsKey("testBean"));
+		assertThat(services.containsKey("testBean")).as("Stereotype annotation not visible").isTrue();
 		ctx.close();
 	}
 
@@ -80,9 +79,9 @@ public class EnableTransactionManagementTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
 				ParentEnableTxConfig.class, ChildEnableTxConfig.class, TxManagerConfig.class);
 		TransactionalTestBean bean = ctx.getBean(TransactionalTestBean.class);
-		assertTrue("testBean is not a proxy", AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).as("testBean is not a proxy").isTrue();
 		Map<?,?> services = ctx.getBeansWithAnnotation(Service.class);
-		assertTrue("Stereotype annotation not visible", services.containsKey("testBean"));
+		assertThat(services.containsKey("testBean")).as("Stereotype annotation not visible").isTrue();
 		ctx.close();
 	}
 
