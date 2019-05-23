@@ -219,7 +219,7 @@ public class MessageBrokerConfigurationTests {
 		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class))).isTrue();
 
-		assertThat(channel.getExecutor()).isNotNull();
+		assertNull(channel.getExecutor());
 	}
 
 	@Test
@@ -471,7 +471,7 @@ public class MessageBrokerConfigurationTests {
 		assertThat(registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
 
 		UserDestinationMessageHandler handler = context.getBean(UserDestinationMessageHandler.class);
-		assertThat(handler.getBroadcastDestination()).isNotNull();
+		assertNull(handler.getBroadcastDestination());
 
 		Object nullBean = context.getBean("userRegistryMessageHandler");
 		assertThat(nullBean.equals(null)).isTrue();

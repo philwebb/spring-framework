@@ -807,7 +807,7 @@ public class XmlBeanFactoryTests {
 
 		DependenciesBean rod5 = (DependenciesBean) xbf.getBean("rod5");
 		// Should not have been autowired
-		assertThat(rod5.getSpouse()).isNotNull();
+		assertNull(rod5.getSpouse());
 
 		BeanFactory appCtx = (BeanFactory) xbf.getBean("childAppCtx");
 		assertThat(appCtx.containsBean("rod1")).isTrue();
@@ -909,7 +909,7 @@ public class XmlBeanFactoryTests {
 		catch (BeanCreationException ex) {
 			assertThat(ex.toString().contains("touchy")).isTrue();
 			ex.printStackTrace();
-			assertThat(ex.getRelatedCauses()).isNotNull();
+			assertNull(ex.getRelatedCauses());
 		}
 	}
 
@@ -937,7 +937,7 @@ public class XmlBeanFactoryTests {
 
 		ConstructorDependenciesBean rod12 = (ConstructorDependenciesBean) xbf.getBean("rod12");
 		assertThat(rod12.getSpouse1()).isEqualTo(kerry1);
-		assertThat(rod12.getSpouse2()).isNotNull();
+		assertThat(rod12.getSpouse2()).isNull();
 
 		ConstructorDependenciesBean rod13 = (ConstructorDependenciesBean) xbf.getBean("rod13");
 		assertThat(rod13.getSpouse1()).isEqualTo(kerry1);
@@ -1345,7 +1345,9 @@ public class XmlBeanFactoryTests {
 		String backwards = new StringBuffer(forwards).reverse().toString();
 		assertThat(s.replaceMe(forwards)).isEqualTo(backwards);
 		// SPR-356: lookup methods & method replacers are not serializable.
-		assertThat(SerializationTestUtils.isSerializable(s)).as("Lookup methods and method replacers are not meant to be serializable.").isFalse();
+		assertFalse(
+				"Lookup methods and method replacers are not meant to be serializable.",
+				SerializationTestUtils.isSerializable(s));
 	}
 
 	@Test

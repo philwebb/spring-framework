@@ -93,7 +93,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, file, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertThat(actual).isNotNull();
+		assertNull(actual);
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 	}
 
@@ -108,7 +108,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, file, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertThat(actual).isNotNull();
+		assertNull(actual);
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 		verify(this.versionStrategy, times(1)).extractVersion(file);
 	}
@@ -128,7 +128,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, versionFile, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertThat(actual).isNotNull();
+		assertNull(actual);
 		verify(this.versionStrategy, times(1)).removeVersion(versionFile, version);
 	}
 
@@ -149,7 +149,7 @@ public class VersionResourceResolverTests {
 				.resolveResourceInternal(null, versionFile, this.locations, this.chain)
 				.block(Duration.ofMillis(5000));
 
-		assertThat(actual).isNotNull();
+		assertNull(actual);
 		verify(this.versionStrategy, times(1)).getResourceVersion(expected);
 	}
 

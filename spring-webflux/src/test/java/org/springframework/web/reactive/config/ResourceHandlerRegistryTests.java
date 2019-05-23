@@ -73,7 +73,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void noResourceHandlers() throws Exception {
 		this.registry = new ResourceHandlerRegistry(new GenericApplicationContext());
-		assertThat(this.registry.getHandlerMapping()).isNotNull();
+		assertNull(this.registry.getHandlerMapping());
 	}
 
 	@Test

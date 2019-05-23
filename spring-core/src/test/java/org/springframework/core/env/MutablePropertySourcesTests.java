@@ -99,7 +99,7 @@ public class MutablePropertySourcesTests {
 		assertThat(sources.size()).isEqualTo(6);
 		assertThat(sources.contains("a")).isFalse();
 
-		assertThat(sources.remove("a")).isNotNull();
+		assertNull(sources.remove("a"));
 		assertThat(sources.size()).isEqualTo(6);
 
 		String bogusPS = "bogus";

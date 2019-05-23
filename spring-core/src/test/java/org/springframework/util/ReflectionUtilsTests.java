@@ -75,7 +75,7 @@ public class ReflectionUtilsTests {
 		assertThat(testBean.getName()).isEqualTo("FooBar");
 
 		ReflectionUtils.setField(field, testBean, null);
-		assertThat(testBean.getName()).isNotNull();
+		assertNull(testBean.getName());
 	}
 
 	@Test
@@ -197,8 +197,8 @@ public class ReflectionUtilsTests {
 		assertThat(mc.getMethodNames().isEmpty()).isFalse();
 		assertThat(mc.getMethodNames().contains("clone")).as("Must find protected method on Object").isTrue();
 		assertThat(mc.getMethodNames().contains("finalize")).as("Must find protected method on Object").isTrue();
-		assertThat(mc.getMethodNames().contains("hashCode")).as("Public, not protected").isFalse();
-		assertThat(mc.getMethodNames().contains("absquatulate")).as("Public, not protected").isFalse();
+		assertFalse("Public, not protected", mc.getMethodNames().contains("hashCode"));
+		assertFalse("Public, not protected", mc.getMethodNames().contains("absquatulate"));
 	}
 
 	@Test

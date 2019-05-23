@@ -385,7 +385,7 @@ public class MvcNamespaceTests {
 			interceptor.preHandle(request, response, chain.getHandler());
 		}
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
-		assertThat(mv).isNotNull();
+		assertNull(mv);
 	}
 
 	@Test
@@ -505,7 +505,7 @@ public class MvcNamespaceTests {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
-		assertThat(mv).isNotNull();
+		assertNull(mv);
 	}
 
 	@Test
@@ -531,7 +531,7 @@ public class MvcNamespaceTests {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
-		assertThat(mv).isNotNull();
+		assertNull(mv);
 	}
 
 	@Test
@@ -589,7 +589,7 @@ public class MvcNamespaceTests {
 		assertThat(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor).isTrue();
 		assertThat(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor).isTrue();
 		ModelAndView mv = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
-		assertThat(mv.getViewName()).isNotNull();
+		assertNull(mv.getViewName());
 
 		request = new MockHttpServletRequest("GET", "/myapp/app/bar");
 		request.setContextPath("/myapp");
@@ -631,7 +631,7 @@ public class MvcNamespaceTests {
 		chain = mapping2.getHandler(request);
 		response = new MockHttpServletResponse();
 		mv = adapter.handle(request, response, chain.getHandler());
-		assertThat(mv).isNotNull();
+		assertThat(mv).isNull();
 		assertThat(response.getStatus()).isEqualTo(404);
 	}
 
@@ -897,8 +897,8 @@ public class MvcNamespaceTests {
 			assertThat(config.getAllowedOrigins().toArray()).isEqualTo(new String[]{"*"});
 			assertThat(config.getAllowedMethods().toArray()).isEqualTo(new String[]{"GET", "HEAD", "POST"});
 			assertThat(config.getAllowedHeaders().toArray()).isEqualTo(new String[]{"*"});
-			assertThat(config.getExposedHeaders()).isNotNull();
-			assertThat(config.getAllowCredentials()).isNotNull();
+			assertThat(config.getExposedHeaders()).isNull();
+			assertThat(config.getAllowCredentials()).isNull();
 			assertThat(config.getMaxAge()).isEqualTo(Long.valueOf(1800));
 		}
 	}
@@ -929,9 +929,9 @@ public class MvcNamespaceTests {
 			assertThat(config.getAllowedOrigins().toArray()).isEqualTo(new String[]{"https://domain1.com"});
 			assertThat(config.getAllowedMethods().toArray()).isEqualTo(new String[]{"GET", "HEAD", "POST"});
 			assertThat(config.getAllowedHeaders().toArray()).isEqualTo(new String[]{"*"});
-			assertThat(config.getExposedHeaders()).isNotNull();
-			assertThat(config.getAllowCredentials()).isNotNull();
-			assertThat(config.getMaxAge()).isEqualTo(Long.valueOf(1800));
+			assertThat(config.getExposedHeaders()).isNull();
+			assertThat(config.getAllowCredentials()).isNull();
+			assertThat(config.getMaxAge()).isEqualTo(1800L);
 		}
 	}
 

@@ -117,7 +117,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.getAnnotations().length).isEqualTo(0);
 		assertThat(desc.isCollection()).isTrue();
 		assertThat(desc.isArray()).isFalse();
-		assertThat(desc.getElementTypeDescriptor()).isNotNull();
+		assertNull(desc.getElementTypeDescriptor());
 		assertThat(desc.isMap()).isFalse();
 	}
 
@@ -293,7 +293,7 @@ public class TypeDescriptorTests {
 		assertThat(typeDescriptor.isArray()).isFalse();
 		assertThat(typeDescriptor.getType()).isEqualTo(List.class);
 		assertThat(typeDescriptor.getElementTypeDescriptor().getType()).isEqualTo(List.class);
-		assertThat(typeDescriptor.getElementTypeDescriptor().getElementTypeDescriptor()).isNotNull();
+		assertThat(typeDescriptor.getElementTypeDescriptor().getElementTypeDescriptor()).isNull();
 		assertThat(typeDescriptor.toString()).isEqualTo("java.util.List<java.util.List<?>>");
 	}
 
@@ -376,7 +376,7 @@ public class TypeDescriptorTests {
 		assertThat(typeDescriptor.isCollection()).isTrue();
 		assertThat(typeDescriptor.isArray()).isFalse();
 		assertThat(typeDescriptor.isMap()).isFalse();
-		assertThat(typeDescriptor.getElementTypeDescriptor()).isNotNull();
+		assertNull(typeDescriptor.getElementTypeDescriptor());
 	}
 
 	@Test
@@ -388,7 +388,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void forObjectNullTypeDescriptor() {
 		TypeDescriptor desc = TypeDescriptor.forObject(null);
-		assertThat(desc).isNotNull();
+		assertNull(desc);
 	}
 
 	@Test
@@ -418,13 +418,13 @@ public class TypeDescriptorTests {
 	@Test
 	public void nestedTooManyLevels() throws Exception {
 		TypeDescriptor t1 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test4", List.class), 0), 3);
-		assertThat(t1).isNotNull();
+		assertNull(t1);
 	}
 
 	@Test
 	public void nestedMethodParameterTypeNotNestable() throws Exception {
 		TypeDescriptor t1 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test5", String.class), 0), 2);
-		assertThat(t1).isNotNull();
+		assertNull(t1);
 	}
 
 	@Test
@@ -439,7 +439,7 @@ public class TypeDescriptorTests {
 		assertThat(t1.getType()).isEqualTo(List.class);
 		assertThat(t1.toString()).isEqualTo("java.util.List<?>");
 		TypeDescriptor t2 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test6", List.class), 0), 2);
-		assertThat(t2).isNotNull();
+		assertNull(t2);
 	}
 
 	@Test
@@ -720,7 +720,7 @@ public class TypeDescriptorTests {
 
 	@Test
 	public void createNullArray() throws Exception {
-		assertThat(TypeDescriptor.array(null)).isNotNull();
+		assertNull(TypeDescriptor.array(null));
 	}
 
 	@Test

@@ -711,7 +711,7 @@ public class DefaultConversionServiceTests {
 		@SuppressWarnings("unchecked")
 		List<Integer> bar = (List<Integer>) conversionService.convert(null,
 				TypeDescriptor.valueOf(LinkedHashSet.class), new TypeDescriptor(getClass().getField("genericList")));
-		assertThat(bar).isNotNull();
+		assertNull(bar);
 	}
 
 	@Test
@@ -894,7 +894,7 @@ public class DefaultConversionServiceTests {
 	public void convertObjectToObjectFinderMethodWithNull() {
 		TestEntity entity = (TestEntity) conversionService.convert(null,
 				TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(TestEntity.class));
-		assertThat(entity).isNotNull();
+		assertNull(entity);
 	}
 
 	@Test

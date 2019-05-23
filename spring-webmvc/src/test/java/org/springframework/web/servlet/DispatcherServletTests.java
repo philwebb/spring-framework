@@ -225,7 +225,7 @@ public class DispatcherServletTests {
 		MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
 		complexDispatcherServlet.service(multipartRequest, response);
 		multipartResolver.cleanupMultipart(multipartRequest);
-		assertThat(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)).isNotNull();
+		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
 		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
@@ -241,7 +241,7 @@ public class DispatcherServletTests {
 		MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
 		complexDispatcherServlet.service(new HttpServletRequestWrapper(multipartRequest), response);
 		multipartResolver.cleanupMultipart(multipartRequest);
-		assertThat(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)).isNotNull();
+		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
 		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
@@ -492,7 +492,8 @@ public class DispatcherServletTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
 
-		assertThat(response.getStatus() == HttpServletResponse.SC_NOT_FOUND).as("Matched through parent controller/handler pair: not response=" + response.getStatus()).isFalse();
+		assertFalse("Matched through parent controller/handler pair: not response=" + response.getStatus(),
+				response.getStatus() == HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@Test
@@ -606,8 +607,8 @@ public class DispatcherServletTests {
 		assertThat(request.getAttribute("test1")).isEqualTo("value1");
 		assertThat(request.getAttribute("test2")).isEqualTo("value2");
 		assertThat(request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isEqualTo(wac);
-		assertThat(request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isNotNull();
-		assertThat(request.getAttribute("command")).isNotNull();
+		assertThat(request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)).isNull();
+		assertThat(request.getAttribute("command")).isNull();
 	}
 
 	@Test
@@ -662,7 +663,7 @@ public class DispatcherServletTests {
 		assertThat(myServlet.getServletConfig().getServletName()).isEqualTo("complex");
 		assertThat(myServlet.getServletConfig().getServletContext()).isEqualTo(getServletContext());
 		complexDispatcherServlet.destroy();
-		assertThat(myServlet.getServletConfig()).isNotNull();
+		assertNull(myServlet.getServletConfig());
 	}
 
 	@Test

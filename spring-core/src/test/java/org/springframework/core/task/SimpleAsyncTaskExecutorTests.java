@@ -45,7 +45,7 @@ public class SimpleAsyncTaskExecutorTests {
 	@Test
 	public void throttleIsNotActiveByDefault() throws Exception {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
-		assertThat(executor.isThrottleActive()).as("Concurrency throttle must not default to being active (on)").isFalse();
+		assertFalse("Concurrency throttle must not default to being active (on)", executor.isThrottleActive());
 	}
 
 	@Test

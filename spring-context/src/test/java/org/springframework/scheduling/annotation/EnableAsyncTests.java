@@ -232,7 +232,7 @@ public class EnableAsyncTests {
 		Method method = ReflectionUtils.findMethod(AsyncBean.class, "fail");
 		TestableAsyncUncaughtExceptionHandler exceptionHandler =
 				(TestableAsyncUncaughtExceptionHandler) ctx.getBean("exceptionHandler");
-		assertThat(exceptionHandler.isCalled()).as("handler should not have been called yet").isFalse();
+		assertFalse("handler should not have been called yet", exceptionHandler.isCalled());
 		// Act
 		asyncBean.fail();
 		// Assert
@@ -270,7 +270,7 @@ public class EnableAsyncTests {
 		AsyncBean asyncBean = ctx.getBean(AsyncBean.class);
 		TestableAsyncUncaughtExceptionHandler exceptionHandler =
 				(TestableAsyncUncaughtExceptionHandler) ctx.getBean("exceptionHandler");
-		assertThat(exceptionHandler.isCalled()).as("handler should not have been called yet").isFalse();
+		assertFalse("handler should not have been called yet", exceptionHandler.isCalled());
 		Method method = ReflectionUtils.findMethod(AsyncBean.class, "fail");
 		// Act
 		asyncBean.fail();

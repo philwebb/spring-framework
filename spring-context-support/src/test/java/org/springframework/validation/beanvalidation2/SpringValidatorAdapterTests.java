@@ -238,7 +238,7 @@ public class SpringValidatorAdapterTests {
 		validatorAdapter.validate(bean, errors);
 
 		assertThat(errors.getFieldErrorCount("property[4]")).isEqualTo(1);
-		assertThat(errors.getFieldValue("property[4]")).isNotNull();
+		assertNull(errors.getFieldValue("property[4]"));
 	}
 
 	@Test  // SPR-15839
@@ -253,7 +253,7 @@ public class SpringValidatorAdapterTests {
 		validatorAdapter.validate(bean, errors);
 
 		assertThat(errors.getFieldErrorCount("property[no value can be]")).isEqualTo(1);
-		assertThat(errors.getFieldValue("property[no value can be]")).isNotNull();
+		assertNull(errors.getFieldValue("property[no value can be]"));
 	}
 
 	@Test  // SPR-15839
@@ -268,7 +268,7 @@ public class SpringValidatorAdapterTests {
 		validatorAdapter.validate(bean, errors);
 
 		assertThat(errors.hasFieldErrors("property[]")).isTrue();
-		assertThat(errors.getFieldValue("property[]")).isNotNull();
+		assertNull(errors.getFieldValue("property[]"));
 	}
 
 

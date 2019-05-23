@@ -313,7 +313,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat(mav).isNotNull();
+		assertThat(mav).isNull();
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 	}
@@ -329,7 +329,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat(mav).isNotNull();
+		assertThat(mav).isNull();
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Error count [1]");
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 	}
@@ -345,7 +345,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat(mav).isNotNull();
+		assertThat(mav).isNull();
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
 		assertThat(response.getHeader("header")).isEqualTo("headerValue");
@@ -363,7 +363,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleHttpEntityWithCacheControl", parameterTypes);
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat(mav).isNotNull();
+		assertThat(mav).isNull();
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
 		assertThat(response.getHeaderValues("Cache-Control")).containsExactly("max-age=3600");

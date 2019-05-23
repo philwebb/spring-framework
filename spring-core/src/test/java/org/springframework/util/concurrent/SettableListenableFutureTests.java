@@ -220,7 +220,7 @@ public class SettableListenableFutureTests {
 	@Test
 	public void nullIsAcceptedAsValueToSet() throws ExecutionException, InterruptedException {
 		settableListenableFuture.set(null);
-		assertThat(settableListenableFuture.get()).isNotNull();
+		assertNull(settableListenableFuture.get());
 		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}

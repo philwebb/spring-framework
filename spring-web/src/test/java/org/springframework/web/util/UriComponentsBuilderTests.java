@@ -145,13 +145,13 @@ public class UriComponentsBuilderTests {
 	public void fromUriString() {
 		UriComponents result = UriComponentsBuilder.fromUriString("https://www.ietf.org/rfc/rfc3986.txt").build();
 		assertThat(result.getScheme()).isEqualTo("https");
-		assertThat(result.getUserInfo()).isNotNull();
+		assertThat(result.getUserInfo()).isNull();
 		assertThat(result.getHost()).isEqualTo("www.ietf.org");
 		assertThat(result.getPort()).isEqualTo(-1);
 		assertThat(result.getPath()).isEqualTo("/rfc/rfc3986.txt");
 		assertThat(result.getPathSegments()).isEqualTo(Arrays.asList("rfc", "rfc3986.txt"));
-		assertThat(result.getQuery()).isNotNull();
-		assertThat(result.getFragment()).isNotNull();
+		assertThat(result.getQuery()).isNull();
+		assertThat(result.getFragment()).isNull();
 
 		String url = "https://arjen:foobar@java.sun.com:80" +
 				"/javase/6/docs/api/java/util/BitSet.html?foo=bar#and(java.util.BitSet)";
@@ -169,21 +169,21 @@ public class UriComponentsBuilderTests {
 
 		result = UriComponentsBuilder.fromUriString("mailto:java-net@java.sun.com#baz").build();
 		assertThat(result.getScheme()).isEqualTo("mailto");
-		assertThat(result.getUserInfo()).isNotNull();
-		assertThat(result.getHost()).isNotNull();
+		assertThat(result.getUserInfo()).isNull();
+		assertThat(result.getHost()).isNull();
 		assertThat(result.getPort()).isEqualTo(-1);
 		assertThat(result.getSchemeSpecificPart()).isEqualTo("java-net@java.sun.com");
-		assertThat(result.getPath()).isNotNull();
-		assertThat(result.getQuery()).isNotNull();
+		assertThat(result.getPath()).isNull();
+		assertThat(result.getQuery()).isNull();
 		assertThat(result.getFragment()).isEqualTo("baz");
 
 		result = UriComponentsBuilder.fromUriString("docs/guide/collections/designfaq.html#28").build();
-		assertThat(result.getScheme()).isNotNull();
-		assertThat(result.getUserInfo()).isNotNull();
-		assertThat(result.getHost()).isNotNull();
+		assertThat(result.getScheme()).isNull();
+		assertThat(result.getUserInfo()).isNull();
+		assertThat(result.getHost()).isNull();
 		assertThat(result.getPort()).isEqualTo(-1);
 		assertThat(result.getPath()).isEqualTo("docs/guide/collections/designfaq.html");
-		assertThat(result.getQuery()).isNotNull();
+		assertThat(result.getQuery()).isNull();
 		assertThat(result.getFragment()).isEqualTo("28");
 	}
 

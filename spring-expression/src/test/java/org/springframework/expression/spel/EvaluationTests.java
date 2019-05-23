@@ -86,7 +86,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 
 		Object o = parser.parseExpression("map['a']").getValue(ctx);
-		assertThat(o).isNotNull();
+		assertNull(o);
 		o = parser.parseExpression("map").getValue(ctx);
 		assertThat(o).isNotNull();
 
@@ -589,13 +589,13 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser();
 
 		Expression e = parser.parseExpression("null");
-		assertThat(e.getValue()).isNotNull();
+		assertNull(e.getValue());
 
 		e = parser.parseExpression("NULL");
-		assertThat(e.getValue()).isNotNull();
+		assertNull(e.getValue());
 
 		e = parser.parseExpression("NuLl");
-		assertThat(e.getValue()).isNotNull();
+		assertNull(e.getValue());
 	}
 
 	/**

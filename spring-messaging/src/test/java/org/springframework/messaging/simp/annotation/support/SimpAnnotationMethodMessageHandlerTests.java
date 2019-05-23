@@ -148,8 +148,8 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		assertThat(this.testController.method).isEqualTo("optionalHeaders");
-		assertThat(this.testController.arguments.get("foo1")).isNotNull();
-		assertThat(this.testController.arguments.get("foo2")).isNotNull();
+		assertThat(this.testController.arguments.get("foo1")).isNull();
+		assertThat(this.testController.arguments.get("foo2")).isNull();
 	}
 
 	@Test

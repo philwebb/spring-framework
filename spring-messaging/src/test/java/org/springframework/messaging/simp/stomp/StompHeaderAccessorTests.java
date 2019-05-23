@@ -205,8 +205,8 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.SEND);
 		MessageHeaders headers = headerAccessor.getMessageHeaders();
 
-		assertThat(headers.getId()).isNotNull();
-		assertThat(headers.getTimestamp()).isNotNull();
+		assertNull(headers.getId());
+		assertNull(headers.getTimestamp());
 	}
 
 	@Test

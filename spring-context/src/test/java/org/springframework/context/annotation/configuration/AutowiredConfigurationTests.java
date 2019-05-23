@@ -174,10 +174,10 @@ public class AutowiredConfigurationTests {
 		System.clearProperty("myProp");
 
 		TestBean testBean = context.getBean("testBean", TestBean.class);
-		assertThat(testBean.getName()).isNotNull();
+		assertNull(testBean.getName());
 
 		testBean = context.getBean("testBean2", TestBean.class);
-		assertThat(testBean.getName()).isNotNull();
+		assertNull(testBean.getName());
 
 		System.setProperty("myProp", "foo");
 
@@ -190,10 +190,10 @@ public class AutowiredConfigurationTests {
 		System.clearProperty("myProp");
 
 		testBean = context.getBean("testBean", TestBean.class);
-		assertThat(testBean.getName()).isNotNull();
+		assertNull(testBean.getName());
 
 		testBean = context.getBean("testBean2", TestBean.class);
-		assertThat(testBean.getName()).isNotNull();
+		assertNull(testBean.getName());
 	}
 
 	@Test

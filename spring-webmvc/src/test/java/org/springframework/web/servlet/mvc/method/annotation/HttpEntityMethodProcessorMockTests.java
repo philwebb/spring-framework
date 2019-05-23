@@ -220,7 +220,7 @@ public class HttpEntityMethodProcessorMockTests {
 		Object result = processor.resolveArgument(paramRequestEntity, mavContainer, webRequest, null);
 
 		assertThat(result instanceof RequestEntity).isTrue();
-		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
+		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
 		RequestEntity<?> requestEntity = (RequestEntity<?>) result;
 		assertThat(requestEntity.getMethod()).as("Invalid method").isEqualTo(HttpMethod.GET);
 		// using default port (which is 80), so do not need to append the port (-1 means ignore)

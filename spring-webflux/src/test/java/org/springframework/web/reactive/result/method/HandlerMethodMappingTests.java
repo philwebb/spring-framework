@@ -136,7 +136,7 @@ public class HandlerMethodMappingTests {
 		this.mapping.unregisterMapping(key);
 		result = this.mapping.getHandler(MockServerWebExchange.from(MockServerHttpRequest.get(key)));
 
-		assertThat(result.block()).isNotNull();
+		assertNull(result.block());
 		assertThat(this.mapping.getMappingRegistry().getMappings().keySet()).isNotEqualTo(Matchers.contains(key));
 	}
 

@@ -83,8 +83,8 @@ public class ContextLoaderTests {
 		assertThat(context.containsBean("beans1.bean2")).isFalse();
 		listener.contextDestroyed(event);
 		assertThat(lb.isDestroyed()).as("Destroyed").isTrue();
-		assertThat(sc.getAttribute(contextAttr)).isNotNull();
-		assertThat(WebApplicationContextUtils.getWebApplicationContext(sc)).isNotNull();
+		assertThat(sc.getAttribute(contextAttr)).isNull();
+		assertThat(WebApplicationContextUtils.getWebApplicationContext(sc)).isNull();
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class ContextLoaderTests {
 		ServletContextListener listener = new ContextLoaderListener() {
 			@Override
 			protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
-				assertThat(sc).as("The ServletContext should not be null.").isNotNull();
+				assertThat(sc).as("The ServletContext should not be null.").isNull();
 				assertThat(sc).as("Verifying that we received the expected ServletContext.").isEqualTo(sc);
 				assertThat(wac.isActive()).as("The ApplicationContext should not yet have been refreshed.").isFalse();
 				buffer.append(expectedContents);
