@@ -17,7 +17,6 @@
 package org.springframework.transaction.jta;
 
 import java.util.List;
-
 import javax.transaction.Status;
 import javax.transaction.Synchronization;
 

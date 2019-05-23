@@ -19,7 +19,6 @@ package org.springframework.test.web.servlet.htmlunit;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
 import javax.servlet.http.Cookie;
 
 import com.gargoylesoftware.htmlunit.WebRequest;

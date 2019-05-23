@@ -18,7 +18,6 @@ package org.springframework.cache.jcache;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 

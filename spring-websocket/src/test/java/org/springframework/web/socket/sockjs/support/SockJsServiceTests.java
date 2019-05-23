@@ -19,7 +19,6 @@ package org.springframework.web.socket.sockjs.support;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 

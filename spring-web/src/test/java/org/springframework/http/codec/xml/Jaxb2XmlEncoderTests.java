@@ -19,7 +19,6 @@ package org.springframework.http.codec.xml;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;

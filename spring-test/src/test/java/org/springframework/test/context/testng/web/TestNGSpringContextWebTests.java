@@ -17,7 +17,6 @@
 package org.springframework.test.context.testng.web;
 
 import java.io.File;
-
 import javax.servlet.ServletContext;
 
 import org.testng.annotations.Test;

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
-
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.BeanUtils;

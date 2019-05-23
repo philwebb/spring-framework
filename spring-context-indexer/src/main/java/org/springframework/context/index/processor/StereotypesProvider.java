@@ -17,7 +17,6 @@
 package org.springframework.context.index.processor;
 
 import java.util.Set;
-
 import javax.lang.model.element.Element;
 
 /**

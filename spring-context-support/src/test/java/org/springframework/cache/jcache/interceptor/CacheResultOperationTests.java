@@ -19,7 +19,6 @@ package org.springframework.cache.jcache.interceptor;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
-
 import javax.cache.annotation.CacheInvocationParameter;
 import javax.cache.annotation.CacheKey;
 import javax.cache.annotation.CacheMethodDetails;

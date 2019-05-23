@@ -22,7 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
 import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;

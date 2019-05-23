@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 

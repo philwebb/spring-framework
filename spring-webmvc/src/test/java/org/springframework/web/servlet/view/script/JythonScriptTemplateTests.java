@@ -18,7 +18,6 @@ package org.springframework.web.servlet.view.script;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.ServletContext;
 
 import org.junit.Before;

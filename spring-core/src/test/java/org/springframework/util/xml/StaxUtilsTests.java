@@ -18,7 +18,6 @@ package org.springframework.util.xml;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;

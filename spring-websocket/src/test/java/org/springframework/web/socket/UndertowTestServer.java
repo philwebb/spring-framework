@@ -18,7 +18,6 @@ package org.springframework.web.socket;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;

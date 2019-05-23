@@ -18,7 +18,6 @@ package org.springframework.messaging.converter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.Before;

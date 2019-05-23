@@ -17,7 +17,6 @@
 package org.springframework.context.annotation;
 
 import java.util.Map;
-
 import javax.management.MBeanServer;
 import javax.naming.NamingException;
 

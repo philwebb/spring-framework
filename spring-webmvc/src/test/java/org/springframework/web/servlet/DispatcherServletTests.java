@@ -18,7 +18,6 @@ package org.springframework.web.servlet;
 
 import java.io.IOException;
 import java.util.Locale;
-
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;

@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
-
 import javax.servlet.ServletException;
 
 import org.junit.Before;

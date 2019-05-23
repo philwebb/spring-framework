@@ -23,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import javax.security.auth.Subject;
 
 import com.fasterxml.jackson.annotation.JsonView;

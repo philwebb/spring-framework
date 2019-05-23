@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.naming.Binding;
 import javax.naming.Context;
 import javax.naming.InitialContext;

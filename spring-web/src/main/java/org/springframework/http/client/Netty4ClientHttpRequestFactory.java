@@ -19,7 +19,6 @@ package org.springframework.http.client;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
-
 import javax.net.ssl.SSLException;
 
 import io.netty.bootstrap.Bootstrap;

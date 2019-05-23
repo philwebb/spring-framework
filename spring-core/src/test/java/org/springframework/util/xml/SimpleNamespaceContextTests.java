@@ -19,7 +19,6 @@ package org.springframework.util.xml;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import javax.xml.XMLConstants;
 
 import org.junit.Test;

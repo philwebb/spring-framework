@@ -17,7 +17,6 @@
 package org.springframework.web.servlet.resource;
 
 import java.util.Collections;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.io.Resource;

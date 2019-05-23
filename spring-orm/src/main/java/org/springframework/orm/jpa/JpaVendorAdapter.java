@@ -18,7 +18,6 @@ package org.springframework.orm.jpa;
 
 import java.util.Collections;
 import java.util.Map;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceProvider;

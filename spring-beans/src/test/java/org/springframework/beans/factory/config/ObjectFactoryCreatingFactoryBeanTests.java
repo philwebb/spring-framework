@@ -17,7 +17,6 @@
 package org.springframework.beans.factory.config;
 
 import java.util.Date;
-
 import javax.inject.Provider;
 
 import org.junit.After;

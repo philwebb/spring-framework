@@ -17,7 +17,6 @@
 package org.springframework.web.servlet.config.annotation;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 
 import org.junit.Test;

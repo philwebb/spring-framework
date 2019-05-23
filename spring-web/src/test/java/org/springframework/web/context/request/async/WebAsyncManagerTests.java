@@ -18,7 +18,6 @@ package org.springframework.web.context.request.async;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;

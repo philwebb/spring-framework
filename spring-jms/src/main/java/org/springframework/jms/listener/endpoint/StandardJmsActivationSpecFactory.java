@@ -17,7 +17,6 @@
 package org.springframework.jms.listener.endpoint;
 
 import java.util.Map;
-
 import javax.jms.JMSException;
 import javax.jms.Queue;
 import javax.jms.Session;

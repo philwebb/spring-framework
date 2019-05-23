@@ -18,7 +18,6 @@ package org.springframework.test.util;
 
 import java.io.StringReader;
 import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;

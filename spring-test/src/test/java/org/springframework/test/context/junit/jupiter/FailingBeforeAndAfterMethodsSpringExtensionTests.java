@@ -19,7 +19,6 @@ package org.springframework.test.context.junit.jupiter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.DynamicTest;

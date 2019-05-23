@@ -18,7 +18,6 @@ package org.springframework.scheduling.concurrent;
 
 import java.util.Properties;
 import java.util.concurrent.Executor;
-
 import javax.naming.NamingException;
 
 import org.springframework.beans.factory.InitializingBean;

@@ -19,7 +19,6 @@ package org.springframework.web.servlet.mvc.method.annotation;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.lang.reflect.Method;
-
 import javax.servlet.ServletResponse;
 
 import org.junit.Before;

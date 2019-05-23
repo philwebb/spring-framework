@@ -17,7 +17,6 @@
 package org.springframework.util.xml;
 
 import java.io.StringWriter;
-
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;

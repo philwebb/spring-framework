@@ -17,7 +17,6 @@
 package org.springframework.test.web.servlet.request;
 
 import java.net.URI;
-
 import javax.servlet.DispatcherType;
 
 import org.springframework.http.HttpMethod;

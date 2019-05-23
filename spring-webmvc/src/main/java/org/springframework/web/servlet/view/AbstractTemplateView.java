@@ -19,7 +19,6 @@ package org.springframework.web.servlet.view;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

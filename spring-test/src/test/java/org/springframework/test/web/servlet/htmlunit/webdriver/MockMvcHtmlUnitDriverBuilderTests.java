@@ -17,7 +17,6 @@
 package org.springframework.test.web.servlet.htmlunit.webdriver;
 
 import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.gargoylesoftware.htmlunit.util.Cookie;

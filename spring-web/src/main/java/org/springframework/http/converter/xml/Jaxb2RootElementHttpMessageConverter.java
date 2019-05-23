@@ -17,7 +17,6 @@
 package org.springframework.http.converter.xml;
 
 import java.io.StringReader;
-
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;

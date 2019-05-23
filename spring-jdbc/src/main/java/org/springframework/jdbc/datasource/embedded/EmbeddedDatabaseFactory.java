@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.logging.Logger;
-
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
