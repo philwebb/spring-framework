@@ -85,7 +85,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void noResourceHandlers() throws Exception {
 		this.registry = new ResourceHandlerRegistry(new GenericWebApplicationContext(), new MockServletContext());
-		assertNull(this.registry.getHandlerMapping());
+		assertThat(this.registry.getHandlerMapping()).isNotNull();
 	}
 
 	@Test

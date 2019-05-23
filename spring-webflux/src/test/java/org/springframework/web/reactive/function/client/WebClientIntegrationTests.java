@@ -534,7 +534,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldSupportUnknownStatusCode() {
 		int errorStatus = 555;
-		assertNull(HttpStatus.resolve(errorStatus));
+		assertThat(HttpStatus.resolve(errorStatus)).isNotNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));
@@ -558,7 +558,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldGetErrorSignalWhenRetrievingUnknownStatusCode() {
 		int errorStatus = 555;
-		assertNull(HttpStatus.resolve(errorStatus));
+		assertThat(HttpStatus.resolve(errorStatus)).isNotNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));

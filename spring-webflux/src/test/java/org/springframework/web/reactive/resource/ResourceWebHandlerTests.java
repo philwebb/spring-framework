@@ -120,7 +120,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.css");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat(exchange.getResponse().getStatusCode()).isNotNull();
 		HttpHeaders headers = exchange.getResponse().getHeaders();
 		assertEquals(MediaType.parseMediaType("text/css"), headers.getContentType());
 		assertEquals(17, headers.getContentLength());
@@ -141,7 +141,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.css");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat(exchange.getResponse().getStatusCode()).isNotNull();
 		assertEquals("GET,HEAD,OPTIONS", exchange.getResponse().getHeaders().getFirst("Allow"));
 	}
 
@@ -417,7 +417,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.css");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat(exchange.getResponse().getStatusCode()).isNotNull();
 		assertResponseBody(exchange, "h1 { color:red; }");
 	}
 

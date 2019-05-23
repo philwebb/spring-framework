@@ -265,7 +265,7 @@ public class ProxyFactoryBeanTests {
 		assertEquals(INITIAL_COUNT + 1, prototype2FirstInstance.getCount());
 
 		SideEffectBean prototype2SecondInstance = (SideEffectBean) bf.getBean(beanName);
-		assertFalse("Prototypes are not ==", prototype2FirstInstance == prototype2SecondInstance);
+		assertThat(prototype2FirstInstance == prototype2SecondInstance).as("Prototypes are not ==").isFalse();
 		assertEquals(INITIAL_COUNT, prototype2SecondInstance.getCount());
 		assertEquals(INITIAL_COUNT + 1, prototype2FirstInstance.getCount());
 
@@ -276,7 +276,7 @@ public class ProxyFactoryBeanTests {
 	public void testCglibPrototypeInstance() {
 		Object prototype = testPrototypeInstancesAreIndependent("cglibPrototype");
 		assertThat(AopUtils.isCglibProxy(prototype)).as("It's a cglib proxy").isTrue();
-		assertFalse("It's not a dynamic proxy", AopUtils.isJdkDynamicProxy(prototype));
+		assertThat(AopUtils.isJdkDynamicProxy(prototype)).as("It's not a dynamic proxy").isFalse();
 	}
 
 	/**
@@ -537,7 +537,7 @@ public class ProxyFactoryBeanTests {
 		((Advised) p).addAdvice(nop);
 		// Check it still works
 		assertEquals(p2.getName(), p2.getName());
-		assertFalse("Not serializable because an interceptor isn't serializable", SerializationTestUtils.isSerializable(p));
+		assertThat(SerializationTestUtils.isSerializable(p)).as("Not serializable because an interceptor isn't serializable").isFalse();
 
 		// Remove offending interceptor...
 		assertThat(((Advised) p).removeAdvice(nop)).isTrue();
@@ -574,7 +574,7 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
 		Person p = (Person) bf.getBean("interceptorNotSerializableSingleton");
-		assertFalse("Not serializable because an interceptor isn't serializable", SerializationTestUtils.isSerializable(p));
+		assertThat(SerializationTestUtils.isSerializable(p)).as("Not serializable because an interceptor isn't serializable").isFalse();
 	}
 
 	@Test

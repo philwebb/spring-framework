@@ -70,8 +70,6 @@ import org.springframework.util.StopWatch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -814,7 +812,7 @@ public class XmlBeanFactoryTests {
 
 		DependenciesBean rod5 = (DependenciesBean) xbf.getBean("rod5");
 		// Should not have been autowired
-		assertNull(rod5.getSpouse());
+		assertThat(rod5.getSpouse()).isNotNull();
 
 		BeanFactory appCtx = (BeanFactory) xbf.getBean("childAppCtx");
 		assertThat(appCtx.containsBean("rod1")).isTrue();
@@ -916,7 +914,7 @@ public class XmlBeanFactoryTests {
 		catch (BeanCreationException ex) {
 			assertThat(ex.toString().contains("touchy")).isTrue();
 			ex.printStackTrace();
-			assertNull(ex.getRelatedCauses());
+			assertThat(ex.getRelatedCauses()).isNotNull();
 		}
 	}
 
@@ -944,7 +942,7 @@ public class XmlBeanFactoryTests {
 
 		ConstructorDependenciesBean rod12 = (ConstructorDependenciesBean) xbf.getBean("rod12");
 		assertEquals(kerry1, rod12.getSpouse1());
-		assertNull(rod12.getSpouse2());
+		assertThat(rod12.getSpouse2()).isNotNull();
 
 		ConstructorDependenciesBean rod13 = (ConstructorDependenciesBean) xbf.getBean("rod13");
 		assertEquals(kerry1, rod13.getSpouse1());
@@ -1355,9 +1353,7 @@ public class XmlBeanFactoryTests {
 		String backwards = new StringBuffer(forwards).reverse().toString();
 		assertEquals(backwards, s.replaceMe(forwards));
 		// SPR-356: lookup methods & method replacers are not serializable.
-		assertFalse(
-				"Lookup methods and method replacers are not meant to be serializable.",
-				SerializationTestUtils.isSerializable(s));
+		assertThat(SerializationTestUtils.isSerializable(s)).as("Lookup methods and method replacers are not meant to be serializable.").isFalse();
 	}
 
 	@Test

@@ -96,7 +96,7 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 	public void actualRequestWithoutCorsEnabled() throws Exception {
 		ResponseEntity<String> entity = performGet("/welcome", this.headers, String.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
-		assertNull(entity.getHeaders().getAccessControlAllowOrigin());
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isNotNull();
 		assertEquals("welcome", entity.getBody());
 	}
 

@@ -149,13 +149,13 @@ public class UriComponentsBuilderTests {
 	public void fromUriString() {
 		UriComponents result = UriComponentsBuilder.fromUriString("https://www.ietf.org/rfc/rfc3986.txt").build();
 		assertEquals("https", result.getScheme());
-		assertNull(result.getUserInfo());
+		assertThat(result.getUserInfo()).isNotNull();
 		assertEquals("www.ietf.org", result.getHost());
 		assertEquals(-1, result.getPort());
 		assertEquals("/rfc/rfc3986.txt", result.getPath());
 		assertEquals(Arrays.asList("rfc", "rfc3986.txt"), result.getPathSegments());
-		assertNull(result.getQuery());
-		assertNull(result.getFragment());
+		assertThat(result.getQuery()).isNotNull();
+		assertThat(result.getFragment()).isNotNull();
 
 		String url = "https://arjen:foobar@java.sun.com:80" +
 				"/javase/6/docs/api/java/util/BitSet.html?foo=bar#and(java.util.BitSet)";
@@ -173,21 +173,21 @@ public class UriComponentsBuilderTests {
 
 		result = UriComponentsBuilder.fromUriString("mailto:java-net@java.sun.com#baz").build();
 		assertEquals("mailto", result.getScheme());
-		assertNull(result.getUserInfo());
-		assertNull(result.getHost());
+		assertThat(result.getUserInfo()).isNotNull();
+		assertThat(result.getHost()).isNotNull();
 		assertEquals(-1, result.getPort());
 		assertEquals("java-net@java.sun.com", result.getSchemeSpecificPart());
-		assertNull(result.getPath());
-		assertNull(result.getQuery());
+		assertThat(result.getPath()).isNotNull();
+		assertThat(result.getQuery()).isNotNull();
 		assertEquals("baz", result.getFragment());
 
 		result = UriComponentsBuilder.fromUriString("docs/guide/collections/designfaq.html#28").build();
-		assertNull(result.getScheme());
-		assertNull(result.getUserInfo());
-		assertNull(result.getHost());
+		assertThat(result.getScheme()).isNotNull();
+		assertThat(result.getUserInfo()).isNotNull();
+		assertThat(result.getHost()).isNotNull();
 		assertEquals(-1, result.getPort());
 		assertEquals("docs/guide/collections/designfaq.html", result.getPath());
-		assertNull(result.getQuery());
+		assertThat(result.getQuery()).isNotNull();
 		assertEquals("28", result.getFragment());
 	}
 

@@ -96,7 +96,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 				converter.canWrite(RootElementSubclass.class, null));
 		assertTrue("Converter does not support writing @XmlRootElement subclass",
 				converter.canWrite(rootElementCglib.getClass(), null));
-		assertFalse("Converter supports writing @XmlType", converter.canWrite(Type.class, null));
+		assertThat(converter.canWrite(Type.class, null)).as("Converter supports writing @XmlType").isFalse();
 	}
 
 	@Test

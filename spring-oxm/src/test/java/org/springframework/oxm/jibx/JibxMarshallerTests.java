@@ -106,7 +106,7 @@ public class JibxMarshallerTests extends AbstractMarshallerTests<JibxMarshaller>
 	public void supports() throws Exception {
 		assertThat(marshaller.supports(Flights.class)).as("JibxMarshaller does not support Flights").isTrue();
 		assertThat(marshaller.supports(FlightType.class)).as("JibxMarshaller does not support FlightType").isTrue();
-		assertFalse("JibxMarshaller supports illegal type", marshaller.supports(getClass()));
+		assertThat(marshaller.supports(getClass())).as("JibxMarshaller supports illegal type").isFalse();
 	}
 
 }

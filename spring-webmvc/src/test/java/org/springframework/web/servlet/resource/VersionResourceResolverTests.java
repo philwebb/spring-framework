@@ -85,7 +85,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.emptyMap());
 		Resource actual = this.resolver.resolveResourceInternal(null, file, this.locations, this.chain);
-		assertNull(actual);
+		assertThat(actual).isNotNull();
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 	}
 
@@ -97,7 +97,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(null, file, this.locations, this.chain);
-		assertNull(actual);
+		assertThat(actual).isNotNull();
 		verify(this.chain, times(1)).resolveResource(null, file, this.locations);
 		verify(this.versionStrategy, times(1)).extractVersion(file);
 	}
@@ -114,7 +114,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(null, versionFile, this.locations, this.chain);
-		assertNull(actual);
+		assertThat(actual).isNotNull();
 		verify(this.versionStrategy, times(1)).removeVersion(versionFile, version);
 	}
 
@@ -132,7 +132,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.setStrategyMap(Collections.singletonMap("/**", this.versionStrategy));
 		Resource actual = this.resolver.resolveResourceInternal(null, versionFile, this.locations, this.chain);
-		assertNull(actual);
+		assertThat(actual).isNotNull();
 		verify(this.versionStrategy, times(1)).getResourceVersion(expected);
 	}
 

@@ -98,7 +98,7 @@ public class ResourceUrlProviderTests {
 		request.setRequestURI("/contextpath-longer-than-request-path/style.css");
 		String url = "/resources/foo.css";
 		String resolvedUrl = this.urlProvider.getForRequestUrl(request, url);
-		assertNull(resolvedUrl);
+		assertThat(resolvedUrl).isNotNull();
 	}
 
 	@Test

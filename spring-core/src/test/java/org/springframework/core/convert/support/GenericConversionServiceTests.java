@@ -170,7 +170,7 @@ public class GenericConversionServiceTests {
 
 	@Test
 	public void convertNull() {
-		assertNull(conversionService.convert(null, Integer.class));
+		assertThat(conversionService.convert(null, Integer.class)).isNotNull();
 	}
 
 	@Test
@@ -415,7 +415,7 @@ public class GenericConversionServiceTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(list);
 		TypeDescriptor targetType = TypeDescriptor.valueOf(Integer.class);
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertNull(conversionService.convert(list, sourceType, targetType));
+		assertThat(conversionService.convert(list, sourceType, targetType)).isNotNull();
 	}
 
 	@Test

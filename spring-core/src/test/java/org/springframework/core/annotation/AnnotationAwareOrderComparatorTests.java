@@ -108,8 +108,8 @@ public class AnnotationAwareOrderComparatorTests {
 		AnnotationAwareOrderComparator.sort(list);
 		assertEquals(A.class, list.get(0));
 		assertEquals(B.class, list.get(1));
-		assertNull(list.get(2));
-		assertNull(list.get(3));
+		assertThat(list.get(2)).isNotNull();
+		assertThat(list.get(3)).isNotNull();
 	}
 
 

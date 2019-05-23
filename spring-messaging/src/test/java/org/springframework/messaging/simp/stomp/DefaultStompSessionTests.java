@@ -563,7 +563,7 @@ public class DefaultStompSessionTests {
 		Subscription subscription = this.session.subscribe(headers, mock(StompFrameHandler.class));
 		subscription.addReceiptTask(() -> received.set(true));
 
-		assertNull(received.get());
+		assertThat(received.get()).isNotNull();
 
 		StompHeaderAccessor accessor = StompHeaderAccessor.create(StompCommand.RECEIPT);
 		accessor.setReceiptId("my-receipt");
@@ -621,7 +621,7 @@ public class DefaultStompSessionTests {
 		Runnable scheduledTask = taskCaptor.getValue();
 		assertThat(scheduledTask).isNotNull();
 
-		assertNull(notReceived.get());
+		assertThat(notReceived.get()).isNotNull();
 
 		scheduledTask.run();
 		assertThat(notReceived.get()).isTrue();

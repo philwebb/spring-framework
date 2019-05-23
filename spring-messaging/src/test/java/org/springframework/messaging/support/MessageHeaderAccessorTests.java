@@ -118,7 +118,7 @@ public class MessageHeaderAccessorTests {
 
 		MessageHeaders actual = accessor.getMessageHeaders();
 		assertEquals(2, actual.size());
-		assertNull(actual.get("foo"));
+		assertThat(actual.get("foo")).isNotNull();
 		assertEquals("baz", actual.get("bar"));
 	}
 
@@ -272,7 +272,7 @@ public class MessageHeaderAccessorTests {
 	@Test
 	public void timestampDefaultBehavior() {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor();
-		assertNull(accessor.getMessageHeaders().getTimestamp());
+		assertThat(accessor.getMessageHeaders().getTimestamp()).isNotNull();
 	}
 
 	@Test
@@ -298,8 +298,8 @@ public class MessageHeaderAccessorTests {
 		accessor.setLeaveMutable(true);
 		MessageHeaders headers = accessor.getMessageHeaders();
 
-		assertNull(headers.getId());
-		assertNull(headers.getTimestamp());
+		assertThat(headers.getId()).isNotNull();
+		assertThat(headers.getTimestamp()).isNotNull();
 
 		final UUID id = new UUID(0L, 23L);
 		accessor.setIdGenerator(() -> id);

@@ -86,8 +86,8 @@ public class ContextLoaderTests {
 		assertThat(context.containsBean("beans1.bean2")).isFalse();
 		listener.contextDestroyed(event);
 		assertTrue("Destroyed", lb.isDestroyed());
-		assertNull(sc.getAttribute(contextAttr));
-		assertNull(WebApplicationContextUtils.getWebApplicationContext(sc));
+		assertThat(sc.getAttribute(contextAttr)).isNotNull();
+		assertThat(WebApplicationContextUtils.getWebApplicationContext(sc)).isNotNull();
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class ContextLoaderTests {
 			protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
 				assertNotNull("The ServletContext should not be null.", sc);
 				assertEquals("Verifying that we received the expected ServletContext.", sc, sc);
-				assertFalse("The ApplicationContext should not yet have been refreshed.", wac.isActive());
+				assertThat(wac.isActive()).as("The ApplicationContext should not yet have been refreshed.").isFalse();
 				buffer.append(expectedContents);
 			}
 		};
@@ -308,7 +308,7 @@ public class ContextLoaderTests {
 				"/org/springframework/web/context/WEB-INF/applicationContext.xml");
 		assertTrue("Has father", context.containsBean("father"));
 		assertTrue("Has rod", context.containsBean("rod"));
-		assertFalse("Hasn't kerry", context.containsBean("kerry"));
+		assertThat(context.containsBean("kerry")).as("Hasn't kerry").isFalse();
 		assertTrue("Doesn't have spouse", ((TestBean) context.getBean("rod")).getSpouse() == null);
 		assertTrue("myinit not evaluated", "Roderick".equals(((TestBean) context.getBean("rod")).getName()));
 

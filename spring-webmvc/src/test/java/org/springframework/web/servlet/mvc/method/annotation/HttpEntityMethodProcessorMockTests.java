@@ -174,8 +174,8 @@ public class HttpEntityMethodProcessorMockTests {
 	public void supportsParameter() {
 		assertTrue("HttpEntity parameter not supported", processor.supportsParameter(paramHttpEntity));
 		assertTrue("RequestEntity parameter not supported", processor.supportsParameter(paramRequestEntity));
-		assertFalse("ResponseEntity parameter supported", processor.supportsParameter(paramResponseEntity));
-		assertFalse("non-entity parameter supported", processor.supportsParameter(paramInt));
+		assertThat(processor.supportsParameter(paramResponseEntity)).as("ResponseEntity parameter supported").isFalse();
+		assertThat(processor.supportsParameter(paramInt)).as("non-entity parameter supported").isFalse();
 	}
 
 	@Test
@@ -183,9 +183,8 @@ public class HttpEntityMethodProcessorMockTests {
 		assertTrue("ResponseEntity return type not supported", processor.supportsReturnType(returnTypeResponseEntity));
 		assertTrue("HttpEntity return type not supported", processor.supportsReturnType(returnTypeHttpEntity));
 		assertTrue("Custom HttpEntity subclass not supported", processor.supportsReturnType(returnTypeHttpEntitySubclass));
-		assertFalse("RequestEntity parameter supported",
-				processor.supportsReturnType(paramRequestEntity));
-		assertFalse("non-ResponseBody return type supported", processor.supportsReturnType(returnTypeInt));
+		assertThat(processor.supportsReturnType(paramRequestEntity)).as("RequestEntity parameter supported").isFalse();
+		assertThat(processor.supportsReturnType(returnTypeInt)).as("non-ResponseBody return type supported").isFalse();
 	}
 
 	@Test
@@ -202,7 +201,7 @@ public class HttpEntityMethodProcessorMockTests {
 		Object result = processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null);
 
 		assertThat(result instanceof HttpEntity).isTrue();
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 		assertEquals("Invalid argument", body, ((HttpEntity<?>) result).getBody());
 	}
 
@@ -224,7 +223,7 @@ public class HttpEntityMethodProcessorMockTests {
 		Object result = processor.resolveArgument(paramRequestEntity, mavContainer, webRequest, null);
 
 		assertThat(result instanceof RequestEntity).isTrue();
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 		RequestEntity<?> requestEntity = (RequestEntity<?>) result;
 		assertEquals("Invalid method", HttpMethod.GET, requestEntity.getMethod());
 		// using default port (which is 80), so do not need to append the port (-1 means ignore)

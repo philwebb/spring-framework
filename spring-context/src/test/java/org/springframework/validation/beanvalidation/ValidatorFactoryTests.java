@@ -251,7 +251,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNotNull();
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNotNull();
 	}
 
 	@Test

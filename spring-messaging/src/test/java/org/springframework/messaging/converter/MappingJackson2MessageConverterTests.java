@@ -242,9 +242,9 @@ public class MappingJackson2MessageConverterTests {
 		method = getClass().getDeclaredMethod("jsonViewPayload", JacksonViewBean.class);
 		MethodParameter param = new MethodParameter(method, 0);
 		JacksonViewBean back = (JacksonViewBean) converter.fromMessage(message, JacksonViewBean.class, param);
-		assertNull(back.getWithView1());
+		assertThat(back.getWithView1()).isNotNull();
 		assertEquals("with", back.getWithView2());
-		assertNull(back.getWithoutView());
+		assertThat(back.getWithoutView()).isNotNull();
 	}
 
 

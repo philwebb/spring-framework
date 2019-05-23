@@ -71,7 +71,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().containsKey(ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().containsKey(ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class DefaultCorsProcessorTests {
 
 		ServerHttpResponse response = exchange.getResponse();
 		assertThat(response.getHeaders().containsKey(ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().containsKey(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS)).isFalse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class DefaultCorsProcessorTests {
 		assertEquals("true", response.getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS));
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class DefaultCorsProcessorTests {
 		assertEquals("true", response.getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS));
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().containsKey(ACCESS_CONTROL_ALLOW_ORIGIN)).isTrue();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS).contains("header2")).isTrue();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class DefaultCorsProcessorTests {
 		ServerHttpResponse response = exchange.getResponse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 
@@ -231,7 +231,7 @@ public class DefaultCorsProcessorTests {
 		this.processor.process(this.conf, exchange);
 
 		ServerHttpResponse response = exchange.getResponse();
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
 		assertEquals("GET,HEAD", response.getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS));
@@ -299,7 +299,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().containsKey(HttpHeaders.ACCESS_CONTROL_MAX_AGE)).isFalse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -323,7 +323,7 @@ public class DefaultCorsProcessorTests {
 		assertEquals("true", response.getHeaders().getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS));
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -345,7 +345,7 @@ public class DefaultCorsProcessorTests {
 		assertEquals("https://domain2.com", response.getHeaders().getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -369,7 +369,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().getFirst(ACCESS_CONTROL_ALLOW_HEADERS).contains("Header3")).isFalse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -391,7 +391,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().getFirst(ACCESS_CONTROL_ALLOW_HEADERS).contains("*")).isFalse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test
@@ -410,7 +410,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(response.getHeaders().containsKey(ACCESS_CONTROL_ALLOW_HEADERS)).isFalse();
 		assertThat(response.getHeaders().get(VARY)).contains(ORIGIN,
 				ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS);
-		assertNull(response.getStatusCode());
+		assertThat(response.getStatusCode()).isNotNull();
 	}
 
 	@Test

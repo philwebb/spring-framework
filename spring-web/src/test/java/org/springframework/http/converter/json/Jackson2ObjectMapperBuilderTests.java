@@ -473,7 +473,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		Serializers serializers = getSerializerFactoryConfig(mapper).serializers().iterator().next();
 		assertSame(serializer1, serializers.findSerializer(null, SimpleType.construct(Class.class), null));
 		assertSame(serializer2, serializers.findSerializer(null, SimpleType.construct(Boolean.class), null));
-		assertNull(serializers.findSerializer(null, SimpleType.construct(Number.class), null));
+		assertThat(serializers.findSerializer(null, SimpleType.construct(Number.class), null)).isNotNull();
 
 		Deserializers deserializers = getDeserializerFactoryConfig(mapper).deserializers().iterator().next();
 		assertSame(deserializer, deserializers.findBeanDeserializer(SimpleType.construct(Date.class), null, null));

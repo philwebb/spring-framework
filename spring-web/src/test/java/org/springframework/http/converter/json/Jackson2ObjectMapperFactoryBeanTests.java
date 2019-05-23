@@ -255,7 +255,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 	@Test
 	public void undefinedObjectType() {
-		assertNull(this.factory.getObjectType());
+		assertThat(this.factory.getObjectType()).isNotNull();
 	}
 
 	private static SerializerFactoryConfig getSerializerFactoryConfig(ObjectMapper objectMapper) {
@@ -349,7 +349,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		Serializers serializers = getSerializerFactoryConfig(objectMapper).serializers().iterator().next();
 		assertSame(serializer1, serializers.findSerializer(null, SimpleType.construct(Class.class), null));
 		assertSame(serializer2, serializers.findSerializer(null, SimpleType.construct(Boolean.class), null));
-		assertNull(serializers.findSerializer(null, SimpleType.construct(Number.class), null));
+		assertThat(serializers.findSerializer(null, SimpleType.construct(Number.class), null)).isNotNull();
 
 		assertSame(annotationIntrospector, objectMapper.getSerializationConfig().getAnnotationIntrospector());
 		assertSame(annotationIntrospector, objectMapper.getDeserializationConfig().getAnnotationIntrospector());

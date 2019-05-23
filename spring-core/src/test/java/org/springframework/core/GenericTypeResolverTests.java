@@ -67,7 +67,7 @@ public class GenericTypeResolverTests {
 	@Test
 	public void nullIfNotResolvable() {
 		GenericClass<String> obj = new GenericClass<>();
-		assertNull(resolveTypeArgument(obj.getClass(), GenericClass.class));
+		assertThat(resolveTypeArgument(obj.getClass(), GenericClass.class)).isNotNull();
 	}
 
 	@Test
@@ -147,13 +147,13 @@ public class GenericTypeResolverTests {
 	@Test  // SPR-11030
 	public void getGenericsCannotBeResolved() throws Exception {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(List.class, Iterable.class);
-		assertNull(resolved);
+		assertThat(resolved).isNotNull();
 	}
 
 	@Test  // SPR-11052
 	public void getRawMapTypeCannotBeResolved() throws Exception {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(Map.class, Map.class);
-		assertNull(resolved);
+		assertThat(resolved).isNotNull();
 	}
 
 	@Test  // SPR-11044

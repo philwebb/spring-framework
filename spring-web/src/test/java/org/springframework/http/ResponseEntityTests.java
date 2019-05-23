@@ -64,7 +64,7 @@ public class ResponseEntityTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class ResponseEntityTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class ResponseEntityTests {
 		assertThat(responseEntity.getHeaders().containsKey("Location")).isTrue();
 		assertEquals(location.toString(),
 				responseEntity.getHeaders().getFirst("Location"));
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 
 		ResponseEntity.created(location).header("MyResponseHeader", "MyValue").body("Hello World");
 	}
@@ -117,7 +117,7 @@ public class ResponseEntityTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test // SPR-14939
@@ -126,7 +126,7 @@ public class ResponseEntityTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class ResponseEntityTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class ResponseEntityTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class ResponseEntityTests {
 
 		assertThat(responseEntity).isNotNull();
 		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class ResponseEntityTests {
 		assertEquals(String.valueOf(contentLength), responseHeaders.getFirst("Content-Length"));
 		assertEquals(contentType.toString(), responseHeaders.getFirst("Content-Type"));
 
-		assertNull(responseEntity.getBody());
+		assertThat(responseEntity.getBody()).isNotNull();
 	}
 
 	@Test

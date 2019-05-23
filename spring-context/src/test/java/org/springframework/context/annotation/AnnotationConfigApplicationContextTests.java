@@ -294,7 +294,7 @@ public class AnnotationConfigApplicationContextTests {
 
 		assertSame(b, context.getBean(BeanA.class).b);
 		assertSame(c, context.getBean(BeanA.class).c);
-		assertNull(b.applicationContext);
+		assertThat(b.applicationContext).isNotNull();
 	}
 
 	@Test
@@ -307,7 +307,7 @@ public class AnnotationConfigApplicationContextTests {
 
 		assertSame(b, context.getBean("a", BeanA.class).b);
 		assertSame(c, context.getBean("a", BeanA.class).c);
-		assertNull(b.applicationContext);
+		assertThat(b.applicationContext).isNotNull();
 	}
 
 	@Test
