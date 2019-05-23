@@ -61,7 +61,6 @@ import static org.springframework.core.annotation.AnnotationUtils.isAnnotationDe
 import static org.springframework.core.annotation.AnnotationUtils.isAnnotationInherited;
 import static org.springframework.core.annotation.AnnotationUtils.isAnnotationMetaPresent;
 import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation;
-import static temp.XAssert.assertArrayEquals;
 
 /**
  * Unit tests for {@link AnnotationUtils}.
@@ -472,8 +471,8 @@ public class AnnotationUtilsTests {
 		assertThat(attributes).isNotNull();
 		assertThat((Object) attributes.annotationType()).isEqualTo(WebMapping.class);
 		assertThat((Object) attributes.getString("name")).as("name attribute: ").isEqualTo("foo");
-		assertArrayEquals("value attribute: ", asArray("/test"), attributes.getStringArray(VALUE));
-		assertArrayEquals("path attribute: ", asArray("/test"), attributes.getStringArray("path"));
+		assertThat((Object) attributes.getStringArray(VALUE)).as("value attribute: ").isEqualTo(asArray("/test"));
+		assertThat((Object) attributes.getStringArray("path")).as("path attribute: ").isEqualTo(asArray("/test"));
 
 		method = WebController.class.getMethod("handleMappedWithPathAttribute");
 		webMapping = method.getAnnotation(WebMapping.class);
@@ -481,8 +480,8 @@ public class AnnotationUtilsTests {
 		assertThat(attributes).isNotNull();
 		assertThat((Object) attributes.annotationType()).isEqualTo(WebMapping.class);
 		assertThat((Object) attributes.getString("name")).as("name attribute: ").isEqualTo("bar");
-		assertArrayEquals("value attribute: ", asArray("/test"), attributes.getStringArray(VALUE));
-		assertArrayEquals("path attribute: ", asArray("/test"), attributes.getStringArray("path"));
+		assertThat((Object) attributes.getStringArray(VALUE)).as("value attribute: ").isEqualTo(asArray("/test"));
+		assertThat((Object) attributes.getStringArray("path")).as("path attribute: ").isEqualTo(asArray("/test"));
 	}
 
 	@Test
@@ -852,7 +851,7 @@ public class AnnotationUtilsTests {
 		assertThat(annotationWithDefaults).isNotNull();
 		assertThat((Object) annotationWithDefaults.text()).as("text: ").isEqualTo("enigma");
 		assertThat(annotationWithDefaults.predicate()).as("predicate: ").isTrue();
-		assertArrayEquals("characters: ", new char[] { 'a', 'b', 'c' }, annotationWithDefaults.characters());
+		assertThat((Object) annotationWithDefaults.characters()).as("characters: ").isEqualTo(new char[] { 'a', 'b', 'c' });
 	}
 
 	@Test

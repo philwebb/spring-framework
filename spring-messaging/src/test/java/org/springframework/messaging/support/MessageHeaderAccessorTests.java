@@ -31,7 +31,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertNotEquals;
 
 /**
  * Test fixture for {@link MessageHeaderAccessor}.

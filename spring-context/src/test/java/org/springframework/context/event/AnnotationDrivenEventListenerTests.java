@@ -68,7 +68,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertNotEquals;
 
 /**
  * @author Stephane Nicoll

@@ -42,9 +42,7 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.Nullable;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Jackson 2.x converter tests.
@@ -92,7 +90,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertThat((Object) result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertEquals(42F, result.getFraction(), 0F);
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
@@ -113,7 +111,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		HashMap<String, Object> result = (HashMap<String, Object>) converter.read(HashMap.class, inputMessage);
 		assertThat(result.get("string")).isEqualTo("Foo");
 		assertThat(result.get("number")).isEqualTo(42);
-		assertEquals(42D, (Double) result.get("fraction"), 0D);
+		assertThat((float) (Double) result.get("fraction")).isCloseTo((float) 42D, within((float) 0D));
 		List<String> array = new ArrayList<>();
 		array.add("Foo");
 		array.add("Bar");
@@ -221,7 +219,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat((Object) result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertEquals(42F, result.getFraction(), 0F);
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
@@ -252,7 +250,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat((Object) result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertEquals(42F, result.getFraction(), 0F);
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
@@ -284,7 +282,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		MyBean result = results.get(0);
 		assertThat((Object) result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
-		assertEquals(42F, result.getFraction(), 0F);
+		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
 		assertThat((Object) result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});

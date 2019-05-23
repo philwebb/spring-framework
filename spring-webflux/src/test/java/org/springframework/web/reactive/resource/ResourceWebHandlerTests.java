@@ -58,10 +58,10 @@ import org.springframework.web.server.ServerWebExchange;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Unit tests for {@link ResourceWebHandler}.
