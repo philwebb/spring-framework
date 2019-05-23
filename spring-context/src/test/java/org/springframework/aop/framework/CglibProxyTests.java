@@ -64,7 +64,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	protected Object createProxy(ProxyCreatorSupport as) {
 		as.setProxyTargetClass(true);
 		Object proxy = as.createAopProxy().getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 		return proxy;
 	}
 
@@ -107,7 +107,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		ProtectedMethodTestBean proxy = (ProtectedMethodTestBean) aop.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 		assertEquals(proxy.getClass().getClassLoader(), bean.getClass().getClassLoader());
 		assertEquals("foo", proxy.getString());
 	}
@@ -124,7 +124,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		PackageMethodTestBean proxy = (PackageMethodTestBean) aop.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 		assertEquals(proxy.getClass().getClassLoader(), bean.getClass().getClassLoader());
 		assertEquals("foo", proxy.getString());
 	}
@@ -139,9 +139,9 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(pc);
 
 		Object proxy = aop.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
-		assertTrue(proxy instanceof ITestBean);
-		assertTrue(proxy instanceof TestBean);
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
+		assertThat(proxy instanceof ITestBean).isTrue();
+		assertThat(proxy instanceof TestBean).isTrue();
 
 		TestBean tb = (TestBean) proxy;
 		assertEquals(32, tb.getAge());
@@ -316,7 +316,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		cglib = new CglibAopProxy(as);
 
 		ITestBean proxy2 = (ITestBean) cglib.getProxy();
-		assertTrue(proxy2 instanceof Serializable);
+		assertThat(proxy2 instanceof Serializable).isTrue();
 	}
 
 	@Test
@@ -361,7 +361,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		pf.setProxyTargetClass(true);
 
 		TestBean proxy = (TestBean) pf.getProxy();
-		assertTrue(AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).isTrue();
 
 		proxy.getAge();
 		assertEquals(0, cba.getCalls());
@@ -394,7 +394,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	public void testVarargsWithEnumArray() {
 		ProxyFactory proxyFactory = new ProxyFactory(new MyBean());
 		MyBean proxy = (MyBean) proxyFactory.getProxy();
-		assertTrue(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C));
+		assertThat(proxy.doWithVarargs(MyEnum.A, MyOtherEnum.C)).isTrue();
 	}
 
 

@@ -150,16 +150,16 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 	public void initializingBeanAndInitMethod() throws Exception {
 		assertFalse(InitAndIB.constructed);
 		InitAndIB iib = (InitAndIB) this.applicationContext.getBean("init-and-ib");
-		assertTrue(InitAndIB.constructed);
-		assertTrue(iib.afterPropertiesSetInvoked && iib.initMethodInvoked);
-		assertTrue(!iib.destroyed && !iib.customDestroyed);
+		assertThat(InitAndIB.constructed).isTrue();
+		assertThat(iib.afterPropertiesSetInvoked && iib.initMethodInvoked).isTrue();
+		assertThat(!iib.destroyed && !iib.customDestroyed).isTrue();
 		this.applicationContext.close();
-		assertTrue(!iib.destroyed && !iib.customDestroyed);
+		assertThat(!iib.destroyed && !iib.customDestroyed).isTrue();
 		ConfigurableApplicationContext parent = (ConfigurableApplicationContext) this.applicationContext.getParent();
 		parent.close();
-		assertTrue(iib.destroyed && iib.customDestroyed);
+		assertThat(iib.destroyed && iib.customDestroyed).isTrue();
 		parent.close();
-		assertTrue(iib.destroyed && iib.customDestroyed);
+		assertThat(iib.destroyed && iib.customDestroyed).isTrue();
 	}
 
 

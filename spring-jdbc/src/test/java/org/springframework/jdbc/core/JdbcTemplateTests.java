@@ -272,7 +272,7 @@ public class JdbcTemplateTests {
 		String result = this.template.execute(new ConnectionCallback<String>() {
 			@Override
 			public String doInConnection(Connection con) {
-				assertTrue(con instanceof ConnectionProxy);
+				assertThat(con instanceof ConnectionProxy).isTrue();
 				assertSame(JdbcTemplateTests.this.connection, ((ConnectionProxy) con).getTargetConnection());
 				return "test";
 			}

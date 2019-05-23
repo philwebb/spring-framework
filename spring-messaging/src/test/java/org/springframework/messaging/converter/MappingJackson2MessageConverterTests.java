@@ -96,7 +96,7 @@ public class MappingJackson2MessageConverterTests {
 		assertEquals(42, actual.getNumber());
 		assertEquals(42F, actual.getFraction(), 0F);
 		assertArrayEquals(new String[]{"Foo", "Bar"}, actual.getArray());
-		assertTrue(actual.isBool());
+		assertThat(actual.isBool()).isTrue();
 		assertArrayEquals(new byte[]{0x1, 0x2}, actual.getBytes());
 	}
 
@@ -167,7 +167,7 @@ public class MappingJackson2MessageConverterTests {
 		MethodParameter param = new MethodParameter(method, 0);
 		Object actual = converter.fromMessage(message, MyBean.class, param);
 
-		assertTrue(actual instanceof MyBean);
+		assertThat(actual instanceof MyBean).isTrue();
 		assertEquals("foo", ((MyBean) actual).getString());
 	}
 
@@ -185,12 +185,12 @@ public class MappingJackson2MessageConverterTests {
 		Message<?> message = converter.toMessage(payload, null);
 		String actual = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
 
-		assertTrue(actual.contains("\"string\":\"Foo\""));
-		assertTrue(actual.contains("\"number\":42"));
-		assertTrue(actual.contains("fraction\":42.0"));
-		assertTrue(actual.contains("\"array\":[\"Foo\",\"Bar\"]"));
-		assertTrue(actual.contains("\"bool\":true"));
-		assertTrue(actual.contains("\"bytes\":\"AQI=\""));
+		assertThat(actual.contains("\"string\":\"Foo\"")).isTrue();
+		assertThat(actual.contains("\"number\":42")).isTrue();
+		assertThat(actual.contains("fraction\":42.0")).isTrue();
+		assertThat(actual.contains("\"array\":[\"Foo\",\"Bar\"]")).isTrue();
+		assertThat(actual.contains("\"bool\":true")).isTrue();
+		assertThat(actual.contains("\"bytes\":\"AQI=\"")).isTrue();
 		assertEquals("Invalid content-type", new MimeType("application", "json"),
 				message.getHeaders().get(MessageHeaders.CONTENT_TYPE, MimeType.class));
 	}

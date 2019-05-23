@@ -56,7 +56,7 @@ public class SimpleClientHttpResponseTests {
 		assertThat(StreamUtils.copyToString(responseStream, StandardCharsets.UTF_8)).isEqualTo("Spring");
 
 		this.response.close();
-		assertTrue(is.isClosed());
+		assertThat(is.isClosed()).isTrue();
 		verify(this.connection, never()).disconnect();
 	}
 
@@ -74,7 +74,7 @@ public class SimpleClientHttpResponseTests {
 
 		this.response.close();
 		assertThat(is.available()).isEqualTo(0);
-		assertTrue(is.isClosed());
+		assertThat(is.isClosed()).isTrue();
 		verify(this.connection, never()).disconnect();
 	}
 
@@ -91,7 +91,7 @@ public class SimpleClientHttpResponseTests {
 
 		this.response.close();
 		assertThat(is.available()).isEqualTo(0);
-		assertTrue(is.isClosed());
+		assertThat(is.isClosed()).isTrue();
 		verify(this.connection, never()).disconnect();
 	}
 
@@ -117,7 +117,7 @@ public class SimpleClientHttpResponseTests {
 
 		this.response.close();
 		assertThat(is.available()).isEqualTo(0);
-		assertTrue(is.isClosed());
+		assertThat(is.isClosed()).isTrue();
 		verify(this.connection, never()).disconnect();
 	}
 

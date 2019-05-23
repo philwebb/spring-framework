@@ -34,9 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class XAssert  {
 
-    public static void assertTrue(boolean condition) {
-    	assertThat(condition).isTrue();
-    }
 
     /**
      * Asserts that a condition is true. If it isn't it throws an

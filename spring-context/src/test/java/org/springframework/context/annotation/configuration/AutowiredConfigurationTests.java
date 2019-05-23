@@ -91,7 +91,7 @@ public class AutowiredConfigurationTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				OptionalAutowiredMethodConfig.class);
 
-		assertTrue(context.getBeansOfType(Colour.class).isEmpty());
+		assertThat(context.getBeansOfType(Colour.class).isEmpty()).isTrue();
 		assertThat(context.getBean(TestBean.class).getName()).isEqualTo("");
 	}
 

@@ -86,9 +86,9 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		loadBeanDefinitions("mvc-config-path-matching.xml");
 		RequestMappingHandlerMapping hm = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(hm);
-		assertTrue(hm.useSuffixPatternMatch());
+		assertThat(hm.useSuffixPatternMatch()).isTrue();
 		assertFalse(hm.useTrailingSlashMatch());
-		assertTrue(hm.useRegisteredSuffixPatternMatch());
+		assertThat(hm.useRegisteredSuffixPatternMatch()).isTrue();
 		assertThat(hm.getUrlPathHelper()).isInstanceOf(TestPathHelper.class);
 		assertThat(hm.getPathMatcher()).isInstanceOf(TestPathMatcher.class);
 		List<String> fileExtensions = hm.getContentNegotiationManager().getAllFileExtensions();
@@ -122,13 +122,13 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("customArgumentResolvers");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		assertThat(value instanceof List).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodArgumentResolver> resolvers = (List<HandlerMethodArgumentResolver>) value;
 		assertEquals(3, resolvers.size());
-		assertTrue(resolvers.get(0) instanceof ServletWebArgumentResolverAdapter);
-		assertTrue(resolvers.get(1) instanceof TestHandlerMethodArgumentResolver);
-		assertTrue(resolvers.get(2) instanceof TestHandlerMethodArgumentResolver);
+		assertThat(resolvers.get(0) instanceof ServletWebArgumentResolverAdapter).isTrue();
+		assertThat(resolvers.get(1) instanceof TestHandlerMethodArgumentResolver).isTrue();
+		assertThat(resolvers.get(2) instanceof TestHandlerMethodArgumentResolver).isTrue();
 		assertNotSame(resolvers.get(1), resolvers.get(2));
 	}
 
@@ -143,7 +143,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("customReturnValueHandlers");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		assertThat(value instanceof List).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodReturnValueHandler> handlers = (List<HandlerMethodReturnValueHandler>) value;
 		assertEquals(2, handlers.size());
@@ -172,7 +172,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("messageConverters");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		assertThat(value instanceof List).isTrue();
 		List<HttpMessageConverter<?>> converters = (List<HttpMessageConverter<?>>) value;
 		if (hasDefaultRegistrations) {
 			assertTrue("Default and custom converter expected", converters.size() > 2);
@@ -180,8 +180,8 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		else {
 			assertTrue("Only custom converters expected", converters.size() == 2);
 		}
-		assertTrue(converters.get(0) instanceof StringHttpMessageConverter);
-		assertTrue(converters.get(1) instanceof ResourceHttpMessageConverter);
+		assertThat(converters.get(0) instanceof StringHttpMessageConverter).isTrue();
+		assertThat(converters.get(1) instanceof ResourceHttpMessageConverter).isTrue();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -189,9 +189,9 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("responseBodyAdvice");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		assertThat(value instanceof List).isTrue();
 		List<ResponseBodyAdvice<?>> converters = (List<ResponseBodyAdvice<?>>) value;
-		assertTrue(converters.get(0) instanceof JsonViewResponseBodyAdvice);
+		assertThat(converters.get(0) instanceof JsonViewResponseBodyAdvice).isTrue();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -199,10 +199,10 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertNotNull(bean);
 		Object value = new DirectFieldAccessor(bean).getPropertyValue("requestResponseBodyAdvice");
 		assertNotNull(value);
-		assertTrue(value instanceof List);
+		assertThat(value instanceof List).isTrue();
 		List<ResponseBodyAdvice<?>> converters = (List<ResponseBodyAdvice<?>>) value;
-		assertTrue(converters.get(0) instanceof JsonViewRequestBodyAdvice);
-		assertTrue(converters.get(1) instanceof JsonViewResponseBodyAdvice);
+		assertThat(converters.get(0) instanceof JsonViewRequestBodyAdvice).isTrue();
+		assertThat(converters.get(1) instanceof JsonViewResponseBodyAdvice).isTrue();
 	}
 
 }

@@ -305,7 +305,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		controller.future.run();
-		assertTrue(controller.exceptionCaught);
+		assertThat(controller.exceptionCaught).isTrue();
 	}
 
 	@Test
@@ -343,7 +343,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		controller.future.completeExceptionally(new IllegalStateException());
-		assertTrue(controller.exceptionCaught);
+		assertThat(controller.exceptionCaught).isTrue();
 	}
 
 	@Test
@@ -381,7 +381,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		controller.mono.onError(new IllegalStateException());
-		assertTrue(controller.exceptionCaught);
+		assertThat(controller.exceptionCaught).isTrue();
 	}
 
 	@Test

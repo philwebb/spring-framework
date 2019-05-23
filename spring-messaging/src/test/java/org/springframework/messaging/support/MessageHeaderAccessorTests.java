@@ -238,7 +238,7 @@ public class MessageHeaderAccessorTests {
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertNotNull(actual);
-		assertTrue(actual.isMutable());
+		assertThat(actual.isMutable()).isTrue();
 		assertSame(expected, actual);
 	}
 
@@ -248,7 +248,7 @@ public class MessageHeaderAccessorTests {
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertNotNull(actual);
-		assertTrue(actual.isMutable());
+		assertThat(actual.isMutable()).isTrue();
 	}
 
 	@Test
@@ -258,7 +258,7 @@ public class MessageHeaderAccessorTests {
 
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertNotNull(actual);
-		assertTrue(actual.isMutable());
+		assertThat(actual.isMutable()).isTrue();
 		assertEquals(TestMessageHeaderAccessor.class, actual.getClass());
 	}
 

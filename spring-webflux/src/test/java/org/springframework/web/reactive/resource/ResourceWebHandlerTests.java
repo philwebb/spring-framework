@@ -107,7 +107,7 @@ public class ResourceWebHandlerTests {
 		assertEquals(MediaType.parseMediaType("text/css"), headers.getContentType());
 		assertEquals(17, headers.getContentLength());
 		assertEquals("max-age=3600", headers.getCacheControl());
-		assertTrue(headers.containsKey("Last-Modified"));
+		assertThat(headers.containsKey("Last-Modified")).isTrue();
 		assertEquals(headers.getLastModified() / 1000, resourceLastModifiedDate("test/foo.css") / 1000);
 		assertEquals("bytes", headers.getFirst("Accept-Ranges"));
 		assertEquals(1, headers.get("Accept-Ranges").size());
@@ -125,7 +125,7 @@ public class ResourceWebHandlerTests {
 		assertEquals(MediaType.parseMediaType("text/css"), headers.getContentType());
 		assertEquals(17, headers.getContentLength());
 		assertEquals("max-age=3600", headers.getCacheControl());
-		assertTrue(headers.containsKey("Last-Modified"));
+		assertThat(headers.containsKey("Last-Modified")).isTrue();
 		assertEquals(headers.getLastModified() / 1000, resourceLastModifiedDate("test/foo.css") / 1000);
 		assertEquals("bytes", headers.getFirst("Accept-Ranges"));
 		assertEquals(1, headers.get("Accept-Ranges").size());
@@ -154,7 +154,7 @@ public class ResourceWebHandlerTests {
 
 		MockServerHttpResponse response = exchange.getResponse();
 		assertEquals("no-store", response.getHeaders().getCacheControl());
-		assertTrue(response.getHeaders().containsKey("Last-Modified"));
+		assertThat(response.getHeaders().containsKey("Last-Modified")).isTrue();
 		assertEquals(response.getHeaders().getLastModified() / 1000, resourceLastModifiedDate("test/foo.css") / 1000);
 		assertEquals("bytes", response.getHeaders().getFirst("Accept-Ranges"));
 		assertEquals(1, response.getHeaders().get("Accept-Ranges").size());
@@ -185,7 +185,7 @@ public class ResourceWebHandlerTests {
 		HttpHeaders headers = exchange.getResponse().getHeaders();
 		assertEquals(MediaType.TEXT_HTML, headers.getContentType());
 		assertEquals("max-age=3600", headers.getCacheControl());
-		assertTrue(headers.containsKey("Last-Modified"));
+		assertThat(headers.containsKey("Last-Modified")).isTrue();
 		assertEquals(headers.getLastModified() / 1000, resourceLastModifiedDate("test/foo.html") / 1000);
 		assertEquals("bytes", headers.getFirst("Accept-Ranges"));
 		assertEquals(1, headers.get("Accept-Ranges").size());
@@ -201,7 +201,7 @@ public class ResourceWebHandlerTests {
 		assertEquals(MediaType.parseMediaType("text/css"), headers.getContentType());
 		assertEquals(17, headers.getContentLength());
 		assertEquals("max-age=3600", headers.getCacheControl());
-		assertTrue(headers.containsKey("Last-Modified"));
+		assertThat(headers.containsKey("Last-Modified")).isTrue();
 		assertEquals(headers.getLastModified() / 1000, resourceLastModifiedDate("testalternatepath/baz.css") / 1000);
 		assertEquals("bytes", headers.getFirst("Accept-Ranges"));
 		assertEquals(1, headers.get("Accept-Ranges").size());
@@ -597,8 +597,8 @@ public class ResourceWebHandlerTests {
 		this.handler.handle(exchange).block(TIMEOUT);
 
 		assertEquals(HttpStatus.PARTIAL_CONTENT, exchange.getResponse().getStatusCode());
-		assertTrue(exchange.getResponse().getHeaders().getContentType().toString()
-				.startsWith("multipart/byteranges;boundary="));
+		assertThat(exchange.getResponse().getHeaders().getContentType().toString()
+		.startsWith("multipart/byteranges;boundary=")).isTrue();
 
 		String boundary = "--" + exchange.getResponse().getHeaders().getContentType().toString().substring(30);
 

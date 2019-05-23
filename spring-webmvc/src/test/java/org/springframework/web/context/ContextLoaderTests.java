@@ -76,7 +76,7 @@ public class ContextLoaderTests {
 		String contextAttr = WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
 		WebApplicationContext context = (WebApplicationContext) sc.getAttribute(contextAttr);
 		assertTrue("Correct WebApplicationContext exposed in ServletContext", context instanceof XmlWebApplicationContext);
-		assertTrue(WebApplicationContextUtils.getRequiredWebApplicationContext(sc) instanceof XmlWebApplicationContext);
+		assertThat(WebApplicationContextUtils.getRequiredWebApplicationContext(sc) instanceof XmlWebApplicationContext).isTrue();
 		LifecycleBean lb = (LifecycleBean) context.getBean("lifecycle");
 		assertTrue("Has father", context.containsBean("father"));
 		assertTrue("Has rod", context.containsBean("rod"));
@@ -297,8 +297,8 @@ public class ContextLoaderTests {
 		servlet.setContextConfigLocation("/org/springframework/web/context/WEB-INF/testNamespace.xml "
 				+ "/org/springframework/web/context/WEB-INF/context-addition.xml");
 		servlet.init(new MockServletConfig(new MockServletContext(""), "test"));
-		assertTrue(servlet.getWebApplicationContext().containsBean("kerry"));
-		assertTrue(servlet.getWebApplicationContext().containsBean("kerryX"));
+		assertThat(servlet.getWebApplicationContext().containsBean("kerry")).isTrue();
+		assertThat(servlet.getWebApplicationContext().containsBean("kerryX")).isTrue();
 	}
 
 	@Test

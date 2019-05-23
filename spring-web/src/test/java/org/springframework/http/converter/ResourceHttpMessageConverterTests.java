@@ -54,13 +54,13 @@ public class ResourceHttpMessageConverterTests {
 
 	@Test
 	public void canReadResource() {
-		assertTrue(converter.canRead(Resource.class, new MediaType("application", "octet-stream")));
+		assertThat(converter.canRead(Resource.class, new MediaType("application", "octet-stream"))).isTrue();
 	}
 
 	@Test
 	public void canWriteResource() {
-		assertTrue(converter.canWrite(Resource.class, new MediaType("application", "octet-stream")));
-		assertTrue(converter.canWrite(Resource.class, MediaType.ALL));
+		assertThat(converter.canWrite(Resource.class, new MediaType("application", "octet-stream"))).isTrue();
+		assertThat(converter.canWrite(Resource.class, MediaType.ALL)).isTrue();
 	}
 
 	@Test
@@ -118,7 +118,7 @@ public class ResourceHttpMessageConverterTests {
 		Resource body = new ByteArrayResource(byteArray);
 		converter.write(body, null, outputMessage);
 
-		assertTrue(Arrays.equals(byteArray, outputMessage.getBodyAsBytes()));
+		assertThat(Arrays.equals(byteArray, outputMessage.getBodyAsBytes())).isTrue();
 	}
 
 	@Test  // SPR-12999

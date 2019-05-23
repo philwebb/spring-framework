@@ -111,7 +111,7 @@ public class MappingJackson2JsonViewTests {
 		assertEquals(MappingJackson2JsonView.DEFAULT_CONTENT_TYPE, response.getContentType());
 
 		String jsonResult = response.getContentAsString();
-		assertTrue(jsonResult.length() > 0);
+		assertThat(jsonResult.length() > 0).isTrue();
 		assertEquals(jsonResult.length(), response.getContentLength());
 
 		validateResult();
@@ -160,7 +160,7 @@ public class MappingJackson2JsonViewTests {
 		view.setUpdateContentLength(true);
 		view.render(model, request, response);
 
-		assertTrue(response.getContentAsString().length() > 0);
+		assertThat(response.getContentAsString().length() > 0).isTrue();
 		assertEquals(response.getContentAsString().length(), response.getContentLength());
 
 		validateResult();
@@ -183,7 +183,7 @@ public class MappingJackson2JsonViewTests {
 	public void renderSimpleBeanPrefixed() throws Exception {
 		view.setPrefixJson(true);
 		renderSimpleBean();
-		assertTrue(response.getContentAsString().startsWith(")]}', "));
+		assertThat(response.getContentAsString().startsWith(")]}', ")).isTrue();
 	}
 
 	@Test
@@ -201,7 +201,7 @@ public class MappingJackson2JsonViewTests {
 
 		view.render(model, request, response);
 
-		assertTrue(response.getContentAsString().length() > 0);
+		assertThat(response.getContentAsString().length() > 0).isTrue();
 		assertEquals("{\"foo\":{\"testBeanSimple\":\"custom\"}}", response.getContentAsString());
 
 		validateResult();
@@ -222,8 +222,8 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		String result = response.getContentAsString();
-		assertTrue(result.length() > 0);
-		assertTrue(result.contains("\"foo\":{\"testBeanSimple\":\"custom\"}"));
+		assertThat(result.length() > 0).isTrue();
+		assertThat(result.contains("\"foo\":{\"testBeanSimple\":\"custom\"}")).isTrue();
 
 		validateResult();
 	}
@@ -245,9 +245,9 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		String result = response.getContentAsString();
-		assertTrue(result.length() > 0);
-		assertTrue(result.contains("\"foo\":\"foo\""));
-		assertTrue(result.contains("\"baz\":\"baz\""));
+		assertThat(result.length() > 0).isTrue();
+		assertThat(result.contains("\"foo\":\"foo\"")).isTrue();
+		assertThat(result.contains("\"baz\":\"baz\"")).isTrue();
 
 		validateResult();
 	}
@@ -278,7 +278,7 @@ public class MappingJackson2JsonViewTests {
 
 		Object actual = view.filterModel(model);
 
-		assertTrue(actual instanceof Map);
+		assertThat(actual instanceof Map).isTrue();
 		assertSame(bean1, ((Map) actual).get("foo1"));
 		assertSame(bean2, ((Map) actual).get("foo2"));
 	}
@@ -295,9 +295,9 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		String content = response.getContentAsString();
-		assertTrue(content.length() > 0);
+		assertThat(content.length() > 0).isTrue();
 		assertEquals(content.length(), response.getContentLength());
-		assertTrue(content.contains("foo"));
+		assertThat(content.contains("foo")).isTrue();
 		assertFalse(content.contains("boo"));
 		assertFalse(content.contains(JsonView.class.getName()));
 	}
@@ -318,7 +318,7 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		String content = response.getContentAsString();
-		assertTrue(content.length() > 0);
+		assertThat(content.length() > 0).isTrue();
 		assertEquals(content.length(), response.getContentLength());
 		assertThat(content).contains("\"property1\":\"value\"");
 		assertThat(content).doesNotContain("\"property2\":\"value\"");

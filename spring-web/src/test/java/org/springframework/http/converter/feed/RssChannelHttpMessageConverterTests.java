@@ -54,14 +54,14 @@ public class RssChannelHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(Channel.class, new MediaType("application", "rss+xml")));
-		assertTrue(converter.canRead(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
+		assertThat(converter.canRead(Channel.class, new MediaType("application", "rss+xml"))).isTrue();
+		assertThat(converter.canRead(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8))).isTrue();
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(Channel.class, new MediaType("application", "rss+xml")));
-		assertTrue(converter.canWrite(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
+		assertThat(converter.canWrite(Channel.class, new MediaType("application", "rss+xml"))).isTrue();
+		assertThat(converter.canWrite(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8))).isTrue();
 	}
 
 	@Test
