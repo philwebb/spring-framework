@@ -299,6 +299,7 @@ public class TigerAspectJExpressionPointcutTests {
 
 	static class BeanA implements IBeanA {
 
+		@SuppressWarnings("unused")
 		private String name;
 
 		private int age;
@@ -318,6 +319,7 @@ public class TigerAspectJExpressionPointcutTests {
 	@Tx
 	static class BeanB {
 
+		@SuppressWarnings("unused")
 		private String name;
 
 		public void setName(String name) {

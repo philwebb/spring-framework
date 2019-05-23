@@ -115,7 +115,7 @@ public class CollectionToCollectionConverterTests {
 		list.add(Arrays.asList("37", "23"));
 		conversionService.addConverter(new CollectionToObjectConverter(conversionService));
 		assertThat(conversionService.canConvert(List.class, List.class)).isTrue();
-		assertThat(conversionService.convert(list, List.class)).isSameAs(list);
+		assertThat((Object) conversionService.convert(list, List.class)).isSameAs(list);
 	}
 
 	@Test

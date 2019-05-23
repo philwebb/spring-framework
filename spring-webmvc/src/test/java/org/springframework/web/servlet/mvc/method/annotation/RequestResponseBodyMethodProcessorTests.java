@@ -526,7 +526,6 @@ public class RequestResponseBodyMethodProcessorTests {
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(
 				converters, null, Collections.singletonList(new JsonViewRequestBodyAdvice()));
 
-		@SuppressWarnings("unchecked")
 		JacksonViewBean result = (JacksonViewBean)
 				processor.resolveArgument(methodParameter, this.container, this.request, this.factory);
 
@@ -582,7 +581,6 @@ public class RequestResponseBodyMethodProcessorTests {
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(
 				converters, null, Collections.singletonList(new JsonViewRequestBodyAdvice()));
 
-		@SuppressWarnings("unchecked")
 		JacksonViewBean result = (JacksonViewBean)
 				processor.resolveArgument(methodParameter, this.container, this.request, this.factory);
 

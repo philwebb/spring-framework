@@ -70,6 +70,7 @@ public class PrototypeBasedTargetSourceTests {
 		 * Nonserializable test field to check that subclass
 		 * state can't prevent serialization from working
 		 */
+		@SuppressWarnings("unused")
 		private TestBean thisFieldIsNotSerializable = new TestBean();
 
 		@Override

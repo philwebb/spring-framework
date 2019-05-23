@@ -50,7 +50,6 @@ public class AbstractViewTests {
 
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void resolveAsyncAttributes() {
 
 		TestBean testBean1 = new TestBean("Bean1");

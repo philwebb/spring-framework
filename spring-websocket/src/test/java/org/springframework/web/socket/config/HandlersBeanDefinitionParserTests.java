@@ -117,7 +117,6 @@ public class HandlersBeanDefinitionParserTests {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void webSocketHandlersAttributes() {
 		loadBeanDefinitions("websocket-config-handlers-attributes.xml");
 
@@ -153,7 +152,6 @@ public class HandlersBeanDefinitionParserTests {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void sockJs() {
 		loadBeanDefinitions("websocket-config-handlers-sockjs.xml");
 
@@ -197,7 +195,6 @@ public class HandlersBeanDefinitionParserTests {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void sockJsAttributes() {
 		loadBeanDefinitions("websocket-config-handlers-sockjs-attributes.xml");
 

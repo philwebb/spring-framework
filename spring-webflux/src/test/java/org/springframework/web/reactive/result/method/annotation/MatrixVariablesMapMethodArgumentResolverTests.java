@@ -168,7 +168,6 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 	}
 
 
-	@SuppressWarnings("unchecked")
 	private MultiValueMap<String, String> getMatrixVariables(String pathVarName) {
 		Map<String, MultiValueMap<String, String>> matrixVariables =
 				this.exchange.getAttribute(HandlerMapping.MATRIX_VARIABLES_ATTRIBUTE);

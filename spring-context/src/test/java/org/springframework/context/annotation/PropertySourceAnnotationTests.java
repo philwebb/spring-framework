@@ -395,7 +395,7 @@ public class PropertySourceAnnotationTests {
 	public static class MyCustomFactory implements PropertySourceFactory {
 
 		@Override
-		public org.springframework.core.env.PropertySource createPropertySource(String name, EncodedResource resource) throws IOException {
+		public org.springframework.core.env.PropertySource<?> createPropertySource(String name, EncodedResource resource) throws IOException {
 			Properties props = PropertiesLoaderUtils.loadProperties(resource);
 			return new org.springframework.core.env.PropertySource<Properties>("my" + name, props) {
 				@Override

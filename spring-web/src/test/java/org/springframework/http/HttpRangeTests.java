@@ -163,7 +163,6 @@ public class HttpRangeTests {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void toResourceRegionExceptionLength() throws IOException {
 		InputStreamResource resource = mock(InputStreamResource.class);
 		given(resource.contentLength()).willThrow(IOException.class);

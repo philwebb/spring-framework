@@ -340,7 +340,6 @@ public class MvcNamespaceTests {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testResources() throws Exception {
 		loadBeanDefinitions("mvc-config-resources.xml");
 

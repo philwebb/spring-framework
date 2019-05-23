@@ -119,7 +119,6 @@ public class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-12999
-	@SuppressWarnings("unchecked")
 	public void writeContentNotGettingInputStream() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource resource = mock(Resource.class);
@@ -143,7 +142,6 @@ public class ResourceHttpMessageConverterTests {
 	}
 
 	@Test  // SPR-13620
-	@SuppressWarnings("unchecked")
 	public void writeContentInputStreamThrowingNullPointerException() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource resource = mock(Resource.class);

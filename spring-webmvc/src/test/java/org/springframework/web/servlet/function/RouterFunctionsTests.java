@@ -30,7 +30,6 @@ import static org.mockito.Mockito.mock;
 /**
  * @author Arjen Poutsma
  */
-@SuppressWarnings("unchecked")
 public class RouterFunctionsTests {
 
 	@Test

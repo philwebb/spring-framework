@@ -74,7 +74,7 @@ public class LocalEntityManagerFactoryBeanTests extends AbstractEntityManagerFac
 
 		assertThat(actualName).isSameAs(entityManagerName);
 		if (props != null) {
-			assertThat(actualProps).isEqualTo(props);
+			assertThat((Object) actualProps).isEqualTo(props);
 		}
 		checkInvariants(lemfb);
 

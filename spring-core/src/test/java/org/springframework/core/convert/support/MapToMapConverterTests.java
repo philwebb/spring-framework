@@ -73,8 +73,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertThat((int) result.get(1)).isEqualTo((int) (Integer) 9);
-		assertThat((int) result.get(2)).isEqualTo((int) (Integer) 37);
+		assertThat((int) result.get(1)).isEqualTo(9);
+		assertThat((int) result.get(2)).isEqualTo(37);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class MapToMapConverterTests {
 		map.put("2", "37");
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
+		assertThat((Map<?, ?>) conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test
@@ -108,8 +108,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertThat((int) result.get(1)).isEqualTo((int) (Integer) 9);
-		assertThat((int) result.get(2)).isEqualTo((int) (Integer) 37);
+		assertThat((int) result.get(1)).isEqualTo(9);
+		assertThat((int) result.get(2)).isEqualTo(37);
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class MapToMapConverterTests {
 		map.put("2", Arrays.asList("37", "23"));
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
+		assertThat((Map<?, ?>) conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class MapToMapConverterTests {
 		conversionService.addConverter(new CollectionToObjectConverter(conversionService));
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
+		assertThat((Map<?, ?>) conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test
@@ -197,7 +197,7 @@ public class MapToMapConverterTests {
 		Map<String, String> map = new HashMap<>();
 
 		assertThat(conversionService.canConvert(Map.class, Map.class)).isTrue();
-		assertThat(conversionService.convert(map, Map.class)).isSameAs(map);
+		assertThat((Map<?, ?>) conversionService.convert(map, Map.class)).isSameAs(map);
 	}
 
 	@Test

@@ -149,7 +149,6 @@ public abstract class AbstractEncoderTestCase<E extends Encoder<?>>
 	 * @param hints the hints used for decoding. May be {@code null}.
 	 * @param <T> the output type
 	 */
-	@SuppressWarnings("unchecked")
 	protected <T> void testEncode(Publisher<? extends T> input, ResolvableType inputType,
 			Consumer<StepVerifier.FirstStep<DataBuffer>> stepConsumer,
 			@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) {

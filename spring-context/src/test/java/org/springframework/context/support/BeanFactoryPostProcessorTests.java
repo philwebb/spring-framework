@@ -235,7 +235,7 @@ public class BeanFactoryPostProcessorTests {
 	}
 
 
-	public static class ListeningBeanFactoryPostProcessor implements BeanFactoryPostProcessor, ApplicationListener {
+	public static class ListeningBeanFactoryPostProcessor implements BeanFactoryPostProcessor, ApplicationListener<ApplicationEvent> {
 
 		public ApplicationEvent received;
 
@@ -251,7 +251,7 @@ public class BeanFactoryPostProcessorTests {
 	}
 
 
-	public static class ListeningBean implements ApplicationListener {
+	public static class ListeningBean implements ApplicationListener<ApplicationEvent> {
 
 		public ApplicationEvent received;
 

@@ -44,7 +44,6 @@ import static org.mockito.Mockito.mock;
  * @author Arjen Poutsma
  * @since 5.0
  */
-@SuppressWarnings("unchecked")
 public class RouterFunctionsTests {
 
 	@Test

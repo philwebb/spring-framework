@@ -49,7 +49,6 @@ public class CookieIntegrationTests extends AbstractHttpHandlerIntegrationTests 
 	}
 
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void basicTest() throws Exception {
 		URI url = new URI("http://localhost:" + port);

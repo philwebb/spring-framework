@@ -769,12 +769,11 @@ public class DefaultConversionServiceTests {
 	}
 
 	@Test
-	@SuppressWarnings("rawtypes")
 	public void convertHashMapValuesToList() {
 		Map<String, Integer> hashMap = new LinkedHashMap<>();
 		hashMap.put("1", 1);
 		hashMap.put("2", 2);
-		List converted = conversionService.convert(hashMap.values(), List.class);
+		List<?> converted = conversionService.convert(hashMap.values(), List.class);
 		assertThat(converted).isEqualTo(Arrays.asList(1, 2));
 	}
 
@@ -956,14 +955,14 @@ public class DefaultConversionServiceTests {
 	public void convertObjectToOptionalNull() {
 		assertThat(conversionService.convert(null, TypeDescriptor.valueOf(Object.class),
 				TypeDescriptor.valueOf(Optional.class))).isSameAs(Optional.empty());
-		assertThat(conversionService.convert(null, Optional.class)).isSameAs(Optional.empty());
+		assertThat((Object) conversionService.convert(null, Optional.class)).isSameAs(Optional.empty());
 	}
 
 	@Test
 	public void convertExistingOptional() {
 		assertThat(conversionService.convert(Optional.empty(), TypeDescriptor.valueOf(Object.class),
 				TypeDescriptor.valueOf(Optional.class))).isSameAs(Optional.empty());
-		assertThat(conversionService.convert(Optional.empty(), Optional.class)).isSameAs(Optional.empty());
+		assertThat((Object) conversionService.convert(Optional.empty(), Optional.class)).isSameAs(Optional.empty());
 	}
 
 	@Test

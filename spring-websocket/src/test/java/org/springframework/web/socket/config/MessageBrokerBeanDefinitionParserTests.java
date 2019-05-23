@@ -106,7 +106,6 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void simpleBroker() throws Exception {
 		loadBeanDefinitions("websocket-config-broker-simple.xml");
 

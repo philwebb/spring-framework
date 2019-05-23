@@ -647,6 +647,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@Aspect
 	public static class NamedPointcutAspectWithFQN {
 
+		@SuppressWarnings("unused")
 		private ITestBean fieldThatShouldBeIgnoredBySpringAtAspectJProcessing = new TestBean();
 
 		@Pointcut("execution(* getAge())")
@@ -1049,6 +1050,7 @@ class PerThisAspect {
 	public int count;
 
 	// Just to check that this doesn't cause problems with introduction processing
+	@SuppressWarnings("unused")
 	private ITestBean fieldThatShouldBeIgnoredBySpringAtAspectJProcessing = new TestBean();
 
 	@Around("execution(int *.getAge())")

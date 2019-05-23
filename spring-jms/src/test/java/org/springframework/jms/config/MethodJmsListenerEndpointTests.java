@@ -65,7 +65,6 @@ import org.springframework.validation.annotation.Validated;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.assertj.core.api.Assertions.within;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -564,7 +563,7 @@ public class MethodJmsListenerEndpointTests {
 			this.invocations.put("resolveMessageHeaders", true);
 			assertThat(headers).as("MessageHeaders not injected").isNotNull();
 			assertThat(headers.get(JmsHeaders.TYPE)).as("Missing JMS message type header").isEqualTo("myMessageType");
-			assertThat((double) (long) headers.get("customLong")).as("Missing custom header").isCloseTo((double) 4567L, within(0.0));
+			assertThat((long) headers.get("customLong")).as("Missing custom header").isEqualTo(4567);
 		}
 
 		public void resolveJmsMessageHeaderAccessor(JmsMessageHeaderAccessor headers) {

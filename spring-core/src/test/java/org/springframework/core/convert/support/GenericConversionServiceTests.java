@@ -519,7 +519,7 @@ public class GenericConversionServiceTests {
 	public void conditionalConversionForAllTypes() {
 		MyConditionalGenericConverter converter = new MyConditionalGenericConverter();
 		conversionService.addConverter(converter);
-		assertThat(conversionService.convert(3, Integer.class)).isEqualTo((int) (Integer) 3);
+		assertThat(conversionService.convert(3, Integer.class)).isEqualTo(3);
 		assertThat(converter.getSourceTypes().size()).isGreaterThan(2);
 		assertThat(converter.getSourceTypes().stream().allMatch(td -> Integer.class.equals(td.getType()))).isTrue();
 	}

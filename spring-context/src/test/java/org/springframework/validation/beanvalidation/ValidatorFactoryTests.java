@@ -74,8 +74,8 @@ public class ValidatorFactoryTests {
 
 		Validator nativeValidator = validator.unwrap(Validator.class);
 		assertThat(nativeValidator.getClass().getName().startsWith("org.hibernate")).isTrue();
-		assertThat(validator.unwrap(ValidatorFactory.class) instanceof HibernateValidatorFactory).isTrue();
-		assertThat(validator.unwrap(HibernateValidatorFactory.class) instanceof HibernateValidatorFactory).isTrue();
+		assertThat(validator.unwrap(ValidatorFactory.class)).isInstanceOf(HibernateValidatorFactory.class);
+		assertThat(validator.unwrap(HibernateValidatorFactory.class)).isInstanceOf(HibernateValidatorFactory.class);
 
 		validator.destroy();
 	}
@@ -97,8 +97,8 @@ public class ValidatorFactoryTests {
 
 		Validator nativeValidator = validator.unwrap(Validator.class);
 		assertThat(nativeValidator.getClass().getName().startsWith("org.hibernate")).isTrue();
-		assertThat(validator.unwrap(ValidatorFactory.class) instanceof HibernateValidatorFactory).isTrue();
-		assertThat(validator.unwrap(HibernateValidatorFactory.class) instanceof HibernateValidatorFactory).isTrue();
+		assertThat(validator.unwrap(ValidatorFactory.class)).isInstanceOf(HibernateValidatorFactory.class);
+		assertThat(validator.unwrap(HibernateValidatorFactory.class)).isInstanceOf(HibernateValidatorFactory.class);
 
 		validator.destroy();
 	}

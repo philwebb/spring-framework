@@ -60,7 +60,7 @@ public class MediaTypeTests {
 	@Test
 	public void getDefaultQualityValue() {
 		MediaType mediaType = new MediaType("text", "plain");
-		assertThat(mediaType.getQualityValue()).as("Invalid quality value").isCloseTo((double) 1, within(0D));
+		assertThat(mediaType.getQualityValue()).as("Invalid quality value").isCloseTo(1D, within(0D));
 	}
 
 	@Test

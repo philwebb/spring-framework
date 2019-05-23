@@ -26,7 +26,6 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 /**
  * @author Arjen Poutsma
  */
-@SuppressWarnings("unchecked")
 public class RouterFunctionTests {
 
 	@Test

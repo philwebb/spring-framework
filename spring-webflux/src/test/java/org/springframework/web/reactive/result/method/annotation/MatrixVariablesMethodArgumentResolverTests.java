@@ -129,7 +129,6 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		assertThat(actual).isEqualTo(2013);
 	}
 
-	@SuppressWarnings("unchecked")
 	private MultiValueMap<String, String> getVariablesFor(String pathVarName) {
 		Map<String, MultiValueMap<String, String>> matrixVariables =
 				this.exchange.getAttribute(HandlerMapping.MATRIX_VARIABLES_ATTRIBUTE);
