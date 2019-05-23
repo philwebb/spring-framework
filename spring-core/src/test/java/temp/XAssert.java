@@ -16,8 +16,6 @@
 
 package temp;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  *
  * @author pwebb
