@@ -132,15 +132,15 @@ public class AutoProxyCreatorTests {
 		TestInterceptor ti = (TestInterceptor) sac.getBean("testInterceptor");
 		int initialNr = ti.nrOfInvocations;
 		singletonToBeProxied.getName();
-		assertThat(ti.nrOfInvocations).isEqualTo((long) (initialNr + 1));
+		assertThat(ti.nrOfInvocations).isEqualTo((initialNr + 1));
 
 		FactoryBean<?> factory = (FactoryBean<?>) sac.getBean("&singletonFactoryToBeProxied");
 		assertThat(Proxy.isProxyClass(factory.getClass())).isTrue();
 		TestBean tb = (TestBean) sac.getBean("singletonFactoryToBeProxied");
 		assertThat(AopUtils.isAopProxy(tb)).isFalse();
-		assertThat(ti.nrOfInvocations).isEqualTo((long) (initialNr + 3));
+		assertThat(ti.nrOfInvocations).isEqualTo((initialNr + 3));
 		tb.getAge();
-		assertThat(ti.nrOfInvocations).isEqualTo((long) (initialNr + 3));
+		assertThat(ti.nrOfInvocations).isEqualTo((initialNr + 3));
 	}
 
 	@Test

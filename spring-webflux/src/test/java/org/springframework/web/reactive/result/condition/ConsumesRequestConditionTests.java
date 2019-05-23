@@ -185,7 +185,7 @@ public class ConsumesRequestConditionTests {
 
 	private void assertConditions(ConsumesRequestCondition condition, String... expected) {
 		Collection<ConsumeMediaTypeExpression> expressions = condition.getContent();
-		assertThat(expected.length).as("Invalid amount of conditions").isEqualTo((long) expressions.size());
+		assertThat(expected.length).as("Invalid amount of conditions").isEqualTo(expressions.size());
 		for (String s : expected) {
 			boolean found = false;
 			for (ConsumeMediaTypeExpression expr : expressions) {

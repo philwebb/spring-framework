@@ -69,7 +69,7 @@ public class AspectJPrecedenceComparatorTests {
 	public void testSameAspectNoAfterAdvice() {
 		Advisor advisor1 = createAspectJBeforeAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, EARLY_ADVICE_DECLARATION_ORDER, "someAspect");
 		Advisor advisor2 = createAspectJBeforeAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, LATE_ADVICE_DECLARATION_ORDER, "someAspect");
-		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo((long) -1);
+		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo(-1);
 
 		advisor1 = createAspectJBeforeAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, LATE_ADVICE_DECLARATION_ORDER, "someAspect");
 		advisor2 = createAspectJAroundAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, EARLY_ADVICE_DECLARATION_ORDER, "someAspect");
@@ -84,7 +84,7 @@ public class AspectJPrecedenceComparatorTests {
 
 		advisor1 = createAspectJAfterReturningAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, LATE_ADVICE_DECLARATION_ORDER, "someAspect");
 		advisor2 = createAspectJAfterThrowingAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, EARLY_ADVICE_DECLARATION_ORDER, "someAspect");
-		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo((long) -1);
+		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo(-1);
 	}
 
 	@Test
@@ -120,22 +120,22 @@ public class AspectJPrecedenceComparatorTests {
 	public void testHigherAdvisorPrecedenceNoAfterAdvice() {
 		Advisor advisor1 = createSpringAOPBeforeAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER);
 		Advisor advisor2 = createAspectJBeforeAdvice(LOW_PRECEDENCE_ADVISOR_ORDER, EARLY_ADVICE_DECLARATION_ORDER, "someOtherAspect");
-		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo((long) -1);
+		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo(-1);
 
 		advisor1 = createAspectJBeforeAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, LATE_ADVICE_DECLARATION_ORDER, "someAspect");
 		advisor2 = createAspectJAroundAdvice(LOW_PRECEDENCE_ADVISOR_ORDER, EARLY_ADVICE_DECLARATION_ORDER, "someOtherAspect");
-		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo((long) -1);
+		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo(-1);
 	}
 
 	@Test
 	public void testHigherAdvisorPrecedenceAfterAdvice() {
 		Advisor advisor1 = createAspectJAfterAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, EARLY_ADVICE_DECLARATION_ORDER, "someAspect");
 		Advisor advisor2 = createAspectJAroundAdvice(LOW_PRECEDENCE_ADVISOR_ORDER, LATE_ADVICE_DECLARATION_ORDER, "someOtherAspect");
-		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo((long) -1);
+		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor1 sorted before advisor2").isEqualTo(-1);
 
 		advisor1 = createAspectJAfterReturningAdvice(HIGH_PRECEDENCE_ADVISOR_ORDER, LATE_ADVICE_DECLARATION_ORDER, "someAspect");
 		advisor2 = createAspectJAfterThrowingAdvice(LOW_PRECEDENCE_ADVISOR_ORDER, EARLY_ADVICE_DECLARATION_ORDER, "someOtherAspect");
-		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor2 sorted after advisor1").isEqualTo((long) -1);
+		assertThat(this.comparator.compare(advisor1, advisor2)).as("advisor2 sorted after advisor1").isEqualTo(-1);
 	}
 
 	@Test

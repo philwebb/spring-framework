@@ -70,7 +70,7 @@ public class ResourceEditorTests {
 		try {
 			editor.setAsText("${test.prop}");
 			Resource resolved = (Resource) editor.getValue();
-			assertEquals("foo", resolved.getFilename());
+			assertThat(resolved.getFilename()).isEqualTo("foo");
 		}
 		finally {
 			System.getProperties().remove("test.prop");

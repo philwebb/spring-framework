@@ -214,15 +214,15 @@ public class BeanFactoryTransactionTests {
 		assertThat(tb.getAge()).isEqualTo(666);
 		int newAge = 557;
 		tb.setAge(newAge);
-		assertThat(tb.getAge()).isEqualTo((long) newAge);
+		assertThat(tb.getAge()).isEqualTo(newAge);
 
 		TestBean target2 = new TestBean();
 		target2.setAge(65);
 		HotSwappableTargetSource ts = (HotSwappableTargetSource) factory.getBean("swapper");
 		ts.swap(target2);
-		assertThat(tb.getAge()).isEqualTo((long) target2.getAge());
+		assertThat(tb.getAge()).isEqualTo(target2.getAge());
 		tb.setAge(newAge);
-		assertThat(target2.getAge()).isEqualTo((long) newAge);
+		assertThat(target2.getAge()).isEqualTo(newAge);
 
 		assertThat(txMan.inflight).isEqualTo(0);
 		assertThat(txMan.commits).isEqualTo(2);

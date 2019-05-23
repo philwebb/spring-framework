@@ -39,9 +39,9 @@ public class ConstantsTests {
 		assertThat(c.getClassName()).isEqualTo(A.class.getName());
 		assertThat(c.getSize()).isEqualTo(9);
 
-		assertThat(c.asNumber("DOG").intValue()).isEqualTo((long) A.DOG);
-		assertThat(c.asNumber("dog").intValue()).isEqualTo((long) A.DOG);
-		assertThat(c.asNumber("cat").intValue()).isEqualTo((long) A.CAT);
+		assertThat(c.asNumber("DOG").intValue()).isEqualTo(A.DOG);
+		assertThat(c.asNumber("dog").intValue()).isEqualTo(A.DOG);
+		assertThat(c.asNumber("cat").intValue()).isEqualTo(A.CAT);
 
 		assertThatExceptionOfType(Constants.ConstantException.class).isThrownBy(() ->
 				c.asNumber("bogus"));
@@ -56,7 +56,7 @@ public class ConstantsTests {
 		Constants c = new Constants(A.class);
 
 		Set<?> names = c.getNames("");
-		assertThat(names.size()).isEqualTo((long) c.getSize());
+		assertThat(names.size()).isEqualTo(c.getSize());
 		assertThat(names.contains("DOG")).isTrue();
 		assertThat(names.contains("CAT")).isTrue();
 		assertThat(names.contains("S1")).isTrue();

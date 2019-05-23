@@ -108,8 +108,8 @@ public class TransactionAttributeSourceEditorTests {
 		TransactionAttribute ta = tas.getTransactionAttribute(method, null);
 		if (propagationBehavior >= 0) {
 			assertThat(ta).isNotNull();
-			assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_DEFAULT);
-			assertThat(ta.getPropagationBehavior()).isEqualTo((long) propagationBehavior);
+			assertThat(ta.getIsolationLevel()).isEqualTo(TransactionDefinition.ISOLATION_DEFAULT);
+			assertThat(ta.getPropagationBehavior()).isEqualTo(propagationBehavior);
 		}
 		else {
 			assertThat(ta).isNull();

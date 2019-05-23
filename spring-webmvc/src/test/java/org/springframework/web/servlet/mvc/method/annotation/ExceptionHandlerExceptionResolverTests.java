@@ -335,8 +335,8 @@ public class ExceptionHandlerExceptionResolverTests {
 
 
 	private void assertMethodProcessorCount(int resolverCount, int handlerCount) {
-		assertThat(this.resolver.getArgumentResolvers().getResolvers().size()).isEqualTo((long) resolverCount);
-		assertThat(this.resolver.getReturnValueHandlers().getHandlers().size()).isEqualTo((long) handlerCount);
+		assertThat(this.resolver.getArgumentResolvers().getResolvers().size()).isEqualTo(resolverCount);
+		assertThat(this.resolver.getReturnValueHandlers().getHandlers().size()).isEqualTo(handlerCount);
 	}
 
 

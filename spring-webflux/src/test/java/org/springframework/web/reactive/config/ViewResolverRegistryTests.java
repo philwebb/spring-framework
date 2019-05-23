@@ -56,7 +56,7 @@ public class ViewResolverRegistryTests {
 
 	@Test
 	public void order() {
-		assertThat(this.registry.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
+		assertThat(this.registry.getOrder()).isEqualTo(Ordered.LOWEST_PRECEDENCE);
 	}
 
 	@Test

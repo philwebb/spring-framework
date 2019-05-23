@@ -341,7 +341,7 @@ public class ProducesRequestConditionTests {
 
 	private void assertConditions(ProducesRequestCondition condition, String... expected) {
 		Collection<ProducesRequestCondition.ProduceMediaTypeExpression> expressions = condition.getContent();
-		assertThat(expected.length).as("Invalid number of conditions").isEqualTo((long) expressions.size());
+		assertThat(expected.length).as("Invalid number of conditions").isEqualTo(expressions.size());
 		for (String s : expected) {
 			boolean found = false;
 			for (ProducesRequestCondition.ProduceMediaTypeExpression expr : expressions) {

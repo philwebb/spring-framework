@@ -60,7 +60,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		IJmxTestBean bean = getBean();
 		assertThat(bean).isNotNull();
 		MBeanInfo inf = getMBeanInfo();
-		assertThat(inf.getOperations().length).as("Incorrect number of operations registered").isEqualTo((long) getExpectedOperationCount());
+		assertThat(inf.getOperations().length).as("Incorrect number of operations registered").isEqualTo(getExpectedOperationCount());
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		IJmxTestBean bean = getBean();
 		assertThat(bean).isNotNull();
 		MBeanInfo inf = getMBeanInfo();
-		assertThat(inf.getAttributes().length).as("Incorrect number of attributes registered").isEqualTo((long) getExpectedAttributeCount());
+		assertThat(inf.getAttributes().length).as("Incorrect number of attributes registered").isEqualTo(getExpectedAttributeCount());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 	public void testGetMBeanAttributeInfo() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		MBeanAttributeInfo[] inf = info.getAttributes();
-		assertThat(inf.length).as("Invalid number of Attributes returned").isEqualTo((long) getExpectedAttributeCount());
+		assertThat(inf.length).as("Invalid number of Attributes returned").isEqualTo(getExpectedAttributeCount());
 
 		for (int x = 0; x < inf.length; x++) {
 			assertThat(inf[x]).as("MBeanAttributeInfo should not be null").isNotNull();
@@ -93,7 +93,7 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 	public void testGetMBeanOperationInfo() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		MBeanOperationInfo[] inf = info.getOperations();
-		assertThat(inf.length).as("Invalid number of Operations returned").isEqualTo((long) getExpectedOperationCount());
+		assertThat(inf.length).as("Invalid number of Operations returned").isEqualTo(getExpectedOperationCount());
 
 		for (int x = 0; x < inf.length; x++) {
 			assertThat(inf[x]).as("MBeanOperationInfo should not be null").isNotNull();

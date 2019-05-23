@@ -427,7 +427,7 @@ public class HttpInvokerTests {
 		// shouldn't go through to remote service
 		assertThat(proxy.toString().contains("HTTP invoker")).isTrue();
 		assertThat(proxy.toString().contains(serviceUrl)).isTrue();
-		assertThat(proxy.hashCode()).isEqualTo((long) proxy.hashCode());
+		assertThat(proxy.hashCode()).isEqualTo(proxy.hashCode());
 		assertThat(proxy.equals(proxy)).isTrue();
 
 		// should go through

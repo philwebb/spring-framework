@@ -55,7 +55,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value1");
 	}
 
@@ -63,7 +63,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 	public void argumentWithImplicitNullValue() throws JspException {
 		int action = tag.doEndTag();
 
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isNull();
 	}
 
@@ -73,7 +73,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isNull();
 	}
 
@@ -84,7 +84,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value2");
 	}
 
@@ -94,7 +94,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value3");
 
 		tag.release();
@@ -107,7 +107,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 
 		action = tag.doEndTag();
 
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(parent.getArgument()).isEqualTo("value4");
 	}
 

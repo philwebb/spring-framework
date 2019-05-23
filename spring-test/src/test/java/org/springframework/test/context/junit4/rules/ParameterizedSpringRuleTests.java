@@ -94,7 +94,7 @@ public class ParameterizedSpringRuleTests {
 
 	@AfterClass
 	public static void verifyNumParameterizedRuns() {
-		assertThat(invocationCount.get()).as("Number of times the parameterized test method was executed.").isEqualTo((long) employeeData().length);
+		assertThat(invocationCount.get()).as("Number of times the parameterized test method was executed.").isEqualTo(employeeData().length);
 	}
 
 }

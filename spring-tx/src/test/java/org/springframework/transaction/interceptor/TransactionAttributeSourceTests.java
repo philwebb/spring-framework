@@ -58,7 +58,7 @@ public class TransactionAttributeSourceTests {
 		tas.setProperties(attributes);
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
 		assertThat(ta).isNotNull();
-		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_REQUIRED);
+		assertThat(ta.getPropagationBehavior()).isEqualTo(TransactionDefinition.PROPAGATION_REQUIRED);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class TransactionAttributeSourceTests {
 		tas.setProperties(attributes);
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
 		assertThat(ta).isNotNull();
-		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_REQUIRED);
+		assertThat(ta.getPropagationBehavior()).isEqualTo(TransactionDefinition.PROPAGATION_REQUIRED);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class TransactionAttributeSourceTests {
 		tas.setProperties(attributes);
 		TransactionAttribute ta = tas.getTransactionAttribute(Object.class.getMethod("hashCode"), null);
 		assertThat(ta).isNotNull();
-		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_MANDATORY);
+		assertThat(ta.getPropagationBehavior()).isEqualTo(TransactionDefinition.PROPAGATION_MANDATORY);
 	}
 
 	@Test

@@ -182,7 +182,7 @@ public class JndiJtaTransactionManagerTests {
 		assertThat(ptm.getUserTransaction()).isEqualTo(ut);
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
-		assertThat(ptm.getTransactionSynchronization()).isEqualTo((long) JtaTransactionManager.SYNCHRONIZATION_ALWAYS);
+		assertThat(ptm.getTransactionSynchronization()).isEqualTo(JtaTransactionManager.SYNCHRONIZATION_ALWAYS);
 		boolean condition1 = !TransactionSynchronizationManager.isSynchronizationActive();
 		assertThat(condition1).isTrue();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();

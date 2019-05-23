@@ -427,8 +427,8 @@ public class NamedParameterJdbcTemplateTests {
 		int[] actualRowsAffected = namedParameterTemplate.batchUpdate(
 				"UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
 		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-		assertThat(actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
-		assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
+		assertThat(actualRowsAffected[0]).isEqualTo(rowsAffected[0]);
+		assertThat(actualRowsAffected[1]).isEqualTo(rowsAffected[1]);
 		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 100);
 		verify(preparedStatement).setObject(1, 200);
@@ -462,8 +462,8 @@ public class NamedParameterJdbcTemplateTests {
 		int[] actualRowsAffected = namedParameterTemplate.batchUpdate(
 				"UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
 		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-		assertThat(actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
-		assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
+		assertThat(actualRowsAffected[0]).isEqualTo(rowsAffected[0]);
+		assertThat(actualRowsAffected[1]).isEqualTo(rowsAffected[1]);
 		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 100);
 		verify(preparedStatement).setObject(1, 200);
@@ -521,8 +521,8 @@ public class NamedParameterJdbcTemplateTests {
 		int[] actualRowsAffected = namedParameterTemplate.batchUpdate(
 				"UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
 		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-		assertThat(actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
-		assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
+		assertThat(actualRowsAffected[0]).isEqualTo(rowsAffected[0]);
+		assertThat(actualRowsAffected[1]).isEqualTo(rowsAffected[1]);
 		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 100, Types.NUMERIC);
 		verify(preparedStatement).setObject(1, 200, Types.NUMERIC);

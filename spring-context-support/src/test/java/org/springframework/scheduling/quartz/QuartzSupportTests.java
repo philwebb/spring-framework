@@ -123,7 +123,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
-		assertThat(taskExecutor.count).isEqualTo((long) DummyJob.count);
+		assertThat(taskExecutor.count).isEqualTo(DummyJob.count);
 
 		bean.destroy();
 	}

@@ -88,7 +88,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		assertThat(tv3).isNotEqualTo(tv2);
 		assertThat(tv1).isNotEqualTo(tv3);
 		assertThat(tv2).isNotEqualTo(tv3);
-		assertThat(tv2.hashCode()).isEqualTo((long) tv1.hashCode());
+		assertThat(tv2.hashCode()).isEqualTo(tv1.hashCode());
 		assertThat(tv3.hashCode()).isNotEqualTo((long) tv1.hashCode());
 		assertThat(tv3.hashCode()).isNotEqualTo((long) tv2.hashCode());
 	}
@@ -414,7 +414,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 	}
 
 	private void checkArguments(Object[] args, Object... expected) {
-		assertThat(args.length).isEqualTo((long) expected.length);
+		assertThat(args.length).isEqualTo(expected.length);
 		for (int i = 0; i < expected.length; i++) {
 			checkArgument(expected[i],args[i]);
 		}

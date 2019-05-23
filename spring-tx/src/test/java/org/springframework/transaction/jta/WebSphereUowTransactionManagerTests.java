@@ -64,7 +64,7 @@ public class WebSphereUowTransactionManagerTests {
 			}
 		})).isEqualTo("result");
 
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isFalse();
 	}
@@ -92,7 +92,7 @@ public class WebSphereUowTransactionManagerTests {
 			}
 		})).isEqualTo("result");
 
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isFalse();
 		verify(ut).begin();
@@ -203,7 +203,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_LOCAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_LOCAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isFalse();
 	}
@@ -296,7 +296,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isFalse();
 	}
@@ -328,7 +328,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(10);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isFalse();
 	}
@@ -398,7 +398,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isTrue();
 	}
@@ -429,7 +429,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isTrue();
 	}
@@ -460,7 +460,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isTrue();
 		assertThat(manager.getRollbackOnly()).isFalse();
 	}
@@ -550,7 +550,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		assertThat(manager.getJoined()).isTrue();
 		assertThat(manager.getRollbackOnly()).isFalse();
 	}
@@ -602,10 +602,10 @@ public class WebSphereUowTransactionManagerTests {
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
 		if (propagationBehavior == TransactionDefinition.PROPAGATION_REQUIRES_NEW) {
-			assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
+			assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_GLOBAL_TRANSACTION);
 		}
 		else {
-			assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_LOCAL_TRANSACTION);
+			assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_LOCAL_TRANSACTION);
 		}
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isFalse();
@@ -648,7 +648,7 @@ public class WebSphereUowTransactionManagerTests {
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 
 		assertThat(manager.getUOWTimeout()).isEqualTo(0);
-		assertThat(manager.getUOWType()).isEqualTo((long) UOWManager.UOW_TYPE_LOCAL_TRANSACTION);
+		assertThat(manager.getUOWType()).isEqualTo(UOWManager.UOW_TYPE_LOCAL_TRANSACTION);
 		assertThat(manager.getJoined()).isFalse();
 		assertThat(manager.getRollbackOnly()).isFalse();
 	}

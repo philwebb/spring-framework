@@ -187,7 +187,7 @@ public class TestExecutionListenersTests {
 
 	private void assertNumRegisteredListeners(Class<?> testClass, int expected) {
 		TestContextManager testContextManager = new TestContextManager(testClass);
-		assertThat(testContextManager.getTestExecutionListeners().size()).as("Num registered TELs for " + testClass).isEqualTo((long) expected);
+		assertThat(testContextManager.getTestExecutionListeners().size()).as("Num registered TELs for " + testClass).isEqualTo(expected);
 	}
 
 

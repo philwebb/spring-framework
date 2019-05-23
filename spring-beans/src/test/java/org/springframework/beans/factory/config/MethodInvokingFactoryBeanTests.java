@@ -42,7 +42,6 @@ public class MethodInvokingFactoryBeanTests {
 
 	@Test
 	public void testParameterValidation() throws Exception {
-		String validationError = "improper validation of input properties";
 
 		// assert that only static OR non static are set, but not both or none
 		MethodInvokingFactoryBean mcfb = new MethodInvokingFactoryBean();

@@ -74,7 +74,7 @@ public class EventCollector {
 	 */
 	public void assertEvent(String listenerId, Object... events) {
 		List<Object> actual = this.content.getOrDefault(listenerId, Collections.emptyList());
-		assertThat(actual.size()).as("Wrong number of events").isEqualTo((long) events.length);
+		assertThat(actual.size()).as("Wrong number of events").isEqualTo(events.length);
 		for (int i = 0; i < events.length; i++) {
 			assertThat(actual.get(i)).as("Wrong event at index " + i).isEqualTo(events[i]);
 		}
@@ -99,7 +99,7 @@ public class EventCollector {
 			actual += entry.getValue().size();
 		}
 		assertThat(actual).as("Wrong number of total events (" + this.content.size() +
-				") registered listener(s)").isEqualTo((long) number);
+				") registered listener(s)").isEqualTo(number);
 	}
 
 	/**

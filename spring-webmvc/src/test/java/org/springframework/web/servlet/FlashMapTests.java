@@ -57,14 +57,14 @@ public class FlashMapTests {
 		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo(0);
 
 		flashMap1.setTargetRequestPath("/path1");
-		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo((long) -1);
+		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo(-1);
 		assertThat(flashMap2.compareTo(flashMap1)).isEqualTo(1);
 
 		flashMap2.setTargetRequestPath("/path2");
 		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo(0);
 
 		flashMap1.addTargetRequestParam("id", "1");
-		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo((long) -1);
+		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo(-1);
 		assertThat(flashMap2.compareTo(flashMap1)).isEqualTo(1);
 
 		flashMap2.addTargetRequestParam("id", "2");

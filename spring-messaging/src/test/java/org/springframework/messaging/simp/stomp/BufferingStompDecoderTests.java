@@ -94,14 +94,14 @@ public class BufferingStompDecoderTests {
 		assertThat(new String(messages.get(0).getPayload())).isEqualTo("Payload1");
 
 		assertThat(stompDecoder.getBufferSize()).isEqualTo(23);
-		assertThat((int) stompDecoder.getExpectedContentLength()).isEqualTo((long) contentLength);
+		assertThat((int) stompDecoder.getExpectedContentLength()).isEqualTo(contentLength);
 
 		String chunk2 = "\nPayload2a";
 		messages = stompDecoder.decode(toByteBuffer(chunk2));
 
 		assertThat(messages.size()).isEqualTo(0);
 		assertThat(stompDecoder.getBufferSize()).isEqualTo(33);
-		assertThat((int) stompDecoder.getExpectedContentLength()).isEqualTo((long) contentLength);
+		assertThat((int) stompDecoder.getExpectedContentLength()).isEqualTo(contentLength);
 
 		String chunk3 = "-Payload2b\0";
 		messages = stompDecoder.decode(toByteBuffer(chunk3));

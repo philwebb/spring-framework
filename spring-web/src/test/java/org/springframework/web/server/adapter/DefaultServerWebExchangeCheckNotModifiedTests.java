@@ -82,7 +82,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(this.currentDate)).isFalse();
 		assertThat(exchange.getResponse().getStatusCode().value()).isEqualTo(304);
-		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo((long) -1);
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(-1);
 	}
 
 	@Test // SPR-14559
@@ -315,7 +315,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(oneMinuteAgo)).isFalse();
 		assertThat(exchange.getResponse().getStatusCode()).isNull();
-		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo((long) -1);
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(-1);
 	}
 
 	@Test
@@ -327,7 +327,7 @@ public class DefaultServerWebExchangeCheckNotModifiedTests {
 
 		assertThat(exchange.checkNotModified(currentDate)).isTrue();
 		assertThat(exchange.getResponse().getStatusCode().value()).isEqualTo(412);
-		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo((long) -1);
+		assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(-1);
 	}
 
 }

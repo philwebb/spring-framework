@@ -175,8 +175,8 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		start(exporter);
 
 		MBeanInfo inf = getServer().getMBeanInfo(ObjectNameManager.getInstance(objectName));
-		assertThat(inf.getOperations().length).as("Incorrect number of operations").isEqualTo((long) getExpectedOperationCount());
-		assertThat(inf.getAttributes().length).as("Incorrect number of attributes").isEqualTo((long) getExpectedAttributeCount());
+		assertThat(inf.getOperations().length).as("Incorrect number of operations").isEqualTo(getExpectedOperationCount());
+		assertThat(inf.getAttributes().length).as("Incorrect number of attributes").isEqualTo(getExpectedAttributeCount());
 
 		assertThat(assembler.includeBean(proxy.getClass(), "some bean name")).as("Not included in autodetection").isTrue();
 	}

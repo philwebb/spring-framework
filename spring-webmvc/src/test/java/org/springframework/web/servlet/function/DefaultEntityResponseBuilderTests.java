@@ -194,7 +194,7 @@ public class DefaultEntityResponseBuilderTests {
 		ModelAndView mav = entityResponse.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
 		assertThat(mav).isNull();
 
-		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo(HttpStatus.NOT_MODIFIED.value());
 	}
 
 
@@ -215,7 +215,7 @@ public class DefaultEntityResponseBuilderTests {
 		ModelAndView mav = entityResponse.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
 		assertThat(mav).isNull();
 
-		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo(HttpStatus.NOT_MODIFIED.value());
 	}
 
 }

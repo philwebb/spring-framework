@@ -86,7 +86,7 @@ public class DefaultClientResponseTests {
 		int status = 999;
 		given(mockResponse.getRawStatusCode()).willReturn(status);
 
-		assertThat(defaultClientResponse.rawStatusCode()).isEqualTo((long) status);
+		assertThat(defaultClientResponse.rawStatusCode()).isEqualTo(status);
 	}
 
 	@Test
@@ -222,7 +222,7 @@ public class DefaultClientResponseTests {
 		ResponseEntity<String> result = defaultClientResponse.toEntity(String.class).block();
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
+		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -269,7 +269,7 @@ public class DefaultClientResponseTests {
 				}).block();
 		assertThat(result.getBody()).isEqualTo("foo");
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
+		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -288,7 +288,7 @@ public class DefaultClientResponseTests {
 		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(String.class).block();
 		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
+		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 
@@ -336,7 +336,7 @@ public class DefaultClientResponseTests {
 				}).block();
 		assertThat(result.getBody()).isEqualTo(Collections.singletonList("foo"));
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(result.getStatusCodeValue()).isEqualTo((long) HttpStatus.OK.value());
+		assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
 		assertThat(result.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 	}
 

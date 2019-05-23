@@ -84,7 +84,7 @@ public class ContextCacheUtilsTests {
 	}
 
 	private static void assertDefaultValue() {
-		assertThat(retrieveMaxCacheSize()).isEqualTo((long) DEFAULT_MAX_CONTEXT_CACHE_SIZE);
+		assertThat(retrieveMaxCacheSize()).isEqualTo(DEFAULT_MAX_CONTEXT_CACHE_SIZE);
 	}
 
 }

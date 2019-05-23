@@ -125,7 +125,7 @@ public class WebRequestDataBinderIntegrationTests {
 		template.postForLocation(baseUrl + "/partlist", parts);
 
 		assertThat(bean.getPartList()).isNotNull();
-		assertThat(bean.getPartList().size()).isEqualTo((long) parts.get("partList").size());
+		assertThat(bean.getPartList().size()).isEqualTo(parts.get("partList").size());
 	}
 
 

@@ -64,7 +64,7 @@ public class DefaultServletHandlerConfigurerTests {
 		DefaultServletHttpRequestHandler handler = (DefaultServletHttpRequestHandler) handlerMapping.getUrlMap().get("/**");
 
 		assertThat(handler).isNotNull();
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(handlerMapping.getOrder()).isEqualTo(Integer.MAX_VALUE);
 
 		handler.handleRequest(new MockHttpServletRequest(), response);
 
@@ -80,7 +80,7 @@ public class DefaultServletHandlerConfigurerTests {
 		DefaultServletHttpRequestHandler handler = (DefaultServletHttpRequestHandler) handlerMapping.getUrlMap().get("/**");
 
 		assertThat(handler).isNotNull();
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(handlerMapping.getOrder()).isEqualTo(Integer.MAX_VALUE);
 
 		handler.handleRequest(new MockHttpServletRequest(), response);
 

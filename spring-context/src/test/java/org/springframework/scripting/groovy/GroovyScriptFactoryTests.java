@@ -381,7 +381,7 @@ public class GroovyScriptFactoryTests {
 		assertThat(countingAspect.getCalls()).isEqualTo(1);
 
 		ctx.close();
-		assertThat(countingAspect.getCalls()).isEqualTo((long) -200);
+		assertThat(countingAspect.getCalls()).isEqualTo(-200);
 	}
 
 	@Test

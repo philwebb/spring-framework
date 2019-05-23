@@ -125,7 +125,7 @@ public class NameMatchMethodPointcutTests {
 		String foo = "foo";
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertThat(pc2.hashCode()).isEqualTo((long) pc1.hashCode());
+		assertThat(pc2.hashCode()).isEqualTo(pc1.hashCode());
 
 		pc1.setMappedName(foo);
 		assertThat(pc1.equals(pc2)).isFalse();
@@ -133,7 +133,7 @@ public class NameMatchMethodPointcutTests {
 
 		pc2.setMappedName(foo);
 		assertThat(pc2).isEqualTo(pc1);
-		assertThat(pc2.hashCode()).isEqualTo((long) pc1.hashCode());
+		assertThat(pc2.hashCode()).isEqualTo(pc1.hashCode());
 	}
 
 }

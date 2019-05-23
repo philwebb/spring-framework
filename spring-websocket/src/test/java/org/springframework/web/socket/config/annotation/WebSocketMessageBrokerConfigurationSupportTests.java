@@ -137,13 +137,13 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		ApplicationContext config = createConfig(TestChannelConfig.class, TestConfigurer.class);
 		SubProtocolWebSocketHandler subWsHandler = config.getBean(SubProtocolWebSocketHandler.class);
 
-		assertThat(subWsHandler.getSendBufferSizeLimit()).isEqualTo((long) (1024 * 1024));
-		assertThat(subWsHandler.getSendTimeLimit()).isEqualTo((long) (25 * 1000));
-		assertThat(subWsHandler.getTimeToFirstMessage()).isEqualTo((long) (30 * 1000));
+		assertThat(subWsHandler.getSendBufferSizeLimit()).isEqualTo((1024 * 1024));
+		assertThat(subWsHandler.getSendTimeLimit()).isEqualTo((25 * 1000));
+		assertThat(subWsHandler.getTimeToFirstMessage()).isEqualTo((30 * 1000));
 
 		Map<String, SubProtocolHandler> handlerMap = subWsHandler.getProtocolHandlerMap();
 		StompSubProtocolHandler protocolHandler = (StompSubProtocolHandler) handlerMap.get("v12.stomp");
-		assertThat(protocolHandler.getMessageSizeLimit()).isEqualTo((long) (128 * 1024));
+		assertThat(protocolHandler.getMessageSizeLimit()).isEqualTo((128 * 1024));
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class WebSocketMessageBrokerConfigurationSupportTests {
 		String name = "messageBrokerSockJsTaskScheduler";
 		ThreadPoolTaskScheduler taskScheduler = config.getBean(name, ThreadPoolTaskScheduler.class);
 		ScheduledThreadPoolExecutor executor = taskScheduler.getScheduledThreadPoolExecutor();
-		assertThat(executor.getCorePoolSize()).isEqualTo((long) Runtime.getRuntime().availableProcessors());
+		assertThat(executor.getCorePoolSize()).isEqualTo(Runtime.getRuntime().availableProcessors());
 		assertThat(executor.getRemoveOnCancelPolicy()).isTrue();
 
 		SimpleBrokerMessageHandler handler = config.getBean(SimpleBrokerMessageHandler.class);

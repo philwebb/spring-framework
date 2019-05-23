@@ -93,7 +93,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setDynamicAttribute(null, dynamicAttribute2, dynamicAttribute2);
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertContainsAttribute(output, dynamicAttribute1, dynamicAttribute1);
@@ -108,7 +108,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemValue("isoCode");
 		this.tag.setItemLabel("name");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertThat(output).isEqualTo("<select id=\"country\" name=\"country\"></select>");
@@ -122,7 +122,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemValue("isoCode");
 		this.tag.setItemLabel("name");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertThat(output).isEqualTo("<select id=\"country\" name=\"country\"></select>");
@@ -166,7 +166,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItems(Country.getCountries());
 		this.tag.setItemValue("isoCode");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 		validateOutput(getOutput(), true);
 	}
 
@@ -339,7 +339,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setPath("sex");
 		this.tag.setItems(getSexes());
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 	}
 
 	@Test
@@ -357,13 +357,13 @@ public class SelectTagTests extends AbstractFormTagTests {
 	public void withNestedOptions() throws Exception {
 		this.tag.setPath("country");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(result).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 
 		BindStatus value = (BindStatus) getPageContext().getAttribute(SelectTag.LIST_VALUE_PAGE_ATTRIBUTE);
 		assertThat(value.getValue()).as("Selected country not exposed in page context").isEqualTo("UK");
 
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 		this.tag.doFinally();
 
 		String output = getOutput();
@@ -395,7 +395,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		}
 		this.tag.setItems(array);
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -410,7 +410,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertThat(selectElement.attribute("name").getValue()).isEqualTo("someIntegerArray");
 
 		List children = selectElement.elements();
-		assertThat(children.size()).as("Incorrect number of children").isEqualTo((long) array.length);
+		assertThat(children.size()).as("Incorrect number of children").isEqualTo(array.length);
 
 		Element e = (Element) selectElement.selectSingleNode("option[text() = '12']");
 		assertThat(e.attribute("selected").getValue()).as("'12' node not selected").isEqualTo("selected");
@@ -436,7 +436,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 
 		this.tag.setItems(array);
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertThat(output.startsWith("<select ")).isTrue();
@@ -448,7 +448,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		assertThat(rootElement.getName()).isEqualTo("select");
 		assertThat(rootElement.attribute("name").getValue()).isEqualTo("myFloat");
 		List children = rootElement.elements();
-		assertThat(children.size()).as("Incorrect number of children").isEqualTo((long) array.length);
+		assertThat(children.size()).as("Incorrect number of children").isEqualTo(array.length);
 
 		Element e = (Element) rootElement.selectSingleNode("option[text() = '12.34f']");
 		assertThat(e.attribute("selected").getValue()).as("'12.34' node not selected").isEqualTo("selected");
@@ -468,7 +468,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItems(Country.getCountries());
 		this.tag.setItemValue("isoCode");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -517,7 +517,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItems(Country.getCountries());
 		this.tag.setItemValue("isoCode");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -565,7 +565,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItems(Country.getCountries());
 		this.tag.setItemValue("isoCode");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -611,7 +611,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItems(Country.getCountries());
 		this.tag.setItemValue("isoCode");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -646,7 +646,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItems(getSexes());
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -722,7 +722,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 			exposeBindingResult(bindingResult);
 
 			int result = this.tag.doStartTag();
-			assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+			assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 			String output = getOutput();
 			output = "<doc>" + output + "</doc>";
@@ -765,7 +765,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItems(Country.getCountries());
 		this.tag.setItemValue("isoCode");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -794,7 +794,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemValue("isoCode");
 		this.tag.setMultiple("multiple");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -823,7 +823,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemValue("isoCode");
 		this.tag.setMultiple("true");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -852,7 +852,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemValue("isoCode");
 		this.tag.setMultiple("false");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -878,7 +878,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemValue("isoCode");
 		this.tag.setMultiple(true);
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -907,7 +907,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemValue("isoCode");
 		this.tag.setMultiple(false);
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		output = "<doc>" + output + "</doc>";
@@ -929,7 +929,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 
 	private void assertStringArray() throws JspException, DocumentException {
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertThat(output.startsWith("<select ")).isTrue();
@@ -977,7 +977,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		this.tag.setItemLabel("name");
 		this.tag.setSize("5");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo(Tag.SKIP_BODY);
 
 		String output = getOutput();
 		validateOutput(output, selected);

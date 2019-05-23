@@ -93,7 +93,7 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 		Person juergen = new Person(JUERGEN, driversLicense);
 		int numRows = countRowsInTable("person");
 		personService.save(juergen);
-		assertThat(countRowsInTable("person")).as("Verifying number of rows in the 'person' table.").isEqualTo((long) (numRows + 1));
+		assertThat(countRowsInTable("person")).as("Verifying number of rows in the 'person' table.").isEqualTo((numRows + 1));
 		assertThat(personService.findByName(JUERGEN)).as("Should be able to save and retrieve Juergen").isNotNull();
 		assertThat(juergen.getId()).as("Juergen's ID should have been set").isNotNull();
 	}

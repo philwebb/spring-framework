@@ -106,7 +106,7 @@ public class SimpleMappingExceptionResolverTests {
 	public void noDefaultStatusCode() {
 		exceptionResolver.setDefaultErrorView("default-view");
 		exceptionResolver.resolveException(request, response, handler1, genericException);
-		assertThat(response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class SimpleMappingExceptionResolverTests {
 		exceptionResolver.setDefaultErrorView("default-view");
 		exceptionResolver.setDefaultStatusCode(HttpServletResponse.SC_BAD_REQUEST);
 		exceptionResolver.resolveException(request, response, handler1, genericException);
-		assertThat(response.getStatus()).isEqualTo((long) HttpServletResponse.SC_BAD_REQUEST);
+		assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class SimpleMappingExceptionResolverTests {
 		exceptionResolver.setDefaultStatusCode(HttpServletResponse.SC_BAD_REQUEST);
 		request.setAttribute(WebUtils.INCLUDE_REQUEST_URI_ATTRIBUTE, "some path");
 		exceptionResolver.resolveException(request, response, handler1, genericException);
-		assertThat(response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class SimpleMappingExceptionResolverTests {
 		statusCodes.setProperty("default-view", "406");
 		exceptionResolver.setStatusCodes(statusCodes);
 		exceptionResolver.resolveException(request, response, handler1, genericException);
-		assertThat(response.getStatus()).isEqualTo((long) HttpServletResponse.SC_NOT_ACCEPTABLE);
+		assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_NOT_ACCEPTABLE);
 	}
 
 	@Test

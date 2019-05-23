@@ -128,10 +128,10 @@ public class SimpleJmsHeaderMapperTests {
 		javax.jms.Message jmsMessage = new StubTextMessage();
 		mapper.fromHeaders(message.getHeaders(), jmsMessage);
 		assertThat(jmsMessage.getJMSDestination()).isNull();
-		assertThat(jmsMessage.getJMSDeliveryMode()).isEqualTo((long) DeliveryMode.PERSISTENT);
+		assertThat(jmsMessage.getJMSDeliveryMode()).isEqualTo(DeliveryMode.PERSISTENT);
 		assertThat(jmsMessage.getJMSExpiration()).isEqualTo(0);
 		assertThat(jmsMessage.getJMSMessageID()).isNull();
-		assertThat(jmsMessage.getJMSPriority()).isEqualTo((long) javax.jms.Message.DEFAULT_PRIORITY);
+		assertThat(jmsMessage.getJMSPriority()).isEqualTo(javax.jms.Message.DEFAULT_PRIORITY);
 		assertThat(jmsMessage.getJMSRedelivered()).isFalse();
 		assertThat(jmsMessage.getJMSTimestamp()).isEqualTo(0);
 	}

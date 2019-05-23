@@ -176,7 +176,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 				this.config.mvcResourceUrlProvider());
 		handlerMapping.setApplicationContext(this.context);
 		assertThat(handlerMapping).isNotNull();
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
+		assertThat(handlerMapping.getOrder()).isEqualTo((Integer.MAX_VALUE - 1));
 		assertThat(handlerMapping.getUrlPathHelper().getClass()).isEqualTo(TestPathHelper.class);
 		assertThat(handlerMapping.getPathMatcher().getClass()).isEqualTo(TestPathMatcher.class);
 		chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/resources/foo.gif"));
@@ -192,7 +192,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 		handlerMapping = (AbstractHandlerMapping) this.config.defaultServletHandlerMapping();
 		handlerMapping.setApplicationContext(this.context);
 		assertThat(handlerMapping).isNotNull();
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(handlerMapping.getOrder()).isEqualTo(Integer.MAX_VALUE);
 		chain = handlerMapping.getHandler(new MockHttpServletRequest("GET", "/anyPath"));
 		assertThat(chain).isNotNull();
 		assertThat(chain.getHandler()).isNotNull();
@@ -316,7 +316,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 	public void viewResolvers() throws Exception {
 		ViewResolverComposite viewResolver = (ViewResolverComposite) this.config.mvcViewResolver(
 				this.config.mvcContentNegotiationManager());
-		assertThat(viewResolver.getOrder()).isEqualTo((long) Ordered.HIGHEST_PRECEDENCE);
+		assertThat(viewResolver.getOrder()).isEqualTo(Ordered.HIGHEST_PRECEDENCE);
 		List<ViewResolver> viewResolvers = viewResolver.getViewResolvers();
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(viewResolvers.get(0));

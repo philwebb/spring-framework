@@ -91,7 +91,7 @@ public class BeanUtilsTests {
 		PropertyDescriptor[] actual = Introspector.getBeanInfo(TestBean.class).getPropertyDescriptors();
 		PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(TestBean.class);
 		assertThat(descriptors).as("Descriptors should not be null").isNotNull();
-		assertThat(descriptors.length).as("Invalid number of descriptors returned").isEqualTo((long) actual.length);
+		assertThat(descriptors.length).as("Invalid number of descriptors returned").isEqualTo(actual.length);
 	}
 
 	@Test

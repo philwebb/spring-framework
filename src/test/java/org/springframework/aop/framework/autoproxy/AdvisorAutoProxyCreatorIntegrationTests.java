@@ -114,7 +114,7 @@ public class AdvisorAutoProxyCreatorIntegrationTests {
 		test.setAge(newAge);
 		assertThat(txc.getCountingBeforeAdvice().getCalls()).isEqualTo(1);
 
-		assertThat(test.getAge()).as("New value set correctly").isEqualTo((long) newAge);
+		assertThat(test.getAge()).as("New value set correctly").isEqualTo(newAge);
 		assertThat(txMan.commits).as("Transaction counts match").isEqualTo(1);
 	}
 

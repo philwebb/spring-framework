@@ -66,8 +66,8 @@ public class RandomHandlerIntegrationTests extends AbstractHttpHandlerIntegratio
 		ResponseEntity<byte[]> response = restTemplate.exchange(request, byte[].class);
 
 		assertThat(response.getBody()).isNotNull();
-		assertThat(response.getHeaders().getContentLength()).isEqualTo((long) RESPONSE_SIZE);
-		assertThat(response.getBody().length).isEqualTo((long) RESPONSE_SIZE);
+		assertThat(response.getHeaders().getContentLength()).isEqualTo(RESPONSE_SIZE);
+		assertThat(response.getBody().length).isEqualTo(RESPONSE_SIZE);
 	}
 
 
@@ -88,7 +88,7 @@ public class RandomHandlerIntegrationTests extends AbstractHttpHandlerIntegratio
 							dataBuffer.readableByteCount()).
 					doOnSuccessOrError((size, throwable) -> {
 						assertThat(throwable).isNull();
-						assertThat(size).isEqualTo((long) REQUEST_SIZE);
+						assertThat(size).isEqualTo(REQUEST_SIZE);
 					});
 
 			response.getHeaders().setContentLength(RESPONSE_SIZE);

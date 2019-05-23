@@ -52,7 +52,7 @@ public class AspectProxyFactoryTests {
 		AspectJProxyFactory proxyFactory = new AspectJProxyFactory(bean);
 		proxyFactory.addAspect(MultiplyReturnValue.class);
 		ITestBean proxy = proxyFactory.getProxy();
-		assertThat(proxy.getAge()).as("Multiplication did not occur").isEqualTo((long) (bean.getAge() * 2));
+		assertThat(proxy.getAge()).as("Multiplication did not occur").isEqualTo((bean.getAge() * 2));
 	}
 
 	@Test
@@ -107,10 +107,10 @@ public class AspectProxyFactoryTests {
 		proxyFactory.addAspect(aspect);
 
 		ITestBean proxy = proxyFactory.getProxy();
-		assertThat(proxy.getAge()).isEqualTo((long) (target.getAge() * multiple));
+		assertThat(proxy.getAge()).isEqualTo((target.getAge() * multiple));
 
 		ITestBean serializedProxy = (ITestBean) SerializationTestUtils.serializeAndDeserialize(proxy);
-		assertThat(serializedProxy.getAge()).isEqualTo((long) (target.getAge() * multiple));
+		assertThat(serializedProxy.getAge()).isEqualTo((target.getAge() * multiple));
 	}
 
 	@Test

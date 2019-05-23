@@ -79,7 +79,7 @@ public class DefaultRollbackTrueRollbackAnnotationTransactionalTests extends Abs
 
 	@AfterClass
 	public static void verifyFinalTestData() {
-		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo((long) originalNumRows);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo(originalNumRows);
 	}
 
 }

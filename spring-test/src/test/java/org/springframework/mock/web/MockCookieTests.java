@@ -37,7 +37,7 @@ public class MockCookieTests {
 
 		assertCookie(cookie, "SESSION", "123");
 		assertThat(cookie.getDomain()).isNull();
-		assertThat(cookie.getMaxAge()).isEqualTo((long) -1);
+		assertThat(cookie.getMaxAge()).isEqualTo(-1);
 		assertThat(cookie.getPath()).isNull();
 		assertThat(cookie.isHttpOnly()).isFalse();
 		assertThat(cookie.getSecure()).isFalse();

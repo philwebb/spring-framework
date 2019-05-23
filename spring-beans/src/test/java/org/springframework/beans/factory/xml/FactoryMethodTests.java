@@ -156,7 +156,7 @@ public class FactoryMethodTests {
 		assertThat(fm.getName()).isEqualTo("default");
 		assertThat(fm.getTestBean().getName()).isEqualTo("defaultInstance");
 		assertThat(fm.getStringValue()).isEqualTo("setterString");
-		assertThat(fm2.getNum()).isEqualTo((long) fm.getNum());
+		assertThat(fm2.getNum()).isEqualTo(fm.getNum());
 		assertThat(fm2.getStringValue()).isEqualTo(fm.getStringValue());
 		// The TestBean is created separately for each bean
 		assertThat(fm2.getTestBean()).isNotSameAs(fm.getTestBean());
@@ -168,7 +168,7 @@ public class FactoryMethodTests {
 		assertThat(fm.getName()).isEqualTo("default");
 		// This comes from the test bean
 		assertThat(fm.getTestBean().getName()).isEqualTo("Juergen");
-		assertThat(fm2.getNum()).isEqualTo((long) fm.getNum());
+		assertThat(fm2.getNum()).isEqualTo(fm.getNum());
 		assertThat(fm2.getStringValue()).isEqualTo(fm.getStringValue());
 		// The TestBean reference is resolved to a prototype in the factory
 		assertThat(fm2.getTestBean()).isSameAs(fm.getTestBean());
@@ -179,7 +179,7 @@ public class FactoryMethodTests {
 		assertThat(fm.getNum()).isEqualTo(27);
 		assertThat(fm.getName()).isEqualTo("gotcha");
 		assertThat(fm.getTestBean().getName()).isEqualTo("Juergen");
-		assertThat(fm2.getNum()).isEqualTo((long) fm.getNum());
+		assertThat(fm2.getNum()).isEqualTo(fm.getNum());
 		assertThat(fm2.getStringValue()).isEqualTo(fm.getStringValue());
 		// The TestBean reference is resolved to a prototype in the factory
 		assertThat(fm2.getTestBean()).isSameAs(fm.getTestBean());
@@ -280,7 +280,7 @@ public class FactoryMethodTests {
 
 		FactoryMethods fm2 = (FactoryMethods) xbf.getBean("testBeanOnlyPrototype", tbArg2);
 		assertThat(fm2.getTestBean().getName()).isEqualTo("arg2");
-		assertThat(fm2.getNum()).isEqualTo((long) fm1.getNum());
+		assertThat(fm2.getNum()).isEqualTo(fm1.getNum());
 		assertThat("testBeanOnlyPrototypeDISetterString").isEqualTo(fm2.getStringValue());
 		assertThat(fm2.getStringValue()).isEqualTo(fm2.getStringValue());
 		// The TestBean reference is resolved to a prototype in the factory

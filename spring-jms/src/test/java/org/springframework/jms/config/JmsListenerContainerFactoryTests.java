@@ -90,7 +90,7 @@ public class JmsListenerContainerFactoryTests {
 		DefaultMessageListenerContainer container = factory.createListenerContainer(endpoint);
 
 		assertDefaultJmsConfig(container);
-		assertThat(container.getCacheLevel()).isEqualTo((long) DefaultMessageListenerContainer.CACHE_CONSUMER);
+		assertThat(container.getCacheLevel()).isEqualTo(DefaultMessageListenerContainer.CACHE_CONSUMER);
 		assertThat(container.getConcurrentConsumers()).isEqualTo(3);
 		assertThat(container.getMaxConcurrentConsumers()).isEqualTo(10);
 		assertThat(container.getMaxMessagesPerTask()).isEqualTo(5);
@@ -180,7 +180,7 @@ public class JmsListenerContainerFactoryTests {
 		assertThat(container.getDestinationResolver()).isEqualTo(this.destinationResolver);
 		assertThat(container.getMessageConverter()).isEqualTo(this.messageConverter);
 		assertThat(container.isSessionTransacted()).isEqualTo(true);
-		assertThat(container.getSessionAcknowledgeMode()).isEqualTo((long) Session.DUPS_OK_ACKNOWLEDGE);
+		assertThat(container.getSessionAcknowledgeMode()).isEqualTo(Session.DUPS_OK_ACKNOWLEDGE);
 		assertThat(container.isPubSubDomain()).isEqualTo(true);
 		assertThat(container.isReplyPubSubDomain()).isEqualTo(true);
 		assertThat(container.getReplyQosSettings()).isEqualTo(new QosSettings(1, 7, 5000));
@@ -205,7 +205,7 @@ public class JmsListenerContainerFactoryTests {
 		assertThat(container.getDestinationResolver()).isEqualTo(this.destinationResolver);
 		JmsActivationSpecConfig config = container.getActivationSpecConfig();
 		assertThat(config).isNotNull();
-		assertThat(config.getAcknowledgeMode()).isEqualTo((long) Session.DUPS_OK_ACKNOWLEDGE);
+		assertThat(config.getAcknowledgeMode()).isEqualTo(Session.DUPS_OK_ACKNOWLEDGE);
 		assertThat(config.isPubSubDomain()).isEqualTo(true);
 		assertThat(container.getReplyQosSettings()).isEqualTo(new QosSettings(1, 7, 5000));
 		assertThat(config.isSubscriptionDurable()).isEqualTo(true);

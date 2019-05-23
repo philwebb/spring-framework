@@ -80,7 +80,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		}
 
 		assertThat(decorator.getTimeSinceSendStarted() > 0).isTrue();
-		assertThat(decorator.getBufferSize()).isEqualTo((long) (5 * payload.getPayloadLength()));
+		assertThat(decorator.getBufferSize()).isEqualTo((5 * payload.getPayloadLength()));
 		assertThat(session.isOpen()).isTrue();
 	}
 

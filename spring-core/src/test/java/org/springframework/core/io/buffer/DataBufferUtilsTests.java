@@ -760,7 +760,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 		byte[] delims = "ooba".getBytes(StandardCharsets.UTF_8);
 		DataBufferUtils.Matcher matcher = DataBufferUtils.matcher(delims);
 		int result = matcher.match(foo);
-		assertThat(result).isEqualTo((long) -1);
+		assertThat(result).isEqualTo(-1);
 		result = matcher.match(bar);
 		assertThat(result).isEqualTo(1);
 
@@ -781,7 +781,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 		assertThat(result).isEqualTo(3);
 		foo.readPosition(3);
 		result = matcher.match(foo);
-		assertThat(result).isEqualTo((long) -1);
+		assertThat(result).isEqualTo(-1);
 
 		release(foo);
 	}

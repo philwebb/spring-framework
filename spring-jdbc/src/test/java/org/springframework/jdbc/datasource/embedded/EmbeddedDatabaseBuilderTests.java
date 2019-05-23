@@ -205,7 +205,7 @@ public class EmbeddedDatabaseBuilderTests {
 	}
 
 	private void assertNumRowsInTestTable(JdbcTemplate template, int count) {
-		assertThat(template.queryForObject("select count(*) from T_TEST", Integer.class).intValue()).isEqualTo((long) count);
+		assertThat(template.queryForObject("select count(*) from T_TEST", Integer.class).intValue()).isEqualTo(count);
 	}
 
 	private void assertDatabaseCreated(EmbeddedDatabase db) {

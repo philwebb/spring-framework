@@ -54,7 +54,7 @@ public abstract class AbstractCacheOperationTests<O extends JCacheOperation<?>> 
 			Object value, int position) {
 		assertThat(actual.getRawType()).as("wrong parameter type for " + actual).isEqualTo(targetType);
 		assertThat(actual.getValue()).as("wrong parameter value for " + actual).isEqualTo(value);
-		assertThat(actual.getParameterPosition()).as("wrong parameter position for " + actual).isEqualTo((long) position);
+		assertThat(actual.getParameterPosition()).as("wrong parameter position for " + actual).isEqualTo(position);
 	}
 
 	protected <A extends Annotation> CacheMethodDetails<A> create(Class<A> annotationType,

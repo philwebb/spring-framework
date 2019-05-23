@@ -70,9 +70,9 @@ public class OptionTagEnumTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue("VALUE_1");
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getWriter().toString();
 

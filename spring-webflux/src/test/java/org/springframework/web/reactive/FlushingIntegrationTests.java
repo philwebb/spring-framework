@@ -77,7 +77,7 @@ public class FlushingIntegrationTests extends AbstractHttpHandlerIntegrationTest
 
 		try {
 			StepVerifier.create(result)
-					.consumeNextWith(value -> assertThat(value.length()).isEqualTo((long) (64 * 1024)))
+					.consumeNextWith(value -> assertThat(value.length()).isEqualTo((64 * 1024)))
 					.expectComplete()
 					.verify(Duration.ofSeconds(10L));
 		}

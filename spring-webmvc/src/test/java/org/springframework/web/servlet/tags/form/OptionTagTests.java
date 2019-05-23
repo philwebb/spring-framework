@@ -86,9 +86,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setLabel("Bar");
 		this.tag.setDisabled(true);
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -107,9 +107,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue("bar");
 		this.tag.setLabel("Bar");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -133,9 +133,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setDynamicAttribute(null, dynamicAttribute2, dynamicAttribute2);
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -156,9 +156,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue("foo");
 		this.tag.setLabel("Foo");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -179,9 +179,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setCssClass("myClass");
 		this.tag.setOnclick("CLICK");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -217,9 +217,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setLabel("someArray");
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -247,9 +247,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue("Sally");
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertOptionTagOpened(output);
@@ -267,9 +267,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue(new Float(12.34));
 		this.tag.setLabel("GBP 12.34");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -288,9 +288,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue(new Float(12.35));
 		this.tag.setLabel("GBP 12.35");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 
@@ -318,9 +318,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setLabel("12.34f");
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertOptionTagOpened(output);
@@ -345,9 +345,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setLabel("12.35f");
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertOptionTagOpened(output);
@@ -366,10 +366,10 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 
 		this.tag.setValue("foo");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertOptionTagOpened(output);
@@ -388,10 +388,10 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 
 		this.tag.setValue("Rob Harrop");
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertOptionTagOpened(output);
@@ -409,10 +409,10 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 
 		this.tag.setValue(bodyContent);
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 		this.tag.setBodyContent(new MockBodyContent(bodyContent, getWriter()));
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertOptionTagOpened(output);
@@ -436,13 +436,13 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue(rulesVariant);
 
 		int result = this.tag.doStartTag();
-		assertThat(result).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(result).isEqualTo(BodyTag.EVAL_BODY_BUFFERED);
 
 		assertThat(getPageContext().getAttribute("value")).isEqualTo(rulesVariant);
 		assertThat(getPageContext().getAttribute("displayValue")).isEqualTo(rulesVariant.toId());
 
 		result = this.tag.doEndTag();
-		assertThat(result).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(result).isEqualTo(Tag.EVAL_PAGE);
 	}
 
 	@Test

@@ -207,7 +207,7 @@ public class RequestMappingInfoTests {
 				.build();
 
 		assertThat(info2).isEqualTo(info1);
-		assertThat(info2.hashCode()).isEqualTo((long) info1.hashCode());
+		assertThat(info2.hashCode()).isEqualTo(info1.hashCode());
 
 		info2 = paths("/foo", "/NOOOOOO").methods(RequestMethod.GET)
 				.params("foo=bar").headers("foo=bar")

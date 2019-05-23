@@ -91,14 +91,14 @@ public class BatchSqlUpdateTests {
 		}
 		else {
 			assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-			assertThat(actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
-			assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
+			assertThat(actualRowsAffected[0]).isEqualTo(rowsAffected[0]);
+			assertThat(actualRowsAffected[1]).isEqualTo(rowsAffected[1]);
 		}
 
 		actualRowsAffected = update.getRowsAffected();
 		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-		assertThat(actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
-		assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
+		assertThat(actualRowsAffected[0]).isEqualTo(rowsAffected[0]);
+		assertThat(actualRowsAffected[1]).isEqualTo(rowsAffected[1]);
 
 		update.reset();
 		assertThat(update.getRowsAffected().length).isEqualTo(0);

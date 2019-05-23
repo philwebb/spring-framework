@@ -71,7 +71,7 @@ public class ClientResponseWrapperTests {
 		int status = 999;
 		given(mockResponse.rawStatusCode()).willReturn(status);
 
-		assertThat(wrapper.rawStatusCode()).isEqualTo((long) status);
+		assertThat(wrapper.rawStatusCode()).isEqualTo(status);
 	}
 
 	@Test

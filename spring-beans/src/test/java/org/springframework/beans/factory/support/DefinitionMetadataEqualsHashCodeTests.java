@@ -69,7 +69,7 @@ public class DefinitionMetadataEqualsHashCodeTests {
 		// considered equal.
 
 		assertThat(equal).as("Should be equal").isEqualTo(master);
-		assertThat(equal.hashCode()).as("Hash code for equal instances must match").isEqualTo((long) master.hashCode());
+		assertThat(equal.hashCode()).as("Hash code for equal instances must match").isEqualTo(master.hashCode());
 	}
 
 	@Test
@@ -123,13 +123,13 @@ public class DefinitionMetadataEqualsHashCodeTests {
 
 	private void assertEqualsAndHashCodeContracts(Object master, Object equal, Object notEqual, Object subclass) {
 		assertThat(equal).as("Should be equal").isEqualTo(master);
-		assertThat(equal.hashCode()).as("Hash code for equal instances should match").isEqualTo((long) master.hashCode());
+		assertThat(equal.hashCode()).as("Hash code for equal instances should match").isEqualTo(master.hashCode());
 
 		assertThat(notEqual).as("Should not be equal").isNotEqualTo(master);
 		assertThat(notEqual.hashCode()).as("Hash code for non-equal instances should not match").isNotEqualTo((long) master.hashCode());
 
 		assertThat(subclass).as("Subclass should be equal").isEqualTo(master);
-		assertThat(subclass.hashCode()).as("Hash code for subclass should match").isEqualTo((long) master.hashCode());
+		assertThat(subclass.hashCode()).as("Hash code for subclass should match").isEqualTo(master.hashCode());
 	}
 
 }

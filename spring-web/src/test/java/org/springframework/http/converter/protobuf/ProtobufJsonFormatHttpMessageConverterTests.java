@@ -130,7 +130,7 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		MediaType contentType = ProtobufHttpMessageConverter.PROTOBUF;
 		this.converter.write(this.testMsg, contentType, outputMessage);
-		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo((long) -1);
+		assertThat(outputMessage.getHeaders().getContentLength()).isEqualTo(-1);
 	}
 
 }

@@ -210,7 +210,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 	public void personResponseBodyWithPublisher() throws Exception {
 		List<?> expected = asList(new Person("Robert"), new Person("Marie"));
 		ResponseEntity<List<Person>> entity = performGet("/person-response/publisher", JSON, PERSON_LIST);
-		assertThat(entity.getHeaders().getContentLength()).isEqualTo((long) -1);
+		assertThat(entity.getHeaders().getContentLength()).isEqualTo(-1);
 		assertThat(entity.getBody()).isEqualTo(expected);
 	}
 

@@ -192,7 +192,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo(HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -202,7 +202,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_BAD_REQUEST);
+		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo(HttpServletResponse.SC_BAD_REQUEST);
 		assertThat(webAppContext.isSingleton(RequiredParamController.class.getSimpleName())).isTrue();
 	}
 
@@ -214,7 +214,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addParameter("id", "foo");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_BAD_REQUEST);
+		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	@Test
@@ -315,7 +315,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertThat(response.getStatus()).as("Invalid response status").isEqualTo((long) HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		assertThat(response.getStatus()).as("Invalid response status").isEqualTo(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 		String allowHeader = response.getHeader("Allow");
 		assertThat(allowHeader).as("No Allow header").isNotNull();
 		Set<String> allowedMethods = new HashSet<>();
@@ -946,7 +946,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addHeader("Content-Type", "application/pdf");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo((long) HttpServletResponse.SC_BAD_REQUEST);
+		assertThat(response.getStatus()).as("Invalid response status code").isEqualTo(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	@Test
@@ -1653,7 +1653,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(new MockHttpServletRequest("POST", "/"), response);
 
-		assertThat(response.getStatus()).as("Wrong status code").isEqualTo((long) MockHttpServletResponse.SC_CREATED);
+		assertThat(response.getStatus()).as("Wrong status code").isEqualTo(MockHttpServletResponse.SC_CREATED);
 		assertThat(response.getHeaderNames().size()).as("Wrong number of headers").isEqualTo(1);
 		assertThat(response.getHeader("location")).as("Wrong value for 'location' header").isEqualTo("/test/items/123");
 		assertThat(response.getContentLength()).as("Expected an empty content").isEqualTo(0);
@@ -1665,7 +1665,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(new MockHttpServletRequest("POST", "/empty"), response);
 
-		assertThat(response.getStatus()).as("Wrong status code").isEqualTo((long) MockHttpServletResponse.SC_CREATED);
+		assertThat(response.getStatus()).as("Wrong status code").isEqualTo(MockHttpServletResponse.SC_CREATED);
 		assertThat(response.getHeaderNames().size()).as("Wrong number of headers").isEqualTo(0);
 		assertThat(response.getContentLength()).as("Expected an empty content").isEqualTo(0);
 	}

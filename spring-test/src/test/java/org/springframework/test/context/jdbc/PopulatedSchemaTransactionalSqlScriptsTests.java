@@ -50,7 +50,7 @@ public class PopulatedSchemaTransactionalSqlScriptsTests extends AbstractTransac
 	}
 
 	protected void assertNumUsers(int expected) {
-		assertThat(countRowsInTable("user")).as("Number of rows in the 'user' table.").isEqualTo((long) expected);
+		assertThat(countRowsInTable("user")).as("Number of rows in the 'user' table.").isEqualTo(expected);
 	}
 
 }

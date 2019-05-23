@@ -60,9 +60,9 @@ public class ContextCacheTestUtils {
 	public static final void assertContextCacheStatistics(ContextCache contextCache, String usageScenario,
 			int expectedSize, int expectedHitCount, int expectedMissCount) {
 
-		assertThat(contextCache.size()).as("Verifying number of contexts in cache (" + usageScenario + ").").isEqualTo((long) expectedSize);
-		assertThat(contextCache.getHitCount()).as("Verifying number of cache hits (" + usageScenario + ").").isEqualTo((long) expectedHitCount);
-		assertThat(contextCache.getMissCount()).as("Verifying number of cache misses (" + usageScenario + ").").isEqualTo((long) expectedMissCount);
+		assertThat(contextCache.size()).as("Verifying number of contexts in cache (" + usageScenario + ").").isEqualTo(expectedSize);
+		assertThat(contextCache.getHitCount()).as("Verifying number of cache hits (" + usageScenario + ").").isEqualTo(expectedHitCount);
+		assertThat(contextCache.getMissCount()).as("Verifying number of cache misses (" + usageScenario + ").").isEqualTo(expectedMissCount);
 	}
 
 }

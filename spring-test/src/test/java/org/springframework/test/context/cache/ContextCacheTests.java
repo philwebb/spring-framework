@@ -57,7 +57,7 @@ public class ContextCacheTests {
 	}
 
 	private void assertParentContextCount(int expected) {
-		assertThat(contextCache.getParentContextCount()).as("parent context count").isEqualTo((long) expected);
+		assertThat(contextCache.getParentContextCount()).as("parent context count").isEqualTo(expected);
 	}
 
 	private MergedContextConfiguration getMergedContextConfiguration(TestContext testContext) {

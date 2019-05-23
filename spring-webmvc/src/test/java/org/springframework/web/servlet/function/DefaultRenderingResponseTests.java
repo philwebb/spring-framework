@@ -71,7 +71,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
 		assertThat(mav).isNotNull();
-		assertThat(response.getStatus()).isEqualTo((long) status.value());
+		assertThat(response.getStatus()).isEqualTo(status.value());
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class DefaultRenderingResponseTests {
 
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
 		assertThat(mav).isNull();
-		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_MODIFIED.value());
 	}
 
 
@@ -185,7 +185,7 @@ public class DefaultRenderingResponseTests {
 
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
 		assertThat(mav).isNull();
-		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_MODIFIED.value());
 	}
 
 

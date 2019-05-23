@@ -121,7 +121,7 @@ public class RequestPredicatesTests {
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/path");
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
 		RequestPredicate predicate = RequestPredicates.path("p*");
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 	}
 
 	@Test

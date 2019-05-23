@@ -147,7 +147,7 @@ public class JmsNamespaceHandlerTests {
 		assertThat(container.getMessageConverter()).as("explicit message converter not set").isEqualTo(context.getBean("testMessageConverter"));
 		assertThat(container.isPubSubDomain()).as("Wrong pub/sub").isEqualTo(true);
 		assertThat(container.isSubscriptionDurable()).as("Wrong durable flag").isEqualTo(true);
-		assertThat(container.getCacheLevel()).as("wrong cache").isEqualTo((long) DefaultMessageListenerContainer.CACHE_CONNECTION);
+		assertThat(container.getCacheLevel()).as("wrong cache").isEqualTo(DefaultMessageListenerContainer.CACHE_CONNECTION);
 		assertThat(container.getConcurrentConsumers()).as("wrong concurrency").isEqualTo(3);
 		assertThat(container.getMaxConcurrentConsumers()).as("wrong concurrency").isEqualTo(5);
 		assertThat(container.getMaxMessagesPerTask()).as("wrong prefetch").isEqualTo(50);
@@ -286,7 +286,7 @@ public class JmsNamespaceHandlerTests {
 		assertThat(phase2).isEqualTo(99);
 		assertThat(phase3).isEqualTo(77);
 		assertThat(phase4).isEqualTo(77);
-		assertThat(defaultPhase).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(defaultPhase).isEqualTo(Integer.MAX_VALUE);
 	}
 
 	@Test

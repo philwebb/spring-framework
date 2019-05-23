@@ -41,7 +41,7 @@ public class FileCopyUtilsTests {
 		ByteArrayInputStream in = new ByteArrayInputStream(content);
 		ByteArrayOutputStream out = new ByteArrayOutputStream(content.length);
 		int count = FileCopyUtils.copy(in, out);
-		assertThat(count).isEqualTo((long) content.length);
+		assertThat(count).isEqualTo(content.length);
 		assertThat(Arrays.equals(content, out.toByteArray())).isTrue();
 	}
 
@@ -67,7 +67,7 @@ public class FileCopyUtilsTests {
 		StringReader in = new StringReader(content);
 		StringWriter out = new StringWriter();
 		int count = FileCopyUtils.copy(in, out);
-		assertThat(count).isEqualTo((long) content.length());
+		assertThat(count).isEqualTo(content.length());
 		assertThat(out.toString()).isEqualTo(content);
 	}
 

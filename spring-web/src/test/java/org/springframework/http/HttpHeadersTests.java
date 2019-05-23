@@ -311,7 +311,7 @@ public class HttpHeadersTests {
 	@Test  // SPR-10648 (example is from INT-3063)
 	public void expiresInvalidDate() {
 		headers.set("Expires", "-1");
-		assertThat(headers.getExpires()).isEqualTo((long) -1);
+		assertThat(headers.getExpires()).isEqualTo(-1);
 	}
 
 	@Test
@@ -327,13 +327,13 @@ public class HttpHeadersTests {
 	@Test  // SPR-14144
 	public void invalidIfModifiedSinceHeader() {
 		headers.set(HttpHeaders.IF_MODIFIED_SINCE, "0");
-		assertThat(headers.getIfModifiedSince()).isEqualTo((long) -1);
+		assertThat(headers.getIfModifiedSince()).isEqualTo(-1);
 
 		headers.set(HttpHeaders.IF_MODIFIED_SINCE, "-1");
-		assertThat(headers.getIfModifiedSince()).isEqualTo((long) -1);
+		assertThat(headers.getIfModifiedSince()).isEqualTo(-1);
 
 		headers.set(HttpHeaders.IF_MODIFIED_SINCE, "XXX");
-		assertThat(headers.getIfModifiedSince()).isEqualTo((long) -1);
+		assertThat(headers.getIfModifiedSince()).isEqualTo(-1);
 	}
 
 	@Test
@@ -444,7 +444,7 @@ public class HttpHeadersTests {
 
 	@Test
 	public void accessControlMaxAge() {
-		assertThat(headers.getAccessControlMaxAge()).isEqualTo((long) -1);
+		assertThat(headers.getAccessControlMaxAge()).isEqualTo(-1);
 		headers.setAccessControlMaxAge(3600);
 		assertThat(headers.getAccessControlMaxAge()).isEqualTo(3600);
 	}

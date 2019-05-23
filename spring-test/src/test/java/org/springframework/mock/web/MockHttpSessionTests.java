@@ -135,7 +135,7 @@ public class MockHttpSessionTests {
 
 		session.setAttribute(bindingListenerName, bindingListener);
 
-		assertThat(1).isEqualTo((long) bindingListener.getCounter());
+		assertThat(1).isEqualTo(bindingListener.getCounter());
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class MockHttpSessionTests {
 		session.setAttribute(bindingListenerName, bindingListener);
 		session.removeAttribute(bindingListenerName);
 
-		assertThat(0).isEqualTo((long) bindingListener.getCounter());
+		assertThat(0).isEqualTo(bindingListener.getCounter());
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class MockHttpSessionTests {
 		session.setAttribute(bindingListenerName, bindingListener);
 		session.setAttribute(bindingListenerName, bindingListener);
 
-		assertThat(1).isEqualTo((long) bindingListener.getCounter());
+		assertThat(1).isEqualTo(bindingListener.getCounter());
 	}
 
 	@Test
@@ -169,8 +169,8 @@ public class MockHttpSessionTests {
 		session.setAttribute(bindingListenerName, bindingListener1);
 		session.setAttribute(bindingListenerName, bindingListener2);
 
-		assertThat(0).isEqualTo((long) bindingListener1.getCounter());
-		assertThat(1).isEqualTo((long) bindingListener2.getCounter());
+		assertThat(0).isEqualTo(bindingListener1.getCounter());
+		assertThat(1).isEqualTo(bindingListener2.getCounter());
 	}
 
 	private static class CountingHttpSessionBindingListener

@@ -164,7 +164,7 @@ public class ClassPathBeanDefinitionScannerTests {
 		int scannedBeanCount = scanner.scan(BASE_PACKAGE);
 
 		assertThat(scannedBeanCount).isEqualTo(6);
-		assertThat(context.getBeanDefinitionCount()).isEqualTo((long) (initialBeanCount + scannedBeanCount));
+		assertThat(context.getBeanDefinitionCount()).isEqualTo((initialBeanCount + scannedBeanCount));
 		assertThat(context.containsBean("serviceInvocationCounter")).isTrue();
 		assertThat(context.containsBean("fooServiceImpl")).isTrue();
 		assertThat(context.containsBean("stubFooDao")).isTrue();
@@ -184,7 +184,7 @@ public class ClassPathBeanDefinitionScannerTests {
 		int scannedBeanCount = scanner.scan(BASE_PACKAGE);
 
 		assertThat(scannedBeanCount).isEqualTo(6);
-		assertThat(context.getBeanDefinitionCount()).isEqualTo((long) (initialBeanCount + scannedBeanCount));
+		assertThat(context.getBeanDefinitionCount()).isEqualTo((initialBeanCount + scannedBeanCount));
 		assertThat(context.containsBean("serviceInvocationCounter")).isTrue();
 		assertThat(context.containsBean("fooServiceImpl")).isTrue();
 		assertThat(context.containsBean("stubFooDao")).isTrue();
@@ -384,9 +384,9 @@ public class ClassPathBeanDefinitionScannerTests {
 		int initialBeanCount = context.getBeanDefinitionCount();
 		int scannedBeanCount = scanner.scan(BASE_PACKAGE);
 		assertThat(scannedBeanCount).isEqualTo(12);
-		assertThat((context.getBeanDefinitionCount() - initialBeanCount)).isEqualTo((long) scannedBeanCount);
+		assertThat((context.getBeanDefinitionCount() - initialBeanCount)).isEqualTo(scannedBeanCount);
 		int addedBeanCount = scanner.scan("org.springframework.aop.aspectj.annotation");
-		assertThat(context.getBeanDefinitionCount()).isEqualTo((long) (initialBeanCount + scannedBeanCount + addedBeanCount));
+		assertThat(context.getBeanDefinitionCount()).isEqualTo((initialBeanCount + scannedBeanCount + addedBeanCount));
 	}
 
 	@Test

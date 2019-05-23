@@ -310,7 +310,7 @@ public class MimeTypeTests {
 	private void testWithQuotedParameters(String... mimeTypes) {
 		String s = String.join(",", mimeTypes);
 		List<MimeType> actual = MimeTypeUtils.parseMimeTypes(s);
-		assertThat(actual.size()).isEqualTo((long) mimeTypes.length);
+		assertThat(actual.size()).isEqualTo(mimeTypes.length);
 		for (int i=0; i < mimeTypes.length; i++) {
 			assertThat(actual.get(i).toString()).isEqualTo(mimeTypes[i]);
 		}

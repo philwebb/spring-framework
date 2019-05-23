@@ -131,7 +131,7 @@ public class ResponseStatusExceptionResolverTests {
 
 	private void assertResolved(ModelAndView mav, int status, String reason) {
 		assertThat(mav != null && mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat(response.getStatus()).isEqualTo((long) status);
+		assertThat(response.getStatus()).isEqualTo(status);
 		assertThat(response.getErrorMessage()).isEqualTo(reason);
 		assertThat(response.isCommitted()).isTrue();
 	}

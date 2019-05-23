@@ -92,7 +92,7 @@ public class RepeatedSpringRunnerTests {
 		runTestsAndAssertCounters(getRunnerClass(), this.testClass, expectedStartedCount, expectedFailureCount,
 			expectedFinishedCount, 0, 0);
 
-		assertThat(invocationCount.get()).as("invocations for [" + testClass + "]:").isEqualTo((long) expectedInvocationCount);
+		assertThat(invocationCount.get()).as("invocations for [" + testClass + "]:").isEqualTo(expectedInvocationCount);
 	}
 
 

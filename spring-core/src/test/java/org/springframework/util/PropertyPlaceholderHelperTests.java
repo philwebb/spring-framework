@@ -20,6 +20,8 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import org.springframework.util.PropertyPlaceholderHelper.PlaceholderResolver;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
@@ -81,17 +83,15 @@ public class PropertyPlaceholderHelperTests {
 	@Test
 	public void testWithResolver() {
 		String text = "foo=${foo}";
+		PlaceholderResolver resolver = new PlaceholderResolver() {
 
-		assertThat(this.helper.replacePlaceholders(text, new PropertyPlaceholderHelper.PlaceholderResolver() {
 			@Override
 			public String resolvePlaceholder(String placeholderName) {
-				if ("foo".equals(placeholderName)) {
-					return "bar";
-				} else {
-					return null;
-				}
+					return "foo".equals(placeholderName) ? "bar" : null;
 			}
-		})).isEqualTo("foo=bar");
+
+		};
+		assertThat(this.helper.replacePlaceholders(text, resolver)).isEqualTo("foo=bar");
 	}
 
 	@Test

@@ -56,7 +56,7 @@ public class RegexpMethodPointcutAdvisorIntegrationTests {
 		advised.exceptional(null);
 		assertThat(nop.getCount()).isEqualTo(0);
 		advised.setAge(newAge);
-		assertThat(advised.getAge()).isEqualTo((long) newAge);
+		assertThat(advised.getAge()).isEqualTo(newAge);
 		// Only setter fired
 		assertThat(nop.getCount()).isEqualTo(1);
 	}
@@ -80,7 +80,7 @@ public class RegexpMethodPointcutAdvisorIntegrationTests {
 		advised.absquatulate();
 		assertThat(nop.getCount()).isEqualTo(1);
 		advised.setAge(newAge);
-		assertThat(advised.getAge()).isEqualTo((long) newAge);
+		assertThat(advised.getAge()).isEqualTo(newAge);
 		// Only setter fired
 		assertThat(nop.getCount()).isEqualTo(2);
 	}
@@ -104,20 +104,20 @@ public class RegexpMethodPointcutAdvisorIntegrationTests {
 		p.setAge(newAge);
 		assertThat(nop.getCount()).isEqualTo(1);
 		p.setAge(newAge);
-		assertThat(p.getAge()).isEqualTo((long) newAge);
+		assertThat(p.getAge()).isEqualTo(newAge);
 		// Only setter fired
 		assertThat(nop.getCount()).isEqualTo(2);
 
 		// Serialize and continue...
 		p = (Person) SerializationTestUtils.serializeAndDeserialize(p);
-		assertThat(p.getAge()).isEqualTo((long) newAge);
+		assertThat(p.getAge()).isEqualTo(newAge);
 		// Remembers count, but we need to get a new reference to nop...
 		nop = (SerializableNopInterceptor) ((Advised) p).getAdvisors()[0].getAdvice();
 		assertThat(nop.getCount()).isEqualTo(2);
 		assertThat(p.getName()).isEqualTo("serializableSettersAdvised");
 		p.setAge(newAge + 1);
 		assertThat(nop.getCount()).isEqualTo(3);
-		assertThat(p.getAge()).isEqualTo((long) (newAge + 1));
+		assertThat(p.getAge()).isEqualTo((newAge + 1));
 	}
 
 }

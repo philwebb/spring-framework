@@ -102,7 +102,7 @@ public class DefaultServerRequestTests {
 		URI result = request.uriBuilder().build();
 		assertThat(result.getScheme()).isEqualTo("http");
 		assertThat(result.getHost()).isEqualTo("localhost");
-		assertThat(result.getPort()).isEqualTo((long) -1);
+		assertThat(result.getPort()).isEqualTo(-1);
 		assertThat(result.getPath()).isEqualTo("/path");
 		assertThat(result.getQuery()).isEqualTo("a=1");
 	}

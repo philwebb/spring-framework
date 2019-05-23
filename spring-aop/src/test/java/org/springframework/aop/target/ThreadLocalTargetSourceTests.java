@@ -62,9 +62,9 @@ public class ThreadLocalTargetSourceTests {
 	@Test
 	public void testUseDifferentManagedInstancesInSameThread() {
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertThat(apartment.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(apartment.getCount()).isEqualTo(INITIAL_COUNT);
 		apartment.doWork();
-		assertThat(apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+		assertThat(apartment.getCount()).isEqualTo((INITIAL_COUNT + 1));
 
 		ITestBean test = (ITestBean) beanFactory.getBean("threadLocal2");
 		assertThat(test.getName()).isEqualTo("Rod");
@@ -74,12 +74,12 @@ public class ThreadLocalTargetSourceTests {
 	@Test
 	public void testReuseInSameThread() {
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertThat(apartment.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(apartment.getCount()).isEqualTo(INITIAL_COUNT);
 		apartment.doWork();
-		assertThat(apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+		assertThat(apartment.getCount()).isEqualTo((INITIAL_COUNT + 1));
 
 		apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertThat(apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+		assertThat(apartment.getCount()).isEqualTo((INITIAL_COUNT + 1));
 	}
 
 	/**
@@ -106,20 +106,20 @@ public class ThreadLocalTargetSourceTests {
 	@Test
 	public void testNewThreadHasOwnInstance() throws InterruptedException {
 		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
-		assertThat(apartment.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(apartment.getCount()).isEqualTo(INITIAL_COUNT);
 		apartment.doWork();
 		apartment.doWork();
 		apartment.doWork();
-		assertThat(apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 3));
+		assertThat(apartment.getCount()).isEqualTo((INITIAL_COUNT + 3));
 
 		class Runner implements Runnable {
 			public SideEffectBean mine;
 			@Override
 			public void run() {
 				this.mine = (SideEffectBean) beanFactory.getBean("apartment");
-				assertThat(mine.getCount()).isEqualTo((long) INITIAL_COUNT);
+				assertThat(mine.getCount()).isEqualTo(INITIAL_COUNT);
 				mine.doWork();
-				assertThat(mine.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+				assertThat(mine.getCount()).isEqualTo((INITIAL_COUNT + 1));
 			}
 		}
 		Runner r = new Runner();
@@ -130,11 +130,11 @@ public class ThreadLocalTargetSourceTests {
 		assertThat(r).isNotNull();
 
 		// Check it didn't affect the other thread's copy
-		assertThat(apartment.getCount()).isEqualTo((long) (INITIAL_COUNT + 3));
+		assertThat(apartment.getCount()).isEqualTo((INITIAL_COUNT + 3));
 
 		// When we use other thread's copy in this thread
 		// it should behave like ours
-		assertThat(r.mine.getCount()).isEqualTo((long) (INITIAL_COUNT + 3));
+		assertThat(r.mine.getCount()).isEqualTo((INITIAL_COUNT + 3));
 
 		// Bound to two threads
 		assertThat(((ThreadLocalTargetSourceStats) apartment).getObjectCount()).isEqualTo(2);

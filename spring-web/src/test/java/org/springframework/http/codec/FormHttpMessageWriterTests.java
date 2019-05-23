@@ -90,7 +90,7 @@ public class FormHttpMessageWriterTests extends AbstractLeakCheckingTestCase {
 				.verify();
 		HttpHeaders headers = response.getHeaders();
 		assertThat(headers.getContentType().toString()).isEqualTo("application/x-www-form-urlencoded;charset=UTF-8");
-		assertThat(headers.getContentLength()).isEqualTo((long) expected.length());
+		assertThat(headers.getContentLength()).isEqualTo(expected.length());
 	}
 
 	private Consumer<DataBuffer> stringConsumer(String expected) {

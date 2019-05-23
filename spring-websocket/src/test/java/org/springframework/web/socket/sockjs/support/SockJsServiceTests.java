@@ -276,7 +276,7 @@ public class SockJsServiceTests extends AbstractHttpRequestTests {
 		String sockJsPath = uri.substring("/echo".length());
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.handler);
 
-		assertThat(this.servletResponse.getStatus()).isEqualTo((long) httpStatus.value());
+		assertThat(this.servletResponse.getStatus()).isEqualTo(httpStatus.value());
 	}
 
 

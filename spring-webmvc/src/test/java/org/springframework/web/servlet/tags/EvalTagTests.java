@@ -63,9 +63,9 @@ public class EvalTagTests extends AbstractTagTests {
 	public void printScopedAttributeResult() throws Exception {
 		tag.setExpression("bean.method()");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("foo");
 	}
 
@@ -73,9 +73,9 @@ public class EvalTagTests extends AbstractTagTests {
 	public void printNullAsEmptyString() throws Exception {
 		tag.setExpression("bean.null");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("");
 	}
 
@@ -84,9 +84,9 @@ public class EvalTagTests extends AbstractTagTests {
 		PercentStyleFormatter formatter = new PercentStyleFormatter();
 		tag.setExpression("bean.formattable");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo(formatter.print(new BigDecimal(".25"), Locale.getDefault()));
 	}
 
@@ -95,9 +95,9 @@ public class EvalTagTests extends AbstractTagTests {
 		tag.setExpression("bean.html()");
 		tag.setHtmlEscape(true);
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("&lt;p&gt;");
 	}
 
@@ -106,9 +106,9 @@ public class EvalTagTests extends AbstractTagTests {
 		tag.setExpression("bean.js()");
 		tag.setJavaScriptEscape(true);
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("function foo() { alert(\\\"hi\\\") }");
 	}
 
@@ -117,9 +117,9 @@ public class EvalTagTests extends AbstractTagTests {
 		tag.setExpression("bean.formattable");
 		tag.setVar("foo");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(context.getAttribute("foo")).isEqualTo(new BigDecimal(".25"));
 	}
 
@@ -128,9 +128,9 @@ public class EvalTagTests extends AbstractTagTests {
 		tag.setExpression("bean.bean");
 		tag.setVar("foo");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(context.getAttribute("foo")).isEqualTo("not the bean object");
 	}
 
@@ -142,9 +142,9 @@ public class EvalTagTests extends AbstractTagTests {
 		tag.setExpression("@bean2.bean");
 		tag.setVar("foo");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(context.getAttribute("foo")).isEqualTo("not the bean object");
 	}
 
@@ -158,9 +158,9 @@ public class EvalTagTests extends AbstractTagTests {
 		wac.getDefaultListableBeanFactory().registerSingleton("bean2", context.getRequest().getAttribute("bean"));
 		tag.setExpression("@environment['key.foo']");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("value.foo");
 	}
 
@@ -168,9 +168,9 @@ public class EvalTagTests extends AbstractTagTests {
 	public void mapAccess() throws Exception {
 		tag.setExpression("bean.map.key");
 		int action = tag.doStartTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(action).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		action = tag.doEndTag();
-		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(((MockHttpServletResponse) context.getResponse()).getContentAsString()).isEqualTo("value");
 	}
 

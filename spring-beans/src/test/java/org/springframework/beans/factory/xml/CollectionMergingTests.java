@@ -63,7 +63,7 @@ public class CollectionMergingTests {
 	@Test
 	public void mergeListWithInnerBeanAsListElement() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListOfRefs");
-		List list = bean.getSomeList();
+		List<?> list = bean.getSomeList();
 		assertThat(list).isNotNull();
 		assertThat(list.size()).isEqualTo(3);
 		assertThat(list.get(2)).isNotNull();
@@ -83,7 +83,7 @@ public class CollectionMergingTests {
 	@Test
 	public void mergeSetWithInnerBeanAsSetElement() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetOfRefs");
-		Set set = bean.getSomeSet();
+		Set<?> set = bean.getSomeSet();
 		assertThat(set).isNotNull();
 		assertThat(set.size()).isEqualTo(2);
 		Iterator it = set.iterator();
@@ -108,7 +108,7 @@ public class CollectionMergingTests {
 	@Test
 	public void mergeMapWithInnerBeanAsMapEntryValue() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapOfRefs");
-		Map map = bean.getSomeMap();
+		Map<?, ?> map = bean.getSomeMap();
 		assertThat(map).isNotNull();
 		assertThat(map.size()).isEqualTo(2);
 		assertThat(map.get("Rob")).isNotNull();
@@ -140,7 +140,7 @@ public class CollectionMergingTests {
 	@Test
 	public void mergeListWithInnerBeanAsListElementInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListOfRefsInConstructor");
-		List list = bean.getSomeList();
+		List<?> list = bean.getSomeList();
 		assertThat(list).isNotNull();
 		assertThat(list.size()).isEqualTo(3);
 		assertThat(list.get(2)).isNotNull();
@@ -160,7 +160,7 @@ public class CollectionMergingTests {
 	@Test
 	public void mergeSetWithInnerBeanAsSetElementInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetOfRefsInConstructor");
-		Set set = bean.getSomeSet();
+		Set<?> set = bean.getSomeSet();
 		assertThat(set).isNotNull();
 		assertThat(set.size()).isEqualTo(2);
 		Iterator it = set.iterator();
@@ -185,7 +185,7 @@ public class CollectionMergingTests {
 	@Test
 	public void mergeMapWithInnerBeanAsMapEntryValueInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapOfRefsInConstructor");
-		Map map = bean.getSomeMap();
+		Map<?, ?> map = bean.getSomeMap();
 		assertThat(map).isNotNull();
 		assertThat(map.size()).isEqualTo(2);
 		assertThat(map.get("Rob")).isNotNull();

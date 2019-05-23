@@ -106,7 +106,7 @@ public class HttpStatusTests {
 		for (Map.Entry<Integer, String> entry : statusCodes.entrySet()) {
 			int value = entry.getKey();
 			HttpStatus status = HttpStatus.valueOf(value);
-			assertThat(status.value()).as("Invalid value").isEqualTo((long) value);
+			assertThat(status.value()).as("Invalid value").isEqualTo(value);
 			assertThat(status.name()).as("Invalid name for [" + value + "]").isEqualTo(entry.getValue());
 		}
 	}

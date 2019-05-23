@@ -159,7 +159,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		assertThat(avogadrosNumber).isCloseTo(6.0221415E+23, within((double) 0));
 
 		int maxValue = (Integer) parser.parseExpression("0x7FFFFFFF").getValue();  // evals to 2147483647
-		assertThat(maxValue).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(maxValue).isEqualTo(Integer.MAX_VALUE);
 
 		boolean trueValue = (Boolean) parser.parseExpression("true").getValue();
 		assertThat(trueValue).isTrue();
@@ -343,7 +343,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		// Division
 		int minusTwo =  parser.parseExpression("6 / -3").getValue(Integer.class); // -2
-		assertThat(minusTwo).isEqualTo((long) -2);
+		assertThat(minusTwo).isEqualTo(-2);
 
 		double one = parser.parseExpression("8.0 / 4e0 / 2").getValue(Double.class); // 1.0
 		assertThat(one).isCloseTo(1.0d, within((double) 0));
@@ -357,7 +357,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		// Operator precedence
 		int minusTwentyOne = parser.parseExpression("1+2-3*8").getValue(Integer.class); // -21
-		assertThat(minusTwentyOne).isEqualTo((long) -21);
+		assertThat(minusTwentyOne).isEqualTo(-21);
 	}
 
 	// 7.5.5

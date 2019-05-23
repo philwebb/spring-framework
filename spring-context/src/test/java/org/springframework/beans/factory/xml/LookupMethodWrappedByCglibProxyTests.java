@@ -68,7 +68,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 
 	private void assertInterceptorCount(int count) {
 		DebugInterceptor interceptor = getInterceptor();
-		assertThat(interceptor.getCount()).as("Interceptor count is incorrect").isEqualTo((long) count);
+		assertThat(interceptor.getCount()).as("Interceptor count is incorrect").isEqualTo(count);
 	}
 
 	private void resetInterceptor() {

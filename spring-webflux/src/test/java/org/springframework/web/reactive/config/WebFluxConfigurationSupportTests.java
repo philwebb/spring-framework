@@ -257,7 +257,7 @@ public class WebFluxConfigurationSupportTests {
 		ViewResolutionResultHandler handler = context.getBean(name, ViewResolutionResultHandler.class);
 		assertThat(handler).isNotNull();
 
-		assertThat(handler.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
+		assertThat(handler.getOrder()).isEqualTo(Ordered.LOWEST_PRECEDENCE);
 
 		List<ViewResolver> resolvers = handler.getViewResolvers();
 		assertThat(resolvers.size()).isEqualTo(1);
@@ -278,7 +278,7 @@ public class WebFluxConfigurationSupportTests {
 		AbstractUrlHandlerMapping handlerMapping = context.getBean(name, AbstractUrlHandlerMapping.class);
 		assertThat(handlerMapping).isNotNull();
 
-		assertThat(handlerMapping.getOrder()).isEqualTo((long) (Ordered.LOWEST_PRECEDENCE - 1));
+		assertThat(handlerMapping.getOrder()).isEqualTo((Ordered.LOWEST_PRECEDENCE - 1));
 
 		SimpleUrlHandlerMapping urlHandlerMapping = (SimpleUrlHandlerMapping) handlerMapping;
 		WebHandler webHandler = (WebHandler) urlHandlerMapping.getUrlMap().get("/images/**");

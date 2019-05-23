@@ -82,7 +82,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertThat(tb.getAge()).isEqualTo((long) age);
+		assertThat(tb.getAge()).isEqualTo(age);
 		boolean condition = tb instanceof TimeStamped;
 		assertThat(condition).as("Introduction was made").isTrue();
 		assertThat(((TimeStamped) tb).getTimeStamp()).isEqualTo(0);
@@ -117,7 +117,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertThat(tb.getAge()).isEqualTo((long) age);
+		assertThat(tb.getAge()).isEqualTo(age);
 		boolean condition = tb instanceof TimeStamped;
 		assertThat(condition).as("Introduction was made").isTrue();
 		assertThat(((TimeStamped) tb).getTimeStamp()).isEqualTo(0);
@@ -170,8 +170,8 @@ public class BeanNameAutoProxyCreatorTests {
 		assertThat(AopUtils.isJdkDynamicProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertThat(tb.getAge()).isEqualTo((long) age);
-		assertThat(nop.getCount()).isEqualTo((long) (2 * nopInterceptorCount));
+		assertThat(tb.getAge()).isEqualTo(age);
+		assertThat(nop.getCount()).isEqualTo((2 * nopInterceptorCount));
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertThat(AopUtils.isCglibProxy(tb)).isTrue();
 		int age = 5;
 		tb.setAge(age);
-		assertThat(tb.getAge()).isEqualTo((long) age);
+		assertThat(tb.getAge()).isEqualTo(age);
 		assertThat(nop.getCount()).isEqualTo(2);
 		assertThat(cba.getCalls()).isEqualTo(2);
 	}

@@ -52,7 +52,7 @@ public class BeanAnnotationAttributePropagationTests {
 			@Bean(autowire=Autowire.BY_TYPE) Object foo() { return null; }
 		}
 
-		assertThat(beanDef(Config.class).getAutowireMode()).as("autowire mode was not propagated").isEqualTo((long) AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+		assertThat(beanDef(Config.class).getAutowireMode()).as("autowire mode was not propagated").isEqualTo(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 	}
 
 	@Test

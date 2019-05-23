@@ -289,7 +289,7 @@ public class ResponseEntityExceptionHandlerTests {
 
 			this.defaultExceptionResolver.resolveException(this.servletRequest, this.servletResponse, null, ex);
 
-			assertThat(responseEntity.getStatusCode().value()).isEqualTo((long) this.servletResponse.getStatus());
+			assertThat(responseEntity.getStatusCode().value()).isEqualTo(this.servletResponse.getStatus());
 
 			return responseEntity;
 		}

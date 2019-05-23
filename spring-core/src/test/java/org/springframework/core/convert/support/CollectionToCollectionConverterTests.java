@@ -196,7 +196,7 @@ public class CollectionToCollectionConverterTests {
 				aSource, TypeDescriptor.forObject(aSource), TypeDescriptor.forObject(new ArrayList()));
 		boolean condition = myConverted instanceof ArrayList<?>;
 		assertThat(condition).isTrue();
-		assertThat(((ArrayList<?>) myConverted).size()).isEqualTo((long) aSource.size());
+		assertThat(((ArrayList<?>) myConverted).size()).isEqualTo(aSource.size());
 	}
 
 	@Test

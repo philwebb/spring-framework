@@ -103,9 +103,9 @@ public class MethodLevelDirtiesContextTests {
 		assertThat(this.context.isActive()).as("context must be active").isTrue();
 
 		assertThat(this.count).as("count must not be null").isNotNull();
-		assertThat(this.count.intValue()).as("count: ").isEqualTo((long) expectedContextCreationCount);
+		assertThat(this.count.intValue()).as("count: ").isEqualTo(expectedContextCreationCount);
 
-		assertThat(contextCount.get()).as("context creation count: ").isEqualTo((long) expectedContextCreationCount);
+		assertThat(contextCount.get()).as("context creation count: ").isEqualTo(expectedContextCreationCount);
 	}
 
 }

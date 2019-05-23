@@ -605,7 +605,7 @@ public class StringUtilsTests {
 		}
 		String[] sa = StringUtils.commaDelimitedListToStringArray(sb.toString());
 		assertThat(sa != null).as("String array isn't null with legal match").isTrue();
-		assertThat(sa.length).as("String array length is correct with legal match").isEqualTo((long) components.length);
+		assertThat(sa.length).as("String array length is correct with legal match").isEqualTo(components.length);
 		assertThat(Arrays.equals(sa, components)).as("Output equals input").isTrue();
 	}
 

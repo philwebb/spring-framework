@@ -43,15 +43,15 @@ public class ControlFlowPointcutTests {
 		pf.addAdvisor(new DefaultPointcutAdvisor(cflow, nop));
 
 		// Not advised, not under One
-		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
+		assertThat(proxied.getAge()).isEqualTo(target.getAge());
 		assertThat(nop.getCount()).isEqualTo(0);
 
 		// Will be advised
-		assertThat(new One().getAge(proxied)).isEqualTo((long) target.getAge());
+		assertThat(new One().getAge(proxied)).isEqualTo(target.getAge());
 		assertThat(nop.getCount()).isEqualTo(1);
 
 		// Won't be advised
-		assertThat(new One().nomatch(proxied)).isEqualTo((long) target.getAge());
+		assertThat(new One().nomatch(proxied)).isEqualTo(target.getAge());
 		assertThat(nop.getCount()).isEqualTo(1);
 		assertThat(cflow.getEvaluations()).isEqualTo(3);
 	}
@@ -95,8 +95,8 @@ public class ControlFlowPointcutTests {
 		assertThat(new ControlFlowPointcut(One.class)).isEqualTo(new ControlFlowPointcut(One.class));
 		assertThat(new ControlFlowPointcut(One.class, "getAge")).isEqualTo(new ControlFlowPointcut(One.class, "getAge"));
 		assertThat(new ControlFlowPointcut(One.class, "getAge").equals(new ControlFlowPointcut(One.class))).isFalse();
-		assertThat(new ControlFlowPointcut(One.class).hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class).hashCode());
-		assertThat(new ControlFlowPointcut(One.class, "getAge").hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class, "getAge").hashCode());
+		assertThat(new ControlFlowPointcut(One.class).hashCode()).isEqualTo(new ControlFlowPointcut(One.class).hashCode());
+		assertThat(new ControlFlowPointcut(One.class, "getAge").hashCode()).isEqualTo(new ControlFlowPointcut(One.class, "getAge").hashCode());
 		assertThat(new ControlFlowPointcut(One.class, "getAge").hashCode() == new ControlFlowPointcut(One.class).hashCode()).isFalse();
 	}
 

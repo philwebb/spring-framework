@@ -675,7 +675,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.doStartTag();
 		int returnValue = tag.doEndTag();
-		assertThat(returnValue).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(returnValue).isEqualTo(Tag.EVAL_PAGE);
 		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isNull();
 	}
 
@@ -707,7 +707,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		int returnValue = tag.doStartTag();
 
-		assertThat(returnValue).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(returnValue).isEqualTo(Tag.EVAL_BODY_INCLUDE);
 		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.");
 	}
 

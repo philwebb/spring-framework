@@ -107,7 +107,7 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		RequestConfig requestConfig = retrieveRequestConfig(hrf);
 		assertThat(requestConfig.getConnectTimeout()).isEqualTo(5000);
 		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo(6789);
-		assertThat(requestConfig.getSocketTimeout()).isEqualTo((long) -1);
+		assertThat(requestConfig.getSocketTimeout()).isEqualTo(-1);
 	}
 
 	@Test
@@ -128,8 +128,8 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		hrf.setReadTimeout(5000);
 
 		RequestConfig requestConfig = retrieveRequestConfig(hrf);
-		assertThat(requestConfig.getConnectTimeout()).isEqualTo((long) -1);
-		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo((long) -1);
+		assertThat(requestConfig.getConnectTimeout()).isEqualTo(-1);
+		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo(-1);
 		assertThat(requestConfig.getSocketTimeout()).isEqualTo(5000);
 
 		// Update the Http client so that it returns an updated  config
@@ -139,7 +139,7 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		hrf.setReadTimeout(7000);
 		RequestConfig requestConfig2 = retrieveRequestConfig(hrf);
 		assertThat(requestConfig2.getConnectTimeout()).isEqualTo(1234);
-		assertThat(requestConfig2.getConnectionRequestTimeout()).isEqualTo((long) -1);
+		assertThat(requestConfig2.getConnectionRequestTimeout()).isEqualTo(-1);
 		assertThat(requestConfig2.getSocketTimeout()).isEqualTo(7000);
 	}
 

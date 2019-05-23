@@ -261,8 +261,8 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		assertThat(bytes).isEqualTo(new byte[]{'e', (byte) 0});
 		assertThat(inputStream.available()).isEqualTo(0);
 
-		assertThat(inputStream.read()).isEqualTo((long) -1);
-		assertThat(inputStream.read(bytes)).isEqualTo((long) -1);
+		assertThat(inputStream.read()).isEqualTo(-1);
+		assertThat(inputStream.read(bytes)).isEqualTo(-1);
 
 		release(buffer);
 	}
@@ -498,10 +498,10 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		assertThat(result).isEqualTo(2);
 
 		result = buffer.indexOf(b -> b == 'c', Integer.MAX_VALUE);
-		assertThat(result).isEqualTo((long) -1);
+		assertThat(result).isEqualTo(-1);
 
 		result = buffer.indexOf(b -> b == 'z', 0);
-		assertThat(result).isEqualTo((long) -1);
+		assertThat(result).isEqualTo(-1);
 
 		release(buffer);
 	}
@@ -524,13 +524,13 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		assertThat(result).isEqualTo(2);
 
 		result = buffer.lastIndexOf(b -> b == 'b', Integer.MIN_VALUE);
-		assertThat(result).isEqualTo((long) -1);
+		assertThat(result).isEqualTo(-1);
 
 		result = buffer.lastIndexOf(b -> b == 'c', Integer.MIN_VALUE);
-		assertThat(result).isEqualTo((long) -1);
+		assertThat(result).isEqualTo(-1);
 
 		result = buffer.lastIndexOf(b -> b == 'z', 0);
-		assertThat(result).isEqualTo((long) -1);
+		assertThat(result).isEqualTo(-1);
 
 		release(buffer);
 	}

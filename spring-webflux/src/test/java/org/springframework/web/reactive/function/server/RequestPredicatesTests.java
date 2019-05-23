@@ -113,7 +113,7 @@ public class RequestPredicatesTests {
 		URI uri = URI.create("http://localhost/path");
 		RequestPredicate predicate = RequestPredicates.path("p*");
 		MockServerRequest request = MockServerRequest.builder().uri(uri).build();
-		assertTrue(predicate.test(request));
+		assertThat(predicate.test(request)).isTrue();
 	}
 
 	@Test

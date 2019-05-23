@@ -44,8 +44,8 @@ public class ButtonTagTests extends AbstractFormTagTests {
 
 	@Test
 	public void buttonTag() throws Exception {
-		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
-		assertThat(this.tag.doEndTag()).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(this.tag.doStartTag()).isEqualTo(Tag.EVAL_BODY_INCLUDE);
+		assertThat(this.tag.doEndTag()).isEqualTo(Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertTagOpened(output);

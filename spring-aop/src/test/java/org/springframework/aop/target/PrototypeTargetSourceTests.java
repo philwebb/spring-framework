@@ -54,14 +54,14 @@ public class PrototypeTargetSourceTests {
 	@Test
 	public void testPrototypeAndSingletonBehaveDifferently() {
 		SideEffectBean singleton = (SideEffectBean) beanFactory.getBean("singleton");
-		assertThat(singleton.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(singleton.getCount()).isEqualTo(INITIAL_COUNT);
 		singleton.doWork();
-		assertThat(singleton.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+		assertThat(singleton.getCount()).isEqualTo((INITIAL_COUNT + 1));
 
 		SideEffectBean prototype = (SideEffectBean) beanFactory.getBean("prototype");
-		assertThat(prototype.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(prototype.getCount()).isEqualTo(INITIAL_COUNT);
 		prototype.doWork();
-		assertThat(prototype.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(prototype.getCount()).isEqualTo(INITIAL_COUNT);
 	}
 
 }

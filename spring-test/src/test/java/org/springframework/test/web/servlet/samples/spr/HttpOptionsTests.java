@@ -69,7 +69,7 @@ public class HttpOptionsTests {
 		int initialCount = controller.counter.get();
 		this.mockMvc.perform(options("/myUrl")).andExpect(status().isOk());
 
-		assertThat(controller.counter.get()).isEqualTo((long) (initialCount + 1));
+		assertThat(controller.counter.get()).isEqualTo((initialCount + 1));
 	}
 
 

@@ -44,17 +44,17 @@ public class ResizableByteArrayOutputStreamTests {
 
 	@Test
 	public void resize() throws Exception {
-		assertThat(this.baos.capacity()).isEqualTo((long) INITIAL_CAPACITY);
+		assertThat(this.baos.capacity()).isEqualTo(INITIAL_CAPACITY);
 		this.baos.write(helloBytes);
 		int size = 64;
 		this.baos.resize(size);
-		assertThat(this.baos.capacity()).isEqualTo((long) size);
+		assertThat(this.baos.capacity()).isEqualTo(size);
 		assertByteArrayEqualsString(this.baos);
 	}
 
 	@Test
 	public void autoGrow() {
-		assertThat(this.baos.capacity()).isEqualTo((long) INITIAL_CAPACITY);
+		assertThat(this.baos.capacity()).isEqualTo(INITIAL_CAPACITY);
 		for (int i = 0; i < 129; i++) {
 			this.baos.write(0);
 		}
@@ -63,10 +63,10 @@ public class ResizableByteArrayOutputStreamTests {
 
 	@Test
 	public void grow() throws Exception {
-		assertThat(this.baos.capacity()).isEqualTo((long) INITIAL_CAPACITY);
+		assertThat(this.baos.capacity()).isEqualTo(INITIAL_CAPACITY);
 		this.baos.write(helloBytes);
 		this.baos.grow(1000);
-		assertThat(this.baos.capacity()).isEqualTo((long) (this.helloBytes.length + 1000));
+		assertThat(this.baos.capacity()).isEqualTo((this.helloBytes.length + 1000));
 		assertByteArrayEqualsString(this.baos);
 	}
 

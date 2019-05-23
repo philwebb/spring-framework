@@ -73,7 +73,7 @@ public class ProxyFactoryBeanTests {
 		assertThat(result.type()).isEqualTo(type);
 		InetSocketAddress address = (InetSocketAddress) result.address();
 		assertThat(address.getHostName()).isEqualTo(hostname);
-		assertThat(address.getPort()).isEqualTo((long) port);
+		assertThat(address.getPort()).isEqualTo(port);
 	}
 
 }

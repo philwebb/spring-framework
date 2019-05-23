@@ -209,7 +209,7 @@ public class AspectJAutoProxyCreatorTests {
 		assertThat(AopUtils.isAopProxy(shouldBeWeaved)).as("Autoproxying must apply from @AspectJ aspect").isTrue();
 		assertThat(shouldBeWeaved.getName()).isEqualTo("Adrian");
 		assertThat(mrv.invocations).isEqualTo(0);
-		assertThat(shouldBeWeaved.getAge()).isEqualTo((long) (34 * mrv.getMultiple()));
+		assertThat(shouldBeWeaved.getAge()).isEqualTo((34 * mrv.getMultiple()));
 		assertThat(tba.count).as("Spring advisor must be invoked").isEqualTo(2);
 		assertThat(mrv.invocations).as("Must be able to hold state in aspect").isEqualTo(1);
 	}
@@ -245,7 +245,7 @@ public class AspectJAutoProxyCreatorTests {
 		int explicitlySetAge = 25;
 		adrian1.setAge(explicitlySetAge);
 
-		assertThat(adrian1.getAge()).as("Setter does not initiate advice").isEqualTo((long) explicitlySetAge);
+		assertThat(adrian1.getAge()).as("Setter does not initiate advice").isEqualTo(explicitlySetAge);
 		// Fire aspect
 
 		AspectMetadata am = new AspectMetadata(PerTargetAspect.class, "someBean");
@@ -303,12 +303,12 @@ public class AspectJAutoProxyCreatorTests {
 	private void testAgeAspect(ITestBean adrian, int start, int increment) {
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
 		adrian.setName("");
-		assertThat(adrian.age()).isEqualTo((long) start);
+		assertThat(adrian.age()).isEqualTo(start);
 		int newAge = 32;
 		adrian.setAge(newAge);
-		assertThat(adrian.age()).isEqualTo((long) (start + increment));
+		assertThat(adrian.age()).isEqualTo((start + increment));
 		adrian.setAge(0);
-		assertThat(adrian.age()).isEqualTo((long) (start + increment * 2));
+		assertThat(adrian.age()).isEqualTo((start + increment * 2));
 	}
 
 	@Test

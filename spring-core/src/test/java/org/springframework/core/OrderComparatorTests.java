@@ -36,7 +36,7 @@ public class OrderComparatorTests {
 
 	@Test
 	public void compareOrderedInstancesBefore() {
-		assertThat(this.comparator.compare(new StubOrdered(100), new StubOrdered(2000))).isEqualTo((long) -1);
+		assertThat(this.comparator.compare(new StubOrdered(100), new StubOrdered(2000))).isEqualTo(-1);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class OrderComparatorTests {
 
 	@Test
 	public void compareOrderedInstancesNullLast() {
-		assertThat(this.comparator.compare(new StubOrdered(100), null)).isEqualTo((long) -1);
+		assertThat(this.comparator.compare(new StubOrdered(100), null)).isEqualTo(-1);
 	}
 
 	@Test
@@ -73,14 +73,14 @@ public class OrderComparatorTests {
 	public void compareWithSimpleSourceProvider() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(5L, new StubOrdered(25)));
-		assertThat(customComparator.compare(new StubOrdered(10), 5L)).isEqualTo((long) -1);
+		assertThat(customComparator.compare(new StubOrdered(10), 5L)).isEqualTo(-1);
 	}
 
 	@Test
 	public void compareWithSourceProviderArray() {
 		Comparator<Object> customComparator = this.comparator.withSourceProvider(
 				new TestSourceProvider(5L, new Object[] {new StubOrdered(10), new StubOrdered(-25)}));
-		assertThat(customComparator.compare(5L, new Object())).isEqualTo((long) -1);
+		assertThat(customComparator.compare(5L, new Object())).isEqualTo(-1);
 	}
 
 	@Test

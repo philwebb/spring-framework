@@ -99,14 +99,14 @@ public class MethodInvocationProceedingJoinPointTests {
 					thisProxy.toString();
 					// Change age, so this will be returned by invocation
 					thisProxy.setAge(newAge);
-					assertThat(thisProxy.getAge()).isEqualTo((long) newAge);
+					assertThat(thisProxy.getAge()).isEqualTo(newAge);
 				}
 
 				assertThat(thisProxy).isSameAs(AopContext.currentProxy());
 				assertThat(raw).isSameAs(target);
 
 				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature().getName()).isSameAs(method.getName());
-				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature().getModifiers()).isEqualTo((long) method.getModifiers());
+				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature().getModifiers()).isEqualTo(method.getModifiers());
 
 				MethodSignature msig = (MethodSignature) AbstractAspectJAdvice.currentJoinPoint().getSignature();
 				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature()).as("Return same MethodSignature repeatedly").isSameAs(msig);
@@ -121,7 +121,7 @@ public class MethodInvocationProceedingJoinPointTests {
 		});
 		ITestBean itb = (ITestBean) pf.getProxy();
 		// Any call will do
-		assertThat(itb.getAge()).as("Advice reentrantly set age").isEqualTo((long) newAge);
+		assertThat(itb.getAge()).as("Advice reentrantly set age").isEqualTo(newAge);
 	}
 
 	@Test

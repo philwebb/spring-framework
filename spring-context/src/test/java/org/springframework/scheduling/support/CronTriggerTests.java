@@ -398,7 +398,7 @@ public class CronTriggerTests {
 		calendar.set(Calendar.SECOND, 0);
 		TriggerContext context = getTriggerContext(date);
 		assertThat(trigger.nextExecutionTime(context)).isEqualTo(calendar.getTime());
-		assertThat(calendar.get(Calendar.DAY_OF_WEEK)).isEqualTo((long) Calendar.TUESDAY);
+		assertThat(calendar.get(Calendar.DAY_OF_WEEK)).isEqualTo(Calendar.TUESDAY);
 	}
 
 	@Test
@@ -412,7 +412,7 @@ public class CronTriggerTests {
 		calendar.set(Calendar.SECOND, 0);
 		TriggerContext context = getTriggerContext(date);
 		assertThat(trigger.nextExecutionTime(context)).isEqualTo(calendar.getTime());
-		assertThat(calendar.get(Calendar.DAY_OF_WEEK)).isEqualTo((long) Calendar.TUESDAY);
+		assertThat(calendar.get(Calendar.DAY_OF_WEEK)).isEqualTo(Calendar.TUESDAY);
 	}
 
 	@Test

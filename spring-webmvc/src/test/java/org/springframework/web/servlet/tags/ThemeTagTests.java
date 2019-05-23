@@ -52,7 +52,7 @@ public class ThemeTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setCode("themetest");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
-		assertThat(tag.doEndTag()).as("Correct doEndTag return value").isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(tag.doEndTag()).as("Correct doEndTag return value").isEqualTo(Tag.EVAL_PAGE);
 		assertThat(message.toString()).isEqualTo("theme test message");
 	}
 

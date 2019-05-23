@@ -82,7 +82,7 @@ public class AutoPopulatingListTests {
 		for (int x = 0; x < list.size(); x++) {
 			Object element = list.get(x);
 			if (element instanceof TestObject) {
-				assertThat(((TestObject) element).getAge()).isEqualTo((long) x);
+				assertThat(((TestObject) element).getAge()).isEqualTo(x);
 			}
 		}
 	}

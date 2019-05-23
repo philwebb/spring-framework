@@ -86,7 +86,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		AopProxy aop = createAopProxy(pc);
 
 		ITestBean tb = (ITestBean) aop.getProxy();
-		assertThat(tb.getAge()).as("correct return value").isEqualTo((long) age);
+		assertThat(tb.getAge()).as("correct return value").isEqualTo(age);
 	}
 
 	@Test

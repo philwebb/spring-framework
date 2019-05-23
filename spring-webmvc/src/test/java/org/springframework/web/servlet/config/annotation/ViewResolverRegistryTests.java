@@ -67,9 +67,9 @@ public class ViewResolverRegistryTests {
 
 	@Test
 	public void order() {
-		assertThat(this.registry.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
+		assertThat(this.registry.getOrder()).isEqualTo(Ordered.LOWEST_PRECEDENCE);
 		this.registry.enableContentNegotiation();
-		assertThat(this.registry.getOrder()).isEqualTo((long) Ordered.HIGHEST_PRECEDENCE);
+		assertThat(this.registry.getOrder()).isEqualTo(Ordered.HIGHEST_PRECEDENCE);
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class ViewResolverRegistryTests {
 		this.registry.enableContentNegotiation(view);
 		ContentNegotiatingViewResolver resolver = checkAndGetResolver(ContentNegotiatingViewResolver.class);
 		assertThat(resolver.getDefaultViews()).isEqualTo(Arrays.asList(view));
-		assertThat(this.registry.getOrder()).isEqualTo((long) Ordered.HIGHEST_PRECEDENCE);
+		assertThat(this.registry.getOrder()).isEqualTo(Ordered.HIGHEST_PRECEDENCE);
 	}
 
 	@Test

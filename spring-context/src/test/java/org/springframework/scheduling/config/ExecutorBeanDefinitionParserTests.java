@@ -54,8 +54,8 @@ public class ExecutorBeanDefinitionParserTests {
 	public void defaultExecutor() throws Exception {
 		ThreadPoolTaskExecutor executor = this.context.getBean("default", ThreadPoolTaskExecutor.class);
 		assertThat(getCorePoolSize(executor)).isEqualTo(1);
-		assertThat(getMaxPoolSize(executor)).isEqualTo((long) Integer.MAX_VALUE);
-		assertThat(getQueueCapacity(executor)).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(getMaxPoolSize(executor)).isEqualTo(Integer.MAX_VALUE);
+		assertThat(getQueueCapacity(executor)).isEqualTo(Integer.MAX_VALUE);
 		assertThat(getKeepAliveSeconds(executor)).isEqualTo(60);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
 
@@ -97,7 +97,7 @@ public class ExecutorBeanDefinitionParserTests {
 		assertThat(getMaxPoolSize(executor)).isEqualTo(9);
 		assertThat(getKeepAliveSeconds(executor)).isEqualTo(37);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(true);
-		assertThat(getQueueCapacity(executor)).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(getQueueCapacity(executor)).isEqualTo(Integer.MAX_VALUE);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class ExecutorBeanDefinitionParserTests {
 		assertThat(getMaxPoolSize(executor)).isEqualTo(123);
 		assertThat(getKeepAliveSeconds(executor)).isEqualTo(60);
 		assertThat(getAllowCoreThreadTimeOut(executor)).isEqualTo(false);
-		assertThat(getQueueCapacity(executor)).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(getQueueCapacity(executor)).isEqualTo(Integer.MAX_VALUE);
 	}
 
 	@Test

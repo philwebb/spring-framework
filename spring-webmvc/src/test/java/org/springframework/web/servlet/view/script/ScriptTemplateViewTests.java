@@ -156,7 +156,7 @@ public class ScriptTemplateViewTests {
 		for (int i = 0; i < iterations; i++) {
 			results.add(executor.submit(() -> view.getEngine() != null));
 		}
-		assertThat(results.size()).isEqualTo((long) iterations);
+		assertThat(results.size()).isEqualTo(iterations);
 		for (int i = 0; i < iterations; i++) {
 			assertThat((boolean) results.get(i).get()).isTrue();
 		}

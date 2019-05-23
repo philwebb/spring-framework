@@ -87,7 +87,7 @@ public class SimpleRemoteStatelessSessionProxyFactoryBeanTests extends SimpleRem
 
 		MyBusinessMethods mbm = (MyBusinessMethods) fb.getObject();
 		assertThat(Proxy.isProxyClass(mbm.getClass())).isTrue();
-		assertThat(mbm.getValue()).as("Returns expected value").isEqualTo((long) value);
+		assertThat(mbm.getValue()).as("Returns expected value").isEqualTo(value);
 		verify(myEjb).remove();
 	}
 
@@ -119,7 +119,7 @@ public class SimpleRemoteStatelessSessionProxyFactoryBeanTests extends SimpleRem
 
 		MyBusinessMethods mbm = (MyBusinessMethods) fb.getObject();
 		assertThat(Proxy.isProxyClass(mbm.getClass())).isTrue();
-		assertThat(mbm.getValue()).as("Returns expected value").isEqualTo((long) value);
+		assertThat(mbm.getValue()).as("Returns expected value").isEqualTo(value);
 	}
 
 	@Override

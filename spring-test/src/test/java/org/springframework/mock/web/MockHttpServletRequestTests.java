@@ -71,11 +71,11 @@ public class MockHttpServletRequestTests {
 	public void setContentAndGetInputStream() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
-		assertThat(request.getContentLength()).isEqualTo((long) bytes.length);
+		assertThat(request.getContentLength()).isEqualTo(bytes.length);
 		assertThat(StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
 
 		request.setContent(bytes);
-		assertThat(request.getContentLength()).isEqualTo((long) bytes.length);
+		assertThat(request.getContentLength()).isEqualTo(bytes.length);
 		assertThat(StreamUtils.copyToString(request.getInputStream(), Charset.defaultCharset())).isEqualTo("body");
 	}
 
@@ -83,11 +83,11 @@ public class MockHttpServletRequestTests {
 	public void setContentAndGetReader() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
 		request.setContent(bytes);
-		assertThat(request.getContentLength()).isEqualTo((long) bytes.length);
+		assertThat(request.getContentLength()).isEqualTo(bytes.length);
 		assertThat(FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
 
 		request.setContent(bytes);
-		assertThat(request.getContentLength()).isEqualTo((long) bytes.length);
+		assertThat(request.getContentLength()).isEqualTo(bytes.length);
 		assertThat(FileCopyUtils.copyToString(request.getReader())).isEqualTo("body");
 	}
 
@@ -95,7 +95,7 @@ public class MockHttpServletRequestTests {
 	public void setContentAndGetContentAsByteArray() {
 		byte[] bytes = "request body".getBytes();
 		request.setContent(bytes);
-		assertThat(request.getContentLength()).isEqualTo((long) bytes.length);
+		assertThat(request.getContentLength()).isEqualTo(bytes.length);
 		assertThat(request.getContentAsByteArray()).isEqualTo(bytes);
 	}
 
@@ -112,14 +112,14 @@ public class MockHttpServletRequestTests {
 		byte[] bytes = palindrome.getBytes("UTF-16");
 		request.setCharacterEncoding("UTF-16");
 		request.setContent(bytes);
-		assertThat(request.getContentLength()).isEqualTo((long) bytes.length);
+		assertThat(request.getContentLength()).isEqualTo(bytes.length);
 		assertThat(request.getContentAsString()).isEqualTo(palindrome);
 	}
 
 	@Test
 	public void noContent() throws IOException {
-		assertThat(request.getContentLength()).isEqualTo((long) -1);
-		assertThat(request.getInputStream().read()).isEqualTo((long) -1);
+		assertThat(request.getContentLength()).isEqualTo(-1);
+		assertThat(request.getInputStream().read()).isEqualTo(-1);
 		assertThat(request.getContentAsByteArray()).isNull();
 	}
 
@@ -417,7 +417,7 @@ public class MockHttpServletRequestTests {
 		String testServer = "[2001:db8:0:1]";
 		int testPort = 9999;
 		request.addHeader(HOST, testServer + ":" + testPort);
-		assertThat(request.getServerPort()).isEqualTo((long) testPort);
+		assertThat(request.getServerPort()).isEqualTo(testPort);
 	}
 
 	@Test
@@ -432,7 +432,7 @@ public class MockHttpServletRequestTests {
 		String testServer = "test.server";
 		int testPort = 9999;
 		request.addHeader(HOST, testServer + ":" + testPort);
-		assertThat(request.getServerPort()).isEqualTo((long) testPort);
+		assertThat(request.getServerPort()).isEqualTo(testPort);
 	}
 
 	@Test

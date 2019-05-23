@@ -88,7 +88,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
 		assertThat(this.mavContainer.isRequestHandled()).as("Null return value + @ResponseStatus should result in 'request handled'").isTrue();
-		assertThat(this.response.getStatus()).isEqualTo((long) HttpStatus.BAD_REQUEST.value());
+		assertThat(this.response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
 		assertThat(this.mavContainer.isRequestHandled()).as("Null return value + @ComposedResponseStatus should result in 'request handled'").isTrue();
-		assertThat(this.response.getStatus()).isEqualTo((long) HttpStatus.BAD_REQUEST.value());
+		assertThat(this.response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
 		assertThat(this.mavContainer.isRequestHandled()).isTrue();
-		assertThat(this.response.getStatus()).isEqualTo((long) HttpStatus.BAD_REQUEST.value());
+		assertThat(this.response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class ServletInvocableHandlerMethodTests {
 		handlerMethod.invokeAndHandle(this.webRequest, this.mavContainer);
 
 		assertThat(this.mavContainer.isRequestHandled()).as("When a status reason w/ used, the request is handled").isTrue();
-		assertThat(this.response.getStatus()).isEqualTo((long) HttpStatus.BAD_REQUEST.value());
+		assertThat(this.response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 		assertThat(this.response.getErrorMessage()).isEqualTo("400 Bad Request");
 	}
 

@@ -132,7 +132,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isEqualTo("https://site1.com");
 		assertThat(entity.getHeaders().getAccessControlAllowCredentials()).isFalse();
-		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo((long) -1);
+		assertThat(entity.getHeaders().getAccessControlMaxAge()).isEqualTo(-1);
 		assertThat(entity.getBody()).isEqualTo("customized");
 	}
 

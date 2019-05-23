@@ -382,7 +382,7 @@ public class TransactionalEventListenerTests {
 
 		public void assertEvents(String phase, Object... expected) {
 			List<Object> actual = getEvents(phase);
-			assertThat(actual.size()).as("wrong number of events for phase '" + phase + "'").isEqualTo((long) expected.length);
+			assertThat(actual.size()).as("wrong number of events for phase '" + phase + "'").isEqualTo(expected.length);
 			for (int i = 0; i < expected.length; i++) {
 				assertThat(actual.get(i)).as("Wrong event for phase '" + phase + "' at index " + i).isEqualTo(expected[i]);
 			}
@@ -394,7 +394,7 @@ public class TransactionalEventListenerTests {
 				size += entry.getValue().size();
 			}
 			assertThat(size).as("Wrong number of total events (" + this.events.size() + ") " +
-						"registered phase(s)").isEqualTo((long) number);
+						"registered phase(s)").isEqualTo(number);
 		}
 	}
 

@@ -239,7 +239,7 @@ public class DefaultServerResponseBuilderTests {
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
 		assertThat(mav).isNull();
 
-		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.CREATED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo(HttpStatus.CREATED.value());
 		assertThat(mockResponse.getHeader("MyKey")).isEqualTo("MyValue");
 		assertThat(mockResponse.getCookie("name").getValue()).isEqualTo("value");
 	}
@@ -258,7 +258,7 @@ public class DefaultServerResponseBuilderTests {
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
 		assertThat(mav).isNull();
 
-		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo(HttpStatus.NOT_MODIFIED.value());
 	}
 
 	@Test
@@ -277,7 +277,7 @@ public class DefaultServerResponseBuilderTests {
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
 		assertThat(mav).isNull();
 
-		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo(HttpStatus.NOT_MODIFIED.value());
 	}
 
 	@Test

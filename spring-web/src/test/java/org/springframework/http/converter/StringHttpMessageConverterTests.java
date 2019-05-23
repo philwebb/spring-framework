@@ -78,7 +78,7 @@ public class StringHttpMessageConverterTests {
 		HttpHeaders headers = this.outputMessage.getHeaders();
 		assertThat(this.outputMessage.getBodyAsString(StandardCharsets.ISO_8859_1)).isEqualTo(body);
 		assertThat(headers.getContentType()).isEqualTo(new MediaType("text", "plain", StandardCharsets.ISO_8859_1));
-		assertThat(headers.getContentLength()).isEqualTo((long) body.getBytes(StandardCharsets.ISO_8859_1).length);
+		assertThat(headers.getContentLength()).isEqualTo(body.getBytes(StandardCharsets.ISO_8859_1).length);
 		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
 
@@ -90,7 +90,7 @@ public class StringHttpMessageConverterTests {
 		HttpHeaders headers = this.outputMessage.getHeaders();
 		assertThat(this.outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(body);
 		assertThat(headers.getContentType()).isEqualTo(TEXT_PLAIN_UTF_8);
-		assertThat(headers.getContentLength()).isEqualTo((long) body.getBytes(StandardCharsets.UTF_8).length);
+		assertThat(headers.getContentLength()).isEqualTo(body.getBytes(StandardCharsets.UTF_8).length);
 		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
 
@@ -105,7 +105,7 @@ public class StringHttpMessageConverterTests {
 
 		assertThat(this.outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo(body);
 		assertThat(headers.getContentType()).isEqualTo(TEXT_PLAIN_UTF_8);
-		assertThat(headers.getContentLength()).isEqualTo((long) body.getBytes(StandardCharsets.UTF_8).length);
+		assertThat(headers.getContentLength()).isEqualTo(body.getBytes(StandardCharsets.UTF_8).length);
 		assertThat(headers.getAcceptCharset().isEmpty()).isTrue();
 	}
 

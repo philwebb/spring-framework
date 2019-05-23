@@ -273,7 +273,7 @@ public class WebMvcConfigurationSupportTests {
 		assertThat(resolver).isNotNull();
 		assertThat(resolver.getViewResolvers().size()).isEqualTo(1);
 		assertThat(resolver.getViewResolvers().get(0).getClass()).isEqualTo(InternalResourceViewResolver.class);
-		assertThat(resolver.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
+		assertThat(resolver.getOrder()).isEqualTo(Ordered.LOWEST_PRECEDENCE);
 	}
 
 	@Test
@@ -283,7 +283,7 @@ public class WebMvcConfigurationSupportTests {
 
 		assertThat(resolver).isNotNull();
 		assertThat(resolver.getViewResolvers().size()).isEqualTo(0);
-		assertThat(resolver.getOrder()).isEqualTo((long) Ordered.LOWEST_PRECEDENCE);
+		assertThat(resolver.getOrder()).isEqualTo(Ordered.LOWEST_PRECEDENCE);
 		assertThat(resolver.resolveViewName("anyViewName", Locale.ENGLISH)).isNull();
 	}
 
