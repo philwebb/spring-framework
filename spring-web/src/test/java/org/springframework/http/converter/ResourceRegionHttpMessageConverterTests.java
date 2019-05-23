@@ -38,8 +38,8 @@ import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Test cases for {@link ResourceRegionHttpMessageConverter} class.

@@ -51,9 +51,9 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.handler.ExceptionHandlingWebHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertSame;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 /**

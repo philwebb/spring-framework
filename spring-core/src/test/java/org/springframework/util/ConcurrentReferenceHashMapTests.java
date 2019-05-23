@@ -41,7 +41,7 @@ import org.springframework.util.comparator.NullSafeComparator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertFalse;
 
 /**
  * Tests for {@link ConcurrentReferenceHashMap}.

@@ -23,9 +23,9 @@ import org.springframework.aop.support.AopUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
 import static org.springframework.test.util.AopTestUtils.getTargetObject;
 import static org.springframework.test.util.AopTestUtils.getUltimateTargetObject;
 

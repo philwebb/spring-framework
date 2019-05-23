@@ -34,7 +34,7 @@ import org.springframework.tests.TestGroup;
 import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Testing variations on map access.
