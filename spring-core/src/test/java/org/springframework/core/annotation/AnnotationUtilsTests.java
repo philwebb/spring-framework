@@ -60,6 +60,7 @@ import static org.springframework.core.annotation.AnnotationUtils.isAnnotationDe
 import static org.springframework.core.annotation.AnnotationUtils.isAnnotationInherited;
 import static org.springframework.core.annotation.AnnotationUtils.isAnnotationMetaPresent;
 import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation;
+import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link AnnotationUtils}.

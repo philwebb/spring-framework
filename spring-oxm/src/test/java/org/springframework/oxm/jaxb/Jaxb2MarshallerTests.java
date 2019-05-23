@@ -71,6 +71,8 @@ import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;
 import static org.xmlunit.diff.DifferenceEvaluators.downgradeDifferencesToEqual;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma

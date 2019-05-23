@@ -63,6 +63,8 @@ import org.springframework.util.SerializationTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * @since 13.03.2003

@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static temp.XAssert.assertNull;
 
 /**
  * @author Stephane Nicoll

@@ -39,6 +39,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link VersionResourceResolver}.

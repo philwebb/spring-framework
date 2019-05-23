@@ -52,6 +52,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller

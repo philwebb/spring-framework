@@ -53,6 +53,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller

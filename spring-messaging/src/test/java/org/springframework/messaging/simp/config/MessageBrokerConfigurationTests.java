@@ -78,6 +78,8 @@ import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBea
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture for {@link AbstractMessageBrokerConfiguration}.

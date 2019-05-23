@@ -49,6 +49,8 @@ import org.springframework.web.reactive.resource.VersionResourceResolver;
 import org.springframework.web.reactive.resource.WebJarsResourceResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ResourceHandlerRegistry}.

@@ -45,6 +45,7 @@ import org.springframework.tests.sample.beans.Colour;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static temp.XAssert.assertNull;
 
 /**
  * System tests covering use of {@link Autowired} and {@link Value} within

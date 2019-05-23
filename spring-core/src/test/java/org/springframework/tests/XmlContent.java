@@ -20,6 +20,8 @@ import java.io.StringWriter;
 
 import org.assertj.core.api.AssertProvider;
 import org.xmlunit.assertj.XmlAssert;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * {@link AssertProvider} to allow XML content assertions. Ultimately delegates

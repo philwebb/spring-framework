@@ -35,6 +35,8 @@ import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADER
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
 import static org.springframework.http.HttpHeaders.ORIGIN;
 import static org.springframework.http.HttpHeaders.VARY;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * {@link DefaultCorsProcessor} tests with simple or pre-flight CORS request.

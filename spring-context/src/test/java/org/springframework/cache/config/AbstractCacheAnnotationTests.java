@@ -32,6 +32,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
+import static temp.XAssert.assertNull;
 
 /**
  * Abstract cache annotation tests (containing several reusable methods).

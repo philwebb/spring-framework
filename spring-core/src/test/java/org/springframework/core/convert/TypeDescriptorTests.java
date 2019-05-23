@@ -44,6 +44,7 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static temp.XAssert.assertNull;
 
 /**
  * Tests for {@link TypeDescriptor}.

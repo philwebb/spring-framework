@@ -28,6 +28,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static temp.XAssert.assertNull;
 import static org.springframework.core.GenericTypeResolver.getTypeVariableMap;
 import static org.springframework.core.GenericTypeResolver.resolveReturnTypeArgument;
 import static org.springframework.core.GenericTypeResolver.resolveType;

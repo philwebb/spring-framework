@@ -22,6 +22,8 @@ import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.diff.DifferenceEvaluator;
 import org.xmlunit.diff.NodeMatcher;
 import org.xmlunit.util.Predicate;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * Assertions exposed by {@link XmlContent}.

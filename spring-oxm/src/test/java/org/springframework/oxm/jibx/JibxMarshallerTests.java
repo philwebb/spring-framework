@@ -28,6 +28,8 @@ import org.springframework.tests.XmlContent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assume.assumeTrue;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertFalse;
 
 /**
  * NOTE: These tests fail under Eclipse/IDEA because JiBX binding does not occur by
