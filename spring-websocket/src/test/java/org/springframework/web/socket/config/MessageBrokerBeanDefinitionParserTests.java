@@ -321,7 +321,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 				"sockJsScheduler\\[pool size = \\d, active threads = \\d, queued tasks = \\d, " +
 				"completed tasks = \\d\\]";
 
-		assertTrue("\nExpected: " + expected.replace("\\", "") + "\n  Actual: " + actual, actual.matches(expected));
+		assertThat(actual.matches(expected)).as("\nExpected: " + expected.replace("\\", "") + "\n  Actual: " + actual).isTrue();
 	}
 
 	@Test

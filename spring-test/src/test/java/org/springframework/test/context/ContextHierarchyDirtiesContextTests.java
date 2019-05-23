@@ -91,7 +91,7 @@ public class ContextHierarchyDirtiesContextTests {
 
 		JUnitCore jUnitCore = new JUnitCore();
 		Result result = jUnitCore.run(testClass);
-		assertTrue("all tests passed", result.wasSuccessful());
+		assertThat(result.wasSuccessful()).as("all tests passed").isTrue();
 
 		assertThat(ContextHierarchyDirtiesContextTests.context).isNotNull();
 

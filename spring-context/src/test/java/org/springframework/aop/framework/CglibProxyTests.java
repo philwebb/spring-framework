@@ -335,11 +335,11 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 			proxy.doTest();
 		}
 		catch (Exception ex) {
-			assertTrue("Invalid exception class", ex instanceof ApplicationContextException);
+			assertThat(ex instanceof ApplicationContextException).as("Invalid exception class").isTrue();
 		}
 
-		assertTrue("Catch was not invoked", proxy.isCatchInvoked());
-		assertTrue("Finally was not invoked", proxy.isFinallyInvoked());
+		assertThat(proxy.isCatchInvoked()).as("Catch was not invoked").isTrue();
+		assertThat(proxy.isFinallyInvoked()).as("Finally was not invoked").isTrue();
 	}
 
 	@Test

@@ -90,8 +90,7 @@ public class JibxMarshallerTests extends AbstractMarshallerTests<JibxMarshaller>
 		marshaller.setStandalone(Boolean.TRUE);
 		StringWriter writer = new StringWriter();
 		marshaller.marshal(flights, new StreamResult(writer));
-		assertTrue("Encoding and standalone not set",
-				writer.toString().startsWith("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?>"));
+		assertThat(writer.toString().startsWith("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?>")).as("Encoding and standalone not set").isTrue();
 	}
 
 	@Test
@@ -100,14 +99,13 @@ public class JibxMarshallerTests extends AbstractMarshallerTests<JibxMarshaller>
 		marshaller.setDocTypeSystemId("flights.dtd");
 		StringWriter writer = new StringWriter();
 		marshaller.marshal(flights, new StreamResult(writer));
-		assertTrue("doc type not written",
-				writer.toString().contains("<!DOCTYPE flights SYSTEM \"flights.dtd\">"));
+		assertThat(writer.toString().contains("<!DOCTYPE flights SYSTEM \"flights.dtd\">")).as("doc type not written").isTrue();
 	}
 
 	@Test
 	public void supports() throws Exception {
-		assertTrue("JibxMarshaller does not support Flights", marshaller.supports(Flights.class));
-		assertTrue("JibxMarshaller does not support FlightType", marshaller.supports(FlightType.class));
+		assertThat(marshaller.supports(Flights.class)).as("JibxMarshaller does not support Flights").isTrue();
+		assertThat(marshaller.supports(FlightType.class)).as("JibxMarshaller does not support FlightType").isTrue();
 		assertFalse("JibxMarshaller supports illegal type", marshaller.supports(getClass()));
 	}
 

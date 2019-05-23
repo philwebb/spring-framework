@@ -88,8 +88,7 @@ public class AbstractMockWebServerTestCase {
 			String location, String contentType, byte[] responseBody) {
 
 		assertEquals(1, request.getHeaders().values("Content-Length").size());
-		assertTrue("Invalid request content-length",
-				Integer.parseInt(request.getHeader("Content-Length")) > 0);
+		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
 		assertNotNull("No content-type", requestContentType);
 		Charset charset = StandardCharsets.ISO_8859_1;
@@ -110,8 +109,7 @@ public class AbstractMockWebServerTestCase {
 
 	private MockResponse jsonPostRequest(RecordedRequest request, String location, String contentType) {
 		if (request.getBodySize() > 0) {
-			assertTrue("Invalid request content-length",
-					Integer.parseInt(request.getHeader("Content-Length")) > 0);
+			assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 			assertNotNull("No content-type", request.getHeader("Content-Type"));
 		}
 		return new MockResponse()
@@ -179,8 +177,7 @@ public class AbstractMockWebServerTestCase {
 			String contentType, byte[] responseBody) {
 
 		assertEquals("PATCH", request.getMethod());
-		assertTrue("Invalid request content-length",
-				Integer.parseInt(request.getHeader("Content-Length")) > 0);
+		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
 		assertNotNull("No content-type", requestContentType);
 		Charset charset = StandardCharsets.ISO_8859_1;
@@ -198,8 +195,7 @@ public class AbstractMockWebServerTestCase {
 	}
 
 	private MockResponse putRequest(RecordedRequest request, String expectedRequestContent) {
-		assertTrue("Invalid request content-length",
-				Integer.parseInt(request.getHeader("Content-Length")) > 0);
+		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
 		assertNotNull("No content-type", requestContentType);
 		Charset charset = StandardCharsets.ISO_8859_1;

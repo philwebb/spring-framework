@@ -53,19 +53,19 @@ public class ReflectionUtilsTests {
 		assertThat(field).isNotNull();
 		assertEquals("publicField", field.getName());
 		assertEquals(String.class, field.getType());
-		assertTrue("Field should be public.", Modifier.isPublic(field.getModifiers()));
+		assertThat(Modifier.isPublic(field.getModifiers())).as("Field should be public.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "prot", String.class);
 		assertThat(field).isNotNull();
 		assertEquals("prot", field.getName());
 		assertEquals(String.class, field.getType());
-		assertTrue("Field should be protected.", Modifier.isProtected(field.getModifiers()));
+		assertThat(Modifier.isProtected(field.getModifiers())).as("Field should be protected.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "name", String.class);
 		assertThat(field).isNotNull();
 		assertEquals("name", field.getName());
 		assertEquals(String.class, field.getType());
-		assertTrue("Field should be private.", Modifier.isPrivate(field.getModifiers()));
+		assertThat(Modifier.isPrivate(field.getModifiers())).as("Field should be private.").isTrue();
 	}
 
 	@Test
@@ -200,8 +200,8 @@ public class ReflectionUtilsTests {
 			}
 		});
 		assertFalse(mc.getMethodNames().isEmpty());
-		assertTrue("Must find protected method on Object", mc.getMethodNames().contains("clone"));
-		assertTrue("Must find protected method on Object", mc.getMethodNames().contains("finalize"));
+		assertThat(mc.getMethodNames().contains("clone")).as("Must find protected method on Object").isTrue();
+		assertThat(mc.getMethodNames().contains("finalize")).as("Must find protected method on Object").isTrue();
 		assertFalse("Public, not protected", mc.getMethodNames().contains("hashCode"));
 		assertFalse("Public, not protected", mc.getMethodNames().contains("absquatulate"));
 	}

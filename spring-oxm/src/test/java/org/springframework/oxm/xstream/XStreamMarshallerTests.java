@@ -199,7 +199,7 @@ public class XStreamMarshallerTests {
 		assertThat(XmlContent.from(writer)).isSimilarTo("<byte-array>AQI=</byte-array>");
 		Reader reader = new StringReader(writer.toString());
 		byte[] bufResult = (byte[]) marshaller.unmarshal(new StreamSource(reader));
-		assertTrue("Invalid result", Arrays.equals(buf, bufResult));
+		assertThat(Arrays.equals(buf, bufResult)).as("Invalid result").isTrue();
 	}
 
 	@Test
@@ -316,7 +316,7 @@ public class XStreamMarshallerTests {
 		marshaller.marshal(flight, new StreamResult(writer));
 		assertEquals("Invalid result", "{\"flight\":{\"flightNumber\":42}}", writer.toString());
 		Object o = marshaller.unmarshal(new StreamSource(new StringReader(writer.toString())));
-		assertTrue("Unmarshalled object is not Flights", o instanceof Flight);
+		assertThat(o instanceof Flight).as("Unmarshalled object is not Flights").isTrue();
 		Flight unflight = (Flight) o;
 		assertNotNull("Flight is null", unflight);
 		assertEquals("Number is invalid", 42L, unflight.getFlightNumber());
@@ -354,7 +354,7 @@ public class XStreamMarshallerTests {
 	private static void assertXpathExists(String xPathExpression, String inXMLString){
 		Source source = Input.fromString(inXMLString).build();
 		Iterable<Node> nodes = new JAXPXPathEngine().selectNodes(xPathExpression, source);
-		assertTrue("Expecting to find matches for Xpath " + xPathExpression, count(nodes) > 0);
+		assertThat(count(nodes) > 0).as("Expecting to find matches for Xpath " + xPathExpression).isTrue();
 	}
 
 	private static void assertXpathNotExists(String xPathExpression, String inXMLString){

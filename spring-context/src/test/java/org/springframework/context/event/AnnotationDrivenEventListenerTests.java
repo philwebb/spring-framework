@@ -250,7 +250,7 @@ public class AnnotationDrivenEventListenerTests {
 		load(ScopedProxyTestBean.class);
 
 		SimpleService proxy = this.context.getBean(SimpleService.class);
-		assertTrue("bean should be a proxy", proxy instanceof Advised);
+		assertThat(proxy instanceof Advised).as("bean should be a proxy").isTrue();
 		this.eventCollector.assertNoEventReceived(proxy.getId());
 
 		this.context.publishEvent(new ContextRefreshedEvent(this.context));
@@ -267,7 +267,7 @@ public class AnnotationDrivenEventListenerTests {
 		load(AnnotatedProxyTestBean.class);
 
 		AnnotatedSimpleService proxy = this.context.getBean(AnnotatedSimpleService.class);
-		assertTrue("bean should be a proxy", proxy instanceof Advised);
+		assertThat(proxy instanceof Advised).as("bean should be a proxy").isTrue();
 		this.eventCollector.assertNoEventReceived(proxy.getId());
 
 		this.context.publishEvent(new ContextRefreshedEvent(this.context));
@@ -284,7 +284,7 @@ public class AnnotationDrivenEventListenerTests {
 		load(CglibProxyTestBean.class);
 
 		CglibProxyTestBean proxy = this.context.getBean(CglibProxyTestBean.class);
-		assertTrue("bean should be a cglib proxy", AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).as("bean should be a cglib proxy").isTrue();
 		this.eventCollector.assertNoEventReceived(proxy.getId());
 
 		this.context.publishEvent(new ContextRefreshedEvent(this.context));
@@ -310,7 +310,7 @@ public class AnnotationDrivenEventListenerTests {
 		this.context.getBeanFactory().registerScope("custom", customScope);
 
 		CustomScopeTestBean proxy = this.context.getBean(CustomScopeTestBean.class);
-		assertTrue("bean should be a cglib proxy", AopUtils.isCglibProxy(proxy));
+		assertThat(AopUtils.isCglibProxy(proxy)).as("bean should be a cglib proxy").isTrue();
 		this.eventCollector.assertNoEventReceived(proxy.getId());
 
 		this.context.publishEvent(new ContextRefreshedEvent(this.context));

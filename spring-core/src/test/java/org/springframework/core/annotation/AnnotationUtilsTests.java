@@ -245,7 +245,7 @@ public class AnnotationUtilsTests {
 	public void findClassAnnotationFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedAnnotations() {
 		Transactional transactional = findAnnotation(SubSubClassWithInheritedAnnotation.class, Transactional.class);
 		assertThat(transactional).isNotNull();
-		assertTrue("readOnly flag for SubSubClassWithInheritedAnnotation", transactional.readOnly());
+		assertThat(transactional.readOnly()).as("readOnly flag for SubSubClassWithInheritedAnnotation").isTrue();
 	}
 
 	// @since 4.0.3
@@ -877,7 +877,7 @@ public class AnnotationUtilsTests {
 		AnnotationWithDefaults annotationWithDefaults = synthesizeAnnotation(AnnotationWithDefaults.class);
 		assertThat(annotationWithDefaults).isNotNull();
 		assertEquals("text: ", "enigma", annotationWithDefaults.text());
-		assertTrue("predicate: ", annotationWithDefaults.predicate());
+		assertThat(annotationWithDefaults.predicate()).as("predicate: ").isTrue();
 		assertArrayEquals("characters: ", new char[] { 'a', 'b', 'c' }, annotationWithDefaults.characters());
 	}
 

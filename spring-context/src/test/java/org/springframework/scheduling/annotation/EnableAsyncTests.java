@@ -171,7 +171,7 @@ public class EnableAsyncTests {
 				break;
 			}
 		}
-		assertTrue("bean was not async advised as expected", isAsyncAdvised);
+		assertThat(isAsyncAdvised).as("bean was not async advised as expected").isTrue();
 
 		ctx.close();
 	}

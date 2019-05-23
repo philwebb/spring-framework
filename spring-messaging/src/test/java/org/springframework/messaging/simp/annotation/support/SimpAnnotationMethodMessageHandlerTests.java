@@ -185,7 +185,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		this.messageHandler.handleMessage(message);
 
 		assertEquals("simpleBinding", this.testController.method);
-		assertTrue("should be bound to type long", this.testController.arguments.get("id") instanceof Long);
+		assertThat(this.testController.arguments.get("id") instanceof Long).as("should be bound to type long").isTrue();
 		assertEquals(12L, this.testController.arguments.get("id"));
 	}
 
