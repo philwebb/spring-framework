@@ -54,8 +54,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Jeremy Grelle
@@ -137,7 +135,7 @@ public class MappingJackson2JsonViewTests {
 
 		view.render(model, request, response);
 
-		assertNull(response.getHeader("Cache-Control"));
+		assertThat((Object) response.getHeader("Cache-Control")).isNull();
 	}
 
 	@Test

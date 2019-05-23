@@ -62,8 +62,6 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ResourceWebHandler}.
@@ -117,7 +115,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.css");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
 		HttpHeaders headers = exchange.getResponse().getHeaders();
 		assertThat(headers.getContentType()).isEqualTo(MediaType.parseMediaType("text/css"));
 		assertThat(headers.getContentLength()).isEqualTo(17);
@@ -413,7 +411,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.css");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertNull(exchange.getResponse().getStatusCode());
+		assertThat((Object) exchange.getResponse().getStatusCode()).isNull();
 		assertResponseBody(exchange, "h1 { color:red; }");
 	}
 

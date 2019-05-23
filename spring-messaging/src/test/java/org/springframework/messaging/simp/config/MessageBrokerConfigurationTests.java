@@ -78,8 +78,6 @@ import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBea
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture for {@link AbstractMessageBrokerConfiguration}.
@@ -221,7 +219,7 @@ public class MessageBrokerConfigurationTests {
 		assertThat(handlers.contains(context.getBean(UserDestinationMessageHandler.class))).isTrue();
 		assertThat(handlers.contains(context.getBean(SimpleBrokerMessageHandler.class))).isTrue();
 
-		assertNull(channel.getExecutor());
+		assertThat((Object) channel.getExecutor()).isNull();
 	}
 
 	@Test
@@ -473,7 +471,7 @@ public class MessageBrokerConfigurationTests {
 		assertThat(registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
 
 		UserDestinationMessageHandler handler = context.getBean(UserDestinationMessageHandler.class);
-		assertNull(handler.getBroadcastDestination());
+		assertThat((Object) handler.getBroadcastDestination()).isNull();
 
 		Object nullBean = context.getBean("userRegistryMessageHandler");
 		assertThat(nullBean.equals(null)).isTrue();

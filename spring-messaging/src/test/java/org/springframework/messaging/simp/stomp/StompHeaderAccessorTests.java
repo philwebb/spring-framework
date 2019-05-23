@@ -37,8 +37,6 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link StompHeaderAccessor}.
@@ -207,8 +205,8 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.SEND);
 		MessageHeaders headers = headerAccessor.getMessageHeaders();
 
-		assertNull(headers.getId());
-		assertNull(headers.getTimestamp());
+		assertThat((Object) headers.getId()).isNull();
+		assertThat((Object) headers.getTimestamp()).isNull();
 	}
 
 	@Test

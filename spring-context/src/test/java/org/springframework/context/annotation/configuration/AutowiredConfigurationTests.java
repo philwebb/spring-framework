@@ -45,7 +45,6 @@ import org.springframework.tests.sample.beans.Colour;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
 
 /**
  * System tests covering use of {@link Autowired} and {@link Value} within
@@ -175,10 +174,10 @@ public class AutowiredConfigurationTests {
 		System.clearProperty("myProp");
 
 		TestBean testBean = context.getBean("testBean", TestBean.class);
-		assertNull(testBean.getName());
+		assertThat((Object) testBean.getName()).isNull();
 
 		testBean = context.getBean("testBean2", TestBean.class);
-		assertNull(testBean.getName());
+		assertThat((Object) testBean.getName()).isNull();
 
 		System.setProperty("myProp", "foo");
 
@@ -191,10 +190,10 @@ public class AutowiredConfigurationTests {
 		System.clearProperty("myProp");
 
 		testBean = context.getBean("testBean", TestBean.class);
-		assertNull(testBean.getName());
+		assertThat((Object) testBean.getName()).isNull();
 
 		testBean = context.getBean("testBean2", TestBean.class);
-		assertNull(testBean.getName());
+		assertThat((Object) testBean.getName()).isNull();
 	}
 
 	@Test

@@ -37,7 +37,6 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.util.StringUtils.uncapitalize;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Chris Beams
@@ -288,7 +287,7 @@ public class AnnotationConfigApplicationContextTests {
 
 		assertThat(context.getBean(BeanA.class).b).isSameAs(b);
 		assertThat(context.getBean(BeanA.class).c).isSameAs(c);
-		assertNull(b.applicationContext);
+		assertThat((Object) b.applicationContext).isNull();
 	}
 
 	@Test
@@ -301,7 +300,7 @@ public class AnnotationConfigApplicationContextTests {
 
 		assertThat(context.getBean("a", BeanA.class).b).isSameAs(b);
 		assertThat(context.getBean("a", BeanA.class).c).isSameAs(c);
-		assertNull(b.applicationContext);
+		assertThat((Object) b.applicationContext).isNull();
 	}
 
 	@Test

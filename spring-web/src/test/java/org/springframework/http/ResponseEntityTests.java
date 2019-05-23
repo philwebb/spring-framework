@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -185,7 +183,7 @@ public class ResponseEntityTests {
 		assertThat(responseHeaders.getFirst("Content-Length")).isEqualTo(String.valueOf(contentLength));
 		assertThat(responseHeaders.getFirst("Content-Type")).isEqualTo(contentType.toString());
 
-		assertNull(responseEntity.getBody());
+		assertThat((Object) responseEntity.getBody()).isNull();
 	}
 
 	@Test

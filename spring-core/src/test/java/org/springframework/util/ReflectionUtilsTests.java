@@ -33,7 +33,6 @@ import org.springframework.tests.sample.objects.TestObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Rob Harrop
@@ -76,7 +75,7 @@ public class ReflectionUtilsTests {
 		assertThat(testBean.getName()).isEqualTo("FooBar");
 
 		ReflectionUtils.setField(field, testBean, null);
-		assertNull(testBean.getName());
+		assertThat((Object) testBean.getName()).isNull();
 	}
 
 	@Test

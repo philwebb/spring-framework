@@ -53,8 +53,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Juergen Hoeller
@@ -251,7 +249,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNull();
 	}
 
 	@Test
@@ -263,7 +261,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNull();
 	}
 
 	@Test

@@ -25,7 +25,6 @@ import org.springframework.mock.env.MockPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Chris Beams
@@ -100,7 +99,7 @@ public class MutablePropertySourcesTests {
 		assertThat(sources.size()).isEqualTo(6);
 		assertThat(sources.contains("a")).isFalse();
 
-		assertNull(sources.remove("a"));
+		assertThat((Object) sources.remove("a")).isNull();
 		assertThat(sources.size()).isEqualTo(6);
 
 		String bogusPS = "bogus";

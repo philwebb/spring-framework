@@ -58,7 +58,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link DefaultConversionService}.
@@ -712,7 +711,7 @@ public class DefaultConversionServiceTests {
 		@SuppressWarnings("unchecked")
 		List<Integer> bar = (List<Integer>) conversionService.convert(null,
 				TypeDescriptor.valueOf(LinkedHashSet.class), new TypeDescriptor(getClass().getField("genericList")));
-		assertNull(bar);
+		assertThat((Object) bar).isNull();
 	}
 
 	@Test
@@ -895,7 +894,7 @@ public class DefaultConversionServiceTests {
 	public void convertObjectToObjectFinderMethodWithNull() {
 		TestEntity entity = (TestEntity) conversionService.convert(null,
 				TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(TestEntity.class));
-		assertNull(entity);
+		assertThat((Object) entity).isNull();
 	}
 
 	@Test

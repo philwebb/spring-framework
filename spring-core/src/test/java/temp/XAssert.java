@@ -29,8 +29,4 @@ public class XAssert {
 		assertThat(jdkDynamicProxy).as(string).isFalse();
 	}
 
-	public static void assertNull(Object o) {
-		assertThat(o).isNull();
-	}
-
 }

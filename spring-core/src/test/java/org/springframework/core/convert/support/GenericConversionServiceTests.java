@@ -55,7 +55,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link GenericConversionService}.
@@ -165,7 +164,7 @@ public class GenericConversionServiceTests {
 
 	@Test
 	public void convertNull() {
-		assertNull(conversionService.convert(null, Integer.class));
+		assertThat(conversionService.convert(null, Integer.class)).isNull();
 	}
 
 	@Test
@@ -410,7 +409,7 @@ public class GenericConversionServiceTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(list);
 		TypeDescriptor targetType = TypeDescriptor.valueOf(Integer.class);
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertNull(conversionService.convert(list, sourceType, targetType));
+		assertThat(conversionService.convert(list, sourceType, targetType)).isNull();
 	}
 
 	@Test

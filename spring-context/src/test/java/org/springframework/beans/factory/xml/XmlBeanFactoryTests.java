@@ -69,8 +69,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -810,7 +808,7 @@ public class XmlBeanFactoryTests {
 
 		DependenciesBean rod5 = (DependenciesBean) xbf.getBean("rod5");
 		// Should not have been autowired
-		assertNull(rod5.getSpouse());
+		assertThat((Object) rod5.getSpouse()).isNull();
 
 		BeanFactory appCtx = (BeanFactory) xbf.getBean("childAppCtx");
 		assertThat(appCtx.containsBean("rod1")).isTrue();
@@ -912,7 +910,7 @@ public class XmlBeanFactoryTests {
 		catch (BeanCreationException ex) {
 			assertThat(ex.toString().contains("touchy")).isTrue();
 			ex.printStackTrace();
-			assertNull(ex.getRelatedCauses());
+			assertThat((Object) ex.getRelatedCauses()).isNull();
 		}
 	}
 

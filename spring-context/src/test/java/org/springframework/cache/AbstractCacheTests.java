@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Stephane Nicoll
@@ -56,9 +55,9 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		String key = createRandomKey();
 		Object value = "george";
 
-		assertNull(cache.get(key));
-		assertNull(cache.get(key, String.class));
-		assertNull(cache.get(key, Object.class));
+		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key, String.class)).isNull();
+		assertThat(cache.get(key, Object.class)).isNull();
 
 		cache.put(key, value);
 		assertThat(cache.get(key).get()).isEqualTo(value);
@@ -68,9 +67,9 @@ public abstract class AbstractCacheTests<T extends Cache> {
 
 		cache.put(key, null);
 		assertThat(cache.get(key)).isNotNull();
-		assertNull(cache.get(key).get());
-		assertNull(cache.get(key, String.class));
-		assertNull(cache.get(key, Object.class));
+		assertThat(cache.get(key).get()).isNull();
+		assertThat(cache.get(key, String.class)).isNull();
+		assertThat(cache.get(key, Object.class)).isNull();
 	}
 
 	@Test
@@ -95,7 +94,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		String key = createRandomKey();
 		Object value = "george";
 
-		assertNull(cache.get(key));
+		assertThat((Object) cache.get(key)).isNull();
 		cache.put(key, value);
 	}
 
@@ -103,13 +102,13 @@ public abstract class AbstractCacheTests<T extends Cache> {
 	public void testCacheClear() throws Exception {
 		T cache = getCache();
 
-		assertNull(cache.get("enescu"));
+		assertThat((Object) cache.get("enescu")).isNull();
 		cache.put("enescu", "george");
-		assertNull(cache.get("vlaicu"));
+		assertThat((Object) cache.get("vlaicu")).isNull();
 		cache.put("vlaicu", "aurel");
 		cache.clear();
-		assertNull(cache.get("vlaicu"));
-		assertNull(cache.get("enescu"));
+		assertThat((Object) cache.get("vlaicu")).isNull();
+		assertThat((Object) cache.get("enescu")).isNull();
 	}
 
 	@Test
@@ -127,7 +126,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 
 		String key = createRandomKey();
 
-		assertNull(cache.get(key));
+		assertThat((Object) cache.get(key)).isNull();
 		Object value = cache.get(key, () -> returnValue);
 		assertThat(value).isEqualTo(returnValue);
 		assertThat(cache.get(key).get()).isEqualTo(value);
@@ -160,7 +159,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		T cache = getCache();
 
 		String key = createRandomKey();
-		assertNull(cache.get(key));
+		assertThat((Object) cache.get(key)).isNull();
 
 		try {
 			cache.get(key, () -> {

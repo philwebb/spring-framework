@@ -60,7 +60,6 @@ import static org.springframework.core.annotation.AnnotationUtils.isAnnotationDe
 import static org.springframework.core.annotation.AnnotationUtils.isAnnotationInherited;
 import static org.springframework.core.annotation.AnnotationUtils.isAnnotationMetaPresent;
 import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link AnnotationUtils}.
@@ -94,9 +93,9 @@ public class AnnotationUtilsTests {
 	public void findMethodAnnotationWithAnnotationOnMethodInInterface() throws Exception {
 		Method m = Leaf.class.getMethod("fromInterfaceImplementedByRoot");
 		// @Order is not @Inherited
-		assertNull(m.getAnnotation(Order.class));
+		assertThat(m.getAnnotation(Order.class)).isNull();
 		// getAnnotation() does not search on interfaces
-		assertNull(getAnnotation(m, Order.class));
+		assertThat(getAnnotation(m, Order.class)).isNull();
 		// findAnnotation() does search on interfaces
 		assertThat(findAnnotation(m, Order.class)).isNotNull();
 	}
@@ -105,7 +104,7 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findMethodAnnotationWithMetaAnnotationOnLeaf() throws Exception {
 		Method m = Leaf.class.getMethod("metaAnnotatedOnLeaf");
-		assertNull(m.getAnnotation(Order.class));
+		assertThat(m.getAnnotation(Order.class)).isNull();
 		assertThat(getAnnotation(m, Order.class)).isNotNull();
 		assertThat(findAnnotation(m, Order.class)).isNotNull();
 	}
@@ -114,8 +113,8 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findMethodAnnotationWithMetaMetaAnnotationOnLeaf() throws Exception {
 		Method m = Leaf.class.getMethod("metaMetaAnnotatedOnLeaf");
-		assertNull(m.getAnnotation(Component.class));
-		assertNull(getAnnotation(m, Component.class));
+		assertThat(m.getAnnotation(Component.class)).isNull();
+		assertThat(getAnnotation(m, Component.class)).isNull();
 		assertThat(findAnnotation(m, Component.class)).isNotNull();
 	}
 
@@ -131,7 +130,7 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findMethodAnnotationWithMetaAnnotationOnRoot() throws Exception {
 		Method m = Leaf.class.getMethod("metaAnnotatedOnRoot");
-		assertNull(m.getAnnotation(Order.class));
+		assertThat(m.getAnnotation(Order.class)).isNull();
 		assertThat(getAnnotation(m, Order.class)).isNotNull();
 		assertThat(findAnnotation(m, Order.class)).isNotNull();
 	}
@@ -139,15 +138,15 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findMethodAnnotationOnRootButOverridden() throws Exception {
 		Method m = Leaf.class.getMethod("overrideWithoutNewAnnotation");
-		assertNull(m.getAnnotation(Order.class));
-		assertNull(getAnnotation(m, Order.class));
+		assertThat(m.getAnnotation(Order.class)).isNull();
+		assertThat(getAnnotation(m, Order.class)).isNull();
 		assertThat(findAnnotation(m, Order.class)).isNotNull();
 	}
 
 	@Test
 	public void findMethodAnnotationNotAnnotated() throws Exception {
 		Method m = Leaf.class.getMethod("notAnnotated");
-		assertNull(findAnnotation(m, Order.class));
+		assertThat(findAnnotation(m, Order.class)).isNull();
 	}
 
 	@Test
@@ -155,8 +154,8 @@ public class AnnotationUtilsTests {
 		Method bridgeMethod = SimpleFoo.class.getMethod("something", Object.class);
 		assertThat(bridgeMethod.isBridge()).isTrue();
 
-		assertNull(bridgeMethod.getAnnotation(Order.class));
-		assertNull(getAnnotation(bridgeMethod, Order.class));
+		assertThat(bridgeMethod.getAnnotation(Order.class)).isNull();
+		assertThat(getAnnotation(bridgeMethod, Order.class)).isNull();
 		assertThat(findAnnotation(bridgeMethod, Order.class)).isNotNull();
 
 		boolean runningInEclipse = Arrays.stream(new Exception().getStackTrace())
@@ -182,8 +181,8 @@ public class AnnotationUtilsTests {
 		Method bridgedMethod = SimpleFoo.class.getMethod("something", String.class);
 		assertThat(bridgedMethod.isBridge()).isFalse();
 
-		assertNull(bridgedMethod.getAnnotation(Order.class));
-		assertNull(getAnnotation(bridgedMethod, Order.class));
+		assertThat(bridgedMethod.getAnnotation(Order.class)).isNull();
+		assertThat(getAnnotation(bridgedMethod, Order.class)).isNull();
 		assertThat(findAnnotation(bridgedMethod, Order.class)).isNotNull();
 
 		assertThat(bridgedMethod.getAnnotation(Transactional.class)).isNotNull();
@@ -322,8 +321,8 @@ public class AnnotationUtilsTests {
 	@Test
 	public void findAnnotationDeclaringClassForAllScenarios() {
 		// no class-level annotation
-		assertNull(findAnnotationDeclaringClass(Transactional.class, NonAnnotatedInterface.class));
-		assertNull(findAnnotationDeclaringClass(Transactional.class, NonAnnotatedClass.class));
+		assertThat((Object) findAnnotationDeclaringClass(Transactional.class, NonAnnotatedInterface.class)).isNull();
+		assertThat((Object) findAnnotationDeclaringClass(Transactional.class, NonAnnotatedClass.class)).isNull();
 
 		// inherited class-level annotation; note: @Transactional is inherited
 		assertThat(findAnnotationDeclaringClass(Transactional.class, InheritedAnnotationInterface.class)).isEqualTo(InheritedAnnotationInterface.class);
@@ -343,8 +342,8 @@ public class AnnotationUtilsTests {
 	public void findAnnotationDeclaringClassForTypesWithSingleCandidateType() {
 		// no class-level annotation
 		List<Class<? extends Annotation>> transactionalCandidateList = Collections.singletonList(Transactional.class);
-		assertNull(findAnnotationDeclaringClassForTypes(transactionalCandidateList, NonAnnotatedInterface.class));
-		assertNull(findAnnotationDeclaringClassForTypes(transactionalCandidateList, NonAnnotatedClass.class));
+		assertThat((Object) findAnnotationDeclaringClassForTypes(transactionalCandidateList, NonAnnotatedInterface.class)).isNull();
+		assertThat((Object) findAnnotationDeclaringClassForTypes(transactionalCandidateList, NonAnnotatedClass.class)).isNull();
 
 		// inherited class-level annotation; note: @Transactional is inherited
 		assertThat(findAnnotationDeclaringClassForTypes(transactionalCandidateList, InheritedAnnotationInterface.class)).isEqualTo(InheritedAnnotationInterface.class);
@@ -366,8 +365,8 @@ public class AnnotationUtilsTests {
 		List<Class<? extends Annotation>> candidates = asList(Transactional.class, Order.class);
 
 		// no class-level annotation
-		assertNull(findAnnotationDeclaringClassForTypes(candidates, NonAnnotatedInterface.class));
-		assertNull(findAnnotationDeclaringClassForTypes(candidates, NonAnnotatedClass.class));
+		assertThat((Object) findAnnotationDeclaringClassForTypes(candidates, NonAnnotatedInterface.class)).isNull();
+		assertThat((Object) findAnnotationDeclaringClassForTypes(candidates, NonAnnotatedClass.class)).isNull();
 
 		// inherited class-level annotation; note: @Transactional is inherited
 		assertThat(findAnnotationDeclaringClassForTypes(candidates, InheritedAnnotationInterface.class)).isEqualTo(InheritedAnnotationInterface.class);
@@ -958,8 +957,8 @@ public class AnnotationUtilsTests {
 
 	@Test // gh-22702
 	public void findAnnotationWithRepeatablesElements() {
-		assertNull(AnnotationUtils.findAnnotation(TestRepeatablesClass.class,
-				TestRepeatable.class));
+		assertThat(AnnotationUtils.findAnnotation(TestRepeatablesClass.class,
+				TestRepeatable.class)).isNull();
 		assertThat(AnnotationUtils.findAnnotation(TestRepeatablesClass.class,
 		TestRepeatableContainer.class)).isNotNull();
 	}

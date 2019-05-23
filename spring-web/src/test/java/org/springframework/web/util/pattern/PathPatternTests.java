@@ -32,8 +32,6 @@ import org.springframework.web.util.pattern.PathPattern.PathRemainingMatchInfo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Exercise matching of {@link PathPattern} objects.
@@ -324,10 +322,10 @@ public class PathPatternTests {
 	@Test
 	public void pathRemainingCornerCases_spr15336() {
 		// No match when the literal path element is a longer form of the segment in the pattern
-		assertNull(parse("/foo").matchStartOfPath(toPathContainer("/footastic/bar")));
-		assertNull(parse("/f?o").matchStartOfPath(toPathContainer("/footastic/bar")));
-		assertNull(parse("/f*o*p").matchStartOfPath(toPathContainer("/flooptastic/bar")));
-		assertNull(parse("/{abc}abc").matchStartOfPath(toPathContainer("/xyzabcbar/bar")));
+		assertThat((Object) parse("/foo").matchStartOfPath(toPathContainer("/footastic/bar"))).isNull();
+		assertThat((Object) parse("/f?o").matchStartOfPath(toPathContainer("/footastic/bar"))).isNull();
+		assertThat((Object) parse("/f*o*p").matchStartOfPath(toPathContainer("/flooptastic/bar"))).isNull();
+		assertThat((Object) parse("/{abc}abc").matchStartOfPath(toPathContainer("/xyzabcbar/bar"))).isNull();
 
 		// With a /** on the end have to check if there is any more data post
 		// 'the match' it starts with a separator
@@ -573,7 +571,7 @@ public class PathPatternTests {
 
 		pp = parse("/*/{foo}/b*");
 		pri = getPathRemaining(pp, "/foo");
-		assertNull(pri);
+		assertThat((Object) pri).isNull();
 		pri = getPathRemaining(pp, "/abc/def/bhi");
 		assertThat(pri.getPathRemaining().value()).isEqualTo("");
 		assertThat(pri.getUriVariables().get("foo")).isEqualTo("def");
@@ -783,8 +781,8 @@ public class PathPatternTests {
 		checkCapture("/A-{B}-C", "/A-b-C", "B", "b");
 		checkCapture("/{name}.{extension}", "/test.html", "name", "test", "extension", "html");
 
-		assertNull(checkCapture("/{one}/", "//"));
-		assertNull(checkCapture("", "/abc"));
+		assertThat((Object) checkCapture("/{one}/", "//")).isNull();
+		assertThat((Object) checkCapture("", "/abc")).isNull();
 
 		assertThat(checkCapture("", "").getUriVariables().size()).isEqualTo(0);
 		checkCapture("{id}", "99", "id", "99");
@@ -991,8 +989,8 @@ public class PathPatternTests {
 		paths.add(null);
 		paths.add(null);
 		paths.sort(comparator);
-		assertNull(paths.get(0));
-		assertNull(paths.get(1));
+		assertThat((Object) paths.get(0)).isNull();
+		assertThat((Object) paths.get(1)).isNull();
 		paths.clear();
 
 		paths.add(null);

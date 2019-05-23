@@ -31,7 +31,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Mattias Severson
@@ -221,7 +220,7 @@ public class SettableListenableFutureTests {
 	@Test
 	public void nullIsAcceptedAsValueToSet() throws ExecutionException, InterruptedException {
 		settableListenableFuture.set(null);
-		assertNull(settableListenableFuture.get());
+		assertThat((Object) settableListenableFuture.get()).isNull();
 		assertThat(settableListenableFuture.isCancelled()).isFalse();
 		assertThat(settableListenableFuture.isDone()).isTrue();
 	}

@@ -56,8 +56,6 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.codec.Pojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Integration tests using an {@link ExchangeFunction} through {@link WebClient}.
@@ -531,7 +529,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldSupportUnknownStatusCode() {
 		int errorStatus = 555;
-		assertNull(HttpStatus.resolve(errorStatus));
+		assertThat((Object) HttpStatus.resolve(errorStatus)).isNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));
@@ -555,7 +553,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldGetErrorSignalWhenRetrievingUnknownStatusCode() {
 		int errorStatus = 555;
-		assertNull(HttpStatus.resolve(errorStatus));
+		assertThat((Object) HttpStatus.resolve(errorStatus)).isNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));

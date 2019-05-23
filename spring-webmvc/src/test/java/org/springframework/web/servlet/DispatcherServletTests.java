@@ -65,7 +65,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -227,7 +226,7 @@ public class DispatcherServletTests {
 		MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
 		complexDispatcherServlet.service(multipartRequest, response);
 		multipartResolver.cleanupMultipart(multipartRequest);
-		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
+		assertThat(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)).isNull();
 		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
@@ -243,7 +242,7 @@ public class DispatcherServletTests {
 		MultipartHttpServletRequest multipartRequest = multipartResolver.resolveMultipart(request);
 		complexDispatcherServlet.service(new HttpServletRequestWrapper(multipartRequest), response);
 		multipartResolver.cleanupMultipart(multipartRequest);
-		assertNull(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE));
+		assertThat(request.getAttribute(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)).isNull();
 		assertThat(request.getAttribute("cleanedUp")).isNotNull();
 	}
 
@@ -665,7 +664,7 @@ public class DispatcherServletTests {
 		assertThat(myServlet.getServletConfig().getServletName()).isEqualTo("complex");
 		assertThat(myServlet.getServletConfig().getServletContext()).isEqualTo(getServletContext());
 		complexDispatcherServlet.destroy();
-		assertNull(myServlet.getServletConfig());
+		assertThat((Object) myServlet.getServletConfig()).isNull();
 	}
 
 	@Test

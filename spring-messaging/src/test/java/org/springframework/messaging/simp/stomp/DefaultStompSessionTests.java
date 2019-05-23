@@ -54,8 +54,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link DefaultStompSession}.
@@ -560,7 +558,7 @@ public class DefaultStompSessionTests {
 		Subscription subscription = this.session.subscribe(headers, mock(StompFrameHandler.class));
 		subscription.addReceiptTask(() -> received.set(true));
 
-		assertNull(received.get());
+		assertThat((Object) received.get()).isNull();
 
 		StompHeaderAccessor accessor = StompHeaderAccessor.create(StompCommand.RECEIPT);
 		accessor.setReceiptId("my-receipt");
@@ -618,7 +616,7 @@ public class DefaultStompSessionTests {
 		Runnable scheduledTask = taskCaptor.getValue();
 		assertThat(scheduledTask).isNotNull();
 
-		assertNull(notReceived.get());
+		assertThat((Object) notReceived.get()).isNull();
 
 		scheduledTask.run();
 		assertThat(notReceived.get()).isTrue();

@@ -49,8 +49,6 @@ import org.springframework.web.reactive.resource.VersionResourceResolver;
 import org.springframework.web.reactive.resource.WebJarsResourceResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ResourceHandlerRegistry}.
@@ -75,7 +73,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void noResourceHandlers() throws Exception {
 		this.registry = new ResourceHandlerRegistry(new GenericApplicationContext());
-		assertNull(this.registry.getHandlerMapping());
+		assertThat((Object) this.registry.getHandlerMapping()).isNull();
 	}
 
 	@Test

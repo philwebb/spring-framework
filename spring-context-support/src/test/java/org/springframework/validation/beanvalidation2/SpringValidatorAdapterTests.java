@@ -58,8 +58,6 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Kazuki Shimizu
@@ -240,7 +238,7 @@ public class SpringValidatorAdapterTests {
 		validatorAdapter.validate(bean, errors);
 
 		assertThat(errors.getFieldErrorCount("property[4]")).isEqualTo(1);
-		assertNull(errors.getFieldValue("property[4]"));
+		assertThat(errors.getFieldValue("property[4]")).isNull();
 	}
 
 	@Test  // SPR-15839
@@ -255,7 +253,7 @@ public class SpringValidatorAdapterTests {
 		validatorAdapter.validate(bean, errors);
 
 		assertThat(errors.getFieldErrorCount("property[no value can be]")).isEqualTo(1);
-		assertNull(errors.getFieldValue("property[no value can be]"));
+		assertThat(errors.getFieldValue("property[no value can be]")).isNull();
 	}
 
 	@Test  // SPR-15839
@@ -270,7 +268,7 @@ public class SpringValidatorAdapterTests {
 		validatorAdapter.validate(bean, errors);
 
 		assertThat(errors.hasFieldErrors("property[]")).isTrue();
-		assertNull(errors.getFieldValue("property[]"));
+		assertThat(errors.getFieldValue("property[]")).isNull();
 	}
 
 

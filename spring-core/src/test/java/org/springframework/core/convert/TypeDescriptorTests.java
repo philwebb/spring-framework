@@ -44,7 +44,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNull;
 
 /**
  * Tests for {@link TypeDescriptor}.
@@ -118,7 +117,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.getAnnotations().length).isEqualTo(0);
 		assertThat(desc.isCollection()).isTrue();
 		assertThat(desc.isArray()).isFalse();
-		assertNull(desc.getElementTypeDescriptor());
+		assertThat((Object) desc.getElementTypeDescriptor()).isNull();
 		assertThat(desc.isMap()).isFalse();
 	}
 
@@ -377,7 +376,7 @@ public class TypeDescriptorTests {
 		assertThat(typeDescriptor.isCollection()).isTrue();
 		assertThat(typeDescriptor.isArray()).isFalse();
 		assertThat(typeDescriptor.isMap()).isFalse();
-		assertNull(typeDescriptor.getElementTypeDescriptor());
+		assertThat((Object) typeDescriptor.getElementTypeDescriptor()).isNull();
 	}
 
 	@Test
@@ -389,7 +388,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void forObjectNullTypeDescriptor() {
 		TypeDescriptor desc = TypeDescriptor.forObject(null);
-		assertNull(desc);
+		assertThat((Object) desc).isNull();
 	}
 
 	@Test
@@ -419,13 +418,13 @@ public class TypeDescriptorTests {
 	@Test
 	public void nestedTooManyLevels() throws Exception {
 		TypeDescriptor t1 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test4", List.class), 0), 3);
-		assertNull(t1);
+		assertThat((Object) t1).isNull();
 	}
 
 	@Test
 	public void nestedMethodParameterTypeNotNestable() throws Exception {
 		TypeDescriptor t1 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test5", String.class), 0), 2);
-		assertNull(t1);
+		assertThat((Object) t1).isNull();
 	}
 
 	@Test
@@ -440,7 +439,7 @@ public class TypeDescriptorTests {
 		assertThat(t1.getType()).isEqualTo(List.class);
 		assertThat(t1.toString()).isEqualTo("java.util.List<?>");
 		TypeDescriptor t2 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test6", List.class), 0), 2);
-		assertNull(t2);
+		assertThat((Object) t2).isNull();
 	}
 
 	@Test
@@ -721,7 +720,7 @@ public class TypeDescriptorTests {
 
 	@Test
 	public void createNullArray() throws Exception {
-		assertNull(TypeDescriptor.array(null));
+		assertThat((Object) TypeDescriptor.array(null)).isNull();
 	}
 
 	@Test

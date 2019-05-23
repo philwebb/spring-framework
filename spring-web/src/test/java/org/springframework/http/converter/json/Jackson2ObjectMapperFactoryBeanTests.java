@@ -66,8 +66,6 @@ import org.springframework.beans.FatalBeanException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test cases for {@link Jackson2ObjectMapperFactoryBean}.
@@ -251,7 +249,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 
 	@Test
 	public void undefinedObjectType() {
-		assertNull(this.factory.getObjectType());
+		assertThat((Object) this.factory.getObjectType()).isNull();
 	}
 
 	private static SerializerFactoryConfig getSerializerFactoryConfig(ObjectMapper objectMapper) {

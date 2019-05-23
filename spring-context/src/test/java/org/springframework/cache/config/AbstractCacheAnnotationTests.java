@@ -32,7 +32,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static temp.XAssert.assertNull;
 
 /**
  * Abstract cache annotation tests (containing several reusable methods).
@@ -93,7 +92,7 @@ public abstract class AbstractCacheAnnotationTests {
 
 	public void testCacheableNull(CacheableService<?> service) throws Exception {
 		Object o1 = new Object();
-		assertNull(this.cm.getCache("testCache").get(o1));
+		assertThat((Object) this.cm.getCache("testCache").get(o1)).isNull();
 
 		Object r1 = service.cacheNull(o1);
 		Object r2 = service.cacheNull(o1);
@@ -119,7 +118,7 @@ public abstract class AbstractCacheAnnotationTests {
 
 	public void testCacheableSyncNull(CacheableService<?> service) throws Exception {
 		Object o1 = new Object();
-		assertNull(this.cm.getCache("testCache").get(o1));
+		assertThat((Object) this.cm.getCache("testCache").get(o1)).isNull();
 
 		Object r1 = service.cacheSyncNull(o1);
 		Object r2 = service.cacheSyncNull(o1);
@@ -231,8 +230,8 @@ public abstract class AbstractCacheAnnotationTests {
 		assertThat(r10).isNotSameAs(r1);
 		service.evictAll(new Object());
 		Cache cache = this.cm.getCache("testCache");
-		assertNull(cache.get(o1));
-		assertNull(cache.get(o2));
+		assertThat((Object) cache.get(o1)).isNull();
+		assertThat((Object) cache.get(o2)).isNull();
 
 		Object r3 = service.cache(o1);
 		Object r4 = service.cache(o1);
@@ -300,7 +299,7 @@ public abstract class AbstractCacheAnnotationTests {
 
 	public void testNullValue(CacheableService<?> service) throws Exception {
 		Object key = new Object();
-		assertNull(service.nullValue(key));
+		assertThat(service.nullValue(key)).isNull();
 		int nr = service.nullInvocations().intValue();
 		assertThat(service.nullValue(key)).isNull();
 		assertThat(service.nullInvocations().intValue()).isEqualTo(nr);
@@ -361,12 +360,12 @@ public abstract class AbstractCacheAnnotationTests {
 	public void testCacheUpdate(CacheableService<?> service) {
 		Object o = new Object();
 		Cache cache = this.cm.getCache("testCache");
-		assertNull(cache.get(o));
+		assertThat((Object) cache.get(o)).isNull();
 		Object r1 = service.update(o);
 		assertThat(cache.get(o).get()).isSameAs(r1);
 
 		o = new Object();
-		assertNull(cache.get(o));
+		assertThat((Object) cache.get(o)).isNull();
 		Object r2 = service.update(o);
 		assertThat(cache.get(o).get()).isSameAs(r2);
 	}
@@ -390,8 +389,8 @@ public abstract class AbstractCacheAnnotationTests {
 		Cache primary = this.cm.getCache("primary");
 		Cache secondary = this.cm.getCache("secondary");
 
-		assertNull(primary.get(o1));
-		assertNull(secondary.get(o1));
+		assertThat((Object) primary.get(o1)).isNull();
+		assertThat((Object) secondary.get(o1)).isNull();
 		Object r1 = service.multiCache(o1);
 		assertThat(primary.get(o1).get()).isSameAs(r1);
 		assertThat(secondary.get(o1).get()).isSameAs(r1);
@@ -402,8 +401,8 @@ public abstract class AbstractCacheAnnotationTests {
 		assertThat(r2).isSameAs(r1);
 		assertThat(r3).isSameAs(r1);
 
-		assertNull(primary.get(o2));
-		assertNull(secondary.get(o2));
+		assertThat((Object) primary.get(o2)).isNull();
+		assertThat((Object) secondary.get(o2)).isNull();
 		Object r4 = service.multiCache(o2);
 		assertThat(primary.get(o2).get()).isSameAs(r4);
 		assertThat(secondary.get(o2).get()).isSameAs(r4);
@@ -426,9 +425,9 @@ public abstract class AbstractCacheAnnotationTests {
 		assertThat(secondary.get(o1).get()).isSameAs(r1);
 
 		service.multiEvict(o1);
-		assertNull(primary.get(o1));
-		assertNull(secondary.get(o1));
-		assertNull(primary.get(o2));
+		assertThat((Object) primary.get(o1)).isNull();
+		assertThat((Object) secondary.get(o1)).isNull();
+		assertThat((Object) primary.get(o2)).isNull();
 
 		Object r3 = service.multiCache(o1);
 		Object r4 = service.multiCache(o1);
@@ -445,15 +444,15 @@ public abstract class AbstractCacheAnnotationTests {
 		Cache primary = this.cm.getCache("primary");
 		Cache secondary = this.cm.getCache("secondary");
 
-		assertNull(primary.get(o));
-		assertNull(secondary.get(o));
+		assertThat((Object) primary.get(o)).isNull();
+		assertThat((Object) secondary.get(o)).isNull();
 		Object r1 = service.multiUpdate(o);
 		assertThat(primary.get(o).get()).isSameAs(r1);
 		assertThat(secondary.get(o).get()).isSameAs(r1);
 
 		o = 2;
-		assertNull(primary.get(o));
-		assertNull(secondary.get(o));
+		assertThat((Object) primary.get(o)).isNull();
+		assertThat((Object) secondary.get(o)).isNull();
 		Object r2 = service.multiUpdate(o);
 		assertThat(primary.get(o).get()).isSameAs(r2);
 		assertThat(secondary.get(o).get()).isSameAs(r2);
@@ -463,8 +462,8 @@ public abstract class AbstractCacheAnnotationTests {
 		Long id = Long.MIN_VALUE;
 		TestEntity entity = new TestEntity();
 		Cache primary = this.cm.getCache("primary");
-		assertNull(primary.get(id));
-		assertNull(entity.getId());
+		assertThat((Object) primary.get(id)).isNull();
+		assertThat((Object) entity.getId()).isNull();
 		service.putRefersToResult(entity);
 		assertThat(primary.get(id).get()).isSameAs(entity);
 	}
@@ -504,7 +503,7 @@ public abstract class AbstractCacheAnnotationTests {
 		Object r3 = service.multiConditionalCacheAndEvict(key);
 
 		assertThat(!r1.equals(r3)).isTrue();
-		assertNull(primary.get(key));
+		assertThat((Object) primary.get(key)).isNull();
 
 		Object key2 = 3;
 		Object r2 = service.multiConditionalCacheAndEvict(key2);
@@ -638,7 +637,7 @@ public abstract class AbstractCacheAnnotationTests {
 	@Test
 	public void testClassNullValue() throws Exception {
 		Object key = new Object();
-		assertNull(this.ccs.nullValue(key));
+		assertThat(this.ccs.nullValue(key)).isNull();
 		int nr = this.ccs.nullInvocations().intValue();
 		assertThat(this.ccs.nullValue(key)).isNull();
 		assertThat(this.ccs.nullInvocations().intValue()).isEqualTo(nr);

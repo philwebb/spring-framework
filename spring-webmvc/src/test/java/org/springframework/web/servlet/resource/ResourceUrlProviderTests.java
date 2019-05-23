@@ -37,8 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ResourceUrlProvider}.
@@ -97,7 +95,7 @@ public class ResourceUrlProviderTests {
 		request.setRequestURI("/contextpath-longer-than-request-path/style.css");
 		String url = "/resources/foo.css";
 		String resolvedUrl = this.urlProvider.getForRequestUrl(request, url);
-		assertNull(resolvedUrl);
+		assertThat((Object) resolvedUrl).isNull();
 	}
 
 	@Test

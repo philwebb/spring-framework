@@ -31,8 +31,6 @@ import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture for {@link MessageHeaderAccessor}.
@@ -267,7 +265,7 @@ public class MessageHeaderAccessorTests {
 	@Test
 	public void timestampDefaultBehavior() {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor();
-		assertNull(accessor.getMessageHeaders().getTimestamp());
+		assertThat((Object) accessor.getMessageHeaders().getTimestamp()).isNull();
 	}
 
 	@Test
@@ -293,8 +291,8 @@ public class MessageHeaderAccessorTests {
 		accessor.setLeaveMutable(true);
 		MessageHeaders headers = accessor.getMessageHeaders();
 
-		assertNull(headers.getId());
-		assertNull(headers.getTimestamp());
+		assertThat((Object) headers.getId()).isNull();
+		assertThat((Object) headers.getTimestamp()).isNull();
 
 		final UUID id = new UUID(0L, 23L);
 		accessor.setIdGenerator(() -> id);

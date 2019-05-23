@@ -46,8 +46,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.within;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests the evaluation of real expressions in a real context.
@@ -88,7 +86,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
 
 		Object o = parser.parseExpression("map['a']").getValue(ctx);
-		assertNull(o);
+		assertThat(o).isNull();
 		o = parser.parseExpression("map").getValue(ctx);
 		assertThat(o).isNotNull();
 
@@ -591,13 +589,13 @@ public class EvaluationTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser();
 
 		Expression e = parser.parseExpression("null");
-		assertNull(e.getValue());
+		assertThat(e.getValue()).isNull();
 
 		e = parser.parseExpression("NULL");
-		assertNull(e.getValue());
+		assertThat(e.getValue()).isNull();
 
 		e = parser.parseExpression("NuLl");
-		assertNull(e.getValue());
+		assertThat(e.getValue()).isNull();
 	}
 
 	/**

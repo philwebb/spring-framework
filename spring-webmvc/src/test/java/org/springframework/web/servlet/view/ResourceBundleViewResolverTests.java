@@ -35,8 +35,6 @@ import org.springframework.web.servlet.View;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assume.assumeTrue;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -134,7 +132,7 @@ public class ResourceBundleViewResolverTests {
 
 	@Test
 	public void noSuchViewEnglish() throws Exception {
-		assertNull(rb.resolveViewName("xxxxxxweorqiwuopeir", Locale.ENGLISH));
+		assertThat((Object) rb.resolveViewName("xxxxxxweorqiwuopeir", Locale.ENGLISH)).isNull();
 	}
 
 	@Test

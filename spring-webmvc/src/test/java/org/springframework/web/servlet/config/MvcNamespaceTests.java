@@ -142,8 +142,6 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests loading actual MVC namespace configuration.
@@ -387,7 +385,7 @@ public class MvcNamespaceTests {
 			interceptor.preHandle(request, response, chain.getHandler());
 		}
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
-		assertNull(mv);
+		assertThat((Object) mv).isNull();
 	}
 
 	@Test
@@ -507,7 +505,7 @@ public class MvcNamespaceTests {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
-		assertNull(mv);
+		assertThat((Object) mv).isNull();
 	}
 
 	@Test
@@ -533,7 +531,7 @@ public class MvcNamespaceTests {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = adapter.handle(request, response, chain.getHandler());
-		assertNull(mv);
+		assertThat((Object) mv).isNull();
 	}
 
 	@Test
@@ -591,7 +589,7 @@ public class MvcNamespaceTests {
 		assertThat(chain.getInterceptors()[2] instanceof LocaleChangeInterceptor).isTrue();
 		assertThat(chain.getInterceptors()[3] instanceof ThemeChangeInterceptor).isTrue();
 		ModelAndView mv = adapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
-		assertNull(mv.getViewName());
+		assertThat((Object) mv.getViewName()).isNull();
 
 		request = new MockHttpServletRequest("GET", "/myapp/app/bar");
 		request.setContextPath("/myapp");

@@ -52,7 +52,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller
@@ -248,7 +247,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNull();
 	}
 
 	@Test
@@ -260,7 +259,7 @@ public class ValidatorFactoryTests {
 		Errors errors = new BeanPropertyBindingResult(mainBean, "mainBean");
 		validator.validate(mainBean, errors);
 		Object rejected = errors.getFieldValue("inner.value");
-		assertNull(rejected);
+		assertThat(rejected).isNull();
 	}
 
 	@Test
