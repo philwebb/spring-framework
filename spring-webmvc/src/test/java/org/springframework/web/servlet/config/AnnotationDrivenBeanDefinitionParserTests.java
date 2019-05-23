@@ -51,7 +51,6 @@ import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -127,7 +126,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertThat(resolvers.get(0) instanceof ServletWebArgumentResolverAdapter).isTrue();
 		assertThat(resolvers.get(1) instanceof TestHandlerMethodArgumentResolver).isTrue();
 		assertThat(resolvers.get(2) instanceof TestHandlerMethodArgumentResolver).isTrue();
-		assertNotSame(resolvers.get(1), resolvers.get(2));
+		assertThat((Object) resolvers.get(2)).isNotSameAs(resolvers.get(1));
 	}
 
 	@Test
@@ -147,7 +146,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertThat(handlers.size()).isEqualTo(2);
 		assertThat((Object) handlers.get(0).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
 		assertThat((Object) handlers.get(1).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
-		assertNotSame(handlers.get(0), handlers.get(1));
+		assertThat((Object) handlers.get(1)).isNotSameAs(handlers.get(0));
 	}
 
 	@Test

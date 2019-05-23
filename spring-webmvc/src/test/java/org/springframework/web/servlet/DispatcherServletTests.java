@@ -62,7 +62,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotSame;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -724,10 +723,10 @@ public class DispatcherServletTests {
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
 		assertThat((Object) contextBean2.getServletContext()).isSameAs(servletContext);
 		assertThat((Object) configBean2.getServletConfig()).isSameAs(servlet.getServletConfig());
-		assertNotSame(contextBean, contextBean2);
-		assertNotSame(configBean, configBean2);
+		assertThat((Object) contextBean2).isNotSameAs(contextBean);
+		assertThat((Object) configBean2).isNotSameAs(configBean);
 		MultipartResolver multipartResolver2 = servlet.getMultipartResolver();
-		assertNotSame(multipartResolver, multipartResolver2);
+		assertThat((Object) multipartResolver2).isNotSameAs(multipartResolver);
 
 		servlet.destroy();
 	}

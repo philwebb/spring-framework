@@ -58,7 +58,6 @@ import org.springframework.web.server.ServerWebExchange;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertNotSame;
 import static temp.XAssert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -486,7 +485,7 @@ public class ResourceWebHandlerTests {
 		// SPR-17475
 		AtomicReference<Throwable> exceptionRef = new AtomicReference<>();
 		StepVerifier.create(mono).consumeErrorWith(exceptionRef::set).verify();
-		StepVerifier.create(mono).consumeErrorWith(ex -> assertNotSame(exceptionRef.get(), ex)).verify();
+		StepVerifier.create(mono).consumeErrorWith(ex -> assertThat((Object) ex).isNotSameAs(exceptionRef.get())).verify();
 	}
 
 	@Test

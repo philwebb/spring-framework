@@ -69,7 +69,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertTrue;
 
@@ -445,7 +444,7 @@ public class XmlBeanFactoryTests {
 
 		DummyBoImpl bos = (DummyBoImpl) xbf.getBean("boSingleton");
 		DummyBoImpl bop = (DummyBoImpl) xbf.getBean("boPrototype");
-		assertNotSame(bos, bop);
+		assertThat((Object) bop).isNotSameAs(bos);
 		assertThat(bos.dao == bop.dao).isTrue();
 	}
 
@@ -600,7 +599,7 @@ public class XmlBeanFactoryTests {
 		assertThat(AopUtils.isAopProxy(jenny)).isTrue();
 		assertThat(AopUtils.isAopProxy(david)).isTrue();
 		assertThat((Object) jenny.getSpouse()).isSameAs(david);
-		assertNotSame(jenny, david.getSpouse());
+		assertThat((Object) david.getSpouse()).isNotSameAs(jenny);
 		assertThat((Object) david.getSpouse().getName()).isEqualTo("Jenny");
 		assertThat((Object) david.getSpouse().getSpouse()).isSameAs(david);
 		assertThat(AopUtils.isAopProxy(jenny.getSpouse())).isTrue();
@@ -1234,14 +1233,14 @@ public class XmlBeanFactoryTests {
 			assertThat(xbf.getBean(beanName)).isSameAs(oom);
 		}
 		else {
-			assertNotSame(oom, xbf.getBean(beanName));
+			assertThat(xbf.getBean(beanName)).isNotSameAs(oom);
 		}
 
 		TestBean jenny1 = oom.getPrototypeDependency();
 		assertThat((Object) jenny1.getName()).isEqualTo("Jenny");
 		TestBean jenny2 = oom.getPrototypeDependency();
 		assertThat((Object) jenny2.getName()).isEqualTo("Jenny");
-		assertNotSame(jenny1, jenny2);
+		assertThat((Object) jenny2).isNotSameAs(jenny1);
 
 		// Check that the bean can invoke the overridden method on itself
 		// This differs from Spring's AOP support, which has a distinct notion
@@ -1249,7 +1248,7 @@ public class XmlBeanFactoryTests {
 		// of AOP proxying to invoke an advised method on itself.
 		TestBean jenny3 = oom.invokesOverriddenMethodOnSelf();
 		assertThat((Object) jenny3.getName()).isEqualTo("Jenny");
-		assertNotSame(jenny1, jenny3);
+		assertThat((Object) jenny3).isNotSameAs(jenny1);
 
 		// Now try protected method, and singleton
 		TestBean dave1 = oom.protectedOverrideSingleton();
@@ -1272,7 +1271,7 @@ public class XmlBeanFactoryTests {
 		assertThat((Object) jenny1.getName()).isEqualTo("Jenny");
 		TestBean jenny2 = oom.getPrototypeDependency();
 		assertThat((Object) jenny2.getName()).isEqualTo("Jenny");
-		assertNotSame(jenny1, jenny2);
+		assertThat((Object) jenny2).isNotSameAs(jenny1);
 
 		TestBean notJenny = oom.getPrototypeDependency("someParam");
 		assertThat(!"Jenny".equals(notJenny.getName())).isTrue();
@@ -1325,7 +1324,7 @@ public class XmlBeanFactoryTests {
 		assertThat((Object) cio.getTestBean()).isSameAs(jenny);
 		FactoryMethods fm1 = cio.createFactoryMethods();
 		FactoryMethods fm2 = cio.createFactoryMethods();
-		assertNotSame("FactoryMethods reference is to a prototype", fm1, fm2);
+		assertThat((Object) fm2).as("FactoryMethods reference is to a prototype").isNotSameAs(fm1);
 		assertThat((Object) fm2.getTestBean()).as("The two prototypes hold the same singleton reference").isSameAs(fm1.getTestBean());
 	}
 
@@ -1368,8 +1367,8 @@ public class XmlBeanFactoryTests {
 		Object friend2 = jenny2.getFriends().iterator().next();
 		assertThat(friend2 instanceof TestBean).isTrue();
 
-		assertNotSame(jenny1, jenny2);
-		assertNotSame(friend1, friend2);
+		assertThat((Object) jenny2).isNotSameAs(jenny1);
+		assertThat(friend2).isNotSameAs(friend1);
 	}
 
 	@Test

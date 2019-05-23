@@ -63,7 +63,6 @@ import org.springframework.util.SerializationTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static temp.XAssert.assertNotSame;
 
 /**
  * @since 13.03.2003
@@ -524,7 +523,7 @@ public class ProxyFactoryBeanTests {
 		assertThat(bf.getBean("serializableSingleton")).as("Should be a Singleton").isSameAs(p);
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		assertThat((Object) p2).isEqualTo(p);
-		assertNotSame(p, p2);
+		assertThat((Object) p2).isNotSameAs(p);
 		assertThat((Object) p2.getName()).isEqualTo("serializableSingleton");
 
 		// Add unserializable advice
@@ -544,10 +543,10 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
 		Person p = (Person) bf.getBean("serializablePrototype");
-		assertNotSame("Should not be a Singleton", p, bf.getBean("serializablePrototype"));
+		assertThat(bf.getBean("serializablePrototype")).as("Should not be a Singleton").isNotSameAs(p);
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
 		assertThat((Object) p2).isEqualTo(p);
-		assertNotSame(p, p2);
+		assertThat((Object) p2).isNotSameAs(p);
 		assertThat((Object) p2.getName()).isEqualTo("serializablePrototype");
 	}
 
@@ -560,7 +559,7 @@ public class ProxyFactoryBeanTests {
 		ProxyFactoryBean pfb2 = (ProxyFactoryBean) SerializationTestUtils.serializeAndDeserialize(pfb);
 		Person p2 = (Person) pfb2.getObject();
 		assertThat((Object) p2).isEqualTo(p);
-		assertNotSame(p, p2);
+		assertThat((Object) p2).isNotSameAs(p);
 		assertThat((Object) p2.getName()).isEqualTo("serializableSingleton");
 	}
 

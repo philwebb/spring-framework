@@ -60,7 +60,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotSame;
 
 /**
  * Unit tests for {@link DefaultConversionService}.
@@ -940,7 +939,7 @@ public class DefaultConversionServiceTests {
 		conversionService.addConverter(Byte.class, Byte.class, source -> (byte) (source + 1));
 		byte[] byteArray = new byte[] {1, 2, 3};
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
-		assertNotSame(byteArray, converted);
+		assertThat((Object) converted).isNotSameAs(byteArray);
 		assertArrayEquals(new byte[]{2, 3, 4}, converted);
 	}
 

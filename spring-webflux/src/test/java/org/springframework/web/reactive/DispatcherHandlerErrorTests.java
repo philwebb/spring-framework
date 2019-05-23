@@ -51,7 +51,6 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.handler.ExceptionHandlingWebHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertNotSame;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 /**
@@ -92,7 +91,7 @@ public class DispatcherHandlerErrorTests {
 		// SPR-17475
 		AtomicReference<Throwable> exceptionRef = new AtomicReference<>();
 		StepVerifier.create(mono).consumeErrorWith(exceptionRef::set).verify();
-		StepVerifier.create(mono).consumeErrorWith(ex -> assertNotSame(exceptionRef.get(), ex)).verify();
+		StepVerifier.create(mono).consumeErrorWith(ex -> assertThat((Object) ex).isNotSameAs(exceptionRef.get())).verify();
 	}
 
 	@Test

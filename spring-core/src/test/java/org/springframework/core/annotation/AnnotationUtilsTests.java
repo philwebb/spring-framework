@@ -49,7 +49,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static org.springframework.core.annotation.AnnotationUtils.VALUE;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
@@ -786,7 +785,7 @@ public class AnnotationUtilsTests {
 		Component synthesizedComponent = synthesizeAnnotation(map, Component.class, WebController.class);
 		assertThat(synthesizedComponent).isNotNull();
 
-		assertNotSame(component, synthesizedComponent);
+		assertThat((Object) synthesizedComponent).isNotSameAs(component);
 		assertThat((Object) component.value()).as("value from component: ").isEqualTo("webController");
 		assertThat((Object) synthesizedComponent.value()).as("value from synthesized component: ").isEqualTo("webController");
 	}
@@ -815,7 +814,7 @@ public class AnnotationUtilsTests {
 				attributes, ComponentScanSingleFilter.class, ComponentScanSingleFilterClass.class);
 		assertThat(synthesizedComponentScan).isNotNull();
 
-		assertNotSame(componentScan, synthesizedComponentScan);
+		assertThat((Object) synthesizedComponentScan).isNotSameAs(componentScan);
 		assertThat((Object) synthesizedComponentScan.value().pattern()).as("value from synthesized ComponentScan: ").isEqualTo("newFoo");
 	}
 
@@ -844,7 +843,7 @@ public class AnnotationUtilsTests {
 		ComponentScan synthesizedComponentScan = synthesizeAnnotation(attributes, ComponentScan.class, ComponentScanClass.class);
 		assertThat(synthesizedComponentScan).isNotNull();
 
-		assertNotSame(componentScan, synthesizedComponentScan);
+		assertThat((Object) synthesizedComponentScan).isNotSameAs(componentScan);
 		patterns = stream(synthesizedComponentScan.excludeFilters()).map(Filter::pattern).collect(toList());
 		assertThat((Object) patterns).isEqualTo(asList("newFoo", "newBar"));
 	}
@@ -954,7 +953,7 @@ public class AnnotationUtilsTests {
 		assertThat(synthesizedComponent).isNotNull();
 
 		// 4) Verify that the original and synthesized annotations are equivalent
-		assertNotSame(component, synthesizedComponent);
+		assertThat((Object) synthesizedComponent).isNotSameAs(component);
 		assertThat((Object) synthesizedComponent).isEqualTo(component);
 		assertThat((Object) component.value()).as("value from component: ").isEqualTo("webController");
 		assertThat((Object) synthesizedComponent.value()).as("value from synthesized component: ").isEqualTo("webController");
