@@ -42,7 +42,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests demonstrating that the reflection-based {@link StandardAnnotationMetadata}
@@ -344,7 +343,7 @@ public class AnnotationMetadataTests {
 			allMeta = metadata.getAllAnnotationAttributes(DirectAnnotation.class.getName()).get("additional");
 			assertThat(new HashSet<>(allMeta)).isEqualTo(new HashSet<Object>(Arrays.asList("direct", "")));
 			assertEquals("", metadata.getAnnotationAttributes(DirectAnnotation.class.getName()).get("additional"));
-			assertEquals(0, ((String[]) metadata.getAnnotationAttributes(DirectAnnotation.class.getName()).get("additionalArray")).length);
+			assertThat(((String[]) metadata.getAnnotationAttributes(DirectAnnotation.class.getName()).get("additionalArray")).length).isEqualTo(0);
 		}
 		{ // perform tests with classValuesAsString = true
 			AnnotationAttributes specialAttrs = (AnnotationAttributes) metadata.getAnnotationAttributes(

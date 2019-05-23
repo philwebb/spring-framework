@@ -96,7 +96,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link MessageBrokerBeanDefinitionParser}.
@@ -149,14 +148,14 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		SubProtocolWebSocketHandler subProtocolWsHandler = (SubProtocolWebSocketHandler) wsHandler;
 		assertEquals(Arrays.asList("v10.stomp", "v11.stomp", "v12.stomp"), subProtocolWsHandler.getSubProtocols());
-		assertEquals(25 * 1000, subProtocolWsHandler.getSendTimeLimit());
-		assertEquals(1024 * 1024, subProtocolWsHandler.getSendBufferSizeLimit());
-		assertEquals(30 * 1000, subProtocolWsHandler.getTimeToFirstMessage());
+		assertThat(subProtocolWsHandler.getSendTimeLimit()).isEqualTo(25 * 1000);
+		assertThat(subProtocolWsHandler.getSendBufferSizeLimit()).isEqualTo(1024 * 1024);
+		assertThat(subProtocolWsHandler.getTimeToFirstMessage()).isEqualTo(30 * 1000);
 
 		Map<String, SubProtocolHandler> handlerMap = subProtocolWsHandler.getProtocolHandlerMap();
 		StompSubProtocolHandler stompHandler = (StompSubProtocolHandler) handlerMap.get("v12.stomp");
 		assertThat(stompHandler).isNotNull();
-		assertEquals(128 * 1024, stompHandler.getMessageSizeLimit());
+		assertThat(stompHandler.getMessageSizeLimit()).isEqualTo(128 * 1024);
 		assertThat(stompHandler.getErrorHandler()).isNotNull();
 		assertEquals(TestStompErrorHandler.class, stompHandler.getErrorHandler().getClass());
 
@@ -182,7 +181,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) defaultSockJsService.getTaskScheduler();
 		ScheduledThreadPoolExecutor executor = scheduler.getScheduledThreadPoolExecutor();
-		assertEquals(Runtime.getRuntime().availableProcessors(), executor.getCorePoolSize());
+		assertThat(executor.getCorePoolSize()).isEqualTo(Runtime.getRuntime().availableProcessors());
 		assertThat(executor.getRemoveOnCancelPolicy()).isTrue();
 
 		interceptors = defaultSockJsService.getHandshakeInterceptors();
@@ -246,7 +245,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		SimpleUrlHandlerMapping suhm = (SimpleUrlHandlerMapping) hm;
 		assertThat(suhm.getUrlMap()).hasSize(1);
-		assertEquals(2, suhm.getOrder());
+		assertThat(suhm.getOrder()).isEqualTo(2);
 
 		HttpRequestHandler httpRequestHandler = (HttpRequestHandler) suhm.getUrlMap().get("/foo/**");
 		assertThat(httpRequestHandler).isNotNull();
@@ -270,7 +269,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertEquals("syslogin", messageBroker.getSystemLogin());
 		assertEquals("syspass", messageBroker.getSystemPasscode());
 		assertEquals("relayhost", messageBroker.getRelayHost());
-		assertEquals(1234, messageBroker.getRelayPort());
+		assertThat(messageBroker.getRelayPort()).isEqualTo(1234);
 		assertEquals("spring.io", messageBroker.getVirtualHost());
 		assertEquals(5000, messageBroker.getSystemHeartbeatReceiveInterval());
 		assertEquals(5000, messageBroker.getSystemHeartbeatSendInterval());
@@ -405,12 +404,12 @@ public class MessageBrokerBeanDefinitionParserTests {
 		SimpAnnotationMethodMessageHandler handler = this.appContext.getBean(SimpAnnotationMethodMessageHandler.class);
 
 		List<HandlerMethodArgumentResolver> customResolvers = handler.getCustomArgumentResolvers();
-		assertEquals(2, customResolvers.size());
+		assertThat(customResolvers.size()).isEqualTo(2);
 		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(0))).isTrue();
 		assertThat(handler.getArgumentResolvers().contains(customResolvers.get(1))).isTrue();
 
 		List<HandlerMethodReturnValueHandler> customHandlers = handler.getCustomReturnValueHandlers();
-		assertEquals(2, customHandlers.size());
+		assertThat(customHandlers.size()).isEqualTo(2);
 		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(0))).isTrue();
 		assertThat(handler.getReturnValueHandlers().contains(customHandlers.get(1))).isTrue();
 	}
@@ -422,7 +421,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		CompositeMessageConverter compositeConverter = this.appContext.getBean(CompositeMessageConverter.class);
 		assertThat(compositeConverter).isNotNull();
 
-		assertEquals(4, compositeConverter.getConverters().size());
+		assertThat(compositeConverter.getConverters().size()).isEqualTo(4);
 		assertEquals(StringMessageConverter.class, compositeConverter.getConverters().iterator().next().getClass());
 	}
 
@@ -433,7 +432,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		CompositeMessageConverter compositeConverter = this.appContext.getBean(CompositeMessageConverter.class);
 		assertThat(compositeConverter).isNotNull();
 
-		assertEquals(1, compositeConverter.getConverters().size());
+		assertThat(compositeConverter.getConverters().size()).isEqualTo(1);
 		assertEquals(StringMessageConverter.class, compositeConverter.getConverters().iterator().next().getClass());
 	}
 
@@ -448,16 +447,16 @@ public class MessageBrokerBeanDefinitionParserTests {
 			assertThat(channel.hasSubscription(subscriber)).isTrue();
 		}
 		List<ChannelInterceptor> interceptors = channel.getInterceptors();
-		assertEquals(interceptorCount, interceptors.size());
+		assertThat(interceptors.size()).isEqualTo(interceptorCount);
 		assertEquals(ImmutableMessageChannelInterceptor.class, interceptors.get(interceptors.size()-1).getClass());
 	}
 
 	private void testExecutor(String channelName, int corePoolSize, int maxPoolSize, int keepAliveSeconds) {
 		ThreadPoolTaskExecutor taskExecutor =
 				this.appContext.getBean(channelName + "Executor", ThreadPoolTaskExecutor.class);
-		assertEquals(corePoolSize, taskExecutor.getCorePoolSize());
-		assertEquals(maxPoolSize, taskExecutor.getMaxPoolSize());
-		assertEquals(keepAliveSeconds, taskExecutor.getKeepAliveSeconds());
+		assertThat(taskExecutor.getCorePoolSize()).isEqualTo(corePoolSize);
+		assertThat(taskExecutor.getMaxPoolSize()).isEqualTo(maxPoolSize);
+		assertThat(taskExecutor.getKeepAliveSeconds()).isEqualTo(keepAliveSeconds);
 	}
 
 	private void loadBeanDefinitions(String fileName) {

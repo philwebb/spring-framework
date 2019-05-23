@@ -34,8 +34,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller
@@ -71,17 +69,17 @@ public class EnableAspectJAutoProxyTests {
 		FooService fooService = ctx.getBean(FooService.class);
 		ServiceInvocationCounter counter = ctx.getBean(ServiceInvocationCounter.class);
 
-		assertEquals(0, counter.getCount());
+		assertThat(counter.getCount()).isEqualTo(0);
 
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertEquals(1, counter.getCount());
+		assertThat(counter.getCount()).isEqualTo(1);
 
 		String value = fooService.foo(1);
 		assertEquals("bar", value);
-		assertEquals(2, counter.getCount());
+		assertThat(counter.getCount()).isEqualTo(2);
 
 		fooService.foo(1);
-		assertEquals(3, counter.getCount());
+		assertThat(counter.getCount()).isEqualTo(3);
 	}
 
 	@Test

@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Keith Donald
@@ -77,8 +76,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertEquals((Integer) 9, result.get(1));
-		assertEquals((Integer) 37, result.get(2));
+		assertThat((int) result.get(1)).isEqualTo((int) (Integer) 9);
+		assertThat((int) result.get(2)).isEqualTo((int) (Integer) 37);
 	}
 
 	@Test
@@ -112,8 +111,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Integer> result = (Map<Integer, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertEquals((Integer) 9, result.get(1));
-		assertEquals((Integer) 37, result.get(2));
+		assertThat((int) result.get(1)).isEqualTo((int) (Integer) 9);
+		assertThat((int) result.get(2)).isEqualTo((int) (Integer) 37);
 	}
 
 	@Test

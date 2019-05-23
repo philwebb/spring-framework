@@ -58,9 +58,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link GenericConversionService}.
@@ -114,7 +112,7 @@ public class GenericConversionServiceTests {
 	@Test
 	public void convert() {
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
-		assertEquals(Integer.valueOf(3), conversionService.convert("3", Integer.class));
+		assertThat(conversionService.convert("3", Integer.class)).isEqualTo((int) Integer.valueOf(3));
 	}
 
 	@Test
@@ -207,7 +205,7 @@ public class GenericConversionServiceTests {
 			}
 		});
 		Integer result = conversionService.convert("3", Integer.class);
-		assertEquals(Integer.valueOf(3), result);
+		assertThat((int) result).isEqualTo((int) Integer.valueOf(3));
 	}
 
 	// SPR-8718
@@ -236,7 +234,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(String.class, int.class)).isTrue();
 		Integer three = conversionService.convert("3", int.class);
-		assertEquals(3, three.intValue());
+		assertThat(three.intValue()).isEqualTo(3);
 	}
 
 	@Test
@@ -404,7 +402,7 @@ public class GenericConversionServiceTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(list);
 		TypeDescriptor targetType = TypeDescriptor.valueOf(String[].class);
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertEquals(0, ((String[]) conversionService.convert(list, sourceType, targetType)).length);
+		assertThat(((String[]) conversionService.convert(list, sourceType, targetType)).length).isEqualTo(0);
 	}
 
 	@Test
@@ -448,7 +446,7 @@ public class GenericConversionServiceTests {
 		GenericConverter.ConvertiblePair pair = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		GenericConverter.ConvertiblePair pairEqual = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		assertEquals(pair, pairEqual);
-		assertEquals(pair.hashCode(), pairEqual.hashCode());
+		assertThat(pairEqual.hashCode()).isEqualTo(pair.hashCode());
 	}
 
 	@Test
@@ -525,7 +523,7 @@ public class GenericConversionServiceTests {
 	public void conditionalConversionForAllTypes() {
 		MyConditionalGenericConverter converter = new MyConditionalGenericConverter();
 		conversionService.addConverter(converter);
-		assertEquals((Integer) 3, conversionService.convert(3, Integer.class));
+		assertThat(conversionService.convert(3, Integer.class)).isEqualTo((int) (Integer) 3);
 		assertThat(converter.getSourceTypes().size()).isGreaterThan(2);
 		assertThat(converter.getSourceTypes().stream().allMatch(td -> Integer.class.equals(td.getType()))).isTrue();
 	}

@@ -122,7 +122,7 @@ public class AnnotationAttributesTests {
 
 		Filter[] retrievedFilters = attributes.getAnnotationArray("filters", Filter.class);
 		assertThat(retrievedFilters).isNotNull();
-		assertEquals(2, retrievedFilters.length);
+		assertThat(retrievedFilters.length).isEqualTo(2);
 		assertThat(retrievedFilters[1].pattern()).isEqualTo("foo");
 	}
 

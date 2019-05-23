@@ -39,7 +39,6 @@ import org.springframework.util.ReflectionUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Costin Leau
@@ -63,7 +62,7 @@ public class ExpressionEvaluatorTests {
 	@Test
 	public void testMultipleCachingSource() {
 		Collection<CacheOperation> ops = getOps("multipleCaching");
-		assertEquals(2, ops.size());
+		assertThat(ops.size()).isEqualTo(2);
 		Iterator<CacheOperation> it = ops.iterator();
 		CacheOperation next = it.next();
 		assertThat(next instanceof CacheableOperation).isTrue();

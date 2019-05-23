@@ -38,8 +38,6 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link AbstractHandlerMethodMapping}.

@@ -48,7 +48,6 @@ import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -153,7 +152,7 @@ public class FormHttpMessageConverterTests {
 		FileUpload fileUpload = new FileUpload(fileItemFactory);
 		RequestContext requestContext = new MockHttpOutputMessageRequestContext(outputMessage);
 		List<FileItem> items = fileUpload.parseRequest(requestContext);
-		assertEquals(6, items.size());
+		assertThat(items.size()).isEqualTo(6);
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();
 		assertEquals("name 1", item.getFieldName());
@@ -216,7 +215,7 @@ public class FormHttpMessageConverterTests {
 		FileUpload fileUpload = new FileUpload(fileItemFactory);
 		RequestContext requestContext = new MockHttpOutputMessageRequestContext(outputMessage);
 		List<FileItem> items = fileUpload.parseRequest(requestContext);
-		assertEquals(2, items.size());
+		assertThat(items.size()).isEqualTo(2);
 
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();

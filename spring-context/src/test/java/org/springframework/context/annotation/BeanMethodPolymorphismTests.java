@@ -28,7 +28,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Tests regarding overloading and overriding of bean methods.

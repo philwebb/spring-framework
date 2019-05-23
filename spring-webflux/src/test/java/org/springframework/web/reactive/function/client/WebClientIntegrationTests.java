@@ -57,9 +57,6 @@ import org.springframework.http.codec.Pojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests using an {@link ExchangeFunction} through {@link WebClient}.
@@ -423,7 +420,7 @@ public class WebClientIntegrationTests {
 			catch (IOException ex) {
 				throw new IllegalStateException(ex);
 			}
-			assertEquals(expected.length, actual.size());
+			assertThat(actual.size()).isEqualTo(expected.length);
 			assertEquals(hash(expected), hash(actual.toByteArray()));
 		});
 	}
@@ -544,7 +541,7 @@ public class WebClientIntegrationTests {
 				.exchange();
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertEquals(555, response.rawStatusCode()))
+				.consumeNextWith(response -> assertThat(response.rawStatusCode()).isEqualTo(555))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
@@ -573,7 +570,7 @@ public class WebClientIntegrationTests {
 					assertThat(throwable instanceof UnknownHttpStatusCodeException).isTrue();
 					UnknownHttpStatusCodeException ex = (UnknownHttpStatusCodeException) throwable;
 					assertEquals("Unknown status code ["+errorStatus+"]", ex.getMessage());
-					assertEquals(errorStatus, ex.getRawStatusCode());
+					assertThat(ex.getRawStatusCode()).isEqualTo(errorStatus);
 					assertEquals("", ex.getStatusText());
 					assertEquals(MediaType.TEXT_PLAIN, ex.getHeaders().getContentType());
 					assertEquals(errorMessage, ex.getResponseBodyAsString());

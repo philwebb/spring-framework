@@ -33,11 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Abstract cache annotation tests (containing several reusable methods).
@@ -308,9 +306,9 @@ public abstract class AbstractCacheAnnotationTests {
 		assertThat(service.nullValue(key)).isNotNull();
 		int nr = service.nullInvocations().intValue();
 		assertThat(service.nullValue(key)).isNotNull();
-		assertEquals(nr, service.nullInvocations().intValue());
+		assertThat(service.nullInvocations().intValue()).isEqualTo(nr);
 		assertThat(service.nullValue(new Object())).isNotNull();
-		assertEquals(nr + 1, service.nullInvocations().intValue());
+		assertThat(service.nullInvocations().intValue()).isEqualTo(nr + 1);
 	}
 
 	public void testMethodName(CacheableService<?> service, String keyName) throws Exception {
@@ -381,11 +379,11 @@ public abstract class AbstractCacheAnnotationTests {
 		Integer three = 3;
 
 		Cache cache = this.cm.getCache("testCache");
-		assertEquals(one, Integer.valueOf(service.conditionalUpdate(one).toString()));
+		assertThat((int) Integer.valueOf(service.conditionalUpdate(one).toString())).isEqualTo((int) one);
 		assertThat(cache.get(one)).isNotNull();
 
-		assertEquals(three, Integer.valueOf(service.conditionalUpdate(three).toString()));
-		assertEquals(three, Integer.valueOf(cache.get(three).get().toString()));
+		assertThat((int) Integer.valueOf(service.conditionalUpdate(three).toString())).isEqualTo((int) three);
+		assertThat((int) Integer.valueOf(cache.get(three).get().toString())).isEqualTo((int) three);
 	}
 
 	public void testMultiCache(CacheableService<?> service) {
@@ -646,11 +644,11 @@ public abstract class AbstractCacheAnnotationTests {
 		assertThat(this.ccs.nullValue(key)).isNotNull();
 		int nr = this.ccs.nullInvocations().intValue();
 		assertThat(this.ccs.nullValue(key)).isNotNull();
-		assertEquals(nr, this.ccs.nullInvocations().intValue());
+		assertThat(this.ccs.nullInvocations().intValue()).isEqualTo(nr);
 		assertThat(this.ccs.nullValue(new Object())).isNotNull();
 		// the check method is also cached
-		assertEquals(nr, this.ccs.nullInvocations().intValue());
-		assertEquals(nr + 1, AnnotatedClassCacheableService.nullInvocations.intValue());
+		assertThat(this.ccs.nullInvocations().intValue()).isEqualTo(nr);
+		assertThat(AnnotatedClassCacheableService.nullInvocations.intValue()).isEqualTo(nr + 1);
 	}
 
 	@Test

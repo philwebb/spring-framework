@@ -52,7 +52,6 @@ import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.core.annotation.AnnotationUtils.VALUE;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotationDeclaringClass;
@@ -533,7 +532,7 @@ public class AnnotationUtilsTests {
 	@Test
 	public void getValueFromNonPublicAnnotation() throws Exception {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
-		assertEquals(1, declaredAnnotations.length);
+		assertThat(declaredAnnotations.length).isEqualTo(1);
 		Annotation annotation = declaredAnnotations[0];
 		assertThat(annotation).isNotNull();
 		assertEquals("NonPublicAnnotation", annotation.annotationType().getSimpleName());
@@ -553,7 +552,7 @@ public class AnnotationUtilsTests {
 	@Test
 	public void getDefaultValueFromNonPublicAnnotation() {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
-		assertEquals(1, declaredAnnotations.length);
+		assertThat(declaredAnnotations.length).isEqualTo(1);
 		Annotation annotation = declaredAnnotations[0];
 		assertThat(annotation).isNotNull();
 		assertEquals("NonPublicAnnotation", annotation.annotationType().getSimpleName());

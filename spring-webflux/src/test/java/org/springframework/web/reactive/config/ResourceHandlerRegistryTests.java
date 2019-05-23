@@ -51,8 +51,6 @@ import org.springframework.web.reactive.resource.WebJarsResourceResolver;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link ResourceHandlerRegistry}.
@@ -107,10 +105,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void order() {
-		assertEquals(Integer.MAX_VALUE -1, this.registry.getHandlerMapping().getOrder());
+		assertThat(this.registry.getHandlerMapping().getOrder()).isEqualTo(Integer.MAX_VALUE -1);
 
 		this.registry.setOrder(0);
-		assertEquals(0, this.registry.getHandlerMapping().getOrder());
+		assertThat(this.registry.getHandlerMapping().getOrder()).isEqualTo(0);
 	}
 
 	@Test

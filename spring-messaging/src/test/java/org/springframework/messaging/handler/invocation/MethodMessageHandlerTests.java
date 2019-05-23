@@ -43,7 +43,6 @@ import org.springframework.util.PathMatcher;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Test fixture for

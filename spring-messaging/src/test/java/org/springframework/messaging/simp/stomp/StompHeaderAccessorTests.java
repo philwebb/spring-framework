@@ -39,7 +39,6 @@ import org.springframework.util.MultiValueMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
 /**
@@ -127,7 +126,7 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertEquals(2, actual.size());
+		assertThat(actual.size()).isEqualTo(2);
 		assertEquals("s1", actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0));
 		assertEquals("/d", actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0));
 	}
@@ -139,7 +138,7 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertEquals(1, actual.size());
+		assertThat(actual.size()).isEqualTo(1);
 		assertEquals("s1", actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0));
 	}
 
@@ -197,7 +196,7 @@ public class StompHeaderAccessorTests {
 		headers.setNativeHeader("accountId", accountId.toLowerCase());
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
-		assertEquals(3, actual.size());
+		assertThat(actual.size()).isEqualTo(3);
 
 		assertEquals("s1", actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0));
 		assertEquals("/d", actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0));

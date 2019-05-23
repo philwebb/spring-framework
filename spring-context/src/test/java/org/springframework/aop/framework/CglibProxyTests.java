@@ -42,7 +42,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * Additional and overridden tests for CGLIB proxies.

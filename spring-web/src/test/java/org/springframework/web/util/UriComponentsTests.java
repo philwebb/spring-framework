@@ -147,13 +147,13 @@ public class UriComponentsTests {
 		UriComponents uri2 = fromUriString("https://example.com/bar").port(8080).build();
 		UriComponents uri3 = fromUriString("https://example.com/bar").port("{port}").build().expand(8080);
 		UriComponents uri4 = fromUriString("https://example.com/bar").port("808{digit}").build().expand(0);
-		assertEquals(8080, uri1.getPort());
+		assertThat(uri1.getPort()).isEqualTo(8080);
 		assertEquals("https://example.com:8080/bar", uri1.toUriString());
-		assertEquals(8080, uri2.getPort());
+		assertThat(uri2.getPort()).isEqualTo(8080);
 		assertEquals("https://example.com:8080/bar", uri2.toUriString());
-		assertEquals(8080, uri3.getPort());
+		assertThat(uri3.getPort()).isEqualTo(8080);
 		assertEquals("https://example.com:8080/bar", uri3.toUriString());
-		assertEquals(8080, uri4.getPort());
+		assertThat(uri4.getPort()).isEqualTo(8080);
 		assertEquals("https://example.com:8080/bar", uri4.toUriString());
 	}
 

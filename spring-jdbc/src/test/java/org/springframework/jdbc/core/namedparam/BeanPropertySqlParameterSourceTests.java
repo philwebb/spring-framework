@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans
@@ -57,8 +56,8 @@ public class BeanPropertySqlParameterSourceTests {
 		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("age")).isTrue();
 		assertEquals("tb", source.getValue("name"));
 		assertEquals(99, source.getValue("age"));
-		assertEquals(Types.VARCHAR, source.getSqlType("name"));
-		assertEquals(Types.INTEGER, source.getSqlType("age"));
+		assertThat(source.getSqlType("name")).isEqualTo(Types.VARCHAR);
+		assertThat(source.getSqlType("age")).isEqualTo(Types.INTEGER);
 	}
 
 	@Test
@@ -67,8 +66,8 @@ public class BeanPropertySqlParameterSourceTests {
 		source.registerSqlType("age", Types.NUMERIC);
 		assertEquals("tb", source.getValue("name"));
 		assertEquals(99, source.getValue("age"));
-		assertEquals(Types.VARCHAR, source.getSqlType("name"));
-		assertEquals(Types.NUMERIC, source.getSqlType("age"));
+		assertThat(source.getSqlType("name")).isEqualTo(Types.VARCHAR);
+		assertThat(source.getSqlType("age")).isEqualTo(Types.NUMERIC);
 	}
 
 	@Test

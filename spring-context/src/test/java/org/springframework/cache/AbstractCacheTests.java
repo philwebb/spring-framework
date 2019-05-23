@@ -26,8 +26,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 
 /**
@@ -205,7 +203,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		}
 		latch.await();
 
-		assertEquals(10, results.size());
+		assertThat(results.size()).isEqualTo(10);
 		results.forEach(r -> assertThat(r).isEqualTo(1)); // Only one method got invoked
 	}
 

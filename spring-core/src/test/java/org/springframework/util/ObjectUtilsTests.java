@@ -31,8 +31,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertTrue;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**

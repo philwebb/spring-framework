@@ -39,7 +39,6 @@ import org.springframework.web.multipart.support.StringMultipartFileEditor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -261,7 +260,7 @@ public class WebRequestDataBinderTests {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
 		request.addFile(new MockMultipartFile("stringArray", "Juergen".getBytes()));
 		binder.bind(new ServletWebRequest(request));
-		assertEquals(1, target.getStringArray().length);
+		assertThat(target.getStringArray().length).isEqualTo(1);
 		assertEquals("Juergen", target.getStringArray()[0]);
 	}
 
@@ -275,7 +274,7 @@ public class WebRequestDataBinderTests {
 		request.addFile(new MockMultipartFile("stringArray", "Juergen".getBytes()));
 		request.addFile(new MockMultipartFile("stringArray", "Eva".getBytes()));
 		binder.bind(new ServletWebRequest(request));
-		assertEquals(2, target.getStringArray().length);
+		assertThat(target.getStringArray().length).isEqualTo(2);
 		assertEquals("Juergen", target.getStringArray()[0]);
 		assertEquals("Eva", target.getStringArray()[1]);
 	}

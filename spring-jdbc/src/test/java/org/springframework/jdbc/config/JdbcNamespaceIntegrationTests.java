@@ -39,7 +39,6 @@ import org.springframework.tests.TestGroup;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory.DEFAULT_DATABASE_NAME;
 
 /**
@@ -186,7 +185,7 @@ public class JdbcNamespaceIntegrationTests {
 	}
 
 	private void assertNumRowsInTestTable(JdbcTemplate template, int count) {
-		assertEquals(count, template.queryForObject("select count(*) from T_TEST", Integer.class).intValue());
+		assertThat(template.queryForObject("select count(*) from T_TEST", Integer.class).intValue()).isEqualTo(count);
 	}
 
 	private void assertCorrectSetup(String file, String... dataSources) {

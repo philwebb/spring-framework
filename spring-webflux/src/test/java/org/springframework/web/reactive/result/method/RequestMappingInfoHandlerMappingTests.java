@@ -60,7 +60,6 @@ import org.springframework.web.util.pattern.PathPattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
@@ -299,7 +298,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		// segment is a sequence of name-value pairs.
 
 		assertThat(matrixVariables).isNotNull();
-		assertEquals(1, matrixVariables.size());
+		assertThat(matrixVariables.size()).isEqualTo(1);
 		assertEquals("c", matrixVariables.getFirst("b"));
 		assertEquals("a=42", uriVariables.get("foo"));
 	}

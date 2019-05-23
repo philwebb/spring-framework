@@ -38,7 +38,6 @@ import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 
 /**
  * Tests that an ImportAware @Configuration classes gets injected with the

@@ -35,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static org.springframework.test.context.support.ContextLoaderUtils.GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX;
 import static org.springframework.test.context.support.ContextLoaderUtils.buildContextHierarchyMap;
 import static org.springframework.test.context.support.ContextLoaderUtils.resolveContextHierarchyAttributes;
@@ -69,18 +68,18 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	@Test
 	public void resolveContextHierarchyAttributesForSingleTestClassWithImplicitSingleLevelContextHierarchy() {
 		List<List<ContextConfigurationAttributes>> hierarchyAttributes = resolveContextHierarchyAttributes(BareAnnotations.class);
-		assertEquals(1, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(1);
 		List<ContextConfigurationAttributes> configAttributesList = hierarchyAttributes.get(0);
-		assertEquals(1, configAttributesList.size());
+		assertThat(configAttributesList.size()).isEqualTo(1);
 		debugConfigAttributes(configAttributesList);
 	}
 
 	@Test
 	public void resolveContextHierarchyAttributesForSingleTestClassWithSingleLevelContextHierarchy() {
 		List<List<ContextConfigurationAttributes>> hierarchyAttributes = resolveContextHierarchyAttributes(SingleTestClassWithSingleLevelContextHierarchy.class);
-		assertEquals(1, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(1);
 		List<ContextConfigurationAttributes> configAttributesList = hierarchyAttributes.get(0);
-		assertEquals(1, configAttributesList.size());
+		assertThat(configAttributesList.size()).isEqualTo(1);
 		debugConfigAttributes(configAttributesList);
 	}
 
@@ -88,11 +87,11 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	public void resolveContextHierarchyAttributesForSingleTestClassWithSingleLevelContextHierarchyFromMetaAnnotation() {
 		Class<SingleTestClassWithSingleLevelContextHierarchyFromMetaAnnotation> testClass = SingleTestClassWithSingleLevelContextHierarchyFromMetaAnnotation.class;
 		List<List<ContextConfigurationAttributes>> hierarchyAttributes = resolveContextHierarchyAttributes(testClass);
-		assertEquals(1, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(1);
 
 		List<ContextConfigurationAttributes> configAttributesList = hierarchyAttributes.get(0);
 		assertThat(configAttributesList).isNotNull();
-		assertEquals(1, configAttributesList.size());
+		assertThat(configAttributesList.size()).isEqualTo(1);
 		debugConfigAttributes(configAttributesList);
 		assertAttributes(configAttributesList.get(0), testClass, new String[] { "A.xml" }, EMPTY_CLASS_ARRAY,
 			ContextLoader.class, true);
@@ -102,11 +101,11 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	public void resolveContextHierarchyAttributesForSingleTestClassWithTripleLevelContextHierarchy() {
 		Class<SingleTestClassWithTripleLevelContextHierarchy> testClass = SingleTestClassWithTripleLevelContextHierarchy.class;
 		List<List<ContextConfigurationAttributes>> hierarchyAttributes = resolveContextHierarchyAttributes(testClass);
-		assertEquals(1, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(1);
 
 		List<ContextConfigurationAttributes> configAttributesList = hierarchyAttributes.get(0);
 		assertThat(configAttributesList).isNotNull();
-		assertEquals(3, configAttributesList.size());
+		assertThat(configAttributesList.size()).isEqualTo(3);
 		debugConfigAttributes(configAttributesList);
 		assertAttributes(configAttributesList.get(0), testClass, new String[] { "A.xml" }, EMPTY_CLASS_ARRAY,
 			ContextLoader.class, true);
@@ -119,33 +118,33 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	@Test
 	public void resolveContextHierarchyAttributesForTestClassHierarchyWithSingleLevelContextHierarchies() {
 		List<List<ContextConfigurationAttributes>> hierarchyAttributes = resolveContextHierarchyAttributes(TestClass3WithSingleLevelContextHierarchy.class);
-		assertEquals(3, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(3);
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel1 = hierarchyAttributes.get(0);
 		debugConfigAttributes(configAttributesListClassLevel1);
-		assertEquals(1, configAttributesListClassLevel1.size());
+		assertThat(configAttributesListClassLevel1.size()).isEqualTo(1);
 		assertThat(configAttributesListClassLevel1.get(0).getLocations()[0]).isEqualTo("one.xml");
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel2);
-		assertEquals(1, configAttributesListClassLevel2.size());
+		assertThat(configAttributesListClassLevel2.size()).isEqualTo(1);
 		assertArrayEquals(new String[] { "two-A.xml", "two-B.xml" },
 			configAttributesListClassLevel2.get(0).getLocations());
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel3 = hierarchyAttributes.get(2);
 		debugConfigAttributes(configAttributesListClassLevel3);
-		assertEquals(1, configAttributesListClassLevel3.size());
+		assertThat(configAttributesListClassLevel3.size()).isEqualTo(1);
 		assertThat(configAttributesListClassLevel3.get(0).getLocations()[0]).isEqualTo("three.xml");
 	}
 
 	@Test
 	public void resolveContextHierarchyAttributesForTestClassHierarchyWithSingleLevelContextHierarchiesAndMetaAnnotations() {
 		List<List<ContextConfigurationAttributes>> hierarchyAttributes = resolveContextHierarchyAttributes(TestClass3WithSingleLevelContextHierarchyFromMetaAnnotation.class);
-		assertEquals(3, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(3);
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel1 = hierarchyAttributes.get(0);
 		debugConfigAttributes(configAttributesListClassLevel1);
-		assertEquals(1, configAttributesListClassLevel1.size());
+		assertThat(configAttributesListClassLevel1.size()).isEqualTo(1);
 		assertThat(configAttributesListClassLevel1.get(0).getLocations()[0]).isEqualTo("A.xml");
 		assertAttributes(configAttributesListClassLevel1.get(0),
 			TestClass1WithSingleLevelContextHierarchyFromMetaAnnotation.class, new String[] { "A.xml" },
@@ -153,7 +152,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel2);
-		assertEquals(1, configAttributesListClassLevel2.size());
+		assertThat(configAttributesListClassLevel2.size()).isEqualTo(1);
 		assertArrayEquals(new String[] { "B-one.xml", "B-two.xml" },
 			configAttributesListClassLevel2.get(0).getLocations());
 		assertAttributes(configAttributesListClassLevel2.get(0),
@@ -163,7 +162,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel3 = hierarchyAttributes.get(2);
 		debugConfigAttributes(configAttributesListClassLevel3);
-		assertEquals(1, configAttributesListClassLevel3.size());
+		assertThat(configAttributesListClassLevel3.size()).isEqualTo(1);
 		assertThat(configAttributesListClassLevel3.get(0).getLocations()[0]).isEqualTo("C.xml");
 		assertAttributes(configAttributesListClassLevel3.get(0),
 			TestClass3WithSingleLevelContextHierarchyFromMetaAnnotation.class, new String[] { "C.xml" },
@@ -171,17 +170,17 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	}
 
 	private void assertOneTwo(List<List<ContextConfigurationAttributes>> hierarchyAttributes) {
-		assertEquals(2, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(2);
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel1 = hierarchyAttributes.get(0);
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel1);
 		debugConfigAttributes(configAttributesListClassLevel2);
 
-		assertEquals(1, configAttributesListClassLevel1.size());
+		assertThat(configAttributesListClassLevel1.size()).isEqualTo(1);
 		assertThat(configAttributesListClassLevel1.get(0).getLocations()[0]).isEqualTo("one.xml");
 
-		assertEquals(1, configAttributesListClassLevel2.size());
+		assertThat(configAttributesListClassLevel2.size()).isEqualTo(1);
 		assertThat(configAttributesListClassLevel2.get(0).getLocations()[0]).isEqualTo("two.xml");
 	}
 
@@ -208,23 +207,23 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 	@Test
 	public void resolveContextHierarchyAttributesForTestClassHierarchyWithMultiLevelContextHierarchies() {
 		List<List<ContextConfigurationAttributes>> hierarchyAttributes = resolveContextHierarchyAttributes(TestClass3WithMultiLevelContextHierarchy.class);
-		assertEquals(3, hierarchyAttributes.size());
+		assertThat(hierarchyAttributes.size()).isEqualTo(3);
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel1 = hierarchyAttributes.get(0);
 		debugConfigAttributes(configAttributesListClassLevel1);
-		assertEquals(2, configAttributesListClassLevel1.size());
+		assertThat(configAttributesListClassLevel1.size()).isEqualTo(2);
 		assertThat(configAttributesListClassLevel1.get(0).getLocations()[0]).isEqualTo("1-A.xml");
 		assertThat(configAttributesListClassLevel1.get(1).getLocations()[0]).isEqualTo("1-B.xml");
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel2 = hierarchyAttributes.get(1);
 		debugConfigAttributes(configAttributesListClassLevel2);
-		assertEquals(2, configAttributesListClassLevel2.size());
+		assertThat(configAttributesListClassLevel2.size()).isEqualTo(2);
 		assertThat(configAttributesListClassLevel2.get(0).getLocations()[0]).isEqualTo("2-A.xml");
 		assertThat(configAttributesListClassLevel2.get(1).getLocations()[0]).isEqualTo("2-B.xml");
 
 		List<ContextConfigurationAttributes> configAttributesListClassLevel3 = hierarchyAttributes.get(2);
 		debugConfigAttributes(configAttributesListClassLevel3);
-		assertEquals(3, configAttributesListClassLevel3.size());
+		assertThat(configAttributesListClassLevel3.size()).isEqualTo(3);
 		assertThat(configAttributesListClassLevel3.get(0).getLocations()[0]).isEqualTo("3-A.xml");
 		assertThat(configAttributesListClassLevel3.get(1).getLocations()[0]).isEqualTo("3-B.xml");
 		assertThat(configAttributesListClassLevel3.get(2).getLocations()[0]).isEqualTo("3-C.xml");

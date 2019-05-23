@@ -71,12 +71,12 @@ public class ListBasedXMLEventReaderTests {
 
 		ListBasedXMLEventReader reader = new ListBasedXMLEventReader(events);
 
-		assertEquals(START_DOCUMENT, reader.nextEvent().getEventType());
-		assertEquals(START_ELEMENT, reader.nextEvent().getEventType());
-		assertEquals(START_ELEMENT, reader.nextEvent().getEventType());
+		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_DOCUMENT);
+		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_ELEMENT);
+		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_ELEMENT);
 		assertEquals("baz", reader.getElementText());
-		assertEquals(END_ELEMENT, reader.nextEvent().getEventType());
-		assertEquals(END_DOCUMENT, reader.nextEvent().getEventType());
+		assertThat(reader.nextEvent().getEventType()).isEqualTo(END_ELEMENT);
+		assertThat(reader.nextEvent().getEventType()).isEqualTo(END_DOCUMENT);
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class ListBasedXMLEventReaderTests {
 
 		ListBasedXMLEventReader reader = new ListBasedXMLEventReader(events);
 
-		assertEquals(START_DOCUMENT, reader.nextEvent().getEventType());
+		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_DOCUMENT);
 
 		assertThatExceptionOfType(XMLStreamException.class).isThrownBy(
 				reader::getElementText)

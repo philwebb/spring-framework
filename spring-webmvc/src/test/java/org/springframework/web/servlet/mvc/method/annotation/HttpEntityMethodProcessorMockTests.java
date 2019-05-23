@@ -524,7 +524,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		then(resourceMessageConverter).should(times(1)).write(
 				any(ByteArrayResource.class), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(200, servletResponse.getStatus());
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 	}
 
 	@Test
@@ -541,7 +541,7 @@ public class HttpEntityMethodProcessorMockTests {
 		then(resourceRegionMessageConverter).should(times(1)).write(
 				anyCollection(), eq(APPLICATION_OCTET_STREAM),
 				argThat(outputMessage -> "bytes".equals(outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES))));
-		assertEquals(206, servletResponse.getStatus());
+		assertThat(servletResponse.getStatus()).isEqualTo(206);
 	}
 
 	@Test
@@ -557,7 +557,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		then(resourceRegionMessageConverter).should(never()).write(
 				anyCollection(), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(416, servletResponse.getStatus());
+		assertThat(servletResponse.getStatus()).isEqualTo(416);
 	}
 
 	@Test //SPR-16754
@@ -573,7 +573,7 @@ public class HttpEntityMethodProcessorMockTests {
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityResource, mavContainer, webRequest);
 		then(resourceMessageConverter).should(times(1)).write(
 				any(InputStreamResource.class), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
-		assertEquals(200, servletResponse.getStatus());
+		assertThat(servletResponse.getStatus()).isEqualTo(200);
 		assertThat(servletResponse.getHeader(HttpHeaders.ACCEPT_RANGES)).isNull();
 	}
 
@@ -590,7 +590,7 @@ public class HttpEntityMethodProcessorMockTests {
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityResource, mavContainer, webRequest);
 
 		then(resourceRegionMessageConverter).should(never()).write(anyCollection(), any(), any());
-		assertEquals(206, servletResponse.getStatus());
+		assertThat(servletResponse.getStatus()).isEqualTo(206);
 	}
 
 	@Test  //SPR-14767
@@ -688,20 +688,20 @@ public class HttpEntityMethodProcessorMockTests {
 	private void assertConditionalResponse(HttpStatus status, String body, String etag, long lastModified)
 			throws IOException {
 
-		assertEquals(status.value(), servletResponse.getStatus());
+		assertThat(servletResponse.getStatus()).isEqualTo(status.value());
 		assertThat(mavContainer.isRequestHandled()).isTrue();
 		if (body != null) {
 			assertResponseBody(body);
 		}
 		else {
-			assertEquals(0, servletResponse.getContentAsByteArray().length);
+			assertThat(servletResponse.getContentAsByteArray().length).isEqualTo(0);
 		}
 		if (etag != null) {
-			assertEquals(1, servletResponse.getHeaderValues(HttpHeaders.ETAG).size());
+			assertThat(servletResponse.getHeaderValues(HttpHeaders.ETAG).size()).isEqualTo(1);
 			assertEquals(etag, servletResponse.getHeader(HttpHeaders.ETAG));
 		}
 		if (lastModified != -1) {
-			assertEquals(1, servletResponse.getHeaderValues(HttpHeaders.LAST_MODIFIED).size());
+			assertThat(servletResponse.getHeaderValues(HttpHeaders.LAST_MODIFIED).size()).isEqualTo(1);
 			assertEquals(lastModified / 1000, servletResponse.getDateHeader(HttpHeaders.LAST_MODIFIED) / 1000);
 		}
 	}

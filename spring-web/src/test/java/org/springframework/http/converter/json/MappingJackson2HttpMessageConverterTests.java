@@ -46,7 +46,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * Jackson 2.x converter tests.
@@ -93,7 +92,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertEquals("Foo", result.getString());
-		assertEquals(42, result.getNumber());
+		assertThat(result.getNumber()).isEqualTo(42);
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
@@ -221,10 +220,10 @@ public class MappingJackson2HttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
 		List<MyBean> results = (List<MyBean>) converter.read(List.class, inputMessage);
-		assertEquals(1, results.size());
+		assertThat(results.size()).isEqualTo(1);
 		MyBean result = results.get(0);
 		assertEquals("Foo", result.getString());
-		assertEquals(42, result.getNumber());
+		assertThat(result.getNumber()).isEqualTo(42);
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
@@ -252,10 +251,10 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
-		assertEquals(1, results.size());
+		assertThat(results.size()).isEqualTo(1);
 		MyBean result = results.get(0);
 		assertEquals("Foo", result.getString());
-		assertEquals(42, result.getNumber());
+		assertThat(result.getNumber()).isEqualTo(42);
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
@@ -284,10 +283,10 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
-		assertEquals(1, results.size());
+		assertThat(results.size()).isEqualTo(1);
 		MyBean result = results.get(0);
 		assertEquals("Foo", result.getString());
-		assertEquals(42, result.getNumber());
+		assertThat(result.getNumber()).isEqualTo(42);
 		assertEquals(42F, result.getFraction(), 0F);
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();

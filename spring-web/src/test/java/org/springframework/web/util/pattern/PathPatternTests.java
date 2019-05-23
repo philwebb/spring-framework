@@ -34,9 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
-import static temp.XAssert.assertTrue;
 
 /**
  * Exercise matching of {@link PathPattern} objects.
@@ -573,7 +570,7 @@ public class PathPatternTests {
 		pp = parse("/aaa/bbb");
 		pri = getPathRemaining(pp, "/aaa/bbb");
 		assertEquals("",pri.getPathRemaining().value());
-		assertEquals(0,pri.getUriVariables().size());
+		assertThat(pri.getUriVariables().size()).isEqualTo(0);
 
 		pp = parse("/*/{foo}/b*");
 		pri = getPathRemaining(pp, "/foo");
@@ -790,7 +787,7 @@ public class PathPatternTests {
 		assertThat(checkCapture("/{one}/", "//")).isNotNull();
 		assertThat(checkCapture("", "/abc")).isNotNull();
 
-		assertEquals(0, checkCapture("", "").getUriVariables().size());
+		assertThat(checkCapture("", "").getUriVariables().size()).isEqualTo(0);
 		checkCapture("{id}", "99", "id", "99");
 		checkCapture("/customer/{customerId}", "/customer/78", "customerId", "78");
 		checkCapture("/customer/{customerId}/banana", "/customer/42/banana", "customerId",
@@ -800,7 +797,7 @@ public class PathPatternTests {
 				"apple");
 		checkCapture("/{bla}.*", "/testing.html", "bla", "testing");
 		PathPattern.PathMatchInfo extracted = checkCapture("/abc", "/abc");
-		assertEquals(0, extracted.getUriVariables().size());
+		assertThat(extracted.getUriVariables().size()).isEqualTo(0);
 		checkCapture("/{bla}/foo","/a/foo");
 	}
 
@@ -904,63 +901,57 @@ public class PathPatternTests {
 	public void patternComparator() {
 		Comparator<PathPattern> comparator = PathPattern.SPECIFICITY_COMPARATOR;
 
-		assertEquals(0, comparator.compare(parse("/hotels/new"), parse("/hotels/new")));
+		assertThat(comparator.compare(parse("/hotels/new"), parse("/hotels/new"))).isEqualTo(0);
 
-		assertEquals(-1, comparator.compare(parse("/hotels/new"), parse("/hotels/*")));
-		assertEquals(1, comparator.compare(parse("/hotels/*"), parse("/hotels/new")));
-		assertEquals(0, comparator.compare(parse("/hotels/*"), parse("/hotels/*")));
+		assertThat(comparator.compare(parse("/hotels/new"), parse("/hotels/*"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/new"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/*"))).isEqualTo(0);
 
-		assertEquals(-1,
-				comparator.compare(parse("/hotels/new"), parse("/hotels/{hotel}")));
-		assertEquals(1,
-				comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/new")));
-		assertEquals(0,
-				comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/{hotel}")));
-		assertEquals(-1, comparator.compare(parse("/hotels/{hotel}/booking"),
-				parse("/hotels/{hotel}/bookings/{booking}")));
-		assertEquals(1, comparator.compare(parse("/hotels/{hotel}/bookings/{booking}"),
-				parse("/hotels/{hotel}/booking")));
+		assertThat(comparator.compare(parse("/hotels/new"), parse("/hotels/{hotel}"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/new"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/{hotel}"))).isEqualTo(0);
+		assertThat(comparator.compare(parse("/hotels/{hotel}/booking"),
+				parse("/hotels/{hotel}/bookings/{booking}"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("/hotels/{hotel}/bookings/{booking}"),
+				parse("/hotels/{hotel}/booking"))).isEqualTo(1);
 
-		assertEquals(-1,
-				comparator.compare(
+		assertThat(comparator.compare(
 						parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"),
-						parse("/**")));
-		assertEquals(1, comparator.compare(parse("/**"),
-				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")));
-		assertEquals(0, comparator.compare(parse("/**"), parse("/**")));
+						parse("/**"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("/**"),
+				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/**"), parse("/**"))).isEqualTo(0);
 
-		assertEquals(-1,
-				comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/*")));
-		assertEquals(1, comparator.compare(parse("/hotels/*"), parse("/hotels/{hotel}")));
+		assertThat(comparator.compare(parse("/hotels/{hotel}"), parse("/hotels/*"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/{hotel}"))).isEqualTo(1);
 
-		assertEquals(-1, comparator.compare(parse("/hotels/*"), parse("/hotels/*/**")));
-		assertEquals(1, comparator.compare(parse("/hotels/*/**"), parse("/hotels/*")));
+		assertThat(comparator.compare(parse("/hotels/*"), parse("/hotels/*/**"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("/hotels/*/**"), parse("/hotels/*"))).isEqualTo(1);
 
 // TODO: shouldn't the wildcard lower the score?
 //		assertEquals(-1,
 //				comparator.compare(parse("/hotels/new"), parse("/hotels/new.*")));
 
 		// SPR-6741
-		assertEquals(-1,
-				comparator.compare(
+		assertThat(comparator.compare(
 						parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"),
-						parse("/hotels/**")));
-		assertEquals(1, comparator.compare(parse("/hotels/**"),
-				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}")));
-		assertEquals(1, comparator.compare(parse("/hotels/foo/bar/**"),
-				parse("/hotels/{hotel}")));
-		assertEquals(-1, comparator.compare(parse("/hotels/{hotel}"),
-				parse("/hotels/foo/bar/**")));
+						parse("/hotels/**"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("/hotels/**"),
+				parse("/hotels/{hotel}/bookings/{booking}/cutomers/{customer}"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/hotels/foo/bar/**"),
+				parse("/hotels/{hotel}"))).isEqualTo(1);
+		assertThat(comparator.compare(parse("/hotels/{hotel}"),
+				parse("/hotels/foo/bar/**"))).isEqualTo(-1);
 
 		// SPR-8683
-		assertEquals(1, comparator.compare(parse("/**"), parse("/hotels/{hotel}")));
+		assertThat(comparator.compare(parse("/**"), parse("/hotels/{hotel}"))).isEqualTo(1);
 
 		// longer is better
-		assertEquals(1, comparator.compare(parse("/hotels"), parse("/hotels2")));
+		assertThat(comparator.compare(parse("/hotels"), parse("/hotels2"))).isEqualTo(1);
 
 		// SPR-13139
-		assertEquals(-1, comparator.compare(parse("*"), parse("*/**")));
-		assertEquals(1, comparator.compare(parse("*/**"), parse("*")));
+		assertThat(comparator.compare(parse("*"), parse("*/**"))).isEqualTo(-1);
+		assertThat(comparator.compare(parse("*/**"), parse("*"))).isEqualTo(1);
 	}
 
 	@Test

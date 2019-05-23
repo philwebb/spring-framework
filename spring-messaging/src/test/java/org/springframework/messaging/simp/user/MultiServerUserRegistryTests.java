@@ -32,9 +32,7 @@ import org.springframework.messaging.converter.MessageConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -68,7 +66,7 @@ public class MultiServerUserRegistryTests {
 		given(this.localRegistry.getUserCount()).willReturn(1);
 		given(this.localRegistry.getUser("joe")).willReturn(user);
 
-		assertEquals(1, this.registry.getUserCount());
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		assertSame(user, this.registry.getUser("joe"));
 	}
 
@@ -87,16 +85,16 @@ public class MultiServerUserRegistryTests {
 		// Add remote registry
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
-		assertEquals(1, this.registry.getUserCount());
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		SimpUser user = this.registry.getUser("joe");
 		assertThat(user).isNotNull();
 		assertThat(user.hasSessions()).isTrue();
-		assertEquals(1, user.getSessions().size());
+		assertThat(user.getSessions().size()).isEqualTo(1);
 		SimpSession session = user.getSession("remote-sess");
 		assertThat(session).isNotNull();
 		assertEquals("remote-sess", session.getId());
 		assertSame(user, session.getUser());
-		assertEquals(1, session.getSubscriptions().size());
+		assertThat(session.getSubscriptions().size()).isEqualTo(1);
 		SimpSubscription subscription = session.getSubscriptions().iterator().next();
 		assertEquals("remote-sub", subscription.getId());
 		assertSame(session, subscription.getSession());
@@ -126,9 +124,9 @@ public class MultiServerUserRegistryTests {
 		// Add remote registry
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
-		assertEquals(3, this.registry.getUserCount());
+		assertThat(this.registry.getUserCount()).isEqualTo(3);
 		Set<SimpSubscription> matches = this.registry.findSubscriptions(s -> s.getDestination().equals("/match"));
-		assertEquals(2, matches.size());
+		assertThat(matches.size()).isEqualTo(2);
 		Iterator<SimpSubscription> iterator = matches.iterator();
 		Set<String> sessionIds = new HashSet<>(2);
 		sessionIds.add(iterator.next().getSession().getId());
@@ -157,16 +155,16 @@ public class MultiServerUserRegistryTests {
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
 
-		assertEquals(1, this.registry.getUserCount());
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		SimpUser user = this.registry.getUsers().iterator().next();
 		assertThat(user.hasSessions()).isTrue();
-		assertEquals(2, user.getSessions().size());
+		assertThat(user.getSessions().size()).isEqualTo(2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertSame(localSession, user.getSession("sess123"));
 		assertEquals(remoteSession, user.getSession("sess456"));
 
 		user = this.registry.getUser("joe");
-		assertEquals(2, user.getSessions().size());
+		assertThat(user.getSessions().size()).isEqualTo(2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
 		assertSame(localSession, user.getSession("sess123"));
 		assertEquals(remoteSession, user.getSession("sess456"));
@@ -186,9 +184,9 @@ public class MultiServerUserRegistryTests {
 		this.registry.addRemoteRegistryDto(message, this.converter, -1);
 
 
-		assertEquals(1, this.registry.getUserCount());
+		assertThat(this.registry.getUserCount()).isEqualTo(1);
 		this.registry.purgeExpiredRegistries();
-		assertEquals(0, this.registry.getUserCount());
+		assertThat(this.registry.getUserCount()).isEqualTo(0);
 	}
 
 }

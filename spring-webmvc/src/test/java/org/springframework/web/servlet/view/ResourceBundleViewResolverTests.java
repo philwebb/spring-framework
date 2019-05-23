@@ -35,7 +35,6 @@ import org.springframework.web.servlet.View;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static temp.XAssert.assertEquals;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
 import static org.junit.Assume.assumeTrue;
 

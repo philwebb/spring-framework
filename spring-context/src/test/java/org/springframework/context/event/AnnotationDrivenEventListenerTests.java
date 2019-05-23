@@ -69,7 +69,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
-import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll

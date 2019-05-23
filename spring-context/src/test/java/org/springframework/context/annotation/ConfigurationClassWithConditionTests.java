@@ -34,7 +34,6 @@ import org.springframework.stereotype.Component;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertTrue;
 
 /**
  * Test for {@link Conditional} beans.
@@ -141,14 +140,14 @@ public class ConfigurationClassWithConditionTests {
 	@Test
 	public void conditionOnOverriddenMethodHonored() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithBeanSkipped.class);
-		assertEquals(0, context.getBeansOfType(ExampleBean.class).size());
+		assertThat(context.getBeansOfType(ExampleBean.class).size()).isEqualTo(0);
 	}
 
 	@Test
 	public void noConditionOnOverriddenMethodHonored() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithBeanReactivated.class);
 		Map<String, ExampleBean> beans = context.getBeansOfType(ExampleBean.class);
-		assertEquals(1, beans.size());
+		assertThat(beans.size()).isEqualTo(1);
 		assertEquals("baz", beans.keySet().iterator().next());
 	}
 
@@ -156,7 +155,7 @@ public class ConfigurationClassWithConditionTests {
 	public void configWithAlternativeBeans() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithAlternativeBeans.class);
 		Map<String, ExampleBean> beans = context.getBeansOfType(ExampleBean.class);
-		assertEquals(1, beans.size());
+		assertThat(beans.size()).isEqualTo(1);
 		assertEquals("baz", beans.keySet().iterator().next());
 	}
 

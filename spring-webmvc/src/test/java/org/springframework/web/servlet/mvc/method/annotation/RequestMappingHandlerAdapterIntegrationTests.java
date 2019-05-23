@@ -87,10 +87,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
-import static temp.XAssert.assertNotNull;
-import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
-import static temp.XAssert.assertTrue;
 
 /**
  * A test fixture with a controller with all supported method signature styles
@@ -199,17 +196,17 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		assertEquals("/contextPath", model.get("value"));
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
-		assertEquals(25, modelAttr.getAge());
+		assertThat(modelAttr.getAge()).isEqualTo(25);
 		assertEquals("Set by model method [modelAttr]", modelAttr.getName());
 		assertSame(modelAttr, request.getSession().getAttribute("modelAttr"));
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
 		assertSame(modelAttr, bindingResult.getTarget());
-		assertEquals(1, bindingResult.getErrorCount());
+		assertThat(bindingResult.getErrorCount()).isEqualTo(1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
-		assertEquals(25, modelAttrByConvention.getAge());
+		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
 		assertEquals("Set by model method [modelAttrByConvention]", modelAttrByConvention.getName());
 		assertSame(modelAttrByConvention, request.getSession().getAttribute(conventionAttrName));
 
@@ -280,17 +277,17 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		assertEquals("/contextPath", model.get("value"));
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
-		assertEquals(25, modelAttr.getAge());
+		assertThat(modelAttr.getAge()).isEqualTo(25);
 		assertEquals("Set by model method [modelAttr]", modelAttr.getName());
 		assertSame(modelAttr, request.getSession().getAttribute("modelAttr"));
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
 		assertSame(modelAttr, bindingResult.getTarget());
-		assertEquals(1, bindingResult.getErrorCount());
+		assertThat(bindingResult.getErrorCount()).isEqualTo(1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
-		assertEquals(25, modelAttrByConvention.getAge());
+		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
 		assertEquals("Set by model method [modelAttrByConvention]", modelAttrByConvention.getName());
 		assertSame(modelAttrByConvention, request.getSession().getAttribute(conventionAttrName));
 
@@ -321,7 +318,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		assertThat(mav).isNotNull();
 		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertEquals(HttpStatus.ACCEPTED.value(), response.getStatus());
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 	}
 
 	@Test
@@ -337,7 +334,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		assertThat(mav).isNotNull();
 		assertEquals("Error count [1]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertEquals(HttpStatus.ACCEPTED.value(), response.getStatus());
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 	}
 
 	@Test
@@ -352,7 +349,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
 		assertThat(mav).isNotNull();
-		assertEquals(HttpStatus.ACCEPTED.value(), response.getStatus());
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
 		assertEquals("headerValue", response.getHeader("header"));
 		// set because of @SesstionAttributes
@@ -370,7 +367,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
 		assertThat(mav).isNotNull();
-		assertEquals(HttpStatus.OK.value(), response.getStatus());
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
 		assertThat(response.getHeaderValues("Cache-Control")).containsExactly("max-age=3600");
 	}
