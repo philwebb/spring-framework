@@ -32,7 +32,6 @@ import org.junit.Before;
 import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 
 /**
@@ -95,7 +94,7 @@ public class AbstractMockWebServerTestCase {
 			String charsetName = requestContentType.split("charset=")[1];
 			charset = Charset.forName(charsetName);
 		}
-		assertEquals("Invalid request body", expectedRequestContent, request.getBody().readString(charset));
+		assertThat((Object) request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
 		Buffer buf = new Buffer();
 		buf.write(responseBody);
 		return new MockResponse()
@@ -164,7 +163,7 @@ public class AbstractMockWebServerTestCase {
 	}
 
 	private MockResponse formRequest(RecordedRequest request) {
-		assertEquals("application/x-www-form-urlencoded;charset=UTF-8", request.getHeader("Content-Type"));
+		assertThat((Object) request.getHeader("Content-Type")).isEqualTo("application/x-www-form-urlencoded;charset=UTF-8");
 		String body = request.getBody().readUtf8();
 		assertThat(body).contains("name+1=value+1");
 		assertThat(body).contains("name+2=value+2%2B1");
@@ -175,7 +174,7 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse patchRequest(RecordedRequest request, String expectedRequestContent,
 			String contentType, byte[] responseBody) {
 
-		assertEquals("PATCH", request.getMethod());
+		assertThat((Object) request.getMethod()).isEqualTo("PATCH");
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
 		assertNotNull("No content-type", requestContentType);
@@ -184,7 +183,7 @@ public class AbstractMockWebServerTestCase {
 			String charsetName = requestContentType.split("charset=")[1];
 			charset = Charset.forName(charsetName);
 		}
-		assertEquals("Invalid request body", expectedRequestContent, request.getBody().readString(charset));
+		assertThat((Object) request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
 		Buffer buf = new Buffer();
 		buf.write(responseBody);
 		return new MockResponse().setResponseCode(201)
@@ -202,7 +201,7 @@ public class AbstractMockWebServerTestCase {
 			String charsetName = requestContentType.split("charset=")[1];
 			charset = Charset.forName(charsetName);
 		}
-		assertEquals("Invalid request body", expectedRequestContent, request.getBody().readString(charset));
+		assertThat((Object) request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
 		return new MockResponse().setResponseCode(202);
 	}
 

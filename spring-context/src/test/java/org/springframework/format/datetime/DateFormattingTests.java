@@ -37,7 +37,6 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.validation.DataBinder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Phillip Webb
@@ -81,7 +80,7 @@ public class DateFormattingTests {
 		propertyValues.add("millis", "1256961600");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("1256961600", binder.getBindingResult().getFieldValue("millis"));
+		assertThat(binder.getBindingResult().getFieldValue("millis")).isEqualTo("1256961600");
 	}
 
 	@Test
@@ -90,7 +89,7 @@ public class DateFormattingTests {
 		propertyValues.add("millisAnnotated", "10/31/09");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("10/31/09", binder.getBindingResult().getFieldValue("millisAnnotated"));
+		assertThat(binder.getBindingResult().getFieldValue("millisAnnotated")).isEqualTo("10/31/09");
 	}
 
 	@Test
@@ -99,7 +98,7 @@ public class DateFormattingTests {
 		propertyValues.add("calendarAnnotated", "10/31/09");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("10/31/09", binder.getBindingResult().getFieldValue("calendarAnnotated"));
+		assertThat(binder.getBindingResult().getFieldValue("calendarAnnotated")).isEqualTo("10/31/09");
 	}
 
 	@Test
@@ -108,7 +107,7 @@ public class DateFormattingTests {
 		propertyValues.add("dateAnnotated", "10/31/09");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("10/31/09", binder.getBindingResult().getFieldValue("dateAnnotated"));
+		assertThat(binder.getBindingResult().getFieldValue("dateAnnotated")).isEqualTo("10/31/09");
 	}
 
 	@Test
@@ -125,7 +124,7 @@ public class DateFormattingTests {
 		propertyValues.add("dateAnnotated", "Oct X31, 2009");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getFieldErrorCount("dateAnnotated")).isEqualTo(1);
-		assertEquals("Oct X31, 2009", binder.getBindingResult().getFieldValue("dateAnnotated"));
+		assertThat(binder.getBindingResult().getFieldValue("dateAnnotated")).isEqualTo("Oct X31, 2009");
 	}
 
 	@Test
@@ -136,7 +135,7 @@ public class DateFormattingTests {
 		propertyValues.add("dateAnnotated", "Oct 031, 2009");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getFieldErrorCount("dateAnnotated")).isEqualTo(1);
-		assertEquals("Oct 031, 2009", binder.getBindingResult().getFieldValue("dateAnnotated"));
+		assertThat(binder.getBindingResult().getFieldValue("dateAnnotated")).isEqualTo("Oct 031, 2009");
 	}
 
 	@Test
@@ -145,7 +144,7 @@ public class DateFormattingTests {
 		propertyValues.add("dateAnnotatedPattern", "10/31/09 1:05");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("10/31/09 1:05", binder.getBindingResult().getFieldValue("dateAnnotatedPattern"));
+		assertThat(binder.getBindingResult().getFieldValue("dateAnnotatedPattern")).isEqualTo("10/31/09 1:05");
 	}
 
 	@Test
@@ -162,7 +161,7 @@ public class DateFormattingTests {
 		propertyValues.add("isoDate", "2009-10-31");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("2009-10-31", binder.getBindingResult().getFieldValue("isoDate"));
+		assertThat(binder.getBindingResult().getFieldValue("isoDate")).isEqualTo("2009-10-31");
 	}
 
 	@Test
@@ -171,7 +170,7 @@ public class DateFormattingTests {
 		propertyValues.add("isoTime", "12:00:00.000-05:00");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("17:00:00.000Z", binder.getBindingResult().getFieldValue("isoTime"));
+		assertThat(binder.getBindingResult().getFieldValue("isoTime")).isEqualTo("17:00:00.000Z");
 	}
 
 	@Test
@@ -180,7 +179,7 @@ public class DateFormattingTests {
 		propertyValues.add("isoDateTime", "2009-10-31T12:00:00.000-08:00");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("2009-10-31T20:00:00.000Z", binder.getBindingResult().getFieldValue("isoDateTime"));
+		assertThat(binder.getBindingResult().getFieldValue("isoDateTime")).isEqualTo("2009-10-31T20:00:00.000Z");
 	}
 
 	@Test
@@ -189,7 +188,7 @@ public class DateFormattingTests {
 		propertyValues.add("children[0].dateAnnotated", "10/31/09");
 		binder.bind(propertyValues);
 		assertThat(binder.getBindingResult().getErrorCount()).isEqualTo(0);
-		assertEquals("10/31/09", binder.getBindingResult().getFieldValue("children[0].dateAnnotated"));
+		assertThat(binder.getBindingResult().getFieldValue("children[0].dateAnnotated")).isEqualTo("10/31/09");
 	}
 
 	@Test
@@ -197,7 +196,7 @@ public class DateFormattingTests {
 		Date date = new Date();
 		Object actual = this.conversionService.convert(date, TypeDescriptor.valueOf(Date.class), TypeDescriptor.valueOf(String.class));
 		String expected = date.toString();
-		assertEquals(expected, actual);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
@@ -208,7 +207,7 @@ public class DateFormattingTests {
 		Date date = new Date();
 		Object actual = this.conversionService.convert(date, TypeDescriptor.valueOf(Date.class), TypeDescriptor.valueOf(String.class));
 		String expected = new DateFormatter().print(date, Locale.US);
-		assertEquals(expected, actual);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test  // SPR-10105

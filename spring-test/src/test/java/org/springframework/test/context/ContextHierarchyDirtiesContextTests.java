@@ -35,7 +35,6 @@ import org.springframework.test.annotation.DirtiesContext.HierarchyMode;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests that verify proper behavior of {@link DirtiesContext @DirtiesContext}
@@ -95,17 +94,17 @@ public class ContextHierarchyDirtiesContextTests {
 		assertThat(ContextHierarchyDirtiesContextTests.context).isNotNull();
 
 		ConfigurableApplicationContext bazContext = (ConfigurableApplicationContext) ContextHierarchyDirtiesContextTests.context;
-		assertEquals("baz", ContextHierarchyDirtiesContextTests.baz);
+		assertThat((Object) ContextHierarchyDirtiesContextTests.baz).isEqualTo("baz");
 		assertThat(bazContext.isActive()).isEqualTo(isBazContextActive);
 
 		ConfigurableApplicationContext barContext = (ConfigurableApplicationContext) bazContext.getParent();
 		assertThat(barContext).isNotNull();
-		assertEquals("bar", ContextHierarchyDirtiesContextTests.bar);
+		assertThat((Object) ContextHierarchyDirtiesContextTests.bar).isEqualTo("bar");
 		assertThat(barContext.isActive()).isEqualTo(isBarContextActive);
 
 		ConfigurableApplicationContext fooContext = (ConfigurableApplicationContext) barContext.getParent();
 		assertThat(fooContext).isNotNull();
-		assertEquals("foo", ContextHierarchyDirtiesContextTests.foo);
+		assertThat((Object) ContextHierarchyDirtiesContextTests.foo).isEqualTo("foo");
 		assertThat(fooContext.isActive()).isEqualTo(isFooContextActive);
 	}
 

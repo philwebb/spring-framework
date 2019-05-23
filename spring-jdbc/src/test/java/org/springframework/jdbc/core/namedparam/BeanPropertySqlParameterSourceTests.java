@@ -25,7 +25,6 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -54,8 +53,8 @@ public class BeanPropertySqlParameterSourceTests {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
 		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("name")).isTrue();
 		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("age")).isTrue();
-		assertEquals("tb", source.getValue("name"));
-		assertEquals(99, source.getValue("age"));
+		assertThat(source.getValue("name")).isEqualTo("tb");
+		assertThat(source.getValue("age")).isEqualTo(99);
 		assertThat(source.getSqlType("name")).isEqualTo(Types.VARCHAR);
 		assertThat(source.getSqlType("age")).isEqualTo(Types.INTEGER);
 	}
@@ -64,8 +63,8 @@ public class BeanPropertySqlParameterSourceTests {
 	public void successfulPropertyAccessWithOverriddenSqlType() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
 		source.registerSqlType("age", Types.NUMERIC);
-		assertEquals("tb", source.getValue("name"));
-		assertEquals(99, source.getValue("age"));
+		assertThat(source.getValue("name")).isEqualTo("tb");
+		assertThat(source.getValue("age")).isEqualTo(99);
 		assertThat(source.getSqlType("name")).isEqualTo(Types.VARCHAR);
 		assertThat(source.getSqlType("age")).isEqualTo(Types.NUMERIC);
 	}

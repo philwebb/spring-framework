@@ -27,7 +27,6 @@ import org.junit.Test;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toCollection;
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests that verify proper concurrency support between a
@@ -131,7 +130,7 @@ public class TestContextConcurrencyTests {
 
 		@Override
 		public void afterTestMethod(TestContext testContext) throws Exception {
-			assertEquals(this.methodName.get(), testContext.getAttribute("method"));
+			assertThat(testContext.getAttribute("method")).isEqualTo(this.methodName.get());
 		}
 
 	}

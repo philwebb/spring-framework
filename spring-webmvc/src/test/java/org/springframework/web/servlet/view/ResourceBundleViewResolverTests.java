@@ -34,7 +34,6 @@ import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 import static org.junit.Assume.assumeTrue;
 
@@ -88,14 +87,14 @@ public class ResourceBundleViewResolverTests {
 		View v = rb.resolveViewName("debugView", Locale.ENGLISH);
 		assertThat(v).isInstanceOf(InternalResourceView.class);
 		InternalResourceView jv = (InternalResourceView) v;
-		assertEquals("debugView must have correct URL", "jsp/debug/debug.jsp", jv.getUrl());
+		assertThat((Object) jv.getUrl()).as("debugView must have correct URL").isEqualTo("jsp/debug/debug.jsp");
 
 		Map<String, Object> m = jv.getStaticAttributes();
-		assertEquals("Must have 2 static attributes", 2, m.size());
-		assertEquals("attribute foo", "bar", m.get("foo"));
-		assertEquals("attribute postcode", "SE10 9JY", m.get("postcode"));
+		assertThat((Object) m.size()).as("Must have 2 static attributes").isEqualTo(2);
+		assertThat(m.get("foo")).as("attribute foo").isEqualTo("bar");
+		assertThat(m.get("postcode")).as("attribute postcode").isEqualTo("SE10 9JY");
 
-		assertEquals("Correct default content type", AbstractView.DEFAULT_CONTENT_TYPE, jv.getContentType());
+		assertThat((Object) jv.getContentType()).as("Correct default content type").isEqualTo(AbstractView.DEFAULT_CONTENT_TYPE);
 	}
 
 	@Test
@@ -103,8 +102,8 @@ public class ResourceBundleViewResolverTests {
 		View v = rb.resolveViewName("debugView", Locale.FRENCH);
 		assertThat(v).isInstanceOf(InternalResourceView.class);
 		InternalResourceView jv = (InternalResourceView) v;
-		assertEquals("French debugView must have correct URL", "jsp/debug/deboug.jsp", jv.getUrl());
-		assertEquals("Correct overridden (XML) content type", "text/xml;charset=ISO-8859-1", jv.getContentType());
+		assertThat((Object) jv.getUrl()).as("French debugView must have correct URL").isEqualTo("jsp/debug/deboug.jsp");
+		assertThat((Object) jv.getContentType()).as("Correct overridden (XML) content type").isEqualTo("text/xml;charset=ISO-8859-1");
 	}
 
 	@Test
@@ -119,8 +118,8 @@ public class ResourceBundleViewResolverTests {
 		View v = rb.resolveViewName("debugView", Locale.FRENCH);
 		assertThat(v).isInstanceOf(InternalResourceView.class);
 		InternalResourceView jv = (InternalResourceView) v;
-		assertEquals("French debugView must have correct URL", "jsp/debug/deboug.jsp", jv.getUrl());
-		assertEquals("Correct overridden (XML) content type", "text/xml;charset=ISO-8859-1", jv.getContentType());
+		assertThat((Object) jv.getUrl()).as("French debugView must have correct URL").isEqualTo("jsp/debug/deboug.jsp");
+		assertThat((Object) jv.getContentType()).as("Correct overridden (XML) content type").isEqualTo("text/xml;charset=ISO-8859-1");
 	}
 
 	@Test
@@ -142,8 +141,8 @@ public class ResourceBundleViewResolverTests {
 		TestView tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
 		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
 		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
-		assertEquals("test has correct name", "test", tv.getBeanName());
-		assertEquals("test should have been initialized once, not ", 1, tv.initCount);
+		assertThat((Object) tv.getBeanName()).as("test has correct name").isEqualTo("test");
+		assertThat((Object) tv.initCount).as("test should have been initialized once, not ").isEqualTo(1);
 	}
 
 	@Test

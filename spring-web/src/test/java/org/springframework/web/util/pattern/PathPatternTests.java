@@ -32,7 +32,6 @@ import org.springframework.web.util.pattern.PathPattern.PathRemainingMatchInfo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -44,12 +43,12 @@ public class PathPatternTests {
 
 	@Test
 	public void pathContainer() {
-		assertEquals("[/][abc][/][def]",elementsToString(toPathContainer("/abc/def").elements()));
-		assertEquals("[abc][/][def]",elementsToString(toPathContainer("abc/def").elements()));
-		assertEquals("[abc][/][def][/]",elementsToString(toPathContainer("abc/def/").elements()));
-		assertEquals("[abc][/][/][def][/][/]",elementsToString(toPathContainer("abc//def//").elements()));
-		assertEquals("[/]",elementsToString(toPathContainer("/").elements()));
-		assertEquals("[/][/][/]",elementsToString(toPathContainer("///").elements()));
+		assertThat((Object) elementsToString(toPathContainer("/abc/def").elements())).isEqualTo("[/][abc][/][def]");
+		assertThat((Object) elementsToString(toPathContainer("abc/def").elements())).isEqualTo("[abc][/][def]");
+		assertThat((Object) elementsToString(toPathContainer("abc/def/").elements())).isEqualTo("[abc][/][def][/]");
+		assertThat((Object) elementsToString(toPathContainer("abc//def//").elements())).isEqualTo("[abc][/][/][def][/][/]");
+		assertThat((Object) elementsToString(toPathContainer("/").elements())).isEqualTo("[/]");
+		assertThat((Object) elementsToString(toPathContainer("///").elements())).isEqualTo("[/][/][/]");
 	}
 
 	@Test
@@ -128,26 +127,26 @@ public class PathPatternTests {
 		// CaptureVariablePathElement
 		pp = parse("/{var}");
 		assertMatches(pp,"/resource");
-		assertEquals("resource",pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var")).isEqualTo("resource");
 		assertMatches(pp,"/resource/");
-		assertEquals("resource",pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var")).isEqualTo("resource");
 		assertNoMatch(pp,"/resource//");
 		pp = parse("/{var}/");
 		assertNoMatch(pp,"/resource");
 		assertMatches(pp,"/resource/");
-		assertEquals("resource",pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var")).isEqualTo("resource");
 		assertNoMatch(pp,"/resource//");
 
 		// CaptureTheRestPathElement
 		pp = parse("/{*var}");
 		assertMatches(pp,"/resource");
-		assertEquals("/resource",pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var")).isEqualTo("/resource");
 		assertMatches(pp,"/resource/");
-		assertEquals("/resource/",pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var")).isEqualTo("/resource/");
 		assertMatches(pp,"/resource//");
-		assertEquals("/resource//",pp.matchAndExtract(toPathContainer("/resource//")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource//")).getUriVariables().get("var")).isEqualTo("/resource//");
 		assertMatches(pp,"//resource//");
-		assertEquals("//resource//",pp.matchAndExtract(toPathContainer("//resource//")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("//resource//")).getUriVariables().get("var")).isEqualTo("//resource//");
 
 		// WildcardTheRestPathElement
 		pp = parse("/**");
@@ -169,17 +168,17 @@ public class PathPatternTests {
 		// RegexPathElement
 		pp = parse("/{var1}_{var2}");
 		assertMatches(pp,"/res1_res2");
-		assertEquals("res1",pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var1"));
-		assertEquals("res2",pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var2"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var1")).isEqualTo("res1");
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var2")).isEqualTo("res2");
 		assertMatches(pp,"/res1_res2/");
-		assertEquals("res1",pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var1"));
-		assertEquals("res2",pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var2"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var1")).isEqualTo("res1");
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var2")).isEqualTo("res2");
 		assertNoMatch(pp,"/res1_res2//");
 		pp = parse("/{var1}_{var2}/");
 		assertNoMatch(pp,"/res1_res2");
 		assertMatches(pp,"/res1_res2/");
-		assertEquals("res1",pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var1"));
-		assertEquals("res2",pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var2"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var1")).isEqualTo("res1");
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var2")).isEqualTo("res2");
 		assertNoMatch(pp,"/res1_res2//");
 		pp = parse("/{var1}*");
 		assertMatches(pp,"/a");
@@ -213,25 +212,25 @@ public class PathPatternTests {
 		// CaptureVariablePathElement
 		pp = parser.parse("/{var}");
 		assertMatches(pp,"/resource");
-		assertEquals("resource",pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var")).isEqualTo("resource");
 		assertNoMatch(pp,"/resource/");
 		assertNoMatch(pp,"/resource//");
 		pp = parser.parse("/{var}/");
 		assertNoMatch(pp,"/resource");
 		assertMatches(pp,"/resource/");
-		assertEquals("resource",pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var")).isEqualTo("resource");
 		assertNoMatch(pp,"/resource//");
 
 		// CaptureTheRestPathElement
 		pp = parser.parse("/{*var}");
 		assertMatches(pp,"/resource");
-		assertEquals("/resource",pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource")).getUriVariables().get("var")).isEqualTo("/resource");
 		assertMatches(pp,"/resource/");
-		assertEquals("/resource/",pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource/")).getUriVariables().get("var")).isEqualTo("/resource/");
 		assertMatches(pp,"/resource//");
-		assertEquals("/resource//",pp.matchAndExtract(toPathContainer("/resource//")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/resource//")).getUriVariables().get("var")).isEqualTo("/resource//");
 		assertMatches(pp,"//resource//");
-		assertEquals("//resource//",pp.matchAndExtract(toPathContainer("//resource//")).getUriVariables().get("var"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("//resource//")).getUriVariables().get("var")).isEqualTo("//resource//");
 
 		// WildcardTheRestPathElement
 		pp = parser.parse("/**");
@@ -253,15 +252,15 @@ public class PathPatternTests {
 		// RegexPathElement
 		pp = parser.parse("/{var1}_{var2}");
 		assertMatches(pp,"/res1_res2");
-		assertEquals("res1",pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var1"));
-		assertEquals("res2",pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var2"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var1")).isEqualTo("res1");
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2")).getUriVariables().get("var2")).isEqualTo("res2");
 		assertNoMatch(pp,"/res1_res2/");
 		assertNoMatch(pp,"/res1_res2//");
 		pp = parser.parse("/{var1}_{var2}/");
 		assertNoMatch(pp,"/res1_res2");
 		assertMatches(pp,"/res1_res2/");
-		assertEquals("res1",pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var1"));
-		assertEquals("res2",pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var2"));
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var1")).isEqualTo("res1");
+		assertThat((Object) pp.matchAndExtract(toPathContainer("/res1_res2/")).getUriVariables().get("var2")).isEqualTo("res2");
 		assertNoMatch(pp,"/res1_res2//");
 		pp = parser.parse("/{var1}*");
 		assertMatches(pp,"/a");
@@ -273,22 +272,22 @@ public class PathPatternTests {
 	@Test
 	public void pathRemainderBasicCases_spr15336() {
 		// Cover all PathElement kinds
-		assertEquals("/bar", getPathRemaining("/foo","/foo/bar").getPathRemaining().value());
-		assertEquals("/", getPathRemaining("/foo","/foo/").getPathRemaining().value());
-		assertEquals("/bar",getPathRemaining("/foo*","/foo/bar").getPathRemaining().value());
-		assertEquals("/bar", getPathRemaining("/*","/foo/bar").getPathRemaining().value());
-		assertEquals("/bar", getPathRemaining("/{foo}","/foo/bar").getPathRemaining().value());
+		assertThat((Object) getPathRemaining("/foo", "/foo/bar").getPathRemaining().value()).isEqualTo("/bar");
+		assertThat((Object) getPathRemaining("/foo", "/foo/").getPathRemaining().value()).isEqualTo("/");
+		assertThat((Object) getPathRemaining("/foo*", "/foo/bar").getPathRemaining().value()).isEqualTo("/bar");
+		assertThat((Object) getPathRemaining("/*", "/foo/bar").getPathRemaining().value()).isEqualTo("/bar");
+		assertThat((Object) getPathRemaining("/{foo}", "/foo/bar").getPathRemaining().value()).isEqualTo("/bar");
 		assertThat(getPathRemaining("/foo","/bar/baz")).isNotNull();
-		assertEquals("",getPathRemaining("/**","/foo/bar").getPathRemaining().value());
-		assertEquals("",getPathRemaining("/{*bar}","/foo/bar").getPathRemaining().value());
-		assertEquals("/bar",getPathRemaining("/a?b/d?e","/aab/dde/bar").getPathRemaining().value());
-		assertEquals("/bar",getPathRemaining("/{abc}abc","/xyzabc/bar").getPathRemaining().value());
-		assertEquals("/bar",getPathRemaining("/*y*","/xyzxyz/bar").getPathRemaining().value());
-		assertEquals("",getPathRemaining("/","/").getPathRemaining().value());
-		assertEquals("a",getPathRemaining("/","/a").getPathRemaining().value());
-		assertEquals("a/",getPathRemaining("/","/a/").getPathRemaining().value());
-		assertEquals("/bar",getPathRemaining("/a{abc}","/a/bar").getPathRemaining().value());
-		assertEquals("/bar", getPathRemaining("/foo//","/foo///bar").getPathRemaining().value());
+		assertThat((Object) getPathRemaining("/**", "/foo/bar").getPathRemaining().value()).isEqualTo("");
+		assertThat((Object) getPathRemaining("/{*bar}", "/foo/bar").getPathRemaining().value()).isEqualTo("");
+		assertThat((Object) getPathRemaining("/a?b/d?e", "/aab/dde/bar").getPathRemaining().value()).isEqualTo("/bar");
+		assertThat((Object) getPathRemaining("/{abc}abc", "/xyzabc/bar").getPathRemaining().value()).isEqualTo("/bar");
+		assertThat((Object) getPathRemaining("/*y*", "/xyzxyz/bar").getPathRemaining().value()).isEqualTo("/bar");
+		assertThat((Object) getPathRemaining("/", "/").getPathRemaining().value()).isEqualTo("");
+		assertThat((Object) getPathRemaining("/", "/a").getPathRemaining().value()).isEqualTo("a");
+		assertThat((Object) getPathRemaining("/", "/a/").getPathRemaining().value()).isEqualTo("a/");
+		assertThat((Object) getPathRemaining("/a{abc}", "/a/bar").getPathRemaining().value()).isEqualTo("/bar");
+		assertThat((Object) getPathRemaining("/foo//", "/foo///bar").getPathRemaining().value()).isEqualTo("/bar");
 	}
 
 	@Test
@@ -332,35 +331,35 @@ public class PathPatternTests {
 		// With a /** on the end have to check if there is any more data post
 		// 'the match' it starts with a separator
 		assertThat(parse("/resource/**").matchStartOfPath(toPathContainer("/resourceX"))).isNotNull();
-		assertEquals("",parse("/resource/**")
-				.matchStartOfPath(toPathContainer("/resource")).getPathRemaining().value());
+		assertThat((Object) parse("/resource/**")
+				.matchStartOfPath(toPathContainer("/resource")).getPathRemaining().value()).isEqualTo("");
 
 		// Similar to above for the capture-the-rest variant
 		assertThat(parse("/resource/{*foo}").matchStartOfPath(toPathContainer("/resourceX"))).isNotNull();
-		assertEquals("", parse("/resource/{*foo}")
-				.matchStartOfPath(toPathContainer("/resource")).getPathRemaining().value());
+		assertThat((Object) parse("/resource/{*foo}")
+				.matchStartOfPath(toPathContainer("/resource")).getPathRemaining().value()).isEqualTo("");
 
 		PathPattern.PathRemainingMatchInfo pri = parse("/aaa/{bbb}/c?d/e*f/*/g")
 				.matchStartOfPath(toPathContainer("/aaa/b/ccd/ef/x/g/i"));
 		assertThat(pri).isNotNull();
-		assertEquals("/i",pri.getPathRemaining().value());
-		assertEquals("b",pri.getUriVariables().get("bbb"));
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("/i");
+		assertThat((Object) pri.getUriVariables().get("bbb")).isEqualTo("b");
 
 		pri = parse("/aaa/{bbb}/c?d/e*f/*/g/").matchStartOfPath(toPathContainer("/aaa/b/ccd/ef/x/g/i"));
 		assertThat(pri).isNotNull();
-		assertEquals("i",pri.getPathRemaining().value());
-		assertEquals("b",pri.getUriVariables().get("bbb"));
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("i");
+		assertThat((Object) pri.getUriVariables().get("bbb")).isEqualTo("b");
 
 		pri = parse("/{aaa}_{bbb}/e*f/{x}/g").matchStartOfPath(toPathContainer("/aa_bb/ef/x/g/i"));
 		assertThat(pri).isNotNull();
-		assertEquals("/i",pri.getPathRemaining().value());
-		assertEquals("aa",pri.getUriVariables().get("aaa"));
-		assertEquals("bb",pri.getUriVariables().get("bbb"));
-		assertEquals("x",pri.getUriVariables().get("x"));
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("/i");
+		assertThat((Object) pri.getUriVariables().get("aaa")).isEqualTo("aa");
+		assertThat((Object) pri.getUriVariables().get("bbb")).isEqualTo("bb");
+		assertThat((Object) pri.getUriVariables().get("x")).isEqualTo("x");
 
 		assertThat(parse("/a/b").matchStartOfPath(toPathContainer(""))).isNotNull();
-		assertEquals("/a/b",parse("").matchStartOfPath(toPathContainer("/a/b")).getPathRemaining().value());
-		assertEquals("",parse("").matchStartOfPath(toPathContainer("")).getPathRemaining().value());
+		assertThat((Object) parse("").matchStartOfPath(toPathContainer("/a/b")).getPathRemaining().value()).isEqualTo("/a/b");
+		assertThat((Object) parse("").matchStartOfPath(toPathContainer("")).getPathRemaining().value()).isEqualTo("");
 	}
 
 	@Test
@@ -403,10 +402,9 @@ public class PathPatternTests {
 	@Test
 	public void multipleSeparatorsInPattern() {
 		PathPattern pp = parse("a//b//c");
-		assertEquals("Literal(a) Separator(/) Separator(/) Literal(b) Separator(/) Separator(/) Literal(c)",
-				pp.toChainString());
+		assertThat((Object) pp.toChainString()).isEqualTo("Literal(a) Separator(/) Separator(/) Literal(b) Separator(/) Separator(/) Literal(c)");
 		assertMatches(pp,"a//b//c");
-		assertEquals("Literal(a) Separator(/) WildcardTheRest(/**)",parse("a//**").toChainString());
+		assertThat((Object) parse("a//**").toChainString()).isEqualTo("Literal(a) Separator(/) WildcardTheRest(/**)");
 		checkMatches("///abc", "///abc");
 		checkNoMatch("///abc", "/abc");
 		checkNoMatch("//", "/");
@@ -557,31 +555,31 @@ public class PathPatternTests {
 		// It would be nice to partially match a path and get any bound variables in one step
 		pp = parse("/{this}/{one}/{here}");
 		pri = getPathRemaining(pp, "/foo/bar/goo/boo");
-		assertEquals("/boo",pri.getPathRemaining().value());
-		assertEquals("foo",pri.getUriVariables().get("this"));
-		assertEquals("bar",pri.getUriVariables().get("one"));
-		assertEquals("goo",pri.getUriVariables().get("here"));
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("/boo");
+		assertThat((Object) pri.getUriVariables().get("this")).isEqualTo("foo");
+		assertThat((Object) pri.getUriVariables().get("one")).isEqualTo("bar");
+		assertThat((Object) pri.getUriVariables().get("here")).isEqualTo("goo");
 
 		pp = parse("/aaa/{foo}");
 		pri = getPathRemaining(pp, "/aaa/bbb");
-		assertEquals("",pri.getPathRemaining().value());
-		assertEquals("bbb",pri.getUriVariables().get("foo"));
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("");
+		assertThat((Object) pri.getUriVariables().get("foo")).isEqualTo("bbb");
 
 		pp = parse("/aaa/bbb");
 		pri = getPathRemaining(pp, "/aaa/bbb");
-		assertEquals("",pri.getPathRemaining().value());
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("");
 		assertThat(pri.getUriVariables().size()).isEqualTo(0);
 
 		pp = parse("/*/{foo}/b*");
 		pri = getPathRemaining(pp, "/foo");
 		assertThat(pri).isNotNull();
 		pri = getPathRemaining(pp, "/abc/def/bhi");
-		assertEquals("",pri.getPathRemaining().value());
-		assertEquals("def",pri.getUriVariables().get("foo"));
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("");
+		assertThat((Object) pri.getUriVariables().get("foo")).isEqualTo("def");
 
 		pri = getPathRemaining(pp, "/abc/def/bhi/jkl");
-		assertEquals("/jkl",pri.getPathRemaining().value());
-		assertEquals("def",pri.getUriVariables().get("foo"));
+		assertThat((Object) pri.getPathRemaining().value()).isEqualTo("/jkl");
+		assertThat((Object) pri.getUriVariables().get("foo")).isEqualTo("def");
 	}
 
 	@Test
@@ -766,8 +764,8 @@ public class PathPatternTests {
 		assertThat(new AntPathMatcher().match("/*", "/")).isTrue();
 		assertThat(new AntPathMatcher().match("/*{foo}", "/")).isFalse();
 		Map<String, String> vars = new AntPathMatcher().extractUriTemplateVariables("/{foo}{bar}", "/a");
-		assertEquals("a",vars.get("foo"));
-		assertEquals("",vars.get("bar"));
+		assertThat((Object) vars.get("foo")).isEqualTo("a");
+		assertThat((Object) vars.get("bar")).isEqualTo("");
 	}
 
 	@Test
@@ -808,13 +806,13 @@ public class PathPatternTests {
 
 		p = pp.parse("{symbolicName:[\\w\\.]+}-{version:[\\w\\.]+}.jar");
 		PathPattern.PathMatchInfo result = matchAndExtract(p, "com.example-1.0.0.jar");
-		assertEquals("com.example", result.getUriVariables().get("symbolicName"));
-		assertEquals("1.0.0", result.getUriVariables().get("version"));
+		assertThat((Object) result.getUriVariables().get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.getUriVariables().get("version")).isEqualTo("1.0.0");
 
 		p = pp.parse("{symbolicName:[\\w\\.]+}-sources-{version:[\\w\\.]+}.jar");
 		result = matchAndExtract(p, "com.example-sources-1.0.0.jar");
-		assertEquals("com.example", result.getUriVariables().get("symbolicName"));
-		assertEquals("1.0.0", result.getUriVariables().get("version"));
+		assertThat((Object) result.getUriVariables().get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.getUriVariables().get("version")).isEqualTo("1.0.0");
 	}
 
 	@Test
@@ -823,22 +821,22 @@ public class PathPatternTests {
 
 		PathPattern p = pp.parse("{symbolicName:[\\p{L}\\.]+}-sources-{version:[\\p{N}\\.]+}.jar");
 		PathPattern.PathMatchInfo result = p.matchAndExtract(toPathContainer("com.example-sources-1.0.0.jar"));
-		assertEquals("com.example", result.getUriVariables().get("symbolicName"));
-		assertEquals("1.0.0", result.getUriVariables().get("version"));
+		assertThat((Object) result.getUriVariables().get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.getUriVariables().get("version")).isEqualTo("1.0.0");
 
 		p = pp.parse("{symbolicName:[\\w\\.]+}-sources-" +
 				"{version:[\\d\\.]+}-{year:\\d{4}}{month:\\d{2}}{day:\\d{2}}.jar");
 		result = matchAndExtract(p,"com.example-sources-1.0.0-20100220.jar");
-		assertEquals("com.example", result.getUriVariables().get("symbolicName"));
-		assertEquals("1.0.0", result.getUriVariables().get("version"));
-		assertEquals("2010", result.getUriVariables().get("year"));
-		assertEquals("02", result.getUriVariables().get("month"));
-		assertEquals("20", result.getUriVariables().get("day"));
+		assertThat((Object) result.getUriVariables().get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.getUriVariables().get("version")).isEqualTo("1.0.0");
+		assertThat((Object) result.getUriVariables().get("year")).isEqualTo("2010");
+		assertThat((Object) result.getUriVariables().get("month")).isEqualTo("02");
+		assertThat((Object) result.getUriVariables().get("day")).isEqualTo("20");
 
 		p = pp.parse("{symbolicName:[\\p{L}\\.]+}-sources-{version:[\\p{N}\\.\\{\\}]+}.jar");
 		result = matchAndExtract(p, "com.example-sources-1.0.0.{12}.jar");
-		assertEquals("com.example", result.getUriVariables().get("symbolicName"));
-		assertEquals("1.0.0.{12}", result.getUriVariables().get("version"));
+		assertThat((Object) result.getUriVariables().get("symbolicName")).isEqualTo("com.example");
+		assertThat((Object) result.getUriVariables().get("version")).isEqualTo("1.0.0.{12}");
 	}
 
 	@Test
@@ -853,40 +851,43 @@ public class PathPatternTests {
 	@Test
 	public void combine() {
 		TestPathCombiner pathMatcher = new TestPathCombiner();
-		assertEquals("", pathMatcher.combine("", ""));
-		assertEquals("/hotels", pathMatcher.combine("/hotels", ""));
-		assertEquals("/hotels", pathMatcher.combine("", "/hotels"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels/*", "booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels/*", "/booking"));
-		assertEquals("/hotels/**/booking", pathMatcher.combine("/hotels/**", "booking"));
-		assertEquals("/hotels/**/booking", pathMatcher.combine("/hotels/**", "/booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels", "/booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels", "booking"));
-		assertEquals("/hotels/booking", pathMatcher.combine("/hotels/", "booking"));
-		assertEquals("/hotels/{hotel}", pathMatcher.combine("/hotels/*", "{hotel}"));
-		assertEquals("/hotels/**/{hotel}", pathMatcher.combine("/hotels/**", "{hotel}"));
-		assertEquals("/hotels/{hotel}", pathMatcher.combine("/hotels", "{hotel}"));
-		assertEquals("/hotels/{hotel}.*", pathMatcher.combine("/hotels", "{hotel}.*"));
-		assertEquals("/hotels/*/booking/{booking}",
-				pathMatcher.combine("/hotels/*/booking", "{booking}"));
-		assertEquals("/hotel.html", pathMatcher.combine("/*.html", "/hotel.html"));
-		assertEquals("/hotel.html", pathMatcher.combine("/*.html", "/hotel"));
-		assertEquals("/hotel.html", pathMatcher.combine("/*.html", "/hotel.*"));
+		assertThat((Object) pathMatcher.combine("", "")).isEqualTo("");
+		assertThat((Object) pathMatcher.combine("/hotels", "")).isEqualTo("/hotels");
+		assertThat((Object) pathMatcher.combine("", "/hotels")).isEqualTo("/hotels");
+		assertThat((Object) pathMatcher.combine("/hotels/*", "booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/*", "/booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/**", "booking")).isEqualTo("/hotels/**/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/**", "/booking")).isEqualTo("/hotels/**/booking");
+		assertThat((Object) pathMatcher.combine("/hotels", "/booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels", "booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/", "booking")).isEqualTo("/hotels/booking");
+		assertThat((Object) pathMatcher.combine("/hotels/*", "{hotel}")).isEqualTo("/hotels/{hotel}");
+		assertThat((Object) pathMatcher.combine("/hotels/**", "{hotel}")).isEqualTo("/hotels/**/{hotel}");
+		assertThat((Object) pathMatcher.combine("/hotels", "{hotel}")).isEqualTo("/hotels/{hotel}");
+		assertThat((Object) pathMatcher.combine("/hotels", "{hotel}.*")).isEqualTo("/hotels/{hotel}.*");
+		assertThat((Object) pathMatcher.combine("/hotels/*/booking", "{booking}")).isEqualTo("/hotels/*/booking/{booking}");
+		assertThat((Object) pathMatcher.combine("/*.html", "/hotel.html")).isEqualTo("/hotel.html");
+		assertThat((Object) pathMatcher.combine("/*.html", "/hotel")).isEqualTo("/hotel.html");
+		assertThat((Object) pathMatcher.combine("/*.html", "/hotel.*")).isEqualTo("/hotel.html");
 		// TODO this seems rather bogus, should we eagerly show an error?
-		assertEquals("/d/e/f/hotel.html", pathMatcher.combine("/a/b/c/*.html", "/d/e/f/hotel.*"));
-		assertEquals("/*.html", pathMatcher.combine("/**", "/*.html"));
-		assertEquals("/*.html", pathMatcher.combine("/*", "/*.html"));
-		assertEquals("/*.html", pathMatcher.combine("/*.*", "/*.html"));
-		assertEquals("/{foo}/bar", pathMatcher.combine("/{foo}", "/bar"));  // SPR-8858
-		assertEquals("/user/user", pathMatcher.combine("/user", "/user"));  // SPR-7970
-		assertEquals("/{foo:.*[^0-9].*}/edit/",
-				pathMatcher.combine("/{foo:.*[^0-9].*}", "/edit/"));  // SPR-10062
-		assertEquals("/1.0/foo/test", pathMatcher.combine("/1.0", "/foo/test"));
+		assertThat((Object) pathMatcher.combine("/a/b/c/*.html", "/d/e/f/hotel.*")).isEqualTo("/d/e/f/hotel.html");
+		assertThat((Object) pathMatcher.combine("/**", "/*.html")).isEqualTo("/*.html");
+		assertThat((Object) pathMatcher.combine("/*", "/*.html")).isEqualTo("/*.html");
+		assertThat((Object) pathMatcher.combine("/*.*", "/*.html")).isEqualTo("/*.html");
+		// SPR-8858
+		assertThat((Object) pathMatcher.combine("/{foo}", "/bar")).isEqualTo("/{foo}/bar");
+		// SPR-7970
+		assertThat((Object) pathMatcher.combine("/user", "/user")).isEqualTo("/user/user");
+		// SPR-10062
+		assertThat((Object) pathMatcher.combine("/{foo:.*[^0-9].*}", "/edit/")).isEqualTo("/{foo:.*[^0-9].*}/edit/");
+		assertThat((Object) pathMatcher.combine("/1.0", "/foo/test")).isEqualTo("/1.0/foo/test");
 		// SPR-10554
-		assertEquals("/hotel", pathMatcher.combine("/", "/hotel"));  // SPR-12975
-		assertEquals("/hotel/booking", pathMatcher.combine("/hotel/", "/booking"));  // SPR-12975
-		assertEquals("/hotel", pathMatcher.combine("", "/hotel"));
-		assertEquals("/hotel", pathMatcher.combine("/hotel", ""));
+		// SPR-12975
+		assertThat((Object) pathMatcher.combine("/", "/hotel")).isEqualTo("/hotel");
+		// SPR-12975
+		assertThat((Object) pathMatcher.combine("/hotel/", "/booking")).isEqualTo("/hotel/booking");
+		assertThat((Object) pathMatcher.combine("", "/hotel")).isEqualTo("/hotel");
+		assertThat((Object) pathMatcher.combine("/hotel", "")).isEqualTo("/hotel");
 		// TODO Do we need special handling when patterns contain multiple dots?
 	}
 
@@ -963,8 +964,8 @@ public class PathPatternTests {
 		PathPattern.PathMatchInfo r2 = matchAndExtract(p2, "/file.txt");
 
 		// works fine
-		assertEquals("file.txt", r1.getUriVariables().get("foo"));
-		assertEquals("file", r2.getUriVariables().get("foo"));
+		assertThat((Object) r1.getUriVariables().get("foo")).isEqualTo("file.txt");
+		assertThat((Object) r2.getUriVariables().get("foo")).isEqualTo("file");
 
 		// This produces 2 (see comments in https://jira.spring.io/browse/SPR-14544 )
 		// Comparator<String> patternComparator = new AntPathMatcher().getPatternComparator("");
@@ -996,67 +997,67 @@ public class PathPatternTests {
 		paths.add(null);
 		paths.add(pp.parse("/hotels/new"));
 		paths.sort(comparator);
-		assertEquals("/hotels/new", paths.get(0).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/new");
 		assertThat(paths.get(1)).isNotNull();
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/*"));
 		paths.add(pp.parse("/hotels/new"));
 		paths.sort(comparator);
-		assertEquals("/hotels/new", paths.get(0).getPatternString());
-		assertEquals("/hotels/*", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/*");
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/new"));
 		paths.add(pp.parse("/hotels/*"));
 		paths.sort(comparator);
-		assertEquals("/hotels/new", paths.get(0).getPatternString());
-		assertEquals("/hotels/*", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/*");
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/**"));
 		paths.add(pp.parse("/hotels/*"));
 		paths.sort(comparator);
-		assertEquals("/hotels/*", paths.get(0).getPatternString());
-		assertEquals("/hotels/**", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/*");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/**");
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/*"));
 		paths.add(pp.parse("/hotels/**"));
 		paths.sort(comparator);
-		assertEquals("/hotels/*", paths.get(0).getPatternString());
-		assertEquals("/hotels/**", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/*");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/**");
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/{hotel}"));
 		paths.add(pp.parse("/hotels/new"));
 		paths.sort(comparator);
-		assertEquals("/hotels/new", paths.get(0).getPatternString());
-		assertEquals("/hotels/{hotel}", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/{hotel}");
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/new"));
 		paths.add(pp.parse("/hotels/{hotel}"));
 		paths.sort(comparator);
-		assertEquals("/hotels/new", paths.get(0).getPatternString());
-		assertEquals("/hotels/{hotel}", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/{hotel}");
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/*"));
 		paths.add(pp.parse("/hotels/{hotel}"));
 		paths.add(pp.parse("/hotels/new"));
 		paths.sort(comparator);
-		assertEquals("/hotels/new", paths.get(0).getPatternString());
-		assertEquals("/hotels/{hotel}", paths.get(1).getPatternString());
-		assertEquals("/hotels/*", paths.get(2).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/new");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/{hotel}");
+		assertThat((Object) paths.get(2).getPatternString()).isEqualTo("/hotels/*");
 		paths.clear();
 
 		paths.add(pp.parse("/hotels/ne*"));
 		paths.add(pp.parse("/hotels/n*"));
 		Collections.shuffle(paths);
 		paths.sort(comparator);
-		assertEquals("/hotels/ne*", paths.get(0).getPatternString());
-		assertEquals("/hotels/n*", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/hotels/ne*");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/hotels/n*");
 		paths.clear();
 
 		// comparator = new PatternComparatorConsideringPath("/hotels/new.html");
@@ -1075,8 +1076,8 @@ public class PathPatternTests {
 		paths.add(pp.parse("/*/login.*"));
 		paths.add(pp.parse("/*/endUser/action/login.*"));
 		paths.sort(comparator);
-		assertEquals("/*/endUser/action/login.*", paths.get(0).getPatternString());
-		assertEquals("/*/login.*", paths.get(1).getPatternString());
+		assertThat((Object) paths.get(0).getPatternString()).isEqualTo("/*/endUser/action/login.*");
+		assertThat((Object) paths.get(1).getPatternString()).isEqualTo("/*/login.*");
 		paths.clear();
 	}
 
@@ -1094,31 +1095,31 @@ public class PathPatternTests {
 	public void parameters() {
 		// CaptureVariablePathElement
 		PathPattern.PathMatchInfo result = matchAndExtract("/abc/{var}","/abc/one;two=three;four=five");
-		assertEquals("one",result.getUriVariables().get("var"));
-		assertEquals("three",result.getMatrixVariables().get("var").getFirst("two"));
-		assertEquals("five",result.getMatrixVariables().get("var").getFirst("four"));
+		assertThat((Object) result.getUriVariables().get("var")).isEqualTo("one");
+		assertThat((Object) result.getMatrixVariables().get("var").getFirst("two")).isEqualTo("three");
+		assertThat((Object) result.getMatrixVariables().get("var").getFirst("four")).isEqualTo("five");
 		// RegexPathElement
 		result = matchAndExtract("/abc/{var1}_{var2}","/abc/123_456;a=b;c=d");
-		assertEquals("123",result.getUriVariables().get("var1"));
-		assertEquals("456",result.getUriVariables().get("var2"));
+		assertThat((Object) result.getUriVariables().get("var1")).isEqualTo("123");
+		assertThat((Object) result.getUriVariables().get("var2")).isEqualTo("456");
 		// vars associated with second variable
 		assertThat(result.getMatrixVariables().get("var1")).isNotNull();
 		assertThat(result.getMatrixVariables().get("var1")).isNotNull();
-		assertEquals("b",result.getMatrixVariables().get("var2").getFirst("a"));
-		assertEquals("d",result.getMatrixVariables().get("var2").getFirst("c"));
+		assertThat((Object) result.getMatrixVariables().get("var2").getFirst("a")).isEqualTo("b");
+		assertThat((Object) result.getMatrixVariables().get("var2").getFirst("c")).isEqualTo("d");
 		// CaptureTheRestPathElement
 		result = matchAndExtract("/{*var}","/abc/123_456;a=b;c=d");
-		assertEquals("/abc/123_456",result.getUriVariables().get("var"));
-		assertEquals("b",result.getMatrixVariables().get("var").getFirst("a"));
-		assertEquals("d",result.getMatrixVariables().get("var").getFirst("c"));
+		assertThat((Object) result.getUriVariables().get("var")).isEqualTo("/abc/123_456");
+		assertThat((Object) result.getMatrixVariables().get("var").getFirst("a")).isEqualTo("b");
+		assertThat((Object) result.getMatrixVariables().get("var").getFirst("c")).isEqualTo("d");
 		result = matchAndExtract("/{*var}","/abc/123_456;a=b;c=d/789;a=e;f=g");
-		assertEquals("/abc/123_456/789",result.getUriVariables().get("var"));
-		assertEquals("[b, e]",result.getMatrixVariables().get("var").get("a").toString());
-		assertEquals("d",result.getMatrixVariables().get("var").getFirst("c"));
-		assertEquals("g",result.getMatrixVariables().get("var").getFirst("f"));
+		assertThat((Object) result.getUriVariables().get("var")).isEqualTo("/abc/123_456/789");
+		assertThat((Object) result.getMatrixVariables().get("var").get("a").toString()).isEqualTo("[b, e]");
+		assertThat((Object) result.getMatrixVariables().get("var").getFirst("c")).isEqualTo("d");
+		assertThat((Object) result.getMatrixVariables().get("var").getFirst("f")).isEqualTo("g");
 
 		result = matchAndExtract("/abc/{var}","/abc/one");
-		assertEquals("one",result.getUriVariables().get("var"));
+		assertThat((Object) result.getUriVariables().get("var")).isEqualTo("one");
 		assertThat(result.getMatrixVariables().get("var")).isNotNull();
 
 		result = matchAndExtract("","");
@@ -1178,7 +1179,7 @@ public class PathPatternTests {
 		PathPatternParser ppp = new PathPatternParser();
 		PathPattern pp = ppp.parse(pattern);
 		String s = pp.extractPathWithinPattern(toPathContainer(path)).value();
-		assertEquals(expected, s);
+		assertThat((Object) s).isEqualTo(expected);
 	}
 
 	private PathRemainingMatchInfo getPathRemaining(String pattern, String path) {

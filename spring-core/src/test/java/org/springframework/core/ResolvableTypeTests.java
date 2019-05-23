@@ -54,7 +54,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -185,7 +184,7 @@ public class ResolvableTypeTests {
 		assertThat(type2.resolve()).isEqualTo(List.class);
 		assertThat(type2.getSource()).isSameAs(field2);
 
-		assertEquals(type, type2);
+		assertThat((Object) type2).isEqualTo(type);
 		assertThat(type2.hashCode()).isEqualTo(type.hashCode());
 	}
 
@@ -898,7 +897,7 @@ public class ResolvableTypeTests {
 		Type sourceType = Methods.class.getMethod("charSequenceReturn").getGenericReturnType();
 		ResolvableType reflectiveType = ResolvableType.forType(sourceType);
 		ResolvableType declaredType = ResolvableType.forType(new ParameterizedTypeReference<List<CharSequence>>() {});
-		assertEquals(reflectiveType, declaredType);
+		assertThat((Object) declaredType).isEqualTo(reflectiveType);
 	}
 
 	@Test
@@ -1282,7 +1281,7 @@ public class ResolvableTypeTests {
 	public void testSpr11219() throws Exception {
 		ResolvableType type = ResolvableType.forField(BaseProvider.class.getField("stuff"), BaseProvider.class);
 		assertThat(type.getNested(2).isAssignableFrom(ResolvableType.forClass(BaseImplementation.class))).isTrue();
-		assertEquals("java.util.Collection<org.springframework.core.ResolvableTypeTests$IBase<?>>", type.toString());
+		assertThat((Object) type.toString()).isEqualTo("java.util.Collection<org.springframework.core.ResolvableTypeTests$IBase<?>>");
 	}
 
 	@Test

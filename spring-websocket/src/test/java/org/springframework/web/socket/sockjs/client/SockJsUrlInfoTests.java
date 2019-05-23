@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -43,7 +42,7 @@ public class SockJsUrlInfoTests {
 	@Test
 	public void sessionId() throws Exception {
 		SockJsUrlInfo info = new SockJsUrlInfo(new URI("https://example.com"));
-		assertEquals("Invalid sessionId: " + info.getSessionId(), 32, info.getSessionId().length());
+		assertThat((Object) info.getSessionId().length()).as("Invalid sessionId: " + info.getSessionId()).isEqualTo(32);
 	}
 
 	@Test

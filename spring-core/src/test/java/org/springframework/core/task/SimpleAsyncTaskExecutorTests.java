@@ -25,7 +25,6 @@ import org.springframework.util.ConcurrencyThrottleSupport;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -71,7 +70,7 @@ public class SimpleAsyncTaskExecutorTests {
 		});
 		ThreadNameHarvester task = new ThreadNameHarvester(monitor);
 		executeAndWait(executor, task, monitor);
-		assertEquals("test", task.getThreadName());
+		assertThat((Object) task.getThreadName()).isEqualTo("test");
 	}
 
 	@Test

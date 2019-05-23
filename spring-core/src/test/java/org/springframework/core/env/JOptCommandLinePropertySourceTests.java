@@ -23,7 +23,6 @@ import joptsimple.OptionSet;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link JOptCommandLinePropertySource}.
@@ -75,7 +74,7 @@ public class JOptCommandLinePropertySourceTests {
 		OptionSet options = parser.parse("--foo=bar,baz,biz");
 
 		CommandLinePropertySource<?> ps = new JOptCommandLinePropertySource(options);
-		assertEquals(Arrays.asList("bar","baz","biz"), ps.getOptionValues("foo"));
+		assertThat((Object) ps.getOptionValues("foo")).isEqualTo(Arrays.asList("bar","baz","biz"));
 		assertThat(ps.getProperty("foo")).isEqualTo("bar,baz,biz");
 	}
 
@@ -86,7 +85,7 @@ public class JOptCommandLinePropertySourceTests {
 		OptionSet options = parser.parse("--foo=bar", "--foo=baz", "--foo=biz");
 
 		CommandLinePropertySource<?> ps = new JOptCommandLinePropertySource(options);
-		assertEquals(Arrays.asList("bar","baz","biz"), ps.getOptionValues("foo"));
+		assertThat((Object) ps.getOptionValues("foo")).isEqualTo(Arrays.asList("bar","baz","biz"));
 		assertThat(ps.getProperty("foo")).isEqualTo("bar,baz,biz");
 	}
 

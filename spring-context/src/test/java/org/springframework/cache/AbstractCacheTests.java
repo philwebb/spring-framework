@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 
 /**
@@ -42,7 +41,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 
 	@Test
 	public void testCacheName() throws Exception {
-		assertEquals(CACHE_NAME, getCache().getName());
+		assertThat((Object) getCache().getName()).isEqualTo(CACHE_NAME);
 	}
 
 	@Test
@@ -62,10 +61,10 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		assertThat(cache.get(key, Object.class)).isNotNull();
 
 		cache.put(key, value);
-		assertEquals(value, cache.get(key).get());
-		assertEquals(value, cache.get(key, String.class));
-		assertEquals(value, cache.get(key, Object.class));
-		assertEquals(value, cache.get(key, (Class<?>) null));
+		assertThat(cache.get(key).get()).isEqualTo(value);
+		assertThat(cache.get(key, String.class)).isEqualTo(value);
+		assertThat(cache.get(key, Object.class)).isEqualTo(value);
+		assertThat(cache.get(key, (Class<?>) null)).isEqualTo(value);
 
 		cache.put(key, null);
 		assertThat(cache.get(key)).isNotNull();
@@ -83,9 +82,10 @@ public abstract class AbstractCacheTests<T extends Cache> {
 
 		assertThat(cache.get(key)).isNotNull();
 		assertThat(cache.putIfAbsent(key, value)).isNotNull();
-		assertEquals(value, cache.get(key).get());
-		assertEquals("initialValue", cache.putIfAbsent(key, "anotherValue").get());
-		assertEquals(value, cache.get(key).get()); // not changed
+		assertThat(cache.get(key).get()).isEqualTo(value);
+		assertThat(cache.putIfAbsent(key, "anotherValue").get()).isEqualTo("initialValue");
+		// not changed
+		assertThat(cache.get(key).get()).isEqualTo(value);
 	}
 
 	@Test
@@ -129,8 +129,8 @@ public abstract class AbstractCacheTests<T extends Cache> {
 
 		assertThat(cache.get(key)).isNotNull();
 		Object value = cache.get(key, () -> returnValue);
-		assertEquals(returnValue, value);
-		assertEquals(value, cache.get(key).get());
+		assertThat(value).isEqualTo(returnValue);
+		assertThat(cache.get(key).get()).isEqualTo(value);
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		Object value = cache.get(key, () -> {
 			throw new IllegalStateException("Should not have been invoked");
 		});
-		assertEquals(initialValue, value);
+		assertThat(value).isEqualTo(initialValue);
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		}
 		catch (Cache.ValueRetrievalException ex) {
 			assertThat(ex.getCause()).isNotNull();
-			assertEquals(UnsupportedOperationException.class, ex.getCause().getClass());
+			assertThat((Object) ex.getCause().getClass()).isEqualTo(UnsupportedOperationException.class);
 		}
 	}
 

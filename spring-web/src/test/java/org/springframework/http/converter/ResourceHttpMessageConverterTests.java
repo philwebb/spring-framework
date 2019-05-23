@@ -35,7 +35,6 @@ import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -71,7 +70,7 @@ public class ResourceHttpMessageConverterTests {
 				ContentDisposition.builder("attachment").filename("yourlogo.jpg").build());
 		Resource actualResource = converter.read(Resource.class, inputMessage);
 		assertThat(FileCopyUtils.copyToByteArray(actualResource.getInputStream())).isEqualTo(body);
-		assertEquals("yourlogo.jpg", actualResource.getFilename());
+		assertThat((Object) actualResource.getFilename()).isEqualTo("yourlogo.jpg");
 	}
 
 	@Test  // SPR-13443
@@ -84,7 +83,7 @@ public class ResourceHttpMessageConverterTests {
 			Resource actualResource = converter.read(InputStreamResource.class, inputMessage);
 			assertThat(actualResource).isInstanceOf(InputStreamResource.class);
 			assertThat(actualResource.getInputStream()).isEqualTo(body);
-			assertEquals("yourlogo.jpg", actualResource.getFilename());
+			assertThat((Object) actualResource.getFilename()).isEqualTo("yourlogo.jpg");
 		}
 	}
 
@@ -105,9 +104,8 @@ public class ResourceHttpMessageConverterTests {
 		Resource body = new ClassPathResource("logo.jpg", getClass());
 		converter.write(body, null, outputMessage);
 
-		assertEquals("Invalid content-type", MediaType.IMAGE_JPEG,
-				outputMessage.getHeaders().getContentType());
-		assertEquals("Invalid content-length", body.getFile().length(), outputMessage.getHeaders().getContentLength());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(MediaType.IMAGE_JPEG);
+		assertThat((Object) outputMessage.getHeaders().getContentLength()).as("Invalid content-length").isEqualTo(body.getFile().length());
 	}
 
 	@Test  // SPR-10848

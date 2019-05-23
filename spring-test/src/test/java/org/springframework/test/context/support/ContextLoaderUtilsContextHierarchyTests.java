@@ -34,7 +34,6 @@ import org.springframework.test.context.ContextLoader;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static temp.XAssert.assertArrayEquals;
-import static temp.XAssert.assertEquals;
 import static org.springframework.test.context.support.ContextLoaderUtils.GENERATED_CONTEXT_HIERARCHY_LEVEL_PREFIX;
 import static org.springframework.test.context.support.ContextLoaderUtils.buildContextHierarchyMap;
 import static org.springframework.test.context.support.ContextLoaderUtils.resolveContextHierarchyAttributes;
@@ -346,7 +345,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		assertThat(alphaConfig.get(0).getInitializers().length).isEqualTo(0);
 		assertThat(alphaConfig.get(1).getLocations().length).isEqualTo(0);
 		assertThat(alphaConfig.get(1).getInitializers().length).isEqualTo(1);
-		assertEquals(DummyApplicationContextInitializer.class, alphaConfig.get(1).getInitializers()[0]);
+		assertThat((Object) alphaConfig.get(1).getInitializers()[0]).isEqualTo(DummyApplicationContextInitializer.class);
 
 		List<ContextConfigurationAttributes> betaConfig = map.get("beta");
 		assertThat(betaConfig).hasSize(2);
@@ -355,7 +354,7 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 		assertThat(betaConfig.get(0).getInitializers().length).isEqualTo(0);
 		assertThat(betaConfig.get(1).getLocations().length).isEqualTo(0);
 		assertThat(betaConfig.get(1).getInitializers().length).isEqualTo(1);
-		assertEquals(DummyApplicationContextInitializer.class, betaConfig.get(1).getInitializers()[0]);
+		assertThat((Object) betaConfig.get(1).getInitializers()[0]).isEqualTo(DummyApplicationContextInitializer.class);
 	}
 
 

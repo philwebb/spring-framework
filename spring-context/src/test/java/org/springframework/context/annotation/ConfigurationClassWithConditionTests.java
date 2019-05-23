@@ -32,7 +32,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Component;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -148,7 +147,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithBeanReactivated.class);
 		Map<String, ExampleBean> beans = context.getBeansOfType(ExampleBean.class);
 		assertThat(beans.size()).isEqualTo(1);
-		assertEquals("baz", beans.keySet().iterator().next());
+		assertThat((Object) beans.keySet().iterator().next()).isEqualTo("baz");
 	}
 
 	@Test
@@ -156,7 +155,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithAlternativeBeans.class);
 		Map<String, ExampleBean> beans = context.getBeansOfType(ExampleBean.class);
 		assertThat(beans.size()).isEqualTo(1);
-		assertEquals("baz", beans.keySet().iterator().next());
+		assertThat((Object) beans.keySet().iterator().next()).isEqualTo("baz");
 	}
 
 

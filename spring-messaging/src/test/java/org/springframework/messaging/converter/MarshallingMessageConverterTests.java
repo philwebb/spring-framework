@@ -31,7 +31,6 @@ import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;
@@ -62,7 +61,7 @@ public class MarshallingMessageConverterTests {
 		MyBean actual = (MyBean) this.converter.fromMessage(message, MyBean.class);
 
 		assertThat(actual).isNotNull();
-		assertEquals("Foo", actual.getName());
+		assertThat((Object) actual.getName()).isEqualTo("Foo");
 	}
 
 	@Test

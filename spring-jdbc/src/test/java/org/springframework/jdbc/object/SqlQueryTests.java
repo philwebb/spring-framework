@@ -41,7 +41,6 @@ import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -612,11 +611,11 @@ public class SqlQueryTests  {
 		ids.add(2);
 		List<Customer> cust = query.findCustomers(ids);
 
-		assertEquals("We got two customers back", 2, cust.size());
-		assertEquals("First customer id was assigned correctly", cust.get(0).getId(), 1);
-		assertEquals("First customer forename was assigned correctly", cust.get(0).getForename(), "rod");
-		assertEquals("Second customer id was assigned correctly", cust.get(1).getId(), 2);
-		assertEquals("Second customer forename was assigned correctly", cust.get(1).getForename(), "juergen");
+		assertThat((Object) cust.size()).as("We got two customers back").isEqualTo(2);
+		assertThat((Object) 1).as("First customer id was assigned correctly").isEqualTo(cust.get(0).getId());
+		assertThat((Object) "rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
+		assertThat((Object) 2).as("Second customer id was assigned correctly").isEqualTo(cust.get(1).getId());
+		assertThat((Object) "juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 2, Types.NUMERIC);
 		verify(resultSet).close();
@@ -661,11 +660,11 @@ public class SqlQueryTests  {
 		CustomerQuery query = new CustomerQuery(dataSource);
 		List<Customer> cust = query.findCustomers(1);
 
-		assertEquals("We got two customers back", 2, cust.size());
-		assertEquals("First customer id was assigned correctly", cust.get(0).getId(), 1);
-		assertEquals("First customer forename was assigned correctly", cust.get(0).getForename(), "rod");
-		assertEquals("Second customer id was assigned correctly", cust.get(1).getId(), 2);
-		assertEquals("Second customer forename was assigned correctly", cust.get(1).getForename(), "juergen");
+		assertThat((Object) cust.size()).as("We got two customers back").isEqualTo(2);
+		assertThat((Object) 1).as("First customer id was assigned correctly").isEqualTo(cust.get(0).getId());
+		assertThat((Object) "rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
+		assertThat((Object) 2).as("Second customer id was assigned correctly").isEqualTo(cust.get(1).getId());
+		assertThat((Object) "juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);

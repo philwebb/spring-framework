@@ -39,7 +39,6 @@ import org.springframework.tests.sample.beans.TestBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 
@@ -157,7 +156,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		CglibTestBean proxy = (CglibTestBean) aop.getProxy();
-		assertEquals("The name property has been overwritten by the constructor", "Rob Harrop", proxy.getName());
+		assertThat((Object) proxy.getName()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -171,7 +170,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		PrivateCglibTestBean proxy = (PrivateCglibTestBean) aop.getProxy();
-		assertEquals("The name property has been overwritten by the constructor", "Rob Harrop", proxy.toString());
+		assertThat((Object) proxy.toString()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -186,7 +185,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		CglibAopProxy aop = new CglibAopProxy(pc);
 		CglibTestBean proxy = (CglibTestBean) aop.getProxy();
 		assertNotNull("Proxy should not be null", proxy);
-		assertEquals("Constructor overrode the value of name", "Rob Harrop", proxy.getName());
+		assertThat((Object) proxy.getName()).as("Constructor overrode the value of name").isEqualTo("Rob Harrop");
 	}
 
 	@Test

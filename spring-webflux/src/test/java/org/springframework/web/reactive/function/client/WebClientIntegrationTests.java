@@ -56,7 +56,6 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.codec.Pojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests using an {@link ExchangeFunction} through {@link WebClient}.
@@ -115,15 +114,15 @@ public class WebClientIntegrationTests {
 		StepVerifier.create(result)
 				.consumeNextWith(
 						httpHeaders -> {
-							assertEquals(MediaType.TEXT_PLAIN, httpHeaders.getContentType());
-							assertEquals(13L, httpHeaders.getContentLength());
+							assertThat((Object) httpHeaders.getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+							assertThat((Object) httpHeaders.getContentLength()).isEqualTo(13L);
 						})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -143,9 +142,9 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("testvalue", request.getHeader("X-Test-Header"));
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader("X-Test-Header")).isEqualTo("testvalue");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -165,9 +164,9 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("testvalue", request.getHeader("X-Test-Header"));
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader("X-Test-Header")).isEqualTo("testvalue");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -188,8 +187,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/json", request.getPath());
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
+			assertThat((Object) request.getPath()).isEqualTo("/json");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -208,14 +207,14 @@ public class WebClientIntegrationTests {
 				.assertNext(valueContainer -> {
 					Foo foo = valueContainer.getContainerValue();
 					assertThat(foo).isNotNull();
-					assertEquals("bar", foo.getFooValue());
+					assertThat((Object) foo.getFooValue()).isEqualTo("bar");
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/json", request.getPath());
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
+			assertThat((Object) request.getPath()).isEqualTo("/json");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -232,17 +231,17 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(entity -> {
-					assertEquals(HttpStatus.OK, entity.getStatusCode());
-					assertEquals(MediaType.APPLICATION_JSON, entity.getHeaders().getContentType());
+					assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+					assertThat((Object) entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 					assertThat(entity.getHeaders().getContentLength()).isEqualTo(31);
-					assertEquals(content, entity.getBody());
+					assertThat((Object) entity.getBody()).isEqualTo(content);
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/json", request.getPath());
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
+			assertThat((Object) request.getPath()).isEqualTo("/json");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -259,19 +258,19 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(entity -> {
-					assertEquals(HttpStatus.OK, entity.getStatusCode());
-					assertEquals(MediaType.APPLICATION_JSON, entity.getHeaders().getContentType());
-					assertEquals(58, entity.getHeaders().getContentLength());
+					assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+					assertThat((Object) entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+					assertThat((Object) entity.getHeaders().getContentLength()).isEqualTo(58);
 					Pojo pojo1 = new Pojo("foo1", "bar1");
 					Pojo pojo2 = new Pojo("foo2", "bar2");
-					assertEquals(Arrays.asList(pojo1, pojo2), entity.getBody());
+					assertThat((Object) entity.getBody()).isEqualTo(Arrays.asList(pojo1, pojo2));
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/json", request.getPath());
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
+			assertThat((Object) request.getPath()).isEqualTo("/json");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -292,8 +291,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/json", request.getPath());
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
+			assertThat((Object) request.getPath()).isEqualTo("/json");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -310,14 +309,14 @@ public class WebClientIntegrationTests {
 				.bodyToMono(Pojo.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(p -> assertEquals("barbar", p.getBar()))
+				.consumeNextWith(p -> assertThat((Object) p.getBar()).isEqualTo("barbar"))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/pojo", request.getPath());
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
+			assertThat((Object) request.getPath()).isEqualTo("/pojo");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -341,8 +340,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/pojos", request.getPath());
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
+			assertThat((Object) request.getPath()).isEqualTo("/pojos");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -360,17 +359,17 @@ public class WebClientIntegrationTests {
 				.bodyToMono(Pojo.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(p -> assertEquals("BARBAR", p.getBar()))
+				.consumeNextWith(p -> assertThat((Object) p.getBar()).isEqualTo("BARBAR"))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/pojo/capitalize", request.getPath());
-			assertEquals("{\"foo\":\"foofoo\",\"bar\":\"barbar\"}", request.getBody().readUtf8());
-			assertEquals("31", request.getHeader(HttpHeaders.CONTENT_LENGTH));
-			assertEquals("application/json", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("application/json", request.getHeader(HttpHeaders.CONTENT_TYPE));
+			assertThat((Object) request.getPath()).isEqualTo("/pojo/capitalize");
+			assertThat((Object) request.getBody().readUtf8()).isEqualTo("{\"foo\":\"foofoo\",\"bar\":\"barbar\"}");
+			assertThat((Object) request.getHeader(HttpHeaders.CONTENT_LENGTH)).isEqualTo("31");
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo("application/json");
 		});
 	}
 
@@ -392,8 +391,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("/test", request.getPath());
-			assertEquals("testkey=testvalue", request.getHeader(HttpHeaders.COOKIE));
+			assertThat((Object) request.getPath()).isEqualTo("/test");
+			assertThat((Object) request.getHeader(HttpHeaders.COOKIE)).isEqualTo("testkey=testvalue");
 		});
 	}
 
@@ -421,7 +420,7 @@ public class WebClientIntegrationTests {
 				throw new IllegalStateException(ex);
 			}
 			assertThat(actual.size()).isEqualTo(expected.length);
-			assertEquals(hash(expected), hash(actual.toByteArray()));
+			assertThat((Object) hash(actual.toByteArray())).isEqualTo(hash(expected));
 		});
 	}
 
@@ -439,14 +438,14 @@ public class WebClientIntegrationTests {
 		Mono<ClientResponse> result = this.webClient.get().uri("/greeting?name=Spring").exchange();
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertEquals(HttpStatus.NOT_FOUND, response.statusCode()))
+				.consumeNextWith(response -> assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -466,8 +465,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -486,8 +485,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting");
 		});
 	}
 
@@ -507,24 +506,23 @@ public class WebClientIntegrationTests {
 				.expectErrorSatisfies(throwable -> {
 					assertThat(throwable instanceof WebClientResponseException).isTrue();
 					WebClientResponseException ex = (WebClientResponseException) throwable;
-					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getStatusCode());
+					assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 					assertThat(ex.getRawStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-							ex.getStatusText());
-					assertEquals(MediaType.TEXT_PLAIN, ex.getHeaders().getContentType());
-					assertEquals(errorMessage, ex.getResponseBodyAsString());
+					assertThat((Object) ex.getStatusText()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+					assertThat((Object) ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+					assertThat((Object) ex.getResponseBodyAsString()).isEqualTo(errorMessage);
 
 					HttpRequest request = ex.getRequest();
-					assertEquals(HttpMethod.GET, request.getMethod());
-					assertEquals(URI.create(this.server.url(path).toString()), request.getURI());
+					assertThat((Object) request.getMethod()).isEqualTo(HttpMethod.GET);
+					assertThat((Object) request.getURI()).isEqualTo(URI.create(this.server.url(path).toString()));
 					assertThat(request.getHeaders()).isNotNull();
 				})
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals(path, request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo(path);
 		});
 	}
 
@@ -547,8 +545,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/unknownPage", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/unknownPage");
 		});
 	}
 
@@ -569,18 +567,18 @@ public class WebClientIntegrationTests {
 				.expectErrorSatisfies(throwable -> {
 					assertThat(throwable instanceof UnknownHttpStatusCodeException).isTrue();
 					UnknownHttpStatusCodeException ex = (UnknownHttpStatusCodeException) throwable;
-					assertEquals("Unknown status code ["+errorStatus+"]", ex.getMessage());
+					assertThat((Object) ex.getMessage()).isEqualTo(("Unknown status code ["+errorStatus+"]"));
 					assertThat(ex.getRawStatusCode()).isEqualTo(errorStatus);
-					assertEquals("", ex.getStatusText());
-					assertEquals(MediaType.TEXT_PLAIN, ex.getHeaders().getContentType());
-					assertEquals(errorMessage, ex.getResponseBodyAsString());
+					assertThat((Object) ex.getStatusText()).isEqualTo("");
+					assertThat((Object) ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+					assertThat((Object) ex.getResponseBodyAsString()).isEqualTo(errorMessage);
 				})
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/unknownPage", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/unknownPage");
 		});
 	}
 
@@ -601,8 +599,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -623,8 +621,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -639,14 +637,14 @@ public class WebClientIntegrationTests {
 				.flatMap(response -> response.toEntity(String.class));
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode()))
+				.consumeNextWith(response -> assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertEquals("*/*", request.getHeader(HttpHeaders.ACCEPT));
-			assertEquals("/greeting?name=Spring", request.getPath());
+			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -674,7 +672,7 @@ public class WebClientIntegrationTests {
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
-		expectRequest(request -> assertEquals("bar", request.getHeader("foo")));
+		expectRequest(request -> assertThat((Object) request.getHeader("foo")).isEqualTo("bar"));
 	}
 
 	@Test

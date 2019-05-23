@@ -49,7 +49,6 @@ import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
 
 /**
@@ -95,7 +94,7 @@ public class SourceHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 		DOMSource result = (DOMSource) converter.read(DOMSource.class, inputMessage);
 		Document document = (Document) result.getNode();
-		assertEquals("Invalid result", "root", document.getDocumentElement().getLocalName());
+		assertThat((Object) document.getDocumentElement().getLocalName()).as("Invalid result").isEqualTo("root");
 	}
 
 	@Test
@@ -105,7 +104,7 @@ public class SourceHttpMessageConverterTests {
 		converter.setSupportDtd(true);
 		DOMSource result = (DOMSource) converter.read(DOMSource.class, inputMessage);
 		Document document = (Document) result.getNode();
-		assertEquals("Invalid result", "root", document.getDocumentElement().getLocalName());
+		assertThat((Object) document.getDocumentElement().getLocalName()).as("Invalid result").isEqualTo("root");
 		assertNotEquals("Invalid result", "Foo Bar", document.getDocumentElement().getTextContent());
 	}
 
@@ -202,9 +201,9 @@ public class SourceHttpMessageConverterTests {
 		assertThat(streamReader.hasNext()).isTrue();
 		streamReader.nextTag();
 		String s = streamReader.getLocalName();
-		assertEquals("root", s);
+		assertThat((Object) s).isEqualTo("root");
 		s = streamReader.getElementText();
-		assertEquals("Hello World", s);
+		assertThat((Object) s).isEqualTo("Hello World");
 		streamReader.close();
 	}
 
@@ -219,7 +218,7 @@ public class SourceHttpMessageConverterTests {
 		streamReader.next();
 		streamReader.next();
 		String s = streamReader.getLocalName();
-		assertEquals("root", s);
+		assertThat((Object) s).isEqualTo("root");
 		try {
 			s = streamReader.getElementText();
 			assertNotEquals("Foo Bar", s);
@@ -257,7 +256,7 @@ public class SourceHttpMessageConverterTests {
 		streamReader.next();
 		streamReader.next();
 		String s = streamReader.getLocalName();
-		assertEquals("root", s);
+		assertThat((Object) s).isEqualTo("root");
 		assertThatExceptionOfType(XMLStreamException.class).isThrownBy(() ->
 				streamReader.getElementText())
 			.withMessageContaining("\"lol9\"");
@@ -293,10 +292,8 @@ public class SourceHttpMessageConverterTests {
 		converter.write(domSource, null, outputMessage);
 		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
 				.isSimilarTo("<root>Hello World</root>");
-		assertEquals("Invalid content-type", new MediaType("application", "xml"),
-				outputMessage.getHeaders().getContentType());
-		assertEquals("Invalid content-length", outputMessage.getBodyAsBytes().length,
-				outputMessage.getHeaders().getContentLength());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
+		assertThat((Object) outputMessage.getHeaders().getContentLength()).as("Invalid content-length").isEqualTo(outputMessage.getBodyAsBytes().length);
 	}
 
 	@Test
@@ -308,8 +305,7 @@ public class SourceHttpMessageConverterTests {
 		converter.write(saxSource, null, outputMessage);
 		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
 				.isSimilarTo("<root>Hello World</root>");
-		assertEquals("Invalid content-type", new MediaType("application", "xml"),
-				outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
 	}
 
 	@Test
@@ -321,8 +317,7 @@ public class SourceHttpMessageConverterTests {
 		converter.write(streamSource, null, outputMessage);
 		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
 				.isSimilarTo("<root>Hello World</root>");
-		assertEquals("Invalid content-type", new MediaType("application", "xml"),
-				outputMessage.getHeaders().getContentType());
+		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
 	}
 
 }

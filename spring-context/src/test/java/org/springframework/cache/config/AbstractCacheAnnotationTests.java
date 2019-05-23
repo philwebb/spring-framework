@@ -32,7 +32,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertNull;
 import static temp.XAssert.assertSame;
@@ -105,7 +104,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertSame(r1, r2);
 		assertSame(r1, r3);
 
-		assertEquals(r3, this.cm.getCache("testCache").get(o1).get());
+		assertThat(this.cm.getCache("testCache").get(o1).get()).isEqualTo(r3);
 		assertNull("Cached value should be null", r3);
 	}
 
@@ -131,7 +130,7 @@ public abstract class AbstractCacheAnnotationTests {
 		assertSame(r1, r2);
 		assertSame(r1, r3);
 
-		assertEquals(r3, this.cm.getCache("testCache").get(o1).get());
+		assertThat(this.cm.getCache("testCache").get(o1).get()).isEqualTo(r3);
 		assertNull("Cached value should be null", r3);
 	}
 

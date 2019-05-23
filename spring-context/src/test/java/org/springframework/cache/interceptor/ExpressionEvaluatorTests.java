@@ -38,7 +38,6 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Costin Leau
@@ -67,11 +66,11 @@ public class ExpressionEvaluatorTests {
 		CacheOperation next = it.next();
 		assertThat(next instanceof CacheableOperation).isTrue();
 		assertThat(next.getCacheNames().contains("test")).isTrue();
-		assertEquals("#a", next.getKey());
+		assertThat((Object) next.getKey()).isEqualTo("#a");
 		next = it.next();
 		assertThat(next instanceof CacheableOperation).isTrue();
 		assertThat(next.getCacheNames().contains("test")).isTrue();
-		assertEquals("#b", next.getKey());
+		assertThat((Object) next.getKey()).isEqualTo("#b");
 	}
 
 	@Test
@@ -92,8 +91,8 @@ public class ExpressionEvaluatorTests {
 		Object keyA = this.eval.key(it.next().getKey(), key, evalCtx);
 		Object keyB = this.eval.key(it.next().getKey(), key, evalCtx);
 
-		assertEquals(args[0], keyA);
-		assertEquals(args[1], keyB);
+		assertThat(keyA).isEqualTo(args[0]);
+		assertThat(keyB).isEqualTo(args[1]);
 	}
 
 	@Test

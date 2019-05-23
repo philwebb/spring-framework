@@ -24,7 +24,6 @@ import org.springframework.beans.FatalBeanException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for the {@link RollbackRuleAttribute} class.

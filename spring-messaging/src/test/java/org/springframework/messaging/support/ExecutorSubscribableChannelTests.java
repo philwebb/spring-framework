@@ -33,7 +33,6 @@ import org.springframework.messaging.MessageHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;

@@ -28,7 +28,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
@@ -149,13 +148,13 @@ public class SQLErrorCodesFactoryTests {
 			protected Resource loadResource(String path) {
 				++lookups;
 				if (lookups == 1) {
-					assertEquals(SQLErrorCodesFactory.SQL_ERROR_CODE_DEFAULT_PATH, path);
+					assertThat((Object) path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_DEFAULT_PATH);
 					return null;
 				}
 				else {
 					// Should have only one more lookup
 					assertThat(lookups).isEqualTo(2);
-					assertEquals(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH, path);
+					assertThat((Object) path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH);
 					return null;
 				}
 			}
@@ -186,8 +185,8 @@ public class SQLErrorCodesFactoryTests {
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
 		assertThat(sf.getErrorCodes("XX").getBadSqlGrammarCodes().length == 0).isTrue();
 		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length).isEqualTo(2);
-		assertEquals("1", sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]);
-		assertEquals("2", sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]);
+		assertThat((Object) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]).isEqualTo("1");
+		assertThat((Object) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]).isEqualTo("2");
 	}
 
 	@Test
@@ -229,7 +228,7 @@ public class SQLErrorCodesFactoryTests {
 		assertThat(sf.getErrorCodes("Oracle").getCustomTranslations().length).isEqualTo(1);
 		CustomSQLErrorCodesTranslation translation =
 				sf.getErrorCodes("Oracle").getCustomTranslations()[0];
-		assertEquals(CustomErrorCodeException.class, translation.getExceptionClass());
+		assertThat((Object) translation.getExceptionClass()).isEqualTo(CustomErrorCodeException.class);
 		assertThat(translation.getErrorCodes().length).isEqualTo(1);
 	}
 

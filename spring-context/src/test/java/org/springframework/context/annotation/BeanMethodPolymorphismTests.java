@@ -26,7 +26,6 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -53,7 +52,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 
@@ -64,7 +63,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 
@@ -75,7 +74,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 
@@ -86,7 +85,7 @@ public class BeanMethodPolymorphismTests {
 		ctx.setAllowBeanDefinitionOverriding(false);
 		ctx.refresh();
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isFalse();
-		assertEquals("overridden", ctx.getBean("testBean", TestBean.class).toString());
+		assertThat((Object) ctx.getBean("testBean", TestBean.class).toString()).isEqualTo("overridden");
 		assertThat(ctx.getDefaultListableBeanFactory().containsSingleton("testBean")).isTrue();
 	}
 

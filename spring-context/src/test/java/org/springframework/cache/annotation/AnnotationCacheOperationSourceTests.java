@@ -35,7 +35,6 @@ import org.springframework.core.annotation.AliasFor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static temp.XAssert.assertSame;
 import static temp.XAssert.assertTrue;
@@ -142,14 +141,14 @@ public class AnnotationCacheOperationSourceTests {
 	public void customKeyGenerator() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "customKeyGenerator", 1);
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertEquals("Custom key generator not set", "custom", cacheOperation.getKeyGenerator());
+		assertThat((Object) cacheOperation.getKeyGenerator()).as("Custom key generator not set").isEqualTo("custom");
 	}
 
 	@Test
 	public void customKeyGeneratorInherited() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "customKeyGeneratorInherited", 1);
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertEquals("Custom key generator not set", "custom", cacheOperation.getKeyGenerator());
+		assertThat((Object) cacheOperation.getKeyGenerator()).as("Custom key generator not set").isEqualTo("custom");
 	}
 
 	@Test
@@ -162,28 +161,28 @@ public class AnnotationCacheOperationSourceTests {
 	public void customCacheManager() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "customCacheManager", 1);
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertEquals("Custom cache manager not set", "custom", cacheOperation.getCacheManager());
+		assertThat((Object) cacheOperation.getCacheManager()).as("Custom cache manager not set").isEqualTo("custom");
 	}
 
 	@Test
 	public void customCacheManagerInherited() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "customCacheManagerInherited", 1);
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertEquals("Custom cache manager not set", "custom", cacheOperation.getCacheManager());
+		assertThat((Object) cacheOperation.getCacheManager()).as("Custom cache manager not set").isEqualTo("custom");
 	}
 
 	@Test
 	public void customCacheResolver() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "customCacheResolver", 1);
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertEquals("Custom cache resolver not set", "custom", cacheOperation.getCacheResolver());
+		assertThat((Object) cacheOperation.getCacheResolver()).as("Custom cache resolver not set").isEqualTo("custom");
 	}
 
 	@Test
 	public void customCacheResolverInherited() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "customCacheResolverInherited", 1);
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertEquals("Custom cache resolver not set", "custom", cacheOperation.getCacheResolver());
+		assertThat((Object) cacheOperation.getCacheResolver()).as("Custom cache resolver not set").isEqualTo("custom");
 	}
 
 	@Test
@@ -226,7 +225,7 @@ public class AnnotationCacheOperationSourceTests {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "noCacheNameSpecified");
 		CacheOperation cacheOperation = ops.iterator().next();
 		assertNotNull("cache names set must not be null", cacheOperation.getCacheNames());
-		assertEquals("no cache names specified", 0, cacheOperation.getCacheNames().size());
+		assertThat((Object) cacheOperation.getCacheNames().size()).as("no cache names specified").isEqualTo(0);
 	}
 
 	@Test
@@ -282,7 +281,7 @@ public class AnnotationCacheOperationSourceTests {
 
 	private Collection<CacheOperation> getOps(Class<?> target, String name, int expectedNumberOfOperations) {
 		Collection<CacheOperation> result = getOps(target, name);
-		assertEquals("Wrong number of operation(s) for '" + name + "'", expectedNumberOfOperations, result.size());
+		assertThat((Object) result.size()).as("Wrong number of operation(s) for '" + name + "'").isEqualTo(expectedNumberOfOperations);
 		return result;
 	}
 
@@ -299,10 +298,10 @@ public class AnnotationCacheOperationSourceTests {
 	private void assertSharedConfig(CacheOperation actual, String keyGenerator, String cacheManager,
 			String cacheResolver, String... cacheNames) {
 
-		assertEquals("Wrong key manager",  keyGenerator, actual.getKeyGenerator());
-		assertEquals("Wrong cache manager", cacheManager, actual.getCacheManager());
-		assertEquals("Wrong cache resolver", cacheResolver, actual.getCacheResolver());
-		assertEquals("Wrong number of cache names", cacheNames.length, actual.getCacheNames().size());
+		assertThat((Object) actual.getKeyGenerator()).as("Wrong key manager").isEqualTo(keyGenerator);
+		assertThat((Object) actual.getCacheManager()).as("Wrong cache manager").isEqualTo(cacheManager);
+		assertThat((Object) actual.getCacheResolver()).as("Wrong cache resolver").isEqualTo(cacheResolver);
+		assertThat((Object) actual.getCacheNames().size()).as("Wrong number of cache names").isEqualTo(cacheNames.length);
 		Arrays.stream(cacheNames).forEach(cacheName ->
 				assertTrue("Cache '" + cacheName + "' not found in " + actual.getCacheNames(),
 						actual.getCacheNames().contains(cacheName)));

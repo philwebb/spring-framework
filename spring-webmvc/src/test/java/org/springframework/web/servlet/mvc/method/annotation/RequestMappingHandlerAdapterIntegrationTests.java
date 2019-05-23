@@ -85,7 +85,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertSame;
 
@@ -178,26 +177,26 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 		ModelMap model = mav.getModelMap();
 
-		assertEquals("viewName", mav.getViewName());
-		assertEquals(99, model.get("cookie"));
-		assertEquals("pathvarValue", model.get("pathvar"));
-		assertEquals("headerValue", model.get("header"));
-		assertEquals(date, model.get("dateParam"));
+		assertThat((Object) mav.getViewName()).isEqualTo("viewName");
+		assertThat(model.get("cookie")).isEqualTo(99);
+		assertThat(model.get("pathvar")).isEqualTo("pathvarValue");
+		assertThat(model.get("header")).isEqualTo("headerValue");
+		assertThat(model.get("dateParam")).isEqualTo(date);
 
 		Map<?, ?> map = (Map<?, ?>) model.get("headerMap");
-		assertEquals("headerValue", map.get("header"));
-		assertEquals("anotherHeaderValue", map.get("anotherHeader"));
-		assertEquals("systemHeaderValue", model.get("systemHeader"));
+		assertThat(map.get("header")).isEqualTo("headerValue");
+		assertThat(map.get("anotherHeader")).isEqualTo("anotherHeaderValue");
+		assertThat(model.get("systemHeader")).isEqualTo("systemHeaderValue");
 
 		map = (Map<?, ?>) model.get("paramMap");
-		assertEquals(formattedDate, map.get("dateParam"));
-		assertEquals("paramByConventionValue", map.get("paramByConvention"));
+		assertThat(map.get("dateParam")).isEqualTo(formattedDate);
+		assertThat(map.get("paramByConvention")).isEqualTo("paramByConventionValue");
 
-		assertEquals("/contextPath", model.get("value"));
+		assertThat(model.get("value")).isEqualTo("/contextPath");
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
 		assertThat(modelAttr.getAge()).isEqualTo(25);
-		assertEquals("Set by model method [modelAttr]", modelAttr.getName());
+		assertThat((Object) modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
 		assertSame(modelAttr, request.getSession().getAttribute("modelAttr"));
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
@@ -207,20 +206,20 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
 		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
-		assertEquals("Set by model method [modelAttrByConvention]", modelAttrByConvention.getName());
+		assertThat((Object) modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
 		assertSame(modelAttrByConvention, request.getSession().getAttribute(conventionAttrName));
 
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
 		assertSame(modelAttrByConvention, bindingResult.getTarget());
 
 		assertThat(model.get("customArg") instanceof Color).isTrue();
-		assertEquals(User.class, model.get("user").getClass());
-		assertEquals(OtherUser.class, model.get("otherUser").getClass());
+		assertThat((Object) model.get("user").getClass()).isEqualTo(User.class);
+		assertThat((Object) model.get("otherUser").getClass()).isEqualTo(OtherUser.class);
 
 		assertSame(sessionAttribute, model.get("sessionAttribute"));
 		assertSame(requestAttribute, model.get("requestAttribute"));
 
-		assertEquals(new URI("http://localhost/contextPath/main/path"), model.get("url"));
+		assertThat(model.get("url")).isEqualTo(new URI("http://localhost/contextPath/main/path"));
 	}
 
 	@Test
@@ -259,26 +258,26 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 		ModelMap model = mav.getModelMap();
 
-		assertEquals("viewName", mav.getViewName());
-		assertEquals(99, model.get("cookie"));
-		assertEquals("pathvarValue", model.get("pathvar"));
-		assertEquals("headerValue", model.get("header"));
-		assertEquals(date, model.get("dateParam"));
+		assertThat((Object) mav.getViewName()).isEqualTo("viewName");
+		assertThat(model.get("cookie")).isEqualTo(99);
+		assertThat(model.get("pathvar")).isEqualTo("pathvarValue");
+		assertThat(model.get("header")).isEqualTo("headerValue");
+		assertThat(model.get("dateParam")).isEqualTo(date);
 
 		Map<?, ?> map = (Map<?, ?>) model.get("headerMap");
-		assertEquals("headerValue", map.get("header"));
-		assertEquals("anotherHeaderValue", map.get("anotherHeader"));
-		assertEquals("systemHeaderValue", model.get("systemHeader"));
+		assertThat(map.get("header")).isEqualTo("headerValue");
+		assertThat(map.get("anotherHeader")).isEqualTo("anotherHeaderValue");
+		assertThat(model.get("systemHeader")).isEqualTo("systemHeaderValue");
 
 		map = (Map<?, ?>) model.get("paramMap");
-		assertEquals(formattedDate, map.get("dateParam"));
-		assertEquals("paramByConventionValue", map.get("paramByConvention"));
+		assertThat(map.get("dateParam")).isEqualTo(formattedDate);
+		assertThat(map.get("paramByConvention")).isEqualTo("paramByConventionValue");
 
-		assertEquals("/contextPath", model.get("value"));
+		assertThat(model.get("value")).isEqualTo("/contextPath");
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
 		assertThat(modelAttr.getAge()).isEqualTo(25);
-		assertEquals("Set by model method [modelAttr]", modelAttr.getName());
+		assertThat((Object) modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
 		assertSame(modelAttr, request.getSession().getAttribute("modelAttr"));
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
@@ -288,20 +287,20 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
 		assertThat(modelAttrByConvention.getAge()).isEqualTo(25);
-		assertEquals("Set by model method [modelAttrByConvention]", modelAttrByConvention.getName());
+		assertThat((Object) modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
 		assertSame(modelAttrByConvention, request.getSession().getAttribute(conventionAttrName));
 
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
 		assertSame(modelAttrByConvention, bindingResult.getTarget());
 
 		assertThat(model.get("customArg") instanceof Color).isTrue();
-		assertEquals(User.class, model.get("user").getClass());
-		assertEquals(OtherUser.class, model.get("otherUser").getClass());
+		assertThat((Object) model.get("user").getClass()).isEqualTo(User.class);
+		assertThat((Object) model.get("otherUser").getClass()).isEqualTo(OtherUser.class);
 
 		assertSame(sessionAttribute, model.get("sessionAttribute"));
 		assertSame(requestAttribute, model.get("requestAttribute"));
 
-		assertEquals(new URI("http://localhost/contextPath/main/path"), model.get("url"));
+		assertThat(model.get("url")).isEqualTo(new URI("http://localhost/contextPath/main/path"));
 	}
 
 	@Test
@@ -317,7 +316,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
 		assertThat(mav).isNotNull();
-		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
+		assertThat((Object) new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 	}
 
@@ -333,7 +332,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
 		assertThat(mav).isNotNull();
-		assertEquals("Error count [1]", new String(response.getContentAsByteArray(), "UTF-8"));
+		assertThat((Object) new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Error count [1]");
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
 	}
 
@@ -350,10 +349,10 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		assertThat(mav).isNotNull();
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
-		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertEquals("headerValue", response.getHeader("header"));
+		assertThat((Object) new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
+		assertThat((Object) response.getHeader("header")).isEqualTo("headerValue");
 		// set because of @SesstionAttributes
-		assertEquals("no-store", response.getHeader("Cache-Control"));
+		assertThat((Object) response.getHeader("Cache-Control")).isEqualTo("no-store");
 	}
 
 	// SPR-13867
@@ -368,7 +367,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		assertThat(mav).isNotNull();
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
+		assertThat((Object) new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
 		assertThat(response.getHeaderValues("Cache-Control")).containsExactly("max-age=3600");
 	}
 
@@ -381,7 +380,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
 
 		assertThat(mav).isNotNull();
-		assertEquals("content", mav.getModelMap().get("requestPart"));
+		assertThat(mav.getModelMap().get("requestPart")).isEqualTo("content");
 	}
 
 	@Test
@@ -393,7 +392,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
 
 		assertThat(mav).isNotNull();
-		assertEquals(1, mav.getModelMap().get("error count"));
+		assertThat(mav.getModelMap().get("error count")).isEqualTo(1);
 	}
 
 	@Test

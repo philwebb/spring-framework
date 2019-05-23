@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests ReflectionUtils methods as used against CGLIB-generated classes created

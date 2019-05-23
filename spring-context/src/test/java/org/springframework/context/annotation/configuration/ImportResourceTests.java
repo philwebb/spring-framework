@@ -35,7 +35,6 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertTrue;
 
 /**
@@ -53,7 +52,7 @@ public class ImportResourceTests {
 		assertTrue("did not contain java-declared bean", ctx.containsBean("javaDeclaredBean"));
 		assertTrue("did not contain xml-declared bean", ctx.containsBean("xmlDeclaredBean"));
 		TestBean tb = ctx.getBean("javaDeclaredBean", TestBean.class);
-		assertEquals("myName", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("myName");
 		ctx.close();
 	}
 
@@ -86,7 +85,7 @@ public class ImportResourceTests {
 		assertTrue("did not contain java-declared bean", ctx.containsBean("javaDeclaredBean"));
 		assertTrue("did not contain xml-declared bean", ctx.containsBean("xmlDeclaredBean"));
 		TestBean tb = ctx.getBean("javaDeclaredBean", TestBean.class);
-		assertEquals("myName", tb.getName());
+		assertThat((Object) tb.getName()).isEqualTo("myName");
 		ctx.close();
 	}
 

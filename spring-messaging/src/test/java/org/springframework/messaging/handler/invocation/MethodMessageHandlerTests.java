@@ -42,7 +42,6 @@ import org.springframework.util.PathMatcher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for
@@ -97,7 +96,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerPathMatchFoo"));
 
-		assertEquals("pathMatchWildcard", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("pathMatchWildcard");
 	}
 
 	@Test
@@ -111,7 +110,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/bestmatch/bar/path"));
 
-		assertEquals("bestMatch", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("bestMatch");
 	}
 
 	@Test
@@ -119,7 +118,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerArgumentResolver"));
 
-		assertEquals("handlerArgumentResolver", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("handlerArgumentResolver");
 		assertThat(this.testController.arguments.get("message")).isNotNull();
 	}
 
@@ -128,7 +127,7 @@ public class MethodMessageHandlerTests {
 
 		this.messageHandler.handleMessage(toDestination("/test/handlerThrowsExc"));
 
-		assertEquals("illegalStateException", this.testController.method);
+		assertThat((Object) this.testController.method).isEqualTo("illegalStateException");
 		assertThat(this.testController.arguments.get("exception")).isNotNull();
 	}
 

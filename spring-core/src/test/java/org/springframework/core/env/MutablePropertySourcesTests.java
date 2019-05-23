@@ -25,7 +25,6 @@ import org.springframework.mock.env.MockPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -97,7 +96,7 @@ public class MutablePropertySourcesTests {
 		assertThat(sources.precedenceOf(PropertySource.named("f"))).isEqualTo(5);
 		assertThat(sources.precedenceOf(PropertySource.named("g"))).isEqualTo(6);
 
-		assertEquals(sources.remove("a"), PropertySource.named("a"));
+		assertThat((Object) PropertySource.named("a")).isEqualTo(sources.remove("a"));
 		assertThat(sources.size()).isEqualTo(6);
 		assertThat(sources.contains("a")).isFalse();
 
@@ -149,7 +148,7 @@ public class MutablePropertySourcesTests {
 
 		Iterator<PropertySource<?>> it = sources.iterator();
 		assertThat(it.hasNext()).isTrue();
-		assertEquals("test", it.next().getName());
+		assertThat((Object) it.next().getName()).isEqualTo("test");
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
 				it::remove);

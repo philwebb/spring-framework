@@ -37,7 +37,6 @@ import static javax.xml.stream.XMLStreamConstants.START_DOCUMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma
@@ -74,7 +73,7 @@ public class ListBasedXMLEventReaderTests {
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_DOCUMENT);
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_ELEMENT);
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_ELEMENT);
-		assertEquals("baz", reader.getElementText());
+		assertThat((Object) reader.getElementText()).isEqualTo("baz");
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(END_ELEMENT);
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(END_DOCUMENT);
 	}

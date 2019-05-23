@@ -30,7 +30,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link StandardMultipartHttpServletRequest}.
@@ -46,7 +45,7 @@ public class StandardMultipartHttpServletRequestTests {
 
 		MultipartFile multipartFile = request.getFile("file");
 		assertThat(multipartFile).isNotNull();
-		assertEquals("myFile.txt", multipartFile.getOriginalFilename());
+		assertThat((Object) multipartFile.getOriginalFilename()).isEqualTo("myFile.txt");
 	}
 
 	@Test  // SPR-13319
@@ -56,7 +55,7 @@ public class StandardMultipartHttpServletRequestTests {
 
 		MultipartFile multipartFile = request.getFile("file");
 		assertThat(multipartFile).isNotNull();
-		assertEquals("foo-ä-€.html", multipartFile.getOriginalFilename());
+		assertThat((Object) multipartFile.getOriginalFilename()).isEqualTo("foo-ä-€.html");
 	}
 
 	@Test  // SPR-15205
@@ -66,7 +65,7 @@ public class StandardMultipartHttpServletRequestTests {
 
 		MultipartFile multipartFile = request.getFile("file");
 		assertThat(multipartFile).isNotNull();
-		assertEquals("Declaração.pdf", multipartFile.getOriginalFilename());
+		assertThat((Object) multipartFile.getOriginalFilename()).isEqualTo("Declaração.pdf");
 	}
 
 	@Test

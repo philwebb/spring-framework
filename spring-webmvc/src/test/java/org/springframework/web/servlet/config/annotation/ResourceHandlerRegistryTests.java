@@ -49,7 +49,6 @@ import org.springframework.web.servlet.resource.WebJarsResourceResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -94,7 +93,7 @@ public class ResourceHandlerRegistryTests {
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		handler.handleRequest(request, this.response);
 
-		assertEquals("test stylesheet content", this.response.getContentAsString());
+		assertThat((Object) this.response.getContentAsString()).isEqualTo("test stylesheet content");
 	}
 
 	@Test
@@ -230,14 +229,14 @@ public class ResourceHandlerRegistryTests {
 
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		UrlResource resource = (UrlResource) handler.getLocations().get(1);
-		assertEquals("file:/tmp", resource.getURL().toString());
+		assertThat((Object) resource.getURL().toString()).isEqualTo("file:/tmp");
 		assertThat(handler.getUrlPathHelper()).isNotNull();
 
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
 		PathResourceResolver resolver = (PathResourceResolver) resolvers.get(resolvers.size()-1);
 		Map<Resource, Charset> locationCharsets = resolver.getLocationCharsets();
 		assertThat(locationCharsets.size()).isEqualTo(1);
-		assertEquals(StandardCharsets.ISO_8859_1, locationCharsets.values().iterator().next());
+		assertThat((Object) locationCharsets.values().iterator().next()).isEqualTo(StandardCharsets.ISO_8859_1);
 	}
 
 	private ResourceHttpRequestHandler getHandler(String pathPattern) {

@@ -23,7 +23,6 @@ import javax.annotation.Priority;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -82,8 +81,8 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(B.class);
 		list.add(A.class);
 		AnnotationAwareOrderComparator.sort(list);
-		assertEquals(A.class, list.get(0));
-		assertEquals(B.class, list.get(1));
+		assertThat(list.get(0)).isEqualTo(A.class);
+		assertThat(list.get(1)).isEqualTo(B.class);
 	}
 
 	@Test
@@ -92,8 +91,8 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(B.class);
 		list.add(C.class);
 		AnnotationAwareOrderComparator.sort(list);
-		assertEquals(C.class, list.get(0));
-		assertEquals(B.class, list.get(1));
+		assertThat(list.get(0)).isEqualTo(C.class);
+		assertThat(list.get(1)).isEqualTo(B.class);
 	}
 
 	@Test
@@ -104,8 +103,8 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(null);
 		list.add(A.class);
 		AnnotationAwareOrderComparator.sort(list);
-		assertEquals(A.class, list.get(0));
-		assertEquals(B.class, list.get(1));
+		assertThat(list.get(0)).isEqualTo(A.class);
+		assertThat(list.get(1)).isEqualTo(B.class);
 		assertThat(list.get(2)).isNotNull();
 		assertThat(list.get(3)).isNotNull();
 	}

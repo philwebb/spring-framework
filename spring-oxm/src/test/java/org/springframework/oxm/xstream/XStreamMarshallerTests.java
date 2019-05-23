@@ -60,7 +60,6 @@ import org.springframework.tests.XmlContent;
 import org.springframework.util.xml.StaxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -313,12 +312,12 @@ public class XStreamMarshallerTests {
 		marshaller.setStreamDriver(new JettisonMappedXmlDriver());
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertEquals("Invalid result", "{\"flight\":{\"flightNumber\":42}}", writer.toString());
+		assertThat((Object) writer.toString()).as("Invalid result").isEqualTo("{\"flight\":{\"flightNumber\":42}}");
 		Object o = marshaller.unmarshal(new StreamSource(new StringReader(writer.toString())));
 		assertThat(o instanceof Flight).as("Unmarshalled object is not Flights").isTrue();
 		Flight unflight = (Flight) o;
 		assertNotNull("Flight is null", unflight);
-		assertEquals("Number is invalid", 42L, unflight.getFlightNumber());
+		assertThat((Object) unflight.getFlightNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 
 	@Test
@@ -334,7 +333,7 @@ public class XStreamMarshallerTests {
 
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertEquals("Invalid result", "{\"flightNumber\": 42}", writer.toString());
+		assertThat((Object) writer.toString()).as("Invalid result").isEqualTo("{\"flightNumber\": 42}");
 	}
 
 	@Test
@@ -359,7 +358,7 @@ public class XStreamMarshallerTests {
 	private static void assertXpathNotExists(String xPathExpression, String inXMLString){
 		Source source = Input.fromString(inXMLString).build();
 		Iterable<Node> nodes = new JAXPXPathEngine().selectNodes(xPathExpression, source);
-		assertEquals("Should be zero matches for Xpath " + xPathExpression, 0, count(nodes));
+		assertThat((Object) count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo(0);
 	}
 
 	private static int count(Iterable<Node> nodes) {

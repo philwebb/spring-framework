@@ -33,7 +33,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller
@@ -75,7 +74,7 @@ public class EnableAspectJAutoProxyTests {
 		assertThat(counter.getCount()).isEqualTo(1);
 
 		String value = fooService.foo(1);
-		assertEquals("bar", value);
+		assertThat((Object) value).isEqualTo("bar");
 		assertThat(counter.getCount()).isEqualTo(2);
 
 		fooService.foo(1);

@@ -34,7 +34,6 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 
 /**
@@ -97,7 +96,7 @@ public class ComponentScanParserTests {
 		ClassPathXmlApplicationContext context = loadContext("componentScanWithAutowiredQualifierTests.xml");
 		AutowiredQualifierFooService fooService = (AutowiredQualifierFooService) context.getBean("fooService");
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertEquals("bar", fooService.foo(123));
+		assertThat((Object) fooService.foo(123)).isEqualTo("bar");
 		context.close();
 	}
 

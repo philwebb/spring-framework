@@ -68,32 +68,7 @@ public class XAssert  {
         fail(null);
     }
 
-    /**
-     * Asserts that two objects are equal. If they are not, an
-     * {@link AssertionError} is thrown with the given message. If
-     * <code>expected</code> and <code>actual</code> are <code>null</code>,
-     * they are considered equal.
-     *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     * okay)
-     * @param expected expected value
-     * @param actual actual value
-     */
-    public static void assertEquals(String message, Object expected,
-            Object actual) {
-        if (equalsRegardingNull(expected, actual)) {
-            return;
-        }
-        if (expected instanceof String && actual instanceof String) {
-            String cleanMessage = message == null ? "" : message;
-            throw new ComparisonFailure(cleanMessage, (String) expected,
-                    (String) actual);
-        } else {
-            failNotEquals(message, expected, actual);
-        }
-    }
-
-    private static boolean equalsRegardingNull(Object expected, Object actual) {
+	private static boolean equalsRegardingNull(Object expected, Object actual) {
         if (expected == null) {
             return actual == null;
         }
@@ -495,49 +470,6 @@ public class XAssert  {
         new ExactComparisonCriteria().arrayEquals(message, expecteds, actuals);
     }
 
-    /**
-     * Asserts that two doubles are equal to within a positive delta.
-     * If they are not, an {@link AssertionError} is thrown with the given
-     * message. If the expected value is infinity then the delta value is
-     * ignored. NaNs are considered equal:
-     * <code>assertEquals(Double.NaN, Double.NaN, *)</code> passes
-     *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     * okay)
-     * @param expected expected value
-     * @param actual the value to check against <code>expected</code>
-     * @param delta the maximum delta between <code>expected</code> and
-     * <code>actual</code> for which both numbers are still
-     * considered equal.
-     */
-    public static void assertEquals(String message, double expected,
-            double actual, double delta) {
-        if (doubleIsDifferent(expected, actual, delta)) {
-            failNotEquals(message, Double.valueOf(expected), Double.valueOf(actual));
-        }
-    }
-
-    /**
-     * Asserts that two floats are equal to within a positive delta.
-     * If they are not, an {@link AssertionError} is thrown with the given
-     * message. If the expected value is infinity then the delta value is
-     * ignored. NaNs are considered equal:
-     * <code>assertEquals(Float.NaN, Float.NaN, *)</code> passes
-     *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     * okay)
-     * @param expected expected value
-     * @param actual the value to check against <code>expected</code>
-     * @param delta the maximum delta between <code>expected</code> and
-     * <code>actual</code> for which both numbers are still
-     * considered equal.
-     */
-    public static void assertEquals(String message, float expected,
-            float actual, float delta) {
-        if (floatIsDifferent(expected, actual, delta)) {
-            failNotEquals(message, Float.valueOf(expected), Float.valueOf(actual));
-        }
-    }
 
     /**
      * Asserts that two floats are <b>not</b> equal to within a positive delta.
@@ -585,48 +517,6 @@ public class XAssert  {
 
 
     /**
-     * Asserts that two longs are equal. If they are not, an
-     * {@link AssertionError} is thrown with the given message.
-     *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     * okay)
-     * @param expected long expected value.
-     * @param actual long actual value
-     */
-    public static void assertEquals(String message, long expected, long actual) {
-        if (expected != actual) {
-            failNotEquals(message, Long.valueOf(expected), Long.valueOf(actual));
-        }
-    }
-
-
-    /**
-     * @deprecated Use
-     *             <code>assertEquals(String message, double expected, double actual, double delta)</code>
-     *             instead
-     */
-    @Deprecated
-    public static void assertEquals(String message, double expected,
-            double actual) {
-        fail("Use assertEquals(expected, actual, delta) to compare floating-point numbers");
-    }
-
-    /**
-     * Asserts that two doubles are equal to within a positive delta.
-     * If they are not, an {@link AssertionError} is thrown. If the expected
-     * value is infinity then the delta value is ignored.NaNs are considered
-     * equal: <code>assertEquals(Double.NaN, Double.NaN, *)</code> passes
-     *
-     * @param expected expected value
-     * @param actual the value to check against <code>expected</code>
-     * @param delta the maximum delta between <code>expected</code> and
-     * <code>actual</code> for which both numbers are still
-     * considered equal.
-     */
-    public static void assertEquals(double expected, double actual, double delta) {
-        assertEquals(null, expected, actual, delta);
-    }
-
     /**
      * Asserts that two floats are equal to within a positive delta.
      * If they are not, an {@link AssertionError} is thrown. If the expected
@@ -784,44 +674,7 @@ public class XAssert  {
         return className + "<" + valueString + ">";
     }
 
-    /**
-     * Asserts that two object arrays are equal. If they are not, an
-     * {@link AssertionError} is thrown with the given message. If
-     * <code>expecteds</code> and <code>actuals</code> are <code>null</code>,
-     * they are considered equal.
-     *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     * okay)
-     * @param expecteds Object array or array of arrays (multi-dimensional array) with
-     * expected values.
-     * @param actuals Object array or array of arrays (multi-dimensional array) with
-     * actual values
-     * @deprecated use assertArrayEquals
-     */
-    @Deprecated
-    public static void assertEquals(String message, Object[] expecteds,
-            Object[] actuals) {
-        assertArrayEquals(message, expecteds, actuals);
-    }
-
-    /**
-     * Asserts that two object arrays are equal. If they are not, an
-     * {@link AssertionError} is thrown. If <code>expected</code> and
-     * <code>actual</code> are <code>null</code>, they are considered
-     * equal.
-     *
-     * @param expecteds Object array or array of arrays (multi-dimensional array) with
-     * expected values
-     * @param actuals Object array or array of arrays (multi-dimensional array) with
-     * actual values
-     * @deprecated use assertArrayEquals
-     */
-    @Deprecated
-    public static void assertEquals(Object[] expecteds, Object[] actuals) {
-        assertArrayEquals(expecteds, actuals);
-    }
-
-    /**
+	/**
      * Asserts that {@code runnable} throws an exception of type {@code expectedThrowable} when
      * executed. If it does, the exception object is returned. If it does not throw an exception, an
      * {@link AssertionError} is thrown. If it throws the wrong type of exception, an {@code

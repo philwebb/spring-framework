@@ -37,7 +37,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.multipart.support.StringMultipartFileEditor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertTrue;
 
@@ -64,7 +63,7 @@ public class WebRequestDataBinderTests {
 		binder.bind(new ServletWebRequest(request));
 
 		assertThat(tb.getSpouse()).isNotNull();
-		assertEquals("test", tb.getSpouse().getName());
+		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -79,7 +78,7 @@ public class WebRequestDataBinderTests {
 		binder.bind(new ServletWebRequest(request));
 
 		assertThat(tb.getSpouse()).isNotNull();
-		assertEquals("test", tb.getSpouse().getName());
+		assertThat((Object) tb.getSpouse().getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -203,11 +202,11 @@ public class WebRequestDataBinderTests {
 		request.addParameter("!name", "anonymous");
 		request.addParameter("name", "Scott");
 		binder.bind(new ServletWebRequest(request));
-		assertEquals("Scott", target.getName());
+		assertThat((Object) target.getName()).isEqualTo("Scott");
 
 		request.removeParameter("name");
 		binder.bind(new ServletWebRequest(request));
-		assertEquals("anonymous", target.getName());
+		assertThat((Object) target.getName()).isEqualTo("anonymous");
 	}
 
 	@Test
@@ -220,12 +219,12 @@ public class WebRequestDataBinderTests {
 		request.addParameter("stringArray", "abc");
 		request.addParameter("stringArray", "123,def");
 		binder.bind(new ServletWebRequest(request));
-		assertEquals("Expected all three items to be bound", 3, target.getStringArray().length);
+		assertThat((Object) target.getStringArray().length).as("Expected all three items to be bound").isEqualTo(3);
 
 		request.removeParameter("stringArray");
 		request.addParameter("stringArray", "123,def");
 		binder.bind(new ServletWebRequest(request));
-		assertEquals("Expected only 1 item to be bound", 1, target.getStringArray().length);
+		assertThat((Object) target.getStringArray().length).as("Expected only 1 item to be bound").isEqualTo(1);
 	}
 
 	@Test
@@ -236,7 +235,7 @@ public class WebRequestDataBinderTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("myEnum", "FOO");
 		binder.bind(new ServletWebRequest(request));
-		assertEquals(MyEnum.FOO, target.getMyEnum());
+		assertThat((Object) target.getMyEnum()).isEqualTo(MyEnum.FOO);
 	}
 
 	@Test
@@ -248,7 +247,7 @@ public class WebRequestDataBinderTests {
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
 		request.addFile(new MockMultipartFile("name", "Juergen".getBytes()));
 		binder.bind(new ServletWebRequest(request));
-		assertEquals("Juergen", target.getName());
+		assertThat((Object) target.getName()).isEqualTo("Juergen");
 	}
 
 	@Test
@@ -261,7 +260,7 @@ public class WebRequestDataBinderTests {
 		request.addFile(new MockMultipartFile("stringArray", "Juergen".getBytes()));
 		binder.bind(new ServletWebRequest(request));
 		assertThat(target.getStringArray().length).isEqualTo(1);
-		assertEquals("Juergen", target.getStringArray()[0]);
+		assertThat((Object) target.getStringArray()[0]).isEqualTo("Juergen");
 	}
 
 	@Test
@@ -275,8 +274,8 @@ public class WebRequestDataBinderTests {
 		request.addFile(new MockMultipartFile("stringArray", "Eva".getBytes()));
 		binder.bind(new ServletWebRequest(request));
 		assertThat(target.getStringArray().length).isEqualTo(2);
-		assertEquals("Juergen", target.getStringArray()[0]);
-		assertEquals("Eva", target.getStringArray()[1]);
+		assertThat((Object) target.getStringArray()[0]).isEqualTo("Juergen");
+		assertThat((Object) target.getStringArray()[1]).isEqualTo("Eva");
 	}
 
 	@Test
@@ -347,7 +346,7 @@ public class WebRequestDataBinderTests {
 		assertTrue("Found 1 parameter", pvs.getPropertyValues().length == 1);
 		assertTrue("Found array value", pvs.getPropertyValue("forname").getValue() instanceof String[]);
 		String[] values = (String[]) pvs.getPropertyValue("forname").getValue();
-		assertEquals("Correct values", Arrays.asList(values), Arrays.asList(original));
+		assertThat(Arrays.asList(original)).as("Correct values").isEqualTo(Arrays.asList(values));
 	}
 
 

@@ -37,7 +37,6 @@ import org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcesso
 import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 
 /**
  * Tests that an ImportAware @Configuration classes gets injected with the
@@ -124,8 +123,7 @@ public class ImportAwareTests {
 		AnnotationMetadata importMetadata = new AnnotationConfigApplicationContext(
 				ConfigurationOne.class, ConfigurationTwo.class)
 				.getBean(MetadataHolder.class).importMetadata;
-		assertEquals(ConfigurationOne.class,
-				((StandardAnnotationMetadata) importMetadata).getIntrospectedClass());
+		assertThat((Object) ((StandardAnnotationMetadata) importMetadata).getIntrospectedClass()).isEqualTo(ConfigurationOne.class);
 	}
 
 	@Test
@@ -133,8 +131,7 @@ public class ImportAwareTests {
 		AnnotationMetadata importMetadata = new AnnotationConfigApplicationContext(
 				ConfigurationTwo.class, ConfigurationOne.class)
 				.getBean(MetadataHolder.class).importMetadata;
-		assertEquals(ConfigurationOne.class,
-				((StandardAnnotationMetadata) importMetadata).getIntrospectedClass());
+		assertThat((Object) ((StandardAnnotationMetadata) importMetadata).getIntrospectedClass()).isEqualTo(ConfigurationOne.class);
 	}
 
 	@Test
@@ -397,9 +394,8 @@ public class ImportAwareTests {
 		public void setImportMetadata(AnnotationMetadata annotationMetadata) {
 			AnnotationAttributes enableFeatureAttributes =
 					AnnotationAttributes.fromMap(annotationMetadata.getAnnotationAttributes(EnableFeature.class.getName()));
-			assertEquals(EnableFeature.class, enableFeatureAttributes.annotationType());
-			Arrays.stream(enableFeatureAttributes.getAnnotationArray("policies")).forEach(featurePolicyAttributes ->
-					assertEquals(EnableFeature.FeaturePolicy.class, featurePolicyAttributes.annotationType()));
+			assertThat((Object) enableFeatureAttributes.annotationType()).isEqualTo(EnableFeature.class);
+			Arrays.stream(enableFeatureAttributes.getAnnotationArray("policies")).forEach(featurePolicyAttributes -> assertThat((Object) featurePolicyAttributes.annotationType()).isEqualTo(EnableFeature.FeaturePolicy.class));
 		}
 	}
 

@@ -50,7 +50,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletWebArgumentR
 import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertFalse;
 import static temp.XAssert.assertNotSame;
 import static temp.XAssert.assertTrue;
@@ -76,8 +75,8 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		MessageCodesResolver resolver =
 				((ConfigurableWebBindingInitializer) initializer).getMessageCodesResolver();
 		assertThat(resolver).isNotNull();
-		assertEquals(TestMessageCodesResolver.class, resolver.getClass());
-		assertEquals(false, new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect"));
+		assertThat((Object) resolver.getClass()).isEqualTo(TestMessageCodesResolver.class);
+		assertThat(new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect")).isEqualTo(false);
 	}
 
 	@Test
@@ -146,8 +145,8 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodReturnValueHandler> handlers = (List<HandlerMethodReturnValueHandler>) value;
 		assertThat(handlers.size()).isEqualTo(2);
-		assertEquals(TestHandlerMethodReturnValueHandler.class, handlers.get(0).getClass());
-		assertEquals(TestHandlerMethodReturnValueHandler.class, handlers.get(1).getClass());
+		assertThat((Object) handlers.get(0).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
+		assertThat((Object) handlers.get(1).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
 		assertNotSame(handlers.get(0), handlers.get(1));
 	}
 

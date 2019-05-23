@@ -67,7 +67,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static temp.XAssert.assertEquals;
 import static temp.XAssert.assertNotEquals;
 
 /**
@@ -141,13 +140,13 @@ public class AnnotationDrivenEventListenerTests {
 		ContextEventListener listener = this.context.getBean(ContextEventListener.class);
 
 		List<Object> events = this.eventCollector.getEvents(listener);
-		assertEquals("Wrong number of initial context events", 1, events.size());
-		assertEquals(ContextRefreshedEvent.class, events.get(0).getClass());
+		assertThat((Object) events.size()).as("Wrong number of initial context events").isEqualTo(1);
+		assertThat((Object) events.get(0).getClass()).isEqualTo(ContextRefreshedEvent.class);
 
 		this.context.stop();
 		List<Object> eventsAfterStop = this.eventCollector.getEvents(listener);
-		assertEquals("Wrong number of context events on shutdown", 2, eventsAfterStop.size());
-		assertEquals(ContextStoppedEvent.class, eventsAfterStop.get(1).getClass());
+		assertThat((Object) eventsAfterStop.size()).as("Wrong number of context events on shutdown").isEqualTo(2);
+		assertThat((Object) eventsAfterStop.get(1).getClass()).isEqualTo(ContextStoppedEvent.class);
 		this.eventCollector.assertTotalEventsCount(2);
 	}
 
