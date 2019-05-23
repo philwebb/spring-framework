@@ -88,8 +88,8 @@ public class PropertySourceAnnotationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ConfigWithTestProfileBeans.class);
 		ctx.refresh();
-		assertTrue(ctx.containsBean("testBean"));
-		assertTrue(ctx.containsBean("testProfileBean"));
+		assertThat(ctx.containsBean("testBean")).isTrue();
+		assertThat(ctx.containsBean("testProfileBean")).isTrue();
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class PropertySourceAnnotationTests {
 			ctx.refresh();
 		}
 		catch (BeanDefinitionStoreException ex) {
-			assertTrue(ex.getCause() instanceof IllegalArgumentException);
+			assertThat(ex.getCause() instanceof IllegalArgumentException).isTrue();
 		}
 	}
 
@@ -179,7 +179,7 @@ public class PropertySourceAnnotationTests {
 			ctx.refresh();
 		}
 		catch (BeanDefinitionStoreException ex) {
-			assertTrue(ex.getCause() instanceof IllegalArgumentException);
+			assertThat(ex.getCause() instanceof IllegalArgumentException).isTrue();
 		}
 	}
 

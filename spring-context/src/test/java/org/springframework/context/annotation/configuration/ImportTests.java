@@ -259,7 +259,7 @@ public class ImportTests {
 	@DependsOn("org.springframework.context.annotation.configuration.ImportTests$InitBean")
 	static class ThirdLevel {
 		public ThirdLevel() {
-			assertTrue(InitBean.initialized);
+			assertThat(InitBean.initialized).isTrue();
 		}
 
 		@Bean

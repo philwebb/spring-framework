@@ -55,9 +55,9 @@ public class ComponentScanParserTests {
 	@Test
 	public void aspectjTypeFilter() {
 		ClassPathXmlApplicationContext context = loadContext("aspectjTypeFilterTests.xml");
-		assertTrue(context.containsBean("fooServiceImpl"));
-		assertTrue(context.containsBean("stubFooDao"));
-		assertFalse(context.containsBean("scopedProxyTestBean"));
+		assertThat(context.containsBean("fooServiceImpl")).isTrue();
+		assertThat(context.containsBean("stubFooDao")).isTrue();
+		assertThat(context.containsBean("scopedProxyTestBean")).isFalse();
 		context.close();
 	}
 
@@ -68,9 +68,9 @@ public class ComponentScanParserTests {
 		System.setProperty("scanExclude", "example..Scoped*Test*");
 		try {
 			ClassPathXmlApplicationContext context = loadContext("aspectjTypeFilterTestsWithPlaceholders.xml");
-			assertTrue(context.containsBean("fooServiceImpl"));
-			assertTrue(context.containsBean("stubFooDao"));
-			assertFalse(context.containsBean("scopedProxyTestBean"));
+			assertThat(context.containsBean("fooServiceImpl")).isTrue();
+			assertThat(context.containsBean("stubFooDao")).isTrue();
+			assertThat(context.containsBean("scopedProxyTestBean")).isFalse();
 			context.close();
 		}
 		finally {
@@ -83,14 +83,14 @@ public class ComponentScanParserTests {
 	@Test
 	public void nonMatchingResourcePattern() {
 		ClassPathXmlApplicationContext context = loadContext("nonMatchingResourcePatternTests.xml");
-		assertFalse(context.containsBean("fooServiceImpl"));
+		assertThat(context.containsBean("fooServiceImpl")).isFalse();
 		context.close();
 	}
 
 	@Test
 	public void matchingResourcePattern() {
 		ClassPathXmlApplicationContext context = loadContext("matchingResourcePatternTests.xml");
-		assertTrue(context.containsBean("fooServiceImpl"));
+		assertThat(context.containsBean("fooServiceImpl")).isTrue();
 		context.close();
 	}
 
@@ -98,7 +98,7 @@ public class ComponentScanParserTests {
 	public void componentScanWithAutowiredQualifier() {
 		ClassPathXmlApplicationContext context = loadContext("componentScanWithAutowiredQualifierTests.xml");
 		AutowiredQualifierFooService fooService = (AutowiredQualifierFooService) context.getBean("fooService");
-		assertTrue(fooService.isInitCalled());
+		assertThat(fooService.isInitCalled()).isTrue();
 		assertEquals("bar", fooService.foo(123));
 		context.close();
 	}

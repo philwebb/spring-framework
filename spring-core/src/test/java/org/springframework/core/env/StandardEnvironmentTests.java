@@ -377,21 +377,21 @@ public class StandardEnvironmentTests {
 	@Test
 	public void suppressGetenvAccessThroughSystemProperty() {
 		System.setProperty("spring.getenv.ignore", "true");
-		assertTrue(environment.getSystemEnvironment().isEmpty());
+		assertThat(environment.getSystemEnvironment().isEmpty()).isTrue();
 		System.clearProperty("spring.getenv.ignore");
 	}
 
 	@Test
 	public void suppressGetenvAccessThroughSpringProperty() {
 		SpringProperties.setProperty("spring.getenv.ignore", "true");
-		assertTrue(environment.getSystemEnvironment().isEmpty());
+		assertThat(environment.getSystemEnvironment().isEmpty()).isTrue();
 		SpringProperties.setProperty("spring.getenv.ignore", null);
 	}
 
 	@Test
 	public void suppressGetenvAccessThroughSpringFlag() {
 		SpringProperties.setFlag("spring.getenv.ignore");
-		assertTrue(environment.getSystemEnvironment().isEmpty());
+		assertThat(environment.getSystemEnvironment().isEmpty()).isTrue();
 		SpringProperties.setProperty("spring.getenv.ignore", null);
 	}
 

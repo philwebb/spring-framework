@@ -238,9 +238,9 @@ public class UriComponentsBuilderTests {
 	@Test  // SPR-11970
 	public void fromUriStringNoPathWithReservedCharInQuery() {
 		UriComponents result = UriComponentsBuilder.fromUriString("https://example.com?foo=bar@baz").build();
-		assertTrue(StringUtils.isEmpty(result.getUserInfo()));
+		assertThat(StringUtils.isEmpty(result.getUserInfo())).isTrue();
 		assertEquals("example.com", result.getHost());
-		assertTrue(result.getQueryParams().containsKey("foo"));
+		assertThat(result.getQueryParams().containsKey("foo")).isTrue();
 		assertEquals("bar@baz", result.getQueryParams().getFirst("foo"));
 	}
 
@@ -949,8 +949,8 @@ public class UriComponentsBuilderTests {
 		UriComponents uri1 = UriComponentsBuilder.fromUriString("http://test.com").build().normalize();
 		UriComponents uri2 = UriComponentsBuilder.fromUriString("http://test.com/").build();
 
-		assertTrue(uri1.getPathSegments().isEmpty());
-		assertTrue(uri2.getPathSegments().isEmpty());
+		assertThat(uri1.getPathSegments().isEmpty()).isTrue();
+		assertThat(uri2.getPathSegments().isEmpty()).isTrue();
 		assertNotEquals(uri1, uri2);
 	}
 

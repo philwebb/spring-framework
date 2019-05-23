@@ -216,7 +216,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
 		assertSame(modelAttrByConvention, bindingResult.getTarget());
 
-		assertTrue(model.get("customArg") instanceof Color);
+		assertThat(model.get("customArg") instanceof Color).isTrue();
 		assertEquals(User.class, model.get("user").getClass());
 		assertEquals(OtherUser.class, model.get("otherUser").getClass());
 
@@ -297,7 +297,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
 		assertSame(modelAttrByConvention, bindingResult.getTarget());
 
-		assertTrue(model.get("customArg") instanceof Color);
+		assertThat(model.get("customArg") instanceof Color).isTrue();
 		assertEquals(User.class, model.get("user").getClass());
 		assertEquals(OtherUser.class, model.get("otherUser").getClass());
 
@@ -404,7 +404,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleAndCompleteSession", SessionStatus.class);
 		handlerAdapter.handle(request, response, handlerMethod);
 
-		assertFalse(request.getSession().getAttributeNames().hasMoreElements());
+		assertThat(request.getSession().getAttributeNames().hasMoreElements()).isFalse();
 	}
 
 	private HandlerMethod handlerMethod(String methodName, Class<?>... paramTypes) throws Exception {

@@ -260,8 +260,8 @@ public class StompSubProtocolHandlerTests {
 
 		assertEquals(1, this.session.getSentMessages().size());
 		WebSocketMessage<?> textMessage = this.session.getSentMessages().get(0);
-		assertTrue(((String) textMessage.getPayload()).contains("destination:/user/queue/foo\n"));
-		assertFalse(((String) textMessage.getPayload()).contains(SimpMessageHeaderAccessor.ORIGINAL_DESTINATION));
+		assertThat(((String) textMessage.getPayload()).contains("destination:/user/queue/foo\n")).isTrue();
+		assertThat(((String) textMessage.getPayload()).contains(SimpMessageHeaderAccessor.ORIGINAL_DESTINATION)).isFalse();
 	}
 
 	// SPR-12475
@@ -283,7 +283,7 @@ public class StompSubProtocolHandlerTests {
 
 		assertEquals(1, this.session.getSentMessages().size());
 		WebSocketMessage<?> webSocketMessage = this.session.getSentMessages().get(0);
-		assertTrue(webSocketMessage instanceof BinaryMessage);
+		assertThat(webSocketMessage instanceof BinaryMessage).isTrue();
 
 		// Empty payload
 
@@ -293,7 +293,7 @@ public class StompSubProtocolHandlerTests {
 
 		assertEquals(2, this.session.getSentMessages().size());
 		webSocketMessage = this.session.getSentMessages().get(1);
-		assertTrue(webSocketMessage instanceof TextMessage);
+		assertThat(webSocketMessage instanceof TextMessage).isTrue();
 	}
 
 	@Test
@@ -344,7 +344,7 @@ public class StompSubProtocolHandlerTests {
 		TextMessage message = StompTextMessageBuilder.create(StompCommand.CONNECT).build();
 		handler.handleMessageFromClient(this.session, message, channel);
 		assertThat(mutable.get()).isNotNull();
-		assertTrue(mutable.get());
+		assertThat(mutable.get()).isTrue();
 	}
 
 	@Test
@@ -365,7 +365,7 @@ public class StompSubProtocolHandlerTests {
 		TextMessage message = StompTextMessageBuilder.create(StompCommand.CONNECT).build();
 		handler.handleMessageFromClient(this.session, message, channel);
 		assertThat(mutable.get()).isNotNull();
-		assertFalse(mutable.get());
+		assertThat(mutable.get()).isFalse();
 	}
 
 	@Test // SPR-14690
@@ -401,7 +401,7 @@ public class StompSubProtocolHandlerTests {
 		verifyZeroInteractions(this.channel);
 		assertEquals(1, this.session.getSentMessages().size());
 		TextMessage actual = (TextMessage) this.session.getSentMessages().get(0);
-		assertTrue(actual.getPayload().startsWith("ERROR"));
+		assertThat(actual.getPayload().startsWith("ERROR")).isTrue();
 	}
 
 	@Test

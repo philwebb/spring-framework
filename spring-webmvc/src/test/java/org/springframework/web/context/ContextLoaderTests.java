@@ -82,8 +82,8 @@ public class ContextLoaderTests {
 		assertTrue("Has rod", context.containsBean("rod"));
 		assertTrue("Has kerry", context.containsBean("kerry"));
 		assertTrue("Not destroyed", !lb.isDestroyed());
-		assertFalse(context.containsBean("beans1.bean1"));
-		assertFalse(context.containsBean("beans1.bean2"));
+		assertThat(context.containsBean("beans1.bean1")).isFalse();
+		assertThat(context.containsBean("beans1.bean2")).isFalse();
 		listener.contextDestroyed(event);
 		assertTrue("Destroyed", lb.isDestroyed());
 		assertNull(sc.getAttribute(contextAttr));

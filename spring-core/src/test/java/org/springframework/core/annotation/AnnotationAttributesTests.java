@@ -67,7 +67,7 @@ public class AnnotationAttributesTests {
 		assertThat(attributes.getBoolean("bool1")).isEqualTo(true);
 		assertThat(attributes.getBoolean("bool2")).isEqualTo(false);
 		assertThat(attributes.<Color>getEnum("color")).isEqualTo(Color.RED);
-		assertTrue(attributes.getClass("class").equals(Integer.class));
+		assertThat(attributes.getClass("class").equals(Integer.class)).isTrue();
 		assertThat(attributes.getClassArray("classes")).isEqualTo(new Class<?>[] {Number.class, Short.class, Integer.class});
 		assertThat(attributes.<Integer>getNumber("number")).isEqualTo(42);
 		assertThat(attributes.getAnnotation("anno").<Integer>getNumber("value")).isEqualTo(10);

@@ -115,8 +115,8 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void hasMappingForPattern() {
-		assertTrue(this.registry.hasMappingForPattern("/resources/**"));
-		assertFalse(this.registry.hasMappingForPattern("/whatever"));
+		assertThat(this.registry.hasMappingForPattern("/resources/**")).isTrue();
+		assertThat(this.registry.hasMappingForPattern("/whatever")).isFalse();
 	}
 
 	@Test

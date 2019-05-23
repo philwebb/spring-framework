@@ -201,7 +201,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		Object result = processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null);
 
-		assertTrue(result instanceof HttpEntity);
+		assertThat(result instanceof HttpEntity).isTrue();
 		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
 		assertEquals("Invalid argument", body, ((HttpEntity<?>) result).getBody());
 	}
@@ -223,7 +223,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		Object result = processor.resolveArgument(paramRequestEntity, mavContainer, webRequest, null);
 
-		assertTrue(result instanceof RequestEntity);
+		assertThat(result instanceof RequestEntity).isTrue();
 		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
 		RequestEntity<?> requestEntity = (RequestEntity<?>) result;
 		assertEquals("Invalid method", HttpMethod.GET, requestEntity.getMethod());
@@ -264,7 +264,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringHttpMessageConverter).write(eq(body), eq(accepted), isA(HttpOutputMessage.class));
 	}
 
@@ -278,7 +278,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntityProduces, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringHttpMessageConverter).write(eq(body), eq(MediaType.TEXT_HTML), isA(HttpOutputMessage.class));
 	}
 
@@ -300,7 +300,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		verify(stringHttpMessageConverter).write(eq("Foo"), eq(MediaType.TEXT_HTML), isA(HttpOutputMessage.class));
 	}
 
@@ -352,7 +352,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		assertEquals("headerValue", servletResponse.getHeader("headerName"));
 	}
 
@@ -367,7 +367,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		ArgumentCaptor<HttpOutputMessage> outputMessage = ArgumentCaptor.forClass(HttpOutputMessage.class);
 		verify(stringHttpMessageConverter).write(eq("body"), eq(TEXT_PLAIN), outputMessage.capture());
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		assertEquals("headerValue", outputMessage.getValue().getHeaders().get("header").get(0));
 	}
 
@@ -670,7 +670,7 @@ public class HttpEntityMethodProcessorMockTests {
 		initStringMessageConversion(TEXT_PLAIN);
 		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
 
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		assertEquals(Arrays.asList(expected), servletResponse.getHeaders("Vary"));
 		verify(stringHttpMessageConverter).write(eq("Foo"), eq(TEXT_PLAIN), isA(HttpOutputMessage.class));
 	}
@@ -690,7 +690,7 @@ public class HttpEntityMethodProcessorMockTests {
 			throws IOException {
 
 		assertEquals(status.value(), servletResponse.getStatus());
-		assertTrue(mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).isTrue();
 		if (body != null) {
 			assertResponseBody(body);
 		}

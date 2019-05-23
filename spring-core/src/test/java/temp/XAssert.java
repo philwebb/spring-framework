@@ -34,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class XAssert  {
 
-
     /**
      * Asserts that a condition is true. If it isn't it throws an
      * {@link AssertionError} with the given message.
@@ -44,9 +43,7 @@ public class XAssert  {
      * @param condition condition to be checked
      */
     public static void assertTrue(String message, boolean condition) {
-        if (!condition) {
-            fail(message);
-        }
+    	assertThat(condition).as(message).isTrue();
     }
 
 
@@ -59,17 +56,7 @@ public class XAssert  {
      * @param condition condition to be checked
      */
     public static void assertFalse(String message, boolean condition) {
-        assertTrue(message, !condition);
-    }
-
-    /**
-     * Asserts that a condition is false. If it isn't it throws an
-     * {@link AssertionError} without a message.
-     *
-     * @param condition condition to be checked
-     */
-    public static void assertFalse(boolean condition) {
-        assertFalse(null, condition);
+        assertThat(!condition).as(message).isTrue();
     }
 
     /**
@@ -294,7 +281,7 @@ public class XAssert  {
      * actual values
      */
     public static void assertArrayEquals(Object[] expecteds, Object[] actuals) {
-        assertArrayEquals(null, expecteds, actuals);
+    	assertThat(actuals).isEqualTo(expecteds);
     }
 
     /**
@@ -707,17 +694,7 @@ public class XAssert  {
      * @param object Object to check or <code>null</code>
      */
     public static void assertNotNull(String message, Object object) {
-        assertTrue(message, object != null);
-    }
-
-    /**
-     * Asserts that an object isn't null. If it is an {@link AssertionError} is
-     * thrown.
-     *
-     * @param object Object to check or <code>null</code>
-     */
-    public static void assertNotNull(Object object) {
-        assertNotNull(null, object);
+        assertThat(object != null).as(message).isTrue();
     }
 
     /**

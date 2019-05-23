@@ -112,8 +112,8 @@ public class MockFilterChainTests {
 
 		chain.doFilter(this.request, this.response);
 
-		assertTrue(filter1.invoked);
-		assertTrue(filter2.invoked);
+		assertThat(filter1.invoked).isTrue();
+		assertThat(filter2.invoked).isTrue();
 
 		verify(servlet).service(this.request, this.response);
 

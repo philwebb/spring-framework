@@ -119,7 +119,7 @@ public class WebSocketStompClientIntegrationTests {
 		TestHandler testHandler = new TestHandler("/topic/foo", "payload");
 		this.stompClient.connect(url, testHandler);
 
-		assertTrue(testHandler.awaitForMessageCount(1, 5000));
+		assertThat(testHandler.awaitForMessageCount(1, 5000)).isTrue();
 		assertThat(testHandler.getReceived()).containsExactly("payload");
 	}
 

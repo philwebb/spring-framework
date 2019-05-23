@@ -199,7 +199,7 @@ public class JdbcNamespaceIntegrationTests {
 			for (String dataSourceName : dataSources) {
 				DataSource dataSource = context.getBean(dataSourceName, DataSource.class);
 				assertNumRowsInTestTable(new JdbcTemplate(dataSource), count);
-				assertTrue(dataSource instanceof AbstractDriverBasedDataSource);
+				assertThat(dataSource instanceof AbstractDriverBasedDataSource).isTrue();
 				AbstractDriverBasedDataSource adbDataSource = (AbstractDriverBasedDataSource) dataSource;
 				assertThat(adbDataSource.getUrl()).contains(dataSourceName);
 			}
@@ -214,9 +214,9 @@ public class JdbcNamespaceIntegrationTests {
 		try {
 			DataSource dataSource = context.getBean(DataSource.class);
 			assertNumRowsInTestTable(new JdbcTemplate(dataSource), 1);
-			assertTrue(dataSource instanceof AbstractDriverBasedDataSource);
+			assertThat(dataSource instanceof AbstractDriverBasedDataSource).isTrue();
 			AbstractDriverBasedDataSource adbDataSource = (AbstractDriverBasedDataSource) dataSource;
-			assertTrue(urlPredicate.test(adbDataSource.getUrl()));
+			assertThat(urlPredicate.test(adbDataSource.getUrl())).isTrue();
 		}
 		finally {
 			context.close();

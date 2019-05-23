@@ -66,12 +66,12 @@ public class ExpressionEvaluatorTests {
 		assertEquals(2, ops.size());
 		Iterator<CacheOperation> it = ops.iterator();
 		CacheOperation next = it.next();
-		assertTrue(next instanceof CacheableOperation);
-		assertTrue(next.getCacheNames().contains("test"));
+		assertThat(next instanceof CacheableOperation).isTrue();
+		assertThat(next.getCacheNames().contains("test")).isTrue();
 		assertEquals("#a", next.getKey());
 		next = it.next();
-		assertTrue(next instanceof CacheableOperation);
-		assertTrue(next.getCacheNames().contains("test"));
+		assertThat(next instanceof CacheableOperation).isTrue();
+		assertThat(next.getCacheNames().contains("test")).isTrue();
 		assertEquals("#b", next.getKey());
 	}
 

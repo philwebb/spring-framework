@@ -108,25 +108,25 @@ public class GroovyMarkupViewTests {
 	@Test
 	public void checkResource() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("test.tpl");
-		assertTrue(view.checkResource(Locale.US));
+		assertThat(view.checkResource(Locale.US)).isTrue();
 	}
 
 	@Test
 	public void checkMissingResource() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("missing.tpl");
-		assertFalse(view.checkResource(Locale.US));
+		assertThat(view.checkResource(Locale.US)).isFalse();
 	}
 
 	@Test
 	public void checkI18nResource() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("i18n.tpl");
-		assertTrue(view.checkResource(Locale.FRENCH));
+		assertThat(view.checkResource(Locale.FRENCH)).isTrue();
 	}
 
 	@Test
 	public void checkI18nResourceMissingLocale() throws Exception {
 		GroovyMarkupView view = createViewWithUrl("i18n.tpl");
-		assertTrue(view.checkResource(Locale.CHINESE));
+		assertThat(view.checkResource(Locale.CHINESE)).isTrue();
 	}
 
 	@Test

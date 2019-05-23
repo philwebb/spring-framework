@@ -94,7 +94,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor(message);
 		accessor.removeHeader("foo");
 		Map<String, Object> headers = accessor.toMap();
-		assertFalse(headers.containsKey("foo"));
+		assertThat(headers.containsKey("foo")).isFalse();
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor(message);
 		accessor.removeHeader("foo");
 		Map<String, Object> headers = accessor.toMap();
-		assertFalse(headers.containsKey("foo"));
+		assertThat(headers.containsKey("foo")).isFalse();
 	}
 
 	@Test

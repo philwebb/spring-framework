@@ -53,23 +53,23 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void singularAnnotation() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "singular", 1);
-		assertTrue(ops.iterator().next() instanceof CacheableOperation);
+		assertThat(ops.iterator().next() instanceof CacheableOperation).isTrue();
 	}
 
 	@Test
 	public void multipleAnnotation() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "multiple", 2);
 		Iterator<CacheOperation> it = ops.iterator();
-		assertTrue(it.next() instanceof CacheableOperation);
-		assertTrue(it.next() instanceof CacheEvictOperation);
+		assertThat(it.next() instanceof CacheableOperation).isTrue();
+		assertThat(it.next() instanceof CacheEvictOperation).isTrue();
 	}
 
 	@Test
 	public void caching() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "caching", 2);
 		Iterator<CacheOperation> it = ops.iterator();
-		assertTrue(it.next() instanceof CacheableOperation);
-		assertTrue(it.next() instanceof CacheEvictOperation);
+		assertThat(it.next() instanceof CacheableOperation).isTrue();
+		assertThat(it.next() instanceof CacheEvictOperation).isTrue();
 	}
 
 	@Test
@@ -80,20 +80,20 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void singularStereotype() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "singleStereotype", 1);
-		assertTrue(ops.iterator().next() instanceof CacheEvictOperation);
+		assertThat(ops.iterator().next() instanceof CacheEvictOperation).isTrue();
 	}
 
 	@Test
 	public void multipleStereotypes() {
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "multipleStereotype", 3);
 		Iterator<CacheOperation> it = ops.iterator();
-		assertTrue(it.next() instanceof CacheableOperation);
+		assertThat(it.next() instanceof CacheableOperation).isTrue();
 		CacheOperation next = it.next();
-		assertTrue(next instanceof CacheEvictOperation);
-		assertTrue(next.getCacheNames().contains("foo"));
+		assertThat(next instanceof CacheEvictOperation).isTrue();
+		assertThat(next.getCacheNames().contains("foo")).isTrue();
 		next = it.next();
-		assertTrue(next instanceof CacheEvictOperation);
-		assertTrue(next.getCacheNames().contains("bar"));
+		assertThat(next instanceof CacheEvictOperation).isTrue();
+		assertThat(next.getCacheNames().contains("bar")).isTrue();
 	}
 
 	@Test
@@ -255,7 +255,7 @@ public class AnnotationCacheOperationSourceTests {
 		Collection<CacheOperation> ops = getOps(InterfaceCacheConfig.class, "interfaceCacheableOverride");
 		assertSame(1, ops.size());
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertTrue(cacheOperation instanceof CacheableOperation);
+		assertThat(cacheOperation instanceof CacheableOperation).isTrue();
 	}
 
 	@Test

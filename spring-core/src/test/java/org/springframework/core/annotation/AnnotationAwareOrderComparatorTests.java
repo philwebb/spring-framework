@@ -44,8 +44,8 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B());
 		list.add(new A());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof A);
-		assertTrue(list.get(1) instanceof B);
+		assertThat(list.get(0) instanceof A).isTrue();
+		assertThat(list.get(1) instanceof B).isTrue();
 	}
 
 	@Test
@@ -54,8 +54,8 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B2());
 		list.add(new A2());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof A2);
-		assertTrue(list.get(1) instanceof B2);
+		assertThat(list.get(0) instanceof A2).isTrue();
+		assertThat(list.get(1) instanceof B2).isTrue();
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B());
 		list.add(new A2());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof A2);
-		assertTrue(list.get(1) instanceof B);
+		assertThat(list.get(0) instanceof A2).isTrue();
+		assertThat(list.get(1) instanceof B).isTrue();
 	}
 
 	@Test
@@ -74,8 +74,8 @@ public class AnnotationAwareOrderComparatorTests {
 		list.add(new B());
 		list.add(new C());
 		AnnotationAwareOrderComparator.sort(list);
-		assertTrue(list.get(0) instanceof C);
-		assertTrue(list.get(1) instanceof B);
+		assertThat(list.get(0) instanceof C).isTrue();
+		assertThat(list.get(1) instanceof B).isTrue();
 	}
 
 	@Test

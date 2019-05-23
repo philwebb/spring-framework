@@ -60,7 +60,7 @@ public class ImportResourceTests {
 	@Test
 	public void importXmlIsInheritedFromSuperclassDeclarations() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(FirstLevelSubConfig.class);
-		assertTrue(ctx.containsBean("xmlDeclaredBean"));
+		assertThat(ctx.containsBean("xmlDeclaredBean")).isTrue();
 		ctx.close();
 	}
 
@@ -76,7 +76,7 @@ public class ImportResourceTests {
 	public void importXmlWithNamespaceConfig() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ImportXmlWithAopNamespaceConfig.class);
 		Object bean = ctx.getBean("proxiedXmlBean");
-		assertTrue(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		ctx.close();
 	}
 
@@ -113,7 +113,7 @@ public class ImportResourceTests {
 	@Test
 	public void importNonXmlResource() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ImportNonXmlResourceConfig.class);
-		assertTrue(ctx.containsBean("propertiesDeclaredBean"));
+		assertThat(ctx.containsBean("propertiesDeclaredBean")).isTrue();
 		ctx.close();
 	}
 

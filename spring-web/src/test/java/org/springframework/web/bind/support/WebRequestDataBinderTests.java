@@ -92,11 +92,11 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_postProcessed", "visible");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -109,11 +109,11 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_postProcessed", "visible");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -125,11 +125,11 @@ public class WebRequestDataBinderTests {
 		request.addParameter("!postProcessed", "off");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	// SPR-13502
@@ -162,15 +162,15 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_postProcessed", "visible");
 		request.addParameter("postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isTrue();
 
 		request.removeParameter("!postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(target.isPostProcessed());
+		assertThat(target.isPostProcessed()).isFalse();
 	}
 
 	@Test
@@ -184,15 +184,15 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_spouse.postProcessed", "visible");
 		request.addParameter("spouse.postProcessed", "on");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(((TestBean) target.getSpouse()).isPostProcessed());
+		assertThat(((TestBean) target.getSpouse()).isPostProcessed()).isTrue();
 
 		request.removeParameter("spouse.postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertTrue(((TestBean) target.getSpouse()).isPostProcessed());
+		assertThat(((TestBean) target.getSpouse()).isPostProcessed()).isTrue();
 
 		request.removeParameter("!spouse.postProcessed");
 		binder.bind(new ServletWebRequest(request));
-		assertFalse(((TestBean) target.getSpouse()).isPostProcessed());
+		assertThat(((TestBean) target.getSpouse()).isPostProcessed()).isFalse();
 	}
 
 	@Test

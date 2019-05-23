@@ -150,19 +150,19 @@ public class MutablePropertySourcesTests {
 		sources.addLast(new MockPropertySource("test"));
 
 		Iterator<PropertySource<?>> it = sources.iterator();
-		assertTrue(it.hasNext());
+		assertThat(it.hasNext()).isTrue();
 		assertEquals("test", it.next().getName());
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
 				it::remove);
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 	}
 
 	@Test
 	public void iteratorIsEmptyForEmptySources() {
 		MutablePropertySources sources = new MutablePropertySources();
 		Iterator<PropertySource<?>> it = sources.iterator();
-		assertFalse(it.hasNext());
+		assertThat(it.hasNext()).isFalse();
 	}
 
 	@Test

@@ -98,7 +98,7 @@ public class GroovyMarkupConfigurerTests {
 		MarkupTemplateEngine markupEngine = (MarkupTemplateEngine) engine;
 		TemplateConfiguration configuration = markupEngine.getTemplateConfiguration();
 		assertThat(configuration).isNotNull();
-		assertFalse(configuration.isCacheTemplates());
+		assertThat(configuration.isCacheTemplates()).isFalse();
 	}
 
 	@Test

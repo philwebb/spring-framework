@@ -56,8 +56,8 @@ public class MappingJackson2MessageConverterTests {
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
 		assertThat(converter.getSupportedMimeTypes())
 				.contains(new MimeType("application", "json"));
-		assertFalse(converter.getObjectMapper().getDeserializationConfig()
-				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+		assertThat(converter.getObjectMapper().getDeserializationConfig()
+		.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 	}
 
 	@Test  // SPR-12724
@@ -65,8 +65,8 @@ public class MappingJackson2MessageConverterTests {
 		MimeType mimetype = new MimeType("application", "xml", StandardCharsets.UTF_8);
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter(mimetype);
 		assertThat(converter.getSupportedMimeTypes()).contains(mimetype);
-		assertFalse(converter.getObjectMapper().getDeserializationConfig()
-				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+		assertThat(converter.getObjectMapper().getDeserializationConfig()
+		.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 	}
 
 	@Test  // SPR-12724
@@ -75,8 +75,8 @@ public class MappingJackson2MessageConverterTests {
 		MimeType xmlMimetype = new MimeType("application", "xml", StandardCharsets.UTF_8);
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter(jsonMimetype, xmlMimetype);
 		assertThat(converter.getSupportedMimeTypes()).contains(jsonMimetype, xmlMimetype);
-		assertFalse(converter.getObjectMapper().getDeserializationConfig()
-				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+		assertThat(converter.getObjectMapper().getDeserializationConfig()
+		.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)).isFalse();
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class MappingJackson2MessageConverterTests {
 		assertEquals("Foo", actual.getString());
 		assertEquals(42, actual.getNumber());
 		assertEquals(42F, actual.getFraction(), 0F);
-		assertArrayEquals(new String[]{"Foo", "Bar"}, actual.getArray());
+		assertThat(actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(actual.isBool()).isTrue();
 		assertArrayEquals(new byte[]{0x1, 0x2}, actual.getBytes());
 	}

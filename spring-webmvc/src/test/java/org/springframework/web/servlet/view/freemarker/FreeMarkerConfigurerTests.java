@@ -62,7 +62,7 @@ public class FreeMarkerConfigurerTests {
 		fcfb.setTemplateLoaderPath("file:/mydir");
 		fcfb.afterPropertiesSet();
 		Configuration cfg = fcfb.getObject();
-		assertTrue(cfg.getTemplateLoader() instanceof SpringTemplateLoader);
+		assertThat(cfg.getTemplateLoader() instanceof SpringTemplateLoader).isTrue();
 	}
 
 	@Test

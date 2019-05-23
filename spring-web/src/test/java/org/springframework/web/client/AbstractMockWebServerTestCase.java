@@ -122,7 +122,7 @@ public class AbstractMockWebServerTestCase {
 
 	private MockResponse multipartRequest(RecordedRequest request) {
 		MediaType mediaType = MediaType.parseMediaType(request.getHeader("Content-Type"));
-		assertTrue(mediaType.isCompatibleWith(MediaType.MULTIPART_FORM_DATA));
+		assertThat(mediaType.isCompatibleWith(MediaType.MULTIPART_FORM_DATA)).isTrue();
 		String boundary = mediaType.getParameter("boundary");
 		Buffer body = request.getBody();
 		try {
@@ -140,27 +140,27 @@ public class AbstractMockWebServerTestCase {
 	private void assertPart(Buffer buffer, String disposition, String boundary, String name,
 			String contentType, String value) throws EOFException {
 
-		assertTrue(buffer.readUtf8Line().contains("--" + boundary));
+		assertThat(buffer.readUtf8Line().contains("--" + boundary)).isTrue();
 		String line = buffer.readUtf8Line();
-		assertTrue(line.contains("Content-Disposition: "+ disposition));
-		assertTrue(line.contains("name=\""+ name + "\""));
-		assertTrue(buffer.readUtf8Line().startsWith("Content-Type: "+contentType));
-		assertTrue(buffer.readUtf8Line().equals("Content-Length: " + value.length()));
-		assertTrue(buffer.readUtf8Line().equals(""));
-		assertTrue(buffer.readUtf8Line().equals(value));
+		assertThat(line.contains("Content-Disposition: "+ disposition)).isTrue();
+		assertThat(line.contains("name=\""+ name + "\"")).isTrue();
+		assertThat(buffer.readUtf8Line().startsWith("Content-Type: "+contentType)).isTrue();
+		assertThat(buffer.readUtf8Line().equals("Content-Length: " + value.length())).isTrue();
+		assertThat(buffer.readUtf8Line().equals("")).isTrue();
+		assertThat(buffer.readUtf8Line().equals(value)).isTrue();
 	}
 
 	private void assertFilePart(Buffer buffer, String disposition, String boundary, String name,
 			String filename, String contentType) throws EOFException {
 
-		assertTrue(buffer.readUtf8Line().contains("--" + boundary));
+		assertThat(buffer.readUtf8Line().contains("--" + boundary)).isTrue();
 		String line = buffer.readUtf8Line();
-		assertTrue(line.contains("Content-Disposition: "+ disposition));
-		assertTrue(line.contains("name=\""+ name + "\""));
-		assertTrue(line.contains("filename=\""+ filename + "\""));
-		assertTrue(buffer.readUtf8Line().startsWith("Content-Type: "+contentType));
-		assertTrue(buffer.readUtf8Line().startsWith("Content-Length: "));
-		assertTrue(buffer.readUtf8Line().equals(""));
+		assertThat(line.contains("Content-Disposition: "+ disposition)).isTrue();
+		assertThat(line.contains("name=\""+ name + "\"")).isTrue();
+		assertThat(line.contains("filename=\""+ filename + "\"")).isTrue();
+		assertThat(buffer.readUtf8Line().startsWith("Content-Type: "+contentType)).isTrue();
+		assertThat(buffer.readUtf8Line().startsWith("Content-Length: ")).isTrue();
+		assertThat(buffer.readUtf8Line().equals("")).isTrue();
 		assertThat(buffer.readUtf8Line()).isNotNull();
 	}
 

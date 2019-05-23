@@ -53,8 +53,8 @@ public class BeanPropertySqlParameterSourceTests {
 	@Test
 	public void successfulPropertyAccess() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
-		assertTrue(Arrays.asList(source.getReadablePropertyNames()).contains("name"));
-		assertTrue(Arrays.asList(source.getReadablePropertyNames()).contains("age"));
+		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("name")).isTrue();
+		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("age")).isTrue();
 		assertEquals("tb", source.getValue("name"));
 		assertEquals(99, source.getValue("age"));
 		assertEquals(Types.VARCHAR, source.getSqlType("name"));
@@ -74,7 +74,7 @@ public class BeanPropertySqlParameterSourceTests {
 	@Test
 	public void hasValueWhereTheUnderlyingBeanHasNoSuchProperty() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean());
-		assertFalse(source.hasValue("thisPropertyDoesNotExist"));
+		assertThat(source.hasValue("thisPropertyDoesNotExist")).isFalse();
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class BeanPropertySqlParameterSourceTests {
 	@Test
 	public void hasValueWhereTheUnderlyingBeanPropertyIsNotReadable() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new NoReadableProperties());
-		assertFalse(source.hasValue("noOp"));
+		assertThat(source.hasValue("noOp")).isFalse();
 	}
 
 	@Test

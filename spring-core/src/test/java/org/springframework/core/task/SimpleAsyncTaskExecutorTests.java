@@ -40,7 +40,7 @@ public class SimpleAsyncTaskExecutorTests {
 	public void cannotExecuteWhenConcurrencyIsSwitchedOff() throws Exception {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
 		executor.setConcurrencyLimit(ConcurrencyThrottleSupport.NO_CONCURRENCY);
-		assertTrue(executor.isThrottleActive());
+		assertThat(executor.isThrottleActive()).isTrue();
 		assertThatIllegalStateException().isThrownBy(() ->
 				executor.execute(new NoOpRunnable()));
 	}

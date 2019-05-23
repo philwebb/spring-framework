@@ -291,7 +291,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		assertEquals("wibble", newString);
 
 		// not writable
-		assertFalse(e.isWritable(new StandardEvaluationContext()));
+		assertThat(e.isWritable(new StandardEvaluationContext())).isFalse();
 
 		// ast
 		assertEquals("new String('wibble')", e.toStringAST());
@@ -373,7 +373,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 	@Test
 	public void testTernaryOperator04() {
 		Expression e = parser.parseExpression("1>2?3:4");
-		assertFalse(e.isWritable(context));
+		assertThat(e.isWritable(context)).isFalse();
 	}
 
 	@Test
@@ -452,7 +452,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 	@Test
 	public void testTypeReferencesAndQualifiedIdentifierCaching() {
 		SpelExpression e = (SpelExpression) parser.parseExpression("T(java.lang.String)");
-		assertFalse(e.isWritable(new StandardEvaluationContext()));
+		assertThat(e.isWritable(new StandardEvaluationContext())).isFalse();
 		assertEquals("T(java.lang.String)", e.toStringAST());
 		assertEquals(String.class, e.getValue(Class.class));
 		// use cached QualifiedIdentifier:
@@ -471,7 +471,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 		assertThat(e.getValue(ctx, Boolean.class)).isTrue();
 		ctx.setVariable("a", (byte) 9);
 		ctx.setVariable("b", (byte) 6);
-		assertFalse(e.getValue(ctx, Boolean.class));
+		assertThat(e.getValue(ctx, Boolean.class)).isFalse();
 		ctx.setVariable("a", 10L);
 		ctx.setVariable("b", (short) 30);
 		assertThat(e.getValue(ctx, Boolean.class)).isTrue();

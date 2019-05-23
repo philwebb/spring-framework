@@ -52,29 +52,29 @@ public class ResourceRegionHttpMessageConverterTests {
 
 	@Test
 	public void canReadResource() {
-		assertFalse(converter.canRead(Resource.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canRead(Resource.class, MediaType.ALL));
-		assertFalse(converter.canRead(List.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canRead(List.class, MediaType.ALL));
+		assertThat(converter.canRead(Resource.class, MediaType.APPLICATION_OCTET_STREAM)).isFalse();
+		assertThat(converter.canRead(Resource.class, MediaType.ALL)).isFalse();
+		assertThat(converter.canRead(List.class, MediaType.APPLICATION_OCTET_STREAM)).isFalse();
+		assertThat(converter.canRead(List.class, MediaType.ALL)).isFalse();
 	}
 
 	@Test
 	public void canWriteResource() {
-		assertTrue(converter.canWrite(ResourceRegion.class, null, MediaType.APPLICATION_OCTET_STREAM));
-		assertTrue(converter.canWrite(ResourceRegion.class, null, MediaType.ALL));
-		assertFalse(converter.canWrite(Object.class, null, MediaType.ALL));
+		assertThat(converter.canWrite(ResourceRegion.class, null, MediaType.APPLICATION_OCTET_STREAM)).isTrue();
+		assertThat(converter.canWrite(ResourceRegion.class, null, MediaType.ALL)).isTrue();
+		assertThat(converter.canWrite(Object.class, null, MediaType.ALL)).isFalse();
 	}
 
 	@Test
 	public void canWriteResourceCollection() {
 		Type resourceRegionList = new ParameterizedTypeReference<List<ResourceRegion>>() {}.getType();
-		assertTrue(converter.canWrite(resourceRegionList, null, MediaType.APPLICATION_OCTET_STREAM));
-		assertTrue(converter.canWrite(resourceRegionList, null, MediaType.ALL));
+		assertThat(converter.canWrite(resourceRegionList, null, MediaType.APPLICATION_OCTET_STREAM)).isTrue();
+		assertThat(converter.canWrite(resourceRegionList, null, MediaType.ALL)).isTrue();
 
-		assertFalse(converter.canWrite(List.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canWrite(List.class, MediaType.ALL));
+		assertThat(converter.canWrite(List.class, MediaType.APPLICATION_OCTET_STREAM)).isFalse();
+		assertThat(converter.canWrite(List.class, MediaType.ALL)).isFalse();
 		Type resourceObjectList = new ParameterizedTypeReference<List<Object>>() {}.getType();
-		assertFalse(converter.canWrite(resourceObjectList, null, MediaType.ALL));
+		assertThat(converter.canWrite(resourceObjectList, null, MediaType.ALL)).isFalse();
 	}
 
 	@Test

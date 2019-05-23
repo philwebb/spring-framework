@@ -212,15 +212,13 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean(BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertTrue(context.getBeanFactory().containsSingleton("annotationConfigApplicationContextTests.BeanA"));
+		assertThat(context.getBeanFactory().containsSingleton("annotationConfigApplicationContextTests.BeanA")).isTrue();
 		assertSame(context.getBean(BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
 		assertSame(context, context.getBean(BeanB.class).applicationContext);
 
-		assertArrayEquals(new String[] {"annotationConfigApplicationContextTests.BeanA"},
-				context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanB"));
-		assertArrayEquals(new String[] {"annotationConfigApplicationContextTests.BeanA"},
-				context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanC"));
+		assertThat(context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanB")).isEqualTo(new String[] {"annotationConfigApplicationContextTests.BeanA"});
+		assertThat(context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanC")).isEqualTo(new String[] {"annotationConfigApplicationContextTests.BeanA"});
 	}
 
 	@Test
@@ -233,7 +231,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean(BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertFalse(context.getBeanFactory().containsSingleton("annotationConfigApplicationContextTests.BeanA"));
+		assertThat(context.getBeanFactory().containsSingleton("annotationConfigApplicationContextTests.BeanA")).isFalse();
 		assertSame(context.getBean(BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean(BeanC.class), context.getBean(BeanA.class).c);
 		assertSame(context, context.getBean(BeanB.class).applicationContext);
@@ -248,7 +246,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("c", BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertTrue(context.getBeanFactory().containsSingleton("a"));
+		assertThat(context.getBeanFactory().containsSingleton("a")).isTrue();
 		assertSame(context.getBean("b", BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean("c"), context.getBean("a", BeanA.class).c);
 		assertSame(context, context.getBean("b", BeanB.class).applicationContext);
@@ -264,7 +262,7 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("c", BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertFalse(context.getBeanFactory().containsSingleton("a"));
+		assertThat(context.getBeanFactory().containsSingleton("a")).isFalse();
 		assertSame(context.getBean("b", BeanB.class), context.getBean(BeanA.class).b);
 		assertSame(context.getBean("c"), context.getBean("a", BeanA.class).c);
 		assertSame(context, context.getBean("b", BeanB.class).applicationContext);
@@ -278,10 +276,10 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("c", BeanC.class, BeanC::new);
 		context.refresh();
 
-		assertTrue(ObjectUtils.containsElement(context.getBeanNamesForType(BeanA.class), "a"));
-		assertTrue(ObjectUtils.containsElement(context.getBeanNamesForType(BeanB.class), "b"));
-		assertTrue(ObjectUtils.containsElement(context.getBeanNamesForType(BeanC.class), "c"));
-		assertTrue(context.getBeansOfType(BeanA.class).isEmpty());
+		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanA.class), "a")).isTrue();
+		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanB.class), "b")).isTrue();
+		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanC.class), "c")).isTrue();
+		assertThat(context.getBeansOfType(BeanA.class).isEmpty()).isTrue();
 		assertSame(context.getBean(BeanB.class), context.getBeansOfType(BeanB.class).values().iterator().next());
 		assertSame(context.getBean(BeanC.class), context.getBeansOfType(BeanC.class).values().iterator().next());
 	}

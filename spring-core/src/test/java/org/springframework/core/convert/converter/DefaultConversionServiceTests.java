@@ -670,21 +670,21 @@ public class DefaultConversionServiceTests {
 	@Test
 	public void convertListOfNonStringifiable() {
 		List<Object> list = Arrays.asList(new TestEntity(1L), new TestEntity(2L));
-		assertTrue(conversionService.canConvert(list.getClass(), String.class));
+		assertThat(conversionService.canConvert(list.getClass(), String.class)).isTrue();
 		try {
 			conversionService.convert(list, String.class);
 		}
 		catch (ConversionFailedException ex) {
-			assertTrue(ex.getMessage().contains(list.getClass().getName()));
-			assertTrue(ex.getCause() instanceof ConverterNotFoundException);
-			assertTrue(ex.getCause().getMessage().contains(TestEntity.class.getName()));
+			assertThat(ex.getMessage().contains(list.getClass().getName())).isTrue();
+			assertThat(ex.getCause() instanceof ConverterNotFoundException).isTrue();
+			assertThat(ex.getCause().getMessage().contains(TestEntity.class.getName())).isTrue();
 		}
 	}
 
 	@Test
 	public void convertListOfStringToString() {
 		List<String> list = Arrays.asList("Foo", "Bar");
-		assertTrue(conversionService.canConvert(list.getClass(), String.class));
+		assertThat(conversionService.canConvert(list.getClass(), String.class)).isTrue();
 		String result = conversionService.convert(list, String.class);
 		assertEquals("Foo,Bar", result);
 	}
@@ -694,7 +694,7 @@ public class DefaultConversionServiceTests {
 		List<String> list1 = Arrays.asList("Foo", "Bar");
 		List<String> list2 = Arrays.asList("Baz", "Boop");
 		List<List<String>> list = Arrays.asList(list1, list2);
-		assertTrue(conversionService.canConvert(list.getClass(), String.class));
+		assertThat(conversionService.canConvert(list.getClass(), String.class)).isTrue();
 		String result = conversionService.convert(list, String.class);
 		assertEquals("Foo,Bar,Baz,Boop", result);
 	}
@@ -803,8 +803,8 @@ public class DefaultConversionServiceTests {
 		foo.setProperty("1", "BAR");
 		foo.setProperty("2", "BAZ");
 		String result = conversionService.convert(foo, String.class);
-		assertTrue(result.contains("1=BAR"));
-		assertTrue(result.contains("2=BAZ"));
+		assertThat(result.contains("1=BAR")).isTrue();
+		assertThat(result.contains("2=BAZ")).isTrue();
 	}
 
 	@Test
@@ -872,12 +872,12 @@ public class DefaultConversionServiceTests {
 
 	@Test
 	public void convertObjectToStringWithJavaTimeOfMethodPresent() {
-		assertTrue(conversionService.convert(ZoneId.of("GMT+1"), String.class).startsWith("GMT+"));
+		assertThat(conversionService.convert(ZoneId.of("GMT+1"), String.class).startsWith("GMT+")).isTrue();
 	}
 
 	@Test
 	public void convertObjectToStringNotSupported() {
-		assertFalse(conversionService.canConvert(TestEntity.class, String.class));
+		assertThat(conversionService.canConvert(TestEntity.class, String.class)).isFalse();
 	}
 
 	@Test

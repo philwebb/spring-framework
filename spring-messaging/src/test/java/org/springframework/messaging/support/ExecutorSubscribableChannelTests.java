@@ -86,7 +86,7 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(this.message);
 		assertEquals(1, interceptor.getCounter().get());
-		assertTrue(interceptor.wasAfterHandledInvoked());
+		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class ExecutorSubscribableChannelTests {
 		this.runnableCaptor.getValue().run();
 		verify(this.handler).handleMessage(this.message);
 		assertEquals(1, interceptor.getCounter().get());
-		assertTrue(interceptor.wasAfterHandledInvoked());
+		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(expected);
 		assertEquals(1, interceptor.getCounter().get());
-		assertTrue(interceptor.wasAfterHandledInvoked());
+		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
 	@Test
@@ -170,7 +170,7 @@ public class ExecutorSubscribableChannelTests {
 		verifyNoMoreInteractions(this.handler);
 		assertEquals(1, interceptor1.getCounter().get());
 		assertEquals(1, interceptor2.getCounter().get());
-		assertTrue(interceptor1.wasAfterHandledInvoked());
+		assertThat(interceptor1.wasAfterHandledInvoked()).isTrue();
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class ExecutorSubscribableChannelTests {
 		}
 		verify(this.handler).handleMessage(this.message);
 		assertEquals(1, interceptor.getCounter().get());
-		assertTrue(interceptor.wasAfterHandledInvoked());
+		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
 

@@ -105,13 +105,13 @@ public class MockMvcHtmlUnitDriverBuilderTests {
 	@Test
 	public void javaScriptEnabledByDefault() {
 		this.driver = MockMvcHtmlUnitDriverBuilder.mockMvcSetup(this.mockMvc).build();
-		assertTrue(this.driver.isJavascriptEnabled());
+		assertThat(this.driver.isJavascriptEnabled()).isTrue();
 	}
 
 	@Test
 	public void javaScriptDisabled() {
 		this.driver = MockMvcHtmlUnitDriverBuilder.mockMvcSetup(this.mockMvc).javascriptEnabled(false).build();
-		assertFalse(this.driver.isJavascriptEnabled());
+		assertThat(this.driver.isJavascriptEnabled()).isFalse();
 	}
 
 	@Test // SPR-14066

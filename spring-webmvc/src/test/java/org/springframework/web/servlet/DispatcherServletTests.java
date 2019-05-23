@@ -208,15 +208,15 @@ public class DispatcherServletTests {
 		complexDispatcherServlet.service(request, response);
 
 		assertThat(response.getForwardedUrl() == null).as("Not forwarded").isTrue();
-		assertTrue(request.getAttribute("test1") != null);
-		assertTrue(request.getAttribute("test1x") == null);
-		assertTrue(request.getAttribute("test1y") == null);
-		assertTrue(request.getAttribute("test2") != null);
-		assertTrue(request.getAttribute("test2x") == null);
-		assertTrue(request.getAttribute("test2y") == null);
-		assertTrue(request.getAttribute("test3") != null);
-		assertTrue(request.getAttribute("test3x") != null);
-		assertTrue(request.getAttribute("test3y") != null);
+		assertThat(request.getAttribute("test1") != null).isTrue();
+		assertThat(request.getAttribute("test1x") == null).isTrue();
+		assertThat(request.getAttribute("test1y") == null).isTrue();
+		assertThat(request.getAttribute("test2") != null).isTrue();
+		assertThat(request.getAttribute("test2x") == null).isTrue();
+		assertThat(request.getAttribute("test2y") == null).isTrue();
+		assertThat(request.getAttribute("test3") != null).isTrue();
+		assertThat(request.getAttribute("test3x") != null).isTrue();
+		assertThat(request.getAttribute("test3y") != null).isTrue();
 		assertEquals("Wed, 01 Apr 2015 00:00:01 GMT", response.getHeader("Last-Modified"));
 	}
 
@@ -275,12 +275,12 @@ public class DispatcherServletTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
 		assertThat(response.getForwardedUrl() == null).as("Not forwarded").isTrue();
-		assertTrue(request.getAttribute("test1") != null);
-		assertTrue(request.getAttribute("test1x") != null);
-		assertTrue(request.getAttribute("test1y") == null);
-		assertTrue(request.getAttribute("test2") == null);
-		assertTrue(request.getAttribute("test2x") == null);
-		assertTrue(request.getAttribute("test2y") == null);
+		assertThat(request.getAttribute("test1") != null).isTrue();
+		assertThat(request.getAttribute("test1x") != null).isTrue();
+		assertThat(request.getAttribute("test1y") == null).isTrue();
+		assertThat(request.getAttribute("test2") == null).isTrue();
+		assertThat(request.getAttribute("test2x") == null).isTrue();
+		assertThat(request.getAttribute("test2y") == null).isTrue();
 	}
 
 	@Test
@@ -456,7 +456,7 @@ public class DispatcherServletTests {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/unknown.do");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
-		assertTrue(response.getStatus() == HttpServletResponse.SC_NOT_FOUND);
+		assertThat(response.getStatus() == HttpServletResponse.SC_NOT_FOUND).isTrue();
 	}
 
 	@Test
@@ -594,8 +594,8 @@ public class DispatcherServletTests {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("foo", "bar");
 		NoHandlerFoundException ex = new NoHandlerFoundException("GET", "/foo", headers);
-		assertTrue(!ex.getMessage().contains("bar"));
-		assertTrue(!ex.toString().contains("bar"));
+		assertThat(!ex.getMessage().contains("bar")).isTrue();
+		assertThat(!ex.toString().contains("bar")).isTrue();
 	}
 
 	@Test
@@ -761,10 +761,10 @@ public class DispatcherServletTests {
 				(ServletConfigAwareBean) servlet.getWebApplicationContext().getBean("servletConfigAwareBean");
 		assertSame(servletContext, contextBean2.getServletContext());
 		assertSame(servlet.getServletConfig(), configBean2.getServletConfig());
-		assertTrue(contextBean != contextBean2);
-		assertTrue(configBean != configBean2);
+		assertThat(contextBean != contextBean2).isTrue();
+		assertThat(configBean != configBean2).isTrue();
 		MultipartResolver multipartResolver2 = servlet.getMultipartResolver();
-		assertTrue(multipartResolver != multipartResolver2);
+		assertThat(multipartResolver != multipartResolver2).isTrue();
 
 		servlet.destroy();
 	}

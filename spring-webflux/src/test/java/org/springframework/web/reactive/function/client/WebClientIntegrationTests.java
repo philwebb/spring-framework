@@ -508,7 +508,7 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.expectErrorSatisfies(throwable -> {
-					assertTrue(throwable instanceof WebClientResponseException);
+					assertThat(throwable instanceof WebClientResponseException).isTrue();
 					WebClientResponseException ex = (WebClientResponseException) throwable;
 					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getStatusCode());
 					assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getRawStatusCode());
@@ -570,7 +570,7 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.expectErrorSatisfies(throwable -> {
-					assertTrue(throwable instanceof UnknownHttpStatusCodeException);
+					assertThat(throwable instanceof UnknownHttpStatusCodeException).isTrue();
 					UnknownHttpStatusCodeException ex = (UnknownHttpStatusCodeException) throwable;
 					assertEquals("Unknown status code ["+errorStatus+"]", ex.getMessage());
 					assertEquals(errorStatus, ex.getRawStatusCode());
@@ -733,7 +733,7 @@ public class WebClientIntegrationTests {
 				.flatMap(response -> response.toEntity(Void.class));
 
 		StepVerifier.create(result).assertNext(r ->
-			assertTrue(r.getStatusCode().is2xxSuccessful())
+			assertThat(r.getStatusCode().is2xxSuccessful()).isTrue()
 		).verifyComplete();
 	}
 

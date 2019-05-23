@@ -76,7 +76,7 @@ public class ClientSockJsSessionTests {
 		assertThat(this.session.isOpen()).isFalse();
 		this.session.handleFrame(SockJsFrame.openFrame().getContent());
 		assertThat(this.session.isOpen()).isTrue();
-		assertTrue(this.connectFuture.isDone());
+		assertThat(this.connectFuture.isDone()).isTrue();
 		assertThat(this.connectFuture.get()).isSameAs(this.session);
 		verify(this.handler).afterConnectionEstablished(this.session);
 		verifyNoMoreInteractions(this.handler);

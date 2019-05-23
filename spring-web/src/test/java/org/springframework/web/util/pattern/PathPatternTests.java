@@ -58,11 +58,11 @@ public class PathPatternTests {
 	@Test
 	public void hasPatternSyntax() {
 		PathPatternParser parser = new PathPatternParser();
-		assertTrue(parser.parse("/foo/*").hasPatternSyntax());
-		assertTrue(parser.parse("/foo/**/bar").hasPatternSyntax());
-		assertTrue(parser.parse("/f?o").hasPatternSyntax());
-		assertTrue(parser.parse("/foo/{bar}/baz").hasPatternSyntax());
-		assertFalse(parser.parse("/foo/bar").hasPatternSyntax());
+		assertThat(parser.parse("/foo/*").hasPatternSyntax()).isTrue();
+		assertThat(parser.parse("/foo/**/bar").hasPatternSyntax()).isTrue();
+		assertThat(parser.parse("/f?o").hasPatternSyntax()).isTrue();
+		assertThat(parser.parse("/foo/{bar}/baz").hasPatternSyntax()).isTrue();
+		assertThat(parser.parse("/foo/bar").hasPatternSyntax()).isFalse();
 	}
 
 	@Test
@@ -95,11 +95,11 @@ public class PathPatternTests {
 	}
 
 	private void assertMatches(PathPattern pp, String path) {
-		assertTrue(pp.matches(toPathContainer(path)));
+		assertThat(pp.matches(toPathContainer(path))).isTrue();
 	}
 
 	private void assertNoMatch(PathPattern pp, String path) {
-		assertFalse(pp.matches(toPathContainer(path)));
+		assertThat(pp.matches(toPathContainer(path))).isFalse();
 	}
 
 	@Test
@@ -462,7 +462,7 @@ public class PathPatternTests {
 		checkMatches("a/*", "a/a/"); // trailing slash, so is allowed
 		PathPatternParser ppp = new PathPatternParser();
 		ppp.setMatchOptionalTrailingSeparator(false);
-		assertFalse(ppp.parse("a/*").matches(toPathContainer("a//")));
+		assertThat(ppp.parse("a/*").matches(toPathContainer("a//"))).isFalse();
 		checkMatches("a/*", "a/a");
 		checkMatches("a/*", "a/a/"); // trailing slash is optional
 		checkMatches("/resource/**", "/resource");
@@ -762,12 +762,12 @@ public class PathPatternTests {
 		assertMatches(pp,"//");
 
 		// Confirming AntPathMatcher behaviour:
-		assertFalse(new AntPathMatcher().match("/{foo}", "/"));
-		assertTrue(new AntPathMatcher().match("/{foo}", "/a"));
-		assertTrue(new AntPathMatcher().match("/{foo}{bar}", "/a"));
-		assertFalse(new AntPathMatcher().match("/{foo}*", "/"));
-		assertTrue(new AntPathMatcher().match("/*", "/"));
-		assertFalse(new AntPathMatcher().match("/*{foo}", "/"));
+		assertThat(new AntPathMatcher().match("/{foo}", "/")).isFalse();
+		assertThat(new AntPathMatcher().match("/{foo}", "/a")).isTrue();
+		assertThat(new AntPathMatcher().match("/{foo}{bar}", "/a")).isTrue();
+		assertThat(new AntPathMatcher().match("/{foo}*", "/")).isFalse();
+		assertThat(new AntPathMatcher().match("/*", "/")).isTrue();
+		assertThat(new AntPathMatcher().match("/*{foo}", "/")).isFalse();
 		Map<String, String> vars = new AntPathMatcher().extractUriTemplateVariables("/{foo}{bar}", "/a");
 		assertEquals("a",vars.get("foo"));
 		assertEquals("",vars.get("bar"));
@@ -984,9 +984,9 @@ public class PathPatternTests {
 
 	@Test
 	public void patternCompareWithNull() {
-		assertTrue(PathPattern.SPECIFICITY_COMPARATOR.compare(null, null) == 0);
-		assertTrue(PathPattern.SPECIFICITY_COMPARATOR.compare(parse("/abc"), null) < 0);
-		assertTrue(PathPattern.SPECIFICITY_COMPARATOR.compare(null, parse("/abc")) > 0);
+		assertThat(PathPattern.SPECIFICITY_COMPARATOR.compare(null, null) == 0).isTrue();
+		assertThat(PathPattern.SPECIFICITY_COMPARATOR.compare(parse("/abc"), null) < 0).isTrue();
+		assertThat(PathPattern.SPECIFICITY_COMPARATOR.compare(null, parse("/abc")) > 0).isTrue();
 	}
 
 	@Test
@@ -1158,14 +1158,14 @@ public class PathPatternTests {
 		parser.setMatchOptionalTrailingSeparator(true);
 		PathPattern p = parser.parse(uriTemplate);
 		PathContainer pc = toPathContainer(path);
-		assertTrue(p.matches(pc));
+		assertThat(p.matches(pc)).isTrue();
 	}
 
 	private void checkNoMatch(String uriTemplate, String path) {
 		PathPatternParser p = new PathPatternParser();
 		PathPattern pattern = p.parse(uriTemplate);
 		PathContainer PathContainer = toPathContainer(path);
-		assertFalse(pattern.matches(PathContainer));
+		assertThat(pattern.matches(PathContainer)).isFalse();
 	}
 
 	private PathPattern.PathMatchInfo checkCapture(String uriTemplate, String path, String... keyValues) {

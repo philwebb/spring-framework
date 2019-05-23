@@ -170,7 +170,7 @@ public class ProxyFactoryBeanTests {
 		assertEquals(0, cba.getCalls());
 
 		ITestBean tb = (ITestBean) bf.getBean("directTarget");
-		assertTrue(tb.getName().equals("Adam"));
+		assertThat(tb.getName().equals("Adam")).isTrue();
 		assertEquals(1, cba.getCalls());
 
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&directTarget");
@@ -182,7 +182,7 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(TARGETSOURCE_CONTEXT, CLASS));
 		ITestBean tb = (ITestBean) bf.getBean("viaTargetSource");
-		assertTrue(tb.getName().equals("Adam"));
+		assertThat(tb.getName().equals("Adam")).isTrue();
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&viaTargetSource");
 		assertThat(TestBean.class.isAssignableFrom(pfb.getObjectType())).as("Has correct object type").isTrue();
 	}
@@ -216,11 +216,11 @@ public class ProxyFactoryBeanTests {
 		assertEquals(test1.getAge(), test1_1.getAge());
 		Advised pc1 = (Advised) test1;
 		Advised pc2 = (Advised) test1_1;
-		assertArrayEquals(pc1.getAdvisors(), pc2.getAdvisors());
+		assertThat(pc2.getAdvisors()).isEqualTo(pc1.getAdvisors());
 		int oldLength = pc1.getAdvisors().length;
 		NopInterceptor di = new NopInterceptor();
 		pc1.addAdvice(1, di);
-		assertArrayEquals(pc1.getAdvisors(), pc2.getAdvisors());
+		assertThat(pc2.getAdvisors()).isEqualTo(pc1.getAdvisors());
 		assertEquals("Now have one more advisor", oldLength + 1, pc2.getAdvisors().length);
 		assertEquals(di.getCount(), 0);
 		test1.setAge(5);
@@ -288,7 +288,7 @@ public class ProxyFactoryBeanTests {
 		TestBean target = (TestBean) factory.getBean("test");
 		target.setName(name);
 		ITestBean autoInvoker = (ITestBean) factory.getBean("autoInvoker");
-		assertTrue(autoInvoker.getName().equals(name));
+		assertThat(autoInvoker.getName().equals(name)).isTrue();
 	}
 
 	@Test
@@ -354,31 +354,31 @@ public class ProxyFactoryBeanTests {
 		// Add to head of interceptor chain
 		int oldCount = config.getAdvisors().length;
 		config.addAdvisor(0, new DefaultIntroductionAdvisor(ti, TimeStamped.class));
-		assertTrue(config.getAdvisors().length == oldCount + 1);
+		assertThat(config.getAdvisors().length == oldCount + 1).isTrue();
 
 		TimeStamped ts = (TimeStamped) factory.getBean("test2");
 		assertEquals(time, ts.getTimeStamp());
 
 		// Can remove
 		config.removeAdvice(ti);
-		assertTrue(config.getAdvisors().length == oldCount);
+		assertThat(config.getAdvisors().length == oldCount).isTrue();
 
 		// Check no change on existing object reference
-		assertTrue(ts.getTimeStamp() == time);
+		assertThat(ts.getTimeStamp() == time).isTrue();
 
 		assertThat(factory.getBean("test2")).as("Should no longer implement TimeStamped")
 				.isNotInstanceOf(TimeStamped.class);
 
 		// Now check non-effect of removing interceptor that isn't there
 		config.removeAdvice(new DebugInterceptor());
-		assertTrue(config.getAdvisors().length == oldCount);
+		assertThat(config.getAdvisors().length == oldCount).isTrue();
 
 		ITestBean it = (ITestBean) ts;
 		DebugInterceptor debugInterceptor = new DebugInterceptor();
 		config.addAdvice(0, debugInterceptor);
 		it.getSpouse();
 		// Won't affect existing reference
-		assertTrue(debugInterceptor.getCount() == 0);
+		assertThat(debugInterceptor.getCount() == 0).isTrue();
 		it = (ITestBean) factory.getBean("test2");
 		it.getSpouse();
 		assertEquals(1, debugInterceptor.getCount());
@@ -426,8 +426,8 @@ public class ProxyFactoryBeanTests {
 		tb.setName("Tristan");
 		tb.toString();
 		assertEquals("Recorded wrong number of invocations", 2, PointcutForVoid.methodNames.size());
-		assertTrue(PointcutForVoid.methodNames.get(0).equals("setAge"));
-		assertTrue(PointcutForVoid.methodNames.get(1).equals("setName"));
+		assertThat(PointcutForVoid.methodNames.get(0).equals("setAge")).isTrue();
+		assertThat(PointcutForVoid.methodNames.get(1).equals("setName")).isTrue();
 	}
 
 	@Test
@@ -505,7 +505,7 @@ public class ProxyFactoryBeanTests {
 	@Test
 	public void testGlobalsCanAddAspectInterfaces() {
 		AddedGlobalInterface agi = (AddedGlobalInterface) factory.getBean("autoInvoker");
-		assertTrue(agi.globalsAdded() == -1);
+		assertThat(agi.globalsAdded() == -1).isTrue();
 
 		ProxyFactoryBean pfb = (ProxyFactoryBean) factory.getBean("&validGlobals");
 		// Trigger lazy initialization.
@@ -515,7 +515,7 @@ public class ProxyFactoryBeanTests {
 
 		ApplicationListener<?> l = (ApplicationListener<?>) factory.getBean("validGlobals");
 		agi = (AddedGlobalInterface) l;
-		assertTrue(agi.globalsAdded() == -1);
+		assertThat(agi.globalsAdded() == -1).isTrue();
 
 		assertThat(factory.getBean("test1")).as("Aspect interface should't be implemeneted without globals")
 				.isNotInstanceOf(AddedGlobalInterface.class);
@@ -540,7 +540,7 @@ public class ProxyFactoryBeanTests {
 		assertFalse("Not serializable because an interceptor isn't serializable", SerializationTestUtils.isSerializable(p));
 
 		// Remove offending interceptor...
-		assertTrue(((Advised) p).removeAdvice(nop));
+		assertThat(((Advised) p).removeAdvice(nop)).isTrue();
 		assertThat(SerializationTestUtils.isSerializable(p)).as("Serializable again because offending interceptor was removed").isTrue();
 	}
 
@@ -648,7 +648,7 @@ public class ProxyFactoryBeanTests {
 		fb.addAdvice(new DebugInterceptor());
 		fb.setBeanFactory(new DefaultListableBeanFactory());
 		ITestBean proxy = (ITestBean) fb.getObject();
-		assertTrue(AopUtils.isJdkDynamicProxy(proxy));
+		assertThat(AopUtils.isJdkDynamicProxy(proxy)).isTrue();
 	}
 
 

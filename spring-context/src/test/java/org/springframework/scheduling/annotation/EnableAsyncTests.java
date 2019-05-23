@@ -163,7 +163,7 @@ public class EnableAsyncTests {
 		ctx.refresh();
 
 		Object bean = ctx.getBean(CustomAsyncBean.class);
-		assertTrue(AopUtils.isAopProxy(bean));
+		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		boolean isAsyncAdvised = false;
 		for (Advisor advisor : ((Advised) bean).getAdvisors()) {
 			if (advisor instanceof AsyncAnnotationAdvisor) {
