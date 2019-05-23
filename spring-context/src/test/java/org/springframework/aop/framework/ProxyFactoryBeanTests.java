@@ -63,7 +63,6 @@ import org.springframework.util.SerializationTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIOException;
-import static temp.XAssert.assertFalse;
 
 /**
  * @since 13.03.2003
@@ -271,7 +270,7 @@ public class ProxyFactoryBeanTests {
 	public void testCglibPrototypeInstance() {
 		Object prototype = testPrototypeInstancesAreIndependent("cglibPrototype");
 		assertThat(AopUtils.isCglibProxy(prototype)).as("It's a cglib proxy").isTrue();
-		assertFalse("It's not a dynamic proxy", AopUtils.isJdkDynamicProxy(prototype));
+		assertThat(AopUtils.isJdkDynamicProxy(prototype)).as("It's not a dynamic proxy").isFalse();
 	}
 
 	/**
@@ -569,7 +568,7 @@ public class ProxyFactoryBeanTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
 		Person p = (Person) bf.getBean("interceptorNotSerializableSingleton");
-		assertFalse("Not serializable because an interceptor isn't serializable", SerializationTestUtils.isSerializable(p));
+		assertThat(SerializationTestUtils.isSerializable(p)).as("Not serializable because an interceptor isn't serializable").isFalse();
 	}
 
 	@Test

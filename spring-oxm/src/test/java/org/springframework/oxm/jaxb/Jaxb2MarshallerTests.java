@@ -71,7 +71,6 @@ import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
 import static org.xmlunit.diff.DifferenceEvaluators.Default;
 import static org.xmlunit.diff.DifferenceEvaluators.chain;
 import static org.xmlunit.diff.DifferenceEvaluators.downgradeDifferencesToEqual;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma
@@ -197,8 +196,8 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 		assertThat(marshaller.supports(Flights.class)).as("Jaxb2Marshaller does not support Flights class").isTrue();
 		assertThat(marshaller.supports((Type)Flights.class)).as("Jaxb2Marshaller does not support Flights generic type").isTrue();
 
-		assertFalse("Jaxb2Marshaller supports FlightType class", marshaller.supports(FlightType.class));
-		assertFalse("Jaxb2Marshaller supports FlightType type", marshaller.supports((Type)FlightType.class));
+		assertThat(marshaller.supports(FlightType.class)).as("Jaxb2Marshaller supports FlightType class").isFalse();
+		assertThat(marshaller.supports((Type)FlightType.class)).as("Jaxb2Marshaller supports FlightType type").isFalse();
 
 		Method method = ObjectFactory.class.getDeclaredMethod("createFlight", FlightType.class);
 		assertThat(marshaller.supports(method.getGenericReturnType())).as("Jaxb2Marshaller does not support JAXBElement<FlightsType>").isTrue();
@@ -208,17 +207,15 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 				new FlightType());
 		assertThat(marshaller.supports(flightTypeJAXBElement.getClass())).as("Jaxb2Marshaller does not support JAXBElement<FlightsType>").isTrue();
 
-		assertFalse("Jaxb2Marshaller supports class not in context path", marshaller.supports(DummyRootElement.class));
-		assertFalse("Jaxb2Marshaller supports type not in context path", marshaller.supports((Type)DummyRootElement.class));
+		assertThat(marshaller.supports(DummyRootElement.class)).as("Jaxb2Marshaller supports class not in context path").isFalse();
+		assertThat(marshaller.supports((Type)DummyRootElement.class)).as("Jaxb2Marshaller supports type not in context path").isFalse();
 		method = getClass().getDeclaredMethod("createDummyRootElement");
-		assertFalse("Jaxb2Marshaller supports JAXBElement not in context path",
-				marshaller.supports(method.getGenericReturnType()));
+		assertThat(marshaller.supports(method.getGenericReturnType())).as("Jaxb2Marshaller supports JAXBElement not in context path").isFalse();
 
-		assertFalse("Jaxb2Marshaller supports class not in context path", marshaller.supports(DummyType.class));
-		assertFalse("Jaxb2Marshaller supports type not in context path", marshaller.supports((Type)DummyType.class));
+		assertThat(marshaller.supports(DummyType.class)).as("Jaxb2Marshaller supports class not in context path").isFalse();
+		assertThat(marshaller.supports((Type)DummyType.class)).as("Jaxb2Marshaller supports type not in context path").isFalse();
 		method = getClass().getDeclaredMethod("createDummyType");
-		assertFalse("Jaxb2Marshaller supports JAXBElement not in context path",
-				marshaller.supports(method.getGenericReturnType()));
+		assertThat(marshaller.supports(method.getGenericReturnType())).as("Jaxb2Marshaller supports JAXBElement not in context path").isFalse();
 
 		testSupportsPrimitives();
 		testSupportsStandardClasses();
@@ -280,8 +277,8 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 		assertThat(marshaller.supports(DummyRootElement.class)).as("Jaxb2Marshaller does not support XmlRootElement class").isTrue();
 		assertThat(marshaller.supports((Type)DummyRootElement.class)).as("Jaxb2Marshaller does not support XmlRootElement generic type").isTrue();
 
-		assertFalse("Jaxb2Marshaller supports DummyType class", marshaller.supports(DummyType.class));
-		assertFalse("Jaxb2Marshaller supports DummyType type", marshaller.supports((Type)DummyType.class));
+		assertThat(marshaller.supports(DummyType.class)).as("Jaxb2Marshaller supports DummyType class").isFalse();
+		assertThat(marshaller.supports((Type)DummyType.class)).as("Jaxb2Marshaller supports DummyType type").isFalse();
 	}
 
 

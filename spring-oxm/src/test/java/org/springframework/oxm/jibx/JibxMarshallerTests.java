@@ -28,7 +28,6 @@ import org.springframework.tests.XmlContent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assume.assumeTrue;
-import static temp.XAssert.assertFalse;
 
 /**
  * NOTE: These tests fail under Eclipse/IDEA because JiBX binding does not occur by
@@ -105,7 +104,7 @@ public class JibxMarshallerTests extends AbstractMarshallerTests<JibxMarshaller>
 	public void supports() throws Exception {
 		assertThat(marshaller.supports(Flights.class)).as("JibxMarshaller does not support Flights").isTrue();
 		assertThat(marshaller.supports(FlightType.class)).as("JibxMarshaller does not support FlightType").isTrue();
-		assertFalse("JibxMarshaller supports illegal type", marshaller.supports(getClass()));
+		assertThat(marshaller.supports(getClass())).as("JibxMarshaller supports illegal type").isFalse();
 	}
 
 }

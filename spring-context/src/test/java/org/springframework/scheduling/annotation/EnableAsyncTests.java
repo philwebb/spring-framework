@@ -56,7 +56,6 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 
 /**
  * Tests use of @EnableAsync on @Configuration classes.
@@ -233,7 +232,7 @@ public class EnableAsyncTests {
 		Method method = ReflectionUtils.findMethod(AsyncBean.class, "fail");
 		TestableAsyncUncaughtExceptionHandler exceptionHandler =
 				(TestableAsyncUncaughtExceptionHandler) ctx.getBean("exceptionHandler");
-		assertFalse("handler should not have been called yet", exceptionHandler.isCalled());
+		assertThat(exceptionHandler.isCalled()).as("handler should not have been called yet").isFalse();
 		// Act
 		asyncBean.fail();
 		// Assert
@@ -271,7 +270,7 @@ public class EnableAsyncTests {
 		AsyncBean asyncBean = ctx.getBean(AsyncBean.class);
 		TestableAsyncUncaughtExceptionHandler exceptionHandler =
 				(TestableAsyncUncaughtExceptionHandler) ctx.getBean("exceptionHandler");
-		assertFalse("handler should not have been called yet", exceptionHandler.isCalled());
+		assertThat(exceptionHandler.isCalled()).as("handler should not have been called yet").isFalse();
 		Method method = ReflectionUtils.findMethod(AsyncBean.class, "fail");
 		// Act
 		asyncBean.fail();

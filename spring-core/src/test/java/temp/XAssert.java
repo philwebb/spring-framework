@@ -25,8 +25,4 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class XAssert {
 
-	public static void assertFalse(String string, boolean jdkDynamicProxy) {
-		assertThat(jdkDynamicProxy).as(string).isFalse();
-	}
-
 }

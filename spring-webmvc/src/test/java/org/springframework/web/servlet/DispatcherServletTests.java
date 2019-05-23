@@ -65,7 +65,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static temp.XAssert.assertFalse;
 
 /**
  * @author Rod Johnson
@@ -493,8 +492,7 @@ public class DispatcherServletTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		complexDispatcherServlet.service(request, response);
 
-		assertFalse("Matched through parent controller/handler pair: not response=" + response.getStatus(),
-				response.getStatus() == HttpServletResponse.SC_NOT_FOUND);
+		assertThat(response.getStatus() == HttpServletResponse.SC_NOT_FOUND).as("Matched through parent controller/handler pair: not response=" + response.getStatus()).isFalse();
 	}
 
 	@Test

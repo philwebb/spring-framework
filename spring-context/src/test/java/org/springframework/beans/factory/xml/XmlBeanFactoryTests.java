@@ -69,7 +69,6 @@ import org.springframework.util.StopWatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.assertFalse;
 
 /**
  * Miscellaneous tests for XML bean definitions.
@@ -1346,9 +1345,7 @@ public class XmlBeanFactoryTests {
 		String backwards = new StringBuffer(forwards).reverse().toString();
 		assertThat(s.replaceMe(forwards)).isEqualTo(backwards);
 		// SPR-356: lookup methods & method replacers are not serializable.
-		assertFalse(
-				"Lookup methods and method replacers are not meant to be serializable.",
-				SerializationTestUtils.isSerializable(s));
+		assertThat(SerializationTestUtils.isSerializable(s)).as("Lookup methods and method replacers are not meant to be serializable.").isFalse();
 	}
 
 	@Test

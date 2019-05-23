@@ -74,7 +74,6 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.web.servlet.HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE;
-import static temp.XAssert.assertFalse;
 
 /**
  * Test fixture for {@link HttpEntityMethodProcessor} delegating to a mock
@@ -221,7 +220,7 @@ public class HttpEntityMethodProcessorMockTests {
 		Object result = processor.resolveArgument(paramRequestEntity, mavContainer, webRequest, null);
 
 		assertThat(result instanceof RequestEntity).isTrue();
-		assertFalse("The requestHandled flag shouldn't change", mavContainer.isRequestHandled());
+		assertThat(mavContainer.isRequestHandled()).as("The requestHandled flag shouldn't change").isFalse();
 		RequestEntity<?> requestEntity = (RequestEntity<?>) result;
 		assertThat(requestEntity.getMethod()).as("Invalid method").isEqualTo(HttpMethod.GET);
 		// using default port (which is 80), so do not need to append the port (-1 means ignore)
