@@ -611,11 +611,11 @@ public class SqlQueryTests  {
 		ids.add(2);
 		List<Customer> cust = query.findCustomers(ids);
 
-		assertThat((Object) cust.size()).as("We got two customers back").isEqualTo(2);
-		assertThat((Object) 1).as("First customer id was assigned correctly").isEqualTo(cust.get(0).getId());
-		assertThat((Object) "rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
-		assertThat((Object) 2).as("Second customer id was assigned correctly").isEqualTo(cust.get(1).getId());
-		assertThat((Object) "juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
+		assertThat(cust.size()).as("We got two customers back").isEqualTo(2);
+		assertThat(1).as("First customer id was assigned correctly").isEqualTo(cust.get(0).getId());
+		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
+		assertThat(2).as("Second customer id was assigned correctly").isEqualTo(cust.get(1).getId());
+		assertThat("juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 2, Types.NUMERIC);
 		verify(resultSet).close();
@@ -660,11 +660,11 @@ public class SqlQueryTests  {
 		CustomerQuery query = new CustomerQuery(dataSource);
 		List<Customer> cust = query.findCustomers(1);
 
-		assertThat((Object) cust.size()).as("We got two customers back").isEqualTo(2);
-		assertThat((Object) 1).as("First customer id was assigned correctly").isEqualTo(cust.get(0).getId());
-		assertThat((Object) "rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
-		assertThat((Object) 2).as("Second customer id was assigned correctly").isEqualTo(cust.get(1).getId());
-		assertThat((Object) "juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
+		assertThat(cust.size()).as("We got two customers back").isEqualTo(2);
+		assertThat(1).as("First customer id was assigned correctly").isEqualTo(cust.get(0).getId());
+		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
+		assertThat(2).as("Second customer id was assigned correctly").isEqualTo(cust.get(1).getId());
+		assertThat("juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);

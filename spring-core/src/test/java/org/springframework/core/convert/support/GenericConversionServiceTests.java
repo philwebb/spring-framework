@@ -280,7 +280,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new MyBaseInterfaceToStringConverter());
 		conversionService.addConverter(new ArrayToArrayConverter(conversionService));
 		String[] converted = conversionService.convert(new MyInterface[] {new MyInterfaceImplementer()}, String[].class);
-		assertThat((Object) converted[0]).isEqualTo("RESULT");
+		assertThat(converted[0]).isEqualTo("RESULT");
 	}
 
 	@Test
@@ -288,7 +288,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new MyBaseInterfaceToStringConverter());
 		conversionService.addConverter(new ArrayToArrayConverter(conversionService));
 		String[] converted = conversionService.convert(new MyInterfaceImplementer[] {new MyInterfaceImplementer()}, String[].class);
-		assertThat((Object) converted[0]).isEqualTo("RESULT");
+		assertThat(converted[0]).isEqualTo("RESULT");
 	}
 
 	@Test
@@ -296,21 +296,21 @@ public class GenericConversionServiceTests {
 		conversionService.addConverter(new MyStringArrayToResourceArrayConverter());
 		Resource[] converted = conversionService.convert(new String[] { "x1", "z3" }, Resource[].class);
 		List<String> descriptions = Arrays.stream(converted).map(Resource::getDescription).sorted(naturalOrder()).collect(toList());
-		assertThat((Object) descriptions).isEqualTo(Arrays.asList("1", "3"));
+		assertThat(descriptions).isEqualTo(Arrays.asList("1", "3"));
 	}
 
 	@Test
 	public void testStringArrayToIntegerArray() {
 		conversionService.addConverter(new MyStringArrayToIntegerArrayConverter());
 		Integer[] converted = conversionService.convert(new String[] {"x1", "z3"}, Integer[].class);
-		assertThat((Object) converted).isEqualTo(new Integer[] { 1, 3 });
+		assertThat(converted).isEqualTo(new Integer[] { 1, 3 });
 	}
 
 	@Test
 	public void testStringToIntegerArray() {
 		conversionService.addConverter(new MyStringToIntegerArrayConverter());
 		Integer[] converted = conversionService.convert("x1,z3", Integer[].class);
-		assertThat((Object) converted).isEqualTo(new Integer[] { 1, 3 });
+		assertThat(converted).isEqualTo(new Integer[] { 1, 3 });
 	}
 
 	@Test
@@ -325,7 +325,7 @@ public class GenericConversionServiceTests {
 	public void testStringToString() {
 		String value = "myValue";
 		String result = conversionService.convert(value, String.class);
-		assertThat((Object) result).isSameAs(value);
+		assertThat(result).isSameAs(value);
 	}
 
 	@Test
@@ -441,7 +441,7 @@ public class GenericConversionServiceTests {
 	public void testConvertiblePairEqualsAndHash() {
 		GenericConverter.ConvertiblePair pair = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		GenericConverter.ConvertiblePair pairEqual = new GenericConverter.ConvertiblePair(Number.class, String.class);
-		assertThat((Object) pairEqual).isEqualTo(pair);
+		assertThat(pairEqual).isEqualTo(pair);
 		assertThat(pairEqual.hashCode()).isEqualTo(pair.hashCode());
 	}
 
@@ -529,7 +529,7 @@ public class GenericConversionServiceTests {
 		// SPR-9566
 		byte[] byteArray = new byte[] { 1, 2, 3 };
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
-		assertThat((Object) converted).isSameAs(byteArray);
+		assertThat(converted).isSameAs(byteArray);
 	}
 
 	@Test

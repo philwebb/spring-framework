@@ -146,13 +146,13 @@ public class SQLErrorCodesFactoryTests {
 			protected Resource loadResource(String path) {
 				++lookups;
 				if (lookups == 1) {
-					assertThat((Object) path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_DEFAULT_PATH);
+					assertThat(path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_DEFAULT_PATH);
 					return null;
 				}
 				else {
 					// Should have only one more lookup
 					assertThat(lookups).isEqualTo(2);
-					assertThat((Object) path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH);
+					assertThat(path).isEqualTo(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH);
 					return null;
 				}
 			}
@@ -183,8 +183,8 @@ public class SQLErrorCodesFactoryTests {
 		TestSQLErrorCodesFactory sf = new TestSQLErrorCodesFactory();
 		assertThat(sf.getErrorCodes("XX").getBadSqlGrammarCodes().length == 0).isTrue();
 		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes().length).isEqualTo(2);
-		assertThat((Object) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]).isEqualTo("1");
-		assertThat((Object) sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]).isEqualTo("2");
+		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[0]).isEqualTo("1");
+		assertThat(sf.getErrorCodes("Oracle").getBadSqlGrammarCodes()[1]).isEqualTo("2");
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class SQLErrorCodesFactoryTests {
 		assertThat(sf.getErrorCodes("Oracle").getCustomTranslations().length).isEqualTo(1);
 		CustomSQLErrorCodesTranslation translation =
 				sf.getErrorCodes("Oracle").getCustomTranslations()[0];
-		assertThat((Object) translation.getExceptionClass()).isEqualTo(CustomErrorCodeException.class);
+		assertThat(translation.getExceptionClass()).isEqualTo(CustomErrorCodeException.class);
 		assertThat(translation.getErrorCodes().length).isEqualTo(1);
 	}
 
@@ -281,7 +281,7 @@ public class SQLErrorCodesFactoryTests {
 
 
 		SQLErrorCodes sec2 = secf.getErrorCodes(dataSource);
-		assertThat((Object) sec).as("Cached per DataSource").isSameAs(sec2);
+		assertThat(sec).as("Cached per DataSource").isSameAs(sec2);
 
 		verify(connection).close();
 		return sec;

@@ -79,7 +79,7 @@ public class ImportedConfigurationClassEnhancementTests {
 	public void importingNonConfigurationClassCausesBeanDefinitionParsingException() {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigThatImportsNonConfigClass.class);
 		ConfigThatImportsNonConfigClass config = ctx.getBean(ConfigThatImportsNonConfigClass.class);
-		assertThat((Object) config.testBean).isSameAs(ctx.getBean(TestBean.class));
+		assertThat(config.testBean).isSameAs(ctx.getBean(TestBean.class));
 	}
 
 

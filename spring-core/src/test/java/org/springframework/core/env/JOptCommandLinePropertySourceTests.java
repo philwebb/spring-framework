@@ -74,7 +74,7 @@ public class JOptCommandLinePropertySourceTests {
 		OptionSet options = parser.parse("--foo=bar,baz,biz");
 
 		CommandLinePropertySource<?> ps = new JOptCommandLinePropertySource(options);
-		assertThat((Object) ps.getOptionValues("foo")).isEqualTo(Arrays.asList("bar","baz","biz"));
+		assertThat(ps.getOptionValues("foo")).isEqualTo(Arrays.asList("bar","baz","biz"));
 		assertThat(ps.getProperty("foo")).isEqualTo("bar,baz,biz");
 	}
 
@@ -85,7 +85,7 @@ public class JOptCommandLinePropertySourceTests {
 		OptionSet options = parser.parse("--foo=bar", "--foo=baz", "--foo=biz");
 
 		CommandLinePropertySource<?> ps = new JOptCommandLinePropertySource(options);
-		assertThat((Object) ps.getOptionValues("foo")).isEqualTo(Arrays.asList("bar","baz","biz"));
+		assertThat(ps.getOptionValues("foo")).isEqualTo(Arrays.asList("bar","baz","biz"));
 		assertThat(ps.getProperty("foo")).isEqualTo("bar,baz,biz");
 	}
 

@@ -70,7 +70,7 @@ public class WebSocketIntegrationTests extends AbstractWebSocketIntegrationTests
 				.then())
 				.block(TIMEOUT);
 
-		assertThat((Object) output.collectList().block(TIMEOUT)).isEqualTo(input.collectList().block(TIMEOUT));
+		assertThat(output.collectList().block(TIMEOUT)).isEqualTo(input.collectList().block(TIMEOUT));
 	}
 
 	@Test
@@ -98,8 +98,8 @@ public class WebSocketIntegrationTests extends AbstractWebSocketIntegrationTests
 
 		HandshakeInfo info = infoRef.get();
 		assertThat(info.getHeaders().getFirst("Upgrade")).isEqualToIgnoringCase("websocket");
-		assertThat((Object) info.getHeaders().getFirst("Sec-WebSocket-Protocol")).isEqualTo(protocol);
-		assertThat((Object) info.getSubProtocol()).as("Wrong protocol accepted").isEqualTo(protocol);
+		assertThat(info.getHeaders().getFirst("Sec-WebSocket-Protocol")).isEqualTo(protocol);
+		assertThat(info.getSubProtocol()).as("Wrong protocol accepted").isEqualTo(protocol);
 		assertThat(output.block(TIMEOUT)).as("Wrong protocol detected on the server side").isEqualTo(protocol);
 	}
 

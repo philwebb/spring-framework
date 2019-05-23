@@ -115,7 +115,7 @@ public class ValidatorFactoryTests {
 		assertThat(result.size()).isEqualTo(1);
 		Iterator<ConstraintViolation<ValidPerson>> iterator = result.iterator();
 		ConstraintViolation<?> cv = iterator.next();
-		assertThat((Object) cv.getPropertyPath().toString()).isEqualTo("");
+		assertThat(cv.getPropertyPath().toString()).isEqualTo("");
 		assertThat(cv.getConstraintDescriptor().getAnnotation() instanceof NameAddressValid).isTrue();
 	}
 
@@ -145,7 +145,7 @@ public class ValidatorFactoryTests {
 		validator.validate(person, result);
 		assertThat(result.getErrorCount()).isEqualTo(2);
 		FieldError fieldError = result.getFieldError("name");
-		assertThat((Object) fieldError.getField()).isEqualTo("name");
+		assertThat(fieldError.getField()).isEqualTo("name");
 		List<String> errorCodes = Arrays.asList(fieldError.getCodes());
 		assertThat(errorCodes.size()).isEqualTo(4);
 		assertThat(errorCodes.contains("NotNull.person.name")).isTrue();
@@ -153,7 +153,7 @@ public class ValidatorFactoryTests {
 		assertThat(errorCodes.contains("NotNull.java.lang.String")).isTrue();
 		assertThat(errorCodes.contains("NotNull")).isTrue();
 		fieldError = result.getFieldError("address.street");
-		assertThat((Object) fieldError.getField()).isEqualTo("address.street");
+		assertThat(fieldError.getField()).isEqualTo("address.street");
 		errorCodes = Arrays.asList(fieldError.getCodes());
 		assertThat(errorCodes.size()).isEqualTo(5);
 		assertThat(errorCodes.contains("NotNull.person.address.street")).isTrue();
@@ -213,11 +213,11 @@ public class ValidatorFactoryTests {
 		validator.validate(person, result);
 		assertThat(result.getErrorCount()).isEqualTo(3);
 		FieldError fieldError = result.getFieldError("name");
-		assertThat((Object) fieldError.getField()).isEqualTo("name");
+		assertThat(fieldError.getField()).isEqualTo("name");
 		fieldError = result.getFieldError("address.street");
-		assertThat((Object) fieldError.getField()).isEqualTo("address.street");
+		assertThat(fieldError.getField()).isEqualTo("address.street");
 		fieldError = result.getFieldError("addressList[0].street");
-		assertThat((Object) fieldError.getField()).isEqualTo("addressList[0].street");
+		assertThat(fieldError.getField()).isEqualTo("addressList[0].street");
 	}
 
 	@Test
@@ -231,11 +231,11 @@ public class ValidatorFactoryTests {
 		validator.validate(person, result);
 		assertThat(result.getErrorCount()).isEqualTo(3);
 		FieldError fieldError = result.getFieldError("name");
-		assertThat((Object) fieldError.getField()).isEqualTo("name");
+		assertThat(fieldError.getField()).isEqualTo("name");
 		fieldError = result.getFieldError("address.street");
-		assertThat((Object) fieldError.getField()).isEqualTo("address.street");
+		assertThat(fieldError.getField()).isEqualTo("address.street");
 		fieldError = result.getFieldError("addressSet[].street");
-		assertThat((Object) fieldError.getField()).isEqualTo("addressSet[].street");
+		assertThat(fieldError.getField()).isEqualTo("addressSet[].street");
 	}
 
 	@Test

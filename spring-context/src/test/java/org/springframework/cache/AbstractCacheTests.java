@@ -40,7 +40,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 
 	@Test
 	public void testCacheName() throws Exception {
-		assertThat((Object) getCache().getName()).isEqualTo(CACHE_NAME);
+		assertThat(getCache().getName()).isEqualTo(CACHE_NAME);
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public abstract class AbstractCacheTests<T extends Cache> {
 		}
 		catch (Cache.ValueRetrievalException ex) {
 			assertThat(ex.getCause()).isNotNull();
-			assertThat((Object) ex.getCause().getClass()).isEqualTo(UnsupportedOperationException.class);
+			assertThat(ex.getCause().getClass()).isEqualTo(UnsupportedOperationException.class);
 		}
 	}
 

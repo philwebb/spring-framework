@@ -46,31 +46,31 @@ public class AopTestUtilsTests {
 	@Test
 	public void getTargetObjectForNonProxiedObject() {
 		Foo target = getTargetObject(foo);
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getTargetObjectWrappedInSingleJdkDynamicProxy() {
 		Foo target = getTargetObject(jdkProxy(foo));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getTargetObjectWrappedInSingleCglibProxy() {
 		Foo target = getTargetObject(cglibProxy(foo));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getTargetObjectWrappedInDoubleJdkDynamicProxy() {
 		Foo target = getTargetObject(jdkProxy(jdkProxy(foo)));
-		assertThat((Object) target).isNotSameAs(foo);
+		assertThat(target).isNotSameAs(foo);
 	}
 
 	@Test
 	public void getTargetObjectWrappedInDoubleCglibProxy() {
 		Foo target = getTargetObject(cglibProxy(cglibProxy(foo)));
-		assertThat((Object) target).isNotSameAs(foo);
+		assertThat(target).isNotSameAs(foo);
 	}
 
 	@Test
@@ -82,43 +82,43 @@ public class AopTestUtilsTests {
 	@Test
 	public void getUltimateTargetObjectForNonProxiedObject() {
 		Foo target = getUltimateTargetObject(foo);
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getUltimateTargetObjectWrappedInSingleJdkDynamicProxy() {
 		Foo target = getUltimateTargetObject(jdkProxy(foo));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getUltimateTargetObjectWrappedInSingleCglibProxy() {
 		Foo target = getUltimateTargetObject(cglibProxy(foo));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getUltimateTargetObjectWrappedInDoubleJdkDynamicProxy() {
 		Foo target = getUltimateTargetObject(jdkProxy(jdkProxy(foo)));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getUltimateTargetObjectWrappedInDoubleCglibProxy() {
 		Foo target = getUltimateTargetObject(cglibProxy(cglibProxy(foo)));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getUltimateTargetObjectWrappedInCglibProxyWrappedInJdkDynamicProxy() {
 		Foo target = getUltimateTargetObject(jdkProxy(cglibProxy(foo)));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	@Test
 	public void getUltimateTargetObjectWrappedInCglibProxyWrappedInDoubleJdkDynamicProxy() {
 		Foo target = getUltimateTargetObject(jdkProxy(jdkProxy(cglibProxy(foo))));
-		assertThat((Object) target).isSameAs(foo);
+		assertThat(target).isSameAs(foo);
 	}
 
 	private Foo jdkProxy(Foo foo) {

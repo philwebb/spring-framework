@@ -96,7 +96,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		byte[] body = "<rootElement><type s=\"Hello World\"/></rootElement>".getBytes("UTF-8");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 		RootElement result = (RootElement) converter.read(RootElement.class, inputMessage);
-		assertThat((Object) result.type.s).as("Invalid result").isEqualTo("Hello World");
+		assertThat(result.type.s).as("Invalid result").isEqualTo("Hello World");
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		byte[] body = "<rootElement><type s=\"Hello World\"/></rootElement>".getBytes("UTF-8");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 		RootElementSubclass result = (RootElementSubclass) converter.read(RootElementSubclass.class, inputMessage);
-		assertThat((Object) result.getType().s).as("Invalid result").isEqualTo("Hello World");
+		assertThat(result.getType().s).as("Invalid result").isEqualTo("Hello World");
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		byte[] body = "<foo s=\"Hello World\"/>".getBytes("UTF-8");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 		Type result = (Type) converter.read(Type.class, inputMessage);
-		assertThat((Object) result.s).as("Invalid result").isEqualTo("Hello World");
+		assertThat(result.s).as("Invalid result").isEqualTo("Hello World");
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		converter.setSupportDtd(true);
 		RootElement rootElement = (RootElement) converter.read(RootElement.class, inputMessage);
 
-		assertThat((Object) rootElement.external).isEqualTo("");
+		assertThat(rootElement.external).isEqualTo("");
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		this.converter.setProcessExternalEntities(true);
 		RootElement rootElement = (RootElement) converter.read(RootElement.class, inputMessage);
 
-		assertThat((Object) rootElement.external).isEqualTo("Foo Bar");
+		assertThat(rootElement.external).isEqualTo("Foo Bar");
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 	public void writeXmlRootElement() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(rootElement, null, outputMessage);
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
 		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
 			.isSimilarTo("<rootElement><type s=\"Hello World\"/></rootElement>", ev);
@@ -182,7 +182,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 	public void writeXmlRootElementSubclass() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(rootElementCglib, null, outputMessage);
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml"));
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
 		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
 				.isSimilarTo("<rootElement><type s=\"Hello World\"/></rootElement>", ev);
@@ -206,8 +206,8 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		MyJaxb2RootElementHttpMessageConverter myConverter = new MyJaxb2RootElementHttpMessageConverter();
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 		MyRootElement result = (MyRootElement) myConverter.read(MyRootElement.class, inputMessage);
-		assertThat((Object) result.getElement().getField1()).isEqualTo("a");
-		assertThat((Object) result.getElement().getField2()).isEqualTo("b");
+		assertThat(result.getElement().getField1()).isEqualTo("a");
+		assertThat(result.getElement().getField2()).isEqualTo("b");
 	}
 
 

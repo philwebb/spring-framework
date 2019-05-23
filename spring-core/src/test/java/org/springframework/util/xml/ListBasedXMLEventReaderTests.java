@@ -73,7 +73,7 @@ public class ListBasedXMLEventReaderTests {
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_DOCUMENT);
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_ELEMENT);
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(START_ELEMENT);
-		assertThat((Object) reader.getElementText()).isEqualTo("baz");
+		assertThat(reader.getElementText()).isEqualTo("baz");
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(END_ELEMENT);
 		assertThat(reader.nextEvent().getEventType()).isEqualTo(END_DOCUMENT);
 	}

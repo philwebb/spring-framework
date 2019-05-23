@@ -148,10 +148,10 @@ public class ResourceWebHandlerTests {
 		this.handler.handle(exchange).block(TIMEOUT);
 
 		MockServerHttpResponse response = exchange.getResponse();
-		assertThat((Object) response.getHeaders().getCacheControl()).isEqualTo("no-store");
+		assertThat(response.getHeaders().getCacheControl()).isEqualTo("no-store");
 		assertThat(response.getHeaders().containsKey("Last-Modified")).isTrue();
 		assertThat(resourceLastModifiedDate("test/foo.css") / 1000).isEqualTo(response.getHeaders().getLastModified() / 1000);
-		assertThat((Object) response.getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
+		assertThat(response.getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
 		assertThat(response.getHeaders().get("Accept-Ranges").size()).isEqualTo(1);
 	}
 
@@ -166,8 +166,8 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "versionString/foo.css");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertThat((Object) exchange.getResponse().getHeaders().getETag()).isEqualTo("\"versionString\"");
-		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
+		assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo("\"versionString\"");
+		assertThat(exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
 		assertThat(exchange.getResponse().getHeaders().get("Accept-Ranges").size()).isEqualTo(1);
 	}
 
@@ -193,12 +193,12 @@ public class ResourceWebHandlerTests {
 		this.handler.handle(exchange).block(TIMEOUT);
 
 		HttpHeaders headers = exchange.getResponse().getHeaders();
-		assertThat((Object) headers.getContentType()).isEqualTo(MediaType.parseMediaType("text/css"));
+		assertThat(headers.getContentType()).isEqualTo(MediaType.parseMediaType("text/css"));
 		assertThat(headers.getContentLength()).isEqualTo(17);
-		assertThat((Object) headers.getCacheControl()).isEqualTo("max-age=3600");
+		assertThat(headers.getCacheControl()).isEqualTo("max-age=3600");
 		assertThat(headers.containsKey("Last-Modified")).isTrue();
 		assertThat(resourceLastModifiedDate("testalternatepath/baz.css") / 1000).isEqualTo(headers.getLastModified() / 1000);
-		assertThat((Object) headers.getFirst("Accept-Ranges")).isEqualTo("bytes");
+		assertThat(headers.getFirst("Accept-Ranges")).isEqualTo("bytes");
 		assertThat(headers.get("Accept-Ranges").size()).isEqualTo(1);
 		assertResponseBody(exchange, "h1 { color:red; }");
 	}
@@ -209,7 +209,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "js/foo.js");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.parseMediaType("application/javascript"));
+		assertThat(exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.parseMediaType("application/javascript"));
 		assertResponseBody(exchange, "function foo() { console.log(\"hello world\"); }");
 	}
 
@@ -281,7 +281,7 @@ public class ResourceWebHandlerTests {
 		StepVerifier.create(handler.handle(exchange))
 				.expectErrorSatisfies(err -> {
 					assertThat(err).isInstanceOf(ResponseStatusException.class);
-					assertThat((Object) ((ResponseStatusException) err).getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+					assertThat(((ResponseStatusException) err).getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 				}).verify(TIMEOUT);
 	}
 
@@ -337,8 +337,8 @@ public class ResourceWebHandlerTests {
 
 	@Test
 	public void processPath() {
-		assertThat((Object) this.handler.processPath("/foo/bar")).isSameAs("/foo/bar");
-		assertThat((Object) this.handler.processPath("foo/bar")).isSameAs("foo/bar");
+		assertThat(this.handler.processPath("/foo/bar")).isSameAs("/foo/bar");
+		assertThat(this.handler.processPath("foo/bar")).isSameAs("foo/bar");
 
 		// leading whitespace control characters (00-1F)
 		assertThat(this.handler.processPath("  /foo/bar")).isEqualTo("/foo/bar");
@@ -444,7 +444,7 @@ public class ResourceWebHandlerTests {
 		StepVerifier.create(this.handler.handle(exchange))
 				.expectErrorSatisfies(err -> {
 					assertThat(err).isInstanceOf(ResponseStatusException.class);
-					assertThat((Object) ((ResponseStatusException) err).getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+					assertThat(((ResponseStatusException) err).getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 				}).verify(TIMEOUT);
 	}
 
@@ -479,13 +479,13 @@ public class ResourceWebHandlerTests {
 		StepVerifier.create(mono)
 				.expectErrorSatisfies(err -> {
 					assertThat(err).isInstanceOf(ResponseStatusException.class);
-					assertThat((Object) ((ResponseStatusException) err).getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+					assertThat(((ResponseStatusException) err).getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 				}).verify(TIMEOUT);
 
 		// SPR-17475
 		AtomicReference<Throwable> exceptionRef = new AtomicReference<>();
 		StepVerifier.create(mono).consumeErrorWith(exceptionRef::set).verify();
-		StepVerifier.create(mono).consumeErrorWith(ex -> assertThat((Object) ex).isNotSameAs(exceptionRef.get())).verify();
+		StepVerifier.create(mono).consumeErrorWith(ex -> assertThat(ex).isNotSameAs(exceptionRef.get())).verify();
 	}
 
 	@Test
@@ -495,11 +495,11 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.txt");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.PARTIAL_CONTENT);
-		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.PARTIAL_CONTENT);
+		assertThat(exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 		assertThat(exchange.getResponse().getHeaders().getContentLength()).isEqualTo(2);
-		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Content-Range")).isEqualTo("bytes 0-1/10");
-		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
+		assertThat(exchange.getResponse().getHeaders().getFirst("Content-Range")).isEqualTo("bytes 0-1/10");
+		assertThat(exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
 		assertThat(exchange.getResponse().getHeaders().get("Accept-Ranges").size()).isEqualTo(1);
 		assertResponseBody(exchange, "So");
 	}
@@ -511,11 +511,11 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.txt");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.PARTIAL_CONTENT);
-		assertThat((Object) exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.PARTIAL_CONTENT);
+		assertThat(exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 		assertThat(exchange.getResponse().getHeaders().getContentLength()).isEqualTo(1);
-		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Content-Range")).isEqualTo("bytes 9-9/10");
-		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
+		assertThat(exchange.getResponse().getHeaders().getFirst("Content-Range")).isEqualTo("bytes 9-9/10");
+		assertThat(exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
 		assertThat(exchange.getResponse().getHeaders().get("Accept-Ranges").size()).isEqualTo(1);
 		assertResponseBody(exchange, ".");
 	}
@@ -579,8 +579,8 @@ public class ResourceWebHandlerTests {
 				.expectComplete()
 				.verify();
 
-		assertThat((Object) exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE);
-		assertThat((Object) exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
+		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE);
+		assertThat(exchange.getResponse().getHeaders().getFirst("Accept-Ranges")).isEqualTo("bytes");
 	}
 
 	@Test
@@ -634,7 +634,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "foo.css");
 		this.handler.handle(exchange).block(TIMEOUT);
 
-		assertThat((Object) exchange.getResponse().getHeaders().getCacheControl()).isEqualTo("max-age=3600");
+		assertThat(exchange.getResponse().getHeaders().getCacheControl()).isEqualTo("max-age=3600");
 	}
 
 
@@ -653,7 +653,7 @@ public class ResourceWebHandlerTests {
 
 	private void assertResponseBody(MockServerWebExchange exchange, String responseBody) {
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertThat((Object) DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)).isEqualTo(responseBody))
+				.consumeNextWith(buf -> assertThat(DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)).isEqualTo(responseBody))
 				.expectComplete()
 				.verify();
 	}

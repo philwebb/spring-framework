@@ -74,7 +74,7 @@ public class EnableAspectJAutoProxyTests {
 		assertThat(counter.getCount()).isEqualTo(1);
 
 		String value = fooService.foo(1);
-		assertThat((Object) value).isEqualTo("bar");
+		assertThat(value).isEqualTo("bar");
 		assertThat(counter.getCount()).isEqualTo(2);
 
 		fooService.foo(1);

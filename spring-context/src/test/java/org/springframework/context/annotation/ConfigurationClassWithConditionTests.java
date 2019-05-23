@@ -146,7 +146,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithBeanReactivated.class);
 		Map<String, ExampleBean> beans = context.getBeansOfType(ExampleBean.class);
 		assertThat(beans.size()).isEqualTo(1);
-		assertThat((Object) beans.keySet().iterator().next()).isEqualTo("baz");
+		assertThat(beans.keySet().iterator().next()).isEqualTo("baz");
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class ConfigurationClassWithConditionTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigWithAlternativeBeans.class);
 		Map<String, ExampleBean> beans = context.getBeansOfType(ExampleBean.class);
 		assertThat(beans.size()).isEqualTo(1);
-		assertThat((Object) beans.keySet().iterator().next()).isEqualTo("baz");
+		assertThat(beans.keySet().iterator().next()).isEqualTo("baz");
 	}
 
 

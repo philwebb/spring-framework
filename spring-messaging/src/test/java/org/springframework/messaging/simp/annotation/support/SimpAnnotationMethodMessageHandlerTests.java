@@ -182,7 +182,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 
 		assertThat(this.testController.method).isEqualTo("simpleBinding");
 		assertThat(this.testController.arguments.get("id") instanceof Long).as("should be bound to type long").isTrue();
-		assertThat(this.testController.arguments.get("id")).isEqualTo((Object) 12L);
+		assertThat(this.testController.arguments.get("id")).isEqualTo(12L);
 	}
 
 	@Test

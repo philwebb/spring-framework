@@ -161,12 +161,12 @@ public class AnnotationAttributesTests {
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("value", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getString(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getString(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("location1", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getString(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getString(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("value", value);
@@ -174,7 +174,7 @@ public class AnnotationAttributesTests {
 		attributes.put("xmlFile", value);
 		attributes.put("groovyScript", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getString(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getString(alias)).isEqualTo(value));
 	}
 
 	@Test
@@ -185,35 +185,35 @@ public class AnnotationAttributesTests {
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("location1", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getStringArray(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getStringArray(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("value", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getStringArray(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getStringArray(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("location1", value);
 		attributes.put("value", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getStringArray(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getStringArray(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("location1", value);
 		AnnotationUtils.registerDefaultValues(attributes);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getStringArray(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getStringArray(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		attributes.put("value", value);
 		AnnotationUtils.registerDefaultValues(attributes);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getStringArray(alias)).isEqualTo(value));
+		aliases.stream().forEach(alias -> assertThat(attributes.getStringArray(alias)).isEqualTo(value));
 
 		attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		AnnotationUtils.registerDefaultValues(attributes);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
-		aliases.stream().forEach(alias -> assertThat((Object) attributes.getStringArray(alias)).isEqualTo(new String[] {""}));
+		aliases.stream().forEach(alias -> assertThat(attributes.getStringArray(alias)).isEqualTo(new String[] {""}));
 	}
 
 

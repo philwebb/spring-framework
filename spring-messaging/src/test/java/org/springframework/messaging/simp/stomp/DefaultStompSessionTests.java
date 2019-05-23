@@ -102,10 +102,10 @@ public class DefaultStompSessionTests {
 		assertThat(this.session.isConnected()).isTrue();
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.CONNECT);
-		assertThat((Object) accessor.getHost()).isEqualTo("my-host");
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.CONNECT);
+		assertThat(accessor.getHost()).isEqualTo("my-host");
 		assertThat(accessor.getAcceptVersion()).containsExactly("1.1", "1.2");
-		assertThat((Object) accessor.getHeartbeat()).isEqualTo(new long[] {11, 12});
+		assertThat(accessor.getHeartbeat()).isEqualTo(new long[] {11, 12});
 	}
 
 	@Test // SPR-16844
@@ -117,7 +117,7 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.CONNECT);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.CONNECT);
 		assertThat(accessor.getAcceptVersion()).containsExactly("1.1");
 	}
 
@@ -162,11 +162,11 @@ public class DefaultStompSessionTests {
 
 		ArgumentCaptor<Long> writeInterval = ArgumentCaptor.forClass(Long.class);
 		verify(this.connection).onWriteInactivity(any(Runnable.class), writeInterval.capture());
-		assertThat((Object) (long) writeInterval.getValue()).isEqualTo(20000);
+		assertThat((long) writeInterval.getValue()).isEqualTo(20000);
 
 		ArgumentCaptor<Long> readInterval = ArgumentCaptor.forClass(Long.class);
 		verify(this.connection).onReadInactivity(any(Runnable.class), readInterval.capture());
-		assertThat((Object) (long) readInterval.getValue()).isEqualTo(60000);
+		assertThat((long) readInterval.getValue()).isEqualTo(60000);
 	}
 
 	@Test
@@ -355,16 +355,16 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.SEND);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.SEND);
 
 		StompHeaders stompHeaders = StompHeaders.readOnlyStompHeaders(accessor.getNativeHeaders());
-		assertThat((Object) stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
+		assertThat(stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
 
-		assertThat((Object) stompHeaders.getDestination()).isEqualTo(destination);
-		assertThat((Object) stompHeaders.getContentType()).isEqualTo(new MimeType("text", "plain", StandardCharsets.UTF_8));
+		assertThat(stompHeaders.getDestination()).isEqualTo(destination);
+		assertThat(stompHeaders.getContentType()).isEqualTo(new MimeType("text", "plain", StandardCharsets.UTF_8));
 		// StompEncoder isn't involved
-		assertThat((Object) stompHeaders.getContentLength()).isEqualTo(-1);
-		assertThat((Object) new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo(payload);
+		assertThat(stompHeaders.getContentLength()).isEqualTo(-1);
+		assertThat(new String(message.getPayload(), StandardCharsets.UTF_8)).isEqualTo(payload);
 	}
 
 	@Test
@@ -387,7 +387,7 @@ public class DefaultStompSessionTests {
 
 		message = this.messageCaptor.getValue();
 		accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getReceipt()).isEqualTo("my-receipt");
+		assertThat(accessor.getReceipt()).isEqualTo("my-receipt");
 	}
 
 	@Test
@@ -430,12 +430,12 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.SUBSCRIBE);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.SUBSCRIBE);
 
 		StompHeaders stompHeaders = StompHeaders.readOnlyStompHeaders(accessor.getNativeHeaders());
-		assertThat((Object) stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
-		assertThat((Object) stompHeaders.getDestination()).isEqualTo(destination);
-		assertThat((Object) stompHeaders.getId()).isEqualTo(subscription.getSubscriptionId());
+		assertThat(stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
+		assertThat(stompHeaders.getDestination()).isEqualTo(destination);
+		assertThat(stompHeaders.getId()).isEqualTo(subscription.getSubscriptionId());
 	}
 
 	@Test
@@ -452,16 +452,16 @@ public class DefaultStompSessionTests {
 		StompFrameHandler frameHandler = mock(StompFrameHandler.class);
 
 		Subscription subscription = this.session.subscribe(stompHeaders, frameHandler);
-		assertThat((Object) subscription.getSubscriptionId()).isEqualTo(subscriptionId);
+		assertThat(subscription.getSubscriptionId()).isEqualTo(subscriptionId);
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.SUBSCRIBE);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.SUBSCRIBE);
 
 		stompHeaders = StompHeaders.readOnlyStompHeaders(accessor.getNativeHeaders());
-		assertThat((Object) stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
-		assertThat((Object) stompHeaders.getDestination()).isEqualTo(destination);
-		assertThat((Object) stompHeaders.getId()).isEqualTo(subscriptionId);
+		assertThat(stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
+		assertThat(stompHeaders.getDestination()).isEqualTo(destination);
+		assertThat(stompHeaders.getId()).isEqualTo(subscriptionId);
 	}
 
 	@Test
@@ -476,11 +476,11 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.UNSUBSCRIBE);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.UNSUBSCRIBE);
 
 		StompHeaders stompHeaders = StompHeaders.readOnlyStompHeaders(accessor.getNativeHeaders());
-		assertThat((Object) stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(1);
-		assertThat((Object) stompHeaders.getId()).isEqualTo(subscription.getSubscriptionId());
+		assertThat(stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(1);
+		assertThat(stompHeaders.getId()).isEqualTo(subscription.getSubscriptionId());
 	}
 
 	@Test // SPR-15131
@@ -503,12 +503,12 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.UNSUBSCRIBE);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.UNSUBSCRIBE);
 
 		StompHeaders stompHeaders = StompHeaders.readOnlyStompHeaders(accessor.getNativeHeaders());
-		assertThat((Object) stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
-		assertThat((Object) stompHeaders.getId()).isEqualTo(subscription.getSubscriptionId());
-		assertThat((Object) stompHeaders.getFirst(headerName)).isEqualTo(headerValue);
+		assertThat(stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(2);
+		assertThat(stompHeaders.getId()).isEqualTo(subscription.getSubscriptionId());
+		assertThat(stompHeaders.getFirst(headerName)).isEqualTo(headerValue);
 	}
 
 	@Test
@@ -521,11 +521,11 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.ACK);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.ACK);
 
 		StompHeaders stompHeaders = StompHeaders.readOnlyStompHeaders(accessor.getNativeHeaders());
-		assertThat((Object) stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(1);
-		assertThat((Object) stompHeaders.getId()).isEqualTo(messageId);
+		assertThat(stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(1);
+		assertThat(stompHeaders.getId()).isEqualTo(messageId);
 	}
 
 	@Test
@@ -538,11 +538,11 @@ public class DefaultStompSessionTests {
 
 		Message<byte[]> message = this.messageCaptor.getValue();
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-		assertThat((Object) accessor.getCommand()).isEqualTo(StompCommand.NACK);
+		assertThat(accessor.getCommand()).isEqualTo(StompCommand.NACK);
 
 		StompHeaders stompHeaders = StompHeaders.readOnlyStompHeaders(accessor.getNativeHeaders());
-		assertThat((Object) stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(1);
-		assertThat((Object) stompHeaders.getId()).isEqualTo(messageId);
+		assertThat(stompHeaders.size()).as(stompHeaders.toString()).isEqualTo(1);
+		assertThat(stompHeaders.getId()).isEqualTo(messageId);
 	}
 
 	@Test

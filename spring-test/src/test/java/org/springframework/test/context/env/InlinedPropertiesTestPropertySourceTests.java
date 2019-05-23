@@ -73,7 +73,7 @@ public class InlinedPropertiesTestPropertySourceTests {
 			"key.value.1", "key.value.2", "key.value.3" };
 		EnumerablePropertySource eps = (EnumerablePropertySource) env.getPropertySources().get(
 			INLINED_PROPERTIES_PROPERTY_SOURCE_NAME);
-		assertThat((Object) eps.getPropertyNames()).isEqualTo(expectedPropertyNames);
+		assertThat(eps.getPropertyNames()).isEqualTo(expectedPropertyNames);
 	}
 
 

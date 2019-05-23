@@ -180,7 +180,7 @@ public class ExecutorSubscribableChannelTests {
 			this.channel.send(this.message);
 		}
 		catch (MessageDeliveryException actual) {
-			assertThat((Object) actual.getCause()).isSameAs(expected);
+			assertThat(actual.getCause()).isSameAs(expected);
 		}
 		verify(this.handler).handleMessage(this.message);
 		assertThat(interceptor.getCounter().get()).isEqualTo(1);

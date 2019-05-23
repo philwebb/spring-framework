@@ -149,9 +149,9 @@ public class MessageBrokerConfigurationTests {
 		message = channel.messages.get(0);
 		headers = StompHeaderAccessor.wrap(message);
 
-		assertThat((Object) headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
-		assertThat((Object) headers.getDestination()).isEqualTo("/foo");
-		assertThat((Object) new String((byte[]) message.getPayload())).isEqualTo("bar");
+		assertThat(headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headers.getDestination()).isEqualTo("/foo");
+		assertThat(new String((byte[]) message.getPayload())).isEqualTo("bar");
 	}
 
 	@Test
@@ -182,9 +182,9 @@ public class MessageBrokerConfigurationTests {
 		message = outboundChannel.messages.get(1);
 		headers = StompHeaderAccessor.wrap(message);
 
-		assertThat((Object) headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
-		assertThat((Object) headers.getDestination()).isEqualTo("/foo");
-		assertThat((Object) new String((byte[]) message.getPayload())).isEqualTo("bar");
+		assertThat(headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headers.getDestination()).isEqualTo("/foo");
+		assertThat(new String((byte[]) message.getPayload())).isEqualTo("bar");
 	}
 
 	@Test
@@ -253,9 +253,9 @@ public class MessageBrokerConfigurationTests {
 		message = channel.messages.get(0);
 		headers = StompHeaderAccessor.wrap(message);
 
-		assertThat((Object) headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
-		assertThat((Object) headers.getDestination()).isEqualTo("/bar");
-		assertThat((Object) new String((byte[]) message.getPayload())).isEqualTo("bar");
+		assertThat(headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headers.getDestination()).isEqualTo("/bar");
+		assertThat(new String((byte[]) message.getPayload())).isEqualTo("bar");
 	}
 
 	@Test
@@ -287,7 +287,7 @@ public class MessageBrokerConfigurationTests {
 		assertThat(converters.get(2)).isInstanceOf(MappingJackson2MessageConverter.class);
 
 		ContentTypeResolver resolver = ((MappingJackson2MessageConverter) converters.get(2)).getContentTypeResolver();
-		assertThat((Object) ((DefaultContentTypeResolver) resolver).getDefaultMimeType()).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
+		assertThat(((DefaultContentTypeResolver) resolver).getDefaultMimeType()).isEqualTo(MimeTypeUtils.APPLICATION_JSON);
 	}
 
 	@Test
@@ -382,7 +382,7 @@ public class MessageBrokerConfigurationTests {
 			}
 		};
 
-		assertThat((Object) config.simpValidator()).isSameAs(validator);
+		assertThat(config.simpValidator()).isSameAs(validator);
 	}
 
 	@Test
@@ -412,16 +412,16 @@ public class MessageBrokerConfigurationTests {
 
 		SimpleBrokerMessageHandler broker = context.getBean(SimpleBrokerMessageHandler.class);
 		DefaultSubscriptionRegistry registry = (DefaultSubscriptionRegistry) broker.getSubscriptionRegistry();
-		assertThat((Object) registry.getPathMatcher().combine("a", "a")).isEqualTo("a.a");
+		assertThat(registry.getPathMatcher().combine("a", "a")).isEqualTo("a.a");
 
 		PathMatcher pathMatcher =
 				context.getBean(SimpAnnotationMethodMessageHandler.class).getPathMatcher();
 
-		assertThat((Object) pathMatcher.combine("a", "a")).isEqualTo("a.a");
+		assertThat(pathMatcher.combine("a", "a")).isEqualTo("a.a");
 
 		DefaultUserDestinationResolver resolver = context.getBean(DefaultUserDestinationResolver.class);
 		assertThat(resolver).isNotNull();
-		assertThat((Object) resolver.isRemoveLeadingSlash()).isEqualTo(false);
+		assertThat(resolver.isRemoveLeadingSlash()).isEqualTo(false);
 	}
 
 	@Test
@@ -447,19 +447,19 @@ public class MessageBrokerConfigurationTests {
 		ApplicationContext context = loadConfig(BrokerRelayConfig.class);
 
 		SimpUserRegistry userRegistry = context.getBean(SimpUserRegistry.class);
-		assertThat((Object) userRegistry.getClass()).isEqualTo(MultiServerUserRegistry.class);
+		assertThat(userRegistry.getClass()).isEqualTo(MultiServerUserRegistry.class);
 
 		UserDestinationMessageHandler handler1 = context.getBean(UserDestinationMessageHandler.class);
-		assertThat((Object) handler1.getBroadcastDestination()).isEqualTo("/topic/unresolved-user-destination");
+		assertThat(handler1.getBroadcastDestination()).isEqualTo("/topic/unresolved-user-destination");
 
 		UserRegistryMessageHandler handler2 = context.getBean(UserRegistryMessageHandler.class);
-		assertThat((Object) handler2.getBroadcastDestination()).isEqualTo("/topic/simp-user-registry");
+		assertThat(handler2.getBroadcastDestination()).isEqualTo("/topic/simp-user-registry");
 
 		StompBrokerRelayMessageHandler relay = context.getBean(StompBrokerRelayMessageHandler.class);
 		assertThat(relay.getSystemSubscriptions()).isNotNull();
 		assertThat(relay.getSystemSubscriptions().size()).isEqualTo(2);
-		assertThat((Object) relay.getSystemSubscriptions().get("/topic/unresolved-user-destination")).isSameAs(handler1);
-		assertThat((Object) relay.getSystemSubscriptions().get("/topic/simp-user-registry")).isSameAs(handler2);
+		assertThat(relay.getSystemSubscriptions().get("/topic/unresolved-user-destination")).isSameAs(handler1);
+		assertThat(relay.getSystemSubscriptions().get("/topic/simp-user-registry")).isSameAs(handler2);
 	}
 
 	@Test
@@ -468,7 +468,7 @@ public class MessageBrokerConfigurationTests {
 
 		SimpUserRegistry registry = context.getBean(SimpUserRegistry.class);
 		assertThat(registry).isNotNull();
-		assertThat((Object) registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
+		assertThat(registry.getClass()).isNotEqualTo(MultiServerUserRegistry.class);
 
 		UserDestinationMessageHandler handler = context.getBean(UserDestinationMessageHandler.class);
 		assertThat(handler.getBroadcastDestination()).isNotNull();
@@ -517,10 +517,10 @@ public class MessageBrokerConfigurationTests {
 		Message<?> outputMessage = outChannel.messages.remove(1);
 		headers = StompHeaderAccessor.wrap(outputMessage);
 
-		assertThat((Object) headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
 		Object expecteds1 = expectLeadingSlash ? "/queue.q1-usersess1" : "queue.q1-usersess1";
-		assertThat((Object) headers.getDestination()).isEqualTo(expecteds1);
-		assertThat((Object) new String((byte[]) outputMessage.getPayload())).isEqualTo("123");
+		assertThat(headers.getDestination()).isEqualTo(expecteds1);
+		assertThat(new String((byte[]) outputMessage.getPayload())).isEqualTo("123");
 		outChannel.messages.clear();
 
 		// 3. Send message via broker channel
@@ -534,10 +534,10 @@ public class MessageBrokerConfigurationTests {
 		outputMessage = outChannel.messages.remove(0);
 		headers = StompHeaderAccessor.wrap(outputMessage);
 
-		assertThat((Object) headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
+		assertThat(headers.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
 		Object expecteds = expectLeadingSlash ? "/queue.q1-usersess1" : "queue.q1-usersess1";
-		assertThat((Object) headers.getDestination()).isEqualTo(expecteds);
-		assertThat((Object) new String((byte[]) outputMessage.getPayload())).isEqualTo("456");
+		assertThat(headers.getDestination()).isEqualTo(expecteds);
+		assertThat(new String((byte[]) outputMessage.getPayload())).isEqualTo("456");
 
 	}
 

@@ -154,7 +154,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		CglibTestBean proxy = (CglibTestBean) aop.getProxy();
-		assertThat((Object) proxy.getName()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
+		assertThat(proxy.getName()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		AopProxy aop = new CglibAopProxy(as);
 
 		PrivateCglibTestBean proxy = (PrivateCglibTestBean) aop.getProxy();
-		assertThat((Object) proxy.toString()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
+		assertThat(proxy.toString()).as("The name property has been overwritten by the constructor").isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -182,8 +182,8 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		CglibAopProxy aop = new CglibAopProxy(pc);
 		CglibTestBean proxy = (CglibTestBean) aop.getProxy();
-		assertThat((Object) proxy).as("Proxy should not be null").isNotNull();
-		assertThat((Object) proxy.getName()).as("Constructor overrode the value of name").isEqualTo("Rob Harrop");
+		assertThat(proxy).as("Proxy should not be null").isNotNull();
+		assertThat(proxy.getName()).as("Constructor overrode the value of name").isEqualTo("Rob Harrop");
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		ITestBean proxy1 = getAdvisedProxy(target);
 		ITestBean proxy2 = getAdvisedProxy(target2);
-		assertThat((Object) proxy2.getClass()).isSameAs(proxy1.getClass());
+		assertThat(proxy2.getClass()).isSameAs(proxy1.getClass());
 		assertThat(proxy1.getAge()).isEqualTo(target.getAge());
 		assertThat(proxy2.getAge()).isEqualTo(target2.getAge());
 	}
@@ -241,7 +241,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 
 		ITestBean proxy1 = getIntroductionAdvisorProxy(target1);
 		ITestBean proxy2 = getIntroductionAdvisorProxy(target2);
-		assertThat((Object) proxy2.getClass()).as("Incorrect duplicate creation of proxy classes").isSameAs(proxy1.getClass());
+		assertThat(proxy2.getClass()).as("Incorrect duplicate creation of proxy classes").isSameAs(proxy1.getClass());
 	}
 
 	private ITestBean getIntroductionAdvisorProxy(TestBean target) {

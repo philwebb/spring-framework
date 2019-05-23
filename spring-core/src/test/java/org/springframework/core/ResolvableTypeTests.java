@@ -183,7 +183,7 @@ public class ResolvableTypeTests {
 		assertThat(type2.resolve()).isEqualTo(List.class);
 		assertThat(type2.getSource()).isSameAs(field2);
 
-		assertThat((Object) type2).isEqualTo(type);
+		assertThat(type2).isEqualTo(type);
 		assertThat(type2.hashCode()).isEqualTo(type.hashCode());
 	}
 
@@ -896,7 +896,7 @@ public class ResolvableTypeTests {
 		Type sourceType = Methods.class.getMethod("charSequenceReturn").getGenericReturnType();
 		ResolvableType reflectiveType = ResolvableType.forType(sourceType);
 		ResolvableType declaredType = ResolvableType.forType(new ParameterizedTypeReference<List<CharSequence>>() {});
-		assertThat((Object) declaredType).isEqualTo(reflectiveType);
+		assertThat(declaredType).isEqualTo(reflectiveType);
 	}
 
 	@Test
@@ -1280,7 +1280,7 @@ public class ResolvableTypeTests {
 	public void testSpr11219() throws Exception {
 		ResolvableType type = ResolvableType.forField(BaseProvider.class.getField("stuff"), BaseProvider.class);
 		assertThat(type.getNested(2).isAssignableFrom(ResolvableType.forClass(BaseImplementation.class))).isTrue();
-		assertThat((Object) type.toString()).isEqualTo("java.util.Collection<org.springframework.core.ResolvableTypeTests$IBase<?>>");
+		assertThat(type.toString()).isEqualTo("java.util.Collection<org.springframework.core.ResolvableTypeTests$IBase<?>>");
 	}
 
 	@Test

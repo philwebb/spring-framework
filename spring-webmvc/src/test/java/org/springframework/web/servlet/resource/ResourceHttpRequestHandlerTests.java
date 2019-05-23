@@ -405,8 +405,8 @@ public class ResourceHttpRequestHandlerTests {
 	@Test
 	public void processPath() {
 		// Unchanged
-		assertThat((Object) this.handler.processPath("/foo/bar")).isSameAs("/foo/bar");
-		assertThat((Object) this.handler.processPath("foo/bar")).isSameAs("foo/bar");
+		assertThat(this.handler.processPath("/foo/bar")).isSameAs("/foo/bar");
+		assertThat(this.handler.processPath("foo/bar")).isSameAs("foo/bar");
 
 		// leading whitespace control characters (00-1F)
 		assertThat(this.handler.processPath("  /foo/bar")).isEqualTo("/foo/bar");

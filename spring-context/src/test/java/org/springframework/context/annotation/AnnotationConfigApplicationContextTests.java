@@ -178,9 +178,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.register(BeanA.class, BeanB.class, BeanC.class);
 		context.refresh();
 
-		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
-		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
-		assertThat((Object) context.getBean(BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
+		assertThat(context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
+		assertThat(context.getBean(BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -191,9 +191,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("c", BeanC.class);
 		context.refresh();
 
-		assertThat((Object) context.getBean("a", BeanA.class).b).isSameAs(context.getBean("b"));
-		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
-		assertThat((Object) context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean("a", BeanA.class).b).isSameAs(context.getBean("b"));
+		assertThat(context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
+		assertThat(context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -206,9 +206,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton("annotationConfigApplicationContextTests.BeanA")).isTrue();
-		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
-		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
-		assertThat((Object) context.getBean(BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
+		assertThat(context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
+		assertThat(context.getBean(BeanB.class).applicationContext).isSameAs(context);
 
 		assertThat(context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanB")).isEqualTo(new String[] {"annotationConfigApplicationContextTests.BeanA"});
 		assertThat(context.getDefaultListableBeanFactory().getDependentBeans("annotationConfigApplicationContextTests.BeanC")).isEqualTo(new String[] {"annotationConfigApplicationContextTests.BeanA"});
@@ -225,9 +225,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton("annotationConfigApplicationContextTests.BeanA")).isFalse();
-		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
-		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
-		assertThat((Object) context.getBean(BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
+		assertThat(context.getBean(BeanA.class).c).isSameAs(context.getBean(BeanC.class));
+		assertThat(context.getBean(BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -240,9 +240,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton("a")).isTrue();
-		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
-		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
-		assertThat((Object) context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean(BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
+		assertThat(context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
+		assertThat(context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -256,9 +256,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.refresh();
 
 		assertThat(context.getBeanFactory().containsSingleton("a")).isFalse();
-		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
-		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
-		assertThat((Object) context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean(BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
+		assertThat(context.getBean("a", BeanA.class).c).isSameAs(context.getBean("c"));
+		assertThat(context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -273,8 +273,8 @@ public class AnnotationConfigApplicationContextTests {
 		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanB.class), "b")).isTrue();
 		assertThat(ObjectUtils.containsElement(context.getBeanNamesForType(BeanC.class), "c")).isTrue();
 		assertThat(context.getBeansOfType(BeanA.class).isEmpty()).isTrue();
-		assertThat((Object) context.getBeansOfType(BeanB.class).values().iterator().next()).isSameAs(context.getBean(BeanB.class));
-		assertThat((Object) context.getBeansOfType(BeanC.class).values().iterator().next()).isSameAs(context.getBean(BeanC.class));
+		assertThat(context.getBeansOfType(BeanB.class).values().iterator().next()).isSameAs(context.getBean(BeanB.class));
+		assertThat(context.getBeansOfType(BeanC.class).values().iterator().next()).isSameAs(context.getBean(BeanC.class));
 	}
 
 	@Test
@@ -285,8 +285,8 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean(BeanA.class, b, c);
 		context.refresh();
 
-		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(b);
-		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(c);
+		assertThat(context.getBean(BeanA.class).b).isSameAs(b);
+		assertThat(context.getBean(BeanA.class).c).isSameAs(c);
 		assertThat(b.applicationContext).isNotNull();
 	}
 
@@ -298,8 +298,8 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("a", BeanA.class, b, c);
 		context.refresh();
 
-		assertThat((Object) context.getBean("a", BeanA.class).b).isSameAs(b);
-		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(c);
+		assertThat(context.getBean("a", BeanA.class).b).isSameAs(b);
+		assertThat(context.getBean("a", BeanA.class).c).isSameAs(c);
 		assertThat(b.applicationContext).isNotNull();
 	}
 
@@ -311,9 +311,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean(BeanB.class);
 		context.refresh();
 
-		assertThat((Object) context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
-		assertThat((Object) context.getBean(BeanA.class).c).isSameAs(c);
-		assertThat((Object) context.getBean(BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean(BeanA.class).b).isSameAs(context.getBean(BeanB.class));
+		assertThat(context.getBean(BeanA.class).c).isSameAs(c);
+		assertThat(context.getBean(BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -324,9 +324,9 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("b", BeanB.class);
 		context.refresh();
 
-		assertThat((Object) context.getBean("a", BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
-		assertThat((Object) context.getBean("a", BeanA.class).c).isSameAs(c);
-		assertThat((Object) context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
+		assertThat(context.getBean("a", BeanA.class).b).isSameAs(context.getBean("b", BeanB.class));
+		assertThat(context.getBean("a", BeanA.class).c).isSameAs(c);
+		assertThat(context.getBean("b", BeanB.class).applicationContext).isSameAs(context);
 	}
 
 	@Test
@@ -335,8 +335,8 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBean("fb", TypedFactoryBean.class, TypedFactoryBean::new, bd -> bd.setLazyInit(true));
 		context.refresh();
 
-		assertThat((Object) context.getType("fb")).isEqualTo(String.class);
-		assertThat((Object) context.getType("&fb")).isEqualTo(TypedFactoryBean.class);
+		assertThat(context.getType("fb")).isEqualTo(String.class);
+		assertThat(context.getType("&fb")).isEqualTo(TypedFactoryBean.class);
 	}
 
 	@Test
@@ -349,8 +349,8 @@ public class AnnotationConfigApplicationContextTests {
 		context.registerBeanDefinition("fb", bd);
 		context.refresh();
 
-		assertThat((Object) context.getType("fb")).isEqualTo(String.class);
-		assertThat((Object) context.getType("&fb")).isEqualTo(FactoryBean.class);
+		assertThat(context.getType("fb")).isEqualTo(String.class);
+		assertThat(context.getType("&fb")).isEqualTo(FactoryBean.class);
 	}
 
 

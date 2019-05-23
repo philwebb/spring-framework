@@ -87,13 +87,13 @@ public class AbstractMockWebServerTestCase {
 		assertThat(request.getHeaders().values("Content-Length").size()).isEqualTo(1);
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
-		assertThat((Object) requestContentType).as("No content-type").isNotNull();
+		assertThat(requestContentType).as("No content-type").isNotNull();
 		Charset charset = StandardCharsets.ISO_8859_1;
 		if (requestContentType.contains("charset=")) {
 			String charsetName = requestContentType.split("charset=")[1];
 			charset = Charset.forName(charsetName);
 		}
-		assertThat((Object) request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
+		assertThat(request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
 		Buffer buf = new Buffer();
 		buf.write(responseBody);
 		return new MockResponse()
@@ -107,7 +107,7 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse jsonPostRequest(RecordedRequest request, String location, String contentType) {
 		if (request.getBodySize() > 0) {
 			assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
-			assertThat((Object) request.getHeader("Content-Type")).as("No content-type").isNotNull();
+			assertThat(request.getHeader("Content-Type")).as("No content-type").isNotNull();
 		}
 		return new MockResponse()
 				.setHeader("Location", baseUrl + location)
@@ -162,7 +162,7 @@ public class AbstractMockWebServerTestCase {
 	}
 
 	private MockResponse formRequest(RecordedRequest request) {
-		assertThat((Object) request.getHeader("Content-Type")).isEqualTo("application/x-www-form-urlencoded;charset=UTF-8");
+		assertThat(request.getHeader("Content-Type")).isEqualTo("application/x-www-form-urlencoded;charset=UTF-8");
 		String body = request.getBody().readUtf8();
 		assertThat(body).contains("name+1=value+1");
 		assertThat(body).contains("name+2=value+2%2B1");
@@ -173,16 +173,16 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse patchRequest(RecordedRequest request, String expectedRequestContent,
 			String contentType, byte[] responseBody) {
 
-		assertThat((Object) request.getMethod()).isEqualTo("PATCH");
+		assertThat(request.getMethod()).isEqualTo("PATCH");
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
-		assertThat((Object) requestContentType).as("No content-type").isNotNull();
+		assertThat(requestContentType).as("No content-type").isNotNull();
 		Charset charset = StandardCharsets.ISO_8859_1;
 		if (requestContentType.contains("charset=")) {
 			String charsetName = requestContentType.split("charset=")[1];
 			charset = Charset.forName(charsetName);
 		}
-		assertThat((Object) request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
+		assertThat(request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
 		Buffer buf = new Buffer();
 		buf.write(responseBody);
 		return new MockResponse().setResponseCode(201)
@@ -194,13 +194,13 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse putRequest(RecordedRequest request, String expectedRequestContent) {
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
-		assertThat((Object) requestContentType).as("No content-type").isNotNull();
+		assertThat(requestContentType).as("No content-type").isNotNull();
 		Charset charset = StandardCharsets.ISO_8859_1;
 		if (requestContentType.contains("charset=")) {
 			String charsetName = requestContentType.split("charset=")[1];
 			charset = Charset.forName(charsetName);
 		}
-		assertThat((Object) request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
+		assertThat(request.getBody().readString(charset)).as("Invalid request body").isEqualTo(expectedRequestContent);
 		return new MockResponse().setResponseCode(202);
 	}
 

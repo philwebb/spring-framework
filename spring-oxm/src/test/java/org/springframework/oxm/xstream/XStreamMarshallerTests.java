@@ -311,12 +311,12 @@ public class XStreamMarshallerTests {
 		marshaller.setStreamDriver(new JettisonMappedXmlDriver());
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertThat((Object) writer.toString()).as("Invalid result").isEqualTo("{\"flight\":{\"flightNumber\":42}}");
+		assertThat(writer.toString()).as("Invalid result").isEqualTo("{\"flight\":{\"flightNumber\":42}}");
 		Object o = marshaller.unmarshal(new StreamSource(new StringReader(writer.toString())));
 		assertThat(o instanceof Flight).as("Unmarshalled object is not Flights").isTrue();
 		Flight unflight = (Flight) o;
-		assertThat((Object) unflight).as("Flight is null").isNotNull();
-		assertThat((Object) unflight.getFlightNumber()).as("Number is invalid").isEqualTo(42L);
+		assertThat(unflight).as("Flight is null").isNotNull();
+		assertThat(unflight.getFlightNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 
 	@Test
@@ -332,7 +332,7 @@ public class XStreamMarshallerTests {
 
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertThat((Object) writer.toString()).as("Invalid result").isEqualTo("{\"flightNumber\": 42}");
+		assertThat(writer.toString()).as("Invalid result").isEqualTo("{\"flightNumber\": 42}");
 	}
 
 	@Test
@@ -357,7 +357,7 @@ public class XStreamMarshallerTests {
 	private static void assertXpathNotExists(String xPathExpression, String inXMLString){
 		Source source = Input.fromString(inXMLString).build();
 		Iterable<Node> nodes = new JAXPXPathEngine().selectNodes(xPathExpression, source);
-		assertThat((Object) count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo(0);
+		assertThat(count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo(0);
 	}
 
 	private static int count(Iterable<Node> nodes) {

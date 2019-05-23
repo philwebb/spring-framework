@@ -318,7 +318,7 @@ public class DefaultConversionServiceTests {
 		UUID uuid = UUID.randomUUID();
 		String convertToString = conversionService.convert(uuid, String.class);
 		UUID convertToUUID = conversionService.convert(convertToString, UUID.class);
-		assertThat((Object) convertToUUID).isEqualTo(uuid);
+		assertThat(convertToUUID).isEqualTo(uuid);
 	}
 
 	@Test
@@ -381,8 +381,8 @@ public class DefaultConversionServiceTests {
 				TypeDescriptor.valueOf(String[].class),
 				new TypeDescriptor(new MethodParameter(getClass().getMethod("handlerMethod", List.class), 0)));
 		assertThat(colors.size()).isEqualTo(2);
-		assertThat((Object) colors.get(0)).isEqualTo(Color.WHITE);
-		assertThat((Object) colors.get(1)).isEqualTo(Color.BLACK);
+		assertThat(colors.get(0)).isEqualTo(Color.WHITE);
+		assertThat(colors.get(1)).isEqualTo(Color.BLACK);
 	}
 
 	@Test
@@ -402,28 +402,28 @@ public class DefaultConversionServiceTests {
 	@Test
 	public void convertArrayToString() {
 		String result = conversionService.convert(new String[] {"1", "2", "3"}, String.class);
-		assertThat((Object) result).isEqualTo("1,2,3");
+		assertThat(result).isEqualTo("1,2,3");
 	}
 
 	@Test
 	public void convertArrayToStringWithElementConversion() {
 		String result = conversionService.convert(new Integer[] {1, 2, 3}, String.class);
-		assertThat((Object) result).isEqualTo("1,2,3");
+		assertThat(result).isEqualTo("1,2,3");
 	}
 
 	@Test
 	public void convertEmptyArrayToString() {
 		String result = conversionService.convert(new String[0], String.class);
-		assertThat((Object) result).isEqualTo("");
+		assertThat(result).isEqualTo("");
 	}
 
 	@Test
 	public void convertStringToArray() {
 		String[] result = conversionService.convert("1,2,3", String[].class);
 		assertThat(result.length).isEqualTo(3);
-		assertThat((Object) result[0]).isEqualTo("1");
-		assertThat((Object) result[1]).isEqualTo("2");
-		assertThat((Object) result[2]).isEqualTo("3");
+		assertThat(result[0]).isEqualTo("1");
+		assertThat(result[1]).isEqualTo("2");
+		assertThat(result[2]).isEqualTo("3");
 	}
 
 	@Test
@@ -468,7 +468,7 @@ public class DefaultConversionServiceTests {
 	public void convertArrayToObjectAssignableTargetType() {
 		Long[] array = new Long[] {3L};
 		Long[] result = (Long[]) conversionService.convert(array, Object.class);
-		assertThat((Object) result).isEqualTo(array);
+		assertThat(result).isEqualTo(array);
 	}
 
 	@Test
@@ -492,9 +492,9 @@ public class DefaultConversionServiceTests {
 		list.add("2");
 		list.add("3");
 		String[] result = conversionService.convert(list, String[].class);
-		assertThat((Object) result[0]).isEqualTo("1");
-		assertThat((Object) result[1]).isEqualTo("2");
-		assertThat((Object) result[2]).isEqualTo("3");
+		assertThat(result[0]).isEqualTo("1");
+		assertThat(result[1]).isEqualTo("2");
+		assertThat(result[2]).isEqualTo("3");
 	}
 
 	@Test
@@ -513,7 +513,7 @@ public class DefaultConversionServiceTests {
 	public void convertCollectionToString() {
 		List<String> list = Arrays.asList("foo", "bar");
 		String result = conversionService.convert(list, String.class);
-		assertThat((Object) result).isEqualTo("foo,bar");
+		assertThat(result).isEqualTo("foo,bar");
 	}
 
 	@Test
@@ -521,7 +521,7 @@ public class DefaultConversionServiceTests {
 		List<Integer> list = Arrays.asList(3, 5);
 		String result = (String) conversionService.convert(list,
 				new TypeDescriptor(getClass().getField("genericList")), TypeDescriptor.valueOf(String.class));
-		assertThat((Object) result).isEqualTo("3,5");
+		assertThat(result).isEqualTo("3,5");
 	}
 
 	@Test
@@ -553,7 +553,7 @@ public class DefaultConversionServiceTests {
 	public void convertCollectionToObject() {
 		List<Long> list = Collections.singletonList(3L);
 		Long result = conversionService.convert(list, Long.class);
-		assertThat((Object) result).isEqualTo(Long.valueOf(3));
+		assertThat(result).isEqualTo(Long.valueOf(3));
 	}
 
 	@Test
@@ -578,7 +578,7 @@ public class DefaultConversionServiceTests {
 		source.add("B");
 		conversionService.addConverter(List.class, ListWrapper.class, ListWrapper::new);
 		ListWrapper result = conversionService.convert(source, ListWrapper.class);
-		assertThat((Object) result.getList()).isSameAs(source);
+		assertThat(result.getList()).isSameAs(source);
 	}
 
 	@Test
@@ -679,7 +679,7 @@ public class DefaultConversionServiceTests {
 		List<String> list = Arrays.asList("Foo", "Bar");
 		assertThat(conversionService.canConvert(list.getClass(), String.class)).isTrue();
 		String result = conversionService.convert(list, String.class);
-		assertThat((Object) result).isEqualTo("Foo,Bar");
+		assertThat(result).isEqualTo("Foo,Bar");
 	}
 
 	@Test
@@ -689,7 +689,7 @@ public class DefaultConversionServiceTests {
 		List<List<String>> list = Arrays.asList(list1, list2);
 		assertThat(conversionService.canConvert(list.getClass(), String.class)).isTrue();
 		String result = conversionService.convert(list, String.class);
-		assertThat((Object) result).isEqualTo("Foo,Bar,Baz,Boop");
+		assertThat(result).isEqualTo("Foo,Bar,Baz,Boop");
 	}
 
 	@Test
@@ -764,8 +764,8 @@ public class DefaultConversionServiceTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, Foo> map = (Map<Integer, Foo>) conversionService.convert(foo,
 				TypeDescriptor.forObject(foo), new TypeDescriptor(getClass().getField("genericMap")));
-		assertThat((Object) map.get(1)).isEqualTo(Foo.BAR);
-		assertThat((Object) map.get(2)).isEqualTo(Foo.BAZ);
+		assertThat(map.get(1)).isEqualTo(Foo.BAR);
+		assertThat(map.get(2)).isEqualTo(Foo.BAZ);
 	}
 
 	@Test
@@ -804,9 +804,9 @@ public class DefaultConversionServiceTests {
 	public void convertStringToProperties() {
 		Properties result = conversionService.convert("a=b\nc=2\nd=", Properties.class);
 		assertThat(result.size()).isEqualTo(3);
-		assertThat((Object) result.getProperty("a")).isEqualTo("b");
-		assertThat((Object) result.getProperty("c")).isEqualTo("2");
-		assertThat((Object) result.getProperty("d")).isEqualTo("");
+		assertThat(result.getProperty("a")).isEqualTo("b");
+		assertThat(result.getProperty("c")).isEqualTo("2");
+		assertThat(result.getProperty("d")).isEqualTo("");
 	}
 
 	@Test
@@ -824,9 +824,9 @@ public class DefaultConversionServiceTests {
 		ISBN.reset();
 		assertThat(conversionService.convert(new ISBN("123456789"), String.class)).isEqualTo("123456789");
 
-		assertThat((Object) ISBN.constructorCount).as("constructor invocations").isEqualTo(1);
-		assertThat((Object) ISBN.valueOfCount).as("valueOf() invocations").isEqualTo(0);
-		assertThat((Object) ISBN.toStringCount).as("toString() invocations").isEqualTo(1);
+		assertThat(ISBN.constructorCount).as("constructor invocations").isEqualTo(1);
+		assertThat(ISBN.valueOfCount).as("valueOf() invocations").isEqualTo(0);
+		assertThat(ISBN.toStringCount).as("toString() invocations").isEqualTo(1);
 	}
 
 	@Test
@@ -834,10 +834,10 @@ public class DefaultConversionServiceTests {
 		ISBN.reset();
 		assertThat(conversionService.convert("123456789", ISBN.class)).isEqualTo(new ISBN("123456789"));
 
-		assertThat((Object) ISBN.valueOfCount).as("valueOf() invocations").isEqualTo(1);
+		assertThat(ISBN.valueOfCount).as("valueOf() invocations").isEqualTo(1);
 		// valueOf() invokes the constructor
-		assertThat((Object) ISBN.constructorCount).as("constructor invocations").isEqualTo(2);
-		assertThat((Object) ISBN.toStringCount).as("toString() invocations").isEqualTo(0);
+		assertThat(ISBN.constructorCount).as("constructor invocations").isEqualTo(2);
+		assertThat(ISBN.toStringCount).as("toString() invocations").isEqualTo(0);
 	}
 
 	@Test
@@ -845,8 +845,8 @@ public class DefaultConversionServiceTests {
 		SSN.reset();
 		assertThat(conversionService.convert(new SSN("123456789"), String.class)).isEqualTo("123456789");
 
-		assertThat((Object) SSN.constructorCount).as("constructor invocations").isEqualTo(1);
-		assertThat((Object) SSN.toStringCount).as("toString() invocations").isEqualTo(1);
+		assertThat(SSN.constructorCount).as("constructor invocations").isEqualTo(1);
+		assertThat(SSN.toStringCount).as("toString() invocations").isEqualTo(1);
 	}
 
 	@Test
@@ -854,13 +854,13 @@ public class DefaultConversionServiceTests {
 		SSN.reset();
 		assertThat(conversionService.convert("123456789", SSN.class)).isEqualTo(new SSN("123456789"));
 
-		assertThat((Object) SSN.constructorCount).as("constructor invocations").isEqualTo(2);
-		assertThat((Object) SSN.toStringCount).as("toString() invocations").isEqualTo(0);
+		assertThat(SSN.constructorCount).as("constructor invocations").isEqualTo(2);
+		assertThat(SSN.toStringCount).as("toString() invocations").isEqualTo(0);
 	}
 
 	@Test
 	public void convertStringToTimezone() {
-		assertThat((Object) conversionService.convert("GMT+2", TimeZone.class).getID()).isEqualTo("GMT+02:00");
+		assertThat(conversionService.convert("GMT+2", TimeZone.class).getID()).isEqualTo("GMT+02:00");
 	}
 
 	@Test
@@ -887,7 +887,7 @@ public class DefaultConversionServiceTests {
 	@Test
 	public void convertObjectToObjectFinderMethod() {
 		TestEntity e = conversionService.convert(1L, TestEntity.class);
-		assertThat((Object) e.getId()).isEqualTo(Long.valueOf(1));
+		assertThat(e.getId()).isEqualTo(Long.valueOf(1));
 	}
 
 	@Test
@@ -900,7 +900,7 @@ public class DefaultConversionServiceTests {
 	@Test
 	public void convertObjectToObjectFinderMethodWithIdConversion() {
 		TestEntity entity = conversionService.convert("1", TestEntity.class);
-		assertThat((Object) entity.getId()).isEqualTo(Long.valueOf(1));
+		assertThat(entity.getId()).isEqualTo(Long.valueOf(1));
 	}
 
 	@Test
@@ -929,7 +929,7 @@ public class DefaultConversionServiceTests {
 				new String[] {"9", "10", "11", "12"}};
 		List<String[]> converted = conversionService.convert(grid, List.class);
 		String[][] convertedBack = conversionService.convert(converted, String[][].class);
-		assertThat((Object) convertedBack).isEqualTo(grid);
+		assertThat(convertedBack).isEqualTo(grid);
 	}
 
 	@Test
@@ -937,8 +937,8 @@ public class DefaultConversionServiceTests {
 		conversionService.addConverter(Byte.class, Byte.class, source -> (byte) (source + 1));
 		byte[] byteArray = new byte[] {1, 2, 3};
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
-		assertThat((Object) converted).isNotSameAs(byteArray);
-		assertThat((Object) converted).isEqualTo(new byte[]{2, 3, 4});
+		assertThat(converted).isNotSameAs(byteArray);
+		assertThat(converted).isEqualTo(new byte[]{2, 3, 4});
 	}
 
 	@Test
@@ -948,8 +948,8 @@ public class DefaultConversionServiceTests {
 		MethodParameter parameter = new MethodParameter(method, 0);
 		TypeDescriptor descriptor = new TypeDescriptor(parameter);
 		Object actual = conversionService.convert("1,2,3", TypeDescriptor.valueOf(String.class), descriptor);
-		assertThat((Object) actual.getClass()).isEqualTo(Optional.class);
-		assertThat((Object) ((Optional<List<Integer>>) actual).get()).isEqualTo(Arrays.asList(1, 2, 3));
+		assertThat(actual.getClass()).isEqualTo(Optional.class);
+		assertThat(((Optional<List<Integer>>) actual).get()).isEqualTo(Arrays.asList(1, 2, 3));
 	}
 
 	@Test

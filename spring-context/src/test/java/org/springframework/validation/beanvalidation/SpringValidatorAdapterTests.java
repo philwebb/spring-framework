@@ -81,7 +81,7 @@ public class SpringValidatorAdapterTests {
 	@Test
 	public void testUnwrap() {
 		Validator nativeValidator = validatorAdapter.unwrap(Validator.class);
-		assertThat((Object) nativeValidator).isSameAs(this.nativeValidator);
+		assertThat(nativeValidator).isSameAs(this.nativeValidator);
 	}
 
 	@Test  // SPR-13406

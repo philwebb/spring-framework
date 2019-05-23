@@ -139,13 +139,13 @@ public class AnnotationDrivenEventListenerTests {
 		ContextEventListener listener = this.context.getBean(ContextEventListener.class);
 
 		List<Object> events = this.eventCollector.getEvents(listener);
-		assertThat((Object) events.size()).as("Wrong number of initial context events").isEqualTo(1);
-		assertThat((Object) events.get(0).getClass()).isEqualTo(ContextRefreshedEvent.class);
+		assertThat(events.size()).as("Wrong number of initial context events").isEqualTo(1);
+		assertThat(events.get(0).getClass()).isEqualTo(ContextRefreshedEvent.class);
 
 		this.context.stop();
 		List<Object> eventsAfterStop = this.eventCollector.getEvents(listener);
-		assertThat((Object) eventsAfterStop.size()).as("Wrong number of context events on shutdown").isEqualTo(2);
-		assertThat((Object) eventsAfterStop.get(1).getClass()).isEqualTo(ContextStoppedEvent.class);
+		assertThat(eventsAfterStop.size()).as("Wrong number of context events on shutdown").isEqualTo(2);
+		assertThat(eventsAfterStop.get(1).getClass()).isEqualTo(ContextStoppedEvent.class);
 		this.eventCollector.assertTotalEventsCount(2);
 	}
 
@@ -730,7 +730,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
+			assertThat(Thread.currentThread().getName()).isNotEqualTo(event.content);
 			collectEvent(event);
 			this.countDownLatch.countDown();
 		}
@@ -777,7 +777,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
+			assertThat(Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}
@@ -803,7 +803,7 @@ public class AnnotationDrivenEventListenerTests {
 		@EventListener
 		@Async
 		public void handleAsync(AnotherTestEvent event) {
-			assertThat((Object) Thread.currentThread().getName()).isNotEqualTo(event.content);
+			assertThat(Thread.currentThread().getName()).isNotEqualTo(event.content);
 			this.eventCollector.addEvent(this, event);
 			this.countDownLatch.countDown();
 		}

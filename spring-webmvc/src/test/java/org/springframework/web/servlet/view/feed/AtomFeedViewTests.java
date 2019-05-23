@@ -51,7 +51,7 @@ public class AtomFeedViewTests {
 		model.put("1", "This is entry 1");
 
 		view.render(model, request, response);
-		assertThat((Object) response.getContentType()).as("Invalid content-type").isEqualTo("application/atom+xml");
+		assertThat(response.getContentType()).as("Invalid content-type").isEqualTo("application/atom+xml");
 		String expected = "<feed xmlns=\"http://www.w3.org/2005/Atom\">" + "<title>Test Feed</title>" +
 				"<entry><title>2</title><summary>This is entry 2</summary></entry>" +
 				"<entry><title>1</title><summary>This is entry 1</summary></entry>" + "</feed>";

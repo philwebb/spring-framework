@@ -46,20 +46,20 @@ public class ReflectionUtilsTests {
 	public void findField() {
 		Field field = ReflectionUtils.findField(TestObjectSubclassWithPublicField.class, "publicField", String.class);
 		assertThat(field).isNotNull();
-		assertThat((Object) field.getName()).isEqualTo("publicField");
-		assertThat((Object) field.getType()).isEqualTo(String.class);
+		assertThat(field.getName()).isEqualTo("publicField");
+		assertThat(field.getType()).isEqualTo(String.class);
 		assertThat(Modifier.isPublic(field.getModifiers())).as("Field should be public.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "prot", String.class);
 		assertThat(field).isNotNull();
-		assertThat((Object) field.getName()).isEqualTo("prot");
-		assertThat((Object) field.getType()).isEqualTo(String.class);
+		assertThat(field.getName()).isEqualTo("prot");
+		assertThat(field.getType()).isEqualTo(String.class);
 		assertThat(Modifier.isProtected(field.getModifiers())).as("Field should be protected.").isTrue();
 
 		field = ReflectionUtils.findField(TestObjectSubclassWithNewField.class, "name", String.class);
 		assertThat(field).isNotNull();
-		assertThat((Object) field.getName()).isEqualTo("name");
-		assertThat((Object) field.getType()).isEqualTo(String.class);
+		assertThat(field.getName()).isEqualTo("name");
+		assertThat(field.getType()).isEqualTo(String.class);
 		assertThat(Modifier.isPrivate(field.getModifiers())).as("Field should be private.").isTrue();
 	}
 
@@ -72,7 +72,7 @@ public class ReflectionUtilsTests {
 
 		ReflectionUtils.setField(field, testBean, "FooBar");
 		assertThat(testBean.getName()).isNotNull();
-		assertThat((Object) testBean.getName()).isEqualTo("FooBar");
+		assertThat(testBean.getName()).isEqualTo("FooBar");
 
 		ReflectionUtils.setField(field, testBean, null);
 		assertThat(testBean.getName()).isNotNull();
@@ -93,7 +93,7 @@ public class ReflectionUtilsTests {
 
 		String juergen = "Juergen Hoeller";
 		ReflectionUtils.invokeMethod(setName, bean, juergen);
-		assertThat((Object) bean.getName()).as("Incorrect name set").isEqualTo(juergen);
+		assertThat(bean.getName()).as("Incorrect name set").isEqualTo(juergen);
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class ReflectionUtilsTests {
 
 		// Check subclass fields were copied
 		assertThat(dest.magic).isEqualTo(src.magic);
-		assertThat((Object) dest.prot).isEqualTo(src.prot);
+		assertThat(dest.prot).isEqualTo(src.prot);
 	}
 
 	@Test
@@ -182,7 +182,7 @@ public class ReflectionUtilsTests {
 
 		ReflectionUtils.shallowCopyFieldState(src, dest);
 		assertThat(dest.getAge()).isEqualTo(src.getAge());
-		assertThat((Object) dest.getSpouse()).isEqualTo(src.getSpouse());
+		assertThat(dest.getSpouse()).isEqualTo(src.getSpouse());
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class ReflectionUtilsTests {
 				++absquatulateCount;
 			}
 		}
-		assertThat((Object) absquatulateCount).as("Found 2 absquatulates").isEqualTo(2);
+		assertThat(absquatulateCount).as("Found 2 absquatulates").isEqualTo(2);
 	}
 
 	@Test

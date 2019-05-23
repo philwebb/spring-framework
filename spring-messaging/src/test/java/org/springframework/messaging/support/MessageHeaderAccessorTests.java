@@ -76,7 +76,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaders actual = accessor.getMessageHeaders();
 
 		assertThat(actual.size()).isEqualTo(3);
-		assertThat((Object) actual.getId()).isNotEqualTo(message.getHeaders().getId());
+		assertThat(actual.getId()).isNotEqualTo(message.getHeaders().getId());
 		assertThat(actual.get("foo")).isEqualTo("BAR");
 		assertThat(actual.get("bar")).isEqualTo("baz");
 	}
@@ -232,7 +232,7 @@ public class MessageHeaderAccessorTests {
 		MessageHeaderAccessor actual = MessageHeaderAccessor.getMutableAccessor(message);
 		assertThat(actual).isNotNull();
 		assertThat(actual.isMutable()).isTrue();
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class MessageHeaderAccessorTests {
 		final UUID id = new UUID(0L, 23L);
 		MessageHeaderAccessor accessor = new MessageHeaderAccessor();
 		accessor.setIdGenerator(() -> id);
-		assertThat((Object) accessor.getMessageHeaders().getId()).isSameAs(id);
+		assertThat(accessor.getMessageHeaders().getId()).isSameAs(id);
 	}
 
 	@Test
@@ -299,7 +299,7 @@ public class MessageHeaderAccessorTests {
 		accessor.setEnableTimestamp(true);
 		accessor.setImmutable();
 
-		assertThat((Object) accessor.getMessageHeaders().getId()).isSameAs(id);
+		assertThat(accessor.getMessageHeaders().getId()).isSameAs(id);
 		assertThat(headers.getTimestamp()).isNotNull();
 	}
 

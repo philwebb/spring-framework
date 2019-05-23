@@ -81,7 +81,7 @@ public class AppCacheManifestTransformerTests {
 		Resource resource = getResource("foo.css");
 		Resource result = this.transformer.transform(this.request, resource, this.chain);
 
-		assertThat((Object) result).isEqualTo(resource);
+		assertThat(result).isEqualTo(resource);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class AppCacheManifestTransformerTests {
 		Resource resource = getResource("error.appcache");
 		Resource result = this.transformer.transform(this.request, resource, this.chain);
 
-		assertThat((Object) result).isEqualTo(resource);
+		assertThat(result).isEqualTo(resource);
 	}
 
 	@Test

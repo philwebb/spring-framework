@@ -134,8 +134,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertThat((Object) result.get(1)).isEqualTo(Arrays.asList(9, 12));
-		assertThat((Object) result.get(2)).isEqualTo(Arrays.asList(37, 23));
+		assertThat(result.get(1)).isEqualTo(Arrays.asList(9, 12));
+		assertThat(result.get(2)).isEqualTo(Arrays.asList(37, 23));
 	}
 
 	@Test
@@ -156,8 +156,8 @@ public class MapToMapConverterTests {
 		@SuppressWarnings("unchecked")
 		Map<Integer, List<Integer>> result = (Map<Integer, List<Integer>>) conversionService.convert(map, sourceType, targetType);
 		assertThat(map.equals(result)).isFalse();
-		assertThat((Object) result.get(1)).isEqualTo(Arrays.asList(9, 12));
-		assertThat((Object) result.get(2)).isEqualTo(Arrays.asList(37, 23));
+		assertThat(result.get(1)).isEqualTo(Arrays.asList(9, 12));
+		assertThat(result.get(2)).isEqualTo(Arrays.asList(37, 23));
 	}
 
 	@Test
@@ -209,8 +209,8 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		LinkedHashMap<String, String> result = (LinkedHashMap<String, String>) conversionService.convert(map, sourceType, targetType);
-		assertThat((Object) result).isEqualTo(map);
-		assertThat((Object) result.getClass()).isEqualTo(LinkedHashMap.class);
+		assertThat(result).isEqualTo(map);
+		assertThat(result.getClass()).isEqualTo(LinkedHashMap.class);
 	}
 
 	@Test
@@ -226,8 +226,8 @@ public class MapToMapConverterTests {
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
 		@SuppressWarnings("unchecked")
 		Map<String, Integer> result = (Map<String, Integer>) conversionService.convert(map, sourceType, targetType);
-		assertThat((Object) result).isEqualTo(map);
-		assertThat((Object) result.getClass()).isEqualTo(NoDefaultConstructorMap.class);
+		assertThat(result).isEqualTo(map);
+		assertThat(result.getClass()).isEqualTo(NoDefaultConstructorMap.class);
 	}
 
 	@Test

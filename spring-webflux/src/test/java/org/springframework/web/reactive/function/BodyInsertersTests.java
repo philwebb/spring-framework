@@ -124,7 +124,7 @@ public class BodyInsertersTests {
 		StepVerifier.create(response.getBody())
 				.consumeNextWith(buf -> {
 					String actual = DataBufferTestUtils.dumpString(buf, UTF_8);
-					assertThat((Object) actual).isEqualTo("foo");
+					assertThat(actual).isEqualTo("foo");
 				})
 				.expectComplete()
 				.verify();
@@ -170,7 +170,7 @@ public class BodyInsertersTests {
 		StepVerifier.create(response.getBody())
 				.consumeNextWith(buf -> {
 					String actual = DataBufferTestUtils.dumpString(buf, UTF_8);
-					assertThat((Object) actual).isEqualTo("foo");
+					assertThat(actual).isEqualTo("foo");
 				})
 				.expectComplete()
 				.verify();
@@ -192,7 +192,7 @@ public class BodyInsertersTests {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
-					assertThat((Object) resultBytes).isEqualTo(expectedBytes);
+					assertThat(resultBytes).isEqualTo(expectedBytes);
 				})
 				.expectComplete()
 				.verify();
@@ -235,7 +235,7 @@ public class BodyInsertersTests {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
-					assertThat((Object) resultBytes).isEqualTo(expectedBytes);
+					assertThat(resultBytes).isEqualTo(expectedBytes);
 				})
 				.expectComplete()
 				.verify();
@@ -273,7 +273,7 @@ public class BodyInsertersTests {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
-					assertThat((Object) resultBytes).isEqualTo("name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3".getBytes(StandardCharsets.UTF_8));
+					assertThat(resultBytes).isEqualTo("name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3".getBytes(StandardCharsets.UTF_8));
 				})
 				.expectComplete()
 				.verify();
@@ -297,7 +297,7 @@ public class BodyInsertersTests {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
-					assertThat((Object) resultBytes).isEqualTo("name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3".getBytes(StandardCharsets.UTF_8));
+					assertThat(resultBytes).isEqualTo("name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3".getBytes(StandardCharsets.UTF_8));
 				})
 				.expectComplete()
 				.verify();

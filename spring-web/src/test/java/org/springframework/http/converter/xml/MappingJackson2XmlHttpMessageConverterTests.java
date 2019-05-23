@@ -72,12 +72,12 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
-		assertThat((Object) result.getString()).isEqualTo("Foo");
+		assertThat(result.getString()).isEqualTo("Foo");
 		assertThat(result.getNumber()).isEqualTo(42);
 		assertThat(result.getFraction()).isCloseTo(42F, within(0F));
-		assertThat((Object) result.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
+		assertThat(result.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertThat((Object) result.getBytes()).isEqualTo(new byte[]{0x1, 0x2});
+		assertThat(result.getBytes()).isEqualTo(new byte[]{0x1, 0x2});
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		assertThat(result.contains("<array><array>Foo</array><array>Bar</array></array>")).isTrue();
 		assertThat(result.contains("<bool>true</bool>")).isTrue();
 		assertThat(result.contains("<bytes>AQI=</bytes>")).isTrue();
-		assertThat((Object) outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml", StandardCharsets.UTF_8));
+		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "xml", StandardCharsets.UTF_8));
 	}
 
 	@Test

@@ -270,11 +270,11 @@ public class JdbcTemplateTests {
 			@Override
 			public String doInConnection(Connection con) {
 				assertThat(con instanceof ConnectionProxy).isTrue();
-				assertThat((Object) ((ConnectionProxy) con).getTargetConnection()).isSameAs(JdbcTemplateTests.this.connection);
+				assertThat(((ConnectionProxy) con).getTargetConnection()).isSameAs(JdbcTemplateTests.this.connection);
 				return "test";
 			}
 		});
-		assertThat((Object) result).isEqualTo("test");
+		assertThat(result).isEqualTo("test");
 	}
 
 	@Test
@@ -290,7 +290,7 @@ public class JdbcTemplateTests {
 			}
 		});
 
-		assertThat((Object) result).isEqualTo("test");
+		assertThat(result).isEqualTo("test");
 		verify(this.preparedStatement).setFetchSize(10);
 		verify(this.preparedStatement).setMaxRows(20);
 		verify(this.preparedStatement).close();
@@ -765,7 +765,7 @@ public class JdbcTemplateTests {
 		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
 
 		int[][] actualRowsAffected = template.batchUpdate(sql, ids, 2, setter);
-		assertThat((Object) actualRowsAffected[0].length).as("executed 2 updates").isEqualTo(2);
+		assertThat(actualRowsAffected[0].length).as("executed 2 updates").isEqualTo(2);
 		assertThat(actualRowsAffected[0][0]).isEqualTo(rowsAffected1[0]);
 		assertThat(actualRowsAffected[0][1]).isEqualTo(rowsAffected1[1]);
 		assertThat(actualRowsAffected[1][0]).isEqualTo(rowsAffected2[0]);
@@ -857,7 +857,7 @@ public class JdbcTemplateTests {
 
 		PreparedStatementSetter pss = ps -> ps.setString(1, name);
 		int actualRowsUpdated = new JdbcTemplate(this.dataSource).update(sql, pss);
-		assertThat((Object) expectedRowsUpdated).as("updated correct # of rows").isEqualTo(actualRowsUpdated);
+		assertThat(expectedRowsUpdated).as("updated correct # of rows").isEqualTo(actualRowsUpdated);
 		verify(this.preparedStatement).setString(1, name);
 		verify(this.preparedStatement).close();
 		verify(this.connection).close();

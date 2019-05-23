@@ -114,15 +114,15 @@ public class WebClientIntegrationTests {
 		StepVerifier.create(result)
 				.consumeNextWith(
 						httpHeaders -> {
-							assertThat((Object) httpHeaders.getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-							assertThat((Object) httpHeaders.getContentLength()).isEqualTo(13L);
+							assertThat(httpHeaders.getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+							assertThat(httpHeaders.getContentLength()).isEqualTo(13L);
 						})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -142,9 +142,9 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader("X-Test-Header")).isEqualTo("testvalue");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader("X-Test-Header")).isEqualTo("testvalue");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -164,9 +164,9 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader("X-Test-Header")).isEqualTo("testvalue");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader("X-Test-Header")).isEqualTo("testvalue");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -187,8 +187,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/json");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/json");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -207,14 +207,14 @@ public class WebClientIntegrationTests {
 				.assertNext(valueContainer -> {
 					Foo foo = valueContainer.getContainerValue();
 					assertThat(foo).isNotNull();
-					assertThat((Object) foo.getFooValue()).isEqualTo("bar");
+					assertThat(foo.getFooValue()).isEqualTo("bar");
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/json");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/json");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -231,17 +231,17 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(entity -> {
-					assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-					assertThat((Object) entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+					assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+					assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 					assertThat(entity.getHeaders().getContentLength()).isEqualTo(31);
-					assertThat((Object) entity.getBody()).isEqualTo(content);
+					assertThat(entity.getBody()).isEqualTo(content);
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/json");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/json");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -258,19 +258,19 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(entity -> {
-					assertThat((Object) entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-					assertThat((Object) entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
-					assertThat((Object) entity.getHeaders().getContentLength()).isEqualTo(58);
+					assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+					assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+					assertThat(entity.getHeaders().getContentLength()).isEqualTo(58);
 					Pojo pojo1 = new Pojo("foo1", "bar1");
 					Pojo pojo2 = new Pojo("foo2", "bar2");
-					assertThat((Object) entity.getBody()).isEqualTo(Arrays.asList(pojo1, pojo2));
+					assertThat(entity.getBody()).isEqualTo(Arrays.asList(pojo1, pojo2));
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/json");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/json");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -291,8 +291,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/json");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/json");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -309,14 +309,14 @@ public class WebClientIntegrationTests {
 				.bodyToMono(Pojo.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(p -> assertThat((Object) p.getBar()).isEqualTo("barbar"))
+				.consumeNextWith(p -> assertThat(p.getBar()).isEqualTo("barbar"))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/pojo");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/pojo");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -340,8 +340,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/pojos");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/pojos");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
 		});
 	}
 
@@ -359,17 +359,17 @@ public class WebClientIntegrationTests {
 				.bodyToMono(Pojo.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(p -> assertThat((Object) p.getBar()).isEqualTo("BARBAR"))
+				.consumeNextWith(p -> assertThat(p.getBar()).isEqualTo("BARBAR"))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/pojo/capitalize");
-			assertThat((Object) request.getBody().readUtf8()).isEqualTo("{\"foo\":\"foofoo\",\"bar\":\"barbar\"}");
-			assertThat((Object) request.getHeader(HttpHeaders.CONTENT_LENGTH)).isEqualTo("31");
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
-			assertThat((Object) request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo("application/json");
+			assertThat(request.getPath()).isEqualTo("/pojo/capitalize");
+			assertThat(request.getBody().readUtf8()).isEqualTo("{\"foo\":\"foofoo\",\"bar\":\"barbar\"}");
+			assertThat(request.getHeader(HttpHeaders.CONTENT_LENGTH)).isEqualTo("31");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("application/json");
+			assertThat(request.getHeader(HttpHeaders.CONTENT_TYPE)).isEqualTo("application/json");
 		});
 	}
 
@@ -391,8 +391,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getPath()).isEqualTo("/test");
-			assertThat((Object) request.getHeader(HttpHeaders.COOKIE)).isEqualTo("testkey=testvalue");
+			assertThat(request.getPath()).isEqualTo("/test");
+			assertThat(request.getHeader(HttpHeaders.COOKIE)).isEqualTo("testkey=testvalue");
 		});
 	}
 
@@ -420,7 +420,7 @@ public class WebClientIntegrationTests {
 				throw new IllegalStateException(ex);
 			}
 			assertThat(actual.size()).isEqualTo(expected.length);
-			assertThat((Object) hash(actual.toByteArray())).isEqualTo(hash(expected));
+			assertThat(hash(actual.toByteArray())).isEqualTo(hash(expected));
 		});
 	}
 
@@ -438,14 +438,14 @@ public class WebClientIntegrationTests {
 		Mono<ClientResponse> result = this.webClient.get().uri("/greeting?name=Spring").exchange();
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertThat((Object) response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND))
+				.consumeNextWith(response -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -465,8 +465,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -485,8 +485,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting");
 		});
 	}
 
@@ -506,23 +506,23 @@ public class WebClientIntegrationTests {
 				.expectErrorSatisfies(throwable -> {
 					assertThat(throwable instanceof WebClientResponseException).isTrue();
 					WebClientResponseException ex = (WebClientResponseException) throwable;
-					assertThat((Object) ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+					assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 					assertThat(ex.getRawStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
-					assertThat((Object) ex.getStatusText()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-					assertThat((Object) ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-					assertThat((Object) ex.getResponseBodyAsString()).isEqualTo(errorMessage);
+					assertThat(ex.getStatusText()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+					assertThat(ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+					assertThat(ex.getResponseBodyAsString()).isEqualTo(errorMessage);
 
 					HttpRequest request = ex.getRequest();
-					assertThat((Object) request.getMethod()).isEqualTo(HttpMethod.GET);
-					assertThat((Object) request.getURI()).isEqualTo(URI.create(this.server.url(path).toString()));
+					assertThat(request.getMethod()).isEqualTo(HttpMethod.GET);
+					assertThat(request.getURI()).isEqualTo(URI.create(this.server.url(path).toString()));
 					assertThat(request.getHeaders()).isNotNull();
 				})
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo(path);
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo(path);
 		});
 	}
 
@@ -545,8 +545,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/unknownPage");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/unknownPage");
 		});
 	}
 
@@ -567,18 +567,18 @@ public class WebClientIntegrationTests {
 				.expectErrorSatisfies(throwable -> {
 					assertThat(throwable instanceof UnknownHttpStatusCodeException).isTrue();
 					UnknownHttpStatusCodeException ex = (UnknownHttpStatusCodeException) throwable;
-					assertThat((Object) ex.getMessage()).isEqualTo(("Unknown status code ["+errorStatus+"]"));
+					assertThat(ex.getMessage()).isEqualTo(("Unknown status code ["+errorStatus+"]"));
 					assertThat(ex.getRawStatusCode()).isEqualTo(errorStatus);
-					assertThat((Object) ex.getStatusText()).isEqualTo("");
-					assertThat((Object) ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-					assertThat((Object) ex.getResponseBodyAsString()).isEqualTo(errorMessage);
+					assertThat(ex.getStatusText()).isEqualTo("");
+					assertThat(ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+					assertThat(ex.getResponseBodyAsString()).isEqualTo(errorMessage);
 				})
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/unknownPage");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/unknownPage");
 		});
 	}
 
@@ -599,8 +599,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -621,8 +621,8 @@ public class WebClientIntegrationTests {
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -637,14 +637,14 @@ public class WebClientIntegrationTests {
 				.flatMap(response -> response.toEntity(String.class));
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertThat((Object) response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND))
+				.consumeNextWith(response -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
 		expectRequest(request -> {
-			assertThat((Object) request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
-			assertThat((Object) request.getPath()).isEqualTo("/greeting?name=Spring");
+			assertThat(request.getHeader(HttpHeaders.ACCEPT)).isEqualTo("*/*");
+			assertThat(request.getPath()).isEqualTo("/greeting?name=Spring");
 		});
 	}
 
@@ -672,7 +672,7 @@ public class WebClientIntegrationTests {
 				.verify(Duration.ofSeconds(3));
 
 		expectRequestCount(1);
-		expectRequest(request -> assertThat((Object) request.getHeader("foo")).isEqualTo("bar"));
+		expectRequest(request -> assertThat(request.getHeader("foo")).isEqualTo("bar"));
 	}
 
 	@Test

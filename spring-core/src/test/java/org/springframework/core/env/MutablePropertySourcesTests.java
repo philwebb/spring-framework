@@ -95,7 +95,7 @@ public class MutablePropertySourcesTests {
 		assertThat(sources.precedenceOf(PropertySource.named("f"))).isEqualTo(5);
 		assertThat(sources.precedenceOf(PropertySource.named("g"))).isEqualTo(6);
 
-		assertThat((Object) PropertySource.named("a")).isEqualTo(sources.remove("a"));
+		assertThat(PropertySource.named("a")).isEqualTo(sources.remove("a"));
 		assertThat(sources.size()).isEqualTo(6);
 		assertThat(sources.contains("a")).isFalse();
 
@@ -147,7 +147,7 @@ public class MutablePropertySourcesTests {
 
 		Iterator<PropertySource<?>> it = sources.iterator();
 		assertThat(it.hasNext()).isTrue();
-		assertThat((Object) it.next().getName()).isEqualTo("test");
+		assertThat(it.next().getName()).isEqualTo("test");
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
 				it::remove);

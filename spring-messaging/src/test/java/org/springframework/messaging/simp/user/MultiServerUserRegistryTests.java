@@ -65,7 +65,7 @@ public class MultiServerUserRegistryTests {
 		given(this.localRegistry.getUser("joe")).willReturn(user);
 
 		assertThat(this.registry.getUserCount()).isEqualTo(1);
-		assertThat((Object) this.registry.getUser("joe")).isSameAs(user);
+		assertThat(this.registry.getUser("joe")).isSameAs(user);
 	}
 
 	@Test
@@ -90,13 +90,13 @@ public class MultiServerUserRegistryTests {
 		assertThat(user.getSessions().size()).isEqualTo(1);
 		SimpSession session = user.getSession("remote-sess");
 		assertThat(session).isNotNull();
-		assertThat((Object) session.getId()).isEqualTo("remote-sess");
-		assertThat((Object) session.getUser()).isSameAs(user);
+		assertThat(session.getId()).isEqualTo("remote-sess");
+		assertThat(session.getUser()).isSameAs(user);
 		assertThat(session.getSubscriptions().size()).isEqualTo(1);
 		SimpSubscription subscription = session.getSubscriptions().iterator().next();
-		assertThat((Object) subscription.getId()).isEqualTo("remote-sub");
-		assertThat((Object) subscription.getSession()).isSameAs(session);
-		assertThat((Object) subscription.getDestination()).isEqualTo("/remote-dest");
+		assertThat(subscription.getId()).isEqualTo("remote-sub");
+		assertThat(subscription.getSession()).isSameAs(session);
+		assertThat(subscription.getDestination()).isEqualTo("/remote-dest");
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class MultiServerUserRegistryTests {
 		Set<String> sessionIds = new HashSet<>(2);
 		sessionIds.add(iterator.next().getSession().getId());
 		sessionIds.add(iterator.next().getSession().getId());
-		assertThat((Object) sessionIds).isEqualTo(new HashSet<>(Arrays.asList("sess1", "sess2")));
+		assertThat(sessionIds).isEqualTo(new HashSet<>(Arrays.asList("sess1", "sess2")));
 	}
 
 	@Test  // SPR-13800
@@ -158,14 +158,14 @@ public class MultiServerUserRegistryTests {
 		assertThat(user.hasSessions()).isTrue();
 		assertThat(user.getSessions().size()).isEqualTo(2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
-		assertThat((Object) user.getSession("sess123")).isSameAs(localSession);
-		assertThat((Object) user.getSession("sess456")).isEqualTo(remoteSession);
+		assertThat(user.getSession("sess123")).isSameAs(localSession);
+		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
 
 		user = this.registry.getUser("joe");
 		assertThat(user.getSessions().size()).isEqualTo(2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
-		assertThat((Object) user.getSession("sess123")).isSameAs(localSession);
-		assertThat((Object) user.getSession("sess456")).isEqualTo(remoteSession);
+		assertThat(user.getSession("sess123")).isSameAs(localSession);
+		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
 	}
 
 	@Test

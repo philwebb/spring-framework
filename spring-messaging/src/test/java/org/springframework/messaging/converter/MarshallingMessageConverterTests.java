@@ -61,7 +61,7 @@ public class MarshallingMessageConverterTests {
 		MyBean actual = (MyBean) this.converter.fromMessage(message, MyBean.class);
 
 		assertThat(actual).isNotNull();
-		assertThat((Object) actual.getName()).isEqualTo("Foo");
+		assertThat(actual.getName()).isEqualTo("Foo");
 	}
 
 	@Test
