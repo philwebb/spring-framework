@@ -148,7 +148,7 @@ public abstract class AnnotationUtils {
 	 * @see #isCandidateClass(Class, String)
 	 */
 	public static boolean isCandidateClass(Class<?> clazz, Class<? extends Annotation> annotationType) {
-		return isCandidateClass(clazz, annotationType.getName());
+		return AnnotationRegistries.requiresIntrospection(clazz, annotationType);
 	}
 
 	/**
@@ -162,14 +162,7 @@ public abstract class AnnotationUtils {
 	 * @since 5.2
 	 */
 	public static boolean isCandidateClass(Class<?> clazz, String annotationName) {
-		if (annotationName.startsWith("java.")) {
-			return true;
-		}
-		if (AnnotationsScanner.hasPlainJavaAnnotationsOnly(clazz)) {
-			return false;
-		}
-		// TODO: annotation presence registry to be integrated here
-		return true;
+		return AnnotationRegistries.requiresIntrospection(clazz, annotationName);
 	}
 
 	/**
