@@ -151,6 +151,38 @@ public class MergedAnnotationsTests {
 	}
 
 	@Test
+	public void isPresentOnAnnotationWhenSourceEqualsAnnotation() {
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				ComposedTransactionalComponent.class)).isTrue();
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				ComposedTransactionalComponent.class.getName())).isTrue();
+	}
+
+	@Test
+	public void isPresentOnAnnotationWhenPresent() {
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				TransactionalComponent.class)).isTrue();
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				TransactionalComponent.class.getName())).isTrue();
+	}
+
+	@Test
+	public void isPresentOnAnnotationWhenMetaPresent() {
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				Transactional.class)).isTrue();
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				Transactional.class.getName())).isTrue();
+	}
+
+	@Test
+	public void isPresentOnAnnotationWhenNotPresent() {
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				Composed.class)).isFalse();
+		assertThat(MergedAnnotations.isPresent(ComposedTransactionalComponent.class,
+				Composed.class.getName())).isFalse();
+	}
+
+	@Test
 	public void getParent() {
 		MergedAnnotations annotations = MergedAnnotations.from(ComposedTransactionalComponentClass.class);
 		assertThat(annotations.get(TransactionalComponent.class).getMetaSource().getType())

@@ -493,6 +493,34 @@ public class AnnotationTypeMappingsTests {
 				ReflectionUtils::invokeMethod)).isFalse();
 	}
 
+	@Test
+	public void containsWhenCheckingSameTypeReturnsTrue() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(ThreeDeepA.class);
+		assertThat(mappings.contains(ThreeDeepA.class)).isTrue();
+		assertThat(mappings.contains(ThreeDeepA.class.getName())).isTrue();
+	}
+
+	@Test
+	public void containsWhenCheckingMetaAnnotationReturnsTrue() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(ThreeDeepA.class);
+		assertThat(mappings.contains(ThreeDeepB.class)).isTrue();
+		assertThat(mappings.contains(ThreeDeepB.class.getName())).isTrue();
+	}
+
+	@Test
+	public void containsWhenCheckingMetaMetaAnnotationReturnsTrue() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(ThreeDeepA.class);
+		assertThat(mappings.contains(ThreeDeepC.class)).isTrue();
+		assertThat(mappings.contains(ThreeDeepC.class.getName())).isTrue();
+	}
+
+	@Test
+	public void containsWhenCheckingMissingAnnotationReturnsFalse() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(ThreeDeepA.class);
+		assertThat(mappings.contains(WithSpringLangAnnotation.class)).isFalse();
+		assertThat(mappings.contains(WithSpringLangAnnotation.class.getName())).isFalse();
+	}
+
 	private Method[] resolveMirrorSets(AnnotationTypeMapping mapping, Class<?> element,
 			Class<? extends Annotation> annotationClass) {
 		Annotation annotation = element.getAnnotation(annotationClass);

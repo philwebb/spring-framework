@@ -389,6 +389,41 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		return MergedAnnotationsCollection.of(annotations);
 	}
 
+	/**
+	 * Determine if the specified annotation is the same as the given
+	 * source annotation, or is directly present or meta-present on it.
+	 * <p>
+	 * Equivalent to calling {@code get(annotationType).isPresent()} if you had
+	 * a {@link MergedAnnotations} instance that contained the source
+	 * annotation.
+	 * @param source the source annotation
+	 * @param annotationType the annotation type to check
+	 * @return {@code true} if the annotation is present
+	 */
+	static boolean isPresent(Class<? extends Annotation> source,
+			Class<? extends Annotation> annotationType) {
+
+		return source.equals(annotationType) ||
+				AnnotationTypeMappings.forAnnotationType(source).contains(annotationType);
+	}
+
+	/**
+	 * Determine if the specified annotation is the same as the given
+	 * source annotation, or is directly present or meta-present on it.
+	 * <p>
+	 * Equivalent to calling {@code get(annotationType).isPresent()} if you had
+	 * a {@link MergedAnnotations} instance that contained the source
+	 * annotation.
+	 * @param source the source annotation
+	 * @param annotationType the fully qualified class name of the annotation type
+	 * to check
+	 * @return {@code true} if the annotation is present
+	 */
+	static boolean isPresent(Class<? extends Annotation> source, String annotationType) {
+		return source.getName().equals(annotationType) ||
+				AnnotationTypeMappings.forAnnotationType(source).contains(annotationType);
+	}
+
 
 	/**
 	 * Search strategies supported by

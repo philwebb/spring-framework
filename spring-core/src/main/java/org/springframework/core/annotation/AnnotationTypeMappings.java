@@ -137,6 +137,25 @@ final class AnnotationTypeMappings {
 		return false;
 	}
 
+	boolean contains(Class<? extends Annotation> annotationType) {
+		for (int i = 0; i < size(); i++) {
+			if (get(i).getAnnotationType().equals(annotationType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	boolean contains(String annotationType) {
+		for (int i = 0; i < size(); i++) {
+			if (get(i).getAnnotationType().getName().equals(annotationType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 	/**
 	 * Get the total number of contained mappings.
 	 * @return the total number of mappings
@@ -157,7 +176,6 @@ final class AnnotationTypeMappings {
 	AnnotationTypeMapping get(int index) {
 		return this.mappings.get(index);
 	}
-
 
 	/**
 	 * Create {@link AnnotationTypeMappings} for the specified annotation type.
