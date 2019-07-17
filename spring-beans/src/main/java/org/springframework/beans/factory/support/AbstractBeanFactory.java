@@ -1215,7 +1215,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected RootBeanDefinition getMergedLocalBeanDefinition(String beanName) throws BeansException {
 		// Quick check on the concurrent map first, with minimal locking.
 		RootBeanDefinition mbd = this.mergedBeanDefinitions.get(beanName);
-		if (mbd != null) {
+		if (mbd != null && !mbd.stale) {
 			return mbd;
 		}
 		return getMergedBeanDefinition(beanName, getBeanDefinition(beanName));
@@ -1251,13 +1251,15 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		synchronized (this.mergedBeanDefinitions) {
 			RootBeanDefinition mbd = null;
+			RootBeanDefinition previous = null;
 
 			// Check with full lock now in order to enforce the same merged instance.
 			if (containingBd == null) {
 				mbd = this.mergedBeanDefinitions.get(beanName);
 			}
 
-			if (mbd == null) {
+			if (mbd == null || mbd.stale) {
+				previous = mbd;
 				if (bd.getParentName() == null) {
 					// Use copy of given root bean definition.
 					if (bd instanceof RootBeanDefinition) {
@@ -1315,8 +1317,23 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					this.mergedBeanDefinitions.put(beanName, mbd);
 				}
 			}
-
+			if (previous != null) {
+				copyRelevantMergedBeanDefinitionCaches(previous, mbd);
+			}
 			return mbd;
+		}
+	}
+
+	private void copyRelevantMergedBeanDefinitionCaches(RootBeanDefinition previous,
+			RootBeanDefinition mbd) {
+		if (ObjectUtils.nullSafeEquals(mbd.getBeanClassName(), previous.getBeanClassName()) &&
+				ObjectUtils.nullSafeEquals(mbd.getFactoryBeanName(), previous.getFactoryBeanName()) &&
+				ObjectUtils.nullSafeEquals(mbd.getFactoryMethodName(), previous.getFactoryMethodName()) &&
+				(mbd.targetType == null || mbd.targetType.equals(previous.targetType))) {
+			mbd.targetType = previous.targetType;
+			mbd.resolvedTargetType = previous.resolvedTargetType;
+			mbd.factoryMethodReturnType = previous.factoryMethodReturnType;
+			mbd.factoryMethodToIntrospect = previous.factoryMethodToIntrospect;
 		}
 	}
 
@@ -1342,7 +1359,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param beanName the bean name to clear the merged definition for
 	 */
 	protected void clearMergedBeanDefinition(String beanName) {
-		this.mergedBeanDefinitions.remove(beanName);
+		RootBeanDefinition bd = this.mergedBeanDefinitions.get(beanName);
+		if (bd != null) {
+			bd.stale = true;
+		}
 	}
 
 	/**
@@ -1354,7 +1374,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @since 4.2
 	 */
 	public void clearMetadataCache() {
-		this.mergedBeanDefinitions.keySet().removeIf(bean -> !isBeanEligibleForMetadataCaching(bean));
+		this.mergedBeanDefinitions.forEach((beanName, bd) -> {
+			if (!isBeanEligibleForMetadataCaching(beanName)) {
+				bd.stale = true;
+			}
+		});
 	}
 
 	/**

@@ -60,6 +60,9 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	@Nullable
 	private AnnotatedElement qualifiedElement;
 
+	/** Determines if the definition needs to be re-merged. */
+	boolean stale;
+
 	boolean allowCaching = true;
 
 	boolean isFactoryMethodUnique = false;
