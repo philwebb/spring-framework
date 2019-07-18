@@ -69,6 +69,7 @@ import org.springframework.core.DecoratingClassLoader;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.log.LogMessage;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -487,13 +488,20 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	@Override
 	public boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException {
+		return isTypeMatch(name, typeToMatch, true, true);
+	}
+
+	boolean isTypeMatch(String name, ResolvableType typeToMatch,
+			boolean allowEarlyFactoryBeanInit, boolean checkDecoratedDefinition) throws NoSuchBeanDefinitionException {
+
 		String beanName = transformedBeanName(name);
+		boolean isFactoryDereference = BeanFactoryUtils.isFactoryDereference(name);
 
 		// Check manually registered singletons.
 		Object beanInstance = getSingleton(beanName, false);
 		if (beanInstance != null && beanInstance.getClass() != NullBean.class) {
 			if (beanInstance instanceof FactoryBean) {
-				if (!BeanFactoryUtils.isFactoryDereference(name)) {
+				if (!isFactoryDereference) {
 					Class<?> type = getTypeForFactoryBean((FactoryBean<?>) beanInstance);
 					return (type != null && typeToMatch.isAssignableFrom(type));
 				}
@@ -501,7 +509,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					return typeToMatch.isInstance(beanInstance);
 				}
 			}
-			else if (!BeanFactoryUtils.isFactoryDereference(name)) {
+			else if (!isFactoryDereference) {
 				if (typeToMatch.isInstance(beanInstance)) {
 					// Direct match for exposed instance?
 					return true;
@@ -554,7 +562,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Check decorated bean definition, if any: We assume it'll be easier
 		// to determine the decorated bean's type than the proxy's type.
 		BeanDefinitionHolder dbd = mbd.getDecoratedDefinition();
-		if (dbd != null && !BeanFactoryUtils.isFactoryDereference(name)) {
+		if (dbd != null && !isFactoryDereference && checkDecoratedDefinition) {
 			RootBeanDefinition tbd = getMergedBeanDefinition(dbd.getBeanName(), dbd.getBeanDefinition(), mbd);
 			Class<?> targetClass = predictBeanType(dbd.getBeanName(), tbd, typesToMatch);
 			if (targetClass != null && !FactoryBean.class.isAssignableFrom(targetClass)) {
@@ -562,37 +570,48 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 		}
 
-		Class<?> beanType = predictBeanType(beanName, mbd, typesToMatch);
-		if (beanType == null) {
+		ResolvableType beanType = null;
+		Class<?> predictedType = predictBeanType(beanName, mbd, typesToMatch);
+		if (predictedType == null) {
 			return false;
 		}
 
 		// Check bean class whether we're dealing with a FactoryBean.
-		if (FactoryBean.class.isAssignableFrom(beanType)) {
-			if (!BeanFactoryUtils.isFactoryDereference(name) && beanInstance == null) {
+		if (FactoryBean.class.isAssignableFrom(predictedType)) {
+			// FIXME attribute
+			if (beanInstance == null && !isFactoryDereference) {
 				// If it's a FactoryBean, we want to look at what it creates, not the factory class.
-				beanType = getTypeForFactoryBean(beanName, mbd);
-				if (beanType == null) {
+				beanType = getTypeForFactoryBean(beanName, mbd, allowEarlyFactoryBeanInit);
+				predictedType = (beanType != null) ? beanType.resolve() : null;
+				if (predictedType == null) {
 					return false;
 				}
 			}
 		}
-		else if (BeanFactoryUtils.isFactoryDereference(name)) {
+		else if (isFactoryDereference) {
 			// Special case: A SmartInstantiationAwareBeanPostProcessor returned a non-FactoryBean
 			// type but we nevertheless are being asked to dereference a FactoryBean...
 			// Let's check the original bean class and proceed with it if it is a FactoryBean.
-			beanType = predictBeanType(beanName, mbd, FactoryBean.class);
-			if (beanType == null || !FactoryBean.class.isAssignableFrom(beanType)) {
+			predictedType = predictBeanType(beanName, mbd, FactoryBean.class);
+			if (predictedType == null || !FactoryBean.class.isAssignableFrom(predictedType)) {
 				return false;
 			}
 		}
 
-		ResolvableType resolvableType = mbd.targetType;
-		if (resolvableType == null) {
-			resolvableType = mbd.factoryMethodReturnType;
+		// We don't have an exact type but if bean definition target type matches the
+		// predicted type then we can use that
+		if (beanType == null) {
+			ResolvableType definedType = mbd.targetType;
+			if (definedType == null) {
+				definedType = mbd.factoryMethodReturnType;
+			}
+			if (definedType != null && definedType.resolve() == predictedType) {
+				beanType = definedType;
+			}
 		}
-		if (resolvableType != null && resolvableType.resolve() == beanType) {
-			return typeToMatch.isAssignableFrom(resolvableType);
+
+		if (beanType == null) {
+			return typeToMatch.isAssignableFrom(predictedType);
 		}
 		return typeToMatch.isAssignableFrom(beanType);
 	}
@@ -1551,6 +1570,54 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Determine the bean type for the given FactoryBean definition, as far as possible.
+	 * Only called if there is no singleton instance registered for the target bean
+	 * already. Implementations are only allowed to instantiate the factory bean if
+	 * {@code allowEarlyInit} is {@code true}, otherwise they should try to determine the
+	 * result through other means.
+	 * <p>If {@code allowEarlyInit} is {@code false} the default implementation returns
+	 * {@code null}, otherwise it creates the FactoryBean via {@code getBean} to call its
+	 * {@code getObjectType} method. Subclasses are encouraged to optimize this,
+	 * typically by inspecting the generic signature of the factory bean class or the
+	 * factory method that creates it. If subclasses do instantiate the FactoryBean, they
+	 * should consider trying the {@code getObjectType} method without fully  populating
+	 * the bean. If this fails, a full FactoryBean creation as performed by this
+	 * implementation should be used as fallback.
+	 * @param beanName the name of the bean
+	 * @param mbd the merged bean definition for the bean
+	 * @param allowEarlyInit if early initialization of the bean is permitted
+	 * @return the type for the bean if determinable, or {@code null} otherwise
+	 * @see org.springframework.beans.factory.FactoryBean#getObjectType()
+	 * @see #getBean(String)
+	 */
+	@Nullable
+	protected ResolvableType getTypeForFactoryBean(String beanName,
+			RootBeanDefinition mbd, boolean allowEarlyInit) {
+
+		if (!allowEarlyInit || !mbd.isSingleton()) {
+			return null;
+		}
+
+		try {
+			FactoryBean<?> factoryBean = doGetBean(FACTORY_BEAN_PREFIX + beanName, FactoryBean.class, null, true);
+			return ResolvableType.forClass(getTypeForFactoryBean(factoryBean));
+		}
+		catch (BeanCreationException ex) {
+			if (ex.contains(BeanCurrentlyInCreationException.class)) {
+				logger.trace(LogMessage.format("Bean currently in creation on FactoryBean type check: %s", ex));
+			}
+			else if (mbd.isLazyInit()) {
+				logger.trace(LogMessage.format("Bean creation exception on lazy FactoryBean type check: %s", ex));
+			}
+			else {
+				logger.debug(LogMessage.format("Bean creation exception on non-lazy FactoryBean type check: %s", ex));
+			}
+			onSuppressedException(ex);
+			return null;
+		}
+	}
+
+	/**
+	 * Determine the bean type for the given FactoryBean definition, as far as possible.
 	 * Only called if there is no singleton instance registered for the target bean already.
 	 * <p>The default implementation creates the FactoryBean via {@code getBean}
 	 * to call its {@code getObjectType} method. Subclasses are encouraged to optimize
@@ -1563,8 +1630,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @return the type for the bean if determinable, or {@code null} otherwise
 	 * @see org.springframework.beans.factory.FactoryBean#getObjectType()
 	 * @see #getBean(String)
+	 * @deprecated since 5.2 in favor of {@link #getTypeForFactoryBean(String, RootBeanDefinition, boolean)}
 	 */
 	@Nullable
+	@Deprecated
 	protected Class<?> getTypeForFactoryBean(String beanName, RootBeanDefinition mbd) {
 		if (!mbd.isSingleton()) {
 			return null;

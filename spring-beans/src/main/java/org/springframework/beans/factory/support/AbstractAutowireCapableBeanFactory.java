@@ -82,6 +82,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.ReflectionUtils.MethodCallback;
 import org.springframework.util.StringUtils;
 
 /**
@@ -645,11 +646,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Override
 	@Nullable
 	protected Class<?> predictBeanType(String beanName, RootBeanDefinition mbd, Class<?>... typesToMatch) {
-		boolean factoryBeanOnly = typesToMatch.length == 1 && typesToMatch[0] == FactoryBean.class;
 		Class<?> targetType = determineTargetType(beanName, mbd, typesToMatch);
 		// Apply SmartInstantiationAwareBeanPostProcessors to predict the
 		// eventual type after a before-instantiation shortcut.
 		if (targetType != null && !mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
+			boolean factoryBeanOnly = typesToMatch.length == 1 && typesToMatch[0] == FactoryBean.class;
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
 					SmartInstantiationAwareBeanPostProcessor ibp = (SmartInstantiationAwareBeanPostProcessor) bp;
@@ -813,6 +814,120 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * if present to determine the object type. If not present, i.e. the FactoryBean is
 	 * declared as a raw type, checks the FactoryBean's {@code getObjectType} method
 	 * on a plain instance of the FactoryBean, without bean properties applied yet.
+	 * If this doesn't return a type yet, and {@code allowEarlyInit} is {@code true} a
+	 * full creation of the FactoryBean is used as fallback (through delegation to the
+	 * superclass's implementation).
+	 * <p>The shortcut check for a FactoryBean is only applied in case of a singleton
+	 * FactoryBean. If the FactoryBean instance itself is not kept as singleton,
+	 * it will be fully created to check the type of its exposed object.
+	 */
+	@Override
+	protected ResolvableType getTypeForFactoryBean(String beanName,
+			RootBeanDefinition mbd, boolean allowEarlyInit) {
+
+		String factoryBeanName = mbd.getFactoryBeanName();
+		String factoryMethodName = mbd.getFactoryMethodName();
+
+		ResolvableType result = null;
+
+		// Try the target type as already defined
+		if (mbd.targetType != null) {
+			result = getTypeForFactoryBean(mbd.targetType);
+		}
+
+		// For instance supplied beans without a target type, we've only got the bean class
+		if (result == null && mbd.getInstanceSupplier() != null && mbd.hasBeanClass()) {
+			result = getTypeForFactoryBean(ResolvableType.forClass(mbd.getBeanClass()));
+		}
+
+		// If we have a factory method return type, it might be enough
+		if (result == null && mbd.factoryMethodReturnType != null) {
+			result = getTypeForFactoryBean(mbd.factoryMethodReturnType);
+		}
+
+		// Take a deeper look at the factory bean methods if we've still not got
+		// a result
+		if (result == null && factoryBeanName != null && factoryMethodName != null) {
+			// Try to obtain the FactoryBean's object type from its factory method
+			// declaration without instantiating the containing bean at all.
+			BeanDefinition factoryBeanDefinition = getBeanDefinition(factoryBeanName);
+			if (factoryBeanDefinition instanceof AbstractBeanDefinition &&
+					((AbstractBeanDefinition) factoryBeanDefinition).hasBeanClass()) {
+				Class<?> factoryBeanClass = ((AbstractBeanDefinition) factoryBeanDefinition).getBeanClass();
+				result= getTypeForFactoryBeanFromMethod(factoryBeanClass, factoryMethodName);
+			}
+		}
+
+		// If we're allowed, we can create the factory bean and ask it
+		if (result == null && allowEarlyInit) {
+			result = getTypeForFactoryBeanFromInstance(beanName, mbd);
+		}
+
+		// No early bean instantiation possible: determine FactoryBean's type from
+		// static factory method signature or from class inheritance hierarchy...
+		if (result == null && factoryBeanName == null && mbd.hasBeanClass()) {
+			if (factoryMethodName != null) {
+				result = getTypeForFactoryBeanFromMethod(mbd.getBeanClass(), factoryMethodName);
+			}
+			else {
+				result = getTypeForFactoryBean(ResolvableType.forClass(mbd.getBeanClass()));
+			}
+		}
+
+		return result;
+	}
+
+	private ResolvableType getTypeForFactoryBean(ResolvableType type) {
+		if (type == null) {
+			return null;
+		}
+		ResolvableType generic = type.as(FactoryBean.class).getGeneric();
+		Class<?> resolved = generic.resolve();
+		return (resolved != null && resolved != Object.class) ? generic : null;
+	}
+
+
+	/**
+	 * Introspect the factory method signatures on the given bean class,
+	 * trying to find a common {@code FactoryBean} object type declared there.
+	 * @param beanClass the bean class to find the factory method on
+	 * @param factoryMethodName the name of the factory method
+	 * @return the common {@code FactoryBean} object type, or {@code null} if none
+	 */
+	@Nullable
+	private ResolvableType getTypeForFactoryBeanFromMethod(Class<?> beanClass, String factoryMethodName) {
+		// CGLIB subclass methods hide generic parameters; look at the original user class.
+		Class<?> factoryBeanClass = ClassUtils.getUserClass(beanClass);
+		FactoryBeanMethodTypeFinder finder = new FactoryBeanMethodTypeFinder(factoryMethodName);
+		ReflectionUtils.doWithMethods(factoryBeanClass, finder, ReflectionUtils.USER_DECLARED_METHODS);
+		return finder.getResult();
+	}
+
+
+
+
+	private ResolvableType getTypeForFactoryBeanFromInstance(String beanName, RootBeanDefinition mbd) {
+		FactoryBean<?> factoryBean = (mbd.isSingleton() ?
+				getSingletonFactoryBeanForTypeCheck(beanName, mbd) :
+				getNonSingletonFactoryBeanForTypeCheck(beanName, mbd));
+		if (factoryBean == null) {
+			return null;
+		}
+		// Try to obtain the FactoryBean's object type from this early stage of the instance.
+		Class<?> type = getTypeForFactoryBean(factoryBean);
+		if (type != null) {
+			return ResolvableType.forClass(type);
+		}
+		// No type found for shortcut FactoryBean instance:
+		// fall back to full creation of the FactoryBean instance.
+		return super.getTypeForFactoryBean(beanName, mbd, true);
+	}
+
+	/**
+	 * This implementation attempts to query the FactoryBean's generic parameter metadata
+	 * if present to determine the object type. If not present, i.e. the FactoryBean is
+	 * declared as a raw type, checks the FactoryBean's {@code getObjectType} method
+	 * on a plain instance of the FactoryBean, without bean properties applied yet.
 	 * If this doesn't return a type yet, a full creation of the FactoryBean is
 	 * used as fallback (through delegation to the superclass's implementation).
 	 * <p>The shortcut check for a FactoryBean is only applied in case of a singleton
@@ -821,6 +936,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	@Override
 	@Nullable
+	@Deprecated
 	protected Class<?> getTypeForFactoryBean(String beanName, RootBeanDefinition mbd) {
 		if (mbd.getInstanceSupplier() != null) {
 			ResolvableType targetType = mbd.targetType;
@@ -849,7 +965,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				if (fbDef instanceof AbstractBeanDefinition) {
 					AbstractBeanDefinition afbDef = (AbstractBeanDefinition) fbDef;
 					if (afbDef.hasBeanClass()) {
-						Class<?> result = getTypeForFactoryBeanFromMethod(afbDef.getBeanClass(), factoryMethodName);
+						Class<?> result = getObjectTypeForFactoryBeanFromMethod(afbDef.getBeanClass(), factoryMethodName);
 						if (result != null) {
 							return result;
 						}
@@ -886,7 +1002,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// No early bean instantiation possible: determine FactoryBean's type from
 			// static factory method signature or from class inheritance hierarchy...
 			if (factoryMethodName != null) {
-				return getTypeForFactoryBeanFromMethod(mbd.getBeanClass(), factoryMethodName);
+				return getObjectTypeForFactoryBeanFromMethod(mbd.getBeanClass(), factoryMethodName);
 			}
 			else {
 				return GenericTypeResolver.resolveTypeArgument(mbd.getBeanClass(), FactoryBean.class);
@@ -904,7 +1020,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @return the common {@code FactoryBean} object type, or {@code null} if none
 	 */
 	@Nullable
-	private Class<?> getTypeForFactoryBeanFromMethod(Class<?> beanClass, final String factoryMethodName) {
+	private Class<?> getObjectTypeForFactoryBeanFromMethod(Class<?> beanClass, final String factoryMethodName) {
 
 		/**
 		 * Holder used to keep a reference to a {@code Class} value.
@@ -1979,6 +2095,50 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		public String getDependencyName() {
 			return null;
 		}
+	}
+
+	/**
+	 * {@link MethodCallback} used to find {@link FactoryBean} type information.
+	 */
+	private static class FactoryBeanMethodTypeFinder implements MethodCallback {
+
+		private final String factoryMethodName;
+
+		private ResolvableType result;
+
+		FactoryBeanMethodTypeFinder(String factoryMethodName) {
+			this.factoryMethodName = factoryMethodName;
+		}
+
+		@Override
+		public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
+			if (isFactoryBeanMethod(method)) {
+				ResolvableType returnType = ResolvableType.forMethodReturnType(method);
+				ResolvableType candidate = returnType.as(FactoryBean.class).getGeneric();
+				if (this.result == null) {
+					this.result = candidate;
+				}
+				else {
+					Class<?> resolvedResult = this.result.resolve();
+					Class<?> commonAncestor = ClassUtils.determineCommonAncestor(candidate.resolve(), resolvedResult);
+					if (!ObjectUtils.nullSafeEquals(resolvedResult, commonAncestor)) {
+						this.result = ResolvableType.forClass(commonAncestor);
+					}
+				}
+			}
+		}
+
+		private boolean isFactoryBeanMethod(Method method) {
+			return method.getName().equals(this.factoryMethodName) &&
+					FactoryBean.class.isAssignableFrom(method.getReturnType());
+		}
+
+
+		ResolvableType getResult() {
+			Class<?> resolved = this.result != null ? this.result.resolve() : null;
+			return (resolved != null && resolved != Object.class) ? this.result : null;
+		}
+
 	}
 
 }
