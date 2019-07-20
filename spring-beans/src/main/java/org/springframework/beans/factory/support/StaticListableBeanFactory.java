@@ -329,26 +329,35 @@ public class StaticListableBeanFactory implements ListableBeanFactory {
 
 	@Override
 	public String[] getBeanNamesForType(@Nullable ResolvableType type) {
-		boolean isFactoryType = false;
-		if (type != null) {
-			Class<?> resolved = type.resolve();
-			if (resolved != null && FactoryBean.class.isAssignableFrom(resolved)) {
-				isFactoryType = true;
-			}
-		}
+		return getBeanNamesForType(type, true, true);
+	}
+
+
+	@Override
+	public String[] getBeanNamesForType(@Nullable ResolvableType type,
+			boolean includeNonSingletons, boolean allowEagerInit) {
+
+		Class<?> resolved = (type != null) ? type.resolve() : null;
+		boolean isFactoryType = resolved != null && FactoryBean.class.isAssignableFrom(resolved);
 		List<String> matches = new ArrayList<>();
+
 		for (Map.Entry<String, Object> entry : this.beans.entrySet()) {
-			String name = entry.getKey();
+			String beanName = entry.getKey();
 			Object beanInstance = entry.getValue();
 			if (beanInstance instanceof FactoryBean && !isFactoryType) {
-				Class<?> objectType = ((FactoryBean<?>) beanInstance).getObjectType();
-				if (objectType != null && (type == null || type.isAssignableFrom(objectType))) {
-					matches.add(name);
+				FactoryBean<?> factory = (FactoryBean<?>) beanInstance;
+				Class<?> objectType = factory.getObjectType();
+				if ((includeNonSingletons || factory.isSingleton()) &&
+						objectType != null && (type == null || type.isAssignableFrom(objectType))) {
+					matches.add(beanName);
 				}
 			}
 			else {
 				if (type == null || type.isInstance(beanInstance)) {
-					matches.add(name);
+					if (isFactoryType) {
+						beanName = FACTORY_BEAN_PREFIX + beanName;
+					}
+					matches.add(beanName);
 				}
 			}
 		}
@@ -362,7 +371,7 @@ public class StaticListableBeanFactory implements ListableBeanFactory {
 
 	@Override
 	public String[] getBeanNamesForType(@Nullable Class<?> type, boolean includeNonSingletons, boolean allowEagerInit) {
-		return getBeanNamesForType(ResolvableType.forClass(type));
+		return getBeanNamesForType(ResolvableType.forClass(type), includeNonSingletons, allowEagerInit);
 	}
 
 	@Override
