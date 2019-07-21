@@ -1635,6 +1635,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	@Nullable
 	@Deprecated
 	protected Class<?> getTypeForFactoryBean(String beanName, RootBeanDefinition mbd) {
+		// FIXME remove calls and use the other method
 		if (!mbd.isSingleton()) {
 			return null;
 		}

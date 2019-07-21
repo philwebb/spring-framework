@@ -18,7 +18,6 @@ package org.springframework.context.annotation;
 
 import java.util.Arrays;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.springframework.beans.BeansException;
@@ -36,8 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Phillip Webb
  */
 public class ConfigurationWithFactoryBeanBeanEarlyDeductionTests {
-
-	// FIXME is &bean valid
 
 	@Test
 	public void preFreezeDirect() {
@@ -69,22 +66,6 @@ public class ConfigurationWithFactoryBeanBeanEarlyDeductionTests {
 		assertPostFreeze(GenericClassConfiguration.class);
 	}
 
-	@Test
-	@Ignore
-	public void preFreezeAttribute() {
-		// Broken for now but the idea is perhaps a bit daft. Using the targetType might be better
-		assertPreFreeze(AttributeClassConfiguration.class,
-				new SetAttributeBeanFactoryPostProcessor());
-	}
-
-	@Test
-	public void postFreezeAttribute() {
-		// We don't need the attribute because we can ask the actual factory
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-				AttributeClassConfiguration.class);
-		assertContainsMyBeanName(context);
-	}
-
 	private void assertPostFreeze(Class<?> configurationClass) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				configurationClass);
@@ -107,7 +88,7 @@ public class ConfigurationWithFactoryBeanBeanEarlyDeductionTests {
 	}
 
 	private void assertContainsMyBeanName(String[] names) {
-		assertThat(names).containsAnyOf("myBean", "&myBean");
+		assertThat(names).containsExactly("myBean");
 	}
 
 	private static class NameCollectingBeanFactoryPostProcessor
@@ -123,18 +104,6 @@ public class ConfigurationWithFactoryBeanBeanEarlyDeductionTests {
 
 		public String[] getNames() {
 			return this.names;
-		}
-
-	}
-
-	private static class SetAttributeBeanFactoryPostProcessor
-			implements BeanFactoryPostProcessor {
-
-		@Override
-		public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
-				throws BeansException {
-			beanFactory.getBeanDefinition("myBean").setAttribute(
-					FactoryBean.OBJECT_TYPE_ATTRIBUTE, MyBean.class);
 		}
 
 	}
@@ -165,17 +134,6 @@ public class ConfigurationWithFactoryBeanBeanEarlyDeductionTests {
 		@Bean
 		MyFactoryBean myBean() {
 			return new MyFactoryBean();
-		}
-
-	}
-
-	@Configuration
-	static class AttributeClassConfiguration {
-
-		@Bean
-		FactoryBean<?> myBean() {
-			// FIXME not expecting this to work!
-			return new TestFactoryBean<>(new MyBean());
 		}
 
 	}
