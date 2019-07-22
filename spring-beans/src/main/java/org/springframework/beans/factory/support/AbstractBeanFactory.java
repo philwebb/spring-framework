@@ -1601,11 +1601,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param beanName the name of the bean
 	 * @param mbd the merged bean definition for the bean
 	 * @param allowInit if initialization of the bean is permitted
-	 * @return the type for the bean if determinable, or {@code null} otherwise
+	 * @return the type for the bean if determinable, or {@code ResolvableType.NONE} otherwise
 	 * @see org.springframework.beans.factory.FactoryBean#getObjectType()
 	 * @see #getBean(String)
 	 */
-	@Nullable
 	protected ResolvableType getTypeForFactoryBean(String beanName,
 			RootBeanDefinition mbd, boolean allowInit) {
 
@@ -1618,7 +1617,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		if (!allowInit || !mbd.isSingleton()) {
-			return null;
+			return ResolvableType.NONE;
 		}
 
 		try {
@@ -1636,7 +1635,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				logger.debug(LogMessage.format("Bean creation exception on non-lazy FactoryBean type check: %s", ex));
 			}
 			onSuppressedException(ex);
-			return null;
+			return ResolvableType.NONE;
 		}
 	}
 

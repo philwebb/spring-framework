@@ -838,15 +838,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		ResolvableType result = getTypeForFactoryBean(mbd.targetType);
 
 		// For instance supplied beans without a target type, we've only got the bean class
-		if (result == null && mbd.getInstanceSupplier() != null && mbd.hasBeanClass()) {
+		if (result == ResolvableType.NONE && mbd.getInstanceSupplier() != null && mbd.hasBeanClass()) {
 			return getTypeForFactoryBean(ResolvableType.forClass(mbd.getBeanClass()));
 		}
 
 		// Try the factory method return type if the bean definition has it
-		if (result == null && mbd.factoryMethodReturnType != null) {
+		if (result == ResolvableType.NONE && mbd.factoryMethodReturnType != null) {
 			result = getTypeForFactoryBean(mbd.targetType);
 		}
-		if (result == null && mbd.factoryMethodToIntrospect != null) {
+		if (result == ResolvableType.NONE && mbd.factoryMethodToIntrospect != null) {
 			ResolvableType returnType = ResolvableType.forMethodReturnType(mbd.factoryMethodToIntrospect);
 			result = getTypeForFactoryBean(returnType);
 		}
@@ -856,7 +856,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		String factoryMethodName = mbd.getFactoryMethodName();
 
 		// Take a deeper look at the factory bean methods
-		if (result == null && factoryBeanName != null && factoryMethodName != null) {
+		if (result == ResolvableType.NONE && factoryBeanName != null && factoryMethodName != null) {
 			// Try to obtain the FactoryBean's object type from its factory method
 			// declaration without instantiating the containing bean at all.
 			BeanDefinition factoryBeanDefinition = getBeanDefinition(factoryBeanName);
@@ -868,13 +868,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// If we're allowed, we can create the factory bean and ask it
-		if (result == null && allowInit) {
+		if (result == ResolvableType.NONE && allowInit) {
 			result = getTypeForFactoryBeanFromInstance(beanName, mbd);
 		}
 
 		// No early bean instantiation possible: determine FactoryBean's type from
 		// static factory method signature or from class inheritance hierarchy...
-		if (result == null && factoryBeanName == null && mbd.hasBeanClass()) {
+		if (result == ResolvableType.NONE && factoryBeanName == null && mbd.hasBeanClass()) {
 			if (factoryMethodName != null) {
 				result = getTypeForFactoryBeanFromMethod(mbd.getBeanClass(), factoryMethodName);
 			}
@@ -886,11 +886,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		return result;
 	}
 
-	@Nullable
 	private ResolvableType getTypeForFactoryBean(@Nullable ResolvableType type) {
 		ResolvableType generic = type != null ? type.as(FactoryBean.class).getGeneric() : ResolvableType.NONE;
 		Class<?> resolved = generic.resolve();
-		return (resolved != null && resolved != Object.class) ? generic : null;
+		return (resolved != null && resolved != Object.class) ? generic : ResolvableType.NONE;
 	}
 
 	/**
@@ -900,7 +899,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @param factoryMethodName the name of the factory method
 	 * @return the common {@code FactoryBean} object type, or {@code null} if none
 	 */
-	@Nullable
 	private ResolvableType getTypeForFactoryBeanFromMethod(Class<?> beanClass, String factoryMethodName) {
 		// CGLIB subclass methods hide generic parameters; look at the original user class.
 		Class<?> factoryBeanClass = ClassUtils.getUserClass(beanClass);
@@ -909,13 +907,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		return finder.getResult();
 	}
 
-	@Nullable
 	private ResolvableType getTypeForFactoryBeanFromInstance(String beanName, RootBeanDefinition mbd) {
 		FactoryBean<?> factoryBean = (mbd.isSingleton() ?
 				getSingletonFactoryBeanForTypeCheck(beanName, mbd) :
 				getNonSingletonFactoryBeanForTypeCheck(beanName, mbd));
 		if (factoryBean == null) {
-			return null;
+			return ResolvableType.NONE;
 		}
 		// Try to obtain the FactoryBean's object type from this early stage of the instance.
 		Class<?> type = getTypeForFactoryBean(factoryBean);
@@ -2108,7 +2105,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		private final String factoryMethodName;
 
-		private ResolvableType result;
+		private ResolvableType result = ResolvableType.NONE;
 
 		FactoryBeanMethodTypeFinder(String factoryMethodName) {
 			this.factoryMethodName = factoryMethodName;
@@ -2119,7 +2116,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (isFactoryBeanMethod(method)) {
 				ResolvableType returnType = ResolvableType.forMethodReturnType(method);
 				ResolvableType candidate = returnType.as(FactoryBean.class).getGeneric();
-				if (this.result == null) {
+				if (this.result == ResolvableType.NONE) {
 					this.result = candidate;
 				}
 				else {
@@ -2139,8 +2136,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
 		ResolvableType getResult() {
-			Class<?> resolved = this.result != null ? this.result.resolve() : null;
-			return (resolved != null && resolved != Object.class) ? this.result : null;
+			Class<?> resolved = this.result.resolve();
+			return (resolved != null && resolved != Object.class) ? this.result : ResolvableType.NONE;
 		}
 
 	}
