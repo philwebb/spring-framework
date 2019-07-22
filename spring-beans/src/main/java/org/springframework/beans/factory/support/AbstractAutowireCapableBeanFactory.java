@@ -825,17 +825,37 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected ResolvableType getTypeForFactoryBean(String beanName,
 			RootBeanDefinition mbd, boolean allowEarlyInit) {
 
-		// Try the merged bean definition type first
-		ResolvableType result = getTypeForFactoryBean(mbd.getResolvableType());
+		// Check it the the bean definition itself has defined the type with an attribute
+		Object attribute = mbd.getAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE);
+		if (attribute instanceof ResolvableType) {
+			return (ResolvableType) attribute;
+		}
+		if (attribute instanceof Class) {
+			return ResolvableType.forClass((Class<?>) attribute);
+		}
+
+		// Try the merged bean target type
+		ResolvableType result = getTypeForFactoryBean(mbd.targetType);
 
 		// For instance supplied beans without a target type, we've only got the bean class
 		if (result == null && mbd.getInstanceSupplier() != null && mbd.hasBeanClass()) {
-			result = getTypeForFactoryBean(ResolvableType.forClass(mbd.getBeanClass()));
+			return getTypeForFactoryBean(ResolvableType.forClass(mbd.getBeanClass()));
 		}
 
-		// Take a deeper look at the factory bean methods
+		// Try the factory method return type if the bean definition has it
+		if (result == null && mbd.factoryMethodReturnType != null) {
+			result = getTypeForFactoryBean(mbd.targetType);
+		}
+		if (result == null && mbd.factoryMethodToIntrospect != null) {
+			ResolvableType returnType = ResolvableType.forMethodReturnType(mbd.factoryMethodToIntrospect);
+			result = getTypeForFactoryBean(returnType);
+		}
+
+		// Consider factory methods
 		String factoryBeanName = mbd.getFactoryBeanName();
 		String factoryMethodName = mbd.getFactoryMethodName();
+
+		// Take a deeper look at the factory bean methods
 		if (result == null && factoryBeanName != null && factoryMethodName != null) {
 			// Try to obtain the FactoryBean's object type from its factory method
 			// declaration without instantiating the containing bean at all.
@@ -867,8 +887,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	@Nullable
-	private ResolvableType getTypeForFactoryBean(ResolvableType type) {
-		ResolvableType generic = type.as(FactoryBean.class).getGeneric();
+	private ResolvableType getTypeForFactoryBean(@Nullable ResolvableType type) {
+		ResolvableType generic = type != null ? type.as(FactoryBean.class).getGeneric() : ResolvableType.NONE;
 		Class<?> resolved = generic.resolve();
 		return (resolved != null && resolved != Object.class) ? generic : null;
 	}
