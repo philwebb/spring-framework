@@ -561,11 +561,19 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// Check decorated bean definition, if any: We assume it'll be easier
 		// to determine the decorated bean's type than the proxy's type.
+
+		// If there is a decorated definition and that one isn't a factory
+		// then assume that our current merge bd decorates another
+		// the the decorated type ...
+
 		BeanDefinitionHolder dbd = mbd.getDecoratedDefinition();
 		if (dbd != null && !isFactoryDereference && checkDecoratedDefinition) {
+			// mbd.isLazy()  checkDecoratedDefinition
+
 			RootBeanDefinition tbd = getMergedBeanDefinition(dbd.getBeanName(), dbd.getBeanDefinition(), mbd);
 			Class<?> targetClass = predictBeanType(dbd.getBeanName(), tbd, typesToMatch);
 			if (targetClass != null && !FactoryBean.class.isAssignableFrom(targetClass)) {
+				// FIXME exit early
 				return typeToMatch.isAssignableFrom(targetClass);
 			}
 		}

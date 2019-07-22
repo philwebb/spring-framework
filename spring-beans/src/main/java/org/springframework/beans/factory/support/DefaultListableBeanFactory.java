@@ -520,15 +520,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						boolean matchFound = false;
 						if (!isFactoryBean) {
 							if (includeNonSingletons || isSingleton(beanName, mbd, dbd)) {
-								matchFound = isTypeMatch(beanName, type, false, true);
+								matchFound = isTypeMatch(beanName, type);
 							}
 						}
 						else {
+
 							boolean isNonLazyDecorated = dbd != null && !mbd.isLazyInit();
+
 							boolean allowEarlyFactoryBeanInit = allowEagerInit || containsSingleton(beanName);
+
 							if (includeNonSingletons || isNonLazyDecorated || allowEarlyFactoryBeanInit && isSingleton(beanName, mbd, dbd)) {
 								// FIXME this is odd
-								matchFound = isTypeMatch(beanName, type, allowEarlyFactoryBeanInit, isNonLazyDecorated);
+								matchFound = isTypeMatch(beanName, type, allowEarlyFactoryBeanInit, isNonLazyDecorated || allowEarlyFactoryBeanInit);
+								if(isNonLazyDecorated || allowEarlyFactoryBeanInit != true) {
+									System.err.println(beanName+" "+isNonLazyDecorated+" "+allowEagerInit);
+								}
 							}
 							if (!matchFound) {
 								// In case of FactoryBean, try to match FactoryBean instance itself next.
