@@ -1609,6 +1609,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected ResolvableType getTypeForFactoryBean(String beanName,
 			RootBeanDefinition mbd, boolean allowInit) {
 
+		Object attribute = mbd.getAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE);
+		if (attribute instanceof ResolvableType) {
+			return (ResolvableType) attribute;
+		}
+		if (attribute instanceof Class) {
+			return ResolvableType.forClass((Class<?>) attribute);
+		}
+
 		if (!allowInit || !mbd.isSingleton()) {
 			return null;
 		}
