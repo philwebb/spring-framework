@@ -519,8 +519,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						boolean matchFound = false;
 						boolean allowFactoryBeanInit = allowEagerInit || containsSingleton(beanName);
 						boolean isNonLazyDecorated = dbd != null && !mbd.isLazyInit();
-						if (!isFactoryBean || allowFactoryBeanInit || isNonLazyDecorated) {
+
+						if (!isFactoryBean) {
 							if (includeNonSingletons || (dbd != null ? mbd.isSingleton() : isSingleton(beanName))) {
+								matchFound = isTypeMatch(beanName, type, isFactoryBean, allowFactoryBeanInit);
+							}
+						} else  {
+							if (includeNonSingletons || isNonLazyDecorated || allowFactoryBeanInit && (dbd != null ? mbd.isSingleton() : isSingleton(beanName))) {
 								matchFound = isTypeMatch(beanName, type, isFactoryBean, allowFactoryBeanInit);
 							}
 						}
