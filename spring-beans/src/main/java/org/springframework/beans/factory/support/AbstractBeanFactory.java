@@ -65,6 +65,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.config.Scope;
+import org.springframework.core.AttributeAccessor;
 import org.springframework.core.DecoratingClassLoader;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.core.ResolvableType;
@@ -1613,36 +1614,41 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected ResolvableType getTypeForFactoryBean(String beanName,
 			RootBeanDefinition mbd, boolean allowInit) {
 
-		Object attribute = mbd.getAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE);
+		ResolvableType result = getTypeForFactoryBeanFromAttributes(mbd);
+		if (result != ResolvableType.NONE) {
+			return result;
+		}
+		if (allowInit && mbd.isSingleton()) {
+			try {
+				FactoryBean<?> factoryBean = doGetBean(FACTORY_BEAN_PREFIX + beanName, FactoryBean.class, null, true);
+				Class<?> objectType = getTypeForFactoryBean(factoryBean);
+				return (objectType != null) ? ResolvableType.forClass(objectType) : ResolvableType.NONE;
+			}
+			catch (BeanCreationException ex) {
+				if (ex.contains(BeanCurrentlyInCreationException.class)) {
+					logger.trace(LogMessage.format("Bean currently in creation on FactoryBean type check: %s", ex));
+				}
+				else if (mbd.isLazyInit()) {
+					logger.trace(LogMessage.format("Bean creation exception on lazy FactoryBean type check: %s", ex));
+				}
+				else {
+					logger.debug(LogMessage.format("Bean creation exception on non-lazy FactoryBean type check: %s", ex));
+				}
+				onSuppressedException(ex);
+			}
+		}
+		return ResolvableType.NONE;
+	}
+
+	ResolvableType getTypeForFactoryBeanFromAttributes(AttributeAccessor attributes) {
+		Object attribute = attributes.getAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE);
 		if (attribute instanceof ResolvableType) {
 			return (ResolvableType) attribute;
 		}
 		if (attribute instanceof Class) {
 			return ResolvableType.forClass((Class<?>) attribute);
 		}
-
-		if (!allowInit || !mbd.isSingleton()) {
-			return ResolvableType.NONE;
-		}
-
-		try {
-			FactoryBean<?> factoryBean = doGetBean(FACTORY_BEAN_PREFIX + beanName, FactoryBean.class, null, true);
-			Class<?> objectType = getTypeForFactoryBean(factoryBean);
-			return (objectType != null) ? ResolvableType.forClass(objectType) : ResolvableType.NONE;
-		}
-		catch (BeanCreationException ex) {
-			if (ex.contains(BeanCurrentlyInCreationException.class)) {
-				logger.trace(LogMessage.format("Bean currently in creation on FactoryBean type check: %s", ex));
-			}
-			else if (mbd.isLazyInit()) {
-				logger.trace(LogMessage.format("Bean creation exception on lazy FactoryBean type check: %s", ex));
-			}
-			else {
-				logger.debug(LogMessage.format("Bean creation exception on non-lazy FactoryBean type check: %s", ex));
-			}
-			onSuppressedException(ex);
-			return ResolvableType.NONE;
-		}
+		return ResolvableType.NONE;
 	}
 
 	/**

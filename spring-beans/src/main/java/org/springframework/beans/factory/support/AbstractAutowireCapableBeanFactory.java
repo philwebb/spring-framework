@@ -826,32 +826,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			RootBeanDefinition mbd, boolean allowInit) {
 
 		// Check it the the bean definition itself has defined the type with an attribute
-		Object attribute = mbd.getAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE);
-		if (attribute instanceof ResolvableType) {
-			return (ResolvableType) attribute;
-		}
-		if (attribute instanceof Class) {
-			return ResolvableType.forClass((Class<?>) attribute);
+		ResolvableType result = getTypeForFactoryBeanFromAttributes(mbd);
+		if (result != ResolvableType.NONE) {
+			return result;
 		}
 
-		// For instance supplied beans without a target type, we've only got the bean class
+		ResolvableType beanType = mbd.hasBeanClass() ?
+				ResolvableType.forClass(mbd.getBeanClass()) :
+				ResolvableType.NONE;
+
+		// For instance supplied beans try the target type and bean class
 		if (mbd.getInstanceSupplier() != null) {
-			ResolvableType targetType = mbd.targetType;
-			if (targetType != null) {
-				ResolvableType result = targetType.as(FactoryBean.class).getGeneric();
-				if (result.resolve() != null) {
-					return result;
-				}
-			}
-			ResolvableType result = getTypeForFactoryBean(mbd.targetType, true);
-			if (result != ResolvableType.NONE) {
+			result = getFactoryBeanGeneric(mbd.targetType);
+			if (result.resolve() != null) {
 				return result;
 			}
-			if (mbd.hasBeanClass()) {
-				result = getTypeForFactoryBean(ResolvableType.forClass(mbd.getBeanClass()), true);
-				if (result != ResolvableType.NONE) {
-					return result;
-				}
+			result = getFactoryBeanGeneric(beanType);
+			if (result.resolve() != null) {
+				return result;
 			}
 		}
 
@@ -868,8 +860,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				if (factoryBeanDefinition instanceof AbstractBeanDefinition &&
 						((AbstractBeanDefinition) factoryBeanDefinition).hasBeanClass()) {
 					Class<?> factoryBeanClass = ((AbstractBeanDefinition) factoryBeanDefinition).getBeanClass();
-					ResolvableType result = getTypeForFactoryBeanFromMethod(factoryBeanClass, factoryMethodName);
-					if (result != ResolvableType.NONE) {
+					result = getTypeForFactoryBeanFromMethod(factoryBeanClass, factoryMethodName);
+					if (result.resolve() != null) {
 						return result;
 					}
 				}
@@ -895,30 +887,27 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}
 				// No type found for shortcut FactoryBean instance:
 				// fall back to full creation of the FactoryBean instance.
-				return super.getTypeForFactoryBean(beanName, mbd, true);
+				return super.getTypeForFactoryBean(beanName, mbd, allowInit);
 			}
 		}
 
-		if (factoryBeanName == null && mbd.hasBeanClass()) {
+		if (factoryBeanName == null && mbd.hasBeanClass() && factoryMethodName != null) {
 			// No early bean instantiation possible: determine FactoryBean's type from
 			// static factory method signature or from class inheritance hierarchy...
-			if (factoryMethodName != null) {
-				return getTypeForFactoryBeanFromMethod(mbd.getBeanClass(), factoryMethodName);
-			}
-			ResolvableType generic = ResolvableType.forClass(mbd.getBeanClass()).as(FactoryBean.class).getGeneric();
-			return (generic.resolve() != null) ? generic : ResolvableType.NONE;
+			return getTypeForFactoryBeanFromMethod(mbd.getBeanClass(), factoryMethodName);
 		}
-
-		return null;
-	}
-
-	private ResolvableType getTypeForFactoryBean(@Nullable ResolvableType type, boolean allowObjectResult) {
-		ResolvableType generic = (type != null) ? type.as(FactoryBean.class).getGeneric() : ResolvableType.NONE;
-		Class<?> resolved = generic.resolve();
-		if (resolved != null && (resolved != Object.class || allowObjectResult)) {
-			return generic;
+		result = getFactoryBeanGeneric(beanType);
+		if (result.resolve() != null) {
+			return result;
 		}
 		return ResolvableType.NONE;
+	}
+
+	private ResolvableType getFactoryBeanGeneric(@Nullable ResolvableType type) {
+		if (type == null) {
+			return ResolvableType.NONE;
+		}
+		return type.as(FactoryBean.class).getGeneric();
 	}
 
 	/**
