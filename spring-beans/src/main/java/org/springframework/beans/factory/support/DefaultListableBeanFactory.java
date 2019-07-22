@@ -519,13 +519,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						boolean matchFound = false;
 						boolean allowFactoryBeanInit = allowEagerInit || containsSingleton(beanName);
 						boolean isNonLazyDecorated = dbd != null && !mbd.isLazyInit();
-
 						if (!isFactoryBean) {
-							if (includeNonSingletons || (dbd != null ? mbd.isSingleton() : isSingleton(beanName))) {
+							if (includeNonSingletons || isSingleton(beanName, mbd, dbd)) {
 								matchFound = isTypeMatch(beanName, type, isFactoryBean, allowFactoryBeanInit);
 							}
 						} else  {
-							if (includeNonSingletons || isNonLazyDecorated || allowFactoryBeanInit && (dbd != null ? mbd.isSingleton() : isSingleton(beanName))) {
+							if (includeNonSingletons || isNonLazyDecorated || allowFactoryBeanInit && isSingleton(beanName, mbd, dbd)) {
 								matchFound = isTypeMatch(beanName, type, isFactoryBean, allowFactoryBeanInit);
 							}
 						}
@@ -553,6 +552,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 		}
 
+
 		// Check manually registered singletons too.
 		for (String beanName : this.manualSingletonNames) {
 			try {
@@ -578,6 +578,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		return StringUtils.toStringArray(result);
+	}
+
+	private boolean isSingleton(String beanName, RootBeanDefinition mbd,
+			BeanDefinitionHolder dbd) {
+		return (dbd != null) ? mbd.isSingleton() : isSingleton(beanName);
 	}
 
 	/**
