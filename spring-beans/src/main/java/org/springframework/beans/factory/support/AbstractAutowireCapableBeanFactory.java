@@ -856,20 +856,43 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		String factoryMethodName = mbd.getFactoryMethodName();
 
 		// Take a deeper look at the factory bean methods
-		if (result == ResolvableType.NONE && factoryBeanName != null && factoryMethodName != null) {
-			// Try to obtain the FactoryBean's object type from its factory method
-			// declaration without instantiating the containing bean at all.
-			BeanDefinition factoryBeanDefinition = getBeanDefinition(factoryBeanName);
-			if (factoryBeanDefinition instanceof AbstractBeanDefinition &&
-					((AbstractBeanDefinition) factoryBeanDefinition).hasBeanClass()) {
-				Class<?> factoryBeanClass = ((AbstractBeanDefinition) factoryBeanDefinition).getBeanClass();
-				result= getTypeForFactoryBeanFromMethod(factoryBeanClass, factoryMethodName);
+		if (result == ResolvableType.NONE && factoryBeanName != null) {
+			if (factoryMethodName != null) {
+				// Try to obtain the FactoryBean's object type from its factory method
+				// declaration without instantiating the containing bean at all.
+				BeanDefinition factoryBeanDefinition = getBeanDefinition(factoryBeanName);
+				if (factoryBeanDefinition instanceof AbstractBeanDefinition &&
+						((AbstractBeanDefinition) factoryBeanDefinition).hasBeanClass()) {
+					Class<?> factoryBeanClass = ((AbstractBeanDefinition) factoryBeanDefinition).getBeanClass();
+					result = getTypeForFactoryBeanFromMethod(factoryBeanClass, factoryMethodName);
+					if (result != ResolvableType.NONE) {
+						return result;
+					}
+				}
+			}
+			// If not resolvable above and the referenced factory bean doesn't exist yet,
+			// exit here - we don't want to force the creation of another bean just to
+			// obtain a FactoryBean's object type...
+			if (!isBeanEligibleForMetadataCaching(factoryBeanName)) {
+				return ResolvableType.NONE;
 			}
 		}
 
 		// If we're allowed, we can create the factory bean and ask it
 		if (result == ResolvableType.NONE && allowInit) {
-			result = getTypeForFactoryBeanFromInstance(beanName, mbd);
+			FactoryBean<?> factoryBean = (mbd.isSingleton() ?
+					getSingletonFactoryBeanForTypeCheck(beanName, mbd) :
+					getNonSingletonFactoryBeanForTypeCheck(beanName, mbd));
+			if (factoryBean != null) {
+				// Try to obtain the FactoryBean's object type from this early stage of the instance.
+				Class<?> type = getTypeForFactoryBean(factoryBean);
+				if (type != null) {
+					return ResolvableType.forClass(type);
+				}
+				// No type found for shortcut FactoryBean instance:
+				// fall back to full creation of the FactoryBean instance.
+				return super.getTypeForFactoryBean(beanName, mbd, true);
+			}
 		}
 
 		// No early bean instantiation possible: determine FactoryBean's type from
@@ -879,7 +902,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				result = getTypeForFactoryBeanFromMethod(mbd.getBeanClass(), factoryMethodName);
 			}
 			else {
-				result = getTypeForFactoryBean(ResolvableType.forClass(mbd.getBeanClass()));
+				ResolvableType generic = ResolvableType.forClass(mbd.getBeanClass()).as(FactoryBean.class).getGeneric();
+				result = generic.resolve() != null ? generic : null;
 			}
 		}
 
@@ -905,23 +929,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		FactoryBeanMethodTypeFinder finder = new FactoryBeanMethodTypeFinder(factoryMethodName);
 		ReflectionUtils.doWithMethods(factoryBeanClass, finder, ReflectionUtils.USER_DECLARED_METHODS);
 		return finder.getResult();
-	}
-
-	private ResolvableType getTypeForFactoryBeanFromInstance(String beanName, RootBeanDefinition mbd) {
-		FactoryBean<?> factoryBean = (mbd.isSingleton() ?
-				getSingletonFactoryBeanForTypeCheck(beanName, mbd) :
-				getNonSingletonFactoryBeanForTypeCheck(beanName, mbd));
-		if (factoryBean == null) {
-			return ResolvableType.NONE;
-		}
-		// Try to obtain the FactoryBean's object type from this early stage of the instance.
-		Class<?> type = getTypeForFactoryBean(factoryBean);
-		if (type != null) {
-			return ResolvableType.forClass(type);
-		}
-		// No type found for shortcut FactoryBean instance:
-		// fall back to full creation of the FactoryBean instance.
-		return super.getTypeForFactoryBean(beanName, mbd, true);
 	}
 
 	/**

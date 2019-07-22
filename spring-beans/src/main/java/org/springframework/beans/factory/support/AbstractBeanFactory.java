@@ -679,7 +679,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		if (beanClass != null && FactoryBean.class.isAssignableFrom(beanClass)) {
 			if (!BeanFactoryUtils.isFactoryDereference(name)) {
 				// If it's a FactoryBean, we want to look at what it creates, not at the factory class.
-				return getTypeForFactoryBean(beanName, mbd);
+				Class<?> expected = getTypeForFactoryBean(beanName, mbd);
+				Class<?> actual = getTypeForFactoryBean(beanName, mbd, true).resolve();
+				if (!ObjectUtils.nullSafeEquals(expected, actual)) {
+					throw new RuntimeException();
+				}
+				return expected;
 			}
 			else {
 				return beanClass;
@@ -1622,7 +1627,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		try {
 			FactoryBean<?> factoryBean = doGetBean(FACTORY_BEAN_PREFIX + beanName, FactoryBean.class, null, true);
-			return ResolvableType.forClass(getTypeForFactoryBean(factoryBean));
+			Class<?> objectType = getTypeForFactoryBean(factoryBean);
+			return (objectType != null) ? ResolvableType.forClass(objectType) : ResolvableType.NONE;
 		}
 		catch (BeanCreationException ex) {
 			if (ex.contains(BeanCurrentlyInCreationException.class)) {
