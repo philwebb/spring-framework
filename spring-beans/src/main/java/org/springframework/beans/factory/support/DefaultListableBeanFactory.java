@@ -514,33 +514,20 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					if (!mbd.isAbstract() && (allowEagerInit ||
 							(mbd.hasBeanClass() || !mbd.isLazyInit() || isAllowEagerClassLoading()) &&
 									!requiresEagerInitForType(mbd.getFactoryBeanName()))) {
-						// In case of FactoryBean, match object created by FactoryBean.
 						boolean isFactoryBean = isFactoryBean(beanName, mbd);
 						BeanDefinitionHolder dbd = mbd.getDecoratedDefinition();
 						boolean matchFound = false;
-						if (!isFactoryBean) {
-							if (includeNonSingletons || isSingleton(beanName, mbd, dbd)) {
-								matchFound = isTypeMatch(beanName, type);
+						boolean allowFactoryBeanInit = allowEagerInit || containsSingleton(beanName);
+						boolean isNonLazyDecorated = dbd != null && !mbd.isLazyInit();
+						if (!isFactoryBean || allowFactoryBeanInit || isNonLazyDecorated) {
+							if (includeNonSingletons || (dbd != null ? mbd.isSingleton() : isSingleton(beanName))) {
+								matchFound = isTypeMatch(beanName, type, isFactoryBean, allowFactoryBeanInit);
 							}
 						}
-						else {
-
-							boolean isNonLazyDecorated = dbd != null && !mbd.isLazyInit();
-
-							boolean allowEarlyFactoryBeanInit = allowEagerInit || containsSingleton(beanName);
-
-							if (includeNonSingletons || isNonLazyDecorated || allowEarlyFactoryBeanInit && isSingleton(beanName, mbd, dbd)) {
-								// FIXME this is odd
-								matchFound = isTypeMatch(beanName, type, allowEarlyFactoryBeanInit, isNonLazyDecorated || allowEarlyFactoryBeanInit);
-								if(isNonLazyDecorated || allowEarlyFactoryBeanInit != true) {
-									System.err.println(beanName+" "+isNonLazyDecorated+" "+allowEagerInit);
-								}
-							}
-							if (!matchFound) {
-								// In case of FactoryBean, try to match FactoryBean instance itself next.
-								beanName = FACTORY_BEAN_PREFIX + beanName;
-								matchFound = isTypeMatch(beanName, type, false, false);
-							}
+						if (!matchFound && isFactoryBean) {
+							// In case of FactoryBean, try to match FactoryBean instance itself next.
+							beanName = FACTORY_BEAN_PREFIX + beanName;
+							matchFound = isTypeMatch(beanName, type, isFactoryBean, allowFactoryBeanInit);
 						}
 						if (matchFound) {
 							result.add(beanName);
@@ -586,10 +573,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		return StringUtils.toStringArray(result);
-	}
-
-	private boolean isSingleton(String beanName, RootBeanDefinition mbd, BeanDefinitionHolder dbd) {
-		return (dbd != null) ? mbd.isSingleton() : isSingleton(beanName);
 	}
 
 	/**

@@ -488,11 +488,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	@Override
 	public boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException {
-		return isTypeMatch(name, typeToMatch, true, true);
+		return isTypeMatch(name, typeToMatch, false, true);
 	}
 
-	boolean isTypeMatch(String name, ResolvableType typeToMatch,
-			boolean allowEarlyFactoryBeanInit, boolean checkDecoratedDefinition) throws NoSuchBeanDefinitionException {
+	boolean isTypeMatch(String name, ResolvableType typeToMatch, boolean isFactoryBean,
+			boolean allowFactoryBeanInit) throws NoSuchBeanDefinitionException {
 
 		String beanName = transformedBeanName(name);
 		boolean isFactoryDereference = BeanFactoryUtils.isFactoryDereference(name);
@@ -551,7 +551,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// Retrieve corresponding bean definition.
 		RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+		BeanDefinitionHolder dbd = mbd.getDecoratedDefinition();
 
+		// Setup the types that we want to match against
 		Class<?> classToMatch = typeToMatch.resolve();
 		if (classToMatch == null) {
 			classToMatch = FactoryBean.class;
@@ -559,37 +561,40 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Class<?>[] typesToMatch = (FactoryBean.class == classToMatch ?
 				new Class<?>[] {classToMatch} : new Class<?>[] {FactoryBean.class, classToMatch});
 
-		// Check decorated bean definition, if any: We assume it'll be easier
-		// to determine the decorated bean's type than the proxy's type.
 
-		// If there is a decorated definition and that one isn't a factory
-		// then assume that our current merge bd decorates another
-		// the the decorated type ...
+		// Attempt to predict the bean type
+		Class<?> predictedType = null;
 
-		BeanDefinitionHolder dbd = mbd.getDecoratedDefinition();
-		if (dbd != null && !isFactoryDereference && checkDecoratedDefinition) {
-			// mbd.isLazy()  checkDecoratedDefinition
-
-			RootBeanDefinition tbd = getMergedBeanDefinition(dbd.getBeanName(), dbd.getBeanDefinition(), mbd);
-			Class<?> targetClass = predictBeanType(dbd.getBeanName(), tbd, typesToMatch);
-			if (targetClass != null && !FactoryBean.class.isAssignableFrom(targetClass)) {
-				// FIXME exit early
-				return typeToMatch.isAssignableFrom(targetClass);
+		// We're looking for a regular reference but we're a factory bean that has
+		// a decorated bean definition. The target bean should be the same type
+		// as FactoryBean would ultimately return.
+		if (!isFactoryDereference && isFactoryBean && dbd != null) {
+			// We should only attempt if the user explicitly set lazy-init to true
+			// or we can intialize the factory bean
+			if (!mbd.isLazyInit() || allowFactoryBeanInit) {
+				RootBeanDefinition tbd = getMergedBeanDefinition(dbd.getBeanName(), dbd.getBeanDefinition(), mbd);
+				Class<?> targetType = predictBeanType(dbd.getBeanName(), tbd, typesToMatch);
+				if (targetType != null && !FactoryBean.class.isAssignableFrom(targetType)) {
+					predictedType = targetType;
+				}
 			}
 		}
 
-		ResolvableType beanType = null;
-		Class<?> predictedType = predictBeanType(beanName, mbd, typesToMatch);
+		// If we couldn't use the target type, try regular prediction
 		if (predictedType == null) {
-			return false;
+			predictedType = predictBeanType(beanName, mbd, typesToMatch);
+			if (predictedType == null) {
+				return false;
+			}
 		}
 
-		// Check bean class whether we're dealing with a FactoryBean.
+		// Attempt to get the actual ResolvableType for the bean
+		ResolvableType beanType = null;
+
+		// If it's a FactoryBean, we want to look at what it creates, not the factory class.
 		if (FactoryBean.class.isAssignableFrom(predictedType)) {
-			// FIXME attribute
 			if (beanInstance == null && !isFactoryDereference) {
-				// If it's a FactoryBean, we want to look at what it creates, not the factory class.
-				beanType = getTypeForFactoryBean(beanName, mbd, allowEarlyFactoryBeanInit);
+				beanType = getTypeForFactoryBean(beanName, mbd, allowFactoryBeanInit);
 				predictedType = (beanType != null) ? beanType.resolve() : null;
 				if (predictedType == null) {
 					return false;
@@ -606,8 +611,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 		}
 
-		// We don't have an exact type but if bean definition target type matches the
-		// predicted type then we can use that
+		// We don't have an exact type but if bean definition target type or the factory
+		// method return type matches the predicted type then we can use that
 		if (beanType == null) {
 			ResolvableType definedType = mbd.targetType;
 			if (definedType == null) {
@@ -618,10 +623,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 		}
 
-		if (beanType == null) {
-			return typeToMatch.isAssignableFrom(predictedType);
+		// If we have a bean type use it so that generics are considered
+		if (beanType != null) {
+			return typeToMatch.isAssignableFrom(beanType);
 		}
-		return typeToMatch.isAssignableFrom(beanType);
+
+		// If we don't have a bean type, fallback to the predicted class
+		return typeToMatch.isAssignableFrom(predictedType);
 	}
 
 	@Override
@@ -1592,16 +1600,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * implementation should be used as fallback.
 	 * @param beanName the name of the bean
 	 * @param mbd the merged bean definition for the bean
-	 * @param allowEarlyInit if early initialization of the bean is permitted
+	 * @param allowInit if initialization of the bean is permitted
 	 * @return the type for the bean if determinable, or {@code null} otherwise
 	 * @see org.springframework.beans.factory.FactoryBean#getObjectType()
 	 * @see #getBean(String)
 	 */
 	@Nullable
 	protected ResolvableType getTypeForFactoryBean(String beanName,
-			RootBeanDefinition mbd, boolean allowEarlyInit) {
+			RootBeanDefinition mbd, boolean allowInit) {
 
-		if (!allowEarlyInit || !mbd.isSingleton()) {
+		if (!allowInit || !mbd.isSingleton()) {
 			return null;
 		}
 

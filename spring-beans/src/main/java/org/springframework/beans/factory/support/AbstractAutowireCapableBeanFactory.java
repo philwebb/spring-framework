@@ -823,7 +823,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	@Override
 	protected ResolvableType getTypeForFactoryBean(String beanName,
-			RootBeanDefinition mbd, boolean allowEarlyInit) {
+			RootBeanDefinition mbd, boolean allowInit) {
 
 		// Check it the the bean definition itself has defined the type with an attribute
 		Object attribute = mbd.getAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE);
@@ -868,7 +868,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// If we're allowed, we can create the factory bean and ask it
-		if (result == null && allowEarlyInit) {
+		if (result == null && allowInit) {
 			result = getTypeForFactoryBeanFromInstance(beanName, mbd);
 		}
 
