@@ -940,6 +940,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Nullable
 	@Deprecated
 	protected Class<?> getTypeForFactoryBean(String beanName, RootBeanDefinition mbd) {
+		Class<?> expected = getTypeForFactoryBeanx(beanName, mbd);
+		Class<?> actual = getTypeForFactoryBean(beanName, mbd, true).resolve();
+		if (!ObjectUtils.nullSafeEquals(expected, actual)) {
+			throw new RuntimeException();
+		}
+		return actual;
+	}
+
+	private Class<?> getTypeForFactoryBeanx(String beanName, RootBeanDefinition mbd) {
 		if (mbd.getInstanceSupplier() != null) {
 			ResolvableType targetType = mbd.targetType;
 			if (targetType != null) {
