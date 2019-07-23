@@ -680,12 +680,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		if (beanClass != null && FactoryBean.class.isAssignableFrom(beanClass)) {
 			if (!BeanFactoryUtils.isFactoryDereference(name)) {
 				// If it's a FactoryBean, we want to look at what it creates, not at the factory class.
-				Class<?> expected = getTypeForFactoryBean(beanName, mbd);
-				Class<?> actual = getTypeForFactoryBean(beanName, mbd, true).resolve();
-				if (!ObjectUtils.nullSafeEquals(expected, actual)) {
-					throw new RuntimeException();
-				}
-				return expected;
+				return getTypeForFactoryBean(beanName, mbd, true).resolve();
 			}
 			else {
 				return beanClass;
@@ -1670,33 +1665,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	@Nullable
 	@Deprecated
 	protected Class<?> getTypeForFactoryBean(String beanName, RootBeanDefinition mbd) {
-		// FIXME remove calls and use the other method
-		if (!mbd.isSingleton()) {
-			return null;
-		}
-		try {
-			FactoryBean<?> factoryBean = doGetBean(FACTORY_BEAN_PREFIX + beanName, FactoryBean.class, null, true);
-			return getTypeForFactoryBean(factoryBean);
-		}
-		catch (BeanCreationException ex) {
-			if (ex.contains(BeanCurrentlyInCreationException.class)) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Bean currently in creation on FactoryBean type check: " + ex);
-				}
-			}
-			else if (mbd.isLazyInit()) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Bean creation exception on lazy FactoryBean type check: " + ex);
-				}
-			}
-			else {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Bean creation exception on non-lazy FactoryBean type check: " + ex);
-				}
-			}
-			onSuppressedException(ex);
-			return null;
-		}
+		return getTypeForFactoryBean(beanName, mbd, true).resolve();
 	}
 
 	/**
