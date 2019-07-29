@@ -58,12 +58,11 @@ public final class GenericTypeResolver {
 	 * @param implementationClass the class to resolve type variables against
 	 * @return the corresponding generic parameter or return type
 	 */
+	@Deprecated
 	public static Class<?> resolveParameterType(MethodParameter methodParameter, Class<?> implementationClass) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		Assert.notNull(implementationClass, "Class must not be null");
-		methodParameter.setContainingClass(implementationClass);
-		ResolvableType.resolveMethodParameter(methodParameter);
-		return methodParameter.getParameterType();
+		return methodParameter.withContainingClass(implementationClass).getParameterType();
 	}
 
 	/**

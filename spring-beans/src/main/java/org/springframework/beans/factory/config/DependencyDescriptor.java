@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -33,7 +35,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.KotlinDetector;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -286,7 +287,7 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 		this.nestingLevel++;
 		this.resolvableType = null;
 		if (this.methodParameter != null) {
-			this.methodParameter.increaseNestingLevel();
+			this.methodParameter = this.methodParameter.nested();
 		}
 	}
 
@@ -300,7 +301,7 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 		this.containingClass = containingClass;
 		this.resolvableType = null;
 		if (this.methodParameter != null) {
-			GenericTypeResolver.resolveParameterType(this.methodParameter, containingClass);
+			this.methodParameter = this.methodParameter.withContainingClass(containingClass);
 		}
 	}
 
@@ -449,16 +450,14 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 			}
 			else {
 				if (this.methodName != null) {
-					this.methodParameter = new MethodParameter(
-							this.declaringClass.getDeclaredMethod(this.methodName, this.parameterTypes), this.parameterIndex);
+					Method method = this.declaringClass.getDeclaredMethod(this.methodName, this.parameterTypes);
+					this.methodParameter = new MethodParameter(method, this.parameterIndex, this.nestingLevel);
 				}
 				else {
-					this.methodParameter = new MethodParameter(
-							this.declaringClass.getDeclaredConstructor(this.parameterTypes), this.parameterIndex);
+					Constructor<?> constructor = this.declaringClass.getDeclaredConstructor(this.parameterTypes);
+					this.methodParameter = new MethodParameter(constructor, this.parameterIndex, this.nestingLevel);
 				}
-				for (int i = 1; i < this.nestingLevel; i++) {
-					this.methodParameter.increaseNestingLevel();
-				}
+				this.methodParameter = this.methodParameter.withContainingClass(this.containingClass);
 			}
 		}
 		catch (Throwable ex) {

@@ -702,7 +702,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				Assert.state(beanFactory != null, "No BeanFactory available");
 				TypeConverter typeConverter = beanFactory.getTypeConverter();
 				for (int i = 0; i < arguments.length; i++) {
-					MethodParameter methodParam = new MethodParameter(method, i);
+					MethodParameter methodParam = new MethodParameter(method, i).withContainingClass(bean.getClass());
 					DependencyDescriptor currDesc = new DependencyDescriptor(methodParam, this.required);
 					currDesc.setContainingClass(bean.getClass());
 					descriptors[i] = currDesc;

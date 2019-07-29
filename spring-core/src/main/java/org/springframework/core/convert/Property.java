@@ -23,7 +23,6 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ConcurrentReferenceHashMap;
@@ -187,7 +186,7 @@ public final class Property {
 		if (getReadMethod() == null) {
 			return null;
 		}
-		return resolveParameterType(new MethodParameter(getReadMethod(), -1));
+		return new MethodParameter(getReadMethod(), -1).withContainingClass(getObjectType());
 	}
 
 	@Nullable
@@ -195,13 +194,7 @@ public final class Property {
 		if (getWriteMethod() == null) {
 			return null;
 		}
-		return resolveParameterType(new MethodParameter(getWriteMethod(), 0));
-	}
-
-	private MethodParameter resolveParameterType(MethodParameter parameter) {
-		// needed to resolve generic property types that parameterized by sub-classes e.g. T getFoo();
-		GenericTypeResolver.resolveParameterType(parameter, getObjectType());
-		return parameter;
+		return new MethodParameter(getWriteMethod(), 0).withContainingClass(getObjectType());
 	}
 
 	private Annotation[] resolveAnnotations() {

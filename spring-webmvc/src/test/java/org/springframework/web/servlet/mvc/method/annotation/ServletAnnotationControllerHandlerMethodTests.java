@@ -616,7 +616,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		request.addParameter("date", "2007-10-02");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		getServlet().service(request, response);
-		assertThat(response.getContentAsString()).isEqualTo("myView-Integer:10-typeMismatch-tb1-myOriginalValue");
+			assertThat(response.getContentAsString()).isEqualTo("myView-Integer:10-typeMismatch-tb1-myOriginalValue");
 
 		request = new MockHttpServletRequest("GET", "/myOtherPath.do");
 		request.addParameter("defaultName", "10");

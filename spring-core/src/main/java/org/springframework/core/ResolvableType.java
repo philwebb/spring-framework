@@ -1200,8 +1200,7 @@ public class ResolvableType implements Serializable {
 			Class<?> implementationClass) {
 
 		Assert.notNull(constructor, "Constructor must not be null");
-		MethodParameter methodParameter = new MethodParameter(constructor, parameterIndex);
-		methodParameter.setContainingClass(implementationClass);
+		MethodParameter methodParameter = new MethodParameter(constructor, parameterIndex, implementationClass);
 		return forMethodParameter(methodParameter);
 	}
 
@@ -1227,8 +1226,7 @@ public class ResolvableType implements Serializable {
 	 */
 	public static ResolvableType forMethodReturnType(Method method, Class<?> implementationClass) {
 		Assert.notNull(method, "Method must not be null");
-		MethodParameter methodParameter = new MethodParameter(method, -1);
-		methodParameter.setContainingClass(implementationClass);
+		MethodParameter methodParameter = new MethodParameter(method, -1, implementationClass);
 		return forMethodParameter(methodParameter);
 	}
 
@@ -1258,8 +1256,7 @@ public class ResolvableType implements Serializable {
 	 */
 	public static ResolvableType forMethodParameter(Method method, int parameterIndex, Class<?> implementationClass) {
 		Assert.notNull(method, "Method must not be null");
-		MethodParameter methodParameter = new MethodParameter(method, parameterIndex);
-		methodParameter.setContainingClass(implementationClass);
+		MethodParameter methodParameter = new MethodParameter(method, parameterIndex, implementationClass);
 		return forMethodParameter(methodParameter);
 	}
 
@@ -1313,7 +1310,9 @@ public class ResolvableType implements Serializable {
 	 * @param methodParameter the method parameter to resolve
 	 * @since 4.1.9
 	 * @see MethodParameter#setParameterType
+	 *
 	 */
+	@Deprecated
 	static void resolveMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		ResolvableType owner = forType(methodParameter.getContainingClass()).as(methodParameter.getDeclaringClass());

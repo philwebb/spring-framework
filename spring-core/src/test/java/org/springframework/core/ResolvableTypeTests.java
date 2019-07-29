@@ -822,8 +822,7 @@ public class ResolvableTypeTests {
 	@Test
 	public void resolveTypeVariableFromMethodParameterTypeWithImplementsClass() throws Exception {
 		Method method = Methods.class.getMethod("typedParameter", Object.class);
-		MethodParameter methodParameter = MethodParameter.forExecutable(method, 0);
-		methodParameter.setContainingClass(TypedMethods.class);
+		MethodParameter methodParameter = MethodParameter.forExecutable(method, 0).withContainingClass(TypedMethods.class);
 		ResolvableType type = ResolvableType.forMethodParameter(methodParameter);
 		assertThat(type.resolve()).isEqualTo(String.class);
 		assertThat(type.getType().toString()).isEqualTo("T");
