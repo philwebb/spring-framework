@@ -39,6 +39,7 @@ import kotlin.reflect.jvm.ReflectJvmMapping;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Helper class that encapsulates the specification of a method parameter, i.e. a {@link Method}
@@ -652,22 +653,32 @@ public class MethodParameter {
 		return annotations;
 	}
 
-
 	@Override
-	public boolean equals(@Nullable Object other) {
-		if (this == other) {
+	public boolean equals(@Nullable Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if (!(other instanceof MethodParameter)) {
+		if (!(obj instanceof MethodParameter)) {
 			return false;
 		}
-		MethodParameter otherParam = (MethodParameter) other;
-		return (this.parameterIndex == otherParam.parameterIndex && getExecutable().equals(otherParam.getExecutable()));
+		MethodParameter other = (MethodParameter) obj;
+		boolean result = true;
+		result = result && this.executable.equals(other.executable);
+		result = result && this.parameterIndex == other.parameterIndex;
+		result = result && ObjectUtils.nullSafeEquals(this.containingClass, other.containingClass);
+		result = result && this.nestingLevel == other.nestingLevel;
+		result = result && ObjectUtils.nullSafeEquals(this.typeIndexesPerLevel, other.typeIndexesPerLevel);
+		return result;
 	}
 
 	@Override
 	public int hashCode() {
-		return (getExecutable().hashCode() * 31 + this.parameterIndex);
+		int result = 1;
+		result = 31 * result + this.executable.hashCode();
+		result = 31 * result + this.parameterIndex;
+		result = 31 * result + ObjectUtils.nullSafeHashCode(this.containingClass);
+		result = 31 * result + this.nestingLevel;
+		return result;
 	}
 
 	@Override

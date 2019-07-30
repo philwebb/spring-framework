@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import org.junit.Before;
@@ -149,6 +150,40 @@ public class MethodParameterTests {
 		assertThat(methodParameter.getGenericParameterType()).isEqualTo(ResolvableType.forClassWithGenerics(Callable.class, Integer.class).getType());
 	}
 
+	@Test
+	public void multipleResolveParameterTypeCalls() throws Exception {
+		Method method = ArrayList.class.getMethod("get", int.class);
+		MethodParameter methodParameter = MethodParameter.forExecutable(method, -1);
+		assertThat(methodParameter.getParameterType()).isEqualTo(Object.class);
+		GenericTypeResolver.resolveParameterType(methodParameter, StringList.class);
+		assertThat(methodParameter.getParameterType()).isEqualTo(String.class);
+		GenericTypeResolver.resolveParameterType(methodParameter, IntegerList.class);
+		assertThat(methodParameter.getParameterType()).isEqualTo(Integer.class);
+	}
+
+	@Test
+	public void equalsAndHashCodeConsidersNesting() throws Exception {
+		Method method = ArrayList.class.getMethod("get", int.class);
+		MethodParameter m1 = MethodParameter.forExecutable(method, -1);
+		MethodParameter m2 = MethodParameter.forExecutable(method, -1);
+		MethodParameter m3 = MethodParameter.forExecutable(method, -1).nested();
+		assertThat(m1).isEqualTo(m2).isNotEqualTo(m3);
+		assertThat(m1.hashCode()).isEqualTo(m2.hashCode());
+	}
+
+	@Test
+	public void equalsAndHashCodeConsidersContainingClass() throws Exception {
+		Method method = ArrayList.class.getMethod("get", int.class);
+		MethodParameter m1 = MethodParameter.forExecutable(method, -1);
+		GenericTypeResolver.resolveParameterType(m1, StringList.class);
+		MethodParameter m2 = MethodParameter.forExecutable(method, -1);
+		GenericTypeResolver.resolveParameterType(m2, StringList.class);
+		MethodParameter m3 = MethodParameter.forExecutable(method, -1);
+		GenericTypeResolver.resolveParameterType(m3, IntegerList.class);
+		MethodParameter m4 = MethodParameter.forExecutable(method, -1);
+		assertThat(m1).isEqualTo(m2).isNotEqualTo(m3).isNotEqualTo(m4);
+		assertThat(m1.hashCode()).isEqualTo(m2.hashCode());
+	}
 
 	public int method(String p1, long p2) {
 		return 42;
@@ -171,6 +206,14 @@ public class MethodParameterTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.PARAMETER)
 	private @interface Param {
+	}
+
+	private static class StringList extends ArrayList<String> {
+
+	}
+
+	private static class IntegerList extends ArrayList<Integer> {
+
 	}
 
 }
