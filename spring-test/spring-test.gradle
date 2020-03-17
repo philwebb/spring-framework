@@ -69,6 +69,8 @@ dependencies {
 	testCompile("org.apache.httpcomponents:httpclient")
 	testCompile("io.projectreactor.netty:reactor-netty")
 	testCompile("de.bechte.junit:junit-hierarchicalcontextrunner")
+	testCompile "org.testcontainers:testcontainers"
+	testCompile "org.testcontainers:junit-jupiter"
 	testRuntime("org.junit.vintage:junit-vintage-engine") {
 		exclude group: "junit", module: "junit"
 	}

@@ -209,6 +209,9 @@ configure(allprojects) { project ->
 			dependency "org.skyscreamer:jsonassert:1.5.0"
 			dependency "com.jayway.jsonpath:json-path:2.4.0"
 
+			dependency "org.testcontainers:testcontainers:1.13.0"
+			dependency "org.testcontainers:junit-jupiter:1.13.0"
+
 			dependencySet(group: 'org.apache.tiles', version: '3.0.8') {
 				entry 'tiles-api'
 				entry('tiles-core', withoutJclOverSlf4j)
