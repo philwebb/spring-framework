@@ -27,6 +27,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
+ * Tests for {@link MutablePropertySources}.
+ *
  * @author Chris Beams
  * @author Juergen Hoeller
  */

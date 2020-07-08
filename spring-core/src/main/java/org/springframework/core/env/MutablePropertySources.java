@@ -16,14 +16,15 @@
 
 package org.springframework.core.env;
 
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * The default implementation of the {@link PropertySources} interface.
@@ -36,12 +37,15 @@ import org.springframework.lang.Nullable;
  *
  * @author Chris Beams
  * @author Juergen Hoeller
+ * @author Phillip Webb
  * @since 3.1
  * @see PropertySourcesPropertyResolver
  */
 public class MutablePropertySources implements PropertySources {
 
-	private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<>();
+	private volatile PropertySource<?>[] sources = new PropertySource<?>[0];
+
+	private final ReentrantLock lock = new ReentrantLock();
 
 
 	/**
@@ -55,55 +59,69 @@ public class MutablePropertySources implements PropertySources {
 	 * object, preserving the original order of contained {@code PropertySource} objects.
 	 */
 	public MutablePropertySources(PropertySources propertySources) {
-		this();
-		for (PropertySource<?> propertySource : propertySources) {
-			addLast(propertySource);
+		if (propertySources instanceof MutablePropertySources) {
+			this.sources = ((MutablePropertySources) propertySources).sources;
+		}
+		else {
+			propertySources.forEach(this::addLast);
 		}
 	}
 
 
 	@Override
 	public Iterator<PropertySource<?>> iterator() {
-		return this.propertySourceList.iterator();
+		return new PropertySourcesIterator(this.sources);
 	}
 
 	@Override
 	public Spliterator<PropertySource<?>> spliterator() {
-		return Spliterators.spliterator(this.propertySourceList, 0);
+		return Arrays.spliterator(this.sources);
 	}
 
 	@Override
 	public Stream<PropertySource<?>> stream() {
-		return this.propertySourceList.stream();
+		return Arrays.stream(this.sources);
 	}
 
 	@Override
 	public boolean contains(String name) {
-		return this.propertySourceList.contains(PropertySource.named(name));
+		return indexOf(this.sources, name) != -1;
 	}
 
 	@Override
 	@Nullable
 	public PropertySource<?> get(String name) {
-		int index = this.propertySourceList.indexOf(PropertySource.named(name));
-		return (index != -1 ? this.propertySourceList.get(index) : null);
+		PropertySource<?>[] sources = this.sources;
+		int index = indexOf(sources, name);
+		return (index != -1) ? sources[index] : null;
 	}
-
 
 	/**
 	 * Add the given property source object with highest precedence.
 	 */
 	public void addFirst(PropertySource<?> propertySource) {
-		removeIfPresent(propertySource);
-		this.propertySourceList.add(0, propertySource);
+		this.lock.lock();
+		try {
+			PropertySource<?>[] sources = removeIfPresent(this.sources, propertySource);
+			this.sources = add(sources, 0, propertySource);
+		}
+		finally {
+			this.lock.unlock();
+		}
 	}
 
 	/**
 	 * Add the given property source object with lowest precedence.
 	 */
 	public void addLast(PropertySource<?> propertySource) {
-		removeIfPresent(propertySource);
-		this.propertySourceList.add(propertySource);
+		this.lock.lock();
+		try {
+			PropertySource<?>[] sources = removeIfPresent(this.sources, propertySource);
+			this.sources = add(sources, sources.length, propertySource);
+		}
+		finally {
+			this.lock.unlock();
+		}
 	}
 
 	/**
@@ -112,9 +130,15 @@ public class MutablePropertySources implements PropertySources {
 	 */
 	public void addBefore(String relativePropertySourceName, PropertySource<?> propertySource) {
 		assertLegalRelativeAddition(relativePropertySourceName, propertySource);
-		removeIfPresent(propertySource);
-		int index = assertPresentAndGetIndex(relativePropertySourceName);
-		addAtIndex(index, propertySource);
+		this.lock.lock();
+		try {
+			PropertySource<?>[] sources = removeIfPresent(this.sources, propertySource);
+			int index = assertPresentAndGetIndex(sources, relativePropertySourceName);
+			this.sources = add(sources, index, propertySource);
+		}
+		finally {
+			this.lock.unlock();
+		}
 	}
 
 	/**
@@ -123,17 +147,24 @@ public class MutablePropertySources implements PropertySources {
 	 */
 	public void addAfter(String relativePropertySourceName, PropertySource<?> propertySource) {
 		assertLegalRelativeAddition(relativePropertySourceName, propertySource);
-		removeIfPresent(propertySource);
-		int index = assertPresentAndGetIndex(relativePropertySourceName);
-		addAtIndex(index + 1, propertySource);
+		this.lock.lock();
+		try {
+			PropertySource<?>[] sources = removeIfPresent(this.sources, propertySource);
+			int index = assertPresentAndGetIndex(sources, relativePropertySourceName);
+			this.sources = add(sources, index + 1, propertySource);
+		}
+		finally {
+			this.lock.unlock();
+		}
 	}
 
 	/**
 	 * Return the precedence of the given property source, {@code -1} if not found.
 	 */
 	public int precedenceOf(PropertySource<?> propertySource) {
-		return this.propertySourceList.indexOf(propertySource);
+		return indexOf(this.sources, propertySource);
 	}
+
 
 	/**
 	 * Remove and return the property source with the given name, {@code null} if not found.
@@ -141,9 +172,21 @@ public class MutablePropertySources implements PropertySources {
 	 */
 	@Nullable
 	public PropertySource<?> remove(String name) {
-		int index = this.propertySourceList.indexOf(PropertySource.named(name));
-		return (index != -1 ? this.propertySourceList.remove(index) : null);
+		this.lock.lock();
+		try {
+			PropertySource<?>[] sources = this.sources;
+			int index = indexOf(sources, name);
+			if (index != -1) {
+				this.sources = remove(sources, index);
+				return sources[index];
+			}
+			return null;
+		}
+		finally {
+			this.lock.unlock();
+		}
 	}
+
 
 	/**
 	 * Replace the property source with the given name with the given property source object.
@@ -153,20 +196,27 @@ public class MutablePropertySources implements PropertySources {
 	 * @see #contains
 	 */
 	public void replace(String name, PropertySource<?> propertySource) {
-		int index = assertPresentAndGetIndex(name);
-		this.propertySourceList.set(index, propertySource);
+		this.lock.lock();
+		try {
+			PropertySource<?>[] sources = this.sources;
+			int index = assertPresentAndGetIndex(sources, name);
+			this.sources[index] = propertySource;
+		}
+		finally {
+			this.lock.unlock();
+		}
 	}
 
 	/**
 	 * Return the number of {@link PropertySource} objects contained.
 	 */
 	public int size() {
-		return this.propertySourceList.size();
+		return this.sources.length;
 	}
 
 	@Override
 	public String toString() {
-		return this.propertySourceList.toString();
+		return Arrays.toString(this.sources);
 	}
 
 	/**
@@ -184,28 +234,97 @@ public class MutablePropertySources implements PropertySources {
 	 * Remove the given property source if it is present.
 	 */
 	protected void removeIfPresent(PropertySource<?> propertySource) {
-		this.propertySourceList.remove(propertySource);
-	}
-
-	/**
-	 * Add the given property source at a particular index in the list.
-	 */
-	private void addAtIndex(int index, PropertySource<?> propertySource) {
-		removeIfPresent(propertySource);
-		this.propertySourceList.add(index, propertySource);
-	}
-
-	/**
-	 * Assert that the named property source is present and return its index.
-	 * @param name {@linkplain PropertySource#getName() name of the property source} to find
-	 * @throws IllegalArgumentException if the named property source is not present
-	 */
-	private int assertPresentAndGetIndex(String name) {
-		int index = this.propertySourceList.indexOf(PropertySource.named(name));
-		if (index == -1) {
-			throw new IllegalArgumentException("PropertySource named '" + name + "' does not exist");
+		this.lock.lock();
+		try {
+			this.sources = removeIfPresent(this.sources, propertySource);
 		}
+		finally {
+			this.lock.unlock();
+		}
+	}
+
+	private PropertySource<?>[] removeIfPresent(PropertySource<?>[] sources, PropertySource<?> source) {
+		int index = indexOf(sources, source);
+		return (index != -1) ? remove(sources, index) : sources;
+	}
+
+	private int assertPresentAndGetIndex(PropertySource<?>[] sources, String name) {
+		int index = indexOf(sources, name);
+		Assert.isTrue(index != -1, () -> "PropertySource named '" + name + "' does not exist");
 		return index;
+	}
+
+	private PropertySource<?>[] add(PropertySource<?>[] sources, int index, PropertySource<?> source) {
+		assertIndexInBounds(sources, index);
+		PropertySource<?>[] updated = new PropertySource<?>[sources.length + 1];
+		System.arraycopy(sources, 0, updated, 0, index);
+		System.arraycopy(sources, index, updated, index + 1, sources.length - index);
+		updated[index] = source;
+		return updated;
+	}
+
+	private PropertySource<?>[] remove(PropertySource<?>[] sources, int index) {
+		assertIndexInBounds(sources, index);
+		PropertySource<?>[] updated = new PropertySource<?>[sources.length - 1];
+		System.arraycopy(sources, 0, updated, 0, index);
+		System.arraycopy(sources, index + 1, updated, index, sources.length - index - 1);
+		return updated;
+	}
+
+	private void assertIndexInBounds(PropertySource<?>[] sources, int index) {
+		if (index > sources.length || index < 0) {
+			throw new IndexOutOfBoundsException(
+					"Index: " + index + ", Size: " + sources.length);
+		}
+	}
+
+	private int indexOf(PropertySource<?>[] sources, PropertySource<?> source) {
+		for (int i = 0; i < sources.length; i++) {
+			if (source.equals(sources[i])) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private int indexOf(PropertySource<?>[] sources, String name) {
+		for (int i = 0; i < sources.length; i++) {
+			if (sources[i].getName().equals(name)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+
+	/**
+	 * Iterator that works directly from a copy of the array.
+	 */
+	private final static class PropertySourcesIterator implements Iterator<PropertySource<?>> {
+
+		private final PropertySource<?>[] sources;
+
+		private int cursor = 0;
+
+
+		private PropertySourcesIterator(PropertySource<?>[] sources) {
+			this.sources = sources;
+		}
+
+
+		@Override
+		public boolean hasNext() {
+			return this.cursor < this.sources.length;
+		}
+
+		@Override
+		public PropertySource<?> next() {
+			if (this.cursor >= this.sources.length) {
+				throw new NoSuchElementException();
+			}
+			return this.sources[this.cursor++];
+		}
+
 	}
 
 }
