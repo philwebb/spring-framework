@@ -1,0 +1,5 @@
+description = "Functional Sample"
+
+dependencies {
+	compile(project(":spring-context"))
+}
