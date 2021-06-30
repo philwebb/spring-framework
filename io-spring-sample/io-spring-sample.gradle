@@ -1,0 +1,5 @@
+description = "IO-Spring Sample"
+
+dependencies {
+	compile(project(":spring-context"))
+}
