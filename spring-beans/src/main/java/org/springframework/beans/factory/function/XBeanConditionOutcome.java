@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package io.spring.context;
-
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.DefaultBeanContainer;
+package org.springframework.beans.factory.function;
 
 /**
- * Default {@link ApplicationContext} implementation.
+ * The result of a {@link XBeanCondition}
+ * {@link XBeanCondition#evaluate(ConditionContext) evaluation}. Provides both an
+ * outcome result along with a message that can be reported to the user.
+ *
+ * @author Phillip Webb
+ * @since 6.0
  */
-public class DefaultApplicationContext extends AbstractApplicationContext {
+public interface XBeanConditionOutcome {
 
-	public DefaultApplicationContext(BeanRegistrar registrar) {
-		this(new DefaultBeanContainer(), registrar);
-	}
+	boolean isMatch();
 
-	private DefaultApplicationContext(DefaultBeanContainer beanContainer,
-			BeanRegistrar registrar) {
-		super(beanContainer);
-		registrar.apply(beanContainer);
-	}
-
-	public void close() {
-		// FIXME
-	}
+	XBeanConditionMessage getMessage();
 
 }

@@ -14,28 +14,16 @@
  * limitations under the License.
  */
 
-package io.spring.context;
+package io.spring.scheduling;
 
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.DefaultBeanContainer;
 
 /**
- * Default {@link ApplicationContext} implementation.
+ *
+ * @author pwebb
+ * @since 5.2
  */
-public class DefaultApplicationContext extends AbstractApplicationContext {
+public interface ScheduleRegistry {
 
-	public DefaultApplicationContext(BeanRegistrar registrar) {
-		this(new DefaultBeanContainer(), registrar);
-	}
-
-	private DefaultApplicationContext(DefaultBeanContainer beanContainer,
-			BeanRegistrar registrar) {
-		super(beanContainer);
-		registrar.apply(beanContainer);
-	}
-
-	public void close() {
-		// FIXME
-	}
+	void register(ScheduleRegistration registration);
 
 }

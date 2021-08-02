@@ -14,28 +14,22 @@
  * limitations under the License.
  */
 
-package io.spring.context;
+package org.springframework.beans.factory.function;
 
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.DefaultBeanContainer;
+/*
+ * DESIGN NOTES
+ *
+ * This is DefaultListableBeanFactory which combines BeanFactory and BeanDefinitionRegistry.
+ * It seem sensible to keep separate read/register interfaces to keep intentions clearer
+ */
 
 /**
- * Default {@link ApplicationContext} implementation.
+ * Dependency injection container used for accessing and registering beans.
+ * Provides both {@link FunctionalBeanRegistry} and {@link XBeanRepository} functionality.
+ *
+ * @author Phillip Webb
+ * @since 6.0.0
  */
-public class DefaultApplicationContext extends AbstractApplicationContext {
-
-	public DefaultApplicationContext(BeanRegistrar registrar) {
-		this(new DefaultBeanContainer(), registrar);
-	}
-
-	private DefaultApplicationContext(DefaultBeanContainer beanContainer,
-			BeanRegistrar registrar) {
-		super(beanContainer);
-		registrar.apply(beanContainer);
-	}
-
-	public void close() {
-		// FIXME
-	}
+public interface XBeanContainer extends FunctionalBeanRegistry, XBeanRepository {
 
 }

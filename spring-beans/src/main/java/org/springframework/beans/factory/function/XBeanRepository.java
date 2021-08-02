@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.bean.config;
-
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
+package org.springframework.beans.factory.function;
 
 /*
  * DESIGN NOTES
@@ -28,13 +26,13 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 
 /**
  * A repository that allows beans to be selected based on various criteria. This
- * interface is passed to {@link BeanInstanceSupplier BeanInstanceSuppliers} so
+ * interface is passed to {@link FunctionalBeanInstanceSupplier BeanInstanceSuppliers} so
  * that they can perform dependency injection.
  *
  * @author Phillip Webb
  * @since 6.0.0
  */
-public interface BeanRepository {
+public interface XBeanRepository {
 
 	/**
 	 * Return the bean instance that uniquely matches the given object type.
@@ -43,7 +41,7 @@ public interface BeanRepository {
 	 * @return an instance of the bean
 	 */
 	default <T> T get(Class<T> type) {
-		return select(BeanSelector.havingType(type)).get();
+		return select(FunctionalBeanSelector.havingType(type)).get();
 	}
 
 	/**
@@ -53,18 +51,18 @@ public interface BeanRepository {
 	 * @return an instance of the bean
 	 */
 	default <T> T get(String name) {
-		BeanSelector<T> selector = BeanSelector.havingName(name);
+		FunctionalBeanSelector<T> selector = FunctionalBeanSelector.havingName(name);
 		return select(selector).get();
 	}
 
 	/**
-	 * Select beans based on the given {@link BeanSelector}.
+	 * Select beans based on the given {@link FunctionalBeanSelector}.
 	 * @param <T> the selected bean type
 	 * @param selector the selector used to limit the selection
 	 * @return a bean selection
 	 */
-	<T> BeanSelection<T> select(BeanSelector<T> selector);
+	<T> FunctionalBeanSelection<T> select(FunctionalBeanSelector<T> selector);
 
-	<T> BeanSelection<T> select(Class<T> type);
+	<T> FunctionalBeanSelection<T> select(Class<T> type);
 
 }

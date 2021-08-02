@@ -14,28 +14,17 @@
  * limitations under the License.
  */
 
-package io.spring.context;
+package org.springframework.beans.factory.function;
 
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.DefaultBeanContainer;
+import org.springframework.beans.factory.ListableBeanFactory;
 
 /**
- * Default {@link ApplicationContext} implementation.
+ *
+ * @author pwebb
+ * @since 5.2
  */
-public class DefaultApplicationContext extends AbstractApplicationContext {
+public interface FunctionalBeanFactory extends ListableBeanFactory {
 
-	public DefaultApplicationContext(BeanRegistrar registrar) {
-		this(new DefaultBeanContainer(), registrar);
-	}
-
-	private DefaultApplicationContext(DefaultBeanContainer beanContainer,
-			BeanRegistrar registrar) {
-		super(beanContainer);
-		registrar.apply(beanContainer);
-	}
-
-	public void close() {
-		// FIXME
-	}
-
+	// FIXME select methods?
+	
 }

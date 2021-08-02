@@ -41,6 +41,11 @@ public abstract class AbstractApplicationContext implements BeanRepository {
 		return this.beanContainer.get(name);
 	}
 
+	@Override
+	public <T> BeanSelection<T> select(Class<T> type) {
+		return this.beanContainer.select(type);
+	}
+
 	public <T> BeanSelection<T> select(BeanSelector<T> selector) {
 		return this.beanContainer.select(selector);
 	}

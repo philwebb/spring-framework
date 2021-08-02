@@ -24,11 +24,11 @@ import io.spring.bean.config.ConcurrentHashFilter.HashCodesExtractor;
 public class IndexApp {
 
 	public static void main(String[] args) throws IOException {
-		List<Class<?>> beanClasses = getClasses("org.springframework");
+		List<Class<?>> beanClasses = getClasses("org.springframework.beans");
 		List<Class<?>> contextClasses = getClasses("org.springframework.context");
 		// beanClasses.forEach(System.out::println);
 		System.out.println(beanClasses.size());
-		Container container = new WithoutIndex();
+		Container container = new WithIndex();
 		long start = System.nanoTime();
 		beanClasses.forEach((t) -> container.add(t));
 		for (Class<?> candidate : beanClasses) {

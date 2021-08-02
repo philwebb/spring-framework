@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.bean.config;
+package org.springframework.beans.factory.function;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -28,12 +28,14 @@ import java.util.function.Function;
  */
 
 /**
- * A selection of zero or more beans obtained from a {@link BeanRepository}.
+ * A selection of zero or more beans obtained from a {@link XBeanRepository}.
  *
  * @author Phillip Webb
  * @since 6.0.0
  */
-public interface BeanSelection<T> {
+public interface FunctionalBeanSelection<T> {
+
+	// FIXME do we want to just use ObjectProvider
 
 	/**
 	 * Return the bean from a selection that is expected to uniquely match a
@@ -43,17 +45,17 @@ public interface BeanSelection<T> {
 	T get();
 
 	/**
-	 * Return a new {@link BeanSelection} with values mapped via the given
+	 * Return a new {@link FunctionalBeanSelection} with values mapped via the given
 	 * function.
 	 * @param <U> the mapper result type
 	 * @param mapper a mapper used for the instances
 	 * @return a mapped bean selection
 	 */
-	default <U> BeanSelection<U> map(Function<? super T, ? extends U> mapper) {
+	default <U> FunctionalBeanSelection<U> map(Function<? super T, ? extends U> mapper) {
 		return () -> mapper.apply(get());
 	}
 
-	default  BeanSelection<T> ordered() {
+	default  FunctionalBeanSelection<T> ordered() {
 		return null;
 	}
 

@@ -6,6 +6,8 @@ import io.spring.bean.config.BeanRegistrar;
 import io.spring.bean.config.BeanRegistration;
 import io.spring.bean.config.BeanRegistry;
 import io.spring.bean.config.BeanRepository;
+import io.spring.scheduling.ScheduleRegistrar;
+import io.spring.scheduling.ScheduleRegistration;
 
 /**
  * {@link BeanRegistrar} to adapt {@link ApplicationConfiguration}.
@@ -14,6 +16,7 @@ class ApplicationConfigurationRegistrar implements BeanRegistrar {
 
 	@Override
 	public void apply(BeanRegistry registry) {
+		registry.registerFrom(SchedulingConfigurationRegistrar::new);
 		registry.register(this::applicationConfigurationRegistration);
 		registry.register(this::printerRegistration);
 		registry.register(this::greeterRegistration);
@@ -35,12 +38,24 @@ class ApplicationConfigurationRegistrar implements BeanRegistrar {
 	private void greeterRegistration(BeanRegistration.Builder<Greeter> registration) {
 		registration.setType(Greeter.class);
 		registration.setInstanceSupplier(this::greeter);
+		registration.onCreate(this::dunno);
 	}
 
 	private Greeter greeter(BeanRepository repository) {
-		ApplicationConfiguration applicationConfiguration = repository.get(ApplicationConfiguration.class);
+		ApplicationConfiguration applicationConfiguration = repository.get(
+				ApplicationConfiguration.class);
 		Printer printer = repository.get(Printer.class);
 		return applicationConfiguration.greeter(printer);
+	}
+	
+	private void dunno(Greeter greeter) {
+		
+	}
+
+	private ScheduleRegistrar scheduleRegistrar(Greeter greeter) {
+		return (registry) -> {
+			registry.register(ScheduleRegistration.of(greeter::greet));
+		};
 	}
 
 }

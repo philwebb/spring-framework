@@ -14,28 +14,34 @@
  * limitations under the License.
  */
 
-package io.spring.context;
+package org.springframework.beans.factory.function;
 
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.DefaultBeanContainer;
+import java.util.List;
+
+import org.springframework.util.Assert;
 
 /**
- * Default {@link ApplicationContext} implementation.
+ * Default {@link FunctionalBeanSelection} implementation.
+ *
+ * @author Phillip Webb
  */
-public class DefaultApplicationContext extends AbstractApplicationContext {
+class XDefaultBeanSelection<T> implements FunctionalBeanSelection<T> {
 
-	public DefaultApplicationContext(BeanRegistrar registrar) {
-		this(new DefaultBeanContainer(), registrar);
+	private List<FunctionalBean<T>> beans;
+
+	XDefaultBeanSelection(List<FunctionalBean<T>> beans) {
+		this.beans = beans;
 	}
 
-	private DefaultApplicationContext(DefaultBeanContainer beanContainer,
-			BeanRegistrar registrar) {
-		super(beanContainer);
-		registrar.apply(beanContainer);
-	}
-
-	public void close() {
-		// FIXME
+	@Override
+	public T get() {
+		Assert.state(this.beans.size() == 1, "Must have exact match");
+		try {
+			return this.beans.get(0).getBeanInstance();
+		}
+		catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }

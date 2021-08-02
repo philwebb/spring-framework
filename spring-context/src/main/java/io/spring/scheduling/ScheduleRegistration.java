@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package io.spring.context;
-
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.DefaultBeanContainer;
+package io.spring.scheduling;
 
 /**
- * Default {@link ApplicationContext} implementation.
+ *
+ * @author pwebb
+ * @since 5.2
  */
-public class DefaultApplicationContext extends AbstractApplicationContext {
+public final class ScheduleRegistration {
 
-	public DefaultApplicationContext(BeanRegistrar registrar) {
-		this(new DefaultBeanContainer(), registrar);
+	static ScheduleRegistration of() {
+		return null;
 	}
 
-	private DefaultApplicationContext(DefaultBeanContainer beanContainer,
-			BeanRegistrar registrar) {
-		super(beanContainer);
-		registrar.apply(beanContainer);
-	}
-
-	public void close() {
-		// FIXME
+	/**
+	 * @param greeter
+	 * @return
+	 */
+	public static ScheduleRegistration of(Runnable runnable) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
 }

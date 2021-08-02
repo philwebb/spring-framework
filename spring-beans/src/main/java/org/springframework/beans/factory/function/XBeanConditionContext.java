@@ -14,28 +14,22 @@
  * limitations under the License.
  */
 
-package io.spring.context;
+package org.springframework.beans.factory.function;
 
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.DefaultBeanContainer;
+import java.util.concurrent.locks.Condition;
+
+import org.springframework.core.env.Environment;
 
 /**
- * Default {@link ApplicationContext} implementation.
+ * Context information for use by {@link Condition} implementations.
+ *
+ * @author Phillip Webb
+ * @since 6.0.0
  */
-public class DefaultApplicationContext extends AbstractApplicationContext {
+public interface XBeanConditionContext {
 
-	public DefaultApplicationContext(BeanRegistrar registrar) {
-		this(new DefaultBeanContainer(), registrar);
-	}
+	Environment getEnvironment();
 
-	private DefaultApplicationContext(DefaultBeanContainer beanContainer,
-			BeanRegistrar registrar) {
-		super(beanContainer);
-		registrar.apply(beanContainer);
-	}
-
-	public void close() {
-		// FIXME
-	}
+	XBeanRepository getBeanRepository();
 
 }
