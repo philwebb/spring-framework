@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefiniti
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
-import org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader;
 import org.springframework.beans.factory.parsing.SourceExtractor;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinitionReader;
@@ -354,17 +353,11 @@ class ConfigurationClassBeanDefinitionReader {
 		importedResources.forEach((resource, readerClass) -> {
 			// Default reader selection necessary?
 			if (BeanDefinitionReader.class == readerClass) {
-				if (StringUtils.endsWithIgnoreCase(resource, ".groovy")) {
-					// When clearly asking for Groovy, that's what they'll get...
-					readerClass = GroovyBeanDefinitionReader.class;
-				}
-				else if (shouldIgnoreXml) {
+				if (shouldIgnoreXml) {
 					throw new UnsupportedOperationException("XML support disabled");
 				}
-				else {
-					// Primarily ".xml" files but for any other extension as well
-					readerClass = XmlBeanDefinitionReader.class;
-				}
+				// Primarily ".xml" files but for any other extension as well
+				readerClass = XmlBeanDefinitionReader.class;
 			}
 
 			BeanDefinitionReader reader = readerInstanceCache.get(readerClass);
