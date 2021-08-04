@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.function;
 
+import org.springframework.beans.factory.ObjectProvider;
 
 /**
  *
@@ -24,7 +25,24 @@ package org.springframework.beans.factory.function;
  */
 public interface InjectionContext {
 
-	// Select / Get
-	// Args
+	default <T> T get(Class<T> type) {
+		return get(BeanSelector.byType(type));
+	}
+
+	default <T> T get(String name) {
+		return get(BeanSelector.byName(name));
+	}
+
+	default <T> T get(String name, Class<T> requiredType){
+		return getProvider(BeanSelector.byName(name)).getObject(requiredType);
+	}
+
+	default <T> T get(BeanSelector<T> selector){
+		return getProvider(selector).getObject();
+	}
+
+	<T> ObjectProvider<T> getProvider(BeanSelector<T> selector);
+
+	Object[] getArgs();
 
 }

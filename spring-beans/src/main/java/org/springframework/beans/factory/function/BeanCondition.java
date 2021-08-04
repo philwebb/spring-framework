@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2021 the original author or authors.
+ * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package io.spring.bean.config;
+package org.springframework.beans.factory.function;
 
-import java.util.concurrent.locks.Condition;
-
-import org.springframework.core.env.Environment;
+import io.spring.core.origin.Origin;
+import io.spring.core.origin.OriginSupplier;
 
 /**
- * Context information for use by {@link Condition} implementations.
+ * A condition used to determine when one or more {@link FunctionBeanDefinition
+ * BeanRegistrations} should be active within a {@link FunctionalBeanRegistry}.
  *
  * @author Phillip Webb
  * @since 6.0.0
  */
-public interface BeanConditionContext {
+@FunctionalInterface
+public interface BeanCondition  {
 
-	Environment getEnvironment();
+	BeanConditionOutcome evaluate(XBeanConditionContext context);
 
-	BeanRepository getBeanRepository();
+	static BeanCondition onProfile(String string) {
+		return null;
+	}
 
 }

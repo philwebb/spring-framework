@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package io.spring.core.origin;
+package org.springframework.beans.factory.function;
 
 /**
+ * The result of a {@link BeanCondition}
+ * {@link BeanCondition#evaluate(ConditionContext) evaluation}. Provides both an
+ * outcome result along with a message that can be reported to the user.
+ *
+ * @author Phillip Webb
+ * @since 6.0
  */
-public interface OriginSupplier {
+public interface BeanConditionOutcome {
 
-	Origin getOrigin();
+	boolean isMatch();
+
+	XBeanConditionMessage getMessage();
 
 }
-
-

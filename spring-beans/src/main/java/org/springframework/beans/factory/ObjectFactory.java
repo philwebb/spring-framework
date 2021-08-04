@@ -39,6 +39,11 @@ import org.springframework.beans.BeansException;
 @FunctionalInterface
 public interface ObjectFactory<T> {
 
+	default <V> V getObject(Class<V> requireType) throws BeansException {
+		// FIXME
+		return (V) getObject();
+	}
+
 	/**
 	 * Return an instance (possibly shared or independent)
 	 * of the object managed by this factory.

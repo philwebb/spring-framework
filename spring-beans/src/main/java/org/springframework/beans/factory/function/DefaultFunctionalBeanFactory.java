@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
@@ -32,163 +33,94 @@ import org.springframework.core.ResolvableType;
  * @author pwebb
  * @since 5.2
  */
-public abstract class DefaultFunctionalBeanFactory implements FunctionalBeanFactory, FunctionalBeanRegistry {
+public abstract class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory implements
+		HierarchicalBeanFactory, FunctionalBeanFactory, FunctionalBeanRegistry {
 
 	@Override
-	public Object getBean(String name) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> T getBean(BeanSelector<T> selector, Object... args) throws BeansException {
+		return null;
+	}
+
+
+	@Override
+	public <S, T> T getBean(BeanSelector<S> selector, Class<T> requiredType)
+			throws BeansException {
+		return null;
 	}
 
 	@Override
-	public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector,
+			boolean allowEagerInit) throws BeansException {
+		return null;
 	}
 
 	@Override
-	public Object getBean(String name, Object... args) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> boolean containsBean(BeanSelector<T> selector) {
+		return false;
+	}
+
+
+	@Override
+	public <T> boolean isSingleton(BeanSelector<T> selector) {
+		return false;
 	}
 
 	@Override
-	public <T> T getBean(Class<T> requiredType) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> boolean isPrototype(BeanSelector<T> selector) {
+		return false;
 	}
 
 	@Override
-	public <T> T getBean(Class<T> requiredType, Object... args) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> boolean isTypeMatch(BeanSelector<T> selector, Class<?> typeToMatch) {
+		return false;
 	}
 
 	@Override
-	public <T> ObjectProvider<T> getBeanProvider(Class<T> requiredType) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> boolean isTypeMatch(BeanSelector<T> selector, ResolvableType typeToMatch) {
+		return false;
 	}
 
-	@Override
-	public <T> ObjectProvider<T> getBeanProvider(ResolvableType requiredType) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
 
 	@Override
-	public boolean containsBean(String name) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public boolean isSingleton(String name) throws NoSuchBeanDefinitionException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public boolean isPrototype(String name) throws NoSuchBeanDefinitionException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public boolean isTypeMatch(String name, ResolvableType typeToMatch)
+	public <T> Class<?> getType(BeanSelector<T> selector, boolean allowFactoryBeanInit)
 			throws NoSuchBeanDefinitionException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return null;
 	}
 
-	@Override
-	public boolean isTypeMatch(String name, Class<?> typeToMatch)
-			throws NoSuchBeanDefinitionException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public Class<?> getType(String name, boolean allowFactoryBeanInit)
-			throws NoSuchBeanDefinitionException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
 
 	@Override
 	public String[] getAliases(String name) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return null;// FIXME
 	}
 
 	@Override
-	public boolean containsBeanDefinition(String beanName) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> boolean containsBeanDefinition(BeanSelector<T> selector) {
+		return false;
 	}
 
 	@Override
 	public int getBeanDefinitionCount() {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return 0;// FIXME
 	}
 
 	@Override
 	public String[] getBeanDefinitionNames() {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return null;// FIXME
 	}
 
 	@Override
-	public <T> ObjectProvider<T> getBeanProvider(Class<T> requiredType,
-			boolean allowEagerInit) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> String[] getBeanNames(BeanSelector<T> selector,
+			boolean includeNonSingletons, boolean allowEagerInit) {
+		return null;
 	}
 
 	@Override
-	public <T> ObjectProvider<T> getBeanProvider(ResolvableType requiredType,
-			boolean allowEagerInit) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public <T> Map<String, T> getBeans(BeanSelector<T> selector,
+			boolean includeNonSingletons, boolean allowEagerInit) throws BeansException {
+		return null;
 	}
 
-	@Override
-	public String[] getBeanNamesForType(ResolvableType type) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public String[] getBeanNamesForType(ResolvableType type, boolean includeNonSingletons,
-			boolean allowEagerInit) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public String[] getBeanNamesForType(Class<?> type) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public String[] getBeanNamesForType(Class<?> type, boolean includeNonSingletons,
-			boolean allowEagerInit) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public <T> Map<String, T> getBeansOfType(Class<T> type, boolean includeNonSingletons,
-			boolean allowEagerInit) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public String[] getBeanNamesForAnnotation(
-			Class<? extends Annotation> annotationType) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public Map<String, Object> getBeansWithAnnotation(
-			Class<? extends Annotation> annotationType) throws BeansException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	@Override
-	public <A extends Annotation> A findAnnotationOnBean(String beanName,
-			Class<A> annotationType) throws NoSuchBeanDefinitionException {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
+	// ****
 
 
 }

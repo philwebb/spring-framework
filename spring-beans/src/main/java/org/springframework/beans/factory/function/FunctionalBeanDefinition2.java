@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.bean.config;
+package org.springframework.beans.factory.function;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,21 +35,23 @@ import io.spring.core.origin.OriginSupplier;
 
 /**
  * A description of a bean may be ultimately instantiated in a
- * {@link BeanContainer}. A {@code BeanRegistration} is an immutable class that
- * provides all the information that a {@link BeanContainer} will need in order
+ * {@link XBeanContainer}. A {@code BeanRegistration} is an immutable class that
+ * provides all the information that a {@link XBeanContainer} will need in order
  * to create a fully-wired bean instance.
  * <p>
- * {@code BeanRegistrations} may be registered with a {@link BeanRegistry} and
- * queried via the {@link BeanRepository} interface.
+ * {@code BeanRegistrations} may be registered with a {@link FunctionalBeanRegistry} and
+ * queried via the {@link XBeanRepository} interface.
  *
  * @author Phillip Webb
  * @since 6.0.0
  * @param <T> the type
- * @see BeanContainer
- * @see BeanRegistry
- * @see BeanRepository
+ * @see XBeanContainer
+ * @see FunctionalBeanRegistry
+ * @see XBeanRepository
  */
-public final class BeanRegistration<T> implements OriginSupplier {
+public final class FunctionalBeanDefinition2<T> implements OriginSupplier {
+
+	// NONE;
 
 	private final Origin origin;
 
@@ -61,9 +63,9 @@ public final class BeanRegistration<T> implements OriginSupplier {
 
 	private final String scope;
 
-	private final BeanInstanceSupplier<T> instanceSupplier;
+	private final FunctionalBeanInstanceSupplier<T> instanceSupplier;
 
-	private BeanRegistration(Builder<T> builder) {
+	private FunctionalBeanDefinition2(Builder<T> builder) {
 		this.origin = builder.origin;
 		this.name = builder.name;
 		this.aliases = (builder.aliases != null)
@@ -95,22 +97,23 @@ public final class BeanRegistration<T> implements OriginSupplier {
 		return this.scope;
 	}
 
-	public BeanInstanceSupplier<T> getInstanceSupplier() {
+	public FunctionalBeanInstanceSupplier<T> getInstanceSupplier() {
+		// FIXME hide this ?
 		return this.instanceSupplier;
 	}
 
-	public BeanRegistration<T> withUpdates(Consumer<Builder<T>> registration) {
+	public FunctionalBeanDefinition2<T> withUpdates(Consumer<Builder<T>> registration) {
 		return build(new Builder<>(this), registration);
 	}
 
-	public static <T> BeanRegistration<T> of(Consumer<Builder<T>> registration) {
+	public static <T> FunctionalBeanDefinition2<T> of(Consumer<Builder<T>> registration) {
 		return build(new Builder<>(), registration);
 	}
 
-	private static <T> BeanRegistration<T> build(Builder<T> builder,
+	private static <T> FunctionalBeanDefinition2<T> build(Builder<T> builder,
 			Consumer<Builder<T>> registration) {
 		registration.accept(builder);
-		return new BeanRegistration<>(builder);
+		return new FunctionalBeanDefinition2<>(builder);
 	}
 
 	public static class Builder<T> {
@@ -125,12 +128,12 @@ public final class BeanRegistration<T> implements OriginSupplier {
 
 		private String scope;
 
-		private BeanInstanceSupplier<T> instanceSupplier;
+		private FunctionalBeanInstanceSupplier<T> instanceSupplier;
 
 		private Builder() {
 		}
 
-		private Builder(BeanRegistration<T> registration) {
+		private Builder(FunctionalBeanDefinition2<T> registration) {
 			this.origin = registration.origin;
 			this.name = registration.name;
 			this.aliases = registration.aliases;
@@ -163,7 +166,7 @@ public final class BeanRegistration<T> implements OriginSupplier {
 			this.scope = scope;
 		}
 
-		public void setInstanceSupplier(BeanInstanceSupplier<T> instanceSupplier) {
+		public void setInstanceSupplier(FunctionalBeanInstanceSupplier<T> instanceSupplier) {
 			this.instanceSupplier = instanceSupplier;
 		}
 

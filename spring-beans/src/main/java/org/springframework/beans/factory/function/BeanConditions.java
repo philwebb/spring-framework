@@ -17,16 +17,16 @@
 package org.springframework.beans.factory.function;
 
 /**
- * Utility providing useful methods for working with {@link XBeanCondition}.
+ * Utility providing useful methods for working with {@link BeanCondition}.
  *
  * @author Phillip Webb
  * @since 6.0.0
  */
-public class XBeanConditions {
+public class BeanConditions {
 
-	static final XBeanCondition[] NONE = {};
+	static final BeanCondition[] NONE = {};
 
-	public static XBeanCondition any(XBeanCondition... conditions) {
+	public static BeanCondition any(BeanCondition... conditions) {
 		return null;
 	}
 

@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package io.spring.bean.config;
+package org.springframework.beans.factory.function;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.core.ResolvableType;
 
 /*
  * DESIGN NOTES
@@ -28,12 +31,14 @@ import java.util.function.Function;
  */
 
 /**
- * A selection of zero or more beans obtained from a {@link BeanRepository}.
+ * A selection of zero or more beans obtained from a {@link XBeanRepository}.
  *
  * @author Phillip Webb
  * @since 6.0.0
  */
 public interface BeanSelection<T> {
+
+	// FIXME do we want to just use ObjectProvider
 
 	/**
 	 * Return the bean from a selection that is expected to uniquely match a
@@ -50,7 +55,7 @@ public interface BeanSelection<T> {
 	 * @return a mapped bean selection
 	 */
 	default <U> BeanSelection<U> map(Function<? super T, ? extends U> mapper) {
-		return () -> mapper.apply(get());
+		return null;
 	}
 
 	default  BeanSelection<T> ordered() {
@@ -59,6 +64,44 @@ public interface BeanSelection<T> {
 
 	default void forEach(Consumer<T> action) {
 	}
+
+	/**
+	 * @param requiredType
+	 * @return
+	 */
+	<R> R get(Class<R> requiredType);
+
+	/**
+	 * @return
+	 */
+	ObjectProvider<T> asObjectProvider();
+
+	/**
+	 * @return
+	 */
+	boolean isPresent();
+
+	/**
+	 * @return
+	 */
+	boolean isSingleton();
+
+	/**
+	 * @return
+	 */
+	boolean isPrototype();
+
+	/**
+	 * @param typeToMatch
+	 * @return
+	 */
+	boolean isTypeMatch(ResolvableType typeToMatch);
+
+	/**
+	 * @param typeToMatch
+	 * @return
+	 */
+	boolean isTypeMatch(Class<?> typeToMatch);
 
 
 }

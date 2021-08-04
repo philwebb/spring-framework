@@ -41,7 +41,7 @@ public interface XBeanRepository {
 	 * @return an instance of the bean
 	 */
 	default <T> T get(Class<T> type) {
-		return select(FunctionalBeanSelector.havingType(type)).get();
+		return select(BeanSelector.byType(type)).get();
 	}
 
 	/**
@@ -51,18 +51,18 @@ public interface XBeanRepository {
 	 * @return an instance of the bean
 	 */
 	default <T> T get(String name) {
-		FunctionalBeanSelector<T> selector = FunctionalBeanSelector.havingName(name);
+		BeanSelector<T> selector = BeanSelector.byName(name);
 		return select(selector).get();
 	}
 
 	/**
-	 * Select beans based on the given {@link FunctionalBeanSelector}.
+	 * Select beans based on the given {@link BeanSelector}.
 	 * @param <T> the selected bean type
 	 * @param selector the selector used to limit the selection
 	 * @return a bean selection
 	 */
-	<T> FunctionalBeanSelection<T> select(FunctionalBeanSelector<T> selector);
+	<T> BeanSelection<T> select(BeanSelector<T> selector);
 
-	<T> FunctionalBeanSelection<T> select(Class<T> type);
+	<T> BeanSelection<T> select(Class<T> type);
 
 }

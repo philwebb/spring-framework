@@ -16,7 +16,10 @@
 
 package org.springframework.beans.factory.function;
 
+import java.lang.annotation.Annotation;
 import java.util.Set;
+
+import org.springframework.core.ResolvableType;
 
 /*
  * DESIGN NOTES
@@ -33,14 +36,14 @@ import java.util.Set;
  * @param <T> the resulting type
  */
 @FunctionalInterface
-public interface FunctionalBeanSelector<T> {
+public interface BeanSelector<T> {
 
 	/**
 	 * Test if the given registration for selection.
 	 * @param registration the registration to select
 	 * @return {@code true} if the registration is selected
 	 */
-	boolean test(FunctionalBeanDefinition<?> registration);
+	boolean test(FunctionBeanDefinition<?> registration);
 
 	/**
 	 * Return the names of the beans that should be tested for selection.
@@ -68,7 +71,7 @@ public interface FunctionalBeanSelector<T> {
 	 * @param other a selector that will be logically-ANDed with this one
 	 * @return the composed selector
 	 */
-	default FunctionalBeanSelector<T> and(FunctionalBeanSelector<? super T> other) {
+	default BeanSelector<T> and(BeanSelector<? super T> other) {
 		return null;
 	}
 
@@ -78,29 +81,42 @@ public interface FunctionalBeanSelector<T> {
 	 * @param other a selector that will be logically-ORed with this one
 	 * @return the composed selector
 	 */
-	default FunctionalBeanSelector<T> or(FunctionalBeanSelector<? super T> other) {
+	default BeanSelector<T> or(BeanSelector<? super T> other) {
 		return null;
 	}
 
 	/**
-	 * Return a {@link FunctionalBeanSelection} that matches beans of the given type.
+	 * Return a {@link BeanSelection} that matches beans of the given type.
 	 * @param <T> the bean type
 	 * @param type the type to match
 	 * @return a bean selector for the given type
 	 */
-	static <T> FunctionalBeanSelector<T> havingType(Class<? extends T> type) {
+	static <T> BeanSelector<T> byType(Class<? extends T> type) {
 		return new TypeBeanSelector<>(type);
 	}
 
 	/**
-	 * Return a {@link FunctionalBeanSelection} that matches beans with the given name or
+	 * Return a {@link BeanSelection} that matches beans with the given name or
 	 * alias.
 	 * @param <T> the bean type
 	 * @param name the name to match
 	 * @return a bean selector for the given name
 	 */
-	static <T> FunctionalBeanSelector<T> havingName(String name) {
+	static <T> BeanSelector<T> byName(String name) {
 		return null;
+	}
+
+	static <T> BeanSelector<T> byType(ResolvableType requiredType) {
+		return null;
+	}
+
+	/**
+	 * @param annotationType
+	 * @return
+	 */
+	static <T> BeanSelector<T> byAnnotation(Class<? extends Annotation> annotationType) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
 }

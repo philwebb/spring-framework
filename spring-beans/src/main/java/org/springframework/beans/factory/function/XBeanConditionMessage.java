@@ -17,7 +17,7 @@
 package org.springframework.beans.factory.function;
 
 /**
- * Message included in a {@link XBeanConditionOutcome}.
+ * Message included in a {@link BeanConditionOutcome}.
  *
  * @author Phillip Webb
  * @since 6.0.0

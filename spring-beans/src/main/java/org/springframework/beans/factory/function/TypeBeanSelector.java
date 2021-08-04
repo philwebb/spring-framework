@@ -20,11 +20,11 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * {@link FunctionalBeanSelector} that limits by Type.
+ * {@link BeanSelector} that limits by Type.
  *
  * @author Phillip Webb
  */
-class TypeBeanSelector<T> implements FunctionalBeanSelector<T> {
+class TypeBeanSelector<T> implements BeanSelector<T> {
 
 	private final Class<?> type;
 
@@ -36,7 +36,7 @@ class TypeBeanSelector<T> implements FunctionalBeanSelector<T> {
 	}
 
 	@Override
-	public boolean test(FunctionalBeanDefinition<?> registration) {
+	public boolean test(FunctionBeanDefinition<?> registration) {
 		return this.type.isAssignableFrom(registration.getType());
 	}
 

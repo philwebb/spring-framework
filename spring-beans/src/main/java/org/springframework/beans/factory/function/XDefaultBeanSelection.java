@@ -21,11 +21,11 @@ import java.util.List;
 import org.springframework.util.Assert;
 
 /**
- * Default {@link FunctionalBeanSelection} implementation.
+ * Default {@link BeanSelection} implementation.
  *
  * @author Phillip Webb
  */
-class XDefaultBeanSelection<T> implements FunctionalBeanSelection<T> {
+class XDefaultBeanSelection<T> implements BeanSelection<T> {
 
 	private List<FunctionalBean<T>> beans;
 

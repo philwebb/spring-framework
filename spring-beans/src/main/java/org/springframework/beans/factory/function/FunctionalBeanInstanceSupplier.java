@@ -73,7 +73,7 @@ public interface FunctionalBeanInstanceSupplier<T> {
 	 */
 	static <S, T> FunctionalBeanInstanceSupplier<T> via(Class<S> selectedBeanType,
 			Function<? super S, ? extends T> mapper) {
-		return via(FunctionalBeanSelector.havingType(selectedBeanType), mapper);
+		return via(BeanSelector.byType(selectedBeanType), mapper);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public interface FunctionalBeanInstanceSupplier<T> {
 	 * @param mapper the mapper applied to the selected bean
 	 * @return a new {@link FunctionalBeanInstanceSupplier}
 	 */
-	static <S, T> FunctionalBeanInstanceSupplier<T> via(FunctionalBeanSelector<S> selector,
+	static <S, T> FunctionalBeanInstanceSupplier<T> via(BeanSelector<S> selector,
 			Function<? super S, ? extends T> mapper) {
 		return (repository) -> repository.select(selector).map(mapper).get();
 	}

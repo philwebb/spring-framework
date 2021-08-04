@@ -33,8 +33,8 @@ public abstract class XDefaultBeanContainer implements XBeanContainer {
 	private final Map<String, FunctionalBean<?>> beans = new ConcurrentHashMap<>();
 
 	@Override
-	public <T> void register(FunctionalBeanDefinition<T> registration,
-			XBeanCondition... conditions) {
+	public <T> void register(FunctionBeanDefinition<T> registration,
+			BeanCondition... conditions) {
 		if (conditionsMatch(conditions)) {
 			this.beans.compute(registration.getName(), (name, existingBean) -> {
 				if (existingBean != null) {
@@ -46,25 +46,25 @@ public abstract class XDefaultBeanContainer implements XBeanContainer {
 	}
 
 	private <T> void attemptBeanOverride(FunctionalBean<?> existingBean,
-			FunctionalBeanDefinition<T> registration) {
+			FunctionBeanDefinition<T> registration) {
 		throw new IllegalStateException("Beans cannot be overriden");
 	}
 
 	@Override
 	public void registerFrom(Supplier<FunctionalBeanRegistrar> registrar,
-			XBeanCondition... conditions) {
+			BeanCondition... conditions) {
 		if (conditionsMatch(conditions)) {
 			registrar.get().apply(this);
 		}
 	}
 
-	private boolean conditionsMatch(XBeanCondition[] conditions) {
+	private boolean conditionsMatch(BeanCondition[] conditions) {
 		return true;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> FunctionalBeanSelection<T> select(FunctionalBeanSelector<T> selector) {
+	public <T> BeanSelection<T> select(BeanSelector<T> selector) {
 		List<FunctionalBean<T>> selection = new ArrayList<>();
 		for (FunctionalBean<?> bean : this.beans.values()) {
 			if (selector.test(bean.getRegistration())) {

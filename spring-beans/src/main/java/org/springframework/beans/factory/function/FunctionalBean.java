@@ -33,16 +33,16 @@ final class FunctionalBean<T> {
 
 	private final XBeanContainer beanContainer;
 
-	private final FunctionalBeanDefinition<T> registration;
+	private final FunctionBeanDefinition<T> registration;
 
 	private volatile Object instance;
 
-	FunctionalBean(XBeanContainer beanContainer, FunctionalBeanDefinition<T> registration) {
+	FunctionalBean(XBeanContainer beanContainer, FunctionBeanDefinition<T> registration) {
 		this.beanContainer = beanContainer;
 		this.registration = registration;
 	}
 
-	FunctionalBeanDefinition<T> getRegistration() {
+	FunctionBeanDefinition<T> getRegistration() {
 		return registration;
 	}
 
