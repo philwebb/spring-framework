@@ -44,20 +44,7 @@ public interface FunctionalBeanRegistry {
 	 * @param registration a consumer used to build the registration
 	 */
 	default <T> void register(Consumer<FunctionBeanDefinition.Builder<T>> registration) {
-		register(FunctionBeanDefinition.of(registration), BeanConditions.NONE);
-	}
-
-	/**
-	 * Register a new {@link FunctionBeanDefinition} built by the given
-	 * consumer.
-	 * @param <T> the bean type
-	 * @param registration a consumer used to build the registration
-	 * @param conditions the conditions that must match for the registration to
-	 * be active
-	 */
-	default <T> void register(Consumer<FunctionBeanDefinition.Builder<T>> registration,
-			BeanCondition... conditions) {
-		register(FunctionBeanDefinition.of(registration), conditions);
+		register(FunctionBeanDefinition.of(registration));
 	}
 
 	/**
@@ -65,59 +52,6 @@ public interface FunctionalBeanRegistry {
 	 * @param <T> the bean type
 	 * @param registration the registration to register
 	 */
-	default <T> void register(FunctionBeanDefinition<T> registration) {
-		register(registration, BeanConditions.NONE);
-	}
-
-	/**
-	 * Register a new {@link FunctionBeanDefinition}.
-	 * @param <T> the bean type
-	 * @param registration the registration to register
-	 * @param conditions the conditions that must match for the registration to
-	 * be active
-	 */
-	<T> void register(FunctionBeanDefinition<T> registration,
-			BeanCondition... conditions);
-
-	/**
-	 * Register {@link FunctionBeanDefinition} instances provided by the given
-	 * {@link FunctionalBeanRegistrar}.
-	 * @param registrar the registrar to apply
-	 */
-	default void registerFrom(FunctionalBeanRegistrar registrar) {
-		registerFrom(() -> registrar, BeanConditions.NONE);
-	}
-
-	/**
-	 * Register {@link FunctionBeanDefinition} instances provided by the given
-	 * {@link FunctionalBeanRegistrar}.
-	 * @param registrar the registrar to apply
-	 * @param conditions the conditions that must match for the registrar to be
-	 * applied
-	 */
-	default void registerFrom(FunctionalBeanRegistrar registrar,
-			BeanCondition... conditions) {
-		registerFrom(() -> registrar, conditions);
-	}
-
-	/**
-	 * Register {@link FunctionBeanDefinition} instances provided by the
-	 * supplied {@link FunctionalBeanRegistrar}.
-	 * @param registrar the registrar supplier
-	 */
-	default void registerFrom(Supplier<FunctionalBeanRegistrar> registrar) {
-		registerFrom(registrar, BeanConditions.NONE);
-	}
-
-	/**
-	 * Register {@link FunctionBeanDefinition} instances provided by the
-	 * supplied {@link FunctionalBeanRegistrar}. The given supplier will only be
-	 * called if all conditions match.
-	 * @param registrar the registrar supplier
-	 * @param conditions the conditions that must match for the registrar to be
-	 * applied
-	 */
-	void registerFrom(Supplier<FunctionalBeanRegistrar> registrar,
-			BeanCondition... conditions);
+	<T> void register(FunctionBeanDefinition<T> registration);
 
 }
