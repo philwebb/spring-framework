@@ -30,6 +30,12 @@ import java.util.function.Consumer;
  * attributes associated with the element. For example, a collection of objects
  * could be filtered based on their type-hierarchy to allow fast retrieval of
  * elements that are likely to implement a given interface.
+ * <p>
+ * This filter may produce false positive matches, but will never produce false
+ * negatives. In other words, a filter returns candidates that are "likely to
+ * match" or "definitely not matching".
+ * <p>
+ *
  *
  * @author Phillip Webb
  * @since 6.0
@@ -125,7 +131,7 @@ public class ConcurrentHashFilter<E, A> {
 		});
 	}
 
-	Candidates getCandidates(A attribute) {
+	Candidates<E> getCandidates(A attribute) {
 		return null;
 	}
 

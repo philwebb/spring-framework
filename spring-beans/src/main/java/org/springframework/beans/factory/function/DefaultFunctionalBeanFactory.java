@@ -16,17 +16,16 @@
 
 package org.springframework.beans.factory.function;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
 
@@ -41,15 +40,16 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 	private final AtomicInteger sequenceGenerator = new AtomicInteger();
 
-	private final Map<FunctionalBeanRegistration<?>, FunctionalBeanRegistration<?>> registrations = new ConcurrentHashMap<>();
+	private final FunctionalBeanRegistrations registrations = new FunctionalBeanRegistrations();
 
-	private final FunctionalBeanRegistrationFilters registrationFilters = new FunctionalBeanRegistrationFilters(
-			() -> this.registrations.keySet().iterator());
+	private DefaultFunctionalBeanFactory() {
+	}
 
 	@Override
 	public <T> void register(FunctionBeanDefinition<T> definition) {
-		addRegistration(new FunctionalBeanRegistration<>(
-				this.sequenceGenerator.getAndIncrement(), definition));
+		FunctionalBeanRegistration<T> registration = new FunctionalBeanRegistration<>(
+				this.sequenceGenerator.getAndIncrement(), definition);
+		this.registrations.add(registration);
 	}
 
 	@Override
@@ -81,11 +81,6 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 	@Override
 	public <T> boolean containsBean(BeanSelector<T> selector) {
-		for (FunctionalBeanRegistration<?> candidate : this.registrations.keySet()) {
-			if (selector.test(candidate.getDefinition())) {
-				return true;
-			}
-		}
 		return false;
 	}
 
@@ -147,40 +142,14 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 		return null;
 	}
 
-	private <T> void addRegistration(FunctionalBeanRegistration<T> registration) {
-		this.registrationFilters.add(registration);
-		FunctionalBeanRegistration<?> previousRegistration = this.registrations.putIfAbsent(
-				registration, registration);
-		if (previousRegistration != null) {
-			this.registrationFilters.remove(registration);
-			throw new FunctionalBeanDefinitionOverrideException(registration,
-					previousRegistration);
-		}
+	static DefaultFunctionalBeanFactory of(Consumer<Builder> beanFactory) {
+		return null;
 	}
 
-	private static class FunctionalBeanRegistrationFilters {
+	static class Builder {
 
-		private final ConcurrentHashFilter<FunctionalBeanRegistration<?>, String> byName;
-
-		FunctionalBeanRegistrationFilters(
-				Supplier<Iterator<FunctionalBeanRegistration<?>>> fallbackValuesSupplier) {
-			this.byName = new ConcurrentHashFilter<>(
-					FunctionalBeanRegistration::extractNameHashCode,
-					fallbackValuesSupplier);
-		}
-
-		void add(FunctionalBeanRegistration<?> registration) {
-			this.byName.add(registration);
-		}
-
-		void remove(FunctionalBeanRegistration<?> registration) {
-			this.byName.remove(registration);
-		}
-
-		void select(BeanSelector<?> selector,
-				Consumer<FunctionalBeanRegistration<?>> action) {
-			this.byName.doWithCandidates(FACTORY_BEAN_PREFIX, null);
-		}
+		// setParent
+		// registerScope
 
 	}
 
