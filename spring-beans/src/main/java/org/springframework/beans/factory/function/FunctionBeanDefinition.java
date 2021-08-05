@@ -19,6 +19,7 @@ package org.springframework.beans.factory.function;
 import java.util.function.Consumer;
 
 import org.springframework.core.ResolvableType;
+import org.springframework.util.Assert;
 
 /*
  * DESIGN NOTES
@@ -34,8 +35,9 @@ import org.springframework.core.ResolvableType;
  * provides all the information that a {@link XBeanContainer} will need in order
  * to create a fully-wired bean instance.
  * <p>
- * {@code BeanRegistrations} may be registered with a {@link FunctionalBeanRegistry} and
- * queried via the {@link XBeanRepository} interface.
+ * {@code BeanRegistrations} may be registered with a
+ * {@link FunctionalBeanRegistry} and queried via the {@link XBeanRepository}
+ * interface.
  *
  * @author Phillip Webb
  * @since 6.0.0
@@ -44,16 +46,55 @@ import org.springframework.core.ResolvableType;
  * @see FunctionalBeanRegistry
  * @see XBeanRepository
  */
-public final class FunctionBeanDefinition<T>  {
+public final class FunctionBeanDefinition<T> {
 
-	static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> registration) {
-		return null;
+	private final String name;
+
+	private final Class<?> type;
+
+	private FunctionBeanDefinition(Builder<T> builder) {
+		Assert.hasText(builder.name, "Name must not be empty");
+		Assert.notNull(builder.type, "Type must not be null");
+		this.name = builder.name;
+		this.type = builder.type;
 	}
-	static interface Builder<T> {
 
+	String getName() {
+		return this.name;
 	}
 
+	Class<?> getType() {
+		return this.type;
+	}
 
+	static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> definition) {
+		Builder<T> builder = new Builder<>();
+		definition.accept(builder);
+		return new FunctionBeanDefinition<>(builder);
+	}
 
+	public static class Builder<T> {
+
+		private String name;
+
+		private Class<?> type;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Class<?> getType() {
+			return type;
+		}
+
+		public void setType(Class<?> type) {
+			this.type = type;
+		}
+
+	}
 
 }

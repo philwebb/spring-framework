@@ -20,10 +20,12 @@ import org.springframework.beans.factory.ObjectProvider;
 
 /**
  *
- * @author pwebb
- * @since 5.2
+ * @author Phillip Webb
+ * @since 6.0
  */
 public interface InjectionContext {
+
+	// FIXME we probably want to resolve multiple in one hit for future threading
 
 	default <T> T get(Class<T> type) {
 		return get(BeanSelector.byType(type));

@@ -107,14 +107,14 @@ public class ConcurrentHashFilter<V, A> {
 	}
 
 	public void add(V value) {
-		this.attributeHashCodesExtractor.extractAttributes(value, (hashCode) -> {
+		this.attributeHashCodesExtractor.extract(value, (hashCode) -> {
 			int hash = getHash(hashCode);
 			getSegmentForHash(hash).add(hash, value);
 		});
 	}
 
 	void remove(V value) {
-		this.attributeHashCodesExtractor.extractAttributes(value, (hashCode) -> {
+		this.attributeHashCodesExtractor.extract(value, (hashCode) -> {
 			int hash = getHash(hashCode);
 			getSegmentForHash(hash).remove(hash, value);
 		});
@@ -124,8 +124,12 @@ public class ConcurrentHashFilter<V, A> {
 		return find(attribute) != null;
 	}
 
+	Iterable<V> getCandidates(A attribute) {
+		return () -> iterator(attribute);
+	}
+
 	@SuppressWarnings("unchecked")
-	Iterator<V> getCandidates(A attribute) {
+	Iterator<V> iterator(A attribute) {
 		Object found = find(attribute);
 		if (found == null) {
 			return Collections.emptyIterator();
@@ -140,20 +144,21 @@ public class ConcurrentHashFilter<V, A> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void doWithCandidates(A attribute, Consumer<V> action) {
+	public boolean doWithCandidates(A attribute, Consumer<V> action) {
 		Object found = find(attribute);
 		if (found == null) {
-			return;
+			return false;
 		}
 		if (found == OVER_CAPACITY) {
 			this.fallbackValuesSupplier.get().forEachRemaining(action);
-			return;
+			return true;
 		}
 		if (found instanceof Values) {
 			((Values<V>) found).forEach(action);
-			return;
+			return false;
 		}
 		action.accept((V) found);
+		return false;
 	}
 
 	private Object find(A attribute) {
@@ -487,7 +492,7 @@ public class ConcurrentHashFilter<V, A> {
 	@FunctionalInterface
 	public interface HashCodesExtractor<V, A> {
 
-		void extractAttributes(V value, HashCodeConsumer<A> consumer);
+		void extract(V value, HashCodeConsumer<A> consumer);
 
 		static <V, A> HashCodesExtractor<V, A> preComputed(int... hashCodes) {
 			return (value, consumer) -> {

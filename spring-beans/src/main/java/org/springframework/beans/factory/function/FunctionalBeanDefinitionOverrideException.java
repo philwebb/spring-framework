@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package io.spring.context;
+package org.springframework.beans.factory.function;
 
-import io.spring.bean.config.BeanRepository;
+import org.springframework.beans.factory.BeanDefinitionStoreException;
 
 /**
- * Minimal {@code ApplicationContext} implementation.
+ * Subclass of {@link BeanDefinitionStoreException} indicating an attempt to
+ * register a duplicate {@link FunctionBeanDefinition}.
  *
  * @author Phillip Webb
- * @since 6.0.0
+ * @since 6.0
  */
-public interface ApplicationContext extends BeanRepository {
+public class FunctionalBeanDefinitionOverrideException extends BeanDefinitionStoreException {
+
+	FunctionalBeanDefinitionOverrideException(FunctionalBeanRegistration<?> registration,
+			FunctionalBeanRegistration<?> existingRegistration) {
+		super(""); // FIXME
+	}
 
 }

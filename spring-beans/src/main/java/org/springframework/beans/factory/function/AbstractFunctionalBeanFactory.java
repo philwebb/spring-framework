@@ -28,6 +28,7 @@ import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 
 /**
+ * Abstract implementation of {@link FunctionalBeanFactory}.
  *
  * @author Phillip Webb
  * @since 6.0

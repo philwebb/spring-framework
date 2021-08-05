@@ -38,12 +38,14 @@ import org.springframework.core.ResolvableType;
 @FunctionalInterface
 public interface BeanSelector<T> {
 
+	// FIXME make it a class?
+
 	/**
 	 * Test if the given registration for selection.
-	 * @param registration the registration to select
+	 * @param definition the definition to test
 	 * @return {@code true} if the registration is selected
 	 */
-	boolean test(FunctionBeanDefinition<?> registration);
+	boolean test(FunctionBeanDefinition<?> definition);
 
 	/**
 	 * Return the names of the beans that should be tested for selection.
@@ -92,7 +94,7 @@ public interface BeanSelector<T> {
 	 * @return a bean selector for the given type
 	 */
 	static <T> BeanSelector<T> byType(Class<? extends T> type) {
-		return new TypeBeanSelector<>(type);
+		return null;
 	}
 
 	/**

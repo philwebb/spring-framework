@@ -16,31 +16,56 @@
 
 package org.springframework.beans.factory.function;
 
-import java.lang.annotation.Annotation;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
 
 /**
+ * Default {@link FunctionalBeanFactory} implementation.
  *
- * @author pwebb
- * @since 5.2
+ * @author Phillip Webb
+ * @since 6.0
  */
-public abstract class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory implements
+public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory implements
 		HierarchicalBeanFactory, FunctionalBeanFactory, FunctionalBeanRegistry {
+
+	private final AtomicInteger sequenceGenerator = new AtomicInteger();
+
+	private final Map<FunctionalBeanRegistration<?>, FunctionalBeanRegistration<?>> registrations = new ConcurrentHashMap<>();
+
+	private final FunctionalBeanRegistrationFilters registrationFilters = new FunctionalBeanRegistrationFilters(
+			() -> this.registrations.keySet().iterator());
+
+	@Override
+	public <T> void register(FunctionBeanDefinition<T> definition) {
+		addRegistration(new FunctionalBeanRegistration<>(
+				this.sequenceGenerator.getAndIncrement(), definition));
+	}
+
+	@Override
+	public BeanFactory getParentBeanFactory() {
+		return null;
+	}
+
+	@Override
+	public boolean containsLocalBean(String name) {
+		return false;
+	}
 
 	@Override
 	public <T> T getBean(BeanSelector<T> selector, Object... args) throws BeansException {
 		return null;
 	}
-
 
 	@Override
 	public <S, T> T getBean(BeanSelector<S> selector, Class<T> requiredType)
@@ -56,9 +81,13 @@ public abstract class DefaultFunctionalBeanFactory extends AbstractFunctionalBea
 
 	@Override
 	public <T> boolean containsBean(BeanSelector<T> selector) {
+		for (FunctionalBeanRegistration<?> candidate : this.registrations.keySet()) {
+			if (selector.test(candidate.getDefinition())) {
+				return true;
+			}
+		}
 		return false;
 	}
-
 
 	@Override
 	public <T> boolean isSingleton(BeanSelector<T> selector) {
@@ -80,13 +109,11 @@ public abstract class DefaultFunctionalBeanFactory extends AbstractFunctionalBea
 		return false;
 	}
 
-
 	@Override
 	public <T> Class<?> getType(BeanSelector<T> selector, boolean allowFactoryBeanInit)
 			throws NoSuchBeanDefinitionException {
 		return null;
 	}
-
 
 	@Override
 	public String[] getAliases(String name) {
@@ -120,7 +147,41 @@ public abstract class DefaultFunctionalBeanFactory extends AbstractFunctionalBea
 		return null;
 	}
 
-	// ****
+	private <T> void addRegistration(FunctionalBeanRegistration<T> registration) {
+		this.registrationFilters.add(registration);
+		FunctionalBeanRegistration<?> previousRegistration = this.registrations.putIfAbsent(
+				registration, registration);
+		if (previousRegistration != null) {
+			this.registrationFilters.remove(registration);
+			throw new FunctionalBeanDefinitionOverrideException(registration,
+					previousRegistration);
+		}
+	}
 
+	private static class FunctionalBeanRegistrationFilters {
+
+		private final ConcurrentHashFilter<FunctionalBeanRegistration<?>, String> byName;
+
+		FunctionalBeanRegistrationFilters(
+				Supplier<Iterator<FunctionalBeanRegistration<?>>> fallbackValuesSupplier) {
+			this.byName = new ConcurrentHashFilter<>(
+					FunctionalBeanRegistration::extractNameHashCode,
+					fallbackValuesSupplier);
+		}
+
+		void add(FunctionalBeanRegistration<?> registration) {
+			this.byName.add(registration);
+		}
+
+		void remove(FunctionalBeanRegistration<?> registration) {
+			this.byName.remove(registration);
+		}
+
+		void select(BeanSelector<?> selector,
+				Consumer<FunctionalBeanRegistration<?>> action) {
+			this.byName.doWithCandidates(FACTORY_BEAN_PREFIX, null);
+		}
+
+	}
 
 }

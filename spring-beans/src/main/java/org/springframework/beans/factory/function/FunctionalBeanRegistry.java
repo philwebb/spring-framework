@@ -17,13 +17,6 @@
 package org.springframework.beans.factory.function;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-/*
- * DESIGN NOTES
- *
- * Similar to BeanDefinitionRegistry
- */
 
 /**
  * Interface that can be used to register {@link FunctionBeanDefinition
@@ -41,17 +34,19 @@ public interface FunctionalBeanRegistry {
 	 * Register a new {@link FunctionBeanDefinition} built by the given
 	 * consumer.
 	 * @param <T> the bean type
-	 * @param registration a consumer used to build the registration
+	 * @param definition a consumer used to build the definition
 	 */
-	default <T> void register(Consumer<FunctionBeanDefinition.Builder<T>> registration) {
-		register(FunctionBeanDefinition.of(registration));
+	default <T> void register(Consumer<FunctionBeanDefinition.Builder<T>> definition)
+			throws FunctionalBeanDefinitionOverrideException {
+		register(FunctionBeanDefinition.of(definition));
 	}
 
 	/**
 	 * Register a new {@link FunctionBeanDefinition}.
 	 * @param <T> the bean type
-	 * @param registration the registration to register
+	 * @param definition the definition to register
 	 */
-	<T> void register(FunctionBeanDefinition<T> registration);
+	<T> void register(FunctionBeanDefinition<T> definition)
+			throws FunctionalBeanDefinitionOverrideException;
 
 }
