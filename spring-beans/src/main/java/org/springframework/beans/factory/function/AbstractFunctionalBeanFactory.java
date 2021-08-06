@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
@@ -28,7 +29,8 @@ import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 
 /**
- * Abstract implementation of {@link FunctionalBeanFactory}.
+ * Abstract implementation of {@link FunctionalBeanFactory}. Delegates most
+ * {@link BeanFactory} methods to their {@link BeanSelector} based equivalents.
  *
  * @author Phillip Webb
  * @since 6.0

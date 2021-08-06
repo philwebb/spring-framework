@@ -19,32 +19,23 @@ package org.springframework.beans.factory.function;
 import java.util.function.Consumer;
 
 import org.springframework.core.ResolvableType;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-
-/*
- * DESIGN NOTES
- *
- * A final immutable class will probably help later with concurrency
- * It also should simplify post processing since an update will result in a replaced
- * rather than mutated registration.
- */
+import org.springframework.util.function.InstanceSupplier;
 
 /**
- * A description of a bean may be ultimately instantiated in a
- * {@link XBeanContainer}. A {@code BeanRegistration} is an immutable class that
- * provides all the information that a {@link XBeanContainer} will need in order
- * to create a fully-wired bean instance.
- * <p>
- * {@code BeanRegistrations} may be registered with a
- * {@link FunctionalBeanRegistry} and queried via the {@link XBeanRepository}
- * interface.
+ * A description of a bean may be registered with a
+ * {@link FunctionalBeanRegistry} and ultimately instantiated by a
+ * {@link FunctionalBeanFactory}. A {@code BeanRegistration} is an immutable
+ * class that provides all the information that a {@link FunctionalBeanFactory}
+ * will need in order to create a fully-wired bean instance.
  *
  * @author Phillip Webb
  * @since 6.0.0
  * @param <T> the type
- * @see XBeanContainer
+ * @see FunctionalBeanFactory
  * @see FunctionalBeanRegistry
- * @see XBeanRepository
+ * @see InjectionContext
  */
 public final class FunctionBeanDefinition<T> {
 
@@ -52,47 +43,81 @@ public final class FunctionBeanDefinition<T> {
 
 	private final Class<?> type;
 
+	@Nullable
+	private final ResolvableType resolvableType;
+
+	private final InstanceSupplier<InjectionContext, T> instanceSupplier;
+
 	private FunctionBeanDefinition(Builder<T> builder) {
 		Assert.hasText(builder.name, "Name must not be empty");
 		Assert.notNull(builder.type, "Type must not be null");
+		Assert.notNull(builder.instanceSupplier, "InstanceSupplier must not be null");
 		this.name = builder.name;
 		this.type = builder.type;
+		this.resolvableType = builder.resolvableType;
+		this.instanceSupplier = builder.instanceSupplier;
 	}
 
 	String getName() {
-		return this.name;
+		return name;
 	}
 
 	Class<?> getType() {
-		return this.type;
+		return type;
 	}
 
-	static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> definition) {
-		Builder<T> builder = new Builder<>();
-		definition.accept(builder);
-		return new FunctionBeanDefinition<>(builder);
+	@Nullable
+	ResolvableType getResolvableType() {
+		return resolvableType;
+	}
+
+	InstanceSupplier<InjectionContext, T> getInstanceSupplier() {
+		return instanceSupplier;
+	}
+
+	static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> builder) {
+		return new Builder<>(builder).build();
 	}
 
 	public static class Builder<T> {
 
+		@Nullable
 		private String name;
 
+		@Nullable
 		private Class<?> type;
 
-		public String getName() {
-			return name;
+		@Nullable
+		private ResolvableType resolvableType;
+
+		@Nullable
+		private InstanceSupplier<InjectionContext, T> instanceSupplier;
+
+		Builder(Consumer<Builder<T>> initialier) {
+			initialier.accept(this);
 		}
 
 		public void setName(String name) {
 			this.name = name;
 		}
 
-		public Class<?> getType() {
-			return type;
-		}
-
 		public void setType(Class<?> type) {
 			this.type = type;
+			this.resolvableType = null;
+		}
+
+		public void setType(ResolvableType type) {
+			this.type = (type != null) ? type.resolve() : null;
+			this.resolvableType = type;
+		}
+
+		public void setInstanceSupplier(
+				InstanceSupplier<InjectionContext, T> instanceSupplier) {
+			this.instanceSupplier = instanceSupplier;
+		}
+
+		FunctionBeanDefinition<T> build() {
+			return new FunctionBeanDefinition<>(this);
 		}
 
 	}

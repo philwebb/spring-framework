@@ -17,73 +17,34 @@
 package org.springframework.beans.factory.function;
 
 import java.lang.annotation.Annotation;
-import java.util.Set;
+import java.util.function.Predicate;
 
 import org.springframework.core.ResolvableType;
 
-/*
- * DESIGN NOTES
- *
- * A bit like a predicate but also needs to "leak" things like the class type
- * so that repositories can quickly limit candidates that need to be passed to `test`.
- */
-
 /**
- * Strategy interface used to select beans from a {@link XBeanRepository}.
+ * Class that can be used to select beans from a {@link FunctionalBeanFactory}
+ * or {@link InjectionContext}.
  *
  * @author Phillip Webb
  * @since 6.0.0
  * @param <T> the resulting type
  */
-@FunctionalInterface
-public interface BeanSelector<T> {
+public final class BeanSelector<T> {
 
-	// FIXME make it a class?
-
-	/**
-	 * Test if the given registration for selection.
-	 * @param definition the definition to test
-	 * @return {@code true} if the registration is selected
-	 */
-	boolean test(FunctionBeanDefinition<?> definition);
-
-	/**
-	 * Return the names of the beans that should be tested for selection.
-	 * Returning a value from this method allows {@link XBeanRepository}
-	 * optimizations to be applied.
-	 * @return the names that should be tested
-	 */
-	default Set<String> getNames() {
+	public BeanSelector<T> withQualifier(String qualifier) {
 		return null;
 	}
 
-	/**
-	 * Return the types of the beans that should be tested for selection.
-	 * Returning a value from this method allows {@link XBeanRepository}
-	 * optimizations to be applied.
-	 * @return the types that should be tested
-	 */
-	default Set<Class<?>> getTypes() {
+	public BeanSelector<T> withFilter(Predicate<FunctionBeanDefinition<?>> filter) {
 		return null;
 	}
 
-	/**
-	 * Returns a composed BeanSelector that represents a short-circuiting
-	 * logical {@code AND} of this selector and another.
-	 * @param other a selector that will be logically-ANDed with this one
-	 * @return the composed selector
-	 */
-	default BeanSelector<T> and(BeanSelector<? super T> other) {
+	public BeanSelector<T> withFilter(String description,
+			Predicate<FunctionBeanDefinition<?>> filter) {
 		return null;
 	}
 
-	/**
-	 * Returns a composed BeanSelector that represents a short-circuiting
-	 * logical {@code OR} of this selector and another.
-	 * @param other a selector that will be logically-ORed with this one
-	 * @return the composed selector
-	 */
-	default BeanSelector<T> or(BeanSelector<? super T> other) {
+	static <T> BeanSelector<T> all() {
 		return null;
 	}
 
@@ -94,6 +55,10 @@ public interface BeanSelector<T> {
 	 * @return a bean selector for the given type
 	 */
 	static <T> BeanSelector<T> byType(Class<? extends T> type) {
+		return null;
+	}
+
+	static <T> BeanSelector<T> byType(ResolvableType requiredType) {
 		return null;
 	}
 
@@ -108,17 +73,12 @@ public interface BeanSelector<T> {
 		return null;
 	}
 
-	static <T> BeanSelector<T> byType(ResolvableType requiredType) {
-		return null;
-	}
-
 	/**
 	 * @param annotationType
 	 * @return
 	 */
 	static <T> BeanSelector<T> byAnnotation(Class<? extends Annotation> annotationType) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return null;
 	}
 
 }

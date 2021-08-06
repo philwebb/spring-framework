@@ -16,26 +16,18 @@
 
 package org.springframework.beans.factory.function;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Internal class used to hold a collection of
- * {@link FunctionalBeanRegistration} objects.
  *
- * @author Phillip Webb
+ * @author pwebb
+ * @since 6.0
  */
-class FunctionalBeanRegistrations {
+enum PrimaryBeanSelectorAttribute {
 
-	private final Map<FunctionalBeanRegistration<?>, FunctionalBeanRegistration<?>> registrations = new ConcurrentHashMap<>();
+	NAME,
 
-	<T> void add(FunctionalBeanRegistration<T> registration) {
-		FunctionalBeanRegistration<?> previousRegistration = this.registrations.putIfAbsent(
-				registration, registration);
-		if (previousRegistration != null) {
-			throw new FunctionalBeanDefinitionOverrideException(registration,
-					previousRegistration);
-		}
-	}
+	TYPE,
+
+	ANNOTATION
 
 }

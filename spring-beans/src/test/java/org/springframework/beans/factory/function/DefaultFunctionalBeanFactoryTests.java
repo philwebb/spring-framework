@@ -24,8 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for {@link DefaultFunctionalBeanFactory}.
  *
- * @author pwebb
- * @since 5.2
+ * @author Phillip Webb
  */
 class DefaultFunctionalBeanFactoryTests {
 

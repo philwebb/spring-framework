@@ -27,6 +27,7 @@ import java.util.function.Consumer;
  * @author Phillip Webb
  * @since 6.0.0
  * @see FunctionalBeanFactory
+ * @see DefaultFunctionalBeanFactory
  */
 public interface FunctionalBeanRegistry {
 
@@ -34,11 +35,11 @@ public interface FunctionalBeanRegistry {
 	 * Register a new {@link FunctionBeanDefinition} built by the given
 	 * consumer.
 	 * @param <T> the bean type
-	 * @param definition a consumer used to build the definition
+	 * @param builder a consumer that accepts the definition builder
 	 */
-	default <T> void register(Consumer<FunctionBeanDefinition.Builder<T>> definition)
+	default <T> void register(Consumer<FunctionBeanDefinition.Builder<T>> builder)
 			throws FunctionalBeanDefinitionOverrideException {
-		register(FunctionBeanDefinition.of(definition));
+		register(FunctionBeanDefinition.of(builder));
 	}
 
 	/**

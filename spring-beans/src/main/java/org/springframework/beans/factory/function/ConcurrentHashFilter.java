@@ -27,7 +27,9 @@ import java.util.function.Supplier;
 
 import org.springframework.util.Assert;
 
-public class ConcurrentHashFilter<V, A> {
+class ConcurrentHashFilter<V, A> {
+
+	// FIXME decide where to put this and finish it
 
 	private static final int HASH_TABLE_ENTRY_FREE = 0x00;
 

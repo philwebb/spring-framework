@@ -20,12 +20,10 @@ import org.springframework.beans.factory.function.ConcurrentHashFilter.HashCodeC
 import org.springframework.util.Assert;
 
 /**
- * Internal class used to hold details of a bean that has been registered with a
+ * Holds details of a bean that has been registered with a
  * {@link FunctionalBeanRegistry}.
  *
- *
  * @author Phillip Webb
- * @since 6.0
  */
 class FunctionalBeanRegistration<T> {
 

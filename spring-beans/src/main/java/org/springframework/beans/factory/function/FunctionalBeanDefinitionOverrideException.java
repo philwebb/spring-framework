@@ -20,7 +20,7 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
 
 /**
  * Subclass of {@link BeanDefinitionStoreException} indicating an attempt to
- * register a duplicate {@link FunctionBeanDefinition}.
+ * override an existing {@link FunctionBeanDefinition}.
  *
  * @author Phillip Webb
  * @since 6.0

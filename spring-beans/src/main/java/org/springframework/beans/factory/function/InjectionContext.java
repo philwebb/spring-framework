@@ -25,26 +25,26 @@ import org.springframework.beans.factory.ObjectProvider;
  */
 public interface InjectionContext {
 
-	// FIXME we probably want to resolve multiple in one hit for future threading
-
-	default <T> T get(Class<T> type) {
-		return get(BeanSelector.byType(type));
-	}
-
-	default <T> T get(String name) {
-		return get(BeanSelector.byName(name));
-	}
-
-	default <T> T get(String name, Class<T> requiredType){
-		return getProvider(BeanSelector.byName(name)).getObject(requiredType);
-	}
-
-	default <T> T get(BeanSelector<T> selector){
-		return getProvider(selector).getObject();
-	}
-
-	<T> ObjectProvider<T> getProvider(BeanSelector<T> selector);
-
 	Object[] getArgs();
+
+	default <T> T getBean(Class<T> type) {
+		return getBean(BeanSelector.byType(type));
+	}
+
+	default <T> T getBean(String name) {
+		return getBean(BeanSelector.byName(name));
+	}
+
+	default <T> T getBean(String name, Class<T> requiredType){
+		return getBeanProvider(BeanSelector.byName(name)).getObject(requiredType);
+	}
+
+	default <T> T getBean(BeanSelector<T> selector){
+		return getBeanProvider(selector).getObject();
+	}
+
+	<T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector);
+
+	String resolveEmbeddedValue(String value);
 
 }

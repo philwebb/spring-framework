@@ -17,15 +17,12 @@
 package org.springframework.beans.factory.function;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
 
@@ -38,11 +35,13 @@ import org.springframework.core.ResolvableType;
 public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory implements
 		HierarchicalBeanFactory, FunctionalBeanFactory, FunctionalBeanRegistry {
 
+	private final FunctionalBeanFactory parent = null;
+
 	private final AtomicInteger sequenceGenerator = new AtomicInteger();
 
 	private final FunctionalBeanRegistrations registrations = new FunctionalBeanRegistrations();
 
-	private DefaultFunctionalBeanFactory() {
+	public DefaultFunctionalBeanFactory() {
 	}
 
 	@Override
@@ -53,8 +52,8 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 	}
 
 	@Override
-	public BeanFactory getParentBeanFactory() {
-		return null;
+	public FunctionalBeanFactory getParentBeanFactory() {
+		return parent;
 	}
 
 	@Override
@@ -65,12 +64,15 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 	@Override
 	public <T> T getBean(BeanSelector<T> selector, Object... args) throws BeansException {
 		return null;
+		// FIXME checksParent
+
 	}
 
 	@Override
 	public <S, T> T getBean(BeanSelector<S> selector, Class<T> requiredType)
 			throws BeansException {
 		return null;
+		// FIXME checksParent
 	}
 
 	@Override
@@ -81,38 +83,46 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 	@Override
 	public <T> boolean containsBean(BeanSelector<T> selector) {
-		return false;
+		// FIXME
+		FunctionalBeanFactory parentBeanFactory = getParentBeanFactory();
+		return (parentBeanFactory != null && parentBeanFactory.containsBean(selector));
 	}
 
 	@Override
 	public <T> boolean isSingleton(BeanSelector<T> selector) {
+		// FIXME checksParent
 		return false;
 	}
 
 	@Override
 	public <T> boolean isPrototype(BeanSelector<T> selector) {
+		// FIXME checksParent
 		return false;
 	}
 
 	@Override
 	public <T> boolean isTypeMatch(BeanSelector<T> selector, Class<?> typeToMatch) {
+		// FIXME checksParent
 		return false;
 	}
 
 	@Override
 	public <T> boolean isTypeMatch(BeanSelector<T> selector, ResolvableType typeToMatch) {
+		// FIXME checksParent
 		return false;
 	}
 
 	@Override
 	public <T> Class<?> getType(BeanSelector<T> selector, boolean allowFactoryBeanInit)
 			throws NoSuchBeanDefinitionException {
+		// FIXME checksParent
 		return null;
 	}
 
 	@Override
 	public String[] getAliases(String name) {
 		return null;// FIXME
+		// FIXME checksParent
 	}
 
 	@Override
@@ -142,7 +152,9 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 		return null;
 	}
 
-	static DefaultFunctionalBeanFactory of(Consumer<Builder> beanFactory) {
+
+
+	static DefaultFunctionalBeanFactory of(Consumer<Builder> initializer) {
 		return null;
 	}
 
@@ -150,6 +162,7 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 		// setParent
 		// registerScope
+		// addEmbeddedValueResolver
 
 	}
 
