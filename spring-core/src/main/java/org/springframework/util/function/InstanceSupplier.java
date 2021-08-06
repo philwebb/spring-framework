@@ -58,7 +58,7 @@ public interface InstanceSupplier<C, T> {
 	 * @param supplier the supplier to adapt
 	 * @return the adapted instance supplier
 	 */
-	static <C, T> InstanceSupplier<C, T> from(Supplier<? extends T> supplier) {
+	static <C, T> InstanceSupplier<C, T> of(Supplier<? extends T> supplier) {
 		return context -> supplier.get();
 	}
 

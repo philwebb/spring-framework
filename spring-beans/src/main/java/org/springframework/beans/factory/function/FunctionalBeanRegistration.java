@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.function;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.function.ConcurrentHashFilter.HashCodeConsumer;
 import org.springframework.util.Assert;
 
@@ -27,9 +28,9 @@ import org.springframework.util.Assert;
  */
 class FunctionalBeanRegistration<T> {
 
-	private int sequence;
+	private final int sequence;
 
-	private FunctionBeanDefinition<T> definition;
+	private final FunctionBeanDefinition<T> definition;
 
 	public FunctionalBeanRegistration(int sequence,
 			FunctionBeanDefinition<T> definition) {
@@ -62,5 +63,49 @@ class FunctionalBeanRegistration<T> {
 	void extractNameHashCode(HashCodeConsumer<String> consumer) {
 		consumer.accept(this.definition.getName());
 	}
+
+	T getBeanInstance(Object[] args) {
+		InjectionContext injectionContext = new InjectionContext() {
+
+			@Override
+			public String resolveEmbeddedValue(String value) {
+				return value;
+			}
+
+			@Override
+			public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector) {
+				return null;
+			}
+
+			@Override
+			public Object[] getArgs() {
+				return args;
+			}
+
+		};
+		try {
+			return this.definition.getInstanceSupplier().get(injectionContext);
+		}
+		catch (Throwable ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isSingleton() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isPrototype() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
+
 
 }

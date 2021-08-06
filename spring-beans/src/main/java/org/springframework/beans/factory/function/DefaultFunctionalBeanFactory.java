@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.function;
 
+import java.nio.channels.IllegalSelectorException;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.core.ResolvableType;
+import org.springframework.lang.Nullable;
 
 /**
  * Default {@link FunctionalBeanFactory} implementation.
@@ -34,6 +36,8 @@ import org.springframework.core.ResolvableType;
  */
 public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory implements
 		HierarchicalBeanFactory, FunctionalBeanFactory, FunctionalBeanRegistry {
+
+	private static final String[] EMPTY_STRING_ARRAY = {};
 
 	private final FunctionalBeanFactory parent = null;
 
@@ -53,31 +57,46 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 	@Override
 	public FunctionalBeanFactory getParentBeanFactory() {
-		return parent;
+		return this.parent;
 	}
 
 	@Override
 	public boolean containsLocalBean(String name) {
-		return false;
+		return this.registrations.find(BeanSelector.byName(name)) != null;
 	}
 
 	@Override
+	@SuppressWarnings("cast")
 	public <T> T getBean(BeanSelector<T> selector, Object... args) throws BeansException {
-		return null;
-		// FIXME checksParent
-
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			return (T) registration.getBeanInstance(args);
+		}
+		if (this.parent != null) {
+			return this.parent.getBean(selector, args);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
-	public <S, T> T getBean(BeanSelector<S> selector, Class<T> requiredType)
+	@SuppressWarnings("unchecked")
+	public <T, R> R getBean(BeanSelector<T> selector, Class<R> requiredType)
 			throws BeansException {
-		return null;
-		// FIXME checksParent
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			Object bean = registration.getBeanInstance(NO_ARGS);
+			return (R) bean;
+		}
+		if (this.parent != null) {
+			return this.parent.getBean(selector, requiredType);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
 	public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector,
 			boolean allowEagerInit) throws BeansException {
+		// FIXME
 		return null;
 	}
 
@@ -90,44 +109,73 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 	@Override
 	public <T> boolean isSingleton(BeanSelector<T> selector) {
-		// FIXME checksParent
-		return false;
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			return registration.isSingleton();
+		}
+		if (this.parent != null) {
+			return this.parent.isSingleton(selector);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
 	public <T> boolean isPrototype(BeanSelector<T> selector) {
-		// FIXME checksParent
-		return false;
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			return registration.isPrototype();
+		}
+		if (this.parent != null) {
+			return this.parent.isPrototype(selector);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
 	public <T> boolean isTypeMatch(BeanSelector<T> selector, Class<?> typeToMatch) {
-		// FIXME checksParent
-		return false;
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			return registration.getDefinition().hasType(typeToMatch);
+		}
+		if (this.parent != null) {
+			return this.parent.isTypeMatch(selector, typeToMatch);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
 	public <T> boolean isTypeMatch(BeanSelector<T> selector, ResolvableType typeToMatch) {
-		// FIXME checksParent
-		return false;
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			return registration.getDefinition().hasType(typeToMatch);
+		}
+		if (this.parent != null) {
+			return this.parent.isTypeMatch(selector, typeToMatch);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
 	public <T> Class<?> getType(BeanSelector<T> selector, boolean allowFactoryBeanInit)
 			throws NoSuchBeanDefinitionException {
-		// FIXME checksParent
-		return null;
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			return registration.getDefinition().getType();
+		}
+		if (this.parent != null) {
+			return this.parent.getType(selector, allowFactoryBeanInit);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
 	public String[] getAliases(String name) {
-		return null;// FIXME
-		// FIXME checksParent
+		return EMPTY_STRING_ARRAY;
 	}
 
 	@Override
 	public <T> boolean containsBeanDefinition(BeanSelector<T> selector) {
-		return false;
+		return false; // FIXME
 	}
 
 	@Override
@@ -152,13 +200,21 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 		return null;
 	}
 
+	/**
+	 * Resolve the given embedded value, e.g. an annotation attribute.
+	 * @param value the value to resolve
+	 * @return the resolved value (may be the original value as-is)
+	 */
+	@Nullable
+	public String resolveEmbeddedValue(String value) {
+		return value;
+	}
 
-
-	static DefaultFunctionalBeanFactory of(Consumer<Builder> initializer) {
+	public static DefaultFunctionalBeanFactory of(Consumer<Builder> initializer) {
 		return null;
 	}
 
-	static class Builder {
+	public static class Builder {
 
 		// setParent
 		// registerScope

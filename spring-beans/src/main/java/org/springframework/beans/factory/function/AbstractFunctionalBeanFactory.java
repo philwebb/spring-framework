@@ -30,7 +30,7 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 
 /**
  * Abstract implementation of {@link FunctionalBeanFactory}. Delegates most
- * {@link BeanFactory} methods to their {@link BeanSelector} based equivalents.
+ * {@link BeanFactory} methods to {@link BeanSelector} equivalents.
  *
  * @author Phillip Webb
  * @since 6.0

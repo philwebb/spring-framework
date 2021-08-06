@@ -16,6 +16,8 @@
 
 package org.springframework.beans.factory.function;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,6 +38,27 @@ class FunctionalBeanRegistrations {
 			throw new FunctionalBeanDefinitionOverrideException(registration,
 					previousRegistration);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	<T> FunctionalBeanRegistration<T> find(BeanSelector<T> selector) {
+		FunctionalBeanRegistration<?> result = null;
+		List<FunctionalBeanRegistration<?>> duplicates = null;
+		for (FunctionalBeanRegistration<?> registration : this.registrations.keySet()) {
+			if (selector.test(registration.getDefinition())) {
+				if (result != null) {
+					duplicates = (duplicates != null) ? duplicates : new ArrayList<>();
+					duplicates.add(registration);
+				}
+			}
+		}
+		if (duplicates != null) {
+			// FIXME throw
+		}
+		if (result == null) {
+			// FIXME throw
+		}
+		return (FunctionalBeanRegistration<T>) result;
 	}
 
 }

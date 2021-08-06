@@ -18,6 +18,9 @@ package org.springframework.beans.factory.function;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.util.function.InstanceSupplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,13 +38,26 @@ class DefaultFunctionalBeanFactoryTests {
 		this.beanFactory.register((definition) -> {
 			definition.setName("foo");
 			definition.setType(TestBean.class);
+			definition.setInstanceSupplier(InstanceSupplier.of(TestBean::new));
 		});
 		assertThatExceptionOfType(
 				FunctionalBeanDefinitionOverrideException.class).isThrownBy(
 						() -> this.beanFactory.register((definition) -> {
 							definition.setName("foo");
 							definition.setType(AnotherTestBean.class);
+							definition.setInstanceSupplier(InstanceSupplier.of(AnotherTestBean::new));
 						}));
+	}
+
+	@Test
+	void getBeanByName() {
+		this.beanFactory.register((definition) -> {
+			definition.setName("foo");
+			definition.setType(TestBean.class);
+			definition.setInstanceSupplier(InstanceSupplier.of(TestBean::new));
+		});
+		Object bean = this.beanFactory.getBean("foo");
+		assertThat(bean).isNotNull().isInstanceOf(TestBean.class);
 	}
 
 	static class TestBean {

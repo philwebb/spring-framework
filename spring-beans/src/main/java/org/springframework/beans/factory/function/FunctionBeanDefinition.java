@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.function;
 
+import java.lang.annotation.Annotation;
 import java.util.function.Consumer;
 
 import org.springframework.core.ResolvableType;
@@ -73,6 +74,29 @@ public final class FunctionBeanDefinition<T> {
 
 	InstanceSupplier<InjectionContext, T> getInstanceSupplier() {
 		return instanceSupplier;
+	}
+
+	boolean hasName(String name) {
+		return false;
+	}
+
+	boolean hasType(ResolvableType type) {
+		if (this.resolvableType != null) {
+			return this.resolvableType.isAssignableFrom(type);
+		}
+		return hasType(type.resolve());
+	}
+
+	boolean hasType(Class<?> type) {
+		return this.type.isAssignableFrom(type);
+	}
+
+	boolean hasAnnotation(Class<? extends Annotation> annotationType) {
+		return false;
+	}
+
+	boolean hasQualifier(String qualifier) {
+		return false;
 	}
 
 	static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> builder) {

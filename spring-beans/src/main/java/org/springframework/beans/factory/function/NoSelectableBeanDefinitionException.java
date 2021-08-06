@@ -16,18 +16,16 @@
 
 package org.springframework.beans.factory.function;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 /**
- *
- * @author pwebb
+ * @author Phillip Webb
  * @since 6.0
  */
-enum PrimaryBeanSelectorAttribute {
+public class NoSelectableBeanDefinitionException extends NoSuchBeanDefinitionException {
 
-	NAME,
-
-	TYPE,
-
-	ANNOTATION
+	public NoSelectableBeanDefinitionException(BeanSelector<?> selector) {
+		super(""); // FIXME
+	}
 
 }
