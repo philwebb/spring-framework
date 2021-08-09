@@ -16,7 +16,6 @@
 
 package org.springframework.beans.factory.function;
 
-import java.nio.channels.IllegalSelectorException;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -66,29 +65,34 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 	}
 
 	@Override
-	@SuppressWarnings("cast")
-	public <T> T getBean(BeanSelector<T> selector, Object... args) throws BeansException {
-		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
-		if (registration != null) {
-			return (T) registration.getBeanInstance(args);
-		}
-		if (this.parent != null) {
-			return this.parent.getBean(selector, args);
-		}
-		throw new NoSelectableBeanDefinitionException(selector);
+	public <T> T getBean(BeanSelector<T> selector) throws BeansException {
+		return getBean(selector, null, null);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	public <T> T getBean(BeanSelector<T> selector, Object... args) throws BeansException {
+		return getBean(selector, args, null);
+	}
+
+	@Override
 	public <T, R> R getBean(BeanSelector<T> selector, Class<R> requiredType)
 			throws BeansException {
+		return getBean(selector, null, requiredType);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T, R> R getBean(BeanSelector<T> selector, @Nullable Object[] args,
+			@Nullable Class<R> requiredType) throws BeansException {
 		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
 		if (registration != null) {
-			Object bean = registration.getBeanInstance(NO_ARGS);
+			InjectionContext injectionContext = new FunctionalBeanInjectionContext(
+					registration, args);
+			Object bean = registration.getBeanInstance(injectionContext, args);
 			return (R) bean;
 		}
 		if (this.parent != null) {
-			return this.parent.getBean(selector, requiredType);
+			return (args != null) ? (R) this.parent.getBean(selector, args)
+					: this.parent.getBean(selector, requiredType);
 		}
 		throw new NoSelectableBeanDefinitionException(selector);
 	}
@@ -96,7 +100,13 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 	@Override
 	public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector,
 			boolean allowEagerInit) throws BeansException {
-		// FIXME
+		return getBeanProvider(selector, null);
+	}
+
+	private <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector,
+			FunctionalBeanInjectionContext injectionContext) {
+
+
 		return null;
 	}
 
@@ -219,6 +229,44 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 		// setParent
 		// registerScope
 		// addEmbeddedValueResolver
+
+	}
+
+	private class FunctionalBeanInjectionContext implements InjectionContext {
+
+		private final InjectionContext parent;
+
+		private final FunctionalBeanRegistration<?> registration;
+
+		@Nullable
+		private Object[] args;
+
+		FunctionalBeanInjectionContext(FunctionalBeanRegistration<?> registration,
+				@Nullable Object[] args) {
+			this.parent = null;
+			this.args = args;
+			this.registration = registration;
+		}
+
+		@Override
+		public Object[] getArgs() {
+			return this.args;
+		}
+
+		public <T> T getBean(BeanSelector<T> selector){
+			// FIXME
+			return null;
+		}
+
+		@Override
+		public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector) {
+			return DefaultFunctionalBeanFactory.this.getBeanProvider(selector, this);
+		}
+
+		@Override
+		public String resolveEmbeddedValue(String value) {
+			return DefaultFunctionalBeanFactory.this.resolveEmbeddedValue(value);
+		}
 
 	}
 

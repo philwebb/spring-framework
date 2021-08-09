@@ -17,6 +17,7 @@
 package org.springframework.beans.factory.function;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.lang.Nullable;
 
 /**
  *
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.ObjectProvider;
  */
 public interface InjectionContext {
 
+	@Nullable
 	Object[] getArgs();
 
 	default <T> T getBean(Class<T> type) {

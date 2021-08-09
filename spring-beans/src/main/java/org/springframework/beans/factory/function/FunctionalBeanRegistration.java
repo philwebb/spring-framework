@@ -18,6 +18,7 @@ package org.springframework.beans.factory.function;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.function.ConcurrentHashFilter.HashCodeConsumer;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -64,29 +65,12 @@ class FunctionalBeanRegistration<T> {
 		consumer.accept(this.definition.getName());
 	}
 
-	T getBeanInstance(Object[] args) {
-		InjectionContext injectionContext = new InjectionContext() {
-
-			@Override
-			public String resolveEmbeddedValue(String value) {
-				return value;
-			}
-
-			@Override
-			public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector) {
-				return null;
-			}
-
-			@Override
-			public Object[] getArgs() {
-				return args;
-			}
-
-		};
+	T getBeanInstance(InjectionContext injectionContext, @Nullable Object[] args) {
 		try {
 			return this.definition.getInstanceSupplier().get(injectionContext);
 		}
 		catch (Throwable ex) {
+			// FIXME
 			throw new RuntimeException(ex);
 		}
 	}

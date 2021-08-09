@@ -37,8 +37,6 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
  */
 public abstract class AbstractFunctionalBeanFactory implements FunctionalBeanFactory {
 
-	protected static final Object[] NO_ARGS = {};
-
 	@Override
 	public Object getBean(String name) throws BeansException {
 		return getBean(BeanSelector.byName(name));
@@ -62,11 +60,6 @@ public abstract class AbstractFunctionalBeanFactory implements FunctionalBeanFac
 	@Override
 	public <T> T getBean(Class<T> requiredType, Object... args) throws BeansException {
 		return getBean(BeanSelector.byType(requiredType), args);
-	}
-
-	@Override
-	public <T> T getBean(BeanSelector<T> selector) throws BeansException {
-		return getBean(selector, NO_ARGS);
 	}
 
 	@Override
