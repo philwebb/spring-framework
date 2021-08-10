@@ -39,20 +39,34 @@ public final class BeanSelector<T> {
 	@Nullable
 	private final Object primarySelector;
 
+	private final Predicate<FunctionBeanDefinition<?>> predicate;
+
 	@Nullable
 	private final Supplier<String> description;
 
-	private final Predicate<FunctionBeanDefinition<?>> predicate;
+	private final boolean hasUndescribedPredicate;
 
 	private String descriptionString;
 
-	private BeanSelector(PrimarySelectorType primarySelectorType, Object primarySelector,
-			Supplier<String> description,
-			Predicate<FunctionBeanDefinition<?>> predicate) {
+	private BeanSelector(@Nullable PrimarySelectorType primarySelectorType,
+			@Nullable Object primarySelector,
+			Predicate<FunctionBeanDefinition<?>> predicate, Supplier<String> description,
+			boolean hasUndescribedPredicate) {
 		this.primarySelectorType = primarySelectorType;
 		this.primarySelector = primarySelector;
-		this.description = description;
 		this.predicate = predicate;
+		this.description = description;
+		this.hasUndescribedPredicate = hasUndescribedPredicate;
+	}
+
+	@Nullable
+	PrimarySelectorType getPrimarySelectorType() {
+		return this.primarySelectorType;
+	}
+
+	@Nullable
+	Object getPrimarySelector() {
+		return this.primarySelector;
 	}
 
 	public BeanSelector<T> withQualifier(String qualifier) {
@@ -75,7 +89,7 @@ public final class BeanSelector<T> {
 	}
 
 	public boolean test(FunctionBeanDefinition<?> beanDefinition) {
-		return true;
+		return this.predicate.test(beanDefinition);
 	}
 
 	@Override
@@ -89,8 +103,17 @@ public final class BeanSelector<T> {
 		return string;
 	}
 
+	/**
+	 * Return a {@link BeanSelection} that matches all beans. Note that this
+	 * selector cannot be optimized by the {@link FunctionalBeanFactory} and
+	 * will result in a full scan of every bean in the context. If possible, use
+	 * one of the {@code by...} methods instead.
+	 * @param <T> the bean type
+	 * @return a bean selector for all beans
+	 */
 	public static <T> BeanSelector<T> all() {
-		return new BeanSelector<>(null, null, () -> "All beans", (descriptor) -> true);
+		return new BeanSelector<>(null, null, (descriptor) -> true, () -> "All beans",
+				false);
 	}
 
 	/**
@@ -101,8 +124,8 @@ public final class BeanSelector<T> {
 	 */
 	public static <T> BeanSelector<T> byName(String name) {
 		return new BeanSelector<T>(PrimarySelectorType.TYPE, name,
-				() -> String.format("Bean with name '%s'", name),
-				(descriptor) -> descriptor.hasName(name));
+				(descriptor) -> descriptor.hasName(name),
+				() -> String.format("Bean with name '%s'", name), false);
 	}
 
 	/**
@@ -113,8 +136,8 @@ public final class BeanSelector<T> {
 	 */
 	public static <T> BeanSelector<T> byType(Class<? extends T> type) {
 		return new BeanSelector<T>(PrimarySelectorType.TYPE, type,
-				() -> String.format("Beans matching type '%s'", type.getName()),
-				(descriptor) -> descriptor.hasType(type));
+				(descriptor) -> descriptor.hasType(type),
+				() -> String.format("Beans matching type '%s'", type.getName()), false);
 	}
 
 	/**
@@ -125,24 +148,32 @@ public final class BeanSelector<T> {
 	 */
 	public static <T> BeanSelector<T> byType(ResolvableType type) {
 		return new BeanSelector<T>(PrimarySelectorType.TYPE, type,
-				() -> String.format("Beans matching type '%s'", type),
-				(descriptor) -> descriptor.hasType(type));
+				(descriptor) -> descriptor.hasType(type),
+				() -> String.format("Beans matching type '%s'", type), false);
 	}
 
 	/**
-	 * @param annotationType
-	 * @return
+	 * Return a {@link BeanSelection} that matches beans annotated or
+	 * meta-annotated with the given type.
+	 * @param annotationType the annotation type to match
+	 * @return a bean selector for the given annotation type
 	 */
 	public static <T> BeanSelector<T> byAnnotation(
 			Class<? extends Annotation> annotationType) {
 		return new BeanSelector<T>(PrimarySelectorType.ANNOTATION_TYPE, annotationType,
+				(descriptor) -> descriptor.hasAnnotation(annotationType),
 				() -> String.format("Beans annotated with '%s'",
 						annotationType.getName()),
-				(descriptor) -> descriptor.hasAnnotation(annotationType));
+				false);
 	}
 
 	enum PrimarySelectorType {
-		TYPE, RESOLVABLE_TYPE, ANNOTATION_TYPE
+
+		TYPE,
+
+		RESOLVABLE_TYPE,
+
+		ANNOTATION_TYPE
 	}
 
 }

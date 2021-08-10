@@ -82,13 +82,13 @@ public final class FunctionBeanDefinition<T> {
 
 	boolean hasType(ResolvableType type) {
 		if (this.resolvableType != null) {
-			return this.resolvableType.isAssignableFrom(type);
+			return type.isAssignableFrom(this.resolvableType);
 		}
 		return hasType(type.resolve());
 	}
 
 	boolean hasType(Class<?> type) {
-		return this.type.isAssignableFrom(type);
+		return type.isAssignableFrom(this.type);
 	}
 
 	boolean hasAnnotation(Class<? extends Annotation> annotationType) {
