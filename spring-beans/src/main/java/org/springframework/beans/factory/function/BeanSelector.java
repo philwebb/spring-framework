@@ -17,6 +17,9 @@
 package org.springframework.beans.factory.function;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -30,6 +33,10 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @since 6.0.0
  * @param <T> the resulting type
+ * @see #byName(String)
+ * @see #byType(Class)
+ * @see #byType(ResolvableType)
+ * @see #all()
  */
 public final class BeanSelector<T> {
 
@@ -44,19 +51,19 @@ public final class BeanSelector<T> {
 	@Nullable
 	private final Supplier<String> description;
 
-	private final boolean hasUndescribedPredicate;
+	private final Set<Flag> flags;
 
 	private String descriptionString;
 
 	private BeanSelector(@Nullable PrimarySelectorType primarySelectorType,
 			@Nullable Object primarySelector,
 			Predicate<FunctionBeanDefinition<?>> predicate, Supplier<String> description,
-			boolean hasUndescribedPredicate) {
+			Set<Flag> flags) {
 		this.primarySelectorType = primarySelectorType;
 		this.primarySelector = primarySelector;
 		this.predicate = predicate;
 		this.description = description;
-		this.hasUndescribedPredicate = hasUndescribedPredicate;
+		this.flags = flags;
 	}
 
 	@Nullable
@@ -69,25 +76,89 @@ public final class BeanSelector<T> {
 		return this.primarySelector;
 	}
 
+	/**
+	 * Return a new {@link BeanSelector} that further restricts the selection to
+	 * {@link FunctionBeanDefinition bean definitions} with the specified
+	 * qualifier.
+	 * @param qualifier the required qualifier
+	 * @return a new {@link BeanSelector} instance with the additional
+	 * restriction
+	 */
 	public BeanSelector<T> withQualifier(String qualifier) {
+		return withQualifier(Qualifier.of(qualifier));
+	}
+
+	/**
+	 * Return a new {@link BeanSelector} that further restricts the selection to
+	 * {@link FunctionBeanDefinition bean definitions} with the specified
+	 * qualifier.
+	 * @param qualifier the required qualifier
+	 * @return a new {@link BeanSelector} instance with the additional
+	 * restriction
+	 */
+	public BeanSelector<T> withQualifier(Qualifier qualifier) {
 		return withFilter(() -> String.format("with qualifier of '%s'", qualifier),
 				beanDefinition -> beanDefinition.hasQualifier(qualifier));
 	}
 
+	/**
+	 * Return a new {@link BeanSelector} that further restricts the selection
+	 * based on the given anonymous filter. If possible, use the
+	 * {@link #withFilter(String, Predicate)} or
+	 * {@link #withFilter(Supplier, Predicate)} variants instead of this method
+	 * as they produce better error messages.
+	 * @param filter the filter to apply
+	 * @return a new {@link BeanSelector} instance with the additional
+	 * restriction
+	 */
 	public BeanSelector<T> withFilter(Predicate<FunctionBeanDefinition<?>> filter) {
 		return withFilter((Supplier<String>) null, filter);
 	}
 
+	/**
+	 * Return a new {@link BeanSelector} that further restricts the selection
+	 * based on the given anonymous filter.
+	 * @param description a description of the filter (e.g. "with my
+	 * restriction")
+	 * @param filter the filter to apply
+	 * @return a new {@link BeanSelector} instance with the additional
+	 * restriction
+	 */
 	public BeanSelector<T> withFilter(String description,
 			Predicate<FunctionBeanDefinition<?>> filter) {
 		return withFilter(() -> description, filter);
 	}
 
+	/**
+	 * Return a new {@link BeanSelector} that further restricts the selection
+	 * based on the given anonymous filter.
+	 * @param description a description of the filter (e.g. "with my
+	 * restriction")
+	 * @param filter the filter to apply
+	 * @return a new {@link BeanSelector} instance with the additional
+	 * restriction
+	 */
 	public BeanSelector<T> withFilter(Supplier<String> description,
 			Predicate<FunctionBeanDefinition<?>> filter) {
-		return null;
+		EnumSet<Flag> flags = EnumSet.noneOf(Flag.class);
+		flags.addAll(this.flags);
+		if (description == null) {
+			flags.add(Flag.HAS_UNDESCRIBED_PREDICATE);
+		}
+		else {
+			flags.remove(Flag.MERGE_DESCRIPTION_WITHOUT_AND);
+		}
+		return new BeanSelector<>(this.primarySelectorType, this.primarySelector,
+				this.predicate.and(filter),
+				merge(this.flags, this.description, description), flags);
 	}
 
+	/**
+	 * Test the given {@link FunctionBeanDefinition} to see if it should be
+	 * selected.
+	 * @param beanDefinition the definition to test
+	 * @return {@code true} if the definition should be selected
+	 */
 	public boolean test(FunctionBeanDefinition<?> beanDefinition) {
 		return this.predicate.test(beanDefinition);
 	}
@@ -96,11 +167,25 @@ public final class BeanSelector<T> {
 	public String toString() {
 		String string = this.descriptionString;
 		if (string == null) {
-			string = (this.description != null) ? this.description.get() : null;
-			this.descriptionString = (string != null) ? string
-					: "Predicate based selector";
+			Supplier<String> description = this.description;
+			if (this.flags.contains(Flag.HAS_UNDESCRIBED_PREDICATE)) {
+				description = merge(this.flags, description,
+						() -> "matching custom filter");
+			}
+			string = description.get();
+			this.descriptionString = string;
 		}
 		return string;
+	}
+
+	private static Supplier<String> merge(Set<Flag> flags, Supplier<String> description,
+			Supplier<String> additional) {
+		if (additional == null) {
+			return description;
+		}
+		return () -> description.get()
+				+ ((flags.contains(Flag.MERGE_DESCRIPTION_WITHOUT_AND)) ? " " : " and ")
+				+ additional.get();
 	}
 
 	/**
@@ -113,7 +198,7 @@ public final class BeanSelector<T> {
 	 */
 	public static <T> BeanSelector<T> all() {
 		return new BeanSelector<>(null, null, (descriptor) -> true, () -> "All beans",
-				false);
+				EnumSet.of(Flag.MERGE_DESCRIPTION_WITHOUT_AND));
 	}
 
 	/**
@@ -125,7 +210,7 @@ public final class BeanSelector<T> {
 	public static <T> BeanSelector<T> byName(String name) {
 		return new BeanSelector<T>(PrimarySelectorType.TYPE, name,
 				(descriptor) -> descriptor.hasName(name),
-				() -> String.format("Bean with name '%s'", name), false);
+				() -> String.format("Bean with name '%s'", name), Collections.emptySet());
 	}
 
 	/**
@@ -137,7 +222,8 @@ public final class BeanSelector<T> {
 	public static <T> BeanSelector<T> byType(Class<? extends T> type) {
 		return new BeanSelector<T>(PrimarySelectorType.TYPE, type,
 				(descriptor) -> descriptor.hasType(type),
-				() -> String.format("Beans matching type '%s'", type.getName()), false);
+				() -> String.format("Beans matching type '%s'", type.getName()),
+				Collections.emptySet());
 	}
 
 	/**
@@ -147,9 +233,10 @@ public final class BeanSelector<T> {
 	 * @return a bean selector for the given type
 	 */
 	public static <T> BeanSelector<T> byType(ResolvableType type) {
-		return new BeanSelector<T>(PrimarySelectorType.TYPE, type,
+		return new BeanSelector<T>(PrimarySelectorType.RESOLVABLE_TYPE, type,
 				(descriptor) -> descriptor.hasType(type),
-				() -> String.format("Beans matching type '%s'", type), false);
+				() -> String.format("Beans matching type '%s'", type),
+				Collections.emptySet());
 	}
 
 	/**
@@ -164,7 +251,7 @@ public final class BeanSelector<T> {
 				(descriptor) -> descriptor.hasAnnotation(annotationType),
 				() -> String.format("Beans annotated with '%s'",
 						annotationType.getName()),
-				false);
+				Collections.emptySet());
 	}
 
 	enum PrimarySelectorType {
@@ -174,6 +261,15 @@ public final class BeanSelector<T> {
 		RESOLVABLE_TYPE,
 
 		ANNOTATION_TYPE
+
+	}
+
+	enum Flag {
+
+		HAS_UNDESCRIBED_PREDICATE,
+
+		MERGE_DESCRIPTION_WITHOUT_AND
+
 	}
 
 }

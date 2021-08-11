@@ -27,7 +27,6 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.function.InstanceSupplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for {@link BeanSelector}.
@@ -69,35 +68,67 @@ class BeanSelectorTests {
 
 	@Test
 	void testWhenByGenericResolvableTypeMatchesOnlyType() {
-		ResolvableType testServiceType = ResolvableType.forClassWithGenerics(
-				TestGeneric.class, TestService.class);
 		ResolvableType testBeanType = ResolvableType.forClassWithGenerics(
 				TestGeneric.class, TestBean.class);
+		ResolvableType testServiceType = ResolvableType.forClassWithGenerics(
+				TestGeneric.class, TestService.class);
 		ResolvableType testOtherType = ResolvableType.forClassWithGenerics(
 				TestGeneric.class, TestOther.class);
 		FunctionBeanDefinition<?> definition = FunctionBeanDefinition.of((builder) -> {
 			builder.setName("test");
 			builder.setType(testBeanType);
-			builder.setInstanceSupplier(InstanceSupplier.of(TestGeneric::new));
+			builder.setInstanceSupplier(InstanceSupplier.of(TestBean::new));
 		});
 		assertThat(BeanSelector.byType(testBeanType).test(definition)).isTrue();
-		assertThat(BeanSelector.byType(testServiceType).test(definition)).isTrue();
+		assertThat(BeanSelector.byType(testServiceType).test(definition)).isFalse();
 		assertThat(BeanSelector.byType(testOtherType).test(definition)).isFalse();
 	}
 
 	@Test
 	void testWhenByAnnoationMatchesAnnotatedType() {
+		FunctionBeanDefinition<?> definition = createTestBeanDefinition(TestBean.class,
+				TestBean::new);
+		assertThat(BeanSelector.byAnnotation(MetaTestAnnotation.class).test(
+				definition)).isTrue();
+		assertThat(BeanSelector.byAnnotation(TestAnnotation.class).test(
+				definition)).isTrue();
+		assertThat(BeanSelector.byAnnotation(OtherAnnotation.class).test(
+				definition)).isFalse();
+	}
 
+	@Test
+	void testWithQualifier() {
+		FunctionBeanDefinition<?> unqualified = FunctionBeanDefinition.of((builder) -> {
+			builder.setName("test");
+			builder.setType(TestBean.class);
+			builder.setInstanceSupplier(InstanceSupplier.of(TestBean::new));
+		});
+		FunctionBeanDefinition<?> qualified = FunctionBeanDefinition.of((builder) -> {
+			builder.setName("test");
+			builder.setType(TestBean.class);
+			builder.setInstanceSupplier(InstanceSupplier.of(TestBean::new));
+			builder.addQualifier("test");
+		});
+		BeanSelector<?> selector = BeanSelector.all().withQualifier("test");
+		assertThat(selector.test(unqualified)).isFalse();
+		assertThat(selector.test(qualified)).isTrue();
+	}
+
+	@Test
+	void testWithFilter() {
+		BeanSelector<?> selector = BeanSelector.all().withFilter("name starts with s",
+				(definition) -> definition.getName().startsWith("s"));
+		assertThat(selector.test(createTestBeanDefinition("spring", TestBean.class,
+				TestBean::new))).isTrue();
+		assertThat(selector.test(createTestBeanDefinition("sprung", TestBean.class,
+				TestBean::new))).isTrue();
+		assertThat(selector.test(createTestBeanDefinition("wrongs", TestBean.class,
+				TestBean::new))).isFalse();
 	}
 
 	@Test
 	void getPrimarySelectorTypeWhenAllReturnsNull() {
 		assertThat(BeanSelector.all().getPrimarySelectorType()).isNull();
-	}
-
-	@Test
-	void getPrimarySelectorWhenAllReturnsNull() {
-		assertThat(BeanSelector.all().getPrimarySelector()).isNull();
 	}
 
 	@Test
@@ -108,12 +139,6 @@ class BeanSelectorTests {
 	}
 
 	@Test
-	void getPrimarySelectorWhenByTypeReturnsType() {
-		Class<TestBean> type = TestBean.class;
-		assertThat(BeanSelector.byType(type).getPrimarySelector()).isEqualTo(type);
-	}
-
-	@Test
 	void getPrimarySelectorTypeWhenByResolvableTypeReturnsResolvableType() {
 		ResolvableType type = ResolvableType.forClass(TestBean.class);
 		assertThat(BeanSelector.byType(type).getPrimarySelectorType()).isEqualTo(
@@ -121,9 +146,34 @@ class BeanSelectorTests {
 	}
 
 	@Test
-	void getPrimarySelectorWhenResolvableTypeReturnsResolvableType() {
+	void getPrimarySelectorTypeWhenByAnnotationReturnsAnnotationClass() {
+		assertThat(BeanSelector.byAnnotation(
+				MetaTestAnnotation.class).getPrimarySelectorType()).isEqualTo(
+						PrimarySelectorType.ANNOTATION_TYPE);
+	}
+
+	@Test
+	void getPrimarySelectorWhenAllReturnsNull() {
+		assertThat(BeanSelector.all().getPrimarySelector()).isNull();
+	}
+
+	@Test
+	void getPrimarySelectorWhenByTypeReturnsType() {
+		Class<TestBean> type = TestBean.class;
+		assertThat(BeanSelector.byType(type).getPrimarySelector()).isEqualTo(type);
+	}
+
+	@Test
+	void getPrimarySelectorWhenByResolvableTypeReturnsResolvableType() {
 		ResolvableType type = ResolvableType.forClass(TestBean.class);
 		assertThat(BeanSelector.byType(type).getPrimarySelector()).isEqualTo(type);
+	}
+
+	@Test
+	void getPrimarySelectorWhenByAnnotationReturnsAnnotationClass() {
+		assertThat(BeanSelector.byAnnotation(
+				MetaTestAnnotation.class).getPrimarySelector()).isEqualTo(
+						MetaTestAnnotation.class);
 	}
 
 	@Test
@@ -142,14 +192,71 @@ class BeanSelectorTests {
 	void toStringWhenByResolvableType() {
 		ResolvableType type = ResolvableType.forClassWithGenerics(TestGeneric.class,
 				TestBean.class);
-		assertThat(BeanSelector.byType(type)).hasToString(
-				"Beans matching xtype '" + TestBean.class.getName() + "'");
+		assertThat(BeanSelector.byType(type)).hasToString("Beans matching type '"
+				+ TestGeneric.class.getName() + "<" + TestBean.class.getName() + ">'");
+	}
+
+	@Test
+	void toStringWhenByAnnotation() {
+		assertThat(BeanSelector.byAnnotation(TestAnnotation.class)).hasToString(
+				"Beans annotated with '" + TestAnnotation.class.getName() + "'");
+	}
+
+	@Test
+	void toStringWhenWithQualifier() {
+		assertThat(BeanSelector.all().withQualifier("test")).hasToString(
+				"All beans with qualifier of 'test'");
+	}
+
+	@Test
+	void toStringWhenByTypeAndWithQualifier() {
+		assertThat(BeanSelector.byType(TestBean.class).withQualifier("test")).hasToString(
+				"Beans matching type '" + TestBean.class.getName()
+						+ "' and with qualifier of 'test'");
+	}
+
+	@Test
+	void toStringWhenWithSeveralQualifiers() {
+		assertThat(BeanSelector.all().withQualifier("test").withQualifier(
+				"spring")).hasToString(
+						"All beans with qualifier of 'test' and with qualifier of 'spring'");
+	}
+
+	@Test
+	void toStringWhenWithDescribedFilter() {
+		assertThat(BeanSelector.all().withFilter("with names starting 's'",
+				(definition) -> true)).hasToString("All beans with names starting 's'");
+	}
+
+	@Test
+	void toStringWhenWithAnonymousFilter() {
+		assertThat(BeanSelector.all().withFilter((definition) -> true)).hasToString(
+				"All beans matching custom filter");
+	}
+
+	@Test
+	void toStringWhenWithQualifierAndWithDescribedFilter() {
+		assertThat(BeanSelector.all().withQualifier("test").withFilter(
+				"with names starting 's'", (definition) -> true)).hasToString(
+						"All beans with qualifier of 'test' and with names starting 's'");
+	}
+
+	@Test
+	void toStringWhenWithQualifierAndWithAnonymousFilter() {
+		assertThat(BeanSelector.all().withQualifier("test").withFilter(
+				(definition) -> true)).hasToString(
+						"All beans with qualifier of 'test' and matching custom filter");
 	}
 
 	private <T> FunctionBeanDefinition<T> createTestBeanDefinition(Class<T> type,
 			Supplier<T> supplier) {
+		return createTestBeanDefinition("test", type, supplier);
+	}
+
+	private <T> FunctionBeanDefinition<T> createTestBeanDefinition(String name,
+			Class<T> type, Supplier<T> supplier) {
 		return FunctionBeanDefinition.of((builder) -> {
-			builder.setName("test");
+			builder.setName(name);
 			builder.setType(type);
 			builder.setInstanceSupplier(InstanceSupplier.of(supplier));
 		});
@@ -162,6 +269,10 @@ class BeanSelectorTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@TestAnnotation
 	static @interface MetaTestAnnotation {
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface OtherAnnotation {
 	}
 
 	static interface TestService {

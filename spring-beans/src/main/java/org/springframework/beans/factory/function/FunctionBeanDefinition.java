@@ -17,9 +17,14 @@
 package org.springframework.beans.factory.function;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.function.InstanceSupplier;
@@ -49,6 +54,10 @@ public final class FunctionBeanDefinition<T> {
 
 	private final InstanceSupplier<InjectionContext, T> instanceSupplier;
 
+	private final MergedAnnotations annotations;
+
+	private final Set<Qualifier> qualifiers;
+
 	private FunctionBeanDefinition(Builder<T> builder) {
 		Assert.hasText(builder.name, "Name must not be empty");
 		Assert.notNull(builder.type, "Type must not be null");
@@ -57,6 +66,10 @@ public final class FunctionBeanDefinition<T> {
 		this.type = builder.type;
 		this.resolvableType = builder.resolvableType;
 		this.instanceSupplier = builder.instanceSupplier;
+		this.annotations = MergedAnnotations.from(this.type,
+				SearchStrategy.TYPE_HIERARCHY);
+		this.qualifiers = (builder.qualifiers.isEmpty()) ? Collections.emptySet()
+				: Collections.unmodifiableSet(new LinkedHashSet<>(builder.qualifiers));
 	}
 
 	String getName() {
@@ -92,11 +105,11 @@ public final class FunctionBeanDefinition<T> {
 	}
 
 	boolean hasAnnotation(Class<? extends Annotation> annotationType) {
-		return false;
+		return this.annotations.isPresent(annotationType);
 	}
 
-	boolean hasQualifier(String qualifier) {
-		return false;
+	boolean hasQualifier(Qualifier qualifier) {
+		return this.qualifiers.contains(qualifier);
 	}
 
 	static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> builder) {
@@ -116,6 +129,8 @@ public final class FunctionBeanDefinition<T> {
 
 		@Nullable
 		private InstanceSupplier<InjectionContext, T> instanceSupplier;
+
+		private Set<Qualifier> qualifiers = new LinkedHashSet<>();
 
 		Builder(Consumer<Builder<T>> initialier) {
 			initialier.accept(this);
@@ -138,6 +153,15 @@ public final class FunctionBeanDefinition<T> {
 		public void setInstanceSupplier(
 				InstanceSupplier<InjectionContext, T> instanceSupplier) {
 			this.instanceSupplier = instanceSupplier;
+		}
+
+		public void addQualifier(String qualifier) {
+			this.qualifiers.add(Qualifier.of(qualifier));
+		}
+
+		public void addQualifier(Qualifier qualifier) {
+			Assert.notNull(qualifier, "Qualifier must not be null");
+			this.qualifiers.add(qualifier);
 		}
 
 		FunctionBeanDefinition<T> build() {
