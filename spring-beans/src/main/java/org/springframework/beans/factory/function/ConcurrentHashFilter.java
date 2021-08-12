@@ -17,25 +17,27 @@
 package org.springframework.beans.factory.function;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
-class ConcurrentHashFilter<V, A> {
-
-	// FIXME decide where to put this and finish it
-
-	private static final int HASH_TABLE_ENTRY_FREE = 0x00;
+/**
+ * Memory efficient filter used to quickly limit candidates based on the hash
+ * codes of attributes extracted from the element. For example, a collection of
+ * objects could be filtered based on their type-hierarchy to allow fast
+ * retrieval of elements that are likely to match an {@code instanceof} check.
+ *
+ * @author Phillip Webb
+ */
+class ConcurrentHashFilter<E, A> {
 
 	private static final int DEFAULT_ATTRIBUTE_VALUES_CAPACITY = 32;
 
-	private static final int DEFAULT_INITIAL_CAPACITY = 256;
+	private static final int DEFAULT_COLLISION_THRESHOLD = 128;
 
 	private static final float DEFAULT_LOAD_FACTOR = 0.7f;
 
@@ -45,55 +47,81 @@ class ConcurrentHashFilter<V, A> {
 
 	private static final int MAXIMUM_SEGMENT_SIZE = 1 << 30;
 
-	private static final Object OVER_CAPACITY = new Object();
+	private static final int HASH_TABLE_ENTRY_FREE = 0x00;
+
+	private static final Object COLLISION_THRESHOLD_EXCEEDED = new Object();
 
 	private static final Object DELETED = new Object();
 
-	private final HashCodesExtractor<V, A> attributeHashCodesExtractor;
+	private static final Candidates<?> EMPTY_CANDIDATES = new Candidates<Object>() {
 
-	private Supplier<Iterator<V>> fallbackValuesSupplier;
+		@Override
+		public Iterator<Object> iterator() {
+			return Collections.emptyIterator();
+		}
 
-	private float loadFactor;
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
+
+	};
+
+	private final HashCodesExtractor<E, A> hashCodesExtractor;
+
+	private final float loadFactor;
 
 	private final int shift;
 
 	private final Segment[] segments;
 
-	private final int attributeValuesCapacity;
+	private final int collisionThreshold;
 
-	public ConcurrentHashFilter(HashCodesExtractor<V, A> attributesExtractor,
-			Supplier<Iterator<V>> fallbackValuesSupplier) {
-		this(attributesExtractor, fallbackValuesSupplier,
-				DEFAULT_ATTRIBUTE_VALUES_CAPACITY, DEFAULT_INITIAL_CAPACITY,
-				DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL);
-	}
-
-	ConcurrentHashFilter(HashCodesExtractor<V, A> attributesExtractor,
-			Supplier<Iterator<V>> fallbackValuesSupplier, int attributeValueCapacity) {
-		this(attributesExtractor, fallbackValuesSupplier, attributeValueCapacity,
-				DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL);
+	/**
+	 * Create a new {@link ConcurrentHashFilter} instance.
+	 * @param hashCodesExtractor the hash codes extractor to apply
+	 */
+	ConcurrentHashFilter(HashCodesExtractor<E, A> hashCodesExtractor) {
+		this(hashCodesExtractor, DEFAULT_ATTRIBUTE_VALUES_CAPACITY,
+				DEFAULT_COLLISION_THRESHOLD, DEFAULT_LOAD_FACTOR,
+				DEFAULT_CONCURRENCY_LEVEL);
 	}
 
 	/**
-	 * @param initialCapacity the initial capacity of the map
+	 * @param hashCodesExtractor the hash codes extractor to apply
+	 * @param collisionThreshold the maximum number of elements that can be
+	 * stored for a given attribute hash code. Once exceeded,
+	 * {@link #findCandidates(Object)} will not return a result and a full scan
+	 * will be required.
+	 */
+	ConcurrentHashFilter(HashCodesExtractor<E, A> hashCodesExtractor,
+			int collisionThreshold) {
+		this(hashCodesExtractor, collisionThreshold, DEFAULT_COLLISION_THRESHOLD,
+				DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL);
+	}
+
+	/**
+	 * @param hashCodesExtractor the hash codes extractor to apply
+	 * @param collisionThreshold the maximum number of elements that can be
+	 * stored for a given attribute hash code. Once exceeded,
+	 * {@link #findCandidates(Object)} will not return a result and a full scan
+	 * will be required.
+	 * @param initialCapacity the initial capacity of the filter
 	 * @param loadFactor the load factor. When the average number of references
-	 * per table exceeds this value, resize will be attempted.
+	 * per table exceeds this value, resize will be attempted
 	 * @param concurrencyLevel the expected number of threads that will
-	 * concurrently use the index.
+	 * concurrently use the filter
 	 */
 	@SuppressWarnings("unchecked")
-	ConcurrentHashFilter(HashCodesExtractor<V, A> hashCodesExtractor,
-			Supplier<Iterator<V>> fallbackValuesSupplier, int attributeValueCapacity,
-			int initialCapacity, float loadFactor, int concurrencyLevel) {
-		Assert.notNull(hashCodesExtractor, "Hash codes extractor must not be null");
-		Assert.notNull(fallbackValuesSupplier,
-				"Fallback values supplier must not be null");
+	ConcurrentHashFilter(HashCodesExtractor<E, A> hashCodesExtractor,
+			int collisionThreshold, int initialCapacity, float loadFactor,
+			int concurrencyLevel) {
+		Assert.notNull(hashCodesExtractor, "HashCodesExtractor must not be null");
 		Assert.isTrue(initialCapacity >= 0, "Initial capacity must not be negative");
 		Assert.isTrue(loadFactor > 0f, "Load factor must be positive");
 		Assert.isTrue(concurrencyLevel > 0, "Concurrency level must be positive");
-		this.attributeHashCodesExtractor = hashCodesExtractor;
-		this.fallbackValuesSupplier = fallbackValuesSupplier;
-		this.attributeValuesCapacity = attributeValueCapacity;
+		this.hashCodesExtractor = hashCodesExtractor;
+		this.collisionThreshold = collisionThreshold;
 		this.loadFactor = loadFactor;
 		this.shift = calculateShift(concurrencyLevel, MAXIMUM_CONCURRENCY_LEVEL);
 		int size = 1 << this.shift;
@@ -108,64 +136,51 @@ class ConcurrentHashFilter<V, A> {
 		this.segments = segments;
 	}
 
-	public void add(V value) {
-		this.attributeHashCodesExtractor.extract(value, (hashCode) -> {
+	/**
+	 * Add the given element to the filter, applying the
+	 * {@link HashCodesExtractor} to create any attribute associations.
+	 * @param element the element to add
+	 */
+	void add(E element) {
+		this.hashCodesExtractor.extract(element, (hashCode) -> {
 			int hash = getHash(hashCode);
-			getSegmentForHash(hash).add(hash, value);
+			getSegmentForHash(hash).add(hash, element);
 		});
 	}
 
-	void remove(V value) {
-		this.attributeHashCodesExtractor.extract(value, (hashCode) -> {
+	/**
+	 * Add the given element to the filter, applying the
+	 * {@link HashCodesExtractor} to remove any attribute associations.
+	 * @param element the element to remove
+	 */
+	void remove(E element) {
+		this.hashCodesExtractor.extract(element, (hashCode) -> {
 			int hash = getHash(hashCode);
-			getSegmentForHash(hash).remove(hash, value);
+			getSegmentForHash(hash).remove(hash, element);
 		});
 	}
 
-	boolean hasCandidates(A attribute) {
-		return find(attribute) != null;
+	/**
+	 * Find candidate elements that are likely to have the specified attribute.
+	 * @param attribute the attribute that the candidates must have
+	 * @return the candidates or {@code null} if a full scan is required
+	 */
+	@Nullable
+	Candidates<E> findCandidates(A attribute) {
+		return findCandidatesForHashCode(attribute.hashCode());
 	}
 
-	Iterable<V> getCandidates(A attribute) {
-		return () -> iterator(attribute);
-	}
-
-	@SuppressWarnings("unchecked")
-	Iterator<V> iterator(A attribute) {
-		Object found = find(attribute);
-		if (found == null) {
-			return Collections.emptyIterator();
-		}
-		if (found == OVER_CAPACITY) {
-			return this.fallbackValuesSupplier.get();
-		}
-		if (found instanceof Values) {
-			return ((Values<V>) found).iterator();
-		}
-		return new SingleCandidateIterator<V>((V) found);
-	}
-
-	@SuppressWarnings("unchecked")
-	public boolean doWithCandidates(A attribute, Consumer<V> action) {
-		Object found = find(attribute);
-		if (found == null) {
-			return false;
-		}
-		if (found == OVER_CAPACITY) {
-			this.fallbackValuesSupplier.get().forEachRemaining(action);
-			return true;
-		}
-		if (found instanceof Values) {
-			((Values<V>) found).forEach(action);
-			return false;
-		}
-		action.accept((V) found);
-		return false;
-	}
-
-	private Object find(A attribute) {
-		int hash = getHash(attribute.hashCode());
-		return getSegmentForHash(hash).find(hash);
+	/**
+	 * Find candidate elements that are likely to have the specified attribute
+	 * based on its hash code.
+	 * @param attributeHashCode the hashcode of the attribute that the
+	 * candidates must have
+	 * @return the candidates or {@code null} if a full scan is required
+	 */
+	@Nullable
+	Candidates<E> findCandidatesForHashCode(int attributeHashCode) {
+		int hash = getHash(attributeHashCode);
+		return getSegmentForHash(hash).findCandidates(hash);
 	}
 
 	private Segment getSegmentForHash(int hash) {
@@ -206,10 +221,21 @@ class ConcurrentHashFilter<V, A> {
 		return (hash != HASH_TABLE_ENTRY_FREE ? hash : hash + 1);
 	}
 
+	/**
+	 * A segment used to divide the hash table to improve multi-threaded
+	 * performance.
+	 */
 	private class Segment extends ReentrantLock {
 
 		private int resizeThreshold;
 
+		/**
+		 * The entry table that contains both the linear probing hash table and
+		 * the values. The first entry in the array always an {@code int[]} hash
+		 * table. The remaining entries are the values which may be a single
+		 * associated value, a {@link Elements} container or
+		 * {@link #COLLISION_THRESHOLD_EXCEEDED}.
+		 */
 		private volatile Object[] table;
 
 		private volatile int entryCount;
@@ -220,7 +246,7 @@ class ConcurrentHashFilter<V, A> {
 		}
 
 		@SuppressWarnings("unchecked")
-		void add(int hash, V value) {
+		void add(int hash, E value) {
 			lock();
 			try {
 				if (this.entryCount >= this.resizeThreshold) {
@@ -235,19 +261,19 @@ class ConcurrentHashFilter<V, A> {
 					return;
 				}
 				Object existing = this.table[index + 1];
-				if (existing == OVER_CAPACITY || value.equals(existing)) {
+				if (existing == COLLISION_THRESHOLD_EXCEEDED || value.equals(existing)) {
 					return;
 				}
-				if (existing instanceof Values) {
-					Values<V> values = (Values<V>) existing;
-					if (values.size() >= ConcurrentHashFilter.this.attributeValuesCapacity) {
-						this.table[index + 1] = OVER_CAPACITY;
+				if (existing instanceof Elements) {
+					Elements<E> elements = (Elements<E>) existing;
+					if (elements.size() >= ConcurrentHashFilter.this.collisionThreshold) {
+						this.table[index + 1] = COLLISION_THRESHOLD_EXCEEDED;
 						return;
 					}
-					values.add(value);
+					elements.add(value);
 					return;
 				}
-				this.table[index + 1] = new Values<V>(existing, value);
+				this.table[index + 1] = new Elements<E>(existing, value);
 			}
 			finally {
 				unlock();
@@ -255,28 +281,28 @@ class ConcurrentHashFilter<V, A> {
 		}
 
 		@SuppressWarnings("unchecked")
-		void remove(int hash, V value) {
+		void remove(int hash, E value) {
 			lock();
 			try {
 				int[] hashes = (int[]) this.table[0];
 				int index = findIndex(hashes, hash);
-				if (hashes[index] != HASH_TABLE_ENTRY_FREE) {
-					Object existing = this.table[index + 1];
-					if (existing == OVER_CAPACITY) {
+				if (hashes[index] == HASH_TABLE_ENTRY_FREE) {
+					return;
+				}
+				Object existing = this.table[index + 1];
+				if (existing == COLLISION_THRESHOLD_EXCEEDED) {
+					return;
+				}
+				if (existing instanceof Elements) {
+					Elements<E> elements = (Elements<E>) existing;
+					elements.remove(value);
+					if (!elements.isEmpty()) {
 						return;
 					}
-					if (existing instanceof Values) {
-						Values<V> candidates = (Values<V>) existing;
-						candidates.remove(value);
-						if (candidates.isEmpty()) {
-							hashes[index] = HASH_TABLE_ENTRY_FREE;
-							this.table[index + 1] = null;
-						}
-					}
-					hashes[index] = HASH_TABLE_ENTRY_FREE;
-					this.table[index + 1] = null;
-					this.entryCount--;
 				}
+				hashes[index] = HASH_TABLE_ENTRY_FREE;
+				this.table[index + 1] = null;
+				this.entryCount--;
 			}
 			finally {
 				unlock();
@@ -306,11 +332,22 @@ class ConcurrentHashFilter<V, A> {
 			return table;
 		}
 
-		Object find(int hash) {
+		@SuppressWarnings("unchecked")
+		Candidates<E> findCandidates(int hash) {
 			Object[] table = this.table;
 			int[] hashTable = (int[]) table[0];
 			int index = findIndex(hashTable, hash);
-			return (hashTable[index] != HASH_TABLE_ENTRY_FREE) ? table[index + 1] : null;
+			if (index == HASH_TABLE_ENTRY_FREE) {
+				return (Candidates<E>) EMPTY_CANDIDATES;
+			}
+			Object existing = table[index + 1];
+			if (existing == COLLISION_THRESHOLD_EXCEEDED) {
+				return null;
+			}
+			if (existing instanceof Elements) {
+				return (Elements<E>) existing;
+			}
+			return new SingleElement<>((E) existing);
 		}
 
 		private int findIndex(int[] hashes, int hash) {
@@ -328,7 +365,12 @@ class ConcurrentHashFilter<V, A> {
 
 	}
 
-	private static class Values<V> implements Iterable<V> {
+	/**
+	 * Container used when more than one element is associated with an attribute
+	 * hash.
+	 * @param <E> the element type
+	 */
+	private static class Elements<E> implements Candidates<E> {
 
 		private static final int DEFAULT_INITIAL_CAPACITY = 16;
 
@@ -338,7 +380,7 @@ class ConcurrentHashFilter<V, A> {
 
 		private volatile Object[] values;
 
-		public Values(Object initial, V additional) {
+		public Elements(Object initial, E additional) {
 			this.values = (Object[]) Array.newInstance(Object.class,
 					DEFAULT_INITIAL_CAPACITY);
 			this.values[0] = initial;
@@ -392,7 +434,7 @@ class ConcurrentHashFilter<V, A> {
 		 * not thread-safe and must only be called when the segment is locked.
 		 * @param value the value to remove
 		 */
-		void remove(V value) {
+		void remove(E value) {
 			Object[] values = this.values;
 			for (int i = 0; i < values.length; i++) {
 				if (value.equals(values[i])) {
@@ -407,71 +449,38 @@ class ConcurrentHashFilter<V, A> {
 			return this.size;
 		}
 
-		boolean isEmpty() {
+		public boolean isEmpty() {
 			return this.size == 0;
 		}
 
 		@Override
-		@SuppressWarnings("unchecked")
-		public void forEach(Consumer<? super V> action) {
-			Object[] values = this.values;
-			for (Object value : values) {
-				if (value != null && value != DELETED) {
-					action.accept((V) value);
-				}
-			}
-		}
-
-		@Override
-		public Iterator<V> iterator() {
-			return new ValuesIterator<V>(this.values);
-		}
-
-	}
-
-	private static class SingleCandidateIterator<E> implements Iterator<E> {
-
-		private E next;
-
-		SingleCandidateIterator(E element) {
-			this.next = element;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return this.next != null;
-		}
-
-		@Override
-		public E next() {
-			E next = this.next;
-			this.next = null;
-			return next;
+		public Iterator<E> iterator() {
+			return new ElementsIterator<E>(this.values);
 		}
 
 	}
 
 	/**
-	 * Iterator for {@link Values}. This iterator requires that elements in the
-	 * backing array to not change position.
-	 * @param <E>
+	 * Iterator for {@link Elements}. This iterator requires that elements in
+	 * the backing array to not change position.
+	 * @param <E> the element type
 	 */
-	private static class ValuesIterator<E> implements Iterator<E> {
+	private static class ElementsIterator<E> implements Iterator<E> {
 
-		private final Object[] values;
+		private final Object[] elements;
 
 		private int index;
 
 		private Object next;
 
-		ValuesIterator(Object[] values) {
-			this.values = values;
+		ElementsIterator(Object[] elements) {
+			this.elements = elements;
 		}
 
 		@Override
 		public boolean hasNext() {
-			while (this.index < this.values.length && this.next == null) {
-				this.next = this.values[this.index];
+			while (this.index < this.elements.length && this.next == null) {
+				this.next = this.elements[this.index];
 				this.next = (this.next != DELETED) ? this.next : null;
 				this.index++;
 			}
@@ -491,12 +500,78 @@ class ConcurrentHashFilter<V, A> {
 
 	}
 
+	/**
+	 * Container used to return a {@link Candidates} result for a single
+	 * element.
+	 * @param <E> the element type
+	 */
+	private static class SingleElement<E> implements Candidates<E> {
+
+		private final E element;
+
+		SingleElement(E element) {
+			this.element = element;
+		}
+
+		@Override
+		public Iterator<E> iterator() {
+			return new SingleElementIterator<>(this.element);
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return false;
+		}
+
+	}
+
+	private static class SingleElementIterator<E> implements Iterator<E> {
+
+		private E next;
+
+		SingleElementIterator(E element) {
+			this.next = element;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.next != null;
+		}
+
+		@Override
+		public E next() {
+			E next = this.next;
+			this.next = null;
+			return next;
+		}
+
+	}
+
+	/**
+	 * Strategy interface used to extract attribute hash codes for an element.
+	 * @param <E> the element type
+	 * @param <A> the attribute type
+	 */
 	@FunctionalInterface
-	public interface HashCodesExtractor<V, A> {
+	public interface HashCodesExtractor<E, A> {
 
-		void extract(V value, HashCodeConsumer<A> consumer);
+		/**
+		 * Extract attribute hash codes for the given element.
+		 * @param element the element to extract attribute hash codes from
+		 * @param consumer a hash code consumer called once for each hash code
+		 */
+		void extract(E element, HashCodeConsumer<A> consumer);
 
-		static <V, A> HashCodesExtractor<V, A> preComputed(int... hashCodes) {
+		/**
+		 * Factory method that can be used to create a
+		 * {@link HashCodesExtractor} for a set of pre-computed hash codes.
+		 * @param <E> the element type
+		 * @param <A> the attribute type
+		 * @param hashCodes the pre-computed hash codes
+		 * @return a {@link HashCodesExtractor} instance that provides the
+		 * pre-computed hash codes
+		 */
+		static <E, A> HashCodesExtractor<E, A> preComputed(int... hashCodes) {
 			return (value, consumer) -> {
 				consumer.acceptHashCodes(hashCodes);
 			};
@@ -504,31 +579,77 @@ class ConcurrentHashFilter<V, A> {
 
 	}
 
+	/**
+	 * Consumer used to receive hash codes.
+	 * @param <A> the attribute type
+	 */
 	@FunctionalInterface
-	public interface HashCodeConsumer<T> {
+	public interface HashCodeConsumer<A> {
 
-		default void accept(T instance) {
-			acceptHashCode(instance.hashCode());
+		/**
+		 * Accept the hash code of the given attribute.
+		 * @param attribute the attribute to accept
+		 */
+		default void accept(A attribute) {
+			acceptHashCode(attribute.hashCode());
 		}
 
-		default void accept(T instance, HashCodeFunction<T> hashFunction) {
-			acceptHashCode(hashFunction.apply(instance));
+		/**
+		 * Accept the hash code of the given attribute generated by a given
+		 * function.
+		 * @param attribute the attribute to accept
+		 * @param hashFunction the function used to generate the hash code
+		 */
+		default void accept(A attributes, HashCodeFunction<A> hashFunction) {
+			acceptHashCode(hashFunction.apply(attributes));
 		}
 
+		/**
+		 * Accept an array of hash codes (one for each attribute)
+		 * @param hashCodes the hash codes to accept
+		 */
 		default void acceptHashCodes(int[] hashCodes) {
 			for (int hashCode : hashCodes) {
 				acceptHashCode(hashCode);
 			}
 		}
 
+		/**
+		 * Accept a single hash code.
+		 * @param hashCode the hash code to accept
+		 */
 		void acceptHashCode(int hashCode);
 
 	}
 
+	/**
+	 * Strategy that can be used to provide a custom hashing function.
+	 * @param <A> the attribute type
+	 */
 	@FunctionalInterface
-	public interface HashCodeFunction<T> {
+	public interface HashCodeFunction<A> {
 
-		int apply(T instance);
+		/**
+		 * Return the hash code of the given attribute
+		 * @param attribute the attribute to hash
+		 * @return the hash code of the attribute
+		 */
+		int apply(A attribute);
+
+	}
+
+	/**
+	 * An {@link Iterable} collection of candidates that are likely to have a
+	 * specific attribute.
+	 * @param <E> the element type
+	 */
+	public interface Candidates<E> extends Iterable<E> {
+
+		/**
+		 * Return {@code true} if there are no candidate.
+		 * @return if there are no candidate
+		 */
+		boolean isEmpty();
 
 	}
 
