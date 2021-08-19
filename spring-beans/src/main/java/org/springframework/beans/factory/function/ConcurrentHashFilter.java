@@ -28,20 +28,20 @@ import org.springframework.util.Assert;
 /**
  * Memory efficient filter used to quickly limit candidates based on the hash
  * codes of attributes extracted from the element. For example, a collection of
- * objects could be filtered based on their type-hierarchy to allow fast
- * retrieval of elements that are likely to match an {@code instanceof} check.
+ * Strings could be filtered based on their letters to allow fast retrieval of
+ * elements that are likely to match an {@code String.contains(char)} check.
  *
  * @author Phillip Webb
  */
 class ConcurrentHashFilter<E, A> {
 
-	private static final int DEFAULT_ATTRIBUTE_VALUES_CAPACITY = 32;
+	static final int DEFAULT_INITIAL_CAPACITY = 32;
 
-	private static final int DEFAULT_COLLISION_THRESHOLD = 128;
+	static final int DEFAULT_COLLISION_THRESHOLD = 128;
 
-	private static final float DEFAULT_LOAD_FACTOR = 0.7f;
+	static final float DEFAULT_LOAD_FACTOR = 0.7f;
 
-	private static final int DEFAULT_CONCURRENCY_LEVEL = 8;
+	static final int DEFAULT_CONCURRENCY_LEVEL = 8;
 
 	private static final int MAXIMUM_CONCURRENCY_LEVEL = 1 << 16;
 
@@ -82,9 +82,8 @@ class ConcurrentHashFilter<E, A> {
 	 * @param hashCodesExtractor the hash codes extractor to apply
 	 */
 	ConcurrentHashFilter(HashCodesExtractor<E, A> hashCodesExtractor) {
-		this(hashCodesExtractor, DEFAULT_ATTRIBUTE_VALUES_CAPACITY,
-				DEFAULT_COLLISION_THRESHOLD, DEFAULT_LOAD_FACTOR,
-				DEFAULT_CONCURRENCY_LEVEL);
+		this(hashCodesExtractor, DEFAULT_COLLISION_THRESHOLD, DEFAULT_INITIAL_CAPACITY,
+				DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL);
 	}
 
 	/**
@@ -96,7 +95,7 @@ class ConcurrentHashFilter<E, A> {
 	 */
 	ConcurrentHashFilter(HashCodesExtractor<E, A> hashCodesExtractor,
 			int collisionThreshold) {
-		this(hashCodesExtractor, collisionThreshold, DEFAULT_COLLISION_THRESHOLD,
+		this(hashCodesExtractor, collisionThreshold, DEFAULT_INITIAL_CAPACITY,
 				DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL);
 	}
 
@@ -117,6 +116,8 @@ class ConcurrentHashFilter<E, A> {
 			int collisionThreshold, int initialCapacity, float loadFactor,
 			int concurrencyLevel) {
 		Assert.notNull(hashCodesExtractor, "HashCodesExtractor must not be null");
+		Assert.isTrue(collisionThreshold >= 0,
+				"Collision threshold must not be negative");
 		Assert.isTrue(initialCapacity >= 0, "Initial capacity must not be negative");
 		Assert.isTrue(loadFactor > 0f, "Load factor must be positive");
 		Assert.isTrue(concurrencyLevel > 0, "Concurrency level must be positive");
@@ -142,6 +143,7 @@ class ConcurrentHashFilter<E, A> {
 	 * @param element the element to add
 	 */
 	void add(E element) {
+		Assert.notNull(element, "Element must not be null");
 		this.hashCodesExtractor.extract(element, (hashCode) -> {
 			int hash = getHash(hashCode);
 			getSegmentForHash(hash).add(hash, element);
@@ -154,6 +156,7 @@ class ConcurrentHashFilter<E, A> {
 	 * @param element the element to remove
 	 */
 	void remove(E element) {
+		Assert.notNull(element, "Element must not be null");
 		this.hashCodesExtractor.extract(element, (hashCode) -> {
 			int hash = getHash(hashCode);
 			getSegmentForHash(hash).remove(hash, element);
@@ -167,6 +170,7 @@ class ConcurrentHashFilter<E, A> {
 	 */
 	@Nullable
 	Candidates<E> findCandidates(A attribute) {
+		Assert.notNull(attribute, "Attribute must not be null");
 		return findCandidatesForHashCode(attribute.hashCode());
 	}
 
@@ -225,7 +229,7 @@ class ConcurrentHashFilter<E, A> {
 	 * A segment used to divide the hash table to improve multi-threaded
 	 * performance.
 	 */
-	private class Segment extends ReentrantLock {
+	class Segment extends ReentrantLock {
 
 		private int resizeThreshold;
 
@@ -296,13 +300,17 @@ class ConcurrentHashFilter<E, A> {
 				if (existing instanceof Elements) {
 					Elements<E> elements = (Elements<E>) existing;
 					elements.remove(value);
-					if (!elements.isEmpty()) {
-						return;
+					if (elements.isEmpty()) {
+						hashes[index] = HASH_TABLE_ENTRY_FREE;
+						this.table[index + 1] = null;
+						this.entryCount--;
 					}
 				}
-				hashes[index] = HASH_TABLE_ENTRY_FREE;
-				this.table[index + 1] = null;
-				this.entryCount--;
+				else if (value.equals(existing)) {
+					hashes[index] = HASH_TABLE_ENTRY_FREE;
+					this.table[index + 1] = null;
+					this.entryCount--;
+				}
 			}
 			finally {
 				unlock();
@@ -335,9 +343,9 @@ class ConcurrentHashFilter<E, A> {
 		@SuppressWarnings("unchecked")
 		Candidates<E> findCandidates(int hash) {
 			Object[] table = this.table;
-			int[] hashTable = (int[]) table[0];
-			int index = findIndex(hashTable, hash);
-			if (index == HASH_TABLE_ENTRY_FREE) {
+			int[] hashes = (int[]) table[0];
+			int index = findIndex(hashes, hash);
+			if (hashes[index] == HASH_TABLE_ENTRY_FREE) {
 				return (Candidates<E>) EMPTY_CANDIDATES;
 			}
 			Object existing = table[index + 1];
@@ -385,6 +393,7 @@ class ConcurrentHashFilter<E, A> {
 					DEFAULT_INITIAL_CAPACITY);
 			this.values[0] = initial;
 			this.values[1] = additional;
+			this.size = 2;
 		}
 
 		/**

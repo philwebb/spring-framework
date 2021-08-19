@@ -34,7 +34,7 @@ import org.springframework.util.function.InstanceSupplier;
  * {@link FunctionalBeanRegistry} and ultimately instantiated by a
  * {@link FunctionalBeanFactory}. A {@code BeanRegistration} is an immutable
  * class that provides all the information that a {@link FunctionalBeanFactory}
- * will need in order to create a fully-wired bean instance.
+ * will need in order to create fully-wired bean instances.
  *
  * @author Phillip Webb
  * @since 6.0.0
@@ -112,7 +112,7 @@ public final class FunctionBeanDefinition<T> {
 		return this.qualifiers.contains(qualifier);
 	}
 
-	static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> builder) {
+	public static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> builder) {
 		return new Builder<>(builder).build();
 	}
 

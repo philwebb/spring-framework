@@ -16,7 +16,6 @@
 
 package org.springframework.beans.factory.function;
 
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.function.ConcurrentHashFilter.HashCodeConsumer;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
