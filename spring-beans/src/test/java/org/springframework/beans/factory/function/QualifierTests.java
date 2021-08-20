@@ -31,7 +31,7 @@ class QualifierTests {
 	@Test
 	void ofReturnsSimpleQualifier() {
 		Qualifier qualifier = Qualifier.of("test");
-		assertThat(qualifier).isInstanceOf(SimpleQualifier.class).hasToString("test");
+		assertThat(qualifier).isInstanceOf(StringQualifier.class).hasToString("test");
 	}
 
 	@Test

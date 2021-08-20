@@ -17,21 +17,26 @@
 package org.springframework.beans.factory.function;
 
 /**
- * A qualifier that can be associated with a {@link FunctionBeanDefinition} in
+ * A qualifier that can be associated with a {@link FunctionalBeanDefinition} in
  * order to disambiguate it from other candidates. Qualifier implementations
  * must have valid {@code hashCode}, {@code equals} and {@code toString}
  * methods.
  * <p>
- * Simple string based qualifiers can be created using the {@link #of(String)}
- * factory method.
+ * String based qualifiers can be created using the {@link #of(String)} factory
+ * method.
  *
  * @author Phillip Webb
  * @since 6.0
  */
 public interface Qualifier {
 
+	/**
+	 * Return string based qualifier for the given value.
+	 * @param value the qualifier value
+	 * @return a string based qualifier
+	 */
 	static Qualifier of(String value) {
-		return new SimpleQualifier(value);
+		return new StringQualifier(value);
 	}
 
 }

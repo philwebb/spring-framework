@@ -24,11 +24,11 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @see Qualifier#of(String)
  */
-class SimpleQualifier implements Qualifier {
+class StringQualifier implements Qualifier {
 
 	private String value;
 
-	SimpleQualifier(String value) {
+	StringQualifier(String value) {
 		Assert.hasText(value, "Value must not be empty");
 		this.value = value;
 	}
@@ -46,7 +46,7 @@ class SimpleQualifier implements Qualifier {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		SimpleQualifier other = (SimpleQualifier) obj;
+		StringQualifier other = (StringQualifier) obj;
 		return this.value.equals(other.value);
 	}
 

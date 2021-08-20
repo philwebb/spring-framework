@@ -20,7 +20,7 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
 
 /**
  * Subclass of {@link BeanDefinitionStoreException} indicating an attempt to
- * override an existing {@link FunctionBeanDefinition}.
+ * override an existing {@link FunctionalBeanDefinition}.
  *
  * @author Phillip Webb
  * @since 6.0

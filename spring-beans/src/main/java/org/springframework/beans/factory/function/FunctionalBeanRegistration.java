@@ -26,21 +26,26 @@ import org.springframework.util.Assert;
  *
  * @author Phillip Webb
  */
-class FunctionalBeanRegistration<T> {
+class FunctionalBeanRegistration<T> implements Comparable<FunctionalBeanRegistration<?>> {
 
 	private final int sequence;
 
-	private final FunctionBeanDefinition<T> definition;
+	private final FunctionalBeanDefinition<T> definition;
 
 	public FunctionalBeanRegistration(int sequence,
-			FunctionBeanDefinition<T> definition) {
+			FunctionalBeanDefinition<T> definition) {
 		Assert.notNull(definition, "Definition must not be null");
 		this.sequence = sequence;
 		this.definition = definition;
 	}
 
-	FunctionBeanDefinition<T> getDefinition() {
+	FunctionalBeanDefinition<T> getDefinition() {
 		return definition;
+	}
+
+	@Override
+	public int compareTo(FunctionalBeanRegistration<?> other) {
+		return Integer.compare(this.sequence, other.sequence);
 	}
 
 	@Override
@@ -74,21 +79,12 @@ class FunctionalBeanRegistration<T> {
 		}
 	}
 
-	/**
-	 * @return
-	 */
 	public boolean isSingleton() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return true;
 	}
 
-	/**
-	 * @return
-	 */
 	public boolean isPrototype() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return false;
 	}
-
 
 }

@@ -22,36 +22,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Tests for {@link SimpleQualifier}.
+ * Tests for {@link StringQualifier}.
  *
  * @author Phillip Webb
  */
-class SimpleQualifierTests {
+class StringQualifierTests {
 
 	@Test
 	void createWhenValueIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> new SimpleQualifier(null)).withMessage("Value must not be empty");
+				() -> new StringQualifier(null)).withMessage("Value must not be empty");
 	}
 
 	@Test
 	void createWhenValueIsEmptyStringThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> new SimpleQualifier("")).withMessage("Value must not be empty");
+				() -> new StringQualifier("")).withMessage("Value must not be empty");
 	}
 
 	@Test
 	void equalsAndHashCodeUseValue() {
-		SimpleQualifier a1 = new SimpleQualifier("a");
-		SimpleQualifier a2 = new SimpleQualifier("a");
-		SimpleQualifier b1 = new SimpleQualifier("b");
+		StringQualifier a1 = new StringQualifier("a");
+		StringQualifier a2 = new StringQualifier("a");
+		StringQualifier b1 = new StringQualifier("b");
 		assertThat(a1.hashCode()).isEqualTo(a2.hashCode());
 		assertThat(a1).isEqualTo(a1).isEqualTo(a2).isNotEqualTo(b1);
 	}
 
 	@Test
 	void toStringReturnsValue() {
-
+		assertThat(new StringQualifier("test")).hasToString("test");
 	}
 
 }

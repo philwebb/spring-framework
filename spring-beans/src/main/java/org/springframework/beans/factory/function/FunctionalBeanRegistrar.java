@@ -17,7 +17,7 @@
 package org.springframework.beans.factory.function;
 
 /**
- * Callback interface used to register one or more {@link FunctionBeanDefinition
+ * Callback interface used to register one or more {@link FunctionalBeanDefinition
  * functional bean definitions} with a {@link FunctionalBeanRegistry}.
  *
  * @author Phillip Webb

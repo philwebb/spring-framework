@@ -43,7 +43,7 @@ import org.springframework.util.function.InstanceSupplier;
  * @see FunctionalBeanRegistry
  * @see InjectionContext
  */
-public final class FunctionBeanDefinition<T> {
+public final class FunctionalBeanDefinition<T> {
 
 	private final String name;
 
@@ -58,7 +58,7 @@ public final class FunctionBeanDefinition<T> {
 
 	private final Set<Qualifier> qualifiers;
 
-	private FunctionBeanDefinition(Builder<T> builder) {
+	private FunctionalBeanDefinition(Builder<T> builder) {
 		Assert.hasText(builder.name, "Name must not be empty");
 		Assert.notNull(builder.type, "Type must not be null");
 		Assert.notNull(builder.instanceSupplier, "InstanceSupplier must not be null");
@@ -73,24 +73,24 @@ public final class FunctionBeanDefinition<T> {
 	}
 
 	String getName() {
-		return name;
+		return this.name;
 	}
 
 	Class<?> getType() {
-		return type;
+		return this.type;
 	}
 
 	@Nullable
 	ResolvableType getResolvableType() {
-		return resolvableType;
+		return this.resolvableType;
 	}
 
 	InstanceSupplier<InjectionContext, T> getInstanceSupplier() {
-		return instanceSupplier;
+		return this.instanceSupplier;
 	}
 
 	boolean hasName(String name) {
-		return false;
+		return this.name.equals(name);
 	}
 
 	boolean hasType(ResolvableType type) {
@@ -112,7 +112,7 @@ public final class FunctionBeanDefinition<T> {
 		return this.qualifiers.contains(qualifier);
 	}
 
-	public static <T> FunctionBeanDefinition<T> of(Consumer<Builder<T>> builder) {
+	public static <T> FunctionalBeanDefinition<T> of(Consumer<Builder<T>> builder) {
 		return new Builder<>(builder).build();
 	}
 
@@ -164,8 +164,8 @@ public final class FunctionBeanDefinition<T> {
 			this.qualifiers.add(qualifier);
 		}
 
-		FunctionBeanDefinition<T> build() {
-			return new FunctionBeanDefinition<>(this);
+		FunctionalBeanDefinition<T> build() {
+			return new FunctionalBeanDefinition<>(this);
 		}
 
 	}

@@ -562,7 +562,7 @@ class ConcurrentHashFilter<E, A> {
 	 * @param <A> the attribute type
 	 */
 	@FunctionalInterface
-	public interface HashCodesExtractor<E, A> {
+	interface HashCodesExtractor<E, A> {
 
 		/**
 		 * Extract attribute hash codes for the given element.
@@ -593,7 +593,7 @@ class ConcurrentHashFilter<E, A> {
 	 * @param <A> the attribute type
 	 */
 	@FunctionalInterface
-	public interface HashCodeConsumer<A> {
+	interface HashCodeConsumer<A> {
 
 		/**
 		 * Accept the hash code of the given attribute.
@@ -636,7 +636,7 @@ class ConcurrentHashFilter<E, A> {
 	 * @param <A> the attribute type
 	 */
 	@FunctionalInterface
-	public interface HashCodeFunction<A> {
+	interface HashCodeFunction<A> {
 
 		/**
 		 * Return the hash code of the given attribute
@@ -652,7 +652,7 @@ class ConcurrentHashFilter<E, A> {
 	 * specific attribute.
 	 * @param <E> the element type
 	 */
-	public interface Candidates<E> extends Iterable<E> {
+	interface Candidates<E> extends Iterable<E> {
 
 		/**
 		 * Return {@code true} if there are no candidate.

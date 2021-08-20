@@ -16,9 +16,12 @@
 
 package org.springframework.beans.factory.function;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
@@ -48,7 +51,7 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 	}
 
 	@Override
-	public <T> void register(FunctionBeanDefinition<T> definition) {
+	public <T> void register(FunctionalBeanDefinition<T> definition) {
 		FunctionalBeanRegistration<T> registration = new FunctionalBeanRegistration<>(
 				this.sequenceGenerator.getAndIncrement(), definition);
 		this.registrations.add(registration);
@@ -71,22 +74,23 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 	@Override
 	public <T> T getBean(BeanSelector<T> selector, Object... args) throws BeansException {
-		return getBean(selector, args, null);
+		return getBean(null, selector, args, null);
 	}
 
 	@Override
 	public <T, R> R getBean(BeanSelector<T> selector, Class<R> requiredType)
 			throws BeansException {
-		return getBean(selector, null, requiredType);
+		return getBean(null, selector, null, requiredType);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T, R> R getBean(BeanSelector<T> selector, @Nullable Object[] args,
+	private <T, R> R getBean(@Nullable FunctionalInjectionContext parentInjectionContext,
+			BeanSelector<T> selector, @Nullable Object[] args,
 			@Nullable Class<R> requiredType) throws BeansException {
 		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
 		if (registration != null) {
-			InjectionContext injectionContext = new FunctionalBeanInjectionContext(
-					registration, args);
+			InjectionContext injectionContext = new FunctionalInjectionContext(
+					parentInjectionContext, registration, args);
 			Object bean = registration.getBeanInstance(injectionContext, args);
 			return (R) bean;
 		}
@@ -100,14 +104,20 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 	@Override
 	public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector,
 			boolean allowEagerInit) throws BeansException {
-		return getBeanProvider(selector, null);
+		return getBeanProvider(null, selector, allowEagerInit);
 	}
 
-	private <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector,
-			FunctionalBeanInjectionContext injectionContext) {
-
-
-		return null;
+	private <T> ObjectProvider<T> getBeanProvider(
+			@Nullable FunctionalInjectionContext parentInjectionContext,
+			BeanSelector<T> selector, boolean allowEagerInit) {
+		FunctionalBeanRegistration<T> registration = this.registrations.find(selector);
+		if (registration != null) {
+			// FIXME
+		}
+		if (this.parent != null) {
+			return this.parent.getBeanProvider(selector, allowEagerInit);
+		}
+		throw new NoSelectableBeanDefinitionException(selector);
 	}
 
 	@Override
@@ -232,7 +242,7 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 
 	}
 
-	private class FunctionalBeanInjectionContext implements InjectionContext {
+	private class FunctionalInjectionContext implements InjectionContext {
 
 		private final InjectionContext parent;
 
@@ -241,11 +251,38 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 		@Nullable
 		private Object[] args;
 
-		FunctionalBeanInjectionContext(FunctionalBeanRegistration<?> registration,
-				@Nullable Object[] args) {
-			this.parent = null;
-			this.args = args;
+		FunctionalInjectionContext(FunctionalInjectionContext parent,
+				FunctionalBeanRegistration<?> registration, @Nullable Object[] args) {
+			this.parent = parent;
 			this.registration = registration;
+			this.args = args;
+		}
+
+		public <T> T getBean(BeanSelector<T> selector) {
+			return DefaultFunctionalBeanFactory.this.getBean(this, selector, null, null);
+		}
+
+		@Override
+		public <S, T> T getBean(BeanSelector<S> selector, Class<T> requiredType)
+				throws BeansException {
+			return DefaultFunctionalBeanFactory.this.getBean(this, selector, null,
+					requiredType);
+		}
+
+		@Override
+		public <T> T getBean(BeanSelector<T> selector, Object... args)
+				throws BeansException {
+			return DefaultFunctionalBeanFactory.this.getBean(this, selector, args, null);
+		}
+
+		@Override
+		public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector) {
+			return DefaultFunctionalBeanFactory.this.getBeanProvider(this, selector, true);
+		}
+
+		@Override
+		public String resolveEmbeddedValue(String value) {
+			return DefaultFunctionalBeanFactory.this.resolveEmbeddedValue(value);
 		}
 
 		@Override
@@ -253,19 +290,80 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 			return this.args;
 		}
 
-		public <T> T getBean(BeanSelector<T> selector){
-			// FIXME
-			return null;
+	}
+
+	private class FunctionalObjectProvider<T> implements ObjectProvider<T> {
+
+		@Override
+		public <V> V getObject(Class<V> requireType) throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
 		}
 
 		@Override
-		public <T> ObjectProvider<T> getBeanProvider(BeanSelector<T> selector) {
-			return DefaultFunctionalBeanFactory.this.getBeanProvider(selector, this);
+		public T getObject() throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
 		}
 
 		@Override
-		public String resolveEmbeddedValue(String value) {
-			return DefaultFunctionalBeanFactory.this.resolveEmbeddedValue(value);
+		public T getObject(Object... args) throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public T getIfAvailable() throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public T getIfAvailable(Supplier<T> defaultSupplier) throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public void ifAvailable(Consumer<T> dependencyConsumer) throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public T getIfUnique() throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public T getIfUnique(Supplier<T> defaultSupplier) throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public void ifUnique(Consumer<T> dependencyConsumer) throws BeansException {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public Iterator<T> iterator() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public Stream<T> stream() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
+
+		@Override
+		public Stream<T> orderedStream() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
 		}
 
 	}
