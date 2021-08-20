@@ -1,61 +1,47 @@
 
 package io.spring.sample;
 
-import io.spring.bean.config.BeanInstanceSupplier;
-import io.spring.bean.config.BeanRegistrar;
-import io.spring.bean.config.BeanRegistration;
-import io.spring.bean.config.BeanRegistry;
-import io.spring.bean.config.BeanRepository;
-import io.spring.scheduling.ScheduleRegistrar;
-import io.spring.scheduling.ScheduleRegistration;
+import org.springframework.beans.factory.function.FunctionalBeanDefinition;
+import org.springframework.beans.factory.function.FunctionalBeanRegistrar;
+import org.springframework.beans.factory.function.FunctionalBeanRegistry;
+import org.springframework.beans.factory.function.InjectionContext;
+import org.springframework.util.function.InstanceSupplier;
 
 /**
  * {@link BeanRegistrar} to adapt {@link ApplicationConfiguration}.
  */
-class ApplicationConfigurationRegistrar implements BeanRegistrar {
+class ApplicationConfigurationRegistrar implements FunctionalBeanRegistrar {
 
 	@Override
-	public void apply(BeanRegistry registry) {
-		registry.registerFrom(SchedulingConfigurationRegistrar::new);
+	public void apply(FunctionalBeanRegistry registry) {
 		registry.register(this::applicationConfigurationRegistration);
 		registry.register(this::printerRegistration);
 		registry.register(this::greeterRegistration);
 	}
 
 	private void applicationConfigurationRegistration(
-			BeanRegistration.Builder<ApplicationConfiguration> registration) {
+			FunctionalBeanDefinition.Builder<ApplicationConfiguration> registration) {
 		registration.setType(ApplicationConfiguration.class);
-		registration.setInstanceSupplier(
-				BeanInstanceSupplier.via(ApplicationConfiguration::new));
+		registration.setInstanceSupplier(InstanceSupplier.of(ApplicationConfiguration::new));
 	}
 
-	private void printerRegistration(BeanRegistration.Builder<Printer> registration) {
+	private void printerRegistration(FunctionalBeanDefinition.Builder<Printer> registration) {
 		registration.setType(Printer.class);
-		registration.setInstanceSupplier(BeanInstanceSupplier.via(
-				ApplicationConfiguration.class, ApplicationConfiguration::printer));
+		registration.setInstanceSupplier(this::printer);
 	}
 
-	private void greeterRegistration(BeanRegistration.Builder<Greeter> registration) {
+	private Printer printer(InjectionContext injectionContext) {
+		return injectionContext.getBean(ApplicationConfiguration.class).printer();
+	}
+
+	private void greeterRegistration(FunctionalBeanDefinition.Builder<Greeter> registration) {
 		registration.setType(Greeter.class);
 		registration.setInstanceSupplier(this::greeter);
-		registration.onCreate(this::dunno);
 	}
 
-	private Greeter greeter(BeanRepository repository) {
-		ApplicationConfiguration applicationConfiguration = repository.get(
-				ApplicationConfiguration.class);
-		Printer printer = repository.get(Printer.class);
-		return applicationConfiguration.greeter(printer);
-	}
-	
-	private void dunno(Greeter greeter) {
-		
-	}
-
-	private ScheduleRegistrar scheduleRegistrar(Greeter greeter) {
-		return (registry) -> {
-			registry.register(ScheduleRegistration.of(greeter::greet));
-		};
+	private Greeter greeter(InjectionContext injectionContext) {
+		Printer printer = injectionContext.getBean(Printer.class);
+		return injectionContext.getBean(ApplicationConfiguration.class).greeter(printer);
 	}
 
 }

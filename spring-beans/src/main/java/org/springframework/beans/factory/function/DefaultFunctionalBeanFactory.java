@@ -50,11 +50,22 @@ public class DefaultFunctionalBeanFactory extends AbstractFunctionalBeanFactory 
 	public DefaultFunctionalBeanFactory() {
 	}
 
+	public DefaultFunctionalBeanFactory(FunctionalBeanRegistrar... registrars) {
+		registerFrom(registrars);
+	}
+
 	@Override
 	public <T> void register(FunctionalBeanDefinition<T> definition) {
 		FunctionalBeanRegistration<T> registration = new FunctionalBeanRegistration<>(
 				this.sequenceGenerator.getAndIncrement(), definition);
 		this.registrations.add(registration);
+	}
+
+	@Override
+	public void registerFrom(FunctionalBeanRegistrar... registrars) {
+		for (FunctionalBeanRegistrar registrar : registrars) {
+			registrar.apply(this);
+		}
 	}
 
 	@Override

@@ -50,4 +50,6 @@ public interface FunctionalBeanRegistry {
 	<T> void register(FunctionalBeanDefinition<T> definition)
 			throws FunctionalBeanDefinitionOverrideException;
 
+	void registerFrom(FunctionalBeanRegistrar... registrars);
+
 }

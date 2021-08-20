@@ -1,16 +1,14 @@
 
 package io.spring.sample;
 
-import io.spring.context.DefaultApplicationContext;
+import org.springframework.context.function.DefaultFunctionalApplicationContext;
 
 public class SampleSpring6Application {
 
 	public static void main(String[] args) throws InterruptedException {
-		DefaultApplicationContext applicationContext = new DefaultApplicationContext(
+		DefaultFunctionalApplicationContext applicationContext = new DefaultFunctionalApplicationContext(
 				new ApplicationConfigurationRegistrar());
-		applicationContext.get(Greeter.class).greet();
-		Thread.sleep(1500);
-		applicationContext.close();
+		applicationContext.getBean(Greeter.class).greet();
 	}
 
 }

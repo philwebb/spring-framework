@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.function;
+package org.springframework.context.function;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.function.FunctionalBeanFactory;
+import org.springframework.context.ApplicationContext;
 
 /**
- * Subclass of {@link NoSuchBeanDefinitionException} used when a
- * {@link BeanSelector} matches no {@link FunctionalBeanDefinition bean
- * definitions}.
- * 
  * @author Phillip Webb
  * @since 6.0
  */
-public class NoSelectableBeanDefinitionException extends NoSuchBeanDefinitionException {
+public interface FunctionalApplicationContext
+		extends ApplicationContext, FunctionalBeanFactory {
 
-	public NoSelectableBeanDefinitionException(BeanSelector<?> selector) {
-		super(""); // FIXME
+	FunctionalBeanFactory getBeanFactory();
+
+	@Override
+	default AutowireCapableBeanFactory getAutowireCapableBeanFactory()
+			throws IllegalStateException {
+		throw new IllegalStateException(
+				"FunctionalApplicationContexts are not autowire capable");
 	}
 
 }

@@ -27,8 +27,7 @@ import org.springframework.beans.factory.function.ConcurrentHashFilter.HashCodeC
 import org.springframework.core.ResolvableType;
 
 /**
- * Internal class used to hold a collection of
- * {@link FunctionalBeanRegistration} objects.
+ * Internal class used to manage {@link FunctionalBeanRegistration} objects.
  *
  * @author Phillip Webb
  */
@@ -42,13 +41,15 @@ class FunctionalBeanRegistrations {
 
 	<T> void add(FunctionalBeanRegistration<T> registration) {
 		addFilters(registration);
-		FunctionalBeanRegistration<?> previousRegistration = this.registrations.putIfAbsent(
-				registration, registration);
-		if (previousRegistration != null) {
-			removeFilters(registration);
-			throw new FunctionalBeanDefinitionOverrideException(registration,
-					previousRegistration);
+		FunctionalBeanRegistration<?> existingRegistration = this.registrations.putIfAbsent(registration, registration);
+		if (existingRegistration != null) {
+			throw new FunctionalBeanDefinitionOverrideException(registration, existingRegistration);
 		}
+	}
+
+	private void addFilters(FunctionalBeanRegistration<?> registration) {
+		this.byName.add(registration);
+		this.byType.add(registration);
 	}
 
 	<T> FunctionalBeanRegistration<T> find(BeanSelector<T> selector) {
@@ -63,9 +64,8 @@ class FunctionalBeanRegistrations {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> FunctionalBeanRegistration<T> find(
-			Iterable<FunctionalBeanRegistration<?>> candidates, BeanSelector<T> selector,
-			boolean checkRegistered) {
+	private <T> FunctionalBeanRegistration<T> find(Iterable<FunctionalBeanRegistration<?>> candidates,
+			BeanSelector<T> selector, boolean checkRegistered) {
 		FunctionalBeanRegistration<T> result = null;
 		List<FunctionalBeanRegistration<T>> duplicates = null;
 		for (FunctionalBeanRegistration<?> candidate : candidates) {
@@ -89,18 +89,10 @@ class FunctionalBeanRegistrations {
 		return result;
 	}
 
-	private void addFilters(FunctionalBeanRegistration<?> registration) {
-		this.byName.add(registration);
-		this.byType.add(registration);
-	}
-
-	private void removeFilters(FunctionalBeanRegistration<?> registration) {
-		this.byName.remove(registration);
-		this.byType.remove(registration);
-	}
-
-	private Candidates<FunctionalBeanRegistration<?>> findCandidates(
-			BeanSelector<?> selector) {
+	private Candidates<FunctionalBeanRegistration<?>> findCandidates(BeanSelector<?> selector) {
+		if (selector.getPrimarySelectorType() == null) {
+			return null;
+		}
 		switch (selector.getPrimarySelectorType()) {
 			case NAME:
 				return findCandidatesByName((String) selector.getPrimarySelector());
@@ -110,8 +102,7 @@ class FunctionalBeanRegistrations {
 				ResolvableType resolvableType = (ResolvableType) selector.getPrimarySelector();
 				return findCandidatesByResolvableType(resolvableType);
 			case ANNOTATION_TYPE:
-				return findCandidatesByAnnotationType(
-						(Class<?>) selector.getPrimarySelector());
+				return findCandidatesByAnnotationType((Class<?>) selector.getPrimarySelector());
 		}
 		return null;
 	}
@@ -120,29 +111,24 @@ class FunctionalBeanRegistrations {
 		return this.byName.findCandidates(name);
 	}
 
-	private Candidates<FunctionalBeanRegistration<?>> findCandidatesByType(
-			Class<?> type) {
+	private Candidates<FunctionalBeanRegistration<?>> findCandidatesByType(Class<?> type) {
 		return this.byType.findCandidates(type.getName());
 	}
 
-	private Candidates<FunctionalBeanRegistration<?>> findCandidatesByResolvableType(
-			ResolvableType resolvableType) {
+	private Candidates<FunctionalBeanRegistration<?>> findCandidatesByResolvableType(ResolvableType resolvableType) {
 		Class<?> type = resolvableType.resolve();
 		return (type != null) ? findCandidatesByType(type) : null;
 	}
 
-	private Candidates<FunctionalBeanRegistration<?>> findCandidatesByAnnotationType(
-			Class<?> annotationType) {
+	private Candidates<FunctionalBeanRegistration<?>> findCandidatesByAnnotationType(Class<?> annotationType) {
 		return null;
 	}
 
-	private void extractName(FunctionalBeanRegistration<?> registration,
-			HashCodeConsumer<String> consumer) {
+	private void extractName(FunctionalBeanRegistration<?> registration, HashCodeConsumer<String> consumer) {
 		consumer.accept(registration.getDefinition().getName());
 	}
 
-	private void extractTypeHierarchy(FunctionalBeanRegistration<?> registration,
-			HashCodeConsumer<String> consumer) {
+	private void extractTypeHierarchy(FunctionalBeanRegistration<?> registration, HashCodeConsumer<String> consumer) {
 		extractTypeHierarchy(registration.getDefinition().getType(), consumer);
 	}
 
@@ -157,8 +143,7 @@ class FunctionalBeanRegistrations {
 		extractTypeHierarchy(type.getSuperclass(), consumer);
 	}
 
-	private static class Filter<A>
-			extends ConcurrentHashFilter<FunctionalBeanRegistration<?>, A> {
+	private static class Filter<A> extends ConcurrentHashFilter<FunctionalBeanRegistration<?>, A> {
 
 		Filter(HashCodesExtractor<FunctionalBeanRegistration<?>, A> hashCodesExtractor) {
 			super(hashCodesExtractor);

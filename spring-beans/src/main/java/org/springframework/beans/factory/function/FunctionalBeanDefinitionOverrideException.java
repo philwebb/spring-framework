@@ -25,11 +25,36 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
  * @author Phillip Webb
  * @since 6.0
  */
-public class FunctionalBeanDefinitionOverrideException extends BeanDefinitionStoreException {
+public class FunctionalBeanDefinitionOverrideException
+		extends BeanDefinitionStoreException {
 
-	FunctionalBeanDefinitionOverrideException(FunctionalBeanRegistration<?> registration,
+	private final FunctionalBeanRegistration<?> beanRegistration;
+
+	private final FunctionalBeanRegistration<?> existingRegistration;
+
+	FunctionalBeanDefinitionOverrideException(
+			FunctionalBeanRegistration<?> beanRegistration,
 			FunctionalBeanRegistration<?> existingRegistration) {
-		super(""); // FIXME
+		super("", existingRegistration.getDefinition().getName(), ""); // FIXME
+		this.existingRegistration = existingRegistration;
+		this.beanRegistration = beanRegistration;
+	}
+
+
+	/**
+	 * Return the bean definition that was attempting registration.
+	 * @see #getBeanName()
+	 */
+	public FunctionalBeanDefinition<?> getBeanDefinition() {
+		return this.beanRegistration.getDefinition();
+	}
+
+	/**
+	 * Return the existing bean definition that prevented registration.
+	 * @see #getBeanName()
+	 */
+	public FunctionalBeanDefinition<?> getExistingDefinition() {
+		return this.existingRegistration.getDefinition();
 	}
 
 }
