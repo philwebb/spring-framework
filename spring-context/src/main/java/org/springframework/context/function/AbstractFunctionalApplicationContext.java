@@ -304,6 +304,10 @@ public abstract class AbstractFunctionalApplicationContext
 		return getHierarchicalBeanFactory().containsLocalBean(name);
 	}
 
+	@Override
+	public void close() {
+	}
+
 	protected abstract MessageSource getMessageSource();
 
 	protected abstract ApplicationEventPublisher getApplicationEventPublisher();

@@ -1,4 +1,4 @@
-package io.spring.sample;
+package com.example.functional;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

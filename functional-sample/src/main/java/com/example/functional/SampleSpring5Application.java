@@ -1,5 +1,5 @@
 
-package io.spring.sample;
+package com.example.functional;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -9,7 +9,6 @@ public class SampleSpring5Application {
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(
 				ApplicationConfiguration.class);
 		applicationContext.getBean(Greeter.class).greet();
-		Thread.sleep(1500);
 		applicationContext.close();
 	}
 

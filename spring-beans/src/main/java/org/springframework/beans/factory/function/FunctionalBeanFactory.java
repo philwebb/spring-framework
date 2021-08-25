@@ -397,4 +397,7 @@ public interface FunctionalBeanFactory extends ListableBeanFactory {
 	<T> Map<String, T> getBeans(BeanSelector<T> selector, boolean includeNonSingletons,
 			boolean allowEagerInit) throws BeansException;
 
+
+	void close();
+
 }

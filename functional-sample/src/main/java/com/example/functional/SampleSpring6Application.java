@@ -1,5 +1,5 @@
 
-package io.spring.sample;
+package com.example.functional;
 
 import org.springframework.context.function.DefaultFunctionalApplicationContext;
 
@@ -9,6 +9,7 @@ public class SampleSpring6Application {
 		DefaultFunctionalApplicationContext applicationContext = new DefaultFunctionalApplicationContext(
 				new ApplicationConfigurationRegistrar());
 		applicationContext.getBean(Greeter.class).greet();
+		applicationContext.close();
 	}
 
 }

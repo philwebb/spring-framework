@@ -62,38 +62,4 @@ public interface InstanceSupplier<C, T> {
 		return context -> supplier.get();
 	}
 
-	/**
-	 * Return a new {@link InstanceSupplier} that extracts the instance by
-	 * querying the context for an object of a particular type.
-	 * @param <C> the context object type
-	 * @param <T> the supplied instance type
-	 * @param contextType the context object type
-	 * @param extractor the extractor used to obtain the instance
-	 * @param type instance type to extract
-	 * @return the extracting instance supplier
-	 */
-	static <C, T> InstanceSupplier<C, T> via(Class<C> contextType, ByType<C, T> extractor,
-			Class<T> type) {
-		return context -> extractor.apply(context, type);
-	}
-
-	/**
-	 * Function that can be used to obtain an object from a context by its type.
-	 * @param <C> the context object type
-	 * @param <T> the supplied instance type
-	 */
-	@FunctionalInterface
-	interface ByType<C, T> {
-
-		/**
-		 * Return an object from the context of the given type.
-		 * @param context the context
-		 * @param type the type of object to obtain
-		 * @return the resulting object
-		 * @throws Throwable if the result cannot be obtained
-		 */
-		T apply(C context, Class<T> type) throws Throwable;
-
-	}
-
 }

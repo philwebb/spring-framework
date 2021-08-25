@@ -1,5 +1,5 @@
 
-package io.spring.sample;
+package com.example.functional;
 
 import org.springframework.beans.factory.function.FunctionalBeanDefinition;
 import org.springframework.beans.factory.function.FunctionalBeanRegistrar;
@@ -14,29 +14,32 @@ class ApplicationConfigurationRegistrar implements FunctionalBeanRegistrar {
 
 	@Override
 	public void apply(FunctionalBeanRegistry registry) {
-		registry.register(this::applicationConfigurationRegistration);
-		registry.register(this::printerRegistration);
-		registry.register(this::greeterRegistration);
+		registry.register(this::applicationConfigurationDefinition);
+		registry.register(this::printerDefinition);
+		registry.register(this::greeterDefinition);
 	}
 
-	private void applicationConfigurationRegistration(
+	private void applicationConfigurationDefinition(
 			FunctionalBeanDefinition.Builder<ApplicationConfiguration> registration) {
+		registration.setName("applicationConfiguration");
 		registration.setType(ApplicationConfiguration.class);
 		registration.setInstanceSupplier(InstanceSupplier.of(ApplicationConfiguration::new));
 	}
 
-	private void printerRegistration(FunctionalBeanDefinition.Builder<Printer> registration) {
-		registration.setType(Printer.class);
-		registration.setInstanceSupplier(this::printer);
+	private void printerDefinition(FunctionalBeanDefinition.Builder<Printer> builder) {
+		builder.setName("printer");
+		builder.setType(Printer.class);
+		builder.setInstanceSupplier(this::printer);
 	}
 
 	private Printer printer(InjectionContext injectionContext) {
 		return injectionContext.getBean(ApplicationConfiguration.class).printer();
 	}
 
-	private void greeterRegistration(FunctionalBeanDefinition.Builder<Greeter> registration) {
-		registration.setType(Greeter.class);
-		registration.setInstanceSupplier(this::greeter);
+	private void greeterDefinition(FunctionalBeanDefinition.Builder<Greeter> builder) {
+		builder.setName("greeter");
+		builder.setType(Greeter.class);
+		builder.setInstanceSupplier(this::greeter);
 	}
 
 	private Greeter greeter(InjectionContext injectionContext) {

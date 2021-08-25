@@ -1,5 +1,5 @@
 
-package io.spring.sample;
+package com.example.functional;
 
 class Greeter {
 

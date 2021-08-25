@@ -16,6 +16,8 @@
 
 package org.springframework.context.function;
 
+import java.io.Closeable;
+
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.function.FunctionalBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -25,7 +27,7 @@ import org.springframework.context.ApplicationContext;
  * @since 6.0
  */
 public interface FunctionalApplicationContext
-		extends ApplicationContext, FunctionalBeanFactory {
+		extends ApplicationContext, FunctionalBeanFactory, Closeable {
 
 	FunctionalBeanFactory getBeanFactory();
 
