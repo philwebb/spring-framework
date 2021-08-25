@@ -51,32 +51,6 @@ class InstanceSupplierTests {
 		// FIXME
 	}
 
-	@Test
-	void viaWhenExtractorIsNullThrowsException() {
-		// FIXME
-	}
-
-	@Test
-	void viaWhenTypeIsNullThrowsException() {
-		// FIXME
-	}
-
-	@Test
-	void viaAppliesExtraction() {
-		// FIXME
-	}
-
-	@Test
-	void viaCombinedWithAndProvidesSimpleFactoryMethodPattern() throws Throwable {
-		TestContext context = new TestContext();
-		context.add(new TestConfiguration());
-		InstanceSupplier<TestContext, TestBean> supplier = InstanceSupplier.via(
-				TestContext.class, TestContext::get, TestConfiguration.class).and(
-						TestConfiguration::testBean);
-		TestBean testBean = supplier.get(context);
-		assertThat(testBean).isNotNull();
-	}
-
 	static class TestContext {
 
 		private final Map<Class<?>, Object> contents = new LinkedHashMap<>();
