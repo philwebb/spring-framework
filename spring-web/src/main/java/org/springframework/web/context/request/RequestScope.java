@@ -19,7 +19,7 @@ package org.springframework.web.context.request;
 import org.springframework.lang.Nullable;
 
 /**
- * Request-backed {@link org.springframework.beans.factory.config.Scope}
+ * Request-backed {@link org.springframework.beans.factory.Scope}
  * implementation.
  *
  * <p>Relies on a thread-bound {@link RequestAttributes} instance, which

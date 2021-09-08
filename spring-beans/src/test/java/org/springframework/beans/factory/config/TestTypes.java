@@ -17,6 +17,7 @@
 package org.springframework.beans.factory.config;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.Scope;
 
 /**
  * Shared test types for this package.

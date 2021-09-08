@@ -31,11 +31,11 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.Scope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.Scope;
 import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.support.AutowireCandidateQualifier;
 import org.springframework.beans.factory.support.GenericBeanDefinition;

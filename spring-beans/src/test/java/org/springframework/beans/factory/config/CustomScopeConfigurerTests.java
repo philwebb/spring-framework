@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.Scope;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;

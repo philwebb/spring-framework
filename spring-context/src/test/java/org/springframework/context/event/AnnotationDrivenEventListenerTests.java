@@ -1068,7 +1068,7 @@ class AnnotationDrivenEventListenerTests {
 	}
 
 
-	private static class CustomScope implements org.springframework.beans.factory.config.Scope {
+	private static class CustomScope implements org.springframework.beans.factory.Scope {
 
 		public boolean active = true;
 

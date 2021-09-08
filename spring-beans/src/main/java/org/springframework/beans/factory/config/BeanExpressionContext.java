@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.config;
 
+import org.springframework.beans.factory.Scope;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 

@@ -23,7 +23,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.Scope;
+import org.springframework.beans.factory.Scope;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 

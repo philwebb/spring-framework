@@ -67,7 +67,7 @@ public class Spr10744Tests {
 	}
 
 
-	private static class MyTestScope implements org.springframework.beans.factory.config.Scope {
+	private static class MyTestScope implements org.springframework.beans.factory.Scope {
 
 		@Override
 		public Object get(String name, ObjectFactory<?> objectFactory) {

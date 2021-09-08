@@ -26,6 +26,7 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.Scope;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.lang.Nullable;
@@ -56,14 +57,14 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * <p>Custom scopes can be added via {@code registerScope}.
 	 * @see #registerScope
 	 */
-	String SCOPE_SINGLETON = "singleton";
+	String SCOPE_SINGLETON = Scope.SINGLETON;
 
 	/**
 	 * Scope identifier for the standard prototype scope: {@value}.
 	 * <p>Custom scopes can be added via {@code registerScope}.
 	 * @see #registerScope
 	 */
-	String SCOPE_PROTOTYPE = "prototype";
+	String SCOPE_PROTOTYPE = Scope.PROTOTYPE;
 
 
 	/**

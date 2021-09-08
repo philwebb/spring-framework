@@ -329,7 +329,7 @@ public class ScopingTests {
 	 * @author Costin Leau
 	 * @author Chris Beams
 	 */
-	static class CustomScope implements org.springframework.beans.factory.config.Scope {
+	static class CustomScope implements org.springframework.beans.factory.Scope {
 
 		public boolean createNewScope = true;
 

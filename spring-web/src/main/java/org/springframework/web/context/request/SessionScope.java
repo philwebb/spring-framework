@@ -20,7 +20,7 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.lang.Nullable;
 
 /**
- * Session-backed {@link org.springframework.beans.factory.config.Scope}
+ * Session-backed {@link org.springframework.beans.factory.Scope}
  * implementation.
  *
  * <p>Relies on a thread-bound {@link RequestAttributes} instance, which

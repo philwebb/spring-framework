@@ -21,7 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.Scope;
+import org.springframework.beans.factory.Scope;
 import org.springframework.lang.Nullable;
 
 /**
