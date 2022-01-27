@@ -39,14 +39,14 @@ class MultiStatementTests {
 	@Test
 	void isEmptyWithStatement() {
 		MultiStatement statements = new MultiStatement();
-		statements.add(CodeBlock.of("int i = 0"));
+		statements.addStatement(CodeBlock.of("int i = 0"));
 		assertThat(statements.isEmpty()).isFalse();
 	}
 
 	@Test
 	void singleStatement() {
 		MultiStatement statements = new MultiStatement();
-		statements.add("field.method($S)", "hello");
+		statements.addStatement("field.method($S)", "hello");
 		CodeBlock codeBlock = statements.toCodeBlock();
 		assertThat(codeBlock.toString()).isEqualTo("field.method(\"hello\")");
 	}
@@ -54,18 +54,31 @@ class MultiStatementTests {
 	@Test
 	void multiStatements() {
 		MultiStatement statements = new MultiStatement();
-		statements.add("field.method($S)", "hello");
-		statements.add("field.anotherMethod($S)", "hello");
+		statements.addStatement("field.method($S)", "hello");
+		statements.addStatement("field.anotherMethod($S)", "hello");
 		CodeBlock codeBlock = statements.toCodeBlock();
-		assertThat(codeBlock.toString().lines()).containsExactly(
-				"field.method(\"hello\");",
-				"field.anotherMethod(\"hello\");");
+		assertThat(codeBlock.toString()).isEqualTo("""
+				field.method("hello");
+				field.anotherMethod("hello");""");
+	}
+
+	@Test
+	void multiStatementsWithCodeBlockRenderedAsIs() {
+		MultiStatement statements = new MultiStatement();
+		statements.addStatement("field.method($S)", "hello");
+		statements.add(CodeBlock.of(("// Hello\n")));
+		statements.addStatement("field.anotherMethod($S)", "hello");
+		CodeBlock codeBlock = statements.toCodeBlock();
+		assertThat(codeBlock.toString()).isEqualTo("""
+				field.method("hello");
+				// Hello
+				field.anotherMethod("hello");""");
 	}
 
 	@Test
 	void singleStatementWithLambda() {
 		MultiStatement statements = new MultiStatement();
-		statements.add("field.method($S)", "hello");
+		statements.addStatement("field.method($S)", "hello");
 		CodeBlock codeBlock = statements.toCodeBlock(CodeBlock.of("() ->"));
 		assertThat(codeBlock.toString()).isEqualTo("() -> field.method(\"hello\")");
 	}
@@ -73,8 +86,8 @@ class MultiStatementTests {
 	@Test
 	void multiStatementsWithLambda() {
 		MultiStatement statements = new MultiStatement();
-		statements.add("field.method($S)", "hello");
-		statements.add("field.anotherMethod($S)", "hello");
+		statements.addStatement("field.method($S)", "hello");
+		statements.addStatement("field.anotherMethod($S)", "hello");
 		CodeBlock codeBlock = statements.toCodeBlock(CodeBlock.of("() ->"));
 		assertThat(codeBlock.toString().lines()).containsExactly(
 				"() -> {",

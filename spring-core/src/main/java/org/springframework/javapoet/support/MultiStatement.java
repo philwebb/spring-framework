@@ -33,7 +33,7 @@ import org.springframework.javapoet.CodeBlock.Builder;
  */
 public final class MultiStatement {
 
-	private final List<CodeBlock> statements = new ArrayList<>();
+	private final List<Statement> statements = new ArrayList<>();
 
 	/**
 	 * Specify if this instance is empty.
@@ -44,11 +44,21 @@ public final class MultiStatement {
 	}
 
 	/**
+	 * Add the specified {@link CodeBlock codeblock} rendered as-is.
+	 * @param codeBlock the code block to add
+	 * @see #addStatement(CodeBlock) to add a code block that represents
+	 * a statement
+	 */
+	public void add(CodeBlock codeBlock) {
+		this.statements.add(Statement.of(codeBlock));
+	}
+
+	/**
 	 * Add a statement.
 	 * @param statement the statement to add
 	 */
-	public void add(CodeBlock statement) {
-		this.statements.add(statement);
+	public void addStatement(CodeBlock statement) {
+		this.statements.add(Statement.ofStatement(statement));
 	}
 
 	/**
@@ -58,8 +68,8 @@ public final class MultiStatement {
 	 * @param args the arguments for placeholders
 	 * @see CodeBlock#of(String, Object...)
 	 */
-	public void add(String code, Object... args) {
-		add(CodeBlock.of(code, args));
+	public void addStatement(String code, Object... args) {
+		addStatement(CodeBlock.of(code, args));
 	}
 
 	/**
@@ -70,7 +80,7 @@ public final class MultiStatement {
 	 * @param <T> the type of the item
 	 */
 	public <T> void addAll(Iterable<T> items, Function<T, CodeBlock> itemGenerator) {
-		items.forEach(element -> add(itemGenerator.apply(element)));
+		items.forEach(element -> addStatement(itemGenerator.apply(element)));
 	}
 
 	/**
@@ -82,13 +92,8 @@ public final class MultiStatement {
 	public CodeBlock toCodeBlock() {
 		Builder code = CodeBlock.builder();
 		for (int i = 0; i < this.statements.size(); i++) {
-			code.add(this.statements.get(i));
-			if (i < this.statements.size() - 1) {
-				code.add(";\n");
-			}
-		}
-		if (this.isMulti()) {
-			code.add(";");
+			Statement statement = this.statements.get(i);
+			statement.contribute(code, this.isMulti(), i == this.statements.size() - 1);
 		}
 		return code.build();
 	}
@@ -128,4 +133,39 @@ public final class MultiStatement {
 	private boolean isMulti() {
 		return this.statements.size() > 1;
 	}
+
+
+	private static class Statement {
+
+		private final CodeBlock codeBlock;
+
+		private final boolean addStatementTermination;
+
+		Statement(CodeBlock codeBlock, boolean addStatementTermination) {
+			this.codeBlock = codeBlock;
+			this.addStatementTermination = addStatementTermination;
+		}
+
+		void contribute(CodeBlock.Builder code, boolean multi, boolean isLastStatement) {
+			code.add(this.codeBlock);
+			if (this.addStatementTermination) {
+				if (!isLastStatement) {
+					code.add(";\n");
+				}
+				else if (multi) {
+					code.add(";");
+				}
+			}
+		}
+
+		static Statement ofStatement(CodeBlock codeBlock) {
+			return new Statement(codeBlock, true);
+		}
+
+		static Statement of(CodeBlock codeBlock) {
+			return new Statement(codeBlock, false);
+		}
+
+	}
+
 }
