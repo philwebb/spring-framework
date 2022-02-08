@@ -81,6 +81,17 @@ public final class CodeSnippet {
 	}
 
 	/**
+	 * Return a new {@link CodeSnippet} where the specified number of indentations
+	 * have been removed.
+	 * @param indent the number of indent to remove
+	 * @return a CodeSnippet instance with the number of indentations removed
+	 */
+	public CodeSnippet removeIndent(int indent) {
+		return new CodeSnippet(this.fileContent, this.snippet.lines().map(line ->
+				removeIndent(line, indent)).collect(Collectors.joining("\n")));
+	}
+
+	/**
 	 * Create a {@link CodeSnippet} using the specified code.
 	 * @param code the code snippet
 	 * @return a {@link CodeSnippet} instance
@@ -109,6 +120,15 @@ public final class CodeSnippet {
 	 */
 	public static String process(CodeBlock code) {
 		return of(code).getSnippet();
+	}
+
+	private String removeIndent(String line, int indent) {
+		for (int i = 0; i < indent; i++) {
+			if (line.startsWith("\t")) {
+				line = line.substring(1);
+			}
+		}
+		return line;
 	}
 
 	private static final class Builder {

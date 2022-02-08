@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.springframework.aot.generator.CodeContribution;
 import org.springframework.aot.generator.DefaultCodeContribution;
+import org.springframework.aot.generator.ProtectedAccess.Options;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.util.ClassUtils;
@@ -36,6 +37,8 @@ import org.springframework.util.ClassUtils;
  * @author Stephane Nicoll
  */
 class DefaultBeanInstanceGenerator {
+
+	private static final Options BEAN_INSTANCE_OPTIONS = new Options(false, true);
 
 	private final Executable instanceCreator;
 
@@ -56,9 +59,9 @@ class DefaultBeanInstanceGenerator {
 	 * @param runtimeHints the runtime hints instance to use
 	 * @return a code contribution that provides an initialized bean instance
 	 */
-	// FIXME: context here to provide more than just the hints?
 	public CodeContribution generateBeanInstance(RuntimeHints runtimeHints) {
 		DefaultCodeContribution contribution = new DefaultCodeContribution(runtimeHints);
+		contribution.protectedAccess().analyze(this.instanceCreator, BEAN_INSTANCE_OPTIONS);
 		if (this.instanceCreator instanceof Constructor<?> constructor) {
 			writeBeanInstantiation(contribution, constructor);
 		}

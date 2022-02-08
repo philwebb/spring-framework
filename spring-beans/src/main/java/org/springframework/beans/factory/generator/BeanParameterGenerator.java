@@ -75,7 +75,7 @@ public final class BeanParameterGenerator {
 	 * @param value the value of the parameter
 	 * @return the value of the parameter
 	 */
-	public CodeBlock writeParameterValue(Object value) {
+	public CodeBlock writeParameterValue(@Nullable Object value) {
 		return writeParameterValue(value, () -> ResolvableType.forInstance(value));
 	}
 

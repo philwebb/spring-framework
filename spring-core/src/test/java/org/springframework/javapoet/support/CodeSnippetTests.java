@@ -55,4 +55,15 @@ class CodeSnippetTests {
 		assertThat(codeSnippet.hasImport(ArrayList.class)).isTrue();
 	}
 
+	@Test
+	void removeIndent() {
+		CodeBlock.Builder code = CodeBlock.builder();
+		code.beginControlFlow("if (condition)");
+		code.addStatement("doStuff()");
+		code.endControlFlow();
+		CodeSnippet snippet = CodeSnippet.of(code.build());
+		assertThat(snippet.getSnippet().lines()).contains("\tdoStuff();");
+		assertThat(snippet.removeIndent(1).getSnippet().lines()).contains("doStuff();");
+	}
+
 }

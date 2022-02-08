@@ -19,6 +19,7 @@ package org.springframework.aot.generator;
 import java.lang.reflect.Member;
 
 import org.springframework.core.ResolvableType;
+import org.springframework.lang.Nullable;
 
 /**
  * A {@link Member} that is non-public, with the related type.
@@ -30,10 +31,11 @@ public final class ProtectedElement {
 
 	private final ResolvableType type;
 
+	@Nullable
 	private final Member target;
 
 
-	private ProtectedElement(ResolvableType type, Member member) {
+	private ProtectedElement(ResolvableType type, @Nullable Member member) {
 		this.type = type;
 		this.target = member;
 	}
@@ -53,11 +55,12 @@ public final class ProtectedElement {
 	 * Return the {@link Member} that is not publicly accessible.
 	 * @return the member
 	 */
+	@Nullable
 	public Member getMember() {
 		return this.target;
 	}
 
-	static ProtectedElement of(ResolvableType type, Member member) {
+	static ProtectedElement of(ResolvableType type, @Nullable Member member) {
 		return new ProtectedElement(type, member);
 	}
 

@@ -31,6 +31,8 @@ import org.springframework.beans.testfixture.beans.factory.generator.SimpleConfi
 import org.springframework.beans.testfixture.beans.factory.generator.factory.NumberHolderFactoryBean;
 import org.springframework.beans.testfixture.beans.factory.generator.factory.SampleFactory;
 import org.springframework.beans.testfixture.beans.factory.generator.injection.InjectionComponent;
+import org.springframework.beans.testfixture.beans.factory.generator.visibility.ProtectedConstructorComponent;
+import org.springframework.beans.testfixture.beans.factory.generator.visibility.ProtectedFactoryMethod;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.support.CodeSnippet;
 import org.springframework.util.ReflectionUtils;
@@ -131,6 +133,22 @@ class DefaultBeanInstanceGeneratorTests {
 					// world
 					return bean;
 				}""");
+	}
+
+	@Test
+	void generateUsingProtectedConstructorRegistersProtectedAccess() {
+		CodeContribution contribution = generate(ProtectedConstructorComponent.class.getDeclaredConstructors()[0]);
+		assertThat(contribution.protectedAccess().isAccessible("com.example")).isFalse();
+		assertThat(contribution.protectedAccess().getPrivilegedPackageName("com.example"))
+				.isEqualTo(ProtectedConstructorComponent.class.getPackageName());
+	}
+
+	@Test
+	void generateUsingProtectedMethodRegistersProtectedAccess() {
+		CodeContribution contribution = generate(method(ProtectedFactoryMethod.class, "testBean", Integer.class));
+		assertThat(contribution.protectedAccess().isAccessible("com.example")).isFalse();
+		assertThat(contribution.protectedAccess().getPrivilegedPackageName("com.example"))
+				.isEqualTo(ProtectedFactoryMethod.class.getPackageName());
 	}
 
 	private String code(CodeContribution contribution) {

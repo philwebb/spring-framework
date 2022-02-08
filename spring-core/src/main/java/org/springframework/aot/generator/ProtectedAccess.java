@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
@@ -72,8 +71,9 @@ public class ProtectedAccess {
 		if (protectedElements.isEmpty()) {
 			return null;
 		}
-		List<String> packageNames = protectedElements.stream().map(element -> element.getType().toClass().getPackageName())
-				.distinct().collect(Collectors.toList());
+		List<String> packageNames = protectedElements.stream()
+				.map(element -> element.getType().toClass().getPackageName())
+				.distinct().toList();
 		if (packageNames.size() == 1) {
 			return packageNames.get(0);
 		}
@@ -89,6 +89,12 @@ public class ProtectedAccess {
 			}
 		}
 		return matches;
+	}
+
+	public void analyze(ResolvableType type) {
+		if (isProtected(type)) {
+			registerProtectedType(type, null);
+		}
 	}
 
 	public void analyze(Member member) {
@@ -169,7 +175,7 @@ public class ProtectedAccess {
 		return !Modifier.isPublic(modifiers);
 	}
 
-	private void registerProtectedType(ResolvableType type, Member member) {
+	private void registerProtectedType(ResolvableType type, @Nullable Member member) {
 		this.elements.add(ProtectedElement.of(type, member));
 	}
 

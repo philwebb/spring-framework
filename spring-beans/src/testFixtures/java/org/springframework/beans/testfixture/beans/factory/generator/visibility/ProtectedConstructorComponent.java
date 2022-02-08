@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.core.testfixture.aot.generator.visibility;
+package org.springframework.beans.testfixture.beans.factory.generator.visibility;
 
-import org.springframework.core.ResolvableType;
+public class ProtectedConstructorComponent {
 
-public class PublicFactoryBean<T> {
+	ProtectedConstructorComponent() {
 
-	public static ResolvableType resolveToProtectedGenericParameter() {
-		return ResolvableType.forClassWithGenerics(PublicFactoryBean.class, ProtectedType.class);
 	}
-
 }
