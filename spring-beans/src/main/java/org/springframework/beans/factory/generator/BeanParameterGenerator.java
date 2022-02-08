@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -50,9 +49,14 @@ import org.springframework.util.ObjectUtils;
  */
 public final class BeanParameterGenerator {
 
+	/**
+	 * A default instance that does not handle inner bean definitions.
+	 */
+	public static final BeanParameterGenerator INSTANCE = new BeanParameterGenerator();
+
 	private final ResolvableTypeGenerator typeGenerator = new ResolvableTypeGenerator();
 
-	private final BiConsumer<BeanDefinition, Builder> innerBeanDefinitionWriter;
+	private final Function<BeanDefinition, CodeBlock> innerBeanDefinitionWriter;
 
 
 	/**
@@ -60,7 +64,7 @@ public final class BeanParameterGenerator {
 	 * definition.
 	 * @param innerBeanDefinitionWriter the inner bean definition writer
 	 */
-	public BeanParameterGenerator(BiConsumer<BeanDefinition, Builder> innerBeanDefinitionWriter) {
+	public BeanParameterGenerator(Function<BeanDefinition, CodeBlock> innerBeanDefinitionWriter) {
 		this.innerBeanDefinitionWriter = innerBeanDefinitionWriter;
 	}
 
@@ -68,7 +72,7 @@ public final class BeanParameterGenerator {
 	 * Create an instance with no support for inner bean definitions.
 	 */
 	public BeanParameterGenerator() {
-		this((beanDefinition, builder) -> {
+		this(beanDefinition -> {
 			throw new IllegalStateException("Inner bean definition is not supported by this instance");
 		});
 	}
@@ -175,7 +179,7 @@ public final class BeanParameterGenerator {
 			code.add(this.typeGenerator.generateTypeFor((ResolvableType) value));
 		}
 		else if (value instanceof BeanDefinition) {
-			this.innerBeanDefinitionWriter.accept((BeanDefinition) value, code);
+			code.add(this.innerBeanDefinitionWriter.apply((BeanDefinition) value));
 		}
 		else if (value instanceof BeanReference) {
 			code.add("new $T($S)", RuntimeBeanReference.class, ((BeanReference) value).getBeanName());

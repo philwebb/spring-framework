@@ -40,7 +40,9 @@ import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.support.CodeSnippet;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -220,8 +222,9 @@ class BeanParameterGeneratorTests {
 	@Test
 	void writeBeanDefinitionCallsConsumer() {
 		BeanParameterGenerator customGenerator = new BeanParameterGenerator(
-				((beanDefinition, builder) -> builder.add("test")));
-		assertThat(CodeSnippet.process(customGenerator.writeParameterValue(new RootBeanDefinition()))).isEqualTo("test");
+				beanDefinition -> CodeBlock.of("test"));
+		assertThat(CodeSnippet.process(customGenerator.writeParameterValue(
+				new RootBeanDefinition()))).isEqualTo("test");
 	}
 
 	@Test
@@ -237,7 +240,7 @@ class BeanParameterGeneratorTests {
 				.withMessageContaining(StringWriter.class.getName());
 	}
 
-	private String write(Object value) {
+	private String write(@Nullable Object value) {
 		return CodeSnippet.process(this.generator.writeParameterValue(value));
 	}
 
