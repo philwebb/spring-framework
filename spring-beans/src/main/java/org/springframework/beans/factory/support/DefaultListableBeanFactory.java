@@ -863,6 +863,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	@Override
+	public RootBeanDefinition getMergedBeanDefinition(
+			String beanName, BeanDefinition bd, BeanDefinition containingBd)
+			throws BeanDefinitionStoreException {
+
+		return super.getMergedBeanDefinition(beanName, bd, containingBd);
+	}
+
+	@Override
 	public Iterator<String> getBeanNamesIterator() {
 		CompositeIterator<String> iterator = new CompositeIterator<>();
 		iterator.add(this.beanDefinitionNames.iterator());

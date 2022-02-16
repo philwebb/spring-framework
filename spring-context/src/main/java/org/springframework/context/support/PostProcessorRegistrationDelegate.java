@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2021 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
+ * @author Stephane Nicoll
  * @since 4.0
  */
 final class PostProcessorRegistrationDelegate {
@@ -278,6 +279,19 @@ final class PostProcessorRegistrationDelegate {
 		// Re-register post-processor for detecting inner beans as ApplicationListeners,
 		// moving it to the end of the processor chain (for picking up proxies etc).
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(applicationContext));
+	}
+
+	static <T extends BeanPostProcessor> List<T> loadBeanPostProcessors(
+			ConfigurableListableBeanFactory beanFactory, Class<T> beanPostProcessorType) {
+
+		String[] postProcessorNames = beanFactory.getBeanNamesForType(beanPostProcessorType, true, false);
+		List<T> postProcessors = new ArrayList<>();
+		for (String ppName : postProcessorNames) {
+			postProcessors.add(beanFactory.getBean(ppName, beanPostProcessorType));
+		}
+		sortPostProcessors(postProcessors, beanFactory);
+		return postProcessors;
+
 	}
 
 	private static void sortPostProcessors(List<?> postProcessors, ConfigurableListableBeanFactory beanFactory) {

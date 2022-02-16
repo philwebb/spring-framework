@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2020 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,19 +18,27 @@ package org.springframework.context.support;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionCustomizer;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -39,6 +47,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Generic ApplicationContext implementation that holds a single internal
@@ -59,6 +68,10 @@ import org.springframework.util.Assert;
  * internal BeanFactory instance for each refresh, the internal BeanFactory of
  * this context is available right from the start, to be able to register bean
  * definitions on it. {@link #refresh()} may only be called once.
+ *
+ * <p>This ApplicationContext implementation is suitable for Ahead of Time
+ * processing, using {@link #refreshForAotProcessing()} as an alternative to the
+ * regular {@link #refresh()}.
  *
  * <p>Usage example:
  *
@@ -86,6 +99,7 @@ import org.springframework.util.Assert;
  *
  * @author Juergen Hoeller
  * @author Chris Beams
+ * @author Stephane Nicoll
  * @since 1.1.2
  * @see #registerBeanDefinition
  * @see #refresh()
@@ -360,6 +374,85 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 		return this.beanFactory.isAlias(beanName);
 	}
 
+
+	//---------------------------------------------------------------------
+	// AOT processing
+	//---------------------------------------------------------------------
+
+	/**
+	 * Load or refresh the persistent representation of the configuration up to
+	 * a point where the underlying bean factory is ready to create bean
+	 * instances.
+	 * <p>This variant of {@link #refresh()} is used by Ahead of Time processing
+	 * that optimizes the application context, typically at build-time.
+	 * <p>In this mode, only {@link BeanDefinitionRegistryPostProcessor} and
+	 * {@link MergedBeanDefinitionPostProcessor} are invoked.
+	 * @throws BeansException if the bean factory could not be initialized
+	 * @throws IllegalStateException if already initialized and multiple refresh
+	 * attempts are not supported
+	 */
+	public void refreshForAotProcessing() {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Preparing bean factory for AOT processing");
+		}
+		prepareRefresh();
+		obtainFreshBeanFactory();
+		prepareBeanFactory(this.beanFactory);
+		postProcessBeanFactory(this.beanFactory);
+		invokeBeanFactoryPostProcessors(this.beanFactory);
+		invokeMergedBeanDefinitionPostProcessors();
+	}
+
+	private void invokeMergedBeanDefinitionPostProcessors() {
+		List<MergedBeanDefinitionPostProcessor> postProcessors = PostProcessorRegistrationDelegate.loadBeanPostProcessors(
+				this.beanFactory, MergedBeanDefinitionPostProcessor.class);
+		for (String beanName : this.beanFactory.getBeanDefinitionNames()) {
+			RootBeanDefinition bd = (RootBeanDefinition) this.beanFactory.getMergedBeanDefinition(beanName);
+			Class<?> beanType = resolveBeanType(bd);
+			postProcessRootBeanDefinition(postProcessors, beanName, beanType, bd);
+		}
+	}
+
+	private void postProcessRootBeanDefinition(List<MergedBeanDefinitionPostProcessor> postProcessors,
+			String beanName, Class<?> beanType, RootBeanDefinition bd) {
+		postProcessors.forEach(postProcessor -> postProcessor.postProcessMergedBeanDefinition(bd, beanType, beanName));
+		for (PropertyValue propertyValue : bd.getPropertyValues().getPropertyValueList()) {
+			Object value = propertyValue.getValue();
+			if (value instanceof AbstractBeanDefinition innerBd) {
+				Class<?> innerBeanType = resolveBeanType(innerBd);
+				resolveInnerBeanDefinition(innerBd, bd, (innerBeanName, innerBeanDefinition)
+						-> postProcessRootBeanDefinition(postProcessors, innerBeanName, innerBeanType, innerBeanDefinition));
+			}
+		}
+		for (ValueHolder valueHolder : bd.getConstructorArgumentValues().getIndexedArgumentValues().values()) {
+			Object value = valueHolder.getValue();
+			if (value instanceof AbstractBeanDefinition innerBd) {
+				Class<?> innerBeanType = resolveBeanType(innerBd);
+				resolveInnerBeanDefinition(innerBd, bd, (innerBeanName, innerBeanDefinition)
+						-> postProcessRootBeanDefinition(postProcessors, innerBeanName, innerBeanType, innerBeanDefinition));
+			}
+		}
+	}
+
+	private void resolveInnerBeanDefinition(BeanDefinition innerBeanDefinition, BeanDefinition containingBeanDefinition,
+			BiConsumer<String, RootBeanDefinition> resolver) {
+		String innerBeanName = "(inner bean)" + BeanFactoryUtils.GENERATED_BEAN_NAME_SEPARATOR +
+				ObjectUtils.getIdentityHexString(innerBeanDefinition);
+		RootBeanDefinition mergedBeanDefinition = this.beanFactory.getMergedBeanDefinition(innerBeanName, innerBeanDefinition, containingBeanDefinition);
+		resolver.accept(innerBeanName, mergedBeanDefinition);
+	}
+
+	private Class<?> resolveBeanType(AbstractBeanDefinition bd) {
+		if (!bd.hasBeanClass()) {
+			try {
+				bd.resolveBeanClass(getClassLoader());
+			}
+			catch (ClassNotFoundException ex) {
+				// ignore
+			}
+		}
+		return bd.getResolvableType().toClass();
+	}
 
 	//---------------------------------------------------------------------
 	// Convenient methods for registering individual beans
