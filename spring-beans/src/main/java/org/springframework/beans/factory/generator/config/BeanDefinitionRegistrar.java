@@ -66,8 +66,6 @@ public final class BeanDefinitionRegistrar {
 	@Nullable
 	private final ResolvableType beanType;
 
-	private final BeanDefinitionBuilder builder;
-
 	private final List<Consumer<RootBeanDefinition>> customizers;
 
 	@Nullable
@@ -80,7 +78,6 @@ public final class BeanDefinitionRegistrar {
 		this.beanName = beanName;
 		this.beanClass = beanClass;
 		this.beanType = beanType;
-		this.builder = BeanDefinitionBuilder.rootBeanDefinition(beanClass);
 		this.customizers = new ArrayList<>();
 	}
 
@@ -206,7 +203,7 @@ public final class BeanDefinitionRegistrar {
 	}
 
 	private RootBeanDefinition createBeanDefinition() {
-		RootBeanDefinition bd = (RootBeanDefinition) this.builder.getBeanDefinition();
+		RootBeanDefinition bd = (RootBeanDefinition) BeanDefinitionBuilder.rootBeanDefinition(beanClass).getBeanDefinition();
 		if (this.beanType != null) {
 			bd.setTargetType(this.beanType);
 		}
