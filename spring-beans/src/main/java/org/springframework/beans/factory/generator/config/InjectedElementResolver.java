@@ -17,6 +17,8 @@
 package org.springframework.beans.factory.generator.config;
 
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.util.function.ThrowableConsumer;
+import org.springframework.util.function.ThrowableFunction;
 
 /**
  * Resolve the attributes of an injected element such as a {@code Constructor}
@@ -50,7 +52,7 @@ public interface InjectedElementResolver {
 	 * @param beanFactory the bean factory to use to resolve the attributes
 	 * @param attributes a consumer of the resolved attributes
 	 */
-	default void invoke(DefaultListableBeanFactory beanFactory, BeanDefinitionRegistrar.ThrowableConsumer<InjectedElementAttributes> attributes) {
+	default void invoke(DefaultListableBeanFactory beanFactory, ThrowableConsumer<InjectedElementAttributes> attributes) {
 		InjectedElementAttributes elements = resolve(beanFactory);
 		attributes.accept(elements);
 	}
@@ -63,7 +65,7 @@ public interface InjectedElementResolver {
 	 * @param <T> the type of the instance
 	 * @return a new instance
 	 */
-	default <T> T create(DefaultListableBeanFactory beanFactory, BeanDefinitionRegistrar.ThrowableFunction<InjectedElementAttributes, T> factory) {
+	default <T> T create(DefaultListableBeanFactory beanFactory, ThrowableFunction<InjectedElementAttributes, T> factory) {
 		InjectedElementAttributes attributes = resolve(beanFactory);
 		return factory.apply(attributes);
 	}

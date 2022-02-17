@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
@@ -42,6 +40,9 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.function.ThrowableConsumer;
+import org.springframework.util.function.ThrowableFunction;
+import org.springframework.util.function.ThrowableSupplier;
 
 /**
  * {@link BeanDefinition} registration mechanism offering transparent
@@ -319,82 +320,6 @@ public final class BeanDefinitionRegistrar {
 			return field;
 		}
 
-	}
-
-	/**
-	 * A {@link Consumer} that allows to invoke code that throws a checked exception.
-	 *
-	 * @author Stephane Nicoll
-	 * @param <T> the type of the input to the operation
-	 */
-	@FunctionalInterface
-	public interface ThrowableConsumer<T> extends Consumer<T> {
-
-		void acceptWithException(T t) throws Exception;
-
-		@Override
-		default void accept(T t) {
-			try {
-				acceptWithException(t);
-			}
-			catch (RuntimeException ex) {
-				throw ex;
-			}
-			catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage(), ex);
-			}
-		}
-
-	}
-
-	/**
-	 * A {@link Function} that allows to invoke code that throws a checked exception.
-	 *
-	 * @author Stephane Nicoll
-	 * @param <T> the type of the input to the function
-	 * @param <R> the type of the result of the function
-	 */
-	@FunctionalInterface
-	public interface ThrowableFunction<T, R> extends Function<T, R> {
-
-		R applyWithException(T t) throws Exception;
-
-		@Override
-		default R apply(T t) {
-			try {
-				return applyWithException(t);
-			}
-			catch (RuntimeException ex) {
-				throw ex;
-			}
-			catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage(), ex);
-			}
-		}
-	}
-
-	/**
-	 * A {@link Supplier} that allows to invoke code that throws a checked exception.
-	 *
-	 * @author Stephane Nicoll
-	 * @param <T> the type of results supplied by this supplier
-	 */
-	public interface ThrowableSupplier<T> extends Supplier<T> {
-
-		T getWithException() throws Exception;
-
-		@Override
-		default T get() {
-			try {
-				return getWithException();
-			}
-			catch (RuntimeException ex) {
-				throw ex;
-			}
-			catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage(), ex);
-			}
-		}
 	}
 
 }

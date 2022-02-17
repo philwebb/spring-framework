@@ -24,6 +24,8 @@ import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.function.ThrowableConsumer;
+import org.springframework.util.function.ThrowableFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -86,7 +88,7 @@ class InjectedMethodResolverTests {
 	@SuppressWarnings("unchecked")
 	void createWithUnresolvedAttributesDoesNotInvokeCallback() {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		BeanDefinitionRegistrar.ThrowableFunction<InjectedElementAttributes, ?> callback = mock(BeanDefinitionRegistrar.ThrowableFunction.class);
+		ThrowableFunction<InjectedElementAttributes, ?> callback = mock(ThrowableFunction.class);
 		assertThatExceptionOfType(UnsatisfiedDependencyException.class).isThrownBy(() ->
 				createResolver(TestBean.class, "injectString", String.class).create(beanFactory, callback));
 		verifyNoInteractions(callback);
@@ -96,7 +98,7 @@ class InjectedMethodResolverTests {
 	@SuppressWarnings("unchecked")
 	void invokeWithUnresolvedAttributesDoesNotInvokeCallback() {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		BeanDefinitionRegistrar.ThrowableConsumer<InjectedElementAttributes> callback = mock(BeanDefinitionRegistrar.ThrowableConsumer.class);
+		ThrowableConsumer<InjectedElementAttributes> callback = mock(ThrowableConsumer.class);
 		assertThatExceptionOfType(UnsatisfiedDependencyException.class).isThrownBy(() ->
 				createResolver(TestBean.class, "injectString", String.class).invoke(beanFactory, callback));
 		verifyNoInteractions(callback);

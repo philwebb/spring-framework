@@ -36,6 +36,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.function.ThrowableConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -113,8 +114,8 @@ class BeanDefinitionRegistrarTests {
 	@SuppressWarnings("unchecked")
 	void registerWithCustomizer() {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		BeanDefinitionRegistrar.ThrowableConsumer<RootBeanDefinition> first = mock(BeanDefinitionRegistrar.ThrowableConsumer.class);
-		BeanDefinitionRegistrar.ThrowableConsumer<RootBeanDefinition> second = mock(BeanDefinitionRegistrar.ThrowableConsumer.class);
+		ThrowableConsumer<RootBeanDefinition> first = mock(ThrowableConsumer.class);
+		ThrowableConsumer<RootBeanDefinition> second = mock(ThrowableConsumer.class);
 		BeanDefinitionRegistrar.of("test", InjectionSample.class)
 				.instanceSupplier(InjectionSample::new).customize(first).customize(second).register(beanFactory);
 		assertBeanFactory(beanFactory, () -> {

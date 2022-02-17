@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.function.ThrowableConsumer;
 
 /**
  * Resolved attributes of an injected element.
@@ -62,7 +63,7 @@ public class InjectedElementAttributes {
 	 * {@link #isResolved() resolved}.
 	 * @param attributes the consumer to invoke if this instance is resolved
 	 */
-	public void ifResolved(BeanDefinitionRegistrar.ThrowableConsumer<InjectedElementAttributes> attributes) {
+	public void ifResolved(ThrowableConsumer<InjectedElementAttributes> attributes) {
 		ifResolved(() -> attributes.accept(this));
 	}
 

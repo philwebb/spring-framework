@@ -20,6 +20,8 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.util.function.ThrowableConsumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -63,7 +65,7 @@ class InjectedElementAttributesTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	void ifResolvedWithUnresolvedAttributesDoesNotInvokeConsumer() {
-		BeanDefinitionRegistrar.ThrowableConsumer<InjectedElementAttributes> consumer = mock(BeanDefinitionRegistrar.ThrowableConsumer.class);
+		ThrowableConsumer<InjectedElementAttributes> consumer = mock(ThrowableConsumer.class);
 		unresolved.ifResolved(consumer);
 		verifyNoInteractions(consumer);
 	}
@@ -71,7 +73,7 @@ class InjectedElementAttributesTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	void ifResolvedWithResolvedAttributesInvokesConsumer() {
-		BeanDefinitionRegistrar.ThrowableConsumer<InjectedElementAttributes> consumer = mock(BeanDefinitionRegistrar.ThrowableConsumer.class);
+		ThrowableConsumer<InjectedElementAttributes> consumer = mock(ThrowableConsumer.class);
 		resolved.ifResolved(consumer);
 		verify(consumer).accept(resolved);
 	}
