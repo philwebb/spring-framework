@@ -16,22 +16,48 @@
 
 package org.springframework.util.function;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
  * A {@link Function} that allows to invoke code that throws a checked exception.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  * @param <T> the type of the input to the function
  * @param <R> the type of the result of the function
+ * @since 6.0
  */
 @FunctionalInterface
 public interface ThrowableFunction<T, R> extends Function<T, R> {
 
+	/**
+	 * Applies this function to the given argument, possibly throwing a checked
+	 * exception.
+	 * @param t the function argument
+	 * @return the function result
+	 * @throws Exception on error
+	 */
 	R applyWithException(T t) throws Exception;
 
+	/**
+	 * Default {@link Function#apply(Object)} that wraps any thrown checked
+	 * exceptions (by default in a {@link RuntimeException}).
+	 * @see java.util.function.Function#apply(java.lang.Object)
+	 */
 	@Override
 	default R apply(T t) {
+		return apply(t, RuntimeException::new);
+	}
+
+	/**
+	 * Applies this function to the given argument, wrapping any any thrown
+	 * checked exceptions using the given {@code exceptionWrapper}.
+	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
+	 * and checked exception into a runtime exception
+	 * @return a result
+	 */
+	default R apply(T t, BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 		try {
 			return applyWithException(t);
 		}
@@ -39,7 +65,49 @@ public interface ThrowableFunction<T, R> extends Function<T, R> {
 			throw ex;
 		}
 		catch (Exception ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw exceptionWrapper.apply(ex.getMessage(), ex);
 		}
 	}
+
+	/**
+	 * Return a new {@link ThrowableFunction} where the {@link #apply(Object} method
+	 * wraps any thrown checked exceptions using the given
+	 * {@code exceptionWrapper}.
+	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
+	 * and checked exception into a runtime exception
+	 * @return the replacement {@link ThrowableFunction} instance
+	 */
+	default ThrowableFunction<T, R> throwing(
+			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
+		return new ThrowableFunction<>() {
+
+			@Override
+			public R applyWithException(T t) throws Exception {
+				return ThrowableFunction.this.applyWithException(t);
+			}
+
+			@Override
+			public R apply(T t) {
+				return apply(t, exceptionWrapper);
+			}
+
+		};
+	}
+
+
+	/**
+	 * Lambda friendly convenience method that can be used to create
+	 * {@link ThrowableFunction} where the {@link #apply(Object)} method wraps any
+	 * thrown checked exceptions using the given {@code exceptionWrapper}.
+	 * @param <T> the type of the input to the function
+	 * @param <R> the type of the result of the function
+	 * @param function the source function
+	 * @return a new {@link ThrowableFunction} instance
+	 */
+	static <T, R> ThrowableFunction<T,R> of(ThrowableFunction<T, R> function,
+			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
+
+		return function.throwing(exceptionWrapper);
+	}
+
 }

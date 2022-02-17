@@ -16,21 +16,46 @@
 
 package org.springframework.util.function;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
- * A {@link Consumer} that allows to invoke code that throws a checked exception.
+ * A {@link Consumer} that allows to invoke code that throws a checked
+ * exception.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  * @param <T> the type of the input to the operation
+ * @since 6.0
  */
 @FunctionalInterface
 public interface ThrowableConsumer<T> extends Consumer<T> {
 
+	/**
+	 * Performs this operation on the given argument, possibly throwing a
+	 * checked exception.
+	 * @param t the input argument
+	 * @throws Exception on error
+	 */
 	void acceptWithException(T t) throws Exception;
 
+	/**
+	 * Default {@link Consumer#accept(Object)} that wraps any thrown checked
+	 * exceptions (by default in a {@link RuntimeException}).
+	 * @see java.util.function.Consumer#accept(Object)
+	 */
 	@Override
 	default void accept(T t) {
+		accept(t, RuntimeException::new);
+	}
+
+	/**
+	 * Performs this operation on the given argument, wrapping any any thrown
+	 * checked exceptions using the given {@code exceptionWrapper}.
+	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
+	 * and checked exception into a runtime exception
+	 */
+	default void accept(T t, BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 		try {
 			acceptWithException(t);
 		}
@@ -38,8 +63,48 @@ public interface ThrowableConsumer<T> extends Consumer<T> {
 			throw ex;
 		}
 		catch (Exception ex) {
-			throw new RuntimeException(ex.getMessage(), ex);
+			throw exceptionWrapper.apply(ex.getMessage(), ex);
 		}
+	}
+
+	/**
+	 * Return a new {@link ThrowableConsumer} where the {@link #consume(Object} method
+	 * wraps any thrown checked exceptions using the given
+	 * {@code exceptionWrapper}.
+	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
+	 * and checked exception into a runtime exception
+	 * @return the replacement {@link ThrowableConsumer} instance
+	 */
+	default ThrowableConsumer<T> throwing(
+			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
+		return new ThrowableConsumer<>() {
+
+			@Override
+			public void acceptWithException(T t) throws Exception {
+				ThrowableConsumer.this.acceptWithException(t);
+			}
+
+			@Override
+			public void accept(T t) {
+				accept(t, exceptionWrapper);
+			}
+
+		};
+	}
+
+
+	/**
+	 * Lambda friendly convenience method that can be used to create
+	 * {@link ThrowableConsumer} where the {@link #apply(Object)} method wraps any
+	 * thrown checked exceptions using the given {@code exceptionWrapper}.
+	 * @param <T> the type of the input to the operation
+	 * @param consumer the source consumer
+	 * @return a new {@link ThrowableConsumer} instance
+	 */
+	static <T> ThrowableConsumer<T> of(ThrowableConsumer<T> consumer,
+			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
+
+		return consumer.throwing(exceptionWrapper);
 	}
 
 }
