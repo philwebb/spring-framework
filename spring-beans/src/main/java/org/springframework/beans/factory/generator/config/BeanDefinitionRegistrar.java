@@ -82,44 +82,6 @@ public final class BeanDefinitionRegistrar {
 	}
 
 	/**
-	 * Initialize the registration of a bean with the specified name and type.
-	 * @param beanName the name of the bean
-	 * @param beanType the type of the bean
-	 * @return a registrar for the specified bean
-	 */
-	public static BeanDefinitionRegistrar of(String beanName, ResolvableType beanType) {
-		return new BeanDefinitionRegistrar(beanName, beanType.toClass(), beanType);
-	}
-
-	/**
-	 * Initialize the registration of a bean with the specified name and type.
-	 * @param beanName the name of the bean
-	 * @param beanType the type of the bean
-	 * @return a registrar for the specified bean
-	 */
-	public static BeanDefinitionRegistrar of(String beanName, Class<?> beanType) {
-		return new BeanDefinitionRegistrar(beanName, beanType, null);
-	}
-
-	/**
-	 * Initialize the registration of an inner bean with the specified type.
-	 * @param beanType the type of the inner bean
-	 * @return a registrar for the specified inner bean
-	 */
-	public static BeanDefinitionRegistrar inner(ResolvableType beanType) {
-		return new BeanDefinitionRegistrar(null, beanType.toClass(), beanType);
-	}
-
-	/**
-	 * Initialize the registration of an inner bean with the specified type.
-	 * @param beanType the type of the inner bean
-	 * @return a registrar for the specified inner bean
-	 */
-	public static BeanDefinitionRegistrar inner(Class<?> beanType) {
-		return new BeanDefinitionRegistrar(null, beanType, null);
-	}
-
-	/**
 	 * Customize the {@link RootBeanDefinition} using the specified consumer.
 	 * @param bd a consumer for the bean definition
 	 * @return {@code this}, to facilitate method chaining
@@ -253,6 +215,46 @@ public final class BeanDefinitionRegistrar {
 	private static String toCommaSeparatedNames(Class<?>... parameterTypes) {
 		return Arrays.stream(parameterTypes).map(Class::getName).collect(Collectors.joining(", "));
 	}
+
+
+	/**
+	 * Initialize the registration of a bean with the specified name and type.
+	 * @param beanName the name of the bean
+	 * @param beanType the type of the bean
+	 * @return a registrar for the specified bean
+	 */
+	public static BeanDefinitionRegistrar of(String beanName, ResolvableType beanType) {
+		return new BeanDefinitionRegistrar(beanName, beanType.toClass(), beanType);
+	}
+
+	/**
+	 * Initialize the registration of a bean with the specified name and type.
+	 * @param beanName the name of the bean
+	 * @param beanType the type of the bean
+	 * @return a registrar for the specified bean
+	 */
+	public static BeanDefinitionRegistrar of(String beanName, Class<?> beanType) {
+		return new BeanDefinitionRegistrar(beanName, beanType, null);
+	}
+
+	/**
+	 * Initialize the registration of an inner bean with the specified type.
+	 * @param beanType the type of the inner bean
+	 * @return a registrar for the specified inner bean
+	 */
+	public static BeanDefinitionRegistrar inner(ResolvableType beanType) {
+		return new BeanDefinitionRegistrar(null, beanType.toClass(), beanType);
+	}
+
+	/**
+	 * Initialize the registration of an inner bean with the specified type.
+	 * @param beanType the type of the inner bean
+	 * @return a registrar for the specified inner bean
+	 */
+	public static BeanDefinitionRegistrar inner(Class<?> beanType) {
+		return new BeanDefinitionRegistrar(null, beanType, null);
+	}
+
 
 	public final class BeanInstanceContext {
 
