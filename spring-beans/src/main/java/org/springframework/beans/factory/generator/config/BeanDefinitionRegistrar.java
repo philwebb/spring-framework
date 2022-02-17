@@ -74,21 +74,12 @@ public final class BeanDefinitionRegistrar {
 	@Nullable
 	private RootBeanDefinition beanDefinition;
 
+
 	private BeanDefinitionRegistrar(@Nullable String beanName, Class<?> beanClass, @Nullable ResolvableType beanType) {
 		this.beanName = beanName;
 		this.beanClass = beanClass;
 		this.beanType = beanType;
 		this.customizers = new ArrayList<>();
-	}
-
-	/**
-	 * Customize the {@link RootBeanDefinition} using the specified consumer.
-	 * @param bd a consumer for the bean definition
-	 * @return {@code this}, to facilitate method chaining
-	 */
-	public BeanDefinitionRegistrar customize(ThrowableConsumer<RootBeanDefinition> bd) {
-		this.customizers.add(bd);
-		return this;
 	}
 
 	/**
@@ -132,6 +123,16 @@ public final class BeanDefinitionRegistrar {
 	 */
 	public BeanDefinitionRegistrar instanceSupplier(ThrowableSupplier<?> instanceSupplier) {
 		return customize(beanDefinition -> beanDefinition.setInstanceSupplier(instanceSupplier));
+	}
+
+	/**
+	 * Customize the {@link RootBeanDefinition} using the specified consumer.
+	 * @param bd a consumer for the bean definition
+	 * @return {@code this}, to facilitate method chaining
+	 */
+	public BeanDefinitionRegistrar customize(ThrowableConsumer<RootBeanDefinition> bd) {
+		this.customizers.add(bd);
+		return this;
 	}
 
 	/**
