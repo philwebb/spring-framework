@@ -37,7 +37,9 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.log.LogMessage;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.ThrowableConsumer;
@@ -141,13 +143,9 @@ public final class BeanDefinitionRegistrar {
 	 * @param beanFactory the bean factory to use
 	 */
 	public void register(DefaultListableBeanFactory beanFactory) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Register bean definition with name '" + this.beanName + "'");
-		}
 		BeanDefinition beanDefinition = toBeanDefinition();
-		if (this.beanName == null) {
-			throw new IllegalStateException("Bean name not set. Could not register " + beanDefinition);
-		}
+		Assert.state(this.beanName != null, () -> "Bean name not set. Could not register " + beanDefinition);
+		logger.debug(LogMessage.format("Register bean definition with name '%s'", this.beanName));
 		beanFactory.registerBeanDefinition(this.beanName, beanDefinition);
 	}
 
@@ -314,9 +312,7 @@ public final class BeanDefinitionRegistrar {
 
 		private Field getField(String fieldName, Class<?> fieldType) {
 			Field field = ReflectionUtils.findField(this.beanType, fieldName, fieldType);
-			if (field == null) {
-				throw new IllegalArgumentException("No field '" + fieldName + "' with type " + fieldType.getName() + " found on " + this.beanType);
-			}
+			Assert.notNull(field, () -> "No field '" + fieldName + "' with type " + fieldType.getName() + " found on " + this.beanType);
 			return field;
 		}
 
