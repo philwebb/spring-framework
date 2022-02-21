@@ -1,0 +1,2 @@
+org.springframework.context.generator.ApplicationContextInitializationContributor=\
+org.springframework.context.generator.InfrastructureApplicationContextContributor
