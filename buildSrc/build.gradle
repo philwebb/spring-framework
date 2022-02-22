@@ -4,11 +4,13 @@ plugins {
 
 repositories {
 	mavenCentral()
+	maven { url "https://plugins.gradle.org/m2/" }
 	gradlePluginPortal()
 }
 
 dependencies {
 	implementation "me.champeau.gradle:japicmp-gradle-plugin:0.3.0"
+	implementation "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.0.0"
 }
 
 gradlePlugin {

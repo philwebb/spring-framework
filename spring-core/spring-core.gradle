@@ -34,6 +34,13 @@ task javapoetRepackJar(type: ShadowJar) {
 	relocate 'com.squareup.javapoet', 'org.springframework.javapoet'
 }
 
+task javapoetRepackSources(type: org.springframework.build.shadow.ShadowSource) {
+	archiveBaseName.set('spring-javapoet-sources-repack')
+	archiveVersion.set(javapoetVersion)
+	configurations = [project.configurations.javapoet]
+	relocate 'com.squareup.javapoet', 'org.springframework.javapoet'
+}
+
 task objenesisRepackJar(type: ShadowJar) {
 	archiveBaseName.set('spring-objenesis-repack')
 	archiveVersion.set(objenesisVersion)
