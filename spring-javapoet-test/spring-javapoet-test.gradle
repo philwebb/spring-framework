@@ -1,0 +1,10 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+description = "Spring JavaPoet Test"
+
+// We will probably eventually want to relocate this and depend only on javapoet / AssertJ so spring-core can use it
+
+dependencies {
+	api(project(":spring-core"))
+	api("org.assertj:assertj-core")
+}

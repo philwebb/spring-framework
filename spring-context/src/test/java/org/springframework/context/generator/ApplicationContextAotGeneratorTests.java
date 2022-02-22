@@ -28,8 +28,11 @@ import org.springframework.aot.generator.GeneratedTypeContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.javapoet.test.assertj.SourceFiles;
+import org.springframework.javapoet.test.assertj.TestCompiler;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link ApplicationContextAotGenerator}.
@@ -37,6 +40,33 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stephane Nicoll
  */
 class ApplicationContextAotGeneratorTests {
+
+	private TestCompiler compiler = TestCompiler.forSystem();
+
+	@Test
+	void generateApplicationContextWitNoContributors2() {
+		GeneratedTypeContext generationContext = createGenerationContext();
+		ApplicationContextAotGenerator generator = new ApplicationContextAotGenerator(List.of());
+		generator.generateApplicationContext(new GenericApplicationContext(), generationContext);
+		SourceFiles.of(generationContext.getMainGeneratedType().toJavaFile());
+		this.compiler.compile(sourceFiles, result -> {
+		});
+
+		assertThat(generationContext.getMainGeneratedType().toJavaFile())
+
+
+
+
+		assertThat(write(generationContext.getMainGeneratedType())).contains("""
+				public class Test implements ApplicationContextInitializer {
+					@Override
+					public void initialize(GenericApplicationContext context) {
+						DefaultListableBeanFactory beanFactory = context.getDefaultListableBeanFactory();
+					}
+				}
+				""");
+	}
+
 
 	@Test
 	void generateApplicationContextWitNoContributors() {
