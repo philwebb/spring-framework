@@ -38,6 +38,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ApplicationContextAotGeneratorTests {
 
+	private TestCompiler compiler = TestCompiler.thing();
+
+	@Test
+	void generateApplicationContextWitNoContributors() {
+		GeneratedTypeContext generationContext = createGenerationContext();
+		ApplicationContextAotGenerator generator = new ApplicationContextAotGenerator(List.of());
+		generator.generateApplicationContext(new GenericApplicationContext(), generationContext);
+		assertThat(compiler.compile(generationContext.getMainGeneratedType()));
+	}
+
 	@Test
 	void generateApplicationContextWitNoContributors() {
 		GeneratedTypeContext generationContext = createGenerationContext();
