@@ -12,7 +12,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-import org.springframework.aot.test.file.Content;
+import org.springframework.aot.test.file.WritableContent;
 import org.springframework.aot.test.file.ResourceFile;
 import org.springframework.aot.test.file.ResourceFiles;
 import org.springframework.aot.test.file.SourceFile;
@@ -62,7 +62,7 @@ public class TestCompiler {
 				this.resourceFiles.and(resourceFiles));
 	}
 
-	public void compile(Content content, Consumer<Compiled> compiled) {
+	public void compile(WritableContent content, Consumer<Compiled> compiled) {
 		compile(SourceFile.of(content), compiled);
 	}
 

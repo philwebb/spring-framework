@@ -16,11 +16,7 @@
 
 package org.springframework.aot.test.file;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.Reader;
 import java.io.StringReader;
-import java.nio.file.Path;
 
 import javax.annotation.Nullable;
 
@@ -33,8 +29,8 @@ import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaSource;
 
 /**
- * A single Java source file with {@link SourceFileAssert} support. Usually created from
- * an AOT generated type, for example:
+ * {@link DynamicFile} that holds Java source code and provides {@link SourceFileAssert}
+ * support. Usually created from an AOT generated type, for example:
  *
  * <pre class="code">
  * SourceFile.of(generatedFile::writeTo)
@@ -43,58 +39,13 @@ import com.thoughtworks.qdox.model.JavaSource;
  * @author Phillip Webb
  * @since 6.0
  */
-public class SourceFile implements AssertProvider<SourceFileAssert> {
-
-	private final String content;
+public final class SourceFile extends DynamicFile implements AssertProvider<SourceFileAssert> {
 
 	private final JavaSource javaSource;
 
-	private final String path;
-
-	private SourceFile(@Nullable String path, String content) {
-		if (Strings.isNullOrEmpty(content)) {
-			throw new AssertionError("Expecting source file content not to be empty");
-		}
-		this.content = content;
-		this.javaSource = parse(content);
-		this.path = (path != null) ? path : deducePath(this.javaSource);
-	}
-
-	/**
-	 * Factory method to create a new {@link SourceFile} from the given {@link File}.
-	 * @param file a file containing the source contents
-	 * @return a {@link SourceFile} instance
-	 */
-	public static SourceFile of(File file) {
-		return of(Content.of(file));
-	}
-
-	/**
-	 * Factory method to create a new {@link SourceFile} from the given {@link Path}.
-	 * @param path a path containing the source contents
-	 * @return a {@link SourceFile} instance
-	 */
-	public static SourceFile of(Path path) {
-		return of(Content.of(path));
-	}
-
-	/**
-	 * Factory method to create a new {@link SourceFile} from the given
-	 * {@link InputStream}.
-	 * @param inputStream an input stream containing the source contents
-	 * @return a {@link SourceFile} instance
-	 */
-	public static SourceFile of(InputStream inputStream) {
-		return of(Content.of(inputStream));
-	}
-
-	/**
-	 * Factory method to create a new {@link SourceFile} from the given {@link Reader}.
-	 * @param reader a reader containing the source contents
-	 * @return a {@link SourceFile} instance
-	 */
-	public static SourceFile of(Reader reader) {
-		return of(Content.of(reader));
+	private SourceFile(String path, String content, JavaSource javaSource) {
+		super(path, content);
+		this.javaSource = javaSource;
 	}
 
 	/**
@@ -104,26 +55,47 @@ public class SourceFile implements AssertProvider<SourceFileAssert> {
 	 * @return a {@link SourceFile} instance
 	 */
 	public static SourceFile of(CharSequence charSequence) {
-		return of(Content.of(charSequence));
+		return of(null, (appendable) -> appendable.append(charSequence));
 	}
 
 	/**
-	 * Factory method to create a new {@link SourceFile} from the given {@link Content}.
-	 * @param content the source contents
-	 * @return a {@link SourceFile} instance
-	 */
-	public static SourceFile of(Content content) {
-		return of(null, content);
-	}
-
-	/**
-	 * Factory method to create a new {@link SourceFile} from the given {@link Content}.
+	 * Factory method to create a new {@link SourceFile} from the given
+	 * {@link CharSequence}.
 	 * @param path the relative path of the file or {@code null} to have the path deduced
-	 * @param content the source contents
+	 * @param charSequence a file containing the source contents
 	 * @return a {@link SourceFile} instance
 	 */
-	public static SourceFile of(@Nullable String path, Content content) {
-		return new SourceFile(path, Content.toString(content));
+	public static SourceFile of(@Nullable String path, CharSequence charSequence) {
+		return of(path, (appendable) -> appendable.append(charSequence));
+	}
+
+	/**
+	 * Factory method to create a new {@link SourceFile} from the given
+	 * {@link WritableContent}.
+	 * @param writableContent the content to write to the file
+	 * @return a {@link SourceFile} instance
+	 */
+	public static SourceFile of(WritableContent writableContent) {
+		return of(null, writableContent);
+	}
+
+	/**
+	 * Factory method to create a new {@link SourceFile} from the given
+	 * {@link WritableContent}.
+	 * @param path the relative path of the file or {@code null} to have the path deduced
+	 * @param writableContent the content to write to the file
+	 * @return a {@link SourceFile} instance
+	 */
+	public static SourceFile of(@Nullable String path, WritableContent writableContent) {
+		String content = toString(writableContent);
+		if (Strings.isNullOrEmpty(content)) {
+			throw new IllegalStateException("WritableContent did not append any content");
+		}
+		JavaSource javaSource = parse(content);
+		if (path == null || path.isEmpty()) {
+			path = deducePath(javaSource);
+		}
+		return new SourceFile(path, content, javaSource);
 	}
 
 	private static JavaSource parse(String content) {
@@ -136,7 +108,7 @@ public class SourceFile implements AssertProvider<SourceFileAssert> {
 			return javaSource;
 		}
 		catch (Exception ex) {
-			throw new AssertionError("Unable to parse source file content:\n\n" + content, ex);
+			throw new IllegalStateException("Unable to parse source file content:\n\n" + content, ex);
 		}
 	}
 
@@ -150,24 +122,8 @@ public class SourceFile implements AssertProvider<SourceFileAssert> {
 		return path;
 	}
 
-	/**
-	 * Return the contents of the file.
-	 * @return the file contents
-	 */
-	public String getContent() {
-		return content;
-	}
-
 	JavaSource getJavaSource() {
 		return javaSource;
-	}
-
-	/**
-	 * Return the relative path of the file.
-	 * @return the file path
-	 */
-	public String getPath() {
-		return path;
 	}
 
 	/**
@@ -180,14 +136,9 @@ public class SourceFile implements AssertProvider<SourceFileAssert> {
 		return new SourceFileAssert(this);
 	}
 
-	@Override
-	public String toString() {
-		return "SourceFile: " + this.path;
-	}
-
 	@Nullable
 	public Class<?> getTarget() {
-		return null; // FIXME not sure if we want this or not
+		return null; // FIXME not yet implemented
 	}
 
 }

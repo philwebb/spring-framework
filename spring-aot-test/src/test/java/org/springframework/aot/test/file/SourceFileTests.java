@@ -1,7 +1,8 @@
 package org.springframework.aot.test.file;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import java.io.IOException;
 
@@ -28,34 +29,33 @@ class SourceFileTests {
 
 	@Test
 	void ofWhenContentIsNullThrowsException() {
-		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> SourceFile.of((Content) null))
-				.withMessage("Expecting source file content not to be empty");
+		assertThatIllegalArgumentException().isThrownBy(() -> SourceFile.of((WritableContent) null))
+				.withMessage("'writableContent' must not to be empty");
 	}
 
 	@Test
 	void ofWhenContentIsEmptyThrowsException() {
-		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> SourceFile.of(""))
-				.withMessage("Expecting source file content not to be empty");
+		assertThatIllegalStateException().isThrownBy(() -> SourceFile.of(""))
+				.withMessage("WritableContent did not append any content");
 	}
 
 	@Test
 	void ofWhenSourceDefinesNoClassThrowsException() {
-		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> SourceFile.of("package com.example;"))
+		assertThatIllegalStateException().isThrownBy(() -> SourceFile.of("package com.example;"))
 				.withMessageContaining("Unable to parse").havingCause()
 				.withMessage("Source must define a single class");
 	}
 
 	@Test
 	void ofWhenSourceDefinesMultipleClassesThrowsException() {
-		assertThatExceptionOfType(AssertionError.class)
-				.isThrownBy(() -> SourceFile.of("public class One {}\npublic class Two{}"))
+		assertThatIllegalStateException().isThrownBy(() -> SourceFile.of("public class One {}\npublic class Two{}"))
 				.withMessageContaining("Unable to parse").havingCause()
 				.withMessage("Source must define a single class");
 	}
 
 	@Test
 	void ofWhenSourceCannotBeParsedThrowsException() {
-		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> SourceFile.of("well this is broken {"))
+		assertThatIllegalStateException().isThrownBy(() -> SourceFile.of("well this is broken {"))
 				.withMessageContaining("Unable to parse source file content");
 	}
 
@@ -67,7 +67,7 @@ class SourceFileTests {
 
 	@Test
 	void ofWithPathUsesPath() {
-		SourceFile sourceFile = SourceFile.of("com/example/DifferentPath.java", Content.of(HELLO_WORLD));
+		SourceFile sourceFile = SourceFile.of("com/example/DifferentPath.java", HELLO_WORLD);
 		assertThat(sourceFile.getPath()).isEqualTo("com/example/DifferentPath.java");
 	}
 

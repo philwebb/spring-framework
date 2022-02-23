@@ -4,6 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests for {@link SourceFiles}.
+ *
+ * @author Phillip Webb
+ */
 class SourceFilesTests {
 
 	@Test

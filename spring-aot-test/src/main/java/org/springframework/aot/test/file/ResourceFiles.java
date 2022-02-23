@@ -16,24 +16,80 @@
 
 package org.springframework.aot.test.file;
 
+import java.util.stream.Stream;
+
+import javax.annotation.Nullable;
+
+/**
+ * An immutable collection of {@link ResourceFile} instances.
+ *
+ * @author Phillip Webb
+ * @since 6.0
+ */
 public class ResourceFiles {
 
+	private static final ResourceFiles NONE = new ResourceFiles(DynamicFiles.none());
+
+	private final DynamicFiles<ResourceFile> files;
+
+	private ResourceFiles(DynamicFiles<ResourceFile> files) {
+		this.files = files;
+	}
+
+	/**
+	 * Return a {@link DynamicFiles} instance with no items.
+	 * @return the empty instance
+	 */
 	public static ResourceFiles none() {
-		return null;
+		return NONE;
 	}
 
-	public ResourceFiles and(ResourceFile... resourceFiles) {
-		return null;
+	/**
+	 * Factory method that can be used to create a {@link ResourceFiles} instance containing
+	 * the specified files.
+	 * @param ResourceFiles the files to include
+	 * @return a {@link ResourceFiles} instance
+	 */
+	public static ResourceFiles of(ResourceFile... ResourceFiles) {
+		return none().and(ResourceFiles);
 	}
 
-	public ResourceFiles and(ResourceFiles resourceFiles) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Return a new {@link ResourceFiles} instance that merges files from another array of
+	 * {@link ResourceFile} instances.
+	 * @param ResourceFiles the instances to merge
+	 * @return a new {@link ResourceFiles} instance containing merged content
+	 */
+	public ResourceFiles and(ResourceFile... ResourceFiles) {
+		return new ResourceFiles(this.files.and(ResourceFiles));
 	}
 
-	public ResourceFile get(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Return a new {@link ResourceFiles} instance that merges files from another
+	 * {@link ResourceFiles} instance.
+	 * @param ResourceFiles the instance to merge
+	 * @return a new {@link ResourceFiles} instance containing merged content
+	 */
+	public ResourceFiles and(ResourceFiles ResourceFiles) {
+		return new ResourceFiles(this.files.and(ResourceFiles.files));
+	}
+
+	/**
+	 * Stream the {@link ResourceFile} instances contained in this collection.
+	 * @return a stream of file instances
+	 */
+	public Stream<ResourceFile> stream() {
+		return this.files.stream();
+	}
+
+	/**
+	 * Get the {@link ResourceFile} with the given {@code DynamicFile#getPath() path}.
+	 * @param path the path to find
+	 * @return a {@link ResourceFile} instance or {@code null}
+	 */
+	@Nullable
+	public ResourceFile get(String path) {
+		return this.files.get(path);
 	}
 
 }

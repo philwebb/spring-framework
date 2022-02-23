@@ -16,7 +16,12 @@
 
 package org.springframework.aot.test.file;
 
-public class ResourceFile {
+public final class ResourceFile extends DynamicFile {
+
+	protected ResourceFile(String path, String content) {
+		super(path, content);
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getPath() {
 		// TODO Auto-generated method stub
