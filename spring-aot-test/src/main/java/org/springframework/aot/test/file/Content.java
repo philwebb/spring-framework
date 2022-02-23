@@ -29,7 +29,8 @@ import java.nio.file.Path;
 import javax.annotation.Nullable;
 
 /**
- * File contents that can be transfered to an {@link Appendable}.
+ * File contents that can be transfered to an {@link Appendable}. Designed to align with
+ * JavaPoet's {@code JavaFile.writeTo} method.
  *
  * @author Phillip Webb
  * @since 6.0
