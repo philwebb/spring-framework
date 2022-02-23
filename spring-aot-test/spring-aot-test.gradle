@@ -1,0 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+description = "Spring AOT Test"
+
+dependencies {
+	api("org.assertj:assertj-core")
+	api("com.thoughtworks.qdox:qdox")
+}

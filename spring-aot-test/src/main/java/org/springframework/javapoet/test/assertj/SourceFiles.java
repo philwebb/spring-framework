@@ -2,11 +2,11 @@ package org.springframework.javapoet.test.assertj;
 
 import javax.tools.JavaFileObject;
 
-import org.springframework.javapoet.JavaFile;
+import org.springframework.aot.test.file.SourceFile;
 
-public class SourceFiles extends DynamicFiles {
+public class SourceFiles {
 
-	public static SourceFiles of(JavaFile... javaFiles) {
+	public static SourceFiles of(SourceFile... javaFiles) {
 		return null;
 	}
 

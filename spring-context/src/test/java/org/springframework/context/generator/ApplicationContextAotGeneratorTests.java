@@ -25,14 +25,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.aot.generator.DefaultGeneratedTypeContext;
 import org.springframework.aot.generator.GeneratedType;
 import org.springframework.aot.generator.GeneratedTypeContext;
+import org.springframework.aot.test.compile.TestCompiler;
+import org.springframework.aot.test.file.SourceFile;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.javapoet.test.assertj.SourceFiles;
-import org.springframework.javapoet.test.assertj.TestCompiler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Tests for {@link ApplicationContextAotGenerator}.
@@ -48,23 +49,23 @@ class ApplicationContextAotGeneratorTests {
 		GeneratedTypeContext generationContext = createGenerationContext();
 		ApplicationContextAotGenerator generator = new ApplicationContextAotGenerator(List.of());
 		generator.generateApplicationContext(new GenericApplicationContext(), generationContext);
-		SourceFiles.of(generationContext.getMainGeneratedType().toJavaFile());
-		this.compiler.compile(sourceFiles, result -> {
+		SourceFile generated = SourceFile.of(generationContext.getMainGeneratedType()::writeTo);
+		assertThat(generated).implementsInterface("ApplicationContextInitializer");
+		assertThat(generated).hasMethod("initialize", GenericApplicationContext.class).withBody(
+						"DefaultListableBeanFactory beanFactory = context.getDefaultListableBeanFactory();");
+	}
+
+	@Test
+	void generateApplicationContextWitNoContributors3() {
+		GeneratedTypeContext generationContext = createGenerationContext();
+		ApplicationContextAotGenerator generator = new ApplicationContextAotGenerator(List.of());
+		generator.generateApplicationContext(new GenericApplicationContext(), generationContext);
+		this.compiler.compile(generationContext.getMainGeneratedType()::writeTo, (compiled) -> {
+			SourceFile source = compiled.getSourceFile();
+			assertThat(source).implementsInterface("ApplicationContextInitializer");
+			assertThat(source).hasMethod("initialize", GenericApplicationContext.class).withBody(
+					"DefaultListableBeanFactory beanFactory = context.getDefaultListableBeanFactory();");
 		});
-
-		assertThat(generationContext.getMainGeneratedType().toJavaFile())
-
-
-
-
-		assertThat(write(generationContext.getMainGeneratedType())).contains("""
-				public class Test implements ApplicationContextInitializer {
-					@Override
-					public void initialize(GenericApplicationContext context) {
-						DefaultListableBeanFactory beanFactory = context.getDefaultListableBeanFactory();
-					}
-				}
-				""");
 	}
 
 

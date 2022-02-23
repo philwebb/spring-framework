@@ -16,6 +16,7 @@
 
 package org.springframework.aot.generator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -97,6 +98,10 @@ public class GeneratedType {
 		MethodSpec methodToAdd = createUniqueNameIfNecessary(method.build());
 		this.methods.add(methodToAdd);
 		return methodToAdd;
+	}
+
+	public void writeTo(Appendable out) throws IOException {
+		toJavaFile().writeTo(out);
 	}
 
 	/**

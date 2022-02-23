@@ -12,6 +12,7 @@ plugins {
 }
 
 include "spring-aop"
+include "spring-aot-test"
 include "spring-aspects"
 include "spring-beans"
 include "spring-context"
@@ -20,7 +21,6 @@ include "spring-context-support"
 include "spring-core"
 include "spring-expression"
 include "spring-instrument"
-include "spring-javapoet-test"
 include "spring-jcl"
 include "spring-jdbc"
 include "spring-jms"

@@ -22,7 +22,7 @@ dependencies {
 	optional("org.jetbrains.kotlin:kotlin-reflect")
 	optional("org.jetbrains.kotlin:kotlin-stdlib")
 	optional("org.reactivestreams:reactive-streams")
-	testImplementation(project(":spring-javapoet-test"))
+	testImplementation(project(":spring-aot-test"))
 	testImplementation(testFixtures(project(":spring-aop")))
 	testImplementation(testFixtures(project(":spring-beans")))
 	testImplementation(testFixtures(project(":spring-core")))
