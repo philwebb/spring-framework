@@ -18,4 +18,14 @@ package org.springframework.aot.test.file;
 
 public class ResourceFile {
 
+	public String getPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

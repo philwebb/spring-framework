@@ -1,4 +1,4 @@
-package org.springframework.javapoet.test;
+package org.springframework.aot.test.compile;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
 /**
- * {@link JavaFileManager} to create in-memory {@link ClassFileObject ClassFileObjects}
+ * {@link JavaFileManager} to create in-memory {@link DynamicClassFileObject ClassFileObjects}
  * when compiling.
  *
  * @author Phillip Webb
@@ -20,9 +20,9 @@ class DynamicJavaFileManager extends ForwardingJavaFileManager<JavaFileManager> 
 
 	private final ClassLoader classLoader;
 
-	private final Map<String, ClassFileObject> classFiles = Collections.synchronizedMap(new LinkedHashMap<>());
+	private final Map<String, DynamicClassFileObject> classFiles = Collections.synchronizedMap(new LinkedHashMap<>());
 
-	DynamicJavaFileManager(ClassLoader classLoader, JavaFileManager fileManager) {
+	DynamicJavaFileManager(JavaFileManager fileManager, ClassLoader classLoader) {
 		super(fileManager);
 		this.classLoader = classLoader;
 	}
@@ -36,12 +36,12 @@ class DynamicJavaFileManager extends ForwardingJavaFileManager<JavaFileManager> 
 	public JavaFileObject getJavaFileForOutput(Location location, String className, JavaFileObject.Kind kind,
 			FileObject sibling) throws IOException {
 		if (kind == JavaFileObject.Kind.CLASS) {
-			return this.classFiles.computeIfAbsent(className, ClassFileObject::new);
+			return this.classFiles.computeIfAbsent(className, DynamicClassFileObject::new);
 		}
 		return super.getJavaFileForOutput(location, className, kind, sibling);
 	}
 
-	Map<String, ClassFileObject> getClassFiles() {
+	Map<String, DynamicClassFileObject> getClassFiles() {
 		return Collections.unmodifiableMap(this.classFiles);
 	}
 

@@ -31,4 +31,9 @@ public class ResourceFiles {
 		return null;
 	}
 
+	public ResourceFile get(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -1,4 +1,4 @@
-package org.springframework.javapoet.test;
+package org.springframework.aot.test.compile;
 
 /**
  * Exception thrown when code cannot compile.

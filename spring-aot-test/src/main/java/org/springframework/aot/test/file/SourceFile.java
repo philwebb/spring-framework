@@ -185,4 +185,9 @@ public class SourceFile implements AssertProvider<SourceFileAssert> {
 		return "SourceFile: " + this.path;
 	}
 
+	@Nullable
+	public Class<?> getTarget() {
+		return null; // FIXME not sure if we want this or not
+	}
+
 }

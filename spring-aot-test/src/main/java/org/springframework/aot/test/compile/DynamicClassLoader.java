@@ -1,8 +1,10 @@
-package org.springframework.javapoet.test;
+package org.springframework.aot.test.compile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.net.URL;
@@ -12,10 +14,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.ClassUtils;
+import org.springframework.aot.test.file.ResourceFile;
+import org.springframework.aot.test.file.ResourceFiles;
+import org.springframework.aot.test.file.SourceFile;
+import org.springframework.aot.test.file.SourceFiles;
 
 /**
  * {@link ClassLoader} used to expose dynamically generated content.
@@ -24,42 +26,42 @@ import org.springframework.util.ClassUtils;
  */
 public class DynamicClassLoader extends ClassLoader {
 
-	private final Log logger = LogFactory.getLog(DynamicClassLoader.class);
+	private final Logger logger = System.getLogger(DynamicClassLoader.class.getName());
 
-	private final Map<String, DynamicallyGeneratedJavaFile> javaFiles;
+	private final SourceFiles sourceFiles;
 
-	private final Map<String, DynamicallyGeneratedResourceFile> resourceFiles;
+	private final ResourceFiles resourceFiles;
 
-	private final Map<String, ClassFileObject> classFiles;
+	private final Map<String, DynamicClassFileObject> classFiles;
 
-	public DynamicClassLoader(ClassLoader parent, Map<String, DynamicallyGeneratedJavaFile> javaFiles,
-			Map<String, DynamicallyGeneratedResourceFile> resourceFiles, Map<String, ClassFileObject> classFiles) {
-		super((parent != null) ? parent : ClassUtils.getDefaultClassLoader());
-		this.javaFiles = javaFiles;
+	public DynamicClassLoader(ClassLoader parent, SourceFiles sourceFiles, ResourceFiles resourceFiles,
+			Map<String, DynamicClassFileObject> classFiles) {
+		super(parent);
+		this.sourceFiles = sourceFiles;
 		this.resourceFiles = resourceFiles;
 		this.classFiles = classFiles;
 	}
 
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
-		ClassFileObject classFile = this.classFiles.get(name);
+		DynamicClassFileObject classFile = this.classFiles.get(name);
 		if (classFile != null) {
 			return defineClass(name, classFile);
 		}
 		return super.findClass(name);
 	}
 
-	private Class<?> defineClass(String name, ClassFileObject classFile) {
+	private Class<?> defineClass(String name, DynamicClassFileObject classFile) {
 		byte[] bytes = classFile.getBytes();
-		DynamicallyGeneratedJavaFile javaFile = this.javaFiles.get(name);
-		if (javaFile != null && javaFile.getClassName().isOwned()) {
+		SourceFile sourceFile = this.sourceFiles.get(name);
+		Class<?> target = sourceFile.getTarget();
+		if (sourceFile != null && sourceFile.getTarget() != null) {
 			try {
-				Class<?> target = javaFile.getClassName().getTarget();
 				Lookup lookup = MethodHandles.privateLookupIn(target, MethodHandles.lookup());
 				return lookup.defineClass(bytes);
 			}
 			catch (IllegalAccessException ex) {
-				this.logger.warn("Unable to define class using MethodHandles Lookup, "
+				this.logger.log(Level.WARNING, "Unable to define class using MethodHandles Lookup, "
 						+ "only public methods and classes will be accessible");
 			}
 		}
@@ -68,9 +70,9 @@ public class DynamicClassLoader extends ClassLoader {
 
 	@Override
 	protected Enumeration<URL> findResources(String name) throws IOException {
-		DynamicallyGeneratedResourceFile file = this.resourceFiles.get(name);
+		ResourceFile file = this.resourceFiles.get(name);
 		if (file != null) {
-			URL url = new URL(null, "resource:///" + file.getRelativePath(), new ResourceFileHandler(file));
+			URL url = new URL(null, "resource:///" + file.getPath(), new ResourceFileHandler(file));
 			return new SingletonEnumeration<>(url);
 		}
 		return super.findResources(name);
@@ -100,9 +102,9 @@ public class DynamicClassLoader extends ClassLoader {
 
 	private static class ResourceFileHandler extends URLStreamHandler {
 
-		private final DynamicallyGeneratedResourceFile file;
+		private final ResourceFile file;
 
-		ResourceFileHandler(DynamicallyGeneratedResourceFile file) {
+		ResourceFileHandler(ResourceFile file) {
 			this.file = file;
 		}
 
@@ -115,9 +117,9 @@ public class DynamicClassLoader extends ClassLoader {
 
 	private static class ResourceFileConnection extends URLConnection {
 
-		private final DynamicallyGeneratedResourceFile file;
+		private final ResourceFile file;
 
-		protected ResourceFileConnection(URL url, DynamicallyGeneratedResourceFile file) {
+		protected ResourceFileConnection(URL url, ResourceFile file) {
 			super(url);
 			this.file = file;
 		}

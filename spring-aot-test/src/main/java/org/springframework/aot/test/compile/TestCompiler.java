@@ -1,8 +1,15 @@
 package org.springframework.aot.test.compile;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticListener;
 import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler.CompilationTask;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 import org.springframework.aot.test.file.Content;
@@ -10,18 +17,21 @@ import org.springframework.aot.test.file.ResourceFile;
 import org.springframework.aot.test.file.ResourceFiles;
 import org.springframework.aot.test.file.SourceFile;
 import org.springframework.aot.test.file.SourceFiles;
-import org.springframework.javapoet.test.CompilationException;
 
 public class TestCompiler {
 
-	private final JavaCompiler javaCompiler;
+	private final ClassLoader classLoader;
+
+	private final JavaCompiler compiler;
 
 	private final SourceFiles sourceFiles;
 
 	private final ResourceFiles resourceFiles;
 
-	private TestCompiler(JavaCompiler javaCompiler, SourceFiles sourceFiles, ResourceFiles resourceFiles) {
-		this.javaCompiler = javaCompiler;
+	private TestCompiler(ClassLoader classLoader, JavaCompiler compiler, SourceFiles sourceFiles,
+			ResourceFiles resourceFiles) {
+		this.classLoader = classLoader;
+		this.compiler = compiler;
 		this.sourceFiles = sourceFiles;
 		this.resourceFiles = resourceFiles;
 	}
@@ -31,23 +41,25 @@ public class TestCompiler {
 	}
 
 	public static TestCompiler forCompiler(JavaCompiler javaCompiler) {
-		return new TestCompiler(javaCompiler, SourceFiles.none(), ResourceFiles.none());
+		return new TestCompiler(null, javaCompiler, SourceFiles.none(), ResourceFiles.none());
 	}
 
 	public TestCompiler withSources(SourceFile... sourceFiles) {
-		return new TestCompiler(javaCompiler, this.sourceFiles.and(sourceFiles), resourceFiles);
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles.and(sourceFiles), this.resourceFiles);
 	}
 
 	public TestCompiler withSources(SourceFiles sourceFiles) {
-		return new TestCompiler(javaCompiler, this.sourceFiles.and(sourceFiles), resourceFiles);
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles.and(sourceFiles), this.resourceFiles);
 	}
 
 	public TestCompiler withResources(ResourceFile... resourceFiles) {
-		return new TestCompiler(javaCompiler, sourceFiles, this.resourceFiles.and(resourceFiles));
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles,
+				this.resourceFiles.and(resourceFiles));
 	}
 
 	public TestCompiler withResources(ResourceFiles resourceFiles) {
-		return new TestCompiler(javaCompiler, sourceFiles, this.resourceFiles.and(resourceFiles));
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles,
+				this.resourceFiles.and(resourceFiles));
 	}
 
 	public void compile(Content content, Consumer<Compiled> compiled) {
@@ -67,7 +79,62 @@ public class TestCompiler {
 	}
 
 	public void compile(Consumer<Compiled> compiled) throws CompilationException {
-		// FIXME
+		DynamicClassLoader dynamicClassLoader = compile();
+		ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
+		try {
+			Thread.currentThread().setContextClassLoader(dynamicClassLoader);
+			compiled.accept(new Compiled(dynamicClassLoader, this.sourceFiles, this.resourceFiles));
+		}
+		finally {
+			Thread.currentThread().setContextClassLoader(previousClassLoader);
+		}
+	}
+
+	private DynamicClassLoader compile() {
+		ClassLoader classLoader = (this.classLoader != null) ? this.classLoader
+				: Thread.currentThread().getContextClassLoader();
+		List<SourceFileJavaFileObject> compilationUnits = this.sourceFiles.stream().map(SourceFileJavaFileObject::new)
+				.toList();
+		StandardJavaFileManager standardFileManager = this.compiler.getStandardFileManager(null, null, null);
+		DynamicJavaFileManager fileManager = new DynamicJavaFileManager(standardFileManager, classLoader);
+		Errors errors = new Errors();
+		CompilationTask task = this.compiler.getTask(null, fileManager, errors, null, null, compilationUnits);
+		boolean result = task.call();
+		if (!result || errors.hasReportedErrors()) {
+			throw new CompilationException("Unable to compile source" + errors);
+		}
+		return new DynamicClassLoader(this.classLoader, this.sourceFiles, this.resourceFiles,
+				fileManager.getClassFiles());
+	}
+
+	/**
+	 * {@link DiagnosticListener} used to collect errors.
+	 */
+	static class Errors implements DiagnosticListener<JavaFileObject> {
+
+		private final StringBuilder message = new StringBuilder();
+
+		@Override
+		public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
+			if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
+				this.message.append("\n");
+				this.message.append(diagnostic.getMessage(Locale.getDefault()));
+				this.message.append(" ");
+				this.message.append(diagnostic.getSource().getName());
+				this.message.append(" ");
+				this.message.append(diagnostic.getLineNumber() + ":" + diagnostic.getColumnNumber());
+			}
+		}
+
+		boolean hasReportedErrors() {
+			return this.message.length() > 0;
+		}
+
+		@Override
+		public String toString() {
+			return this.message.toString();
+		}
+
 	}
 
 }

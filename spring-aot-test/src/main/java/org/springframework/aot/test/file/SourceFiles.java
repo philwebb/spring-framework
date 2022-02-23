@@ -16,21 +16,42 @@
 
 package org.springframework.aot.test.file;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
 public class SourceFiles {
 
-	private SourceFiles() {
+	private final List<SourceFile> files;
+
+	private SourceFiles(List<SourceFile> files) {
+		this.files = files;
 	}
 
 	public static SourceFiles none() {
-		return null;
+		return new SourceFiles(Collections.emptyList());
+	}
+
+	public static SourceFiles of(SourceFile... sourceFiles) {
+		return new SourceFiles(List.of(sourceFiles));
 	}
 
 	public SourceFiles and(SourceFile... sourceFiles) {
-		// TODO Auto-generated method stub
-		return null;
+		return and(SourceFiles.of(sourceFiles));
 	}
 
 	public SourceFiles and(SourceFiles sourceFiles) {
+		List<SourceFile> files = new ArrayList<>(this.files);
+		files.addAll(sourceFiles.files);
+		return new SourceFiles(Collections.unmodifiableList(files));
+	}
+
+	public Stream<SourceFile> stream() {
+		return this.files.stream();
+	}
+
+	public SourceFile get(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
