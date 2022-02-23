@@ -16,22 +16,39 @@
 
 package org.springframework.aot.test.file;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.AbstractAssert;
 
 import com.thoughtworks.qdox.model.JavaMethod;
 
+/**
+ * Assertion methods for {@code SourceFile} methods.
+ *
+ * @author Phillip Webb
+ * @since 6.0
+ */
 public class MethodAssert extends AbstractAssert<MethodAssert, JavaMethod> {
 
-	protected MethodAssert(JavaMethod actual) {
+	MethodAssert(JavaMethod actual) {
 		super(actual, MethodAssert.class);
+		as(describe(actual));
+	}
+
+	private String describe(JavaMethod actual) {
+		return actual.getName() + "(" + actual.getParameters().stream()
+				.map((parameter) -> parameter.getType().getFullyQualifiedName()).collect(Collectors.joining(", "))
+				+ ")";
 	}
 
 	public void withBody(String expected) {
-		// TODO Auto-generated method stub
+		assertThat(actual.getSourceCode()).as(this.info.description()).isEqualToNormalizingWhitespace(expected);
 	}
 
 	public void withBodyContaining(CharSequence... values) {
-
+		assertThat(actual.getSourceCode()).as(this.info.description()).contains(values);
 	}
 
 }

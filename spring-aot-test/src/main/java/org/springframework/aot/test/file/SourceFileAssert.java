@@ -31,6 +31,12 @@ import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.JavaType;
 
+/**
+ * Assertion methods for {@code SourceFile} instances.
+ *
+ * @author Phillip Webb
+ * @since 6.0
+ */
 public class SourceFileAssert extends AbstractAssert<SourceFileAssert, SourceFile> {
 
 	SourceFileAssert(SourceFile actual) {

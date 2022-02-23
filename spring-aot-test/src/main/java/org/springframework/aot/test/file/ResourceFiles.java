@@ -18,4 +18,17 @@ package org.springframework.aot.test.file;
 
 public class ResourceFiles {
 
+	public static ResourceFiles none() {
+		return null;
+	}
+
+	public ResourceFiles and(ResourceFile... resourceFiles) {
+		return null;
+	}
+
+	public ResourceFiles and(ResourceFiles resourceFiles) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

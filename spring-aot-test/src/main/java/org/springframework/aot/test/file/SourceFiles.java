@@ -18,4 +18,21 @@ package org.springframework.aot.test.file;
 
 public class SourceFiles {
 
+	private SourceFiles() {
+	}
+
+	public static SourceFiles none() {
+		return null;
+	}
+
+	public SourceFiles and(SourceFile... sourceFiles) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public SourceFiles and(SourceFiles sourceFiles) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
