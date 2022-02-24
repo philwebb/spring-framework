@@ -1,3 +1,19 @@
+/*
+ * Copyright 2002-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.springframework.aot.test.compile;
 
 import java.util.List;
@@ -18,6 +34,13 @@ import org.springframework.aot.test.file.ResourceFiles;
 import org.springframework.aot.test.file.SourceFile;
 import org.springframework.aot.test.file.SourceFiles;
 
+/**
+ * Utility that can be used to dynamically compile and test Java source code.
+ *
+ * @author Phillip Webb
+ * @see #forSystem()
+ * @since 6.0
+ */
 public class TestCompiler {
 
 	private final ClassLoader classLoader;
@@ -36,48 +59,108 @@ public class TestCompiler {
 		this.resourceFiles = resourceFiles;
 	}
 
+	/**
+	 * Return a new {@link TestCompiler} backed by the system java compiler.
+	 * @return a new {@link TestCompiler} instance
+	 */
 	public static TestCompiler forSystem() {
 		return forCompiler(ToolProvider.getSystemJavaCompiler());
 	}
 
+	/**
+	 * Return a new {@link TestCompiler} backed by the given {@link JavaCompiler}.
+	 * @param javaCompiler the java compiler to use
+	 * @return a new {@link TestCompiler} instance
+	 */
 	public static TestCompiler forCompiler(JavaCompiler javaCompiler) {
 		return new TestCompiler(null, javaCompiler, SourceFiles.none(), ResourceFiles.none());
 	}
 
+	/**
+	 * Return a new {@link TestCompiler} instance with addition source files.
+	 * @param sourceFiles the additional source files
+	 * @return a new {@link TestCompiler} instance
+	 */
 	public TestCompiler withSources(SourceFile... sourceFiles) {
 		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles.and(sourceFiles), this.resourceFiles);
 	}
 
+	/**
+	 * Return a new {@link TestCompiler} instance with addition source files.
+	 * @param sourceFiles the additional source files
+	 * @return a new {@link TestCompiler} instance
+	 */
 	public TestCompiler withSources(SourceFiles sourceFiles) {
 		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles.and(sourceFiles), this.resourceFiles);
 	}
 
+	/**
+	 * Return a new {@link TestCompiler} instance with addition resource files.
+	 * @param resourceFiles the additional resource files
+	 * @return a new {@link TestCompiler} instance
+	 */
 	public TestCompiler withResources(ResourceFile... resourceFiles) {
 		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles,
 				this.resourceFiles.and(resourceFiles));
 	}
 
+	/**
+	 * Return a new {@link TestCompiler} instance with addition resource files.
+	 * @param resourceFiles the additional resource files
+	 * @return a new {@link TestCompiler} instance
+	 */
 	public TestCompiler withResources(ResourceFiles resourceFiles) {
 		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles,
 				this.resourceFiles.and(resourceFiles));
 	}
 
+	/**
+	 * Compile content from this instance along with the additional provided content.
+	 * @param content the additional content to compile
+	 * @param compiled a consumed used to further assert the compiled code
+	 * @throws CompilationException if source cannot be compiled
+	 */
 	public void compile(WritableContent content, Consumer<Compiled> compiled) {
 		compile(SourceFile.of(content), compiled);
 	}
 
+	/**
+	 * Compile content from this instance along with the additional provided source file.
+	 * @param sourceFile the additional source file to compile
+	 * @param compiled a consumed used to further assert the compiled code
+	 * @throws CompilationException if source cannot be compiled
+	 */
 	public void compile(SourceFile sourceFile, Consumer<Compiled> compiled) {
 		withSources(sourceFile).compile(compiled);
 	}
 
+	/**
+	 * Compile content from this instance along with the additional provided source files.
+	 * @param sourceFiles the additional source files to compile
+	 * @param compiled a consumed used to further assert the compiled code
+	 * @throws CompilationException if source cannot be compiled
+	 */
 	public void compile(SourceFiles sourceFiles, Consumer<Compiled> compiled) {
 		withSources(sourceFiles).compile(compiled);
 	}
 
+	/**
+	 * Compile content from this instance along with the additional provided source and
+	 * resource files.
+	 * @param sourceFiles the additional source files to compile
+	 * @param resourceFiles the additional resource files to include
+	 * @param compiled a consumed used to further assert the compiled code
+	 * @throws CompilationException if source cannot be compiled
+	 */
 	public void compile(SourceFiles sourceFiles, ResourceFiles resourceFiles, Consumer<Compiled> compiled) {
 		withSources(sourceFiles).withResources(resourceFiles).compile(compiled);
 	}
 
+	/**
+	 * Compile content from this instance.
+	 * @param compiled a consumed used to further assert the compiled code
+	 * @throws CompilationException if source cannot be compiled
+	 */
 	public void compile(Consumer<Compiled> compiled) throws CompilationException {
 		DynamicClassLoader dynamicClassLoader = compile();
 		ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
