@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.error.BasicErrorMessageFactory;
 import org.assertj.core.internal.Failures;
 
@@ -37,20 +36,10 @@ import com.thoughtworks.qdox.model.JavaType;
  * @author Phillip Webb
  * @since 6.0
  */
-public class SourceFileAssert extends AbstractAssert<SourceFileAssert, SourceFile> {
+public class SourceFileAssert extends DynamicFileAssert<SourceFileAssert, SourceFile> {
 
 	SourceFileAssert(SourceFile actual) {
 		super(actual, SourceFileAssert.class);
-	}
-
-	public SourceFileAssert contains(CharSequence... values) {
-		assertThat(this.actual.getContent()).contains(values);
-		return this;
-	}
-
-	public SourceFileAssert isEqualTo(Object expected) {
-		assertThat(this.actual.getContent()).isEqualTo(expected != null ? expected.toString() : null);
-		return this;
 	}
 
 	public SourceFileAssert implementsInterface(Class<?> type) {
@@ -59,7 +48,7 @@ public class SourceFileAssert extends AbstractAssert<SourceFileAssert, SourceFil
 
 	public SourceFileAssert implementsInterface(String name) {
 		JavaClass javaClass = getJavaClass();
-		assertThat(javaClass.getImplements()).as("imports").map(JavaType::getFullyQualifiedName).contains(name);
+		assertThat(javaClass.getImplements()).as("implements").map(JavaType::getFullyQualifiedName).contains(name);
 		return this;
 	}
 

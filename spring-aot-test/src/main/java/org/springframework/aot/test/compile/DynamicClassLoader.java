@@ -54,10 +54,9 @@ public class DynamicClassLoader extends ClassLoader {
 	private Class<?> defineClass(String name, DynamicClassFileObject classFile) {
 		byte[] bytes = classFile.getBytes();
 		SourceFile sourceFile = this.sourceFiles.get(name);
-		Class<?> target = sourceFile.getTarget();
 		if (sourceFile != null && sourceFile.getTarget() != null) {
 			try {
-				Lookup lookup = MethodHandles.privateLookupIn(target, MethodHandles.lookup());
+				Lookup lookup = MethodHandles.privateLookupIn(sourceFile.getTarget(), MethodHandles.lookup());
 				return lookup.defineClass(bytes);
 			}
 			catch (IllegalAccessException ex) {

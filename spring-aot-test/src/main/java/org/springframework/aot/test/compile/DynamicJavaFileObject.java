@@ -13,11 +13,11 @@ import org.springframework.aot.test.file.SourceFile;
  *
  * @author Phillip Webb
  */
-class SourceFileJavaFileObject extends SimpleJavaFileObject {
+class DynamicJavaFileObject extends SimpleJavaFileObject {
 
 	private final SourceFile sourceFile;
 
-	SourceFileJavaFileObject(SourceFile sourceFile) {
+	DynamicJavaFileObject(SourceFile sourceFile) {
 		super(URI.create(sourceFile.getPath()), Kind.SOURCE);
 		this.sourceFile = sourceFile;
 	}

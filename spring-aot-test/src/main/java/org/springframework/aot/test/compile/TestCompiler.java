@@ -93,7 +93,7 @@ public class TestCompiler {
 	private DynamicClassLoader compile() {
 		ClassLoader classLoader = (this.classLoader != null) ? this.classLoader
 				: Thread.currentThread().getContextClassLoader();
-		List<SourceFileJavaFileObject> compilationUnits = this.sourceFiles.stream().map(SourceFileJavaFileObject::new)
+		List<DynamicJavaFileObject> compilationUnits = this.sourceFiles.stream().map(DynamicJavaFileObject::new)
 				.toList();
 		StandardJavaFileManager standardFileManager = this.compiler.getStandardFileManager(null, null, null);
 		DynamicJavaFileManager fileManager = new DynamicJavaFileManager(standardFileManager, classLoader);

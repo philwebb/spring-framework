@@ -16,21 +16,51 @@
 
 package org.springframework.aot.test.file;
 
-public final class ResourceFile extends DynamicFile {
+import org.assertj.core.api.AssertProvider;
 
-	protected ResourceFile(String path, String content) {
+/**
+ * {@link DynamicFile} that holds resource file content and provides
+ * {@link ResourceFileAssert} support.
+ *
+ * @author Phillip Webb
+ * @since 6.0
+ */
+public final class ResourceFile extends DynamicFile implements AssertProvider<ResourceFileAssert> {
+
+	private ResourceFile(String path, String content) {
 		super(path, content);
-		// TODO Auto-generated constructor stub
 	}
 
-	public String getPath() {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Factory method to create a new {@link ResourceFile} from the given
+	 * {@link CharSequence}.
+	 * @param path the relative path of the file or {@code null} to have the path deduced
+	 * @param charSequence a file containing the source contents
+	 * @return a {@link ResourceFile} instance
+	 */
+	public static ResourceFile of(String path, CharSequence charSequence) {
+		return new ResourceFile(path, charSequence.toString());
 	}
 
-	public String getContent() {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Factory method to create a new {@link SourceFile} from the given
+	 * {@link WritableContent}.
+	 * @param path the relative path of the file or {@code null} to have the path deduced
+	 * @param writableContent the content to write to the file
+	 * @return a {@link SourceFile} instance
+	 */
+	public static ResourceFile of(String path, WritableContent writableContent) {
+		return new ResourceFile(path, toString(writableContent));
+	}
+
+	/**
+	 * @deprecated use {@code assertThat(sourceFile)} rather than calling this method
+	 * directly.
+	 */
+	@Override
+	@Deprecated
+	public ResourceFileAssert assertThat() {
+		return new ResourceFileAssert(this);
 	}
 
 }
