@@ -123,7 +123,16 @@ public final class SourceFile extends DynamicFile implements AssertProvider<Sour
 	}
 
 	JavaSource getJavaSource() {
-		return javaSource;
+		return this.javaSource;
+	}
+
+	@Nullable
+	public Class<?> getTarget() {
+		return null; // FIXME not yet implemented
+	}
+
+	public String getClassName() {
+		return this.javaSource.getClasses().get(0).getFullyQualifiedName();
 	}
 
 	/**
@@ -134,11 +143,6 @@ public final class SourceFile extends DynamicFile implements AssertProvider<Sour
 	@Deprecated
 	public SourceFileAssert assertThat() {
 		return new SourceFileAssert(this);
-	}
-
-	@Nullable
-	public Class<?> getTarget() {
-		return null; // FIXME not yet implemented
 	}
 
 }

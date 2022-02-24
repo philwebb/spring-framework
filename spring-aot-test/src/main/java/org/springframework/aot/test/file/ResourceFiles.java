@@ -16,6 +16,7 @@
 
 package org.springframework.aot.test.file;
 
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -26,7 +27,7 @@ import javax.annotation.Nullable;
  * @author Phillip Webb
  * @since 6.0
  */
-public class ResourceFiles {
+public class ResourceFiles implements Iterable<ResourceFile> {
 
 	private static final ResourceFiles NONE = new ResourceFiles(DynamicFiles.none());
 
@@ -45,8 +46,8 @@ public class ResourceFiles {
 	}
 
 	/**
-	 * Factory method that can be used to create a {@link ResourceFiles} instance containing
-	 * the specified files.
+	 * Factory method that can be used to create a {@link ResourceFiles} instance
+	 * containing the specified files.
 	 * @param ResourceFiles the files to include
 	 * @return a {@link ResourceFiles} instance
 	 */
@@ -74,6 +75,11 @@ public class ResourceFiles {
 		return new ResourceFiles(this.files.and(ResourceFiles.files));
 	}
 
+	@Override
+	public Iterator<ResourceFile> iterator() {
+		return this.files.iterator();
+	}
+
 	/**
 	 * Stream the {@link ResourceFile} instances contained in this collection.
 	 * @return a stream of file instances
@@ -90,6 +96,15 @@ public class ResourceFiles {
 	@Nullable
 	public ResourceFile get(String path) {
 		return this.files.get(path);
+	}
+
+	/**
+	 * Return the single source file contained in the collection.
+	 * @return the single file
+	 * @throws IllegalStateException if the collection doesn't contain exactly one file
+	 */
+	public ResourceFile getSingle() throws IllegalStateException {
+		return this.files.getSingle();
 	}
 
 }

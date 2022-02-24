@@ -16,6 +16,7 @@
 
 package org.springframework.aot.test.file;
 
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -26,7 +27,7 @@ import javax.annotation.Nullable;
  * @author Phillip Webb
  * @since 6.0
  */
-public class SourceFiles {
+public class SourceFiles implements Iterable<SourceFile> {
 
 	private static final SourceFiles NONE = new SourceFiles(DynamicFiles.none());
 
@@ -74,6 +75,11 @@ public class SourceFiles {
 		return new SourceFiles(this.files.and(sourceFiles.files));
 	}
 
+	@Override
+	public Iterator<SourceFile> iterator() {
+		return this.files.iterator();
+	}
+
 	/**
 	 * Stream the {@link SourceFile} instances contained in this collection.
 	 * @return a stream of file instances
@@ -90,6 +96,15 @@ public class SourceFiles {
 	@Nullable
 	public SourceFile get(String path) {
 		return this.files.get(path);
+	}
+
+	/**
+	 * Return the single source file contained in the collection.
+	 * @return the single file
+	 * @throws IllegalStateException if the collection doesn't contain exactly one file
+	 */
+	public SourceFile getSingle() throws IllegalStateException {
+		return this.files.getSingle();
 	}
 
 }
