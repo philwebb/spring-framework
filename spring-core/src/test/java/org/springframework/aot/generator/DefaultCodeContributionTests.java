@@ -18,6 +18,8 @@ package org.springframework.aot.generator;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.generator.CodeContribution;
+import org.springframework.aot.generator.DefaultCodeContribution;
 import org.springframework.aot.hint.RuntimeHints;
 
 import static org.assertj.core.api.Assertions.assertThat;

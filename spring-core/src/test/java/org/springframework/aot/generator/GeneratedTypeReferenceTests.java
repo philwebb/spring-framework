@@ -18,6 +18,7 @@ package org.springframework.aot.generator;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.generator.GeneratedTypeReference;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.javapoet.ClassName;
 

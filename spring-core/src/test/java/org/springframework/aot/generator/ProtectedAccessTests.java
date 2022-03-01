@@ -23,6 +23,9 @@ import java.lang.reflect.Modifier;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.generator.ProtectedAccess;
+import org.springframework.aot.generator.ProtectedAccessException;
+import org.springframework.aot.generator.ProtectedElement;
 import org.springframework.aot.generator.ProtectedAccess.Options;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.testfixture.aot.generator.visibility.ProtectedGenericParameter;
