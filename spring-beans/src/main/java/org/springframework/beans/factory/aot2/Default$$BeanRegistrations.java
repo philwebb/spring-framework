@@ -40,7 +40,6 @@ public class Default$$BeanRegistrations implements BeanDefinitionRegistryInitial
 
 	private void customizeFooBeanDefinition(RootBeanDefinition rootBeanDefinition) {
 		rootBeanDefinition.getPropertyValues().add("innerBean", createFooInnerBeanDefinition());
-
 	}
 
 	private RootBeanDefinition createFooInnerBeanDefinition() {

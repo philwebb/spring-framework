@@ -57,7 +57,7 @@ class DefaultBeanRegistrationCode implements BeanRegistrationCode {
 	}
 
 	@Override
-	public CodeBlock getMethodBodyCodeBlock(AotContext aotContext) {
+	public CodeBlock getMethodBody(AotContext aotContext) {
 		BeanDefinition mergedBeanDefinition = this.definedBean.getMergedBeanDefinition();
 		Executable executable = new BeanRegistrationExecutableResolver(this.definedBean.getBeanFactory())
 				.resolveExecutable(mergedBeanDefinition);

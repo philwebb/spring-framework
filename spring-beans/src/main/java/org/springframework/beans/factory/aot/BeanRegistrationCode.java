@@ -18,6 +18,7 @@ package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.context.AotContext;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.javapoet.CodeBlock;
 
@@ -42,13 +43,41 @@ public interface BeanRegistrationCode {
 	static final String REGISTRY = "registry";
 
 	/**
-	 * Return a {@link CodeBlock} containing source code to register a
-	 * {@link BeanDefinition} to {@link BeanDefinitionRegistry}. The resulting code will
-	 * be included as the body of a generated method and can assume that the
-	 * {@link #REGISTRY} parameter is available.
-	 * @param aotContext
-	 * @return
+	 * Return the kind of generated method used for registration.
+	 * @return the registration code kind
 	 */
-	CodeBlock getMethodBodyCodeBlock(AotContext aotContext);
+	default Kind getKind() {
+		return Kind.BEAN_DEFINITION_SUPPLIER;
+	}
+
+	/**
+	 * Return a {@link CodeBlock} containing method body that performs registration.
+	 * Depending on {@link #getKind() the kind}, this will either be a method that returns
+	 * the {@link BeanDefinition} or a method that accepts a
+	 * {@link ConfigurableListableBeanFactory}.
+	 * @param aotContext the AOT context
+	 * @return the method body
+	 */
+	CodeBlock getMethodBody(AotContext aotContext);
+
+	// FIXME we need a way for implementations to add additional methods
+
+	/**
+	 * Supported kinds of {@link BeanRegistrationCode}.
+	 */
+	static enum Kind {
+
+		/**
+		 * The generated method returns a {@link BeanDefinition} instance.
+		 */
+		BEAN_DEFINITION_SUPPLIER,
+
+		/**
+		 * The generated method accepts a {@link ConfigurableListableBeanFactory} named
+		 * {@link BeanRegistrationCode#REGISTRY}.
+		 */
+		BEAN_FACTORY_CONSUMER
+
+	}
 
 }

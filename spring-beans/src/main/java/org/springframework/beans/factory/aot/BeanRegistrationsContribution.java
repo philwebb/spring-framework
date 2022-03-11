@@ -107,7 +107,7 @@ class BeanRegistrationsContribution implements AotContribution {
 		builder.addJavadoc("Register the bean definition for $S", beanName);
 		builder.addModifiers(Modifier.PRIVATE);
 		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationCode.REGISTRY);
-		builder.addCode(code.getMethodBodyCodeBlock(aotContext));
+		builder.addCode(code.getMethodBody(aotContext));
 		return builder.build();
 	}
 
