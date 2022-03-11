@@ -74,7 +74,7 @@ class BeanRegistrationsContribution implements AotContribution {
 		TypeSpec.Builder builder = TypeSpec.classBuilder(className.toString());
 		builder.addJavadoc("BeanDefinitionRegistryInitializer for $S", this.beanFactoryName);
 		builder.addSuperinterface(BeanDefinitionRegistryInitializer.class);
-		List<MethodSpec> registrationMethods = generateRegistartionMethods(aotContext);
+		List<MethodSpec> registrationMethods = generateRegistrationMethods(aotContext);
 		builder.addMethod(generateInitializeMethod(registrationMethods));
 		registrationMethods.forEach(builder::addMethod);
 		return builder.build();
@@ -91,7 +91,7 @@ class BeanRegistrationsContribution implements AotContribution {
 		return builder.build();
 	}
 
-	private List<MethodSpec> generateRegistartionMethods(AotContext aotContext) {
+	private List<MethodSpec> generateRegistrationMethods(AotContext aotContext) {
 		MethodNameGenerator nameGenerator = new MethodNameGenerator();
 		List<MethodSpec> generatedMethods = new ArrayList<>(this.registrations.size());
 		this.registrations.forEach((definedBean, registration) -> {

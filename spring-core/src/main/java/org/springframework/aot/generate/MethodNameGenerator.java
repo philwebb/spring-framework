@@ -42,14 +42,14 @@ public class MethodNameGenerator {
 	 * @param parts the parts used to build the name.
 	 * @return the generated method name
 	 */
-	public String generatedMethodName(Object... parts) {
+	public GeneratedMethodName generatedMethodName(Object... parts) {
 		StringBuilder generatedName = new StringBuilder();
 		for (int i = 0; i < parts.length; i++) {
 			String partName = getPartName(parts[i]);
 			generatedName.append(i != 0 ? StringUtils.capitalize(partName)
 					: StringUtils.uncapitalize(partName));
 		}
-		return addSequence(generatedName.isEmpty() ? "$$aot" : generatedName.toString());
+		return new GeneratedMethodName(addSequence(generatedName.isEmpty() ? "$$aot" : generatedName.toString()));
 	}
 
 	private String getPartName(Object part) {

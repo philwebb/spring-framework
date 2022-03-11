@@ -54,13 +54,13 @@ public interface BeanRegistrationCode {
 	 * Return a {@link CodeBlock} containing method body that performs registration.
 	 * Depending on {@link #getKind() the kind}, this will either be a method that returns
 	 * the {@link BeanDefinition} or a method that accepts a
-	 * {@link ConfigurableListableBeanFactory}.
+	 * {@link ConfigurableListableBeanFactory}. The {@code registrationMethods} parameter
+	 * can be used if additional methods need to be added to support registration.
 	 * @param aotContext the AOT context
-	 * @return the method body
+	 * @param registrationMethods the registration methods being generated
+	 * @return a {@link CodeBlock} containing the method body
 	 */
-	CodeBlock getMethodBody(AotContext aotContext);
-
-	// FIXME we need a way for implementations to add additional methods
+	CodeBlock getMethodBody(AotContext aotContext, BeanRegistrationMethods registrationMethods);
 
 	/**
 	 * Supported kinds of {@link BeanRegistrationCode}.
