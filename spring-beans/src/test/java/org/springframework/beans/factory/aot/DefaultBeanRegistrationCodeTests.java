@@ -16,13 +16,25 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.assertj.core.api.AbstractStringAssert;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
+import javax.lang.model.element.Modifier;
+
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.test.generator.compile.Compiled;
+import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.aot.DefaultBeanRegistrationCode.BeanDefinitionCustomizeCode;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.javapoet.JavaFile;
+import org.springframework.javapoet.MethodSpec;
+import org.springframework.javapoet.ParameterizedTypeName;
+import org.springframework.javapoet.TypeSpec;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,108 +54,164 @@ class DefaultBeanRegistrationCodeTests {
 
 		// FIXME convert to TestCompiler based test
 
+		// FIXME inner bean definition on
+
 		private RootBeanDefinition bd = new RootBeanDefinition();
 
 		@Test
 		void setPrimaryWhenFalse() {
 			this.bd.setPrimary(false);
-			assertThatCodeBlock(bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setPrimary");
+				assertThat(actual.isPrimary()).isFalse();
+			});
 		}
 
 		@Test
 		void setPrimaryWhenTrue() {
 			this.bd.setPrimary(true);
-			assertThatCodeBlock(this.bd).contains("bd.setPrimary(true);");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.isPrimary()).isTrue();
+			});
 		}
 
 		@Test
 		void setScopeWhenEmptyString() {
 			this.bd.setScope("");
-			assertThatCodeBlock(this.bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setScope");
+				assertThat(actual.getScope()).isEmpty();
+			});
 		}
 
 		@Test
 		void setScopeWhenSingleton() {
 			this.bd.setScope("singleton");
-			assertThatCodeBlock(this.bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setScope");
+				assertThat(actual.getScope()).isEmpty();
+			});
 		}
 
 		@Test
 		void setScopeWhenOther() {
 			this.bd.setScope("prototype");
-			assertThatCodeBlock(this.bd).contains("bd.setScope(\"prototype\");");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.getScope()).isEqualTo("prototype");
+			});
 		}
 
 		@Test
 		void setDependsOnWhenEmpty() {
 			this.bd.setDependsOn();
-			assertThatCodeBlock(this.bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setDependsOn");
+				assertThat(actual.getDependsOn()).isNull();
+			});
 		}
 
 		@Test
 		void setDependsOnWhenNotEmpty() {
 			this.bd.setDependsOn("a", "b", "c");
-			assertThatCodeBlock(this.bd).contains("bd.setDependsOn(\"a\", \"b\", \"c\");");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.getDependsOn()).containsExactly("a", "b", "c");
+			});
+		}
+
+		@Test
+		void setLazyInitWhenNoSet() {
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setLazyInit");
+				assertThat(actual.isLazyInit()).isFalse();
+				assertThat(actual.getLazyInit()).isNull();
+			});
 		}
 
 		@Test
 		void setLazyInitWhenFalse() {
 			this.bd.setLazyInit(false);
-			assertThatCodeBlock(this.bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.isLazyInit()).isFalse();
+				assertThat(actual.getLazyInit()).isFalse();
+			});
 		}
 
 		@Test
 		void setLazyInitWhenTrue() {
 			this.bd.setLazyInit(true);
-			assertThatCodeBlock(this.bd).contains("bd.setLazyInit(true);");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.isLazyInit()).isTrue();
+				assertThat(actual.getLazyInit()).isTrue();
+			});
 		}
 
 		@Test
 		void setAutowireCandidateWhenFalse() {
 			this.bd.setAutowireCandidate(false);
-			assertThatCodeBlock(this.bd).contains("bd.setAutowireCandidate(false);");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.isAutowireCandidate()).isFalse();
+			});
 		}
 
 		@Test
 		void setAutowireCandidateWhenTrue() {
 			this.bd.setAutowireCandidate(true);
-			assertThatCodeBlock(this.bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setAutowireCandidate");
+				assertThat(actual.isAutowireCandidate()).isTrue();
+			});
 		}
 
 		@Test
 		void setSyntheticWhenFalse() {
 			this.bd.setSynthetic(false);
-			assertThatCodeBlock(this.bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setSynthetic");
+				assertThat(actual.isSynthetic()).isFalse();
+			});
 		}
 
 		@Test
 		void setSyntheticWhenTrue() {
 			this.bd.setSynthetic(true);
-			assertThatCodeBlock(this.bd).contains("bd.setSynthetic(true);");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.isSynthetic()).isTrue();
+			});
 		}
 
 		@Test
 		void setRoleWhenApplication() {
 			this.bd.setRole(BeanDefinition.ROLE_APPLICATION);
-			assertThatCodeBlock(this.bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setRole");
+				assertThat(actual.getRole()).isEqualTo(BeanDefinition.ROLE_APPLICATION);
+			});
 		}
 
 		@Test
 		void setRoleWhenInfrastructure() {
 			this.bd.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
-			assertThatCodeBlock(this.bd).contains("bd.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).contains("setRole(BeanDefinition.ROLE_INFRASTRUCTURE);");
+				assertThat(actual.getRole()).isEqualTo(BeanDefinition.ROLE_INFRASTRUCTURE);
+			});
 		}
 
 		@Test
 		void setRoleWhenSupport() {
 			this.bd.setRole(BeanDefinition.ROLE_SUPPORT);
-			assertThatCodeBlock(this.bd).contains("bd.setRole(BeanDefinition.ROLE_SUPPORT);");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).contains("setRole(BeanDefinition.ROLE_SUPPORT);");
+				assertThat(actual.getRole()).isEqualTo(BeanDefinition.ROLE_SUPPORT);
+			});
 		}
 
 		@Test
 		void setRoleWhenOther() {
 			this.bd.setRole(999);
-			assertThatCodeBlock(this.bd).contains("bd.setRole(999);");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.getRole()).isEqualTo(999);
+			});
 		}
 
 		@Test
@@ -151,27 +219,33 @@ class DefaultBeanRegistrationCodeTests {
 			this.bd.getConstructorArgumentValues().addIndexedArgumentValue(0, String.class);
 			this.bd.getConstructorArgumentValues().addIndexedArgumentValue(1, "test");
 			this.bd.getConstructorArgumentValues().addIndexedArgumentValue(2, 123);
-			assertThatCodeBlock(this.bd)
-					.contains("bd.getConstructorArgumentValues().addIndexedArgumentValue(0,java.lang.String.class);")
-					.contains("bd.getConstructorArgumentValues().addIndexedArgumentValue(1,\"test\");")
-					.contains("bd.getConstructorArgumentValues().addIndexedArgumentValue(2,123);");
+			testCompiledResult((actual, compiled) -> {
+				Map<Integer, ValueHolder> values = actual.getConstructorArgumentValues().getIndexedArgumentValues();
+				assertThat(values.get(0).getValue()).isEqualTo(String.class);
+				assertThat(values.get(1).getValue()).isEqualTo("test");
+				assertThat(values.get(2).getValue()).isEqualTo(123);
+			});
 		}
 
 		@Test
 		void propertyValuesWhenValues() {
 			this.bd.getPropertyValues().add("test", String.class);
 			this.bd.getPropertyValues().add("spring", "framework");
-			assertThatCodeBlock(this.bd)
-					.contains("bd.getPropertyValues().addPropertyValue(\"test\", java.lang.String.class);");
-			assertThatCodeBlock(this.bd)
-					.contains("bd.getPropertyValues().addPropertyValue(\"spring\", \"framework\");");
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.getPropertyValues().get("test")).isEqualTo(String.class);
+				assertThat(actual.getPropertyValues().get("spring")).isEqualTo("framework");
+			});
 		}
 
 		@Test
 		void attributesWhenAllFiltered() {
 			this.bd.setAttribute("a", "A");
 			this.bd.setAttribute("b", "B");
-			assertThatCodeBlock(bd).isEmpty();
+			testCompiledResult((actual, compiled) -> {
+				assertThat(compiled.getSourceFile()).doesNotContain("setAttribute");
+				assertThat(actual.getAttribute("a")).isNull();
+				assertThat(actual.getAttribute("b")).isNull();
+			});
 		}
 
 		@Test
@@ -180,13 +254,51 @@ class DefaultBeanRegistrationCodeTests {
 			this.bd.setAttribute("b", "B");
 			BeanDefinitionCustomizeCode code = new BeanDefinitionCustomizeCode(this.bd, "bd",
 					attribute -> "a".equals(attribute));
-			assertThat(code.getCodeBlock().toString()).contains("bd.setAttribute(\"a\", \"A\");")
-					.doesNotContain("\"b\"");
+			testCompiledResult(code, (actual, compiled) -> {
+				assertThat(actual.getAttribute("a")).isEqualTo("A");
+				assertThat(actual.getAttribute("b")).isNull();
+			});
 		}
 
-		private AbstractStringAssert<?> assertThatCodeBlock(RootBeanDefinition bd) {
-			BeanDefinitionCustomizeCode code = new BeanDefinitionCustomizeCode(bd, "bd");
-			return assertThat(code.getCodeBlock().toString());
+		@Test
+		void multipleItems() {
+			this.bd.setPrimary(true);
+			this.bd.setScope("test");
+			this.bd.setRole(BeanDefinition.ROLE_SUPPORT);
+			testCompiledResult((actual, compiled) -> {
+				assertThat(actual.isPrimary()).isTrue();
+				assertThat(actual.getScope()).isEqualTo("test");
+				assertThat(actual.getRole()).isEqualTo(BeanDefinition.ROLE_SUPPORT);
+			});
+		}
+
+		private void testCompiledResult(BiConsumer<RootBeanDefinition, Compiled> result) {
+			testCompiledResult(this.bd, result);
+		}
+
+		private void testCompiledResult(RootBeanDefinition bd, BiConsumer<RootBeanDefinition, Compiled> result) {
+			testCompiledResult(new BeanDefinitionCustomizeCode(bd, "bd"), result);
+		}
+
+		private void testCompiledResult(BeanDefinitionCustomizeCode code,
+				BiConsumer<RootBeanDefinition, Compiled> result) {
+			JavaFile javaFile = createJavaFile(code);
+			TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
+				RootBeanDefinition beanDefinition = (RootBeanDefinition) compiled.getInstance(Supplier.class).get();
+				result.accept(beanDefinition, compiled);
+			});
+		}
+
+		private JavaFile createJavaFile(BeanDefinitionCustomizeCode code) {
+			TypeSpec.Builder builder = TypeSpec.classBuilder("BeanSupplier");
+			builder.addModifiers(Modifier.PUBLIC);
+			builder.addSuperinterface(ParameterizedTypeName.get(Supplier.class, RootBeanDefinition.class));
+			builder.addMethod(
+					MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(RootBeanDefinition.class)
+							.addStatement("$T bd = new $T()", RootBeanDefinition.class, RootBeanDefinition.class)
+							.addCode(code.getCodeBlock()).addStatement("return bd").build());
+			return JavaFile.builder("com.example", builder.build()).build();
+
 		}
 
 	}

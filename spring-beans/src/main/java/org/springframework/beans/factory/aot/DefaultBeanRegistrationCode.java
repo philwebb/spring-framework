@@ -98,7 +98,7 @@ class DefaultBeanRegistrationCode implements BeanRegistrationCode {
 			addStatementForValue(builder, RootBeanDefinition::getScope, this::hasScope, "$L.setScope($S)");
 			addStatementForValue(builder, RootBeanDefinition::getDependsOn, this::hasDependsOn, "$L.setDependsOn($L)",
 					this::toStringVarArgs);
-			addStatementForValue(builder, RootBeanDefinition::isLazyInit, "$L.setLazyInit($L)");
+			addStatementForValue(builder, RootBeanDefinition::getLazyInit, "$L.setLazyInit($L)");
 			addStatementForValue(builder, RootBeanDefinition::isAutowireCandidate, "$L.setAutowireCandidate($L)");
 			addStatementForValue(builder, RootBeanDefinition::isSynthetic, "$L.setSynthetic($L)");
 			addStatementForValue(builder, RootBeanDefinition::getRole, this::hasRole, "$L.setRole($L)", this::toRole);
@@ -168,9 +168,9 @@ class DefaultBeanRegistrationCode implements BeanRegistrationCode {
 		private Object toRole(int value) {
 			switch (value) {
 			case BeanDefinition.ROLE_INFRASTRUCTURE:
-				return "BeanDefinition.ROLE_INFRASTRUCTURE";
+				return CodeBlock.builder().add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
 			case BeanDefinition.ROLE_SUPPORT:
-				return "BeanDefinition.ROLE_SUPPORT";
+				return CodeBlock.builder().add("$T.ROLE_SUPPORT", BeanDefinition.class).build();
 			}
 			return value;
 		}

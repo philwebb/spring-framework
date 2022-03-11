@@ -17,8 +17,10 @@
 package org.springframework.beans.factory.aot2;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.generator.config.BeanDefinitionRegistrar;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryInitializer;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 
 /**
  * {@link BeanDefinitionRegistryInitializer} for the {@literal "default"}
@@ -33,6 +35,16 @@ public class Default$$BeanRegistrations implements BeanDefinitionRegistryInitial
 
 	private void registerFooBeanDefinition(BeanDefinitionRegistry registry) {
 		// FIXME use registrar
+		BeanDefinitionRegistrar.of("boo", String.class).customize(this::customizeFooBeanDefinition);
+	}
+
+	private void customizeFooBeanDefinition(RootBeanDefinition rootBeanDefinition) {
+		rootBeanDefinition.getPropertyValues().add("innerBean", createFooInnerBeanDefinition());
+
+	}
+
+	private RootBeanDefinition createFooInnerBeanDefinition() {
+		return BeanDefinitionRegistrar.inner(Integer.class).toBeanDefinition();
 	}
 
 }
