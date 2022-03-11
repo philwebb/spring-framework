@@ -49,6 +49,6 @@ public interface BeanRegistrationCode {
 	 * @param aotContext
 	 * @return
 	 */
-	CodeBlock getRegistrationMethodBody(AotContext aotContext);
+	CodeBlock getMethodBodyCodeBlock(AotContext aotContext);
 
 }
