@@ -36,6 +36,7 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.MethodIntrospector;
@@ -185,6 +186,18 @@ public final class BeanDefinitionRegistrar {
 		Assert.state(this.beanName != null, () -> "Bean name not set. Could not register " + beanDefinition);
 		logger.debug(LogMessage.format("Register bean definition with name '%s'", this.beanName));
 		beanFactory.registerBeanDefinition(this.beanName, beanDefinition);
+	}
+
+	/**
+	 * Register the {@link RootBeanDefinition} defined by this instance to
+	 * the specified bean factory.
+	 * @param beanFactory the bean factory to use
+	 */
+	public void registerWith(BeanDefinitionRegistry registry) {
+		BeanDefinition beanDefinition = toBeanDefinition();
+		Assert.state(this.beanName != null, () -> "Bean name not set. Could not register " + beanDefinition);
+		logger.debug(LogMessage.format("Register bean definition with name '%s'", this.beanName));
+		registry.registerBeanDefinition(this.beanName, beanDefinition);
 	}
 
 	/**

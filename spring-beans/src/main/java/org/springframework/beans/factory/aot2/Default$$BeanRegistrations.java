@@ -31,11 +31,12 @@ public class Default$$BeanRegistrations implements BeanDefinitionRegistryInitial
 	@Override
 	public void initialize(BeanDefinitionRegistry registry) {
 		registerFooBeanDefinition(registry);
+
 	}
 
 	private void registerFooBeanDefinition(BeanDefinitionRegistry registry) {
 		// FIXME use registrar
-		BeanDefinitionRegistrar.of("boo", String.class).customize(this::customizeFooBeanDefinition);
+		BeanDefinitionRegistrar.of("boo", String.class).customize(this::customizeFooBeanDefinition).registerWith(registry);
 	}
 
 	private void customizeFooBeanDefinition(RootBeanDefinition rootBeanDefinition) {

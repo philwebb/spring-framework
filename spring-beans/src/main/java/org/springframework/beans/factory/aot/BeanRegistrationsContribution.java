@@ -16,9 +16,9 @@
 
 package org.springframework.beans.factory.aot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.lang.model.element.Modifier;
 
@@ -26,8 +26,10 @@ import org.springframework.aot.context.AotContext;
 import org.springframework.aot.context.AotContribution;
 import org.springframework.aot.context.AotProcessors.Subset;
 import org.springframework.aot.generate.GeneratedClassName;
+import org.springframework.aot.generate.GeneratedMethodName;
 import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.aot.BeanRegistrationMethods.BeanRegistrationMethod;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryInitializer;
@@ -71,43 +73,42 @@ class BeanRegistrationsContribution implements AotContribution {
 	}
 
 	private TypeSpec generateType(AotContext aotContext, GeneratedClassName className) {
+		BeanRegistrationMethods methods = new BeanRegistrationMethods(
+				new MethodNameGenerator().withReservedNames("initialize"));
 		TypeSpec.Builder builder = TypeSpec.classBuilder(className.toString());
-		builder.addJavadoc("BeanDefinitionRegistryInitializer for $S", this.beanFactoryName);
+		builder.addJavadoc("BeanDefinitionRegistryInitializer for $S",
+				BeanRegistrationsContribution.this.beanFactoryName);
 		builder.addSuperinterface(BeanDefinitionRegistryInitializer.class);
-		List<MethodSpec> registrationMethods = generateRegistrationMethods(aotContext);
-		builder.addMethod(generateInitializeMethod(registrationMethods));
-		registrationMethods.forEach(builder::addMethod);
+		Set<GeneratedMethodName> registrationMethodsToCall = addRegistrationMethods(aotContext, methods);
+		builder.addMethod(generateInitializeMethod(registrationMethodsToCall));
+		methods.doWithMethodSpecs(builder::addMethod);
 		return builder.build();
 	}
 
-	private MethodSpec generateInitializeMethod(List<MethodSpec> registrationMethods) {
+	private Set<GeneratedMethodName> addRegistrationMethods(AotContext aotContext, BeanRegistrationMethods methods) {
+		Set<GeneratedMethodName> registrationMethodsToCall = new LinkedHashSet<>();
+		this.registrations.forEach((definedBean, code) -> {
+			String beanName = definedBean.getBeanName();
+			BeanRegistrationMethod method = methods.add("register", beanName);
+			registrationMethodsToCall.add(method.getName());
+			method.generateBy((builder) -> {
+				builder.addJavadoc("Register the bean definition for $S", beanName);
+				builder.addModifiers(Modifier.PRIVATE);
+				builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationCode.REGISTRY);
+				builder.addCode(code.getMethodBody(aotContext, methods));
+			});
+		});
+		return registrationMethodsToCall;
+	}
+
+	private MethodSpec generateInitializeMethod(Set<GeneratedMethodName> registrationMethodsToCalls) {
 		MethodSpec.Builder builder = MethodSpec.methodBuilder("initialize");
 		builder.addAnnotation(Override.class);
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationCode.REGISTRY);
-		for (MethodSpec registrationMethod : registrationMethods) {
-			builder.addStatement("$N($L)", registrationMethod, BeanRegistrationCode.REGISTRY);
+		for (GeneratedMethodName registrationMethodToCall : registrationMethodsToCalls) {
+			builder.addStatement("$N($L)", registrationMethodToCall, BeanRegistrationCode.REGISTRY);
 		}
-		return builder.build();
-	}
-
-	private List<MethodSpec> generateRegistrationMethods(AotContext aotContext) {
-		MethodNameGenerator nameGenerator = new MethodNameGenerator();
-		List<MethodSpec> generatedMethods = new ArrayList<>(this.registrations.size());
-		this.registrations.forEach((definedBean, registration) -> {
-			generatedMethods.add(generateRegistrationMethod(aotContext, nameGenerator, definedBean, registration));
-		});
-		return generatedMethods;
-	}
-
-	private MethodSpec generateRegistrationMethod(AotContext aotContext, MethodNameGenerator nameGenerator,
-			DefinedBean definedBean, BeanRegistrationCode code) {
-		String beanName = definedBean.getBeanName();
-		MethodSpec.Builder builder = MethodSpec.methodBuilder(nameGenerator.generatedMethodName("register", beanName));
-		builder.addJavadoc("Register the bean definition for $S", beanName);
-		builder.addModifiers(Modifier.PRIVATE);
-		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationCode.REGISTRY);
-		builder.addCode(code.getMethodBody(aotContext));
 		return builder.build();
 	}
 
