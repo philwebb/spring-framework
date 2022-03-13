@@ -18,7 +18,6 @@ package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.context.AotContext;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.javapoet.CodeBlock;
 
@@ -43,41 +42,13 @@ public interface BeanRegistrationCode {
 	static final String REGISTRY = "registry";
 
 	/**
-	 * Return the kind of generated method used for registration.
-	 * @return the registration code kind
-	 */
-	default Kind getKind() {
-		return Kind.BEAN_DEFINITION_SUPPLIER;
-	}
-
-	/**
-	 * Return a {@link CodeBlock} containing method body that performs registration.
-	 * Depending on {@link #getKind() the kind}, this will either be a method that returns
-	 * the {@link BeanDefinition} or a method that accepts a
-	 * {@link ConfigurableListableBeanFactory}. The {@code registrationMethods} parameter
-	 * can be used if additional methods need to be added to support registration.
-	 * @param aotContext the AOT context
-	 * @param registrationMethods the registration methods being generated
-	 * @return a {@link CodeBlock} containing the method body
+	 * Return a {@link CodeBlock} containing source code to register a
+	 * {@link BeanDefinition} to {@link BeanDefinitionRegistry}. The resulting code will
+	 * be included as the body of a generated method and can assume that the
+	 * {@link #REGISTRY} parameter is available.
+	 * @param aotContext
+	 * @return
 	 */
 	CodeBlock getMethodBody(AotContext aotContext, BeanRegistrationMethods registrationMethods);
-
-	/**
-	 * Supported kinds of {@link BeanRegistrationCode}.
-	 */
-	static enum Kind {
-
-		/**
-		 * The generated method returns a {@link BeanDefinition} instance.
-		 */
-		BEAN_DEFINITION_SUPPLIER,
-
-		/**
-		 * The generated method accepts a {@link ConfigurableListableBeanFactory} named
-		 * {@link BeanRegistrationCode#REGISTRY}.
-		 */
-		BEAN_FACTORY_CONSUMER
-
-	}
 
 }

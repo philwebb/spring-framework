@@ -28,6 +28,8 @@ import org.springframework.beans.factory.aot.BeanRegistrationMethods.BeanRegistr
 import org.springframework.javapoet.MethodSpec;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Tests for {@link BeanRegistrationMethods}.
@@ -39,44 +41,56 @@ class BeanRegistrationMethodsTests {
 
 	private List<MethodSpec> specs = new ArrayList<>();
 
-	private BeanRegistrationMethods registrationMethods = new BeanRegistrationMethods(new MethodNameGenerator(),
-			this.specs::add);
+	private BeanRegistrationMethods registrationMethods = new BeanRegistrationMethods(new MethodNameGenerator());
 
 	@Test
 	void getNameReturnsGeneratedName() {
-		BeanRegistrationMethod generated = this.registrationMethods.withName("spring", "framework");
+		BeanRegistrationMethod generated = this.registrationMethods.add("spring", "framework");
 		assertThat(generated.getName()).hasToString("springFramework");
 	}
 
 	@Test
-	void addWithConsumedBuilderAddsSpec() {
-		this.registrationMethods.withName("spring").add((builder) -> builder.addModifiers(Modifier.PUBLIC));
+	void addGeneratedByConsumerAddsSpec() {
+		this.registrationMethods.add("spring").generateBy((builder) -> builder.addModifiers(Modifier.PUBLIC));
+		this.registrationMethods.doWithMethodSpecs(this.specs::add);
 		assertThat(this.specs).hasSize(1);
 		assertThat(this.specs.get(0).toString()).isEqualToIgnoringNewLines("public void spring() {}");
 	}
 
 	@Test
-	void addWithBuilderAddsSpec() {
-		BeanRegistrationMethod method = this.registrationMethods.withName("spring");
+	void addGeneratedByBuilderAddsSpec() {
+		BeanRegistrationMethod method = this.registrationMethods.add("spring");
 		MethodSpec.Builder builder = MethodSpec.methodBuilder(method.getName().toString())
 				.addModifiers(Modifier.PUBLIC);
-		method.add(builder);
+		method.generateBy(builder);
+		this.registrationMethods.doWithMethodSpecs(this.specs::add);
 		assertThat(this.specs).hasSize(1);
 		assertThat(this.specs.get(0).toString()).isEqualToIgnoringNewLines("public void spring() {}");
 	}
 
 	@Test
-	void addWithSpecAddsSpec() {
-		BeanRegistrationMethod method = this.registrationMethods.withName("spring");
+	void addGeneratedBySpecAddsSpec() {
+		BeanRegistrationMethod method = this.registrationMethods.add("spring");
 		MethodSpec spec = MethodSpec.methodBuilder(method.getName().toString()).addModifiers(Modifier.PUBLIC).build();
-		method.add(spec);
+		method.generateBy(spec);
+		this.registrationMethods.doWithMethodSpecs(this.specs::add);
 		assertThat(this.specs).hasSize(1);
 		assertThat(this.specs.get(0).toString()).isEqualToIgnoringNewLines("public void spring() {}");
 	}
 
 	@Test
-	void generateMethodWithIncorrectNameThrowsException() {
+	void addGeneratedBySpecWithIncorrectNameThrowsException() {
+		BeanRegistrationMethod method = this.registrationMethods.add("spring");
+		MethodSpec spec = MethodSpec.methodBuilder("badname").addModifiers(Modifier.PUBLIC).build();
+		assertThatIllegalArgumentException().isThrownBy(() -> method.generateBy(spec))
+				.withMessage("'spec' must use the generated name \"spring\"");
+	}
 
+	@Test
+	void doWithMethodSpecsWhenMethodHasNotHadSpecDefinedThrowsException() {
+		this.registrationMethods.add("spring");
+		assertThatIllegalStateException().isThrownBy(() -> this.registrationMethods.doWithMethodSpecs(this.specs::add))
+				.withMessage("Method 'spring' has no method spec defined");
 	}
 
 }

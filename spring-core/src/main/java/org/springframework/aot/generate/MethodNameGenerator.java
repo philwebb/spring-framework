@@ -68,4 +68,13 @@ public class MethodNameGenerator {
 				(key) -> new AtomicInteger()).getAndIncrement();
 		return (sequence > 0) ? name + sequence : name;
 	}
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	public MethodNameGenerator withReservedNames(String string) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
 }
