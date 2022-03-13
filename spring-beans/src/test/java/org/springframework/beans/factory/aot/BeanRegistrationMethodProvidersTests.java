@@ -16,27 +16,23 @@
 
 package org.springframework.beans.factory.aot;
 
-import javax.annotation.Nullable;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.generate.BeanRegistrationMethodProviders;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Strategy used to provide specific {@link BeanRegistrationCode} for a
- * {@link DefinedBean}.
+ * Tests for {@link BeanRegistrationMethodProviders}.
  *
- * @author Stephane Nicoll
  * @author Phillip Webb
- * @author Andy Wilkinson
  * @since 6.0
  */
-public interface BeanRegistrationCodeProvider {
+class BeanRegistrationMethodProvidersTests {
 
-	/**
-	 * Return the {@link BeanRegistrationCode} that should be used for the
-	 * {@link DefinedBean}.
-	 * @param definedBean the defined bean that should be registered
-	 * @return a {@link BeanRegistrationCode} instance or {@code null} if no special
-	 * registration code is required
-	 */
-	@Nullable
-	BeanRegistrationCode getBeanRegistrationCode(DefinedBean definedBean);
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
 
 }

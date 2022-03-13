@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.generate;
 
-import org.springframework.aot.context.AotContext;
+import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.javapoet.CodeBlock;
@@ -29,11 +30,11 @@ import org.springframework.javapoet.CodeBlock;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationCodeProvider
+ * @see BeanRegistrationMethodProvider
  * @see BeanRegistrationsContribution
  */
 @FunctionalInterface
-public interface BeanRegistrationCode {
+public interface BeanRegistrationMethodGenerator {
 
 	/**
 	 * The name of the parameter passed to the generated method that contains the
@@ -49,6 +50,6 @@ public interface BeanRegistrationCode {
 	 * @param aotContext
 	 * @return
 	 */
-	CodeBlock getMethodBody(AotContext aotContext, BeanRegistrationMethods registrationMethods);
+	CodeBlock generateRegistrationMethod(GenerationContext generationContext, GeneratedMethods generatedMethods);
 
 }

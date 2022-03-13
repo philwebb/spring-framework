@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.generate;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 
-import org.springframework.aot.context.AotContext;
+import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.GenerationContext;
+import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.util.Assert;
 
 /**
- * Default {@link BeanRegistrationCode} providing registration code suitable for most
+ * Default {@link BeanRegistrationMethodGenerator} providing registration code suitable for most
  * beans.
  *
  * @author Stephane Nicoll
@@ -34,7 +36,7 @@ import org.springframework.util.Assert;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class DefaultBeanRegistrationCode implements BeanRegistrationCode {
+class DefaultBeanRegistrationCode implements BeanRegistrationMethodGenerator {
 
 	private final DefinedBean definedBean;
 
@@ -43,7 +45,7 @@ class DefaultBeanRegistrationCode implements BeanRegistrationCode {
 	}
 
 	@Override
-	public CodeBlock getMethodBody(AotContext aotContext, BeanRegistrationMethods registrationMethods) {
+	public CodeBlock generateRegistrationMethod(GenerationContext generationContext, GeneratedMethods registrationMethods) {
 		BeanDefinition mergedBeanDefinition = this.definedBean.getMergedBeanDefinition();
 		Executable executable = new BeanRegistrationExecutableResolver(this.definedBean.getBeanFactory())
 				.resolveExecutable(mergedBeanDefinition);

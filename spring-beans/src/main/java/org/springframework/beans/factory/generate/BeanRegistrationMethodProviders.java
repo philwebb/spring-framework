@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.generate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,58 +25,59 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 
 /**
- * A managed collection of {@link BeanRegistrationCodeProvider} instances.
+ * A managed collection of {@link BeanRegistrationMethodProvider} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-class BeanRegistrationCodeProviders {
+public class BeanRegistrationMethodProviders {
 
-	private static final Log logger = LogFactory.getLog(BeanRegistrationCodeProviders.class);
+	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodProviders.class);
 
-	private final List<BeanRegistrationCodeProvider> providers;
+	private final List<BeanRegistrationMethodProvider> providers;
 
 	/**
-	 * Create a new {@link BeanRegistrationCodeProviders} instance, obtaining providers
+	 * Create a new {@link BeanRegistrationMethodProviders} instance, obtaining providers
 	 * using the default {@link SpringFactoriesLoader} and the given {@link BeanFactory}.
 	 * @param beanFactory the bean factory to use
 	 */
-	BeanRegistrationCodeProviders(ConfigurableListableBeanFactory beanFactory) {
+	public BeanRegistrationMethodProviders(ConfigurableListableBeanFactory beanFactory) {
 		this(SpringFactoriesLoader.forDefaultResourceLocation(), beanFactory);
 	}
 
 	/**
-	 * Create a new {@link BeanRegistrationCodeProviders} instance, obtaining providers
+	 * Create a new {@link BeanRegistrationMethodProviders} instance, obtaining providers
 	 * using the given {@link SpringFactoriesLoader} and {@link BeanFactory}.
 	 * @param springFactoriesLoader the factories loader to use
 	 * @param beanFactory the bean factory to use
 	 */
-	BeanRegistrationCodeProviders(SpringFactoriesLoader springFactoriesLoader,
+	BeanRegistrationMethodProviders(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
-		List<BeanRegistrationCodeProvider> providers = new ArrayList<>();
-		providers.addAll(springFactoriesLoader.load(BeanRegistrationCodeProvider.class));
-		providers.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, BeanRegistrationCodeProvider.class)
+		List<BeanRegistrationMethodProvider> providers = new ArrayList<>();
+		providers.addAll(springFactoriesLoader.load(BeanRegistrationMethodProvider.class));
+		providers.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, BeanRegistrationMethodProvider.class)
 				.values());
 		AnnotationAwareOrderComparator.sort(providers);
 		this.providers = Collections.unmodifiableList(providers);
 	}
 
 	/**
-	 * Return the {@link BeanRegistrationCode} that should be used for the defined bean.
+	 * Return the {@link BeanRegistrationMethodGenerator} that should be used for the defined bean.
 	 * @param definedBean the bean to check
-	 * @return a {@link BeanRegistrationCode} instance
+	 * @return a {@link BeanRegistrationMethodGenerator} instance
 	 */
-	BeanRegistrationCode getBeanRegistrationCode(DefinedBean definedBean) {
-		for (BeanRegistrationCodeProvider provider : providers) {
-			BeanRegistrationCode provided = provider.getBeanRegistrationCode(definedBean);
+	public BeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator(DefinedBean definedBean) {
+		for (BeanRegistrationMethodProvider provider : providers) {
+			BeanRegistrationMethodGenerator provided = provider.getBeanRegistrationMethodGenerator(definedBean);
 			if (provided != null) {
 				logger.trace(LogMessage.format("Returning BeanRegistrationCode provided by %s for '%s'",
 						provider.getClass().getName(), definedBean.getUniqueBeanName()));

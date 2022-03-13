@@ -40,7 +40,7 @@ import org.springframework.core.log.LogMessage;
  */
 class AotDefinedBeanExcludeFilters {
 
-	private static final Log logger = LogFactory.getLog(BeanRegistrationCodeProviders.class);
+	private static final Log logger = LogFactory.getLog(AotDefinedBeanExcludeFilters.class);
 
 	private final List<AotDefinedBeanExcludeFilter> filters;
 

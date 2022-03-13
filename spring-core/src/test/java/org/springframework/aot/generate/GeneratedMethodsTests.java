@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.aot.generate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,9 @@ import javax.lang.model.element.Modifier;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.MethodNameGenerator;
-import org.springframework.beans.factory.aot.BeanRegistrationMethods.BeanRegistrationMethod;
 import org.springframework.javapoet.MethodSpec;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,20 +33,20 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
- * Tests for {@link BeanRegistrationMethods}.
+ * Tests for {@link GeneratedMethods}.
  *
  * @author Phillip Webb
  * @since 6.0
  */
-class BeanRegistrationMethodsTests {
+class GeneratedMethodsTests {
 
 	private List<MethodSpec> specs = new ArrayList<>();
 
-	private BeanRegistrationMethods registrationMethods = new BeanRegistrationMethods(new MethodNameGenerator());
+	private GeneratedMethods registrationMethods = new GeneratedMethods(new MethodNameGenerator());
 
 	@Test
 	void getNameReturnsGeneratedName() {
-		BeanRegistrationMethod generated = this.registrationMethods.add("spring", "framework");
+		GeneratedMethod generated = this.registrationMethods.add("spring", "framework");
 		assertThat(generated.getName()).hasToString("springFramework");
 	}
 
@@ -59,7 +60,7 @@ class BeanRegistrationMethodsTests {
 
 	@Test
 	void addGeneratedByBuilderAddsSpec() {
-		BeanRegistrationMethod method = this.registrationMethods.add("spring");
+		GeneratedMethod method = this.registrationMethods.add("spring");
 		MethodSpec.Builder builder = MethodSpec.methodBuilder(method.getName().toString())
 				.addModifiers(Modifier.PUBLIC);
 		method.generateBy(builder);
@@ -70,7 +71,7 @@ class BeanRegistrationMethodsTests {
 
 	@Test
 	void addGeneratedBySpecAddsSpec() {
-		BeanRegistrationMethod method = this.registrationMethods.add("spring");
+		GeneratedMethod method = this.registrationMethods.add("spring");
 		MethodSpec spec = MethodSpec.methodBuilder(method.getName().toString()).addModifiers(Modifier.PUBLIC).build();
 		method.generateBy(spec);
 		this.registrationMethods.doWithMethodSpecs(this.specs::add);
@@ -80,7 +81,7 @@ class BeanRegistrationMethodsTests {
 
 	@Test
 	void addGeneratedBySpecWithIncorrectNameThrowsException() {
-		BeanRegistrationMethod method = this.registrationMethods.add("spring");
+		GeneratedMethod method = this.registrationMethods.add("spring");
 		MethodSpec spec = MethodSpec.methodBuilder("badname").addModifiers(Modifier.PUBLIC).build();
 		assertThatIllegalArgumentException().isThrownBy(() -> method.generateBy(spec))
 				.withMessage("'spec' must use the generated name \"spring\"");

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.generate;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
