@@ -18,7 +18,7 @@ package org.springframework.beans.factory.aot;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.generate.BeanRegistrationMethodProviders;
+import org.springframework.beans.factory.support.generate.BeanRegistrationMethodProviders;
 
 import static org.junit.jupiter.api.Assertions.*;
 

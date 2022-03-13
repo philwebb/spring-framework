@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.support.aot;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -32,10 +32,15 @@ import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.aot.AotBeanClassProcessor;
+import org.springframework.beans.factory.aot.AotBeanDefinitionProcessor;
+import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
+import org.springframework.beans.factory.aot.UniqueBeanName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.generate.BeanRegistrationMethodGenerator;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryInitializer;
+import org.springframework.beans.factory.support.generate.BeanRegistrationMethodGenerator;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeSpec;

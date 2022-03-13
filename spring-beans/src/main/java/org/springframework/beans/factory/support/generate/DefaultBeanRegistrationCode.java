@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.generate;
+package org.springframework.beans.factory.support.generate;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;

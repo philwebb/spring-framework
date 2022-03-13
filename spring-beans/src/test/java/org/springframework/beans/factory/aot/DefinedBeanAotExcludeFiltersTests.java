@@ -21,12 +21,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests for {@link AotDefinedBeanExcludeFilters}.
+ * Tests for {@link DefinedBeanAotExcludeFilters}.
  *
  * @author Phillip Webb
  * @since 6.0
  */
-class AotDefinedBeanExcludeFiltersTests {
+class DefinedBeanAotExcludeFiltersTests {
 
 	@Test
 	void test() {

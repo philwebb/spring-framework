@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.support.aot;
 
+import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
+import org.springframework.beans.factory.aot.UniqueBeanName;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.support.aot;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,9 +24,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.aot.context.AotContribution;
+import org.springframework.beans.factory.aot.AotBeanFactoryProcessor;
+import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.DefinedBeanAotExcludeFilters;
+import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.generate.BeanRegistrationMethodGenerator;
-import org.springframework.beans.factory.generate.BeanRegistrationMethodProviders;
+import org.springframework.beans.factory.support.generate.BeanRegistrationMethodGenerator;
+import org.springframework.beans.factory.support.generate.BeanRegistrationMethodProviders;
 import org.springframework.core.log.LogMessage;
 
 /**
@@ -41,7 +45,7 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationsAotBeanFactoryProcessor.class);
 
-	private Map<ConfigurableListableBeanFactory, AotDefinedBeanExcludeFilters> aotDefinedBeanExcludeFilters = new HashMap<>();
+	private Map<ConfigurableListableBeanFactory, DefinedBeanAotExcludeFilters> aotDefinedBeanExcludeFilters = new HashMap<>();
 
 	private Map<ConfigurableListableBeanFactory, BeanRegistrationMethodProviders> beanRegistrationCodeProviders = new HashMap<>();
 
@@ -49,8 +53,8 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 	public AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
 			ConfigurableListableBeanFactory beanFactory) {
 		logger.trace(LogMessage.format("Generating bean registrations contribution for '%s'", beanFactoryName));
-		AotDefinedBeanExcludeFilters excludeFilters = this.aotDefinedBeanExcludeFilters.computeIfAbsent(beanFactory,
-				AotDefinedBeanExcludeFilters::new);
+		DefinedBeanAotExcludeFilters excludeFilters = this.aotDefinedBeanExcludeFilters.computeIfAbsent(beanFactory,
+				DefinedBeanAotExcludeFilters::new);
 		BeanRegistrationMethodProviders registrationProviders = this.beanRegistrationCodeProviders
 				.computeIfAbsent(beanFactory, BeanRegistrationMethodProviders::new);
 		Map<DefinedBean, BeanRegistrationMethodGenerator> registrations = new LinkedHashMap<>();

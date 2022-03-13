@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot2;
+package org.springframework.beans.factory.dunno;
 
 import org.springframework.aot.context.AotContext;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredAnnotationBeanInstantiationContribution;

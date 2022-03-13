@@ -29,7 +29,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * @author Andy Wilkinson
  * @since 6.0
  * @see AotBeanDefinitionProcessor
- * @see AotDefinedBeanExcludeFilter
+ * @see DefinedBeanAotExcludeFilter
  */
 public interface DefinedBean {
 

@@ -24,7 +24,7 @@ package org.springframework.beans.factory.aot;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface AotDefinedBeanExcludeFilter {
+public interface DefinedBeanAotExcludeFilter {
 
 	/**
 	 * Return if the defined bean should be excluded from AOT processing and registration.
