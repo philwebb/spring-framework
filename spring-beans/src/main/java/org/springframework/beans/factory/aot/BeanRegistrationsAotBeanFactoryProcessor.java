@@ -25,6 +25,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.aot.context.AotContribution;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.generate.BeanRegistrationMethodGenerator;
+import org.springframework.beans.factory.generate.BeanRegistrationMethodProviders;
 import org.springframework.core.log.LogMessage;
 
 /**
@@ -41,7 +43,7 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 	private Map<ConfigurableListableBeanFactory, AotDefinedBeanExcludeFilters> aotDefinedBeanExcludeFilters = new HashMap<>();
 
-	private Map<ConfigurableListableBeanFactory, BeanRegistrationCodeProviders> beanRegistrationCodeProviders = new HashMap<>();
+	private Map<ConfigurableListableBeanFactory, BeanRegistrationMethodProviders> beanRegistrationCodeProviders = new HashMap<>();
 
 	@Override
 	public AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
@@ -49,16 +51,16 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		logger.trace(LogMessage.format("Generating bean registrations contribution for '%s'", beanFactoryName));
 		AotDefinedBeanExcludeFilters excludeFilters = this.aotDefinedBeanExcludeFilters.computeIfAbsent(beanFactory,
 				AotDefinedBeanExcludeFilters::new);
-		BeanRegistrationCodeProviders registrationProviders = this.beanRegistrationCodeProviders
-				.computeIfAbsent(beanFactory, BeanRegistrationCodeProviders::new);
-		Map<DefinedBean, BeanRegistrationCode> registrations = new LinkedHashMap<>();
+		BeanRegistrationMethodProviders registrationProviders = this.beanRegistrationCodeProviders
+				.computeIfAbsent(beanFactory, BeanRegistrationMethodProviders::new);
+		Map<DefinedBean, BeanRegistrationMethodGenerator> registrations = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			DefinedBean definedBean = new DefaultDefinedBean(beanFactoryName, beanFactory, beanName);
 			if (excludeFilters.isExcluded(definedBean)) {
 				logger.trace(LogMessage.format("Excluded '%s' from AOT registration and processing", beanName));
 				continue;
 			}
-			BeanRegistrationCode registration = registrationProviders.getBeanRegistrationCode(definedBean);
+			BeanRegistrationMethodGenerator registration = registrationProviders.getBeanRegistrationMethodGenerator(definedBean);
 			logger.trace(
 					LogMessage.format("Adding registration %s for '%s'", registration.getClass().getName(), beanName));
 			registrations.put(definedBean, registration);

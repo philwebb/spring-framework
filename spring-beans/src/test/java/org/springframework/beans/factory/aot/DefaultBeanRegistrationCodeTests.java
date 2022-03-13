@@ -29,6 +29,8 @@ import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
+import org.springframework.beans.factory.generate.BeanDefinitionCustomizationGenerator;
+import org.springframework.beans.factory.generate.DefaultBeanRegistrationCode;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -46,7 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultBeanRegistrationCodeTests {
 
 	/**
-	 * Tests for {@link BeanDefinitionCustomizeCode}.
+	 * Tests for {@link BeanDefinitionCustomizationGenerator}.
 	 */
 	@Nested
 	class BeanDefinitionCustomizeCodeTests {
@@ -251,7 +253,7 @@ class DefaultBeanRegistrationCodeTests {
 		void attributesWhenSomeFiltered() {
 			this.bd.setAttribute("a", "A");
 			this.bd.setAttribute("b", "B");
-			BeanDefinitionCustomizeCode code = new BeanDefinitionCustomizeCode(this.bd, "bd",
+			BeanDefinitionCustomizationGenerator code = new BeanDefinitionCustomizationGenerator(this.bd, "bd",
 					attribute -> "a".equals(attribute));
 			testCompiledResult(code, (actual, compiled) -> {
 				assertThat(actual.getAttribute("a")).isEqualTo("A");
@@ -276,10 +278,10 @@ class DefaultBeanRegistrationCodeTests {
 		}
 
 		private void testCompiledResult(RootBeanDefinition bd, BiConsumer<RootBeanDefinition, Compiled> result) {
-			testCompiledResult(new BeanDefinitionCustomizeCode(bd, "bd"), result);
+			testCompiledResult(new BeanDefinitionCustomizationGenerator(bd, "bd"), result);
 		}
 
-		private void testCompiledResult(BeanDefinitionCustomizeCode code,
+		private void testCompiledResult(BeanDefinitionCustomizationGenerator code,
 				BiConsumer<RootBeanDefinition, Compiled> result) {
 			JavaFile javaFile = createJavaFile(code);
 			TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
@@ -288,7 +290,7 @@ class DefaultBeanRegistrationCodeTests {
 			});
 		}
 
-		private JavaFile createJavaFile(BeanDefinitionCustomizeCode code) {
+		private JavaFile createJavaFile(BeanDefinitionCustomizationGenerator code) {
 			TypeSpec.Builder builder = TypeSpec.classBuilder("BeanSupplier");
 			builder.addModifiers(Modifier.PUBLIC);
 			builder.addSuperinterface(ParameterizedTypeName.get(Supplier.class, RootBeanDefinition.class));

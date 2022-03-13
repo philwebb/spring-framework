@@ -26,11 +26,14 @@ import org.springframework.aot.context.AotContext;
 import org.springframework.aot.context.AotContribution;
 import org.springframework.aot.context.AotProcessors.Subset;
 import org.springframework.aot.generate.GeneratedClassName;
+import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethodName;
+import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.aot.BeanRegistrationMethods.BeanRegistrationMethod;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.generate.BeanRegistrationMethodGenerator;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryInitializer;
 import org.springframework.javapoet.JavaFile;
@@ -48,10 +51,10 @@ class BeanRegistrationsContribution implements AotContribution {
 
 	private final UniqueBeanFactoryName beanFactoryName;
 
-	private final Map<DefinedBean, BeanRegistrationCode> registrations;
+	private final Map<DefinedBean, BeanRegistrationMethodGenerator> registrations;
 
 	BeanRegistrationsContribution(UniqueBeanFactoryName beanFactoryName, ConfigurableListableBeanFactory beanFactory,
-			Map<DefinedBean, BeanRegistrationCode> registrations) {
+			Map<DefinedBean, BeanRegistrationMethodGenerator> registrations) {
 		this.beanFactoryName = beanFactoryName;
 		this.registrations = registrations;
 		// FIXME grab processor beans to apply
@@ -72,30 +75,30 @@ class BeanRegistrationsContribution implements AotContribution {
 		return JavaFile.builder(className.getPackageName(), generateType(aotContext, className)).build();
 	}
 
-	private TypeSpec generateType(AotContext aotContext, GeneratedClassName className) {
-		BeanRegistrationMethods methods = new BeanRegistrationMethods(
-				new MethodNameGenerator().withReservedNames("initialize"));
+	private TypeSpec generateType(GenerationContext generationContext, GeneratedClassName className) {
+		GeneratedMethods methods = new GeneratedMethods(new MethodNameGenerator().withReservedNames("initialize"));
 		TypeSpec.Builder builder = TypeSpec.classBuilder(className.toString());
 		builder.addJavadoc("BeanDefinitionRegistryInitializer for $S",
 				BeanRegistrationsContribution.this.beanFactoryName);
 		builder.addSuperinterface(BeanDefinitionRegistryInitializer.class);
-		Set<GeneratedMethodName> registrationMethodsToCall = addRegistrationMethods(aotContext, methods);
+		Set<GeneratedMethodName> registrationMethodsToCall = addRegistrationMethods(generationContext, methods);
 		builder.addMethod(generateInitializeMethod(registrationMethodsToCall));
 		methods.doWithMethodSpecs(builder::addMethod);
 		return builder.build();
 	}
 
-	private Set<GeneratedMethodName> addRegistrationMethods(AotContext aotContext, BeanRegistrationMethods methods) {
+	private Set<GeneratedMethodName> addRegistrationMethods(GenerationContext generationContext,
+			GeneratedMethods methods) {
 		Set<GeneratedMethodName> registrationMethodsToCall = new LinkedHashSet<>();
 		this.registrations.forEach((definedBean, code) -> {
 			String beanName = definedBean.getBeanName();
-			BeanRegistrationMethod method = methods.add("register", beanName);
+			GeneratedMethod method = methods.add("register", beanName);
 			registrationMethodsToCall.add(method.getName());
 			method.generateBy((builder) -> {
 				builder.addJavadoc("Register the bean definition for $S", beanName);
 				builder.addModifiers(Modifier.PRIVATE);
-				builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationCode.REGISTRY);
-				builder.addCode(code.getMethodBody(aotContext, methods));
+				builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodGenerator.REGISTRY);
+				builder.addCode(code.generateRegistrationMethod(generationContext, methods));
 			});
 		});
 		return registrationMethodsToCall;
@@ -105,9 +108,9 @@ class BeanRegistrationsContribution implements AotContribution {
 		MethodSpec.Builder builder = MethodSpec.methodBuilder("initialize");
 		builder.addAnnotation(Override.class);
 		builder.addModifiers(Modifier.PUBLIC);
-		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationCode.REGISTRY);
+		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodGenerator.REGISTRY);
 		for (GeneratedMethodName registrationMethodToCall : registrationMethodsToCalls) {
-			builder.addStatement("$N($L)", registrationMethodToCall, BeanRegistrationCode.REGISTRY);
+			builder.addStatement("$N($L)", registrationMethodToCall, BeanRegistrationMethodGenerator.REGISTRY);
 		}
 		return builder.build();
 	}

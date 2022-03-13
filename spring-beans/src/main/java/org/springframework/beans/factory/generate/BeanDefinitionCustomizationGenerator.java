@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.generate;
 
 import java.util.Map;
 import java.util.Objects;
@@ -34,7 +34,7 @@ import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-class BeanDefinitionCustomizeCode {
+class BeanDefinitionCustomizationGenerator {
 
 	// FIXME move package? Rename?
 
@@ -46,11 +46,11 @@ class BeanDefinitionCustomizeCode {
 
 	private final Predicate<String> attributeFilter;
 
-	protected BeanDefinitionCustomizeCode(RootBeanDefinition beanDefinition, String variable) {
+	protected BeanDefinitionCustomizationGenerator(RootBeanDefinition beanDefinition, String variable) {
 		this(beanDefinition, variable, (attribute) -> false);
 	}
 
-	protected BeanDefinitionCustomizeCode(RootBeanDefinition beanDefinition, String variable,
+	protected BeanDefinitionCustomizationGenerator(RootBeanDefinition beanDefinition, String variable,
 			Predicate<String> attributeFilter) {
 		this.beanDefinition = beanDefinition;
 		this.variable = variable;

@@ -32,26 +32,26 @@ class MethodNameGeneratorTests {
 
 	@Test
 	void generateMethodNameGeneratesName() {
-		String generated = this.generator.generatedMethodName("register", "myBean",
-				"bean");
+		GeneratedMethodName generated = this.generator.generatedMethodName("register",
+				"myBean", "bean");
 		assertThat(generated).isEqualTo("registerMyBeanBean");
 	}
 
 	@Test
 	void generateMethodNameWhenHasNonLettersGeneratesName() {
-		String generated = this.generator.generatedMethodName("register", "myBean123",
-				"bean");
+		GeneratedMethodName generated = this.generator.generatedMethodName("register",
+				"myBean123", "bean");
 		assertThat(generated).isEqualTo("registerMyBeanBean");
 	}
 
 	@Test
 	void generateMethodNameWhenMultipleCallsGeneratesSequencedName() {
-		String generated1 = this.generator.generatedMethodName("register", "myBean123",
-				"bean");
-		String generated2 = this.generator.generatedMethodName("register", "myBean!",
-				"bean");
-		String generated3 = this.generator.generatedMethodName("register", "myBean%%",
-				"bean");
+		GeneratedMethodName generated1 = this.generator.generatedMethodName("register",
+				"myBean123", "bean");
+		GeneratedMethodName generated2 = this.generator.generatedMethodName("register",
+				"myBean!", "bean");
+		GeneratedMethodName generated3 = this.generator.generatedMethodName("register",
+				"myBean%%", "bean");
 		assertThat(generated1).isEqualTo("registerMyBeanBean");
 		assertThat(generated2).isEqualTo("registerMyBeanBean1");
 		assertThat(generated3).isEqualTo("registerMyBeanBean2");
@@ -59,7 +59,7 @@ class MethodNameGeneratorTests {
 
 	@Test
 	void generateMethodNameWhenAllEmptyPartsGeneratesSetName() {
-		String generated = this.generator.generatedMethodName("123");
+		GeneratedMethodName generated = this.generator.generatedMethodName("123");
 		assertThat(generated).isEqualTo("$$aot");
 	}
 

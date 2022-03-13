@@ -19,6 +19,7 @@ package org.springframework.aot.context;
 import org.springframework.aot.generate.ClassNameGenerator;
 import org.springframework.aot.generate.GeneratedFiles;
 import org.springframework.aot.generate.GeneratedSpringFactories;
+import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.hint.JavaSerializationHints;
 import org.springframework.aot.hint.ProxyHints;
 import org.springframework.aot.hint.ReflectionHints;
@@ -47,7 +48,7 @@ import org.springframework.aot.hint.RuntimeHints;
  * @see AotProcessor
  * @see AotContribution
  */
-public interface AotContext {
+public interface AotContext extends GenerationContext {
 
 	/**
 	 * Return the {@link AotProcessors} being used by the context. Typically
@@ -56,37 +57,5 @@ public interface AotContext {
 	 */
 	AotProcessors getProcessors();
 
-	/**
-	 * Return the {@link ClassNameGenerator} being used by the context. Allows
-	 * new class names to be generated before they are added to the
-	 * {@link #getGeneratedFiles() generated files}.
-	 * @return the class name generator
-	 */
-	ClassNameGenerator getClassNameGenerator();
-
-	/**
-	 * Return the {@link GeneratedFiles} being used by the context. Used to
-	 * write resource, java source or class bytecode files.
-	 * @return the generated files
-	 */
-	GeneratedFiles getGeneratedFiles();
-
-	/**
-	 * Return the {@link GeneratedSpringFactories} files that will be written
-	 * once AOT processing has completed. Typically used to register generated
-	 * code as a service so that it will be applied when the AOT optimized
-	 * application is run.
-	 * @return the spring factories
-	 */
-	GeneratedSpringFactories getGeneratedSpringFactories();
-
-	/**
-	 * Return the {@link RuntimeHints} being used by the context. Used to record
-	 * {@link ReflectionHints reflection}, {@link ResourceHints resource},
-	 * {@link JavaSerializationHints serialization} and {@link ProxyHints proxy}
-	 * hints so that the application can run as a native image.
-	 * @return the runtime hints
-	 */
-	RuntimeHints getRuntimeHints();
 
 }
