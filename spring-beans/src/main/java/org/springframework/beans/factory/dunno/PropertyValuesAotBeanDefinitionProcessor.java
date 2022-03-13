@@ -14,35 +14,21 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.dunno;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.core.CollectionFactory;
+import org.springframework.aot.context.AotContribution;
+import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
  *
  * @author pwebb
  * @since 6.0
  */
-public class DunnoGenerator {
+public class PropertyValuesAotBeanDefinitionProcessor implements AotBeanDefinitionProcessor {
 
-
-	void testName() {
-		Collection<Object> collection = CollectionFactory.createCollection(ArrayList.class, String.class, 102);
-		RootBeanDefinition bd = null;
-		bd.getPropertyValues().add("foo", getTestNameFoo());
-
+	@Override
+	public AotContribution processAheadOfTime(String name, BeanDefinition instance) {
+		return null;
 	}
-
-	private Object getTestNameFoo() {
-		Map<String, Map<String, Integer>> map = new LinkedHashMap<>();
-		return map;
-	}
-
 
 }

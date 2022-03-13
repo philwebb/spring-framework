@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot2;
+package org.springframework.beans.factory.dunno;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.generator.config.BeanDefinitionRegistrar;
