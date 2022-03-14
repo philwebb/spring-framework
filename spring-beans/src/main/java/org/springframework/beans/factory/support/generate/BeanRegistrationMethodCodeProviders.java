@@ -32,52 +32,52 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 
 /**
- * A managed collection of {@link BeanRegistrationMethodProvider} instances.
+ * A managed collection of {@link BeanRegistrationMethodCodeProvider} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class BeanRegistrationMethodProviders {
+public class BeanRegistrationMethodCodeProviders {
 
-	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodProviders.class);
+	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodCodeProviders.class);
 
-	private final List<BeanRegistrationMethodProvider> providers;
+	private final List<BeanRegistrationMethodCodeProvider> providers;
 
 	/**
-	 * Create a new {@link BeanRegistrationMethodProviders} instance, obtaining providers
+	 * Create a new {@link BeanRegistrationMethodCodeProviders} instance, obtaining providers
 	 * using the default {@link SpringFactoriesLoader} and the given {@link BeanFactory}.
 	 * @param beanFactory the bean factory to use
 	 */
-	public BeanRegistrationMethodProviders(ConfigurableListableBeanFactory beanFactory) {
+	public BeanRegistrationMethodCodeProviders(ConfigurableListableBeanFactory beanFactory) {
 		this(SpringFactoriesLoader.forDefaultResourceLocation(), beanFactory);
 	}
 
 	/**
-	 * Create a new {@link BeanRegistrationMethodProviders} instance, obtaining providers
+	 * Create a new {@link BeanRegistrationMethodCodeProviders} instance, obtaining providers
 	 * using the given {@link SpringFactoriesLoader} and {@link BeanFactory}.
 	 * @param springFactoriesLoader the factories loader to use
 	 * @param beanFactory the bean factory to use
 	 */
-	BeanRegistrationMethodProviders(SpringFactoriesLoader springFactoriesLoader,
+	BeanRegistrationMethodCodeProviders(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
-		List<BeanRegistrationMethodProvider> providers = new ArrayList<>();
-		providers.addAll(springFactoriesLoader.load(BeanRegistrationMethodProvider.class));
-		providers.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, BeanRegistrationMethodProvider.class)
+		List<BeanRegistrationMethodCodeProvider> providers = new ArrayList<>();
+		providers.addAll(springFactoriesLoader.load(BeanRegistrationMethodCodeProvider.class));
+		providers.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, BeanRegistrationMethodCodeProvider.class)
 				.values());
 		AnnotationAwareOrderComparator.sort(providers);
 		this.providers = Collections.unmodifiableList(providers);
 	}
 
 	/**
-	 * Return the {@link BeanRegistrationMethodGenerator} that should be used for the defined bean.
+	 * Return the {@link BeanRegistrationMethodCodeGenerator} that should be used for the defined bean.
 	 * @param definedBean the bean to check
-	 * @return a {@link BeanRegistrationMethodGenerator} instance
+	 * @return a {@link BeanRegistrationMethodCodeGenerator} instance
 	 */
-	public BeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator(DefinedBean definedBean) {
-		for (BeanRegistrationMethodProvider provider : providers) {
-			BeanRegistrationMethodGenerator provided = provider.getBeanRegistrationMethodGenerator(definedBean);
+	public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodGenerator(DefinedBean definedBean) {
+		for (BeanRegistrationMethodCodeProvider provider : providers) {
+			BeanRegistrationMethodCodeGenerator provided = provider.getBeanRegistrationMethodGenerator(definedBean);
 			if (provided != null) {
 				logger.trace(LogMessage.format("Returning BeanRegistrationCode provided by %s for '%s'",
 						provider.getClass().getName(), definedBean.getUniqueBeanName()));
@@ -86,7 +86,7 @@ public class BeanRegistrationMethodProviders {
 		}
 		logger.trace(
 				LogMessage.format("Returning default BeanRegistrationCode for '%s'", definedBean.getUniqueBeanName()));
-		return new DefaultBeanRegistrationCode(definedBean);
+		return new DefaultBeanRegistrationMethodCodeGenerator(definedBean);
 	}
 
 }

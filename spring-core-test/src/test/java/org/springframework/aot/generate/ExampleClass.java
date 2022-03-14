@@ -14,25 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
-
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeProviders;
-
-import static org.junit.jupiter.api.Assertions.*;
+package org.springframework.aot.generate;
 
 /**
- * Tests for {@link BeanRegistrationMethodCodeProviders}.
- *
- * @author Phillip Webb
- * @since 6.0
+ * Public example class used for test.
  */
-class BeanRegistrationMethodProvidersTests {
-
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
+public class ExampleClass {
 
 }

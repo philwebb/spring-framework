@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
-
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeProviders;
-
-import static org.junit.jupiter.api.Assertions.*;
+package org.springframework.aot.generate;
 
 /**
- * Tests for {@link BeanRegistrationMethodCodeProviders}.
- *
- * @author Phillip Webb
- * @since 6.0
+ * Test enum that include a class body.
  */
-class BeanRegistrationMethodProvidersTests {
+public enum EnumWithClassBody {
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
+	/**
+	 * No class body.
+	 */
+	ONE,
+
+	/**
+	 * With class body.
+	 */
+	TWO {
+
+		@Override
+		public String toString() {
+			return "2";
+		}
+
 	}
 
 }

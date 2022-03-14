@@ -28,7 +28,7 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.util.Assert;
 
 /**
- * Default {@link BeanRegistrationMethodGenerator} providing registration code suitable for most
+ * Default {@link BeanRegistrationMethodCodeGenerator} providing registration code suitable for most
  * beans.
  *
  * @author Stephane Nicoll
@@ -36,11 +36,11 @@ import org.springframework.util.Assert;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class DefaultBeanRegistrationCode implements BeanRegistrationMethodGenerator {
+class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMethodCodeGenerator {
 
 	private final DefinedBean definedBean;
 
-	DefaultBeanRegistrationCode(DefinedBean definedBean) {
+	DefaultBeanRegistrationMethodCodeGenerator(DefinedBean definedBean) {
 		this.definedBean = definedBean;
 	}
 

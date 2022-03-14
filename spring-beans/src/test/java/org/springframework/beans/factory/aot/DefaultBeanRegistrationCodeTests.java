@@ -30,8 +30,8 @@ import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.beans.factory.support.generate.BeanDefinitionCustomizationGenerator;
-import org.springframework.beans.factory.support.generate.DefaultBeanRegistrationCode;
+import org.springframework.beans.factory.support.generate.BeanDefinitionCustomizeCodeGenerator;
+import org.springframework.beans.factory.support.generate.DefaultBeanRegistrationMethodCodeGenerator;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
@@ -40,7 +40,7 @@ import org.springframework.javapoet.TypeSpec;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link DefaultBeanRegistrationCode}.
+ * Tests for {@link DefaultBeanRegistrationMethodCodeGenerator}.
  *
  * @author Phillip Webb
  * @since 6.0
@@ -48,7 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultBeanRegistrationCodeTests {
 
 	/**
-	 * Tests for {@link BeanDefinitionCustomizationGenerator}.
+	 * Tests for {@link BeanDefinitionCustomizeCodeGenerator}.
 	 */
 	@Nested
 	class BeanDefinitionCustomizeCodeTests {
@@ -253,7 +253,7 @@ class DefaultBeanRegistrationCodeTests {
 		void attributesWhenSomeFiltered() {
 			this.bd.setAttribute("a", "A");
 			this.bd.setAttribute("b", "B");
-			BeanDefinitionCustomizationGenerator code = new BeanDefinitionCustomizationGenerator(this.bd, "bd",
+			BeanDefinitionCustomizeCodeGenerator code = new BeanDefinitionCustomizeCodeGenerator(this.bd, "bd",
 					attribute -> "a".equals(attribute));
 			testCompiledResult(code, (actual, compiled) -> {
 				assertThat(actual.getAttribute("a")).isEqualTo("A");
@@ -278,10 +278,10 @@ class DefaultBeanRegistrationCodeTests {
 		}
 
 		private void testCompiledResult(RootBeanDefinition bd, BiConsumer<RootBeanDefinition, Compiled> result) {
-			testCompiledResult(new BeanDefinitionCustomizationGenerator(bd, "bd"), result);
+			testCompiledResult(new BeanDefinitionCustomizeCodeGenerator(bd, "bd"), result);
 		}
 
-		private void testCompiledResult(BeanDefinitionCustomizationGenerator code,
+		private void testCompiledResult(BeanDefinitionCustomizeCodeGenerator code,
 				BiConsumer<RootBeanDefinition, Compiled> result) {
 			JavaFile javaFile = createJavaFile(code);
 			TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
@@ -290,7 +290,7 @@ class DefaultBeanRegistrationCodeTests {
 			});
 		}
 
-		private JavaFile createJavaFile(BeanDefinitionCustomizationGenerator code) {
+		private JavaFile createJavaFile(BeanDefinitionCustomizeCodeGenerator code) {
 			TypeSpec.Builder builder = TypeSpec.classBuilder("BeanSupplier");
 			builder.addModifiers(Modifier.PUBLIC);
 			builder.addSuperinterface(ParameterizedTypeName.get(Supplier.class, RootBeanDefinition.class));
@@ -299,7 +299,6 @@ class DefaultBeanRegistrationCodeTests {
 							.addStatement("$T bd = new $T()", RootBeanDefinition.class, RootBeanDefinition.class)
 							.addCode(code.getCodeBlock()).addStatement("return bd").build());
 			return JavaFile.builder("com.example", builder.build()).build();
-
 		}
 
 	}
