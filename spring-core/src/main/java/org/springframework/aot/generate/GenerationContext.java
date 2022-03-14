@@ -40,7 +40,6 @@ import org.springframework.aot.hint.RuntimeHints;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @since 6.0
  */
 public interface GenerationContext {
 
