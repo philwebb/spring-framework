@@ -23,8 +23,23 @@ import org.springframework.aot.hint.ResourceHints;
 import org.springframework.aot.hint.RuntimeHints;
 
 /**
+ * Central interface used for code generation.
+ * <p>
+ * An generation context provides:
+ * <ul>
+ * <li>Support for {@link #getClassNameGenerator() class name generation}.</li>
+ * <li>Central management of all {@link #getGeneratedFiles() generated
+ * files}.</li>
+ * <li>Support for the recording of {@link #getRuntimeHints() runtime
+ * hints}.</li>
+ * <li>Registration of {@link #getGeneratedSpringFactories() spring.factories}
+ * content.
+ * </ul>
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
+ * @since 6.0
  * @since 6.0
  */
 public interface GenerationContext {
@@ -61,6 +76,5 @@ public interface GenerationContext {
 	 * @return the runtime hints
 	 */
 	RuntimeHints getRuntimeHints();
-
 
 }

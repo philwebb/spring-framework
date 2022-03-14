@@ -58,35 +58,36 @@ import org.springframework.util.ReflectionUtils;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class BeanRegistrationExecutableResolver {
+class ConstructorOrFactoryMethodResolver {
 
 	// FIXME: copy-paste from Spring Native that should go away in favor of
 	// ConstructorResolver
 
-	private static final Log logger = LogFactory.getLog(BeanRegistrationExecutableResolver.class);
+	private static final Log logger = LogFactory.getLog(ConstructorOrFactoryMethodResolver.class);
 
 	private final ConfigurableBeanFactory beanFactory;
 
 	private final ClassLoader classLoader;
 
-	BeanRegistrationExecutableResolver(ConfigurableBeanFactory beanFactory) {
+	ConstructorOrFactoryMethodResolver(ConfigurableBeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 		this.classLoader = (beanFactory.getBeanClassLoader() != null) ? beanFactory.getBeanClassLoader()
 				: ClassUtils.getDefaultClassLoader();
 	}
 
 	@Nullable
-	Executable resolveExecutable(BeanDefinition beanDefinition) {
-		Supplier<ResolvableType> beanType = () -> getBeanType(beanDefinition);
-		List<ResolvableType> valueTypes = beanDefinition.hasConstructorArgumentValues()
-				? determineParameterValueTypes(beanDefinition.getConstructorArgumentValues()) : Collections.emptyList();
-		Method resolvedFactoryMethod = resolveFactoryMethod(beanDefinition, valueTypes);
+	Executable resolve(BeanDefinition mergedBeanDefinition) {
+		Supplier<ResolvableType> beanType = () -> getBeanType(mergedBeanDefinition);
+		List<ResolvableType> valueTypes = mergedBeanDefinition.hasConstructorArgumentValues()
+				? determineParameterValueTypes(mergedBeanDefinition.getConstructorArgumentValues())
+				: Collections.emptyList();
+		Method resolvedFactoryMethod = resolveFactoryMethod(mergedBeanDefinition, valueTypes);
 		if (resolvedFactoryMethod != null) {
 			return resolvedFactoryMethod;
 		}
-		Class<?> factoryBeanClass = getFactoryBeanClass(beanDefinition);
-		if (factoryBeanClass != null && !factoryBeanClass.equals(beanDefinition.getResolvableType().toClass())) {
-			ResolvableType resolvableType = beanDefinition.getResolvableType();
+		Class<?> factoryBeanClass = getFactoryBeanClass(mergedBeanDefinition);
+		if (factoryBeanClass != null && !factoryBeanClass.equals(mergedBeanDefinition.getResolvableType().toClass())) {
+			ResolvableType resolvableType = mergedBeanDefinition.getResolvableType();
 			boolean isCompatible = ResolvableType.forClass(factoryBeanClass).as(FactoryBean.class).getGeneric(0)
 					.isAssignableFrom(resolvableType);
 			Assert.state(isCompatible, () -> String.format("Incompatible target type '%s' for factory bean '%s'",
@@ -97,10 +98,10 @@ class BeanRegistrationExecutableResolver {
 		if (resolvedConstructor != null) {
 			return resolvedConstructor;
 		}
-		Executable resolvedConstructorOrFactoryMethod = getField(beanDefinition, "resolvedConstructorOrFactoryMethod",
-				Executable.class);
+		Executable resolvedConstructorOrFactoryMethod = getField(mergedBeanDefinition,
+				"resolvedConstructorOrFactoryMethod", Executable.class);
 		if (resolvedConstructorOrFactoryMethod != null) {
-			logger.error("resolvedConstructorOrFactoryMethod required for " + beanDefinition);
+			logger.error("resolvedConstructorOrFactoryMethod required for " + mergedBeanDefinition);
 			return resolvedConstructorOrFactoryMethod;
 		}
 		return null;
@@ -208,7 +209,7 @@ class BeanRegistrationExecutableResolver {
 		}
 		List<? extends Executable> typeConversionFallbackMatches = Arrays.stream(constructors)
 				.filter(executable -> match(parameterTypesFactory.apply(executable), valueTypes,
-						BeanRegistrationExecutableResolver.FallbackMode.TYPE_CONVERSION))
+						ConstructorOrFactoryMethodResolver.FallbackMode.TYPE_CONVERSION))
 				.toList();
 		return (typeConversionFallbackMatches.size() == 1) ? typeConversionFallbackMatches.get(0) : null;
 	}
@@ -217,21 +218,21 @@ class BeanRegistrationExecutableResolver {
 			Function<Method, List<ResolvableType>> parameterTypesFactory, List<ResolvableType> valueTypes) {
 		List<? extends Executable> matches = executables.stream()
 				.filter(executable -> match(parameterTypesFactory.apply(executable), valueTypes,
-						BeanRegistrationExecutableResolver.FallbackMode.NONE))
+						ConstructorOrFactoryMethodResolver.FallbackMode.NONE))
 				.toList();
 		if (matches.size() == 1) {
 			return matches.get(0);
 		}
 		List<? extends Executable> assignableElementFallbackMatches = executables.stream()
 				.filter(executable -> match(parameterTypesFactory.apply(executable), valueTypes,
-						BeanRegistrationExecutableResolver.FallbackMode.ASSIGNABLE_ELEMENT))
+						ConstructorOrFactoryMethodResolver.FallbackMode.ASSIGNABLE_ELEMENT))
 				.toList();
 		if (assignableElementFallbackMatches.size() == 1) {
 			return assignableElementFallbackMatches.get(0);
 		}
 		List<? extends Executable> typeConversionFallbackMatches = executables.stream()
 				.filter(executable -> match(parameterTypesFactory.apply(executable), valueTypes,
-						BeanRegistrationExecutableResolver.FallbackMode.TYPE_CONVERSION))
+						ConstructorOrFactoryMethodResolver.FallbackMode.TYPE_CONVERSION))
 				.toList();
 		Assert.state(typeConversionFallbackMatches.size() <= 1,
 				() -> "Multiple matches with parameters '" + valueTypes + "': " + typeConversionFallbackMatches);
@@ -239,7 +240,7 @@ class BeanRegistrationExecutableResolver {
 	}
 
 	private boolean match(List<ResolvableType> parameterTypes, List<ResolvableType> valueTypes,
-			BeanRegistrationExecutableResolver.FallbackMode fallbackMode) {
+			ConstructorOrFactoryMethodResolver.FallbackMode fallbackMode) {
 		if (parameterTypes.size() != valueTypes.size()) {
 			return false;
 		}
@@ -252,7 +253,7 @@ class BeanRegistrationExecutableResolver {
 	}
 
 	private boolean isMatch(ResolvableType parameterType, ResolvableType valueType,
-			BeanRegistrationExecutableResolver.FallbackMode fallbackMode) {
+			ConstructorOrFactoryMethodResolver.FallbackMode fallbackMode) {
 		if (isAssignable(valueType).test(parameterType)) {
 			return true;
 		}

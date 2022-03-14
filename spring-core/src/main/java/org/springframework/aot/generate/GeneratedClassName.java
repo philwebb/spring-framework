@@ -16,30 +16,93 @@
 
 package org.springframework.aot.generate;
 
+import org.springframework.javapoet.JavaFile;
+import org.springframework.javapoet.TypeSpec;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
 /**
+ * A class name generated from a {@link ClassNameGenerator}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
+ * @see ClassNameGenerator
  */
-public class GeneratedClassName {
+public final class GeneratedClassName {
 
 	private final String name;
 
-	GeneratedClassName(String name, String featureName) {
+	/**
+	 * Create a new {@link GeneratedClassName} instance with the given name.
+	 * This constructor is package-private since names should only be generated
+	 * via a {@link ClassNameGenerator}.
+	 * @param name the generated name
+	 */
+	GeneratedClassName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * Return the fully-qualified class name.
+	 * @return the class name
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Return the package name.
+	 * @return the package name
+	 */
+	public String getPackageName() {
+		return ClassUtils.getPackageName(this.name);
+	}
+
+	/**
+	 * Return a new {@link TypeSpec#classBuilder(String) TypeSpec class builder}
+	 * pre-configured with the generated name.
+	 * @return a {@link TypeSpec} class builder
+	 */
+	public TypeSpec.Builder classBuilder() {
+		return TypeSpec.classBuilder(this.name);
+	}
+
+	/**
+	 * Return a new {@link JavaFile#builder(String, TypeSpec) JavaFile builder}
+	 * pre-configured with the package of the generated name.
+	 * @return a {@link JavaFile} builder
+	 * @throws IllegalArgumentException if the type spec doesn't have the
+	 * correct name
+	 */
+	public JavaFile.Builder javaFileBuilder(TypeSpec typeSpec) {
+		Assert.notNull(typeSpec, "'typeSpec' must not be null");
+		Assert.isTrue(this.name.equals(typeSpec.name),
+				() -> String.format("'typeSpec' must be named '%s' instead of '%s'", this,
+						typeSpec.name));
+		return JavaFile.builder(getPackageName(), typeSpec).skipJavaLangImports(true);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		return this.name.equals(((GeneratedClassName) obj).name);
 	}
 
 	@Override
 	public String toString() {
 		return this.name;
-	}
-
-	/**
-	 * @return
-	 */
-	public String getPackageName() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
 }

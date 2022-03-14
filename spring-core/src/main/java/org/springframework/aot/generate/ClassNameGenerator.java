@@ -33,6 +33,7 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see GeneratedClassName
  */
 public class ClassNameGenerator {
 
@@ -55,7 +56,7 @@ public class ClassNameGenerator {
 		String rootName = getRootName(name);
 		String generatedName = addSequence(
 				rootName + "$$" + StringUtils.capitalize(featureName));
-		return new GeneratedClassName(generatedName, featureName);
+		return new GeneratedClassName(generatedName);
 	}
 
 	private <N> String getRootName(N name) {

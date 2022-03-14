@@ -25,16 +25,24 @@ import org.springframework.util.Assert;
 /**
  * A bean registration method that has been added to a {@link GeneratedMethods}
  * collection.
+ *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
+ * @see GeneratedMethods
  */
-public class GeneratedMethod {
+public final class GeneratedMethod {
 
 	private final GeneratedMethodName name;
 
 	private MethodSpec spec;
 
+	/**
+	 * Create a new {@link GeneratedMethod} instance with the given name. This
+	 * constructor is package-private since names should only be generated via a
+	 * {@link GeneratedMethods}.
+	 * @param name the generated name
+	 */
 	GeneratedMethod(GeneratedMethodName name) {
 		this.name = name;
 	}
@@ -47,7 +55,13 @@ public class GeneratedMethod {
 		return this.name;
 	}
 
-	MethodSpec getSpec() {
+	/**
+	 * Return the {@link MethodSpec} for this generated method.
+	 * @return the method spec
+	 * @throws IllegalStateException if one of the {@code generateBy(...)}
+	 * methods has not been called
+	 */
+	public MethodSpec getSpec() {
 		Assert.state(this.spec != null,
 				() -> String.format("Method '%s' has no method spec defined", this.name));
 		return this.spec;
@@ -55,11 +69,11 @@ public class GeneratedMethod {
 
 	/**
 	 * Generate the method using the given consumer.
-	 * @param builder a consumer that will accept a method spec builder and configure it
-	 * as necessary
+	 * @param builder a consumer that will accept a method spec builder and
+	 * configure it as necessary
 	 */
 	public void generateBy(Consumer<MethodSpec.Builder> builder) {
-		Builder builderToUse = MethodSpec.methodBuilder(getName().toString());
+		Builder builderToUse = getName().methodBuilder();
 		builder.accept(builderToUse);
 		generateBy(builderToUse);
 	}
@@ -78,9 +92,9 @@ public class GeneratedMethod {
 	 */
 	public void generateBy(MethodSpec spec) {
 		Assert.isTrue(this.name.toString().equals(spec.name),
-				() -> String.format("'spec' must use the generated name \"%s\"", this.name));
+				() -> String.format("'spec' must use the generated name \"%s\"",
+						this.name));
 		this.spec = spec;
 	}
-
 
 }

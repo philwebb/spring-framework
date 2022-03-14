@@ -17,10 +17,13 @@
 package org.springframework.aot.generate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.springframework.javapoet.MethodSpec;
+import org.springframework.util.Assert;
 
 /**
  * A managed collection of generated methods.
@@ -31,17 +34,27 @@ import org.springframework.javapoet.MethodSpec;
  * @since 6.0
  * @see GeneratedMethod
  */
-public class GeneratedMethods {
+public class GeneratedMethods implements Iterable<GeneratedMethod> {
 
 	private final MethodNameGenerator methodNameGenerator;
 
 	private final List<GeneratedMethod> methods = new ArrayList<>();
 
+	/**
+	 * Create a new {@link GeneratedMethods} instance backed by a new
+	 * {@link MethodNameGenerator}.
+	 */
 	public GeneratedMethods() {
 		this(new MethodNameGenerator());
 	}
 
+	/**
+	 * Create a new {@link GeneratedMethods} instance backed by the given
+	 * {@link MethodNameGenerator}.
+	 * @param methodNameGenerator the method name generator
+	 */
 	public GeneratedMethods(MethodNameGenerator methodNameGenerator) {
+		Assert.notNull(methodNameGenerator, "'methodNameGenerator' must not be null");
 		this.methodNameGenerator = methodNameGenerator;
 	}
 
@@ -53,17 +66,23 @@ public class GeneratedMethods {
 	 * @return the newly added {@link GeneratedMethod}
 	 */
 	public GeneratedMethod add(Object... methodNameParts) {
-		GeneratedMethodName name = this.methodNameGenerator.generatedMethodName(
-				methodNameParts);
-		GeneratedMethod method = new GeneratedMethod(name);
+		GeneratedMethod method = new GeneratedMethod(
+				this.methodNameGenerator.generateMethodName(methodNameParts));
 		this.methods.add(method);
 		return method;
 	}
 
 	public void doWithMethodSpecs(Consumer<MethodSpec> action) {
-		for (GeneratedMethod method : this.methods) {
-			action.accept(method.getSpec());
-		}
+		stream().map(GeneratedMethod::getSpec).forEach(action);
+	}
+
+	@Override
+	public Iterator<GeneratedMethod> iterator() {
+		return this.methods.iterator();
+	}
+
+	public Stream<GeneratedMethod> stream() {
+		return this.methods.stream();
 	}
 
 }

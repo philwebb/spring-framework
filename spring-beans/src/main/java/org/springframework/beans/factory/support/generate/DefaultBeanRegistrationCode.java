@@ -47,8 +47,8 @@ class DefaultBeanRegistrationCode implements BeanRegistrationMethodGenerator {
 	@Override
 	public CodeBlock generateRegistrationMethod(GenerationContext generationContext, GeneratedMethods registrationMethods) {
 		BeanDefinition mergedBeanDefinition = this.definedBean.getMergedBeanDefinition();
-		Executable executable = new BeanRegistrationExecutableResolver(this.definedBean.getBeanFactory())
-				.resolveExecutable(mergedBeanDefinition);
+		Executable executable = new ConstructorOrFactoryMethodResolver(this.definedBean.getBeanFactory())
+				.resolve(mergedBeanDefinition);
 		Assert.state(executable != null, () -> "No suitable executor found for " + mergedBeanDefinition);
 		if (executable instanceof Constructor<?> constructor) {
 
