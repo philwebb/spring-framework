@@ -16,10 +16,12 @@
 
 package org.springframework.aot.generate;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -38,18 +40,47 @@ public class MethodNameGenerator {
 	private final Map<String, AtomicInteger> sequenceGenerator = new ConcurrentHashMap<>();
 
 	/**
+	 * Create a new {@link MethodNameGenerator} instance without any reserved
+	 * names.
+	 */
+	public MethodNameGenerator() {
+	}
+
+	/**
+	 * Create a new {@link MethodNameGenerator} instance with the specified
+	 * reserved names.
+	 * @param reservedNames the method names to reserve
+	 */
+	public MethodNameGenerator(String... reservedNames) {
+		this(List.of(reservedNames));
+	}
+
+	/**
+	 * Create a new {@link MethodNameGenerator} instance with the specified
+	 * reserved names.
+	 * @param reservedNames the method names to reserve
+	 */
+	public MethodNameGenerator(List<String> reservedNames) {
+		Assert.notNull(reservedNames, "'reservedNames' must not be null");
+		for (String reservedName : reservedNames) {
+			addSequence(StringUtils.uncapitalize(reservedName));
+		}
+	}
+
+	/**
 	 * Generate a new method name from the given parts.
 	 * @param parts the parts used to build the name.
 	 * @return the generated method name
 	 */
-	public GeneratedMethodName generatedMethodName(Object... parts) {
+	public GeneratedMethodName generateMethodName(Object... parts) {
 		StringBuilder generatedName = new StringBuilder();
 		for (int i = 0; i < parts.length; i++) {
 			String partName = getPartName(parts[i]);
 			generatedName.append(i != 0 ? StringUtils.capitalize(partName)
 					: StringUtils.uncapitalize(partName));
 		}
-		return new GeneratedMethodName(addSequence(generatedName.isEmpty() ? "$$aot" : generatedName.toString()));
+		return new GeneratedMethodName(addSequence(
+				generatedName.isEmpty() ? "$$aot" : generatedName.toString()));
 	}
 
 	private String getPartName(Object part) {
@@ -69,12 +100,4 @@ public class MethodNameGenerator {
 		return (sequence > 0) ? name + sequence : name;
 	}
 
-	/**
-	 * @param string
-	 * @return
-	 */
-	public MethodNameGenerator withReservedNames(String string) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
 }

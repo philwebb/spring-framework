@@ -16,15 +16,7 @@
 
 package org.springframework.aot.context;
 
-import org.springframework.aot.generate.ClassNameGenerator;
-import org.springframework.aot.generate.GeneratedFiles;
-import org.springframework.aot.generate.GeneratedSpringFactories;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.hint.JavaSerializationHints;
-import org.springframework.aot.hint.ProxyHints;
-import org.springframework.aot.hint.ReflectionHints;
-import org.springframework.aot.hint.ResourceHints;
-import org.springframework.aot.hint.RuntimeHints;
 
 /**
  * Central interface used with ahead-of-time processing of a Spring application.
@@ -47,6 +39,7 @@ import org.springframework.aot.hint.RuntimeHints;
  * @since 6.0
  * @see AotProcessor
  * @see AotContribution
+ * @see GenerationContext
  */
 public interface AotContext extends GenerationContext {
 

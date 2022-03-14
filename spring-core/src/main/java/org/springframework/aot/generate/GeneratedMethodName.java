@@ -16,17 +16,62 @@
 
 package org.springframework.aot.generate;
 
+import org.springframework.javapoet.MethodSpec;
+
 /**
+ * A method name generated from a {@link MethodNameGenerator}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
+ * @see MethodNameGenerator
  */
-public class GeneratedMethodName {
+public final class GeneratedMethodName {
 
 	private final String name;
 
-	public GeneratedMethodName(String name) {
+	/**
+	 * Create a new {@link GeneratedMethodName} instance with the given name.
+	 * This constructor is package-private since names should only be generated
+	 * via a {@link MethodNameGenerator}.
+	 * @param name the generated name
+	 */
+	GeneratedMethodName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * Return the method name.
+	 * @return the method name
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Return a {@link MethodSpec#methodBuilder(String) MethodSpec builder}
+	 * pre-configured with the generated name.
+	 * @return a method builder
+	 */
+	public MethodSpec.Builder methodBuilder() {
+		return MethodSpec.methodBuilder(this.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		return this.name.equals(((GeneratedMethodName) obj).name);
 	}
 
 	@Override

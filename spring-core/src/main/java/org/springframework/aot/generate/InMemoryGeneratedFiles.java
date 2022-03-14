@@ -52,13 +52,24 @@ public class InMemoryGeneratedFiles implements GeneratedFiles {
 		paths.put(path, content);
 	}
 
-	@Nullable
+	/**
+	 * Return a {@link Map} of the generated files of a specific {@link Kind}.
+	 * @param kind the kind of generated file
+	 * @return a {@link Map} of paths to {@link InputStreamSource} instances
+	 */
 	public Map<String, InputStreamSource> getGeneratedFiles(Kind kind) {
 		Assert.notNull(kind, "'kind' must not be null");
-		Map<String, InputStreamSource> paths = this.files.get(kind);
-		return (paths != null) ? Collections.unmodifiableMap(paths) : null;
+		return Collections.unmodifiableMap(
+				this.files.getOrDefault(kind, Collections.emptyMap()));
 	}
 
+	/**
+	 * Return the content of the specified file.
+	 * @param kind the kind of generated file
+	 * @param path the path of the file
+	 * @return the file content or {@code null} if no file could be found
+	 * @throws IOException on read error
+	 */
 	@Nullable
 	public String getGeneratedFileContent(Kind kind, String path) throws IOException {
 		InputStreamSource source = getGeneratedFile(kind, path);
@@ -69,6 +80,12 @@ public class InMemoryGeneratedFiles implements GeneratedFiles {
 		return null;
 	}
 
+	/**
+	 * Return the {@link InputStreamSource} of specified file.
+	 * @param kind the kind of generated file
+	 * @param path the path of the file
+	 * @return the file source or {@code null} if no file could be found
+	 */
 	@Nullable
 	public InputStreamSource getGeneratedFile(Kind kind, String path) {
 		Assert.notNull(kind, "'kind' must not be null");

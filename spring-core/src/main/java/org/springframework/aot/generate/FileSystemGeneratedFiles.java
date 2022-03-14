@@ -29,7 +29,7 @@ import org.springframework.core.io.InputStreamSource;
 import org.springframework.util.Assert;
 
 /**
- * {@link GeneratedFiles} implementation that stored generated files using a
+ * {@link GeneratedFiles} implementation that stores generated files using a
  * {@link FileSystem}.
  *
  * @author Brian Clozel

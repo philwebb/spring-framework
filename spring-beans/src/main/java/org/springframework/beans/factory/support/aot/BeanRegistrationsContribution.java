@@ -77,12 +77,12 @@ class BeanRegistrationsContribution implements AotContribution {
 	}
 
 	private JavaFile generateJavaFile(AotContext aotContext, GeneratedClassName className) {
-		return JavaFile.builder(className.getPackageName(), generateType(aotContext, className)).build();
+		return className.javaFileBuilder(generateType(aotContext, className)).build();
 	}
 
 	private TypeSpec generateType(GenerationContext generationContext, GeneratedClassName className) {
 		GeneratedMethods methods = new GeneratedMethods(new MethodNameGenerator().withReservedNames("initialize"));
-		TypeSpec.Builder builder = TypeSpec.classBuilder(className.toString());
+		TypeSpec.Builder builder = className.classBuilder();
 		builder.addJavadoc("BeanDefinitionRegistryInitializer for $S",
 				BeanRegistrationsContribution.this.beanFactoryName);
 		builder.addSuperinterface(BeanDefinitionRegistryInitializer.class);

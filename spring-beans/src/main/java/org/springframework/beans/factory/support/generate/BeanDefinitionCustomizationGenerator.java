@@ -36,8 +36,6 @@ import org.springframework.util.StringUtils;
 
 class BeanDefinitionCustomizationGenerator {
 
-	// FIXME move package? Rename?
-
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITON = new RootBeanDefinition();
 
 	private final RootBeanDefinition beanDefinition;
