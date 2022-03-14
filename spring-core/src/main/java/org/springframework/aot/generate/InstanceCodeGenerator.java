@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.aot.generate;
 
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeProviders;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.core.ResolvableType;
+import org.springframework.javapoet.CodeBlock;
+import org.springframework.lang.Nullable;
 
 /**
- * Tests for {@link BeanRegistrationMethodCodeProviders}.
  *
+ * @author Stephane Nicoll
  * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
-class BeanRegistrationMethodProvidersTests {
+public interface InstanceCodeGenerator {
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
+	@Nullable
+	CodeBlock generateCode(@Nullable Object value, ResolvableType type);
 
 }

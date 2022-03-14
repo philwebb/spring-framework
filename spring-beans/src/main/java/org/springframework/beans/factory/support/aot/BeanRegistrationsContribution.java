@@ -40,7 +40,7 @@ import org.springframework.beans.factory.aot.UniqueBeanName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryInitializer;
-import org.springframework.beans.factory.support.generate.BeanRegistrationMethodGenerator;
+import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeSpec;
@@ -56,10 +56,10 @@ class BeanRegistrationsContribution implements AotContribution {
 
 	private final UniqueBeanFactoryName beanFactoryName;
 
-	private final Map<DefinedBean, BeanRegistrationMethodGenerator> registrations;
+	private final Map<DefinedBean, BeanRegistrationMethodCodeGenerator> registrations;
 
 	BeanRegistrationsContribution(UniqueBeanFactoryName beanFactoryName, ConfigurableListableBeanFactory beanFactory,
-			Map<DefinedBean, BeanRegistrationMethodGenerator> registrations) {
+			Map<DefinedBean, BeanRegistrationMethodCodeGenerator> registrations) {
 		this.beanFactoryName = beanFactoryName;
 		this.registrations = registrations;
 		// FIXME grab processor beans to apply
@@ -102,7 +102,7 @@ class BeanRegistrationsContribution implements AotContribution {
 			method.generateBy((builder) -> {
 				builder.addJavadoc("Register the bean definition for $S", beanName);
 				builder.addModifiers(Modifier.PRIVATE);
-				builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodGenerator.REGISTRY);
+				builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodCodeGenerator.REGISTRY);
 				builder.addCode(code.generateRegistrationMethod(generationContext, methods));
 			});
 		});
@@ -113,9 +113,9 @@ class BeanRegistrationsContribution implements AotContribution {
 		MethodSpec.Builder builder = MethodSpec.methodBuilder("initialize");
 		builder.addAnnotation(Override.class);
 		builder.addModifiers(Modifier.PUBLIC);
-		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodGenerator.REGISTRY);
+		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodCodeGenerator.REGISTRY);
 		for (GeneratedMethodName registrationMethodToCall : registrationMethodsToCalls) {
-			builder.addStatement("$N($L)", registrationMethodToCall, BeanRegistrationMethodGenerator.REGISTRY);
+			builder.addStatement("$N($L)", registrationMethodToCall, BeanRegistrationMethodCodeGenerator.REGISTRY);
 		}
 		return builder.build();
 	}

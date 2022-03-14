@@ -38,6 +38,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  */
 class TestCompilerTests {
 
+	// FIXME test compileAndReturn
+
 	private static final String HELLO_WORLD = """
 			package com.example;
 

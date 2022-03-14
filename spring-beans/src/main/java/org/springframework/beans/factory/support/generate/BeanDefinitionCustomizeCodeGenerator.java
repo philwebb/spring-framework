@@ -34,7 +34,7 @@ import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-class BeanDefinitionCustomizationGenerator {
+class BeanDefinitionCustomizeCodeGenerator {
 
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITON = new RootBeanDefinition();
 
@@ -44,11 +44,11 @@ class BeanDefinitionCustomizationGenerator {
 
 	private final Predicate<String> attributeFilter;
 
-	protected BeanDefinitionCustomizationGenerator(RootBeanDefinition beanDefinition, String variable) {
+	protected BeanDefinitionCustomizeCodeGenerator(RootBeanDefinition beanDefinition, String variable) {
 		this(beanDefinition, variable, (attribute) -> false);
 	}
 
-	protected BeanDefinitionCustomizationGenerator(RootBeanDefinition beanDefinition, String variable,
+	protected BeanDefinitionCustomizeCodeGenerator(RootBeanDefinition beanDefinition, String variable,
 			Predicate<String> attributeFilter) {
 		this.beanDefinition = beanDefinition;
 		this.variable = variable;

@@ -30,11 +30,11 @@ import org.springframework.javapoet.CodeBlock;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationMethodProvider
+ * @see BeanRegistrationMethodCodeProvider
  * @see BeanRegistrationsContribution
  */
 @FunctionalInterface
-public interface BeanRegistrationMethodGenerator {
+public interface BeanRegistrationMethodCodeGenerator {
 
 	/**
 	 * The name of the parameter passed to the generated method that contains the
