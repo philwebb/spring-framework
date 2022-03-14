@@ -16,22 +16,21 @@
 
 package org.springframework.beans.factory.aot;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * Filter that can be used to exclude AOT processing of a {@link DefinedBean}.
+ * Tests for {@link DefinedBean}.
  *
- * @author Stephane Nicoll
  * @author Phillip Webb
- * @author Andy Wilkinson
  * @since 6.0
  */
-@FunctionalInterface
-public interface DefinedBeanAotExcludeFilter {
+class DefinedBeanTests {
 
-	/**
-	 * Return if the defined bean should be excluded from AOT processing and registration.
-	 * @param definedBean the defined bean
-	 * @return if the defined bean should be excluded
-	 */
-	boolean isExcluded(DefinedBean definedBean);
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
 
 }

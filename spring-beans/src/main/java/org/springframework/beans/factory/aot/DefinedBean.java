@@ -19,6 +19,8 @@ package org.springframework.beans.factory.aot;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.core.ResolvableType;
+import org.springframework.util.Assert;
 
 /**
  * Details that can be used when AOT processing a bean that has been defined in a
@@ -31,18 +33,91 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * @see AotBeanDefinitionProcessor
  * @see DefinedBeanAotExcludeFilter
  */
-public interface DefinedBean {
+public final class DefinedBean {
 
-	ConfigurableListableBeanFactory getBeanFactory();
+	private final ConfigurableListableBeanFactory beanFactory;
 
-	String getBeanName();
+	private final String beanName;
 
-	UniqueBeanName getUniqueBeanName();
+	private final UniqueBeanName uniqueBeanName;
 
-	Class<?> getResolvedBeanClass();
+	private final BeanDefinition beanDefinition;
 
-	BeanDefinition getBeanDefinition();
+	private final BeanDefinition mergedBeanDefinition;
 
-	BeanDefinition getMergedBeanDefinition();
+	private final ResolvableType resolvedBeanType;
+
+	public DefinedBean(ConfigurableListableBeanFactory beanFactory, UniqueBeanFactoryName beanFactoryName,
+			String beanName) {
+		Assert.notNull(beanFactory, "'beanFactory' must not be null");
+		Assert.notNull(beanFactoryName, "'beanFactoryName' must not be null");
+		Assert.hasLength(beanName, "'beanName' must not be null");
+		this.beanFactory = beanFactory;
+		this.beanName = beanName;
+		this.uniqueBeanName = new UniqueBeanName(beanFactoryName, beanName);
+		this.beanDefinition = beanFactory.getBeanDefinition(beanName);
+		this.mergedBeanDefinition = beanFactory.getMergedBeanDefinition(beanName);
+		this.resolvedBeanType = mergedBeanDefinition.getResolvableType();
+	}
+
+	/**
+	 * Return the {@link ConfigurableListableBeanFactory} that defined the bean.
+	 * @return the bean factory
+	 */
+	public ConfigurableListableBeanFactory getBeanFactory() {
+		return beanFactory;
+	}
+
+	/**
+	 * Return the name of the bean as defined in the bean factory.
+	 * @return the bean name
+	 */
+	public String getBeanName() {
+		return this.beanName;
+	}
+
+	/**
+	 * Return the unique bean name composed from the {@link UniqueBeanFactoryName bean
+	 * factory name} and the {@link #getBeanName() bean name}
+	 * @return the unique bean name
+	 */
+	public UniqueBeanName getUniqueBeanName() {
+		return this.uniqueBeanName;
+	}
+
+	/**
+	 * Return the {@link BeanDefinition} as registered.
+	 * @return the bean definition
+	 * @see #getMergedBeanDefinition()
+	 */
+	public BeanDefinition getBeanDefinition() {
+		return this.beanDefinition;
+	}
+
+	/**
+	 * Return the full merged bean definition.
+	 * @return the merged bean definition
+	 * @see #getBeanDefinition()
+	 * @see ConfigurableBeanFactory#getMergedBeanDefinition(String)
+	 */
+	public BeanDefinition getMergedBeanDefinition() {
+		return this.mergedBeanDefinition;
+	}
+
+	/**
+	 * Return the bean class as resolved by the bean factory.
+	 * @return the resolved bean class
+	 */
+	public ResolvableType getResolvedBeanType() {
+		return this.resolvedBeanType;
+	}
+
+	/**
+	 * Return the bean class as resolved by the bean factory.
+	 * @return the resolved bean class
+	 */
+	public Class<?> getResolvedBeanClass() {
+		return this.resolvedBeanType.toClass();
+	}
 
 }

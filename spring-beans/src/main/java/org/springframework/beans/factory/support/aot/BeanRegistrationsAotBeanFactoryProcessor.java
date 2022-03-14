@@ -59,7 +59,7 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 				.computeIfAbsent(beanFactory, BeanRegistrationMethodProviders::new);
 		Map<DefinedBean, BeanRegistrationMethodGenerator> registrations = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			DefinedBean definedBean = new DefaultDefinedBean(beanFactoryName, beanFactory, beanName);
+			DefinedBean definedBean = new DefinedBean(beanFactory, beanFactoryName, beanName);
 			if (excludeFilters.isExcluded(definedBean)) {
 				logger.trace(LogMessage.format("Excluded '%s' from AOT registration and processing", beanName));
 				continue;

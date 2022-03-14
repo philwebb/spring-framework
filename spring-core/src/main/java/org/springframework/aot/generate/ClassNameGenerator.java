@@ -35,7 +35,7 @@ import org.springframework.util.StringUtils;
  * @since 6.0
  * @see GeneratedClassName
  */
-public class ClassNameGenerator {
+public final class ClassNameGenerator {
 
 	private final Map<String, AtomicInteger> sequenceGenerator = new ConcurrentHashMap<>();
 
