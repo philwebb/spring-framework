@@ -30,6 +30,6 @@ import org.springframework.lang.Nullable;
 public interface InstanceCodeGenerator {
 
 	@Nullable
-	CodeBlock generateCode(@Nullable Object value, ResolvableType type);
+	CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type);
 
 }

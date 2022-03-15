@@ -17,7 +17,15 @@
 package org.springframework.aot.generate;
 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.IllegalSelectorException;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -26,12 +34,16 @@ import javax.lang.model.element.Modifier;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.generate.InstanceCodeGenerators.ArrayInstanceCodeGenerator;
 import org.springframework.aot.generate.InstanceCodeGenerators.CharacterInstanceCodeGenerator;
 import org.springframework.aot.generate.InstanceCodeGenerators.ClassInstanceCodeGenerator;
 import org.springframework.aot.generate.InstanceCodeGenerators.EnumInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerators.ListInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerators.MapInstanceCodeGenerator;
 import org.springframework.aot.generate.InstanceCodeGenerators.NullInstanceCodeGenerator;
 import org.springframework.aot.generate.InstanceCodeGenerators.PrimitiveInstanceCodeGenerator;
 import org.springframework.aot.generate.InstanceCodeGenerators.ResolvableTypeInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerators.SetInstanceCodeGenerator;
 import org.springframework.aot.generate.InstanceCodeGenerators.StringInstanceCodeGenerator;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
@@ -66,14 +78,14 @@ class InstanceCodeGeneratorsCompilerTests {
 	private void compile(InstanceCodeGenerators generators, Object value,
 			ResolvableType type, BiConsumer<Object, Compiled> result) {
 		CodeBlock code = generators.generateInstantiationCode(value, type);
-		JavaFile javaFile = createJavaFile(code);
+		JavaFile javaFile = createJavaFile(generators, code);
 		System.out.println(javaFile);
 		TestCompiler.forSystem().compile(SourceFile.of(javaFile::writeTo),
 				compiled -> result.accept(compiled.getInstance(Supplier.class).get(),
 						compiled));
 	}
 
-	private JavaFile createJavaFile(CodeBlock code) {
+	private JavaFile createJavaFile(InstanceCodeGenerators generators, CodeBlock code) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder("InstanceSupplier");
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addSuperinterface(
@@ -81,7 +93,20 @@ class InstanceCodeGeneratorsCompilerTests {
 		builder.addMethod(
 				MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(
 						Object.class).addStatement("return $L", code).build());
+		GeneratedMethods generatedMethods = getGeneratedMethods(generators);
+		if (generatedMethods != null) {
+			generatedMethods.doWithMethodSpecs(builder::addMethod);
+		}
 		return JavaFile.builder("com.example", builder.build()).build();
+	}
+
+	private GeneratedMethods getGeneratedMethods(InstanceCodeGenerators generators) {
+		try {
+			return generators.getGeneratedMethods();
+		}
+		catch (IllegalStateException ex) {
+			return null;
+		}
 	}
 
 	/**
@@ -277,38 +302,189 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenSimpleResolvableType() {
+			ResolvableType resolvableType = ResolvableType.forClass(String.class);
+			compile(InstanceCodeGenerators.simple(), resolvableType, (instance,
+					compiled) -> assertThat(instance).isEqualTo(resolvableType));
+		}
 
+		@Test
+		void generateWhenNoneResolvableType() {
+			ResolvableType resolvableType = ResolvableType.NONE;
+			compile(InstanceCodeGenerators.simple(), resolvableType,
+					(instance, compiled) -> {
+						assertThat(instance).isEqualTo(resolvableType);
+						assertThat(compiled.getSourceFile()).contains(
+								"ResolvableType.NONE");
+					});
 		}
 
 		@Test
 		void generateWhenGenericResolvableType() {
-
+			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(
+					List.class, String.class);
+			compile(InstanceCodeGenerators.simple(), resolvableType, (instance,
+					compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 		@Test
 		void generateWhenNestedGenericResolvableType() {
-
+			ResolvableType stringList = ResolvableType.forClassWithGenerics(List.class,
+					String.class);
+			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Map.class,
+					ResolvableType.forClass(Integer.class), stringList);
+			compile(InstanceCodeGenerators.simple(), resolvableType, (instance,
+					compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 	}
 
+	/**
+	 * Tests for {@link ArrayInstanceCodeGenerator}.
+	 */
 	@Nested
 	class ArrayInstanceCodeGeneratorTests {
 
+		@Test
+		void generateWhenPrimitiveArray() {
+			byte[] bytes = { 0, 1, 2 };
+			compile(InstanceCodeGenerators.simple(), bytes, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(bytes);
+				assertThat(compiler.getSourceFile()).contains("new byte[]");
+			});
+		}
+
+		@Test
+		void generateWhenWrapperArray() {
+			Byte[] bytes = { 0, 1, 2 };
+			compile(InstanceCodeGenerators.simple(), bytes, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(bytes);
+				assertThat(compiler.getSourceFile()).contains("new Byte[]");
+			});
+		}
+
+		@Test
+		void generateWhenClassArray() {
+			Class<?>[] classes = new Class<?>[] { InputStream.class, OutputStream.class };
+			compile(InstanceCodeGenerators.simple(), classes, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(classes);
+				assertThat(compiler.getSourceFile()).contains("new Class[]");
+			});
+		}
+
 	}
 
+	/**
+	 * Tests for {@link ListInstanceCodeGenerator}.
+	 */
 	@Nested
 	class ListInstanceCodeGeneratorTests {
 
+		@Test
+		void generateWhenStringList() {
+			List<String> list = List.of("a", "b", "c");
+			compile(InstanceCodeGenerators.simple(), list, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(list);
+			});
+		}
+
+		@Test
+		void generateWhenEmptyList() {
+			List<String> list = List.of();
+			compile(InstanceCodeGenerators.simple(), list, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(list);
+				assertThat(compiler.getSourceFile()).contains("Collections.emptyList();");
+			});
+		}
+
 	}
 
+	/**
+	 * Tests for {@link SetInstanceCodeGenerator}.
+	 */
 	@Nested
 	class SetInstanceCodeGeneratorTests {
 
+		@Test
+		void generateWhenStringSet() {
+			Set<String> set = Set.of("a", "b", "c");
+			compile(InstanceCodeGenerators.simple(), set, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(set);
+			});
+		}
+
+		@Test
+		void generateWhenEmptySet() {
+			Set<String> set = Set.of();
+			compile(InstanceCodeGenerators.simple(), set, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(set);
+				assertThat(compiler.getSourceFile()).contains("Collections.emptySet();");
+			});
+		}
+
+		@Test
+		void generateWhenLinkedHashSet() {
+			Set<String> set = new LinkedHashSet<>(List.of("a", "b", "c"));
+			compile(InstanceCodeGenerators.simple(), set, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(set).isInstanceOf(LinkedHashSet.class);
+				assertThat(compiler.getSourceFile()).contains(
+						"new LinkedHashSet(List.of(");
+			});
+		}
+
 	}
 
+	/**
+	 * Tests for {@link MapInstanceCodeGenerator}.
+	 */
 	@Nested
 	class MapInstanceCodeGeneratorTests {
+
+		@Test
+		void generateWhenSmallMap() {
+			Map<String, String> map = Map.of("k1", "v1", "k2", "v2");
+			compile(InstanceCodeGenerators.simple(), map, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(map);
+				assertThat(compiler.getSourceFile()).contains("Map.of(");
+			});
+		}
+
+		@Test
+		void generateWhenMapWithOverTenElements() {
+			Map<String, String> map = new HashMap<>();
+			for (int i = 1; i <= 11; i++) {
+				map.put("k" + i, "v" + i);
+			}
+			compile(InstanceCodeGenerators.simple(), map, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(map);
+				assertThat(compiler.getSourceFile()).contains("Map.ofEntries(");
+			});
+		}
+
+		@Test
+		void generateWhenLinkedHashMapAndCanGenerateMethod() {
+			Map<String, String> map = new LinkedHashMap<>();
+			map.put("a", "A");
+			map.put("b", "B");
+			map.put("c", "C");
+			InstanceCodeGenerators generators = new InstanceCodeGenerators(
+					new GeneratedMethods());
+			compile(generators, map, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
+				assertThat(compiler.getSourceFile()).contains("getMap()");
+			});
+		}
+
+		@Test
+		void generateWhenLinkedHashMapAndCannotGenerateMethod() {
+			Map<String, String> map = new LinkedHashMap<>();
+			map.put("a", "A");
+			map.put("b", "B");
+			map.put("c", "C");
+			compile(InstanceCodeGenerators.simple(), map, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
+				assertThat(compiler.getSourceFile()).contains("Collectors.toMap(");
+			});
+		}
 
 	}
 

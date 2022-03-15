@@ -71,30 +71,39 @@ public final class GeneratedMethod {
 	 * Generate the method using the given consumer.
 	 * @param builder a consumer that will accept a method spec builder and
 	 * configure it as necessary
+	 * @return this instance
 	 */
-	public void generateBy(Consumer<MethodSpec.Builder> builder) {
+	public GeneratedMethod generateBy(Consumer<MethodSpec.Builder> builder) {
 		Builder builderToUse = getName().methodBuilder();
 		builder.accept(builderToUse);
-		generateBy(builderToUse);
+		return generateBy(builderToUse);
 	}
 
 	/**
 	 * Generate the method using the given spec builder.
 	 * @param builder the method spec builder
+	 * @return this instance
 	 */
-	public void generateBy(MethodSpec.Builder builder) {
-		generateBy(builder.build());
+	public GeneratedMethod generateBy(MethodSpec.Builder builder) {
+		return generateBy(builder.build());
 	}
 
 	/**
 	 * Generate the method using the given spec.
 	 * @param spec the method spec
+	 * @return this instance
 	 */
-	public void generateBy(MethodSpec spec) {
+	public GeneratedMethod generateBy(MethodSpec spec) {
 		Assert.isTrue(this.name.toString().equals(spec.name),
 				() -> String.format("'spec' must use the generated name \"%s\"",
 						this.name));
 		this.spec = spec;
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return (this.spec != null) ? this.spec.toString() : this.name.toString();
 	}
 
 }

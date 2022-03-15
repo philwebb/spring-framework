@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -73,31 +73,42 @@ public class MethodNameGenerator {
 	 * @return the generated method name
 	 */
 	public GeneratedMethodName generateMethodName(Object... parts) {
-		StringBuilder generatedName = new StringBuilder();
-		for (int i = 0; i < parts.length; i++) {
-			String partName = getPartName(parts[i]);
-			generatedName.append(i != 0 ? StringUtils.capitalize(partName)
-					: StringUtils.uncapitalize(partName));
-		}
-		return new GeneratedMethodName(addSequence(
-				generatedName.isEmpty() ? "$$aot" : generatedName.toString()));
-	}
-
-	private String getPartName(Object part) {
-		String string = (part instanceof Class<?>) ? ((Class<?>) part).getName()
-				: ObjectUtils.nullSafeToString(part);
-		char[] chars = (string != null) ? string.toCharArray() : new char[0];
-		StringBuffer name = new StringBuffer(chars.length);
-		for (char ch : chars) {
-			name.append((!Character.isLetter(ch)) ? "" : ch);
-		}
-		return name.toString();
+		String generatedName = join(parts);
+		return new GeneratedMethodName(
+				addSequence(generatedName.isEmpty() ? "$$aot" : generatedName));
 	}
 
 	private String addSequence(String name) {
 		int sequence = this.sequenceGenerator.computeIfAbsent(name,
 				(key) -> new AtomicInteger()).getAndIncrement();
 		return (sequence > 0) ? name + sequence : name;
+	}
+
+	// FIXME test
+	public static String join(Object... parts) {
+		StringBuilder generatedName = new StringBuilder();
+		boolean first = true;
+		for (Object part : parts) {
+			String partName = getPartName(part);
+			generatedName.append((!first) ? StringUtils.capitalize(partName)
+					: StringUtils.uncapitalize(partName));
+			first = first && partName.isEmpty();
+		}
+		return generatedName.toString();
+	}
+
+	private static String getPartName(@Nullable Object part) {
+		if (part == null) {
+			return "";
+		}
+		String string = (part instanceof Class<?>) ? ((Class<?>) part).getName()
+				: String.valueOf(part);
+		char[] chars = (string != null) ? string.toCharArray() : new char[0];
+		StringBuffer name = new StringBuffer(chars.length);
+		for (char ch : chars) {
+			name.append((!Character.isLetter(ch)) ? "" : ch);
+		}
+		return name.toString();
 	}
 
 }
