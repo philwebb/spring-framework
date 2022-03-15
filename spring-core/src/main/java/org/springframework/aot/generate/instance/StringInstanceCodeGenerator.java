@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate;
+package org.springframework.aot.generate.instance;
+
+import org.springframework.core.ResolvableType;
+import org.springframework.javapoet.CodeBlock;
+import org.springframework.lang.Nullable;
 
 /**
- * Tests for {@link InstanceCodeGenerator}. See also
- * {@code InstanceCodeGeneratorsCompilerTests} in {@literal spring-core-test}.
+ * {@link InstanceCodeGenerator} to support {@link String Strings}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
-class InstanceCodeGeneratorTests {
+class StringInstanceCodeGenerator implements InstanceCodeGenerator {
+
+	static final StringInstanceCodeGenerator INSTANCE = new StringInstanceCodeGenerator();
+
+	@Override
+	public CodeBlock generateCode(@Nullable String name, Object value,
+			ResolvableType type) {
+		if (value instanceof String) {
+			return CodeBlock.of("$S", value);
+		}
+		return null;
+	}
 
 }

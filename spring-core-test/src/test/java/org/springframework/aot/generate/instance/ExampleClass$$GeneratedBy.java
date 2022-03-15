@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate;
+package org.springframework.aot.generate.instance;
 
 /**
  * Fake CGLIB generated class.
