@@ -16,13 +16,17 @@
 
 package org.springframework.aot.generate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -84,26 +88,30 @@ public class MethodNameGenerator {
 		return (sequence > 0) ? name + sequence : name;
 	}
 
-	// FIXME test
+	/**
+	 * Join the specified parts to create a valid camel case method name.
+	 * @param parts the parts to join
+	 * @return a method name from the joined parts.
+	 */
 	public static String join(Object... parts) {
-		StringBuilder generatedName = new StringBuilder();
-		boolean first = true;
-		for (Object part : parts) {
-			String partName = getPartName(part);
-			generatedName.append((!first) ? StringUtils.capitalize(partName)
-					: StringUtils.uncapitalize(partName));
-			first = first && partName.isEmpty();
-		}
-		return generatedName.toString();
+		Stream<String> capitalizedPartNames = Arrays.stream(parts).map(
+				MethodNameGenerator::getPartName).map(StringUtils::capitalize);
+		return StringUtils.uncapitalize(
+				capitalizedPartNames.collect(Collectors.joining()));
 	}
 
 	private static String getPartName(@Nullable Object part) {
 		if (part == null) {
 			return "";
 		}
-		String string = (part instanceof Class<?>) ? ((Class<?>) part).getName()
-				: String.valueOf(part);
-		char[] chars = (string != null) ? string.toCharArray() : new char[0];
+		if(part instanceof Class<?> clazz) {
+			return clean(ClassUtils.getShortName(clazz));
+		}
+		return (part != null) ? clean(part.toString()) : "";
+	}
+
+	private static String clean(String string) {
+		char[] chars = string.toCharArray();
 		StringBuffer name = new StringBuffer(chars.length);
 		for (char ch : chars) {
 			name.append((!Character.isLetter(ch)) ? "" : ch);

@@ -18,7 +18,6 @@ package org.springframework.aot.generate;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.IllegalSelectorException;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -34,17 +33,17 @@ import javax.lang.model.element.Modifier;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.generate.InstanceCodeGenerators.ArrayInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.CharacterInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.ClassInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.EnumInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.ListInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.MapInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.NullInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.PrimitiveInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.ResolvableTypeInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.SetInstanceCodeGenerator;
-import org.springframework.aot.generate.InstanceCodeGenerators.StringInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.ArrayInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.CharacterInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.ClassInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.EnumInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.ListInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.MapInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.NullInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.PrimitiveInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.ResolvableTypeInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.SetInstanceCodeGenerator;
+import org.springframework.aot.generate.InstanceCodeGenerator.StringInstanceCodeGenerator;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.aot.test.generator.file.SourceFile;
@@ -58,7 +57,7 @@ import org.springframework.javapoet.TypeSpec;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link InstanceCodeGenerators}.
+ * Tests for {@link InstanceCodeGenerator}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -66,16 +65,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class InstanceCodeGeneratorsCompilerTests {
 
-	// ResolvableTypeGeneratorTests
-	// BeanParameterGeneratorTests
-
-	private void compile(InstanceCodeGenerators generators, Object value,
+	private void compile(InstanceCodeGenerator generators, Object value,
 			BiConsumer<Object, Compiled> result) {
 		compile(generators, value,
 				(value != null) ? ResolvableType.forInstance(value) : null, result);
 	}
 
-	private void compile(InstanceCodeGenerators generators, Object value,
+	private void compile(InstanceCodeGenerator generators, Object value,
 			ResolvableType type, BiConsumer<Object, Compiled> result) {
 		CodeBlock code = generators.generateInstantiationCode(value, type);
 		JavaFile javaFile = createJavaFile(generators, code);
@@ -85,7 +81,7 @@ class InstanceCodeGeneratorsCompilerTests {
 						compiled));
 	}
 
-	private JavaFile createJavaFile(InstanceCodeGenerators generators, CodeBlock code) {
+	private JavaFile createJavaFile(InstanceCodeGenerator generators, CodeBlock code) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder("InstanceSupplier");
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addSuperinterface(
@@ -100,7 +96,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		return JavaFile.builder("com.example", builder.build()).build();
 	}
 
-	private GeneratedMethods getGeneratedMethods(InstanceCodeGenerators generators) {
+	private GeneratedMethods getGeneratedMethods(InstanceCodeGenerator generators) {
 		try {
 			return generators.getGeneratedMethods();
 		}
@@ -117,7 +113,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenNull() {
-			compile(InstanceCodeGenerators.simple(), null,
+			compile(InstanceCodeGenerator.simple(), null,
 					(instance, compiled) -> assertThat(instance).isNull());
 		}
 
@@ -131,7 +127,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateReturnsCharacterInstance() {
-			compile(InstanceCodeGenerators.simple(), 'a', (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), 'a', (instance, compiled) -> {
 				assertThat(instance).isEqualTo('a');
 				assertThat(compiled.getSourceFile()).contains("'a'");
 			});
@@ -155,7 +151,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		}
 
 		private void testEscaped(char value, String expectedSourceContent) {
-			compile(InstanceCodeGenerators.simple(), value, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), value, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(value);
 				assertThat(compiled.getSourceFile()).contains(expectedSourceContent);
 			});
@@ -171,7 +167,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenBoolean() {
-			compile(InstanceCodeGenerators.simple(), true, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), true, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(Boolean.TRUE);
 				assertThat(compiled.getSourceFile()).contains("true");
 			});
@@ -179,7 +175,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenByte() {
-			compile(InstanceCodeGenerators.simple(), (byte) 2, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), (byte) 2, (instance, compiled) -> {
 				assertThat(instance).isEqualTo((byte) 2);
 				assertThat(compiled.getSourceFile()).contains("(byte) 2");
 			});
@@ -187,7 +183,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenShort() {
-			compile(InstanceCodeGenerators.simple(), (short) 3, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), (short) 3, (instance, compiled) -> {
 				assertThat(instance).isEqualTo((short) 3);
 				assertThat(compiled.getSourceFile()).contains("(short) 3");
 			});
@@ -195,7 +191,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenInt() {
-			compile(InstanceCodeGenerators.simple(), 4, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), 4, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(4);
 				assertThat(compiled.getSourceFile()).contains("return 4;");
 			});
@@ -203,7 +199,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenLong() {
-			compile(InstanceCodeGenerators.simple(), 5L, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), 5L, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(5L);
 				assertThat(compiled.getSourceFile()).contains("5L");
 			});
@@ -211,7 +207,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenFloat() {
-			compile(InstanceCodeGenerators.simple(), 0.1F, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), 0.1F, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(0.1F);
 				assertThat(compiled.getSourceFile()).contains("0.1F");
 			});
@@ -219,7 +215,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenDouble() {
-			compile(InstanceCodeGenerators.simple(), 0.2, (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), 0.2, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(0.2);
 				assertThat(compiled.getSourceFile()).contains("(double) 0.2");
 			});
@@ -235,7 +231,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenString() {
-			compile(InstanceCodeGenerators.simple(), "test\n", (instance, compiled) -> {
+			compile(InstanceCodeGenerator.simple(), "test\n", (instance, compiled) -> {
 				assertThat(instance).isEqualTo("test\n");
 				assertThat(compiled.getSourceFile()).contains("\n");
 			});
@@ -251,7 +247,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenEnum() {
-			compile(InstanceCodeGenerators.simple(), ChronoUnit.DAYS,
+			compile(InstanceCodeGenerator.simple(), ChronoUnit.DAYS,
 					(instance, compiled) -> {
 						assertThat(instance).isEqualTo(ChronoUnit.DAYS);
 						assertThat(compiled.getSourceFile()).contains("ChronoUnit.DAYS");
@@ -260,7 +256,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenEnumWithClassBody() {
-			compile(InstanceCodeGenerators.simple(), EnumWithClassBody.TWO,
+			compile(InstanceCodeGenerator.simple(), EnumWithClassBody.TWO,
 					(instance, compiled) -> {
 						assertThat(instance).isEqualTo(EnumWithClassBody.TWO);
 						assertThat(compiled.getSourceFile()).contains(
@@ -278,7 +274,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenClass() {
-			compile(InstanceCodeGenerators.simple(), InputStream.class,
+			compile(InstanceCodeGenerator.simple(), InputStream.class,
 					(instance, compiled) -> {
 						assertThat(instance).isEqualTo(InputStream.class);
 					});
@@ -286,7 +282,7 @@ class InstanceCodeGeneratorsCompilerTests {
 
 		@Test
 		void generateWhenCglibClass() {
-			compile(InstanceCodeGenerators.simple(), ExampleClass$$GeneratedBy.class,
+			compile(InstanceCodeGenerator.simple(), ExampleClass$$GeneratedBy.class,
 					(instance, compiled) -> {
 						assertThat(instance).isEqualTo(ExampleClass.class);
 					});
@@ -303,14 +299,14 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenSimpleResolvableType() {
 			ResolvableType resolvableType = ResolvableType.forClass(String.class);
-			compile(InstanceCodeGenerators.simple(), resolvableType, (instance,
+			compile(InstanceCodeGenerator.simple(), resolvableType, (instance,
 					compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 		@Test
 		void generateWhenNoneResolvableType() {
 			ResolvableType resolvableType = ResolvableType.NONE;
-			compile(InstanceCodeGenerators.simple(), resolvableType,
+			compile(InstanceCodeGenerator.simple(), resolvableType,
 					(instance, compiled) -> {
 						assertThat(instance).isEqualTo(resolvableType);
 						assertThat(compiled.getSourceFile()).contains(
@@ -322,7 +318,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		void generateWhenGenericResolvableType() {
 			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(
 					List.class, String.class);
-			compile(InstanceCodeGenerators.simple(), resolvableType, (instance,
+			compile(InstanceCodeGenerator.simple(), resolvableType, (instance,
 					compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
@@ -332,7 +328,7 @@ class InstanceCodeGeneratorsCompilerTests {
 					String.class);
 			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Map.class,
 					ResolvableType.forClass(Integer.class), stringList);
-			compile(InstanceCodeGenerators.simple(), resolvableType, (instance,
+			compile(InstanceCodeGenerator.simple(), resolvableType, (instance,
 					compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
@@ -347,7 +343,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenPrimitiveArray() {
 			byte[] bytes = { 0, 1, 2 };
-			compile(InstanceCodeGenerators.simple(), bytes, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), bytes, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(bytes);
 				assertThat(compiler.getSourceFile()).contains("new byte[]");
 			});
@@ -356,7 +352,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenWrapperArray() {
 			Byte[] bytes = { 0, 1, 2 };
-			compile(InstanceCodeGenerators.simple(), bytes, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), bytes, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(bytes);
 				assertThat(compiler.getSourceFile()).contains("new Byte[]");
 			});
@@ -365,7 +361,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenClassArray() {
 			Class<?>[] classes = new Class<?>[] { InputStream.class, OutputStream.class };
-			compile(InstanceCodeGenerators.simple(), classes, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), classes, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(classes);
 				assertThat(compiler.getSourceFile()).contains("new Class[]");
 			});
@@ -382,7 +378,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenStringList() {
 			List<String> list = List.of("a", "b", "c");
-			compile(InstanceCodeGenerators.simple(), list, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), list, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(list);
 			});
 		}
@@ -390,7 +386,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenEmptyList() {
 			List<String> list = List.of();
-			compile(InstanceCodeGenerators.simple(), list, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), list, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(list);
 				assertThat(compiler.getSourceFile()).contains("Collections.emptyList();");
 			});
@@ -407,7 +403,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenStringSet() {
 			Set<String> set = Set.of("a", "b", "c");
-			compile(InstanceCodeGenerators.simple(), set, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), set, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(set);
 			});
 		}
@@ -415,7 +411,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenEmptySet() {
 			Set<String> set = Set.of();
-			compile(InstanceCodeGenerators.simple(), set, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), set, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(set);
 				assertThat(compiler.getSourceFile()).contains("Collections.emptySet();");
 			});
@@ -424,7 +420,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenLinkedHashSet() {
 			Set<String> set = new LinkedHashSet<>(List.of("a", "b", "c"));
-			compile(InstanceCodeGenerators.simple(), set, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), set, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(set).isInstanceOf(LinkedHashSet.class);
 				assertThat(compiler.getSourceFile()).contains(
 						"new LinkedHashSet(List.of(");
@@ -442,7 +438,7 @@ class InstanceCodeGeneratorsCompilerTests {
 		@Test
 		void generateWhenSmallMap() {
 			Map<String, String> map = Map.of("k1", "v1", "k2", "v2");
-			compile(InstanceCodeGenerators.simple(), map, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map);
 				assertThat(compiler.getSourceFile()).contains("Map.of(");
 			});
@@ -454,7 +450,7 @@ class InstanceCodeGeneratorsCompilerTests {
 			for (int i = 1; i <= 11; i++) {
 				map.put("k" + i, "v" + i);
 			}
-			compile(InstanceCodeGenerators.simple(), map, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map);
 				assertThat(compiler.getSourceFile()).contains("Map.ofEntries(");
 			});
@@ -466,7 +462,7 @@ class InstanceCodeGeneratorsCompilerTests {
 			map.put("a", "A");
 			map.put("b", "B");
 			map.put("c", "C");
-			InstanceCodeGenerators generators = new InstanceCodeGenerators(
+			InstanceCodeGenerator generators = new InstanceCodeGenerator(
 					new GeneratedMethods());
 			compile(generators, map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
@@ -480,7 +476,7 @@ class InstanceCodeGeneratorsCompilerTests {
 			map.put("a", "A");
 			map.put("b", "B");
 			map.put("c", "C");
-			compile(InstanceCodeGenerators.simple(), map, (instance, compiler) -> {
+			compile(InstanceCodeGenerator.simple(), map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
 				assertThat(compiler.getSourceFile()).contains("Collectors.toMap(");
 			});

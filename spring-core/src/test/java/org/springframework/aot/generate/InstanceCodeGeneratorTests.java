@@ -16,31 +16,14 @@
 
 package org.springframework.aot.generate;
 
-import java.util.function.Supplier;
-
-import javax.lang.model.element.Modifier;
-
-import org.junit.jupiter.api.Nested;
-
-import org.springframework.aot.generate.InstanceCodeGenerators.NullInstanceCodeGenerator;
-import org.springframework.core.ResolvableType;
-import org.springframework.javapoet.CodeBlock;
-import org.springframework.javapoet.JavaFile;
-import org.springframework.javapoet.MethodSpec;
-import org.springframework.javapoet.ParameterizedTypeName;
-import org.springframework.javapoet.TypeSpec;
-
 /**
- * Tests for {@link InstanceCodeGenerators}.
+ * Tests for {@link InstanceCodeGenerator}. See also
+ * {@code InstanceCodeGeneratorsCompilerTests} in {@literal spring-core-test}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @since 6.0
  */
-class InstanceCodeGeneratorsTests {
-
-	// ResolvableTypeGeneratorTests
-	// BeanParameterGeneratorTests
-
+class InstanceCodeGeneratorTests {
 
 }

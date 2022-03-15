@@ -16,12 +16,6 @@
 
 package org.springframework.beans.factory.dunno;
 
-import org.springframework.aot.context.AotContext;
-import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredAnnotationBeanInstantiationContribution;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.generator.AotContributingBeanFactoryPostProcessor;
-import org.springframework.context.annotation.ConfigurationClassPostProcessor.ImportAwareBeanFactoryConfiguration;
-
 /**
  *
  * @author pwebb
@@ -30,17 +24,17 @@ import org.springframework.context.annotation.ConfigurationClassPostProcessor.Im
 public class Dunno {
 
 	public static void main(String[] args) {
-		
+
 		/*
 		ProcessorList
-		
+
 		AotContributingBeanFactoryPostProcessor
 			ConfigurationClassPostProcessor contributes ImportAwareBeanFactoryConfiguration
 		AotContributingBeanPostProcessor
 			AutowiredAnnotationBeanPostProcessor contributes AutowiredAnnotationBeanInstantiationContribution (hints)
-		
-			
-		
+
+
+
 		*/
 	}
 
