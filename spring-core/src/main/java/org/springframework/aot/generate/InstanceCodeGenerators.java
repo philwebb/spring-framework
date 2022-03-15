@@ -16,17 +16,28 @@
 
 package org.springframework.aot.generate;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.core.ResolvableType;
+import org.springframework.javapoet.AnnotationSpec;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.CodeBlock.Builder;
-import org.springframework.javapoet.support.MultiCodeBlock;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -50,30 +61,33 @@ public class InstanceCodeGenerators {
 
 	private final List<InstanceCodeGenerator> generators = new ArrayList<>();
 
-	public InstanceCodeGenerators(GeneratedMethods generatedMethods, boolean addDefault) {
-		this(generatedMethods, (addDefault) ? Kind.DEFAULT : Kind.EMPTY);
+	public InstanceCodeGenerators(GeneratedMethods generatedMethods) {
+		this(generatedMethods, true);
+	}
+
+	public InstanceCodeGenerators(GeneratedMethods generatedMethods,
+			boolean addDefaultGenerators) {
+		this(generatedMethods, (addDefaultGenerators) ? Kind.DEFAULT : Kind.EMPTY);
 	}
 
 	private InstanceCodeGenerators(@Nullable GeneratedMethods generatedMethods,
 			Kind kind) {
-		this.generatedMethods = generatedMethods;
-		this.kind = kind;
 		Assert.isTrue(generatedMethods != null || kind == Kind.SIMPLE,
 				"'generatedMethods' must not be null");
+		this.generatedMethods = generatedMethods;
+		this.kind = kind;
 		this.generators.add(NullInstanceCodeGenerator.INSTANCE);
-		if (kind == Kind.SIMPLE || kind == Kind.DEFAULT) {
+		if (kind != Kind.EMPTY) {
 			this.generators.add(CharacterInstanceCodeGenerator.INSTANCE);
 			this.generators.add(PrimitiveInstanceCodeGenerator.INSTANCE);
 			this.generators.add(StringInstanceCodeGenerator.INSTANCE);
 			this.generators.add(EnumInstanceCodeGenerator.INSTANCE);
 			this.generators.add(ClassInstanceCodeGenerator.INSTANCE);
 			this.generators.add(ResolvableTypeInstanceCodeGenerator.INSTANCE);
-			this.generators.add(new ArrayInstanceCodeGenerator());
-		}
-		if (kind == Kind.DEFAULT) {
-			this.generators.add(new ListInstanceCodeGenerator());
-			this.generators.add(new SetInstanceCodeGenerator());
-			this.generators.add(new MapInstanceCodeGenerator());
+			this.generators.add(new ArrayInstanceCodeGenerator(this));
+			this.generators.add(new ListInstanceCodeGenerator(this));
+			this.generators.add(new SetInstanceCodeGenerator(this));
+			this.generators.add(new MapInstanceCodeGenerator(this));
 		}
 	}
 
@@ -85,7 +99,7 @@ public class InstanceCodeGenerators {
 		Assert.state(kind != Kind.SIMPLE,
 				"'InstanceCodeGenerators.simple()' cannot be modified");
 		Assert.notNull(generator, "'generator' must not be null");
-		this.generators.add(generator);
+		this.generators.add(0, generator);
 	}
 
 	public GeneratedMethods getGeneratedMethods() {
@@ -102,8 +116,13 @@ public class InstanceCodeGenerators {
 
 	public CodeBlock generateInstantiationCode(@Nullable Object value,
 			ResolvableType type) {
+		return generateInstantiationCode(null, value, type);
+	}
+
+	public CodeBlock generateInstantiationCode(@Nullable String name,
+			@Nullable Object value, ResolvableType type) {
 		for (InstanceCodeGenerator generator : this.generators) {
-			CodeBlock code = generator.generateCode(value, type);
+			CodeBlock code = generator.generateCode(name, value, type);
 			if (code != null) {
 				return code;
 			}
@@ -129,7 +148,8 @@ public class InstanceCodeGenerators {
 		private static final CodeBlock CODE_BLOCK = CodeBlock.of("null");
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
 			if (value != null) {
 				return null;
 			}
@@ -157,7 +177,8 @@ public class InstanceCodeGenerators {
 		}
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
 			if (value instanceof Character character) {
 				return CodeBlock.of("'$L'", escape(character));
 			}
@@ -179,7 +200,8 @@ public class InstanceCodeGenerators {
 		static final PrimitiveInstanceCodeGenerator INSTANCE = new PrimitiveInstanceCodeGenerator();
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
 			if (value instanceof Boolean || value instanceof Integer) {
 				return CodeBlock.of("$L", value);
 			}
@@ -208,7 +230,8 @@ public class InstanceCodeGenerators {
 		static final StringInstanceCodeGenerator INSTANCE = new StringInstanceCodeGenerator();
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
 			if (value instanceof String) {
 				return CodeBlock.of("$S", value);
 			}
@@ -222,7 +245,8 @@ public class InstanceCodeGenerators {
 		static final EnumInstanceCodeGenerator INSTANCE = new EnumInstanceCodeGenerator();
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
 			if (value instanceof Enum<?> enumValue) {
 				return CodeBlock.of("$T.$L", enumValue.getDeclaringClass(),
 						enumValue.name());
@@ -237,7 +261,8 @@ public class InstanceCodeGenerators {
 		static final ClassInstanceCodeGenerator INSTANCE = new ClassInstanceCodeGenerator();
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
 			if (value instanceof Class<?> clazz) {
 				return CodeBlock.of("$T.class", ClassUtils.getUserClass(clazz));
 			}
@@ -251,79 +276,284 @@ public class InstanceCodeGenerators {
 		static final ResolvableTypeInstanceCodeGenerator INSTANCE = new ResolvableTypeInstanceCodeGenerator();
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
 			if (value instanceof ResolvableType resolvableType) {
-				return generateCode(resolvableType, true);
+				return generateCode(resolvableType, false);
 			}
 			return null;
 		}
 
-		private CodeBlock generateCode(ResolvableType resolvableType, boolean forceResolvableType) {
+		private CodeBlock generateCode(ResolvableType resolvableType,
+				boolean allowClassResult) {
+			if (ResolvableType.NONE.equals(resolvableType)) {
+				return CodeBlock.of("$T.NONE", ResolvableType.class);
+			}
+			Class<?> type = ClassUtils.getUserClass(resolvableType.toClass());
+			if (resolvableType.hasGenerics()) {
+				return generateCodeWithGenerics(resolvableType, type);
+			}
+			if (allowClassResult) {
+				return CodeBlock.of("$T.class", type);
+			}
+			return CodeBlock.of("$T.forClass($T.class)", ResolvableType.class, type);
+		}
+
+		private CodeBlock generateCodeWithGenerics(ResolvableType target, Class<?> type) {
+			ResolvableType[] generics = target.getGenerics();
+			boolean hasNoNestedGenerics = Arrays.stream(generics).noneMatch(
+					ResolvableType::hasGenerics);
 			CodeBlock.Builder builder = CodeBlock.builder();
-			buildCode(builder, resolvableType, true);
+			builder.add("$T.forClassWithGenerics($T.class", ResolvableType.class, type);
+			for (ResolvableType generic : generics) {
+				builder.add(", $L", generateCode(generic, hasNoNestedGenerics));
+			}
+			builder.add(")");
 			return builder.build();
 		}
 
-		private void buildCode(CodeBlock.Builder builder, ResolvableType target,
-				boolean forceResolvableType) {
-			if (target.hasGenerics()) {
-				buildCodeWithGenerics(builder, target, forceResolvableType);
-				return;
-			}
-			Class<?> type = ClassUtils.getUserClass(target.toClass());
-			if (forceResolvableType) {
-				builder.add("$T.forClass($T.class)", ResolvableType.class, type);
-				return;
-			}
-			builder.add("$T.class", type);
+	}
+
+	public static class ArrayInstanceCodeGenerator implements InstanceCodeGenerator {
+
+		private final InstanceCodeGenerators generators;
+
+		public ArrayInstanceCodeGenerator(InstanceCodeGenerators generators) {
+			this.generators = generators;
 		}
 
-		private void buildCodeWithGenerics(Builder builder, ResolvableType target,
-				boolean forceResolvableType) {
-			Class<?> type = ClassUtils.getUserClass(target.toClass());
-			ResolvableType[] generics = target.getGenerics();
-			boolean hasNestedGenerics = Arrays.stream(generics).anyMatch(ResolvableType::hasGenerics);
-			builder.add("$T.forClassWithGenerics($T.class", ResolvableType.class, type);
-			for (ResolvableType generic : generics) {
-				builder.add(",$L", generateCode(generic, hasNestedGenerics));
+		protected final InstanceCodeGenerators getGenerators() {
+			return generators;
+		}
+
+		@Override
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
+			if (type.isArray()) {
+				ResolvableType componentType = type.getComponentType();
+				int length = Array.getLength(value);
+				CodeBlock.Builder builder = CodeBlock.builder();
+				builder.add("new $T {", type.toClass());
+				for (int i = 0; i < length; i++) {
+					Object component = Array.get(value, i);
+					builder.add((i != 0) ? ", $L" : "$L",
+							getGenerators().generateInstantiationCode(name, component,
+									componentType));
+				}
+				builder.add("}");
+				return builder.build();
+			}
+			return null;
+		}
+
+	}
+
+	public static class CollectionInstanceCodeGenerator<T extends Collection<?>>
+			implements InstanceCodeGenerator {
+
+		private final InstanceCodeGenerators generators;
+
+		private final Class<?> collectionType;
+
+		private final CodeBlock emptyResult;
+
+		protected CollectionInstanceCodeGenerator(InstanceCodeGenerators generators,
+				Class<?> collectionType, CodeBlock emptyResult) {
+			this.generators = generators;
+			this.collectionType = collectionType;
+			this.emptyResult = emptyResult;
+		}
+
+		protected final InstanceCodeGenerators getGenerators() {
+			return generators;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
+			if (this.collectionType.isInstance(value)) {
+				T collection = (T) value;
+				return generateCollectionCode(name, type, collection);
+			}
+			return null;
+		}
+
+		private CodeBlock generateCollectionCode(String name, ResolvableType type,
+				T collection) {
+			if (collection.isEmpty()) {
+				return this.emptyResult;
+			}
+			ResolvableType elementType = type.as(this.collectionType).getGeneric();
+			return generateCollectionCode(name, collection, elementType);
+		}
+
+		protected CodeBlock generateCollectionCode(String name, T collection,
+				ResolvableType elementType) {
+			return generateCollectionOf(name, collection, this.collectionType,
+					elementType);
+		}
+
+		protected final CodeBlock generateCollectionOf(String name,
+				Collection<?> collection, Class<?> collectionType,
+				ResolvableType elementType) {
+			Builder builder = CodeBlock.builder();
+			builder.add("$T.of(", collectionType);
+			Iterator<?> iterator = collection.iterator();
+			while (iterator.hasNext()) {
+				Object element = iterator.next();
+				builder.add("$L", getGenerators().generateInstantiationCode(name, element,
+						elementType));
+				builder.add((!iterator.hasNext()) ? "" : ", ");
 			}
 			builder.add(")");
+			return builder.build();
 		}
 
 	}
 
-	class ArrayInstanceCodeGenerator implements InstanceCodeGenerator {
+	public class ListInstanceCodeGenerator
+			extends CollectionInstanceCodeGenerator<List<?>> {
+
+		protected static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.emptyList()",
+				Collections.class);
+
+		public ListInstanceCodeGenerator(InstanceCodeGenerators generators) {
+			super(generators, List.class, EMPTY_RESULT);
+		}
+	}
+
+	public class SetInstanceCodeGenerator
+			extends CollectionInstanceCodeGenerator<Set<?>> {
+
+		protected static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.emptySet()",
+				Collections.class);
+
+		public SetInstanceCodeGenerator(InstanceCodeGenerators generators) {
+			super(generators, Set.class, EMPTY_RESULT);
+		}
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
-			return null;
+		protected CodeBlock generateCollectionCode(String name, Set<?> set,
+				ResolvableType elementType) {
+			if (set instanceof LinkedHashSet) {
+				return CodeBlock.of("new $T($L)", LinkedHashSet.class,
+						generateCollectionOf(name, set, List.class, elementType));
+			}
+			set = new TreeSet<Object>(set); // Order for consistency
+			return super.generateCollectionCode(name, set, elementType);
 		}
 
 	}
 
-	class ListInstanceCodeGenerator implements InstanceCodeGenerator {
+	public static class MapInstanceCodeGenerator implements InstanceCodeGenerator {
+
+		protected static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.emptyMap()",
+				Collections.class);
+
+		private final InstanceCodeGenerators generators;
+
+		public MapInstanceCodeGenerator(InstanceCodeGenerators generators) {
+			this.generators = generators;
+		}
+
+		protected final InstanceCodeGenerators getGenerators() {
+			return this.generators;
+		}
 
 		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
+		public CodeBlock generateCode(@Nullable String name, Object value,
+				ResolvableType type) {
+			if (value instanceof Map<?, ?> map) {
+				return generateMapCode(name, type, map);
+			}
 			return null;
 		}
 
-	}
-
-	class SetInstanceCodeGenerator implements InstanceCodeGenerator {
-
-		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
-			return null;
+		private <K, V> CodeBlock generateMapCode(String name, ResolvableType type,
+				Map<K, V> map) {
+			if (map.isEmpty()) {
+				return EMPTY_RESULT;
+			}
+			ResolvableType keyType = type.as(Map.class).getGeneric(0);
+			ResolvableType valueType = type.as(Map.class).getGeneric(1);
+			if (map instanceof LinkedHashMap<?, ?>) {
+				return generateLinkedHashMapCode(name, map, keyType, valueType);
+			}
+			map = new TreeMap<>(map); // Order for consistency
+			boolean useOfEntries = map.size() > 10;
+			CodeBlock.Builder builder = CodeBlock.builder();
+			builder.add("$T" + ((!useOfEntries) ? ".of(" : ".ofEntries("), Map.class);
+			Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<K, V> entry = iterator.next();
+				CodeBlock keyCode = getGenerators().generateInstantiationCode(name,
+						entry.getKey(), keyType);
+				CodeBlock valueCode = getGenerators().generateInstantiationCode(name,
+						entry.getValue(), valueType);
+				if (!useOfEntries) {
+					builder.add("$L, $L", keyCode, valueCode);
+				}
+				else {
+					builder.add("$T.entry($L,$L)", Map.class, keyCode, valueCode);
+				}
+				builder.add((!iterator.hasNext()) ? "" : ", ");
+			}
+			builder.add(")");
+			return builder.build();
 		}
 
-	}
+		private <K, V> CodeBlock generateLinkedHashMapCode(String name, Map<K, V> map,
+				ResolvableType keyType, ResolvableType valueType) {
+			if (getGenerators().kind == Kind.SIMPLE) {
+				return generateLinkedHashMapCodeWithStream(name, map, keyType, valueType);
+			}
+			return generateLinkedHashMapCodeWithMethod(name, map, keyType, valueType);
+		}
 
-	class MapInstanceCodeGenerator implements InstanceCodeGenerator {
+		private <K, V> CodeBlock generateLinkedHashMapCodeWithStream(String name,
+				Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
+			CodeBlock.Builder builder = CodeBlock.builder();
+			builder.add("$T.of(", Stream.class);
+			Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<K, V> entry = iterator.next();
+				CodeBlock keyCode = getGenerators().generateInstantiationCode(name,
+						entry.getKey(), keyType);
+				CodeBlock valueCode = getGenerators().generateInstantiationCode(name,
+						entry.getValue(), valueType);
+				builder.add("$T.entry($L, $L)", Map.class, keyCode, valueCode);
+				builder.add((!iterator.hasNext()) ? "" : ", ");
+			}
+			builder.add(
+					").collect($T.toMap($T::getKey, $T::getValue, "
+							+ "(v1, v2) -> v1, $T::new))",
+					Collectors.class, Map.Entry.class, Map.Entry.class,
+					LinkedHashMap.class);
+			return builder.build();
+		}
 
-		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type) {
-			return null;
+		private <K, V> CodeBlock generateLinkedHashMapCodeWithMethod(String name,
+				Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
+			GeneratedMethod method = getGenerators().getGeneratedMethods().add(
+					MethodNameGenerator.join("get", name, "map"));
+			method.generateBy((builder) -> {
+				builder.addAnnotation(
+						AnnotationSpec.builder(SuppressWarnings.class).addMember("value",
+								"{\"rawtypes\", \"unchecked\"}").build());
+				builder.returns(Map.class);
+				builder.addStatement("$T map = new $T($L)", Map.class,
+						LinkedHashMap.class, map.size());
+				map.forEach((key, value) -> {
+					CodeBlock keyCode = getGenerators().generateInstantiationCode(name,
+							key, keyType);
+					CodeBlock valueCode = getGenerators().generateInstantiationCode(name,
+							value, valueType);
+					builder.addStatement("map.put($L, $L)", keyCode, valueCode);
+				});
+				builder.addStatement("return map");
+			});
+			return CodeBlock.of("$L()", method.getName());
 		}
 
 	}
