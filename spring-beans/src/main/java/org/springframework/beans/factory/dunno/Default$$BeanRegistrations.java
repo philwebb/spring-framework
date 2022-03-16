@@ -19,14 +19,14 @@ package org.springframework.beans.factory.dunno;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.generator.config.BeanDefinitionRegistrar;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanDefinitionRegistryInitializer;
+import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
 /**
- * {@link BeanDefinitionRegistryInitializer} for the {@literal "default"}
+ * {@link DefaultListableBeanFactoryInitializer} for the {@literal "default"}
  * {@link BeanFactory}.
  */
-public class Default$$BeanRegistrations implements BeanDefinitionRegistryInitializer {
+public class Default$$BeanRegistrations implements DefaultListableBeanFactoryInitializer {
 
 	@Override
 	public void initialize(BeanDefinitionRegistry registry) {

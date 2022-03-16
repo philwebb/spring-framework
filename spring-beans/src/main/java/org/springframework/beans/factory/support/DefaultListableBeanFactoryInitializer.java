@@ -24,7 +24,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
  * @since 6.0
  */
 @FunctionalInterface
-public interface BeanDefinitionRegistryInitializer {
+public interface DefaultListableBeanFactoryInitializer {
 
 	// FIXME not good enough
 
@@ -32,6 +32,6 @@ public interface BeanDefinitionRegistryInitializer {
 	 * Initialize the given bean definition registry.
 	 * @param beanDefinitionRegistry the registry to initialize
 	 */
-	void initialize(BeanDefinitionRegistry beanDefinitionRegistry, ListableBeanFactory beanFactory);
+	void initialize(DefaultListableBeanFactory defaultListableBeanFactory);
 
 }
