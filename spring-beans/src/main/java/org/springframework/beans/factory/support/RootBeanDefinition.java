@@ -263,6 +263,15 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	}
 
 
+	static SuppliedRootBeanDefinitionBuilder supply(Class<?> type) {
+		return new SuppliedRootBeanDefinitionBuilder(type);
+	}
+
+	static SuppliedRootBeanDefinitionBuilder supply(ResolvableType type) {
+		return new SuppliedRootBeanDefinitionBuilder(type);
+	}
+
+
 	@Override
 	public String getParentName() {
 		return null;
