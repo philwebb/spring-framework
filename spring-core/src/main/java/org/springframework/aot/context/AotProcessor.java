@@ -34,7 +34,7 @@ import org.springframework.lang.Nullable;
 @FunctionalInterface
 public interface AotProcessor<N, T> {
 
-	// FIXME we might meed some way for a processor to contribute to another
+	// FIXME we might need some way for a processor to contribute to another
 	// processor. For example, a MyBean$$Access contribution allowing access
 	// to package-private fields or methods.
 

@@ -39,7 +39,7 @@ import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.aot.UniqueBeanName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanDefinitionRegistryInitializer;
+import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -71,7 +71,7 @@ class BeanRegistrationsContribution implements AotContribution {
 				"BeanDefinitionRegistrations");
 		aotContext.getGeneratedFiles().addSourceFile(generateJavaFile(aotContext, className));
 		aotContext.getGeneratedSpringFactories().forNamedItem(BeanFactory.class, this.beanFactoryName)
-				.add(BeanDefinitionRegistryInitializer.class, className);
+				.add(DefaultListableBeanFactoryInitializer.class, className);
 		applyBeanDefinitionProcessors(aotContext);
 		applyBeanClassProcessors(aotContext);
 	}
@@ -85,7 +85,7 @@ class BeanRegistrationsContribution implements AotContribution {
 		TypeSpec.Builder builder = className.classBuilder();
 		builder.addJavadoc("BeanDefinitionRegistryInitializer for $S",
 				BeanRegistrationsContribution.this.beanFactoryName);
-		builder.addSuperinterface(BeanDefinitionRegistryInitializer.class);
+		builder.addSuperinterface(DefaultListableBeanFactoryInitializer.class);
 		Set<GeneratedMethodName> registrationMethodsToCall = addRegistrationMethods(generationContext, methods);
 		builder.addMethod(generateInitializeMethod(registrationMethodsToCall));
 		methods.doWithMethodSpecs(builder::addMethod);
