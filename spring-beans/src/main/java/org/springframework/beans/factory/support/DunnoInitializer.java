@@ -16,22 +16,22 @@
 
 package org.springframework.beans.factory.support;
 
-import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**
  *
  * @author pwebb
  * @since 6.0
  */
-@FunctionalInterface
-public interface BeanDefinitionRegistryInitializer {
+public interface DunnoInitializer {
+	// BeanFactoryInitializer
+	// BeanDefinitionRegistry
+	// // Factory and Registry
+	// RegisteringBeanFactoryInitializer
+	// BeanFactoryInitializer
 
-	// FIXME not good enough
 
-	/**
-	 * Initialize the given bean definition registry.
-	 * @param beanDefinitionRegistry the registry to initialize
-	 */
-	void initialize(BeanDefinitionRegistry beanDefinitionRegistry, ListableBeanFactory beanFactory);
+
+	void initialize(ConfigurableListableBeanFactory beanFactory, BeanDefinitionRegistry beanDefinitionRegistry);
 
 }
