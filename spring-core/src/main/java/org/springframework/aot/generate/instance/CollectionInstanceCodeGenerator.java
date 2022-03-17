@@ -24,7 +24,7 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.lang.Nullable;
 
-class CollectionInstanceCodeGenerator<T extends Collection<?>>
+public class CollectionInstanceCodeGenerator<T extends Collection<?>>
 		implements InstanceCodeGenerator {
 
 	private final InstanceCodeGenerationService codeGenerationService;
@@ -33,7 +33,7 @@ class CollectionInstanceCodeGenerator<T extends Collection<?>>
 
 	private final CodeBlock emptyResult;
 
-	protected CollectionInstanceCodeGenerator(
+	public CollectionInstanceCodeGenerator(
 			InstanceCodeGenerationService codeGenerationService, Class<?> collectionType,
 			CodeBlock emptyResult) {
 		this.codeGenerationService = codeGenerationService;
