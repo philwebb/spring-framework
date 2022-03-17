@@ -271,11 +271,9 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	 * @return a new {@link SuppliedRootBeanDefinitionBuilder} instance
 	 * @since 6.0
 	 * @see #supply(ResolvableType)
-	 * @see #supply(String, Class)
-	 * @see #supply(String, ResolvableType)
 	 */
 	public static SuppliedRootBeanDefinitionBuilder supply(Class<?> beanType) {
-		return supply(null, beanType);
+		return new SuppliedRootBeanDefinitionBuilder(beanType);
 	}
 
 	/**
@@ -286,43 +284,9 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	 * @return a new {@link SuppliedRootBeanDefinitionBuilder} instance
 	 * @since 6.0
 	 * @see #supply(Class)
-	 * @see #supply(String, Class)
-	 * @see #supply(String, ResolvableType)
 	 */
 	public static SuppliedRootBeanDefinitionBuilder supply(ResolvableType beanType) {
-		return supply(null, beanType);
-	}
-
-	/**
-	 * Return a {@link SuppliedRootBeanDefinitionBuilder builder} that can be used to
-	 * create a {@link RootBeanDefinition} backed by an
-	 * {@link AbstractBeanDefinition#setInstanceSupplier(Supplier) instance supplier}.
-	 * @param beanName the name that will be used when the definition is registered (if known)
-	 * @param beanType the bean type
-	 * @return a new {@link SuppliedRootBeanDefinitionBuilder} instance
-	 * @since 6.0
-	 * @see #supply(Class)
-	 * @see #supply(ResolvableType)
-	 * @see #supply(String, ResolvableType)
-	 */
-	public static SuppliedRootBeanDefinitionBuilder supply(@Nullable String beanName, Class<?> beanType) {
-		return new SuppliedRootBeanDefinitionBuilder(beanName, beanType);
-	}
-
-	/**
-	 * Return a {@link SuppliedRootBeanDefinitionBuilder builder} that can be used to
-	 * create a {@link RootBeanDefinition} backed by an
-	 * {@link AbstractBeanDefinition#setInstanceSupplier(Supplier) instance supplier}.
-	 * @param beanName the name that will be used when the definition is registered (if known)
-	 * @param beanType the bean type
-	 * @return a new {@link SuppliedRootBeanDefinitionBuilder} instance
-	 * @since 6.0
-	 * @see #supply(Class)
-	 * @see #supply(ResolvableType)
-	 * @see #supply(String, Class)
-	 */
-	public static SuppliedRootBeanDefinitionBuilder supply(@Nullable String beanName, ResolvableType beanType) {
-		return new SuppliedRootBeanDefinitionBuilder(beanName, beanType);
+		return new SuppliedRootBeanDefinitionBuilder(beanType);
 	}
 
 
