@@ -16,18 +16,22 @@
 
 package org.springframework.beans.factory.support;
 
+import java.util.function.Supplier;
+
+import org.springframework.lang.Nullable;
+
 /**
  *
- * @author pwebb
+ * @author Phillip Webb
  * @since 6.0
  */
 @FunctionalInterface
-public interface DefaultListableBeanFactoryInitializer {
+interface BeanNameAwareInstanceSupplier<T> extends Supplier<T> {
 
-	/**
-	 * Initialize the given bean definition registry.
-	 * @param beanDefinitionRegistry the registry to initialize
-	 */
-	void initialize(DefaultListableBeanFactory beanFactory);
+	default T get() {
+		return get(null);
+	}
+
+	T get(@Nullable String beanName);
 
 }
