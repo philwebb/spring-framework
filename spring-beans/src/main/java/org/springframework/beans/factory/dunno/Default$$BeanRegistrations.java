@@ -19,6 +19,7 @@ package org.springframework.beans.factory.dunno;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.generator.config.BeanDefinitionRegistrar;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
@@ -29,14 +30,12 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 public class Default$$BeanRegistrations implements DefaultListableBeanFactoryInitializer {
 
 	@Override
-	public void initialize(BeanDefinitionRegistry registry) {
-		registerFooBeanDefinition(registry);
-
+	public void initialize(DefaultListableBeanFactory beanFactory) {
+		registerFooBeanDefinition(beanFactory);
 	}
 
-	private void registerFooBeanDefinition(BeanDefinitionRegistry registry) {
-		// FIXME use registrar
-		BeanDefinitionRegistrar.of("boo", String.class).customize(this::customizeFooBeanDefinition).registerWith(registry);
+	private void registerFooBeanDefinition(DefaultListableBeanFactory beanFactory) {
+		// RootBeanDefinition.supply(MyBean.class).usingConstructor().resolvedBy(beanFactory, this::createDaBean);
 	}
 
 	private void customizeFooBeanDefinition(RootBeanDefinition rootBeanDefinition) {
@@ -45,6 +44,10 @@ public class Default$$BeanRegistrations implements DefaultListableBeanFactoryIni
 
 	private RootBeanDefinition createFooInnerBeanDefinition() {
 		return BeanDefinitionRegistrar.inner(Integer.class).toBeanDefinition();
+	}
+
+	static class MyBean {
+
 	}
 
 }
