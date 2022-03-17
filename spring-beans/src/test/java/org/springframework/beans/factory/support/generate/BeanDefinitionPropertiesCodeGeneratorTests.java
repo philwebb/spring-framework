@@ -16,8 +16,11 @@
 
 package org.springframework.beans.factory.support.generate;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javax.lang.model.element.Modifier;
@@ -28,8 +31,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
+import org.springframework.beans.factory.config.RuntimeBeanNameReference;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.ManagedList;
+import org.springframework.beans.factory.support.ManagedMap;
+import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
@@ -43,9 +53,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Nested
 class BeanDefinitionPropertiesCodeGeneratorTests {
 
-	// FIXME inner bean definition on
+	// FIXME BeanDefinition
 
 	private RootBeanDefinition beanDefinition = new RootBeanDefinition();
+
+	private BeanDefinitionPropertiesCodeGenerator generator = new BeanDefinitionPropertiesCodeGenerator();
 
 	@Test
 	void setPrimaryWhenFalse() {
@@ -227,6 +239,52 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	}
 
 	@Test
+	void propertyValuesWhenContainsBeanReference() {
+		this.beanDefinition.getPropertyValues().add("myService", new RuntimeBeanNameReference("test"));
+		testCompiledResult((actual, compiled) -> {
+			assertThat(actual.getPropertyValues().contains("myService")).isTrue();
+			assertThat(actual.getPropertyValues().get("myService")).isInstanceOfSatisfying(RuntimeBeanReference.class,
+					beanReference -> assertThat(beanReference.getBeanName()).isEqualTo("test"));
+		});
+	}
+
+	@Test
+	void propertyValuesWhenContainsManagedList() {
+		ManagedList<Object> managedList = new ManagedList<>();
+		managedList.add(new RuntimeBeanNameReference("test"));
+		this.beanDefinition.getPropertyValues().add("value", managedList);
+		testCompiledResult((actual, compiled) -> {
+			Object value = actual.getPropertyValues().get("value");
+			assertThat(value).isInstanceOf(ManagedList.class);
+			assertThat(((List<?>) value).get(0)).isInstanceOf(BeanReference.class);
+		});
+	}
+
+	@Test
+	void propertyValuesWhenContainsManagedSet() {
+		ManagedSet<Object> managedSet = new ManagedSet<>();
+		managedSet.add(new RuntimeBeanNameReference("test"));
+		this.beanDefinition.getPropertyValues().add("value", managedSet);
+		testCompiledResult((actual, compiled) -> {
+			Object value = actual.getPropertyValues().get("value");
+			assertThat(value).isInstanceOf(ManagedSet.class);
+			assertThat(((Set<?>) value).iterator().next()).isInstanceOf(BeanReference.class);
+		});
+	}
+
+	@Test
+	void propertyValuesWhenContainsManagedMap() {
+		ManagedMap<String, Object> managedMap = new ManagedMap<>();
+		managedMap.put("test", new RuntimeBeanNameReference("test"));
+		this.beanDefinition.getPropertyValues().add("value", managedMap);
+		testCompiledResult((actual, compiled) -> {
+			Object value = actual.getPropertyValues().get("value");
+			assertThat(value).isInstanceOf(ManagedMap.class);
+			assertThat(((Map<?,?>)value).get("test")).isInstanceOf(BeanReference.class);
+		});
+	}
+
+	@Test
 	void attributesWhenAllFiltered() {
 		this.beanDefinition.setAttribute("a", "A");
 		this.beanDefinition.setAttribute("b", "B");
@@ -241,9 +299,8 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	void attributesWhenSomeFiltered() {
 		this.beanDefinition.setAttribute("a", "A");
 		this.beanDefinition.setAttribute("b", "B");
-		BeanDefinitionPropertiesCodeGenerator code = new BeanDefinitionPropertiesCodeGenerator(this.beanDefinition,
-				"bd", attribute -> "a".equals(attribute));
-		testCompiledResult(code, (actual, compiled) -> {
+		Predicate<String> attributeFilter = attribute -> "a".equals(attribute);
+		testCompiledResult(this.beanDefinition, attributeFilter, (actual, compiled) -> {
 			assertThat(actual.getAttribute("a")).isEqualTo("A");
 			assertThat(actual.getAttribute("b")).isNull();
 		});
@@ -265,27 +322,32 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 		testCompiledResult(this.beanDefinition, result);
 	}
 
-	private void testCompiledResult(RootBeanDefinition bd, BiConsumer<RootBeanDefinition, Compiled> result) {
-		testCompiledResult(new BeanDefinitionPropertiesCodeGenerator(bd, "bd"), result);
+	private void testCompiledResult(RootBeanDefinition beanDefinition,
+			BiConsumer<RootBeanDefinition, Compiled> result) {
+		testCompiledResult(() -> this.generator.getCodeBlock(beanDefinition), result);
 	}
 
-	private void testCompiledResult(BeanDefinitionPropertiesCodeGenerator code,
+	private void testCompiledResult(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter,
 			BiConsumer<RootBeanDefinition, Compiled> result) {
-		JavaFile javaFile = createJavaFile(code);
+		testCompiledResult(() -> this.generator.getCodeBlock(beanDefinition, attributeFilter), result);
+	}
+
+	private void testCompiledResult(Supplier<CodeBlock> codeBlock, BiConsumer<RootBeanDefinition, Compiled> result) {
+		JavaFile javaFile = createJavaFile(codeBlock);
 		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
 			RootBeanDefinition beanDefinition = (RootBeanDefinition) compiled.getInstance(Supplier.class).get();
 			result.accept(beanDefinition, compiled);
 		});
 	}
 
-	private JavaFile createJavaFile(BeanDefinitionPropertiesCodeGenerator code) {
+	private JavaFile createJavaFile(Supplier<CodeBlock> codeBlock) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder("BeanSupplier");
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addSuperinterface(ParameterizedTypeName.get(Supplier.class, RootBeanDefinition.class));
-		builder.addMethod(
-				MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(RootBeanDefinition.class)
-						.addStatement("$T bd = new $T()", RootBeanDefinition.class, RootBeanDefinition.class)
-						.addCode(code.getCodeBlock()).addStatement("return bd").build());
+		builder.addMethod(MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC)
+				.returns(RootBeanDefinition.class)
+				.addStatement("$T beanDefinition = new $T()", RootBeanDefinition.class, RootBeanDefinition.class)
+				.addCode(codeBlock.get()).addStatement("return beanDefinition").build());
 		return JavaFile.builder("com.example", builder.build()).build();
 	}
 
