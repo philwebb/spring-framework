@@ -41,36 +41,40 @@ class ThrowableSupplierTests {
 	@Test
 	void getWhenThrowingCheckedExceptionThrowsWrapperRuntimeException() {
 		ThrowableSupplier<Object> supplier = this::throwIOException;
-		assertThatExceptionOfType(RuntimeException.class).isThrownBy(supplier::get)
-			.withCauseInstanceOf(IOException.class);
+		assertThatExceptionOfType(RuntimeException.class).isThrownBy(
+				supplier::get).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void getWithExceptionWrapperWhenThrowingUncheckedExceptionThrowsOriginal() {
 		ThrowableSupplier<Object> supplier = this::throwIllegalArgumentException;
-		assertThatIllegalArgumentException().isThrownBy(() -> supplier.get(IllegalStateException::new));
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> supplier.get(IllegalStateException::new));
 	}
 
 	@Test
 	void getWithExceptionWrapperWhenThrowingCheckedExceptionThrowsWrapper() {
 		ThrowableSupplier<Object> supplier = this::throwIOException;
-		assertThatIllegalStateException().isThrownBy(() -> supplier.get(IllegalStateException::new))
-			.withCauseInstanceOf(IOException.class);
+		assertThatIllegalStateException().isThrownBy(
+				() -> supplier.get(IllegalStateException::new)).withCauseInstanceOf(
+						IOException.class);
 	}
 
 	@Test
 	void throwingModifiesThrownException() {
 		ThrowableSupplier<Object> supplier = this::throwIOException;
-		ThrowableSupplier<Object> modified = supplier.throwing(IllegalStateException::new);
-		assertThatIllegalStateException().isThrownBy(() -> modified.get())
-			.withCauseInstanceOf(IOException.class);
+		ThrowableSupplier<Object> modified = supplier.throwing(
+				IllegalStateException::new);
+		assertThatIllegalStateException().isThrownBy(
+				() -> modified.get()).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void ofModifiesThrowException() {
-		ThrowableSupplier<Object> supplier = ThrowableSupplier.of(IllegalStateException::new, this::throwIOException);
-		assertThatIllegalStateException().isThrownBy(() -> supplier.get())
-			.withCauseInstanceOf(IOException.class);
+		ThrowableSupplier<Object> supplier = ThrowableSupplier.of(
+				IllegalStateException::new, this::throwIOException);
+		assertThatIllegalStateException().isThrownBy(
+				() -> supplier.get()).withCauseInstanceOf(IOException.class);
 	}
 
 	private Object throwIOException() throws IOException {

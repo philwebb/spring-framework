@@ -25,62 +25,62 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
- * Tests for {@link ThrowableFunction}.
+ * Tests for {@link ThrowableBiFunction}.
  *
  * @author Phillip Webb
  * @since 6.0
  */
-class ThrowableFunctionTests {
+class ThrowableBiFunctionTests {
 
 	@Test
 	void applyWhenThrowingUncheckedExceptionThrowsOriginal() {
-		ThrowableFunction<Object, Object> function = this::throwIllegalArgumentException;
-		assertThatIllegalArgumentException().isThrownBy(() -> function.apply(this));
+		ThrowableBiFunction<Object, Object, Object> function = this::throwIllegalArgumentException;
+		assertThatIllegalArgumentException().isThrownBy(() -> function.apply(this, this));
 	}
 
 	@Test
 	void applyWhenThrowingCheckedExceptionThrowsWrapperRuntimeException() {
-		ThrowableFunction<Object, Object> function = this::throwIOException;
+		ThrowableBiFunction<Object, Object, Object> function = this::throwIOException;
 		assertThatExceptionOfType(RuntimeException.class).isThrownBy(
-				() -> function.apply(this)).withCauseInstanceOf(IOException.class);
+				() -> function.apply(this, this)).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void applyWithExceptionWrapperWhenThrowingUncheckedExceptionThrowsOriginal() {
-		ThrowableFunction<Object, Object> function = this::throwIllegalArgumentException;
+		ThrowableBiFunction<Object, Object, Object> function = this::throwIllegalArgumentException;
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> function.apply(this, IllegalStateException::new));
+				() -> function.apply(this, this, IllegalStateException::new));
 	}
 
 	@Test
 	void applyWithExceptionWrapperWhenThrowingCheckedExceptionThrowsWrapper() {
-		ThrowableFunction<Object, Object> function = this::throwIOException;
-		assertThatIllegalStateException().isThrownBy(() -> function.apply(this,
+		ThrowableBiFunction<Object, Object, Object> function = this::throwIOException;
+		assertThatIllegalStateException().isThrownBy(() -> function.apply(this, this,
 				IllegalStateException::new)).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void throwingModifiesThrownException() {
-		ThrowableFunction<Object, Object> function = this::throwIOException;
-		ThrowableFunction<Object, Object> modified = function.throwing(
+		ThrowableBiFunction<Object, Object, Object> function = this::throwIOException;
+		ThrowableBiFunction<Object, Object, Object> modified = function.throwing(
 				IllegalStateException::new);
 		assertThatIllegalStateException().isThrownBy(
-				() -> modified.apply(this)).withCauseInstanceOf(IOException.class);
+				() -> modified.apply(this, this)).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void ofModifiesThrowException() {
-		ThrowableFunction<Object, Object> function = ThrowableFunction.of(
+		ThrowableBiFunction<Object, Object, Object> function = ThrowableBiFunction.of(
 				this::throwIOException, IllegalStateException::new);
 		assertThatIllegalStateException().isThrownBy(
-				() -> function.apply(this)).withCauseInstanceOf(IOException.class);
+				() -> function.apply(this, this)).withCauseInstanceOf(IOException.class);
 	}
 
-	private Object throwIOException(Object o) throws IOException {
+	private Object throwIOException(Object o, Object u) throws IOException {
 		throw new IOException();
 	}
 
-	private Object throwIllegalArgumentException(Object o) throws IOException {
+	private Object throwIllegalArgumentException(Object o, Object u) throws IOException {
 		throw new IllegalArgumentException();
 	}
 
