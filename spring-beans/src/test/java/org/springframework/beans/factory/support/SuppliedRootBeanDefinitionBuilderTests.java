@@ -41,7 +41,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.SuppliedRootBeanDefinitionBuilder.Using;
@@ -70,6 +69,27 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	private DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
 	@Test
+	void accessViaRootBeanDefinition() {
+		ResolvableType stringType = ResolvableType.forClass(String.class);
+		SuppliedRootBeanDefinitionBuilder byClass = RootBeanDefinition.supply(String.class);
+		assertThat(byClass).extracting("beanName").isNull();
+		assertThat(byClass).extracting("beanClass").isEqualTo(String.class);
+		assertThat(byClass).extracting("beanType").isNull();
+		SuppliedRootBeanDefinitionBuilder byType = RootBeanDefinition.supply(stringType);
+		assertThat(byType).extracting("beanName").isNull();
+		assertThat(byType).extracting("beanClass").isEqualTo(String.class);
+		assertThat(byType).extracting("beanType").isEqualTo(stringType);
+		SuppliedRootBeanDefinitionBuilder namedByClass = RootBeanDefinition.supply("test", String.class);
+		assertThat(namedByClass).extracting("beanName").isEqualTo("test");
+		assertThat(namedByClass).extracting("beanClass").isEqualTo(String.class);
+		assertThat(namedByClass).extracting("beanType").isNull();
+		SuppliedRootBeanDefinitionBuilder namedByType = RootBeanDefinition.supply("test", stringType);
+		assertThat(namedByType).extracting("beanName").isEqualTo("test");
+		assertThat(namedByType).extracting("beanClass").isEqualTo(String.class);
+		assertThat(byType).extracting("beanType").isEqualTo(stringType);
+	}
+
+	@Test
 	void createWhenClassTypeIsNullThrowsException() {
 		assertThatIllegalArgumentException()
 				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder(null, (Class<?>) null))
@@ -92,27 +112,41 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void usingConstructorWhenNoConstructorFoundThrowsException() {
-
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null,
+				SingleArgConstructor.class);
+		assertThatIllegalArgumentException().isThrownBy(() -> builder.usingConstructor(Integer.class)).withMessage(
+				"No constructor with type(s) [java.lang.Integer] found on " + SingleArgConstructor.class.getName());
 	}
 
 	@Test
 	void usingConstructorWhenFound() {
-
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null,
+				SingleArgConstructor.class);
+		assertThat(builder.usingConstructor(String.class)).isNotNull();
 	}
 
 	@Test
 	void usingMethodWhenNoMethodFoundThrowsException() {
-
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null, String.class);
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> builder.usingFactoryMethod(SingleArgFactory.class, "single", Integer.class))
+				.withMessage("No method 'single' with type(s) [java.lang.Integer] found on "
+						+ SingleArgFactory.class.getName());
 	}
 
 	@Test
 	void usingWhenMethodOnInterface() {
-
+		this.beanFactory.registerSingleton("factory", new MethodOnInterfaceImpl());
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null, String.class);
+		Using using = builder.usingFactoryMethod(MethodOnInterface.class, "test");
+		Instantiator instantiator = new Instantiator(using);
+		assertThat(using.resolvedBy(beanFactory, instantiator).getInstanceSupplier().get()).isEqualTo("Test");
 	}
 
 	@Test
 	void usingMethodWhenFound() {
-
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null, String.class);
+		assertThat(builder.usingFactoryMethod(SingleArgFactory.class, "single", String.class)).isNotNull();
 	}
 
 	@Test
@@ -166,7 +200,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	void resolveRequiredListOfBeansInjectEmptyList(Using using) {
 		Object[] arguments = new Instantiator(using).apply();
 		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isInstanceOf(List.class).asList().isEmpty();
+		assertThat((List<?>) arguments[0]).isEmpty();
 	}
 
 	@ParameterizedTestUsing(Source.SET_OF_BEANS)
@@ -176,14 +210,14 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		beanFactory.registerSingleton("two", "2");
 		Object[] arguments = new Instantiator(using).apply();
 		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isInstanceOf(Set.class).asList().containsExactly("1", "2");
+		assertThat((Set<String>) arguments[0]).containsExactly("1", "2");
 	}
 
 	@ParameterizedTestUsing(Source.SET_OF_BEANS)
 	void resolveRequiredSetOfBeansInjectEmptySet(Using using) {
 		Object[] arguments = new Instantiator(using).apply();
 		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isInstanceOf(Set.class).asList().isEmpty();
+		assertThat((Set<?>) arguments[0]).isEmpty();
 	}
 
 	@ParameterizedTestUsing(Source.MAP_OF_BEANS)
@@ -223,11 +257,10 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		Environment environment = mock(Environment.class);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, resourceLoader);
 		beanFactory.registerSingleton("environment", environment);
-		AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(MixedArgsConstructor.class)
-				.setAutowireMode(RootBeanDefinition.AUTOWIRE_CONSTRUCTOR).getBeanDefinition();
-		beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, "user-value");
-		beanFactory.registerBeanDefinition("test", beanDefinition);
-		Object[] arguments = new Instantiator(using).apply();
+		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+			beanDefinition.setAutowireMode(RootBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, "user-value");
+		});
 		assertThat(arguments).hasSize(3);
 		assertThat(arguments[0]).isEqualTo(resourceLoader);
 		assertThat(arguments[1]).isEqualTo("user-value");
@@ -238,16 +271,14 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	void resolveMixedArgsConstructorWithUserBeanReference(Using using) {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		Environment environment = mock(Environment.class);
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		beanFactory.registerResolvableDependency(ResourceLoader.class, resourceLoader);
 		beanFactory.registerSingleton("environment", environment);
 		beanFactory.registerSingleton("one", "1");
 		beanFactory.registerSingleton("two", "2");
-		AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(MixedArgsConstructor.class)
-				.setAutowireMode(RootBeanDefinition.AUTOWIRE_CONSTRUCTOR).getBeanDefinition();
-		beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, new RuntimeBeanReference("two"));
-		beanFactory.registerBeanDefinition("test", beanDefinition);
-		Object[] arguments = new Instantiator(using).apply();
+		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+			beanDefinition.setAutowireMode(RootBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, new RuntimeBeanReference("two"));
+		});
 		assertThat(arguments).hasSize(3);
 		assertThat(arguments[0]).isEqualTo(resourceLoader);
 		assertThat(arguments[1]).isEqualTo("2");
@@ -256,24 +287,22 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void resolveUserValueWithTypeConversionRequired() {
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(CharDependency.class)
-				.setAutowireMode(RootBeanDefinition.AUTOWIRE_CONSTRUCTOR).getBeanDefinition();
-		beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, "\\");
-		beanFactory.registerBeanDefinition("test", beanDefinition);
-		Using using = RootBeanDefinition.supply(CharDependency.class).usingConstructor(char.class);
-		Object[] arguments = new Instantiator(using).apply();
+		Using using = RootBeanDefinition.supply("test", CharDependency.class).usingConstructor(char.class);
+		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+			beanDefinition.setAutowireMode(RootBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, "\\");
+		});
 		assertThat(arguments).hasSize(1);
 		assertThat(arguments[0]).isInstanceOf(Character.class).isEqualTo('\\');
 	}
 
 	@ParameterizedTestUsing(Source.SINGLE_ARG)
 	void resolveUserValueWithBeanReference(Using using) {
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		beanFactory.registerSingleton("stringBean", "string");
-		beanFactory.registerBeanDefinition("test", BeanDefinitionBuilder.rootBeanDefinition(SingleArgConstructor.class)
-				.addConstructorArgReference("stringBean").getBeanDefinition());
-		Object[] arguments = new Instantiator(using).apply();
+		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0,
+					new RuntimeBeanReference("stringBean"));
+		});
 		assertThat(arguments).hasSize(1);
 		assertThat(arguments[0]).isEqualTo("string");
 	}
@@ -282,22 +311,20 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	void resolveUserValueWithBeanDefinition(Using using) {
 		AbstractBeanDefinition userValue = BeanDefinitionBuilder.rootBeanDefinition(String.class, () -> "string")
 				.getBeanDefinition();
-		beanFactory.registerBeanDefinition("test", BeanDefinitionBuilder.rootBeanDefinition(SingleArgConstructor.class)
-				.addConstructorArgValue(userValue).getBeanDefinition());
-		Object[] arguments = new Instantiator(using).apply();
+		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, userValue);
+		});
 		assertThat(arguments).hasSize(1);
 		assertThat(arguments[0]).isEqualTo("string");
 	}
 
 	@ParameterizedTestUsing(Source.SINGLE_ARG)
 	void resolveUserValueThatIsAlreadyResolved(Using using) {
-		AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(SingleArgConstructor.class)
-				.getBeanDefinition();
-		ValueHolder valueHolder = new ValueHolder('a');
-		valueHolder.setConvertedValue("this is an a");
-		beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, valueHolder);
-		beanFactory.registerBeanDefinition("test", beanDefinition);
-		Object[] arguments = new Instantiator(using).apply();
+		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+			ValueHolder valueHolder = new ValueHolder('a');
+			valueHolder.setConvertedValue("this is an a");
+			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, valueHolder);
+		});
 		assertThat(arguments).hasSize(1);
 		assertThat(arguments[0]).isEqualTo("this is an a");
 	}
@@ -463,12 +490,14 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			});
 		}
 
-		public Object[] apply(Consumer<BeanDefinition> customizer) {
+		public Object[] apply(Consumer<RootBeanDefinition> customizer) {
 			return applyTo(beanFactory, customizer);
 		}
 
-		public Object[] applyTo(DefaultListableBeanFactory beanFactory, Consumer<BeanDefinition> customizer) {
-			this.using.resolvedBy(beanFactory, this).getInstanceSupplier().get();
+		public Object[] applyTo(DefaultListableBeanFactory beanFactory, Consumer<RootBeanDefinition> customizer) {
+			RootBeanDefinition beanDefinition = this.using.resolvedBy(beanFactory, this);
+			customizer.accept(beanDefinition);
+			beanDefinition.getInstanceSupplier().get();
 			return this.arguments;
 		}
 
@@ -522,7 +551,6 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	}
 
-	@SuppressWarnings("unused")
 	static class BeansCollectionConstructor {
 
 		public BeansCollectionConstructor(String[] beans) {
@@ -543,7 +571,6 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	}
 
-	@SuppressWarnings("unused")
 	static class BeansCollectionFactory {
 
 		public String array(String[] beans) {
@@ -564,7 +591,6 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	}
 
-	@SuppressWarnings("unused")
 	static class MultiArgsConstructor {
 
 		public MultiArgsConstructor(ResourceLoader resourceLoader, Environment environment,
@@ -572,7 +598,6 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	static class MultiArgsFactory {
 
 		String multiArgs(ResourceLoader resourceLoader, Environment environment, ObjectProvider<String> provider) {
@@ -580,7 +605,6 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	static class MixedArgsConstructor {
 
 		public MixedArgsConstructor(ResourceLoader resourceLoader, String test, Environment environment) {
@@ -589,7 +613,6 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	}
 
-	@SuppressWarnings("unused")
 	static class MixedArgsFactory {
 
 		String mixedArgs(ResourceLoader resourceLoader, String test, Environment environment) {
@@ -598,11 +621,22 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	}
 
-	@SuppressWarnings("unused")
 	static class CharDependency {
 
 		CharDependency(char escapeChar) {
 		}
+
+	}
+
+	static interface MethodOnInterface {
+
+		default String test() {
+			return "Test";
+		}
+
+	}
+
+	static class MethodOnInterfaceImpl implements MethodOnInterface {
 
 	}
 
