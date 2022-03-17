@@ -194,7 +194,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 			return beanDefinition;
 		}
 
-		InstanceSupplier createInstanceSupplier(DefaultListableBeanFactory beanFactory,
+		private ThrowableSupplier<Object> createInstanceSupplier(DefaultListableBeanFactory beanFactory,
 				RootBeanDefinition beanDefinition, ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
 			if (this.executable.getParameterCount() == 0) {
 				return new NoArgumentsInstanceSupplier(beanFactory, instantiator);
@@ -215,15 +215,14 @@ public class SuppliedRootBeanDefinitionBuilder {
 			return beanDefinition;
 		}
 
+		@Override
+		public String toString() {
+			return this.executable.toString();
+		}
+
 	}
 
-	abstract static class InstanceSupplier implements ThrowableSupplier<Object> {
-
-		abstract Object[] getArguments();
-
-	}
-
-	static class NoArgumentsInstanceSupplier extends InstanceSupplier {
+	static class NoArgumentsInstanceSupplier implements ThrowableSupplier<Object> {
 
 		private static final Object[] NO_ARGUMENTS = {};
 
@@ -239,12 +238,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		@Override
 		public Object getWithException() throws Exception {
-			return instantiator.apply(this.beanFactory, getArguments());
-		}
-
-		@Override
-		Object[] getArguments() {
-			return NO_ARGUMENTS;
+			return instantiator.apply(this.beanFactory, NO_ARGUMENTS);
 		}
 
 	}
@@ -253,7 +247,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 	 * {@link ThrowableSupplier} implementation that uses an {@link XArgumentsResolver} to
 	 * resolve arguments before delegating to an {@code instantiator} function.
 	 */
-	static class ResolvingInstanceSupplier extends InstanceSupplier {
+	static class ResolvingInstanceSupplier implements ThrowableSupplier<Object> {
 
 		private final RootBeanDefinition beanDefinition;
 
@@ -278,14 +272,9 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		@Override
 		public Object getWithException() throws Exception {
-			Object[] arguments = getArguments();
-			return this.instantiator.apply(this.beanFactory, arguments);
-		}
-
-		Object[] getArguments() {
 			String beanName = (this.beanName != null) ? this.beanName : findBeanName();
 			Object[] arguments = this.argumentsResolver.resolveArguments(beanName);
-			return arguments;
+			return this.instantiator.apply(this.beanFactory, arguments);
 		}
 
 		private String findBeanName() {
@@ -316,6 +305,10 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 	}
 
+	/**
+	 * Resolved arguments using the {@link BeanFactory} so that they can be passed to the
+	 * {@code instantiator}.
+	 */
 	private static class ArgumentsResolver {
 
 		private final AbstractAutowireCapableBeanFactory beanFactory;
@@ -334,7 +327,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 			this.executable = executable;
 		}
 
-		public Object[] resolveArguments(String beanName) {
+		Object[] resolveArguments(String beanName) {
 			int parameterCount = this.executable.getParameterCount();
 			Object[] resolvedArguments = new Object[parameterCount];
 			Set<String> autowiredBeans = new LinkedHashSet<>(resolvedArguments.length);
@@ -400,9 +393,6 @@ public class SuppliedRootBeanDefinitionBuilder {
 							typeConverter);
 				}
 				catch (NoSuchBeanDefinitionException ex) {
-					// Single constructor or factory method -> let's return an empty
-					// array/collection for e.g. a vararg or a non-null List/Set/Map
-					// parameter.
 					if (parameterType.isArray()) {
 						return Array.newInstance(parameterType.getComponentType(), 0);
 					}
