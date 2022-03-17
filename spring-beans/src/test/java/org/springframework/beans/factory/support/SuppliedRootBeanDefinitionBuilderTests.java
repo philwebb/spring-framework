@@ -74,47 +74,37 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	void accessViaRootBeanDefinition() {
 		ResolvableType stringType = ResolvableType.forClass(String.class);
 		SuppliedRootBeanDefinitionBuilder byClass = RootBeanDefinition.supply(String.class);
-		assertThat(byClass).extracting("beanName").isNull();
 		assertThat(byClass).extracting("beanClass").isEqualTo(String.class);
 		assertThat(byClass).extracting("beanType").isNull();
 		SuppliedRootBeanDefinitionBuilder byType = RootBeanDefinition.supply(stringType);
-		assertThat(byType).extracting("beanName").isNull();
 		assertThat(byType).extracting("beanClass").isEqualTo(String.class);
-		assertThat(byType).extracting("beanType").isEqualTo(stringType);
-		SuppliedRootBeanDefinitionBuilder namedByClass = RootBeanDefinition.supply("test", String.class);
-		assertThat(namedByClass).extracting("beanName").isEqualTo("test");
-		assertThat(namedByClass).extracting("beanClass").isEqualTo(String.class);
-		assertThat(namedByClass).extracting("beanType").isNull();
-		SuppliedRootBeanDefinitionBuilder namedByType = RootBeanDefinition.supply("test", stringType);
-		assertThat(namedByType).extracting("beanName").isEqualTo("test");
-		assertThat(namedByType).extracting("beanClass").isEqualTo(String.class);
 		assertThat(byType).extracting("beanType").isEqualTo(stringType);
 	}
 
 	@Test
 	void createWhenClassTypeIsNullThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder(null, (Class<?>) null))
+				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder((Class<?>) null))
 				.withMessage("'beanType' must not be null");
 	}
 
 	@Test
 	void createWhenResolvableTypeIsNullThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder(null, (ResolvableType) null))
+				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder((ResolvableType) null))
 				.withMessage("'beanType' must not be null");
 	}
 
 	@Test
 	void createWhenResolvableTypeCannotBeResolvedThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder(null, ResolvableType.NONE))
+				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder(ResolvableType.NONE))
 				.withMessage("'beanType' must be resolvable");
 	}
 
 	@Test
 	void usingConstructorWhenNoConstructorFoundThrowsException() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null,
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(
 				SingleArgConstructor.class);
 		assertThatIllegalArgumentException().isThrownBy(() -> builder.usingConstructor(Integer.class)).withMessage(
 				"No constructor with type(s) [java.lang.Integer] found on " + SingleArgConstructor.class.getName());
@@ -122,14 +112,14 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void usingConstructorWhenFound() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null,
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(
 				SingleArgConstructor.class);
 		assertThat(builder.usingConstructor(String.class)).isNotNull();
 	}
 
 	@Test
 	void usingMethodWhenNoMethodFoundThrowsException() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null, String.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder( String.class);
 		assertThatIllegalArgumentException()
 				.isThrownBy(() -> builder.usingFactoryMethod(SingleArgFactory.class, "single", Integer.class))
 				.withMessage("No method 'single' with type(s) [java.lang.Integer] found on "
@@ -139,7 +129,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	@Test
 	void usingWhenMethodOnInterface() {
 		this.beanFactory.registerSingleton("factory", new MethodOnInterfaceImpl());
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null, String.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder( String.class);
 		Using using = builder.usingFactoryMethod(MethodOnInterface.class, "test");
 		Instantiator instantiator = new Instantiator(using);
 		assertThat(using.resolvedBy(this.beanFactory, instantiator).getInstanceSupplier().get()).isEqualTo("Test");
@@ -147,12 +137,12 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void usingMethodWhenFound() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(null, String.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder( String.class);
 		assertThat(builder.usingFactoryMethod(SingleArgFactory.class, "single", String.class)).isNotNull();
 	}
 
 	@Test
-	void instanceSupplierFindsOwnBeanNameWhenNoBeanNameSpecified() {
+	void instanceSupplierUsesInjectedBeanNameWhenNoBeanNameSpecified() {
 		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(SingleArgConstructor.class)
 				.usingConstructor(String.class).resolvedBy(this.beanFactory, new Instantiator());
 		this.beanFactory.registerBeanDefinition("myTest", beanDefinition);
@@ -299,7 +289,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void resolveUserValueWithTypeConversionRequired() {
-		Using using = RootBeanDefinition.supply("test", CharDependency.class).usingConstructor(char.class);
+		Using using = RootBeanDefinition.supply(CharDependency.class).usingConstructor(char.class);
 		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, "\\");
@@ -389,8 +379,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply("test", SingleArgConstructor.class).usingConstructor(String.class));
-				add(RootBeanDefinition.supply("test", String.class).usingFactoryMethod(SingleArgFactory.class, "single",
+				add(RootBeanDefinition.supply(SingleArgConstructor.class).usingConstructor(String.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(SingleArgFactory.class, "single",
 						String.class));
 			}
 
@@ -400,9 +390,9 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply("test", BeansCollectionConstructor.class)
+				add(RootBeanDefinition.supply(BeansCollectionConstructor.class)
 						.usingConstructor(String[].class));
-				add(RootBeanDefinition.supply("test", String.class).usingFactoryMethod(BeansCollectionFactory.class,
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
 						"array", String[].class));
 			}
 
@@ -412,8 +402,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply("test", BeansCollectionConstructor.class).usingConstructor(List.class));
-				add(RootBeanDefinition.supply("test", String.class).usingFactoryMethod(BeansCollectionFactory.class,
+				add(RootBeanDefinition.supply(BeansCollectionConstructor.class).usingConstructor(List.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
 						"list", List.class));
 			}
 
@@ -423,8 +413,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply("test", BeansCollectionConstructor.class).usingConstructor(Set.class));
-				add(RootBeanDefinition.supply("test", String.class).usingFactoryMethod(BeansCollectionFactory.class,
+				add(RootBeanDefinition.supply(BeansCollectionConstructor.class).usingConstructor(Set.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
 						"set", Set.class));
 			}
 
@@ -434,8 +424,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply("test", BeansCollectionConstructor.class).usingConstructor(Map.class));
-				add(RootBeanDefinition.supply("test", String.class).usingFactoryMethod(BeansCollectionFactory.class,
+				add(RootBeanDefinition.supply(BeansCollectionConstructor.class).usingConstructor(Map.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
 						"map", Map.class));
 			}
 
@@ -445,9 +435,9 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply("test", MultiArgsConstructor.class).usingConstructor(ResourceLoader.class,
+				add(RootBeanDefinition.supply(MultiArgsConstructor.class).usingConstructor(ResourceLoader.class,
 						Environment.class, ObjectProvider.class));
-				add(RootBeanDefinition.supply("test", String.class).usingFactoryMethod(MultiArgsFactory.class,
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(MultiArgsFactory.class,
 						"multiArgs", ResourceLoader.class, Environment.class, ObjectProvider.class));
 			}
 
@@ -457,9 +447,9 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply("test", MixedArgsConstructor.class).usingConstructor(ResourceLoader.class,
+				add(RootBeanDefinition.supply(MixedArgsConstructor.class).usingConstructor(ResourceLoader.class,
 						String.class, Environment.class));
-				add(RootBeanDefinition.supply("test", String.class).usingFactoryMethod(MixedArgsFactory.class,
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(MixedArgsFactory.class,
 						"mixedArgs", ResourceLoader.class, String.class, Environment.class));
 			}
 
@@ -515,7 +505,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			Assert.state(this.using != null, "No 'Using' provided");
 			RootBeanDefinition beanDefinition = this.using.resolvedBy(beanFactory, this);
 			customizer.accept(beanDefinition);
-			beanDefinition.getInstanceSupplier().get();
+			BeanNameAwareInstanceSupplier.getFrom(beanDefinition.getInstanceSupplier(), "test");
 			return this.arguments;
 		}
 

@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.aot.hint.ExecutableMode;
@@ -32,7 +33,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
@@ -66,32 +66,29 @@ import org.springframework.util.function.ThrowableSupplier;
  * @since 6.0
  * @see RootBeanDefinition#supply(Class)
  * @see RootBeanDefinition#supply(ResolvableType)
- * @see RootBeanDefinition#supply(String, Class)
- * @see RootBeanDefinition#supply(String, ResolvableType)
  */
 public class SuppliedRootBeanDefinitionBuilder {
-
-	@Nullable
-	private final String beanName;
 
 	private final Class<?> beanClass;
 
 	@Nullable
 	private final ResolvableType beanType;
 
-	SuppliedRootBeanDefinitionBuilder(@Nullable String beanName, Class<?> beanType) {
+	SuppliedRootBeanDefinitionBuilder(Class<?> beanType) {
 		Assert.notNull(beanType, "'beanType' must not be null");
-		this.beanName = beanName;
 		this.beanClass = beanType;
 		this.beanType = null;
 	}
 
-	SuppliedRootBeanDefinitionBuilder(@Nullable String beanName, ResolvableType beanType) {
+	SuppliedRootBeanDefinitionBuilder(ResolvableType beanType) {
 		Assert.notNull(beanType, "'beanType' must not be null");
 		Assert.notNull(beanType.resolve(), "'beanType' must be resolvable");
-		this.beanName = beanName;
 		this.beanClass = beanType.resolve();
 		this.beanType = beanType;
+	}
+
+	public RootBeanDefinition using(Supplier<?> instanceSupplier) {
+		return usingConstructor().suppliedBy(instanceSupplier);
 	}
 
 	/**
@@ -188,21 +185,20 @@ public class SuppliedRootBeanDefinitionBuilder {
 		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
 		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
 		 */
-		public RootBeanDefinition suppliedBy(ThrowableSupplier<Object> supplier) {
+		public RootBeanDefinition suppliedBy(Supplier<Object> supplier) {
 			RootBeanDefinition beanDefinition = createBeanDefinition();
 			beanDefinition.setInstanceSupplier(supplier);
 			return beanDefinition;
 		}
 
-		private ThrowableSupplier<Object> createInstanceSupplier(DefaultListableBeanFactory beanFactory,
+		private Supplier<Object> createInstanceSupplier(DefaultListableBeanFactory beanFactory,
 				RootBeanDefinition beanDefinition, ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
 			if (this.executable.getParameterCount() == 0) {
 				return new NoArgumentsInstanceSupplier(beanFactory, instantiator);
 			}
 			ArgumentsResolver argumentResolver = new ArgumentsResolver(beanFactory,
 					SuppliedRootBeanDefinitionBuilder.this.beanClass, this.executable, beanDefinition);
-			return new ResolvingInstanceSupplier(beanFactory, SuppliedRootBeanDefinitionBuilder.this.beanName,
-					beanDefinition, argumentResolver, instantiator);
+			return new ResolvingInstanceSupplier(beanFactory, argumentResolver, instantiator);
 		}
 
 		private RootBeanDefinition createBeanDefinition() {
@@ -247,9 +243,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 	 * {@link ThrowableSupplier} implementation that uses an {@link XArgumentsResolver} to
 	 * resolve arguments before delegating to an {@code instantiator} function.
 	 */
-	static class ResolvingInstanceSupplier implements ThrowableSupplier<Object> {
-
-		private final RootBeanDefinition beanDefinition;
+	static class ResolvingInstanceSupplier implements BeanNameAwareInstanceSupplier<Object> {
 
 		private final ArgumentsResolver argumentsResolver;
 
@@ -257,50 +251,18 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		private final ThrowableBiFunction<BeanFactory, Object[], Object> instantiator;
 
-		@Nullable
-		private final String beanName;
-
-		ResolvingInstanceSupplier(ConfigurableListableBeanFactory beanFactory, @Nullable String beanName,
-				RootBeanDefinition beanDefinition, ArgumentsResolver argumentsResolver,
+		ResolvingInstanceSupplier(ConfigurableListableBeanFactory beanFactory, ArgumentsResolver argumentsResolver,
 				ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
-			this.beanDefinition = beanDefinition;
 			this.argumentsResolver = argumentsResolver;
 			this.beanFactory = beanFactory;
 			this.instantiator = instantiator;
-			this.beanName = beanName;
 		}
 
 		@Override
-		public Object getWithException() throws Exception {
-			String beanName = (this.beanName != null) ? this.beanName : findBeanName();
+		public Object get(String beanName) {
+			Assert.state(beanName != null, "A bean name must be provided in order to resolve instance arguments");
 			Object[] arguments = this.argumentsResolver.resolveArguments(beanName);
 			return this.instantiator.apply(this.beanFactory, arguments);
-		}
-
-		private String findBeanName() {
-			String beanName = null;
-			for (String candidate : this.beanFactory.getBeanDefinitionNames()) {
-				if (isDefinedFromUs(candidate)) {
-					Assert.state(beanName == null, "Multiple beans");
-					beanName = candidate;
-				}
-			}
-			Assert.state(beanName != null, "No bean");
-			return beanName;
-		}
-
-		private boolean isDefinedFromUs(String beanName) {
-			return isDefinedFromUs(this.beanFactory.getBeanDefinition(beanName));
-		}
-
-		private boolean isDefinedFromUs(@Nullable BeanDefinition beanDefinition) {
-			while (beanDefinition != null) {
-				if (this.beanDefinition.getInstanceSupplier() == this) {
-					return true;
-				}
-				beanDefinition = beanDefinition.getOriginatingBeanDefinition();
-			}
-			return false;
 		}
 
 	}

@@ -21,9 +21,12 @@ import java.util.function.Supplier;
 import org.springframework.lang.Nullable;
 
 /**
+ * Internal instance supplier that also provides access to the bean name. This class is
+ * used to support argument injection by the {@link SuppliedRootBeanDefinitionBuilder}.
  *
  * @author Phillip Webb
  * @since 6.0
+ * @see AbstractAutowireCapableBeanFactory#obtainFromSupplier(Supplier, String)
  */
 @FunctionalInterface
 interface BeanNameAwareInstanceSupplier<T> extends Supplier<T> {
@@ -32,6 +35,18 @@ interface BeanNameAwareInstanceSupplier<T> extends Supplier<T> {
 		return get(null);
 	}
 
+	/**
+	 * Supply the bean instance.
+	 * @param beanName the name of the bean or {@code null}
+	 * @return the supplied instance
+	 */
 	T get(@Nullable String beanName);
+
+	static <T> T getFrom(Supplier<T> supplier, String beanName) {
+		if (supplier instanceof BeanNameAwareInstanceSupplier<T> beanNameAwareSupplier) {
+			return beanNameAwareSupplier.get(beanName);
+		}
+		return supplier.get();
+	}
 
 }

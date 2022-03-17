@@ -31,22 +31,43 @@ public class Default$$BeanRegistrations implements DefaultListableBeanFactoryIni
 
 	@Override
 	public void initialize(DefaultListableBeanFactory beanFactory) {
-		registerFooBeanDefinition(beanFactory);
+		registerMyBeanBeanDefinition(beanFactory);
+		registerMyOtherBeanBeanDefinition(beanFactory);
 	}
 
-	private void registerFooBeanDefinition(DefaultListableBeanFactory beanFactory) {
-		// RootBeanDefinition.supply(MyBean.class).usingConstructor().resolvedBy(beanFactory, this::createDaBean);
+	private void registerMyBeanBeanDefinition(DefaultListableBeanFactory beanFactory) {
+		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyBean.class).usingConstructor()
+				.suppliedBy(MyBean::new);
+		beanFactory.registerBeanDefinition("myBean", beanDefinition);
 	}
 
-	private void customizeFooBeanDefinition(RootBeanDefinition rootBeanDefinition) {
-		rootBeanDefinition.getPropertyValues().add("innerBean", createFooInnerBeanDefinition());
+	private void registerMyOtherBeanBeanDefinition(DefaultListableBeanFactory beanFactory) {
+		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyOtherBean.class).usingConstructor(MyBean.class)
+				.resolvedBy(beanFactory, this::createMyOtherBeanInstance);
+		beanDefinition.setAttribute("foo", "bar");
+		beanFactory.registerBeanDefinition("myOtherBean", beanDefinition);
 	}
 
-	private RootBeanDefinition createFooInnerBeanDefinition() {
-		return BeanDefinitionRegistrar.inner(Integer.class).toBeanDefinition();
+	private void registerThingWithInnerBean(DefaultListableBeanFactory beanFactory) {
+		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyOuterBean.class).using(MyOuterBean::new);
+	}
+
+	private MyOtherBean createMyOtherBeanInstance(Object[] args) {
+		return new MyOtherBean((MyBean) args[0]);
 	}
 
 	static class MyBean {
+
+	}
+
+	static class MyOtherBean {
+
+		MyOtherBean(MyBean myBean) {
+		}
+
+	}
+
+	static class MyOuterBean {
 
 	}
 
