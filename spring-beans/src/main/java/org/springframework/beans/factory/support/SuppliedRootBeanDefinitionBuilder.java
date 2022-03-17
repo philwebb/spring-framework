@@ -199,21 +199,10 @@ public class SuppliedRootBeanDefinitionBuilder {
 			if (this.executable.getParameterCount() == 0) {
 				return new NoArgumentsInstanceSupplier(beanFactory, instantiator);
 			}
-			ArgumentsResolver argumentResolver = createArgumentResolver(beanFactory, beanDefinition);
-			return new ResolvingInstanceSupplier(beanFactory, SuppliedRootBeanDefinitionBuilder.this.beanName, beanDefinition,
-					argumentResolver, instantiator);
-		}
-
-		private ArgumentsResolver createArgumentResolver(DefaultListableBeanFactory beanFactory,
-				RootBeanDefinition beanDefinition) {
-			Class<?> beanClass = SuppliedRootBeanDefinitionBuilder.this.beanClass;
-			if (this.executable instanceof Constructor<?> constructor) {
-				return new ConstructorArgumentsResolver(beanFactory, beanClass, constructor, beanDefinition);
-			}
-			if (this.executable instanceof Method method) {
-				return new MethodArgumentsResolver(beanFactory, beanClass, method);
-			}
-			throw new IllegalStateException("Unsupported executable " + executable.getClass().getName());
+			ArgumentsResolver argumentResolver = new ArgumentsResolver(beanFactory,
+					SuppliedRootBeanDefinitionBuilder.this.beanClass, this.executable, beanDefinition);
+			return new ResolvingInstanceSupplier(beanFactory, SuppliedRootBeanDefinitionBuilder.this.beanName,
+					beanDefinition, argumentResolver, instantiator);
 		}
 
 		private RootBeanDefinition createBeanDefinition() {
@@ -261,7 +250,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 	}
 
 	/**
-	 * {@link ThrowableSupplier} implementation that uses an {@link ArgumentsResolver} to
+	 * {@link ThrowableSupplier} implementation that uses an {@link XArgumentsResolver} to
 	 * resolve arguments before delegating to an {@code instantiator} function.
 	 */
 	static class ResolvingInstanceSupplier extends InstanceSupplier {
@@ -327,60 +316,49 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 	}
 
-	/**
-	 * Resolves arguments so that they can be passed to an {@code instantiator} function.
-	 */
-	private abstract static class ArgumentsResolver {
+	private static class ArgumentsResolver {
 
-		protected final AbstractAutowireCapableBeanFactory beanFactory;
+		private final AbstractAutowireCapableBeanFactory beanFactory;
 
-		protected final Class<?> beanClass;
-
-		ArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass) {
-			this.beanFactory = beanFactory;
-			this.beanClass = beanClass;
-		}
-
-		abstract Object[] resolveArguments(String beanName);
-
-		protected final DependencyDescriptor getDependencyDescriptor(MethodParameter parameter) {
-			DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(parameter, true);
-			dependencyDescriptor.setContainingClass(this.beanClass);
-			return dependencyDescriptor;
-		}
-
-	}
-
-	/**
-	 * {@link ArgumentsResolver} for a {@link Constructor}.
-	 */
-	private static class ConstructorArgumentsResolver extends ArgumentsResolver {
+		private final Class<?> beanClass;
 
 		private final RootBeanDefinition beanDefinition;
 
-		private final Constructor<?> constructor;
+		private final Executable executable;
 
-		ConstructorArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass,
-				Constructor<?> constructor, RootBeanDefinition beanDefinition) {
-			super(beanFactory, beanClass);
+		ArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass, Executable executable,
+				RootBeanDefinition beanDefinition) {
+			this.beanFactory = beanFactory;
+			this.beanClass = beanClass;
 			this.beanDefinition = beanDefinition;
-			this.constructor = constructor;
+			this.executable = executable;
 		}
 
 		public Object[] resolveArguments(String beanName) {
-			int parameterCount = this.constructor.getParameterCount();
+			int parameterCount = this.executable.getParameterCount();
 			Object[] resolvedArguments = new Object[parameterCount];
 			Set<String> autowiredBeans = new LinkedHashSet<>(resolvedArguments.length);
 			TypeConverter typeConverter = this.beanFactory.getTypeConverter();
 			ConstructorArgumentValues argumentValues = resolveArgumentValues(beanName);
 			for (int i = 0; i < parameterCount; i++) {
-				MethodParameter parameter = new MethodParameter(this.constructor, i);
-				DependencyDescriptor dependencyDescriptor = getDependencyDescriptor(parameter);
+				MethodParameter parameter = extracted(i);
+				DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(parameter, true);
+				dependencyDescriptor.setContainingClass(this.beanClass);
 				ValueHolder argumentValue = argumentValues.getIndexedArgumentValue(i, null);
 				resolvedArguments[i] = resolveArgument(beanName, autowiredBeans, typeConverter, parameter,
 						dependencyDescriptor, argumentValue);
 			}
 			return resolvedArguments;
+		}
+
+		private MethodParameter extracted(int index) {
+			if (this.executable instanceof Constructor<?> constructor) {
+				return new MethodParameter(constructor, index);
+			}
+			if (this.executable instanceof Method method) {
+				return new MethodParameter(method, index);
+			}
+			throw new IllegalStateException("Unsupported executable " + executable.getClass().getName());
 		}
 
 		private ConstructorArgumentValues resolveArgumentValues(String beanName) {
@@ -439,46 +417,6 @@ public class SuppliedRootBeanDefinitionBuilder {
 			}
 			catch (BeansException ex) {
 				throw new UnsatisfiedDependencyException(null, beanName, new InjectionPoint(parameter), ex);
-			}
-		}
-
-	}
-
-	/**
-	 * {@link ArgumentsResolver} for a factory {@link Method}.
-	 */
-	private static class MethodArgumentsResolver extends ArgumentsResolver {
-
-		private final Method method;
-
-		MethodArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass, Method method) {
-			super(beanFactory, beanClass);
-			this.method = method;
-		}
-
-		@Override
-		public Object[] resolveArguments(String beanName) {
-			int parameterCount = this.method.getParameterCount();
-			Object[] resolvedArguments = new Object[parameterCount];
-			Set<String> autowiredBeans = new LinkedHashSet<>(parameterCount);
-			TypeConverter typeConverter = beanFactory.getTypeConverter();
-			for (int i = 0; i < parameterCount; i++) {
-				MethodParameter parameter = new MethodParameter(this.method, i);
-				DependencyDescriptor dependencyDescriptor = getDependencyDescriptor(parameter);
-				resolvedArguments[i] = resolveArgument(beanName, autowiredBeans, typeConverter, parameter,
-						dependencyDescriptor);
-			}
-			return resolvedArguments;
-		}
-
-		private Object resolveArgument(String beanName, Set<String> autowiredBeans, TypeConverter typeConverter,
-				MethodParameter methodParam, DependencyDescriptor dependencyDescriptor) {
-			try {
-				return this.beanFactory.resolveDependency(dependencyDescriptor, beanName, autowiredBeans,
-						typeConverter);
-			}
-			catch (BeansException ex) {
-				throw new UnsatisfiedDependencyException(null, beanName, new InjectionPoint(methodParam), ex);
 			}
 		}
 
