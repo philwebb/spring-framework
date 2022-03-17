@@ -34,7 +34,15 @@ import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-class BeanDefinitionCustomizeCodeGenerator {
+/**
+ * Code generator set {@link RootBeanDefinition} properties.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
+ * @since 6.0
+ */
+class BeanDefinitionPropertiesCodeGenerator {
 
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITON = new RootBeanDefinition();
 
@@ -44,11 +52,11 @@ class BeanDefinitionCustomizeCodeGenerator {
 
 	private final Predicate<String> attributeFilter;
 
-	protected BeanDefinitionCustomizeCodeGenerator(RootBeanDefinition beanDefinition, String variable) {
+	protected BeanDefinitionPropertiesCodeGenerator(RootBeanDefinition beanDefinition, String variable) {
 		this(beanDefinition, variable, (attribute) -> false);
 	}
 
-	protected BeanDefinitionCustomizeCodeGenerator(RootBeanDefinition beanDefinition, String variable,
+	protected BeanDefinitionPropertiesCodeGenerator(RootBeanDefinition beanDefinition, String variable,
 			Predicate<String> attributeFilter) {
 		this.beanDefinition = beanDefinition;
 		this.variable = variable;
@@ -77,8 +85,8 @@ class BeanDefinitionCustomizeCodeGenerator {
 		if (!argumentValues.isEmpty()) {
 			argumentValues.forEach((index, valueHolder) -> {
 				CodeBlock value = BeanParameterGenerator.INSTANCE.generateParameterValue(valueHolder.getValue());
-				builder.addStatement("$L.getConstructorArgumentValues().addIndexedArgumentValue($L,$L)",
-						this.variable, index, value);
+				builder.addStatement("$L.getConstructorArgumentValues().addIndexedArgumentValue($L,$L)", this.variable,
+						index, value);
 			});
 		}
 	}
@@ -139,8 +147,8 @@ class BeanDefinitionCustomizeCodeGenerator {
 	}
 
 	private <T> void addStatementForValue(Builder builder, Function<RootBeanDefinition, T> getter, String format) {
-		addStatementForValue(builder, getter,
-				(defaultValue, actualValue) -> !Objects.equals(defaultValue, actualValue), format);
+		addStatementForValue(builder, getter, (defaultValue, actualValue) -> !Objects.equals(defaultValue, actualValue),
+				format);
 	}
 
 	private <T> void addStatementForValue(Builder builder, Function<RootBeanDefinition, T> getter,
