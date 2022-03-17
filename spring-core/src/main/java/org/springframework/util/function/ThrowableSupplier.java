@@ -91,7 +91,6 @@ public interface ThrowableSupplier<T> extends Supplier<T> {
 		};
 	}
 
-
 	/**
 	 * Lambda friendly convenience method that can be used to create
 	 * {@link ThrowableSupplier} where the {@link #get()} method wraps any
@@ -101,7 +100,8 @@ public interface ThrowableSupplier<T> extends Supplier<T> {
 	 * @param supplier the source supplier
 	 * @return a new {@link ThrowableSupplier} instance
 	 */
-	static <T> ThrowableSupplier<T> of(BiFunction<String, Exception, RuntimeException> exceptionWrapper,
+	static <T> ThrowableSupplier<T> of(
+			BiFunction<String, Exception, RuntimeException> exceptionWrapper,
 			ThrowableSupplier<T> supplier) {
 
 		return supplier.throwing(exceptionWrapper);

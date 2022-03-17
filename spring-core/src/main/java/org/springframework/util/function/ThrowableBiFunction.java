@@ -17,51 +17,56 @@
 package org.springframework.util.function;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
- * A {@link Function} that allows to invoke code that throws a checked
+ * A {@link BiFunction} that allows to invoke code that throws a checked
  * exception.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
- * @param <T> the type of the input to the function
+ * @param <T> the type of the first argument to the function
+ * @param <U> the type of the second argument to the function
  * @param <R> the type of the result of the function
  * @since 6.0
  */
-@FunctionalInterface
-public interface ThrowableFunction<T, R> extends Function<T, R> {
+public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 
 	/**
 	 * Applies this function to the given argument, possibly throwing a checked
 	 * exception.
-	 * @param t the function argument
+	 * @param t the first function argument
+	 * @param u the second function argument
 	 * @return the function result
 	 * @throws Exception on error
 	 */
-	R applyWithException(T t) throws Exception;
+	R applyWithException(T t, U u) throws Exception;
 
 	/**
 	 * Default {@link Function#apply(Object)} that wraps any thrown checked
 	 * exceptions (by default in a {@link RuntimeException}).
-	 * @see java.util.function.Function#apply(java.lang.Object)
+	 * @param t the first function argument
+	 * @param u the second function argument
+	 * @return the function result
+	 * @see java.util.function.BiFunction#apply(Object, Object)
 	 */
 	@Override
-	default R apply(T t) {
-		return apply(t, RuntimeException::new);
+	default R apply(T t, U u) {
+		return apply(t, u, RuntimeException::new);
 	}
 
 	/**
 	 * Applies this function to the given argument, wrapping any any thrown
 	 * checked exceptions using the given {@code exceptionWrapper}.
+	 * @param t the first function argument
+	 * @param u the second function argument
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
 	 * and checked exception into a runtime exception
 	 * @return a result
 	 */
-	default R apply(T t,
+	default R apply(T t, U u,
 			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 		try {
-			return applyWithException(t);
+			return applyWithException(t, u);
 		}
 		catch (RuntimeException ex) {
 			throw ex;
@@ -72,25 +77,25 @@ public interface ThrowableFunction<T, R> extends Function<T, R> {
 	}
 
 	/**
-	 * Return a new {@link ThrowableFunction} where the {@link #apply(Object}
+	 * Return a new {@link ThrowableBiFunction} where the {@link #apply(Object}
 	 * method wraps any thrown checked exceptions using the given
 	 * {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
 	 * and checked exception into a runtime exception
-	 * @return the replacement {@link ThrowableFunction} instance
+	 * @return the replacement {@link ThrowableBiFunction} instance
 	 */
-	default ThrowableFunction<T, R> throwing(
+	default ThrowableBiFunction<T, U, R> throwing(
 			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
-		return new ThrowableFunction<>() {
+		return new ThrowableBiFunction<>() {
 
 			@Override
-			public R applyWithException(T t) throws Exception {
-				return ThrowableFunction.this.applyWithException(t);
+			public R applyWithException(T t, U u) throws Exception {
+				return ThrowableBiFunction.this.applyWithException(t, u);
 			}
 
 			@Override
-			public R apply(T t) {
-				return apply(t, exceptionWrapper);
+			public R apply(T t, U u) {
+				return apply(t, u, exceptionWrapper);
 			}
 
 		};
@@ -98,14 +103,16 @@ public interface ThrowableFunction<T, R> extends Function<T, R> {
 
 	/**
 	 * Lambda friendly convenience method that can be used to create
-	 * {@link ThrowableFunction} where the {@link #apply(Object)} method wraps
+	 * {@link ThrowableBiFunction} where the {@link #apply(Object)} method wraps
 	 * any thrown checked exceptions using the given {@code exceptionWrapper}.
-	 * @param <T> the type of the input to the function
+	 * @param <T> the type of the first argument to the function
+	 * @param <U> the type of the second argument to the function
 	 * @param <R> the type of the result of the function
 	 * @param function the source function
 	 * @return a new {@link ThrowableFunction} instance
 	 */
-	static <T, R> ThrowableFunction<T, R> of(ThrowableFunction<T, R> function,
+	static <T, U, R> ThrowableBiFunction<T, U, R> of(
+			ThrowableBiFunction<T, U, R> function,
 			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 
 		return function.throwing(exceptionWrapper);

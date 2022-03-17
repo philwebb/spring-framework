@@ -41,36 +41,39 @@ class ThrowableConsumerTests {
 	@Test
 	void applyWhenThrowingCheckedExceptionThrowsWrapperRuntimeException() {
 		ThrowableConsumer<Object> consumer = this::throwIOException;
-		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> consumer.accept(this))
-			.withCauseInstanceOf(IOException.class);
+		assertThatExceptionOfType(RuntimeException.class).isThrownBy(
+				() -> consumer.accept(this)).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void applyWithExceptionWrapperWhenThrowingUncheckedExceptionThrowsOriginal() {
 		ThrowableConsumer<Object> consumer = this::throwIllegalArgumentException;
-		assertThatIllegalArgumentException().isThrownBy(() -> consumer.accept(this, IllegalStateException::new));
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> consumer.accept(this, IllegalStateException::new));
 	}
 
 	@Test
 	void applyWithExceptionWrapperWhenThrowingCheckedExceptionThrowsWrapper() {
 		ThrowableConsumer<Object> consumer = this::throwIOException;
-		assertThatIllegalStateException().isThrownBy(() -> consumer.accept(this, IllegalStateException::new))
-			.withCauseInstanceOf(IOException.class);
+		assertThatIllegalStateException().isThrownBy(() -> consumer.accept(this,
+				IllegalStateException::new)).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void throwingModifiesThrownException() {
 		ThrowableConsumer<Object> consumer = this::throwIOException;
-		ThrowableConsumer<Object> modified = consumer.throwing(IllegalStateException::new);
-		assertThatIllegalStateException().isThrownBy(() -> modified.accept(this))
-			.withCauseInstanceOf(IOException.class);
+		ThrowableConsumer<Object> modified = consumer.throwing(
+				IllegalStateException::new);
+		assertThatIllegalStateException().isThrownBy(
+				() -> modified.accept(this)).withCauseInstanceOf(IOException.class);
 	}
 
 	@Test
 	void ofModifiesThrowException() {
-		ThrowableConsumer<Object> consumer = ThrowableConsumer.of(this::throwIOException, IllegalStateException::new);
-		assertThatIllegalStateException().isThrownBy(() -> consumer.accept(this))
-			.withCauseInstanceOf(IOException.class);
+		ThrowableConsumer<Object> consumer = ThrowableConsumer.of(this::throwIOException,
+				IllegalStateException::new);
+		assertThatIllegalStateException().isThrownBy(
+				() -> consumer.accept(this)).withCauseInstanceOf(IOException.class);
 	}
 
 	private void throwIOException(Object o) throws IOException {

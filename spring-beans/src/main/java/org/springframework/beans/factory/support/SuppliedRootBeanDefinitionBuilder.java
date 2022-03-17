@@ -25,8 +25,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
@@ -42,19 +44,32 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.function.ThrowableBiFunction;
 import org.springframework.util.function.ThrowableFunction;
 import org.springframework.util.function.ThrowableSupplier;
 
 /**
+ * Builder class that can be used to create a {@link RootBeanDefinition} configured with a
+ * {@link AbstractBeanDefinition#setInstanceSupplier(java.util.function.Supplier) instance
+ * supplier}.
+ * <p>
+ * This builder is designed primary used by AOT generated code, specifically in a native
+ * image. As long as the {@link Constructor} or {@link Method} being used has been marked
+ * with an {@link ExecutableMode#INTROSPECT introspection} hint, the builder can provide
+ * resolved arguments that should be injected. In other words, the class helps separate
+ * injection from instantiation and allows for lighter native images since full
+ * {@link ExecutableMode#INVOKE invocation} hints are not necessary.
+ *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see RootBeanDefinition#supply(Class)
+ * @see RootBeanDefinition#supply(ResolvableType)
+ * @see RootBeanDefinition#supply(String, Class)
  * @see RootBeanDefinition#supply(String, ResolvableType)
  */
 public class SuppliedRootBeanDefinitionBuilder {
-
-	private static final Object[] NO_ARGUMENTS = {};
 
 	@Nullable
 	private final String beanName;
@@ -65,7 +80,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 	private final ResolvableType beanType;
 
 	SuppliedRootBeanDefinitionBuilder(@Nullable String beanName, Class<?> beanType) {
-		Assert.notNull(beanType, "'type' must not be null");
+		Assert.notNull(beanType, "'beanType' must not be null");
 		this.beanName = beanName;
 		this.beanClass = beanType;
 		this.beanType = null;
@@ -79,6 +94,13 @@ public class SuppliedRootBeanDefinitionBuilder {
 		this.beanType = beanType;
 	}
 
+	/**
+	 * Build the definition using annotations and meta-data from the identified
+	 * constructor.
+	 * @param parameterTypes the constructor parameters
+	 * @return a {@link Using} instance that be used to build the
+	 * {@link RootBeanDefinition}
+	 */
 	public Using usingConstructor(Class<?>... parameterTypes) {
 		try {
 			return new Using(this.beanClass.getDeclaredConstructor(parameterTypes));
@@ -89,6 +111,14 @@ public class SuppliedRootBeanDefinitionBuilder {
 		}
 	}
 
+	/**
+	 * Build the definition using annotations and meta-data from the identified factory
+	 * method.
+	 * @param declaringClass the class the declares the factory method
+	 * @param parameterTypes the method parameters
+	 * @return a {@link Using} instance that be used to build the
+	 * {@link RootBeanDefinition}
+	 */
 	public Using usingFactoryMethod(Class<?> declaringClass, String name, Class<?>... parameterTypes) {
 		Method method = ReflectionUtils.findMethod(declaringClass, name, parameterTypes);
 		Assert.notNull(method, () -> String.format("No method '%s' with type(s) [%s] found on %s", name,
@@ -100,6 +130,10 @@ public class SuppliedRootBeanDefinitionBuilder {
 		return Arrays.stream(parameterTypes).map(Class::getName).collect(Collectors.joining(", "));
 	}
 
+	/**
+	 * Inner-class used to continue building a {@link RootBeanDefinition} once a
+	 * constructor of factory method has been selected for use.
+	 */
 	public class Using {
 
 		private final Executable executable;
@@ -108,51 +142,129 @@ public class SuppliedRootBeanDefinitionBuilder {
 			this.executable = executable;
 		}
 
+		Executable getExecutable() {
+			return executable;
+		}
+
+		/**
+		 * Build a {@link RootBeanDefinition} where the instance supplier calls the
+		 * specified {@code instantiator} with resolved arguments.
+		 * @param beanFactory the bean factory that should resolve arguments
+		 * @param instantiator a function that takes the resolved arguments and returns
+		 * the bean instance by calling the appropriate constructor or factory method.
+		 * @return the built root bean definition
+		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
+		 * @see #suppliedBy(ThrowableSupplier)
+		 */
 		public RootBeanDefinition resolvedBy(DefaultListableBeanFactory beanFactory,
 				ThrowableFunction<Object[], Object> instantiator) {
+			return resolvedBy(beanFactory, (bf, arguments) -> instantiator.apply(arguments));
+		}
+
+		/**
+		 * Build a {@link RootBeanDefinition} where the instance supplier calls the
+		 * specified {@code instantiator} with the {@link BeanFactory} and the resolved
+		 * arguments.
+		 * @param beanFactory the bean factory that should resolve arguments
+		 * @param instantiator a function that takes the {@link BeanFactory} and resolved
+		 * arguments and returns the bean instance by calling the appropriate constructor
+		 * or factory method.
+		 * @return the built root bean definition
+		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
+		 * @see #suppliedBy(ThrowableSupplier)
+		 */
+		public RootBeanDefinition resolvedBy(DefaultListableBeanFactory beanFactory,
+				ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
 			RootBeanDefinition beanDefinition = createBeanDefinition();
-			beanDefinition.setInstanceSupplier(createInstanceSupplier(beanFactory, instantiator, beanDefinition));
+			beanDefinition.setInstanceSupplier(createInstanceSupplier(beanFactory, beanDefinition, instantiator));
 			return beanDefinition;
 		}
 
-		public RootBeanDefinition suppliedBy(ThrowableSupplier<Object> instantiator) {
+		/**
+		 * Build a {@link RootBeanDefinition} with the given instance supplier. This
+		 * method can be used when no injected arguments are needed.
+		 * @param supplier the bean instance supplier
+		 * @return the built root bean definition
+		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
+		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
+		 */
+		public RootBeanDefinition suppliedBy(ThrowableSupplier<Object> supplier) {
 			RootBeanDefinition beanDefinition = createBeanDefinition();
-			beanDefinition.setInstanceSupplier(instantiator);
+			beanDefinition.setInstanceSupplier(supplier);
 			return beanDefinition;
 		}
 
-		private ThrowableSupplier<Object> createInstanceSupplier(DefaultListableBeanFactory beanFactory,
-				ThrowableFunction<Object[], Object> instantiator, RootBeanDefinition beanDefinition) {
+		InstanceSupplier createInstanceSupplier(DefaultListableBeanFactory beanFactory,
+				RootBeanDefinition beanDefinition, ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
 			if (this.executable.getParameterCount() == 0) {
-				return () -> instantiator.apply(NO_ARGUMENTS);
+				return new NoArgumentsInstanceSupplier(beanFactory, instantiator);
 			}
 			ArgumentsResolver argumentResolver = createArgumentResolver(beanFactory, beanDefinition);
-			return new InstanceSupplier(beanFactory, SuppliedRootBeanDefinitionBuilder.this.beanName, beanDefinition,
+			return new ResolvingInstanceSupplier(beanFactory, SuppliedRootBeanDefinitionBuilder.this.beanName, beanDefinition,
 					argumentResolver, instantiator);
 		}
 
 		private ArgumentsResolver createArgumentResolver(DefaultListableBeanFactory beanFactory,
 				RootBeanDefinition beanDefinition) {
+			Class<?> beanClass = SuppliedRootBeanDefinitionBuilder.this.beanClass;
 			if (this.executable instanceof Constructor<?> constructor) {
-				return new ConstructorArgumentsResolver(beanFactory, beanDefinition,
-						SuppliedRootBeanDefinitionBuilder.this.beanClass, constructor);
-
+				return new ConstructorArgumentsResolver(beanFactory, beanClass, constructor, beanDefinition);
 			}
 			if (this.executable instanceof Method method) {
-
+				return new MethodArgumentsResolver(beanFactory, beanClass, method);
 			}
-			throw new UnsupportedOperationException("Auto-generated method stub");
+			throw new IllegalStateException("Unsupported executable " + executable.getClass().getName());
 		}
 
 		private RootBeanDefinition createBeanDefinition() {
-			// FIXME setTargetType
-			// FIMXE getResolvedFactoryMethod
-			return null;
+			RootBeanDefinition beanDefinition = new RootBeanDefinition(
+					SuppliedRootBeanDefinitionBuilder.this.beanClass);
+			beanDefinition.setTargetType(SuppliedRootBeanDefinitionBuilder.this.beanType);
+			if (this.executable instanceof Method method) {
+				beanDefinition.setResolvedFactoryMethod(method);
+			}
+			return beanDefinition;
 		}
 
 	}
 
-	static class InstanceSupplier implements ThrowableSupplier<Object> {
+	abstract static class InstanceSupplier implements ThrowableSupplier<Object> {
+
+		abstract Object[] getArguments();
+
+	}
+
+	static class NoArgumentsInstanceSupplier extends InstanceSupplier {
+
+		private static final Object[] NO_ARGUMENTS = {};
+
+		private final DefaultListableBeanFactory beanFactory;
+
+		private final ThrowableBiFunction<BeanFactory, Object[], Object> instantiator;
+
+		NoArgumentsInstanceSupplier(DefaultListableBeanFactory beanFactory,
+				ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
+			this.beanFactory = beanFactory;
+			this.instantiator = instantiator;
+		}
+
+		@Override
+		public Object getWithException() throws Exception {
+			return instantiator.apply(this.beanFactory, getArguments());
+		}
+
+		@Override
+		Object[] getArguments() {
+			return NO_ARGUMENTS;
+		}
+
+	}
+
+	/**
+	 * {@link ThrowableSupplier} implementation that uses an {@link ArgumentsResolver} to
+	 * resolve arguments before delegating to an {@code instantiator} function.
+	 */
+	static class ResolvingInstanceSupplier extends InstanceSupplier {
 
 		private final RootBeanDefinition beanDefinition;
 
@@ -160,14 +272,14 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		private final ConfigurableListableBeanFactory beanFactory;
 
-		private final ThrowableFunction<Object[], Object> instantiator;
+		private final ThrowableBiFunction<BeanFactory, Object[], Object> instantiator;
 
 		@Nullable
 		private final String beanName;
 
-		public InstanceSupplier(ConfigurableListableBeanFactory beanFactory, @Nullable String beanName,
+		ResolvingInstanceSupplier(ConfigurableListableBeanFactory beanFactory, @Nullable String beanName,
 				RootBeanDefinition beanDefinition, ArgumentsResolver argumentsResolver,
-				ThrowableFunction<Object[], Object> instantiator) {
+				ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
 			this.beanDefinition = beanDefinition;
 			this.argumentsResolver = argumentsResolver;
 			this.beanFactory = beanFactory;
@@ -177,9 +289,14 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		@Override
 		public Object getWithException() throws Exception {
+			Object[] arguments = getArguments();
+			return this.instantiator.apply(this.beanFactory, arguments);
+		}
+
+		Object[] getArguments() {
 			String beanName = (this.beanName != null) ? this.beanName : findBeanName();
 			Object[] arguments = this.argumentsResolver.resolveArguments(beanName);
-			return this.instantiator.apply(arguments);
+			return arguments;
 		}
 
 		private String findBeanName() {
@@ -210,27 +327,43 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 	}
 
-	interface ArgumentsResolver {
+	/**
+	 * Resolves arguments so that they can be passed to an {@code instantiator} function.
+	 */
+	private abstract static class ArgumentsResolver {
 
-		Object[] resolveArguments(String beanName);
+		protected final AbstractAutowireCapableBeanFactory beanFactory;
+
+		protected final Class<?> beanClass;
+
+		ArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass) {
+			this.beanFactory = beanFactory;
+			this.beanClass = beanClass;
+		}
+
+		abstract Object[] resolveArguments(String beanName);
+
+		protected final DependencyDescriptor getDependencyDescriptor(MethodParameter parameter) {
+			DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(parameter, true);
+			dependencyDescriptor.setContainingClass(this.beanClass);
+			return dependencyDescriptor;
+		}
 
 	}
 
-	static class ConstructorArgumentsResolver implements ArgumentsResolver {
-
-		private final AbstractAutowireCapableBeanFactory beanFactory;
+	/**
+	 * {@link ArgumentsResolver} for a {@link Constructor}.
+	 */
+	private static class ConstructorArgumentsResolver extends ArgumentsResolver {
 
 		private final RootBeanDefinition beanDefinition;
 
-		private final Class<?> beanClass;
-
 		private final Constructor<?> constructor;
 
-		ConstructorArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, RootBeanDefinition beanDefinition,
-				Class<?> beanClass, Constructor<?> constructor) {
-			this.beanFactory = beanFactory;
+		ConstructorArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass,
+				Constructor<?> constructor, RootBeanDefinition beanDefinition) {
+			super(beanFactory, beanClass);
 			this.beanDefinition = beanDefinition;
-			this.beanClass = beanClass;
 			this.constructor = constructor;
 		}
 
@@ -242,9 +375,10 @@ public class SuppliedRootBeanDefinitionBuilder {
 			ConstructorArgumentValues argumentValues = resolveArgumentValues(beanName);
 			for (int i = 0; i < parameterCount; i++) {
 				MethodParameter parameter = new MethodParameter(this.constructor, i);
+				DependencyDescriptor dependencyDescriptor = getDependencyDescriptor(parameter);
 				ValueHolder argumentValue = argumentValues.getIndexedArgumentValue(i, null);
 				resolvedArguments[i] = resolveArgument(beanName, autowiredBeans, typeConverter, parameter,
-						argumentValue);
+						dependencyDescriptor, argumentValue);
 			}
 			return resolvedArguments;
 		}
@@ -275,15 +409,13 @@ public class SuppliedRootBeanDefinitionBuilder {
 		}
 
 		private Object resolveArgument(String beanName, Set<String> autowiredBeans, TypeConverter typeConverter,
-				MethodParameter parameter, ValueHolder argumentValue) {
+				MethodParameter parameter, DependencyDescriptor dependencyDescriptor, ValueHolder argumentValue) {
 			Class<?> parameterType = parameter.getParameterType();
 			if (argumentValue != null) {
 				return (!argumentValue.isConverted())
 						? typeConverter.convertIfNecessary(argumentValue.getValue(), parameterType)
 						: argumentValue.getConvertedValue();
 			}
-			DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(parameter, true);
-			dependencyDescriptor.setContainingClass(this.beanClass);
 			try {
 				try {
 					return this.beanFactory.resolveDependency(dependencyDescriptor, beanName, autowiredBeans,
@@ -312,7 +444,43 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 	}
 
-	static class MethodArgumentsResolver {
+	/**
+	 * {@link ArgumentsResolver} for a factory {@link Method}.
+	 */
+	private static class MethodArgumentsResolver extends ArgumentsResolver {
+
+		private final Method method;
+
+		MethodArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass, Method method) {
+			super(beanFactory, beanClass);
+			this.method = method;
+		}
+
+		@Override
+		public Object[] resolveArguments(String beanName) {
+			int parameterCount = this.method.getParameterCount();
+			Object[] resolvedArguments = new Object[parameterCount];
+			Set<String> autowiredBeans = new LinkedHashSet<>(parameterCount);
+			TypeConverter typeConverter = beanFactory.getTypeConverter();
+			for (int i = 0; i < parameterCount; i++) {
+				MethodParameter parameter = new MethodParameter(this.method, i);
+				DependencyDescriptor dependencyDescriptor = getDependencyDescriptor(parameter);
+				resolvedArguments[i] = resolveArgument(beanName, autowiredBeans, typeConverter, parameter,
+						dependencyDescriptor);
+			}
+			return resolvedArguments;
+		}
+
+		private Object resolveArgument(String beanName, Set<String> autowiredBeans, TypeConverter typeConverter,
+				MethodParameter methodParam, DependencyDescriptor dependencyDescriptor) {
+			try {
+				return this.beanFactory.resolveDependency(dependencyDescriptor, beanName, autowiredBeans,
+						typeConverter);
+			}
+			catch (BeansException ex) {
+				throw new UnsatisfiedDependencyException(null, beanName, new InjectionPoint(methodParam), ex);
+			}
+		}
 
 	}
 
