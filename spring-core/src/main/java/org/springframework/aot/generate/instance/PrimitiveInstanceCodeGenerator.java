@@ -33,8 +33,8 @@ class PrimitiveInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final PrimitiveInstanceCodeGenerator INSTANCE = new PrimitiveInstanceCodeGenerator();
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, Object value,
-			ResolvableType type) {
+	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
+			InstanceCodeGenerationService service) {
 		if (value instanceof Boolean || value instanceof Integer) {
 			return CodeBlock.of("$L", value);
 		}

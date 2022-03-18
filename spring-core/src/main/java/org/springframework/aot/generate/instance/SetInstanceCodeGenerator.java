@@ -26,8 +26,8 @@ import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 
 /**
- * {@link InstanceCodeGenerator} to support {@link Set Sets} and
- * {@link LinkedHashSet LinkedHashSet}.
+ * {@link InstanceCodeGenerator} to support {@link Set Sets} and {@link LinkedHashSet
+ * LinkedHashSet}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -36,22 +36,21 @@ import org.springframework.javapoet.CodeBlock;
  */
 public class SetInstanceCodeGenerator extends CollectionInstanceCodeGenerator<Set<?>> {
 
-	private static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.emptySet()",
-			Collections.class);
+	static final SetInstanceCodeGenerator INSTANCE = new SetInstanceCodeGenerator();
 
-	SetInstanceCodeGenerator(DefaultInstanceCodeGenerationService generators) {
-		super(generators, Set.class, EMPTY_RESULT);
+	SetInstanceCodeGenerator() {
+		super(Set.class, CodeBlock.of("$T.emptySet()", Collections.class));
 	}
 
 	@Override
-	protected CodeBlock generateCollectionCode(String name, Set<?> set,
-			ResolvableType elementType) {
+	protected CodeBlock generateCollectionCode(String name, InstanceCodeGenerationService service,
+			ResolvableType elementType, Set<?> set) {
 		if (set instanceof LinkedHashSet) {
 			return CodeBlock.of("new $T($L)", LinkedHashSet.class,
-					generateCollectionOf(name, set, List.class, elementType));
+					generateCollectionOf(name, set, List.class, elementType, service));
 		}
 		set = orderForCodeConsistency(set);
-		return super.generateCollectionCode(name, set, elementType);
+		return super.generateCollectionCode(name, service, elementType, set);
 	}
 
 	private Set<?> orderForCodeConsistency(Set<?> set) {

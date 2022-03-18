@@ -51,8 +51,8 @@ class CharacterInstanceCodeGenerator implements InstanceCodeGenerator {
 	}
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, @Nullable Object value,
-			ResolvableType type) {
+	public CodeBlock generateCode(@Nullable String name, @Nullable Object value, ResolvableType type,
+			InstanceCodeGenerationService service) {
 		if (value instanceof Character character) {
 			return CodeBlock.of("'$L'", escape(character));
 		}
@@ -64,8 +64,7 @@ class CharacterInstanceCodeGenerator implements InstanceCodeGenerator {
 		if (escaped != null) {
 			return escaped;
 		}
-		return (!Character.isISOControl(ch)) ? Character.toString(ch)
-				: String.format("\\u%04x", (int) ch);
+		return (!Character.isISOControl(ch)) ? Character.toString(ch) : String.format("\\u%04x", (int) ch);
 	}
 
 }

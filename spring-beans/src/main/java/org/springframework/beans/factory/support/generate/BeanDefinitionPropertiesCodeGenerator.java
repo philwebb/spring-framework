@@ -65,31 +65,29 @@ class BeanDefinitionPropertiesCodeGenerator {
 	private final InstanceCodeGenerationService instanceCodeGenerationService;
 
 	BeanDefinitionPropertiesCodeGenerator(GeneratedMethods generatedMethods) {
-		this.generatedMethods=generatedMethods;
+		this.generatedMethods = generatedMethods;
 		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
 	}
 
 	private InstanceCodeGenerationService createInstanceCodeGenerationService(GeneratedMethods generatedMethods) {
 		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(generatedMethods);
-		service.add(new BeanReferenceInstanceCodeGenerator());
-		service.add(new CollectionInstanceCodeGenerator<>(service, ManagedList.class,
-				CodeBlock.of("new $T()", ManagedList.class)));
-		service.add(new CollectionInstanceCodeGenerator<>(service, ManagedSet.class,
-				CodeBlock.of("new $T()", ManagedSet.class)));
-		service.add(new ManagedMapInstanceCodeGenerator(service));
+		service.add(BeanReferenceInstanceCodeGenerator.INSTANCE);
+		service.add(ManagedListInstanceCodeGenerator.INSTANCE);
+		service.add(ManagedSetInstanceCodeGenerator.INSTANCE);
+		service.add(ManagedMapInstanceCodeGenerator.INSTANCE);
 		return service;
 	}
 
-	CodeBlock getCodeBlock(@Nullable String beanName, RootBeanDefinition beanDefinition) {
-		return getCodeBlock(beanName, beanDefinition, (attribute) -> false, null);
+	CodeBlock generateCode(@Nullable String beanName, RootBeanDefinition beanDefinition) {
+		return generateCode(beanName, beanDefinition, (attribute) -> false, null);
 	}
 
-	CodeBlock getCodeBlock(@Nullable String beanName, RootBeanDefinition beanDefinition,
+	CodeBlock generateCode(@Nullable String beanName, RootBeanDefinition beanDefinition,
 			Predicate<String> attributeFilter) {
-		return getCodeBlock(beanName, beanDefinition, attributeFilter, null);
+		return generateCode(beanName, beanDefinition, attributeFilter, null);
 	}
 
-	CodeBlock getCodeBlock(@Nullable String beanName, RootBeanDefinition beanDefinition,
+	CodeBlock generateCode(@Nullable String beanName, RootBeanDefinition beanDefinition,
 			Predicate<String> attributeFilter, @Nullable String variable) {
 		return new PropertiesCodeBlockBuilder(beanDefinition, variable, attributeFilter).build();
 	}
@@ -221,8 +219,11 @@ class BeanDefinitionPropertiesCodeGenerator {
 	 */
 	static class BeanReferenceInstanceCodeGenerator implements InstanceCodeGenerator {
 
+		public static final BeanReferenceInstanceCodeGenerator INSTANCE = new BeanReferenceInstanceCodeGenerator();
+
 		@Override
-		public CodeBlock generateCode(String name, Object value, ResolvableType type) {
+		public CodeBlock generateCode(String name, Object value, ResolvableType type,
+				InstanceCodeGenerationService service) {
 			if (value instanceof BeanReference beanReference) {
 				return CodeBlock.of("new $T($S)", RuntimeBeanReference.class, beanReference.getBeanName());
 			}
@@ -232,27 +233,51 @@ class BeanDefinitionPropertiesCodeGenerator {
 	}
 
 	/**
+	 * {@link InstanceCodeGenerator} for {@link ManagedList} types.
+	 */
+	static class ManagedListInstanceCodeGenerator extends CollectionInstanceCodeGenerator<ManagedList<?>> {
+
+		static final ManagedListInstanceCodeGenerator INSTANCE = new ManagedListInstanceCodeGenerator();
+
+		public ManagedListInstanceCodeGenerator() {
+			super(ManagedList.class, CodeBlock.of("new $T()", ManagedList.class));
+		}
+	}
+
+	/**
+	 * {@link InstanceCodeGenerator} for {@link ManagedSet} types.
+	 */
+	static class ManagedSetInstanceCodeGenerator extends CollectionInstanceCodeGenerator<ManagedSet<?>> {
+
+		static final ManagedSetInstanceCodeGenerator INSTANCE = new ManagedSetInstanceCodeGenerator();
+
+		public ManagedSetInstanceCodeGenerator() {
+			super(ManagedSet.class, CodeBlock.of("new $T()", ManagedSet.class));
+		}
+
+	}
+
+	/**
 	 * {@link InstanceCodeGenerator} for {@link ManagedMap} types.
 	 */
 	static class ManagedMapInstanceCodeGenerator implements InstanceCodeGenerator {
 
+		static final ManagedMapInstanceCodeGenerator INSTANCE = new ManagedMapInstanceCodeGenerator();
+
+
 		private static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.ofEntries()", ManagedMap.class);
 
-		private final InstanceCodeGenerationService codeGenerationService;
-
-		ManagedMapInstanceCodeGenerator(InstanceCodeGenerationService codeGenerationService) {
-			this.codeGenerationService = codeGenerationService;
-		}
-
 		@Override
-		public CodeBlock generateCode(String name, Object value, ResolvableType type) {
+		public CodeBlock generateCode(String name, Object value, ResolvableType type,
+				InstanceCodeGenerationService service) {
 			if (value instanceof ManagedMap<?, ?> managedMap) {
-				return generateMapCode(name, type, managedMap);
+				return generateManagedMapCode(name, type, service, managedMap);
 			}
 			return null;
 		}
 
-		private <K, V> CodeBlock generateMapCode(String name, ResolvableType type, ManagedMap<K, V> managedMap) {
+		private <K, V> CodeBlock generateManagedMapCode(String name, ResolvableType type,
+				InstanceCodeGenerationService service, ManagedMap<K, V> managedMap) {
 			if (managedMap.isEmpty()) {
 				return EMPTY_RESULT;
 			}
@@ -263,8 +288,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 			Iterator<Map.Entry<K, V>> iterator = managedMap.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<?, ?> entry = iterator.next();
-				CodeBlock keyCode = this.codeGenerationService.generateCode(name, entry.getKey(), keyType);
-				CodeBlock valueCode = this.codeGenerationService.generateCode(name, entry.getValue(), valueType);
+				CodeBlock keyCode = service.generateCode(name, entry.getKey(), keyType);
+				CodeBlock valueCode = service.generateCode(name, entry.getValue(), valueType);
 				builder.add("$T.entry($L,$L)", Map.class, keyCode, valueCode);
 				builder.add((!iterator.hasNext()) ? "" : ", ");
 			}
@@ -280,7 +305,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 		}
 
 		@Override
-		public CodeBlock generateCode(String name, Object value, ResolvableType type) {
+		public CodeBlock generateCode(String name, Object value, ResolvableType type,
+				InstanceCodeGenerationService service) {
 			if (type instanceof BeanDefinition beanDefinition) {
 
 			}

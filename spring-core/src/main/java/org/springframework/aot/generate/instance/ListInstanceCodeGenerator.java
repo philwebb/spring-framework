@@ -29,13 +29,11 @@ import org.springframework.javapoet.CodeBlock;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class ListInstanceCodeGenerator
-		extends CollectionInstanceCodeGenerator<List<?>> {
+class ListInstanceCodeGenerator extends CollectionInstanceCodeGenerator<List<?>> {
 
-	private static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.emptyList()",
-			Collections.class);
+	static final ListInstanceCodeGenerator INSTANCE = new ListInstanceCodeGenerator();
 
-	ListInstanceCodeGenerator(DefaultInstanceCodeGenerationService generators) {
-		super(generators, List.class, EMPTY_RESULT);
+	ListInstanceCodeGenerator() {
+		super(List.class, CodeBlock.of("$T.emptyList()", Collections.class));
 	}
 }

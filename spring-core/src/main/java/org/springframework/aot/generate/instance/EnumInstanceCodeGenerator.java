@@ -34,7 +34,7 @@ class EnumInstanceCodeGenerator implements InstanceCodeGenerator {
 
 	@Override
 	public CodeBlock generateCode(@Nullable String name, Object value,
-			ResolvableType type) {
+			ResolvableType type, InstanceCodeGenerationService service) {
 		if (value instanceof Enum<?> enumValue) {
 			return CodeBlock.of("$T.$L", enumValue.getDeclaringClass(),
 					enumValue.name());

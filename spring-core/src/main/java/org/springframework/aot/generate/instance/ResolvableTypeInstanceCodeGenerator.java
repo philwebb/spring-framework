@@ -36,16 +36,15 @@ class ResolvableTypeInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final ResolvableTypeInstanceCodeGenerator INSTANCE = new ResolvableTypeInstanceCodeGenerator();
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, Object value,
-			ResolvableType type) {
+	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
+			InstanceCodeGenerationService service) {
 		if (value instanceof ResolvableType resolvableType) {
 			return generateCode(resolvableType, false);
 		}
 		return null;
 	}
 
-	private CodeBlock generateCode(ResolvableType resolvableType,
-			boolean allowClassResult) {
+	private CodeBlock generateCode(ResolvableType resolvableType, boolean allowClassResult) {
 		if (ResolvableType.NONE.equals(resolvableType)) {
 			return CodeBlock.of("$T.NONE", ResolvableType.class);
 		}
@@ -61,8 +60,7 @@ class ResolvableTypeInstanceCodeGenerator implements InstanceCodeGenerator {
 
 	private CodeBlock generateCodeWithGenerics(ResolvableType target, Class<?> type) {
 		ResolvableType[] generics = target.getGenerics();
-		boolean hasNoNestedGenerics = Arrays.stream(generics).noneMatch(
-				ResolvableType::hasGenerics);
+		boolean hasNoNestedGenerics = Arrays.stream(generics).noneMatch(ResolvableType::hasGenerics);
 		CodeBlock.Builder builder = CodeBlock.builder();
 		builder.add("$T.forClassWithGenerics($T.class", ResolvableType.class, type);
 		for (ResolvableType generic : generics) {

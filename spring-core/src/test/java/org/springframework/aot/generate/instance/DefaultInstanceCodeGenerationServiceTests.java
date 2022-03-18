@@ -94,7 +94,7 @@ class DefaultInstanceCodeGenerationServiceTests {
 	void addWhenExistingGeneratorAddsAbove() {
 		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService();
 		CodeBlock block = CodeBlock.of("tset");
-		service.add((name, value, type) -> "test".equals(value) ? block : null);
+		service.add((name, value, type, service2) -> "test".equals(value) ? block : null);
 		assertThat(service.generateCode("test")).isSameAs(block);
 	}
 
@@ -144,7 +144,7 @@ class DefaultInstanceCodeGenerationServiceTests {
 		InstanceCodeGenerator generator1 = mock(InstanceCodeGenerator.class);
 		InstanceCodeGenerator generator2 = mock(InstanceCodeGenerator.class);
 		CodeBlock block = CodeBlock.of("test");
-		given(generator1.generateCode(null, "test", ResolvableType.forClass(String.class))).willReturn(block);
+		given(generator1.generateCode(null, "test", ResolvableType.forClass(String.class), service)).willReturn(block);
 		service.add(generator2); // Adds have higher priority
 		service.add(generator1);
 		assertThat(service.generateCode("test")).isSameAs(block);
@@ -177,7 +177,8 @@ class DefaultInstanceCodeGenerationServiceTests {
 	private static class TestInstanceCodeGenerator implements InstanceCodeGenerator {
 
 		@Override
-		public CodeBlock generateCode(String name, Object value, ResolvableType type) {
+		public CodeBlock generateCode(String name, Object value, ResolvableType type,
+				InstanceCodeGenerationService service) {
 			return (value instanceof TestInstance) ? CodeBlock.of("test") : null;
 		}
 

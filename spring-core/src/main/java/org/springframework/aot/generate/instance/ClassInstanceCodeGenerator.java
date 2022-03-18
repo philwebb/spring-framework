@@ -34,8 +34,8 @@ class ClassInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final ClassInstanceCodeGenerator INSTANCE = new ClassInstanceCodeGenerator();
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, Object value,
-			ResolvableType type) {
+	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
+			InstanceCodeGenerationService service) {
 		if (value instanceof Class<?> clazz) {
 			return CodeBlock.of("$T.class", ClassUtils.getUserClass(clazz));
 		}
