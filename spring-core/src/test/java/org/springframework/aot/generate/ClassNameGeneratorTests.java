@@ -65,14 +65,14 @@ class ClassNameGeneratorTests {
 	void generateClassNameWithClassGeneratesName() {
 		GeneratedClassName generated = this.generator.generateClassName(InputStream.class,
 				"Bytes");
-		assertThat(generated).hasToString("java.io.InputStream$$Bytes");
+		assertThat(generated).hasToString("java.io.InputStream__Bytes");
 	}
 
 	@Test
 	void generateClassNameWithClassWhenLowercaseFeatureNameGeneratesName() {
 		GeneratedClassName generated = this.generator.generateClassName(InputStream.class,
 				"bytes");
-		assertThat(generated).hasToString("java.io.InputStream$$Bytes");
+		assertThat(generated).hasToString("java.io.InputStream__Bytes");
 	}
 
 	@Test
@@ -81,7 +81,7 @@ class ClassNameGeneratorTests {
 				"EventListener");
 		assertThat(generated).hasToString(
 				"org.springframework.aot.generate.ClassNameGeneratorTests$"
-						+ "TestBean$$EventListener");
+						+ "TestBean__EventListener");
 	}
 
 	@Test
@@ -92,23 +92,23 @@ class ClassNameGeneratorTests {
 				InputStream.class, "bytes");
 		GeneratedClassName generated3 = this.generator.generateClassName(
 				InputStream.class, "bytes");
-		assertThat(generated1).hasToString("java.io.InputStream$$Bytes");
-		assertThat(generated2).hasToString("java.io.InputStream$$Bytes1");
-		assertThat(generated3).hasToString("java.io.InputStream$$Bytes2");
+		assertThat(generated1).hasToString("java.io.InputStream__Bytes");
+		assertThat(generated2).hasToString("java.io.InputStream__Bytes1");
+		assertThat(generated3).hasToString("java.io.InputStream__Bytes2");
 	}
 
 	@Test
 	void generateClassNameWithNonClassGeneratesNameUsingOnlyLetters() {
 		GeneratedClassName generated = this.generator.generateClassName(
 				"my-bean--factoryStuff", "beans");
-		assertThat(generated).hasToString("$$.MyBeanFactoryStuff$$Beans");
+		assertThat(generated).hasToString("__.MyBeanFactoryStuff__Beans");
 	}
 
 	@Test
 	void generateClassNameWithNonClassWhenNoLettersGeneratesAotName() {
 		GeneratedClassName generated = this.generator.generateClassName("1234!@#",
 				"beans");
-		assertThat(generated).hasToString("$$.Aot$$Beans");
+		assertThat(generated).hasToString("__.Aot__Beans");
 	}
 
 	static class TestBean {

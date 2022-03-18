@@ -87,10 +87,6 @@ public class SuppliedRootBeanDefinitionBuilder {
 		this.beanType = beanType;
 	}
 
-	public RootBeanDefinition using(Supplier<?> instanceSupplier) {
-		return usingConstructor().suppliedBy(instanceSupplier);
-	}
-
 	/**
 	 * Build the definition using annotations and meta-data from the identified
 	 * constructor.
@@ -151,7 +147,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 		 * the bean instance by calling the appropriate constructor or factory method.
 		 * @return the built root bean definition
 		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
-		 * @see #suppliedBy(ThrowableSupplier)
+		 * @see #resolvedBy(ThrowableSupplier)
 		 */
 		public RootBeanDefinition resolvedBy(DefaultListableBeanFactory beanFactory,
 				ThrowableFunction<Object[], Object> instantiator) {
@@ -168,7 +164,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 		 * or factory method.
 		 * @return the built root bean definition
 		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
-		 * @see #suppliedBy(ThrowableSupplier)
+		 * @see #resolvedBy(ThrowableSupplier)
 		 */
 		public RootBeanDefinition resolvedBy(DefaultListableBeanFactory beanFactory,
 				ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
@@ -185,7 +181,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
 		 * @see #resolvedBy(DefaultListableBeanFactory, ThrowableBiFunction)
 		 */
-		public RootBeanDefinition suppliedBy(Supplier<Object> supplier) {
+		public RootBeanDefinition resolvedBy(Supplier<Object> supplier) {
 			RootBeanDefinition beanDefinition = createBeanDefinition();
 			beanDefinition.setInstanceSupplier(supplier);
 			return beanDefinition;

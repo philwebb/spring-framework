@@ -28,14 +28,14 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Default implementation of {@link InstanceCodeGenerationService} backed by a
- * collection of {@link InstanceCodeGenerator} instances.
+ * Default implementation of {@link InstanceCodeGenerationService} backed by a collection
+ * of {@link InstanceCodeGenerator} instances.
  * <p>
  * By default, the following instance value types are supported:
  * <ul>
  * <li>{@link Character}</li>
- * <li>Primitives ({@link Boolean}, {@link Byte}, {@link Short},
- * {@link Integer}, {@link Long})</li>
+ * <li>Primitives ({@link Boolean}, {@link Byte}, {@link Short}, {@link Integer},
+ * {@link Long})</li>
  * <li>{@link String}</li>
  * <li>{@link Enum}</li>
  * <li>{@link Class}</li>
@@ -45,27 +45,27 @@ import org.springframework.util.Assert;
  * <li>{@link List}</li>
  * <li>{@link Map}</li>
  * </ul>
- * Set the {@code addDefaultGenerators} constructor parameter to {@code false}
- * if these are not required. Additional {@link InstanceCodeGenerator}
- * implementations can be {@link #add(InstanceCodeGenerator) added} to support
- * other types.
+ * Set the {@code addDefaultGenerators} constructor parameter to {@code false} if these
+ * are not required. Additional {@link InstanceCodeGenerator} implementations can be
+ * {@link #add(InstanceCodeGenerator) added} to support other types.
  * <p>
- * If no additional {@link InstanceCodeGenerator} implementations are needed
- * then the {@link InstanceCodeGenerationService#getSharedInstance()} may be
- * used.
+ * If no additional {@link InstanceCodeGenerator} implementations are needed then the
+ * {@link InstanceCodeGenerationService#getSharedInstance()} may be used.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class DefaultInstanceCodeGenerationService
-		implements InstanceCodeGenerationService {
+public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerationService {
 
 	private static final DefaultInstanceCodeGenerationService SHARED_INSTANCE = new DefaultInstanceCodeGenerationService(
-			null, true, true);
+			null, null, true, true);
 
 	static final CodeBlock NULL_INSTANCE_CODE_BLOCK = CodeBlock.of("null");
+
+	@Nullable
+	private final InstanceCodeGenerationService parent;
 
 	@Nullable
 	private final GeneratedMethods generatedMethods;
@@ -74,24 +74,47 @@ public class DefaultInstanceCodeGenerationService
 
 	private final List<InstanceCodeGenerator> generators = new ArrayList<>();
 
+	/**
+	 * Crate a new {@link DefaultInstanceCodeGenerationService} with a default set of
+	 * generators.
+	 */
 	public DefaultInstanceCodeGenerationService() {
-		this(null, true);
+		this(null, null, true, false);
 	}
 
-	public DefaultInstanceCodeGenerationService(
-			@Nullable GeneratedMethods generatedMethods) {
-		this(generatedMethods, true);
+	/**
+	 * Create a new {@link DefaultInstanceCodeGenerationService} with a parent
+	 * {@link InstanceCodeGenerationService}.
+	 * @param parent the parent {@link InstanceCodeGenerationService}
+	 */
+	public DefaultInstanceCodeGenerationService(InstanceCodeGenerationService parent) {
+		this(parent, null, false, false);
 	}
 
-	public DefaultInstanceCodeGenerationService(
-			@Nullable GeneratedMethods generatedMethods, boolean addDefaultGenerators) {
-		this(generatedMethods, addDefaultGenerators, false);
+	/**
+	 * Create a new {@link DefaultInstanceCodeGenerationService} with the specified
+	 * {@link GeneratedMethods} and a default set of generators.
+	 * @param generatedMethods the generated method instance to use
+	 */
+	public DefaultInstanceCodeGenerationService(@Nullable GeneratedMethods generatedMethods) {
+		this(null, generatedMethods, true, false);
 	}
 
-	private DefaultInstanceCodeGenerationService(
-			@Nullable GeneratedMethods generatedMethods, boolean addDefaultGenerators,
-			boolean sharedInstance) {
-		this.generatedMethods = generatedMethods;
+	/**
+	 * Create a new {@link DefaultInstanceCodeGenerationService} with the specified
+	 * {@link GeneratedMethods} and default or empty set of generators.
+	 * @param generatedMethods the generated method instance to use
+	 * @param addDefaultGenerators if default generates should be added
+	 */
+	public DefaultInstanceCodeGenerationService(@Nullable GeneratedMethods generatedMethods,
+			boolean addDefaultGenerators) {
+		this(null, generatedMethods, addDefaultGenerators, false);
+	}
+
+	private DefaultInstanceCodeGenerationService(@Nullable InstanceCodeGenerationService parent,
+			@Nullable GeneratedMethods generatedMethods, boolean addDefaultGenerators, boolean sharedInstance) {
+		this.parent = parent;
+		this.generatedMethods = (generatedMethods != null) ? generatedMethods : getGeneratedMethodsFromParent(parent);
 		this.sharedInstance = sharedInstance;
 		if (addDefaultGenerators) {
 			this.generators.add(CharacterInstanceCodeGenerator.INSTANCE);
@@ -107,10 +130,15 @@ public class DefaultInstanceCodeGenerationService
 		}
 	}
 
+	@Nullable
+	private GeneratedMethods getGeneratedMethodsFromParent(InstanceCodeGenerationService parent) {
+		return (parent != null && parent.supportsGeneratedMethods()) ? parent.getGeneratedMethods() : null;
+	}
+
 	/**
-	 * Return a shared instance of {@link DefaultInstanceCodeGenerationService}
-	 * that can be used when no addition {@link InstanceCodeGenerator
-	 * InstanceCodeGenerators} are required.
+	 * Return a shared instance of {@link DefaultInstanceCodeGenerationService} that can
+	 * be used when no addition {@link InstanceCodeGenerator InstanceCodeGenerators} are
+	 * required.
 	 * @return the shared {@link DefaultInstanceCodeGenerationService} instance
 	 */
 	static DefaultInstanceCodeGenerationService getSharedInstance() {
@@ -118,8 +146,8 @@ public class DefaultInstanceCodeGenerationService
 	}
 
 	/**
-	 * Add a new {@link InstanceCodeGenerator} to this service. Added generators
-	 * take precedence over existing generators.
+	 * Add a new {@link InstanceCodeGenerator} to this service. Added generators take
+	 * precedence over existing generators.
 	 * @param generator the generator to add
 	 */
 	public void add(InstanceCodeGenerator generator) {
@@ -136,14 +164,12 @@ public class DefaultInstanceCodeGenerationService
 
 	@Override
 	public GeneratedMethods getGeneratedMethods() {
-		Assert.state(this.generatedMethods != null,
-				"No GeneratedMethods instance available");
+		Assert.state(this.generatedMethods != null, "No GeneratedMethods instance available");
 		return this.generatedMethods;
 	}
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, @Nullable Object value,
-			ResolvableType type) {
+	public CodeBlock generateCode(@Nullable String name, @Nullable Object value, ResolvableType type) {
 		if (value == null) {
 			return NULL_INSTANCE_CODE_BLOCK;
 		}
@@ -153,8 +179,10 @@ public class DefaultInstanceCodeGenerationService
 				return code;
 			}
 		}
-		throw new IllegalArgumentException(
-				"'type' " + type + " must be supported for instance code generation");
+		if (this.parent != null) {
+			return this.parent.generateCode(name, value, type);
+		}
+		throw new IllegalArgumentException("'type' " + type + " must be supported for instance code generation");
 	}
 
 }

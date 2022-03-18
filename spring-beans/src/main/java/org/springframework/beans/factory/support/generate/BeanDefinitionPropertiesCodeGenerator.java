@@ -24,6 +24,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.instance.CollectionInstanceCodeGenerator;
 import org.springframework.aot.generate.instance.DefaultInstanceCodeGenerationService;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
@@ -59,14 +60,17 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	private static final String DEFAULT_VARIABLE = "beanDefinition";
 
+	private final GeneratedMethods generatedMethods;
+
 	private final InstanceCodeGenerationService instanceCodeGenerationService;
 
-	BeanDefinitionPropertiesCodeGenerator() {
-		this.instanceCodeGenerationService = createInstanceCodeGenerationService();
+	BeanDefinitionPropertiesCodeGenerator(GeneratedMethods generatedMethods) {
+		this.generatedMethods=generatedMethods;
+		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
 	}
 
-	private InstanceCodeGenerationService createInstanceCodeGenerationService() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService();
+	private InstanceCodeGenerationService createInstanceCodeGenerationService(GeneratedMethods generatedMethods) {
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(generatedMethods);
 		service.add(new BeanReferenceInstanceCodeGenerator());
 		service.add(new CollectionInstanceCodeGenerator<>(service, ManagedList.class,
 				CodeBlock.of("new $T()", ManagedList.class)));
@@ -76,16 +80,17 @@ class BeanDefinitionPropertiesCodeGenerator {
 		return service;
 	}
 
-	CodeBlock getCodeBlock(RootBeanDefinition beanDefinition) {
-		return getCodeBlock(beanDefinition, (attribute) -> false, null);
+	CodeBlock getCodeBlock(@Nullable String beanName, RootBeanDefinition beanDefinition) {
+		return getCodeBlock(beanName, beanDefinition, (attribute) -> false, null);
 	}
 
-	CodeBlock getCodeBlock(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter) {
-		return getCodeBlock(beanDefinition, attributeFilter, null);
+	CodeBlock getCodeBlock(@Nullable String beanName, RootBeanDefinition beanDefinition,
+			Predicate<String> attributeFilter) {
+		return getCodeBlock(beanName, beanDefinition, attributeFilter, null);
 	}
 
-	CodeBlock getCodeBlock(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter,
-			@Nullable String variable) {
+	CodeBlock getCodeBlock(@Nullable String beanName, RootBeanDefinition beanDefinition,
+			Predicate<String> attributeFilter, @Nullable String variable) {
 		return new PropertiesCodeBlockBuilder(beanDefinition, variable, attributeFilter).build();
 	}
 
@@ -265,6 +270,21 @@ class BeanDefinitionPropertiesCodeGenerator {
 			}
 			builder.add(")");
 			return builder.build();
+		}
+
+	}
+
+	class BeanDefinitionInstanceCodeGenerator implements InstanceCodeGenerator {
+
+		public BeanDefinitionInstanceCodeGenerator(@Nullable String beanName) {
+		}
+
+		@Override
+		public CodeBlock generateCode(String name, Object value, ResolvableType type) {
+			if (type instanceof BeanDefinition beanDefinition) {
+
+			}
+			return null;
 		}
 
 	}
