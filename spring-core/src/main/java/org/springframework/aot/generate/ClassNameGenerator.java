@@ -37,6 +37,8 @@ import org.springframework.util.StringUtils;
  */
 public final class ClassNameGenerator {
 
+	private static final String SEPARATOR = "__";
+
 	private final Map<String, AtomicInteger> sequenceGenerator = new ConcurrentHashMap<>();
 
 	/**
@@ -55,7 +57,7 @@ public final class ClassNameGenerator {
 				"'featureName' must contain only letters");
 		String rootName = getRootName(name);
 		String generatedName = addSequence(
-				rootName + "$$" + StringUtils.capitalize(featureName));
+				rootName + SEPARATOR + StringUtils.capitalize(featureName));
 		return new GeneratedClassName(generatedName);
 	}
 
@@ -73,7 +75,7 @@ public final class ClassNameGenerator {
 			rootName.append(lastNotLetter ? Character.toUpperCase(ch) : ch);
 			lastNotLetter = false;
 		}
-		return (!rootName.isEmpty()) ? "$$." + rootName : "$$.Aot";
+		return SEPARATOR + "." +((!rootName.isEmpty()) ?  rootName : "Aot");
 	}
 
 	private String addSequence(String name) {

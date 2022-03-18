@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package __;
 
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.generator.config.BeanDefinitionRegistrar;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -27,17 +25,18 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
  * {@link DefaultListableBeanFactoryInitializer} for the {@literal "default"}
  * {@link BeanFactory}.
  */
-public class Default$$BeanRegistrations implements DefaultListableBeanFactoryInitializer {
+public class Default__BeanRegistrations implements DefaultListableBeanFactoryInitializer {
 
 	@Override
 	public void initialize(DefaultListableBeanFactory beanFactory) {
 		registerMyBeanBeanDefinition(beanFactory);
 		registerMyOtherBeanBeanDefinition(beanFactory);
+		registerMyOuterBeanBeanDefinition(beanFactory);
 	}
 
 	private void registerMyBeanBeanDefinition(DefaultListableBeanFactory beanFactory) {
 		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyBean.class).usingConstructor()
-				.suppliedBy(MyBean::new);
+				.resolvedBy(MyBean::new);
 		beanFactory.registerBeanDefinition("myBean", beanDefinition);
 	}
 
@@ -48,8 +47,14 @@ public class Default$$BeanRegistrations implements DefaultListableBeanFactoryIni
 		beanFactory.registerBeanDefinition("myOtherBean", beanDefinition);
 	}
 
-	private void registerThingWithInnerBean(DefaultListableBeanFactory beanFactory) {
-		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyOuterBean.class).using(MyOuterBean::new);
+	private void registerMyOuterBeanBeanDefinition(DefaultListableBeanFactory beanFactory) {
+		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyOuterBean.class).usingConstructor()
+				.resolvedBy(MyOuterBean::new);
+		beanDefinition.getPropertyValues().add("myBean", createMyOuterBeanMyBeanBeanDefinition());
+	}
+
+	private RootBeanDefinition createMyOuterBeanMyBeanBeanDefinition() {
+		return RootBeanDefinition.supply(MyBean.class).usingConstructor().resolvedBy(MyBean::new);
 	}
 
 	private MyOtherBean createMyOtherBeanInstance(Object[] args) {

@@ -28,6 +28,7 @@ import javax.lang.model.element.Modifier;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -46,6 +47,7 @@ import org.springframework.javapoet.ParameterizedTypeName;
 import org.springframework.javapoet.TypeSpec;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link BeanDefinitionPropertiesCodeGenerator}.
@@ -53,11 +55,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Nested
 class BeanDefinitionPropertiesCodeGeneratorTests {
 
-	// FIXME BeanDefinition
-
 	private RootBeanDefinition beanDefinition = new RootBeanDefinition();
 
-	private BeanDefinitionPropertiesCodeGenerator generator = new BeanDefinitionPropertiesCodeGenerator();
+	private GeneratedMethods generatedMethods = new GeneratedMethods();
+
+	private BeanDefinitionPropertiesCodeGenerator generator = new BeanDefinitionPropertiesCodeGenerator(
+			this.generatedMethods);
 
 	@Test
 	void setPrimaryWhenFalse() {
@@ -280,8 +283,13 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 		testCompiledResult((actual, compiled) -> {
 			Object value = actual.getPropertyValues().get("value");
 			assertThat(value).isInstanceOf(ManagedMap.class);
-			assertThat(((Map<?,?>)value).get("test")).isInstanceOf(BeanReference.class);
+			assertThat(((Map<?, ?>) value).get("test")).isInstanceOf(BeanReference.class);
 		});
+	}
+
+	@Test
+	void propertyValuesWhenContainsBeanDefinition() {
+		fail();
 	}
 
 	@Test
@@ -324,12 +332,12 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 
 	private void testCompiledResult(RootBeanDefinition beanDefinition,
 			BiConsumer<RootBeanDefinition, Compiled> result) {
-		testCompiledResult(() -> this.generator.getCodeBlock(beanDefinition), result);
+		testCompiledResult(() -> this.generator.getCodeBlock("test", beanDefinition), result);
 	}
 
 	private void testCompiledResult(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter,
 			BiConsumer<RootBeanDefinition, Compiled> result) {
-		testCompiledResult(() -> this.generator.getCodeBlock(beanDefinition, attributeFilter), result);
+		testCompiledResult(() -> this.generator.getCodeBlock("test", beanDefinition, attributeFilter), result);
 	}
 
 	private void testCompiledResult(Supplier<CodeBlock> codeBlock, BiConsumer<RootBeanDefinition, Compiled> result) {
