@@ -24,57 +24,45 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.lang.Nullable;
 
-public class CollectionInstanceCodeGenerator<T extends Collection<?>>
-		implements InstanceCodeGenerator {
-
-	private final InstanceCodeGenerationService codeGenerationService;
+public class CollectionInstanceCodeGenerator<T extends Collection<?>> implements InstanceCodeGenerator {
 
 	private final Class<?> collectionType;
 
 	private final CodeBlock emptyResult;
 
-	public CollectionInstanceCodeGenerator(
-			InstanceCodeGenerationService codeGenerationService, Class<?> collectionType,
-			CodeBlock emptyResult) {
-		this.codeGenerationService = codeGenerationService;
+	public CollectionInstanceCodeGenerator(Class<?> collectionType, CodeBlock emptyResult) {
 		this.collectionType = collectionType;
 		this.emptyResult = emptyResult;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public CodeBlock generateCode(@Nullable String name, Object value,
-			ResolvableType type) {
+	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
+			InstanceCodeGenerationService service) {
 		if (this.collectionType.isInstance(value)) {
 			T collection = (T) value;
-			return generateCollectionCode(name, type, collection);
+			if (collection.isEmpty()) {
+				return this.emptyResult;
+			}
+			ResolvableType elementType = type.as(this.collectionType).getGeneric();
+			return generateCollectionCode(name, service, elementType, collection);
 		}
 		return null;
 	}
 
-	private CodeBlock generateCollectionCode(String name, ResolvableType type,
-			T collection) {
-		if (collection.isEmpty()) {
-			return this.emptyResult;
-		}
-		ResolvableType elementType = type.as(this.collectionType).getGeneric();
-		return generateCollectionCode(name, collection, elementType);
+	protected CodeBlock generateCollectionCode(String name, InstanceCodeGenerationService service,
+			ResolvableType elementType, T collection) {
+		return generateCollectionOf(name, collection, this.collectionType, elementType, service);
 	}
 
-	protected CodeBlock generateCollectionCode(String name, T collection,
-			ResolvableType elementType) {
-		return generateCollectionOf(name, collection, this.collectionType, elementType);
-	}
-
-	protected final CodeBlock generateCollectionOf(String name, Collection<?> collection,
-			Class<?> collectionType, ResolvableType elementType) {
+	protected final CodeBlock generateCollectionOf(String name, Collection<?> collection, Class<?> collectionType,
+			ResolvableType elementType, InstanceCodeGenerationService service) {
 		Builder builder = CodeBlock.builder();
 		builder.add("$T.of(", collectionType);
 		Iterator<?> iterator = collection.iterator();
 		while (iterator.hasNext()) {
 			Object element = iterator.next();
-			CodeBlock elementCode = this.codeGenerationService.generateCode(name, element,
-					elementType);
+			CodeBlock elementCode = service.generateCode(name, element, elementType);
 			builder.add("$L", elementCode);
 			builder.add((!iterator.hasNext()) ? "" : ", ");
 		}

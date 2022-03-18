@@ -34,7 +34,7 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see DefaultInstanceCodeGenerationService
  */
-public interface InstanceCodeGenerationService {
+public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGenerator> {
 
 	/**
 	 * Return a shared instance backed by the

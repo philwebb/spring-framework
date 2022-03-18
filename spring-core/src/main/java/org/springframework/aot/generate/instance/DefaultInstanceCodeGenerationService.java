@@ -17,6 +17,8 @@
 package org.springframework.aot.generate.instance;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,7 +67,7 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	static final CodeBlock NULL_INSTANCE_CODE_BLOCK = CodeBlock.of("null");
 
 	@Nullable
-	private final InstanceCodeGenerationService parent;
+	private final DefaultInstanceCodeGenerationService parent;
 
 	@Nullable
 	private final GeneratedMethods generatedMethods;
@@ -87,7 +89,7 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	 * {@link InstanceCodeGenerationService}.
 	 * @param parent the parent {@link InstanceCodeGenerationService}
 	 */
-	public DefaultInstanceCodeGenerationService(InstanceCodeGenerationService parent) {
+	public DefaultInstanceCodeGenerationService(DefaultInstanceCodeGenerationService parent) {
 		this(parent, null, false, false);
 	}
 
@@ -111,7 +113,7 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 		this(null, generatedMethods, addDefaultGenerators, false);
 	}
 
-	private DefaultInstanceCodeGenerationService(@Nullable InstanceCodeGenerationService parent,
+	private DefaultInstanceCodeGenerationService(@Nullable DefaultInstanceCodeGenerationService parent,
 			@Nullable GeneratedMethods generatedMethods, boolean addDefaultGenerators, boolean sharedInstance) {
 		this.parent = parent;
 		this.generatedMethods = (generatedMethods != null) ? generatedMethods : getGeneratedMethodsFromParent(parent);
@@ -123,10 +125,10 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 			this.generators.add(EnumInstanceCodeGenerator.INSTANCE);
 			this.generators.add(ClassInstanceCodeGenerator.INSTANCE);
 			this.generators.add(ResolvableTypeInstanceCodeGenerator.INSTANCE);
-			this.generators.add(new ArrayInstanceCodeGenerator(this));
-			this.generators.add(new ListInstanceCodeGenerator(this));
-			this.generators.add(new SetInstanceCodeGenerator(this));
-			this.generators.add(new MapInstanceCodeGenerator(this));
+			this.generators.add(ArrayInstanceCodeGenerator.INSTANCE);
+			this.generators.add(ListInstanceCodeGenerator.INSTANCE);
+			this.generators.add(SetInstanceCodeGenerator.INSTANCE);
+			this.generators.add(MapInstanceCodeGenerator.INSTANCE);
 		}
 	}
 
@@ -173,16 +175,21 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 		if (value == null) {
 			return NULL_INSTANCE_CODE_BLOCK;
 		}
-		for (InstanceCodeGenerator generator : this.generators) {
-			CodeBlock code = generator.generateCode(name, value, type);
-			if (code != null) {
-				return code;
+		DefaultInstanceCodeGenerationService service = this;
+		while (service != null) {
+			for (InstanceCodeGenerator generator : service.generators) {
+				CodeBlock code = generator.generateCode(name, value, type, service);
+				if (code != null) {
+					return code;
+				}
 			}
-		}
-		if (this.parent != null) {
-			return this.parent.generateCode(name, value, type);
+			service = service.parent;
 		}
 		throw new IllegalArgumentException("'type' " + type + " must be supported for instance code generation");
 	}
 
+	@Override
+	public Iterator<InstanceCodeGenerator> iterator() {
+		return Collections.unmodifiableList(this.generators).iterator();
+	}
 }
