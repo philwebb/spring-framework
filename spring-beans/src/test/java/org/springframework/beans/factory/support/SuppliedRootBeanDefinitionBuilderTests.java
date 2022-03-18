@@ -50,6 +50,8 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.ThrowableBiFunction;
 
@@ -83,8 +85,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void createWhenClassTypeIsNullThrowsException() {
-		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder((Class<?>) null))
+		assertThatIllegalArgumentException().isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder((Class<?>) null))
 				.withMessage("'beanType' must not be null");
 	}
 
@@ -104,22 +105,20 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void usingConstructorWhenNoConstructorFoundThrowsException() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(
-				SingleArgConstructor.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(SingleArgConstructor.class);
 		assertThatIllegalArgumentException().isThrownBy(() -> builder.usingConstructor(Integer.class)).withMessage(
 				"No constructor with type(s) [java.lang.Integer] found on " + SingleArgConstructor.class.getName());
 	}
 
 	@Test
 	void usingConstructorWhenFound() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(
-				SingleArgConstructor.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(SingleArgConstructor.class);
 		assertThat(builder.usingConstructor(String.class)).isNotNull();
 	}
 
 	@Test
 	void usingMethodWhenNoMethodFoundThrowsException() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder( String.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(String.class);
 		assertThatIllegalArgumentException()
 				.isThrownBy(() -> builder.usingFactoryMethod(SingleArgFactory.class, "single", Integer.class))
 				.withMessage("No method 'single' with type(s) [java.lang.Integer] found on "
@@ -129,7 +128,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	@Test
 	void usingWhenMethodOnInterface() {
 		this.beanFactory.registerSingleton("factory", new MethodOnInterfaceImpl());
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder( String.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(String.class);
 		Using using = builder.usingFactoryMethod(MethodOnInterface.class, "test");
 		Instantiator instantiator = new Instantiator(using);
 		assertThat(using.resolvedBy(this.beanFactory, instantiator).getInstanceSupplier().get()).isEqualTo("Test");
@@ -137,7 +136,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@Test
 	void usingMethodWhenFound() {
-		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder( String.class);
+		SuppliedRootBeanDefinitionBuilder builder = new SuppliedRootBeanDefinitionBuilder(String.class);
 		assertThat(builder.usingFactoryMethod(SingleArgFactory.class, "single", String.class)).isNotNull();
 	}
 
@@ -159,6 +158,12 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 	@ParameterizedTestUsing(Source.SINGLE_ARG)
 	void resolveSingleArgConstructor(Using using) {
+		this.beanFactory.registerSingleton("one", "1");
+		assertThat(new Instantiator(using).apply()).containsExactly("1");
+	}
+
+	@ParameterizedTestUsing(Source.INNER_CLASS_SINGLE_ARG)
+	void resolvedNestedSingleArgConstructor(Using using) {
 		this.beanFactory.registerSingleton("one", "1");
 		assertThat(new Instantiator(using).apply()).containsExactly("1");
 	}
@@ -386,14 +391,25 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 		},
 
+		INNER_CLASS_SINGLE_ARG {
+
+			@Override
+			protected void setup() {
+				add(RootBeanDefinition.supply(Enclosing.InnerSingleArgConstructor.class)
+						.usingConstructor(String.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(Enclosing.InnerSingleArgFactory.class,
+						"single", String.class));
+			}
+
+		},
+
 		ARRAY_OF_BEANS {
 
 			@Override
 			protected void setup() {
-				add(RootBeanDefinition.supply(BeansCollectionConstructor.class)
-						.usingConstructor(String[].class));
-				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
-						"array", String[].class));
+				add(RootBeanDefinition.supply(BeansCollectionConstructor.class).usingConstructor(String[].class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class, "array",
+						String[].class));
 			}
 
 		},
@@ -403,8 +419,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			@Override
 			protected void setup() {
 				add(RootBeanDefinition.supply(BeansCollectionConstructor.class).usingConstructor(List.class));
-				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
-						"list", List.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class, "list",
+						List.class));
 			}
 
 		},
@@ -414,8 +430,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			@Override
 			protected void setup() {
 				add(RootBeanDefinition.supply(BeansCollectionConstructor.class).usingConstructor(Set.class));
-				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
-						"set", Set.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class, "set",
+						Set.class));
 			}
 
 		},
@@ -425,8 +441,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			@Override
 			protected void setup() {
 				add(RootBeanDefinition.supply(BeansCollectionConstructor.class).usingConstructor(Map.class));
-				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class,
-						"map", Map.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(BeansCollectionFactory.class, "map",
+						Map.class));
 			}
 
 		},
@@ -437,8 +453,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			protected void setup() {
 				add(RootBeanDefinition.supply(MultiArgsConstructor.class).usingConstructor(ResourceLoader.class,
 						Environment.class, ObjectProvider.class));
-				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(MultiArgsFactory.class,
-						"multiArgs", ResourceLoader.class, Environment.class, ObjectProvider.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(MultiArgsFactory.class, "multiArgs",
+						ResourceLoader.class, Environment.class, ObjectProvider.class));
 			}
 
 		},
@@ -449,8 +465,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			protected void setup() {
 				add(RootBeanDefinition.supply(MixedArgsConstructor.class).usingConstructor(ResourceLoader.class,
 						String.class, Environment.class));
-				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(MixedArgsFactory.class,
-						"mixedArgs", ResourceLoader.class, String.class, Environment.class));
+				add(RootBeanDefinition.supply(String.class).usingFactoryMethod(MixedArgsFactory.class, "mixedArgs",
+						ResourceLoader.class, String.class, Environment.class));
 			}
 
 		};
@@ -513,7 +529,12 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		public Object applyWithException(BeanFactory beanFactory, Object[] arguments) throws Exception {
 			this.arguments = arguments;
 			Executable executable = this.using.getExecutable();
+			Class<?> declaringClass = executable.getDeclaringClass();
 			if (executable instanceof Constructor<?> constructor) {
+				if (ClassUtils.isInnerClass(declaringClass)) {
+					Object enclosingInstance = createInstance(declaringClass.getEnclosingClass());
+					arguments = ObjectUtils.addObjectToArray(arguments, enclosingInstance, 0);
+				}
 				ReflectionUtils.makeAccessible(constructor);
 				return constructor.newInstance(arguments);
 			}
@@ -525,17 +546,25 @@ class SuppliedRootBeanDefinitionBuilderTests {
 			throw new IllegalStateException();
 		}
 
-		private Object getFactoryMethodTarget(BeanFactory beanFactory, Method method)
-				throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-				InvocationTargetException, NoSuchMethodException, SecurityException {
+		private Object getFactoryMethodTarget(BeanFactory beanFactory, Method method) throws Exception {
+			Class<?> declaringClass = method.getDeclaringClass();
 			try {
-				return beanFactory.getBean(method.getDeclaringClass());
+				return beanFactory.getBean(declaringClass);
 			}
 			catch (NoSuchBeanDefinitionException ex) {
-				Constructor<?> constructor = method.getDeclaringClass().getDeclaredConstructor();
+				return createInstance(declaringClass);
+			}
+		}
+
+		private Object createInstance(Class<?> clazz) throws Exception {
+			if (!ClassUtils.isInnerClass(clazz)) {
+				Constructor<?> constructor = clazz.getDeclaredConstructor();
 				ReflectionUtils.makeAccessible(constructor);
 				return constructor.newInstance();
 			}
+			Class<?> enclosingClass = clazz.getEnclosingClass();
+			Constructor<?> constructor = clazz.getDeclaredConstructor(enclosingClass);
+			return constructor.newInstance(createInstance(enclosingClass));
 		}
 
 	}
@@ -555,6 +584,25 @@ class SuppliedRootBeanDefinitionBuilderTests {
 
 		String single(String s) {
 			return s;
+		}
+
+	}
+
+	static class Enclosing {
+
+		class InnerSingleArgConstructor {
+
+			InnerSingleArgConstructor(String s) {
+			}
+
+		}
+
+		class InnerSingleArgFactory {
+
+			String single(String s) {
+				return s;
+			}
+
 		}
 
 	}
