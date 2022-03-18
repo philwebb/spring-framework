@@ -43,6 +43,8 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.ThrowableBiFunction;
 import org.springframework.util.function.ThrowableFunction;
@@ -96,7 +98,12 @@ public class SuppliedRootBeanDefinitionBuilder {
 	 */
 	public Using usingConstructor(Class<?>... parameterTypes) {
 		try {
-			return new Using(this.beanClass.getDeclaredConstructor(parameterTypes));
+			boolean innerClass = ClassUtils.isInnerClass(this.beanClass);
+			int parameterOffset = (!innerClass) ? 0 : 1;
+			Class<?>[] actualParameterTypes = (!innerClass) ? parameterTypes
+					: ObjectUtils.addObjectToArray(parameterTypes, this.beanClass.getEnclosingClass(), 0);
+			Constructor<?> constructor = this.beanClass.getDeclaredConstructor(actualParameterTypes);
+			return new Using(constructor, parameterOffset);
 		}
 		catch (NoSuchMethodException ex) {
 			throw new IllegalArgumentException(String.format("No constructor with type(s) [%s] found on %s",
@@ -116,7 +123,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 		Method method = ReflectionUtils.findMethod(declaringClass, name, parameterTypes);
 		Assert.notNull(method, () -> String.format("No method '%s' with type(s) [%s] found on %s", name,
 				toCommaSeparatedNames(parameterTypes), declaringClass.getName()));
-		return new Using(MethodIntrospector.selectInvocableMethod(method, declaringClass));
+		return new Using(MethodIntrospector.selectInvocableMethod(method, declaringClass), 0);
 	}
 
 	private static String toCommaSeparatedNames(Class<?>... parameterTypes) {
@@ -131,8 +138,11 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		private final Executable executable;
 
-		Using(Executable executable) {
+		private final int parameterOffset;
+
+		Using(Executable executable, int parameterOffset) {
 			this.executable = executable;
+			this.parameterOffset = parameterOffset;
 		}
 
 		Executable getExecutable() {
@@ -189,11 +199,12 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		private Supplier<Object> createInstanceSupplier(DefaultListableBeanFactory beanFactory,
 				RootBeanDefinition beanDefinition, ThrowableBiFunction<BeanFactory, Object[], Object> instantiator) {
-			if (this.executable.getParameterCount() == 0) {
+			if ((this.executable.getParameterCount() - this.parameterOffset) == 0) {
 				return new NoArgumentsInstanceSupplier(beanFactory, instantiator);
 			}
 			ArgumentsResolver argumentResolver = new ArgumentsResolver(beanFactory,
-					SuppliedRootBeanDefinitionBuilder.this.beanClass, this.executable, beanDefinition);
+					SuppliedRootBeanDefinitionBuilder.this.beanClass, this.executable, this.parameterOffset,
+					beanDefinition);
 			return new ResolvingInstanceSupplier(beanFactory, argumentResolver, instantiator);
 		}
 
@@ -273,36 +284,40 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		private final Class<?> beanClass;
 
+		private int parameterOffset;
+
 		private final RootBeanDefinition beanDefinition;
 
 		private final Executable executable;
 
 		ArgumentsResolver(AbstractAutowireCapableBeanFactory beanFactory, Class<?> beanClass, Executable executable,
-				RootBeanDefinition beanDefinition) {
+				int parameterOffset, RootBeanDefinition beanDefinition) {
 			this.beanFactory = beanFactory;
 			this.beanClass = beanClass;
+			this.parameterOffset = parameterOffset;
 			this.beanDefinition = beanDefinition;
 			this.executable = executable;
 		}
 
 		Object[] resolveArguments(String beanName) {
+			int startIndex = this.parameterOffset;
 			int parameterCount = this.executable.getParameterCount();
-			Object[] resolvedArguments = new Object[parameterCount];
+			Object[] resolvedArguments = new Object[parameterCount - startIndex];
 			Set<String> autowiredBeans = new LinkedHashSet<>(resolvedArguments.length);
 			TypeConverter typeConverter = this.beanFactory.getTypeConverter();
 			ConstructorArgumentValues argumentValues = resolveArgumentValues(beanName);
-			for (int i = 0; i < parameterCount; i++) {
-				MethodParameter parameter = extracted(i);
+			for (int i = startIndex; i < parameterCount; i++) {
+				MethodParameter parameter = getMethodParameter(i);
 				DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(parameter, true);
 				dependencyDescriptor.setContainingClass(this.beanClass);
 				ValueHolder argumentValue = argumentValues.getIndexedArgumentValue(i, null);
-				resolvedArguments[i] = resolveArgument(beanName, autowiredBeans, typeConverter, parameter,
+				resolvedArguments[i - startIndex] = resolveArgument(beanName, autowiredBeans, typeConverter, parameter,
 						dependencyDescriptor, argumentValue);
 			}
 			return resolvedArguments;
 		}
 
-		private MethodParameter extracted(int index) {
+		private MethodParameter getMethodParameter(int index) {
 			if (this.executable instanceof Constructor<?> constructor) {
 				return new MethodParameter(constructor, index);
 			}
