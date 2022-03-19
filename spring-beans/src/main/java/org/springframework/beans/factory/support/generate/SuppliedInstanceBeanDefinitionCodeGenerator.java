@@ -107,7 +107,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 			return generateUsingAndGeneratedByConstructorCode(beanDefinition, constructor);
 		}
 		if (executable instanceof Method method) {
-			return generateUsingAndGeneratedByMethodCode(beanDefinition, method);
+			return generateUsingAndGeneratedByFactoryMethodCode(beanDefinition, method);
 		}
 		throw new IllegalStateException("No suitable executor found for " + beanDefinition);
 	}
@@ -118,8 +118,8 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 		boolean innerClass = ClassUtils.isInnerClass(declaringClass);
 		int parameterOffset = (!innerClass) ? 0 : 1;
 		CodeBlock.Builder builder = CodeBlock.builder();
-		builder.add(".usingConstructor($L)",
-				generateUsingParametersCode(constructor.getParameterTypes(), parameterOffset));
+		CodeBlock parametersCode = generateUsingParametersCode(constructor.getParameterTypes(), parameterOffset);
+		builder.add(".usingConstructor($L)", parametersCode);
 		if (constructor.getParameterCount() == 0 && !innerClass) {
 			builder.add(".resolvedBy($T::new)", declaringClass);
 			return builder.build();
@@ -132,8 +132,8 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 
 	private GeneratedMethod generateGetBeanInstanceMethod(RootBeanDefinition beanDefinition, Constructor<?> constructor,
 			Class<?> declaringClass) {
-		return this.generatedMethods.add("get", beanName, "instance").generateBy((builder) -> {
-			boolean isInnerClass = ClassUtils.isInnerClass(declaringClass);
+		boolean isInnerClass = ClassUtils.isInnerClass(declaringClass);
+		return this.generatedMethods.add("get", this.beanName, "instance").generateBy((builder) -> {
 			builder.returns(declaringClass);
 			if (isInnerClass) {
 				builder.addParameter(BeanFactory.class, "beanFactory");
@@ -141,12 +141,12 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 			builder.addParameter(Object[].class, "args");
 			CodeBlock.Builder code = CodeBlock.builder();
 			code.add("return ");
-			if (isInnerClass) {
-				code.add("beanFactory.getBean($T.class).new $L(", declaringClass.getEnclosingClass(),
-						declaringClass.getSimpleName());
+			if (!isInnerClass) {
+				code.add("new $T(", declaringClass);
 			}
 			else {
-				code.add("new $T(", declaringClass);
+				code.add("beanFactory.getBean($T.class).new $L(", declaringClass.getEnclosingClass(),
+						declaringClass.getSimpleName());
 			}
 			Class<?>[] parameterTypes = constructor.getParameterTypes();
 			int startIndex = (!isInnerClass) ? 0 : 1;
@@ -162,11 +162,54 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 		});
 	}
 
-	private CodeBlock generateUsingAndGeneratedByMethodCode(RootBeanDefinition beanDefinition, Method method) {
+	private CodeBlock generateUsingAndGeneratedByFactoryMethodCode(RootBeanDefinition beanDefinition,
+			Method factoryMethod) {
 		CodeBlock.Builder builder = CodeBlock.builder();
-		builder.add(".usingFactoryMethod($T.class, %S, $L)", ClassUtils.getUserClass(method.getDeclaringClass()),
-				method.getName(), generateUsingParametersCode(method.getParameterTypes(), 0));
+		Class<?> factoryClass = ClassUtils.getUserClass(factoryMethod.getDeclaringClass());
+		String factoryMethodName = factoryMethod.getName();
+		builder.add(".usingFactoryMethod($T.class, $S", factoryClass, factoryMethodName);
+		CodeBlock parametersCode = generateUsingParametersCode(factoryMethod.getParameterTypes(), 0);
+		if (!parametersCode.isEmpty()) {
+			builder.add(", $L", parametersCode);
+		}
+		builder.add(")");
+		GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(beanDefinition, factoryMethod);
+		builder.add(".resolvedBy($L, this::$L)", this.beanFactoryVariable, getBeanInstanceMethod.getName());
 		return builder.build();
+	}
+
+	private GeneratedMethod generateGetBeanInstanceMethod(RootBeanDefinition beanDefinition, Method factoryMethod) {
+		boolean staticFactoryMethod = Modifier.isStatic(factoryMethod.getModifiers());
+		Class<?> declaringClass = factoryMethod.getDeclaringClass();
+		Class<?> returnType = factoryMethod.getReturnType();
+		return this.generatedMethods.add("get", this.beanName, "instance").generateBy((builder) -> {
+			builder.returns(returnType);
+			if (!staticFactoryMethod) {
+				builder.addParameter(BeanFactory.class, "beanFactory");
+			}
+			builder.addParameter(Object[].class, "args");
+			CodeBlock.Builder code = CodeBlock.builder();
+			code.add("return ");
+			if (staticFactoryMethod) {
+				code.add("$T", declaringClass);
+			}
+			else {
+				code.add("beanFactory.getBean($T.class)", declaringClass);
+			}
+			code.add(".$L(", factoryMethod.getName());
+			Class<?>[] parameterTypes = factoryMethod.getParameterTypes();
+			int startIndex = 0;
+			// FIXME extract
+			for (int i = startIndex; i < parameterTypes.length; i++) {
+				code.add((i != startIndex) ? ", " : "");
+				if (!parameterTypes[i].equals(Object.class)) {
+					code.add("($T) ", parameterTypes[i]);
+				}
+				code.add("args[$L]", i - startIndex);
+			}
+			code.add(");");
+			builder.addCode(code.build());
+		});
 	}
 
 	private CodeBlock generateUsingParametersCode(Class<?>[] parameterTypes, int offset) {

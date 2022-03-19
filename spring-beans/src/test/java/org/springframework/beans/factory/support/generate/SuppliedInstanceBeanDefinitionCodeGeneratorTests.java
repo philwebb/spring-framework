@@ -34,6 +34,10 @@ import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.NoDependencyComponent;
+import org.springframework.beans.testfixture.beans.factory.generator.SimpleConfiguration;
+import org.springframework.beans.testfixture.beans.factory.generator.factory.NumberHolder;
+import org.springframework.beans.testfixture.beans.factory.generator.factory.NumberHolderFactoryBean;
+import org.springframework.beans.testfixture.beans.factory.generator.factory.SampleFactory;
 import org.springframework.beans.testfixture.beans.factory.generator.injection.InjectionComponent;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.javapoet.CodeBlock;
@@ -41,6 +45,7 @@ import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
 import org.springframework.javapoet.TypeSpec;
+import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,7 +58,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 
-	// DefaultBeanInstantiationGeneratorTests
+	// FIXME DefaultBeanInstantiationGeneratorTests
+	// FIXME native hints
+	// FIXME protected access
 
 	@Test
 	void generateWhenHasDefaultConstructor() {
@@ -87,7 +94,8 @@ class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 		testCompiledResult(beanFactory, beanDefinition, (supplierBeanDefinition, compiled) -> {
 			NoDependencyComponent bean = getBean(beanFactory, supplierBeanDefinition);
 			assertThat(bean).isInstanceOf(NoDependencyComponent.class);
-			assertThat(compiled.getSourceFile()).contains("Factory.getBean(InnerComponentConfiguration.class).new NoDependencyComponent()");
+			assertThat(compiled.getSourceFile())
+					.contains("Factory.getBean(InnerComponentConfiguration.class).new NoDependencyComponent()");
 		});
 	}
 
@@ -101,7 +109,72 @@ class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 		testCompiledResult(beanFactory, beanDefinition, (supplierBeanDefinition, compiled) -> {
 			EnvironmentAwareComponent bean = getBean(beanFactory, supplierBeanDefinition);
 			assertThat(bean).isInstanceOf(EnvironmentAwareComponent.class);
-			assertThat(compiled.getSourceFile()).contains("Factory.getBean(InnerComponentConfiguration.class).new EnvironmentAwareComponent(");
+			assertThat(compiled.getSourceFile())
+					.contains("Factory.getBean(InnerComponentConfiguration.class).new EnvironmentAwareComponent(");
+		});
+	}
+
+	@Test
+	void generateWhenHasConstructorWithGeneric() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(NumberHolderFactoryBean.class)
+				.getBeanDefinition();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerSingleton("number", 123);
+		testCompiledResult(beanFactory, beanDefinition, (supplierBeanDefinition, compiled) -> {
+			NumberHolder<?> bean = getBean(beanFactory, supplierBeanDefinition);
+			assertThat(bean).isInstanceOf(NumberHolder.class);
+			assertThat(bean).extracting("number").isNull(); // No property actually set
+			assertThat(compiled.getSourceFile()).contains("NumberHolderFactoryBean::new");
+		});
+	}
+
+	@Test
+	void generateWhenHasFactoryMethodWithNoArg() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(String.class)
+				.setFactoryMethodOnBean("stringBean", "config").getBeanDefinition();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
+		testCompiledResult(beanFactory, beanDefinition, (supplierBeanDefinition, compiled) -> {
+			String bean = getBean(beanFactory, supplierBeanDefinition);
+			assertThat(bean).isInstanceOf(String.class);
+			assertThat(bean).isEqualTo("Hello");
+			assertThat(compiled.getSourceFile())
+					.contains("beanFactory.getBean(SimpleConfiguration.class).stringBean()");
+		});
+	}
+
+	@Test
+	void generateWhenHasStaticFactoryMethodWithNoArg() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(Integer.class)
+				.setFactoryMethodOnBean("integerBean", "config").getBeanDefinition();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
+		testCompiledResult(beanFactory, beanDefinition, (supplierBeanDefinition, compiled) -> {
+			Integer bean = getBean(beanFactory, supplierBeanDefinition);
+			assertThat(bean).isInstanceOf(Integer.class);
+			assertThat(bean).isEqualTo(42);
+			assertThat(compiled.getSourceFile()).contains("SimpleConfiguration.integerBean()");
+		});
+	}
+
+	@Test
+	void generateWhenHasStaticFactoryMethodWithArg() {
+		RootBeanDefinition beanDefinition = (RootBeanDefinition) BeanDefinitionBuilder.rootBeanDefinition(String.class)
+				.setFactoryMethodOnBean("create", "config").getBeanDefinition();
+		beanDefinition.setResolvedFactoryMethod(
+				ReflectionUtils.findMethod(SampleFactory.class, "create", Number.class, String.class));
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SampleFactory.class).getBeanDefinition());
+		beanFactory.registerSingleton("number", 42);
+		beanFactory.registerSingleton("string", "test");
+		testCompiledResult(beanFactory, beanDefinition, (supplierBeanDefinition, compiled) -> {
+			String bean = getBean(beanFactory, supplierBeanDefinition);
+			assertThat(bean).isInstanceOf(String.class);
+			assertThat(bean).isEqualTo("42test");
+			assertThat(compiled.getSourceFile()).contains("SampleFactory.create(");
 		});
 	}
 
@@ -118,22 +191,22 @@ class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 		SuppliedInstanceBeanDefinitionCodeGenerator generator = new SuppliedInstanceBeanDefinitionCodeGenerator(
 				beanFactory, generatedMethods, "test");
-		RootBeanDefinition mergedBeanDefinition = getMergedBeanDefinition(beanDefinition);
+		RootBeanDefinition mergedBeanDefinition = getMergedBeanDefinition(beanFactory, beanDefinition);
 		CodeBlock generatedCode = generator.generateCode(mergedBeanDefinition);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
-		System.out.println(javaFile);
 		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> result
 				.accept((RootBeanDefinition) compiled.getInstance(Function.class).apply(beanFactory), compiled));
 	}
 
-	private RootBeanDefinition getMergedBeanDefinition(BeanDefinition beanDefinition) {
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+	private RootBeanDefinition getMergedBeanDefinition(DefaultListableBeanFactory parentBeanFactory,
+			BeanDefinition beanDefinition) {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory(parentBeanFactory);
 		beanFactory.registerBeanDefinition("test", beanDefinition);
 		return (RootBeanDefinition) beanFactory.getMergedBeanDefinition("test");
 	}
 
 	private JavaFile createJavaFile(CodeBlock generatedCode, GeneratedMethods generatedMethods) {
-		TypeSpec.Builder builder = TypeSpec.classBuilder("BeanDefinitionSupplier");
+		TypeSpec.Builder builder = TypeSpec.classBuilder("BeanDefinitionFunction");
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addSuperinterface(
 				ParameterizedTypeName.get(Function.class, DefaultListableBeanFactory.class, RootBeanDefinition.class));
