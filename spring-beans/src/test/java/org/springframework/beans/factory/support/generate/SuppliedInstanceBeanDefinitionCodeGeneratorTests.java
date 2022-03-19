@@ -58,7 +58,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 
-	// FIXME DefaultBeanInstantiationGeneratorTests
+	// FIXME See DefaultBeanInstantiationGeneratorTests
 	// FIXME native hints
 	// FIXME protected access
 

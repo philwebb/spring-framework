@@ -36,6 +36,7 @@ import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.config.RuntimeBeanNameReference;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.ManagedSet;
@@ -55,12 +56,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Nested
 class BeanDefinitionPropertiesCodeGeneratorTests {
 
-	private RootBeanDefinition beanDefinition = new RootBeanDefinition();
+	private final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
-	private GeneratedMethods generatedMethods = new GeneratedMethods();
+	private final RootBeanDefinition beanDefinition = new RootBeanDefinition();
+
+	private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
 	private BeanDefinitionPropertiesCodeGenerator generator = new BeanDefinitionPropertiesCodeGenerator(
-			this.generatedMethods);
+			this.beanFactory, this.generatedMethods);
 
 	@Test
 	void setPrimaryWhenFalse() {
