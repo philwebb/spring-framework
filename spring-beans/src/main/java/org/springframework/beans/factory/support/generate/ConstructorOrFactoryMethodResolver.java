@@ -49,6 +49,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 /**
  * Resolves the {@link Executable} (factory method or constructor) that should be used to
  * create a bean.
@@ -146,8 +148,10 @@ class ConstructorOrFactoryMethodResolver {
 		}
 		String factoryMethodName = beanDefinition.getFactoryMethodName();
 		if (factoryMethodName != null) {
+			String factoryBeanName = beanDefinition.getFactoryBeanName();
+			Class<?> beanClass = getBeanClass((factoryBeanName != null)
+					? this.beanFactory.getMergedBeanDefinition(factoryBeanName) : beanDefinition);
 			List<Method> methods = new ArrayList<>();
-			Class<?> beanClass = getBeanClass(beanDefinition);
 			Assert.state(beanClass != null, () -> "Failed to determine bean class of " + beanDefinition);
 			ReflectionUtils.doWithMethods(beanClass, methods::add,
 					method -> isFactoryMethodCandidate(beanClass, method, factoryMethodName));

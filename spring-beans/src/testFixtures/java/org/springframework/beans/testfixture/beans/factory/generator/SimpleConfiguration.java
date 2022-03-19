@@ -25,7 +25,7 @@ public class SimpleConfiguration {
 		return "Hello";
 	}
 
-	public Integer integerBean() {
+	public static Integer integerBean() {
 		return 42;
 	}
 
