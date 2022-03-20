@@ -59,6 +59,8 @@ class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMeth
 		return null;
 	}
 
+	// FIXME
+
 // @formatter:off
 
 	/*

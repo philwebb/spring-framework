@@ -20,11 +20,12 @@ import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.javapoet.CodeBlock;
 
 /**
- * Encapsulates the code required to register a {@link BeanDefinition} to
- * {@link BeanDefinitionRegistry} programmatically.
+ * Generates the code required to register a {@link BeanDefinition} to
+ * {@link DefaultListableBeanFactory} programmatically.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -40,13 +41,13 @@ public interface BeanRegistrationMethodCodeGenerator {
 	 * The name of the parameter passed to the generated method that contains the
 	 * {@link BeanDefinitionRegistry} to use.
 	 */
-	static final String REGISTRY = "registry";
+	static final String BEAN_FACTORY_VARIABLE = "beanFactory";
 
 	/**
 	 * Return a {@link CodeBlock} containing source code to register a
 	 * {@link BeanDefinition} to {@link BeanDefinitionRegistry}. The resulting code will
 	 * be included as the body of a generated method and can assume that the
-	 * {@link #REGISTRY} parameter is available.
+	 * {@link #BEAN_FACTORY_VARIABLE} parameter is available.
 	 * @param aotContext
 	 * @return
 	 */

@@ -36,11 +36,13 @@ import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.config.RuntimeBeanNameReference;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.testfixture.beans.AnnotatedBean;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -48,7 +50,6 @@ import org.springframework.javapoet.ParameterizedTypeName;
 import org.springframework.javapoet.TypeSpec;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link BeanDefinitionPropertiesCodeGenerator}.
@@ -292,7 +293,16 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 
 	@Test
 	void propertyValuesWhenContainsBeanDefinition() {
-		fail();
+		RootBeanDefinition innerBeanDefinition = (RootBeanDefinition) BeanDefinitionBuilder
+				.rootBeanDefinition(AnnotatedBean.class).setRole(BeanDefinition.ROLE_INFRASTRUCTURE)
+				.setPrimary(true).getBeanDefinition();
+		this.beanDefinition.getPropertyValues().add("name", innerBeanDefinition);
+		testCompiledResult((actual, compiled) -> {
+			RootBeanDefinition actualInnerBeanDefinition = (RootBeanDefinition) actual.getPropertyValues().get("name");
+			assertThat(actualInnerBeanDefinition.isPrimary()).isTrue();
+			assertThat(actualInnerBeanDefinition.getRole()).isEqualTo(BeanDefinition.ROLE_INFRASTRUCTURE);
+			assertThat(actualInnerBeanDefinition.getInstanceSupplier().get()).isInstanceOf(AnnotatedBean.class);
+		});
 	}
 
 	@Test
@@ -358,7 +368,10 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 		builder.addMethod(MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC)
 				.returns(RootBeanDefinition.class)
 				.addStatement("$T beanDefinition = new $T()", RootBeanDefinition.class, RootBeanDefinition.class)
+				.addStatement("$T beanFactory = new $T()", DefaultListableBeanFactory.class,
+						DefaultListableBeanFactory.class)
 				.addCode(codeBlock.get()).addStatement("return beanDefinition").build());
+		this.generatedMethods.doWithMethodSpecs(builder::addMethod);
 		return JavaFile.builder("com.example", builder.build()).build();
 	}
 
