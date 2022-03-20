@@ -30,6 +30,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.support.aot.TestConstructorOrFactoryMethodResolver;
 import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
@@ -187,7 +188,7 @@ class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 			BiConsumer<RootBeanDefinition, Compiled> result) {
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 		SuppliedInstanceBeanDefinitionCodeGenerator generator = new SuppliedInstanceBeanDefinitionCodeGenerator(
-				beanFactory, generatedMethods);
+				generatedMethods, new TestConstructorOrFactoryMethodResolver(beanFactory));
 		RootBeanDefinition mergedBeanDefinition = getMergedBeanDefinition(beanFactory, beanDefinition);
 		CodeBlock generatedCode = generator.generateCode(mergedBeanDefinition, "test");
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);

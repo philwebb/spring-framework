@@ -32,6 +32,7 @@ import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.aot.TestConstructorOrFactoryMethodResolver;
 import org.springframework.beans.testfixture.beans.AnnotatedBean;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
@@ -66,8 +67,8 @@ class DefaultBeanRegistrationMethodCodeGeneratorTests {
 	private void testCompiledResult(String beanName, BeanDefinition beanDefinition,
 			BiConsumer<DefaultListableBeanFactory, Compiled> result) {
 		DefaultListableBeanFactory generationBeanFactory = new DefaultListableBeanFactory();
-		DefaultBeanRegistrationMethodCodeGenerator generator = new DefaultBeanRegistrationMethodCodeGenerator(
-				generationBeanFactory, "test", beanDefinition);
+		DefaultBeanRegistrationMethodCodeGenerator generator = new DefaultBeanRegistrationMethodCodeGenerator("test",
+				beanDefinition, new TestConstructorOrFactoryMethodResolver(generationBeanFactory));
 		GenerationContext generationContext = new DefaultGenerationContext(new InMemoryGeneratedFiles());
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 		CodeBlock generatedCode = generator.generateBeanRegistrationMethodCode(generationContext, generatedMethods);
@@ -88,5 +89,5 @@ class DefaultBeanRegistrationMethodCodeGeneratorTests {
 		generatedMethods.doWithMethodSpecs(builder::addMethod);
 		return JavaFile.builder("com.example", builder.build()).build();
 	}
-	
+
 }

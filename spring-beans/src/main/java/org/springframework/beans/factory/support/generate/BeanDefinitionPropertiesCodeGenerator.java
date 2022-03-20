@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.support.generate;
 
+import java.lang.reflect.Executable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -89,15 +90,15 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	/**
 	 * Create a new {@link BeanDefinitionPropertiesCodeGenerator} instance.
-	 * @param beanFactory the bean factory
 	 * @param generatedMethods the generated methods
-	 * @param name the name of the item being created, often (but not always) the bean
-	 * name
+	 * @param constructorOrFactoryMethodResolver resolver used to find the constructor or
+	 * factory method for a bean definition
 	 */
-	BeanDefinitionPropertiesCodeGenerator(DefaultListableBeanFactory beanFactory, GeneratedMethods generatedMethods) {
+	BeanDefinitionPropertiesCodeGenerator(GeneratedMethods generatedMethods,
+			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver) {
 		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
-		this.suppliedInstanceBeanDefinitionCodeGenerator = new SuppliedInstanceBeanDefinitionCodeGenerator(beanFactory,
-				generatedMethods);
+		this.suppliedInstanceBeanDefinitionCodeGenerator = new SuppliedInstanceBeanDefinitionCodeGenerator(
+				generatedMethods, constructorOrFactoryMethodResolver);
 		this.generatedMethods = generatedMethods;
 	}
 

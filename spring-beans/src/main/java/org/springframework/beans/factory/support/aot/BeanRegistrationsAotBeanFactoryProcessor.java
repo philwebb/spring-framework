@@ -16,9 +16,11 @@
 
 package org.springframework.beans.factory.support.aot;
 
+import java.lang.reflect.Executable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,8 +30,12 @@ import org.springframework.beans.factory.aot.AotBeanFactoryProcessor;
 import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.aot.DefinedBeanExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
+import org.springframework.beans.factory.support.generate.BeanRegistrationsJavaFileGenerator;
+import org.springframework.beans.factory.support.generate.DefaultBeanRegistrationMethodCodeGenerator;
 import org.springframework.core.log.LogMessage;
 
 /**
@@ -41,6 +47,8 @@ import org.springframework.core.log.LogMessage;
  * @since 6.0
  */
 public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryProcessor {
+
+	// FIXME grab processor beans to apply and remove them after?
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationsAotBeanFactoryProcessor.class);
 
@@ -59,7 +67,8 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		}
 		logger.trace(LogMessage.format("Contributing %s %s for '%s'", handlerMap.size(),
 				((handlerMap.size() != 1) ? "registrations" : "registration"), beanFactoryName));
-		return new BeanRegistrationsContribution(beanFactoryName, beanFactory, handlerMap);
+		BeanRegistrationsJavaFileGenerator javaFileGenerator = getJavaFileGenerator(beanFactory, handlerMap);
+		return new BeanRegistrationsContribution(beanFactoryName, handlerMap.keySet(), javaFileGenerator);
 	}
 
 	private Map<DefinedBean, DefinedBeanRegistrationHandler> getHandlerMap(UniqueBeanFactoryName beanFactoryName,
@@ -81,6 +90,25 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 			handlerMap.put(definedBean, handler);
 		}
 		return handlerMap;
+	}
+
+	private BeanRegistrationsJavaFileGenerator getJavaFileGenerator(ConfigurableBeanFactory beanFactory,
+			Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap) {
+		Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver = new ConstructorOrFactoryMethodResolver(
+				beanFactory);
+		Map<String, BeanRegistrationMethodCodeGenerator> methodCodeGenerators = new LinkedHashMap<>();
+		handlerMap.forEach((definedBean, handler) -> {
+			String beanName = definedBean.getBeanName();
+			BeanDefinition beanDefinition = definedBean.getMergedBeanDefinition();
+			BeanRegistrationMethodCodeGenerator methodCodeGenerator = handler
+					.getBeanRegistrationMethodCodeGenerator(definedBean);
+			if (methodCodeGenerator == null) {
+				methodCodeGenerator = new DefaultBeanRegistrationMethodCodeGenerator(beanName, beanDefinition,
+						constructorOrFactoryMethodResolver);
+			}
+			methodCodeGenerators.put(beanName, methodCodeGenerator);
+		});
+		return new BeanRegistrationsJavaFileGenerator(methodCodeGenerators);
 	}
 
 }
