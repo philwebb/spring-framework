@@ -16,29 +16,13 @@
 
 package org.springframework.beans.factory.support.generate;
 
-import javax.annotation.Nullable;
-
-import org.springframework.beans.factory.aot.DefinedBean;
-
 /**
- * Strategy used to provide specific {@link BeanRegistrationMethodCodeGenerator} for a
- * {@link DefinedBean}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface BeanRegistrationCodeGeneratorProvider {
-
-	/**
-	 * Return the {@link BeanRegistrationMethodCodeGenerator} that should be used for the
-	 * {@link DefinedBean}.
-	 * @param definedBean the defined bean that should be registered
-	 * @return a {@link BeanRegistrationMethodCodeGenerator} instance or {@code null} if no
-	 * special registration code is required
-	 */
-	@Nullable
-	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefinedBean definedBean);
+public class BeanRegistrationsCodeGenerator {
 
 }

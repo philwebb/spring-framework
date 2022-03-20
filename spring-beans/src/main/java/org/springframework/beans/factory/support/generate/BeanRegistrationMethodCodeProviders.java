@@ -71,13 +71,13 @@ public class BeanRegistrationMethodCodeProviders {
 	}
 
 	/**
-	 * Return the {@link BeanRegistrationContribution} that should be used for the defined bean.
+	 * Return the {@link BeanRegistrationMethodCodeGenerator} that should be used for the defined bean.
 	 * @param definedBean the bean to check
-	 * @return a {@link BeanRegistrationContribution} instance
+	 * @return a {@link BeanRegistrationMethodCodeGenerator} instance
 	 */
-	public BeanRegistrationContribution getBeanRegistrationMethodGenerator(DefinedBean definedBean) {
+	public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodGenerator(DefinedBean definedBean) {
 		for (BeanRegistrationCodeGeneratorProvider provider : providers) {
-			BeanRegistrationContribution provided = provider.getBeanRegistrationMethodCodeGenerator(definedBean);
+			BeanRegistrationMethodCodeGenerator provided = provider.getBeanRegistrationMethodCodeGenerator(definedBean);
 			if (provided != null) {
 				logger.trace(LogMessage.format("Returning BeanRegistrationCode provided by %s for '%s'",
 						provider.getClass().getName(), definedBean.getUniqueBeanName()));

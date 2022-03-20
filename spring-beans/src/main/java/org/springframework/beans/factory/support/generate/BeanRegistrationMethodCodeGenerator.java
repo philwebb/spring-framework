@@ -35,7 +35,7 @@ import org.springframework.javapoet.CodeBlock;
  * @see BeanRegistrationsContribution
  */
 @FunctionalInterface
-public interface BeanRegistrationContribution {
+public interface BeanRegistrationMethodCodeGenerator {
 
 	/**
 	 * The name of the parameter passed to the generated method that contains the
