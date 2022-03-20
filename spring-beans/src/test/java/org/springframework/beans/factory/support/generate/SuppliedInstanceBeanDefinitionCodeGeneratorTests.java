@@ -190,9 +190,9 @@ class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 			BiConsumer<RootBeanDefinition, Compiled> result) {
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 		SuppliedInstanceBeanDefinitionCodeGenerator generator = new SuppliedInstanceBeanDefinitionCodeGenerator(
-				beanFactory, generatedMethods, "test");
+				beanFactory, generatedMethods);
 		RootBeanDefinition mergedBeanDefinition = getMergedBeanDefinition(beanFactory, beanDefinition);
-		CodeBlock generatedCode = generator.generateCode(mergedBeanDefinition);
+		CodeBlock generatedCode = generator.generateCode(mergedBeanDefinition, "test");
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
 		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> result
 				.accept((RootBeanDefinition) compiled.getInstance(Function.class).apply(beanFactory), compiled));
