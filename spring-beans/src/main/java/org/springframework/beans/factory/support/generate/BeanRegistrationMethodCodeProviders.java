@@ -32,7 +32,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 
 /**
- * A managed collection of {@link BeanRegistrationMethodCodeProvider} instances.
+ * A managed collection of {@link BeanRegistrationCodeGeneratorProvider} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -43,7 +43,7 @@ public class BeanRegistrationMethodCodeProviders {
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodCodeProviders.class);
 
-	private final List<BeanRegistrationMethodCodeProvider> providers;
+	private final List<BeanRegistrationCodeGeneratorProvider> providers;
 
 	/**
 	 * Create a new {@link BeanRegistrationMethodCodeProviders} instance, obtaining providers
@@ -62,22 +62,22 @@ public class BeanRegistrationMethodCodeProviders {
 	 */
 	BeanRegistrationMethodCodeProviders(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
-		List<BeanRegistrationMethodCodeProvider> providers = new ArrayList<>();
-		providers.addAll(springFactoriesLoader.load(BeanRegistrationMethodCodeProvider.class));
-		providers.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, BeanRegistrationMethodCodeProvider.class)
+		List<BeanRegistrationCodeGeneratorProvider> providers = new ArrayList<>();
+		providers.addAll(springFactoriesLoader.load(BeanRegistrationCodeGeneratorProvider.class));
+		providers.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, BeanRegistrationCodeGeneratorProvider.class)
 				.values());
 		AnnotationAwareOrderComparator.sort(providers);
 		this.providers = Collections.unmodifiableList(providers);
 	}
 
 	/**
-	 * Return the {@link BeanRegistrationMethodCodeGenerator} that should be used for the defined bean.
+	 * Return the {@link BeanRegistrationContribution} that should be used for the defined bean.
 	 * @param definedBean the bean to check
-	 * @return a {@link BeanRegistrationMethodCodeGenerator} instance
+	 * @return a {@link BeanRegistrationContribution} instance
 	 */
-	public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodGenerator(DefinedBean definedBean) {
-		for (BeanRegistrationMethodCodeProvider provider : providers) {
-			BeanRegistrationMethodCodeGenerator provided = provider.getBeanRegistrationMethodGenerator(definedBean);
+	public BeanRegistrationContribution getBeanRegistrationMethodGenerator(DefinedBean definedBean) {
+		for (BeanRegistrationCodeGeneratorProvider provider : providers) {
+			BeanRegistrationContribution provided = provider.getBeanRegistrationMethodCodeGenerator(definedBean);
 			if (provided != null) {
 				logger.trace(LogMessage.format("Returning BeanRegistrationCode provided by %s for '%s'",
 						provider.getClass().getName(), definedBean.getUniqueBeanName()));
