@@ -29,25 +29,25 @@ public class Default__BeanRegistrations implements DefaultListableBeanFactoryIni
 
 	@Override
 	public void initialize(DefaultListableBeanFactory beanFactory) {
-		registerMyBeanBeanDefinition(beanFactory);
-		registerMyOtherBeanBeanDefinition(beanFactory);
-		registerMyOuterBeanBeanDefinition(beanFactory);
+		registerMyBean(beanFactory);
+		registerMyOtherBean(beanFactory);
+		registerMyOuterBean(beanFactory);
 	}
 
-	private void registerMyBeanBeanDefinition(DefaultListableBeanFactory beanFactory) {
+	private void registerMyBean(DefaultListableBeanFactory beanFactory) {
 		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyBean.class).usingConstructor()
 				.resolvedBy(MyBean::new);
 		beanFactory.registerBeanDefinition("myBean", beanDefinition);
 	}
 
-	private void registerMyOtherBeanBeanDefinition(DefaultListableBeanFactory beanFactory) {
+	private void registerMyOtherBean(DefaultListableBeanFactory beanFactory) {
 		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyOtherBean.class).usingConstructor(MyBean.class)
 				.resolvedBy(beanFactory, this::createMyOtherBeanInstance);
 		beanDefinition.setAttribute("foo", "bar");
 		beanFactory.registerBeanDefinition("myOtherBean", beanDefinition);
 	}
 
-	private void registerMyOuterBeanBeanDefinition(DefaultListableBeanFactory beanFactory) {
+	private void registerMyOuterBean(DefaultListableBeanFactory beanFactory) {
 		RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyOuterBean.class).usingConstructor()
 				.resolvedBy(MyOuterBean::new);
 		beanDefinition.getPropertyValues().add("myBean", createMyOuterBeanMyBeanBeanDefinition());

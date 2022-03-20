@@ -32,9 +32,9 @@ public final class GeneratedMethodName {
 	private final String name;
 
 	/**
-	 * Create a new {@link GeneratedMethodName} instance with the given name.
-	 * This constructor is package-private since names should only be generated
-	 * via a {@link MethodNameGenerator}.
+	 * Create a new {@link GeneratedMethodName} instance with the given name. This
+	 * constructor is package-private since names should only be generated via a
+	 * {@link MethodNameGenerator}.
 	 * @param name the generated name
 	 */
 	GeneratedMethodName(String name) {
@@ -50,8 +50,8 @@ public final class GeneratedMethodName {
 	}
 
 	/**
-	 * Return a {@link MethodSpec#methodBuilder(String) MethodSpec builder}
-	 * pre-configured with the generated name.
+	 * Return a {@link MethodSpec#methodBuilder(String) MethodSpec builder} pre-configured
+	 * with the generated name.
 	 * @return a method builder
 	 */
 	public MethodSpec.Builder methodBuilder() {

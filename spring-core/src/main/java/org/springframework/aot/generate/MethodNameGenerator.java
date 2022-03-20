@@ -30,9 +30,8 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Generates unique method names that can be used in ahead-of-time generated
- * source code. This class is stateful so one instance should be used per
- * generated type.
+ * Generates unique method names that can be used in ahead-of-time generated source code.
+ * This class is stateful so one instance should be used per generated type.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -44,15 +43,14 @@ public class MethodNameGenerator {
 	private final Map<String, AtomicInteger> sequenceGenerator = new ConcurrentHashMap<>();
 
 	/**
-	 * Create a new {@link MethodNameGenerator} instance without any reserved
-	 * names.
+	 * Create a new {@link MethodNameGenerator} instance without any reserved names.
 	 */
 	public MethodNameGenerator() {
 	}
 
 	/**
-	 * Create a new {@link MethodNameGenerator} instance with the specified
-	 * reserved names.
+	 * Create a new {@link MethodNameGenerator} instance with the specified reserved
+	 * names.
 	 * @param reservedNames the method names to reserve
 	 */
 	public MethodNameGenerator(String... reservedNames) {
@@ -60,8 +58,8 @@ public class MethodNameGenerator {
 	}
 
 	/**
-	 * Create a new {@link MethodNameGenerator} instance with the specified
-	 * reserved names.
+	 * Create a new {@link MethodNameGenerator} instance with the specified reserved
+	 * names.
 	 * @param reservedNames the method names to reserve
 	 */
 	public MethodNameGenerator(List<String> reservedNames) {
@@ -78,13 +76,11 @@ public class MethodNameGenerator {
 	 */
 	public GeneratedMethodName generateMethodName(Object... parts) {
 		String generatedName = join(parts);
-		return new GeneratedMethodName(
-				addSequence(generatedName.isEmpty() ? "$$aot" : generatedName));
+		return new GeneratedMethodName(addSequence(generatedName.isEmpty() ? "$$aot" : generatedName));
 	}
 
 	private String addSequence(String name) {
-		int sequence = this.sequenceGenerator.computeIfAbsent(name,
-				(key) -> new AtomicInteger()).getAndIncrement();
+		int sequence = this.sequenceGenerator.computeIfAbsent(name, (key) -> new AtomicInteger()).getAndIncrement();
 		return (sequence > 0) ? name + sequence : name;
 	}
 
@@ -94,17 +90,16 @@ public class MethodNameGenerator {
 	 * @return a method name from the joined parts.
 	 */
 	public static String join(Object... parts) {
-		Stream<String> capitalizedPartNames = Arrays.stream(parts).map(
-				MethodNameGenerator::getPartName).map(StringUtils::capitalize);
-		return StringUtils.uncapitalize(
-				capitalizedPartNames.collect(Collectors.joining()));
+		Stream<String> capitalizedPartNames = Arrays.stream(parts).map(MethodNameGenerator::getPartName)
+				.map(StringUtils::capitalize);
+		return StringUtils.uncapitalize(capitalizedPartNames.collect(Collectors.joining()));
 	}
 
 	private static String getPartName(@Nullable Object part) {
 		if (part == null) {
 			return "";
 		}
-		if(part instanceof Class<?> clazz) {
+		if (part instanceof Class<?> clazz) {
 			return clean(ClassUtils.getShortName(clazz));
 		}
 		return (part != null) ? clean(part.toString()) : "";

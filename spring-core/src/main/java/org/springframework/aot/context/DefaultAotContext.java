@@ -55,10 +55,8 @@ public class DefaultAotContext extends DefaultGenerationContext implements AotCo
 	 * @param runtimeHints the runtime hints
 	 * @param processors the processors
 	 */
-	public DefaultAotContext(ClassNameGenerator classNameGenerator,
-			GeneratedFiles generatedFiles,
-			GeneratedSpringFactories generatedSpringFactories, RuntimeHints runtimeHints,
-			AotProcessors processors) {
+	public DefaultAotContext(ClassNameGenerator classNameGenerator, GeneratedFiles generatedFiles,
+			GeneratedSpringFactories generatedSpringFactories, RuntimeHints runtimeHints, AotProcessors processors) {
 		super(classNameGenerator, generatedFiles, generatedSpringFactories, runtimeHints);
 		Assert.notNull(processors, "'processors' must not be null");
 		this.processors = processors;

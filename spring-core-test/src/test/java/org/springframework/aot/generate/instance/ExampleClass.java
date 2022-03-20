@@ -18,6 +18,10 @@ package org.springframework.aot.generate.instance;
 
 /**
  * Public example class used for test.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 public class ExampleClass {
 

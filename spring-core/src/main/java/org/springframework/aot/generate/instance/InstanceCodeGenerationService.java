@@ -24,9 +24,9 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
 
 /**
- * Service that generates code to re-create an instance of an object. For
- * example, given a {@link List} containing the Strings "a", "b", "c", a
- * generators might return {@code List.of("a", "b", "c")}.
+ * Service that generates code to re-create an instance of an object. For example, given a
+ * {@link List} containing the Strings "a", "b", "c", a generators might return
+ * {@code List.of("a", "b", "c")}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -49,8 +49,7 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 	 * Generate code that we recreate the given instance value.
 	 * @param value the value to recreate
 	 * @return the generated code
-	 * @throws IllegalArgumentException if no generation is possible for the
-	 * given value
+	 * @throws IllegalArgumentException if no generation is possible for the given value
 	 */
 	default CodeBlock generateCode(@Nullable Object value) {
 		return generateCode(null, value);
@@ -61,12 +60,10 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 	 * @param name a name to identify value instance, or {@code null} if unnamed
 	 * @param value the value to recreate
 	 * @return the generated code
-	 * @throws IllegalArgumentException if no generation is possible for the
-	 * given value
+	 * @throws IllegalArgumentException if no generation is possible for the given value
 	 */
 	default CodeBlock generateCode(@Nullable String name, @Nullable Object value) {
-		ResolvableType type = (value != null) ? ResolvableType.forInstance(value)
-				: ResolvableType.NONE;
+		ResolvableType type = (value != null) ? ResolvableType.forInstance(value) : ResolvableType.NONE;
 		return generateCode(name, value, type);
 	}
 
@@ -76,27 +73,24 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 	 * @param value the value to recreate
 	 * @param type the type of the value object
 	 * @return the generated code
-	 * @throws IllegalArgumentException if no generation is possible for the
-	 * given value
+	 * @throws IllegalArgumentException if no generation is possible for the given value
 	 */
-	CodeBlock generateCode(@Nullable String name, @Nullable Object value,
-			ResolvableType type);
+	CodeBlock generateCode(@Nullable String name, @Nullable Object value, ResolvableType type);
 
 	/**
-	 * Return if this service supports {@link GeneratedMethods}. If this method
-	 * returns {@code true} then {@link #getGeneratedMethods()} can be safely
-	 * called.
+	 * Return if this service supports {@link GeneratedMethods}. If this method returns
+	 * {@code true} then {@link #getGeneratedMethods()} can be safely called.
 	 * @return {@code true} if generated methods are supported
 	 * @see #getGeneratedMethods()
 	 */
 	boolean supportsGeneratedMethods();
 
 	/**
-	 * Return a {@link GeneratedMethods} instance that can be used to add
-	 * methods to support instance generation.
+	 * Return a {@link GeneratedMethods} instance that can be used to add methods to
+	 * support instance generation.
 	 * @return a generated methods instance
-	 * @throws IllegalStateException if generation methods cannot be used with
-	 * this service
+	 * @throws IllegalStateException if generation methods cannot be used with this
+	 * service
 	 * @see #supportsGeneratedMethods()
 	 */
 	GeneratedMethods getGeneratedMethods();

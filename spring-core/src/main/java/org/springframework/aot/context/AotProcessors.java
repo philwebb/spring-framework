@@ -58,8 +58,7 @@ public interface AotProcessors {
 	 * @param processorType the processor type
 	 * @return a {@link Subset} of processors the match the processor type
 	 */
-	<P extends AotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(
-			Class<P> processorType);
+	<P extends AotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(Class<P> processorType);
 
 	/**
 	 * A subset of processors contained in the collection.
@@ -70,8 +69,8 @@ public interface AotProcessors {
 	interface Subset<P extends AotProcessor<N, T>, N, T> {
 
 		/**
-		 * Call each processor in the subset with the given named instance and
-		 * apply all resulting {@link AotContribution contributions}.
+		 * Call each processor in the subset with the given named instance and apply all
+		 * resulting {@link AotContribution contributions}.
 		 * @param name the name of the item being processed.
 		 * @param instance the instance to process
 		 */

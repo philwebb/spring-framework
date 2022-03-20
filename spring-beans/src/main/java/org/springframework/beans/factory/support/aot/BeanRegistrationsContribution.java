@@ -102,7 +102,8 @@ class BeanRegistrationsContribution implements AotContribution {
 			method.generateBy((builder) -> {
 				builder.addJavadoc("Register the bean definition for $S", beanName);
 				builder.addModifiers(Modifier.PRIVATE);
-				builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
+				builder.addParameter(BeanDefinitionRegistry.class,
+						BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
 				builder.addCode(code.generateBeanRegistrationMethodCode(generationContext, methods));
 			});
 		});
@@ -115,7 +116,8 @@ class BeanRegistrationsContribution implements AotContribution {
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
 		for (GeneratedMethodName registrationMethodToCall : registrationMethodsToCalls) {
-			builder.addStatement("$N($L)", registrationMethodToCall, BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
+			builder.addStatement("$N($L)", registrationMethodToCall,
+					BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
 		}
 		return builder.build();
 	}

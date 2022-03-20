@@ -28,12 +28,9 @@ import org.springframework.aot.hint.RuntimeHints;
  * An generation context provides:
  * <ul>
  * <li>Support for {@link #getClassNameGenerator() class name generation}.</li>
- * <li>Central management of all {@link #getGeneratedFiles() generated
- * files}.</li>
- * <li>Support for the recording of {@link #getRuntimeHints() runtime
- * hints}.</li>
- * <li>Registration of {@link #getGeneratedSpringFactories() spring.factories}
- * content.
+ * <li>Central management of all {@link #getGeneratedFiles() generated files}.</li>
+ * <li>Support for the recording of {@link #getRuntimeHints() runtime hints}.</li>
+ * <li>Registration of {@link #getGeneratedSpringFactories() spring.factories} content.
  * </ul>
  *
  * @author Stephane Nicoll
@@ -44,25 +41,24 @@ import org.springframework.aot.hint.RuntimeHints;
 public interface GenerationContext {
 
 	/**
-	 * Return the {@link ClassNameGenerator} being used by the context. Allows
-	 * new class names to be generated before they are added to the
-	 * {@link #getGeneratedFiles() generated files}.
+	 * Return the {@link ClassNameGenerator} being used by the context. Allows new class
+	 * names to be generated before they are added to the {@link #getGeneratedFiles()
+	 * generated files}.
 	 * @return the class name generator
 	 */
 	ClassNameGenerator getClassNameGenerator();
 
 	/**
-	 * Return the {@link GeneratedFiles} being used by the context. Used to
-	 * write resource, java source or class bytecode files.
+	 * Return the {@link GeneratedFiles} being used by the context. Used to write
+	 * resource, java source or class bytecode files.
 	 * @return the generated files
 	 */
 	GeneratedFiles getGeneratedFiles();
 
 	/**
-	 * Return the {@link GeneratedSpringFactories} files that will be written
-	 * once AOT processing has completed. Typically used to register generated
-	 * code as a service so that it will be applied when the AOT optimized
-	 * application is run.
+	 * Return the {@link GeneratedSpringFactories} files that will be written once AOT
+	 * processing has completed. Typically used to register generated code as a service so
+	 * that it will be applied when the AOT optimized application is run.
 	 * @return the spring factories
 	 */
 	GeneratedSpringFactories getGeneratedSpringFactories();
@@ -70,8 +66,8 @@ public interface GenerationContext {
 	/**
 	 * Return the {@link RuntimeHints} being used by the context. Used to record
 	 * {@link ReflectionHints reflection}, {@link ResourceHints resource},
-	 * {@link JavaSerializationHints serialization} and {@link ProxyHints proxy}
-	 * hints so that the application can run as a native image.
+	 * {@link JavaSerializationHints serialization} and {@link ProxyHints proxy} hints so
+	 * that the application can run as a native image.
 	 * @return the runtime hints
 	 */
 	RuntimeHints getRuntimeHints();

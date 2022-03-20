@@ -57,7 +57,7 @@ public final class DefinedBean {
 		this.uniqueBeanName = new UniqueBeanName(beanFactoryName, beanName);
 		this.beanDefinition = beanFactory.getBeanDefinition(beanName);
 		this.mergedBeanDefinition = beanFactory.getMergedBeanDefinition(beanName);
-		this.resolvedBeanType = mergedBeanDefinition.getResolvableType();
+		this.resolvedBeanType = this.mergedBeanDefinition.getResolvableType();
 	}
 
 	/**
@@ -65,7 +65,7 @@ public final class DefinedBean {
 	 * @return the bean factory
 	 */
 	public ConfigurableListableBeanFactory getBeanFactory() {
-		return beanFactory;
+		return this.beanFactory;
 	}
 
 	/**

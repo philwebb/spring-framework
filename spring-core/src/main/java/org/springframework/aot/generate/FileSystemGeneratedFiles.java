@@ -43,9 +43,9 @@ public class FileSystemGeneratedFiles implements GeneratedFiles {
 	private final Function<Kind, Path> roots;
 
 	/**
-	 * Create a new {@link FileSystemGeneratedFiles} instance with all files
-	 * stored under the specific {@code root}. The following subdirectories are
-	 * created for the different file {@link Kind kinds}:
+	 * Create a new {@link FileSystemGeneratedFiles} instance with all files stored under
+	 * the specific {@code root}. The following subdirectories are created for the
+	 * different file {@link Kind kinds}:
 	 * <ul>
 	 * <li>{@code sources}</li>
 	 * <li>{@code resources}</li>
@@ -59,10 +59,9 @@ public class FileSystemGeneratedFiles implements GeneratedFiles {
 	}
 
 	/**
-	 * Create a new {@link FileSystemGeneratedFiles} instance with all files
-	 * stored under the root provided by the given {@link Function}.
-	 * @param roots a function that returns the root to use for the given
-	 * {@link Kind}
+	 * Create a new {@link FileSystemGeneratedFiles} instance with all files stored under
+	 * the root provided by the given {@link Function}.
+	 * @param roots a function that returns the root to use for the given {@link Kind}
 	 */
 	public FileSystemGeneratedFiles(Function<Kind, Path> roots) {
 		Assert.notNull(roots, "'roots' must not be null");
@@ -75,12 +74,12 @@ public class FileSystemGeneratedFiles implements GeneratedFiles {
 		Assert.notNull(root, "'root' must not be null");
 		return kind -> {
 			switch (kind) {
-				case SOURCE:
-					return root.resolve("sources");
-				case RESOURCE:
-					return root.resolve("resources");
-				case CLASS:
-					return root.resolve("classes");
+			case SOURCE:
+				return root.resolve("sources");
+			case RESOURCE:
+				return root.resolve("resources");
+			case CLASS:
+				return root.resolve("classes");
 			}
 			return null;
 		};
@@ -91,7 +90,7 @@ public class FileSystemGeneratedFiles implements GeneratedFiles {
 		Assert.notNull(kind, "'kind' must not be null");
 		Assert.hasLength(path, "'path' must not be empty");
 		Assert.notNull(content, "'kind' must not be null");
-		Path root = roots.apply(kind).toAbsolutePath().normalize();
+		Path root = this.roots.apply(kind).toAbsolutePath().normalize();
 		Path relativePath = root.resolve(path).toAbsolutePath().normalize();
 		Assert.isTrue(relativePath.startsWith(root), () -> "'path' must be relative");
 		try {

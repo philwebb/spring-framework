@@ -59,15 +59,14 @@ public class GeneratedMethods implements Iterable<GeneratedMethod> {
 	}
 
 	/**
-	 * Add a new {@link GeneratedMethod}. The returned instance must define the
-	 * method spec by calling {@code generateBy(...)}.
-	 * @param methodNameParts the method name parts that should be used to
-	 * generate a unique method name
+	 * Add a new {@link GeneratedMethod}. The returned instance must define the method
+	 * spec by calling {@code generateBy(...)}.
+	 * @param methodNameParts the method name parts that should be used to generate a
+	 * unique method name
 	 * @return the newly added {@link GeneratedMethod}
 	 */
 	public GeneratedMethod add(Object... methodNameParts) {
-		GeneratedMethod method = new GeneratedMethod(
-				this.methodNameGenerator.generateMethodName(methodNameParts));
+		GeneratedMethod method = new GeneratedMethod(this.methodNameGenerator.generateMethodName(methodNameParts));
 		this.methods.add(method);
 		return method;
 	}

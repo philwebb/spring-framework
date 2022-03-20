@@ -16,87 +16,69 @@
 
 package org.springframework.beans.factory.support.generate;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
-import java.lang.reflect.Method;
-
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.util.Assert;
+import org.springframework.javapoet.CodeBlock.Builder;
 
 /**
- * Default {@link BeanRegistrationMethodCodeGenerator} providing registration code suitable for most
- * beans.
+ * Default {@link BeanRegistrationMethodCodeGenerator} providing registration code
+ * suitable for most beans.
+ * <p>
+ * For example:
+ * <p>
+ * <pre class="code">
+ * RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyBean.class)
+ * 		.usingConstructor()
+ * 		.resolvedBy(MyBean::new);
+ * beanDefinition.setPrimary(true);
+ * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
+ * beanFactory.registerBeanDefinition("myBean", beanDefinition);
+ * </pre>
+ * <p>
+ * The generated code expects a {@link DefaultListableBeanFactory} {@code beanFactory}
+ * variable to be available.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see SuppliedInstanceBeanDefinitionCodeGenerator
+ * @see BeanDefinitionPropertiesCodeGenerator
  */
 class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMethodCodeGenerator {
 
-	private final DefinedBean definedBean;
+	static final String BEAN_FACTORY_VARIABLE = SuppliedInstanceBeanDefinitionCodeGenerator.BEAN_FACTORY_VARIABLE;
 
-	DefaultBeanRegistrationMethodCodeGenerator(DefinedBean definedBean) {
-		this.definedBean = definedBean;
+	private final DefaultListableBeanFactory beanFactory;
+
+	private final String beanName;
+
+	private final BeanDefinition beanDefinition;
+
+	DefaultBeanRegistrationMethodCodeGenerator(DefaultListableBeanFactory beanFactory, String beanName,
+			BeanDefinition beanDefinition) {
+		this.beanFactory = beanFactory;
+		this.beanName = beanName;
+		this.beanDefinition = beanDefinition;
 	}
 
 	@Override
-	public CodeBlock generateBeanRegistrationMethodCode(GenerationContext generationContext, GeneratedMethods registrationMethods) {
-		BeanDefinition mergedBeanDefinition = this.definedBean.getMergedBeanDefinition();
-		Executable executable = new ConstructorOrFactoryMethodResolver(this.definedBean.getBeanFactory())
-				.resolve(mergedBeanDefinition);
-		Assert.state(executable != null, () -> "No suitable executor found for " + mergedBeanDefinition);
-		if (executable instanceof Constructor<?> constructor) {
-
-		}
-		if (executable instanceof Method method) {
-
-		}
-		return null;
+	public CodeBlock generateBeanRegistrationMethodCode(GenerationContext generationContext,
+			GeneratedMethods generatedMethods) {
+		Builder builder = CodeBlock.builder();
+		CodeBlock suppliedInstanceCode = new SuppliedInstanceBeanDefinitionCodeGenerator(this.beanFactory,
+				generatedMethods).generateCode(this.beanDefinition, this.beanName);
+		builder.addStatement("$T $L = $L", RootBeanDefinition.class,
+				BeanDefinitionPropertiesCodeGenerator.BEAN_DEFINITION_VARIABLE, suppliedInstanceCode);
+		builder.add(new BeanDefinitionPropertiesCodeGenerator(this.beanFactory, generatedMethods)
+				.generateCode(this.beanDefinition, this.beanName));
+		builder.addStatement("$L.registerBeanDefinition($S, $L)", BEAN_FACTORY_VARIABLE, this.beanName,
+				BeanDefinitionPropertiesCodeGenerator.BEAN_DEFINITION_VARIABLE);
+		return builder.build();
 	}
-
-	// FIXME
-
-// @formatter:off
-
-	/*
-
-initializeBeanDefinitionRegistrar(instanceStatements, code);
-
-	BeanDefinitionRegistrar.of("beanName",
-		MyBean.class
-	or
-		ResolvableType.forClass(MyBean.class)
-		Type.class
-		ResolvableType.forClassWithGenerics
-	)
-
-
-	shouldDeclareCreator
-		(yes if method or contructor declaring class is has params)
-		 some withs
-
-
-	.instanceSupplier
-
-	handleBeanDefinitionMetadata
-		(a bunch of BD stuff)
-
-		.register(beanFactory)
-
-
-
-	BeanDefinitionRegistrar.of("beanName", MyBeanClass.class).customize(beanDefinition -> {
-		beanDefinition.setPrimary(true);
-	});
-
-
-	 */
-
-// @formatter:on
 
 }

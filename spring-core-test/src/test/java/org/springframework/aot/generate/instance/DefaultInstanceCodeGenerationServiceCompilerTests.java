@@ -52,6 +52,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  * @see DefaultInstanceCodeGenerationServiceTests
  */

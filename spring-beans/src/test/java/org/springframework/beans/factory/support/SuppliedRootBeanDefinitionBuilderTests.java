@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +65,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
 class SuppliedRootBeanDefinitionBuilderTests {

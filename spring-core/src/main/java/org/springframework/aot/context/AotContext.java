@@ -25,12 +25,9 @@ import org.springframework.aot.generate.GenerationContext;
  * <ul>
  * <li>Access to and management of {@link #getProcessors() AOT processors}.</li>
  * <li>Support for {@link #getClassNameGenerator() class name generation}.</li>
- * <li>Central management of all {@link #getGeneratedFiles() generated
- * files}.</li>
- * <li>Support for the recording of {@link #getRuntimeHints() runtime
- * hints}.</li>
- * <li>Registration of {@link #getGeneratedSpringFactories() spring.factories}
- * content.
+ * <li>Central management of all {@link #getGeneratedFiles() generated files}.</li>
+ * <li>Support for the recording of {@link #getRuntimeHints() runtime hints}.</li>
+ * <li>Registration of {@link #getGeneratedSpringFactories() spring.factories} content.
  * </ul>
  *
  * @author Stephane Nicoll
@@ -44,11 +41,10 @@ import org.springframework.aot.generate.GenerationContext;
 public interface AotContext extends GenerationContext {
 
 	/**
-	 * Return the {@link AotProcessors} being used by the context. Typically
-	 * used to register additional processors or apply further processing.
+	 * Return the {@link AotProcessors} being used by the context. Typically used to
+	 * register additional processors or apply further processing.
 	 * @return the AOT processors
 	 */
 	AotProcessors getProcessors();
-
 
 }

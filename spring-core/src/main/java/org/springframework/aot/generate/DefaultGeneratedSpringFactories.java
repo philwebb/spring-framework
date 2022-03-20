@@ -33,8 +33,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * Default implementation of {@link GeneratedSpringFactories} that can
- * ultimately be written to a {@link GeneratedFiles} instance.
+ * Default implementation of {@link GeneratedSpringFactories} that can ultimately be
+ * written to a {@link GeneratedFiles} instance.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -55,13 +55,12 @@ public class DefaultGeneratedSpringFactories implements GeneratedSpringFactories
 	}
 
 	/**
-	 * Create a new {@link DefaultGeneratedSpringFactories} instance with access
-	 * to existing file content.
-	 * @param existingContent factory that will return any existing content
-	 * given a resource location
+	 * Create a new {@link DefaultGeneratedSpringFactories} instance with access to
+	 * existing file content.
+	 * @param existingContent factory that will return any existing content given a
+	 * resource location
 	 */
-	public DefaultGeneratedSpringFactories(
-			Function<String, InputStreamSource> existingContent) {
+	public DefaultGeneratedSpringFactories(Function<String, InputStreamSource> existingContent) {
 		Assert.notNull(existingContent, "'existingContent' must not be null");
 		this.existingContent = existingContent;
 	}
@@ -70,20 +69,18 @@ public class DefaultGeneratedSpringFactories implements GeneratedSpringFactories
 	public Declarations forResourceLocation(String resourceLocation) {
 		Assert.hasLength(resourceLocation, "'resourceLocation' must not be empty");
 		return this.factoryFiles.computeIfAbsent(resourceLocation,
-				key -> new FactoryFile(resourceLocation,
-						this.existingContent.apply(resourceLocation)));
+				key -> new FactoryFile(resourceLocation, this.existingContent.apply(resourceLocation)));
 	}
 
 	/**
-	 * Write generated Spring {@code .factories} files to the given
-	 * {@link GeneratedFiles} instance.
+	 * Write generated Spring {@code .factories} files to the given {@link GeneratedFiles}
+	 * instance.
 	 * @param generatedFiles where to write the generated files
 	 * @throws IOException on IO error
 	 */
 	public void writeTo(GeneratedFiles generatedFiles) throws IOException {
 		Assert.notNull(generatedFiles, "'generatedFiles' must not be null");
-		this.factoryFiles.values().forEach(
-				(factoryFile) -> factoryFile.writeTo(generatedFiles));
+		this.factoryFiles.values().forEach((factoryFile) -> factoryFile.writeTo(generatedFiles));
 	}
 
 	/**
@@ -109,12 +106,10 @@ public class DefaultGeneratedSpringFactories implements GeneratedSpringFactories
 		}
 
 		private void addExisting(InputStream inputStream) throws IOException {
-			Properties properties = PropertiesLoaderUtils.loadProperties(
-					new InputStreamResource(inputStream));
+			Properties properties = PropertiesLoaderUtils.loadProperties(new InputStreamResource(inputStream));
 			properties.forEach((factoryTypeName, implementationNames) -> {
 				addAll((String) factoryTypeName,
-						StringUtils.commaDelimitedListToStringArray(
-								(String) implementationNames));
+						StringUtils.commaDelimitedListToStringArray((String) implementationNames));
 			});
 		}
 
@@ -128,8 +123,8 @@ public class DefaultGeneratedSpringFactories implements GeneratedSpringFactories
 		public void add(String factoryTypeName, String implementationName) {
 			implementationName = implementationName.trim();
 			if (StringUtils.hasLength(implementationName)) {
-				this.factoryNames.computeIfAbsent(factoryTypeName.trim(),
-						key -> new LinkedHashSet<>()).add(implementationName);
+				this.factoryNames.computeIfAbsent(factoryTypeName.trim(), key -> new LinkedHashSet<>())
+						.add(implementationName);
 			}
 		}
 

@@ -38,32 +38,28 @@ public class DefaultGenerationContext implements GenerationContext {
 	private final RuntimeHints runtimeHints;
 
 	/**
-	 * Create a new {@link DefaultGenerationContext} instance backed by the
-	 * specified {@code generatedFiles}.
+	 * Create a new {@link DefaultGenerationContext} instance backed by the specified
+	 * {@code generatedFiles}.
 	 * @param generatedFiles the generated files
 	 * @param processors the processors
 	 */
 	public DefaultGenerationContext(GeneratedFiles generatedFiles) {
-		this(new ClassNameGenerator(), generatedFiles,
-				new DefaultGeneratedSpringFactories(), new RuntimeHints());
+		this(new ClassNameGenerator(), generatedFiles, new DefaultGeneratedSpringFactories(), new RuntimeHints());
 	}
 
 	/**
-	 * Create a new {@link DefaultGenerationContext} instance backed by the
-	 * specified items.
+	 * Create a new {@link DefaultGenerationContext} instance backed by the specified
+	 * items.
 	 * @param classNameGenerator the class name generator
 	 * @param generatedFiles the generated files
 	 * @param generatedSpringFactories the generated spring factories
 	 * @param runtimeHints the runtime hints
 	 */
-	public DefaultGenerationContext(ClassNameGenerator classNameGenerator,
-			GeneratedFiles generatedFiles,
-			GeneratedSpringFactories generatedSpringFactories,
-			RuntimeHints runtimeHints) {
+	public DefaultGenerationContext(ClassNameGenerator classNameGenerator, GeneratedFiles generatedFiles,
+			GeneratedSpringFactories generatedSpringFactories, RuntimeHints runtimeHints) {
 		Assert.notNull(classNameGenerator, "'classNameGenerator' must not be null");
 		Assert.notNull(generatedFiles, "'generatedFiles' must not be null");
-		Assert.notNull(generatedSpringFactories,
-				"'generatedSpringFactories' must not be null");
+		Assert.notNull(generatedSpringFactories, "'generatedSpringFactories' must not be null");
 		Assert.notNull(runtimeHints, "'runtimeHints' must not be null");
 		this.classNameGenerator = classNameGenerator;
 		this.generatedFiles = generatedFiles;

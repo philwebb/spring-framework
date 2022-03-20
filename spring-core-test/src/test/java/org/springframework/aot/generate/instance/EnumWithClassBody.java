@@ -18,6 +18,10 @@ package org.springframework.aot.generate.instance;
 
 /**
  * Test enum that include a class body.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 public enum EnumWithClassBody {
 

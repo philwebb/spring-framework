@@ -17,6 +17,7 @@
 package org.springframework.beans.factory.support.aot;
 
 import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
 
 /**
@@ -28,6 +29,7 @@ public interface AotBeanRegistrationHandler {
 
 	boolean canHandle(DefinedBean definedBean);
 
-	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefinedBean definedBean);
+	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefaultListableBeanFactory beanFactory,
+			DefinedBean definedBean);
 
 }

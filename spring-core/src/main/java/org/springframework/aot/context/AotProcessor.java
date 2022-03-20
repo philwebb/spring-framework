@@ -19,10 +19,10 @@ package org.springframework.aot.context;
 import org.springframework.lang.Nullable;
 
 /**
- * Base interface for all AOT processor interfaces. Allows named instances to be
- * analyzed ahead-of-time and in order to optionally provide an
- * {@link AotContribution}. This interface should not be directly implemented,
- * but instead should be as the superclass of a more specialized processor.
+ * Base interface for all AOT processor interfaces. Allows named instances to be analyzed
+ * ahead-of-time and in order to optionally provide an {@link AotContribution}. This
+ * interface should not be directly implemented, but instead should be as the superclass
+ * of a more specialized processor.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -34,22 +34,16 @@ import org.springframework.lang.Nullable;
 @FunctionalInterface
 public interface AotProcessor<N, T> {
 
-	// FIXME we might need some way for a processor to contribute to another
-	// processor. For example, a MyBean$$Access contribution allowing access
-	// to package-private fields or methods.
-
 	/**
 	 * Process the given named instance ahead-of-time and return an
-	 * {@link AotContribution} or {@code null}. The provided name is unique
-	 * within the context of the processor. It can be an {@link Class} or any
-	 * object that has an appropriate {@link Object#toString() toString()}
-	 * method.
+	 * {@link AotContribution} or {@code null}. The provided name is unique within the
+	 * context of the processor. It can be an {@link Class} or any object that has an
+	 * appropriate {@link Object#toString() toString()} method.
 	 * <p>
-	 * Processors are free to use any techniques they like to analyze the given
-	 * instance. Most typically use reflection to find fields or methods to use
-	 * in the {@link AotContribution}. Contributions typically generate source
-	 * code or resource files that can be used when the AOT optimized
-	 * application runs.
+	 * Processors are free to use any techniques they like to analyze the given instance.
+	 * Most typically use reflection to find fields or methods to use in the
+	 * {@link AotContribution}. Contributions typically generate source code or resource
+	 * files that can be used when the AOT optimized application runs.
 	 * <p>
 	 * If the given instance isn't relevant to the processor, it should return a
 	 * {@code null} contribution.

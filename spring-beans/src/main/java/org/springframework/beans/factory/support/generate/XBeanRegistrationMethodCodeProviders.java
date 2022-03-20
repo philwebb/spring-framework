@@ -39,28 +39,28 @@ import org.springframework.core.log.LogMessage;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class BeanRegistrationMethodCodeProviders {
+public class XBeanRegistrationMethodCodeProviders {
 
-	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodCodeProviders.class);
+	private static final Log logger = LogFactory.getLog(XBeanRegistrationMethodCodeProviders.class);
 
 	private final List<BeanRegistrationCodeGeneratorProvider> providers;
 
 	/**
-	 * Create a new {@link BeanRegistrationMethodCodeProviders} instance, obtaining providers
+	 * Create a new {@link XBeanRegistrationMethodCodeProviders} instance, obtaining providers
 	 * using the default {@link SpringFactoriesLoader} and the given {@link BeanFactory}.
 	 * @param beanFactory the bean factory to use
 	 */
-	public BeanRegistrationMethodCodeProviders(ConfigurableListableBeanFactory beanFactory) {
+	public XBeanRegistrationMethodCodeProviders(ConfigurableListableBeanFactory beanFactory) {
 		this(SpringFactoriesLoader.forDefaultResourceLocation(), beanFactory);
 	}
 
 	/**
-	 * Create a new {@link BeanRegistrationMethodCodeProviders} instance, obtaining providers
+	 * Create a new {@link XBeanRegistrationMethodCodeProviders} instance, obtaining providers
 	 * using the given {@link SpringFactoriesLoader} and {@link BeanFactory}.
 	 * @param springFactoriesLoader the factories loader to use
 	 * @param beanFactory the bean factory to use
 	 */
-	BeanRegistrationMethodCodeProviders(SpringFactoriesLoader springFactoriesLoader,
+	XBeanRegistrationMethodCodeProviders(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
 		List<BeanRegistrationCodeGeneratorProvider> providers = new ArrayList<>();
 		providers.addAll(springFactoriesLoader.load(BeanRegistrationCodeGeneratorProvider.class));

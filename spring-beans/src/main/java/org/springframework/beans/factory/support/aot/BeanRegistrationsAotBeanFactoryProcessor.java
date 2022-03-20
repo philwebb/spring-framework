@@ -30,7 +30,7 @@ import org.springframework.beans.factory.aot.DefinedBeanAotExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
-import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeProviders;
+import org.springframework.beans.factory.support.generate.XBeanRegistrationMethodCodeProviders;
 import org.springframework.core.log.LogMessage;
 
 /**
@@ -45,9 +45,9 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationsAotBeanFactoryProcessor.class);
 
-	private Map<ConfigurableListableBeanFactory, DefinedBeanAotExcludeFilters> aotDefinedBeanExcludeFilters = new HashMap<>();
+	private final Map<ConfigurableListableBeanFactory, DefinedBeanAotExcludeFilters> aotDefinedBeanExcludeFilters = new HashMap<>();
 
-	private Map<ConfigurableListableBeanFactory, BeanRegistrationMethodCodeProviders> beanRegistrationCodeProviders = new HashMap<>();
+	private final Map<ConfigurableListableBeanFactory, XBeanRegistrationMethodCodeProviders> beanRegistrationCodeProviders = new HashMap<>();
 
 	@Override
 	public AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
@@ -55,8 +55,8 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		logger.trace(LogMessage.format("Generating bean registrations contribution for '%s'", beanFactoryName));
 		DefinedBeanAotExcludeFilters excludeFilters = this.aotDefinedBeanExcludeFilters.computeIfAbsent(beanFactory,
 				DefinedBeanAotExcludeFilters::new);
-		BeanRegistrationMethodCodeProviders registrationProviders = this.beanRegistrationCodeProviders
-				.computeIfAbsent(beanFactory, BeanRegistrationMethodCodeProviders::new);
+		XBeanRegistrationMethodCodeProviders registrationProviders = this.beanRegistrationCodeProviders
+				.computeIfAbsent(beanFactory, XBeanRegistrationMethodCodeProviders::new);
 		Map<DefinedBean, BeanRegistrationMethodCodeGenerator> registrations = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			DefinedBean definedBean = new DefinedBean(beanFactory, beanFactoryName, beanName);
