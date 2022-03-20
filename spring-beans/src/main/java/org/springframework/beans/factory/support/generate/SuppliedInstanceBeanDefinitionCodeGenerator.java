@@ -60,7 +60,7 @@ import org.springframework.util.ClassUtils;
  */
 class SuppliedInstanceBeanDefinitionCodeGenerator {
 
-	static final String BEAN_FACTORY_VARIABLE = BeanRegistrationContribution.BEAN_FACTORY_VARIABLE;
+	static final String BEAN_FACTORY_VARIABLE = BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE;
 
 	private final GeneratedMethods generatedMethods;
 
