@@ -60,7 +60,7 @@ import org.springframework.util.ClassUtils;
  */
 class SuppliedInstanceBeanDefinitionCodeGenerator {
 
-	static final String BEAN_FACTORY_VARIABLE = "beanFactory";
+	static final String BEAN_FACTORY_VARIABLE = BeanRegistrationContribution.BEAN_FACTORY_VARIABLE;
 
 	private final GeneratedMethods generatedMethods;
 
@@ -162,7 +162,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 					.generateBy((builder) -> {
 						builder.returns(declaringClass);
 						if (isInnerClass) {
-							builder.addParameter(BeanFactory.class, "beanFactory");
+							builder.addParameter(BeanFactory.class, BEAN_FACTORY_VARIABLE);
 						}
 						builder.addParameter(Object[].class, "args");
 						CodeBlock.Builder code = CodeBlock.builder();

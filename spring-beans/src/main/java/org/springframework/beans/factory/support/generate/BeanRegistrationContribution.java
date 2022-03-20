@@ -31,11 +31,11 @@ import org.springframework.javapoet.CodeBlock;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationMethodCodeProvider
+ * @see BeanRegistrationCodeGeneratorProvider
  * @see BeanRegistrationsContribution
  */
 @FunctionalInterface
-public interface BeanRegistrationMethodCodeGenerator {
+public interface BeanRegistrationContribution {
 
 	/**
 	 * The name of the parameter passed to the generated method that contains the
@@ -51,6 +51,7 @@ public interface BeanRegistrationMethodCodeGenerator {
 	 * @param aotContext
 	 * @return
 	 */
-	CodeBlock generateRegistrationMethod(GenerationContext generationContext, GeneratedMethods generatedMethods);
+	CodeBlock generateBeanRegistrationMethodCode(GenerationContext generationContext,
+			GeneratedMethods generatedMethods);
 
 }

@@ -28,7 +28,7 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.util.Assert;
 
 /**
- * Default {@link BeanRegistrationMethodCodeGenerator} providing registration code suitable for most
+ * Default {@link BeanRegistrationContribution} providing registration code suitable for most
  * beans.
  *
  * @author Stephane Nicoll
@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMethodCodeGenerator {
+class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationContribution {
 
 	private final DefinedBean definedBean;
 
@@ -45,7 +45,7 @@ class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMeth
 	}
 
 	@Override
-	public CodeBlock generateRegistrationMethod(GenerationContext generationContext, GeneratedMethods registrationMethods) {
+	public CodeBlock generateBeanRegistrationMethodCode(GenerationContext generationContext, GeneratedMethods registrationMethods) {
 		BeanDefinition mergedBeanDefinition = this.definedBean.getMergedBeanDefinition();
 		Executable executable = new ConstructorOrFactoryMethodResolver(this.definedBean.getBeanFactory())
 				.resolve(mergedBeanDefinition);

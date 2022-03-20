@@ -29,7 +29,7 @@ import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.aot.DefinedBeanAotExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
+import org.springframework.beans.factory.support.generate.BeanRegistrationContribution;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeProviders;
 import org.springframework.core.log.LogMessage;
 
@@ -57,14 +57,15 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 				DefinedBeanAotExcludeFilters::new);
 		BeanRegistrationMethodCodeProviders registrationProviders = this.beanRegistrationCodeProviders
 				.computeIfAbsent(beanFactory, BeanRegistrationMethodCodeProviders::new);
-		Map<DefinedBean, BeanRegistrationMethodCodeGenerator> registrations = new LinkedHashMap<>();
+		Map<DefinedBean, BeanRegistrationContribution> registrations = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			DefinedBean definedBean = new DefinedBean(beanFactory, beanFactoryName, beanName);
 			if (excludeFilters.isExcluded(definedBean)) {
 				logger.trace(LogMessage.format("Excluded '%s' from AOT registration and processing", beanName));
 				continue;
 			}
-			BeanRegistrationMethodCodeGenerator registration = registrationProviders.getBeanRegistrationMethodGenerator(definedBean);
+			BeanRegistrationContribution registration = registrationProviders
+					.getBeanRegistrationMethodGenerator(definedBean);
 			logger.trace(
 					LogMessage.format("Adding registration %s for '%s'", registration.getClass().getName(), beanName));
 			registrations.put(definedBean, registration);
