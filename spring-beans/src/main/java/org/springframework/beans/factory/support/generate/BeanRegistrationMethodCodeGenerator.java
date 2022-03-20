@@ -24,8 +24,9 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.javapoet.CodeBlock;
 
 /**
- * Generates the code required to register a {@link BeanDefinition} to
- * {@link DefaultListableBeanFactory} programmatically.
+ * Strategy used to generator the code required to register a {@link BeanDefinition} to
+ * {@link DefaultListableBeanFactory} programmatically. Most bean definitions won't need a
+ * custom generator and can rely on default code generation.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -33,6 +34,7 @@ import org.springframework.javapoet.CodeBlock;
  * @since 6.0
  * @see BeanRegistrationCodeGeneratorProvider
  * @see BeanRegistrationsContribution
+ * @see DefaultBeanRegistrationMethodCodeGenerator
  */
 @FunctionalInterface
 public interface BeanRegistrationMethodCodeGenerator {
@@ -48,8 +50,9 @@ public interface BeanRegistrationMethodCodeGenerator {
 	 * {@link BeanDefinition} to {@link BeanDefinitionRegistry}. The resulting code will
 	 * be included as the body of a generated method and can assume that the
 	 * {@link #BEAN_FACTORY_VARIABLE} parameter is available.
-	 * @param aotContext
-	 * @return
+	 * @param generationContext the generation context
+	 * @param generatedMethods the generated methods
+	 * @return the generated code
 	 */
 	CodeBlock generateBeanRegistrationMethodCode(GenerationContext generationContext,
 			GeneratedMethods generatedMethods);

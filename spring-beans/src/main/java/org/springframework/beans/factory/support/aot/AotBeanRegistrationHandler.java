@@ -16,19 +16,39 @@
 
 package org.springframework.beans.factory.support.aot;
 
+import groovyjarjarantlr4.v4.runtime.misc.Nullable;
+
 import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
 
 /**
+ * Strategy used by {@link BeanRegistrationsAotBeanFactoryProcessor} in order to support
+ * customized bean registration.
  *
- * @author pwebb
+ * specific {@link BeanRegistrationMethodCodeGenerator} for a {@link DefinedBean}.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
 public interface AotBeanRegistrationHandler {
 
+	/**
+	 * Return {@code true} if this handler supports the given defined bean.
+	 * @param definedBean
+	 * @return
+	 */
 	boolean canHandle(DefinedBean definedBean);
 
+	/**
+	 * Return the {@link BeanRegistrationMethodCodeGenerator} that should be used.
+	 * @param definedBean the defined bean that should be registered
+	 * @return a {@link BeanRegistrationMethodCodeGenerator} instance of {@code null} to
+	 * use default method code generation
+	 */
+	@Nullable
 	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefaultListableBeanFactory beanFactory,
 			DefinedBean definedBean);
 

@@ -54,12 +54,19 @@ import org.springframework.util.StringUtils;
 /**
  * Code generator to set {@link RootBeanDefinition} properties.
  * <p>
- * For example: <pre class="code">
+ * Generates code in the following form:<pre class="code">{@code
  * beanDefinition.setPrimary(true);
  * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
  * ...
- * </pre> The generated code expects {@link RootBeanDefinition} {@code beanDefinition} and
- * {@link DefaultListableBeanFactory} {@code beanFactory} variables to be available.
+ * }</pre>
+ * <p>
+ * The generated code expects the following variables to be available:
+ * <p>
+ * <ul>
+ * <li>{@code beanDefinition} - The {@link RootBeanDefinition} to configure.</li>
+ * <li>{@code beanFactory} - The {@link DefaultListableBeanFactory} used for
+ * injection.</li>
+ * </ul>
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
