@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.instance.CollectionInstanceCodeGenerator;
@@ -43,7 +44,6 @@ import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -68,11 +68,9 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITON = new RootBeanDefinition();
 
-	private final DefaultListableBeanFactory beanFactory;
-
-	private final GeneratedMethods generatedMethods;
-
 	private final DefaultInstanceCodeGenerationService instanceCodeGenerationService;
+
+	private SuppliedInstanceBeanDefinitionCodeGenerator suppliedInstanceBeanDefinitionCodeGenerator;
 
 	/**
 	 * Create a new {@link BeanDefinitionPropertiesCodeGenerator} instance.
@@ -82,9 +80,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 	 * name
 	 */
 	BeanDefinitionPropertiesCodeGenerator(DefaultListableBeanFactory beanFactory, GeneratedMethods generatedMethods) {
-		this.beanFactory = beanFactory;
-		this.generatedMethods = generatedMethods;
 		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
+		this.suppliedInstanceBeanDefinitionCodeGenerator = new SuppliedInstanceBeanDefinitionCodeGenerator(beanFactory, generatedMethods);
 	}
 
 	private DefaultInstanceCodeGenerationService createInstanceCodeGenerationService(
@@ -97,16 +94,34 @@ class BeanDefinitionPropertiesCodeGenerator {
 		return service;
 	}
 
-	CodeBlock generateCode(@Nullable String beanName, RootBeanDefinition beanDefinition) {
-		return generateCode(beanName, beanDefinition, (attribute) -> false);
+	/**
+	 * Generate code to set the {@link RootBeanDefinition} properties.
+	 * @param beanDefinition the source bean definition
+	 * @param name a name that can be used when generating new methods. The bean name
+	 * should be used unless generating source for an inner-beans.
+	 * @return the generated code
+	 */
+	CodeBlock generateCode(RootBeanDefinition beanDefinition, String name) {
+		return generateCode(beanDefinition, name, (attribute) -> false);
 	}
 
-	CodeBlock generateCode(@Nullable String beanName, RootBeanDefinition beanDefinition,
-			Predicate<String> attributeFilter) {
-		return new PropertiesCodeBlockBuilder(beanDefinition, attributeFilter).build();
+	/**
+	 * Generate code to set the {@link RootBeanDefinition} properties.
+	 * @param beanDefinition the source bean definition
+	 * @param name a name that can be used when generating new methods. The bean name
+	 * should be used unless generating source for an inner-beans
+	 * @param attributeFilter a predicate that can be used to filter attributes by their
+	 * name
+	 * @return the generated code
+	 */
+	CodeBlock generateCode(RootBeanDefinition beanDefinition, String name, Predicate<String> attributeFilter) {
+		return new CodeBuilder(beanDefinition, attributeFilter).build();
 	}
 
-	private class PropertiesCodeBlockBuilder {
+	/**
+	 * Builder used to create the {@link CodeBlock}.
+	 */
+	private class CodeBuilder {
 
 		private final RootBeanDefinition beanDefinition;
 
@@ -114,7 +129,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 		private String name;
 
-		PropertiesCodeBlockBuilder(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter) {
+		CodeBuilder(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter) {
 			this.beanDefinition = beanDefinition;
 			this.attributeFilter = attributeFilter;
 		}
@@ -156,7 +171,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 			if (!propertyValues.isEmpty()) {
 				for (PropertyValue propertyValue : propertyValues) {
 					CodeBlock value = BeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService
-							.generateCode(propertyValue.getValue());
+							.generateCode(propertyValue.getName(), propertyValue.getValue());
 					builder.addStatement("$L.getPropertyValues().addPropertyValue($S, $L)", BEAN_DEFINITION_VARIABLE,
 							propertyValue.getName(), value);
 				}
@@ -313,16 +328,22 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	}
 
+	/**
+	 * {@link InstanceCodeGenerator} for inner {@link BeanDefinition} types.
+	 */
 	class BeanDefinitionInstanceCodeGenerator implements InstanceCodeGenerator {
 
-		public BeanDefinitionInstanceCodeGenerator(@Nullable String beanName) {
+		private final String name;
+
+		public BeanDefinitionInstanceCodeGenerator(String name) {
+			this.name = name;
 		}
 
 		@Override
 		public CodeBlock generateCode(String name, Object value, ResolvableType type,
 				InstanceCodeGenerationService service) {
 			if (type instanceof BeanDefinition beanDefinition) {
-
+				suppliedInstanceBeanDefinitionCodeGenerator.generateCode(bea, name)
 			}
 			return null;
 		}

@@ -335,12 +335,12 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 
 	private void testCompiledResult(RootBeanDefinition beanDefinition,
 			BiConsumer<RootBeanDefinition, Compiled> result) {
-		testCompiledResult(() -> this.generator.generateCode("test", beanDefinition), result);
+		testCompiledResult(() -> this.generator.generateCode(beanDefinition, "test"), result);
 	}
 
 	private void testCompiledResult(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter,
 			BiConsumer<RootBeanDefinition, Compiled> result) {
-		testCompiledResult(() -> this.generator.generateCode("test", beanDefinition, attributeFilter), result);
+		testCompiledResult(() -> this.generator.generateCode(beanDefinition, "test", attributeFilter), result);
 	}
 
 	private void testCompiledResult(Supplier<CodeBlock> codeBlock, BiConsumer<RootBeanDefinition, Compiled> result) {
