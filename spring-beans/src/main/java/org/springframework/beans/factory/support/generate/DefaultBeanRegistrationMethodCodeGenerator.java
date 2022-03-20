@@ -16,6 +16,9 @@
 
 package org.springframework.beans.factory.support.generate;
 
+import java.lang.reflect.Executable;
+import java.util.function.Function;
+
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -57,34 +60,35 @@ public class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrat
 
 	static final String BEAN_FACTORY_VARIABLE = SuppliedInstanceBeanDefinitionCodeGenerator.BEAN_FACTORY_VARIABLE;
 
-	private final DefaultListableBeanFactory beanFactory;
-
 	private final String beanName;
 
 	private final BeanDefinition beanDefinition;
 
+	private final Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver;
+
 	/**
 	 * Create a new {@link DefaultBeanRegistrationMethodCodeGenerator} instance.
-	 * @param beanFactory the source bean factory
 	 * @param beanName the bean name being registered
 	 * @param beanDefinition the bean definition being registered
+	 * @param constructorOrFactoryMethodResolver resolver used to find the constructor or
+	 * factory method for a bean definition
 	 */
-	public DefaultBeanRegistrationMethodCodeGenerator(DefaultListableBeanFactory beanFactory, String beanName,
-			BeanDefinition beanDefinition) {
-		this.beanFactory = beanFactory;
+	public DefaultBeanRegistrationMethodCodeGenerator(String beanName, BeanDefinition beanDefinition,
+			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver) {
 		this.beanName = beanName;
 		this.beanDefinition = beanDefinition;
+		this.constructorOrFactoryMethodResolver = constructorOrFactoryMethodResolver;
 	}
 
 	@Override
 	public CodeBlock generateBeanRegistrationMethodCode(GenerationContext generationContext,
 			GeneratedMethods generatedMethods) {
 		Builder builder = CodeBlock.builder();
-		CodeBlock suppliedInstanceCode = new SuppliedInstanceBeanDefinitionCodeGenerator(this.beanFactory,
-				generatedMethods).generateCode(this.beanDefinition, this.beanName);
+		CodeBlock suppliedInstanceCode = new SuppliedInstanceBeanDefinitionCodeGenerator(generatedMethods,
+				this.constructorOrFactoryMethodResolver).generateCode(this.beanDefinition, this.beanName);
 		builder.addStatement("$T $L = $L", RootBeanDefinition.class,
 				BeanDefinitionPropertiesCodeGenerator.BEAN_DEFINITION_VARIABLE, suppliedInstanceCode);
-		builder.add(new BeanDefinitionPropertiesCodeGenerator(this.beanFactory, generatedMethods)
+		builder.add(new BeanDefinitionPropertiesCodeGenerator(generatedMethods, this.constructorOrFactoryMethodResolver)
 				.generateCode(this.beanDefinition, this.beanName));
 		builder.addStatement("$L.registerBeanDefinition($S, $L)", BEAN_FACTORY_VARIABLE, this.beanName,
 				BeanDefinitionPropertiesCodeGenerator.BEAN_DEFINITION_VARIABLE);

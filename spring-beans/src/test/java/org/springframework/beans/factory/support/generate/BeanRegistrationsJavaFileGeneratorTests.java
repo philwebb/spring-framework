@@ -29,9 +29,11 @@ import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
+import org.springframework.beans.factory.support.aot.TestConstructorOrFactoryMethodResolver;
 import org.springframework.beans.testfixture.beans.AnnotatedBean;
 import org.springframework.javapoet.JavaFile;
 
@@ -50,12 +52,12 @@ class BeanRegistrationsJavaFileGeneratorTests {
 	void generateBeanRegistrationsCodeGeneratesCode() {
 		Map<String, BeanRegistrationMethodCodeGenerator> beanDefinitionGenerators = new LinkedHashMap<>();
 		DefaultListableBeanFactory generationBeanFactory = new DefaultListableBeanFactory();
-		beanDefinitionGenerators.put("primaryBean", new DefaultBeanRegistrationMethodCodeGenerator(
-				generationBeanFactory, "primaryBean",
-				BeanDefinitionBuilder.rootBeanDefinition(AnnotatedBean.class).setPrimary(true).getBeanDefinition()));
-		beanDefinitionGenerators.put("anotherBean",
-				new DefaultBeanRegistrationMethodCodeGenerator(generationBeanFactory, "anotherBean",
-						BeanDefinitionBuilder.rootBeanDefinition(AnnotatedBean.class).getBeanDefinition()));
+		TestConstructorOrFactoryMethodResolver constructorOrFactoryMethodResolver = new TestConstructorOrFactoryMethodResolver(
+				generationBeanFactory);
+		put(beanDefinitionGenerators, constructorOrFactoryMethodResolver, "primaryBean",
+				BeanDefinitionBuilder.rootBeanDefinition(AnnotatedBean.class).setPrimary(true));
+		put(beanDefinitionGenerators, constructorOrFactoryMethodResolver, "anotherBean",
+				BeanDefinitionBuilder.rootBeanDefinition(AnnotatedBean.class));
 		BeanRegistrationsJavaFileGenerator generator = new BeanRegistrationsJavaFileGenerator(beanDefinitionGenerators);
 		testCompiledResult(generator, (initializer, compiled) -> {
 			DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
@@ -65,6 +67,15 @@ class BeanRegistrationsJavaFileGeneratorTests {
 			assertThat(beanFactory.getBean("primaryBean")).isInstanceOf(AnnotatedBean.class);
 			assertThat(beanFactory.getBean("anotherBean")).isInstanceOf(AnnotatedBean.class);
 		});
+	}
+
+	private void put(Map<String, BeanRegistrationMethodCodeGenerator> beanDefinitionGenerators,
+			TestConstructorOrFactoryMethodResolver constructorOrFactoryMethodResolver, String beanName,
+			BeanDefinitionBuilder beanDefinitionBuilder) {
+		AbstractBeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();
+		DefaultBeanRegistrationMethodCodeGenerator generator = new DefaultBeanRegistrationMethodCodeGenerator(beanName,
+				beanDefinition, constructorOrFactoryMethodResolver);
+		beanDefinitionGenerators.put(beanName, generator);
 	}
 
 	private void testCompiledResult(BeanRegistrationsJavaFileGenerator generator,

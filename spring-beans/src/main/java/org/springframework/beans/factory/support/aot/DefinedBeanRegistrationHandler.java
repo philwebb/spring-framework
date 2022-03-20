@@ -19,12 +19,12 @@ package org.springframework.beans.factory.support.aot;
 import groovyjarjarantlr4.v4.runtime.misc.Nullable;
 
 import org.springframework.beans.factory.aot.DefinedBean;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
 
 /**
- * Strategy used by {@link BeanRegistrationsAotBeanFactoryProcessor} in order to support
- * customized bean registration.
+ * Strategy used by {@link BeanRegistrationsAotBeanFactoryProcessor} in order to handle
+ * customized bean registration. Most bean definitions won't need a custom handling and
+ * can rely on the default behavior.
  *
  * specific {@link BeanRegistrationMethodCodeGenerator} for a {@link DefinedBean}.
  *
@@ -49,7 +49,6 @@ public interface DefinedBeanRegistrationHandler {
 	 * use default method code generation
 	 */
 	@Nullable
-	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefaultListableBeanFactory beanFactory,
-			DefinedBean definedBean);
+	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefinedBean definedBean);
 
 }

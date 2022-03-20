@@ -21,13 +21,13 @@ import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.function.Function;
 
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -69,17 +69,18 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 
 	private final GeneratedMethods generatedMethods;
 
-	private final ConstructorOrFactoryMethodResolver constructorOrFactoryMethodResolver;
+	private final Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver;
 
 	/**
 	 * Create a new {@link SuppliedInstanceBeanDefinitionCodeGenerator} instance.
-	 * @param beanFactory the bean factory
 	 * @param generatedMethods the generated methods
+	 * @param constructorOrFactoryMethodResolver resolver used to find the constructor or
+	 * factory method for a bean definition
 	 */
-	SuppliedInstanceBeanDefinitionCodeGenerator(ConfigurableBeanFactory beanFactory,
-			GeneratedMethods generatedMethods) {
+	SuppliedInstanceBeanDefinitionCodeGenerator(GeneratedMethods generatedMethods,
+			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver) {
 		this.generatedMethods = generatedMethods;
-		this.constructorOrFactoryMethodResolver = new ConstructorOrFactoryMethodResolver(beanFactory);
+		this.constructorOrFactoryMethodResolver = constructorOrFactoryMethodResolver;
 	}
 
 	/**
@@ -132,13 +133,13 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 		}
 
 		private void addUsingAndGeneratedBy(CodeBlock.Builder builder) {
-			Executable executable = SuppliedInstanceBeanDefinitionCodeGenerator.this.constructorOrFactoryMethodResolver
-					.resolve(this.beanDefinition);
-			if (executable instanceof Constructor<?> constructor) {
+			Executable constructorOrFactoryMethod = SuppliedInstanceBeanDefinitionCodeGenerator.this.constructorOrFactoryMethodResolver
+					.apply(this.beanDefinition);
+			if (constructorOrFactoryMethod instanceof Constructor<?> constructor) {
 				addUsingAndGeneratedByConstructor(builder, constructor);
 				return;
 			}
-			if (executable instanceof Method method) {
+			if (constructorOrFactoryMethod instanceof Method method) {
 				addUsingAndGeneratedByFactoryMethod(builder, method);
 				return;
 			}

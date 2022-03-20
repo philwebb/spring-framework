@@ -41,6 +41,7 @@ import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.support.aot.TestConstructorOrFactoryMethodResolver;
 import org.springframework.beans.testfixture.beans.AnnotatedBean;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
@@ -66,7 +67,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
 	private BeanDefinitionPropertiesCodeGenerator generator = new BeanDefinitionPropertiesCodeGenerator(
-			this.beanFactory, this.generatedMethods);
+			this.generatedMethods, new TestConstructorOrFactoryMethodResolver(this.beanFactory));
 
 	@Test
 	void setPrimaryWhenFalse() {

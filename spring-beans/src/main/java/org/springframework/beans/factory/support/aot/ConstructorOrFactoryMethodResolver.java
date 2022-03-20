@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support.generate;
+package org.springframework.beans.factory.support.aot;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -53,14 +53,14 @@ import org.springframework.util.ReflectionUtils;
  * Resolves the {@link Executable} (factory method or constructor) that should be used to
  * create a bean. This class is similar to
  * {@code org.springframework.beans.factory.support.ConstructorResolver} but it doesn't
- * cause bean initialization.
+ * need bean initialization.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-class ConstructorOrFactoryMethodResolver {
+class ConstructorOrFactoryMethodResolver implements Function<BeanDefinition, Executable> {
 
 	private static final Log logger = LogFactory.getLog(ConstructorOrFactoryMethodResolver.class);
 
@@ -74,19 +74,18 @@ class ConstructorOrFactoryMethodResolver {
 				: ClassUtils.getDefaultClassLoader();
 	}
 
-	@Nullable
-	Executable resolve(BeanDefinition mergedBeanDefinition) {
-		Supplier<ResolvableType> beanType = () -> getBeanType(mergedBeanDefinition);
-		List<ResolvableType> valueTypes = mergedBeanDefinition.hasConstructorArgumentValues()
-				? determineParameterValueTypes(mergedBeanDefinition.getConstructorArgumentValues())
-				: Collections.emptyList();
-		Method resolvedFactoryMethod = resolveFactoryMethod(mergedBeanDefinition, valueTypes);
+	@Override
+	public Executable apply(BeanDefinition beanDefinition) {
+		Supplier<ResolvableType> beanType = () -> getBeanType(beanDefinition);
+		List<ResolvableType> valueTypes = beanDefinition.hasConstructorArgumentValues()
+				? determineParameterValueTypes(beanDefinition.getConstructorArgumentValues()) : Collections.emptyList();
+		Method resolvedFactoryMethod = resolveFactoryMethod(beanDefinition, valueTypes);
 		if (resolvedFactoryMethod != null) {
 			return resolvedFactoryMethod;
 		}
-		Class<?> factoryBeanClass = getFactoryBeanClass(mergedBeanDefinition);
-		if (factoryBeanClass != null && !factoryBeanClass.equals(mergedBeanDefinition.getResolvableType().toClass())) {
-			ResolvableType resolvableType = mergedBeanDefinition.getResolvableType();
+		Class<?> factoryBeanClass = getFactoryBeanClass(beanDefinition);
+		if (factoryBeanClass != null && !factoryBeanClass.equals(beanDefinition.getResolvableType().toClass())) {
+			ResolvableType resolvableType = beanDefinition.getResolvableType();
 			boolean isCompatible = ResolvableType.forClass(factoryBeanClass).as(FactoryBean.class).getGeneric(0)
 					.isAssignableFrom(resolvableType);
 			Assert.state(isCompatible, () -> String.format("Incompatible target type '%s' for factory bean '%s'",
@@ -97,10 +96,10 @@ class ConstructorOrFactoryMethodResolver {
 		if (resolvedConstructor != null) {
 			return resolvedConstructor;
 		}
-		Executable resolvedConstructorOrFactoryMethod = getField(mergedBeanDefinition,
-				"resolvedConstructorOrFactoryMethod", Executable.class);
+		Executable resolvedConstructorOrFactoryMethod = getField(beanDefinition, "resolvedConstructorOrFactoryMethod",
+				Executable.class);
 		if (resolvedConstructorOrFactoryMethod != null) {
-			logger.error("resolvedConstructorOrFactoryMethod required for " + mergedBeanDefinition);
+			logger.error("resolvedConstructorOrFactoryMethod required for " + beanDefinition);
 			return resolvedConstructorOrFactoryMethod;
 		}
 		return null;
