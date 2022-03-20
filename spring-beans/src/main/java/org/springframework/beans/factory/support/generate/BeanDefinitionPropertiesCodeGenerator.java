@@ -81,7 +81,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 	 */
 	BeanDefinitionPropertiesCodeGenerator(DefaultListableBeanFactory beanFactory, GeneratedMethods generatedMethods) {
 		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
-		this.suppliedInstanceBeanDefinitionCodeGenerator = new SuppliedInstanceBeanDefinitionCodeGenerator(beanFactory, generatedMethods);
+		this.suppliedInstanceBeanDefinitionCodeGenerator = new SuppliedInstanceBeanDefinitionCodeGenerator(beanFactory,
+				generatedMethods);
 	}
 
 	private DefaultInstanceCodeGenerationService createInstanceCodeGenerationService(
@@ -343,7 +344,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 		public CodeBlock generateCode(String name, Object value, ResolvableType type,
 				InstanceCodeGenerationService service) {
 			if (type instanceof BeanDefinition beanDefinition) {
-				suppliedInstanceBeanDefinitionCodeGenerator.generateCode(bea, name)
+				// suppliedInstanceBeanDefinitionCodeGenerator.generateCode(DEFAULT_BEAN_DEFINITON,
+				// name)
 			}
 			return null;
 		}
