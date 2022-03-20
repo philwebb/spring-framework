@@ -23,9 +23,12 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
+import javax.lang.model.element.Modifier;
+
+import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.instance.CollectionInstanceCodeGenerator;
 import org.springframework.aot.generate.instance.DefaultInstanceCodeGenerationService;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
@@ -37,6 +40,7 @@ import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
@@ -54,8 +58,8 @@ import org.springframework.util.StringUtils;
  * beanDefinition.setPrimary(true);
  * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
  * ...
- * </pre> The generated code expects a {@link RootBeanDefinition} {@code beanDefinition}
- * variable to be set.
+ * </pre> The generated code expects {@link RootBeanDefinition} {@code beanDefinition} and
+ * {@link DefaultListableBeanFactory} {@code beanFactory} variables to be available.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -64,13 +68,17 @@ import org.springframework.util.StringUtils;
  */
 class BeanDefinitionPropertiesCodeGenerator {
 
-	private static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
+	static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
+
+	static final String BEAN_FACTORY_VARIABLE = SuppliedInstanceBeanDefinitionCodeGenerator.BEAN_FACTORY_VARIABLE;
 
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITON = new RootBeanDefinition();
 
 	private final DefaultInstanceCodeGenerationService instanceCodeGenerationService;
 
-	private SuppliedInstanceBeanDefinitionCodeGenerator suppliedInstanceBeanDefinitionCodeGenerator;
+	private final SuppliedInstanceBeanDefinitionCodeGenerator suppliedInstanceBeanDefinitionCodeGenerator;
+
+	private final GeneratedMethods generatedMethods;
 
 	/**
 	 * Create a new {@link BeanDefinitionPropertiesCodeGenerator} instance.
@@ -83,6 +91,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
 		this.suppliedInstanceBeanDefinitionCodeGenerator = new SuppliedInstanceBeanDefinitionCodeGenerator(beanFactory,
 				generatedMethods);
+		this.generatedMethods = generatedMethods;
 	}
 
 	private DefaultInstanceCodeGenerationService createInstanceCodeGenerationService(
@@ -102,7 +111,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 	 * should be used unless generating source for an inner-beans.
 	 * @return the generated code
 	 */
-	CodeBlock generateCode(RootBeanDefinition beanDefinition, String name) {
+	CodeBlock generateCode(BeanDefinition beanDefinition, String name) {
 		return generateCode(beanDefinition, name, (attribute) -> false);
 	}
 
@@ -115,8 +124,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 	 * name
 	 * @return the generated code
 	 */
-	CodeBlock generateCode(RootBeanDefinition beanDefinition, String name, Predicate<String> attributeFilter) {
-		return new CodeBuilder(beanDefinition, attributeFilter).build();
+	CodeBlock generateCode(BeanDefinition beanDefinition, String name, Predicate<String> attributeFilter) {
+		return new CodeBuilder(beanDefinition, name, attributeFilter).build();
 	}
 
 	/**
@@ -124,27 +133,30 @@ class BeanDefinitionPropertiesCodeGenerator {
 	 */
 	private class CodeBuilder {
 
-		private final RootBeanDefinition beanDefinition;
+		private final BeanDefinition beanDefinition;
+
+		private final String name;
 
 		private final Predicate<String> attributeFilter;
 
-		private String name;
-
-		CodeBuilder(RootBeanDefinition beanDefinition, Predicate<String> attributeFilter) {
+		CodeBuilder(BeanDefinition beanDefinition, String name, Predicate<String> attributeFilter) {
 			this.beanDefinition = beanDefinition;
+			this.name = name;
 			this.attributeFilter = attributeFilter;
 		}
 
 		CodeBlock build() {
 			CodeBlock.Builder builder = CodeBlock.builder();
-			addStatementForValue(builder, RootBeanDefinition::isPrimary, "$L.setPrimary($L)");
-			addStatementForValue(builder, RootBeanDefinition::getScope, this::hasScope, "$L.setScope($S)");
-			addStatementForValue(builder, RootBeanDefinition::getDependsOn, this::hasDependsOn, "$L.setDependsOn($L)",
+			addStatementForValue(builder, BeanDefinition::isPrimary, "$L.setPrimary($L)");
+			addStatementForValue(builder, BeanDefinition::getScope, this::hasScope, "$L.setScope($S)");
+			addStatementForValue(builder, BeanDefinition::getDependsOn, this::hasDependsOn, "$L.setDependsOn($L)",
 					this::toStringVarArgs);
-			addStatementForValue(builder, RootBeanDefinition::getLazyInit, "$L.setLazyInit($L)");
-			addStatementForValue(builder, RootBeanDefinition::isAutowireCandidate, "$L.setAutowireCandidate($L)");
-			addStatementForValue(builder, RootBeanDefinition::isSynthetic, "$L.setSynthetic($L)");
-			addStatementForValue(builder, RootBeanDefinition::getRole, this::hasRole, "$L.setRole($L)", this::toRole);
+			addStatementForValue(builder, BeanDefinition::isAutowireCandidate, "$L.setAutowireCandidate($L)");
+			addStatementForValue(builder, BeanDefinition::getRole, this::hasRole, "$L.setRole($L)", this::toRole);
+			if (this.beanDefinition instanceof AbstractBeanDefinition) {
+				addStatementForValue(builder, AbstractBeanDefinition::getLazyInit, "$L.setLazyInit($L)");
+				addStatementForValue(builder, AbstractBeanDefinition::isSynthetic, "$L.setSynthetic($L)");
+			}
 			addConstructorArgumentValues(builder);
 			addPropertyValues(builder);
 			addAttributes(builder);
@@ -171,8 +183,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 			MutablePropertyValues propertyValues = this.beanDefinition.getPropertyValues();
 			if (!propertyValues.isEmpty()) {
 				for (PropertyValue propertyValue : propertyValues) {
-					CodeBlock value = BeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService
-							.generateCode(propertyValue.getName(), propertyValue.getValue());
+					CodeBlock value = instanceCodeGenerationService.generateCode(propertyValue.getName(),
+							propertyValue.getValue());
 					builder.addStatement("$L.getPropertyValues().addPropertyValue($S, $L)", BEAN_DEFINITION_VARIABLE,
 							propertyValue.getName(), value);
 				}
@@ -223,21 +235,22 @@ class BeanDefinitionPropertiesCodeGenerator {
 			return value;
 		}
 
-		private <T> void addStatementForValue(CodeBlock.Builder builder, Function<RootBeanDefinition, T> getter,
-				String format) {
+		private <B extends BeanDefinition, T> void addStatementForValue(CodeBlock.Builder builder,
+				Function<B, T> getter, String format) {
 			addStatementForValue(builder, getter,
 					(defaultValue, actualValue) -> !Objects.equals(defaultValue, actualValue), format);
 		}
 
-		private <T> void addStatementForValue(CodeBlock.Builder builder, Function<RootBeanDefinition, T> getter,
-				BiPredicate<T, T> filter, String format) {
+		private <B extends BeanDefinition, T> void addStatementForValue(CodeBlock.Builder builder,
+				Function<B, T> getter, BiPredicate<T, T> filter, String format) {
 			addStatementForValue(builder, getter, filter, format, actualValue -> actualValue);
 		}
 
-		private <T> void addStatementForValue(CodeBlock.Builder builder, Function<RootBeanDefinition, T> getter,
-				BiPredicate<T, T> filter, String format, Function<T, Object> formatter) {
-			T defaultValue = getter.apply(DEFAULT_BEAN_DEFINITON);
-			T actualValue = getter.apply(this.beanDefinition);
+		@SuppressWarnings("unchecked")
+		private <B extends BeanDefinition, T> void addStatementForValue(CodeBlock.Builder builder,
+				Function<B, T> getter, BiPredicate<T, T> filter, String format, Function<T, Object> formatter) {
+			T defaultValue = getter.apply((B) DEFAULT_BEAN_DEFINITON);
+			T actualValue = getter.apply((B) this.beanDefinition);
 			if (filter.test(defaultValue, actualValue)) {
 				builder.addStatement(format, BEAN_DEFINITION_VARIABLE, formatter.apply(actualValue));
 			}
@@ -343,11 +356,27 @@ class BeanDefinitionPropertiesCodeGenerator {
 		@Override
 		public CodeBlock generateCode(String name, Object value, ResolvableType type,
 				InstanceCodeGenerationService service) {
-			if (type instanceof BeanDefinition beanDefinition) {
-				// suppliedInstanceBeanDefinitionCodeGenerator.generateCode(DEFAULT_BEAN_DEFINITON,
-				// name)
+			if (value instanceof BeanDefinition beanDefinition) {
+				GeneratedMethod generatedMethod = generatedMethods.add("get", this.name, name).generateBy((builder) -> {
+					builder.addModifiers(Modifier.PRIVATE);
+					builder.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_VARIABLE);
+					builder.returns(BeanDefinition.class);
+					builder.addCode(getMethodCode(name, beanDefinition));
+				});
+				return CodeBlock.of("$L($L)", generatedMethod.getName(), BEAN_FACTORY_VARIABLE);
 			}
 			return null;
+		}
+
+		private CodeBlock getMethodCode(String name, BeanDefinition beanDefinition) {
+			CodeBlock.Builder builder = CodeBlock.builder();
+			String compoundName = MethodNameGenerator.join(this.name, name);
+			builder.add("$T beanDefinition = ", RootBeanDefinition.class);
+			builder.addStatement(BeanDefinitionPropertiesCodeGenerator.this.suppliedInstanceBeanDefinitionCodeGenerator
+					.generateCode(beanDefinition, compoundName));
+			builder.add(BeanDefinitionPropertiesCodeGenerator.this.generateCode(beanDefinition, compoundName));
+			builder.addStatement("return beanDefinition");
+			return builder.build();
 		}
 
 	}

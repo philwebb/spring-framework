@@ -49,8 +49,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 /**
  * Resolves the {@link Executable} (factory method or constructor) that should be used to
  * create a bean.
@@ -61,9 +59,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * @since 6.0
  */
 class ConstructorOrFactoryMethodResolver {
-
-	// FIXME: copy-paste from Spring Native that should go away in favor of
-	// ConstructorResolver
 
 	private static final Log logger = LogFactory.getLog(ConstructorOrFactoryMethodResolver.class);
 

@@ -26,6 +26,7 @@ import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -50,7 +51,7 @@ import org.springframework.util.ClassUtils;
  * {@link BeanDefinitionPropertiesCodeGenerator}.
  * <p>
  * The generated code expects a {@link DefaultListableBeanFactory} {@code beanFactory}
- * variable to be set.
+ * variable to be available.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -59,7 +60,7 @@ import org.springframework.util.ClassUtils;
  */
 class SuppliedInstanceBeanDefinitionCodeGenerator {
 
-	private static final String BEAN_FACTORY_VARIABLE = "beanFactory";
+	static final String BEAN_FACTORY_VARIABLE = "beanFactory";
 
 	private final GeneratedMethods generatedMethods;
 
@@ -84,7 +85,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 	 * should be used unless generating source for an inner-beans
 	 * @return the generated code
 	 */
-	CodeBlock generateCode(RootBeanDefinition beanDefinition, String name) {
+	CodeBlock generateCode(BeanDefinition beanDefinition, String name) {
 		return new CodeBuilder(beanDefinition, name).build();
 	}
 
@@ -93,11 +94,11 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 	 */
 	private class CodeBuilder {
 
-		private final RootBeanDefinition beanDefinition;
+		private final BeanDefinition beanDefinition;
 
 		private final String name;
 
-		CodeBuilder(RootBeanDefinition beanDefinition, String name) {
+		CodeBuilder(BeanDefinition beanDefinition, String name) {
 			this.beanDefinition = beanDefinition;
 			this.name = name;
 		}
@@ -111,7 +112,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 
 		private void addSupplyBeanDefinition(CodeBlock.Builder builder) {
 			builder.add("$T.supply(", RootBeanDefinition.class);
-			ResolvableType beanType = beanDefinition.getResolvableType();
+			ResolvableType beanType = this.beanDefinition.getResolvableType();
 			Object supplyType = beanType;
 			if (!beanType.hasGenerics() || hasAnyUnresolvableGenerics(beanType)) {
 				supplyType = ClassUtils.getUserClass(beanType.toClass());
@@ -126,7 +127,8 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 		}
 
 		private void addUsingAndGeneratedBy(CodeBlock.Builder builder) {
-			Executable executable = constructorOrFactoryMethodResolver.resolve(beanDefinition);
+			Executable executable = SuppliedInstanceBeanDefinitionCodeGenerator.this.constructorOrFactoryMethodResolver
+					.resolve(this.beanDefinition);
 			if (executable instanceof Constructor<?> constructor) {
 				addUsingAndGeneratedByConstructor(builder, constructor);
 				return;
@@ -135,7 +137,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 				addUsingAndGeneratedByFactoryMethod(builder, method);
 				return;
 			}
-			throw new IllegalStateException("No suitable executor found for " + beanDefinition);
+			throw new IllegalStateException("No suitable executor found for " + this.beanDefinition);
 		}
 
 		private void addUsingAndGeneratedByConstructor(CodeBlock.Builder builder, Constructor<?> constructor) {
@@ -148,33 +150,34 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 				builder.add(".resolvedBy($T::new)", declaringClass);
 				return;
 			}
-			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(beanDefinition, name, constructor,
-					declaringClass);
+			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.beanDefinition, this.name,
+					constructor, declaringClass);
 			builder.add(".resolvedBy($L, this::$L)", BEAN_FACTORY_VARIABLE, getBeanInstanceMethod.getName());
 		}
 
-		private GeneratedMethod generateGetBeanInstanceMethod(RootBeanDefinition beanDefinition, String name,
+		private GeneratedMethod generateGetBeanInstanceMethod(BeanDefinition beanDefinition, String name,
 				Constructor<?> constructor, Class<?> declaringClass) {
 			boolean isInnerClass = ClassUtils.isInnerClass(declaringClass);
-			return generatedMethods.add("get", name, "instance").generateBy((builder) -> {
-				builder.returns(declaringClass);
-				if (isInnerClass) {
-					builder.addParameter(BeanFactory.class, "beanFactory");
-				}
-				builder.addParameter(Object[].class, "args");
-				CodeBlock.Builder code = CodeBlock.builder();
-				code.add("return ");
-				if (!isInnerClass) {
-					code.add("new $T(", declaringClass);
-				}
-				else {
-					code.add("beanFactory.getBean($T.class).new $L(", declaringClass.getEnclosingClass(),
-							declaringClass.getSimpleName());
-				}
-				addExtractFromArgs(code, constructor.getParameterTypes(), (!isInnerClass) ? 0 : 1);
-				code.add(");");
-				builder.addCode(code.build());
-			});
+			return SuppliedInstanceBeanDefinitionCodeGenerator.this.generatedMethods.add("get", name, "instance")
+					.generateBy((builder) -> {
+						builder.returns(declaringClass);
+						if (isInnerClass) {
+							builder.addParameter(BeanFactory.class, "beanFactory");
+						}
+						builder.addParameter(Object[].class, "args");
+						CodeBlock.Builder code = CodeBlock.builder();
+						code.add("return ");
+						if (!isInnerClass) {
+							code.add("new $T(", declaringClass);
+						}
+						else {
+							code.add("beanFactory.getBean($T.class).new $L(", declaringClass.getEnclosingClass(),
+									declaringClass.getSimpleName());
+						}
+						addExtractFromArgs(code, constructor.getParameterTypes(), (!isInnerClass) ? 0 : 1);
+						code.add(");");
+						builder.addCode(code.build());
+					});
 		}
 
 		private void addUsingAndGeneratedByFactoryMethod(CodeBlock.Builder builder, Method factoryMethod) {
@@ -186,7 +189,8 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 				builder.add(", $L", parametersCode);
 			}
 			builder.add(")");
-			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(beanDefinition, name, factoryMethod);
+			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.beanDefinition, this.name,
+					factoryMethod);
 			builder.add(".resolvedBy($L, this::$L)", BEAN_FACTORY_VARIABLE, getBeanInstanceMethod.getName());
 		}
 
@@ -200,30 +204,31 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 			return builder.build();
 		}
 
-		private GeneratedMethod generateGetBeanInstanceMethod(RootBeanDefinition beanDefinition, String name,
+		private GeneratedMethod generateGetBeanInstanceMethod(BeanDefinition beanDefinition, String name,
 				Method factoryMethod) {
 			boolean staticFactoryMethod = Modifier.isStatic(factoryMethod.getModifiers());
 			Class<?> declaringClass = factoryMethod.getDeclaringClass();
 			Class<?> returnType = factoryMethod.getReturnType();
-			return generatedMethods.add("get", name, "instance").generateBy((builder) -> {
-				builder.returns(returnType);
-				if (!staticFactoryMethod) {
-					builder.addParameter(BeanFactory.class, "beanFactory");
-				}
-				builder.addParameter(Object[].class, "args");
-				CodeBlock.Builder code = CodeBlock.builder();
-				code.add("return ");
-				if (staticFactoryMethod) {
-					code.add("$T", declaringClass);
-				}
-				else {
-					code.add("beanFactory.getBean($T.class)", declaringClass);
-				}
-				code.add(".$L(", factoryMethod.getName());
-				addExtractFromArgs(code, factoryMethod.getParameterTypes(), 0);
-				code.add(");");
-				builder.addCode(code.build());
-			});
+			return SuppliedInstanceBeanDefinitionCodeGenerator.this.generatedMethods.add("get", name, "instance")
+					.generateBy((builder) -> {
+						builder.returns(returnType);
+						if (!staticFactoryMethod) {
+							builder.addParameter(BeanFactory.class, "beanFactory");
+						}
+						builder.addParameter(Object[].class, "args");
+						CodeBlock.Builder code = CodeBlock.builder();
+						code.add("return ");
+						if (staticFactoryMethod) {
+							code.add("$T", declaringClass);
+						}
+						else {
+							code.add("beanFactory.getBean($T.class)", declaringClass);
+						}
+						code.add(".$L(", factoryMethod.getName());
+						addExtractFromArgs(code, factoryMethod.getParameterTypes(), 0);
+						code.add(");");
+						builder.addCode(code.build());
+					});
 		}
 
 		private void addExtractFromArgs(CodeBlock.Builder builder, Class<?>[] parameterTypes, int startIndex) {
