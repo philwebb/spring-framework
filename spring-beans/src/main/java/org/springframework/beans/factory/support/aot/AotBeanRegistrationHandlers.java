@@ -17,7 +17,7 @@
 package org.springframework.beans.factory.support.aot;
 
 /**
- * 
+ *
  * @author pwebb
  * @since 6.0
  */

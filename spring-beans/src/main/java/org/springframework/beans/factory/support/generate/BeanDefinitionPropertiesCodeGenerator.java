@@ -52,7 +52,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Code generator set {@link RootBeanDefinition} properties.
+ * Code generator to set {@link RootBeanDefinition} properties.
  * <p>
  * For example: <pre class="code">
  * beanDefinition.setPrimary(true);
@@ -358,6 +358,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 				InstanceCodeGenerationService service) {
 			if (value instanceof BeanDefinition beanDefinition) {
 				GeneratedMethod generatedMethod = generatedMethods.add("get", this.name, name).generateBy((builder) -> {
+					builder.addJavadoc("Get the bean instance for '$L' ('$L').", this.name, name);
 					builder.addModifiers(Modifier.PRIVATE);
 					builder.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_VARIABLE);
 					builder.returns(BeanDefinition.class);

@@ -25,7 +25,6 @@ import java.util.function.Supplier;
 
 import javax.lang.model.element.Modifier;
 
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedMethods;
@@ -53,8 +52,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link BeanDefinitionPropertiesCodeGenerator}.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
-@Nested
 class BeanDefinitionPropertiesCodeGeneratorTests {
 
 	private final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
@@ -294,8 +296,8 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	@Test
 	void propertyValuesWhenContainsBeanDefinition() {
 		RootBeanDefinition innerBeanDefinition = (RootBeanDefinition) BeanDefinitionBuilder
-				.rootBeanDefinition(AnnotatedBean.class).setRole(BeanDefinition.ROLE_INFRASTRUCTURE)
-				.setPrimary(true).getBeanDefinition();
+				.rootBeanDefinition(AnnotatedBean.class).setRole(BeanDefinition.ROLE_INFRASTRUCTURE).setPrimary(true)
+				.getBeanDefinition();
 		this.beanDefinition.getPropertyValues().add("name", innerBeanDefinition);
 		testCompiledResult((actual, compiled) -> {
 			RootBeanDefinition actualInnerBeanDefinition = (RootBeanDefinition) actual.getPropertyValues().get("name");

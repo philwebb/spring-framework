@@ -20,8 +20,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Interface that can be used to add entries to generated Spring
- * {@code .factories} files.
+ * Interface that can be used to add entries to generated Spring {@code .factories} files.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -32,8 +31,8 @@ import org.springframework.util.ObjectUtils;
 public interface GeneratedSpringFactories {
 
 	/**
-	 * Return {@link Declarations} for the default {@code spring.factories}
-	 * resource location.
+	 * Return {@link Declarations} for the default {@code spring.factories} resource
+	 * location.
 	 * @return declarations for the default resource location
 	 * @see SpringFactoriesLoader#forDefaultResourceLocation()
 	 */
@@ -49,21 +48,19 @@ public interface GeneratedSpringFactories {
 	 * @see SpringFactoriesLoader#forNamedItem(Class, String)
 	 */
 	default <N> Declarations forNamedItem(Class<?> classification, N name) {
-		return forResourceLocation(SpringFactoriesLoader.resolveNamedItemLocation(
-				classification, toString(name)));
+		return forResourceLocation(SpringFactoriesLoader.resolveNamedItemLocation(classification, toString(name)));
 	}
 
 	/**
 	 * Return {@link Declarations} for the named item.
-	 * @param classification the classification used to group related items
-	 * (usually a fully-qualified class name)
+	 * @param classification the classification used to group related items (usually a
+	 * fully-qualified class name)
 	 * @param name the name of the item
 	 * @return declarations for the named item
 	 * @see SpringFactoriesLoader#forNamedItem(String, String)
 	 */
 	default <N> Declarations forNamedItem(String classification, N name) {
-		return forResourceLocation(SpringFactoriesLoader.resolveNamedItemLocation(
-				classification, toString(name)));
+		return forResourceLocation(SpringFactoriesLoader.resolveNamedItemLocation(classification, toString(name)));
 	}
 
 	/**
@@ -74,8 +71,7 @@ public interface GeneratedSpringFactories {
 	Declarations forResourceLocation(String resourceLocation);
 
 	private static <N> String toString(N name) {
-		return (name instanceof Class<?>) ? ((Class<?>) name).getName()
-				: ObjectUtils.nullSafeToString(name);
+		return (name instanceof Class<?>) ? ((Class<?>) name).getName() : ObjectUtils.nullSafeToString(name);
 	}
 
 	/**
@@ -95,8 +91,7 @@ public interface GeneratedSpringFactories {
 		/**
 		 * Add a new spring factory declaration to the file when it is written.
 		 * @param factoryType the factory type
-		 * @param implementationName the generated class name of the
-		 * implementation class
+		 * @param implementationName the generated class name of the implementation class
 		 */
 		default void add(Class<?> factoryType, GeneratedClassName implementationName) {
 			add(factoryType, implementationName.toString());

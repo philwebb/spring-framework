@@ -18,6 +18,10 @@ package org.springframework.aot.generate.instance;
 
 /**
  * Fake CGLIB generated class.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 class ExampleClass$$GeneratedBy extends ExampleClass {
 

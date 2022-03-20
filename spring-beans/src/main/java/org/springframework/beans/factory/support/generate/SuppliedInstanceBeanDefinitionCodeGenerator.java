@@ -42,8 +42,8 @@ import org.springframework.util.ClassUtils;
  * <p>
  * <pre class="code">
  * RootBeanDefinition.supply(MyBean.class)
- * 		.usingConstructor()
- * 		.resolvedBy(MyBean::new);
+ * 	.usingConstructor()
+ * 	.resolvedBy(MyBean::new);
  * </pre> This generator creates a {@link RootBeanDefinition} with only the
  * {@link RootBeanDefinition#setInstanceSupplier(java.util.function.Supplier) instance
  * supplier} set. Additional bean definition properties (such as
@@ -160,6 +160,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 			boolean isInnerClass = ClassUtils.isInnerClass(declaringClass);
 			return SuppliedInstanceBeanDefinitionCodeGenerator.this.generatedMethods.add("get", name, "instance")
 					.generateBy((builder) -> {
+						builder.addJavadoc("Create the bean instance for '$L'.", name);
 						builder.returns(declaringClass);
 						if (isInnerClass) {
 							builder.addParameter(BeanFactory.class, BEAN_FACTORY_VARIABLE);
@@ -211,6 +212,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 			Class<?> returnType = factoryMethod.getReturnType();
 			return SuppliedInstanceBeanDefinitionCodeGenerator.this.generatedMethods.add("get", name, "instance")
 					.generateBy((builder) -> {
+						builder.addJavadoc("Get the bean instance for '$L'.", name);
 						builder.returns(returnType);
 						if (!staticFactoryMethod) {
 							builder.addParameter(BeanFactory.class, "beanFactory");

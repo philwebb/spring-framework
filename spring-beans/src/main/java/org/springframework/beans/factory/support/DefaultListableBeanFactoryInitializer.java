@@ -17,15 +17,27 @@
 package org.springframework.beans.factory.support;
 
 /**
+ * Callback interface for initializing a {@link DefaultListableBeanFactory} prior to it
+ * being used to obtain beans.
+ * <p>
+ * Typically used with AOT optimized applications that require some programmatic
+ * initialization of the bean factory, for example, registering bean definitions.
+ * <p>
+ * {@code DefaultListableBeanFactoryInitializer} processors are encouraged to detect
+ * whether Spring's {@link org.springframework.core.Ordered Ordered} interface has been
+ * implemented or if the {@link org.springframework.core.annotation.Order @Order}
+ * annotation is present and to sort instances accordingly if so prior to invocation.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
 @FunctionalInterface
 public interface DefaultListableBeanFactoryInitializer {
 
 	/**
-	 * Initialize the given bean definition registry.
+	 * Initialize the given default listable bean factory.
 	 * @param beanDefinitionRegistry the registry to initialize
 	 */
 	void initialize(DefaultListableBeanFactory beanFactory);

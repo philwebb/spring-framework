@@ -46,8 +46,8 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link AotProcessors} implementation that tracks calls to ensure that
- * processors are only invoked once-per-name.
+ * {@link AotProcessors} implementation that tracks calls to ensure that processors are
+ * only invoked once-per-name.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -65,11 +65,11 @@ public class TrackedAotProcessors implements AotProcessors {
 	private final Tracker tracker;
 
 	/**
-	 * Create a new {@link TrackedAotProcessors} implementation backed by the
-	 * given {@link Tracker}.
+	 * Create a new {@link TrackedAotProcessors} implementation backed by the given
+	 * {@link Tracker}.
 	 * @param applyAction the action call when applying AOT contributions
-	 * @param tracker the tracker used to ensure once-per-name invocation
-	 * (usually a {@link FileTracker})
+	 * @param tracker the tracker used to ensure once-per-name invocation (usually a
+	 * {@link FileTracker})
 	 */
 	public TrackedAotProcessors(Consumer<AotContribution> applyAction, Tracker tracker) {
 		Assert.notNull(applyAction, "'applyAction' must not be null");
@@ -96,11 +96,9 @@ public class TrackedAotProcessors implements AotProcessors {
 	}
 
 	@Override
-	public <P extends AotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(
-			Class<P> processorType) {
+	public <P extends AotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(Class<P> processorType) {
 		Assert.notNull(processorType, "'processorType' must not be null");
-		Assert.isTrue(
-				processorType.isInterface() && !AotProcessor.class.equals(processorType),
+		Assert.isTrue(processorType.isInterface() && !AotProcessor.class.equals(processorType),
 				"'processorType' must be a subinterface of AotProcessor");
 		return new TypedSubset<>(processorType);
 	}
@@ -134,16 +132,15 @@ public class TrackedAotProcessors implements AotProcessors {
 		private void processAndApplyContributions(P processor, N name, T instance) {
 			Class<?> processorImplementationType = processor.getClass();
 			String nameAsString = toString(name);
-			if (tracker.shouldSkip(processorImplementationType, nameAsString)) {
-				logger.trace(LogMessage.format("Skipped '%s' with AOT processor '%s'",
-						name, processorImplementationType.getName()));
+			if (TrackedAotProcessors.this.tracker.shouldSkip(processorImplementationType, nameAsString)) {
+				logger.trace(LogMessage.format("Skipped '%s' with AOT processor '%s'", name,
+						processorImplementationType.getName()));
 				return;
 			}
 			AotContribution contribution = processor.processAheadOfTime(name, instance);
-			tracker.markProcessed(processorImplementationType, nameAsString);
+			TrackedAotProcessors.this.tracker.markProcessed(processorImplementationType, nameAsString);
 			logger.trace(LogMessage.format("Processed '%s' with AOT '%s'%s", name,
-					processorImplementationType.getName(),
-					(contribution != null) ? " (no contribution)" : ""));
+					processorImplementationType.getName(), (contribution != null) ? " (no contribution)" : ""));
 			apply(contribution);
 		}
 
@@ -177,9 +174,8 @@ public class TrackedAotProcessors implements AotProcessors {
 		boolean shouldSkip(Class<?> processorImplementationType, String name);
 
 		/**
-		 * Mark that the given processor has been called with a specific name
-		 * and should be skipped if the same name is presented again in the
-		 * future.
+		 * Mark that the given processor has been called with a specific name and should
+		 * be skipped if the same name is presented again in the future.
 		 * @param processorImplementationType the processor implementation class
 		 * @param name the name of the item
 		 */
@@ -188,12 +184,12 @@ public class TrackedAotProcessors implements AotProcessors {
 	}
 
 	/**
-	 * {@link Tracker} implementation that uses persistent files to track if a
-	 * processor should be skipped. By default all
+	 * {@link Tracker} implementation that uses persistent files to track if a processor
+	 * should be skipped. By default all
 	 * {@code META-INF/spring/org.springframework.aot.context.AotProcessor/<processorType>.processed}
-	 * files on the classpath are checked. The {@link #save(GeneratedFiles)}
-	 * method should be used at the end of AOT processing to persist any
-	 * processors marked during the session.
+	 * files on the classpath are checked. The {@link #save(GeneratedFiles)} method should
+	 * be used at the end of AOT processing to persist any processors marked during the
+	 * session.
 	 */
 	public static class FileTracker implements Tracker {
 
@@ -204,41 +200,36 @@ public class TrackedAotProcessors implements AotProcessors {
 		private final Function<Class<?>, String> resourceName;
 
 		/**
-		 * Create a new {@link FileTracker} instance using the default
-		 * classloader.
+		 * Create a new {@link FileTracker} instance using the default classloader.
 		 */
 		public FileTracker() {
 			this(null);
 		}
 
 		/**
-		 * Create a new {@link FileTracker} instance using the specified
-		 * classloader.
-		 * @param classLoader the classloader to use or {@code null} to use the
-		 * default classloader
+		 * Create a new {@link FileTracker} instance using the specified classloader.
+		 * @param classLoader the classloader to use or {@code null} to use the default
+		 * classloader
 		 */
 		public FileTracker(@Nullable ClassLoader classLoader) {
 			this(classLoader, FileTracker::getResourceLocation);
 		}
 
 		/**
-		 * Create a new {@link FileTracker} instance using the specified
-		 * classloader.
-		 * @param classLoader the classloader to use or {@code null} to use the
-		 * default classloader
-		 * @param resourceName a function the should return the resource
-		 * location to use for the given {@code processorImplementationType}
+		 * Create a new {@link FileTracker} instance using the specified classloader.
+		 * @param classLoader the classloader to use or {@code null} to use the default
+		 * classloader
+		 * @param resourceName a function the should return the resource location to use
+		 * for the given {@code processorImplementationType}
 		 */
-		public FileTracker(@Nullable ClassLoader classLoader,
-				Function<Class<?>, String> resourceName) {
-			this.classLoader = (classLoader != null) ? classLoader
-					: ClassUtils.getDefaultClassLoader();
+		public FileTracker(@Nullable ClassLoader classLoader, Function<Class<?>, String> resourceName) {
+			this.classLoader = (classLoader != null) ? classLoader : ClassUtils.getDefaultClassLoader();
 			this.resourceName = resourceName;
 		}
 
 		private static String getResourceLocation(Class<?> processorImplementationType) {
-			return String.format("META-INF/spring/%s/%s.processed",
-					AotProcessor.class.getName(), processorImplementationType.getName());
+			return String.format("META-INF/spring/%s/%s.processed", AotProcessor.class.getName(),
+					processorImplementationType.getName());
 		}
 
 		@Override
@@ -256,8 +247,7 @@ public class TrackedAotProcessors implements AotProcessors {
 		 * @param generatedFiles the generated files to add to
 		 */
 		public void save(GeneratedFiles generatedFiles) {
-			this.trackedResources.values().forEach(
-					(processed) -> processed.save(generatedFiles));
+			this.trackedResources.values().forEach((processed) -> processed.save(generatedFiles));
 		}
 
 		private TrackedResource getTrackedResource(Class<?> processorImplementationType) {
@@ -310,16 +300,13 @@ public class TrackedAotProcessors implements AotProcessors {
 				return resources;
 			}
 			try {
-				resources = loadResources(
-						this.classLoader.getResources(this.resourceName));
-				this.loadCache = new SoftReference<Set<String>>(resources);
+				resources = loadResources(this.classLoader.getResources(this.resourceName));
+				this.loadCache = new SoftReference<>(resources);
 				return resources;
 			}
 			catch (IOException ex) {
 				throw new IllegalArgumentException(
-						"Unable to load AOT processor tracking from location ["
-								+ this.resourceName + "]",
-						ex);
+						"Unable to load AOT processor tracking from location [" + this.resourceName + "]", ex);
 			}
 		}
 
@@ -330,15 +317,14 @@ public class TrackedAotProcessors implements AotProcessors {
 			Set<String> contents = new LinkedHashSet<>();
 			while (urls.hasMoreElements()) {
 				UrlResource url = new UrlResource(urls.nextElement());
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-						url.getInputStream(), StandardCharsets.UTF_8))) {
+				try (BufferedReader reader = new BufferedReader(
+						new InputStreamReader(url.getInputStream(), StandardCharsets.UTF_8))) {
 					String line = reader.readLine();
 					if (StringUtils.hasText(line)) {
 						contents.add(line);
 					}
 				}
-				logger.trace(LogMessage.format(
-						"Loaded %s previously tracked AOT %s from %s", contents.size(),
+				logger.trace(LogMessage.format("Loaded %s previously tracked AOT %s from %s", contents.size(),
 						(contents.size()) == 1 ? "processor" : "processors", url));
 			}
 			return Collections.unmodifiableSet(contents);

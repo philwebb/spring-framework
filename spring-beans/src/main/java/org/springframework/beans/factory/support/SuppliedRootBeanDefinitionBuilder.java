@@ -146,7 +146,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 		}
 
 		Executable getExecutable() {
-			return executable;
+			return this.executable;
 		}
 
 		/**
@@ -241,7 +241,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		@Override
 		public Object getWithException() throws Exception {
-			return instantiator.apply(this.beanFactory, NO_ARGUMENTS);
+			return this.instantiator.apply(this.beanFactory, NO_ARGUMENTS);
 		}
 
 	}
@@ -284,7 +284,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 
 		private final Class<?> beanClass;
 
-		private int parameterOffset;
+		private final int parameterOffset;
 
 		private final RootBeanDefinition beanDefinition;
 
@@ -324,7 +324,7 @@ public class SuppliedRootBeanDefinitionBuilder {
 			if (this.executable instanceof Method method) {
 				return new MethodParameter(method, index);
 			}
-			throw new IllegalStateException("Unsupported executable " + executable.getClass().getName());
+			throw new IllegalStateException("Unsupported executable " + this.executable.getClass().getName());
 		}
 
 		private ConstructorArgumentValues resolveArgumentValues(String beanName) {

@@ -17,8 +17,7 @@
 package org.springframework.aot.context;
 
 /**
- * A contribution generated ahead-of-time that can be applied to an
- * {@link AotContext}.
+ * A contribution generated ahead-of-time that can be applied to an {@link AotContext}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

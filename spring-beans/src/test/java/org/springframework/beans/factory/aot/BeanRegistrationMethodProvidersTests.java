@@ -18,12 +18,12 @@ package org.springframework.beans.factory.aot;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeProviders;
+import org.springframework.beans.factory.support.generate.XBeanRegistrationMethodCodeProviders;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests for {@link BeanRegistrationMethodCodeProviders}.
+ * Tests for {@link XBeanRegistrationMethodCodeProviders}.
  *
  * @author Phillip Webb
  * @since 6.0

@@ -35,9 +35,9 @@ public final class GeneratedClassName {
 	private final String name;
 
 	/**
-	 * Create a new {@link GeneratedClassName} instance with the given name.
-	 * This constructor is package-private since names should only be generated
-	 * via a {@link ClassNameGenerator}.
+	 * Create a new {@link GeneratedClassName} instance with the given name. This
+	 * constructor is package-private since names should only be generated via a
+	 * {@link ClassNameGenerator}.
 	 * @param name the generated name
 	 */
 	GeneratedClassName(String name) {
@@ -61,26 +61,32 @@ public final class GeneratedClassName {
 	}
 
 	/**
+	 * Return the class name without the qualified package name.
+	 * @return the short name
+	 */
+	public String getShortName() {
+		return ClassUtils.getShortName(this.name);
+	}
+
+	/**
 	 * Return a new {@link TypeSpec#classBuilder(String) TypeSpec class builder}
 	 * pre-configured with the generated name.
 	 * @return a {@link TypeSpec} class builder
 	 */
 	public TypeSpec.Builder classBuilder() {
-		return TypeSpec.classBuilder(this.name);
+		return TypeSpec.classBuilder(getShortName());
 	}
 
 	/**
 	 * Return a new {@link JavaFile#builder(String, TypeSpec) JavaFile builder}
 	 * pre-configured with the package of the generated name.
 	 * @return a {@link JavaFile} builder
-	 * @throws IllegalArgumentException if the type spec doesn't have the
-	 * correct name
+	 * @throws IllegalArgumentException if the type spec doesn't have the correct name
 	 */
 	public JavaFile.Builder javaFileBuilder(TypeSpec typeSpec) {
 		Assert.notNull(typeSpec, "'typeSpec' must not be null");
-		Assert.isTrue(this.name.equals(typeSpec.name),
-				() -> String.format("'typeSpec' must be named '%s' instead of '%s'", this,
-						typeSpec.name));
+		Assert.isTrue(getShortName().equals(typeSpec.name),
+				() -> String.format("'typeSpec' must be named '%s' instead of '%s'", this, typeSpec.name));
 		return JavaFile.builder(getPackageName(), typeSpec).skipJavaLangImports(true);
 	}
 

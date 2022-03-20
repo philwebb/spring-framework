@@ -26,10 +26,9 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.function.ThrowableConsumer;
 
 /**
- * Interface that can be used to add {@link Kind#SOURCE source},
- * {@link Kind#RESOURCE resource} or {@link Kind#CLASS class} files generated
- * during ahead-of-time processing. Source and resource files are written using
- * UTF-8 encoding.
+ * Interface that can be used to add {@link Kind#SOURCE source}, {@link Kind#RESOURCE
+ * resource} or {@link Kind#CLASS class} files generated during ahead-of-time processing.
+ * Source and resource files are written using UTF-8 encoding.
  *
  * @author Brian Clozel
  * @author Stephane Nicoll
@@ -42,8 +41,8 @@ import org.springframework.util.function.ThrowableConsumer;
 public interface GeneratedFiles {
 
 	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content from the
-	 * given {@link JavaFile}.
+	 * Add a generated {@link Kind#SOURCE source file} with content from the given
+	 * {@link JavaFile}.
 	 * @param javaFile the java file to add
 	 */
 	default void addSourceFile(JavaFile javaFile) {
@@ -52,10 +51,10 @@ public interface GeneratedFiles {
 	}
 
 	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content from the
-	 * given {@link CharSequence}.
-	 * @param className the class name that should be used to determine the path
-	 * of the file
+	 * Add a generated {@link Kind#SOURCE source file} with content from the given
+	 * {@link CharSequence}.
+	 * @param className the class name that should be used to determine the path of the
+	 * file
 	 * @param content the contents of the file
 	 */
 	default void addSourceFile(String className, CharSequence content) {
@@ -63,32 +62,32 @@ public interface GeneratedFiles {
 	}
 
 	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content written to
-	 * an {@link Appendable} passed to the given {@link ThrowableConsumer}.
-	 * @param className the class name that should be used to determine the path
-	 * of the file
-	 * @param content a {@link ThrowableConsumer} that accepts an
-	 * {@link Appendable} which will receive the file contents
+	 * Add a generated {@link Kind#SOURCE source file} with content written to an
+	 * {@link Appendable} passed to the given {@link ThrowableConsumer}.
+	 * @param className the class name that should be used to determine the path of the
+	 * file
+	 * @param content a {@link ThrowableConsumer} that accepts an {@link Appendable} which
+	 * will receive the file contents
 	 */
 	default void addSourceFile(String className, ThrowableConsumer<Appendable> content) {
 		addFile(Kind.SOURCE, getClassNamePath(className), content);
 	}
 
 	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content from the
-	 * given {@link InputStreamSource}.
-	 * @param className the class name that should be used to determine the path
-	 * of the file
-	 * @param content an {@link InputStreamSource} that will provide an input
-	 * stream containing the file contents
+	 * Add a generated {@link Kind#SOURCE source file} with content from the given
+	 * {@link InputStreamSource}.
+	 * @param className the class name that should be used to determine the path of the
+	 * file
+	 * @param content an {@link InputStreamSource} that will provide an input stream
+	 * containing the file contents
 	 */
 	default void addSourceFile(String className, InputStreamSource content) {
 		addFile(Kind.SOURCE, getClassNamePath(className), content);
 	}
 
 	/**
-	 * Add a generated {@link Kind#RESOURCE resource file} with content from the
-	 * given {@link CharSequence}.
+	 * Add a generated {@link Kind#RESOURCE resource file} with content from the given
+	 * {@link CharSequence}.
 	 * @param path the relative path of the file
 	 * @param content the contents of the file
 	 */
@@ -97,22 +96,22 @@ public interface GeneratedFiles {
 	}
 
 	/**
-	 * Add a generated {@link Kind#RESOURCE resource file} with content written
-	 * to an {@link Appendable} passed to the given {@link ThrowableConsumer}.
+	 * Add a generated {@link Kind#RESOURCE resource file} with content written to an
+	 * {@link Appendable} passed to the given {@link ThrowableConsumer}.
 	 * @param path the relative path of the file
-	 * @param content a {@link ThrowableConsumer} that accepts an
-	 * {@link Appendable} which will receive the file contents
+	 * @param content a {@link ThrowableConsumer} that accepts an {@link Appendable} which
+	 * will receive the file contents
 	 */
 	default void addResourceFile(String path, ThrowableConsumer<Appendable> content) {
 		addFile(Kind.RESOURCE, path, content);
 	}
 
 	/**
-	 * Add a generated {@link Kind#RESOURCE resource file} with content from the
-	 * given {@link InputStreamSource}.
+	 * Add a generated {@link Kind#RESOURCE resource file} with content from the given
+	 * {@link InputStreamSource}.
 	 * @param path the relative path of the file
-	 * @param content an {@link InputStreamSource} that will provide an input
-	 * stream containing the file contents
+	 * @param content an {@link InputStreamSource} that will provide an input stream
+	 * containing the file contents
 	 */
 	default void addResourceFile(String path, InputStreamSource content) {
 		addFile(Kind.RESOURCE, path, content);
@@ -122,16 +121,16 @@ public interface GeneratedFiles {
 	 * Add a generated {@link Kind#CLASS class file} with content from the given
 	 * {@link InputStreamSource}.
 	 * @param path the relative path of the file
-	 * @param content an {@link InputStreamSource} that will provide an input
-	 * stream containing the file contents
+	 * @param content an {@link InputStreamSource} that will provide an input stream
+	 * containing the file contents
 	 */
 	default void addClassFile(String path, InputStreamSource content) {
 		addFile(Kind.CLASS, path, content);
 	}
 
 	/**
-	 * Add a generated file of the specified {@link Kind} with content from the
-	 * given {@link CharSequence}.
+	 * Add a generated file of the specified {@link Kind} with content from the given
+	 * {@link CharSequence}.
 	 * @param kind the kind of file being written
 	 * @param path the relative path of the file
 	 * @param content the contents of the file
@@ -141,38 +140,35 @@ public interface GeneratedFiles {
 	}
 
 	/**
-	 * Add a generated file of the specified {@link Kind} with content content
-	 * written to an {@link Appendable} passed to the given
-	 * {@link ThrowableConsumer}.
+	 * Add a generated file of the specified {@link Kind} with content content written to
+	 * an {@link Appendable} passed to the given {@link ThrowableConsumer}.
 	 * @param kind the kind of file being written
 	 * @param path the relative path of the file
-	 * @param content a {@link ThrowableConsumer} that accepts an
-	 * {@link Appendable} which will receive the file contents
+	 * @param content a {@link ThrowableConsumer} that accepts an {@link Appendable} which
+	 * will receive the file contents
 	 */
 	default void addFile(Kind kind, String path, ThrowableConsumer<Appendable> content) {
 		Assert.notNull(content, "'content' must not be null");
 		addFile(kind, path, () -> {
 			StringBuilder buffer = new StringBuilder();
 			content.accept(buffer);
-			return new ByteArrayInputStream(
-					buffer.toString().getBytes(StandardCharsets.UTF_8));
+			return new ByteArrayInputStream(buffer.toString().getBytes(StandardCharsets.UTF_8));
 		});
 	}
 
 	/**
-	 * Add a generated file of the specified {@link Kind} with content from the
-	 * given {@link InputStreamSource}.
+	 * Add a generated file of the specified {@link Kind} with content from the given
+	 * {@link InputStreamSource}.
 	 * @param kind the kind of file being written
 	 * @param path the relative path of the file
-	 * @param content an {@link InputStreamSource} that will provide an input
-	 * stream containing the file contents
+	 * @param content an {@link InputStreamSource} that will provide an input stream
+	 * containing the file contents
 	 */
 	void addFile(Kind kind, String path, InputStreamSource content);
 
 	private static String getClassNamePath(String className) {
 		Assert.hasLength(className, "'className' must not be empty");
-		Assert.isTrue(isJavaIdentifier(className),
-				"'className' must be a valid identifier");
+		Assert.isTrue(isJavaIdentifier(className), "'className' must be a valid identifier");
 		return ClassUtils.convertClassNameToResourcePath(className) + ".java";
 	}
 
@@ -200,14 +196,14 @@ public interface GeneratedFiles {
 		SOURCE,
 
 		/**
-		 * A resource file that should be directly added to final application.
-		 * For example, a {@code .properties} file.
+		 * A resource file that should be directly added to final application. For
+		 * example, a {@code .properties} file.
 		 */
 		RESOURCE,
 
 		/**
-		 * A class file containing bytecode. For example, the result of a proxy
-		 * generated using cglib.
+		 * A class file containing bytecode. For example, the result of a proxy generated
+		 * using cglib.
 		 */
 		CLASS
 
