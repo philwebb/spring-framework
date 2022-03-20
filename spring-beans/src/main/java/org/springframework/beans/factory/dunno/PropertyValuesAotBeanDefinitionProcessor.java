@@ -17,7 +17,7 @@
 package org.springframework.beans.factory.dunno;
 
 import org.springframework.aot.context.AotContribution;
-import org.springframework.beans.factory.aot.AotBeanDefinitionProcessor;
+import org.springframework.beans.factory.aot.AotDefinedBeanProcessor;
 import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.aot.UniqueBeanName;
 
@@ -26,7 +26,7 @@ import org.springframework.beans.factory.aot.UniqueBeanName;
  * @author pwebb
  * @since 6.0
  */
-public class PropertyValuesAotBeanDefinitionProcessor implements AotBeanDefinitionProcessor {
+public class PropertyValuesAotBeanDefinitionProcessor implements AotDefinedBeanProcessor {
 
 	@Override
 	public AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean beanDefinition) {

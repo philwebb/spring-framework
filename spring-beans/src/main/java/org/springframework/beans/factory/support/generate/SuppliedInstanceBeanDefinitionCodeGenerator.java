@@ -27,6 +27,7 @@ import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -75,7 +76,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 	 * @param beanFactory the bean factory
 	 * @param generatedMethods the generated methods
 	 */
-	SuppliedInstanceBeanDefinitionCodeGenerator(DefaultListableBeanFactory beanFactory,
+	SuppliedInstanceBeanDefinitionCodeGenerator(ConfigurableBeanFactory beanFactory,
 			GeneratedMethods generatedMethods) {
 		this.generatedMethods = generatedMethods;
 		this.constructorOrFactoryMethodResolver = new ConstructorOrFactoryMethodResolver(beanFactory);

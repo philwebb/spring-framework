@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support.aot;
+package org.springframework.beans.factory.aot;
+
+import org.springframework.aot.context.AotContribution;
+import org.springframework.aot.context.AotProcessor;
 
 /**
+ * {@link AotProcessor} that makes contributions by processing {@link DefinedBean defined
+ * beans}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
-public class AotBeanRegistrationHandlers {
+public interface AotDefinedBeanProcessor extends AotProcessor<UniqueBeanName, DefinedBean> {
+
+	@Override
+	AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean beanDefinition);
 
 }

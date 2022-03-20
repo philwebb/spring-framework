@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.aot.context.AotContribution;
 import org.springframework.beans.factory.aot.AotBeanFactoryProcessor;
 import org.springframework.beans.factory.aot.DefinedBean;
-import org.springframework.beans.factory.aot.DefinedBeanAotExcludeFilters;
+import org.springframework.beans.factory.aot.DefinedBeanExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
@@ -44,37 +44,43 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationsAotBeanFactoryProcessor.class);
 
-	private final Map<ConfigurableListableBeanFactory, DefinedBeanAotExcludeFilters> aotDefinedBeanExcludeFilters = new HashMap<>();
+	private final Map<ConfigurableListableBeanFactory, DefinedBeanExcludeFilters> excludeFilters = new HashMap<>();
 
-	private final Map<ConfigurableListableBeanFactory, XBeanRegistrationMethodCodeProviders> beanRegistrationCodeProviders = new HashMap<>();
+	private final Map<ConfigurableListableBeanFactory, DefinedBeanRegistrationHandlers> registrationHandlers = new HashMap<>();
 
 	@Override
 	public AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
 			ConfigurableListableBeanFactory beanFactory) {
-		logger.trace(LogMessage.format("Generating bean registrations contribution for '%s'", beanFactoryName));
-		DefinedBeanAotExcludeFilters excludeFilters = this.aotDefinedBeanExcludeFilters.computeIfAbsent(beanFactory,
-				DefinedBeanAotExcludeFilters::new);
-		XBeanRegistrationMethodCodeProviders registrationProviders = this.beanRegistrationCodeProviders
-				.computeIfAbsent(beanFactory, XBeanRegistrationMethodCodeProviders::new);
-		Map<DefinedBean, BeanRegistrationMethodCodeGenerator> registrations = new LinkedHashMap<>();
+		logger.trace(LogMessage.format("Generating bean registrations for bean factory'%s'", beanFactoryName));
+		Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap = getHandlerMap(beanFactoryName, beanFactory);
+		if (handlerMap.isEmpty()) {
+			logger.trace(LogMessage.format("No registration contribution for '%s'", beanFactoryName));
+			return null;
+		}
+		logger.trace(LogMessage.format("Contributing %s %s for '%s'", handlerMap.size(),
+				((handlerMap.size() != 1) ? "registrations" : "registration"), beanFactoryName));
+		return new BeanRegistrationsContribution(beanFactoryName, beanFactory, handlerMap);
+	}
+
+	private Map<DefinedBean, DefinedBeanRegistrationHandler> getHandlerMap(UniqueBeanFactoryName beanFactoryName,
+			ConfigurableListableBeanFactory beanFactory) {
+		DefinedBeanExcludeFilters excludeFilters = this.excludeFilters.computeIfAbsent(beanFactory,
+				DefinedBeanExcludeFilters::new);
+		DefinedBeanRegistrationHandlers registrationHandlers = this.registrationHandlers.computeIfAbsent(beanFactory,
+				DefinedBeanRegistrationHandlers::new);
+		Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			DefinedBean definedBean = new DefinedBean(beanFactory, beanFactoryName, beanName);
 			if (excludeFilters.isExcluded(definedBean)) {
 				logger.trace(LogMessage.format("Excluded '%s' from AOT registration and processing", beanName));
 				continue;
 			}
-			BeanRegistrationMethodCodeGenerator registration = registrationProviders
-					.getBeanRegistrationMethodGenerator(definedBean);
-			logger.trace(
-					LogMessage.format("Adding registration %s for '%s'", registration.getClass().getName(), beanName));
-			registrations.put(definedBean, registration);
+			DefinedBeanRegistrationHandler handler = registrationHandlers.getHandler(definedBean);
+			logger.trace(LogMessage.format("Registering bean named '%s' using handler '%s'", beanName,
+					handler.getClass().getName()));
+			handlerMap.put(definedBean, handler);
 		}
-		if (registrations.isEmpty()) {
-			logger.trace(LogMessage.format("No registration contribution for '%s'", beanFactoryName));
-		}
-		logger.trace(
-				LogMessage.format("Contributing %s registrations for '%s'", registrations.size(), beanFactoryName));
-		return new BeanRegistrationsContribution(beanFactoryName, beanFactory, registrations);
+		return handlerMap;
 	}
 
 }

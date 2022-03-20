@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.support.aot;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**
- * Tests for {@link DefinedBeanAotExcludeFilters}.
  *
- * @author Phillip Webb
+ * @author pwebb
  * @since 6.0
  */
-class DefinedBeanAotExcludeFiltersTests {
+class DefinedBeanRegistrationHandlers {
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
+	DefinedBeanRegistrationHandlers(ConfigurableListableBeanFactory beanFactory) {
+	}
+
+	DefinedBeanRegistrationHandler getHandler(DefinedBean definedBean) {
+		return null;
 	}
 
 }

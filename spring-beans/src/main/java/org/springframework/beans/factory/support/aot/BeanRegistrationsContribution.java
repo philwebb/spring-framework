@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.support.aot;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +26,7 @@ import javax.lang.model.element.Modifier;
 import org.springframework.aot.context.AotContext;
 import org.springframework.aot.context.AotContribution;
 import org.springframework.aot.context.AotProcessors.Subset;
+import org.springframework.aot.generate.ClassNameGenerator;
 import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethodName;
@@ -33,7 +35,7 @@ import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.aot.AotBeanClassProcessor;
-import org.springframework.beans.factory.aot.AotBeanDefinitionProcessor;
+import org.springframework.beans.factory.aot.AotDefinedBeanProcessor;
 import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.aot.UniqueBeanName;
@@ -41,6 +43,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
+import org.springframework.beans.factory.support.generate.BeanRegistrationsJavaFileGenerator;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeSpec;
@@ -56,20 +59,20 @@ class BeanRegistrationsContribution implements AotContribution {
 
 	private final UniqueBeanFactoryName beanFactoryName;
 
-	private final Map<DefinedBean, BeanRegistrationMethodCodeGenerator> registrationMethodCodeGenerators;
+	private final Map<DefinedBean, DefinedBeanRegistrationHandler> handlers;
 
 	BeanRegistrationsContribution(UniqueBeanFactoryName beanFactoryName, ConfigurableListableBeanFactory beanFactory,
-			Map<DefinedBean, BeanRegistrationMethodCodeGenerator> registrations) {
+			Map<DefinedBean, DefinedBeanRegistrationHandler> handlers) {
 		this.beanFactoryName = beanFactoryName;
-		this.registrationMethodCodeGenerators = registrations;
+		this.handlers = handlers;
 		// FIXME grab processor beans to apply
 	}
 
 	@Override
 	public void applyTo(AotContext aotContext) {
-		GeneratedClassName className = aotContext.getClassNameGenerator().generateClassName(this.beanFactoryName,
-				"BeanDefinitionRegistrations");
-		aotContext.getGeneratedFiles().addSourceFile(generateJavaFile(aotContext, className));
+		ClassNameGenerator classNameGenerator = aotContext.getClassNameGenerator();
+		GeneratedClassName className = classNameGenerator.generateClassName(this.beanFactoryName, "Registrations");
+		generateJavaFile(aotContext, className);
 		aotContext.getGeneratedSpringFactories().forNamedItem(BeanFactory.class, this.beanFactoryName)
 				.add(DefaultListableBeanFactoryInitializer.class, className);
 		applyBeanDefinitionProcessors(aotContext);
@@ -77,55 +80,19 @@ class BeanRegistrationsContribution implements AotContribution {
 	}
 
 	private JavaFile generateJavaFile(AotContext aotContext, GeneratedClassName className) {
-		return className.javaFileBuilder(generateType(aotContext, className)).build();
-	}
-
-	private TypeSpec generateType(GenerationContext generationContext, GeneratedClassName className) {
-		GeneratedMethods methods = new GeneratedMethods(new MethodNameGenerator("initialize"));
-		TypeSpec.Builder builder = className.classBuilder();
-		builder.addJavadoc("BeanDefinitionRegistryInitializer for $S",
-				BeanRegistrationsContribution.this.beanFactoryName);
-		builder.addSuperinterface(DefaultListableBeanFactoryInitializer.class);
-		Set<GeneratedMethodName> registrationMethodsToCall = addRegistrationMethods(generationContext, methods);
-		builder.addMethod(generateInitializeMethod(registrationMethodsToCall));
-		methods.doWithMethodSpecs(builder::addMethod);
-		return builder.build();
-	}
-
-	private Set<GeneratedMethodName> addRegistrationMethods(GenerationContext generationContext,
-			GeneratedMethods methods) {
-		Set<GeneratedMethodName> registrationMethodsToCall = new LinkedHashSet<>();
-		this.registrationMethodCodeGenerators.forEach((definedBean, code) -> {
-			String beanName = definedBean.getBeanName();
-			GeneratedMethod method = methods.add("register", beanName);
-			registrationMethodsToCall.add(method.getName());
-			method.generateBy((builder) -> {
-				builder.addJavadoc("Register the bean definition for $S", beanName);
-				builder.addModifiers(Modifier.PRIVATE);
-				builder.addParameter(BeanDefinitionRegistry.class,
-						BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
-				builder.addCode(code.generateBeanRegistrationMethodCode(generationContext, methods));
-			});
+		Map<String, BeanRegistrationMethodCodeGenerator> methodCodeGenerators = new LinkedHashMap<>();
+		this.handlers.forEach((definedBean, handler) -> {
+			methodCodeGenerators.put(definedBean.getBeanName(),
+					handler.getBeanRegistrationMethodCodeGenerator(null, definedBean));
 		});
-		return registrationMethodsToCall;
-	}
-
-	private MethodSpec generateInitializeMethod(Set<GeneratedMethodName> registrationMethodsToCalls) {
-		MethodSpec.Builder builder = MethodSpec.methodBuilder("initialize");
-		builder.addAnnotation(Override.class);
-		builder.addModifiers(Modifier.PUBLIC);
-		builder.addParameter(BeanDefinitionRegistry.class, BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
-		for (GeneratedMethodName registrationMethodToCall : registrationMethodsToCalls) {
-			builder.addStatement("$N($L)", registrationMethodToCall,
-					BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE);
-		}
-		return builder.build();
+		return new BeanRegistrationsJavaFileGenerator(methodCodeGenerators).generateJavaFile(aotContext,
+				beanFactoryName, className);
 	}
 
 	private void applyBeanDefinitionProcessors(AotContext aotContext) {
-		Subset<AotBeanDefinitionProcessor, UniqueBeanName, DefinedBean> processors = aotContext.getProcessors()
-				.allOfType(AotBeanDefinitionProcessor.class);
-		for (DefinedBean definedBean : this.registrationMethodCodeGenerators.keySet()) {
+		Subset<AotDefinedBeanProcessor, UniqueBeanName, DefinedBean> processors = aotContext.getProcessors()
+				.allOfType(AotDefinedBeanProcessor.class);
+		for (DefinedBean definedBean : this.handlers.keySet()) {
 			processors.processAndApplyContributions(definedBean.getUniqueBeanName(), definedBean);
 		}
 	}
@@ -133,7 +100,7 @@ class BeanRegistrationsContribution implements AotContribution {
 	private void applyBeanClassProcessors(AotContext aotContext) {
 		Subset<AotBeanClassProcessor, String, Class<?>> processors = aotContext.getProcessors()
 				.allOfType(AotBeanClassProcessor.class);
-		for (DefinedBean definedBean : this.registrationMethodCodeGenerators.keySet()) {
+		for (DefinedBean definedBean : this.handlers.keySet()) {
 			Class<?> beanClass = definedBean.getResolvedBeanClass();
 			processors.processAndApplyContributions(beanClass.getName(), beanClass);
 		}

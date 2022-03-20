@@ -72,7 +72,7 @@ class BeanRegistrationsJavaFileGeneratorTests {
 		GenerationContext generationContext = new DefaultGenerationContext(new InMemoryGeneratedFiles());
 		GeneratedClassName className = generationContext.getClassNameGenerator().generateClassName(getClass(),
 				"registrations");
-		JavaFile javaFile = generator.generateCode(generationContext, new UniqueBeanFactoryName("test"), className);
+		JavaFile javaFile = generator.generateJavaFile(generationContext, new UniqueBeanFactoryName("test"), className);
 		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
 			DefaultListableBeanFactoryInitializer initializer = compiled
 					.getInstance(DefaultListableBeanFactoryInitializer.class);

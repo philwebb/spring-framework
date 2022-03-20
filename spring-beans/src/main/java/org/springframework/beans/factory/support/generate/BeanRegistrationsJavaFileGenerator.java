@@ -81,7 +81,7 @@ public class BeanRegistrationsJavaFileGenerator {
 	 * @param className the class name of the generated file
 	 * @return a {@link JavaFile} containing the generated code
 	 */
-	public JavaFile generateCode(GenerationContext generationContext, UniqueBeanFactoryName beanFactoryName,
+	public JavaFile generateJavaFile(GenerationContext generationContext, UniqueBeanFactoryName beanFactoryName,
 			GeneratedClassName className) {
 		TypeSpec typeSpec = generateTypeSpecCode(generationContext, beanFactoryName, className);
 		return className.javaFileBuilder(typeSpec).build();

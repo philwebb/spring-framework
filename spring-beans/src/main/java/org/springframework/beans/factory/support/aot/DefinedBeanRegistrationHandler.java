@@ -33,12 +33,12 @@ import org.springframework.beans.factory.support.generate.BeanRegistrationMethod
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface AotBeanRegistrationHandler {
+public interface DefinedBeanRegistrationHandler {
 
 	/**
 	 * Return {@code true} if this handler supports the given defined bean.
-	 * @param definedBean
-	 * @return
+	 * @param definedBean the defined bean to check
+	 * @return {@code true} if the defined bean should be handled by this handler
 	 */
 	boolean canHandle(DefinedBean definedBean);
 
