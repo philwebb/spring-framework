@@ -38,13 +38,13 @@ import org.springframework.javapoet.JavaFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link BeanRegistrationsCodeGenerator}.
+ * Tests for {@link BeanRegistrationsJavaFileGenerator}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
-class BeanRegistrationsCodeGeneratorTests {
+class BeanRegistrationsJavaFileGeneratorTests {
 
 	@Test
 	void generateBeanRegistrationsCodeGeneratesCode() {
@@ -56,7 +56,7 @@ class BeanRegistrationsCodeGeneratorTests {
 		beanDefinitionGenerators.put("anotherBean",
 				new DefaultBeanRegistrationMethodCodeGenerator(generationBeanFactory, "anotherBean",
 						BeanDefinitionBuilder.rootBeanDefinition(AnnotatedBean.class).getBeanDefinition()));
-		BeanRegistrationsCodeGenerator generator = new BeanRegistrationsCodeGenerator(beanDefinitionGenerators);
+		BeanRegistrationsJavaFileGenerator generator = new BeanRegistrationsJavaFileGenerator(beanDefinitionGenerators);
 		testCompiledResult(generator, (initializer, compiled) -> {
 			DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 			initializer.initialize(beanFactory);
@@ -67,7 +67,7 @@ class BeanRegistrationsCodeGeneratorTests {
 		});
 	}
 
-	private void testCompiledResult(BeanRegistrationsCodeGenerator generator,
+	private void testCompiledResult(BeanRegistrationsJavaFileGenerator generator,
 			BiConsumer<DefaultListableBeanFactoryInitializer, Compiled> result) {
 		GenerationContext generationContext = new DefaultGenerationContext(new InMemoryGeneratedFiles());
 		GeneratedClassName className = generationContext.getClassNameGenerator().generateClassName(getClass(),

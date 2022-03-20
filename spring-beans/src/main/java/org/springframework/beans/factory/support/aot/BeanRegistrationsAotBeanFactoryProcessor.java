@@ -30,7 +30,6 @@ import org.springframework.beans.factory.aot.DefinedBeanAotExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
-import org.springframework.beans.factory.support.generate.XBeanRegistrationMethodCodeProviders;
 import org.springframework.core.log.LogMessage;
 
 /**

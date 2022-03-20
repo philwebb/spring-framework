@@ -38,20 +38,24 @@ import org.springframework.util.ClassUtils;
  * Code generator to create a {@link RootBeanDefinition} via
  * {@link RootBeanDefinition#supply(ResolvableType)}.
  * <p>
- * For example:
- * <p>
- * <pre class="code">
+ * Generates code in the following form:<pre class="code">{@code
  * RootBeanDefinition.supply(MyBean.class)
  * 	.usingConstructor()
  * 	.resolvedBy(MyBean::new);
- * </pre> This generator creates a {@link RootBeanDefinition} with only the
+ * }</pre>
+ * <p>
+ * This generator creates a {@link RootBeanDefinition} with only the
  * {@link RootBeanDefinition#setInstanceSupplier(java.util.function.Supplier) instance
  * supplier} set. Additional bean definition properties (such as
- * {@link AbstractBeanDefinition#setScope(String)} can be set using a
+ * {@link AbstractBeanDefinition#setScope(String) setScope(...)}) can be set using a
  * {@link BeanDefinitionPropertiesCodeGenerator}.
  * <p>
- * The generated code expects a {@link DefaultListableBeanFactory} {@code beanFactory}
- * variable to be available.
+ * The generated code expects the following variables to be available:
+ * <p>
+ * <ul>
+ * <li>{@code beanFactory} - The {@link DefaultListableBeanFactory} used for
+ * injection.</li>
+ * </ul>
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

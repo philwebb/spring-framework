@@ -51,7 +51,9 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * Resolves the {@link Executable} (factory method or constructor) that should be used to
- * create a bean.
+ * create a bean. This class is similar to
+ * {@code org.springframework.beans.factory.support.ConstructorResolver} but it doesn't
+ * cause bean initialization.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

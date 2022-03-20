@@ -28,19 +28,23 @@ import org.springframework.javapoet.CodeBlock.Builder;
  * Default {@link BeanRegistrationMethodCodeGenerator} providing registration code
  * suitable for most beans.
  * <p>
- * For example:
- * <p>
- * <pre class="code">
- * RootBeanDefinition beanDefinition = RootBeanDefinition.supply(MyBean.class)
- * 		.usingConstructor()
- * 		.resolvedBy(MyBean::new);
+ * Generates code in the following form:<pre class="code">{@code
+ * RootBeanDefinition beanDefinition = RootBeanDefinition
+ * 	.supply(MyBean.class)
+ * 	.usingConstructor()
+ * 	.resolvedBy(MyBean::new);
  * beanDefinition.setPrimary(true);
  * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
  * beanFactory.registerBeanDefinition("myBean", beanDefinition);
- * </pre>
+ * }</pre>
  * <p>
- * The generated code expects a {@link DefaultListableBeanFactory} {@code beanFactory}
- * variable to be available.
+ * The generated code expects the following variables to be available:
+ * <p>
+ * <ul>
+ * <li>{@code beanDefinition} - The {@link RootBeanDefinition} to configure.</li>
+ * <li>{@code beanFactory} - The {@link DefaultListableBeanFactory} used for
+ * injection.</li>
+ * </ul>
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -49,7 +53,7 @@ import org.springframework.javapoet.CodeBlock.Builder;
  * @see SuppliedInstanceBeanDefinitionCodeGenerator
  * @see BeanDefinitionPropertiesCodeGenerator
  */
-class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMethodCodeGenerator {
+public class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMethodCodeGenerator {
 
 	static final String BEAN_FACTORY_VARIABLE = SuppliedInstanceBeanDefinitionCodeGenerator.BEAN_FACTORY_VARIABLE;
 
@@ -59,7 +63,13 @@ class DefaultBeanRegistrationMethodCodeGenerator implements BeanRegistrationMeth
 
 	private final BeanDefinition beanDefinition;
 
-	DefaultBeanRegistrationMethodCodeGenerator(DefaultListableBeanFactory beanFactory, String beanName,
+	/**
+	 * Create a new {@link DefaultBeanRegistrationMethodCodeGenerator} instance.
+	 * @param beanFactory the source bean factory
+	 * @param beanName the bean name being registered
+	 * @param beanDefinition the bean definition being registered
+	 */
+	public DefaultBeanRegistrationMethodCodeGenerator(DefaultListableBeanFactory beanFactory, String beanName,
 			BeanDefinition beanDefinition) {
 		this.beanFactory = beanFactory;
 		this.beanName = beanName;

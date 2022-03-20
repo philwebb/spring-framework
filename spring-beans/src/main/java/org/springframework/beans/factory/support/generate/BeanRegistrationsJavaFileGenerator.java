@@ -37,10 +37,10 @@ import org.springframework.javapoet.TypeSpec;
 import org.springframework.util.ClassUtils;
 
 /**
- * Code generator to generate a {@link DefaultListableBeanFactoryInitializer} to register
- * bean definitions.
+ * Java file generator to generate a {@link DefaultListableBeanFactoryInitializer} to
+ * register bean definitions.
  * <p>
- * For example: <pre class="code">
+ * Generates code in the following form:<pre class="code">
  * public class MyInitializer implements DefaultListableBeanFactoryInitialier {
  *
  * 	initialize(DefaultListableBeanFactory beanFactory) {
@@ -59,14 +59,28 @@ import org.springframework.util.ClassUtils;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class BeanRegistrationsCodeGenerator {
+public class BeanRegistrationsJavaFileGenerator {
 
-	private final Map<String, BeanRegistrationMethodCodeGenerator> beanDefinitionGenerators;
+	private final Map<String, BeanRegistrationMethodCodeGenerator> beanRegistrationMethodCodeGenerators;
 
-	public BeanRegistrationsCodeGenerator(Map<String, BeanRegistrationMethodCodeGenerator> beanDefinitionGenerators) {
-		this.beanDefinitionGenerators = beanDefinitionGenerators;
+	/**
+	 * Create a new {@link BeanRegistrationsJavaFileGenerator} instance.
+	 * @param beanRegistrationMethodCodeGenerators a map containing {@code beanName} to
+	 * {@link BeanRegistrationMethodCodeGenerator} in the order that registrations should
+	 * be made.
+	 */
+	public BeanRegistrationsJavaFileGenerator(
+			Map<String, BeanRegistrationMethodCodeGenerator> beanRegistrationMethodCodeGenerators) {
+		this.beanRegistrationMethodCodeGenerators = beanRegistrationMethodCodeGenerators;
 	}
 
+	/**
+	 * Return a {@link JavaFile} containing the generated code.
+	 * @param generationContext the generation context
+	 * @param beanFactoryName the bean factory name
+	 * @param className the class name of the generated file
+	 * @return a {@link JavaFile} containing the generated code
+	 */
 	public JavaFile generateCode(GenerationContext generationContext, UniqueBeanFactoryName beanFactoryName,
 			GeneratedClassName className) {
 		TypeSpec typeSpec = generateTypeSpecCode(generationContext, beanFactoryName, className);
@@ -91,7 +105,7 @@ public class BeanRegistrationsCodeGenerator {
 	private Set<GeneratedMethodName> addRegistrationMethods(GenerationContext generationContext,
 			GeneratedMethods generatedMethods) {
 		Set<GeneratedMethodName> registrationMethodsToCall = new LinkedHashSet<>();
-		this.beanDefinitionGenerators.forEach((beanName, code) -> {
+		this.beanRegistrationMethodCodeGenerators.forEach((beanName, code) -> {
 			GeneratedMethod method = generateRegistrationMethod(generationContext, generatedMethods, beanName, code);
 			registrationMethodsToCall.add(method.getName());
 		});

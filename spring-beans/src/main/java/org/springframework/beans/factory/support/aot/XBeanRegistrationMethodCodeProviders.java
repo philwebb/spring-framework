@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support.generate;
+package org.springframework.beans.factory.support.aot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +27,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
+import org.springframework.beans.factory.support.generate.DefaultBeanRegistrationMethodCodeGenerator;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
