@@ -30,8 +30,8 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see AotBeanDefinitionProcessor
- * @see DefinedBeanAotExcludeFilter
+ * @see AotDefinedBeanProcessor
+ * @see DefinedBeanExcludeFilter
  */
 public final class DefinedBean {
 

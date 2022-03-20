@@ -16,20 +16,21 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.context.AotContribution;
-import org.springframework.aot.context.AotProcessor;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * AOT processor that make contributions by processing bean definitions.
+ * Tests for {@link DefinedBeanExcludeFilters}.
  *
- * @author Stephane Nicoll
  * @author Phillip Webb
- * @author Andy Wilkinson
  * @since 6.0
  */
-public interface AotBeanDefinitionProcessor extends AotProcessor<UniqueBeanName, DefinedBean> {
+class DefinedBeanExcludeFiltersTests {
 
-	@Override
-	AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean beanDefinition);
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
 
 }

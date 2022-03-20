@@ -20,7 +20,7 @@ import org.springframework.aot.context.AotContribution;
 import org.springframework.aot.context.AotProcessor;
 
 /**
- * AOT processor that make contributions by processing bean classes.
+ * {@link AotProcessor} that makes contributions by processing bean classes.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

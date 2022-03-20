@@ -21,7 +21,7 @@ import org.springframework.aot.context.AotContribution;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**
- * AOT processor that make contributions by processing
+ * {@link AotProcessor} that makes contributions by processing
  * {@link ConfigurableListableBeanFactory} instances.
  *
  * @author Stephane Nicoll

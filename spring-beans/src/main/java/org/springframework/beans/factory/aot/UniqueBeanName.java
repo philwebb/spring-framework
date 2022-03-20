@@ -24,14 +24,14 @@ import org.springframework.util.Assert;
 
 /**
  * A unique name associated with a bean defined in a {@link BeanFactory}. Used to
- * disambiguate when an {@link AotBeanDefinitionProcessor} has already been run.
+ * disambiguate when an {@link AotDefinedBeanProcessor} has already been run.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  * @see UniqueBeanFactoryName
- * @see AotBeanDefinitionProcessor
+ * @see AotDefinedBeanProcessor
  * @see TrackedAotProcessors
  */
 public final class UniqueBeanName {

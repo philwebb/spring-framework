@@ -31,50 +31,50 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 
 /**
- * A managed collection of {@link DefinedBeanAotExcludeFilter} instances.
+ * A managed collection of {@link DefinedBeanExcludeFilter} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class DefinedBeanAotExcludeFilters {
+public class DefinedBeanExcludeFilters {
 
-	private static final Log logger = LogFactory.getLog(DefinedBeanAotExcludeFilters.class);
+	private static final Log logger = LogFactory.getLog(DefinedBeanExcludeFilters.class);
 
-	private final List<DefinedBeanAotExcludeFilter> filters;
+	private final List<DefinedBeanExcludeFilter> filters;
 
 	/**
-	 * Create a new {@link DefinedBeanAotExcludeFilters} instance, obtaining filters using
+	 * Create a new {@link DefinedBeanExcludeFilters} instance, obtaining filters using
 	 * the default {@link SpringFactoriesLoader} and the given {@link BeanFactory}.
 	 * @param beanFactory the bean factory to use
 	 */
-	public DefinedBeanAotExcludeFilters(ConfigurableListableBeanFactory beanFactory) {
+	public DefinedBeanExcludeFilters(ConfigurableListableBeanFactory beanFactory) {
 		this(SpringFactoriesLoader.forDefaultResourceLocation(), beanFactory);
 	}
 
 	/**
-	 * Create a new {@link DefinedBeanAotExcludeFilters} instance, obtaining filters using
+	 * Create a new {@link DefinedBeanExcludeFilters} instance, obtaining filters using
 	 * the given {@link SpringFactoriesLoader} and {@link BeanFactory}.
 	 * @param springFactoriesLoader the factories loader to use
 	 * @param beanFactory the bean factory to use
 	 * @param
 	 */
-	public DefinedBeanAotExcludeFilters(SpringFactoriesLoader springFactoriesLoader,
+	public DefinedBeanExcludeFilters(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
-		List<DefinedBeanAotExcludeFilter> filters = new ArrayList<>();
-		filters.addAll(springFactoriesLoader.load(DefinedBeanAotExcludeFilter.class));
-		filters.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, DefinedBeanAotExcludeFilter.class)
-				.values());
+		List<DefinedBeanExcludeFilter> filters = new ArrayList<>();
+		filters.addAll(springFactoriesLoader.load(DefinedBeanExcludeFilter.class));
+		filters.addAll(
+				BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, DefinedBeanExcludeFilter.class).values());
 		AnnotationAwareOrderComparator.sort(filters);
 		this.filters = Collections.unmodifiableList(filters);
 	}
 
 	public boolean isExcluded(DefinedBean definedBean) {
-		for (DefinedBeanAotExcludeFilter filter : this.filters) {
+		for (DefinedBeanExcludeFilter filter : this.filters) {
 			if (filter.isExcluded(definedBean)) {
-				logger.trace(LogMessage.format("Excluding DefinedBean '%s' from AOT due to %s",
-						definedBean.getUniqueBeanName(), filter.getClass().getName()));
+				logger.trace(LogMessage.format("Excluding DefinedBean '%s' due to %s", definedBean.getUniqueBeanName(),
+						filter.getClass().getName()));
 				return true;
 			}
 		}
