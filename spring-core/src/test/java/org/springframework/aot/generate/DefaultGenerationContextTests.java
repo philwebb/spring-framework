@@ -31,30 +31,26 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 class DefaultGenerationContextTests {
 
-	private ClassNameGenerator classNameGenerator = new ClassNameGenerator();
+	private final ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 
-	private GeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
+	private final GeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 
-	private GeneratedSpringFactories generatedSpringFactories = new DefaultGeneratedSpringFactories();
+	private final GeneratedSpringFactories generatedSpringFactories = new DefaultGeneratedSpringFactories();
 
-	private RuntimeHints runtimeHints = new RuntimeHints();
+	private final RuntimeHints runtimeHints = new RuntimeHints();
 
 	@Test
 	void createWithOnlyGeneratedFilesCreatesContext() {
-		DefaultGenerationContext context = new DefaultGenerationContext(
-				this.generatedFiles);
-		assertThat(context.getClassNameGenerator()).isInstanceOf(
-				ClassNameGenerator.class);
+		DefaultGenerationContext context = new DefaultGenerationContext(this.generatedFiles);
+		assertThat(context.getClassNameGenerator()).isInstanceOf(ClassNameGenerator.class);
 		assertThat(context.getGeneratedFiles()).isSameAs(this.generatedFiles);
-		assertThat(context.getGeneratedSpringFactories()).isInstanceOf(
-				DefaultGeneratedSpringFactories.class);
+		assertThat(context.getGeneratedSpringFactories()).isInstanceOf(DefaultGeneratedSpringFactories.class);
 		assertThat(context.getRuntimeHints()).isInstanceOf(RuntimeHints.class);
 	}
 
 	@Test
 	void createCreatesContext() {
-		DefaultGenerationContext context = new DefaultGenerationContext(
-				this.classNameGenerator, this.generatedFiles,
+		DefaultGenerationContext context = new DefaultGenerationContext(this.classNameGenerator, this.generatedFiles,
 				this.generatedSpringFactories, this.runtimeHints);
 		assertThat(context.getClassNameGenerator()).isNotNull();
 		assertThat(context.getGeneratedFiles()).isNotNull();
@@ -64,65 +60,56 @@ class DefaultGenerationContextTests {
 
 	@Test
 	void createWhenClassNameGeneratorIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new DefaultGenerationContext(null, this.generatedFiles,
-						this.generatedSpringFactories, this.runtimeHints)).withMessage(
-								"'classNameGenerator' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> new DefaultGenerationContext(null, this.generatedFiles,
+				this.generatedSpringFactories, this.runtimeHints)).withMessage("'classNameGenerator' must not be null");
 	}
 
 	@Test
 	void createWhenGeneratedFilesIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new DefaultGenerationContext(this.classNameGenerator, null,
-						this.generatedSpringFactories, this.runtimeHints)).withMessage(
-								"'generatedFiles' must not be null");
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> new DefaultGenerationContext(this.classNameGenerator, null,
+						this.generatedSpringFactories, this.runtimeHints))
+				.withMessage("'generatedFiles' must not be null");
 	}
 
 	@Test
 	void createWhenGeneratedSpringFactoriesIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new DefaultGenerationContext(this.classNameGenerator,
-						this.generatedFiles, null, this.runtimeHints)).withMessage(
-								"'generatedSpringFactories' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> new DefaultGenerationContext(this.classNameGenerator,
+				this.generatedFiles, null, this.runtimeHints))
+				.withMessage("'generatedSpringFactories' must not be null");
 	}
 
 	@Test
 	void createWhenRuntimeHintsIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new DefaultGenerationContext(this.classNameGenerator,
-						this.generatedFiles, this.generatedSpringFactories,
-						null)).withMessage("'runtimeHints' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> new DefaultGenerationContext(this.classNameGenerator,
+				this.generatedFiles, this.generatedSpringFactories, null))
+				.withMessage("'runtimeHints' must not be null");
 	}
 
 	@Test
 	void getClassNameGeneratorReturnsClassNameGenerator() {
-		DefaultGenerationContext context = new DefaultGenerationContext(
-				this.classNameGenerator, this.generatedFiles,
+		DefaultGenerationContext context = new DefaultGenerationContext(this.classNameGenerator, this.generatedFiles,
 				this.generatedSpringFactories, this.runtimeHints);
 		assertThat(context.getClassNameGenerator()).isSameAs(this.classNameGenerator);
 	}
 
 	@Test
 	void getGeneratedFilesReturnsGeneratedFiles() {
-		DefaultGenerationContext context = new DefaultGenerationContext(
-				this.classNameGenerator, this.generatedFiles,
+		DefaultGenerationContext context = new DefaultGenerationContext(this.classNameGenerator, this.generatedFiles,
 				this.generatedSpringFactories, this.runtimeHints);
 		assertThat(context.getGeneratedFiles()).isSameAs(this.generatedFiles);
 	}
 
 	@Test
 	void getGeneratedSpringFactoriesReturnsGeneratedSpringFactories() {
-		DefaultGenerationContext context = new DefaultGenerationContext(
-				this.classNameGenerator, this.generatedFiles,
+		DefaultGenerationContext context = new DefaultGenerationContext(this.classNameGenerator, this.generatedFiles,
 				this.generatedSpringFactories, this.runtimeHints);
-		assertThat(context.getGeneratedSpringFactories()).isSameAs(
-				this.generatedSpringFactories);
+		assertThat(context.getGeneratedSpringFactories()).isSameAs(this.generatedSpringFactories);
 	}
 
 	@Test
 	void getRuntimeHintsReturnsRuntimeHints() {
-		DefaultGenerationContext context = new DefaultGenerationContext(
-				this.classNameGenerator, this.generatedFiles,
+		DefaultGenerationContext context = new DefaultGenerationContext(this.classNameGenerator, this.generatedFiles,
 				this.generatedSpringFactories, this.runtimeHints);
 		assertThat(context.getRuntimeHints()).isSameAs(this.runtimeHints);
 	}

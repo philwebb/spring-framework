@@ -36,52 +36,46 @@ class InMemoryGeneratedFilesTests {
 	@Test
 	void addFileAddsInMemoryFile() throws Exception {
 		this.generatedFiles.addResourceFile("META-INF/test", "test");
-		assertThat(this.generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/test")).isEqualTo("test");
+		assertThat(this.generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/test")).isEqualTo("test");
 	}
 
 	@Test
 	void addFileWhenFileAlreadyAddedThrowsException() {
 		this.generatedFiles.addResourceFile("META-INF/test", "test");
-		assertThatIllegalStateException().isThrownBy(
-				() -> this.generatedFiles.addResourceFile("META-INF/test",
-						"test")).withMessage("Path 'META-INF/test' already in use");
+		assertThatIllegalStateException().isThrownBy(() -> this.generatedFiles.addResourceFile("META-INF/test", "test"))
+				.withMessage("Path 'META-INF/test' already in use");
 	}
 
 	@Test
 	void getGeneratedFilesReturnsFiles() throws Exception {
 		this.generatedFiles.addResourceFile("META-INF/test1", "test1");
 		this.generatedFiles.addResourceFile("META-INF/test2", "test2");
-		assertThat(this.generatedFiles.getGeneratedFiles(Kind.RESOURCE)).containsKeys(
-				"META-INF/test1", "META-INF/test2");
+		assertThat(this.generatedFiles.getGeneratedFiles(Kind.RESOURCE)).containsKeys("META-INF/test1",
+				"META-INF/test2");
 	}
 
 	@Test
 	void getGeneratedFileContentWhenFileExistsReturnsContent() throws Exception {
 		this.generatedFiles.addResourceFile("META-INF/test", "test");
-		assertThat(this.generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/test")).isEqualTo("test");
+		assertThat(this.generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/test")).isEqualTo("test");
 	}
 
 	@Test
 	void getGeneratedFileContentWhenFileIsMissingReturnsNull() throws Exception {
 		this.generatedFiles.addResourceFile("META-INF/test", "test");
-		assertThat(this.generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/missing")).isNull();
+		assertThat(this.generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/missing")).isNull();
 	}
 
 	@Test
 	void getGeneratedFileWhenFileExistsReturnsInputStreamSource() {
 		this.generatedFiles.addResourceFile("META-INF/test", "test");
-		assertThat(this.generatedFiles.getGeneratedFile(Kind.RESOURCE,
-				"META-INF/test")).isNotNull();
+		assertThat(this.generatedFiles.getGeneratedFile(Kind.RESOURCE, "META-INF/test")).isNotNull();
 	}
 
 	@Test
 	void getGeneratedFileWhenFileIsMissingReturnsNull() {
 		this.generatedFiles.addResourceFile("META-INF/test", "test");
-		assertThat(this.generatedFiles.getGeneratedFile(Kind.RESOURCE,
-				"META-INF/missing")).isNull();
+		assertThat(this.generatedFiles.getGeneratedFile(Kind.RESOURCE, "META-INF/missing")).isNull();
 	}
 
 }

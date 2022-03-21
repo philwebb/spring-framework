@@ -19,7 +19,9 @@ package org.springframework.aot.context;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -44,25 +46,22 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
  */
 class TrackedAotProcessorsTests {
 
-	private List<Object> contributed = new ArrayList<>();
+	private final List<Object> contributed = new ArrayList<>();
 
 	private Object lastContributed;
 
-	private TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute,
-			new TestTracker());
+	private final TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute, new TestTracker());
 
 	@Test
 	void createWhenApplyActionIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new TrackedAotProcessors(null, new TestTracker())).withMessage(
-						"'applyAction' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> new TrackedAotProcessors(null, new TestTracker()))
+				.withMessage("'applyAction' must not be null");
 	}
 
 	@Test
 	void createWhenTrackerIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new TrackedAotProcessors(this::contribute, null)).withMessage(
-						"'tracker' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> new TrackedAotProcessors(this::contribute, null))
+				.withMessage("'tracker' must not be null");
 	}
 
 	@Test
@@ -76,9 +75,8 @@ class TrackedAotProcessorsTests {
 
 	@Test
 	void addWhenAotProcessorIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> this.processors.add(null)).withMessage(
-						"'aotProcessor' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> this.processors.add(null))
+				.withMessage("'aotProcessor' must not be null");
 	}
 
 	@Test
@@ -94,9 +92,8 @@ class TrackedAotProcessorsTests {
 
 	@Test
 	void removeWhenAotProcessorIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> this.processors.remove(null)).withMessage(
-						"'aotProcessor' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> this.processors.remove(null))
+				.withMessage("'aotProcessor' must not be null");
 	}
 
 	@Test
@@ -114,60 +111,58 @@ class TrackedAotProcessorsTests {
 
 	@Test
 	void allOfTypeWhenProcessorTypeIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> this.processors.allOfType(null)).withMessage(
-						"'processorType' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> this.processors.allOfType(null))
+				.withMessage("'processorType' must not be null");
 	}
 
 	@Test
 	void allOfTypeWhenProcessorTypeIsNotInterfaceThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(() -> this.processors.allOfType(
-				ContributingAotStringStringProcessor.class)).withMessage(
-						"'processorType' must be a subinterface of AotProcessor");
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> this.processors.allOfType(ContributingAotStringStringProcessor.class))
+				.withMessage("'processorType' must be a subinterface of AotProcessor");
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	void allOfTypeWhenProcessorTypeIsNotSubInterfaceThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> this.processors.allOfType(AotProcessor.class)).withMessage(
-						"'processorType' must be a subinterface of AotProcessor");
+		assertThatIllegalArgumentException().isThrownBy(() -> this.processors.allOfType(AotProcessor.class))
+				.withMessage("'processorType' must be a subinterface of AotProcessor");
 	}
 
 	@Test
 	void processAndApplyContributionsWhenMultipleTypesAppliesOnlyToTypeMatched() {
 		this.processors.add(new ContributingAotStringStringProcessor());
 		this.processors.add(new ContributingAotIntegerIntegerProcessor());
-		this.processors.allOfType(
-				TestAotStringStringProcessor.class).processAndApplyContributions("a",
-						"b");
+		this.processors.allOfType(TestAotStringStringProcessor.class).processAndApplyContributions("a", "b");
 		assertThat(this.contributed).containsExactly("ab");
+	}
+
+	@Test
+	void processAndApplyContributionsWithAndAppliesToBoth() {
+		this.processors.add(new ContributingAotStringStringProcessor("1"));
+		Set<ContributingAotStringStringProcessor> additional = Collections
+				.singleton(new ContributingAotStringStringProcessor("2"));
+		this.processors.allOfType(TestAotStringStringProcessor.class).and(additional).processAndApplyContributions("a",
+				"b");
+		assertThat(this.contributed).containsExactly("1ab", "2ab");
 	}
 
 	@Test
 	void processAndApplyContributionsWhenNameIsClassShouldUseClassName() {
 		Tracker tracker = mock(Tracker.class);
-		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute,
-				tracker);
+		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute, tracker);
 		processors.add(new NonContributingAotClassStringProcessor());
-		processors.allOfType(
-				TestAotClassStringProcessor.class).processAndApplyContributions(
-						InputStream.class, "?");
-		verify(tracker).shouldSkip(NonContributingAotClassStringProcessor.class,
-				"java.io.InputStream");
+		processors.allOfType(TestAotClassStringProcessor.class).processAndApplyContributions(InputStream.class, "?");
+		verify(tracker).shouldSkip(NonContributingAotClassStringProcessor.class, "java.io.InputStream");
 	}
 
 	@Test
 	void processAndApplyWhenTrackerSkipsShouldSkip() {
 		Tracker tracker = mock(Tracker.class);
-		given(tracker.shouldSkip(ContributingAotStringStringProcessor.class,
-				"name")).willReturn(true);
-		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute,
-				tracker);
+		given(tracker.shouldSkip(ContributingAotStringStringProcessor.class, "name")).willReturn(true);
+		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute, tracker);
 		processors.add(new ContributingAotStringStringProcessor());
-		processors.allOfType(
-				TestAotStringStringProcessor.class).processAndApplyContributions("name",
-						"value");
+		processors.allOfType(TestAotStringStringProcessor.class).processAndApplyContributions("name", "value");
 		verify(tracker).shouldSkip(ContributingAotStringStringProcessor.class, "name");
 		verifyNoMoreInteractions(tracker);
 		assertThat(this.lastContributed).isNull();
@@ -176,36 +171,26 @@ class TrackedAotProcessorsTests {
 	@Test
 	void processAndApplyContributionsWhenContributesShouldMarksProcessed() {
 		Tracker tracker = mock(Tracker.class);
-		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute,
-				tracker);
+		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute, tracker);
 		processors.add(new ContributingAotStringStringProcessor());
-		processors.allOfType(
-				TestAotStringStringProcessor.class).processAndApplyContributions("name",
-						"value");
+		processors.allOfType(TestAotStringStringProcessor.class).processAndApplyContributions("name", "value");
 		verify(tracker).markProcessed(ContributingAotStringStringProcessor.class, "name");
 	}
 
 	@Test
 	void processAndApplyContributionsWhenNoContributionMarksProcessed() {
 		Tracker tracker = mock(Tracker.class);
-		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute,
-				tracker);
+		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute, tracker);
 		processors.add(new NonContributingAotStringStringProcessor());
-		processors.allOfType(
-				TestAotStringStringProcessor.class).processAndApplyContributions("name",
-						"value");
-		verify(tracker).markProcessed(NonContributingAotStringStringProcessor.class,
-				"name");
+		processors.allOfType(TestAotStringStringProcessor.class).processAndApplyContributions("name", "value");
+		verify(tracker).markProcessed(NonContributingAotStringStringProcessor.class, "name");
 	}
 
 	@Test
 	void processAndApplyContributionsAppliesContribution() {
-		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute,
-				new TestTracker());
+		TrackedAotProcessors processors = new TrackedAotProcessors(this::contribute, new TestTracker());
 		processors.add(new ContributingAotStringStringProcessor());
-		processors.allOfType(
-				TestAotStringStringProcessor.class).processAndApplyContributions("spring",
-						"framework");
+		processors.allOfType(TestAotStringStringProcessor.class).processAndApplyContributions("spring", "framework");
 		assertThat(this.lastContributed).isEqualTo("springframework");
 	}
 
@@ -226,23 +211,20 @@ class TrackedAotProcessorsTests {
 		@Test
 		void shouldSkipWhenInFileAndNotProcessedReturnsTrue() {
 			FileTracker tracker = new FileTracker(null, this::getTestResourceLocation);
-			assertThat(tracker.shouldSkip(ContributingAotStringStringProcessor.class,
-					"a")).isTrue();
+			assertThat(tracker.shouldSkip(ContributingAotStringStringProcessor.class, "a")).isTrue();
 		}
 
 		@Test
 		void shouldSkipWhenNotInFileAndNotProcessedReturnsFalse() {
 			FileTracker tracker = new FileTracker(null, this::getTestResourceLocation);
-			assertThat(tracker.shouldSkip(ContributingAotStringStringProcessor.class,
-					"b")).isFalse();
+			assertThat(tracker.shouldSkip(ContributingAotStringStringProcessor.class, "b")).isFalse();
 		}
 
 		@Test
 		void shouldSkipWhenNotInFileAndProcessedReturnsFalse() {
 			FileTracker tracker = new FileTracker(null, this::getTestResourceLocation);
 			tracker.markProcessed(ContributingAotStringStringProcessor.class, "b");
-			assertThat(tracker.shouldSkip(ContributingAotStringStringProcessor.class,
-					"b")).isTrue();
+			assertThat(tracker.shouldSkip(ContributingAotStringStringProcessor.class, "b")).isTrue();
 		}
 
 		@Test
@@ -258,12 +240,12 @@ class TrackedAotProcessorsTests {
 			tracker.save(generatedFiles);
 			assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
 					"META-INF/spring/org.springframework.aot.context.AotProcessor/"
-							+ ContributingAotStringStringProcessor.class.getName()
-							+ ".processed")).isEqualTo("a\nb\nc\n");
+							+ ContributingAotStringStringProcessor.class.getName() + ".processed"))
+									.isEqualTo("a\nb\nc\n");
 			assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
 					"META-INF/spring/org.springframework.aot.context.AotProcessor/"
-							+ ContributingAotIntegerIntegerProcessor.class.getName()
-							+ ".processed")).isEqualTo("1\n2\n3\n");
+							+ ContributingAotIntegerIntegerProcessor.class.getName() + ".processed"))
+									.isEqualTo("1\n2\n3\n");
 		}
 
 		@Test
@@ -273,14 +255,11 @@ class TrackedAotProcessorsTests {
 			InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 			tracker.save(generatedFiles);
 			assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-					getTestResourceLocation(
-							ContributingAotStringStringProcessor.class))).isEqualTo(
-									"b\n");
+					getTestResourceLocation(ContributingAotStringStringProcessor.class))).isEqualTo("b\n");
 		}
 
 		private String getTestResourceLocation(Class<?> processorImplementationType) {
-			return String.format("org/springframework/aot/context/%s.processed",
-					processorImplementationType.getName());
+			return String.format("org/springframework/aot/context/%s.processed", processorImplementationType.getName());
 		}
 
 	}
@@ -302,18 +281,26 @@ class TrackedAotProcessorsTests {
 
 	}
 
-	static class ContributingAotStringStringProcessor
-			implements TestAotStringStringProcessor {
+	static class ContributingAotStringStringProcessor implements TestAotStringStringProcessor {
+
+		private final String prefix;
+
+		ContributingAotStringStringProcessor() {
+			this("");
+		}
+
+		ContributingAotStringStringProcessor(String prefix) {
+			this.prefix = prefix;
+		}
 
 		@Override
 		public AotContribution processAheadOfTime(String name, String instance) {
-			return new TestAotContribution(name + instance);
+			return new TestAotContribution(this.prefix + name + instance);
 		}
 
 	}
 
-	static class NonContributingAotStringStringProcessor
-			implements TestAotStringStringProcessor {
+	static class NonContributingAotStringStringProcessor implements TestAotStringStringProcessor {
 
 		@Override
 		public AotContribution processAheadOfTime(String name, String instance) {
@@ -322,13 +309,11 @@ class TrackedAotProcessorsTests {
 
 	}
 
-	static interface TestAotIntegerIntegerProcessor
-			extends AotProcessor<Integer, Integer> {
+	static interface TestAotIntegerIntegerProcessor extends AotProcessor<Integer, Integer> {
 
 	}
 
-	static class ContributingAotIntegerIntegerProcessor
-			implements TestAotIntegerIntegerProcessor {
+	static class ContributingAotIntegerIntegerProcessor implements TestAotIntegerIntegerProcessor {
 
 		@Override
 		public AotContribution processAheadOfTime(Integer name, Integer instance) {
@@ -337,8 +322,7 @@ class TrackedAotProcessorsTests {
 
 	}
 
-	static class NonContributingAotIntegerIntegerProcessor
-			implements TestAotIntegerIntegerProcessor {
+	static class NonContributingAotIntegerIntegerProcessor implements TestAotIntegerIntegerProcessor {
 
 		@Override
 		public AotContribution processAheadOfTime(Integer name, Integer instance) {
@@ -351,8 +335,7 @@ class TrackedAotProcessorsTests {
 
 	}
 
-	static class NonContributingAotClassStringProcessor
-			implements TestAotClassStringProcessor {
+	static class NonContributingAotClassStringProcessor implements TestAotClassStringProcessor {
 
 		@Override
 		public AotContribution processAheadOfTime(Class<?> name, String instance) {

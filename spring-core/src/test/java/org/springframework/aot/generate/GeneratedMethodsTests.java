@@ -36,13 +36,12 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  */
 class GeneratedMethodsTests {
 
-	private GeneratedMethods methods = new GeneratedMethods();
+	private final GeneratedMethods methods = new GeneratedMethods();
 
 	@Test
 	void createWhenMethodNameGeneratorIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new GeneratedMethods(null)).withMessage(
-						"'methodNameGenerator' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> new GeneratedMethods(null))
+				.withMessage("'methodNameGenerator' must not be null");
 	}
 
 	@Test
@@ -57,8 +56,8 @@ class GeneratedMethodsTests {
 	void addAddsMethod() {
 		this.methods.add("spring", "beans").generateBy(this::build);
 		this.methods.add("spring", "context").generateBy(this::build);
-		assertThat(this.methods.stream().map(GeneratedMethod::getName).map(
-				Object::toString)).containsExactly("springBeans", "springContext");
+		assertThat(this.methods.stream().map(GeneratedMethod::getName).map(Object::toString))
+				.containsExactly("springBeans", "springContext");
 	}
 
 	@Test
@@ -73,9 +72,8 @@ class GeneratedMethodsTests {
 	@Test
 	void doWithMethodSpecsWhenMethodHasNotHadSpecDefinedThrowsException() {
 		this.methods.add("spring");
-		assertThatIllegalStateException().isThrownBy(
-				() -> this.methods.doWithMethodSpecs((spec) -> {
-				})).withMessage("Method 'spring' has no method spec defined");
+		assertThatIllegalStateException().isThrownBy(() -> this.methods.doWithMethodSpecs((spec) -> {
+		})).withMessage("Method 'spring' has no method spec defined");
 	}
 
 	@Test
