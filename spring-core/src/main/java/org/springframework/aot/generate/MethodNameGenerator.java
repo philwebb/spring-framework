@@ -108,8 +108,11 @@ public class MethodNameGenerator {
 	private static String clean(String string) {
 		char[] chars = string.toCharArray();
 		StringBuffer name = new StringBuffer(chars.length);
+		boolean uppercase = false;
 		for (char ch : chars) {
-			name.append((!Character.isLetter(ch)) ? "" : ch);
+			char outputChar = (!uppercase) ? ch : Character.toUpperCase(ch);
+			name.append((!Character.isLetter(ch)) ? "" : outputChar);
+			uppercase = ch == '.';
 		}
 		return name.toString();
 	}

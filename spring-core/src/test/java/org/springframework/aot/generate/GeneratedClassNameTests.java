@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 class GeneratedClassNameTests {
 
-	private static final String NAME = "com.example.Test$Thing$$Feature";
+	private static final String NAME = "com.example.Test$Thing__Feature";
 
 	@Test
 	void getNameReturnsName() {
@@ -51,7 +51,7 @@ class GeneratedClassNameTests {
 		GeneratedClassName generated = new GeneratedClassName(NAME);
 		TypeSpec.Builder builder = generated.classBuilder();
 		assertThat(builder).isNotNull();
-		assertThat(builder.build().name).isEqualTo(NAME);
+		assertThat(builder.build().name).isEqualTo("Test$Thing__Feature");
 	}
 
 	@Test
@@ -64,9 +64,9 @@ class GeneratedClassNameTests {
 	@Test
 	void javaFileBuilderWhenNameIsWrongThrowsException() {
 		GeneratedClassName generated = new GeneratedClassName(NAME);
-		TypeSpec typeSpec = new GeneratedClassName("com.example.Bad").classBuilder().build();
+		TypeSpec typeSpec = TypeSpec.classBuilder("com.example.Bad").build();
 		assertThatIllegalArgumentException().isThrownBy(() -> generated.javaFileBuilder(typeSpec))
-				.withMessage("'typeSpec' must be named 'com.example.Test$Thing$$Feature' instead of 'com.example.Bad'");
+				.withMessage("'typeSpec' must be named 'Test$Thing__Feature' instead of 'com.example.Bad'");
 	}
 
 	@Test

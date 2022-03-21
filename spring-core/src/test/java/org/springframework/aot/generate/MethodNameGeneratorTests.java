@@ -51,6 +51,12 @@ class MethodNameGeneratorTests {
 	}
 
 	@Test
+	void generateMethodNameWhenHasDotsGeneratesCamelCaseName() {
+		GeneratedMethodName generated = this.generator.generateMethodName("register", "org.springframework.example.bean");
+		assertThat(generated).hasToString("registerOrgSpringframeworkExampleBean");
+	}
+
+	@Test
 	void generateMethodNameWhenMultipleCallsGeneratesSequencedName() {
 		GeneratedMethodName generated1 = this.generator.generateMethodName("register", "myBean123", "bean");
 		GeneratedMethodName generated2 = this.generator.generateMethodName("register", "myBean!", "bean");

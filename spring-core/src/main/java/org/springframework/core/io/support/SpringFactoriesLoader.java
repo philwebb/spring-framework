@@ -89,7 +89,7 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @since 3.2
  */
-public final class SpringFactoriesLoader {
+public class SpringFactoriesLoader {
 
 	/**
 	 * The location to look for factories.
@@ -108,15 +108,21 @@ public final class SpringFactoriesLoader {
 	static final Map<ClassLoader, Map<String, SpringFactoriesLoader>> cache = new ConcurrentReferenceHashMap<>();
 
 
+	@Nullable
 	private final ClassLoader classLoader;
 
 	private final Map<String, List<String>> factories;
 
 
-	private SpringFactoriesLoader(ClassLoader classLoader, String resourceLocation) {
+	private SpringFactoriesLoader(@Nullable ClassLoader classLoader, String resourceLocation) {
 		this.classLoader = classLoader;
 		this.factories = loadFactoriesResource((classLoader != null) ? classLoader
 				: SpringFactoriesLoader.class.getClassLoader(), resourceLocation);
+	}
+
+	protected SpringFactoriesLoader(@Nullable ClassLoader classLoader, Map<String, List<String>> factories) {
+		this.classLoader = classLoader;
+		this.factories = factories;
 	}
 
 
@@ -237,7 +243,7 @@ public final class SpringFactoriesLoader {
 	}
 
 	@Nullable
-	private <T> T instantiateFactory(String implementationName, Class<T> type, @Nullable ArgumentResolver argumentResolver, FailureHandler failureHandler) {
+	protected <T> T instantiateFactory(String implementationName, Class<T> type, @Nullable ArgumentResolver argumentResolver, FailureHandler failureHandler) {
 		try {
 			Class<?> factoryImplementationClass = ClassUtils.forName(implementationName, this.classLoader);
 			Assert.isTrue(type.isAssignableFrom(factoryImplementationClass),
@@ -403,7 +409,7 @@ public final class SpringFactoriesLoader {
 	public static SpringFactoriesLoader forResourceLocation(@Nullable ClassLoader classLoader, String resourceLocation) {
 		Assert.hasText(resourceLocation, "'resourceLocation' must not be empty");
 		Map<String, SpringFactoriesLoader> loaders = cache.computeIfAbsent(classLoader, key -> new LinkedHashMap<>());
-		return loaders.computeIfAbsent(resourceLocation, key -> new SpringFactoriesLoader(classLoader, key));
+		return loaders.computeIfAbsent(resourceLocation, key -> new SpringFactoriesLoader(classLoader, resourceLocation));
 	}
 
 	/**

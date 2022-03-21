@@ -29,6 +29,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
+import org.springframework.util.Assert;
 
 /**
  * A managed collection of {@link DefinedBeanExcludeFilter} instances.
@@ -61,6 +62,8 @@ public class DefinedBeanExcludeFilters {
 	 */
 	public DefinedBeanExcludeFilters(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
+		Assert.notNull(springFactoriesLoader, "'springFactoriesLoader' must not be null");
+		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		List<DefinedBeanExcludeFilter> filters = new ArrayList<>();
 		filters.addAll(springFactoriesLoader.load(DefinedBeanExcludeFilter.class));
 		filters.addAll(
@@ -70,6 +73,7 @@ public class DefinedBeanExcludeFilters {
 	}
 
 	public boolean isExcluded(DefinedBean definedBean) {
+		Assert.notNull(definedBean, "'definedBean' must not be null");
 		for (DefinedBeanExcludeFilter filter : this.filters) {
 			if (filter.isExcluded(definedBean)) {
 				logger.trace(LogMessage.format("Excluding DefinedBean '%s' due to %s", definedBean.getUniqueBeanName(),
