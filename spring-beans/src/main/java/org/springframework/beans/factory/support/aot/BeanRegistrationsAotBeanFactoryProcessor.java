@@ -111,9 +111,9 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		Map<String, BeanRegistrationMethodCodeGenerator> methodCodeGenerators = new LinkedHashMap<>();
 		handlerMap.forEach((definedBean, handler) -> {
 			String beanName = definedBean.getBeanName();
-			BeanDefinition beanDefinition = definedBean.getMergedBeanDefinition();
 			BeanRegistrationMethodCodeGenerator methodCodeGenerator = handler
 					.getBeanRegistrationMethodCodeGenerator(definedBean);
+			BeanDefinition beanDefinition = definedBean.getMergedBeanDefinition();
 			if (methodCodeGenerator == null) {
 				methodCodeGenerator = new DefaultBeanRegistrationMethodCodeGenerator(beanName, beanDefinition,
 						constructorOrFactoryMethodResolver);

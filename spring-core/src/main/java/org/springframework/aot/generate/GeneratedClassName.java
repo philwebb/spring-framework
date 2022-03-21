@@ -65,7 +65,8 @@ public final class GeneratedClassName {
 	 * @return the short name
 	 */
 	public String getShortName() {
-		return ClassUtils.getShortName(this.name);
+		int lastDotIndex = this.name.lastIndexOf('.');
+		return (lastDotIndex != -1) ? this.name.substring(lastDotIndex + 1, this.name.length()) : this.name;
 	}
 
 	/**
@@ -86,7 +87,7 @@ public final class GeneratedClassName {
 	public JavaFile.Builder javaFileBuilder(TypeSpec typeSpec) {
 		Assert.notNull(typeSpec, "'typeSpec' must not be null");
 		Assert.isTrue(getShortName().equals(typeSpec.name),
-				() -> String.format("'typeSpec' must be named '%s' instead of '%s'", this, typeSpec.name));
+				() -> String.format("'typeSpec' must be named '%s' instead of '%s'", getShortName(), typeSpec.name));
 		return JavaFile.builder(getPackageName(), typeSpec).skipJavaLangImports(true);
 	}
 
