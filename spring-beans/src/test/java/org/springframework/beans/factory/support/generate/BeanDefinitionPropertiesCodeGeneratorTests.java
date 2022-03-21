@@ -81,9 +81,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	@Test
 	void setPrimaryWhenTrue() {
 		this.beanDefinition.setPrimary(true);
-		testCompiledResult((actual, compiled) -> {
-			assertThat(actual.isPrimary()).isTrue();
-		});
+		testCompiledResult((actual, compiled) -> assertThat(actual.isPrimary()).isTrue());
 	}
 
 	@Test
@@ -107,9 +105,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	@Test
 	void setScopeWhenOther() {
 		this.beanDefinition.setScope("prototype");
-		testCompiledResult((actual, compiled) -> {
-			assertThat(actual.getScope()).isEqualTo("prototype");
-		});
+		testCompiledResult((actual, compiled) -> assertThat(actual.getScope()).isEqualTo("prototype"));
 	}
 
 	@Test
@@ -124,9 +120,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	@Test
 	void setDependsOnWhenNotEmpty() {
 		this.beanDefinition.setDependsOn("a", "b", "c");
-		testCompiledResult((actual, compiled) -> {
-			assertThat(actual.getDependsOn()).containsExactly("a", "b", "c");
-		});
+		testCompiledResult((actual, compiled) -> assertThat(actual.getDependsOn()).containsExactly("a", "b", "c"));
 	}
 
 	@Test
@@ -159,9 +153,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	@Test
 	void setAutowireCandidateWhenFalse() {
 		this.beanDefinition.setAutowireCandidate(false);
-		testCompiledResult((actual, compiled) -> {
-			assertThat(actual.isAutowireCandidate()).isFalse();
-		});
+		testCompiledResult((actual, compiled) -> assertThat(actual.isAutowireCandidate()).isFalse());
 	}
 
 	@Test
@@ -185,9 +177,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	@Test
 	void setSyntheticWhenTrue() {
 		this.beanDefinition.setSynthetic(true);
-		testCompiledResult((actual, compiled) -> {
-			assertThat(actual.isSynthetic()).isTrue();
-		});
+		testCompiledResult((actual, compiled) -> assertThat(actual.isSynthetic()).isTrue());
 	}
 
 	@Test
@@ -220,9 +210,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	@Test
 	void setRoleWhenOther() {
 		this.beanDefinition.setRole(999);
-		testCompiledResult((actual, compiled) -> {
-			assertThat(actual.getRole()).isEqualTo(999);
-		});
+		testCompiledResult((actual, compiled) -> assertThat(actual.getRole()).isEqualTo(999));
 	}
 
 	@Test
@@ -358,7 +346,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 
 	private void testCompiledResult(Supplier<CodeBlock> codeBlock, BiConsumer<RootBeanDefinition, Compiled> result) {
 		JavaFile javaFile = createJavaFile(codeBlock);
-		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
+		TestCompiler.forSystem().compile(javaFile::writeTo, compiled -> {
 			RootBeanDefinition beanDefinition = (RootBeanDefinition) compiled.getInstance(Supplier.class).get();
 			result.accept(beanDefinition, compiled);
 		});

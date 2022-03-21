@@ -73,7 +73,7 @@ class DefaultBeanRegistrationMethodCodeGeneratorTests {
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 		CodeBlock generatedCode = generator.generateBeanRegistrationMethodCode(generationContext, generatedMethods);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
-		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
+		TestCompiler.forSystem().compile(javaFile::writeTo, compiled -> {
 			DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 			compiled.getInstance(Consumer.class).accept(beanFactory);
 			result.accept(beanFactory, compiled);

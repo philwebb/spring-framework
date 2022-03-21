@@ -80,7 +80,7 @@ public class DefaultGeneratedSpringFactories implements GeneratedSpringFactories
 	 */
 	public void writeTo(GeneratedFiles generatedFiles) throws IOException {
 		Assert.notNull(generatedFiles, "'generatedFiles' must not be null");
-		this.factoryFiles.values().forEach((factoryFile) -> factoryFile.writeTo(generatedFiles));
+		this.factoryFiles.values().forEach(factoryFile -> factoryFile.writeTo(generatedFiles));
 	}
 
 	/**
@@ -107,10 +107,8 @@ public class DefaultGeneratedSpringFactories implements GeneratedSpringFactories
 
 		private void addExisting(InputStream inputStream) throws IOException {
 			Properties properties = PropertiesLoaderUtils.loadProperties(new InputStreamResource(inputStream));
-			properties.forEach((factoryTypeName, implementationNames) -> {
-				addAll((String) factoryTypeName,
-						StringUtils.commaDelimitedListToStringArray((String) implementationNames));
-			});
+			properties.forEach((factoryTypeName, implementationNames) -> addAll((String) factoryTypeName,
+					StringUtils.commaDelimitedListToStringArray((String) implementationNames)));
 		}
 
 		private void addAll(String factoryTypeName, String[] implementationNames) {

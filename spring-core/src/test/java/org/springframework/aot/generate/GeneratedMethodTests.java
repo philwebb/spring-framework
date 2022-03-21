@@ -60,7 +60,7 @@ class GeneratedMethodTests {
 	@Test
 	void generateByConsumerAddsSpec() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
-		method.generateBy((builder) -> builder.addModifiers(Modifier.PUBLIC));
+		method.generateBy(builder -> builder.addModifiers(Modifier.PUBLIC));
 		assertThat(method.getSpec().toString()).isEqualToIgnoringNewLines("public void spring() {}");
 	}
 

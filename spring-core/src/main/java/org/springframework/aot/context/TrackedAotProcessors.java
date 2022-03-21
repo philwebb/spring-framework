@@ -310,12 +310,12 @@ public class TrackedAotProcessors implements AotProcessors {
 		 * @param generatedFiles the generated files to add to
 		 */
 		public void save(GeneratedFiles generatedFiles) {
-			this.trackedResources.values().forEach((processed) -> processed.save(generatedFiles));
+			this.trackedResources.values().forEach(processed -> processed.save(generatedFiles));
 		}
 
 		private TrackedResource getTrackedResource(Class<?> processorImplementationType) {
 			return this.trackedResources.computeIfAbsent(processorImplementationType,
-					(key) -> new TrackedResource(this.classLoader,
+					key -> new TrackedResource(this.classLoader,
 							this.resourceName.apply(processorImplementationType)));
 		}
 
@@ -349,7 +349,7 @@ public class TrackedAotProcessors implements AotProcessors {
 
 		void save(GeneratedFiles generatedFiles) {
 			if (!this.processed.isEmpty()) {
-				generatedFiles.addResourceFile(this.resourceName, (appendable) -> {
+				generatedFiles.addResourceFile(this.resourceName, appendable -> {
 					for (String line : this.processed) {
 						appendable.append(line + "\n");
 					}

@@ -58,7 +58,7 @@ public interface GeneratedFiles {
 	 * @param content the contents of the file
 	 */
 	default void addSourceFile(String className, CharSequence content) {
-		addSourceFile(className, (appendable) -> appendable.append(content));
+		addSourceFile(className, appendable -> appendable.append(content));
 	}
 
 	/**
@@ -92,7 +92,7 @@ public interface GeneratedFiles {
 	 * @param content the contents of the file
 	 */
 	default void addResourceFile(String path, CharSequence content) {
-		addResourceFile(path, (appendable) -> appendable.append(content));
+		addResourceFile(path, appendable -> appendable.append(content));
 	}
 
 	/**
@@ -136,7 +136,7 @@ public interface GeneratedFiles {
 	 * @param content the contents of the file
 	 */
 	default void addFile(Kind kind, String path, CharSequence content) {
-		addFile(kind, path, (appendable) -> appendable.append(content));
+		addFile(kind, path, appendable -> appendable.append(content));
 	}
 
 	/**

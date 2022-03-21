@@ -192,7 +192,7 @@ class SuppliedInstanceBeanDefinitionCodeGeneratorTests {
 		RootBeanDefinition mergedBeanDefinition = getMergedBeanDefinition(beanFactory, beanDefinition);
 		CodeBlock generatedCode = generator.generateCode(mergedBeanDefinition, "test");
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
-		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> result
+		TestCompiler.forSystem().compile(javaFile::writeTo, compiled -> result
 				.accept((RootBeanDefinition) compiled.getInstance(Function.class).apply(beanFactory), compiled));
 	}
 

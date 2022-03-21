@@ -25,8 +25,8 @@ import java.util.function.Supplier;
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
- * @param <T> the type of results supplied by this supplier
  * @since 6.0
+ * @param <T> the type of results supplied by this supplier
  */
 public interface ThrowableSupplier<T> extends Supplier<T> {
 
@@ -95,7 +95,6 @@ public interface ThrowableSupplier<T> extends Supplier<T> {
 	 * Lambda friendly convenience method that can be used to create
 	 * {@link ThrowableSupplier} where the {@link #get()} method wraps any
 	 * thrown checked exceptions using the given {@code exceptionWrapper}.
-	 * @param <T> the type of results supplied by this supplier
 	 * @param <T> the type of results supplied by this supplier
 	 * @param supplier the source supplier
 	 * @return a new {@link ThrowableSupplier} instance

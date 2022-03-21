@@ -41,7 +41,6 @@ public class DefaultGenerationContext implements GenerationContext {
 	 * Create a new {@link DefaultGenerationContext} instance backed by the specified
 	 * {@code generatedFiles}.
 	 * @param generatedFiles the generated files
-	 * @param processors the processors
 	 */
 	public DefaultGenerationContext(GeneratedFiles generatedFiles) {
 		this(new ClassNameGenerator(), generatedFiles, new DefaultGeneratedSpringFactories(), new RuntimeHints());

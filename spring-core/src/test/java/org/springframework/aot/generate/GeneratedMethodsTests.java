@@ -65,14 +65,14 @@ class GeneratedMethodsTests {
 		this.methods.add("spring", "beans").generateBy(this::build);
 		this.methods.add("spring", "context").generateBy(this::build);
 		List<String> names = new ArrayList<>();
-		this.methods.doWithMethodSpecs((spec) -> names.add(spec.name));
+		this.methods.doWithMethodSpecs(spec -> names.add(spec.name));
 		assertThat(names).containsExactly("springBeans", "springContext");
 	}
 
 	@Test
 	void doWithMethodSpecsWhenMethodHasNotHadSpecDefinedThrowsException() {
 		this.methods.add("spring");
-		assertThatIllegalStateException().isThrownBy(() -> this.methods.doWithMethodSpecs((spec) -> {
+		assertThatIllegalStateException().isThrownBy(() -> this.methods.doWithMethodSpecs(spec -> {
 		})).withMessage("Method 'spring' has no method spec defined");
 	}
 

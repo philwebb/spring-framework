@@ -25,8 +25,8 @@ import java.util.function.Consumer;
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
- * @param <T> the type of the input to the operation
  * @since 6.0
+ * @param <T> the type of the input to the operation
  */
 @FunctionalInterface
 public interface ThrowableConsumer<T> extends Consumer<T> {
@@ -69,7 +69,7 @@ public interface ThrowableConsumer<T> extends Consumer<T> {
 	}
 
 	/**
-	 * Return a new {@link ThrowableConsumer} where the {@link #consume(Object}
+	 * Return a new {@link ThrowableConsumer} where the {@link #consume(Object)}
 	 * method wraps any thrown checked exceptions using the given
 	 * {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message

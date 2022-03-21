@@ -25,9 +25,9 @@ import java.util.function.Function;
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
+ * @since 6.0
  * @param <T> the type of the input to the function
  * @param <R> the type of the result of the function
- * @since 6.0
  */
 @FunctionalInterface
 public interface ThrowableFunction<T, R> extends Function<T, R> {
@@ -72,7 +72,7 @@ public interface ThrowableFunction<T, R> extends Function<T, R> {
 	}
 
 	/**
-	 * Return a new {@link ThrowableFunction} where the {@link #apply(Object}
+	 * Return a new {@link ThrowableFunction} where the {@link #apply(Object)}
 	 * method wraps any thrown checked exceptions using the given
 	 * {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message

@@ -165,7 +165,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 				Constructor<?> constructor, Class<?> declaringClass) {
 			boolean isInnerClass = ClassUtils.isInnerClass(declaringClass);
 			return SuppliedInstanceBeanDefinitionCodeGenerator.this.generatedMethods.add("get", name, "instance")
-					.generateBy((builder) -> {
+					.generateBy(builder -> {
 						builder.addJavadoc("Create the bean instance for '$L'.", name);
 						builder.returns(declaringClass);
 						if (isInnerClass) {
@@ -217,7 +217,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 			Class<?> declaringClass = factoryMethod.getDeclaringClass();
 			Class<?> returnType = factoryMethod.getReturnType();
 			return SuppliedInstanceBeanDefinitionCodeGenerator.this.generatedMethods.add("get", name, "instance")
-					.generateBy((builder) -> {
+					.generateBy(builder -> {
 						builder.addJavadoc("Get the bean instance for '$L'.", name);
 						builder.returns(returnType);
 						if (!staticFactoryMethod) {

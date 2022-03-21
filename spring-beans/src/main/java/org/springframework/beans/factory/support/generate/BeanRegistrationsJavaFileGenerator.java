@@ -114,7 +114,7 @@ public class BeanRegistrationsJavaFileGenerator {
 
 	private GeneratedMethod generateRegistrationMethod(GenerationContext generationContext,
 			GeneratedMethods generatedMethods, String beanName, BeanRegistrationMethodCodeGenerator code) {
-		return generatedMethods.add("register", beanName).generateBy((builder) -> {
+		return generatedMethods.add("register", beanName).generateBy(builder -> {
 			builder.addJavadoc("Register the bean definition for '$L'.", beanName);
 			builder.addModifiers(Modifier.PRIVATE);
 			builder.addParameter(DefaultListableBeanFactory.class,

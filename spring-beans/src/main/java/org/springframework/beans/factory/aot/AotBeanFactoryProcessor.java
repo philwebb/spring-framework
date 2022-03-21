@@ -16,8 +16,8 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.context.AotProcessor;
 import org.springframework.aot.context.AotContribution;
+import org.springframework.aot.context.AotProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**

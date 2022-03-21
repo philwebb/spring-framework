@@ -51,9 +51,9 @@ class BeanRegistrationsContribution implements AotContribution {
 
 	private final BeanRegistrationsJavaFileGenerator javaFileGenerator;
 
-	private Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors;
+	private final Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors;
 
-	private Collection<AotBeanClassProcessor> aotBeanClassProcessors;
+	private final Collection<AotBeanClassProcessor> aotBeanClassProcessors;
 
 	BeanRegistrationsContribution(UniqueBeanFactoryName beanFactoryName, Set<DefinedBean> definedBeans,
 			BeanRegistrationsJavaFileGenerator javaFileGenerator,
@@ -70,7 +70,8 @@ class BeanRegistrationsContribution implements AotContribution {
 	public void applyTo(AotContext aotContext) {
 		ClassNameGenerator classNameGenerator = aotContext.getClassNameGenerator();
 		GeneratedClassName className = classNameGenerator.generateClassName(this.beanFactoryName, "Registrations");
-		JavaFile generatedJavaFile = this.javaFileGenerator.generateJavaFile(aotContext, beanFactoryName, className);
+		JavaFile generatedJavaFile = this.javaFileGenerator.generateJavaFile(aotContext, this.beanFactoryName,
+				className);
 		aotContext.getGeneratedFiles().addSourceFile(generatedJavaFile);
 		aotContext.getGeneratedSpringFactories().forNamedItem(BeanFactory.class, this.beanFactoryName)
 				.add(DefaultListableBeanFactoryInitializer.class, className);

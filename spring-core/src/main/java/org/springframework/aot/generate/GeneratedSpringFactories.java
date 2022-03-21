@@ -64,7 +64,7 @@ public interface GeneratedSpringFactories {
 	}
 
 	/**
-	 * Return {@link Declarations} for the given resource location
+	 * Return {@link Declarations} for the given resource location.
 	 * @param resourceLocation the resource location
 	 * @return declarations for the resource location
 	 */

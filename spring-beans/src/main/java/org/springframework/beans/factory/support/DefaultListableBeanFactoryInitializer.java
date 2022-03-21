@@ -38,7 +38,7 @@ public interface DefaultListableBeanFactoryInitializer {
 
 	/**
 	 * Initialize the given default listable bean factory.
-	 * @param beanDefinitionRegistry the registry to initialize
+	 * @param beanFactory the default listable bean factory to initialize
 	 */
 	void initialize(DefaultListableBeanFactory beanFactory);
 

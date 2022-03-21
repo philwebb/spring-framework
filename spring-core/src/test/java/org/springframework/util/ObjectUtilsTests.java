@@ -181,7 +181,7 @@ class ObjectUtilsTests {
 		assertThat(newArray).hasSize(3);
 		assertThat(newArray[2]).isEqualTo(newElement);
 	}
-	
+
 	@Test
 	void addObjectToArraysAtPosition() {
 		String[] array = new String[] {"foo", "bar", "baz"};

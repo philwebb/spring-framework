@@ -58,7 +58,6 @@ public class DefinedBeanExcludeFilters {
 	 * the given {@link SpringFactoriesLoader} and {@link BeanFactory}.
 	 * @param springFactoriesLoader the factories loader to use
 	 * @param beanFactory the bean factory to use
-	 * @param
 	 */
 	public DefinedBeanExcludeFilters(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
