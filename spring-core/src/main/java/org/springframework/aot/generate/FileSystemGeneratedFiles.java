@@ -51,7 +51,7 @@ public class FileSystemGeneratedFiles implements GeneratedFiles {
 	 * <li>{@code resources}</li>
 	 * <li>{@code classes}</li>
 	 * </ul>
-	 * @param root
+	 * @param root the root path
 	 * @see #FileSystemGeneratedFiles(Function)
 	 */
 	public FileSystemGeneratedFiles(Path root) {

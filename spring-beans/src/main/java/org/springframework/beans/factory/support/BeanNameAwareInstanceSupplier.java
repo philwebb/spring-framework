@@ -26,6 +26,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Phillip Webb
  * @since 6.0
+ * @param <T> the type of results supplied by this supplier
  * @see AbstractAutowireCapableBeanFactory#obtainFromSupplier(Supplier, String)
  */
 @FunctionalInterface

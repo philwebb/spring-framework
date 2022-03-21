@@ -120,7 +120,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 	 * @return the generated code
 	 */
 	CodeBlock generateCode(BeanDefinition beanDefinition, String name) {
-		return generateCode(beanDefinition, name, (attribute) -> false);
+		return generateCode(beanDefinition, name, attribute -> false);
 	}
 
 	/**
@@ -365,7 +365,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 		public CodeBlock generateCode(String name, Object value, ResolvableType type,
 				InstanceCodeGenerationService service) {
 			if (value instanceof BeanDefinition beanDefinition) {
-				GeneratedMethod generatedMethod = generatedMethods.add("get", this.name, name).generateBy((builder) -> {
+				GeneratedMethod generatedMethod = generatedMethods.add("get", this.name, name).generateBy(builder -> {
 					builder.addJavadoc("Get the bean instance for '$L' ('$L').", this.name, name);
 					builder.addModifiers(Modifier.PRIVATE);
 					builder.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_VARIABLE);

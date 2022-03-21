@@ -84,7 +84,7 @@ class BeanRegistrationsJavaFileGeneratorTests {
 		GeneratedClassName className = generationContext.getClassNameGenerator().generateClassName(getClass(),
 				"registrations");
 		JavaFile javaFile = generator.generateJavaFile(generationContext, new UniqueBeanFactoryName("test"), className);
-		TestCompiler.forSystem().compile(javaFile::writeTo, (compiled) -> {
+		TestCompiler.forSystem().compile(javaFile::writeTo, compiled -> {
 			DefaultListableBeanFactoryInitializer initializer = compiled
 					.getInstance(DefaultListableBeanFactoryInitializer.class);
 			result.accept(initializer, compiled);

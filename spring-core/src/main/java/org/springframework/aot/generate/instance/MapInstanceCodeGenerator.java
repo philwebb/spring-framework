@@ -119,7 +119,7 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 	private <K, V> CodeBlock generateLinkedHashMapCodeWithMethod(String name, InstanceCodeGenerationService service,
 			Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
 		GeneratedMethod method = service.getGeneratedMethods().add(MethodNameGenerator.join("get", name, "map"));
-		method.generateBy((builder) -> {
+		method.generateBy(builder -> {
 			builder.addAnnotation(AnnotationSpec.builder(SuppressWarnings.class)
 					.addMember("value", "{\"rawtypes\", \"unchecked\"}").build());
 			builder.returns(Map.class);

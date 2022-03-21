@@ -60,29 +60,24 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 	private void compile(DefaultInstanceCodeGenerationService generators, Object value,
 			BiConsumer<Object, Compiled> result) {
-		compile(generators, value,
-				(value != null) ? ResolvableType.forInstance(value) : null, result);
+		compile(generators, value, (value != null) ? ResolvableType.forInstance(value) : null, result);
 	}
 
-	private void compile(DefaultInstanceCodeGenerationService generators, Object value,
-			ResolvableType type, BiConsumer<Object, Compiled> result) {
+	private void compile(DefaultInstanceCodeGenerationService generators, Object value, ResolvableType type,
+			BiConsumer<Object, Compiled> result) {
 		CodeBlock code = generators.generateCode(null, value, type);
 		JavaFile javaFile = createJavaFile(generators, code);
 		System.out.println(javaFile);
 		TestCompiler.forSystem().compile(SourceFile.of(javaFile::writeTo),
-				compiled -> result.accept(compiled.getInstance(Supplier.class).get(),
-						compiled));
+				compiled -> result.accept(compiled.getInstance(Supplier.class).get(), compiled));
 	}
 
-	private JavaFile createJavaFile(DefaultInstanceCodeGenerationService generators,
-			CodeBlock code) {
+	private JavaFile createJavaFile(DefaultInstanceCodeGenerationService generators, CodeBlock code) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder("InstanceSupplier");
 		builder.addModifiers(Modifier.PUBLIC);
-		builder.addSuperinterface(
-				ParameterizedTypeName.get(Supplier.class, Object.class));
-		builder.addMethod(
-				MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(
-						Object.class).addStatement("return $L", code).build());
+		builder.addSuperinterface(ParameterizedTypeName.get(Supplier.class, Object.class));
+		builder.addMethod(MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(Object.class)
+				.addStatement("return $L", code).build());
 		GeneratedMethods generatedMethods = getGeneratedMethods(generators);
 		if (generatedMethods != null) {
 			generatedMethods.doWithMethodSpecs(builder::addMethod);
@@ -90,8 +85,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		return JavaFile.builder("com.example", builder.build()).build();
 	}
 
-	private GeneratedMethods getGeneratedMethods(
-			DefaultInstanceCodeGenerationService generators) {
+	private GeneratedMethods getGeneratedMethods(DefaultInstanceCodeGenerationService generators) {
 		try {
 			return generators.getGeneratedMethods();
 		}
@@ -122,11 +116,10 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateReturnsCharacterInstance() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 'a',
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo('a');
-						assertThat(compiled.getSourceFile()).contains("'a'");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 'a', (instance, compiled) -> {
+				assertThat(instance).isEqualTo('a');
+				assertThat(compiled.getSourceFile()).contains("'a'");
+			});
 		}
 
 		@Test
@@ -147,12 +140,10 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		}
 
 		private void testEscaped(char value, String expectedSourceContent) {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), value,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo(value);
-						assertThat(compiled.getSourceFile()).contains(
-								expectedSourceContent);
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), value, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(value);
+				assertThat(compiled.getSourceFile()).contains(expectedSourceContent);
+			});
 		}
 
 	}
@@ -165,65 +156,58 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenBoolean() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), true,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo(Boolean.TRUE);
-						assertThat(compiled.getSourceFile()).contains("true");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), true, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(Boolean.TRUE);
+				assertThat(compiled.getSourceFile()).contains("true");
+			});
 		}
 
 		@Test
 		void generateWhenByte() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), (byte) 2,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo((byte) 2);
-						assertThat(compiled.getSourceFile()).contains("(byte) 2");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), (byte) 2, (instance, compiled) -> {
+				assertThat(instance).isEqualTo((byte) 2);
+				assertThat(compiled.getSourceFile()).contains("(byte) 2");
+			});
 		}
 
 		@Test
 		void generateWhenShort() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), (short) 3,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo((short) 3);
-						assertThat(compiled.getSourceFile()).contains("(short) 3");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), (short) 3, (instance, compiled) -> {
+				assertThat(instance).isEqualTo((short) 3);
+				assertThat(compiled.getSourceFile()).contains("(short) 3");
+			});
 		}
 
 		@Test
 		void generateWhenInt() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 4,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo(4);
-						assertThat(compiled.getSourceFile()).contains("return 4;");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 4, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(4);
+				assertThat(compiled.getSourceFile()).contains("return 4;");
+			});
 		}
 
 		@Test
 		void generateWhenLong() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 5L,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo(5L);
-						assertThat(compiled.getSourceFile()).contains("5L");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 5L, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(5L);
+				assertThat(compiled.getSourceFile()).contains("5L");
+			});
 		}
 
 		@Test
 		void generateWhenFloat() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 0.1F,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo(0.1F);
-						assertThat(compiled.getSourceFile()).contains("0.1F");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 0.1F, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(0.1F);
+				assertThat(compiled.getSourceFile()).contains("0.1F");
+			});
 		}
 
 		@Test
 		void generateWhenDouble() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 0.2,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo(0.2);
-						assertThat(compiled.getSourceFile()).contains("(double) 0.2");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 0.2, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(0.2);
+				assertThat(compiled.getSourceFile()).contains("(double) 0.2");
+			});
 		}
 
 	}
@@ -236,11 +220,10 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenString() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), "test\n",
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo("test\n");
-						assertThat(compiled.getSourceFile()).contains("\n");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), "test\n", (instance, compiled) -> {
+				assertThat(instance).isEqualTo("test\n");
+				assertThat(compiled.getSourceFile()).contains("\n");
+			});
 		}
 
 	}
@@ -253,20 +236,18 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenEnum() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					ChronoUnit.DAYS, (instance, compiled) -> {
-						assertThat(instance).isEqualTo(ChronoUnit.DAYS);
-						assertThat(compiled.getSourceFile()).contains("ChronoUnit.DAYS");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), ChronoUnit.DAYS, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(ChronoUnit.DAYS);
+				assertThat(compiled.getSourceFile()).contains("ChronoUnit.DAYS");
+			});
 		}
 
 		@Test
 		void generateWhenEnumWithClassBody() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					EnumWithClassBody.TWO, (instance, compiled) -> {
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), EnumWithClassBody.TWO,
+					(instance, compiled) -> {
 						assertThat(instance).isEqualTo(EnumWithClassBody.TWO);
-						assertThat(compiled.getSourceFile()).contains(
-								"EnumWithClassBody.TWO");
+						assertThat(compiled.getSourceFile()).contains("EnumWithClassBody.TWO");
 					});
 		}
 
@@ -280,18 +261,14 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenClass() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					InputStream.class, (instance, compiled) -> {
-						assertThat(instance).isEqualTo(InputStream.class);
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), InputStream.class,
+					(instance, compiled) -> assertThat(instance).isEqualTo(InputStream.class));
 		}
 
 		@Test
 		void generateWhenCglibClass() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					ExampleClass$$GeneratedBy.class, (instance, compiled) -> {
-						assertThat(instance).isEqualTo(ExampleClass.class);
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), ExampleClass$$GeneratedBy.class,
+					(instance, compiled) -> assertThat(instance).isEqualTo(ExampleClass.class));
 		}
 
 	}
@@ -305,40 +282,33 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		@Test
 		void generateWhenSimpleResolvableType() {
 			ResolvableType resolvableType = ResolvableType.forClass(String.class);
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					resolvableType, (instance,
-							compiled) -> assertThat(instance).isEqualTo(resolvableType));
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType,
+					(instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 		@Test
 		void generateWhenNoneResolvableType() {
 			ResolvableType resolvableType = ResolvableType.NONE;
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					resolvableType, (instance, compiled) -> {
-						assertThat(instance).isEqualTo(resolvableType);
-						assertThat(compiled.getSourceFile()).contains(
-								"ResolvableType.NONE");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(resolvableType);
+				assertThat(compiled.getSourceFile()).contains("ResolvableType.NONE");
+			});
 		}
 
 		@Test
 		void generateWhenGenericResolvableType() {
-			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(
-					List.class, String.class);
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					resolvableType, (instance,
-							compiled) -> assertThat(instance).isEqualTo(resolvableType));
+			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(List.class, String.class);
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType,
+					(instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 		@Test
 		void generateWhenNestedGenericResolvableType() {
-			ResolvableType stringList = ResolvableType.forClassWithGenerics(List.class,
-					String.class);
+			ResolvableType stringList = ResolvableType.forClassWithGenerics(List.class, String.class);
 			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Map.class,
 					ResolvableType.forClass(Integer.class), stringList);
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(),
-					resolvableType, (instance,
-							compiled) -> assertThat(instance).isEqualTo(resolvableType));
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType,
+					(instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 	}
@@ -352,31 +322,28 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		@Test
 		void generateWhenPrimitiveArray() {
 			byte[] bytes = { 0, 1, 2 };
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), bytes,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(bytes);
-						assertThat(compiler.getSourceFile()).contains("new byte[]");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), bytes, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(bytes);
+				assertThat(compiler.getSourceFile()).contains("new byte[]");
+			});
 		}
 
 		@Test
 		void generateWhenWrapperArray() {
 			Byte[] bytes = { 0, 1, 2 };
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), bytes,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(bytes);
-						assertThat(compiler.getSourceFile()).contains("new Byte[]");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), bytes, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(bytes);
+				assertThat(compiler.getSourceFile()).contains("new Byte[]");
+			});
 		}
 
 		@Test
 		void generateWhenClassArray() {
 			Class<?>[] classes = new Class<?>[] { InputStream.class, OutputStream.class };
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), classes,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(classes);
-						assertThat(compiler.getSourceFile()).contains("new Class[]");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), classes, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(classes);
+				assertThat(compiler.getSourceFile()).contains("new Class[]");
+			});
 		}
 
 	}
@@ -391,20 +358,16 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		void generateWhenStringList() {
 			List<String> list = List.of("a", "b", "c");
 			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), list,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(list);
-					});
+					(instance, compiler) -> assertThat(instance).isEqualTo(list));
 		}
 
 		@Test
 		void generateWhenEmptyList() {
 			List<String> list = List.of();
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), list,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(list);
-						assertThat(compiler.getSourceFile()).contains(
-								"Collections.emptyList();");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), list, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(list);
+				assertThat(compiler.getSourceFile()).contains("Collections.emptyList();");
+			});
 		}
 
 	}
@@ -419,32 +382,25 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		void generateWhenStringSet() {
 			Set<String> set = Set.of("a", "b", "c");
 			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(set);
-					});
+					(instance, compiler) -> assertThat(instance).isEqualTo(set));
 		}
 
 		@Test
 		void generateWhenEmptySet() {
 			Set<String> set = Set.of();
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(set);
-						assertThat(compiler.getSourceFile()).contains(
-								"Collections.emptySet();");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(set);
+				assertThat(compiler.getSourceFile()).contains("Collections.emptySet();");
+			});
 		}
 
 		@Test
 		void generateWhenLinkedHashSet() {
 			Set<String> set = new LinkedHashSet<>(List.of("a", "b", "c"));
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(set).isInstanceOf(
-								LinkedHashSet.class);
-						assertThat(compiler.getSourceFile()).contains(
-								"new LinkedHashSet(List.of(");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(set).isInstanceOf(LinkedHashSet.class);
+				assertThat(compiler.getSourceFile()).contains("new LinkedHashSet(List.of(");
+			});
 		}
 
 	}
@@ -458,11 +414,10 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		@Test
 		void generateWhenSmallMap() {
 			Map<String, String> map = Map.of("k1", "v1", "k2", "v2");
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(map);
-						assertThat(compiler.getSourceFile()).contains("Map.of(");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(map);
+				assertThat(compiler.getSourceFile()).contains("Map.of(");
+			});
 		}
 
 		@Test
@@ -471,11 +426,10 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			for (int i = 1; i <= 11; i++) {
 				map.put("k" + i, "v" + i);
 			}
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(map);
-						assertThat(compiler.getSourceFile()).contains("Map.ofEntries(");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(map);
+				assertThat(compiler.getSourceFile()).contains("Map.ofEntries(");
+			});
 		}
 
 		@Test
@@ -498,13 +452,10 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			map.put("a", "A");
 			map.put("b", "B");
 			map.put("c", "C");
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map,
-					(instance, compiler) -> {
-						assertThat(instance).isEqualTo(map).isInstanceOf(
-								LinkedHashMap.class);
-						assertThat(compiler.getSourceFile()).contains(
-								"Collectors.toMap(");
-					});
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map, (instance, compiler) -> {
+				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
+				assertThat(compiler.getSourceFile()).contains("Collectors.toMap(");
+			});
 		}
 
 	}

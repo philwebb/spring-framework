@@ -49,7 +49,7 @@ public final class GeneratedMethod {
 
 	/**
 	 * Return the generated name of the method.
-	 * @return
+	 * @return the name of the generated method
 	 */
 	public GeneratedMethodName getName() {
 		return this.name;

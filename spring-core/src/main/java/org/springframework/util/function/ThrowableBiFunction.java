@@ -24,10 +24,10 @@ import java.util.function.BiFunction;
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
+ * @since 6.0
  * @param <T> the type of the first argument to the function
  * @param <U> the type of the second argument to the function
  * @param <R> the type of the result of the function
- * @since 6.0
  */
 public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 
@@ -77,7 +77,7 @@ public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 	}
 
 	/**
-	 * Return a new {@link ThrowableBiFunction} where the {@link #apply(Object}
+	 * Return a new {@link ThrowableBiFunction} where the {@link #apply(Object)}
 	 * method wraps any thrown checked exceptions using the given
 	 * {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message

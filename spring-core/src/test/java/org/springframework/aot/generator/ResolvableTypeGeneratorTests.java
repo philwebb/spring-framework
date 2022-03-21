@@ -21,7 +21,6 @@ import java.util.function.Supplier;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.generator.ResolvableTypeGenerator;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.support.CodeSnippet;
 

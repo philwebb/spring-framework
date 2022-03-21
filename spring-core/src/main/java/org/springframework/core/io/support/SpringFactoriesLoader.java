@@ -157,7 +157,6 @@ public final class SpringFactoriesLoader {
 	 * discovered for a given factory type, only one instance of the duplicated
 	 * implementation type will be instantiated.
 	 * @param factoryType the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading (can be {@code null} to use the default)
 	 * @throws IllegalArgumentException if any factory implementation class cannot
 	 * be loaded or if an error occurs while instantiating any factory
 	 */
@@ -174,7 +173,6 @@ public final class SpringFactoriesLoader {
 	 * discovered for a given factory type, only one instance of the duplicated
 	 * implementation type will be instantiated.
 	 * @param factoryType the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading (can be {@code null} to use the default)
 	 * @param argumentResolver strategy used to resolve constructor arguments by their type
 	 * @throws IllegalArgumentException if any factory implementation class cannot
 	 * be loaded or if an error occurs while instantiating any factory
@@ -195,7 +193,6 @@ public final class SpringFactoriesLoader {
 	 * <p>For any factory implementation class that cannot be loaded or error that occurs while
 	 * instantiating it, the given failure handler is called.
 	 * @param factoryType the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading (can be {@code null} to use the default)
 	 * @param failureHandler strategy used to handle factory instantiation failures
 	 * @since 6.0
 	 */
@@ -215,7 +212,6 @@ public final class SpringFactoriesLoader {
 	 * <p>For any factory implementation class that cannot be loaded or error that occurs while
 	 * instantiating it, the given failure handler is called.
 	 * @param factoryType the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading (can be {@code null} to use the default)
 	 * @param argumentResolver strategy used to resolve constructor arguments by their type
 	 * @param failureHandler strategy used to handle factory instantiation failures
 	 * @since 6.0

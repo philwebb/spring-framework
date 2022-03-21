@@ -78,7 +78,7 @@ public final class DefinedBean {
 
 	/**
 	 * Return the unique bean name composed from the {@link UniqueBeanFactoryName bean
-	 * factory name} and the {@link #getBeanName() bean name}
+	 * factory name} and the {@link #getBeanName() bean name}.
 	 * @return the unique bean name
 	 */
 	public UniqueBeanName getUniqueBeanName() {

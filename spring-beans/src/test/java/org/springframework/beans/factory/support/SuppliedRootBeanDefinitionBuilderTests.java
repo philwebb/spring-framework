@@ -264,7 +264,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		Environment environment = mock(Environment.class);
 		this.beanFactory.registerResolvableDependency(ResourceLoader.class, resourceLoader);
 		this.beanFactory.registerSingleton("environment", environment);
-		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+		Object[] arguments = new Instantiator(using).apply(beanDefinition -> {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, "user-value");
 		});
@@ -282,7 +282,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		this.beanFactory.registerSingleton("environment", environment);
 		this.beanFactory.registerSingleton("one", "1");
 		this.beanFactory.registerSingleton("two", "2");
-		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+		Object[] arguments = new Instantiator(using).apply(beanDefinition -> {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, new RuntimeBeanReference("two"));
 		});
@@ -295,7 +295,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	@Test
 	void resolveUserValueWithTypeConversionRequired() {
 		Using using = RootBeanDefinition.supply(CharDependency.class).usingConstructor(char.class);
-		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+		Object[] arguments = new Instantiator(using).apply(beanDefinition -> {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, "\\");
 		});
@@ -306,10 +306,8 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	@ParameterizedTestUsing(Source.SINGLE_ARG)
 	void resolveUserValueWithBeanReference(Using using) {
 		this.beanFactory.registerSingleton("stringBean", "string");
-		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
-			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0,
-					new RuntimeBeanReference("stringBean"));
-		});
+		Object[] arguments = new Instantiator(using).apply(beanDefinition -> beanDefinition
+				.getConstructorArgumentValues().addIndexedArgumentValue(0, new RuntimeBeanReference("stringBean")));
 		assertThat(arguments).hasSize(1);
 		assertThat(arguments[0]).isEqualTo("string");
 	}
@@ -318,16 +316,15 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	void resolveUserValueWithBeanDefinition(Using using) {
 		AbstractBeanDefinition userValue = BeanDefinitionBuilder.rootBeanDefinition(String.class, () -> "string")
 				.getBeanDefinition();
-		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
-			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, userValue);
-		});
+		Object[] arguments = new Instantiator(using).apply(
+				beanDefinition -> beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, userValue));
 		assertThat(arguments).hasSize(1);
 		assertThat(arguments[0]).isEqualTo("string");
 	}
 
 	@ParameterizedTestUsing(Source.SINGLE_ARG)
 	void resolveUserValueThatIsAlreadyResolved(Using using) {
-		Object[] arguments = new Instantiator(using).apply((beanDefinition) -> {
+		Object[] arguments = new Instantiator(using).apply(beanDefinition -> {
 			ValueHolder valueHolder = new ValueHolder('a');
 			valueHolder.setConvertedValue("this is an a");
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, valueHolder);
@@ -491,7 +488,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 	}
 
 	/**
-	 * Instantiator function uses reflection and retains arguments for further assetions.
+	 * Instantiator function uses reflection and retains arguments for further assertions.
 	 */
 	private class Instantiator implements ThrowableBiFunction<BeanFactory, Object[], Object> {
 
@@ -509,7 +506,7 @@ class SuppliedRootBeanDefinitionBuilderTests {
 		}
 
 		public Object[] apply() {
-			return apply((bd) -> {
+			return apply(beanDefinition -> {
 			});
 		}
 

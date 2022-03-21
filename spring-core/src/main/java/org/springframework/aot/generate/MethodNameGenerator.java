@@ -80,7 +80,7 @@ public class MethodNameGenerator {
 	}
 
 	private String addSequence(String name) {
-		int sequence = this.sequenceGenerator.computeIfAbsent(name, (key) -> new AtomicInteger()).getAndIncrement();
+		int sequence = this.sequenceGenerator.computeIfAbsent(name, key -> new AtomicInteger()).getAndIncrement();
 		return (sequence > 0) ? name + sequence : name;
 	}
 
