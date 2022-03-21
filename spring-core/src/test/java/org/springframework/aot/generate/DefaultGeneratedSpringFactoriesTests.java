@@ -62,37 +62,32 @@ class DefaultGeneratedSpringFactoriesTests {
 		defaultLocation.add("com.example.FactoryA", "com.example.FactoryA1");
 		defaultLocation.add("com.example.FactoryA", "com.example.FactoryA2");
 		defaultLocation.add("com.example.FactoryB", "com.example.FactoryB1");
-		Declarations namedLocation = springFactories.forNamedItem(
-				"com.example.Classification", "test");
+		Declarations namedLocation = springFactories.forNamedItem("com.example.Classification", "test");
 		namedLocation.add("com.example.FactoryC", "com.example.FactoryC1");
-		Declarations resourceLocation = springFactories.forResourceLocation(
-				"META-INF/custom.factories");
+		Declarations resourceLocation = springFactories.forResourceLocation("META-INF/custom.factories");
 		resourceLocation.add("com.example.FactoryD", "com.example.FactoryD1");
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 		springFactories.writeTo(generatedFiles);
+		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/spring.factories"))
+				.isEqualTo(DEFAULT_CONTENT);
 		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/spring.factories")).isEqualTo(DEFAULT_CONTENT);
-		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/spring/com.example.Classification/test.factories")).isEqualTo(
-						NAMED_CONTENT);
-		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/custom.factories")).isEqualTo(CUSTOM_CONTENT);
+				"META-INF/spring/com.example.Classification/test.factories")).isEqualTo(NAMED_CONTENT);
+		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/custom.factories"))
+				.isEqualTo(CUSTOM_CONTENT);
 	}
 
 	@Test
 	void writeToWhenHasExistingContentMerges() throws Exception {
 		Function<String, InputStreamSource> existing = name -> new ByteArrayResource(
-				"com.example.FactoryA = com.example.FactoryA1".getBytes(
-						StandardCharsets.UTF_8));
-		DefaultGeneratedSpringFactories springFactories = new DefaultGeneratedSpringFactories(
-				existing);
+				"com.example.FactoryA = com.example.FactoryA1".getBytes(StandardCharsets.UTF_8));
+		DefaultGeneratedSpringFactories springFactories = new DefaultGeneratedSpringFactories(existing);
 		Declarations defaultLocation = springFactories.forDefaultResourceLocation();
 		defaultLocation.add("com.example.FactoryA", "com.example.FactoryA2");
 		defaultLocation.add("com.example.FactoryB", "com.example.FactoryB1");
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 		springFactories.writeTo(generatedFiles);
-		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/spring.factories")).isEqualTo(DEFAULT_CONTENT);
+		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/spring.factories"))
+				.isEqualTo(DEFAULT_CONTENT);
 	}
 
 }

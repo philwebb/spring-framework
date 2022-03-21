@@ -69,6 +69,13 @@ public interface AotProcessors {
 	interface Subset<P extends AotProcessor<N, T>, N, T> {
 
 		/**
+		 * Extend the subset with the specified processors.
+		 * @param processors the processors to add
+		 * @return a new subset with both processors
+		 */
+		Subset<P, N, T> and(Iterable<? extends P> processors);
+
+		/**
 		 * Call each processor in the subset with the given named instance and apply all
 		 * resulting {@link AotContribution contributions}.
 		 * @param name the name of the item being processed.

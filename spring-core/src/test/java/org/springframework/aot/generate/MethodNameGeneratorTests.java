@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class MethodNameGeneratorTests {
 
-	private MethodNameGenerator generator = new MethodNameGenerator();
+	private final MethodNameGenerator generator = new MethodNameGenerator();
 
 	@Test
 	void createWithReservedNamesReservesNames() {
@@ -40,26 +40,21 @@ class MethodNameGeneratorTests {
 
 	@Test
 	void generateMethodNameGeneratesName() {
-		GeneratedMethodName generated = this.generator.generateMethodName("register",
-				"myBean", "bean");
+		GeneratedMethodName generated = this.generator.generateMethodName("register", "myBean", "bean");
 		assertThat(generated).hasToString("registerMyBeanBean");
 	}
 
 	@Test
 	void generateMethodNameWhenHasNonLettersGeneratesName() {
-		GeneratedMethodName generated = this.generator.generateMethodName("register",
-				"myBean123", "bean");
+		GeneratedMethodName generated = this.generator.generateMethodName("register", "myBean123", "bean");
 		assertThat(generated).hasToString("registerMyBeanBean");
 	}
 
 	@Test
 	void generateMethodNameWhenMultipleCallsGeneratesSequencedName() {
-		GeneratedMethodName generated1 = this.generator.generateMethodName("register",
-				"myBean123", "bean");
-		GeneratedMethodName generated2 = this.generator.generateMethodName("register",
-				"myBean!", "bean");
-		GeneratedMethodName generated3 = this.generator.generateMethodName("register",
-				"myBean%%", "bean");
+		GeneratedMethodName generated1 = this.generator.generateMethodName("register", "myBean123", "bean");
+		GeneratedMethodName generated2 = this.generator.generateMethodName("register", "myBean!", "bean");
+		GeneratedMethodName generated3 = this.generator.generateMethodName("register", "myBean%%", "bean");
 		assertThat(generated1).hasToString("registerMyBeanBean");
 		assertThat(generated2).hasToString("registerMyBeanBean1");
 		assertThat(generated3).hasToString("registerMyBeanBean2");
@@ -73,10 +68,8 @@ class MethodNameGeneratorTests {
 
 	@Test
 	void joinReturnsJoinedName() {
-		assertThat(MethodNameGenerator.join("get", "bean", "factory")).isEqualTo(
-				"getBeanFactory");
-		assertThat(MethodNameGenerator.join("get", null, "factory")).isEqualTo(
-				"getFactory");
+		assertThat(MethodNameGenerator.join("get", "bean", "factory")).isEqualTo("getBeanFactory");
+		assertThat(MethodNameGenerator.join("get", null, "factory")).isEqualTo("getFactory");
 		assertThat(MethodNameGenerator.join(null, null)).isEqualTo("");
 		assertThat(MethodNameGenerator.join("", null)).isEqualTo("");
 		assertThat(MethodNameGenerator.join("get", InputStream.class)).isEqualTo("getInputStream");

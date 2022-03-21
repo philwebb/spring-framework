@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.support.aot;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.springframework.aot.context.AotContext;
@@ -50,11 +51,19 @@ class BeanRegistrationsContribution implements AotContribution {
 
 	private final BeanRegistrationsJavaFileGenerator javaFileGenerator;
 
+	private Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors;
+
+	private Collection<AotBeanClassProcessor> aotBeanClassProcessors;
+
 	BeanRegistrationsContribution(UniqueBeanFactoryName beanFactoryName, Set<DefinedBean> definedBeans,
-			BeanRegistrationsJavaFileGenerator javaFileGenerator) {
+			BeanRegistrationsJavaFileGenerator javaFileGenerator,
+			Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors,
+			Collection<AotBeanClassProcessor> aotBeanClassProcessors) {
 		this.beanFactoryName = beanFactoryName;
 		this.definedBeans = definedBeans;
 		this.javaFileGenerator = javaFileGenerator;
+		this.aotDefinedBeanProcessors = aotDefinedBeanProcessors;
+		this.aotBeanClassProcessors = aotBeanClassProcessors;
 	}
 
 	@Override
@@ -71,7 +80,7 @@ class BeanRegistrationsContribution implements AotContribution {
 
 	private void applyBeanDefinitionProcessors(AotContext aotContext) {
 		Subset<AotDefinedBeanProcessor, UniqueBeanName, DefinedBean> processors = aotContext.getProcessors()
-				.allOfType(AotDefinedBeanProcessor.class);
+				.allOfType(AotDefinedBeanProcessor.class).and(this.aotDefinedBeanProcessors);
 		for (DefinedBean definedBean : this.definedBeans) {
 			UniqueBeanName uniqueBeanName = definedBean.getUniqueBeanName();
 			processors.processAndApplyContributions(uniqueBeanName, definedBean);
@@ -80,7 +89,7 @@ class BeanRegistrationsContribution implements AotContribution {
 
 	private void applyBeanClassProcessors(AotContext aotContext) {
 		Subset<AotBeanClassProcessor, String, Class<?>> processors = aotContext.getProcessors()
-				.allOfType(AotBeanClassProcessor.class);
+				.allOfType(AotBeanClassProcessor.class).and(this.aotBeanClassProcessors);
 		for (DefinedBean definedBean : this.definedBeans) {
 			Class<?> beanClass = definedBean.getResolvedBeanClass();
 			processors.processAndApplyContributions(beanClass.getName(), beanClass);

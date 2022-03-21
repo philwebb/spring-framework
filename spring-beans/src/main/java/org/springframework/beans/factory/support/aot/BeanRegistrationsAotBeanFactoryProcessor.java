@@ -17,6 +17,8 @@
 package org.springframework.beans.factory.support.aot;
 
 import java.lang.reflect.Executable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,7 +28,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.aot.context.AotContribution;
+import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.beans.factory.aot.AotBeanClassProcessor;
 import org.springframework.beans.factory.aot.AotBeanFactoryProcessor;
+import org.springframework.beans.factory.aot.AotDefinedBeanProcessor;
 import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.aot.DefinedBeanExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
@@ -48,13 +53,15 @@ import org.springframework.core.log.LogMessage;
  */
 public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryProcessor {
 
-	// FIXME grab processor beans to apply and remove them after?
-
 	private static final Log logger = LogFactory.getLog(BeanRegistrationsAotBeanFactoryProcessor.class);
 
 	private final Map<ConfigurableListableBeanFactory, DefinedBeanExcludeFilters> excludeFilters = new HashMap<>();
 
 	private final Map<ConfigurableListableBeanFactory, DefinedBeanRegistrationHandlers> registrationHandlers = new HashMap<>();
+
+	private final Map<ConfigurableListableBeanFactory, Collection<AotDefinedBeanProcessor>> aotDefinedBeanProcessors = new HashMap<>();
+
+	private final Map<ConfigurableListableBeanFactory, Collection<AotBeanClassProcessor>> aotBeanClassProcessors = new HashMap<>();
 
 	@Override
 	public AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
@@ -68,7 +75,12 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		logger.trace(LogMessage.format("Contributing %s %s for '%s'", handlerMap.size(),
 				((handlerMap.size() != 1) ? "registrations" : "registration"), beanFactoryName));
 		BeanRegistrationsJavaFileGenerator javaFileGenerator = getJavaFileGenerator(beanFactory, handlerMap);
-		return new BeanRegistrationsContribution(beanFactoryName, handlerMap.keySet(), javaFileGenerator);
+		Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors = this.aotDefinedBeanProcessors
+				.computeIfAbsent(beanFactory, this::getAotDefinedBeanProcessors);
+		Collection<AotBeanClassProcessor> aotBeanClassProcessors = this.aotBeanClassProcessors
+				.computeIfAbsent(beanFactory, this::getAotBeanClassProcessors);
+		return new BeanRegistrationsContribution(beanFactoryName, handlerMap.keySet(), javaFileGenerator,
+				aotDefinedBeanProcessors, aotBeanClassProcessors);
 	}
 
 	private Map<DefinedBean, DefinedBeanRegistrationHandler> getHandlerMap(UniqueBeanFactoryName beanFactoryName,
@@ -109,6 +121,22 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 			methodCodeGenerators.put(beanName, methodCodeGenerator);
 		});
 		return new BeanRegistrationsJavaFileGenerator(methodCodeGenerators);
+	}
+
+	private Collection<AotDefinedBeanProcessor> getAotDefinedBeanProcessors(
+			ConfigurableListableBeanFactory beanFactory) {
+		Class<AotDefinedBeanProcessor> type = AotDefinedBeanProcessor.class;
+		return beansOfTypeIncludingAncestors(beanFactory, type);
+	}
+
+	private Collection<AotBeanClassProcessor> getAotBeanClassProcessors(ConfigurableListableBeanFactory beanFactory) {
+		return beansOfTypeIncludingAncestors(beanFactory, AotBeanClassProcessor.class);
+	}
+
+	private <T> Collection<T> beansOfTypeIncludingAncestors(ConfigurableListableBeanFactory beanFactory,
+			Class<T> type) {
+		Map<String, T> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, type);
+		return Collections.unmodifiableCollection(beans.values());
 	}
 
 }

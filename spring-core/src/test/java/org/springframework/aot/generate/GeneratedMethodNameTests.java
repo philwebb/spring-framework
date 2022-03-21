@@ -51,8 +51,7 @@ class GeneratedMethodNameTests {
 		GeneratedMethodName generated2 = new GeneratedMethodName(new String(NAME));
 		GeneratedMethodName generated3 = new GeneratedMethodName("other");
 		assertThat(generated1.hashCode()).isEqualTo(generated2.hashCode());
-		assertThat(generated1).isEqualTo(generated1).isEqualTo(generated2).isNotEqualTo(
-				generated3);
+		assertThat(generated1).isEqualTo(generated1).isEqualTo(generated2).isNotEqualTo(generated3);
 	}
 
 	@Test

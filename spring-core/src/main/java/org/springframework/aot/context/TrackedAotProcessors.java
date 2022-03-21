@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +101,7 @@ public class TrackedAotProcessors implements AotProcessors {
 		Assert.notNull(processorType, "'processorType' must not be null");
 		Assert.isTrue(processorType.isInterface() && !AotProcessor.class.equals(processorType),
 				"'processorType' must be a subinterface of AotProcessor");
-		return new TypedSubset<>(processorType);
+		return new TypedSubset<>(processorType, this.processors);
 	}
 
 	/**
@@ -113,8 +114,19 @@ public class TrackedAotProcessors implements AotProcessors {
 
 		private final Class<P> processorType;
 
-		TypedSubset(Class<P> processorType) {
+		private final Iterable<AotProcessor<?, ?>> candidates;
+
+		TypedSubset(Class<P> processorType, Iterable<AotProcessor<?, ?>> candidates) {
 			this.processorType = processorType;
+			this.candidates = candidates;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public Subset<P, N, T> and(Iterable<? extends P> processors) {
+			Assert.notNull(processors, "'processors' must not be null");
+			return new TypedSubset<>(this.processorType, new CompoundIterable<AotProcessor<?, ?>>(this.candidates,
+					(Iterable<AotProcessor<?, ?>>) processors));
 		}
 
 		@Override
@@ -122,7 +134,7 @@ public class TrackedAotProcessors implements AotProcessors {
 		public void processAndApplyContributions(N name, T instance) {
 			Assert.notNull(name, "'name' must not be null");
 			Assert.notNull(instance, "'instance' must not be null");
-			for (AotProcessor<?, ?> candidate : TrackedAotProcessors.this.processors) {
+			for (AotProcessor<?, ?> candidate : this.candidates) {
 				if (this.processorType.isInstance(candidate)) {
 					processAndApplyContributions((P) candidate, name, instance);
 				}
@@ -155,6 +167,57 @@ public class TrackedAotProcessors implements AotProcessors {
 				return ((Class<?>) name).getName();
 			}
 			return name.toString();
+		}
+
+	}
+
+	/**
+	 * Compound {@link Iterable} build from two other {@link Iterable} instance.
+	 *
+	 * @param <T> the type of elements returned by the iterator
+	 */
+	private static class CompoundIterable<T> implements Iterable<T> {
+
+		private final Iterable<T> first;
+
+		private final Iterable<T> second;
+
+		CompoundIterable(Iterable<T> first, Iterable<T> second) {
+			this.first = first;
+			this.second = second;
+		}
+
+		@Override
+		public Iterator<T> iterator() {
+			return new CompoundIterator<>(this.first.iterator(), this.second.iterator());
+		}
+
+	}
+
+	/**
+	 * Compound {@link Iterator} build from two other {@link Iterator} instance.
+	 *
+	 * @param <T> the type of elements returned by the iterator
+	 */
+	private static class CompoundIterator<T> implements Iterator<T> {
+
+		private final Iterator<T> first;
+
+		private final Iterator<T> second;
+
+		public CompoundIterator(Iterator<T> first, Iterator<T> second) {
+			this.first = first;
+			this.second = second;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.first.hasNext() || this.second.hasNext();
+		}
+
+		@Override
+		public T next() {
+			return (this.first.hasNext()) ? this.first.next() : this.second.next();
 		}
 
 	}

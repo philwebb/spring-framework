@@ -57,19 +57,16 @@ class GeneratedClassNameTests {
 	@Test
 	void javaFileBuilderWhenNameIsNullThrowsException() {
 		GeneratedClassName generated = new GeneratedClassName(NAME);
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> generated.javaFileBuilder(null)).withMessage(
-						"'typeSpec' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> generated.javaFileBuilder(null))
+				.withMessage("'typeSpec' must not be null");
 	}
 
 	@Test
 	void javaFileBuilderWhenNameIsWrongThrowsException() {
 		GeneratedClassName generated = new GeneratedClassName(NAME);
-		TypeSpec typeSpec = new GeneratedClassName(
-				"com.example.Bad").classBuilder().build();
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> generated.javaFileBuilder(typeSpec)).withMessage(
-						"'typeSpec' must be named 'com.example.Test$Thing$$Feature' instead of 'com.example.Bad'");
+		TypeSpec typeSpec = new GeneratedClassName("com.example.Bad").classBuilder().build();
+		assertThatIllegalArgumentException().isThrownBy(() -> generated.javaFileBuilder(typeSpec))
+				.withMessage("'typeSpec' must be named 'com.example.Test$Thing$$Feature' instead of 'com.example.Bad'");
 	}
 
 	@Test
@@ -88,8 +85,7 @@ class GeneratedClassNameTests {
 		GeneratedClassName generated2 = new GeneratedClassName(new String(NAME));
 		GeneratedClassName generated3 = new GeneratedClassName("com.example.Other");
 		assertThat(generated1.hashCode()).isEqualTo(generated2.hashCode());
-		assertThat(generated1).isEqualTo(generated1).isEqualTo(generated2).isNotEqualTo(
-				generated3);
+		assertThat(generated1).isEqualTo(generated1).isEqualTo(generated2).isNotEqualTo(generated3);
 	}
 
 	@Test

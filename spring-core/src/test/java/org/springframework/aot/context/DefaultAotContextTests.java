@@ -37,33 +37,30 @@ import static org.mockito.Mockito.mock;
  */
 class DefaultAotContextTests {
 
-	private ClassNameGenerator classNameGenerator = new ClassNameGenerator();
+	private final ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 
-	private GeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
+	private final GeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 
-	private GeneratedSpringFactories generatedSpringFactories = new DefaultGeneratedSpringFactories();
+	private final GeneratedSpringFactories generatedSpringFactories = new DefaultGeneratedSpringFactories();
 
-	private RuntimeHints runtimeHints = new RuntimeHints();
+	private final RuntimeHints runtimeHints = new RuntimeHints();
 
-	private AotProcessors processors = mock(AotProcessors.class);
+	private final AotProcessors processors = mock(AotProcessors.class);
 
 	@Test
 	void createWithGeneratedFilesAndAotProcessorsCreatesContext() {
 		AotContext context = new DefaultAotContext(this.generatedFiles, this.processors);
-		assertThat(context.getClassNameGenerator()).isInstanceOf(
-				ClassNameGenerator.class);
+		assertThat(context.getClassNameGenerator()).isInstanceOf(ClassNameGenerator.class);
 		assertThat(context.getGeneratedFiles()).isSameAs(this.generatedFiles);
-		assertThat(context.getGeneratedSpringFactories()).isInstanceOf(
-				DefaultGeneratedSpringFactories.class);
+		assertThat(context.getGeneratedSpringFactories()).isInstanceOf(DefaultGeneratedSpringFactories.class);
 		assertThat(context.getRuntimeHints()).isInstanceOf(RuntimeHints.class);
 		assertThat(context.getProcessors()).isSameAs(this.processors);
 	}
 
 	@Test
 	void createCreatesContext() {
-		AotContext context = new DefaultAotContext(this.classNameGenerator,
-				this.generatedFiles, this.generatedSpringFactories, this.runtimeHints,
-				this.processors);
+		AotContext context = new DefaultAotContext(this.classNameGenerator, this.generatedFiles,
+				this.generatedSpringFactories, this.runtimeHints, this.processors);
 		assertThat(context.getClassNameGenerator()).isNotNull();
 		assertThat(context.getGeneratedFiles()).isNotNull();
 		assertThat(context.getGeneratedSpringFactories()).isNotNull();
@@ -73,20 +70,18 @@ class DefaultAotContextTests {
 
 	@Test
 	void createWhenAotProcessorsIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new DefaultAotContext(this.classNameGenerator, this.generatedFiles,
-						this.generatedSpringFactories, this.runtimeHints,
-						null)).withMessage("'processors' must not be null");
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new DefaultAotContext(this.generatedFiles, null)).withMessage(
-						"'processors' must not be null");
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> new DefaultAotContext(this.classNameGenerator, this.generatedFiles,
+						this.generatedSpringFactories, this.runtimeHints, null))
+				.withMessage("'processors' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> new DefaultAotContext(this.generatedFiles, null))
+				.withMessage("'processors' must not be null");
 	}
 
 	@Test
 	void getProcessorsReturnsProcessors() {
-		AotContext context = new DefaultAotContext(this.classNameGenerator,
-				this.generatedFiles, this.generatedSpringFactories, this.runtimeHints,
-				this.processors);
+		AotContext context = new DefaultAotContext(this.classNameGenerator, this.generatedFiles,
+				this.generatedSpringFactories, this.runtimeHints, this.processors);
 		assertThat(context.getProcessors()).isSameAs(this.processors);
 	}
 
