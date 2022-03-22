@@ -1022,6 +1022,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 		private TypeSpec generateTypeSpec(GeneratedClassName className) {
 			TypeSpec.Builder builder = className.classBuilder();
+			builder.addJavadoc("Autowiring for {@link $T}.", this.beanClass);
 			builder.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 			builder.superclass(AutowiredAnnotationBeanPostProcessor.class);
 			builder.addMethod(MethodSpec.constructorBuilder().addCode(generateConstructorCode()).build());

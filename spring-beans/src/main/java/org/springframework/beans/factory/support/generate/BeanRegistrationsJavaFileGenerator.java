@@ -92,8 +92,8 @@ public class BeanRegistrationsJavaFileGenerator {
 		GeneratedMethods generatedMethods = new GeneratedMethods(new MethodNameGenerator("initialize"));
 		TypeSpec.Builder builder = className.classBuilder();
 		builder.addModifiers(Modifier.PUBLIC);
-		builder.addJavadoc("$L for bean factory '$L'.",
-				ClassUtils.getShortName(DefaultListableBeanFactoryInitializer.class), beanFactoryName);
+		builder.addJavadoc("{@link $T} for bean factory '$L'.",
+				DefaultListableBeanFactoryInitializer.class, beanFactoryName);
 		builder.addSuperinterface(DefaultListableBeanFactoryInitializer.class);
 		Set<GeneratedMethodName> registrationMethodsToCall = addRegistrationMethods(generationContext,
 				generatedMethods);
