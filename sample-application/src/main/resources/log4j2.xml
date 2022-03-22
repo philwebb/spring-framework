@@ -7,8 +7,17 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Logger name="org.springframework" level="trace">
-			<AppenderRef ref="Out" />
+		<Logger name="org.springframework.aot" level="trace">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.beans.factory.aot" level="trace">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.beans.factory.support.aot" level="trace">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.beans.factory.support.generate" level="trace">
+			<AppenderRef ref="Console" />
 		</Logger>
 		<Root level="info">
 			<AppenderRef ref="Console" />

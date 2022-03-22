@@ -3,11 +3,7 @@ package com.example;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
-
-import javax.net.ssl.CertPathTrustManagerParameters;
 
 import org.springframework.aot.context.AotContribution;
 import org.springframework.aot.context.AotProcessors;
