@@ -67,7 +67,7 @@ class DefinedBeanExcludeFiltersTests {
 		MockDefinedBeanExcludeFilter filter5 = new MockDefinedBeanExcludeFilter(true, 5);
 		MockDefinedBeanExcludeFilter filter6 = new MockDefinedBeanExcludeFilter(true, 6);
 		MockSpringFactoriesLoader springFactoriesLoader = new MockSpringFactoriesLoader();
-		springFactoriesLoader.add(DefinedBeanExcludeFilter.class, filter3, filter1, filter5);
+		springFactoriesLoader.addInstance(DefinedBeanExcludeFilter.class, filter3, filter1, filter5);
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		beanFactory.registerSingleton("filter4", filter4);
 		beanFactory.registerSingleton("filter2", filter2);

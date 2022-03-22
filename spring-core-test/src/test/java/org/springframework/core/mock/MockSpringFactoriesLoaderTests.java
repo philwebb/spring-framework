@@ -16,9 +16,12 @@
 
 package org.springframework.core.mock;
 
+import java.util.List;
+
+import org.apache.logging.log4j.core.config.Order;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link MockSpringFactoriesLoader}.
@@ -28,8 +31,52 @@ import static org.junit.jupiter.api.Assertions.fail;
 class MockSpringFactoriesLoaderTests {
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void addWithClassesAddsFactories() {
+		MockSpringFactoriesLoader loader = new MockSpringFactoriesLoader();
+		loader.add(TestFactoryType.class, TestFactoryOne.class, TestFactoryTwo.class);
+		assertThatLoaderHasTestFactories(loader);
+	}
+
+	@Test
+	void addWithClassNamesAddsFactories() {
+		MockSpringFactoriesLoader loader = new MockSpringFactoriesLoader();
+		loader.add(TestFactoryType.class.getName(), TestFactoryOne.class.getName(), TestFactoryTwo.class.getName());
+		assertThatLoaderHasTestFactories(loader);
+	}
+
+	@Test
+	void addWithClassAndInstancesAddsFactories() {
+		MockSpringFactoriesLoader loader = new MockSpringFactoriesLoader();
+		loader.addInstance(TestFactoryType.class, new TestFactoryOne(), new TestFactoryTwo());
+		assertThatLoaderHasTestFactories(loader);
+	}
+
+	@Test
+	void addWithClassNameAndInstancesAddsFactories() {
+		MockSpringFactoriesLoader loader = new MockSpringFactoriesLoader();
+		loader.addInstance(TestFactoryType.class.getName(), new TestFactoryOne(), new TestFactoryTwo());
+		assertThatLoaderHasTestFactories(loader);
+	}
+
+	private void assertThatLoaderHasTestFactories(MockSpringFactoriesLoader loader) {
+		List<TestFactoryType> factories = loader.load(TestFactoryType.class);
+		assertThat(factories).hasSize(2);
+		assertThat(factories.get(0)).isInstanceOf(TestFactoryOne.class);
+		assertThat(factories.get(1)).isInstanceOf(TestFactoryTwo.class);
+	}
+
+	static interface TestFactoryType {
+
+	}
+
+	@Order(1)
+	static class TestFactoryOne implements TestFactoryType {
+
+	}
+
+	@Order(2)
+	static class TestFactoryTwo implements TestFactoryType {
+
 	}
 
 }
