@@ -16,9 +16,15 @@
 
 package org.springframework.beans.factory.aot;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.core.ResolvableType;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link DefinedBean}.
@@ -28,9 +34,89 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 class DefinedBeanTests {
 
+	private DefaultListableBeanFactory beanFactory;
+
+	private RootBeanDefinition beanDefinition;
+
+	private UniqueBeanFactoryName beanFactoryName;
+
+	private DefinedBean definedBean;
+
+	@BeforeEach
+	void setup() {
+		this.beanFactory = new DefaultListableBeanFactory();
+		this.beanDefinition = new RootBeanDefinition(TestBean.class);
+		this.beanDefinition.setTargetType(ResolvableType.forClassWithGenerics(TestBean.class, String.class));
+		this.beanFactory.registerBeanDefinition("testBean", beanDefinition);
+		this.beanFactoryName = new UniqueBeanFactoryName("default");
+		this.definedBean = new DefinedBean(beanFactory, this.beanFactoryName, "testBean");
+	}
+
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void createWhenBeanFactoryIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new DefinedBean(null, this.beanFactoryName, "testBean"))
+				.withMessage("'beanFactory' must not be null");
+	}
+
+	@Test
+	void createWhenBeanFactoryNameIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new DefinedBean(this.beanFactory, null, "testBean"))
+				.withMessage("'beanFactoryName' must not be null");
+	}
+
+	@Test
+	void createWhenBeanNameIsNullThrowsException() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> new DefinedBean(this.beanFactory, this.beanFactoryName, null))
+				.withMessage("'beanName' must not be empty");
+	}
+
+	@Test
+	void createWhenBeanNameIsEmptyThrowsException() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> new DefinedBean(this.beanFactory, this.beanFactoryName, ""))
+				.withMessage("'beanName' must not be empty");
+	}
+
+	@Test
+	void getBeanFactoryReturnsBeanFactory() {
+		assertThat(this.definedBean.getBeanFactory()).isEqualTo(this.beanFactory);
+	}
+
+	@Test
+	void getBeanNameReturnsBeanName() {
+		assertThat(this.definedBean.getBeanName()).isEqualTo("testBean");
+	}
+
+	@Test
+	void getUniqueBeanNameReturnsUniqueBeanName() {
+		assertThat(this.definedBean.getUniqueBeanName()).hasToString("default:testBean");
+	}
+
+	@Test
+	void getBeanDefinitionReturnsBeanDefinition() {
+		assertThat(this.definedBean.getBeanDefinition()).isSameAs(this.beanDefinition);
+	}
+
+	@Test
+	void getMergedBeanDefinitionReturnsMergedBeanDefinition() {
+		assertThat(this.definedBean.getMergedBeanDefinition()).isNotSameAs(this.beanDefinition)
+				.isEqualTo(this.beanFactory.getMergedBeanDefinition("testBean"));
+	}
+
+	@Test
+	void getResolvedBeanTypeReturnsResolvedBeanType() {
+		assertThat(this.definedBean.getResolvedBeanType())
+				.isEqualTo(ResolvableType.forClassWithGenerics(TestBean.class, String.class));
+	}
+
+	@Test
+	void getResolvedBeanClassReturnsResolvedBeanClass() {
+		assertThat(this.definedBean.getResolvedBeanClass()).isEqualTo(TestBean.class);
+	}
+
+	static class TestBean<T> {
+
 	}
 
 }
