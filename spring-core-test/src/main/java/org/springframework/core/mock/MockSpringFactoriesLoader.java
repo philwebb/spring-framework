@@ -27,21 +27,23 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.Nullable;
 
 /**
- * Simple {@link SpringFactoriesLoader} implementation for testing purposes.
+ * Simple mock {@link SpringFactoriesLoader} implementation that can be used for testing
+ * purposes.
  *
  * @author Phillip Webb
  * @since 6.0
  */
 public class MockSpringFactoriesLoader extends SpringFactoriesLoader {
 
-	private AtomicInteger sequence = new AtomicInteger();
+	private final AtomicInteger sequence = new AtomicInteger();
 
 	private final Map<String, List<String>> factories;
 
 	private final Map<String, Object> implementations = new HashMap<>();
 
 	/**
-	 * Create a new {@link MockSpringFactoriesLoader} instance with the default classloader.
+	 * Create a new {@link MockSpringFactoriesLoader} instance with the default
+	 * classloader.
 	 */
 	public MockSpringFactoriesLoader() {
 		this(null);
@@ -78,8 +80,9 @@ public class MockSpringFactoriesLoader extends SpringFactoriesLoader {
 	 * @param factoryType the factory type class
 	 * @param factoryImplementations the implementation classes
 	 */
+	@SafeVarargs
 	@SuppressWarnings("unchecked")
-	public <T> void add(Class<T> factoryType, Class<? extends T>... factoryImplementations) {
+	public final <T> void add(Class<T> factoryType, Class<? extends T>... factoryImplementations) {
 		for (Class<? extends T> factoryImplementation : factoryImplementations) {
 			add(factoryType.getName(), factoryImplementation.getName());
 		}
@@ -98,24 +101,24 @@ public class MockSpringFactoriesLoader extends SpringFactoriesLoader {
 	}
 
 	/**
-	 * Add factory implementations to this instance.
+	 * Add factory instances to this instance.
 	 * @param factoryType the factory type class
-	 * @param factoryImplementations the implementation instances to add
+	 * @param factoryInstances the implementation instances to add
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> void add(Class<T> factoryType, T... factoryImplementations) {
-		add(factoryType.getName(), factoryImplementations);
+	public <T> void addInstance(Class<T> factoryType, T... factoryInstances) {
+		addInstance(factoryType.getName(), factoryInstances);
 	}
 
 	/**
-	 * Add factory implementations to this instance.
+	 * Add factory instances to this instance.
 	 * @param factoryType the factory type class name
-	 * @param factoryImplementations the implementation instances to add
+	 * @param factoryInstance the implementation instances to add
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> void add(String factoryType, T... factoryImplementations) {
+	public <T> void addInstance(String factoryType, T... factoryInstance) {
 		List<String> implementations = this.factories.computeIfAbsent(factoryType, key -> new ArrayList<>());
-		for (T factoryImplementation : factoryImplementations) {
+		for (T factoryImplementation : factoryInstance) {
 			String reference = "!" + factoryType + ":" + factoryImplementation.getClass().getName()
 					+ this.sequence.getAndIncrement();
 			implementations.add(reference);
