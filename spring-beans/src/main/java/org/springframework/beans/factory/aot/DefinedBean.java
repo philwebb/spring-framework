@@ -19,6 +19,7 @@ package org.springframework.beans.factory.aot;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 
@@ -43,7 +44,7 @@ public final class DefinedBean {
 
 	private final BeanDefinition beanDefinition;
 
-	private final BeanDefinition mergedBeanDefinition;
+	private final RootBeanDefinition mergedBeanDefinition;
 
 	private final ResolvableType resolvedBeanType;
 
@@ -56,7 +57,7 @@ public final class DefinedBean {
 		this.beanName = beanName;
 		this.uniqueBeanName = new UniqueBeanName(beanFactoryName, beanName);
 		this.beanDefinition = beanFactory.getBeanDefinition(beanName);
-		this.mergedBeanDefinition = beanFactory.getMergedBeanDefinition(beanName);
+		this.mergedBeanDefinition = (RootBeanDefinition) beanFactory.getMergedBeanDefinition(beanName);
 		this.resolvedBeanType = this.mergedBeanDefinition.getResolvableType();
 	}
 
@@ -100,7 +101,7 @@ public final class DefinedBean {
 	 * @see #getBeanDefinition()
 	 * @see ConfigurableBeanFactory#getMergedBeanDefinition(String)
 	 */
-	public BeanDefinition getMergedBeanDefinition() {
+	public RootBeanDefinition getMergedBeanDefinition() {
 		return this.mergedBeanDefinition;
 	}
 

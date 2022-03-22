@@ -31,6 +31,6 @@ import org.springframework.aot.context.AotProcessor;
 public interface AotDefinedBeanProcessor extends AotProcessor<UniqueBeanName, DefinedBean> {
 
 	@Override
-	AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean beanDefinition);
+	AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean definedBean);
 
 }

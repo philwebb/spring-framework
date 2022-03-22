@@ -2,8 +2,12 @@ package com.example;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
+
+import javax.net.ssl.CertPathTrustManagerParameters;
 
 import org.springframework.aot.context.AotContribution;
 import org.springframework.aot.context.AotProcessors;
@@ -27,12 +31,13 @@ public class AotProcess {
 		DefaultListableBeanFactory beanFactory = getSourceBeanFactory();
 		GeneratedFiles generatedFiles = getGeneratedFiles();
 		FileTracker tracker = new FileTracker();
-		List<AotContribution> contributions = new ArrayList<>();
+		Deque<AotContribution> contributions = new ArrayDeque<>();
 		AotProcessors aotProcessors = new TrackedAotProcessors(contributions::add, tracker);
 		DefaultAotContext aotContext = new DefaultAotContext(generatedFiles, aotProcessors);
 		aotContext.getProcessors().add(new BeanRegistrationsAotBeanFactoryProcessor());
 		aotContext.getProcessors().allOfType(AotBeanFactoryProcessor.class).processAndApplyContributions(new UniqueBeanFactoryName("default"), beanFactory);
-		for (AotContribution contribution : contributions) {
+		while(!contributions.isEmpty()) {
+			AotContribution contribution = contributions.removeFirst();
 			contribution.applyTo(aotContext);
 		}
 		DefaultGeneratedSpringFactories springFactories = (DefaultGeneratedSpringFactories) aotContext.getGeneratedSpringFactories();

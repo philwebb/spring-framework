@@ -15,10 +15,10 @@ public class MyApplication implements ApplicationContextAware {
 	}
 
 	public void run() {
-		System.out.println("Hello World!");
-		System.out.println(this.applicationContext.getBean(MyBean.class));
-		System.out.println(this.applicationContext.getBean(MyService.class));
-		System.out.println(this.applicationContext.getBean(MyNaughtyComponent.class));
+		System.err.println("Hello World!");
+		System.err.println(this.applicationContext.getBean(MyBean.class));
+		System.err.println(this.applicationContext.getBean(MyService.class));
+		System.err.println(this.applicationContext.getBean(MyNaughtyComponent.class));
 	}
 
 	@SuppressWarnings("resource")

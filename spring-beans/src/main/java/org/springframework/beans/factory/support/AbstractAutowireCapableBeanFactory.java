@@ -24,6 +24,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -73,6 +74,7 @@ import org.springframework.core.NativeDetector;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
@@ -1349,11 +1351,29 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
+		// FIXME Refine this factory hack
+
+		Class<?> beanType = mbd.getResolvableType().resolve();
+		List<BeanPostProcessor> loadedPostProcessors = (beanType != null) ? SpringFactoriesLoader
+				.forNamedItem("org.springframework.beans.factory.config.BeanClass", beanType.getName())
+				.load(BeanPostProcessor.class) : Collections.emptyList();
+		boolean hasLoadedInstantiationAwareBeanPostProcessors = loadedPostProcessors.stream()
+				.anyMatch(InstantiationAwareBeanPostProcessor.class::isInstance);
+		for (BeanPostProcessor loadedPostProcessor : loadedPostProcessors) {
+			invokeAwareMethods(beanName, loadedPostProcessor);
+		}
+
 		// Give any InstantiationAwareBeanPostProcessors the opportunity to modify the
 		// state of the bean before properties are set. This can be used, for example,
 		// to support styles of field injection.
-		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
-			for (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) {
+		List<InstantiationAwareBeanPostProcessor> instantiationAware = getBeanPostProcessorCache().instantiationAware;
+		if (hasLoadedInstantiationAwareBeanPostProcessors) {
+			instantiationAware = new ArrayList<>(getBeanPostProcessorCache().instantiationAware);
+			loadedPostProcessors.stream().filter(InstantiationAwareBeanPostProcessor.class::isInstance)
+					.map(InstantiationAwareBeanPostProcessor.class::cast).forEach(instantiationAware::add);
+		}
+		if (!mbd.isSynthetic() && (hasLoadedInstantiationAwareBeanPostProcessors || hasInstantiationAwareBeanPostProcessors())) {
+			for (InstantiationAwareBeanPostProcessor bp : instantiationAware) {
 				if (!bp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
 					return;
 				}
@@ -1376,14 +1396,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			pvs = newPvs;
 		}
 
-		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
+		boolean hasInstAwareBpps = hasLoadedInstantiationAwareBeanPostProcessors || hasInstantiationAwareBeanPostProcessors();
 		boolean needsDepCheck = (mbd.getDependencyCheck() != AbstractBeanDefinition.DEPENDENCY_CHECK_NONE);
 
 		if (hasInstAwareBpps) {
 			if (pvs == null) {
 				pvs = mbd.getPropertyValues();
 			}
-			for (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) {
+			for (InstantiationAwareBeanPostProcessor bp : instantiationAware) {
 				PropertyValues pvsToUse = bp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
 				if (pvsToUse == null) {
 					return;
