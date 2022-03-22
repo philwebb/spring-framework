@@ -34,13 +34,12 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactoryIniti
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeSpec;
-import org.springframework.util.ClassUtils;
 
 /**
  * Java file generator to generate a {@link DefaultListableBeanFactoryInitializer} to
  * register bean definitions.
  * <p>
- * Generates code in the following form:<pre class="code">
+ * Generates code in the following form:<blockquote><pre class="code">
  * public class MyInitializer implements DefaultListableBeanFactoryInitialier {
  *
  * 	initialize(DefaultListableBeanFactory beanFactory) {
@@ -52,7 +51,7 @@ import org.springframework.util.ClassUtils;
  * 	}
  *
  * }
- * </pre>
+ * </pre></blockquote>
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

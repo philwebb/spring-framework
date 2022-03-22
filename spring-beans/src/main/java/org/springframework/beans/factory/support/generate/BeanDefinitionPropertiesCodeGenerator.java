@@ -55,11 +55,11 @@ import org.springframework.util.StringUtils;
 /**
  * Code generator to set {@link RootBeanDefinition} properties.
  * <p>
- * Generates code in the following form:<pre class="code">{@code
+ * Generates code in the following form:<blockquote><pre class="code">
  * beanDefinition.setPrimary(true);
  * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
  * ...
- * }</pre>
+ * </pre></blockquote>
  * <p>
  * The generated code expects the following variables to be available:
  * <p>

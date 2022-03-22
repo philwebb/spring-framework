@@ -31,7 +31,7 @@ import org.springframework.javapoet.CodeBlock.Builder;
  * Default {@link BeanRegistrationMethodCodeGenerator} providing registration code
  * suitable for most beans.
  * <p>
- * Generates code in the following form:<pre class="code">{@code
+ * Generates code in the following form:<blockquote><pre class="code">
  * RootBeanDefinition beanDefinition = RootBeanDefinition
  * 	.supply(MyBean.class)
  * 	.usingConstructor()
@@ -39,7 +39,7 @@ import org.springframework.javapoet.CodeBlock.Builder;
  * beanDefinition.setPrimary(true);
  * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
  * beanFactory.registerBeanDefinition("myBean", beanDefinition);
- * }</pre>
+ * </pre></blockquote>
  * <p>
  * The generated code expects the following variables to be available:
  * <p>

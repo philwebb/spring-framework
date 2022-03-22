@@ -11,6 +11,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 
 public class MyProcessedApplication {
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		GenericApplicationContext context = new GenericApplicationContext();
 		DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
