@@ -18,8 +18,9 @@ package org.springframework.core.mock;
 
 import java.util.List;
 
-import org.apache.logging.log4j.core.config.Order;
 import org.junit.jupiter.api.Test;
+
+import org.springframework.core.annotation.Order;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

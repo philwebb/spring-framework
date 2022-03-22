@@ -52,7 +52,7 @@ public final class DefinedBean {
 			String beanName) {
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		Assert.notNull(beanFactoryName, "'beanFactoryName' must not be null");
-		Assert.hasLength(beanName, "'beanName' must not be null");
+		Assert.hasLength(beanName, "'beanName' must not be empty");
 		this.beanFactory = beanFactory;
 		this.beanName = beanName;
 		this.uniqueBeanName = new UniqueBeanName(beanFactoryName, beanName);
