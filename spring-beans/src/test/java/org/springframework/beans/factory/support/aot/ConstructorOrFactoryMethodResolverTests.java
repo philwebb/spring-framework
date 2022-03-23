@@ -73,7 +73,7 @@ class ConstructorOrFactoryMethodResolverTests {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		beanFactory.registerBeanDefinition("testBean", new RootBeanDefinition(AnnotatedBean.class));
 		MockSpringFactoriesLoader loader = new MockSpringFactoriesLoader();
-		DefinedBeanExcludeFilter filterAll = (definedBean) -> true;
+		DefinedBeanExcludeFilter filterAll = definedBean -> true;
 		loader.addInstance(DefinedBeanExcludeFilter.class, filterAll);
 		DefinedBeanExcludeFilters excludeFilters = new DefinedBeanExcludeFilters(loader, beanFactory);
 		BeanRegistrationsAotBeanFactoryProcessor processor = new BeanRegistrationsAotBeanFactoryProcessor(
@@ -92,7 +92,7 @@ class ConstructorOrFactoryMethodResolverTests {
 		loader.addInstance(DefinedBeanRegistrationHandler.class, handler);
 		DefinedBeanRegistrationHandlers handlers = new DefinedBeanRegistrationHandlers(loader, beanFactory);
 		BeanRegistrationsAotBeanFactoryProcessor processor = new BeanRegistrationsAotBeanFactoryProcessor(
-				DefinedBeanExcludeFilters::new, (bf) -> handlers);
+				DefinedBeanExcludeFilters::new, bf -> handlers);
 		BeanRegistrationsContribution contribution = (BeanRegistrationsContribution) processor
 				.processAheadOfTime(new UniqueBeanFactoryName("testBeanFactory"), beanFactory);
 		assertThat(contribution).isNotNull();
@@ -110,7 +110,7 @@ class ConstructorOrFactoryMethodResolverTests {
 		loader.addInstance(DefinedBeanRegistrationHandler.class, handler);
 		DefinedBeanRegistrationHandlers handlers = new DefinedBeanRegistrationHandlers(loader, beanFactory);
 		BeanRegistrationsAotBeanFactoryProcessor processor = new BeanRegistrationsAotBeanFactoryProcessor(
-				DefinedBeanExcludeFilters::new, (bf) -> handlers);
+				DefinedBeanExcludeFilters::new, bf -> handlers);
 		BeanRegistrationsContribution contribution = (BeanRegistrationsContribution) processor
 				.processAheadOfTime(new UniqueBeanFactoryName("testBeanFactory"), beanFactory);
 		assertThat(contribution).isNotNull();
