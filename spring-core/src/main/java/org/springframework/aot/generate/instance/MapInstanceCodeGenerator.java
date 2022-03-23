@@ -33,7 +33,7 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
 
 /**
- * {@link InstanceCodeGenerator} to support {@link Maps Maps} and {@link LinkedHashMap
+ * {@link InstanceCodeGenerator} to support {@link Map Maps} and {@link LinkedHashMap
  * LinkedHashMaps}.
  *
  * @author Stephane Nicoll

@@ -351,7 +351,7 @@ public class TrackedAotProcessors implements AotProcessors {
 			if (!this.processed.isEmpty()) {
 				generatedFiles.addResourceFile(this.resourceName, appendable -> {
 					for (String line : this.processed) {
-						appendable.append(line + "\n");
+						appendable.append(line).append("\n");
 					}
 				});
 			}

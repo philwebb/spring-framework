@@ -16,10 +16,10 @@
 
 package org.springframework.beans.factory.support.aot;
 
-import groovyjarjarantlr4.v4.runtime.misc.Nullable;
 
 import org.springframework.beans.factory.aot.DefinedBean;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
+import org.springframework.lang.Nullable;
 
 /**
  * Strategy used by {@link BeanRegistrationsAotBeanFactoryProcessor} in order to handle

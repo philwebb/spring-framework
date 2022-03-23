@@ -72,16 +72,10 @@ public class FileSystemGeneratedFiles implements GeneratedFiles {
 
 	private static Function<Kind, Path> conventionRoots(Path root) {
 		Assert.notNull(root, "'root' must not be null");
-		return kind -> {
-			switch (kind) {
-			case SOURCE:
-				return root.resolve("sources");
-			case RESOURCE:
-				return root.resolve("resources");
-			case CLASS:
-				return root.resolve("classes");
-			}
-			return null;
+		return kind -> switch (kind) {
+			case SOURCE -> root.resolve("sources");
+			case RESOURCE -> root.resolve("resources");
+			case CLASS -> root.resolve("classes");
 		};
 	}
 

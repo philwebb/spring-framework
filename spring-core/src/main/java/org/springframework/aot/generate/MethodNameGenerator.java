@@ -102,12 +102,12 @@ public class MethodNameGenerator {
 		if (part instanceof Class<?> clazz) {
 			return clean(ClassUtils.getShortName(clazz));
 		}
-		return (part != null) ? clean(part.toString()) : "";
+		return clean(part.toString());
 	}
 
 	private static String clean(String string) {
 		char[] chars = string.toCharArray();
-		StringBuffer name = new StringBuffer(chars.length);
+		StringBuilder name = new StringBuilder(chars.length);
 		boolean uppercase = false;
 		for (char ch : chars) {
 			char outputChar = (!uppercase) ? ch : Character.toUpperCase(ch);
