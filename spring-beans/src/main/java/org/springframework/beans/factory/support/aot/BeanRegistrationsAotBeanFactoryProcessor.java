@@ -55,6 +55,10 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationsAotBeanFactoryProcessor.class);
 
+	private final Function<ConfigurableListableBeanFactory, DefinedBeanExcludeFilters> excludeFiltersFactory;
+
+	private final Function<ConfigurableListableBeanFactory, DefinedBeanRegistrationHandlers> registrationHandlersFactory;
+
 	private final Map<ConfigurableListableBeanFactory, DefinedBeanExcludeFilters> excludeFilters = new HashMap<>();
 
 	private final Map<ConfigurableListableBeanFactory, DefinedBeanRegistrationHandlers> registrationHandlers = new HashMap<>();
@@ -62,6 +66,17 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 	private final Map<ConfigurableListableBeanFactory, Collection<AotDefinedBeanProcessor>> aotDefinedBeanProcessors = new HashMap<>();
 
 	private final Map<ConfigurableListableBeanFactory, Collection<AotBeanClassProcessor>> aotBeanClassProcessors = new HashMap<>();
+
+	public BeanRegistrationsAotBeanFactoryProcessor() {
+		this(DefinedBeanExcludeFilters::new, DefinedBeanRegistrationHandlers::new);
+	}
+
+	BeanRegistrationsAotBeanFactoryProcessor(
+			Function<ConfigurableListableBeanFactory, DefinedBeanExcludeFilters> excludeFiltersFactory,
+			Function<ConfigurableListableBeanFactory, DefinedBeanRegistrationHandlers> registrationHandlersFactory) {
+		this.excludeFiltersFactory = excludeFiltersFactory;
+		this.registrationHandlersFactory = registrationHandlersFactory;
+	}
 
 	@Override
 	public AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
@@ -85,10 +100,8 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 	private Map<DefinedBean, DefinedBeanRegistrationHandler> getHandlerMap(UniqueBeanFactoryName beanFactoryName,
 			ConfigurableListableBeanFactory beanFactory) {
-		DefinedBeanExcludeFilters excludeFilters = this.excludeFilters.computeIfAbsent(beanFactory,
-				DefinedBeanExcludeFilters::new);
-		DefinedBeanRegistrationHandlers registrationHandlers = this.registrationHandlers.computeIfAbsent(beanFactory,
-				DefinedBeanRegistrationHandlers::new);
+		DefinedBeanExcludeFilters excludeFilters = getExcludeFilters(beanFactory);
+		DefinedBeanRegistrationHandlers registrationHandlers = getRegistrationHandlers(beanFactory);
 		Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			DefinedBean definedBean = new DefinedBean(beanFactory, beanFactoryName, beanName);
@@ -103,6 +116,16 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		}
 		return handlerMap;
 	}
+
+	private DefinedBeanExcludeFilters getExcludeFilters(ConfigurableListableBeanFactory beanFactory) {
+		return this.excludeFilters.computeIfAbsent(beanFactory,
+				this.excludeFiltersFactory);
+	}
+
+	private DefinedBeanRegistrationHandlers getRegistrationHandlers(ConfigurableListableBeanFactory beanFactory) {
+		return this.registrationHandlers.computeIfAbsent(beanFactory, registrationHandlersFactory);
+	}
+
 
 	private BeanRegistrationsJavaFileGenerator getJavaFileGenerator(ConfigurableBeanFactory beanFactory,
 			Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap) {
