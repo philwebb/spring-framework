@@ -234,13 +234,11 @@ class BeanDefinitionPropertiesCodeGenerator {
 		}
 
 		private Object toRole(int value) {
-			switch (value) {
-			case BeanDefinition.ROLE_INFRASTRUCTURE:
-				return CodeBlock.builder().add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
-			case BeanDefinition.ROLE_SUPPORT:
-				return CodeBlock.builder().add("$T.ROLE_SUPPORT", BeanDefinition.class).build();
-			}
-			return value;
+			return switch (value) {
+				case BeanDefinition.ROLE_INFRASTRUCTURE -> CodeBlock.builder().add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
+				case BeanDefinition.ROLE_SUPPORT -> CodeBlock.builder().add("$T.ROLE_SUPPORT", BeanDefinition.class).build();
+				default -> value;
+			};
 		}
 
 		private <B extends BeanDefinition, T> void addStatementForValue(CodeBlock.Builder builder,
@@ -365,13 +363,14 @@ class BeanDefinitionPropertiesCodeGenerator {
 		public CodeBlock generateCode(String name, Object value, ResolvableType type,
 				InstanceCodeGenerationService service) {
 			if (value instanceof BeanDefinition beanDefinition) {
-				GeneratedMethod generatedMethod = generatedMethods.add("get", this.name, name).generateBy(builder -> {
-					builder.addJavadoc("Get the bean instance for '$L' ('$L').", this.name, name);
-					builder.addModifiers(Modifier.PRIVATE);
-					builder.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_VARIABLE);
-					builder.returns(BeanDefinition.class);
-					builder.addCode(getMethodCode(name, beanDefinition));
-				});
+				GeneratedMethod generatedMethod = BeanDefinitionPropertiesCodeGenerator.this.generatedMethods
+						.add("get", this.name, name).generateBy(builder -> {
+							builder.addJavadoc("Get the bean instance for '$L' ('$L').", this.name, name);
+							builder.addModifiers(Modifier.PRIVATE);
+							builder.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_VARIABLE);
+							builder.returns(BeanDefinition.class);
+							builder.addCode(getMethodCode(name, beanDefinition));
+						});
 				return CodeBlock.of("$L($L)", generatedMethod.getName(), BEAN_FACTORY_VARIABLE);
 			}
 			return null;

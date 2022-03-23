@@ -156,13 +156,13 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 				builder.add(".resolvedBy($T::new)", declaringClass);
 				return;
 			}
-			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.beanDefinition, this.name,
+			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.name,
 					constructor, declaringClass);
 			builder.add(".resolvedBy($L, this::$L)", BEAN_FACTORY_VARIABLE, getBeanInstanceMethod.getName());
 		}
 
-		private GeneratedMethod generateGetBeanInstanceMethod(BeanDefinition beanDefinition, String name,
-				Constructor<?> constructor, Class<?> declaringClass) {
+		private GeneratedMethod generateGetBeanInstanceMethod(String name, Constructor<?> constructor,
+				Class<?> declaringClass) {
 			boolean isInnerClass = ClassUtils.isInnerClass(declaringClass);
 			return SuppliedInstanceBeanDefinitionCodeGenerator.this.generatedMethods.add("get", name, "instance")
 					.generateBy(builder -> {
@@ -196,7 +196,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 				builder.add(", $L", parametersCode);
 			}
 			builder.add(")");
-			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.beanDefinition, this.name,
+			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.name,
 					factoryMethod);
 			builder.add(".resolvedBy($L, this::$L)", BEAN_FACTORY_VARIABLE, getBeanInstanceMethod.getName());
 		}
@@ -211,8 +211,7 @@ class SuppliedInstanceBeanDefinitionCodeGenerator {
 			return builder.build();
 		}
 
-		private GeneratedMethod generateGetBeanInstanceMethod(BeanDefinition beanDefinition, String name,
-				Method factoryMethod) {
+		private GeneratedMethod generateGetBeanInstanceMethod(String name, Method factoryMethod) {
 			boolean staticFactoryMethod = Modifier.isStatic(factoryMethod.getModifiers());
 			Class<?> declaringClass = factoryMethod.getDeclaringClass();
 			Class<?> returnType = factoryMethod.getReturnType();
