@@ -43,7 +43,7 @@ public interface BeanRegistrationMethodCodeGenerator {
 	 * The name of the parameter passed to the generated method that contains the
 	 * {@link BeanDefinitionRegistry} to use.
 	 */
-	static final String BEAN_FACTORY_VARIABLE = "beanFactory";
+	String BEAN_FACTORY_VARIABLE = "beanFactory";
 
 	/**
 	 * Return a {@link CodeBlock} containing source code to register a
