@@ -123,7 +123,7 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 	}
 
 	private DefinedBeanRegistrationHandlers getRegistrationHandlers(ConfigurableListableBeanFactory beanFactory) {
-		return this.registrationHandlers.computeIfAbsent(beanFactory, registrationHandlersFactory);
+		return this.registrationHandlers.computeIfAbsent(beanFactory, this.registrationHandlersFactory);
 	}
 
 
