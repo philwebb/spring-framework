@@ -66,6 +66,18 @@ class BeanRegistrationsContribution implements AotContribution {
 		this.aotBeanClassProcessors = aotBeanClassProcessors;
 	}
 
+	BeanRegistrationsJavaFileGenerator getJavaFileGenerator() {
+		return this.javaFileGenerator;
+	}
+
+	Collection<AotDefinedBeanProcessor> getAotDefinedBeanProcessors() {
+		return this.aotDefinedBeanProcessors;
+	}
+
+	Collection<AotBeanClassProcessor> getAotBeanClassProcessors() {
+		return this.aotBeanClassProcessors;
+	}
+
 	@Override
 	public void applyTo(AotContext aotContext) {
 		ClassNameGenerator classNameGenerator = aotContext.getClassNameGenerator();
