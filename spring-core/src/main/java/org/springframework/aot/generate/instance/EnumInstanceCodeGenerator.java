@@ -21,7 +21,7 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
 
 /**
- * {@link InstanceCodeGenerator} to support {@link Enums enums}.
+ * {@link InstanceCodeGenerator} to support {@link Enum enums}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

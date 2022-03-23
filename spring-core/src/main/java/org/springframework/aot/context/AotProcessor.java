@@ -21,8 +21,8 @@ import org.springframework.lang.Nullable;
 /**
  * Base interface for all AOT processor interfaces. Allows named instances to be analyzed
  * ahead-of-time and in order to optionally provide an {@link AotContribution}. This
- * interface should not be directly implemented, but instead should be as the superclass
- * of a more specialized processor.
+ * interface should not be directly implemented, but instead should be used as the
+ * superclass of a more specialized processor.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -37,7 +37,7 @@ public interface AotProcessor<N, T> {
 	/**
 	 * Process the given named instance ahead-of-time and return an
 	 * {@link AotContribution} or {@code null}. The provided name is unique within the
-	 * context of the processor. It can be an {@link Class} or any object that has an
+	 * context of the processor. It can be a {@link Class} or any object that has an
 	 * appropriate {@link Object#toString() toString()} method.
 	 * <p>
 	 * Processors are free to use any techniques they like to analyze the given instance.
