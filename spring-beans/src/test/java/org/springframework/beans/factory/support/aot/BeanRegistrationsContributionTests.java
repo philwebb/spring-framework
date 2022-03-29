@@ -18,8 +18,6 @@ package org.springframework.beans.factory.support.aot;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 /**
  * Tests for {@link BeanRegistrationsContribution}.
  *
@@ -31,8 +29,23 @@ import static org.junit.jupiter.api.Assertions.fail;
 class BeanRegistrationsContributionTests {
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void applyToAddsSourceFile() {
+
+	}
+
+	@Test
+	void applyToAddsToSpringFactories() {
+
+	}
+
+	@Test
+	void applyToTriggersBeanDefinitionProcessors() {
+
+	}
+
+	@Test
+	void applyToTriggersBeanClassProcessors() {
+
 	}
 
 }

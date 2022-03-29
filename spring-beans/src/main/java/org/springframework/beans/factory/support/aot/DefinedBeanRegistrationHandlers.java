@@ -52,7 +52,7 @@ class DefinedBeanRegistrationHandlers {
 	 * using the default {@link SpringFactoriesLoader} and the given {@link BeanFactory}.
 	 * @param beanFactory the bean factory to use
 	 */
-	public DefinedBeanRegistrationHandlers(ConfigurableListableBeanFactory beanFactory) {
+	DefinedBeanRegistrationHandlers(ConfigurableListableBeanFactory beanFactory) {
 		this(SpringFactoriesLoader.forDefaultResourceLocation(), beanFactory);
 	}
 
