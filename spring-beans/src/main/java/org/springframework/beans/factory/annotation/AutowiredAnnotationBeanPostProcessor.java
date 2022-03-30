@@ -170,8 +170,11 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 	private final Set<String> lookupMethodsChecked = Collections.newSetFromMap(new ConcurrentHashMap<>(256));
 
+	// FIXME this cache is not hit in a typical Boot app
 	private final Map<Class<?>, Constructor<?>[]> candidateConstructorsCache = new ConcurrentHashMap<>(256);
 
+	// FIXME do we need this cache? For most singletons it seems to be only hit once
+	// from postProcessProperties then postProcessMergedBeanDefinition (both from doCreateBean)
 	private final Map<String, InjectionMetadata> injectionMetadataCache = new ConcurrentHashMap<>(256);
 
 	@Nullable
@@ -335,6 +338,8 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	@Nullable
 	public Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, final String beanName)
 			throws BeanCreationException {
+
+		// FIXME lookups are pretty rare these days
 
 		// Let's check for lookup methods here...
 		if (!this.lookupMethodsChecked.contains(beanName)) {

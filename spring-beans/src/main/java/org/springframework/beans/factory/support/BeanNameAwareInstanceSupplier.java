@@ -50,4 +50,6 @@ interface BeanNameAwareInstanceSupplier<T> extends Supplier<T> {
 		return supplier.get();
 	}
 
+	// FIXME drop in favor of InstanceSupplier
+
 }

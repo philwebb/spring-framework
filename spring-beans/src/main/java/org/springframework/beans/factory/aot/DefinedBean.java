@@ -36,6 +36,8 @@ import org.springframework.util.Assert;
  */
 public final class DefinedBean {
 
+	// FIXME Might be able to use RegisteredBean
+
 	private final ConfigurableListableBeanFactory beanFactory;
 
 	private final String beanName;
