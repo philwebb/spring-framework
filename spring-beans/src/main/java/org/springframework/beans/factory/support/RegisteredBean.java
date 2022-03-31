@@ -17,6 +17,10 @@
 package org.springframework.beans.factory.support;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.core.ResolvableType;
+import org.springframework.util.Assert;
 
 /**
  * A {@code RegisteredBean} represents a bean that has been registered with a
@@ -33,9 +37,11 @@ public final class RegisteredBean {
 
 	private final String beanName;
 
-	private final BeanFactory beanFactory;
+	private final ConfigurableBeanFactory beanFactory;
 
-	RegisteredBean(String beanName, BeanFactory beanFactory) {
+	public RegisteredBean(String beanName, ConfigurableBeanFactory beanFactory) {
+		Assert.notNull(beanName, "'beanName' must not be null");
+		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		this.beanName = beanName;
 		this.beanFactory = beanFactory;
 	}
@@ -52,8 +58,23 @@ public final class RegisteredBean {
 	 * Return the bean factory containing the bean.
 	 * @return the bean factory
 	 */
-	public BeanFactory getBeanFactory() {
+	public ConfigurableBeanFactory getBeanFactory() {
 		return beanFactory;
+	}
+
+	public Class<?> getBeanClass() {
+		if (this.beanFactory.containsSingleton(this.beanName)) {
+			return this.beanFactory.getSingleton(this.beanName).getClass();
+		}
+		return getBeanType().resolve();
+	}
+
+	public ResolvableType getBeanType() {
+		return getMergedBeanDefinition().getResolvableType();
+	}
+
+	public RootBeanDefinition getMergedBeanDefinition() {
+		return (RootBeanDefinition) this.beanFactory.getMergedBeanDefinition(this.beanName);
 	}
 
 }

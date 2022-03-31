@@ -17,10 +17,10 @@
 package org.springframework.beans.factory.support;
 
 /**
- * 
+ *
  * @author pwebb
  * @since 6.0
  */
-public interface AutowiredMethodArgumentsResolver {
+public class AutowiredMethodArgumentsResolver extends AutowiredElementResolver {
 
 }
