@@ -408,8 +408,17 @@ public class SpringFactoriesLoader {
 	 */
 	public static SpringFactoriesLoader forResourceLocation(@Nullable ClassLoader classLoader, String resourceLocation) {
 		Assert.hasText(resourceLocation, "'resourceLocation' must not be empty");
-		Map<String, SpringFactoriesLoader> loaders = cache.computeIfAbsent(classLoader, key -> new LinkedHashMap<>());
-		return loaders.computeIfAbsent(resourceLocation, key -> new SpringFactoriesLoader(classLoader, resourceLocation));
+		Map<String, SpringFactoriesLoader> loaders = SpringFactoriesLoader.cache.get(classLoader);
+		if (loaders == null) {
+			loaders = new ConcurrentReferenceHashMap<>();
+			SpringFactoriesLoader.cache.put(classLoader, loaders);
+		}
+		SpringFactoriesLoader loader = loaders.get(resourceLocation);
+		if (loader == null) {
+			loader = new SpringFactoriesLoader(classLoader, resourceLocation);
+			loaders.put(resourceLocation, loader);
+		}
+		return loader;
 	}
 
 	/**
