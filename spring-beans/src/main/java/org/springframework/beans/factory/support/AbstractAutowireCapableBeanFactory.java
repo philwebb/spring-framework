@@ -1352,29 +1352,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
-		// FIXME Refine this factory hack
-
-		Class<?> beanType = mbd.getResolvableType().resolve();
-		List<BeanPostProcessor> loadedPostProcessors = (beanType != null) ? SpringFactoriesLoader
-				.forNamedItem("org.springframework.beans.factory.config.BeanClass", beanType.getName())
-				.load(BeanPostProcessor.class) : Collections.emptyList();
-		boolean hasLoadedInstantiationAwareBeanPostProcessors = loadedPostProcessors.stream()
-				.anyMatch(InstantiationAwareBeanPostProcessor.class::isInstance);
-		for (BeanPostProcessor loadedPostProcessor : loadedPostProcessors) {
-			invokeAwareMethods(beanName, loadedPostProcessor);
-		}
-
 		// Give any InstantiationAwareBeanPostProcessors the opportunity to modify the
 		// state of the bean before properties are set. This can be used, for example,
 		// to support styles of field injection.
-		List<InstantiationAwareBeanPostProcessor> instantiationAware = getBeanPostProcessorCache().instantiationAware;
-		if (hasLoadedInstantiationAwareBeanPostProcessors) {
-			instantiationAware = new ArrayList<>(getBeanPostProcessorCache().instantiationAware);
-			loadedPostProcessors.stream().filter(InstantiationAwareBeanPostProcessor.class::isInstance)
-					.map(InstantiationAwareBeanPostProcessor.class::cast).forEach(instantiationAware::add);
-		}
-		if (!mbd.isSynthetic() && (hasLoadedInstantiationAwareBeanPostProcessors || hasInstantiationAwareBeanPostProcessors())) {
-			for (InstantiationAwareBeanPostProcessor bp : instantiationAware) {
+		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
+			for (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) {
 				if (!bp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
 					return;
 				}
@@ -1397,14 +1379,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			pvs = newPvs;
 		}
 
-		boolean hasInstAwareBpps = hasLoadedInstantiationAwareBeanPostProcessors || hasInstantiationAwareBeanPostProcessors();
+		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
 		boolean needsDepCheck = (mbd.getDependencyCheck() != AbstractBeanDefinition.DEPENDENCY_CHECK_NONE);
 
 		if (hasInstAwareBpps) {
 			if (pvs == null) {
 				pvs = mbd.getPropertyValues();
 			}
-			for (InstantiationAwareBeanPostProcessor bp : instantiationAware) {
+			for (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) {
 				PropertyValues pvsToUse = bp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
 				if (pvsToUse == null) {
 					return;
