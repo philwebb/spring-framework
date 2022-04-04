@@ -98,7 +98,7 @@ class InstanceSupplierTests {
 
 	@Test
 	void ofInstanceSupplierAdaptsToInstanceSupplier() throws Exception {
-		InstanceSupplier<String> instanceSupplier = InstanceSupplier.of((registeredBean) -> "test");
+		InstanceSupplier<String> instanceSupplier = InstanceSupplier.of(registeredBean -> "test");
 		assertThat(instanceSupplier.get(this.registeredBean)).isEqualTo("test");
 	}
 
@@ -148,7 +148,7 @@ class InstanceSupplierTests {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		RootBeanDefinition beanDefinition = new RootBeanDefinition();
 		beanDefinition.setInstanceSupplier(
-				InstanceSupplier.of((registeredBean) -> "I am bean " + registeredBean.getBeanName()));
+				InstanceSupplier.of(registeredBean -> "I am bean " + registeredBean.getBeanName()));
 		beanFactory.registerBeanDefinition("test", beanDefinition);
 		assertThat(beanFactory.getBean("test")).isEqualTo("I am bean test");
 	}

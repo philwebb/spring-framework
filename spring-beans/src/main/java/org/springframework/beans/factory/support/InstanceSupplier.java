@@ -84,11 +84,11 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	 * add post processors in a single call. For example: {@code
 	 * InstanceSupplier.of(registeredBean -> ...).withPostProcessor(...)}.
 	 * @param <T> the type of instance supplied by this supplier
-	 * @param supplier the source supplier
+	 * @param instanceSupplier the source instance supplier
 	 * @return a new {@link InstanceSupplier}
 	 */
 	static <T> InstanceSupplier<T> of(InstanceSupplier<T> instanceSupplier) {
-		Assert.notNull(instanceSupplier, "'function' must not be null");
+		Assert.notNull(instanceSupplier, "'instanceSupplier' must not be null");
 		return instanceSupplier;
 	}
 

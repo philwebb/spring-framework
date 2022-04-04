@@ -26,6 +26,7 @@ import java.util.Arrays;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @param <T> the type of instance supplied by this supplier
  */
 final class PostProcessingInstanceSupplier<T> implements InstanceSupplier<T> {
 
@@ -33,7 +34,7 @@ final class PostProcessingInstanceSupplier<T> implements InstanceSupplier<T> {
 
 	private final InstancePostProcessor<T>[] postProcessors;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	PostProcessingInstanceSupplier(InstanceSupplier<T> instanceSupplier, InstancePostProcessor<T> postProcessor) {
 		if (instanceSupplier instanceof PostProcessingInstanceSupplier<T> postProcessingInstanceSupplier) {
 			InstancePostProcessor<T>[] originalPostProcessors = postProcessingInstanceSupplier.postProcessors;

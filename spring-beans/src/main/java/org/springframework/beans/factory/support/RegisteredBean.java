@@ -18,7 +18,6 @@ package org.springframework.beans.factory.support;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.SingletonBeanRegistry;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 
@@ -51,7 +50,7 @@ public final class RegisteredBean {
 	 * @return the beanName the bean name
 	 */
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	/**
@@ -59,7 +58,7 @@ public final class RegisteredBean {
 	 * @return the bean factory
 	 */
 	public ConfigurableBeanFactory getBeanFactory() {
-		return beanFactory;
+		return this.beanFactory;
 	}
 
 	public Class<?> getBeanClass() {

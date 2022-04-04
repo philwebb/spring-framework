@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.support;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Phillip Webb
  * @since 6.0
  */
+@Disabled("will be deleted")
 class BeanNameAwareInstanceSupplierTests {
 
 	@Test

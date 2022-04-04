@@ -63,7 +63,7 @@ import org.springframework.util.ReflectionUtils;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class AutowiredInstantiationArgumentsResolver extends AutowiredElementResolver {
+public final class AutowiredInstantiationArgumentsResolver extends AutowiredElementResolver {
 
 	private final ExecutableLookup lookup;
 
@@ -111,8 +111,8 @@ public class AutowiredInstantiationArgumentsResolver extends AutowiredElementRes
 	/**
 	 * Return a new {@link AutowiredInstantiationArgumentsResolver} instance that uses
 	 * direct bean name injection shortcuts for specific parameters.
-	 * @param beanNames the shortcuts to use (aligned with the constructor or factory
-	 * method parameters)
+	 * @param beanNames the bean names to use as shortcuts (aligned with the constructor
+	 * or factory method parameters)
 	 * @return a new {@link AutowiredInstantiationArgumentsResolver} instance that uses
 	 * the shortcuts
 	 */

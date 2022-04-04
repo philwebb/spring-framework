@@ -50,7 +50,7 @@ import org.springframework.util.function.ThrowableConsumer;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class AutowiredFieldValueResolver extends AutowiredElementResolver {
+public final class AutowiredFieldValueResolver extends AutowiredElementResolver {
 
 	private final String fieldName;
 
@@ -88,8 +88,8 @@ public class AutowiredFieldValueResolver extends AutowiredElementResolver {
 
 	/**
 	 * Return a new {@link AutowiredFieldValueResolver} instance that uses a direct bean
-	 * name injection shortcut
-	 * @param shortcut the shortcut to use
+	 * name injection shortcut.
+	 * @param beanName the bean name to use as a shortcut
 	 * @return a new {@link AutowiredFieldValueResolver} instance that uses the shortcuts
 	 */
 	public AutowiredFieldValueResolver withShortcut(String beanName) {

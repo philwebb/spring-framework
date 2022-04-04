@@ -33,8 +33,8 @@ import org.springframework.util.function.ThrowableFunction;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see InstanceSupplier#withPostProcessor(InstancePostProcessor)
  * @param <T> the bean type
+ * @see InstanceSupplier#withPostProcessor(InstancePostProcessor)
  */
 public interface InstancePostProcessor<T> {
 

@@ -18,6 +18,8 @@ package org.springframework.beans.factory.support;
 
 import java.util.Set;
 
+import javax.lang.model.element.Element;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.core.log.LogMessage;
 
 /**
+ * Base class for resolvers that support autowiring related to an {@link Element}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

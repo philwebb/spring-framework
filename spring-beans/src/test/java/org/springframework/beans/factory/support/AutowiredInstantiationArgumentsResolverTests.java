@@ -226,7 +226,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 		// and our own bean is a String so it's a valid candidate
 		this.beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(String.class);
-		beanDefinition.setInstanceSupplier(InstanceSupplier.of((registeredBean) -> {
+		beanDefinition.setInstanceSupplier(InstanceSupplier.of(registeredBean -> {
 			Object[] args = AutowiredInstantiationArgumentsResolver
 					.forFactoryMethod(SingleArgFactory.class, "single", String.class).resolve(registeredBean);
 			return new SingleArgFactory().single((String) args[0]);
@@ -331,7 +331,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 		Environment environment = mock(Environment.class);
 		this.beanFactory.registerResolvableDependency(ResourceLoader.class, resourceLoader);
 		this.beanFactory.registerSingleton("environment", environment);
-		RegisteredBean registerBean = source.registerBean(this.beanFactory, (beanDefinition) -> {
+		RegisteredBean registerBean = source.registerBean(this.beanFactory, beanDefinition -> {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, "user-value");
 		});
@@ -350,7 +350,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.registerSingleton("environment", environment);
 		this.beanFactory.registerSingleton("one", "1");
 		this.beanFactory.registerSingleton("two", "2");
-		RegisteredBean registerBean = source.registerBean(this.beanFactory, (beanDefinition) -> {
+		RegisteredBean registerBean = source.registerBean(this.beanFactory, beanDefinition -> {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, new RuntimeBeanReference("two"));
 		});
@@ -365,7 +365,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 	void resolveUserValueWithTypeConversionRequired() {
 		Source source = new Source(CharDependency.class,
 				AutowiredInstantiationArgumentsResolver.forConstructor(char.class));
-		RegisteredBean registerBean = source.registerBean(this.beanFactory, (beanDefinition) -> {
+		RegisteredBean registerBean = source.registerBean(this.beanFactory, beanDefinition -> {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, "\\");
 		});
@@ -377,7 +377,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
 	void resolveUserValueWithBeanReference(Source source) {
 		this.beanFactory.registerSingleton("stringBean", "string");
-		RegisteredBean registerBean = source.registerBean(this.beanFactory, (beanDefinition) -> beanDefinition
+		RegisteredBean registerBean = source.registerBean(this.beanFactory, beanDefinition -> beanDefinition
 				.getConstructorArgumentValues().addIndexedArgumentValue(0, new RuntimeBeanReference("stringBean")));
 		Object[] arguments = source.getResolver().resolve(registerBean);
 		assertThat(arguments).hasSize(1);
@@ -600,7 +600,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 		}
 
 		RegisteredBean registerBean(DefaultListableBeanFactory beanFactory) {
-			return registerBean(beanFactory, (beanDefinition) -> {
+			return registerBean(beanFactory, beanDefinition -> {
 			});
 		}
 

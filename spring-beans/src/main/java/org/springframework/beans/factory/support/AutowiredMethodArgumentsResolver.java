@@ -53,7 +53,7 @@ import org.springframework.util.function.ThrowableConsumer;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class AutowiredMethodArgumentsResolver extends AutowiredElementResolver {
+public final class AutowiredMethodArgumentsResolver extends AutowiredElementResolver {
 
 	private final String methodName;
 
@@ -98,7 +98,8 @@ public class AutowiredMethodArgumentsResolver extends AutowiredElementResolver {
 	/**
 	 * Return a new {@link AutowiredInstantiationArgumentsResolver} instance that uses
 	 * direct bean name injection shortcuts for specific parameters.
-	 * @param beanNames the shortcuts to use (aligned with the method parameters)
+	 * @param beanNames the bean names to use as shortcuts (aligned with the method
+	 * parameters)
 	 * @return a new {@link AutowiredMethodArgumentsResolver} instance that uses the
 	 * shortcuts
 	 */
