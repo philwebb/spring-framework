@@ -191,10 +191,11 @@ class BeanDefinitionPropertiesCodeGenerator {
 			MutablePropertyValues propertyValues = this.beanDefinition.getPropertyValues();
 			if (!propertyValues.isEmpty()) {
 				for (PropertyValue propertyValue : propertyValues) {
-					CodeBlock value = instanceCodeGenerationService.generateCode(propertyValue.getName(),
-							propertyValue.getValue());
+					Object value = propertyValue.getValue();
+					CodeBlock code = instanceCodeGenerationService.generateCode(propertyValue.getName(),
+							value);
 					builder.addStatement("$L.getPropertyValues().addPropertyValue($S, $L)", BEAN_DEFINITION_VARIABLE,
-							propertyValue.getName(), value);
+							propertyValue.getName(), code);
 				}
 			}
 		}
