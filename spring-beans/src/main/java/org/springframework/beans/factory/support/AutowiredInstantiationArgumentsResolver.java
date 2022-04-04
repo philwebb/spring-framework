@@ -20,16 +20,21 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
+import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.config.DependencyDescriptor;
@@ -45,6 +50,13 @@ import org.springframework.util.ReflectionUtils;
  * Resolver used to support the autowiring of constructors or factory methods. Typically
  * used in AOT-processed applications as a targeted alternative to the reflection based
  * injection.
+ * <p>
+ * When resolving arguments in a native image, the {@link Constructor} or {@link Method}
+ * being used must be marked with an {@link ExecutableMode#INTROSPECT introspection} hint
+ * so that parameter annotations can be read. Full {@link ExecutableMode#INVOKE
+ * invocation} hints are only required if the {@code resolveAndInstantiate} methods of
+ * this class are being used (typically to support private constructors, methods or
+ * classes).
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -62,47 +74,102 @@ public class AutowiredInstantiationArgumentsResolver extends AutowiredElementRes
 		this.shortcuts = shortcuts;
 	}
 
+	/**
+	 * Create a {@link AutowiredInstantiationArgumentsResolver} that resolves arguments
+	 * for the specified bean constructor.
+	 * @param parameterTypes the constructor parameter types
+	 * @return a new {@link AutowiredInstantiationArgumentsResolver} instance
+	 */
 	public static AutowiredInstantiationArgumentsResolver forConstructor(Class<?>... parameterTypes) {
+		Assert.notNull(parameterTypes, "'parameterTypes' must not be null");
+		Assert.noNullElements(parameterTypes, "'parameterTypes' must not contain null elements");
 		return new AutowiredInstantiationArgumentsResolver(new ConstructorLookup(parameterTypes), null);
 	}
 
-	public static AutowiredInstantiationArgumentsResolver forFactoryMethod(Class<?> declaringClass, String name,
+	/**
+	 * Create a new {@link AutowiredInstantiationArgumentsResolver} that resolves
+	 * arguments for the specified factory method.
+	 * @param declaringClass the class that declares the factory method
+	 * @param methodName the factory method name
+	 * @param parameterTypes the factory method parameter types
+	 * @return a new {@link AutowiredInstantiationArgumentsResolver} instance
+	 */
+	public static AutowiredInstantiationArgumentsResolver forFactoryMethod(Class<?> declaringClass, String methodName,
 			Class<?>... parameterTypes) {
+		Assert.notNull(declaringClass, "'declaringClass' must not be null");
+		Assert.hasText(methodName, "'methodName' must not be empty");
+		Assert.notNull(parameterTypes, "'parameterTypes' must not be null");
+		Assert.noNullElements(parameterTypes, "'parameterTypes' must not contain null elements");
 		return new AutowiredInstantiationArgumentsResolver(
-				new FactoryMethodLookup(declaringClass, name, parameterTypes), null);
+				new FactoryMethodLookup(declaringClass, methodName, parameterTypes), null);
 	}
 
 	ExecutableLookup getLookup() {
 		return this.lookup;
 	}
 
-	public AutowiredInstantiationArgumentsResolver withShortcuts(String... shortcuts) {
-		return new AutowiredInstantiationArgumentsResolver(this.lookup, shortcuts);
+	/**
+	 * Return a new {@link AutowiredInstantiationArgumentsResolver} instance that uses
+	 * direct bean name injection shortcuts for specific parameters.
+	 * @param beanNames the shortcuts to use (aligned with the constructor or factory
+	 * method parameters)
+	 * @return a new {@link AutowiredInstantiationArgumentsResolver} instance that uses
+	 * the shortcuts
+	 */
+	public AutowiredInstantiationArgumentsResolver withShortcuts(String... beanNames) {
+		return new AutowiredInstantiationArgumentsResolver(this.lookup, beanNames);
 	}
 
+	/**
+	 * Resolve arguments for the specified registered bean and provide them to the given
+	 * action.
+	 * @param registeredBean the registered bean
+	 * @param action the action to execute with the resolved constructor or factory method
+	 * arguments
+	 */
 	public void resolve(RegisteredBean registeredBean, ThrowableConsumer<Object[]> action) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(registeredBean, "'action' must not be null");
+		Assert.notNull(action, "'action' must not be null");
 		Object[] resolved = resolveArguments(registeredBean, this.lookup.get(registeredBean));
 		action.accept(resolved);
 	}
 
+	/**
+	 * Resolve arguments for the specified registered bean.
+	 * @param registeredBean the registered bean
+	 * @return the resolved constructor or factory method arguments
+	 */
 	public Object[] resolve(RegisteredBean registeredBean) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		return resolveArguments(registeredBean, this.lookup.get(registeredBean));
 	}
 
+	/**
+	 * Resolve arguments for the specified registered bean and instantiate a new instance
+	 * using reflection.
+	 * @param registeredBean the registered bean
+	 * @return an instance of the bean
+	 */
 	public Object resolveAndInstantiate(RegisteredBean registeredBean) {
 		return resolveAndInstantiate(registeredBean, Object.class);
 	}
 
+	/**
+	 * Resolve arguments for the specified registered bean and instantiate a new instance
+	 * using reflection.
+	 * @param registeredBean the registered bean
+	 * @param requiredType the required result type
+	 * @return an instance of the bean
+	 */
+	@SuppressWarnings("unchecked")
 	public <T> T resolveAndInstantiate(RegisteredBean registeredBean, Class<T> requiredType) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(registeredBean, "'requiredType' must not be null");
 		Executable executable = this.lookup.get(registeredBean);
-		Object[] resolved = resolveArguments(registeredBean, executable);
-		// FIXME see Instantiator in SupplierBuilderTests
-		return null;
+		Object[] arguments = resolveArguments(registeredBean, executable);
+		Object instance = instantiate(registeredBean.getBeanFactory(), executable, arguments);
+		Assert.isInstanceOf(requiredType, instance);
+		return (T) instance;
 	}
 
 	private Object[] resolveArguments(RegisteredBean registeredBean, Executable executable) {
@@ -121,9 +188,9 @@ public class AutowiredInstantiationArgumentsResolver extends AutowiredElementRes
 		Set<String> autowiredBeans = new LinkedHashSet<>(resolved.length);
 		ConstructorArgumentValues argumentValues = resolveArgumentValues(beanFactory, beanName, mergedBeanDefinition);
 		for (int i = startIndex; i < parameterCount; i++) {
-			String shortcut = (this.shortcuts != null) ? this.shortcuts[i - startIndex] : null;
 			MethodParameter parameter = getMethodParameter(executable, i);
 			DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(parameter, true);
+			String shortcut = (this.shortcuts != null) ? this.shortcuts[i - startIndex] : null;
 			if (shortcut != null) {
 				dependencyDescriptor = new ShortcutDependencyDescriptor(dependencyDescriptor, shortcut, beanClass);
 			}
@@ -205,6 +272,57 @@ public class AutowiredInstantiationArgumentsResolver extends AutowiredElementRes
 		}
 	}
 
+	private Object instantiate(ConfigurableBeanFactory beanFactory, Executable executable, Object[] arguments) {
+		try {
+			if (executable instanceof Constructor<?> constructor) {
+				return instantiate(constructor, arguments);
+			}
+			if (executable instanceof Method method) {
+				return instantiate(beanFactory, method, arguments);
+			}
+		}
+		catch (Exception ex) {
+			throw new BeanCreationException("Unable to instantiate bean using " + executable, ex);
+		}
+		throw new IllegalStateException("Unsupported executable " + executable.getClass().getName());
+	}
+
+	private Object instantiate(Constructor<?> constructor, Object[] arguments) throws Exception {
+		Class<?> declaringClass = constructor.getDeclaringClass();
+		if (ClassUtils.isInnerClass(declaringClass)) {
+			Object enclosingInstance = createInstance(declaringClass.getEnclosingClass());
+			arguments = ObjectUtils.addObjectToArray(arguments, enclosingInstance, 0);
+		}
+		ReflectionUtils.makeAccessible(constructor);
+		return constructor.newInstance(arguments);
+	}
+
+	private Object instantiate(ConfigurableBeanFactory beanFactory, Method method, Object[] arguments)
+			throws Exception {
+		ReflectionUtils.makeAccessible(method);
+		Object target = getFactoryMethodTarget(beanFactory, method);
+		return ReflectionUtils.invokeMethod(method, target, arguments);
+	}
+
+	private Object getFactoryMethodTarget(BeanFactory beanFactory, Method method) throws Exception {
+		if (Modifier.isStatic(method.getModifiers())) {
+			return null;
+		}
+		Class<?> declaringClass = method.getDeclaringClass();
+		return beanFactory.getBean(declaringClass);
+	}
+
+	private Object createInstance(Class<?> clazz) throws Exception {
+		if (!ClassUtils.isInnerClass(clazz)) {
+			Constructor<?> constructor = clazz.getDeclaredConstructor();
+			ReflectionUtils.makeAccessible(constructor);
+			return constructor.newInstance();
+		}
+		Class<?> enclosingClass = clazz.getEnclosingClass();
+		Constructor<?> constructor = clazz.getDeclaredConstructor(enclosingClass);
+		return constructor.newInstance(createInstance(enclosingClass));
+	}
+
 	/**
 	 * Performs lookup of the {@link Executable}.
 	 */
@@ -257,26 +375,26 @@ public class AutowiredInstantiationArgumentsResolver extends AutowiredElementRes
 
 		private final Class<?> declaringClass;
 
-		private final String name;
+		private final String methodName;
 
 		private final Class<?>[] parameterTypes;
 
-		FactoryMethodLookup(Class<?> declaringClass, String name, Class<?>[] parameterTypes) {
+		FactoryMethodLookup(Class<?> declaringClass, String methodName, Class<?>[] parameterTypes) {
 			this.declaringClass = declaringClass;
-			this.name = name;
+			this.methodName = methodName;
 			this.parameterTypes = parameterTypes;
 		}
 
 		@Override
 		public Executable get(RegisteredBean registeredBean) {
-			Method method = ReflectionUtils.findMethod(this.declaringClass, this.name, this.parameterTypes);
-			Assert.notNull(method, () -> String.format("%s cannot be found", method));
+			Method method = ReflectionUtils.findMethod(this.declaringClass, this.methodName, this.parameterTypes);
+			Assert.notNull(method, () -> String.format("%s cannot be found", this));
 			return method;
 		}
 
 		@Override
 		public String toString() {
-			return String.format("Factory method '%s' with parameter types [%s] declared on %s", this.name,
+			return String.format("Factory method '%s' with parameter types [%s] declared on %s", this.methodName,
 					toCommaSeparatedNames(this.parameterTypes), this.declaringClass);
 		}
 

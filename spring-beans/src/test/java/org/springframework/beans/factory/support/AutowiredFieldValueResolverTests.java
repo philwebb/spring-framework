@@ -41,7 +41,7 @@ class AutowiredFieldValueResolverTests {
 	private final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
 	@Test
-	void forFieldWhenNameIsEmptyThrowsException() {
+	void forFieldWhenFieldNameIsEmptyThrowsException() {
 		String message = "'fieldName' must not be empty";
 		assertThatIllegalArgumentException().isThrownBy(() -> AutowiredFieldValueResolver.forField(null))
 				.withMessage(message);
@@ -97,7 +97,7 @@ class AutowiredFieldValueResolverTests {
 		AutowiredFieldValueResolver resolver = AutowiredFieldValueResolver.forRequiredField("string");
 		assertThatExceptionOfType(UnsatisfiedDependencyException.class)
 				.isThrownBy(() -> resolver.resolve(registeredBean)).satisfies(ex -> {
-					assertThat(ex.getBeanName()).isEqualTo("test");
+					assertThat(ex.getBeanName()).isEqualTo("testBean");
 					assertThat(ex.getInjectionPoint()).isNotNull();
 					assertThat(ex.getInjectionPoint().getField().getName()).isEqualTo("string");
 				});
@@ -148,8 +148,8 @@ class AutowiredFieldValueResolverTests {
 			}
 
 		};
-		RegisteredBean registeredBean = registerTestBean(beanFactory);
 		beanFactory.registerSingleton("one", "1");
+		RegisteredBean registeredBean = registerTestBean(beanFactory);
 		AutowiredFieldValueResolver resolver = AutowiredFieldValueResolver.forField("string");
 		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> resolver.resolve(registeredBean));
 		assertThat(resolver.withShortcut("one").resolve(registeredBean)).isEqualTo("1");
@@ -160,12 +160,12 @@ class AutowiredFieldValueResolverTests {
 		this.beanFactory.registerSingleton("one", "1");
 		RegisteredBean registeredBean = registerTestBean(this.beanFactory);
 		AutowiredFieldValueResolver.forField("string").resolve(registeredBean);
-		assertThat(this.beanFactory.getDependentBeans("one")).containsExactly("test");
+		assertThat(this.beanFactory.getDependentBeans("one")).containsExactly("testBean");
 	}
 
 	private RegisteredBean registerTestBean(DefaultListableBeanFactory beanFactory) {
-		beanFactory.registerBeanDefinition("test", new RootBeanDefinition(TestBean.class));
-		RegisteredBean registeredBean = new RegisteredBean("test", beanFactory);
+		beanFactory.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
+		RegisteredBean registeredBean = new RegisteredBean("testBean", beanFactory);
 		return registeredBean;
 	}
 

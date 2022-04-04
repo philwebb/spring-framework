@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.support;
 
+import java.io.InputStream;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Executable;
@@ -41,7 +42,9 @@ import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
+import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.AutowiredInstantiationArgumentsResolverTests.Enclosing.InnerSingleArgConstructor;
 import org.springframework.beans.factory.support.SuppliedRootBeanDefinitionBuilder.Using;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -50,110 +53,148 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link AutowiredInstantiationArgumentsResolver}.
  *
- * @author pwebb
- * @since 6.0
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 class AutowiredInstantiationArgumentsResolverTests {
 
 	private final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
-	//
-	// @Test
-	// void createWhenClassTypeIsNullThrowsException() {
-	// assertThatIllegalArgumentException().isThrownBy(() -> new
-	// SuppliedRootBeanDefinitionBuilder((Class<?>) null))
-	// .withMessage("'beanType' must not be null");
-	// }
-	//
-	// @Test
-	// void createWhenResolvableTypeIsNullThrowsException() {
-	// assertThatIllegalArgumentException()
-	// .isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder((ResolvableType) null))
-	// .withMessage("'beanType' must not be null");
-	// }
-	//
-	// @Test
-	// void createWhenResolvableTypeCannotBeResolvedThrowsException() {
-	// assertThatIllegalArgumentException()
-	// .isThrownBy(() -> new SuppliedRootBeanDefinitionBuilder(ResolvableType.NONE))
-	// .withMessage("'beanType' must be resolvable");
-	// }
-	//
-	// @Test
-	// void usingConstructorWhenNoConstructorFoundThrowsException() {
-	// SuppliedRootBeanDefinitionBuilder builder = new
-	// SuppliedRootBeanDefinitionBuilder(SingleArgConstructor.class);
-	// assertThatIllegalArgumentException().isThrownBy(() ->
-	// builder.usingConstructor(Integer.class)).withMessage(
-	// "No constructor with type(s) [java.lang.Integer] found on " +
-	// SingleArgConstructor.class.getName());
-	// }
-	//
-	// @Test
-	// void usingConstructorWhenFound() {
-	//
-	// SuppliedRootBeanDefinitionBuilder builder = new
-	// SuppliedRootBeanDefinitionBuilder(SingleArgConstructor.class);
-	// assertThat(builder.usingConstructor(String.class)).isNotNull();
-	// }
-	//
-	// @Test
-	// void usingMethodWhenNoMethodFoundThrowsException() {
-	// SuppliedRootBeanDefinitionBuilder builder = new
-	// SuppliedRootBeanDefinitionBuilder(String.class);
-	// assertThatIllegalArgumentException()
-	// .isThrownBy(() -> builder.usingFactoryMethod(SingleArgFactory.class, "single",
-	// Integer.class))
-	// .withMessage("No method 'single' with type(s) [java.lang.Integer] found on "
-	// + SingleArgFactory.class.getName());
-	// }
-	//
-	// @Test
-	// void usingWhenMethodOnInterface() {
-	// this.beanFactory.registerSingleton("factory", new MethodOnInterfaceImpl());
-	// SuppliedRootBeanDefinitionBuilder builder = new
-	// SuppliedRootBeanDefinitionBuilder(String.class);
-	// Using using = builder.usingFactoryMethod(MethodOnInterface.class, "test");
-	// Instantiator instantiator = new Instantiator(using);
-	// assertThat(using.resolvedBy(this.beanFactory,
-	// instantiator).getInstanceSupplier().get()).isEqualTo("Test");
-	// }
-	//
-	// @Test
-	// void usingMethodWhenFound() {
-	// SuppliedRootBeanDefinitionBuilder builder = new
-	// SuppliedRootBeanDefinitionBuilder(String.class);
-	// assertThat(builder.usingFactoryMethod(SingleArgFactory.class, "single",
-	// String.class)).isNotNull();
-	// }
-	//
-	// @Test
-	// void instanceSupplierUsesInjectedBeanNameWhenNoBeanNameSpecified() {
-	// RootBeanDefinition beanDefinition =
-	// RootBeanDefinition.supply(SingleArgConstructor.class)
-	// .usingConstructor(String.class).resolvedBy(this.beanFactory, new Instantiator());
-	// this.beanFactory.registerBeanDefinition("myTest", beanDefinition);
-	// assertThatExceptionOfType(UnsatisfiedDependencyException.class)
-	// .isThrownBy(() -> this.beanFactory.getBean(SingleArgConstructor.class))
-	// .withMessageContaining("bean with name 'myTest'");
-	// }
-	//
-	// @Test
-	// void resolveNoArgConstructor() {
-	// RootBeanDefinition beanDefinition = new RootBeanDefinition(NoArgConstructor.class);
-	// this.beanFactory.registerBeanDefinition("test", beanDefinition);
-	// RegisteredBean registeredBean = new RegisteredBean("test", this.beanFactory);
-	// Object[] resolved =
-	// AutowiredInstantiationArgumentsResolver.forConstructor().resolve(registeredBean);
-	// assertThat(resolved).isEmpty();
-	// }
-	//
+	@Test
+	void forConstructorWhenParameterTypesIsNullThrowsException() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> AutowiredInstantiationArgumentsResolver.forConstructor((Class<?>[]) null))
+				.withMessage("'parameterTypes' must not be null");
+	}
+
+	@Test
+	void forConstructorWhenParameterTypesContainsNullThrowsException() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> AutowiredInstantiationArgumentsResolver.forConstructor(String.class, null))
+				.withMessage("'parameterTypes' must not contain null elements");
+	}
+
+	@Test
+	void forConstructorWhenNotFoundThrowsException() {
+		AutowiredInstantiationArgumentsResolver resolver = AutowiredInstantiationArgumentsResolver
+				.forConstructor(InputStream.class);
+		Source source = new Source(SingleArgConstructor.class, resolver);
+		RegisteredBean registerBean = source.registerBean(this.beanFactory);
+		assertThatIllegalArgumentException().isThrownBy(() -> resolver.resolve(registerBean))
+				.withMessage("Constructor with parameter types [java.io.InputStream] cannot be found on "
+						+ SingleArgConstructor.class.getName());
+	}
+
+	@Test
+	void forFactoryMethodWhenDeclaringClassIsNullThrowsException() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> AutowiredInstantiationArgumentsResolver.forFactoryMethod(null, "test"))
+				.withMessage("'declaringClass' must not be null");
+	}
+
+	@Test
+	void forFactoryMethodWhenNameIsEmptyThrowsException() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> AutowiredInstantiationArgumentsResolver.forFactoryMethod(SingleArgFactory.class, ""))
+				.withMessage("'methodName' must not be empty");
+	}
+
+	@Test
+	void forFactoryMethodWhenParameterTypesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> AutowiredInstantiationArgumentsResolver
+				.forFactoryMethod(SingleArgFactory.class, "single", (Class<?>[]) null))
+				.withMessage("'parameterTypes' must not be null");
+	}
+
+	@Test
+	void forFactoryMethodWhenParameterTypesContainsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> AutowiredInstantiationArgumentsResolver
+				.forFactoryMethod(SingleArgFactory.class, "single", String.class, null))
+				.withMessage("'parameterTypes' must not contain null elements");
+	}
+
+	@Test
+	void forFactoryMethodWhenNotFoundThrowsException() {
+		AutowiredInstantiationArgumentsResolver resolver = AutowiredInstantiationArgumentsResolver
+				.forFactoryMethod(SingleArgFactory.class, "single", InputStream.class);
+		Source source = new Source(String.class, resolver);
+		RegisteredBean registerBean = source.registerBean(this.beanFactory);
+		assertThatIllegalArgumentException().isThrownBy(() -> resolver.resolve(registerBean))
+				.withMessage("Factory method 'single' with parameter types [java.io.InputStream] declared on class "
+						+ SingleArgFactory.class.getName() + " cannot be found");
+	}
+
+	@Test
+	void resolveWithActionWhenActionIsNullThrowsException() {
+		AutowiredInstantiationArgumentsResolver resolver = AutowiredInstantiationArgumentsResolver.forConstructor();
+		Source source = new Source(NoArgConstructor.class, resolver);
+		RegisteredBean registerBean = source.registerBean(this.beanFactory);
+		assertThatIllegalArgumentException().isThrownBy(() -> resolver.resolve(registerBean, null))
+				.withMessage("'action' must not be null");
+	}
+
+	@Test
+	void resolveWithActionCallsAction() {
+		AutowiredInstantiationArgumentsResolver resolver = AutowiredInstantiationArgumentsResolver
+				.forConstructor(String.class);
+		Source source = new Source(SingleArgConstructor.class, resolver);
+		this.beanFactory.registerSingleton("one", "1");
+		RegisteredBean registerBean = source.registerBean(this.beanFactory);
+		List<Object> result = new ArrayList<>();
+		resolver.resolve(registerBean, result::add);
+		assertThat(result).hasSize(1);
+		assertThat((Object[]) result.get(0)).containsExactly("1");
+	}
+
+	@Test
+	void resolveWhenRegisteredBeanIsNullThrowsException() {
+		AutowiredInstantiationArgumentsResolver resolver = AutowiredInstantiationArgumentsResolver
+				.forConstructor(String.class);
+		assertThatIllegalArgumentException().isThrownBy(() -> resolver.resolve(null))
+				.withMessage("'registeredBean' must not be null");
+	}
+
+	@ParameterizedResolverTest(Sources.SINGLE_ARG)
+	void resolveAndInstantiate(Source source) {
+		this.beanFactory.registerSingleton("one", "1");
+		this.beanFactory.registerSingleton("testFactory", new SingleArgFactory());
+		RegisteredBean registerBean = source.registerBean(this.beanFactory);
+		Object instance = source.getResolver().resolveAndInstantiate(registerBean);
+		if (instance instanceof SingleArgConstructor singleArgConstructor) {
+			instance = singleArgConstructor.getString();
+		}
+		assertThat(instance).isEqualTo("1");
+	}
+
+	@ParameterizedResolverTest(Sources.INNER_CLASS_SINGLE_ARG)
+	void resolveAndInstantiateNested(Source source) {
+		this.beanFactory.registerSingleton("one", "1");
+		this.beanFactory.registerSingleton("testFactory", new Enclosing().new InnerSingleArgFactory());
+		RegisteredBean registerBean = source.registerBean(this.beanFactory);
+		Object instance = source.getResolver().resolveAndInstantiate(registerBean);
+		if (instance instanceof InnerSingleArgConstructor innerSingleArgConstructor) {
+			instance = innerSingleArgConstructor.getString();
+		}
+		assertThat(instance).isEqualTo("1");
+	}
+
+	@Test
+	void resolveNoArgConstructor() {
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(NoArgConstructor.class);
+		this.beanFactory.registerBeanDefinition("test", beanDefinition);
+		RegisteredBean registeredBean = new RegisteredBean("test", this.beanFactory);
+		Object[] resolved = AutowiredInstantiationArgumentsResolver.forConstructor().resolve(registeredBean);
+		assertThat(resolved).isEmpty();
+	}
 
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
 	void resolveSingleArgConstructor(Source source) {
@@ -174,7 +215,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 		RegisteredBean registeredBean = source.registerBean(this.beanFactory);
 		assertThatExceptionOfType(UnsatisfiedDependencyException.class)
 				.isThrownBy(() -> source.getResolver().resolve(registeredBean)).satisfies(ex -> {
-					assertThat(ex.getBeanName()).isEqualTo("test");
+					assertThat(ex.getBeanName()).isEqualTo("testBean");
 					assertThat(ex.getInjectionPoint()).isNotNull();
 					assertThat(ex.getInjectionPoint().getMember()).isEqualTo(source.lookupExecutable(registeredBean));
 				});
@@ -358,13 +399,44 @@ class AutowiredInstantiationArgumentsResolverTests {
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
 	void resolveUserValueThatIsAlreadyResolved(Source source) {
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		BeanDefinition mergedBeanDefinition = this.beanFactory.getMergedBeanDefinition("test");
+		BeanDefinition mergedBeanDefinition = this.beanFactory.getMergedBeanDefinition("testBean");
 		ValueHolder valueHolder = new ValueHolder('a');
 		valueHolder.setConvertedValue("this is an a");
 		mergedBeanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, valueHolder);
 		Object[] arguments = source.getResolver().resolve(registerBean);
 		assertThat(arguments).hasSize(1);
 		assertThat(arguments[0]).isEqualTo("this is an a");
+	}
+
+	@Test
+	void resolveWhenUsingShortcutsInjectsDirectly() {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory() {
+
+			@Override
+			protected Map<String, Object> findAutowireCandidates(String beanName, Class<?> requiredType,
+					DependencyDescriptor descriptor) {
+				throw new AssertionError("Should be shortcut");
+			}
+
+		};
+		AutowiredInstantiationArgumentsResolver resolver = AutowiredInstantiationArgumentsResolver
+				.forConstructor(String.class);
+		Source source = new Source(String.class, resolver);
+		beanFactory.registerSingleton("one", "1");
+		RegisteredBean registeredBean = source.registerBean(beanFactory);
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> resolver.resolve(registeredBean));
+		assertThat(resolver.withShortcuts("one").resolve(registeredBean)).containsExactly("1");
+	}
+
+	@Test
+	void resolveRegistersDependantBeans() {
+		AutowiredInstantiationArgumentsResolver resolver = AutowiredInstantiationArgumentsResolver
+				.forConstructor(String.class);
+		Source source = new Source(SingleArgConstructor.class, resolver);
+		beanFactory.registerSingleton("one", "1");
+		RegisteredBean registeredBean = source.registerBean(this.beanFactory);
+		resolver.resolve(registeredBean);
+		assertThat(this.beanFactory.getDependentBeans("one")).containsExactly("testBean");
 	}
 
 	/**
@@ -535,7 +607,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 
 		RegisteredBean registerBean(DefaultListableBeanFactory beanFactory,
 				Consumer<RootBeanDefinition> beanDefinitionCustomizer) {
-			String beanName = "test";
+			String beanName = "testBean";
 			RootBeanDefinition beanDefinition = new RootBeanDefinition(this.beanClass);
 			beanDefinition.setInstanceSupplier(() -> {
 				throw new BeanCurrentlyInCreationException(beanName);
@@ -566,7 +638,14 @@ class AutowiredInstantiationArgumentsResolverTests {
 
 	static class SingleArgConstructor {
 
-		public SingleArgConstructor(String s) {
+		private final String string;
+
+		SingleArgConstructor(String string) {
+			this.string = string;
+		}
+
+		String getString() {
+			return string;
 		}
 
 	}
@@ -583,7 +662,14 @@ class AutowiredInstantiationArgumentsResolverTests {
 
 		class InnerSingleArgConstructor {
 
-			InnerSingleArgConstructor(String s) {
+			private final String string;
+
+			InnerSingleArgConstructor(String string) {
+				this.string = string;
+			}
+
+			String getString() {
+				return this.string;
 			}
 
 		}

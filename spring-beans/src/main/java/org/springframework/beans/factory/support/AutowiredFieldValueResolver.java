@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
 import org.springframework.beans.factory.InjectionPoint;
@@ -37,6 +38,12 @@ import org.springframework.util.function.ThrowableConsumer;
  * applications as a targeted alternative to the
  * {@link org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
  * AutowiredAnnotationBeanPostProcessor}.
+ * <p>
+ * When resolving arguments in a native image, the {@link Field} being used must be marked
+ * with an {@link ExecutableMode#INTROSPECT introspection} hint so that field annotations
+ * can be read. Full {@link ExecutableMode#INVOKE invocation} hints are only required if
+ * the {@link #resolveAndSet(RegisteredBean, Object)} method of this class is being used
+ * (typically to support private fields).
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -59,40 +66,81 @@ public class AutowiredFieldValueResolver extends AutowiredElementResolver {
 		this.shortcut = shortcut;
 	}
 
+	/**
+	 * Create a new {@link AutowiredFieldValueResolver} for the specified field where
+	 * injection is optional.
+	 * @param fieldName the field name
+	 * @return a new {@link AutowiredFieldValueResolver} instance
+	 */
 	public static AutowiredFieldValueResolver forField(String fieldName) {
 		return new AutowiredFieldValueResolver(fieldName, false, null);
 	}
 
+	/**
+	 * Create a new {@link AutowiredFieldValueResolver} for the specified field where
+	 * injection is required.
+	 * @param fieldName the field name
+	 * @return a new {@link AutowiredFieldValueResolver} instance
+	 */
 	public static AutowiredFieldValueResolver forRequiredField(String fieldName) {
 		return new AutowiredFieldValueResolver(fieldName, true, null);
 	}
 
+	/**
+	 * Return a new {@link AutowiredFieldValueResolver} instance that uses a direct bean
+	 * name injection shortcut
+	 * @param shortcut the shortcut to use
+	 * @return a new {@link AutowiredFieldValueResolver} instance that uses the shortcuts
+	 */
 	public AutowiredFieldValueResolver withShortcut(String beanName) {
 		return new AutowiredFieldValueResolver(this.fieldName, this.required, beanName);
 	}
 
+	/**
+	 * Resolve the field for the specified registered bean and provide it to the given
+	 * action.
+	 * @param registeredBean the registered bean
+	 * @param action the action to execute with the resolved field value
+	 */
 	public void resolve(RegisteredBean registeredBean, ThrowableConsumer<Object> action) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(action, "'action' must not be null");
 		Object resolved = resolve(registeredBean);
-		action.accept(resolved);
+		if (resolved != null) {
+			action.accept(resolved);
+		}
 	}
 
+	/**
+	 * Resolve the field value for the specified registered bean.
+	 * @param registeredBean the registered bean
+	 * @return the resolved field value
+	 */
+	@Nullable
 	public Object resolve(RegisteredBean registeredBean) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
 		return resolveValue(registeredBean, field);
 	}
 
+	/**
+	 * Resolve the field value for the specified registered bean and set it using
+	 * reflection.
+	 * @param registeredBean the registered bean
+	 * @param instance the bean instance
+	 */
 	public void resolveAndSet(RegisteredBean registeredBean, Object instance) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(instance, "'instance' must not be null");
 		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
 		Object resolved = resolveValue(registeredBean, field);
-		ReflectionUtils.makeAccessible(field);
-		ReflectionUtils.setField(field, instance, resolved);
+		if (resolved != null) {
+			ReflectionUtils.makeAccessible(field);
+			ReflectionUtils.setField(field, instance, resolved);
+		}
 	}
 
+	@Nullable
 	private Object resolveValue(RegisteredBean registeredBean, Field field) {
 		String beanName = registeredBean.getBeanName();
 		Class<?> beanClass = registeredBean.getBeanClass();
