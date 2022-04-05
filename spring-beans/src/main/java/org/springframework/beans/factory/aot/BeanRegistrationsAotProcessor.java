@@ -14,36 +14,34 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.context.TrackedAotProcessors;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.dunno.BeanRegistrationsBeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.util.MultiValueMap;
 
 /**
- * {@link BeanFactoryAotProcessor} that generates bean registration code.
+ * {@link BeanFactoryInitializationAotProcessor} that contributes bean registration code.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
-public class BeanRegistrationsBeanFactoryAotProcessor implements BeanFactoryAotProcessor {
+public class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProcessor {
 
 	// FIXME see BeanRegistrationsAotBeanFactoryProcessor
 
 	@Override
 	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
-
-		TrackedAotProcessors aotProcessors = new TrackedAotProcessors(null, null);
-
-
 		MultiValueMap<RegisteredBean, BeanRegistrationAotContribution> dunno;
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			RegisteredBean registeredBean = new RegisteredBean(beanName, beanFactory);
 			// for all RegisteredBeanAotProcessor dunno.add(registeredBean, null);
 			// for add BeanClassAotProcessor
-			RegisteredBeanAotProcessor processor = null;
-			BeanRegistrationAotContribution contribution = processor.processAheadOfTime(registeredBean);
+			BeanRegistrationAotProcessor processor = null;
+			processor.processAheadOfTime(registeredBean);
 			// add
 		}
 		return new BeanRegistrationsBeanFactoryInitializationAotContribution();

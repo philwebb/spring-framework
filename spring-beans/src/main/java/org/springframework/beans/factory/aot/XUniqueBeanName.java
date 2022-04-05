@@ -18,43 +18,38 @@ package org.springframework.beans.factory.aot;
 
 import java.util.Objects;
 
-import groovyjarjarantlr4.v4.runtime.misc.Nullable;
-
-import org.springframework.aot.context.TrackedAotProcessors;
+import org.springframework.aot.context.XTrackedAotProcessors;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.util.Assert;
 
 /**
- * A unique name associated with a {@link BeanFactory}. Used to disambiguate when an
- * {@link AotBeanFactoryProcessor} has already been run.
+ * A unique name associated with a bean defined in a {@link BeanFactory}. Used to
+ * disambiguate when an {@link XAotDefinedBeanProcessor} has already been run.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see AotBeanFactoryProcessor
- * @see TrackedAotProcessors
+ * @see UniqueBeanFactoryName
+ * @see XAotDefinedBeanProcessor
+ * @see XTrackedAotProcessors
  */
-public final class UniqueBeanFactoryName {
+public final class XUniqueBeanName {
 
-	@Nullable
-	private final UniqueBeanFactoryName parent;
+	private final UniqueBeanFactoryName beanFactoryName;
 
-	private final String value;
+	private final String beanName;
 
-	public UniqueBeanFactoryName(String value) {
-		this(null, value);
-	}
-
-	public UniqueBeanFactoryName(@Nullable UniqueBeanFactoryName parent, String value) {
-		Assert.hasText(value, "'value' must not be empty");
-		this.parent = parent;
-		this.value = value;
+	public UniqueBeanName(UniqueBeanFactoryName beanFactoryName, String beanName) {
+		Assert.notNull(beanFactoryName, "'beanFactoryName' must not be null");
+		Assert.hasText(beanName, "'beanName' must not be empty");
+		this.beanFactoryName = beanFactoryName;
+		this.beanName = beanName;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.parent, this.value);
+		return Objects.hash(this.beanFactoryName, this.beanName);
 	}
 
 	@Override
@@ -65,13 +60,14 @@ public final class UniqueBeanFactoryName {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		UniqueBeanFactoryName other = (UniqueBeanFactoryName) obj;
-		return Objects.equals(this.parent, other.parent) && Objects.equals(this.value, other.value);
+		UniqueBeanName other = (UniqueBeanName) obj;
+		return Objects.equals(this.beanFactoryName, other.beanFactoryName)
+				&& Objects.equals(this.beanName, other.beanName);
 	}
 
 	@Override
 	public String toString() {
-		return (this.parent != null) ? this.parent + ":" + this.value : this.value;
+		return this.beanFactoryName + ":" + this.beanName;
 	}
 
 }

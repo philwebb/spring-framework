@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.dunno;
 
+import org.springframework.beans.factory.aot.BeanRegistrationCodeGenerator;
 import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
@@ -25,6 +26,6 @@ import org.springframework.beans.factory.support.RegisteredBean;
  */
 public interface GeneratedBeanRegistrationProvider {
 
-	GeneratedBeanRegistration get(RegisteredBean registeredBean);
+	BeanRegistrationCodeGenerator get(RegisteredBean registeredBean);
 
 }

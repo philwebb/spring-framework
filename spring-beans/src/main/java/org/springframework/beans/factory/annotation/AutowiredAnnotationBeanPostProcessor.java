@@ -39,8 +39,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.aot.context.AotContext;
-import org.springframework.aot.context.AotContribution;
+import org.springframework.aot.context.XAotContext;
+import org.springframework.aot.context.XAotContribution;
 import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generator.CodeContribution;
 import org.springframework.aot.hint.ExecutableMode;
@@ -56,8 +56,8 @@ import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement;
-import org.springframework.beans.factory.aot.AotDefinedBeanProcessor;
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XAotDefinedBeanProcessor;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.aot.UniqueBeanName;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -153,7 +153,7 @@ import org.springframework.util.StringUtils;
  */
 public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationAwareBeanPostProcessor,
 		MergedBeanDefinitionPostProcessor, AotContributingBeanPostProcessor, PriorityOrdered, BeanFactoryAware,
-		AotDefinedBeanProcessor {
+		XAotDefinedBeanProcessor {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -311,7 +311,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	}
 
 	@Override
-	public AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean definedBean) {
+	public XAotContribution processAheadOfTime(UniqueBeanName beanName, XDefinedBean definedBean) {
 		Class<?> beanClass = definedBean.getResolvedBeanClass();
 		InjectionMetadata metadata = findInjectionMetadata(definedBean.getBeanName(), beanClass,
 				definedBean.getMergedBeanDefinition());
@@ -1000,7 +1000,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		}
 	}
 
-	private static class AutowiredAnnotationAotContribution implements AotContribution {
+	private static class AutowiredAnnotationAotContribution implements XAotContribution {
 
 		private static final String SETUP_VARIABLE = "preComputedAutowiredElements";
 
@@ -1014,7 +1014,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		}
 
 		@Override
-		public void applyTo(AotContext aotContext) {
+		public void applyTo(XAotContext aotContext) {
 			GeneratedClassName className = aotContext.getClassNameGenerator().generateClassName(this.beanClass, "autowire");
 			aotContext.getGeneratedFiles().addSourceFile(generateJavaFile(className));
 			aotContext.getGeneratedSpringFactories().forNamedItem("org.springframework.beans.factory.config.BeanClass",

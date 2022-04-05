@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package org.springframework.aot.context;
 
 /**
+ * A contribution generated ahead-of-time that can be applied to an {@link XAotContext}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
-public interface BeanClassAotProcessor extends AotProcessor<Class<?>, BeanRegistrationAotContribution> {
+public interface XAotContribution {
 
-	BeanRegistrationAotContribution processAheadOfTime(Class<?> beanClass);
+	// FIXME delete
+
+	/**
+	 * Apply this contribution to the given {@link XAotContext}.
+	 * @param aotContext the AOT context used to receive the contribution
+	 */
+	void applyTo(XAotContext aotContext);
 
 }

@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
-
-import org.springframework.beans.factory.support.RegisteredBean;
+package org.springframework.beans.factory.aot;
 
 /**
+ * Filter that can be used to exclude AOT processing of a {@link XDefinedBean}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationsBeanFactoryAotProcessor
  */
-public interface RegisteredBeanAotProcessor extends AotProcessor<RegisteredBean, BeanRegistrationAotContribution> {
+@FunctionalInterface
+public interface XDefinedBeanExcludeFilter {
+
+	/**
+	 * Return if the defined bean should be excluded from AOT processing and registration.
+	 * @param definedBean the defined bean
+	 * @return if the defined bean should be excluded
+	 */
+	boolean isExcluded(XDefinedBean definedBean);
 
 }

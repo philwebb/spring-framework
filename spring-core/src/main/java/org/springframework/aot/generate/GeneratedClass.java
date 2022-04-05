@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package org.springframework.aot.generate;
 
 /**
  *
  * @author pwebb
  * @since 6.0
  */
-public interface AotProcessor<S, C> {
+public interface GeneratedClass {
 
-	C processAheadOfTime(S source);
+	// FIXME
+
+	GeneratedMethod addMethod(Object... methodNameParts);
 
 }

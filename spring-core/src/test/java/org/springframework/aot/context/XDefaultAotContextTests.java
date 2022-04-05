@@ -30,12 +30,12 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.mockito.Mockito.mock;
 
 /**
- * Tests for {@link DefaultAotContext}.
+ * Tests for {@link XDefaultAotContext}.
  *
  * @author Phillip Webb
  * @since 6.0
  */
-class DefaultAotContextTests {
+class XDefaultAotContextTests {
 
 	private final ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 
@@ -45,11 +45,11 @@ class DefaultAotContextTests {
 
 	private final RuntimeHints runtimeHints = new RuntimeHints();
 
-	private final AotProcessors processors = mock(AotProcessors.class);
+	private final XAotProcessors processors = mock(XAotProcessors.class);
 
 	@Test
 	void createWithGeneratedFilesAndAotProcessorsCreatesContext() {
-		AotContext context = new DefaultAotContext(this.generatedFiles, this.processors);
+		XAotContext context = new XDefaultAotContext(this.generatedFiles, this.processors);
 		assertThat(context.getClassNameGenerator()).isInstanceOf(ClassNameGenerator.class);
 		assertThat(context.getGeneratedFiles()).isSameAs(this.generatedFiles);
 		assertThat(context.getGeneratedSpringFactories()).isInstanceOf(DefaultGeneratedSpringFactories.class);
@@ -59,7 +59,7 @@ class DefaultAotContextTests {
 
 	@Test
 	void createCreatesContext() {
-		AotContext context = new DefaultAotContext(this.classNameGenerator, this.generatedFiles,
+		XAotContext context = new XDefaultAotContext(this.classNameGenerator, this.generatedFiles,
 				this.generatedSpringFactories, this.runtimeHints, this.processors);
 		assertThat(context.getClassNameGenerator()).isNotNull();
 		assertThat(context.getGeneratedFiles()).isNotNull();
@@ -71,16 +71,16 @@ class DefaultAotContextTests {
 	@Test
 	void createWhenAotProcessorsIsNullThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new DefaultAotContext(this.classNameGenerator, this.generatedFiles,
+				.isThrownBy(() -> new XDefaultAotContext(this.classNameGenerator, this.generatedFiles,
 						this.generatedSpringFactories, this.runtimeHints, null))
 				.withMessage("'processors' must not be null");
-		assertThatIllegalArgumentException().isThrownBy(() -> new DefaultAotContext(this.generatedFiles, null))
+		assertThatIllegalArgumentException().isThrownBy(() -> new XDefaultAotContext(this.generatedFiles, null))
 				.withMessage("'processors' must not be null");
 	}
 
 	@Test
 	void getProcessorsReturnsProcessors() {
-		AotContext context = new DefaultAotContext(this.classNameGenerator, this.generatedFiles,
+		XAotContext context = new XDefaultAotContext(this.classNameGenerator, this.generatedFiles,
 				this.generatedSpringFactories, this.runtimeHints, this.processors);
 		assertThat(context.getProcessors()).isSameAs(this.processors);
 	}

@@ -16,22 +16,23 @@
 
 package org.springframework.beans.factory.aot;
 
+import org.springframework.aot.context.AotProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+
 /**
- * Filter that can be used to exclude AOT processing of a {@link DefinedBean}.
+ * {@link AotProcessor} that makes bean factory initialization contributions by processing
+ * {@link ConfigurableListableBeanFactory} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see BeanFactoryInitializationAotContribution
  */
-@FunctionalInterface
-public interface DefinedBeanExcludeFilter {
+public interface BeanFactoryInitializationAotProcessor
+		extends AotProcessor<ConfigurableListableBeanFactory, BeanFactoryInitializationAotContribution> {
 
-	/**
-	 * Return if the defined bean should be excluded from AOT processing and registration.
-	 * @param definedBean the defined bean
-	 * @return if the defined bean should be excluded
-	 */
-	boolean isExcluded(DefinedBean definedBean);
+	@Override
+	BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory);
 
 }

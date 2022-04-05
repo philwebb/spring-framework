@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
-
-import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
+package org.springframework.aot.generate;
 
 /**
- *
+ * 
  * @author pwebb
  * @since 6.0
  */
-public interface GeneratedBeanFactoryInitializer extends GeneratedClass {
-
-	/**
-	 * @param methodReference
-	 * see {@link DefaultListableBeanFactoryInitializer}
-	 */
-	void addInitializer(MethodReference methodReference);
+public interface MethodReference {
 
 }

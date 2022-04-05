@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.context;
+package org.springframework.beans.factory.aot;
+
+import org.springframework.aot.context.XAotContribution;
+import org.springframework.aot.context.AotProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**
- * A contribution generated ahead-of-time that can be applied to an {@link AotContext}.
+ * {@link AotProcessor} that makes contributions by processing
+ * {@link ConfigurableListableBeanFactory} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface AotContribution {
+public interface XAotBeanFactoryProcessor extends AotProcessor<UniqueBeanFactoryName, ConfigurableListableBeanFactory> {
 
-	/**
-	 * Apply this contribution to the given {@link AotContext}.
-	 * @param aotContext the AOT context used to receive the contribution
-	 */
-	void applyTo(AotContext aotContext);
+	@Override
+	XAotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
+			ConfigurableListableBeanFactory beanFactory);
 
 }

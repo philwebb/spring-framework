@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
+ * Filter that can be used to exclude {@link BeanRegistrationsAotProcessor AOT processing}
+ * of a {@link RegisteredBean}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
-public interface GeneratedClass {
+@FunctionalInterface
+public interface BeanRegistrationExcludeFilter {
 
-	GeneratedMethod addMethod(Object... methodNameParts);
+	/**
+	 * Return if the registered bean should be excluded from AOT processing and
+	 * registration.
+	 * @param registeredBean the registered bean
+	 * @return if the registered bean should be excluded
+	 */
+	boolean isExcluded(RegisteredBean registeredBean);
 
 }

@@ -24,46 +24,46 @@ import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.util.Assert;
 
 /**
- * Default implementation of {@link AotContext}.
+ * Default implementation of {@link XAotContext}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class DefaultAotContext extends DefaultGenerationContext implements AotContext {
+public class XDefaultAotContext extends DefaultGenerationContext implements XAotContext {
 
-	private final AotProcessors processors;
+	private final XAotProcessors processors;
 
 	/**
-	 * Create a new {@link DefaultAotContext} instance backed by the specified
+	 * Create a new {@link XDefaultAotContext} instance backed by the specified
 	 * {@code generatedFiles} and {@code processors}.
 	 * @param generatedFiles the generated files
 	 * @param processors the processors
 	 */
-	public DefaultAotContext(GeneratedFiles generatedFiles, AotProcessors processors) {
+	public XDefaultAotContext(GeneratedFiles generatedFiles, XAotProcessors processors) {
 		super(generatedFiles);
 		Assert.notNull(processors, "'processors' must not be null");
 		this.processors = processors;
 	}
 
 	/**
-	 * Create a new {@link DefaultAotContext} instance backed by the specified items.
+	 * Create a new {@link XDefaultAotContext} instance backed by the specified items.
 	 * @param classNameGenerator the class name generator
 	 * @param generatedFiles the generated files
 	 * @param generatedSpringFactories the generated spring factories
 	 * @param runtimeHints the runtime hints
 	 * @param processors the processors
 	 */
-	public DefaultAotContext(ClassNameGenerator classNameGenerator, GeneratedFiles generatedFiles,
-			GeneratedSpringFactories generatedSpringFactories, RuntimeHints runtimeHints, AotProcessors processors) {
+	public XDefaultAotContext(ClassNameGenerator classNameGenerator, GeneratedFiles generatedFiles,
+			GeneratedSpringFactories generatedSpringFactories, RuntimeHints runtimeHints, XAotProcessors processors) {
 		super(classNameGenerator, generatedFiles, generatedSpringFactories, runtimeHints);
 		Assert.notNull(processors, "'processors' must not be null");
 		this.processors = processors;
 	}
 
 	@Override
-	public AotProcessors getProcessors() {
+	public XAotProcessors getProcessors() {
 		return this.processors;
 	}
 

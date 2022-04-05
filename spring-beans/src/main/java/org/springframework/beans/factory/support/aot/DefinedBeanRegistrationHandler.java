@@ -17,7 +17,7 @@
 package org.springframework.beans.factory.support.aot;
 
 
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
 import org.springframework.lang.Nullable;
 
@@ -26,7 +26,7 @@ import org.springframework.lang.Nullable;
  * customized bean registration. Most bean definitions won't need a custom handling and
  * can rely on the default behavior.
  *
- * specific {@link BeanRegistrationMethodCodeGenerator} for a {@link DefinedBean}.
+ * specific {@link BeanRegistrationMethodCodeGenerator} for a {@link XDefinedBean}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -40,7 +40,7 @@ public interface DefinedBeanRegistrationHandler {
 	 * @param definedBean the defined bean to check
 	 * @return {@code true} if the defined bean should be handled by this handler
 	 */
-	boolean canHandle(DefinedBean definedBean);
+	boolean canHandle(XDefinedBean definedBean);
 
 	/**
 	 * Return the {@link BeanRegistrationMethodCodeGenerator} that should be used.
@@ -49,6 +49,6 @@ public interface DefinedBeanRegistrationHandler {
 	 * use default method code generation
 	 */
 	@Nullable
-	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefinedBean definedBean);
+	BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(XDefinedBean definedBean);
 
 }

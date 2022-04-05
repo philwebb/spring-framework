@@ -31,10 +31,10 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see AotDefinedBeanProcessor
+ * @see XAotDefinedBeanProcessor
  * @see DefinedBeanExcludeFilter
  */
-public final class DefinedBean {
+public final class XDefinedBean {
 
 	// FIXME Might be able to use RegisteredBean
 
@@ -50,7 +50,7 @@ public final class DefinedBean {
 
 	private final ResolvableType resolvedBeanType;
 
-	public DefinedBean(ConfigurableListableBeanFactory beanFactory, UniqueBeanFactoryName beanFactoryName,
+	public XDefinedBean(ConfigurableListableBeanFactory beanFactory, UniqueBeanFactoryName beanFactoryName,
 			String beanName) {
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		Assert.notNull(beanFactoryName, "'beanFactoryName' must not be null");

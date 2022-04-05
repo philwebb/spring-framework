@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package org.springframework.beans.factory.aot;
 
-import org.springframework.beans.factory.support.InstancePostProcessor;
+import org.springframework.aot.context.XAotContribution;
+import org.springframework.aot.context.AotProcessor;
 
 /**
- * Code to handle bean registration.
+ * {@link AotProcessor} that makes contributions by processing {@link XDefinedBean defined
+ * beans}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
-public interface GeneratedBeanRegistration extends GeneratedClass {
+public interface XAotDefinedBeanProcessor extends AotProcessor<UniqueBeanName, XDefinedBean> {
 
-	/**
-	 * @param methodReference
-	 * @see InstancePostProcessor
-	 */
-	void addInstancePostProcessor(MethodReference methodReference);
-
-	void applyTo(GeneratedBeanFactoryInitializer generator);
+	@Override
+	XAotContribution processAheadOfTime(UniqueBeanName beanName, XDefinedBean definedBean);
 
 }

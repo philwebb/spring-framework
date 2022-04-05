@@ -40,6 +40,8 @@ import org.springframework.aot.hint.RuntimeHints;
  */
 public interface GenerationContext {
 
+	// FIXME we need to provide access to the methods in the current class
+
 	/**
 	 * Return the {@link ClassNameGenerator} being used by the context. Allows new class
 	 * names to be generated before they are added to the {@link #getGeneratedFiles()

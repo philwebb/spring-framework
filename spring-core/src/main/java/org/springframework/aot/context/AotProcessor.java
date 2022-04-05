@@ -20,7 +20,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Base interface for all AOT processor interfaces. Allows named instances to be analyzed
- * ahead-of-time and in order to optionally provide an {@link AotContribution}. This
+ * ahead-of-time and in order to optionally provide an {@link XAotContribution}. This
  * interface should not be directly implemented, but instead should be used as the
  * superclass of a more specialized processor.
  *
@@ -28,30 +28,27 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @param <N> the name type
- * @param <T> the instance type
+ * @param <T> the type being processed
+ * @param <C> the contribution type
  */
 @FunctionalInterface
-public interface AotProcessor<N, T> {
+public interface AotProcessor<T, C> {
 
 	/**
-	 * Process the given named instance ahead-of-time and return an
-	 * {@link AotContribution} or {@code null}. The provided name is unique within the
-	 * context of the processor. It can be a {@link Class} or any object that has an
-	 * appropriate {@link Object#toString() toString()} method.
+	 * Process the given named instance ahead-of-time and return an contribution or
+	 * {@code null}.
 	 * <p>
 	 * Processors are free to use any techniques they like to analyze the given instance.
-	 * Most typically use reflection to find fields or methods to use in the
-	 * {@link AotContribution}. Contributions typically generate source code or resource
-	 * files that can be used when the AOT optimized application runs.
+	 * Most typically use reflection to find fields or methods to use in the contribution.
+	 * Contributions typically generate source code or resource files that can be used
+	 * when the AOT optimized application runs.
 	 * <p>
 	 * If the given instance isn't relevant to the processor, it should return a
 	 * {@code null} contribution.
-	 * @param name the name of the item being processed.
 	 * @param instance the instance to process
-	 * @return an {@link AotContribution} or {@code null}
+	 * @return an {@link XAotContribution} or {@code null}
 	 */
 	@Nullable
-	AotContribution processAheadOfTime(N name, T instance);
+	C processAheadOfTime(T instance);
 
 }

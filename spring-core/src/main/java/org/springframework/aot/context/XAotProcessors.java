@@ -24,7 +24,7 @@ package org.springframework.aot.context;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface AotProcessors {
+public interface XAotProcessors {
 
 	/**
 	 * Add the given AOT processor to this collection.
@@ -77,7 +77,7 @@ public interface AotProcessors {
 
 		/**
 		 * Call each processor in the subset with the given named instance and apply all
-		 * resulting {@link AotContribution contributions}.
+		 * resulting {@link XAotContribution contributions}.
 		 * @param name the name of the item being processed.
 		 * @param instance the instance to process
 		 */

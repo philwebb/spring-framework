@@ -16,23 +16,25 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.context.AotContribution;
-import org.springframework.aot.context.AotProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.aot.generate.MethodReference;
+import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 
 /**
- * {@link AotProcessor} that makes contributions by processing
- * {@link ConfigurableListableBeanFactory} instances.
+ * Generates code that performs bean factory initialization.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface AotBeanFactoryProcessor extends AotProcessor<UniqueBeanFactoryName, ConfigurableListableBeanFactory> {
+public interface BeanFactoryInitializationCodeGenerator {
 
-	@Override
-	AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
-			ConfigurableListableBeanFactory beanFactory);
+	/**
+	 * Add an initializer method call.
+	 * @param methodReference a reference to the initialize method to call. The referenced
+	 * method must have the same functional signature as
+	 * {@link DefaultListableBeanFactoryInitializer}.
+	 */
+	void addInitializer(MethodReference methodReference);
 
 }

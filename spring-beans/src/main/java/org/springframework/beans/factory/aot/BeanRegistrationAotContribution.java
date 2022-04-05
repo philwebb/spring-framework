@@ -16,21 +16,24 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.context.AotContribution;
-import org.springframework.aot.context.AotProcessor;
+import org.springframework.aot.generate.GenerationContext;
 
 /**
- * {@link AotProcessor} that makes contributions by processing {@link DefinedBean defined
- * beans}.
+ * AOT contribution from a {@link BeanRegistrationAotProcessor}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see BeanRegistrationAotProcessor
  */
-public interface AotDefinedBeanProcessor extends AotProcessor<UniqueBeanName, DefinedBean> {
+public interface BeanRegistrationAotContribution {
 
-	@Override
-	AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean definedBean);
+	/**
+	 * Apply this contribution to the given {@link BeanRegistrationCodeGenerator}.
+	 * @param generationContext the active generation context
+	 * @param beanRegistrationCodeGenerator the generated registration
+	 */
+	void applyTo(GenerationContext generationContext, BeanRegistrationCodeGenerator beanRegistrationCodeGenerator);
 
 }

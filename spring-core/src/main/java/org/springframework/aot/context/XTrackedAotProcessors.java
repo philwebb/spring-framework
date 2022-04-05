@@ -47,7 +47,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link AotProcessors} implementation that tracks calls to ensure that processors are
+ * {@link XAotProcessors} implementation that tracks calls to ensure that processors are
  * only invoked once-per-name.
  *
  * @author Stephane Nicoll
@@ -55,24 +55,24 @@ import org.springframework.util.StringUtils;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class TrackedAotProcessors implements AotProcessors {
+public class XTrackedAotProcessors implements XAotProcessors {
 
-	private static final Log logger = LogFactory.getLog(TrackedAotProcessors.class);
+	private static final Log logger = LogFactory.getLog(XTrackedAotProcessors.class);
 
 	private final List<AotProcessor<?, ?>> processors = new ArrayList<>();
 
-	private final Consumer<AotContribution> applyAction;
+	private final Consumer<XAotContribution> applyAction;
 
 	private final Tracker tracker;
 
 	/**
-	 * Create a new {@link TrackedAotProcessors} implementation backed by the given
+	 * Create a new {@link XTrackedAotProcessors} implementation backed by the given
 	 * {@link Tracker}.
 	 * @param applyAction the action call when applying AOT contributions
 	 * @param tracker the tracker used to ensure once-per-name invocation (usually a
 	 * {@link FileTracker})
 	 */
-	public TrackedAotProcessors(Consumer<AotContribution> applyAction, Tracker tracker) {
+	public XTrackedAotProcessors(Consumer<XAotContribution> applyAction, Tracker tracker) {
 		Assert.notNull(applyAction, "'applyAction' must not be null");
 		Assert.notNull(tracker, "'tracker' must not be null");
 		this.applyAction = applyAction;
@@ -144,21 +144,21 @@ public class TrackedAotProcessors implements AotProcessors {
 		private void processAndApplyContributions(P processor, N name, T instance) {
 			Class<?> processorImplementationType = processor.getClass();
 			String nameAsString = toString(name);
-			if (TrackedAotProcessors.this.tracker.shouldSkip(processorImplementationType, nameAsString)) {
+			if (XTrackedAotProcessors.this.tracker.shouldSkip(processorImplementationType, nameAsString)) {
 				logger.trace(LogMessage.format("Skipped '%s' with AOT processor '%s'", name,
 						processorImplementationType.getName()));
 				return;
 			}
-			AotContribution contribution = processor.processAheadOfTime(name, instance);
-			TrackedAotProcessors.this.tracker.markProcessed(processorImplementationType, nameAsString);
+			XAotContribution contribution = processor.processAheadOfTime(name, instance);
+			XTrackedAotProcessors.this.tracker.markProcessed(processorImplementationType, nameAsString);
 			logger.trace(LogMessage.format("Processed '%s' with AOT '%s'%s", name,
 					processorImplementationType.getName(), (contribution != null) ? " (no contribution)" : ""));
 			apply(contribution);
 		}
 
-		private void apply(@Nullable AotContribution contribution) {
+		private void apply(@Nullable XAotContribution contribution) {
 			if (contribution != null) {
-				TrackedAotProcessors.this.applyAction.accept(contribution);
+				XTrackedAotProcessors.this.applyAction.accept(contribution);
 			}
 		}
 

@@ -21,16 +21,16 @@ import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import org.springframework.aot.context.AotContribution;
-import org.springframework.aot.context.AotProcessors;
-import org.springframework.aot.context.DefaultAotContext;
-import org.springframework.aot.context.TrackedAotProcessors;
-import org.springframework.aot.context.TrackedAotProcessors.FileTracker;
+import org.springframework.aot.context.XAotContribution;
+import org.springframework.aot.context.XAotProcessors;
+import org.springframework.aot.context.XDefaultAotContext;
+import org.springframework.aot.context.XTrackedAotProcessors;
+import org.springframework.aot.context.XTrackedAotProcessors.FileTracker;
 import org.springframework.aot.generate.DefaultGeneratedSpringFactories;
 import org.springframework.aot.generate.FileSystemGeneratedFiles;
 import org.springframework.aot.generate.GeneratedFiles;
-import org.springframework.beans.factory.aot.AotBeanFactoryProcessor;
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XAotBeanFactoryProcessor;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.aot.DefinedBeanExcludeFilter;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -43,13 +43,13 @@ public class AotProcess {
 		DefaultListableBeanFactory beanFactory = getSourceBeanFactory();
 		GeneratedFiles generatedFiles = getGeneratedFiles();
 		FileTracker tracker = new FileTracker();
-		Deque<AotContribution> contributions = new ArrayDeque<>();
-		AotProcessors aotProcessors = new TrackedAotProcessors(contributions::add, tracker);
-		DefaultAotContext aotContext = new DefaultAotContext(generatedFiles, aotProcessors);
+		Deque<XAotContribution> contributions = new ArrayDeque<>();
+		XAotProcessors aotProcessors = new XTrackedAotProcessors(contributions::add, tracker);
+		XDefaultAotContext aotContext = new XDefaultAotContext(generatedFiles, aotProcessors);
 		aotContext.getProcessors().add(new BeanRegistrationsAotBeanFactoryProcessor());
-		aotContext.getProcessors().allOfType(AotBeanFactoryProcessor.class).processAndApplyContributions(new UniqueBeanFactoryName("default"), beanFactory);
+		aotContext.getProcessors().allOfType(XAotBeanFactoryProcessor.class).processAndApplyContributions(new UniqueBeanFactoryName("default"), beanFactory);
 		while(!contributions.isEmpty()) {
-			AotContribution contribution = contributions.removeFirst();
+			XAotContribution contribution = contributions.removeFirst();
 			contribution.applyTo(aotContext);
 		}
 		DefaultGeneratedSpringFactories springFactories = (DefaultGeneratedSpringFactories) aotContext.getGeneratedSpringFactories();
@@ -70,7 +70,7 @@ public class AotProcess {
 		context.getBeanFactory().registerSingleton("excluder", new DefinedBeanExcludeFilter() {
 
 			@Override
-			public boolean isExcluded(DefinedBean definedBean) {
+			public boolean isExcluded(XDefinedBean definedBean) {
 				return definedBean.getBeanName().equals("excluder") || definedBean.getBeanName().contains("internal");
 			}
 

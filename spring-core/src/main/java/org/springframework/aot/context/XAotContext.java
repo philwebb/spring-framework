@@ -35,16 +35,16 @@ import org.springframework.aot.generate.GenerationContext;
  * @author Andy Wilkinson
  * @since 6.0
  * @see AotProcessor
- * @see AotContribution
+ * @see XAotContribution
  * @see GenerationContext
  */
-public interface AotContext extends GenerationContext {
+public interface XAotContext extends GenerationContext {
 
 	/**
-	 * Return the {@link AotProcessors} being used by the context. Typically used to
+	 * Return the {@link XAotProcessors} being used by the context. Typically used to
 	 * register additional processors or apply further processing.
 	 * @return the AOT processors
 	 */
-	AotProcessors getProcessors();
+	XAotProcessors getProcessors();
 
 }

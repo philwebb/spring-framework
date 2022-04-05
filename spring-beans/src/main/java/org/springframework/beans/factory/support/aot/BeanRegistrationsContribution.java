@@ -19,15 +19,15 @@ package org.springframework.beans.factory.support.aot;
 import java.util.Collection;
 import java.util.Set;
 
-import org.springframework.aot.context.AotContext;
-import org.springframework.aot.context.AotContribution;
-import org.springframework.aot.context.AotProcessors.Subset;
+import org.springframework.aot.context.XAotContext;
+import org.springframework.aot.context.XAotContribution;
+import org.springframework.aot.context.XAotProcessors.Subset;
 import org.springframework.aot.generate.ClassNameGenerator;
 import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.aot.AotBeanClassProcessor;
-import org.springframework.beans.factory.aot.AotDefinedBeanProcessor;
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XAotDefinedBeanProcessor;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.aot.UniqueBeanName;
 import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.support.generate.BeanRegistrationsJavaF
 import org.springframework.javapoet.JavaFile;
 
 /**
- * {@link AotContribution} provided by {@link BeanRegistrationsAotBeanFactoryProcessor} to
+ * {@link XAotContribution} provided by {@link BeanRegistrationsAotBeanFactoryProcessor} to
  * contribute bean registration code.
  *
  * @author Stephane Nicoll
@@ -43,21 +43,21 @@ import org.springframework.javapoet.JavaFile;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class BeanRegistrationsContribution implements AotContribution {
+class BeanRegistrationsContribution implements XAotContribution {
 
 	private final UniqueBeanFactoryName beanFactoryName;
 
-	private final Set<DefinedBean> definedBeans;
+	private final Set<XDefinedBean> definedBeans;
 
 	private final BeanRegistrationsJavaFileGenerator javaFileGenerator;
 
-	private final Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors;
+	private final Collection<XAotDefinedBeanProcessor> aotDefinedBeanProcessors;
 
 	private final Collection<AotBeanClassProcessor> aotBeanClassProcessors;
 
-	BeanRegistrationsContribution(UniqueBeanFactoryName beanFactoryName, Set<DefinedBean> definedBeans,
+	BeanRegistrationsContribution(UniqueBeanFactoryName beanFactoryName, Set<XDefinedBean> definedBeans,
 			BeanRegistrationsJavaFileGenerator javaFileGenerator,
-			Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors,
+			Collection<XAotDefinedBeanProcessor> aotDefinedBeanProcessors,
 			Collection<AotBeanClassProcessor> aotBeanClassProcessors) {
 		this.beanFactoryName = beanFactoryName;
 		this.definedBeans = definedBeans;
@@ -70,7 +70,7 @@ class BeanRegistrationsContribution implements AotContribution {
 		return this.javaFileGenerator;
 	}
 
-	Collection<AotDefinedBeanProcessor> getAotDefinedBeanProcessors() {
+	Collection<XAotDefinedBeanProcessor> getAotDefinedBeanProcessors() {
 		return this.aotDefinedBeanProcessors;
 	}
 
@@ -79,7 +79,7 @@ class BeanRegistrationsContribution implements AotContribution {
 	}
 
 	@Override
-	public void applyTo(AotContext aotContext) {
+	public void applyTo(XAotContext aotContext) {
 		ClassNameGenerator classNameGenerator = aotContext.getClassNameGenerator();
 		GeneratedClassName className = classNameGenerator.generateClassName(this.beanFactoryName, "Registrations");
 		JavaFile generatedJavaFile = this.javaFileGenerator.generateJavaFile(aotContext, this.beanFactoryName,
@@ -91,19 +91,19 @@ class BeanRegistrationsContribution implements AotContribution {
 		applyBeanClassProcessors(aotContext);
 	}
 
-	private void applyBeanDefinitionProcessors(AotContext aotContext) {
-		Subset<AotDefinedBeanProcessor, UniqueBeanName, DefinedBean> processors = aotContext.getProcessors()
-				.allOfType(AotDefinedBeanProcessor.class).and(this.aotDefinedBeanProcessors);
-		for (DefinedBean definedBean : this.definedBeans) {
+	private void applyBeanDefinitionProcessors(XAotContext aotContext) {
+		Subset<XAotDefinedBeanProcessor, UniqueBeanName, XDefinedBean> processors = aotContext.getProcessors()
+				.allOfType(XAotDefinedBeanProcessor.class).and(this.aotDefinedBeanProcessors);
+		for (XDefinedBean definedBean : this.definedBeans) {
 			UniqueBeanName uniqueBeanName = definedBean.getUniqueBeanName();
 			processors.processAndApplyContributions(uniqueBeanName, definedBean);
 		}
 	}
 
-	private void applyBeanClassProcessors(AotContext aotContext) {
+	private void applyBeanClassProcessors(XAotContext aotContext) {
 		Subset<AotBeanClassProcessor, String, Class<?>> processors = aotContext.getProcessors()
 				.allOfType(AotBeanClassProcessor.class).and(this.aotBeanClassProcessors);
-		for (DefinedBean definedBean : this.definedBeans) {
+		for (XDefinedBean definedBean : this.definedBeans) {
 			Class<?> beanClass = definedBean.getResolvedBeanClass();
 			processors.processAndApplyContributions(beanClass.getName(), beanClass);
 		}

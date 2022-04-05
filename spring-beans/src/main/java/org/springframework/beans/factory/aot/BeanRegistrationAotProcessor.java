@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package org.springframework.beans.factory.aot;
+
+import org.springframework.aot.context.AotProcessor;
+import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
- * 
- * @author pwebb
+ * {@link AotProcessor} that makes bean registration contributions by processing
+ * {@link RegisteredBean} instances.
+ *
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
+ * @see BeanRegistrationAotContribution
  */
-public interface MethodReference {
+public interface BeanRegistrationAotProcessor extends AotProcessor<RegisteredBean, BeanRegistrationAotContribution> {
+
+	@Override
+	BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean);
 
 }

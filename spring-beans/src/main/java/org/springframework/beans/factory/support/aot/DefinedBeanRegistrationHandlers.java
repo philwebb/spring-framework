@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.generate.BeanRegistrationMethodCodeGenerator;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
@@ -78,7 +78,7 @@ class DefinedBeanRegistrationHandlers {
 	 * @param definedBean the bean to check
 	 * @return a {@link BeanRegistrationMethodCodeGenerator} instance
 	 */
-	public DefinedBeanRegistrationHandler getHandler(DefinedBean definedBean) {
+	public DefinedBeanRegistrationHandler getHandler(XDefinedBean definedBean) {
 		for (DefinedBeanRegistrationHandler handler : this.handlers) {
 			if (handler.canHandle(definedBean)) {
 				logger.trace(LogMessage.format("Using DefinedBeanRegistrationHandler %s for '%s'",
@@ -96,13 +96,13 @@ class DefinedBeanRegistrationHandlers {
 		static final DefinedBeanRegistrationHandler INSTANCE = new DefaultDefinedBeanRegistrationHandler();
 
 		@Override
-		public boolean canHandle(DefinedBean definedBean) {
+		public boolean canHandle(XDefinedBean definedBean) {
 			return true;
 		}
 
 		@Override
 		@Nullable
-		public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefinedBean definedBean) {
+		public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(XDefinedBean definedBean) {
 			return null;
 		}
 

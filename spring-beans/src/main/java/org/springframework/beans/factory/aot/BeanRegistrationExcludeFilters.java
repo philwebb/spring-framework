@@ -26,31 +26,33 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 /**
- * A managed collection of {@link DefinedBeanExcludeFilter} instances.
+ * A managed collection of {@link BeanRegistrationExcludeFilter} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class DefinedBeanExcludeFilters {
+class BeanRegistrationExcludeFilters {
 
-	private static final Log logger = LogFactory.getLog(DefinedBeanExcludeFilters.class);
+	private static final Log logger = LogFactory.getLog(BeanRegistrationExcludeFilters.class);
 
-	private final List<DefinedBeanExcludeFilter> filters;
+	private final List<BeanRegistrationExcludeFilter> filters;
 
 	/**
 	 * Create a new {@link DefinedBeanExcludeFilters} instance, obtaining filters using
 	 * the default {@link SpringFactoriesLoader} and the given {@link BeanFactory}.
 	 * @param beanFactory the bean factory to use
 	 */
-	public DefinedBeanExcludeFilters(ConfigurableListableBeanFactory beanFactory) {
+	BeanRegistrationExcludeFilters(ConfigurableListableBeanFactory beanFactory) {
 		this(SpringFactoriesLoader.forDefaultResourceLocation(), beanFactory);
 	}
 
@@ -60,23 +62,24 @@ public class DefinedBeanExcludeFilters {
 	 * @param springFactoriesLoader the factories loader to use
 	 * @param beanFactory the bean factory to use
 	 */
-	public DefinedBeanExcludeFilters(SpringFactoriesLoader springFactoriesLoader,
+	BeanRegistrationExcludeFilters(SpringFactoriesLoader springFactoriesLoader,
 			ConfigurableListableBeanFactory beanFactory) {
 		Assert.notNull(springFactoriesLoader, "'springFactoriesLoader' must not be null");
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
-		List<DefinedBeanExcludeFilter> filters = new ArrayList<>();
-		filters.addAll(springFactoriesLoader.load(DefinedBeanExcludeFilter.class));
-		filters.addAll(
-				BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, DefinedBeanExcludeFilter.class).values());
+		List<BeanRegistrationExcludeFilter> filters = new ArrayList<>();
+		filters.addAll(springFactoriesLoader.load(BeanRegistrationExcludeFilter.class));
+		filters.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, BeanRegistrationExcludeFilter.class)
+				.values());
 		AnnotationAwareOrderComparator.sort(filters);
 		this.filters = Collections.unmodifiableList(filters);
 	}
 
-	public boolean isExcluded(DefinedBean definedBean) {
-		Assert.notNull(definedBean, "'definedBean' must not be null");
-		for (DefinedBeanExcludeFilter filter : this.filters) {
-			if (filter.isExcluded(definedBean)) {
-				logger.trace(LogMessage.format("Excluding DefinedBean '%s' due to %s", definedBean.getUniqueBeanName(),
+	boolean isExcluded(RegisteredBean registeredBean) {
+		Assert.notNull(registeredBean, "'registeredBean' must not be null");
+		for (BeanRegistrationExcludeFilter filter : this.filters) {
+			if (filter.isExcluded(registeredBean)) {
+				logger.trace(LogMessage.format("Excluding registered bean '%s' from bean factory %s due to %s",
+						registeredBean.getBeanName(), ObjectUtils.identityToString(registeredBean.getBeanFactory()),
 						filter.getClass().getName()));
 				return true;
 			}

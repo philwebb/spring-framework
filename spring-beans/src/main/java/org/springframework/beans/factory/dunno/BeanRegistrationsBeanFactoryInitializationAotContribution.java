@@ -17,6 +17,10 @@
 package org.springframework.beans.factory.dunno;
 
 import org.springframework.aot.generate.GenerationContext;
+import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
+import org.springframework.beans.factory.aot.BeanRegistrationAotContribution;
+import org.springframework.beans.factory.aot.BeanFactoryInitializationCodeGenerator;
+import org.springframework.beans.factory.aot.BeanRegistrationCodeGenerator;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.util.MultiValueMap;
 
@@ -35,9 +39,9 @@ public class BeanRegistrationsBeanFactoryInitializationAotContribution
 	GeneratedBeanRegistrationProvider factory;
 
 	@Override
-	public void applyTo(GenerationContext generationContext, GeneratedBeanFactoryInitializer generator) {
+	public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCodeGenerator generator) {
 		this.registrations.forEach((registeredBean, registrationContributions) -> {
-			GeneratedBeanRegistration beanRegistrationGenerator = null;
+			BeanRegistrationCodeGenerator beanRegistrationGenerator = null;
 			for (BeanRegistrationAotContribution registrationContribution : registrationContributions) {
 				registrationContribution.applyTo(generationContext, beanRegistrationGenerator);
 			}

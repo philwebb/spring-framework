@@ -18,7 +18,7 @@ package org.springframework.beans.factory.support.aot;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -47,7 +47,7 @@ class DefinedBeanRegistrationHandlersTests {
 				beanFactory);
 		beanFactory.registerBeanDefinition("test",
 				BeanDefinitionBuilder.rootBeanDefinition(TestBean.class).getBeanDefinition());
-		DefinedBean definedBean = new DefinedBean(beanFactory, new UniqueBeanFactoryName("test"), "test");
+		XDefinedBean definedBean = new XDefinedBean(beanFactory, new UniqueBeanFactoryName("test"), "test");
 		assertThat(handlers.getHandler(definedBean)).isSameAs(DefaultDefinedBeanRegistrationHandler.INSTANCE);
 	}
 
@@ -69,7 +69,7 @@ class DefinedBeanRegistrationHandlersTests {
 				beanFactory);
 		beanFactory.registerBeanDefinition("test",
 				BeanDefinitionBuilder.rootBeanDefinition(TestBean.class).getBeanDefinition());
-		DefinedBean definedBean = new DefinedBean(beanFactory, new UniqueBeanFactoryName("test"), "test");
+		XDefinedBean definedBean = new XDefinedBean(beanFactory, new UniqueBeanFactoryName("test"), "test");
 		assertThat(handlers.getHandler(definedBean)).isSameAs(handler4);
 		assertThat(handler1.wasCalled()).isTrue();
 		assertThat(handler2.wasCalled()).isTrue();
@@ -93,13 +93,13 @@ class DefinedBeanRegistrationHandlersTests {
 		}
 
 		@Override
-		public boolean canHandle(DefinedBean definedBean) {
+		public boolean canHandle(XDefinedBean definedBean) {
 			this.called = true;
 			return this.canHandle;
 		}
 
 		@Override
-		public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefinedBean definedBean) {
+		public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(XDefinedBean definedBean) {
 			return null;
 		}
 

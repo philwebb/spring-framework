@@ -75,7 +75,7 @@ class DefinedBeanExcludeFiltersTests {
 		DefinedBeanExcludeFilters filters = new DefinedBeanExcludeFilters(springFactoriesLoader, beanFactory);
 		beanFactory.registerBeanDefinition("test",
 				BeanDefinitionBuilder.rootBeanDefinition(TestBean.class).getBeanDefinition());
-		DefinedBean definedBean = new DefinedBean(beanFactory, new UniqueBeanFactoryName("test"), "test");
+		XDefinedBean definedBean = new XDefinedBean(beanFactory, new UniqueBeanFactoryName("test"), "test");
 		assertThat(filters.isExcluded(definedBean)).isTrue();
 		assertThat(filter1.wasCalled()).isTrue();
 		assertThat(filter2.wasCalled()).isTrue();
@@ -91,7 +91,7 @@ class DefinedBeanExcludeFiltersTests {
 
 		private final int order;
 
-		private DefinedBean definedBean;
+		private XDefinedBean definedBean;
 
 		MockDefinedBeanExcludeFilter(boolean excluded, int order) {
 			this.excluded = excluded;
@@ -99,7 +99,7 @@ class DefinedBeanExcludeFiltersTests {
 		}
 
 		@Override
-		public boolean isExcluded(DefinedBean definedBean) {
+		public boolean isExcluded(XDefinedBean definedBean) {
 			this.definedBean = definedBean;
 			return this.excluded;
 		}

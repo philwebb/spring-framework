@@ -27,7 +27,7 @@ import org.springframework.util.StringUtils;
  * Generates unique class names that can be used in ahead-of-time generated source code.
  * This class is stateful so the same instance should be used for all name generation.
  * Most commonly the class name generator is obtained via an
- * {@link org.springframework.aot.context.AotContext AotContext}.
+ * {@link org.springframework.aot.context.XAotContext AotContext}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

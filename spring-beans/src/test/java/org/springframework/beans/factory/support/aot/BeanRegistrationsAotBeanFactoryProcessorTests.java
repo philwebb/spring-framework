@@ -19,12 +19,12 @@ package org.springframework.beans.factory.support.aot;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.aot.context.AotContribution;
+import org.springframework.aot.context.XAotContribution;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.aot.AotBeanClassProcessor;
-import org.springframework.beans.factory.aot.AotDefinedBeanProcessor;
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XAotDefinedBeanProcessor;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.aot.DefinedBeanExcludeFilter;
 import org.springframework.beans.factory.aot.DefinedBeanExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
@@ -130,7 +130,7 @@ class BeanRegistrationsAotBeanFactoryProcessorTests {
 				.processAheadOfTime(new UniqueBeanFactoryName("testBeanFactory"), beanFactory);
 		assertThat(contribution).isNotNull();
 		assertThat(contribution.getAotDefinedBeanProcessors())
-				.containsExactly((AotDefinedBeanProcessor) beanFactory.getBean("processor"));
+				.containsExactly((XAotDefinedBeanProcessor) beanFactory.getBean("processor"));
 	}
 
 	@Test
@@ -155,12 +155,12 @@ class BeanRegistrationsAotBeanFactoryProcessorTests {
 		}
 
 		@Override
-		public boolean canHandle(DefinedBean definedBean) {
+		public boolean canHandle(XDefinedBean definedBean) {
 			return true;
 		}
 
 		@Override
-		public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(DefinedBean definedBean) {
+		public BeanRegistrationMethodCodeGenerator getBeanRegistrationMethodCodeGenerator(XDefinedBean definedBean) {
 			return (!this.returnGenerator) ? null : new TestBeanRegistrationMethodCodeGenerator();
 		}
 
@@ -176,10 +176,10 @@ class BeanRegistrationsAotBeanFactoryProcessorTests {
 
 	}
 
-	static class TestAotDefinedBeanProcessor implements AotDefinedBeanProcessor {
+	static class TestAotDefinedBeanProcessor implements XAotDefinedBeanProcessor {
 
 		@Override
-		public AotContribution processAheadOfTime(UniqueBeanName beanName, DefinedBean definedBean) {
+		public XAotContribution processAheadOfTime(UniqueBeanName beanName, XDefinedBean definedBean) {
 			return null;
 		}
 
@@ -188,7 +188,7 @@ class BeanRegistrationsAotBeanFactoryProcessorTests {
 	static class TestAotBeanClassProcessor implements AotBeanClassProcessor {
 
 		@Override
-		public AotContribution processAheadOfTime(String beanClassName, Class<?> beanClass) {
+		public XAotContribution processAheadOfTime(String beanClassName, Class<?> beanClass) {
 			return null;
 		}
 

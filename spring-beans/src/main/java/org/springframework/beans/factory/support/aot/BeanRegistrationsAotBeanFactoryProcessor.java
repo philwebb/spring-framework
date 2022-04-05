@@ -27,12 +27,12 @@ import java.util.function.Function;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.aot.context.AotContribution;
+import org.springframework.aot.context.XAotContribution;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.aot.AotBeanClassProcessor;
-import org.springframework.beans.factory.aot.AotBeanFactoryProcessor;
-import org.springframework.beans.factory.aot.AotDefinedBeanProcessor;
-import org.springframework.beans.factory.aot.DefinedBean;
+import org.springframework.beans.factory.aot.XAotBeanFactoryProcessor;
+import org.springframework.beans.factory.aot.XAotDefinedBeanProcessor;
+import org.springframework.beans.factory.aot.XDefinedBean;
 import org.springframework.beans.factory.aot.DefinedBeanExcludeFilters;
 import org.springframework.beans.factory.aot.UniqueBeanFactoryName;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -44,14 +44,14 @@ import org.springframework.beans.factory.support.generate.DefaultBeanRegistratio
 import org.springframework.core.log.LogMessage;
 
 /**
- * {@link AotBeanFactoryProcessor} that contributes code to register beans.
+ * {@link XAotBeanFactoryProcessor} that contributes code to register beans.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryProcessor {
+public class BeanRegistrationsAotBeanFactoryProcessor implements XAotBeanFactoryProcessor {
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationsAotBeanFactoryProcessor.class);
 
@@ -63,7 +63,7 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 	private final Map<ConfigurableListableBeanFactory, DefinedBeanRegistrationHandlers> registrationHandlers = new HashMap<>();
 
-	private final Map<ConfigurableListableBeanFactory, Collection<AotDefinedBeanProcessor>> aotDefinedBeanProcessors = new HashMap<>();
+	private final Map<ConfigurableListableBeanFactory, Collection<XAotDefinedBeanProcessor>> aotDefinedBeanProcessors = new HashMap<>();
 
 	private final Map<ConfigurableListableBeanFactory, Collection<AotBeanClassProcessor>> aotBeanClassProcessors = new HashMap<>();
 
@@ -79,10 +79,10 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 	}
 
 	@Override
-	public AotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
+	public XAotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
 			ConfigurableListableBeanFactory beanFactory) {
 		logger.trace(LogMessage.format("Generating bean registrations for bean factory'%s'", beanFactoryName));
-		Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap = getHandlerMap(beanFactoryName, beanFactory);
+		Map<XDefinedBean, DefinedBeanRegistrationHandler> handlerMap = getHandlerMap(beanFactoryName, beanFactory);
 		if (handlerMap.isEmpty()) {
 			logger.trace(LogMessage.format("No registration contribution for '%s'", beanFactoryName));
 			return null;
@@ -90,7 +90,7 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		logger.trace(LogMessage.format("Contributing %s %s for '%s'", handlerMap.size(),
 				((handlerMap.size() != 1) ? "registrations" : "registration"), beanFactoryName));
 		BeanRegistrationsJavaFileGenerator javaFileGenerator = getJavaFileGenerator(beanFactory, handlerMap);
-		Collection<AotDefinedBeanProcessor> aotDefinedBeanProcessors = this.aotDefinedBeanProcessors
+		Collection<XAotDefinedBeanProcessor> aotDefinedBeanProcessors = this.aotDefinedBeanProcessors
 				.computeIfAbsent(beanFactory, this::getAotDefinedBeanProcessors);
 		Collection<AotBeanClassProcessor> aotBeanClassProcessors = this.aotBeanClassProcessors
 				.computeIfAbsent(beanFactory, this::getAotBeanClassProcessors);
@@ -98,13 +98,13 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 				aotDefinedBeanProcessors, aotBeanClassProcessors);
 	}
 
-	private Map<DefinedBean, DefinedBeanRegistrationHandler> getHandlerMap(UniqueBeanFactoryName beanFactoryName,
+	private Map<XDefinedBean, DefinedBeanRegistrationHandler> getHandlerMap(UniqueBeanFactoryName beanFactoryName,
 			ConfigurableListableBeanFactory beanFactory) {
 		DefinedBeanExcludeFilters excludeFilters = getExcludeFilters(beanFactory);
 		DefinedBeanRegistrationHandlers registrationHandlers = getRegistrationHandlers(beanFactory);
-		Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap = new LinkedHashMap<>();
+		Map<XDefinedBean, DefinedBeanRegistrationHandler> handlerMap = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			DefinedBean definedBean = new DefinedBean(beanFactory, beanFactoryName, beanName);
+			XDefinedBean definedBean = new XDefinedBean(beanFactory, beanFactoryName, beanName);
 			if (excludeFilters.isExcluded(definedBean)) {
 				logger.trace(LogMessage.format("Excluded '%s' from AOT registration and processing", beanName));
 				continue;
@@ -128,7 +128,7 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 
 
 	private BeanRegistrationsJavaFileGenerator getJavaFileGenerator(ConfigurableBeanFactory beanFactory,
-			Map<DefinedBean, DefinedBeanRegistrationHandler> handlerMap) {
+			Map<XDefinedBean, DefinedBeanRegistrationHandler> handlerMap) {
 		Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver = new ConstructorOrFactoryMethodResolver(
 				beanFactory);
 		Map<String, BeanRegistrationMethodCodeGenerator> methodCodeGenerators = new LinkedHashMap<>();
@@ -146,9 +146,9 @@ public class BeanRegistrationsAotBeanFactoryProcessor implements AotBeanFactoryP
 		return new BeanRegistrationsJavaFileGenerator(methodCodeGenerators);
 	}
 
-	private Collection<AotDefinedBeanProcessor> getAotDefinedBeanProcessors(
+	private Collection<XAotDefinedBeanProcessor> getAotDefinedBeanProcessors(
 			ConfigurableListableBeanFactory beanFactory) {
-		Class<AotDefinedBeanProcessor> type = AotDefinedBeanProcessor.class;
+		Class<XAotDefinedBeanProcessor> type = XAotDefinedBeanProcessor.class;
 		return beansOfTypeIncludingAncestors(beanFactory, type);
 	}
 

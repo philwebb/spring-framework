@@ -27,12 +27,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Tests for {@link DefinedBean}.
+ * Tests for {@link XDefinedBean}.
  *
  * @author Phillip Webb
  * @since 6.0
  */
-class DefinedBeanTests {
+class XDefinedBeanTests {
 
 	private DefaultListableBeanFactory beanFactory;
 
@@ -40,7 +40,7 @@ class DefinedBeanTests {
 
 	private UniqueBeanFactoryName beanFactoryName;
 
-	private DefinedBean definedBean;
+	private XDefinedBean definedBean;
 
 	@BeforeEach
 	void setup() {
@@ -49,32 +49,32 @@ class DefinedBeanTests {
 		this.beanDefinition.setTargetType(ResolvableType.forClassWithGenerics(TestBean.class, String.class));
 		this.beanFactory.registerBeanDefinition("testBean", beanDefinition);
 		this.beanFactoryName = new UniqueBeanFactoryName("default");
-		this.definedBean = new DefinedBean(beanFactory, this.beanFactoryName, "testBean");
+		this.definedBean = new XDefinedBean(beanFactory, this.beanFactoryName, "testBean");
 	}
 
 	@Test
 	void createWhenBeanFactoryIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new DefinedBean(null, this.beanFactoryName, "testBean"))
+		assertThatIllegalArgumentException().isThrownBy(() -> new XDefinedBean(null, this.beanFactoryName, "testBean"))
 				.withMessage("'beanFactory' must not be null");
 	}
 
 	@Test
 	void createWhenBeanFactoryNameIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new DefinedBean(this.beanFactory, null, "testBean"))
+		assertThatIllegalArgumentException().isThrownBy(() -> new XDefinedBean(this.beanFactory, null, "testBean"))
 				.withMessage("'beanFactoryName' must not be null");
 	}
 
 	@Test
 	void createWhenBeanNameIsNullThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new DefinedBean(this.beanFactory, this.beanFactoryName, null))
+				.isThrownBy(() -> new XDefinedBean(this.beanFactory, this.beanFactoryName, null))
 				.withMessage("'beanName' must not be empty");
 	}
 
 	@Test
 	void createWhenBeanNameIsEmptyThrowsException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new DefinedBean(this.beanFactory, this.beanFactoryName, ""))
+				.isThrownBy(() -> new XDefinedBean(this.beanFactory, this.beanFactoryName, ""))
 				.withMessage("'beanName' must not be empty");
 	}
 
