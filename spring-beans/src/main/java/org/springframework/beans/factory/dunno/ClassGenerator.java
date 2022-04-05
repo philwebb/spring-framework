@@ -14,32 +14,20 @@
  * limitations under the License.
  */
 
-package com.example;
+package org.springframework.beans.factory.dunno;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.hint.RuntimeHints;
 
-@Service
-public class MyService {
+/**
+ *
+ * @author pwebb
+ * @since 6.0
+ */
+public interface ClassGenerator extends Generator {
 
-	private final MyRepository repository;
+	GeneratedMethods getMethods();
 
-	private final MyMetrics metrics;
-
-	private final String value;
-
-	public MyService(MyRepository repository, MyMetrics metrics, @Value("{test}") String value) {
-		this.repository = repository;
-		this.metrics = metrics;
-		this.value = value;
-	}
-
-	public void example(String thing) {
-	}
-
-	@Override
-	public String toString() {
-		return "MyService using " + this.repository + " and " + this.metrics + " with " + this.value;
-	}
+	RuntimeHints getRuntimeHints();
 
 }

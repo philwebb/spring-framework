@@ -14,32 +14,22 @@
  * limitations under the License.
  */
 
-package com.example;
+package org.springframework.beans.factory.dunno;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 
-@Service
-public class MyService {
+/**
+ *
+ * @author pwebb
+ * @since 6.0
+ */
+public interface BeanFactoryInitializationGenerator extends ClassGenerator {
 
-	private final MyRepository repository;
+	/**
+	 * @param methodReference
+	 * see {@link DefaultListableBeanFactoryInitializer}
+	 */
+	void addInitializer(MethodReference methodReference);
 
-	private final MyMetrics metrics;
-
-	private final String value;
-
-	public MyService(MyRepository repository, MyMetrics metrics, @Value("{test}") String value) {
-		this.repository = repository;
-		this.metrics = metrics;
-		this.value = value;
-	}
-
-	public void example(String thing) {
-	}
-
-	@Override
-	public String toString() {
-		return "MyService using " + this.repository + " and " + this.metrics + " with " + this.value;
-	}
 
 }

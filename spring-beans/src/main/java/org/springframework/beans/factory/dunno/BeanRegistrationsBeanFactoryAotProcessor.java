@@ -14,32 +14,21 @@
  * limitations under the License.
  */
 
-package com.example;
+package org.springframework.beans.factory.dunno;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
-@Service
-public class MyService {
-
-	private final MyRepository repository;
-
-	private final MyMetrics metrics;
-
-	private final String value;
-
-	public MyService(MyRepository repository, MyMetrics metrics, @Value("{test}") String value) {
-		this.repository = repository;
-		this.metrics = metrics;
-		this.value = value;
-	}
-
-	public void example(String thing) {
-	}
+/**
+ * {@link BeanFactoryAotProcessor} that generates bean registration code.
+ *
+ * @author pwebb
+ * @since 6.0
+ */
+public class BeanRegistrationsBeanFactoryAotProcessor implements BeanFactoryAotProcessor {
 
 	@Override
-	public String toString() {
-		return "MyService using " + this.repository + " and " + this.metrics + " with " + this.value;
+	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory source) {
+		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
 }
