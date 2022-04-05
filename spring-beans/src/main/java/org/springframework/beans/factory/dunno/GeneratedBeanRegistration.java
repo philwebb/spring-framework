@@ -16,18 +16,22 @@
 
 package org.springframework.beans.factory.dunno;
 
-import org.springframework.aot.generate.GeneratedMethods;
-import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.beans.factory.support.InstancePostProcessor;
 
 /**
+ * Code to handle bean registration.
  *
  * @author pwebb
  * @since 6.0
  */
-public interface ClassGenerator extends Generator {
+public interface GeneratedBeanRegistration extends GeneratedClass {
 
-	GeneratedMethods getMethods();
+	/**
+	 * @param methodReference
+	 * @see InstancePostProcessor
+	 */
+	void addInstancePostProcessor(MethodReference methodReference);
 
-	RuntimeHints getRuntimeHints();
+	void applyTo(GeneratedBeanFactoryInitializer generator);
 
 }

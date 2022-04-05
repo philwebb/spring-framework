@@ -16,6 +16,8 @@
 
 package org.springframework.beans.factory.dunno;
 
+import org.springframework.aot.generate.GenerationContext;
+
 /**
  *
  * @author pwebb
@@ -23,6 +25,6 @@ package org.springframework.beans.factory.dunno;
  */
 public interface BeanRegistrationAotContribution {
 
-	void applyTo(BeanRegistrationGenerator generator);
+	void applyTo(GenerationContext generationContext, GeneratedBeanRegistration generatedBeanRegistration);
 
 }

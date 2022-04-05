@@ -16,6 +16,8 @@
 
 package org.springframework.beans.factory.dunno;
 
+import org.springframework.aot.generate.GenerationContext;
+
 /**
  *
  * @author pwebb
@@ -23,7 +25,7 @@ package org.springframework.beans.factory.dunno;
  */
 public interface BeanFactoryInitializationAotContribution {
 
-	void applyTo(BeanFactoryInitializationGenerator generator);
+	void applyTo(GenerationContext generationContext, GeneratedBeanFactoryInitializer generator);
 
 
 

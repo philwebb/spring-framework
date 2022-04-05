@@ -16,16 +16,15 @@
 
 package org.springframework.beans.factory.dunno;
 
-import org.springframework.aot.generate.GeneratedFiles;
+import org.springframework.aot.generate.GeneratedMethod;
 
 /**
  *
  * @author pwebb
  * @since 6.0
  */
-public interface Generator {
+public interface GeneratedClass {
 
-	GeneratedFiles getFiles();
-
+	GeneratedMethod addMethod(Object... methodNameParts);
 
 }

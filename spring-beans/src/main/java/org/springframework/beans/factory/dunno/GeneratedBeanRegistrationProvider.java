@@ -16,20 +16,15 @@
 
 package org.springframework.beans.factory.dunno;
 
-import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
+import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
  *
  * @author pwebb
  * @since 6.0
  */
-public interface BeanFactoryInitializationGenerator extends ClassGenerator {
+public interface GeneratedBeanRegistrationProvider {
 
-	/**
-	 * @param methodReference
-	 * see {@link DefaultListableBeanFactoryInitializer}
-	 */
-	void addInitializer(MethodReference methodReference);
-
+	GeneratedBeanRegistration get(RegisteredBean registeredBean);
 
 }

@@ -16,20 +16,19 @@
 
 package org.springframework.beans.factory.dunno;
 
-import org.springframework.beans.factory.support.InstancePostProcessor;
+import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 
 /**
- * Code to handle bean registration.
  *
  * @author pwebb
  * @since 6.0
  */
-public interface BeanRegistrationGenerator extends ClassGenerator {
+public interface GeneratedBeanFactoryInitializer extends GeneratedClass {
 
 	/**
 	 * @param methodReference
-	 * @see InstancePostProcessor
+	 * see {@link DefaultListableBeanFactoryInitializer}
 	 */
-	void addInstancePostProcessor(MethodReference methodReference);
+	void addInitializer(MethodReference methodReference);
 
 }

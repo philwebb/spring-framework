@@ -23,4 +23,6 @@ package org.springframework.beans.factory.dunno;
  */
 public interface BeanClassAotProcessor extends AotProcessor<Class<?>, BeanRegistrationAotContribution> {
 
+	BeanRegistrationAotContribution processAheadOfTime(Class<?> beanClass);
+
 }

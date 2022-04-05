@@ -33,7 +33,7 @@ import org.springframework.javapoet.CodeBlock;
  * @author Andy Wilkinson
  * @since 6.0
  * @see BeanRegistrationCodeGeneratorProvider
- * @see BeanRegistrationsContribution
+ * @see BeanRegistrationsBeanFactoryInitializationAotContribution
  * @see DefaultBeanRegistrationMethodCodeGenerator
  */
 @FunctionalInterface

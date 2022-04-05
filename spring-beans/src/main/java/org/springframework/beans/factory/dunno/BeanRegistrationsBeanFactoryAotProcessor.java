@@ -16,7 +16,10 @@
 
 package org.springframework.beans.factory.dunno;
 
+import org.springframework.aot.context.TrackedAotProcessors;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.util.MultiValueMap;
 
 /**
  * {@link BeanFactoryAotProcessor} that generates bean registration code.
@@ -26,9 +29,24 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  */
 public class BeanRegistrationsBeanFactoryAotProcessor implements BeanFactoryAotProcessor {
 
+	// FIXME see BeanRegistrationsAotBeanFactoryProcessor
+
 	@Override
-	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory source) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
+
+		TrackedAotProcessors aotProcessors = new TrackedAotProcessors(null, null);
+
+
+		MultiValueMap<RegisteredBean, BeanRegistrationAotContribution> dunno;
+		for (String beanName : beanFactory.getBeanDefinitionNames()) {
+			RegisteredBean registeredBean = new RegisteredBean(beanName, beanFactory);
+			// for all RegisteredBeanAotProcessor dunno.add(registeredBean, null);
+			// for add BeanClassAotProcessor
+			RegisteredBeanAotProcessor processor = null;
+			BeanRegistrationAotContribution contribution = processor.processAheadOfTime(registeredBean);
+			// add
+		}
+		return new BeanRegistrationsBeanFactoryInitializationAotContribution();
 	}
 
 }
