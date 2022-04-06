@@ -17,7 +17,6 @@
 package org.springframework.beans.factory.aot;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.dunno.BeanRegistrationsBeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.util.MultiValueMap;
 
@@ -44,7 +43,7 @@ public class BeanRegistrationsAotProcessor implements BeanFactoryInitializationA
 			processor.processAheadOfTime(registeredBean);
 			// add
 		}
-		return new BeanRegistrationsBeanFactoryInitializationAotContribution();
+		return new BeanRegistrationsAotContribution();
 	}
 
 }

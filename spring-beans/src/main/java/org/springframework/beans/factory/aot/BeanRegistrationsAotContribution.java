@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.dunno;
+package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
-import org.springframework.beans.factory.aot.BeanRegistrationAotContribution;
-import org.springframework.beans.factory.aot.BeanFactoryInitializationCodeGenerator;
-import org.springframework.beans.factory.aot.BeanRegistrationCodeGenerator;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.util.MultiValueMap;
 
 /**
- * {@link BeanFactoryInitializationAotContribution} to register beans.
+ * AOT contribution from a {@link BeanRegistrationsAotProcessor} used to register bean
+ * definitions.
  *
  * @author pwebb
  * @since 6.0
+ * @see BeanRegistrationsAotProcessor
  */
-public class BeanRegistrationsBeanFactoryInitializationAotContribution
-		implements BeanFactoryInitializationAotContribution {
+class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotContribution {
 
 	// MVMap? BeanRegistration ->
 	MultiValueMap<RegisteredBean, BeanRegistrationAotContribution> registrations;
 
-	GeneratedBeanRegistrationProvider factory;
+	BeanRegistrationCodeGeneratorFactory factory;
 
 	@Override
 	public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCodeGenerator generator) {
@@ -45,7 +42,7 @@ public class BeanRegistrationsBeanFactoryInitializationAotContribution
 			for (BeanRegistrationAotContribution registrationContribution : registrationContributions) {
 				registrationContribution.applyTo(generationContext, beanRegistrationGenerator);
 			}
-			beanRegistrationGenerator.applyTo(generator);
+			beanRegistrationGenerator.applyTo(generationContext, generator);
 		});
 	}
 

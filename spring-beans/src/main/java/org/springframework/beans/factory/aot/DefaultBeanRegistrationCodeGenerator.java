@@ -16,27 +16,34 @@
 
 package org.springframework.beans.factory.aot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodReference;
+import org.springframework.javapoet.CodeBlock;
 
 /**
- * AOT contribution from a {@link BeanFactoryInitializationAotProcessor} used to
- * initialize a bean factory.
+ * Default implementation of {@link BeanRegistrationCodeGenerator} that should work for
+ * most beans.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanFactoryInitializationAotProcessor
  */
-public interface BeanFactoryInitializationAotContribution {
+public class DefaultBeanRegistrationCodeGenerator implements BeanRegistrationCodeGenerator {
 
-	/**
-	 * Apply this contribution to the given
-	 * {@link BeanFactoryInitializationCodeGenerator}.
-	 * @param generationContext the active generation context
-	 * @param beanFactoryInitializationCode the generated initializer
-	 */
-	void applyTo(GenerationContext generationContext,
-			BeanFactoryInitializationCodeGenerator beanFactoryInitializationCodeGenerator);
+	private final List<CodeBlock> instancePostProcessors = new ArrayList<>();
+
+	@Override
+	public void addInstancePostProcessor(MethodReference methodReference) {
+		// FIXME
+	}
+
+	@Override
+	public void applyTo(GenerationContext generationContext,
+			BeanFactoryInitializationCodeGenerator beanFactoryInitializationCodeGenerator) {
+	}
 
 }

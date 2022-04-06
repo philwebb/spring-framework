@@ -38,13 +38,13 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.config.DependencyDescriptor;
-import org.springframework.beans.factory.generator.config.BeanDefinitionRegistrar.ThrowableConsumer;
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.function.ThrowableFunction;
 
 /**
  * Resolver used to support the autowiring of constructors or factory methods. Typically
@@ -122,16 +122,16 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 
 	/**
 	 * Resolve arguments for the specified registered bean and provide them to the given
-	 * action.
+	 * generator in order to return a result.
 	 * @param registeredBean the registered bean
-	 * @param action the action to execute with the resolved constructor or factory method
-	 * arguments
+	 * @param generator the generator to execute with the resolved constructor or factory
+	 * method arguments
 	 */
-	public void resolve(RegisteredBean registeredBean, ThrowableConsumer<Object[]> action) {
+	public <T> T resolve(RegisteredBean registeredBean, ThrowableFunction<Object[], T> generator) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(action, "'action' must not be null");
+		Assert.notNull(generator, "'action' must not be null");
 		Object[] resolved = resolveArguments(registeredBean, this.lookup.get(registeredBean));
-		action.accept(resolved);
+		return generator.apply(resolved);
 	}
 
 	/**

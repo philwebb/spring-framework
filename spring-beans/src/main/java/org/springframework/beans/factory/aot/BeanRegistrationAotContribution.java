@@ -19,7 +19,8 @@ package org.springframework.beans.factory.aot;
 import org.springframework.aot.generate.GenerationContext;
 
 /**
- * AOT contribution from a {@link BeanRegistrationAotProcessor}.
+ * AOT contribution from a {@link BeanRegistrationAotProcessor} used to register a single
+ * bean definition.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
