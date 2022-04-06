@@ -181,8 +181,7 @@ class AutowiredMethodArgumentsResolverTests {
 
 	private RegisteredBean registerTestBean(DefaultListableBeanFactory beanFactory) {
 		beanFactory.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
-		RegisteredBean registeredBean = new RegisteredBean(beanFactory, "testBean");
-		return registeredBean;
+		return RegisteredBean.of(beanFactory, "testBean");
 	}
 
 	@SuppressWarnings("unused")

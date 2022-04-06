@@ -39,9 +39,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.aot.context.XAotContext;
-import org.springframework.aot.context.XAotContribution;
-import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generator.CodeContribution;
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeanUtils;
@@ -56,17 +53,12 @@ import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement;
-import org.springframework.beans.factory.aot.XAotDefinedBeanProcessor;
-import org.springframework.beans.factory.aot.XDefinedBean;
-import org.springframework.beans.factory.aot.UniqueBeanName;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.generator.AotContributingBeanPostProcessor;
 import org.springframework.beans.factory.generator.BeanInstantiationContribution;
 import org.springframework.beans.factory.generator.InjectionGenerator;
-import org.springframework.beans.factory.generator.config.BeanDefinitionRegistrar.ThrowableConsumer;
 import org.springframework.beans.factory.support.LookupOverride;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -78,10 +70,6 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
-import org.springframework.javapoet.CodeBlock;
-import org.springframework.javapoet.JavaFile;
-import org.springframework.javapoet.MethodSpec;
-import org.springframework.javapoet.TypeSpec;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -152,8 +140,7 @@ import org.springframework.util.StringUtils;
  * @see Value
  */
 public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationAwareBeanPostProcessor,
-		MergedBeanDefinitionPostProcessor, AotContributingBeanPostProcessor, PriorityOrdered, BeanFactoryAware,
-		XAotDefinedBeanProcessor {
+		MergedBeanDefinitionPostProcessor, AotContributingBeanPostProcessor, PriorityOrdered, BeanFactoryAware {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -170,15 +157,9 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 	private final Set<String> lookupMethodsChecked = Collections.newSetFromMap(new ConcurrentHashMap<>(256));
 
-	// FIXME this cache is not hit in a typical Boot app
 	private final Map<Class<?>, Constructor<?>[]> candidateConstructorsCache = new ConcurrentHashMap<>(256);
 
-	// FIXME do we need this cache? For most singletons it seems to be only hit once
-	// from postProcessProperties then postProcessMergedBeanDefinition (both from doCreateBean)
 	private final Map<String, InjectionMetadata> injectionMetadataCache = new ConcurrentHashMap<>(256);
-
-	@Nullable
-	private final PreComputedAutowiredElements preComputedAutowiredElements;
 
 
 	/**
@@ -189,7 +170,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	 */
 	@SuppressWarnings("unchecked")
 	public AutowiredAnnotationBeanPostProcessor() {
-		this.preComputedAutowiredElements = null;
 		this.autowiredAnnotationTypes.add(Autowired.class);
 		this.autowiredAnnotationTypes.add(Value.class);
 
@@ -210,20 +190,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		catch (ClassNotFoundException ex) {
 			// javax.inject API not available - simply skip.
 		}
-	}
-
-	/**
-	 * Create a new {@link AutowiredAnnotationBeanPostProcessor} with pre-computed
-	 * injection elements. This method is indended for use with AOT generated code.
-	 * @param preComputedAutowiredElements consumer to configure the pre-configured
-	 * elements
-	 */
-	protected AutowiredAnnotationBeanPostProcessor(Class<?> targetClass,
-			ThrowableConsumer<PreComputedAutowiredElements> preComputedAutowiredElements) {
-
-		this.preComputedAutowiredElements = new PreComputedAutowiredElements(targetClass);
-		preComputedAutowiredElements.accept(this.preComputedAutowiredElements);
-		this.preComputedAutowiredElements.initialize();
 	}
 
 
@@ -310,18 +276,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 				: null);
 	}
 
-	@Override
-	public XAotContribution processAheadOfTime(UniqueBeanName beanName, XDefinedBean definedBean) {
-		Class<?> beanClass = definedBean.getResolvedBeanClass();
-		InjectionMetadata metadata = findInjectionMetadata(definedBean.getBeanName(), beanClass,
-				definedBean.getMergedBeanDefinition());
-		Collection<InjectedElement> injectedElements = metadata.getInjectedElements();
-		if (!ObjectUtils.isEmpty(injectedElements)) {
-			return new AutowiredAnnotationAotContribution(beanClass, metadata);
-		}
-		return null;
-	}
-
 	private InjectionMetadata findInjectionMetadata(String beanName, Class<?> beanType, RootBeanDefinition beanDefinition) {
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
 		metadata.checkConfigMembers(beanDefinition);
@@ -338,8 +292,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	@Nullable
 	public Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, final String beanName)
 			throws BeanCreationException {
-
-		// FIXME lookups are pretty rare these days
 
 		// Let's check for lookup methods here...
 		if (!this.lookupMethodsChecked.contains(beanName)) {
@@ -515,9 +467,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 
 	private InjectionMetadata findAutowiringMetadata(String beanName, Class<?> clazz, @Nullable PropertyValues pvs) {
-		if (this.preComputedAutowiredElements != null) {
-			return this.preComputedAutowiredElements.getAutowiringMetadata();
-		}
 		// Fall back to class name as cache key, for backwards compatibility with custom callers.
 		String cacheKey = (StringUtils.hasLength(beanName) ? beanName : clazz.getName());
 		// Quick check on the concurrent map first, with minimal locking.
@@ -680,65 +629,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		}
 	}
 
-
-	protected class PreComputedAutowiredElements {
-
-		private final Class<?> targetClass;
-
-		private List<InjectedElement> elements = new ArrayList<>();
-
-		@Nullable
-		private InjectionMetadata autowiringMetadata;
-
-		PreComputedAutowiredElements(Class<?> targetClass) {
-			this.targetClass = targetClass;
-		}
-
-		public void field(String name) {
-			field(this.targetClass, name);
-		}
-
-		public void field(Class<?> clazz, String name) {
-			field(ReflectionUtils.findField(clazz, name));
-		}
-
-		public void field(Field field) {
-			this.elements.add(new AutowiredFieldElement(field, true));
-		}
-
-		public void optionalField(Class<?> clazz, String name) {
-			optionalField(ReflectionUtils.findField(clazz, name));
-		}
-
-		public void optionalField(Field field) {
-			this.elements.add(new AutowiredFieldElement(field, false));
-		}
-
-		public void method(Class<?> clazz, String name, @Nullable Class<?>... paramTypes) {
-			method(ReflectionUtils.findMethod(clazz, name, paramTypes));
-		}
-
-		public void method(Method method) {
-			this.elements.add(new AutowiredMethodElement(method, false, null));
-		}
-
-		public void optionalMethod(Class<?> clazz, String name, @Nullable Class<?>... paramTypes) {
-			optionalMethod(ReflectionUtils.findMethod(clazz, name, paramTypes));
-		}
-
-		public void optionalMethod(Method method) {
-			this.elements.add(new AutowiredMethodElement(method, true, null));
-		}
-
-		void initialize() {
-			this.autowiringMetadata = InjectionMetadata.forElements(this.elements, this.targetClass);
-		}
-
-		InjectionMetadata getAutowiringMetadata() {
-			return this.autowiringMetadata;
-		}
-
-	}
 
 	/**
 	 * Class representing injection information about an annotated field.
@@ -998,65 +888,6 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		public Object resolveShortcut(BeanFactory beanFactory) {
 			return beanFactory.getBean(this.shortcut, this.requiredType);
 		}
-	}
-
-	private static class AutowiredAnnotationAotContribution implements XAotContribution {
-
-		private static final String SETUP_VARIABLE = "preComputedAutowiredElements";
-
-		private final Class<?> beanClass;
-
-		private final InjectionMetadata metadata;
-
-		AutowiredAnnotationAotContribution(Class<?> beanClass, InjectionMetadata metadata) {
-			this.beanClass = beanClass;
-			this.metadata = metadata;
-		}
-
-		@Override
-		public void applyTo(XAotContext aotContext) {
-			GeneratedClassName className = aotContext.getClassNameGenerator().generateClassName(this.beanClass, "autowire");
-			aotContext.getGeneratedFiles().addSourceFile(generateJavaFile(className));
-			aotContext.getGeneratedSpringFactories().forNamedItem("org.springframework.beans.factory.config.BeanClass",
-					this.beanClass).add(BeanPostProcessor.class, className);
-		}
-
-		private JavaFile generateJavaFile(GeneratedClassName className) {
-			return className.javaFileBuilder(generateTypeSpec(className)).build();
-		}
-
-		private TypeSpec generateTypeSpec(GeneratedClassName className) {
-			TypeSpec.Builder builder = className.classBuilder();
-			builder.addJavadoc("Autowiring for {@link $T}.", this.beanClass);
-			builder.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
-			builder.superclass(AutowiredAnnotationBeanPostProcessor.class);
-			builder.addMethod(MethodSpec.constructorBuilder().addCode(generateConstructorCode()).build());
-			return builder.build();
-		}
-
-		private CodeBlock generateConstructorCode() {
-			CodeBlock.Builder builder = CodeBlock.builder();
-			Collection<InjectedElement> elements = this.metadata.getInjectedElements();
-			builder.beginControlFlow("super($T.class, ($L) -> ", this.beanClass, SETUP_VARIABLE);
-			for (InjectedElement element : elements) {
-				builder.addStatement(generateSetupCall(element));
-			}
-			builder.endControlFlow(")");
-			return builder.build();
-		}
-
-		private CodeBlock generateSetupCall(InjectedElement element) {
-			if (element instanceof AutowiredFieldElement fieldElement) {
-				Field field = (Field) fieldElement.member;
-				if (field.getDeclaringClass() == this.beanClass) {
-					return CodeBlock.of("$L.field($S)", SETUP_VARIABLE, field.getName());
-				}
-				return CodeBlock.of("$L.field($T, $S)", SETUP_VARIABLE, field.getDeclaringClass(), field.getName());
-			}
-			throw new IllegalStateException();
-			// FIXME method injection
-		}
-
 	}
 
 }
