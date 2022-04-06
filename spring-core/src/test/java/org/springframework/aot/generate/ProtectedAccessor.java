@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.core.testfixture.aot.generator.visibility;
+package org.springframework.aot.generate;
 
-public class ProtectedParameter {
+@SuppressWarnings("unused")
+public class ProtectedAccessor {
 
-	public ProtectedParameter(ProtectedType type) {
+	ProtectedAccessor() {
 	}
 
+	public String methodWithProtectedParameter(PackagePrivateClass type) {
+		return "test";
+	}
+
+	public PackagePrivateClass methodWithProtectedReturnType() {
+		return new PackagePrivateClass();
+	}
 }
