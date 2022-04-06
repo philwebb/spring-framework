@@ -36,7 +36,7 @@ public class BeanRegistrationsAotProcessor implements BeanFactoryInitializationA
 	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
 		MultiValueMap<RegisteredBean, BeanRegistrationAotContribution> dunno;
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			RegisteredBean registeredBean = new RegisteredBean(beanName, beanFactory);
+			RegisteredBean registeredBean = new RegisteredBean(beanFactory, beanName);
 			// for all RegisteredBeanAotProcessor dunno.add(registeredBean, null);
 			// for add BeanClassAotProcessor
 			BeanRegistrationAotProcessor processor = null;

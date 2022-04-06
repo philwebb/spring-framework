@@ -165,7 +165,7 @@ class AutowiredFieldValueResolverTests {
 
 	private RegisteredBean registerTestBean(DefaultListableBeanFactory beanFactory) {
 		beanFactory.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
-		RegisteredBean registeredBean = new RegisteredBean("testBean", beanFactory);
+		RegisteredBean registeredBean = new RegisteredBean(beanFactory, "testBean");
 		return registeredBean;
 	}
 

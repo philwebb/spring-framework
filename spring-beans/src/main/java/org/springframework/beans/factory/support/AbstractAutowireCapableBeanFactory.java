@@ -1211,7 +1211,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		String outerBean = this.currentlyCreatedBean.get();
 		this.currentlyCreatedBean.set(beanName);
 		try {
-			RegisteredBean registeredBean = new RegisteredBean(beanName, this);
+			RegisteredBean registeredBean = new RegisteredBean(this, beanName);
 			instance = InstanceSupplier.getSuppliedInstance(registeredBean, instanceSupplier);
 		}
 		finally {

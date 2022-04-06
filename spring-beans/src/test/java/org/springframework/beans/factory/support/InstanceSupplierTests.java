@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  */
 class InstanceSupplierTests {
 
-	private RegisteredBean registeredBean = new RegisteredBean("test", new DefaultListableBeanFactory());
+	private RegisteredBean registeredBean = RegisteredBean.of(new DefaultListableBeanFactory(), "test");
 
 	@Test
 	void getWithoutRegisteredBeanThrowsException() {

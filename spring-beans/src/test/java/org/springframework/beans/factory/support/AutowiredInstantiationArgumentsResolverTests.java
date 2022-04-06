@@ -190,7 +190,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 	void resolveNoArgConstructor() {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(NoArgConstructor.class);
 		this.beanFactory.registerBeanDefinition("test", beanDefinition);
-		RegisteredBean registeredBean = new RegisteredBean("test", this.beanFactory);
+		RegisteredBean registeredBean = new RegisteredBean(this.beanFactory, "test");
 		Object[] resolved = AutowiredInstantiationArgumentsResolver.forConstructor().resolve(registeredBean);
 		assertThat(resolved).isEmpty();
 	}
@@ -613,7 +613,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 			});
 			beanDefinitionCustomizer.accept(beanDefinition);
 			beanFactory.registerBeanDefinition(beanName, beanDefinition);
-			return new RegisteredBean(beanName, beanFactory);
+			return new RegisteredBean(beanFactory, beanName);
 		}
 
 		AutowiredInstantiationArgumentsResolver getResolver() {

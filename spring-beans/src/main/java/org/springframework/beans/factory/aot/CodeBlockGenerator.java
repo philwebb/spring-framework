@@ -16,26 +16,15 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.MethodReference;
-import org.springframework.beans.factory.support.InstancePostProcessor;
+import groovyjarjarantlr4.v4.codegen.model.decl.CodeBlock;
 
 /**
- * Generates code that performs bean registration.
- *
- * @author Stephane Nicoll
- * @author Phillip Webb
- * @author Andy Wilkinson
+ * 
+ * @author pwebb
  * @since 6.0
  */
-public interface BeanRegistrationCodeGenerator {
+public interface CodeBlockGenerator {
 
-	/**
-	 * Add an instance post processor method call.
-	 * @param methodReference a reference to the post-process method to call. The
-	 * referenced method must have the same functional signature as
-	 * {@link InstancePostProcessor}.
-	 * @see InstancePostProcessor
-	 */
-	void addInstancePostProcessor(MethodReference methodReference);
+	CodeBlock generateCode();
 
 }
