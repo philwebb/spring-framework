@@ -363,6 +363,9 @@ class BeanDefinitionPropertiesCodeGenerator {
 		@Override
 		public CodeBlock generateCode(String name, Object value, ResolvableType type,
 				InstanceCodeGenerationService service) {
+			// FIXME we need to somehow trigger AotProcessors for inner beans definitions
+			// RegisteredBean BeanRegistrationAotProcessor
+			// Perhaps not the job of this class
 			if (value instanceof BeanDefinition beanDefinition) {
 				GeneratedMethod generatedMethod = BeanDefinitionPropertiesCodeGenerator.this.generatedMethods
 						.add("get", this.name, name).generateBy(builder -> {
