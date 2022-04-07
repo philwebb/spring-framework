@@ -16,26 +16,41 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.MethodReference;
-import org.springframework.beans.factory.support.InstancePostProcessor;
+import groovyjarjarantlr4.v4.codegen.CodeGenerator;
+
+import org.springframework.aot.generate.GenerationContext;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.javapoet.CodeBlock;
 
 /**
- * Generates code that performs bean registration.
+ * {@link BeanRegistrationCode} with {@link CodeGenerator} support. Instances of this
+ * interface can be supplied by a {@link BeanRegistrationCodeGeneratorFactory} if custom
+ * code generation is required.
+ * <p>
+ * Implementations can assume that they will be included in the body of a new method must
+ * generates code that returns a fully configured {@link BeanDefinition}. For
+ * example:<blockquote><pre class="code">
+ * RootBeanDefinition beanDefinition = new RootBeanDefinition(MyBean.class);
+ * beanDefinition.setPrimary(true);
+ * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
+ * ...
+ * return beanDefinition;
+ * </pre></blockquote>
+ * <p>
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see BeanRegistrationCodeGeneratorFactory
  */
-public interface BeanRegistrationCodeGenerator {
+public interface BeanRegistrationCodeGenerator extends BeanRegistrationCode {
 
 	/**
-	 * Add an instance post processor method call.
-	 * @param methodReference a reference to the post-process method to call. The
-	 * referenced method must have the same functional signature as
-	 * {@link InstancePostProcessor}.
-	 * @see InstancePostProcessor
+	 * The variable name that should be used when creating the bean definition.
 	 */
-	void addInstancePostProcessor(MethodReference methodReference);
+	static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
+
+	CodeBlock generateCode(GenerationContext generationContext);
 
 }

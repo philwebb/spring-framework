@@ -16,25 +16,25 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodReference;
+import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 
 /**
- * AOT contribution from a {@link BeanRegistrationAotProcessor} used to register a single
- * bean definition.
+ * Generates code that performs bean factory initialization.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationAotProcessor
  */
-public interface BeanRegistrationAotContribution {
+public interface BeanFactoryInitializationCode {
 
 	/**
-	 * Apply this contribution to the given {@link BeanRegistrationCode}.
-	 * @param generationContext the active generation context
-	 * @param beanRegistrationCode the generated registration
+	 * Add an initializer method call.
+	 * @param methodReference a reference to the initialize method to call. The referenced
+	 * method must have the same functional signature as
+	 * {@link DefaultListableBeanFactoryInitializer}.
 	 */
-	void applyTo(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode);
+	void addInitializer(MethodReference methodReference);
 
 }

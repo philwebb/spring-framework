@@ -32,11 +32,11 @@ public interface BeanFactoryInitializationAotContribution {
 
 	/**
 	 * Apply this contribution to the given
-	 * {@link BeanFactoryInitializationCodeGenerator}.
+	 * {@link BeanFactoryInitializationCode}.
 	 * @param generationContext the active generation context
 	 * @param beanFactoryInitializationCode the generated initializer
 	 */
 	void applyTo(GenerationContext generationContext,
-			BeanFactoryInitializationCodeGenerator beanFactoryInitializationCodeGenerator);
+			BeanFactoryInitializationCode beanFactoryInitializationCodeGenerator);
 
 }

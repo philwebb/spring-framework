@@ -150,8 +150,9 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 * @param registeredBean the registered bean
 	 * @return an instance of the bean
 	 */
-	public Object resolveAndInstantiate(RegisteredBean registeredBean) {
-		return resolveAndInstantiate(registeredBean, Object.class);
+	@SuppressWarnings("unchecked")
+	public <T> T resolveAndInstantiate(RegisteredBean registeredBean) {
+		return (T) resolveAndInstantiate(registeredBean, Object.class);
 	}
 
 	/**

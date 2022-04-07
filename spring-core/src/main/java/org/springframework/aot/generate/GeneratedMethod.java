@@ -66,6 +66,8 @@ public final class GeneratedMethod {
 		return this.spec;
 	}
 
+	// FIXME rename to using
+
 	/**
 	 * Generate the method using the given consumer.
 	 * @param builder a consumer that will accept a method spec builder and configure it

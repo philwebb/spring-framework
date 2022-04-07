@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate;
+package org.springframework.beans.factory.aot;
 
-import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
-
-import org.springframework.javapoet.TypeSpec;
+import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
  *
  * @author pwebb
  * @since 6.0
+ * @see BeanRegistrationCodeGeneratorFactory
  */
-public class GeneratedClass {
+class BeanRegistrationCodeGeneratorFactories {
 
-	// FIXME
-
-	private final GeneratedClassName name = null;
-
-	private TypeSpec spec;
-
-	public GeneratedClass using(Consumer<TypeSpec.Builder> builder) {
-		return this;
+	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+			InnerBeanRegistrationMethodGenerator innerBeanCodeGenerator) {
+		return null;
 	}
-
 
 }

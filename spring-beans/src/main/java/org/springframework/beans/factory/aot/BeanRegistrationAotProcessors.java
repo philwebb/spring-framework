@@ -16,15 +16,11 @@
 
 package org.springframework.beans.factory.aot;
 
-import groovyjarjarantlr4.v4.codegen.model.decl.CodeBlock;
-
 /**
- * 
+ *
  * @author pwebb
  * @since 6.0
  */
-public interface CodeBlockGenerator {
-
-	CodeBlock generateCode();
-
+public interface BeanRegistrationAotProcessors extends BeanRegistrationAotProcessor {
+ // FIXME Tracking
 }

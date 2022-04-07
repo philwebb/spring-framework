@@ -21,29 +21,42 @@ import java.util.List;
 
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.util.Assert;
 
 /**
- * Default implementation of {@link BeanRegistrationCodeGenerator} that should work for
- * most beans.
+ * Default implementation of {@link BeanRegistrationCode} that should work for most beans.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see BeanRegistrationCodeGeneratorFactory
  */
 public class DefaultBeanRegistrationCodeGenerator implements BeanRegistrationCodeGenerator {
 
-	private final List<CodeBlock> instancePostProcessors = new ArrayList<>();
+	private final GenerationContext generationContext;
 
-	@Override
-	public void addInstancePostProcessor(MethodReference methodReference) {
-		// FIXME
+	private final RegisteredBean registeredBean;
+
+	private final List<MethodReference> postProcessors = new ArrayList<>();
+
+
+	public DefaultBeanRegistrationCodeGenerator(GenerationContext generationContext, RegisteredBean registeredBean) {
+		this.generationContext = generationContext;
+		this.registeredBean = registeredBean;
 	}
 
 	@Override
-	public void applyTo(GenerationContext generationContext,
-			BeanFactoryInitializationCodeGenerator beanFactoryInitializationCodeGenerator) {
+	public void addInstancePostProcessor(MethodReference methodReference) {
+		Assert.notNull(methodReference, "'methodReference' must not be null");
+		this.postProcessors.add(methodReference);
+	}
+
+	@Override
+	public CodeBlock generateCode(GenerationContext generationContext) {
+		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
 }

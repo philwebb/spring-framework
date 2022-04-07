@@ -34,14 +34,10 @@ public class BeanRegistrationsAotProcessor implements BeanFactoryInitializationA
 
 	@Override
 	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
+		BeanRegistrationMethodGenerator.get(processors, factories)
 		MultiValueMap<RegisteredBean, BeanRegistrationAotContribution> dunno;
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			RegisteredBean registeredBean = new RegisteredBean(beanFactory, beanName);
-			// for all RegisteredBeanAotProcessor dunno.add(registeredBean, null);
-			// for add BeanClassAotProcessor
-			BeanRegistrationAotProcessor processor = null;
-			processor.processAheadOfTime(registeredBean);
-			// add
+			RegisteredBean registeredBean = RegisteredBean.of(beanFactory, beanName);
 		}
 		return new BeanRegistrationsAotContribution();
 	}

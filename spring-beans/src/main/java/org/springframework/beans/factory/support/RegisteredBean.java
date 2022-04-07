@@ -48,6 +48,8 @@ public final class RegisteredBean {
 	private final Supplier<String> beanName;
 
 	private final Supplier<RootBeanDefinition> mergedBeanDefinition;
+	
+	// FIXME is inner
 
 	private RegisteredBean(ConfigurableBeanFactory beanFactory, Supplier<String> beanName,
 			Supplier<RootBeanDefinition> mergedBeanDefinition) {

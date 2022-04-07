@@ -16,9 +16,10 @@
 
 package org.springframework.beans.factory.aot;
 
-import groovyjarjarantlr4.v4.runtime.misc.Nullable;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.lang.Nullable;
 
 /**
  * Strategy interface that can be used to create a custom
@@ -34,13 +35,14 @@ import org.springframework.beans.factory.support.RegisteredBean;
 public interface BeanRegistrationCodeGeneratorFactory {
 
 	/**
-	 * Return the {@link BeanRegistrationCodeGenerator} that should be used for the given
+	 * Return the {@link BeanRegistrationCode} that should be used for the given
 	 * registered bean or {@code null} if the registered bean isn't supported by this
 	 * factory.
 	 * @param registeredBean the registered bean
-	 * @return a {@link BeanRegistrationCodeGenerator} instance or {@code null}
+	 * @return a {@link BeanRegistrationCode} instance or {@code null}
 	 */
 	@Nullable
-	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean);
+	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+			InnerBeanRegistrationMethodGenerator innerBeanCodeGenerator);
 
 }

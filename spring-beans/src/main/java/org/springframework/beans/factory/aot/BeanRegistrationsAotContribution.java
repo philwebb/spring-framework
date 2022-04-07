@@ -36,9 +36,9 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 	BeanRegistrationCodeGeneratorFactory factory;
 
 	@Override
-	public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCodeGenerator generator) {
+	public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCode generator) {
 		this.registrations.forEach((registeredBean, registrationContributions) -> {
-			BeanRegistrationCodeGenerator beanRegistrationGenerator = null;
+			BeanRegistrationCode beanRegistrationGenerator = null;
 			for (BeanRegistrationAotContribution registrationContribution : registrationContributions) {
 				registrationContribution.applyTo(generationContext, beanRegistrationGenerator);
 			}
