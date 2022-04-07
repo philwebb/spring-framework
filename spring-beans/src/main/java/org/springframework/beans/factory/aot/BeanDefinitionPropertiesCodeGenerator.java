@@ -53,7 +53,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Code generator to set {@link RootBeanDefinition} properties.
+ * Internal code generator to set {@link RootBeanDefinition} properties.
  * <p>
  * Generates code in the following form:<blockquote><pre class="code">
  * beanDefinition.setPrimary(true);
@@ -97,8 +97,8 @@ class BeanDefinitionPropertiesCodeGenerator {
 	BeanDefinitionPropertiesCodeGenerator(GeneratedMethods generatedMethods,
 			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver) {
 		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
-		this.suppliedInstanceBeanDefinitionCodeGenerator = new InstanceSupplierCodeGenerator(
-				generatedMethods, constructorOrFactoryMethodResolver);
+		this.suppliedInstanceBeanDefinitionCodeGenerator = new InstanceSupplierCodeGenerator(generatedMethods,
+				constructorOrFactoryMethodResolver, null);
 		this.generatedMethods = generatedMethods;
 	}
 
@@ -192,8 +192,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 			if (!propertyValues.isEmpty()) {
 				for (PropertyValue propertyValue : propertyValues) {
 					Object value = propertyValue.getValue();
-					CodeBlock code = instanceCodeGenerationService.generateCode(propertyValue.getName(),
-							value);
+					CodeBlock code = instanceCodeGenerationService.generateCode(propertyValue.getName(), value);
 					builder.addStatement("$L.getPropertyValues().addPropertyValue($S, $L)", BEAN_DEFINITION_VARIABLE,
 							propertyValue.getName(), code);
 				}
@@ -236,9 +235,11 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 		private Object toRole(int value) {
 			return switch (value) {
-				case BeanDefinition.ROLE_INFRASTRUCTURE -> CodeBlock.builder().add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
-				case BeanDefinition.ROLE_SUPPORT -> CodeBlock.builder().add("$T.ROLE_SUPPORT", BeanDefinition.class).build();
-				default -> value;
+			case BeanDefinition.ROLE_INFRASTRUCTURE -> CodeBlock.builder()
+					.add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
+			case BeanDefinition.ROLE_SUPPORT -> CodeBlock.builder().add("$T.ROLE_SUPPORT", BeanDefinition.class)
+					.build();
+			default -> value;
 			};
 		}
 

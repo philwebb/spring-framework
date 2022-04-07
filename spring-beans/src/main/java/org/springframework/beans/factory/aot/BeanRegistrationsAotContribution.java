@@ -16,9 +16,9 @@
 
 package org.springframework.beans.factory.aot;
 
+import java.util.List;
+
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.util.MultiValueMap;
 
 /**
  * AOT contribution from a {@link BeanRegistrationsAotProcessor} used to register bean
@@ -30,20 +30,17 @@ import org.springframework.util.MultiValueMap;
  */
 class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotContribution {
 
-	// MVMap? BeanRegistration ->
-	MultiValueMap<RegisteredBean, BeanRegistrationAotContribution> registrations;
+	private final List<ContributedBeanRegistration> contributedBeanRegistrations;
 
-	BeanRegistrationCodeGeneratorFactory factory;
+	BeanRegistrationsAotContribution(List<ContributedBeanRegistration> contributedBeanRegistrations) {
+		this.contributedBeanRegistrations = contributedBeanRegistrations;
+	}
 
 	@Override
 	public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCode generator) {
-		this.registrations.forEach((registeredBean, registrationContributions) -> {
-			BeanRegistrationCode beanRegistrationGenerator = null;
-			for (BeanRegistrationAotContribution registrationContribution : registrationContributions) {
-				registrationContribution.applyTo(generationContext, beanRegistrationGenerator);
-			}
-			beanRegistrationGenerator.applyTo(generationContext, generator);
-		});
+		for (ContributedBeanRegistration contributedBeanRegistration : contributedBeanRegistrations) {
+			contributedBeanRegistration.generateRegistrationMethod(generationContext);
+		}
 	}
 
 }

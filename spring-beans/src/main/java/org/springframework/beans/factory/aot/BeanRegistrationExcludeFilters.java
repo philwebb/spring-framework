@@ -43,6 +43,8 @@ import org.springframework.util.ObjectUtils;
  */
 class BeanRegistrationExcludeFilters {
 
+	// FIXME delete
+
 	private static final Log logger = LogFactory.getLog(BeanRegistrationExcludeFilters.class);
 
 	private final List<BeanRegistrationExcludeFilter> filters;

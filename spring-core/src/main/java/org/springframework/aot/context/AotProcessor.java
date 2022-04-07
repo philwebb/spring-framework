@@ -34,6 +34,8 @@ import org.springframework.lang.Nullable;
 @FunctionalInterface
 public interface AotProcessor<T, C> {
 
+	// FIXME we might not need this now!
+
 	/**
 	 * Process the given named instance ahead-of-time and return an contribution or
 	 * {@code null}.

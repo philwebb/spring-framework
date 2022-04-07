@@ -36,7 +36,7 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.util.ClassUtils;
 
 /**
- * Code generator to create an {@link InstanceSupplier}.
+ * Internal code generator to create an {@link InstanceSupplier}.
  * <p>
  * Generates code in the following form:<pre class="code">{@code
  * InstanceSupplier.of(this::getMyBeanInstance);
@@ -49,7 +49,7 @@ import org.springframework.util.ClassUtils;
  */
 class InstanceSupplierCodeGenerator {
 
-	static final String BEAN_FACTORY_VARIABLE = BeanRegistrationMethodCodeGenerator.BEAN_FACTORY_VARIABLE;
+	static final String BEAN_FACTORY_VARIABLE = BeanDefinitionPropertiesCodeGenerator.BEAN_FACTORY_VARIABLE;
 
 	private final GeneratedMethods generatedMethods;
 
@@ -62,7 +62,8 @@ class InstanceSupplierCodeGenerator {
 	 * factory method for a bean definition
 	 */
 	InstanceSupplierCodeGenerator(GeneratedMethods generatedMethods,
-			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver) {
+			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver,
+			InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator) {
 		this.generatedMethods = generatedMethods;
 		this.constructorOrFactoryMethodResolver = constructorOrFactoryMethodResolver;
 	}
@@ -140,8 +141,8 @@ class InstanceSupplierCodeGenerator {
 				builder.add(".resolvedBy($T::new)", declaringClass);
 				return;
 			}
-			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.name,
-					constructor, declaringClass);
+			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.name, constructor,
+					declaringClass);
 			builder.add(".resolvedBy($L, this::$L)", BEAN_FACTORY_VARIABLE, getBeanInstanceMethod.getName());
 		}
 
@@ -180,8 +181,7 @@ class InstanceSupplierCodeGenerator {
 				builder.add(", $L", parametersCode);
 			}
 			builder.add(")");
-			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.name,
-					factoryMethod);
+			GeneratedMethod getBeanInstanceMethod = generateGetBeanInstanceMethod(this.name, factoryMethod);
 			builder.add(".resolvedBy($L, this::$L)", BEAN_FACTORY_VARIABLE, getBeanInstanceMethod.getName());
 		}
 

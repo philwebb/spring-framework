@@ -16,9 +16,10 @@
 
 package org.springframework.beans.factory.aot;
 
+import java.util.List;
+
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.util.MultiValueMap;
 
 /**
  * {@link BeanFactoryInitializationAotProcessor} that contributes bean registration code.
@@ -30,16 +31,18 @@ import org.springframework.util.MultiValueMap;
  */
 public class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProcessor {
 
-	// FIXME see BeanRegistrationsAotBeanFactoryProcessor
-
 	@Override
-	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
-		BeanRegistrationMethodGenerator.get(processors, factories)
-		MultiValueMap<RegisteredBean, BeanRegistrationAotContribution> dunno;
+	public BeanRegistrationsAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
+		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory);
+		List<ContributedBeanRegistration> contributedBeanRegistrations = null;
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			RegisteredBean registeredBean = RegisteredBean.of(beanFactory, beanName);
+			ContributedBeanRegistration contributedBeanRegistration = manager
+					.getContributedBeanRegistration(registeredBean);
+			if (contributedBeanRegistration != null) {
+				contributedBeanRegistrations.add(contributedBeanRegistration);
+			}
 		}
-		return new BeanRegistrationsAotContribution();
+		return new BeanRegistrationsAotContribution(contributedBeanRegistrations);
 	}
-
 }

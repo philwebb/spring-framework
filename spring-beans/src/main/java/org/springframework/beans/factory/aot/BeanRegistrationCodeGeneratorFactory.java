@@ -16,8 +16,6 @@
 
 package org.springframework.beans.factory.aot;
 
-import java.util.function.Function;
-
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.lang.Nullable;
 

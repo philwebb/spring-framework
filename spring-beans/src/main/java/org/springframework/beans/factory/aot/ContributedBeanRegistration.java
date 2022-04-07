@@ -16,44 +16,44 @@
 
 package org.springframework.beans.factory.aot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.util.Assert;
 
 /**
- * Default implementation of {@link BeanRegistrationCode} that should work for most beans.
+ * Internal helper class used to manage contributed bean registrations. Holds the
+ * {@link BeanRegistrationCodeGenerator code generator} and any
+ * {@link BeanRegistrationAotContribution AOT contributions} to apply.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationCodeGeneratorFactory
  */
-public class DefaultBeanRegistrationCodeGenerator implements BeanRegistrationCodeGenerator {
+class ContributedBeanRegistration {
 
 	private final RegisteredBean registeredBean;
 
-	private final List<MethodReference> postProcessors = new ArrayList<>();
+	private final List<BeanRegistrationAotContribution> aotContributions;
 
+	private final BeanRegistrationCodeGenerator codeGenerator;
 
-	public DefaultBeanRegistrationCodeGenerator(RegisteredBean registeredBean) {
+	ContributedBeanRegistration(RegisteredBean registeredBean, List<BeanRegistrationAotContribution> aotContributions,
+			BeanRegistrationCodeGenerator codeGenerator) {
 		this.registeredBean = registeredBean;
+		this.aotContributions = aotContributions;
+		this.codeGenerator = codeGenerator;
 	}
 
-	@Override
-	public void addInstancePostProcessor(MethodReference methodReference) {
-		Assert.notNull(methodReference, "'methodReference' must not be null");
-		this.postProcessors.add(methodReference);
-	}
-
-	@Override
-	public CodeBlock generateCode(GenerationContext generationContext) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	MethodReference generateRegistrationMethod(GenerationContext generationContext) {
+		this.aotContributions.forEach((aotContribution) -> aotContribution.applyTo(generationContext, codeGenerator));
+		CodeBlock generatedCode = this.codeGenerator.generateCode(generationContext);
+		// wrap in a function named something or other
+		// return a reference to the function
+		return null;
 	}
 
 }
