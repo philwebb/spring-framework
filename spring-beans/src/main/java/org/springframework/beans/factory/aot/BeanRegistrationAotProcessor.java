@@ -16,11 +16,11 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.context.AotProcessor;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.lang.Nullable;
 
 /**
- * {@link AotProcessor} that makes bean registration contributions by processing
+ * AOT processor that makes bean registration contributions by processing
  * {@link RegisteredBean} instances.
  *
  * @author Stephane Nicoll
@@ -29,9 +29,23 @@ import org.springframework.beans.factory.support.RegisteredBean;
  * @since 6.0
  * @see BeanRegistrationAotContribution
  */
-public interface BeanRegistrationAotProcessor extends AotProcessor<RegisteredBean, BeanRegistrationAotContribution> {
+public interface BeanRegistrationAotProcessor {
 
-	@Override
+	/**
+	 * Process the given {@link RegisteredBean} instance ahead-of-time and return an
+	 * contribution or {@code null}.
+	 * <p>
+	 * Processors are free to use any techniques they like to analyze the given instance.
+	 * Most typically use reflection to find fields or methods to use in the contribution.
+	 * Contributions typically generate source code or resource files that can be used
+	 * when the AOT optimized application runs.
+	 * <p>
+	 * If the given instance isn't relevant to the processor, it should return a
+	 * {@code null} contribution.
+	 * @param instance the instance to process
+	 * @return a {@link BeanRegistrationAotContribution} or {@code null}
+	 */
+	@Nullable
 	BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean);
 
 }

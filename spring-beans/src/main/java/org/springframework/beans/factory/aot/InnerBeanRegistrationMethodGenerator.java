@@ -18,16 +18,27 @@ package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
+ * Interface passed to {@link BeanRegistrationCodeGeneratorFactory} so that inner-bean
+ * registration can be supported.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  */
 @FunctionalInterface
 public interface InnerBeanRegistrationMethodGenerator {
 
+	/**
+	 * Generate a new method that will create a {@link BeanDefinition} for the inner-bean.
+	 * @param generationContext the generation context
+	 * @param innerRegisteredBean the inner-bean
+	 * @return a reference to the newly generated method
+	 */
 	MethodReference generateInnerBeanDefinitionMethod(GenerationContext generationContext,
 			RegisteredBean innerRegisteredBean);
 

@@ -17,7 +17,7 @@
 package org.springframework.aot.context;
 
 /**
- * A managed collection of {@link AotProcessor} instances.
+ * A managed collection of {@link XAotProcessor} instances.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -32,7 +32,7 @@ public interface XAotProcessors {
 	 * @param <T> the item type used by the processor
 	 * @param aotProcessor the AOT processor to add
 	 */
-	<N, T> void add(AotProcessor<N, T> aotProcessor);
+	<N, T> void add(XAotProcessor<N, T> aotProcessor);
 
 	/**
 	 * Remove the given AOT processor to this collection.
@@ -40,7 +40,7 @@ public interface XAotProcessors {
 	 * @param <T> the item type used by the processor
 	 * @param aotProcessor the AOT processor to remove
 	 */
-	<N, T> void remove(AotProcessor<N, T> aotProcessor);
+	<N, T> void remove(XAotProcessor<N, T> aotProcessor);
 
 	/**
 	 * Return if the collection contains the given processor.
@@ -48,7 +48,7 @@ public interface XAotProcessors {
 	 * @param <T> the item type used by the processor
 	 * @param aotProcessor the AOT processor to check
 	 */
-	<N, T> boolean contains(AotProcessor<N, T> aotProcessor);
+	<N, T> boolean contains(XAotProcessor<N, T> aotProcessor);
 
 	/**
 	 * Return a {@link Subset} of processors matching the given processor type.
@@ -58,7 +58,7 @@ public interface XAotProcessors {
 	 * @param processorType the processor type
 	 * @return a {@link Subset} of processors the match the processor type
 	 */
-	<P extends AotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(Class<P> processorType);
+	<P extends XAotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(Class<P> processorType);
 
 	/**
 	 * A subset of processors contained in the collection.
@@ -66,7 +66,7 @@ public interface XAotProcessors {
 	 * @param <N> the name type used by the processor
 	 * @param <T> the item type used by the processor
 	 */
-	interface Subset<P extends AotProcessor<N, T>, N, T> {
+	interface Subset<P extends XAotProcessor<N, T>, N, T> {
 
 		/**
 		 * Extend the subset with the specified processors.

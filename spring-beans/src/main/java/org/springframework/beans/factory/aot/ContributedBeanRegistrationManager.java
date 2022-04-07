@@ -100,4 +100,20 @@ class ContributedBeanRegistrationManager {
 			RegisteredBean innerRegisteredBean) {
 		return getContributedBeanRegistration(innerRegisteredBean).generateRegistrationMethod(generationContext);
 	}
+
+	/*
+	 * 	boolean isExcluded(RegisteredBean registeredBean) {
+		Assert.notNull(registeredBean, "'registeredBean' must not be null");
+		for (BeanRegistrationExcludeFilter filter : this.filters) {
+			if (filter.isExcluded(registeredBean)) {
+				logger.trace(LogMessage.format("Excluding registered bean '%s' from bean factory %s due to %s",
+						registeredBean.getBeanName(), ObjectUtils.identityToString(registeredBean.getBeanFactory()),
+						filter.getClass().getName()));
+				return true;
+			}
+		}
+		return false;
+	}
+	 */
+
 }

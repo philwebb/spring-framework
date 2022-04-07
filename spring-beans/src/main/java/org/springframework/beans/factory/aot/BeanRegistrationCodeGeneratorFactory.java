@@ -20,7 +20,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.lang.Nullable;
 
 /**
- * Strategy interface that can be used to create a custom
+ * Strategy factory interface that can be used to create a custom
  * {@link BeanRegistrationCodeGenerator} for a given {@link RegisteredBean} if the
  * {@link DefaultBeanRegistrationCodeGenerator} is not suitable.
  *
@@ -37,10 +37,12 @@ public interface BeanRegistrationCodeGeneratorFactory {
 	 * registered bean or {@code null} if the registered bean isn't supported by this
 	 * factory.
 	 * @param registeredBean the registered bean
+	 * @param innerBeanRegistrationMethodGenerator a method generator that can be used to
+	 * create registration code for inner-beans
 	 * @return a {@link BeanRegistrationCode} instance or {@code null}
 	 */
 	@Nullable
 	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
-			InnerBeanRegistrationMethodGenerator innerBeanCodeGenerator);
+			InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator);
 
 }

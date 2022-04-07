@@ -29,7 +29,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProcessor {
+class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProcessor {
 
 	@Override
 	public BeanRegistrationsAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {

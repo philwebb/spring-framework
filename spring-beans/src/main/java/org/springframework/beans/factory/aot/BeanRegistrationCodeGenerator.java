@@ -16,16 +16,14 @@
 
 package org.springframework.beans.factory.aot;
 
-import groovyjarjarantlr4.v4.codegen.CodeGenerator;
-
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.javapoet.CodeBlock;
 
 /**
- * {@link BeanRegistrationCode} with {@link CodeGenerator} support. Instances of this
- * interface can be supplied by a {@link BeanRegistrationCodeGeneratorFactory} if custom
- * code generation is required.
+ * {@link BeanRegistrationCode} with generation support. Instances of this interface can
+ * be supplied by a {@link BeanRegistrationCodeGeneratorFactory} if custom code generation
+ * is required.
  * <p>
  * Implementations can assume that they will be included in the body of a new method must
  * generates code that returns a fully configured {@link BeanDefinition}. For
@@ -51,6 +49,11 @@ public interface BeanRegistrationCodeGenerator extends BeanRegistrationCode {
 	 */
 	static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
 
+	/**
+	 * Generate a code block containing the method body to use for bean registration.
+	 * @param generationContext the generation context
+	 * @return a code block containing the method body
+	 */
 	CodeBlock generateCode(GenerationContext generationContext);
 
 }

@@ -32,7 +32,7 @@ import org.springframework.lang.Nullable;
  * @param <C> the contribution type
  */
 @FunctionalInterface
-public interface AotProcessor<T, C> {
+public interface XAotProcessor<T, C> {
 
 	// FIXME we might not need this now!
 

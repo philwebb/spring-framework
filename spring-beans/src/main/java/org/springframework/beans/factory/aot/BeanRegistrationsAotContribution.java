@@ -24,7 +24,9 @@ import org.springframework.aot.generate.GenerationContext;
  * AOT contribution from a {@link BeanRegistrationsAotProcessor} used to register bean
  * definitions.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
  * @see BeanRegistrationsAotProcessor
  */

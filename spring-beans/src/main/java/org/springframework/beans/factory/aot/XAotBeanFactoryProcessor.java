@@ -17,11 +17,11 @@
 package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.context.XAotContribution;
-import org.springframework.aot.context.AotProcessor;
+import org.springframework.aot.context.XAotProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**
- * {@link AotProcessor} that makes contributions by processing
+ * {@link XAotProcessor} that makes contributions by processing
  * {@link ConfigurableListableBeanFactory} instances.
  *
  * @author Stephane Nicoll
@@ -29,7 +29,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface XAotBeanFactoryProcessor extends AotProcessor<UniqueBeanFactoryName, ConfigurableListableBeanFactory> {
+public interface XAotBeanFactoryProcessor extends XAotProcessor<UniqueBeanFactoryName, ConfigurableListableBeanFactory> {
 
 	@Override
 	XAotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,

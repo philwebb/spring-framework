@@ -34,7 +34,7 @@ import org.springframework.aot.generate.GenerationContext;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see AotProcessor
+ * @see XAotProcessor
  * @see XAotContribution
  * @see GenerationContext
  */

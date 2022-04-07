@@ -59,7 +59,7 @@ public class XTrackedAotProcessors implements XAotProcessors {
 
 	private static final Log logger = LogFactory.getLog(XTrackedAotProcessors.class);
 
-	private final List<AotProcessor<?, ?>> processors = new ArrayList<>();
+	private final List<XAotProcessor<?, ?>> processors = new ArrayList<>();
 
 	private final Consumer<XAotContribution> applyAction;
 
@@ -80,26 +80,26 @@ public class XTrackedAotProcessors implements XAotProcessors {
 	}
 
 	@Override
-	public <N, T> void add(AotProcessor<N, T> aotProcessor) {
+	public <N, T> void add(XAotProcessor<N, T> aotProcessor) {
 		Assert.notNull(aotProcessor, "'aotProcessor' must not be null");
 		this.processors.add(aotProcessor);
 	}
 
 	@Override
-	public <N, T> void remove(AotProcessor<N, T> aotProcessor) {
+	public <N, T> void remove(XAotProcessor<N, T> aotProcessor) {
 		Assert.notNull(aotProcessor, "'aotProcessor' must not be null");
 		this.processors.remove(aotProcessor);
 	}
 
 	@Override
-	public <N, T> boolean contains(AotProcessor<N, T> aotProcessor) {
+	public <N, T> boolean contains(XAotProcessor<N, T> aotProcessor) {
 		return this.processors.contains(aotProcessor);
 	}
 
 	@Override
-	public <P extends AotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(Class<P> processorType) {
+	public <P extends XAotProcessor<N, T>, N, T> Subset<P, N, T> allOfType(Class<P> processorType) {
 		Assert.notNull(processorType, "'processorType' must not be null");
-		Assert.isTrue(processorType.isInterface() && !AotProcessor.class.equals(processorType),
+		Assert.isTrue(processorType.isInterface() && !XAotProcessor.class.equals(processorType),
 				"'processorType' must be a subinterface of AotProcessor");
 		return new TypedSubset<>(processorType, this.processors);
 	}
@@ -110,13 +110,13 @@ public class XTrackedAotProcessors implements XAotProcessors {
 	 * @param <N> the name type
 	 * @param <T> the instance type
 	 */
-	class TypedSubset<P extends AotProcessor<N, T>, N, T> implements Subset<P, N, T> {
+	class TypedSubset<P extends XAotProcessor<N, T>, N, T> implements Subset<P, N, T> {
 
 		private final Class<P> processorType;
 
-		private final Iterable<AotProcessor<?, ?>> candidates;
+		private final Iterable<XAotProcessor<?, ?>> candidates;
 
-		TypedSubset(Class<P> processorType, Iterable<AotProcessor<?, ?>> candidates) {
+		TypedSubset(Class<P> processorType, Iterable<XAotProcessor<?, ?>> candidates) {
 			this.processorType = processorType;
 			this.candidates = candidates;
 		}
@@ -125,8 +125,8 @@ public class XTrackedAotProcessors implements XAotProcessors {
 		@SuppressWarnings("unchecked")
 		public Subset<P, N, T> and(Iterable<? extends P> processors) {
 			Assert.notNull(processors, "'processors' must not be null");
-			return new TypedSubset<>(this.processorType, new CompoundIterable<AotProcessor<?, ?>>(this.candidates,
-					(Iterable<AotProcessor<?, ?>>) processors));
+			return new TypedSubset<>(this.processorType, new CompoundIterable<XAotProcessor<?, ?>>(this.candidates,
+					(Iterable<XAotProcessor<?, ?>>) processors));
 		}
 
 		@Override
@@ -134,7 +134,7 @@ public class XTrackedAotProcessors implements XAotProcessors {
 		public void processAndApplyContributions(N name, T instance) {
 			Assert.notNull(name, "'name' must not be null");
 			Assert.notNull(instance, "'instance' must not be null");
-			for (AotProcessor<?, ?> candidate : this.candidates) {
+			for (XAotProcessor<?, ?> candidate : this.candidates) {
 				if (this.processorType.isInstance(candidate)) {
 					processAndApplyContributions((P) candidate, name, instance);
 				}
@@ -291,7 +291,7 @@ public class XTrackedAotProcessors implements XAotProcessors {
 		}
 
 		private static String getResourceLocation(Class<?> processorImplementationType) {
-			return String.format("META-INF/spring/%s/%s.processed", AotProcessor.class.getName(),
+			return String.format("META-INF/spring/%s/%s.processed", XAotProcessor.class.getName(),
 					processorImplementationType.getName());
 		}
 

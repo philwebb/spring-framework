@@ -17,10 +17,10 @@
 package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.context.XAotContribution;
-import org.springframework.aot.context.AotProcessor;
+import org.springframework.aot.context.XAotProcessor;
 
 /**
- * {@link AotProcessor} that makes contributions by processing {@link XDefinedBean defined
+ * {@link XAotProcessor} that makes contributions by processing {@link XDefinedBean defined
  * beans}.
  *
  * @author Stephane Nicoll
@@ -28,7 +28,7 @@ import org.springframework.aot.context.AotProcessor;
  * @author Andy Wilkinson
  * @since 6.0
  */
-public interface XAotDefinedBeanProcessor extends AotProcessor<UniqueBeanName, XDefinedBean> {
+public interface XAotDefinedBeanProcessor extends XAotProcessor<UniqueBeanName, XDefinedBean> {
 
 	@Override
 	XAotContribution processAheadOfTime(UniqueBeanName beanName, XDefinedBean definedBean);

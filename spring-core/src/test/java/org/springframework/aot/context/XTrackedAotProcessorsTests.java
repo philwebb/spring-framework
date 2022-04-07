@@ -125,7 +125,7 @@ class XTrackedAotProcessorsTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	void allOfTypeWhenProcessorTypeIsNotSubInterfaceThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(() -> this.processors.allOfType(AotProcessor.class))
+		assertThatIllegalArgumentException().isThrownBy(() -> this.processors.allOfType(XAotProcessor.class))
 				.withMessage("'processorType' must be a subinterface of AotProcessor");
 	}
 
@@ -277,7 +277,7 @@ class XTrackedAotProcessorsTests {
 
 	}
 
-	static interface TestAotStringStringProcessor extends AotProcessor<String, String> {
+	static interface TestAotStringStringProcessor extends XAotProcessor<String, String> {
 
 	}
 
@@ -309,7 +309,7 @@ class XTrackedAotProcessorsTests {
 
 	}
 
-	static interface TestAotIntegerIntegerProcessor extends AotProcessor<Integer, Integer> {
+	static interface TestAotIntegerIntegerProcessor extends XAotProcessor<Integer, Integer> {
 
 	}
 
@@ -331,7 +331,7 @@ class XTrackedAotProcessorsTests {
 
 	}
 
-	static interface TestAotClassStringProcessor extends AotProcessor<Class<?>, String> {
+	static interface TestAotClassStringProcessor extends XAotProcessor<Class<?>, String> {
 
 	}
 

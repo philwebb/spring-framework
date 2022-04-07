@@ -20,7 +20,8 @@ import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.DefaultListableBeanFactoryInitializer;
 
 /**
- * Generates code that performs bean factory initialization.
+ * Interface that can be used to configure the code that will be generated to perform bean
+ * factory initialization.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
