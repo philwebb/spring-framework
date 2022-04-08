@@ -19,7 +19,9 @@ package org.springframework.beans.factory.aot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
@@ -29,7 +31,9 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.core.log.LogMessage;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Internal helper class used to create {@link ContributedBeanRegistration} instances.
@@ -41,8 +45,11 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see ContributedBeanRegistration
  */
 class ContributedBeanRegistrationManager {
+
+	private static final Log logger = LogFactory.getLog(ContributedBeanRegistrationManager.class);
 
 	private final List<BeanRegistrationAotProcessor> aotProcessors;
 
@@ -79,41 +86,48 @@ class ContributedBeanRegistrationManager {
 	}
 
 	private boolean isExcluded(RegisteredBean registeredBean) {
-		// FIXME logging
-		return excludeFilters.stream().anyMatch(filter -> filter.isExcluded(registeredBean));
+		for (BeanRegistrationExcludeFilter excludeFilter : this.excludeFilters) {
+			if (excludeFilter.isExcluded(registeredBean)) {
+				logger.trace(LogMessage.format("Excluding registered bean '%s' from bean factory %s due to %s",
+						registeredBean.getBeanName(), ObjectUtils.identityToString(registeredBean.getBeanFactory()),
+						excludeFilter.getClass().getName()));
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private List<BeanRegistrationAotContribution> getAotContributions(RegisteredBean registeredBean) {
-		return aotProcessors.stream().map(processor -> processor.processAheadOfTime(registeredBean))
-				.filter(Objects::nonNull).toList();
+		String beanName = registeredBean.getBeanName();
+		List<BeanRegistrationAotContribution> contributions = new ArrayList<>();
+		for (BeanRegistrationAotProcessor aotProcessor : aotProcessors) {
+			BeanRegistrationAotContribution contribution = aotProcessor.processAheadOfTime(registeredBean);
+			if (contribution != null) {
+				logger.trace(LogMessage.format("Adding bean registration AOT contribution %S from %S to '%S'",
+						contribution.getClass().getName(), aotProcessor.getClass().getName(), beanName));
+				contributions.add(contribution);
+			}
+		}
+		return contributions;
 	}
 
 	private BeanRegistrationCodeGenerator getCodeGenerator(RegisteredBean registeredBean) {
-		return codeGeneratorFactories.stream()
-				.map(factory -> factory.getBeanRegistrationCodeGenerator(registeredBean,
-						this::generateInnerBeanRegistrationMethod))
-				.filter(Objects::nonNull).findFirst()
-				.orElseGet(() -> new DefaultBeanRegistrationCodeGenerator(registeredBean));
+		InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator = this::generateInnerBeanRegistrationMethod;
+		for (BeanRegistrationCodeGeneratorFactory codeGeneratorFactory : codeGeneratorFactories) {
+			BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory
+					.getBeanRegistrationCodeGenerator(registeredBean, innerBeanRegistrationMethodGenerator);
+			if (codeGenerator != null) {
+				logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
+						codeGenerator.getClass().getName(), registeredBean.getBeanName()));
+				return codeGenerator;
+			}
+		}
+		return new DefaultBeanRegistrationCodeGenerator(registeredBean);
 	}
 
 	private MethodReference generateInnerBeanRegistrationMethod(GenerationContext generationContext,
 			RegisteredBean innerRegisteredBean) {
 		return getContributedBeanRegistration(innerRegisteredBean).generateRegistrationMethod(generationContext);
 	}
-
-	/*
-	 * 	boolean isExcluded(RegisteredBean registeredBean) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		for (BeanRegistrationExcludeFilter filter : this.filters) {
-			if (filter.isExcluded(registeredBean)) {
-				logger.trace(LogMessage.format("Excluding registered bean '%s' from bean factory %s due to %s",
-						registeredBean.getBeanName(), ObjectUtils.identityToString(registeredBean.getBeanFactory()),
-						filter.getClass().getName()));
-				return true;
-			}
-		}
-		return false;
-	}
-	 */
 
 }

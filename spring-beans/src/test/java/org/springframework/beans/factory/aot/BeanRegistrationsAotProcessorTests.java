@@ -16,23 +16,20 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.context.XAotContribution;
-import org.springframework.aot.context.XAotProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * {@link XAotProcessor} that makes contributions by processing
- * {@link ConfigurableListableBeanFactory} instances.
  *
- * @author Stephane Nicoll
- * @author Phillip Webb
- * @author Andy Wilkinson
+ * @author pwebb
  * @since 6.0
  */
-public interface XAotBeanFactoryProcessor extends XAotProcessor<UniqueBeanFactoryName, ConfigurableListableBeanFactory> {
+class BeanRegistrationsAotProcessorTests {
 
-	@Override
-	XAotContribution processAheadOfTime(UniqueBeanFactoryName beanFactoryName,
-			ConfigurableListableBeanFactory beanFactory);
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
 
 }

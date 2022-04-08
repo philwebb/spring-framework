@@ -48,7 +48,7 @@ public interface GenerationContext {
 	 * generated files}.
 	 * @return the class name generator
 	 */
-	ClassNameGenerator getClassNameGenerator();
+	ClassNameGenerator getClassNameGenerator(); // FIXME probably don't need to expose if we're only going to allow JavaPoet
 
 	/**
 	 * Return the {@link GeneratedFiles} being used by the context. Used to write
@@ -63,7 +63,7 @@ public interface GenerationContext {
 	 * that it will be applied when the AOT optimized application is run.
 	 * @return the spring factories
 	 */
-	GeneratedSpringFactories getGeneratedSpringFactories();
+	GeneratedSpringFactories getGeneratedSpringFactories(); // FIXME might not need. Certainly don't need the name stuff
 
 	/**
 	 * Return the {@link RuntimeHints} being used by the context. Used to record

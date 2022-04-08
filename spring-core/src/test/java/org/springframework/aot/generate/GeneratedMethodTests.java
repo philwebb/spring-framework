@@ -20,8 +20,6 @@ import javax.lang.model.element.Modifier;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.javapoet.MethodSpec;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -45,9 +43,10 @@ class GeneratedMethodTests {
 	@Test
 	void getSpecReturnsSpec() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
-		MethodSpec spec = MethodSpec.methodBuilder("spring").build();
-		method.generateBy(spec);
-		assertThat(method.getSpec()).isSameAs(spec);
+		method.using((builder) -> {
+			builder.addJavadoc("Test");
+		});
+		assertThat(method.getSpec().javadoc.toString()).contains("Test");
 	}
 
 	@Test
@@ -58,34 +57,16 @@ class GeneratedMethodTests {
 	}
 
 	@Test
-	void generateByConsumerAddsSpec() {
+	void usingAddsSpec() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
-		method.generateBy(builder -> builder.addModifiers(Modifier.PUBLIC));
+		method.using(builder -> builder.addModifiers(Modifier.PUBLIC));
 		assertThat(method.getSpec().toString()).isEqualToIgnoringNewLines("public void spring() {}");
 	}
 
 	@Test
-	void generateByBuilderAddsSpec() {
+	void usingWhenBuilderChanagesNameThrowsException() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
-		MethodSpec.Builder builder = MethodSpec.methodBuilder(method.getName().toString())
-				.addModifiers(Modifier.PUBLIC);
-		method.generateBy(builder);
-		assertThat(method.getSpec().toString()).isEqualToIgnoringNewLines("public void spring() {}");
-	}
-
-	@Test
-	void generateBySpecAddsSpec() {
-		GeneratedMethod method = new GeneratedMethod(NAME);
-		MethodSpec spec = MethodSpec.methodBuilder(method.getName().toString()).addModifiers(Modifier.PUBLIC).build();
-		method.generateBy(spec);
-		assertThat(method.getSpec()).isSameAs(spec);
-	}
-
-	@Test
-	void generateBySpecWhenWrongNameThrowsException() {
-		GeneratedMethod method = new GeneratedMethod(NAME);
-		MethodSpec spec = MethodSpec.methodBuilder("badname").addModifiers(Modifier.PUBLIC).build();
-		assertThatIllegalArgumentException().isThrownBy(() -> method.generateBy(spec))
+		assertThatIllegalArgumentException().isThrownBy(() -> method.using(builder -> builder.setName("badname")))
 				.withMessage("'spec' must use the generated name \"spring\"");
 	}
 

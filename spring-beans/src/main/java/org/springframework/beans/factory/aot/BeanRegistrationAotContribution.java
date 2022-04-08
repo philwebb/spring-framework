@@ -28,6 +28,7 @@ import org.springframework.aot.generate.GenerationContext;
  * @since 6.0
  * @see BeanRegistrationAotProcessor
  */
+@FunctionalInterface
 public interface BeanRegistrationAotContribution {
 
 	/**

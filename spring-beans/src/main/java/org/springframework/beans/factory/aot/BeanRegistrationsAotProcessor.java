@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.aot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -33,11 +34,11 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 
 	@Override
 	public BeanRegistrationsAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory);
-		List<ContributedBeanRegistration> contributedBeanRegistrations = null;
+		ContributedBeanRegistrationManager registrationManager = new ContributedBeanRegistrationManager(beanFactory);
+		List<ContributedBeanRegistration> contributedBeanRegistrations = new ArrayList<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			RegisteredBean registeredBean = RegisteredBean.of(beanFactory, beanName);
-			ContributedBeanRegistration contributedBeanRegistration = manager
+			ContributedBeanRegistration contributedBeanRegistration = registrationManager
 					.getContributedBeanRegistration(registeredBean);
 			if (contributedBeanRegistration != null) {
 				contributedBeanRegistrations.add(contributedBeanRegistration);

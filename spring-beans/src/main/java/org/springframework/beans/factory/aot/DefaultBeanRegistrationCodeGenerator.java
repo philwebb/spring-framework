@@ -53,7 +53,7 @@ public class DefaultBeanRegistrationCodeGenerator implements BeanRegistrationCod
 
 	@Override
 	public CodeBlock generateCode(GenerationContext generationContext) {
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return CodeBlock.of("// FIXME");
 	}
 
 }

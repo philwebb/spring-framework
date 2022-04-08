@@ -32,6 +32,7 @@ import org.springframework.javapoet.CodeBlock;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see ContributedBeanRegistrationManager
  */
 class ContributedBeanRegistration {
 
@@ -49,11 +50,13 @@ class ContributedBeanRegistration {
 	}
 
 	MethodReference generateRegistrationMethod(GenerationContext generationContext) {
+		
 		this.aotContributions.forEach((aotContribution) -> aotContribution.applyTo(generationContext, codeGenerator));
 		CodeBlock generatedCode = this.codeGenerator.generateCode(generationContext);
 		// wrap in a function named something or other
 		// return a reference to the function
-		return null;
+		return new MethodReference() {
+		};
 	}
 
 }

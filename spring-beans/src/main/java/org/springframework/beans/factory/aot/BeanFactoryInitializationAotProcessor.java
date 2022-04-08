@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
  * @since 6.0
  * @see BeanFactoryInitializationAotContribution
  */
+@FunctionalInterface
 public interface BeanFactoryInitializationAotProcessor {
 
 	/**

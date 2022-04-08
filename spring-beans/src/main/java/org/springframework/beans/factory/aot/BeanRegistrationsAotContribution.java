@@ -16,9 +16,13 @@
 
 package org.springframework.beans.factory.aot;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.aot.generate.GeneratedClassName;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodReference;
 
 /**
  * AOT contribution from a {@link BeanRegistrationsAotProcessor} used to register bean
@@ -39,10 +43,46 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 	}
 
 	@Override
-	public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCode generator) {
-		for (ContributedBeanRegistration contributedBeanRegistration : contributedBeanRegistrations) {
-			contributedBeanRegistration.generateRegistrationMethod(generationContext);
+	public void applyTo(GenerationContext generationContext,
+			BeanFactoryInitializationCode beanFactoryInitializationCode) {
+
+		GeneratedClassName generateClassName = generationContext.getClassNameGenerator()
+				.generateClassName(beanFactoryInitializationCode.getBeanFactoryName(), "Registrations");
+		GeneratedMethods generatedMethods = new GeneratedMethods();
+
+		// FIXME create a new file, create a new context, do the stuff, write the file,
+		// add a reference
+
+		GenerationContext newGenerationContext = generationContext;
+
+		List<MethodReference> registrationMethods = new ArrayList<>();
+		for (ContributedBeanRegistration contributedBeanRegistration : this.contributedBeanRegistrations) {
+			registrationMethods.add(contributedBeanRegistration.generateRegistrationMethod(newGenerationContext));
 		}
+
+		// FIXME add the method
+
+		beanFactoryInitializationCode.addInitializer(null);
+
 	}
+
+	void dunno(GenerationContext generationContext) {
+
+//		GeneratedClass
+//
+//		generationContext.generateClass("Foo");
+//		generationContext.generateClass(MyClass.class, "Foo").using((gc, ty) -> {
+//			// methods added
+//		});
+//
+		
+		// generationContext
+		
+//		generationContext.addType(context-> {}).using((x, typeSpecBuilder -> ) {
+//
+//		});
+
+	}
+
 
 }

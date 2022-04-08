@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.aot.generate;
 
 /**
- * Filter that can be used to exclude AOT processing of a {@link XDefinedBean}.
- *
- * @author Stephane Nicoll
- * @author Phillip Webb
- * @author Andy Wilkinson
+ * 
+ * @author pwebb
  * @since 6.0
  */
-@FunctionalInterface
-public interface XDefinedBeanExcludeFilter {
+public class GeneratedType {
 
-	/**
-	 * Return if the defined bean should be excluded from AOT processing and registration.
-	 * @param definedBean the defined bean
-	 * @return if the defined bean should be excluded
-	 */
-	boolean isExcluded(XDefinedBean definedBean);
-
+	// name
+	// methods
+	
+	// addMethod
+	
 }

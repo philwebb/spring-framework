@@ -36,6 +36,8 @@ package org.springframework.beans.factory.support;
 @FunctionalInterface
 public interface DefaultListableBeanFactoryInitializer {
 
+	// FIXME not needed ?
+
 	/**
 	 * Initialize the given default listable bean factory.
 	 * @param beanFactory the default listable bean factory to initialize

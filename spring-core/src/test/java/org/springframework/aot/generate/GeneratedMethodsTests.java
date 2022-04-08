@@ -54,16 +54,16 @@ class GeneratedMethodsTests {
 
 	@Test
 	void addAddsMethod() {
-		this.methods.add("spring", "beans").generateBy(this::build);
-		this.methods.add("spring", "context").generateBy(this::build);
+		this.methods.add("spring", "beans").using(this::build);
+		this.methods.add("spring", "context").using(this::build);
 		assertThat(this.methods.stream().map(GeneratedMethod::getName).map(Object::toString))
 				.containsExactly("springBeans", "springContext");
 	}
 
 	@Test
 	void doWithMethodSpecsAcceptsMethodSpecs() {
-		this.methods.add("spring", "beans").generateBy(this::build);
-		this.methods.add("spring", "context").generateBy(this::build);
+		this.methods.add("spring", "beans").using(this::build);
+		this.methods.add("spring", "context").using(this::build);
 		List<String> names = new ArrayList<>();
 		this.methods.doWithMethodSpecs(spec -> names.add(spec.name));
 		assertThat(names).containsExactly("springBeans", "springContext");
@@ -78,8 +78,8 @@ class GeneratedMethodsTests {
 
 	@Test
 	void iteratorIteratesMethods() {
-		this.methods.add("spring", "beans").generateBy(this::build);
-		this.methods.add("spring", "context").generateBy(this::build);
+		this.methods.add("spring", "beans").using(this::build);
+		this.methods.add("spring", "context").using(this::build);
 		Iterator<GeneratedMethod> iterator = this.methods.iterator();
 		assertThat(iterator.next().getName()).hasToString("springBeans");
 		assertThat(iterator.next().getName()).hasToString("springContext");
@@ -88,8 +88,8 @@ class GeneratedMethodsTests {
 
 	@Test
 	void streamStreamsMethods() {
-		this.methods.add("spring", "beans").generateBy(this::build);
-		this.methods.add("spring", "context").generateBy(this::build);
+		this.methods.add("spring", "beans").using(this::build);
+		this.methods.add("spring", "context").using(this::build);
 		assertThat(this.methods.stream()).hasSize(2);
 	}
 

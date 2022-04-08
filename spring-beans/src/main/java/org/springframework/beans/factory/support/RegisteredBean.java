@@ -28,7 +28,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.util.function.SingletonSupplier;
 
 /**
  * A {@code RegisteredBean} represents a bean that has been registered with a
@@ -48,7 +47,7 @@ public final class RegisteredBean {
 	private final Supplier<String> beanName;
 
 	private final Supplier<RootBeanDefinition> mergedBeanDefinition;
-	
+
 	// FIXME is inner
 
 	private RegisteredBean(ConfigurableBeanFactory beanFactory, Supplier<String> beanName,
@@ -80,7 +79,7 @@ public final class RegisteredBean {
 		Assert.notNull(innerBeanDefinition, "'innerBeanDefinition' must not be null");
 		InnerBeanResolver resolver = new InnerBeanResolver(parent, innerBeanName, innerBeanDefinition);
 		Supplier<String> beanName = StringUtils.hasLength(innerBeanName) ? () -> innerBeanName
-				: SingletonSupplier.of(resolver::resolveBeanName);
+				: resolver::resolveBeanName;
 		return new RegisteredBean(parent.getBeanFactory(), beanName, resolver::resolveMergedBeanDefinition);
 	}
 
@@ -130,6 +129,8 @@ public final class RegisteredBean {
 
 		private final BeanDefinition innerBeanDefinition;
 
+		private volatile String resolvedBeanName;
+
 		InnerBeanResolver(RegisteredBean parent, @Nullable String innerBeanName, BeanDefinition innerBeanDefinition) {
 			Assert.isInstanceOf(AbstractAutowireCapableBeanFactory.class, parent.getBeanFactory());
 			this.parent = parent;
@@ -138,7 +139,13 @@ public final class RegisteredBean {
 		}
 
 		String resolveBeanName() {
-			return resolveInnerBean((beanName, mergedBeanDefinition) -> beanName);
+			String resolvedBeanName = this.resolvedBeanName;
+			if (resolvedBeanName != null) {
+				return resolvedBeanName;
+			}
+			resolvedBeanName = resolveInnerBean((beanName, mergedBeanDefinition) -> beanName);
+			this.resolvedBeanName = resolvedBeanName;
+			return resolvedBeanName;
 		}
 
 		RootBeanDefinition resolveMergedBeanDefinition() {
@@ -149,9 +156,9 @@ public final class RegisteredBean {
 			// Always use a fresh BeanDefinitionValueResolver in case the parent merged
 			// bean definition has changed.
 			BeanDefinitionValueResolver beanDefinitionValueResolver = new BeanDefinitionValueResolver(
-					(AbstractAutowireCapableBeanFactory) parent.getBeanFactory(), parent.getBeanName(),
-					parent.getMergedBeanDefinition());
-			return beanDefinitionValueResolver.resolveInnerBean(innerBeanName, innerBeanDefinition, resolver);
+					(AbstractAutowireCapableBeanFactory) this.parent.getBeanFactory(), this.parent.getBeanName(),
+					this.parent.getMergedBeanDefinition());
+			return beanDefinitionValueResolver.resolveInnerBean(this.innerBeanName, this.innerBeanDefinition, resolver);
 		}
 
 	}
