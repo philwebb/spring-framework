@@ -19,13 +19,12 @@ package org.springframework.beans.factory.support;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import groovyjarjarantlr4.v4.runtime.misc.Nullable;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.ResolvableType;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -48,31 +47,58 @@ public final class RegisteredBean {
 
 	private final Supplier<RootBeanDefinition> mergedBeanDefinition;
 
-	// FIXME is inner
+	@Nullable
+	private final RegisteredBean parent;
 
 	private RegisteredBean(ConfigurableBeanFactory beanFactory, Supplier<String> beanName,
-			Supplier<RootBeanDefinition> mergedBeanDefinition) {
+			Supplier<RootBeanDefinition> mergedBeanDefinition, @Nullable RegisteredBean parent) {
 		this.beanFactory = beanFactory;
 		this.beanName = beanName;
 		this.mergedBeanDefinition = mergedBeanDefinition;
+		this.parent = parent;
 	}
 
+	/**
+	 * Create a new {@link RegisteredBean} instance for a regular bean.
+	 * @param beanFactory the source bean factory
+	 * @param beanName the bean name
+	 * @return a new {@link RegisteredBean} instance
+	 */
 	public static RegisteredBean of(ConfigurableBeanFactory beanFactory, String beanName) {
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		Assert.hasLength(beanName, "'beanName' must not be empty");
 		return new RegisteredBean(beanFactory, () -> beanName,
-				() -> (RootBeanDefinition) beanFactory.getMergedBeanDefinition(beanName));
+				() -> (RootBeanDefinition) beanFactory.getMergedBeanDefinition(beanName), null);
 	}
 
+	/**
+	 * Create a new {@link RegisteredBean} instance for an inner-bean.
+	 * @param parent the parent of the inner-bean
+	 * @param innerBean a {@link BeanDefinitionHolder} for the inner bean
+	 * @return a new {@link RegisteredBean} instance
+	 */
 	public static RegisteredBean ofInnerBean(RegisteredBean parent, BeanDefinitionHolder innerBean) {
 		Assert.notNull(innerBean, "'innerBean' must not be null");
 		return ofInnerBean(parent, innerBean.getBeanName(), innerBean.getBeanDefinition());
 	}
 
+	/**
+	 * Create a new {@link RegisteredBean} instance for an inner-bean.
+	 * @param parent the parent of the inner-bean
+	 * @param innerBean a {@link BeanDefinition} for the inner bean
+	 * @return a new {@link RegisteredBean} instance
+	 */
 	public static RegisteredBean ofInnerBean(RegisteredBean parent, BeanDefinition innerBeanDefinition) {
 		return ofInnerBean(parent, null, innerBeanDefinition);
 	}
 
+	/**
+	 * Create a new {@link RegisteredBean} instance for an inner-bean.
+	 * @param parent the parent of the inner-bean
+	 * @param innerBeanName the name of the inner bean or {@code null} to generate a name
+	 * @param innerBeanDefinition the inner-bean definition
+	 * @return a new {@link RegisteredBean} instance
+	 */
 	public static RegisteredBean ofInnerBean(RegisteredBean parent, @Nullable String innerBeanName,
 			BeanDefinition innerBeanDefinition) {
 		Assert.notNull(parent, "'parent' must not be null");
@@ -80,7 +106,7 @@ public final class RegisteredBean {
 		InnerBeanResolver resolver = new InnerBeanResolver(parent, innerBeanName, innerBeanDefinition);
 		Supplier<String> beanName = StringUtils.hasLength(innerBeanName) ? () -> innerBeanName
 				: resolver::resolveBeanName;
-		return new RegisteredBean(parent.getBeanFactory(), beanName, resolver::resolveMergedBeanDefinition);
+		return new RegisteredBean(parent.getBeanFactory(), beanName, resolver::resolveMergedBeanDefinition, parent);
 	}
 
 	/**
@@ -99,6 +125,10 @@ public final class RegisteredBean {
 		return this.beanFactory;
 	}
 
+	/**
+	 * Return the class of the bean.
+	 * @return the bean class
+	 */
 	public Class<?> getBeanClass() {
 		if (this.beanFactory.containsSingleton(getBeanName())) {
 			return this.beanFactory.getSingleton(getBeanName()).getClass();
@@ -106,6 +136,10 @@ public final class RegisteredBean {
 		return getBeanType().resolve();
 	}
 
+	/**
+	 * Return the {@link ResolvableType} of the bean.
+	 * @return the bean type
+	 */
 	public ResolvableType getBeanType() {
 		if (this.beanFactory.containsSingleton(getBeanName())) {
 			return ResolvableType.forInstance(this.beanFactory.getSingleton(getBeanName()));
@@ -113,8 +147,30 @@ public final class RegisteredBean {
 		return getMergedBeanDefinition().getResolvableType();
 	}
 
+	/**
+	 * Return the merged bean definition of the bean.
+	 * @return the merged bean definition
+	 * @see ConfigurableBeanFactory#getMergedBeanDefinition(String)
+	 */
 	public RootBeanDefinition getMergedBeanDefinition() {
 		return this.mergedBeanDefinition.get();
+	}
+
+	/**
+	 * Return if this instance if for an inner-bean.
+	 * @return if an inner-bean
+	 */
+	public boolean isInnerBean() {
+		return this.parent != null;
+	}
+
+	/**
+	 * Return the parent of this instance or {@code null} if not an inner-bean.
+	 * @return the parent
+	 */
+	@Nullable
+	public RegisteredBean getParent() {
+		return this.parent;
 	}
 
 	/**

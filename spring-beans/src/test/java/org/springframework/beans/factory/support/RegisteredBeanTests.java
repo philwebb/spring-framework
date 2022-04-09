@@ -66,7 +66,7 @@ class RegisteredBeanTests {
 	}
 
 	@Test
-	void pfInnerBeanWhenParentIsNullThrowsException() {
+	void ofInnerBeanWhenParentIsNullThrowsException() {
 		assertThatIllegalArgumentException()
 				.isThrownBy(() -> RegisteredBean.ofInnerBean(null, new RootBeanDefinition(TestInnerBean.class)))
 				.withMessage("'parent' must not be null");
@@ -144,6 +144,8 @@ class RegisteredBeanTests {
 		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent, new RootBeanDefinition(TestInnerBean.class));
 		assertThat(registeredBean.getMergedBeanDefinition().getBeanClass()).isEqualTo(TestInnerBean.class);
 	}
+
+
 
 	static class TestBean {
 	}
