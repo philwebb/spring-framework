@@ -29,7 +29,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Internal factory used to create {@link BeanRegistrationMethodGenerator} instances.
+ * Factory used to create a {@link BeanRegistrationMethodGenerator} instance for a
+ * {@link RegisteredBean}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -54,6 +55,15 @@ class BeanRegistrationMethodGeneratorFactory {
 		this.excludeFilters = loader.load(BeanRegistrationExcludeFilter.class);
 	}
 
+	/**
+	 * Return a {@link BeanRegistrationMethodGenerator} for the given
+	 * {@link RegisteredBean} or {@code null} if the registered bean is excluded by a
+	 * {@link BeanRegistrationExcludeFilter}. The resulting
+	 * {@link BeanRegistrationMethodGenerator} will include all
+	 * {@link BeanRegistrationAotProcessor} provided contributions.
+	 * @param registeredBean the registered bean
+	 * @return a new {@link BeanRegistrationMethodGenerator} instance or {@code null}
+	 */
 	@Nullable
 	BeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator(RegisteredBean registeredBean) {
 		if (isExcluded(registeredBean)) {

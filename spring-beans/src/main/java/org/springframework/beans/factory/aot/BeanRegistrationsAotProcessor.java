@@ -19,8 +19,6 @@ package org.springframework.beans.factory.aot;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.aot.generate.GeneratedMethod;
-import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
 
@@ -36,18 +34,18 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 
 	@Override
 	public BeanRegistrationsAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
-		BeanRegistrationMethodGeneratorFactory registrationManager = new BeanRegistrationMethodGeneratorFactory(
+		BeanRegistrationMethodGeneratorFactory methodGeneratorFactory = new BeanRegistrationMethodGeneratorFactory(
 				beanFactory);
-		List<BeanRegistrationMethodGenerator> contributedBeanRegistrations = new ArrayList<>();
+		List<BeanRegistrationMethodGenerator> methodGenerators = new ArrayList<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			RegisteredBean registeredBean = RegisteredBean.of(beanFactory, beanName);
-			BeanRegistrationMethodGenerator contributedBeanRegistration = registrationManager
+			BeanRegistrationMethodGenerator methodGenerator = methodGeneratorFactory
 					.getBeanRegistrationMethodGenerator(registeredBean);
-			if (contributedBeanRegistration != null) {
-				contributedBeanRegistrations.add(contributedBeanRegistration);
+			if (methodGenerator != null) {
+				methodGenerators.add(methodGenerator);
 			}
 		}
-		return new BeanRegistrationsAotContribution(contributedBeanRegistrations);
+		return new BeanRegistrationsAotContribution(methodGenerators, methodGeneratorFactory);
 	}
 
 }

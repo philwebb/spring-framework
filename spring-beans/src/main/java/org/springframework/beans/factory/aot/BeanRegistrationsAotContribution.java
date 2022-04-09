@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.aot.generate.GeneratedClassName;
+import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
+import org.springframework.util.Assert;
 
 /**
  * AOT contribution from a {@link BeanRegistrationsAotProcessor} used to register bean
@@ -36,10 +38,14 @@ import org.springframework.aot.generate.MethodReference;
  */
 class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotContribution {
 
-	private final List<BeanRegistrationMethodGenerator> contributedBeanRegistrations;
+	private final List<BeanRegistrationMethodGenerator> methodGenerators;
 
-	BeanRegistrationsAotContribution(List<BeanRegistrationMethodGenerator> contributedBeanRegistrations) {
-		this.contributedBeanRegistrations = contributedBeanRegistrations;
+	private final BeanRegistrationMethodGeneratorFactory methodGeneratorFactory;
+
+	BeanRegistrationsAotContribution(List<BeanRegistrationMethodGenerator> methodGenerators,
+			BeanRegistrationMethodGeneratorFactory methodGeneratorFactory) {
+		this.methodGenerators = methodGenerators;
+		this.methodGeneratorFactory = methodGeneratorFactory;
 	}
 
 	@Override
@@ -47,40 +53,57 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 		String beanFactoryName = beanFactoryInitializationCode.getBeanFactoryName();
 		BeanRegistrationsCode code = null;
-		GeneratedClassName generateClassName = generationContext.getClassNameGenerator()
-				.generateClassName(beanFactoryName, "Registrations");
-
-		GeneratedMethods generatedMethods = new GeneratedMethods();
 
 		// FIXME create a new file, create a new context, do the stuff, write the file,
 		// add a reference
 
+		GeneratedClassName generateClassName = generationContext.getClassNameGenerator()
+				.generateClassName(beanFactoryName, "Registrations");
+
 		List<MethodReference> registrationMethods = new ArrayList<>();
-		for (BeanRegistrationMethodGenerator contributedBeanRegistration : this.contributedBeanRegistrations) {
+		for (BeanRegistrationMethodGenerator contributedBeanRegistration : this.methodGenerators) {
 			registrationMethods.add(contributedBeanRegistration.generateRegistrationMethod(generationContext, code));
 		}
 
 		// FIXME add the method
 
 		beanFactoryInitializationCode.addInitializer(null);
-
 	}
 
-	void dunno(GenerationContext generationContext) {
+	static class BeanRegistrationsCodeGenerator implements BeanRegistrationsCode {
 
-		// GeneratedClass
-		//
-		// generationContext.generateClass("Foo");
-		// generationContext.generateClass(MyClass.class, "Foo").using((gc, ty) -> {
-		// // methods added
-		// });
-		//
+		private final BeanFactoryInitializationCode beanFactoryInitializationCode;
 
-		// generationContext
+		private final InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator;
 
-		// generationContext.addType(context-> {}).using((x, typeSpecBuilder -> ) {
-		//
-		// });
+		private final GeneratedMethods generatedMethods = new GeneratedMethods();
+
+		public BeanRegistrationsCodeGenerator(BeanFactoryInitializationCode beanFactoryInitializationCode,
+				BeanRegistrationMethodGeneratorFactory methodGeneratorFactory) {
+			this.innerBeanRegistrationMethodGenerator = (generationContext, innerRegisteredBean) -> {
+				BeanRegistrationMethodGenerator methodGenerator = methodGeneratorFactory
+						.getBeanRegistrationMethodGenerator(innerRegisteredBean);
+				Assert.state(methodGenerator != null, "Unexpected filtering of inner-bean");
+				return methodGenerator.generateRegistrationMethod(generationContext, this);
+			};
+			this.beanFactoryInitializationCode = beanFactoryInitializationCode;
+
+		}
+
+		@Override
+		public String getBeanFactoryName() {
+			return beanFactoryInitializationCode.getBeanFactoryName();
+		}
+
+		@Override
+		public InnerBeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator() {
+			return this.innerBeanRegistrationMethodGenerator;
+		}
+
+		@Override
+		public GeneratedMethod addMethod(Object... methodNameParts) {
+			return this.generatedMethods.add(methodNameParts);
+		}
 
 	}
 
