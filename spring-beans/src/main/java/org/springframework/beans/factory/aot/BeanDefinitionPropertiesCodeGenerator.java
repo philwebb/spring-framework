@@ -366,7 +366,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 				InstanceCodeGenerationService service) {
 			if (value instanceof BeanDefinition beanDefinition) {
 				GeneratedMethod generatedMethod = BeanDefinitionPropertiesCodeGenerator.this.generatedMethods
-						.add("get", this.name, name).generateBy(builder -> {
+						.add("get", this.name, name).using(builder -> {
 							builder.addJavadoc("Get the bean instance for '$L' ('$L').", this.name, name);
 							builder.addModifiers(Modifier.PRIVATE);
 							builder.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_VARIABLE);

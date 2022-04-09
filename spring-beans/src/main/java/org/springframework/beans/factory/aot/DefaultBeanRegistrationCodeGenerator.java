@@ -16,14 +16,9 @@
 
 package org.springframework.beans.factory.aot;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.util.Assert;
 
 /**
  * Default implementation of {@link BeanRegistrationCode} that should work for most beans.
@@ -34,26 +29,17 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see BeanRegistrationCodeGeneratorFactory
  */
-public class DefaultBeanRegistrationCodeGenerator implements BeanRegistrationCodeGenerator {
+public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrationCodeGenerator {
 
-	private final RegisteredBean registeredBean;
-
-	private final List<MethodReference> postProcessors = new ArrayList<>();
-
-
-	public DefaultBeanRegistrationCodeGenerator(RegisteredBean registeredBean) {
-		this.registeredBean = registeredBean;
-	}
-
-	@Override
-	public void addInstancePostProcessor(MethodReference methodReference) {
-		Assert.notNull(methodReference, "'methodReference' must not be null");
-		this.postProcessors.add(methodReference);
+	public DefaultBeanRegistrationCodeGenerator(BeanRegistrationsCode beanRegistrationsCode,
+			RegisteredBean registeredBean) {
+		super(beanRegistrationsCode, registeredBean);
 	}
 
 	@Override
 	public CodeBlock generateCode(GenerationContext generationContext) {
 		return CodeBlock.of("// FIXME");
+		// FIXME hide other code generators in protected methods
 	}
 
 }

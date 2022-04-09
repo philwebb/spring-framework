@@ -41,6 +41,8 @@ import org.springframework.javapoet.CodeBlock;
  * @author Andy Wilkinson
  * @since 6.0
  * @see BeanRegistrationCodeGeneratorFactory
+ * @see AbstractBeanRegistrationCodeGenerator
+ * @see DefaultBeanRegistrationCodeGenerator
  */
 public interface BeanRegistrationCodeGenerator extends BeanRegistrationCode {
 

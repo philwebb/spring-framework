@@ -50,6 +50,7 @@ public final class ClassNameGenerator {
 	 * @return a unique generated class name
 	 */
 	public <N> GeneratedClassName generateClassName(N name, String featureName) {
+		// FIXME split into two methods (string, class)
 		Assert.notNull(name, "'name' must not be null");
 		Assert.hasLength(featureName, "'featureName' must not be empty");
 		Assert.isTrue(featureName.chars().allMatch(Character::isLetter), "'featureName' must contain only letters");

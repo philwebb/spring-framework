@@ -60,7 +60,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod> {
 
 	/**
 	 * Add a new {@link GeneratedMethod}. The returned instance must define the method
-	 * spec by calling {@code generateBy(...)}.
+	 * spec by calling {@code using(builder -> ...)}.
 	 * @param methodNameParts the method name parts that should be used to generate a
 	 * unique method name
 	 * @return the newly added {@link GeneratedMethod}

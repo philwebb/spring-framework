@@ -31,13 +31,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
- * Tests for {@link ContributedBeanRegistrationManager}.
+ * Tests for {@link BeanRegistrationMethodGeneratorFactory}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
-class ContributedBeanRegistrationManagerTests {
+class BeanRegistrationMethodGeneratorFactoryTests {
 
 	@Test
 	void getContributedBeanRegistrationWhenExcludedByBeanRegistrationExcludeFilterBeanReturnsNull() {
@@ -45,9 +45,9 @@ class ContributedBeanRegistrationManagerTests {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
 		beanFactory.registerSingleton("filter", new MockBeanRegistrationExcludeFilter(true, 0));
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory,
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
 				springFactoriesLoader);
-		assertThat(manager.getContributedBeanRegistration(registeredBean)).isNull();
+		assertThat(manager.getBeanRegistrationMethodGenerator(registeredBean)).isNull();
 	}
 
 	@Test
@@ -57,9 +57,9 @@ class ContributedBeanRegistrationManagerTests {
 		springFactoriesLoader.addInstance(BeanRegistrationExcludeFilter.class,
 				new MockBeanRegistrationExcludeFilter(true, 0));
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory,
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
 				springFactoriesLoader);
-		assertThat(manager.getContributedBeanRegistration(registeredBean)).isNull();
+		assertThat(manager.getBeanRegistrationMethodGenerator(registeredBean)).isNull();
 	}
 
 	@Test
@@ -77,9 +77,9 @@ class ContributedBeanRegistrationManagerTests {
 		beanFactory.registerSingleton("filter2", filter2);
 		beanFactory.registerSingleton("filter6", filter6);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory,
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
 				springFactoriesLoader);
-		assertThat(manager.getContributedBeanRegistration(registeredBean)).isNull();
+		assertThat(manager.getBeanRegistrationMethodGenerator(registeredBean)).isNull();
 		assertThat(filter1.wasCalled()).isTrue();
 		assertThat(filter2.wasCalled()).isTrue();
 		assertThat(filter3.wasCalled()).isTrue();
@@ -99,10 +99,10 @@ class ContributedBeanRegistrationManagerTests {
 		BeanRegistrationAotProcessor loaderProcessor = registeredBean -> loaderContribution;
 		springFactoriesLoader.addInstance(BeanRegistrationAotProcessor.class, loaderProcessor);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory,
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
 				springFactoriesLoader);
-		ContributedBeanRegistration contributedBeanRegistration = manager
-				.getContributedBeanRegistration(registeredBean);
+		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
+				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("aotContributions").asList()
 				.containsExactly(beanContribution, loaderContribution);
 	}
@@ -114,10 +114,10 @@ class ContributedBeanRegistrationManagerTests {
 				innerBeanRegistrationMethodGenerator) -> null;
 		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory,
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
 				new MockSpringFactoriesLoader());
-		ContributedBeanRegistration contributedBeanRegistration = manager
-				.getContributedBeanRegistration(registeredBean);
+		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
+				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("codeGenerator")
 				.isInstanceOf(DefaultBeanRegistrationCodeGenerator.class);
 	}
@@ -130,10 +130,10 @@ class ContributedBeanRegistrationManagerTests {
 				innerBeanRegistrationMethodGenerator) -> codeGenerator;
 		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory,
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
 				new MockSpringFactoriesLoader());
-		ContributedBeanRegistration contributedBeanRegistration = manager
-				.getContributedBeanRegistration(registeredBean);
+		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
+				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("codeGenerator").isSameAs(codeGenerator);
 	}
 
@@ -156,10 +156,10 @@ class ContributedBeanRegistrationManagerTests {
 		};
 		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		ContributedBeanRegistrationManager manager = new ContributedBeanRegistrationManager(beanFactory,
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
 				new MockSpringFactoriesLoader());
-		ContributedBeanRegistration contributedBeanRegistration = manager
-				.getContributedBeanRegistration(registeredBean);
+		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
+				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("codeGenerator").isSameAs(codeGenerator);
 
 	}

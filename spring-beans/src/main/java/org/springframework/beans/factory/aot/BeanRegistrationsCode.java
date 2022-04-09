@@ -17,13 +17,10 @@
 package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.generate.GeneratedMethod;
-import org.springframework.aot.generate.MethodReference;
-import org.springframework.beans.factory.support.InstancePostProcessor;
-import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
- * Interface that can be used to configure the code that will be generated to perform a
- * single bean registration.
+ * Interface that can be used to configure the code that will be generated to perform bean
+ * registrations.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -31,13 +28,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
  * @since 6.0
  * @see BeanRegistrationCodeGenerator
  */
-public interface BeanRegistrationCode {
-
-	/**
-	 * Return the source bean that is being registered.
-	 * @return the registered bean
-	 */
-	RegisteredBean getRegisteredBean();
+public interface BeanRegistrationsCode {
 
 	/**
 	 * Return the name of the bean factory that will accept the registration.
@@ -53,14 +44,5 @@ public interface BeanRegistrationCode {
 	 * @return the newly added {@link GeneratedMethod}
 	 */
 	GeneratedMethod addMethod(Object... methodNameParts);
-
-	/**
-	 * Add an instance post processor method call to the registration code.
-	 * @param methodReference a reference to the post-process method to call. The
-	 * referenced method must have the same functional signature as
-	 * {@link InstancePostProcessor}.
-	 * @see InstancePostProcessor
-	 */
-	void addInstancePostProcessor(MethodReference methodReference);
 
 }

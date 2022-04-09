@@ -43,10 +43,12 @@ public interface BeanFactoryInitializationAotProcessor {
 	 * <p>
 	 * If the given instance isn't relevant to the processor, it should return a
 	 * {@code null} contribution.
+	 * @param beanFactoryName the name of the bean factory
 	 * @param instance the instance to process
 	 * @return a {@link BeanFactoryInitializationAotContribution} or {@code null}
 	 */
 	@Nullable
-	BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory);
+	BeanFactoryInitializationAotContribution processAheadOfTime(String beanFactoryName,
+			ConfigurableListableBeanFactory beanFactory);
 
 }

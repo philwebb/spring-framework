@@ -118,19 +118,19 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 
 	private <K, V> CodeBlock generateLinkedHashMapCodeWithMethod(String name, InstanceCodeGenerationService service,
 			Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
-		GeneratedMethod method = service.getGeneratedMethods().add(MethodNameGenerator.join("get", name, "map"));
-		method.generateBy(builder -> {
-			builder.addAnnotation(AnnotationSpec.builder(SuppressWarnings.class)
-					.addMember("value", "{\"rawtypes\", \"unchecked\"}").build());
-			builder.returns(Map.class);
-			builder.addStatement("$T map = new $T($L)", Map.class, LinkedHashMap.class, map.size());
-			map.forEach((key, value) -> {
-				CodeBlock keyCode = service.generateCode(name, key, keyType);
-				CodeBlock valueCode = service.generateCode(name, value, valueType);
-				builder.addStatement("map.put($L, $L)", keyCode, valueCode);
-			});
-			builder.addStatement("return map");
-		});
+		GeneratedMethod method = service.getGeneratedMethods().add(MethodNameGenerator.join("get", name, "map"))
+				.using(builder -> {
+					builder.addAnnotation(AnnotationSpec.builder(SuppressWarnings.class)
+							.addMember("value", "{\"rawtypes\", \"unchecked\"}").build());
+					builder.returns(Map.class);
+					builder.addStatement("$T map = new $T($L)", Map.class, LinkedHashMap.class, map.size());
+					map.forEach((key, value) -> {
+						CodeBlock keyCode = service.generateCode(name, key, keyType);
+						CodeBlock valueCode = service.generateCode(name, value, valueType);
+						builder.addStatement("map.put($L, $L)", keyCode, valueCode);
+					});
+					builder.addStatement("return map");
+				});
 		return CodeBlock.of("$L()", method.getName());
 	}
 

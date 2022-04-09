@@ -36,9 +36,13 @@ import org.springframework.aot.generate.MethodReference;
  */
 class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotContribution {
 
-	private final List<ContributedBeanRegistration> contributedBeanRegistrations;
+	private final String beanFactoryName;
 
-	BeanRegistrationsAotContribution(List<ContributedBeanRegistration> contributedBeanRegistrations) {
+	private final List<BeanRegistrationMethodGenerator> contributedBeanRegistrations;
+
+	BeanRegistrationsAotContribution(String beanFactoryName,
+			List<BeanRegistrationMethodGenerator> contributedBeanRegistrations) {
+		this.beanFactoryName = beanFactoryName;
 		this.contributedBeanRegistrations = contributedBeanRegistrations;
 	}
 
@@ -46,18 +50,18 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 
+		BeanRegistrationsCode code = null;
 		GeneratedClassName generateClassName = generationContext.getClassNameGenerator()
-				.generateClassName(beanFactoryInitializationCode.getBeanFactoryName(), "Registrations");
+				.generateClassName(this.beanFactoryName, "Registrations");
+
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 
 		// FIXME create a new file, create a new context, do the stuff, write the file,
 		// add a reference
 
-		GenerationContext newGenerationContext = generationContext;
-
 		List<MethodReference> registrationMethods = new ArrayList<>();
-		for (ContributedBeanRegistration contributedBeanRegistration : this.contributedBeanRegistrations) {
-			registrationMethods.add(contributedBeanRegistration.generateRegistrationMethod(newGenerationContext));
+		for (BeanRegistrationMethodGenerator contributedBeanRegistration : this.contributedBeanRegistrations) {
+			registrationMethods.add(contributedBeanRegistration.generateRegistrationMethod(generationContext, code));
 		}
 
 		// FIXME add the method
@@ -68,21 +72,20 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 	void dunno(GenerationContext generationContext) {
 
-//		GeneratedClass
-//
-//		generationContext.generateClass("Foo");
-//		generationContext.generateClass(MyClass.class, "Foo").using((gc, ty) -> {
-//			// methods added
-//		});
-//
-		
+		// GeneratedClass
+		//
+		// generationContext.generateClass("Foo");
+		// generationContext.generateClass(MyClass.class, "Foo").using((gc, ty) -> {
+		// // methods added
+		// });
+		//
+
 		// generationContext
-		
-//		generationContext.addType(context-> {}).using((x, typeSpecBuilder -> ) {
-//
-//		});
+
+		// generationContext.addType(context-> {}).using((x, typeSpecBuilder -> ) {
+		//
+		// });
 
 	}
-
 
 }
