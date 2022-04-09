@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.util.Assert;
@@ -47,10 +48,21 @@ public class AotFactoriesLoader {
 
 	private final SpringFactoriesLoader factoriesLoader;
 
+	/**
+	 * Create a new {@link AotFactoriesLoader} instance backed by the given bean factory.
+	 * @param beanFactory the bean factory to use
+	 */
 	public AotFactoriesLoader(ListableBeanFactory beanFactory) {
 		this(beanFactory, SpringFactoriesLoader.forResourceLocation(FACTORIES_RESOURCE_LOCATION));
 	}
 
+	/**
+	 * Create a new {@link AotFactoriesLoader} instance backed by the given bean factory
+	 * and loading items from the given {@link SpringFactoriesLoader} rather than from
+	 * {@value #FACTORIES_RESOURCE_LOCATION}.
+	 * @param beanFactory the bean factory to use
+	 * @param factoriesLoader the factories loader to use
+	 */
 	public AotFactoriesLoader(ListableBeanFactory beanFactory, SpringFactoriesLoader factoriesLoader) {
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		Assert.notNull(beanFactory, "'factoriesLoader' must not be null");
@@ -58,6 +70,13 @@ public class AotFactoriesLoader {
 		this.factoriesLoader = factoriesLoader;
 	}
 
+	/**
+	 * Load items from factories file and merge them with any beans defined in the
+	 * {@link DefaultListableBeanFactory}.
+	 * @param <T> the item type
+	 * @param type the item type to load
+	 * @return a list of loaded instances
+	 */
 	public <T> List<T> load(Class<T> type) {
 		List<T> result = new ArrayList<>();
 		result.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(this.beanFactory, type).values());

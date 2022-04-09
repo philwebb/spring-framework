@@ -46,21 +46,21 @@ import org.springframework.util.ClassUtils;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class InstanceSupplierCodeGenerator {
+class XInstanceSupplierCodeGenerator {
 
-	static final String BEAN_FACTORY_VARIABLE = BeanDefinitionPropertiesCodeGenerator.BEAN_FACTORY_VARIABLE;
+	static final String BEAN_FACTORY_VARIABLE = XBeanDefinitionPropertiesCodeGenerator.BEAN_FACTORY_VARIABLE;
 
 	private final GeneratedMethods generatedMethods;
 
 	private final Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver;
 
 	/**
-	 * Create a new {@link InstanceSupplierCodeGenerator} instance.
+	 * Create a new {@link XInstanceSupplierCodeGenerator} instance.
 	 * @param generatedMethods the generated methods
 	 * @param constructorOrFactoryMethodResolver resolver used to find the constructor or
 	 * factory method for a bean definition
 	 */
-	InstanceSupplierCodeGenerator(GeneratedMethods generatedMethods,
+	XInstanceSupplierCodeGenerator(GeneratedMethods generatedMethods,
 			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver,
 			InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator) {
 		this.generatedMethods = generatedMethods;
@@ -117,7 +117,7 @@ class InstanceSupplierCodeGenerator {
 		}
 
 		private void addUsingAndGeneratedBy(CodeBlock.Builder builder) {
-			Executable constructorOrFactoryMethod = InstanceSupplierCodeGenerator.this.constructorOrFactoryMethodResolver
+			Executable constructorOrFactoryMethod = XInstanceSupplierCodeGenerator.this.constructorOrFactoryMethodResolver
 					.apply(this.beanDefinition);
 			if (constructorOrFactoryMethod instanceof Constructor<?> constructor) {
 				addUsingAndGeneratedByConstructor(builder, constructor);
@@ -148,7 +148,7 @@ class InstanceSupplierCodeGenerator {
 		private GeneratedMethod generateGetBeanInstanceMethod(String name, Constructor<?> constructor,
 				Class<?> declaringClass) {
 			boolean isInnerClass = ClassUtils.isInnerClass(declaringClass);
-			return InstanceSupplierCodeGenerator.this.generatedMethods.add("get", name, "instance")
+			return XInstanceSupplierCodeGenerator.this.generatedMethods.add("get", name, "instance")
 					.using(builder -> {
 						builder.addJavadoc("Create the bean instance for '$L'.", name);
 						builder.returns(declaringClass);
@@ -198,7 +198,7 @@ class InstanceSupplierCodeGenerator {
 			boolean staticFactoryMethod = Modifier.isStatic(factoryMethod.getModifiers());
 			Class<?> declaringClass = factoryMethod.getDeclaringClass();
 			Class<?> returnType = factoryMethod.getReturnType();
-			return InstanceSupplierCodeGenerator.this.generatedMethods.add("get", name, "instance")
+			return XInstanceSupplierCodeGenerator.this.generatedMethods.add("get", name, "instance")
 					.using(builder -> {
 						builder.addJavadoc("Get the bean instance for '$L'.", name);
 						builder.returns(returnType);

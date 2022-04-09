@@ -26,8 +26,7 @@ import org.springframework.util.StringUtils;
 /**
  * Generates unique class names that can be used in ahead-of-time generated source code.
  * This class is stateful so the same instance should be used for all name generation.
- * Most commonly the class name generator is obtained via an
- * {@link org.springframework.aot.context.XAotContext AotContext}.
+ * Most commonly the class name generator is obtained via a {@link GenerationContext}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -39,6 +38,8 @@ public final class ClassNameGenerator {
 
 	private static final String SEPARATOR = "__";
 
+	private static final String AOT_PACKAGE = "__";
+
 	private final Map<String, AtomicInteger> sequenceGenerator = new ConcurrentHashMap<>();
 
 	/**
@@ -49,20 +50,27 @@ public final class ClassNameGenerator {
 	 * @param featureName the name of the feature that the generated class supports
 	 * @return a unique generated class name
 	 */
-	public <N> GeneratedClassName generateClassName(N name, String featureName) {
-		// FIXME split into two methods (string, class)
-		Assert.notNull(name, "'name' must not be null");
-		Assert.hasLength(featureName, "'featureName' must not be empty");
-		Assert.isTrue(featureName.chars().allMatch(Character::isLetter), "'featureName' must contain only letters");
-		String rootName = getRootName(name);
-		String generatedName = addSequence(rootName + SEPARATOR + StringUtils.capitalize(featureName));
-		return new GeneratedClassName(generatedName);
+	public GeneratedClassName generateClassName(Class<?> source, String featureName) {
+		Assert.notNull(source, "'source' must not be null");
+		return generateSequencedClassName(featureName, source.getName());
 	}
 
-	private <N> String getRootName(N name) {
-		if (name instanceof Class<?>) {
-			return ((Class<?>) name).getName();
-		}
+	/**
+	 * Generate a new class name for the given {@code name} / {@code featureName}
+	 * combination.
+	 * @param name the name of the source item. Whenever possible this should be a target
+	 * {@link Class}
+	 * @param featureName the name of the feature that the generated class supports
+	 * @return a unique generated class name
+	 */
+	public GeneratedClassName generateClassName(String source, String featureName) {
+		Assert.hasLength(source, "'source' must not be empty");
+		String cleanedSource = clean(source);
+		String rootName = AOT_PACKAGE + "." + ((!cleanedSource.isEmpty()) ? cleanedSource : "Aot");
+		return generateSequencedClassName(featureName, rootName);
+	}
+
+	private String clean(String name) {
 		StringBuilder rootName = new StringBuilder();
 		boolean lastNotLetter = true;
 		for (char ch : name.toString().toCharArray()) {
@@ -73,7 +81,14 @@ public final class ClassNameGenerator {
 			rootName.append(lastNotLetter ? Character.toUpperCase(ch) : ch);
 			lastNotLetter = false;
 		}
-		return SEPARATOR + "." + ((!rootName.isEmpty()) ? rootName : "Aot");
+		return rootName.toString();
+	}
+
+	private GeneratedClassName generateSequencedClassName(String featureName, String rootName) {
+		Assert.hasLength(featureName, "'featureName' must not be empty");
+		Assert.isTrue(featureName.chars().allMatch(Character::isLetter), "'featureName' must contain only letters");
+		String generatedName = addSequence(rootName + SEPARATOR + StringUtils.capitalize(featureName));
+		return new GeneratedClassName(generatedName);
 	}
 
 	private String addSequence(String name) {

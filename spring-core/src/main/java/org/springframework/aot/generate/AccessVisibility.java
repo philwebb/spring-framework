@@ -32,32 +32,37 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 /**
- * Access visibility that can be determined for a {@link Member}.
+ * Access visibility types as determined by the <a href=
+ * "https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">modifiers</a>
+ * on a {@link Member} or {@link ResolvableType}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see #forMember(Member)
+ * @see #forResolvableType(ResolvableType)
  */
 public enum AccessVisibility {
 
 	/**
-	 * Public visibility.
+	 * Public visibility. The member or type is visible to all classes.
 	 */
 	PUBLIC,
 
 	/**
-	 * Protected visibility.
+	 * Protected visibility. The member or type is only visible to subclasses.
 	 */
 	PROTECTED,
 
 	/**
-	 * Package-private visibility.
+	 * Package-private visibility. The member or type is only visible to classes in the
+	 * same package.
 	 */
-	PACKAGE,
+	PACKAGE_PRIVATE,
 
 	/**
-	 * Private visibility.
+	 * Private visibility. The member or type is not visible to other classes.
 	 */
 	PRIVATE;
 
@@ -66,7 +71,7 @@ public enum AccessVisibility {
 	 * consider the member modifier, parameter types, return types and any enclosing
 	 * classes. The lowest overall visibility will be returned.
 	 * @param member the source member
-	 * @return the {@link AccessVisibility} member.
+	 * @return the {@link AccessVisibility} for the member
 	 */
 	public static AccessVisibility forMember(Member member) {
 		Assert.notNull(member, "'member' must not be null");
@@ -93,6 +98,12 @@ public enum AccessVisibility {
 		return PRIVATE;
 	}
 
+	/**
+	 * Determine the {@link AccessVisibility} for the given {@link ResolvableType}. This
+	 * method will consider the type itself as well as any generics.
+	 * @param resolvableType the source resolvable type
+	 * @return the {@link AccessVisibility} for the type
+	 */
 	public static AccessVisibility forResolvableType(ResolvableType resolvableType) {
 		return forResolvableType(resolvableType, new HashSet<>());
 	}
@@ -145,9 +156,14 @@ public enum AccessVisibility {
 		if (Modifier.isPrivate(modifiers)) {
 			return PRIVATE;
 		}
-		return PACKAGE;
+		return PACKAGE_PRIVATE;
 	}
 
+	/**
+	 * Returns the lowest {@link AccessVisibility} put of the given candidates.
+	 * @param candidates the candidates to check
+	 * @return the lowest {@link AccessVisibility} from the candidates
+	 */
 	public static AccessVisibility lowest(AccessVisibility... candidates) {
 		AccessVisibility visibility = PUBLIC;
 		for (AccessVisibility candidate : candidates) {

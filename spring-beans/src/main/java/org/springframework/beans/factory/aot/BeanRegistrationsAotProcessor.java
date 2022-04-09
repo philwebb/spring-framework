@@ -23,7 +23,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
- * {@link BeanFactoryInitializationAotProcessor} that contributes bean registration code.
+ * {@link BeanFactoryInitializationAotProcessor} that contributes code to register beans.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -45,7 +45,7 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 				methodGenerators.add(methodGenerator);
 			}
 		}
-		return new BeanRegistrationsAotContribution(methodGenerators, methodGeneratorFactory);
+		return new BeanRegistrationsAotContribution(methodGeneratorFactory, methodGenerators);
 	}
 
 }

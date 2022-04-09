@@ -48,85 +48,85 @@ class AccessVisibilityTests {
 	@Test
 	void forMemberWhenPackagePrivateConstructor() {
 		Member member = ProtectedAccessor.class.getDeclaredConstructors()[0];
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPackagePrivateClassWithPublicConstructor() {
 		Member member = PackagePrivateClass.class.getDeclaredConstructors()[0];
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPackagePrivateClassWithPublicMethod() {
 		Member member = method(PackagePrivateClass.class, "stringBean");
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPackagePrivateConstructorParameter() {
 		Member member = ProtectedParameter.class.getConstructors()[0];
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPackagePrivateGenericOnConstructorParameter() {
 		Member member = ProtectedGenericParameter.class.getConstructors()[0];
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPackagePrivateMethod() {
 		Member member = method(PublicClass.class, "getProtectedMethod");
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPackagePrivateMethodReturnType() {
 		Member member = method(ProtectedAccessor.class, "methodWithProtectedReturnType");
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPackagePrivateMethodParameter() {
 		Member member = method(ProtectedAccessor.class, "methodWithProtectedParameter", PackagePrivateClass.class);
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPackagePrivateField() {
 		Field member = field(PublicClass.class, "protectedField");
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPublicFieldAndPackagePrivateFieldType() {
 		Member member = field(PublicClass.class, "protectedClassField");
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPublicMethodAndPackagePrivateGenericOnReturnType() {
 		Member member = method(PublicFactoryBean.class, "protectedTypeFactoryBean");
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forMemberWhenPublicClassWithPackagePrivateArrayComponent() {
 		Member member = field(PublicClass.class, "packagePrivateClasses");
-		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forMember(member)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forResolvableTypeWhenPackagePrivateGeneric() {
 		ResolvableType resolvableType = PublicFactoryBean.resolveToProtectedGenericParameter();
-		assertThat(AccessVisibility.forResolvableType(resolvableType)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forResolvableType(resolvableType)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test
 	void forResolvableTypeWhenRecursiveType() {
 		ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SelfReference.class, SelfReference.class);
-		assertThat(AccessVisibility.forResolvableType(resolvableType)).isEqualTo(AccessVisibility.PACKAGE);
+		assertThat(AccessVisibility.forResolvableType(resolvableType)).isEqualTo(AccessVisibility.PACKAGE_PRIVATE);
 	}
 
 	@Test

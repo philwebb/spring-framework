@@ -46,13 +46,26 @@ class BeanRegistrationMethodGeneratorFactory {
 
 	private final List<BeanRegistrationExcludeFilter> excludeFilters;
 
+	private final List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories;
+
+	/**
+	 * Create a new {@link BeanRegistrationMethodGeneratorFactory} backed by the given
+	 * {@link ConfigurableListableBeanFactory}.
+	 * @param beanFactory the bean factory use
+	 */
 	BeanRegistrationMethodGeneratorFactory(ConfigurableListableBeanFactory beanFactory) {
 		this(new AotFactoriesLoader(beanFactory));
 	}
 
+	/**
+	 * Create a new {@link BeanRegistrationMethodGeneratorFactory} backed by the given
+	 * {@link AotFactoriesLoader}.
+	 * @param loader the AOT factory loader to use
+	 */
 	BeanRegistrationMethodGeneratorFactory(AotFactoriesLoader loader) {
 		this.aotProcessors = loader.load(BeanRegistrationAotProcessor.class);
 		this.excludeFilters = loader.load(BeanRegistrationExcludeFilter.class);
+		this.codeGeneratorFactories = loader.load(BeanRegistrationCodeGeneratorFactory.class);
 	}
 
 	/**
@@ -70,7 +83,7 @@ class BeanRegistrationMethodGeneratorFactory {
 			return null;
 		}
 		List<BeanRegistrationAotContribution> contributions = getAotContributions(registeredBean);
-		return new BeanRegistrationMethodGenerator(this, registeredBean, contributions);
+		return new BeanRegistrationMethodGenerator(registeredBean, contributions, this.codeGeneratorFactories);
 	}
 
 	private boolean isExcluded(RegisteredBean registeredBean) {

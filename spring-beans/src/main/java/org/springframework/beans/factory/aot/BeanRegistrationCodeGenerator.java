@@ -26,7 +26,7 @@ import org.springframework.javapoet.CodeBlock;
  * is required.
  * <p>
  * Implementations can assume that they will be included in the body of a new method must
- * generates code that returns a fully configured {@link BeanDefinition}. For
+ * generate code that returns a fully configured {@link BeanDefinition}. For
  * example:<blockquote><pre class="code">
  * RootBeanDefinition beanDefinition = new RootBeanDefinition(MyBean.class);
  * beanDefinition.setPrimary(true);
@@ -47,7 +47,7 @@ import org.springframework.javapoet.CodeBlock;
 public interface BeanRegistrationCodeGenerator extends BeanRegistrationCode {
 
 	/**
-	 * The variable name that should be used when creating the bean definition.
+	 * The recommended variable name to used when creating the bean definition.
 	 */
 	static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
 

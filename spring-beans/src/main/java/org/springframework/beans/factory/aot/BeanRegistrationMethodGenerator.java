@@ -18,13 +18,20 @@ package org.springframework.beans.factory.aot;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.log.LogMessage;
 import org.springframework.javapoet.CodeBlock;
 
 /**
+ * Generates bean registration code and returns a reference to the method that should be
+ * called.
+ *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
@@ -33,23 +40,38 @@ import org.springframework.javapoet.CodeBlock;
  */
 class BeanRegistrationMethodGenerator {
 
-	private final BeanRegistrationMethodGeneratorFactory manager;
+	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodGenerator.class);
 
 	private final RegisteredBean registeredBean;
 
 	private final List<BeanRegistrationAotContribution> aotContributions;
 
-	BeanRegistrationMethodGenerator(BeanRegistrationMethodGeneratorFactory manager, RegisteredBean registeredBean,
-			List<BeanRegistrationAotContribution> aotContributions) {
-		this.manager = manager;
+	private final List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories;
+
+	/**
+	 * Create a new {@link BeanRegistrationMethodGenerator} instance.
+	 * @param registeredBean the registered bean
+	 * @param aotContributions the AOT contributions that should be applied before
+	 * generating the registration method
+	 */
+	BeanRegistrationMethodGenerator(RegisteredBean registeredBean,
+			List<BeanRegistrationAotContribution> aotContributions,
+			List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories) {
 		this.registeredBean = registeredBean;
 		this.aotContributions = aotContributions;
+		this.codeGeneratorFactories = codeGeneratorFactories;
 	}
 
+	/**
+	 * Generate the registration method and return a {@link MethodReference} that can be
+	 * called when the {@link DefaultListableBeanFactory} is initialized.
+	 * @param generationContext
+	 * @param beanRegistrationsCode
+	 * @return
+	 */
 	MethodReference generateRegistrationMethod(GenerationContext generationContext,
 			BeanRegistrationsCode beanRegistrationsCode) {
-		BeanRegistrationCodeGenerator codeGenerator = getCodeGenerator(beanRegistrationsCode,
-				this.registeredBean);
+		BeanRegistrationCodeGenerator codeGenerator = getCodeGenerator(beanRegistrationsCode);
 		this.aotContributions.forEach((aotContribution) -> aotContribution.applyTo(generationContext, codeGenerator));
 		CodeBlock generatedCode = codeGenerator.generateCode(generationContext);
 		// wrap in a function named something or other
@@ -58,38 +80,17 @@ class BeanRegistrationMethodGenerator {
 		};
 	}
 
-	/**
-	 * @param beanRegistrationsCode
-	 * @param registeredBean2
-	 * @return
-	 */
-	private BeanRegistrationCodeGenerator getCodeGenerator(BeanRegistrationsCode beanRegistrationsCode,
-			RegisteredBean registeredBean2) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	private BeanRegistrationCodeGenerator getCodeGenerator(BeanRegistrationsCode beanRegistrationsCode) {
+		for (BeanRegistrationCodeGeneratorFactory codeGeneratorFactory : this.codeGeneratorFactories) {
+			BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory
+					.getBeanRegistrationCodeGenerator(registeredBean, beanRegistrationsCode);
+			if (codeGenerator != null) {
+				logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
+						codeGenerator.getClass().getName(), registeredBean.getBeanName()));
+				return codeGenerator;
+			}
+		}
+		return new DefaultBeanRegistrationCodeGenerator(beanRegistrationsCode, registeredBean);
 	}
-
-//
-//	BeanRegistrationCodeGenerator getCodeGenerator(BeanRegistrationsCode beanRegistrationsCode,
-//			RegisteredBean registeredBean) {
-//		InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator = getInnerBeanRegistrationMethodGenerator(
-//				beanRegistrationsCode);
-//		for (BeanRegistrationCodeGeneratorFactory codeGeneratorFactory : this.codeGeneratorFactories) {
-//			BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory.getBeanRegistrationCodeGenerator(
-//					beanRegistrationsCode, registeredBean, innerBeanRegistrationMethodGenerator);
-//			if (codeGenerator != null) {
-//				logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
-//						codeGenerator.getClass().getName(), registeredBean.getBeanName()));
-//				return codeGenerator;
-//			}
-//		}
-//		return new DefaultBeanRegistrationCodeGenerator(beanRegistrationsCode, registeredBean);
-//	}
-//
-//	private InnerBeanRegistrationMethodGenerator getInnerBeanRegistrationMethodGenerator(
-//			BeanRegistrationsCode beanRegistrationsCode) {
-//		return (generationContext, innerRegisteredBean) -> getContributedBeanRegistration(innerRegisteredBean)
-//				.generateRegistrationMethod(generationContext, beanRegistrationsCode);
-//	}
 
 }

@@ -41,18 +41,15 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
-	public AbstractBeanRegistrationCodeGenerator(BeanRegistrationsCode beanRegistrationsCode,
-			RegisteredBean registeredBean) {
+	/**
+	 * Create a new {@link AbstractBeanRegistrationCodeGenerator} instance.
+	 * @param registeredBean the registered bean
+	 * @param beanRegistrationsCode the bean registrations code
+	 */
+	public AbstractBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+			BeanRegistrationsCode beanRegistrationsCode) {
 		this.beanRegistrationsCode = beanRegistrationsCode;
 		this.registeredBean = registeredBean;
-	}
-
-	protected BeanRegistrationsCode getBeanRegistrationsCode() {
-		return this.beanRegistrationsCode;
-	}
-
-	protected final List<MethodReference> getInstancePostProcessors() {
-		return this.instancePostProcessors;
 	}
 
 	@Override
@@ -74,6 +71,23 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 	public void addInstancePostProcessor(MethodReference methodReference) {
 		Assert.notNull(methodReference, "'methodReference' must not be null");
 		this.instancePostProcessors.add(methodReference);
+	}
+
+	/**
+	 * Return the {@link BeanRegistrationCode} being used with this instance.
+	 * @return the bean registrations code
+	 */
+	protected BeanRegistrationsCode getBeanRegistrationsCode() {
+		return this.beanRegistrationsCode;
+	}
+
+	/**
+	 * Return the instance post-processor method references that have been added to this
+	 * instance.
+	 * @return the instance post-processor method references
+	 */
+	protected final List<MethodReference> getInstancePostProcessorMethodReferences() {
+		return this.instancePostProcessors;
 	}
 
 }

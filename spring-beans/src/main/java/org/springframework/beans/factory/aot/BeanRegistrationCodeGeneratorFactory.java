@@ -37,9 +37,7 @@ public interface BeanRegistrationCodeGeneratorFactory {
 	 * registered bean or {@code null} if the registered bean isn't supported by this
 	 * factory.
 	 * @param registeredBean the registered bean
-	 * @param beanFactoryName the bean factory name
-	 * @param innerBeanRegistrationMethodGenerator a method generator that can be used to
-	 * create registration code for inner-beans
+	 * @param beanRegistrationsCode the bean registrations code
 	 * @return a {@link BeanRegistrationCode} instance or {@code null}
 	 */
 	@Nullable

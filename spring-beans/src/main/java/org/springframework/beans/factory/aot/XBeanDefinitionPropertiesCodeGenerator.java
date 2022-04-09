@@ -74,30 +74,30 @@ import org.springframework.util.StringUtils;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class BeanDefinitionPropertiesCodeGenerator {
+class XBeanDefinitionPropertiesCodeGenerator {
 
 	static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
 
-	static final String BEAN_FACTORY_VARIABLE = InstanceSupplierCodeGenerator.BEAN_FACTORY_VARIABLE;
+	static final String BEAN_FACTORY_VARIABLE = XInstanceSupplierCodeGenerator.BEAN_FACTORY_VARIABLE;
 
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITON = new RootBeanDefinition();
 
 	private final DefaultInstanceCodeGenerationService instanceCodeGenerationService;
 
-	private final InstanceSupplierCodeGenerator suppliedInstanceBeanDefinitionCodeGenerator;
+	private final XInstanceSupplierCodeGenerator suppliedInstanceBeanDefinitionCodeGenerator;
 
 	private final GeneratedMethods generatedMethods;
 
 	/**
-	 * Create a new {@link BeanDefinitionPropertiesCodeGenerator} instance.
+	 * Create a new {@link XBeanDefinitionPropertiesCodeGenerator} instance.
 	 * @param generatedMethods the generated methods
 	 * @param constructorOrFactoryMethodResolver resolver used to find the constructor or
 	 * factory method for a bean definition
 	 */
-	BeanDefinitionPropertiesCodeGenerator(GeneratedMethods generatedMethods,
+	XBeanDefinitionPropertiesCodeGenerator(GeneratedMethods generatedMethods,
 			Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver) {
 		this.instanceCodeGenerationService = createInstanceCodeGenerationService(generatedMethods);
-		this.suppliedInstanceBeanDefinitionCodeGenerator = new InstanceSupplierCodeGenerator(generatedMethods,
+		this.suppliedInstanceBeanDefinitionCodeGenerator = new XInstanceSupplierCodeGenerator(generatedMethods,
 				constructorOrFactoryMethodResolver, null);
 		this.generatedMethods = generatedMethods;
 	}
@@ -176,7 +176,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 					.getIndexedArgumentValues();
 			if (!argumentValues.isEmpty()) {
 				argumentValues.forEach((index, valueHolder) -> {
-					CodeBlock value = BeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService
+					CodeBlock value = XBeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService
 							.generateCode(valueHolder.getValue());
 					builder.addStatement("$L.getConstructorArgumentValues().addIndexedArgumentValue($L, $L)",
 							BEAN_DEFINITION_VARIABLE, index, value);
@@ -186,7 +186,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 		private void addPropertyValues(CodeBlock.Builder builder) {
 			DefaultInstanceCodeGenerationService instanceCodeGenerationService = new DefaultInstanceCodeGenerationService(
-					BeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService);
+					XBeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService);
 			instanceCodeGenerationService.add(new BeanDefinitionInstanceCodeGenerator(this.name));
 			MutablePropertyValues propertyValues = this.beanDefinition.getPropertyValues();
 			if (!propertyValues.isEmpty()) {
@@ -204,7 +204,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 			if (!ObjectUtils.isEmpty(attributeNames)) {
 				for (String attributeName : attributeNames) {
 					if (this.attributeFilter.test(attributeName)) {
-						CodeBlock value = BeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService
+						CodeBlock value = XBeanDefinitionPropertiesCodeGenerator.this.instanceCodeGenerationService
 								.generateCode(this.beanDefinition.getAttribute(attributeName));
 						builder.addStatement("$L.setAttribute($S, $L)", BEAN_DEFINITION_VARIABLE, attributeName, value);
 					}
@@ -365,7 +365,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 		public CodeBlock generateCode(String name, Object value, ResolvableType type,
 				InstanceCodeGenerationService service) {
 			if (value instanceof BeanDefinition beanDefinition) {
-				GeneratedMethod generatedMethod = BeanDefinitionPropertiesCodeGenerator.this.generatedMethods
+				GeneratedMethod generatedMethod = XBeanDefinitionPropertiesCodeGenerator.this.generatedMethods
 						.add("get", this.name, name).using(builder -> {
 							builder.addJavadoc("Get the bean instance for '$L' ('$L').", this.name, name);
 							builder.addModifiers(Modifier.PRIVATE);
@@ -382,9 +382,9 @@ class BeanDefinitionPropertiesCodeGenerator {
 			CodeBlock.Builder builder = CodeBlock.builder();
 			String compoundName = MethodNameGenerator.join(this.name, name);
 			builder.add("$T beanDefinition = ", RootBeanDefinition.class);
-			builder.addStatement(BeanDefinitionPropertiesCodeGenerator.this.suppliedInstanceBeanDefinitionCodeGenerator
+			builder.addStatement(XBeanDefinitionPropertiesCodeGenerator.this.suppliedInstanceBeanDefinitionCodeGenerator
 					.generateCode(beanDefinition, compoundName));
-			builder.add(BeanDefinitionPropertiesCodeGenerator.this.generateCode(beanDefinition, compoundName));
+			builder.add(XBeanDefinitionPropertiesCodeGenerator.this.generateCode(beanDefinition, compoundName));
 			builder.addStatement("return beanDefinition");
 			return builder.build();
 		}

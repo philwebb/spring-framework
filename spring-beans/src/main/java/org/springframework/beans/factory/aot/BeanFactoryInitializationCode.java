@@ -26,6 +26,7 @@ import org.springframework.aot.generate.MethodReference;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see BeanFactoryInitializationAotContribution
  */
 public interface BeanFactoryInitializationCode {
 

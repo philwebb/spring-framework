@@ -33,7 +33,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 
 	public DefaultBeanRegistrationCodeGenerator(BeanRegistrationsCode beanRegistrationsCode,
 			RegisteredBean registeredBean) {
-		super(beanRegistrationsCode, registeredBean);
+		super(registeredBean, beanRegistrationsCode);
 	}
 
 	@Override

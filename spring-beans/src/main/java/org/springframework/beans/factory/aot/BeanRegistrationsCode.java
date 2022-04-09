@@ -19,8 +19,8 @@ package org.springframework.beans.factory.aot;
 import org.springframework.aot.generate.GeneratedMethod;
 
 /**
- * Interface that can be used to configure the code that will be generated to perform bean
- * registrations.
+ * Interface that can be used to configure the code that will be generated to register
+ * beans.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

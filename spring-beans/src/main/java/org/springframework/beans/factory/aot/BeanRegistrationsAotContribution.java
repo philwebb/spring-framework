@@ -38,12 +38,12 @@ import org.springframework.util.Assert;
  */
 class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotContribution {
 
-	private final List<BeanRegistrationMethodGenerator> methodGenerators;
-
 	private final BeanRegistrationMethodGeneratorFactory methodGeneratorFactory;
 
-	BeanRegistrationsAotContribution(List<BeanRegistrationMethodGenerator> methodGenerators,
-			BeanRegistrationMethodGeneratorFactory methodGeneratorFactory) {
+	private final List<BeanRegistrationMethodGenerator> methodGenerators;
+
+	BeanRegistrationsAotContribution(BeanRegistrationMethodGeneratorFactory methodGeneratorFactory,
+			List<BeanRegistrationMethodGenerator> methodGenerators) {
 		this.methodGenerators = methodGenerators;
 		this.methodGeneratorFactory = methodGeneratorFactory;
 	}
@@ -52,7 +52,8 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 		String beanFactoryName = beanFactoryInitializationCode.getBeanFactoryName();
-		BeanRegistrationsCode code = null;
+		BeanRegistrationsCode code = new BeanRegistrationsCodeGenerator(beanFactoryInitializationCode,
+				this.methodGeneratorFactory);
 
 		// FIXME create a new file, create a new context, do the stuff, write the file,
 		// add a reference
