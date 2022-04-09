@@ -35,8 +35,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
 class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProcessor {
 
 	@Override
-	public BeanRegistrationsAotContribution processAheadOfTime(String beanFactoryName,
-			ConfigurableListableBeanFactory beanFactory) {
+	public BeanRegistrationsAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
 		BeanRegistrationMethodGeneratorFactory registrationManager = new BeanRegistrationMethodGeneratorFactory(
 				beanFactory);
 		List<BeanRegistrationMethodGenerator> contributedBeanRegistrations = new ArrayList<>();
@@ -48,7 +47,7 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 				contributedBeanRegistrations.add(contributedBeanRegistration);
 			}
 		}
-		return new BeanRegistrationsAotContribution(beanFactoryName, contributedBeanRegistrations);
+		return new BeanRegistrationsAotContribution(contributedBeanRegistrations);
 	}
 
 }

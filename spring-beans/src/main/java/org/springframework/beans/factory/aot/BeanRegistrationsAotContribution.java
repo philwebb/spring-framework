@@ -36,23 +36,19 @@ import org.springframework.aot.generate.MethodReference;
  */
 class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotContribution {
 
-	private final String beanFactoryName;
-
 	private final List<BeanRegistrationMethodGenerator> contributedBeanRegistrations;
 
-	BeanRegistrationsAotContribution(String beanFactoryName,
-			List<BeanRegistrationMethodGenerator> contributedBeanRegistrations) {
-		this.beanFactoryName = beanFactoryName;
+	BeanRegistrationsAotContribution(List<BeanRegistrationMethodGenerator> contributedBeanRegistrations) {
 		this.contributedBeanRegistrations = contributedBeanRegistrations;
 	}
 
 	@Override
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
-
+		String beanFactoryName = beanFactoryInitializationCode.getBeanFactoryName();
 		BeanRegistrationsCode code = null;
 		GeneratedClassName generateClassName = generationContext.getClassNameGenerator()
-				.generateClassName(this.beanFactoryName, "Registrations");
+				.generateClassName(beanFactoryName, "Registrations");
 
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 

@@ -22,8 +22,8 @@ import org.springframework.beans.factory.support.InstancePostProcessor;
 import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
- * Interface that can be used to configure the code that will be generated to perform a
- * single bean registration.
+ * Interface that can be used to configure the code that will be generated to perform
+ * registration of a single bean.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

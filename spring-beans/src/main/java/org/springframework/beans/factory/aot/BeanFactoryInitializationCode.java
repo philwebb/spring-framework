@@ -30,6 +30,12 @@ import org.springframework.aot.generate.MethodReference;
 public interface BeanFactoryInitializationCode {
 
 	/**
+	 * Return the name of the bean factory.
+	 * @return the bean factory name
+	 */
+	public String getBeanFactoryName();
+
+	/**
 	 * Add an initializer method call.
 	 * @param methodReference a reference to the initialize method to call. The referenced
 	 * method must have the same functional signature as

@@ -22,10 +22,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
@@ -48,12 +46,12 @@ class BeanRegistrationMethodGeneratorFactory {
 	private final List<BeanRegistrationExcludeFilter> excludeFilters;
 
 	BeanRegistrationMethodGeneratorFactory(ConfigurableListableBeanFactory beanFactory) {
-		this(beanFactory, SpringFactoriesLoader.forResourceLocation("META-INF/spring/aot.factories"));
+		this(new AotFactoriesLoader(beanFactory));
 	}
 
-	BeanRegistrationMethodGeneratorFactory(ListableBeanFactory beanFactory, SpringFactoriesLoader factoriesLoader) {
-		this.aotProcessors = LoaderThing.load(beanFactory, factoriesLoader, BeanRegistrationAotProcessor.class);
-		this.excludeFilters = LoaderThing.load(beanFactory, factoriesLoader, BeanRegistrationExcludeFilter.class);
+	BeanRegistrationMethodGeneratorFactory(AotFactoriesLoader loader) {
+		this.aotProcessors = loader.load(BeanRegistrationAotProcessor.class);
+		this.excludeFilters = loader.load(BeanRegistrationExcludeFilter.class);
 	}
 
 	@Nullable

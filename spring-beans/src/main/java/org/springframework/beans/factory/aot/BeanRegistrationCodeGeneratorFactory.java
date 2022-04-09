@@ -36,14 +36,14 @@ public interface BeanRegistrationCodeGeneratorFactory {
 	 * Return the {@link BeanRegistrationCode} that should be used for the given
 	 * registered bean or {@code null} if the registered bean isn't supported by this
 	 * factory.
-	 * @param beanFactoryName the bean factory name
 	 * @param registeredBean the registered bean
+	 * @param beanFactoryName the bean factory name
 	 * @param innerBeanRegistrationMethodGenerator a method generator that can be used to
 	 * create registration code for inner-beans
 	 * @return a {@link BeanRegistrationCode} instance or {@code null}
 	 */
 	@Nullable
-	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(BeanRegistrationsCode beanRegistrationsCode,
-			RegisteredBean registeredBean, InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator);
+	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+			BeanRegistrationsCode beanRegistrationsCode);
 
 }

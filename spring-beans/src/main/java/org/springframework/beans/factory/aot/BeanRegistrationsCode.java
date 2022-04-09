@@ -36,6 +36,8 @@ public interface BeanRegistrationsCode {
 	 */
 	String getBeanFactoryName();
 
+	// InnerBeanRegistrationMethodGenerator
+
 	/**
 	 * Add a generated method to the registrations class. The returned instance must
 	 * define the method spec by calling {@code using(builder -> ...)}.
