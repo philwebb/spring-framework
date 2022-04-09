@@ -139,7 +139,6 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	 * @see #setPropertyValues
 	 */
 	public RootBeanDefinition() {
-		super();
 	}
 
 	/**
@@ -148,8 +147,16 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	 * @see #setBeanClass
 	 */
 	public RootBeanDefinition(@Nullable Class<?> beanClass) {
-		super();
 		setBeanClass(beanClass);
+	}
+
+	/**
+	 * Create a new RootBeanDefinition for a singleton.
+	 * @param beanType the type of bean to instantiate
+	 * @see #setTargetType(ResolvableType)
+	 */
+	public RootBeanDefinition(@Nullable ResolvableType beanType) {
+		setTargetType(beanType);
 	}
 
 	/**

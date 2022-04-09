@@ -25,6 +25,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link RegisteredBean}.
@@ -145,6 +146,40 @@ class RegisteredBeanTests {
 		assertThat(registeredBean.getMergedBeanDefinition().getBeanClass()).isEqualTo(TestInnerBean.class);
 	}
 
+	@Test
+	void isInnerBeanWhenInnerBeanReturnsTrue() {
+		fail();
+	}
+
+	@Test
+	void isInnerBeanWhenNotInnerBeanReturnsTrue() {
+		fail();
+	}
+
+	@Test
+	void getParentWhenInnerBeanReturnsParent() {
+
+	}
+
+	@Test
+	void getParentWhenNotInnerBeanReturnsNull() {
+
+	}
+
+	@Test
+	void isGeneratedBeanNameWhenInnerBeanWithoutNameReturnsTrue() {
+
+	}
+
+	@Test
+	void isGeneratedBeanNameWhenInnerBeanWithNameReturnsFalse() {
+
+	}
+
+	@Test
+	void isGeneratedBeanNameWhenNotInnerBeanReturnsFalse() {
+
+	}
 
 
 	static class TestBean {

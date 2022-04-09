@@ -74,6 +74,9 @@ class BeanRegistrationMethodGenerator {
 		BeanRegistrationCodeGenerator codeGenerator = getCodeGenerator(beanRegistrationsCode);
 		this.aotContributions.forEach((aotContribution) -> aotContribution.applyTo(generationContext, codeGenerator));
 		CodeBlock generatedCode = codeGenerator.generateCode(generationContext);
+
+
+
 		// wrap in a function named something or other
 		// return a reference to the function
 		return new MethodReference() {

@@ -45,15 +45,18 @@ public final class RegisteredBean {
 
 	private final Supplier<String> beanName;
 
+	private final boolean generatedBeanName;
+
 	private final Supplier<RootBeanDefinition> mergedBeanDefinition;
 
 	@Nullable
 	private final RegisteredBean parent;
 
-	private RegisteredBean(ConfigurableBeanFactory beanFactory, Supplier<String> beanName,
+	private RegisteredBean(ConfigurableBeanFactory beanFactory, Supplier<String> beanName, boolean generatedBeanName,
 			Supplier<RootBeanDefinition> mergedBeanDefinition, @Nullable RegisteredBean parent) {
 		this.beanFactory = beanFactory;
 		this.beanName = beanName;
+		this.generatedBeanName = generatedBeanName;
 		this.mergedBeanDefinition = mergedBeanDefinition;
 		this.parent = parent;
 	}
@@ -67,7 +70,7 @@ public final class RegisteredBean {
 	public static RegisteredBean of(ConfigurableBeanFactory beanFactory, String beanName) {
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		Assert.hasLength(beanName, "'beanName' must not be empty");
-		return new RegisteredBean(beanFactory, () -> beanName,
+		return new RegisteredBean(beanFactory, () -> beanName, false,
 				() -> (RootBeanDefinition) beanFactory.getMergedBeanDefinition(beanName), null);
 	}
 
@@ -106,7 +109,8 @@ public final class RegisteredBean {
 		InnerBeanResolver resolver = new InnerBeanResolver(parent, innerBeanName, innerBeanDefinition);
 		Supplier<String> beanName = StringUtils.hasLength(innerBeanName) ? () -> innerBeanName
 				: resolver::resolveBeanName;
-		return new RegisteredBean(parent.getBeanFactory(), beanName, resolver::resolveMergedBeanDefinition, parent);
+		return new RegisteredBean(parent.getBeanFactory(), beanName, innerBeanName == null,
+				resolver::resolveMergedBeanDefinition, parent);
 	}
 
 	/**
@@ -115,6 +119,14 @@ public final class RegisteredBean {
 	 */
 	public String getBeanName() {
 		return this.beanName.get();
+	}
+
+	/**
+	 * Return if the bean name is generated.
+	 * @return {@code true} if the name was generated
+	 */
+	public boolean isGeneratedBeanName() {
+		return this.generatedBeanName;
 	}
 
 	/**
