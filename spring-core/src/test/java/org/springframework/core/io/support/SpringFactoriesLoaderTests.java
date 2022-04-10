@@ -155,22 +155,6 @@ class SpringFactoriesLoaderTests {
 	}
 
 	@Test
-	void loadForNamedItemWithClassUsesLocationBasedOnCategoryAndName() {
-		List<DummyFactory> factories = SpringFactoriesLoader.forNamedItem(getClass(),
-				"test").load(DummyFactory.class);
-		assertThat(factories).hasSize(1);
-		assertThat(factories.get(0)).isInstanceOf(MyDummyFactory1.class);
-	}
-
-	@Test
-	void loadForNamedItemUsesLocationBasedOnCategoryAndName() {
-		List<DummyFactory> factories = SpringFactoriesLoader.forNamedItem(
-				getClass().getName(), "test").load(DummyFactory.class);
-		assertThat(factories).hasSize(1);
-		assertThat(factories.get(0)).isInstanceOf(MyDummyFactory1.class);
-	}
-
-	@Test
 	void loadForResourceLocationWhenLocationDoesNotExistReturnsEmptyList() {
 		List<DummyFactory> factories = SpringFactoriesLoader.forResourceLocation(
 				"META-INF/missing/missing-spring.factories").load(DummyFactory.class);

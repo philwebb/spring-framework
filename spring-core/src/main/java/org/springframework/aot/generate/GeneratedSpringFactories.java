@@ -17,7 +17,6 @@
 package org.springframework.aot.generate;
 
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.util.ObjectUtils;
 
 /**
  * Interface that can be used to add entries to generated Spring {@code .factories} files.
@@ -41,38 +40,11 @@ public interface GeneratedSpringFactories {
 	}
 
 	/**
-	 * Return {@link Declarations} for the named item.
-	 * @param classification the classification used to group related items
-	 * @param name the name of the item
-	 * @return declarations for the named item
-	 * @see SpringFactoriesLoader#forNamedItem(Class, String)
-	 */
-	default <N> Declarations forNamedItem(Class<?> classification, N name) {
-		return forResourceLocation(SpringFactoriesLoader.resolveNamedItemLocation(classification, toString(name)));
-	}
-
-	/**
-	 * Return {@link Declarations} for the named item.
-	 * @param classification the classification used to group related items (usually a
-	 * fully-qualified class name)
-	 * @param name the name of the item
-	 * @return declarations for the named item
-	 * @see SpringFactoriesLoader#forNamedItem(String, String)
-	 */
-	default <N> Declarations forNamedItem(String classification, N name) {
-		return forResourceLocation(SpringFactoriesLoader.resolveNamedItemLocation(classification, toString(name)));
-	}
-
-	/**
 	 * Return {@link Declarations} for the given resource location.
 	 * @param resourceLocation the resource location
 	 * @return declarations for the resource location
 	 */
 	Declarations forResourceLocation(String resourceLocation);
-
-	private static <N> String toString(N name) {
-		return (name instanceof Class<?>) ? ((Class<?>) name).getName() : ObjectUtils.nullSafeToString(name);
-	}
 
 	/**
 	 * Spring factory declarations for a specific file.
