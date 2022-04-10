@@ -70,7 +70,7 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	private final DefaultInstanceCodeGenerationService parent;
 
 	@Nullable
-	private final GeneratedMethods generatedMethods;
+	private final GeneratedMethods generatedMethods; // FIXME replace with method generator
 
 	private final boolean sharedInstance;
 
