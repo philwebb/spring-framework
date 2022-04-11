@@ -33,6 +33,7 @@ import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
+import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.NoDependencyComponent;
@@ -123,9 +124,35 @@ class InstanceSupplierCodeGeneratorTests {
 	}
 
 	@Test
+	void generateWhenHasPrivateConstructor() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPrivateConstructor.class);
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
+			TestBeanWithPrivateConstructor bean = getBean(beanFactory, beanDefinition, instanceSupplier);
+			assertThat(bean).isInstanceOf(TestBeanWithPrivateConstructor.class);
+		});
+	}
+
+	@Test
 	void generateWhenHasFactoryMethodWithNoArg() {
 		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
 				.setFactoryMethodOnBean("stringBean", "config").getBeanDefinition();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
+		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
+			String bean = getBean(beanFactory, beanDefinition, instanceSupplier);
+			assertThat(bean).isInstanceOf(String.class);
+			assertThat(bean).isEqualTo("Hello");
+			assertThat(compiled.getSourceFile())
+					.contains("getBeanFactory().getBean(SimpleConfiguration.class).stringBean()");
+		});
+	}
+
+	@Test
+	void generateWhenHasPrivateStaticFactoryMethodWithNoArg() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
+				.setFactoryMethodOnBean("privateStaticStringBean", "config").getBeanDefinition();
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		beanFactory.registerBeanDefinition("config",
 				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
@@ -187,7 +214,7 @@ class InstanceSupplierCodeGeneratorTests {
 		registrationBeanFactory.registerBeanDefinition("testBean", beanDefinition);
 		RegisteredBean registeredBean = RegisteredBean.of(registrationBeanFactory, "testBean");
 		GeneratedMethods generatedMethods = new GeneratedMethods();
-		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(null, generatedMethods::add);
+		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(generatedMethods::add);
 		CodeBlock generatedCode = generator.generateCode(registeredBean);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
 		System.out.println(javaFile);
