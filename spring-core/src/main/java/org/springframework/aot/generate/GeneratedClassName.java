@@ -16,6 +16,7 @@
 
 package org.springframework.aot.generate;
 
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.TypeSpec;
 import org.springframework.util.Assert;
@@ -89,6 +90,15 @@ public final class GeneratedClassName {
 		Assert.isTrue(getShortName().equals(typeSpec.name),
 				() -> String.format("'typeSpec' must be named '%s' instead of '%s'", getShortName(), typeSpec.name));
 		return JavaFile.builder(getPackageName(), typeSpec).skipJavaLangImports(true);
+	}
+
+
+	/**
+	 * Return this instance as a Javapoet {@link ClassName}.
+	 * @return a {@link ClassName} instance
+	 */
+	public ClassName toClassName() {
+		return ClassName.get(getPackageName(), getShortName());
 	}
 
 	@Override

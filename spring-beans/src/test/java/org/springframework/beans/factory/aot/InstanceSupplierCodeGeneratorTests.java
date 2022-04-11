@@ -21,9 +21,12 @@ import java.util.function.Supplier;
 
 import javax.lang.model.element.Modifier;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.aot.generate.DefaultGenerationContext;
 import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -33,6 +36,7 @@ import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
+import org.springframework.beans.testfixture.beans.TestBeanWithPackagePrivateConstructor;
 import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
@@ -60,6 +64,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Andy Wilkinson
  */
 class InstanceSupplierCodeGeneratorTests {
+
+	private InMemoryGeneratedFiles generatedFiles;
+
+	private DefaultGenerationContext generationContext;
+
+	@BeforeEach
+	void setup() {
+		this.generatedFiles = new InMemoryGeneratedFiles();
+		this.generationContext = new DefaultGenerationContext(generatedFiles);
+	}
 
 	@Test
 	void generateWhenHasDefaultConstructor() {
@@ -132,6 +146,18 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(bean).isInstanceOf(TestBeanWithPrivateConstructor.class);
 			assertThat(compiled.getSourceFile()).contains("resolveAndInstantiate(registeredBean)");
 		});
+		// FIXME assert hint
+	}
+
+	@Test
+	void generateWhenHasPackagePrivateConstructor() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPackagePrivateConstructor.class);
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
+			TestBeanWithPackagePrivateConstructor bean = getBean(beanFactory, beanDefinition, instanceSupplier);
+			assertThat(bean).isInstanceOf(TestBeanWithPackagePrivateConstructor.class);
+			assertThat(compiled.getSourceFile()).contains("resolveAndInstantiate(registeredBean)");
+		});
 	}
 
 	@Test
@@ -163,6 +189,7 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(bean).isEqualTo("Hello");
 			assertThat(compiled.getSourceFile()).contains("resolveAndInstantiate(registeredBean)");
 		});
+		// FIXME assert hint
 	}
 
 	@Test
@@ -214,7 +241,8 @@ class InstanceSupplierCodeGeneratorTests {
 		registrationBeanFactory.registerBeanDefinition("testBean", beanDefinition);
 		RegisteredBean registeredBean = RegisteredBean.of(registrationBeanFactory, "testBean");
 		GeneratedMethods generatedMethods = new GeneratedMethods();
-		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(generatedMethods::add);
+		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(generationContext,
+				generatedMethods::add);
 		CodeBlock generatedCode = generator.generateCode(registeredBean);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
 		System.out.println(javaFile);
