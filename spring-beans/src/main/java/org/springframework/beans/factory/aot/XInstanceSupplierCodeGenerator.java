@@ -52,6 +52,7 @@ class XInstanceSupplierCodeGenerator {
 
 	private final GeneratedMethods generatedMethods;
 
+	// FIXME can be real thing if we move it
 	private final Function<BeanDefinition, Executable> constructorOrFactoryMethodResolver;
 
 	/**

@@ -71,7 +71,7 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	 * @param supplier the source supplier
 	 * @return a new {@link InstanceSupplier}
 	 */
-	static <T> InstanceSupplier<T> of(ThrowableSupplier<T> supplier) {
+	static <T> InstanceSupplier<T> suppliedBy(ThrowableSupplier<T> supplier) {
 		Assert.notNull(supplier, "'supplier' must not be null");
 		if (supplier instanceof InstanceSupplier<T> instanceSupplier) {
 			return instanceSupplier;

@@ -91,8 +91,8 @@ class InstanceSupplierTests {
 	}
 
 	@Test
-	void ofSupplierAdaptsToInstanceSupplier() throws Exception {
-		InstanceSupplier<String> instanceSupplier = InstanceSupplier.of(() -> "test");
+	void suppliedBySupplierAdaptsToInstanceSupplier() throws Exception {
+		InstanceSupplier<String> instanceSupplier = InstanceSupplier.suppliedBy(() -> "test");
 		assertThat(instanceSupplier.get(this.registeredBean)).isEqualTo("test");
 	}
 

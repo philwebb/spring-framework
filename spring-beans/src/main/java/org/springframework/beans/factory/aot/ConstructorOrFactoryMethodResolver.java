@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support.aot;
+package org.springframework.beans.factory.aot;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -41,6 +41,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotations;
@@ -60,9 +61,7 @@ import org.springframework.util.ReflectionUtils;
  * @author Andy Wilkinson
  * @since 6.0
  */
-class ConstructorOrFactoryMethodResolver implements Function<BeanDefinition, Executable> {
-
-	// FIXME move
+class ConstructorOrFactoryMethodResolver {
 
 	private static final Log logger = LogFactory.getLog(ConstructorOrFactoryMethodResolver.class);
 
@@ -76,8 +75,7 @@ class ConstructorOrFactoryMethodResolver implements Function<BeanDefinition, Exe
 				: ClassUtils.getDefaultClassLoader();
 	}
 
-	@Override
-	public Executable apply(BeanDefinition beanDefinition) {
+	Executable resolve(BeanDefinition beanDefinition) {
 		Supplier<ResolvableType> beanType = () -> getBeanType(beanDefinition);
 		List<ResolvableType> valueTypes = beanDefinition.hasConstructorArgumentValues()
 				? determineParameterValueTypes(beanDefinition.getConstructorArgumentValues()) : Collections.emptyList();
@@ -375,6 +373,11 @@ class ConstructorOrFactoryMethodResolver implements Function<BeanDefinition, Exe
 		return (type.isPrimitive() && type != void.class) || type == Double.class || type == Float.class
 				|| type == Long.class || type == Integer.class || type == Short.class || type == Character.class
 				|| type == Byte.class || type == Boolean.class || type == String.class;
+	}
+
+	static Executable resolve(RegisteredBean registeredBean) {
+		return new ConstructorOrFactoryMethodResolver(registeredBean.getBeanFactory())
+				.resolve(registeredBean.getMergedBeanDefinition());
 	}
 
 	enum FallbackMode {

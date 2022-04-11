@@ -24,6 +24,6 @@ package org.springframework.aot.generate;
 @FunctionalInterface
 public interface MethodGenerator {
 
-	GeneratedMethod add(Object... methodNameParts);
+	GeneratedMethod generateMethod(Object... methodNameParts);
 
 }
