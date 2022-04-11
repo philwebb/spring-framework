@@ -31,7 +31,6 @@ import org.springframework.beans.factory.support.AutowiredInstantiationArguments
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.util.ClassUtils;
 
@@ -131,33 +130,31 @@ class InstanceSupplierCodeGenerator {
 
 	private CodeBlock generateCodeForFactoryMethod(String name, RegisteredBean registeredBean, Method factoryMethod) {
 		Class<?> factoryClass = ClassUtils.getUserClass(factoryMethod.getDeclaringClass());
-		boolean isStaticFactoryMethod = Modifier.isStatic(factoryMethod.getModifiers());
 		AccessVisibility accessVisibility = getAccessVisibility(registeredBean, factoryMethod);
 		if (accessVisibility == AccessVisibility.PUBLIC) {
-			if (isStaticFactoryMethod && factoryMethod.getParameterCount() == 0) {
+			if (Modifier.isStatic(factoryMethod.getModifiers()) && factoryMethod.getParameterCount() == 0) {
 				return CodeBlock.of("$T.suppliedBy($T::$L)", InstanceSupplier.class, factoryClass,
 						factoryMethod.getName());
 			}
 			GeneratedMethod getInstanceMethod = InstanceSupplierCodeGenerator.this.methodGenerator
 					.generateMethod("get", name, "instance")
-					.using(builder -> buildGetInstanceMethodForFactoryMethod(name, factoryClass, isStaticFactoryMethod,
-							factoryMethod, builder));
+					.using(builder -> buildGetInstanceMethodForFactoryMethod(name, factoryClass, factoryMethod,
+							builder));
 			return CodeBlock.of("$T.of(this::$L)", InstanceSupplier.class, getInstanceMethod.getName());
 
 		}
 		throw new IllegalStateException("Only public factory methods supported"); // FIXME
 	}
 
-	private void buildGetInstanceMethodForFactoryMethod(String name, Class<?> factoryClass,
-			boolean isStaticFactoryMethod, Method factoryMethod, MethodSpec.Builder builder) {
+	private void buildGetInstanceMethodForFactoryMethod(String name, Class<?> factoryClass, Method factoryMethod,
+			MethodSpec.Builder builder) {
 		Class<?> declaringClass = factoryMethod.getDeclaringClass();
 		Class<?> returnType = factoryMethod.getReturnType();
 		builder.addJavadoc("Get the bean instance for '$L'.", name);
 		builder.returns(returnType);
 		builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
 		if (factoryMethod.getParameterCount() == 0) {
-			CodeBlock instantiationCode = generateNewInstanceCodeForMethod(isStaticFactoryMethod, declaringClass,
-					factoryMethod, NO_ARGS);
+			CodeBlock instantiationCode = generateNewInstanceCodeForMethod(declaringClass, factoryMethod, NO_ARGS);
 			CodeBlock.Builder code = CodeBlock.builder();
 			code.addStatement("return $L", instantiationCode);
 			builder.addCode(code.build());
@@ -165,18 +162,17 @@ class InstanceSupplierCodeGenerator {
 		else {
 			CodeBlock ParameterTypes = generateParameterTypesCode(factoryMethod.getParameterTypes(), 0);
 			CodeBlock extraction = generateArgsExtractionCode(factoryMethod.getParameterTypes(), 0);
-			CodeBlock newInstance = generateNewInstanceCodeForMethod(isStaticFactoryMethod, declaringClass,
-					factoryMethod, extraction);
+			CodeBlock newInstance = generateNewInstanceCodeForMethod(declaringClass, factoryMethod, extraction);
 			CodeBlock.Builder code = CodeBlock.builder();
-			code.addStatement("return $T.forFactoryMethod($L).resolve($L, (args) -> $L)",
-					AutowiredInstantiationArgumentsResolver.class, ParameterTypes, REGISTERED_BEAN_PARAMETER_NAME,
-					newInstance);
+			code.addStatement("return $T.forFactoryMethod($T.class, $S, $L).resolve($L, (args) -> $L)",
+					AutowiredInstantiationArgumentsResolver.class, factoryClass, factoryMethod.getName(),
+					ParameterTypes, REGISTERED_BEAN_PARAMETER_NAME, newInstance);
 			builder.addCode(code.build());
 		}
 	}
 
-	private CodeBlock generateNewInstanceCodeForMethod(boolean isStaticFactoryMethod, Class<?> declaringClass,
-			Method factoryMethod, CodeBlock args) {
+	private CodeBlock generateNewInstanceCodeForMethod(Class<?> declaringClass, Method factoryMethod, CodeBlock args) {
+		boolean isStaticFactoryMethod = Modifier.isStatic(factoryMethod.getModifiers());
 		// FIXME use fm directly and check unused params
 		if (isStaticFactoryMethod) {
 			return CodeBlock.of("$T.$L($L)", declaringClass, factoryMethod.getName(), args);
