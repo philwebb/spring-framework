@@ -45,8 +45,8 @@ class BeanRegistrationMethodGeneratorFactoryTests {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
 		beanFactory.registerSingleton("filter", new MockBeanRegistrationExcludeFilter(true, 0));
-		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
-				springFactoriesLoader);
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(
+				new AotFactoriesLoader(beanFactory, springFactoriesLoader));
 		assertThat(manager.getBeanRegistrationMethodGenerator(registeredBean)).isNull();
 	}
 
@@ -57,8 +57,8 @@ class BeanRegistrationMethodGeneratorFactoryTests {
 		springFactoriesLoader.addInstance(BeanRegistrationExcludeFilter.class,
 				new MockBeanRegistrationExcludeFilter(true, 0));
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
-				springFactoriesLoader);
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(
+				new AotFactoriesLoader(beanFactory, springFactoriesLoader));
 		assertThat(manager.getBeanRegistrationMethodGenerator(registeredBean)).isNull();
 	}
 
@@ -77,8 +77,8 @@ class BeanRegistrationMethodGeneratorFactoryTests {
 		beanFactory.registerSingleton("filter2", filter2);
 		beanFactory.registerSingleton("filter6", filter6);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
-				springFactoriesLoader);
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(
+				new AotFactoriesLoader(beanFactory, springFactoriesLoader));
 		assertThat(manager.getBeanRegistrationMethodGenerator(registeredBean)).isNull();
 		assertThat(filter1.wasCalled()).isTrue();
 		assertThat(filter2.wasCalled()).isTrue();
@@ -99,8 +99,8 @@ class BeanRegistrationMethodGeneratorFactoryTests {
 		BeanRegistrationAotProcessor loaderProcessor = registeredBean -> loaderContribution;
 		springFactoriesLoader.addInstance(BeanRegistrationAotProcessor.class, loaderProcessor);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
-				springFactoriesLoader);
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(
+				new AotFactoriesLoader(beanFactory, springFactoriesLoader));
 		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
 				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("aotContributions").asList()
@@ -114,8 +114,8 @@ class BeanRegistrationMethodGeneratorFactoryTests {
 				innerBeanRegistrationMethodGenerator) -> null;
 		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
-				new MockSpringFactoriesLoader());
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(
+				new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
 		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
 				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("codeGenerator")
@@ -130,8 +130,8 @@ class BeanRegistrationMethodGeneratorFactoryTests {
 				innerBeanRegistrationMethodGenerator) -> codeGenerator;
 		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
-				new MockSpringFactoriesLoader());
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(
+				new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
 		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
 				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("codeGenerator").isSameAs(codeGenerator);
@@ -141,23 +141,22 @@ class BeanRegistrationMethodGeneratorFactoryTests {
 	void getContributedBeanRegistrationProvidesInnerBeanRegistrationMethodGeneratorToFactory() {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		BeanRegistrationCodeGenerator codeGenerator = mock(BeanRegistrationCodeGenerator.class);
-		BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean,
-				innerBeanRegistrationMethodGenerator) -> {
+		BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean, beanRegistrationsCode) -> {
 			if (!"test".equals(registeredBean.getBeanName())) {
 				return null;
 			}
-			assertThat(innerBeanRegistrationMethodGenerator).isNotNull();
+			assertThat(beanRegistrationsCode).isNotNull();
 			RegisteredBean innerBean = RegisteredBean.ofInnerBean(registeredBean,
 					new RootBeanDefinition(InnerTestBean.class));
-			MethodReference methodReference = innerBeanRegistrationMethodGenerator
+			MethodReference methodReference = beanRegistrationsCode.getInnerBeanRegistrationMethodGenerator()
 					.generateInnerBeanDefinitionMethod(mock(GenerationContext.class), innerBean);
 			assertThat(methodReference).isNotNull();
 			return codeGenerator;
 		};
 		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
-		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(beanFactory,
-				new MockSpringFactoriesLoader());
+		BeanRegistrationMethodGeneratorFactory manager = new BeanRegistrationMethodGeneratorFactory(
+				new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
 		BeanRegistrationMethodGenerator contributedBeanRegistration = manager
 				.getBeanRegistrationMethodGenerator(registeredBean);
 		assertThat(contributedBeanRegistration).extracting("codeGenerator").isSameAs(codeGenerator);

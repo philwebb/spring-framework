@@ -30,6 +30,10 @@ public class SimpleConfiguration {
 		return "Hello";
 	}
 
+	static String packageStaticStringBean() {
+		return "Hello";
+	}
+
 	public static Integer integerBean() {
 		return 42;
 	}

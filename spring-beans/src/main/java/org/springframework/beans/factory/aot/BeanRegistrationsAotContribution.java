@@ -97,7 +97,7 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		}
 
 		@Override
-		public InnerBeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator() {
+		public InnerBeanRegistrationMethodGenerator getInnerBeanRegistrationMethodGenerator() {
 			return this.innerBeanRegistrationMethodGenerator;
 		}
 

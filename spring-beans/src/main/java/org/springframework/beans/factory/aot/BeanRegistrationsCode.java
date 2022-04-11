@@ -41,7 +41,7 @@ public interface BeanRegistrationsCode {
 	 * additional bean registration methods for inner-beans.
 	 * @return an inner-bean registration method generator
 	 */
-	InnerBeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator();
+	InnerBeanRegistrationMethodGenerator getInnerBeanRegistrationMethodGenerator();
 
 	/**
 	 * Add a generated method to the registrations class. The returned instance must

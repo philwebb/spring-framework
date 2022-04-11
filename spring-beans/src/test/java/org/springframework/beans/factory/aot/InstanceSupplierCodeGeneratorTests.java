@@ -197,6 +197,21 @@ class InstanceSupplierCodeGeneratorTests {
 	}
 
 	@Test
+	void generateWhenHasPackagePrivateStaticFactoryMethodWithNoArg() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
+				.setFactoryMethodOnBean("packageStaticStringBean", "config").getBeanDefinition();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
+		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
+			String bean = getBean(beanFactory, beanDefinition, instanceSupplier);
+			assertThat(bean).isInstanceOf(String.class);
+			assertThat(bean).isEqualTo("Hello");
+			assertThat(compiled.getSourceFileFromPackage("__")).contains("SimpleConfiguration__");
+		});
+	}
+
+	@Test
 	void generateWhenHasStaticFactoryMethodWithNoArg() {
 		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(Integer.class)
 				.setFactoryMethodOnBean("integerBean", "config").getBeanDefinition();
