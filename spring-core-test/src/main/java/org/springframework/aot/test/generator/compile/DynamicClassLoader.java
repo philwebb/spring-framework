@@ -37,6 +37,7 @@ import org.springframework.aot.test.generator.file.ResourceFiles;
 import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.aot.test.generator.file.SourceFiles;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 
 /**
  * {@link ClassLoader} used to expose dynamically generated content.
@@ -94,13 +95,19 @@ public class DynamicClassLoader extends ClassLoader {
 	}
 
 	private Class<?> defineClass(String name, DynamicClassFileObject classFile) {
+		String path = ClassUtils.convertClassNameToResourcePath(name) + ".java";
 		byte[] bytes = classFile.getBytes();
-		SourceFile sourceFile = this.sourceFiles.get(name);
-		if (sourceFile != null && sourceFile.getTarget() != null) {
+		SourceFile sourceFile = this.sourceFiles.get(path);
+		if (sourceFile != null && sourceFile.getTargetClass() != null) {
 			try {
-				Lookup lookup = MethodHandles.privateLookupIn(sourceFile.getTarget(),
+				Lookup lookup = MethodHandles.privateLookupIn(sourceFile.getTargetClass(),
 						MethodHandles.lookup());
-				return lookup.defineClass(bytes);
+				try {
+					return lookup.findClass(name);
+				}
+				catch (ClassNotFoundException ex) {
+					return lookup.defineClass(bytes);
+				}
 			}
 			catch (IllegalAccessException ex) {
 				logger.log(Level.WARNING,

@@ -16,6 +16,8 @@
 
 package org.springframework.beans.factory.aot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -25,10 +27,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
+import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
+import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -156,7 +160,7 @@ class InstanceSupplierCodeGeneratorTests {
 		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
 			TestBeanWithPackagePrivateConstructor bean = getBean(beanFactory, beanDefinition, instanceSupplier);
 			assertThat(bean).isInstanceOf(TestBeanWithPackagePrivateConstructor.class);
-			assertThat(compiled.getSourceFile()).contains("resolveAndInstantiate(registeredBean)");
+			assertThat(compiled.getSourceFileFromPackage("__")).contains("TestBeanWithPackagePrivateConstructor__");
 		});
 	}
 
@@ -246,7 +250,14 @@ class InstanceSupplierCodeGeneratorTests {
 		CodeBlock generatedCode = generator.generateCode(registeredBean);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
 		System.out.println(javaFile);
-		TestCompiler.forSystem().compile(javaFile::writeTo,
+		this.generatedFiles.addSourceFile(javaFile);
+		List<SourceFile> sourceFiles = new ArrayList<>();
+		this.generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
+			Class<?> targetClass = this.generatedFiles.getTargetClass(path);
+			SourceFile sourceFile = SourceFile.of(path, inputStreamSource).withTargetClass(targetClass);
+			sourceFiles.add(sourceFile);
+		});
+		TestCompiler.forSystem().withSources(sourceFiles).compile(
 				compiled -> result.accept((InstanceSupplier<?>) compiled.getInstance(Supplier.class).get(), compiled));
 	}
 
@@ -257,7 +268,7 @@ class InstanceSupplierCodeGeneratorTests {
 		builder.addMethod(MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(InstanceSupplier.class)
 				.addStatement("return $L", generatedCode).build());
 		generatedMethods.doWithMethodSpecs(builder::addMethod);
-		return JavaFile.builder("com.example", builder.build()).build();
+		return JavaFile.builder("__", builder.build()).build();
 	}
 
 }

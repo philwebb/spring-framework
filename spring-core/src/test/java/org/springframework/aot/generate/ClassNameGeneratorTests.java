@@ -71,6 +71,7 @@ class ClassNameGeneratorTests {
 	void generateClassNameWithClassGeneratesName() {
 		GeneratedClassName generated = this.generator.generateClassName(InputStream.class, "Bytes");
 		assertThat(generated).hasToString("java.io.InputStream__Bytes");
+		assertThat(generated.getSourceClass()).isEqualTo(InputStream.class);
 	}
 
 	@Test

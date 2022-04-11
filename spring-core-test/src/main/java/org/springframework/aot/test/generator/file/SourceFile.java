@@ -16,9 +16,9 @@
 
 package org.springframework.aot.test.generator.file;
 
+import java.io.InputStreamReader;
 import java.io.StringReader;
-
-import javax.annotation.Nullable;
+import java.nio.charset.StandardCharsets;
 
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -26,6 +26,10 @@ import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaSource;
 import org.assertj.core.api.AssertProvider;
 import org.assertj.core.util.Strings;
+
+import org.springframework.core.io.InputStreamSource;
+import org.springframework.lang.Nullable;
+import org.springframework.util.FileCopyUtils;
 
 /**
  * {@link DynamicFile} that holds Java source code and provides
@@ -45,10 +49,14 @@ public final class SourceFile extends DynamicFile
 
 	private final JavaSource javaSource;
 
+	@Nullable
+	private final Class<?> targetClass;
 
-	private SourceFile(String path, String content, JavaSource javaSource) {
+
+	private SourceFile(String path, String content, JavaSource javaSource, @Nullable Class<?> targetClass) {
 		super(path, content);
 		this.javaSource = javaSource;
+		this.targetClass = targetClass;
 	}
 
 
@@ -59,7 +67,7 @@ public final class SourceFile extends DynamicFile
 	 * @return a {@link SourceFile} instance
 	 */
 	public static SourceFile of(CharSequence charSequence) {
-		return of(null, appendable -> appendable.append(charSequence));
+		return of(null, charSequence);
 	}
 
 	/**
@@ -72,6 +80,29 @@ public final class SourceFile extends DynamicFile
 	 */
 	public static SourceFile of(@Nullable String path, CharSequence charSequence) {
 		return of(path, appendable -> appendable.append(charSequence));
+	}
+
+	/**
+	 * Factory method to create a new {@link SourceFile} from the given
+	 * {@link InputStreamSource}.
+	 * @param inputStreamSource the source for the file
+	 * @return a {@link SourceFile} instance
+	 */
+	public static SourceFile of(InputStreamSource inputStreamSource) {
+		return of(null, inputStreamSource);
+	}
+
+	/**
+	 * Factory method to create a new {@link SourceFile} from the given
+	 * {@link InputStreamSource}.
+	 * @param path the relative path of the file or {@code null} to have the
+	 * path deduced
+	 * @param inputStreamSource the source for the file
+	 * @return a {@link SourceFile} instance
+	 */
+	public static SourceFile of(@Nullable String path, InputStreamSource inputStreamSource) {
+		return of(path, appendable -> appendable.append(FileCopyUtils
+				.copyToString(new InputStreamReader(inputStreamSource.getInputStream(), StandardCharsets.UTF_8))));
 	}
 
 	/**
@@ -101,7 +132,7 @@ public final class SourceFile extends DynamicFile
 		if (path == null || path.isEmpty()) {
 			path = deducePath(javaSource);
 		}
-		return new SourceFile(path, content, javaSource);
+		return new SourceFile(path, content, javaSource, null);
 	}
 
 	private static JavaSource parse(String content) {
@@ -134,13 +165,25 @@ public final class SourceFile extends DynamicFile
 	}
 
 	/**
+	 * Return a new variant of this {@link SourceFile} that includes a target class.
+	 * @param targetClass the target class
+	 * @return a variant with a target class
+	 */
+	public SourceFile withTargetClass(@Nullable Class<?> targetClass) {
+		if (targetClass == null) {
+			return this;
+		}
+		return new SourceFile(getPath(), getContent(), this.javaSource, targetClass);
+	}
+
+	/**
 	 * Return the target class for this source file or {@code null}. The target
 	 * class can be used if private lookup access is required.
 	 * @return the target class
 	 */
 	@Nullable
-	public Class<?> getTarget() {
-		return null; // Not yet supported
+	public Class<?> getTargetClass() {
+		return this.targetClass;
 	}
 
 	public String getClassName() {

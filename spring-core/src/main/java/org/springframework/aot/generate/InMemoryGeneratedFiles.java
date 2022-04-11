@@ -40,14 +40,19 @@ public class InMemoryGeneratedFiles implements GeneratedFiles {
 
 	private final Map<Kind, Map<String, InputStreamSource>> files = new HashMap<>();
 
+	private final Map<String, Class<?>> targetClasses = new HashMap<>();
+
 	@Override
-	public void addFile(Kind kind, String path, InputStreamSource content) {
+	public void addFile(Kind kind, String path, InputStreamSource content, Class<?> targetClass) {
 		Assert.notNull(kind, "'kind' must not be null");
 		Assert.hasLength(path, "'path' must not be empty");
 		Assert.notNull(content, "'content' must not be null");
 		Map<String, InputStreamSource> paths = this.files.computeIfAbsent(kind, key -> new LinkedHashMap<>());
 		Assert.state(!paths.containsKey(path), () -> "Path '" + path + "' already in use");
 		paths.put(path, content);
+		if (kind == Kind.SOURCE) {
+			this.targetClasses.put(path, targetClass);
+		}
 	}
 
 	/**
@@ -58,6 +63,16 @@ public class InMemoryGeneratedFiles implements GeneratedFiles {
 	public Map<String, InputStreamSource> getGeneratedFiles(Kind kind) {
 		Assert.notNull(kind, "'kind' must not be null");
 		return Collections.unmodifiableMap(this.files.getOrDefault(kind, Collections.emptyMap()));
+	}
+
+	/**
+	 * Return the target class for the given {@link Kind#SOURCE source} path.
+	 * @param sourcePath the source path
+	 * @return the target class for the path or {@code null}
+	 */
+	@Nullable
+	public Class<?> getTargetClass(String sourcePath) {
+		return this.targetClasses.get(sourcePath);
 	}
 
 	/**

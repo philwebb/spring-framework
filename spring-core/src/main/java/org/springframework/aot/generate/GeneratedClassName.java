@@ -16,6 +16,8 @@
 
 package org.springframework.aot.generate;
 
+import javax.annotation.Nullable;
+
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.TypeSpec;
@@ -35,14 +37,19 @@ public final class GeneratedClassName {
 
 	private final String name;
 
+	private final Object source;
+
 	/**
 	 * Create a new {@link GeneratedClassName} instance with the given name. This
 	 * constructor is package-private since names should only be generated via a
 	 * {@link ClassNameGenerator}.
 	 * @param name the generated name
+	 * @param source the original source for the generated name
+	 * @param featureName the feature name
 	 */
-	GeneratedClassName(String name) {
+	GeneratedClassName(String name, Object source) {
 		this.name = name;
+		this.source = source;
 	}
 
 	/**
@@ -71,12 +78,50 @@ public final class GeneratedClassName {
 	}
 
 	/**
+	 * Return the source class for this generated name.
+	 * @return the source class
+	 */
+	@Nullable
+	public Class<?> getSourceClass() {
+		if (this.source instanceof Class<?> sourceClass) {
+			return sourceClass;
+		}
+		try {
+			return ClassUtils.forName((String) source, null);
+		}
+		catch (Exception ex) {
+			return null;
+		}
+	}
+
+	/**
 	 * Return a new {@link TypeSpec#classBuilder(String) TypeSpec class builder}
 	 * pre-configured with the generated name.
 	 * @return a {@link TypeSpec} class builder
 	 */
 	public TypeSpec.Builder classBuilder() {
 		return TypeSpec.classBuilder(getShortName());
+	}
+
+	/**
+	 * Return a new {@link JavaFile} using this class name and a {@link TypeSpec} from the
+	 * given {@code typeSpecBuilder}.
+	 * @param typeSpecBuilder the type spec builder
+	 * @return a new {@link JavaFile}.
+	 */
+	public JavaFile toJavaFile(TypeSpec.Builder typeSpecBuilder) {
+		Assert.notNull(typeSpecBuilder, "'typeSpecBuilder' must not be null");
+		return toJavaFile(typeSpecBuilder.build());
+	}
+
+	/**
+	 * Return a new {@link JavaFile} using this class name and the given {@link TypeSpec}.
+	 * @param typeSpec the type spec
+	 * @return a new {@link JavaFile}.
+	 */
+	public JavaFile toJavaFile(TypeSpec typeSpec) {
+		Assert.notNull(typeSpec, "'typeSpec' must not be null");
+		return javaFileBuilder(typeSpec).build();
 	}
 
 	/**
@@ -91,7 +136,6 @@ public final class GeneratedClassName {
 				() -> String.format("'typeSpec' must be named '%s' instead of '%s'", getShortName(), typeSpec.name));
 		return JavaFile.builder(getPackageName(), typeSpec).skipJavaLangImports(true);
 	}
-
 
 	/**
 	 * Return this instance as a Javapoet {@link ClassName}.

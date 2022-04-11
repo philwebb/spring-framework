@@ -33,6 +33,7 @@ import org.springframework.beans.factory.support.AutowiredInstantiationArguments
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeSpec;
 import org.springframework.util.ClassUtils;
@@ -118,7 +119,9 @@ class InstanceSupplierCodeGenerator {
 		TypeSpec.Builder classBuilder =  className.classBuilder();
 		classBuilder.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 		generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
-		System.out.println(classBuilder.build());
+		JavaFile javaFile = className.javaFileBuilder(classBuilder.build()).build();
+		System.out.println(javaFile);
+		this.generationContext.getGeneratedFiles().addSourceFile(javaFile, className.getSourceClass());
 		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class,  className.toClassName(), generatedMethod.getName());
 	}
 

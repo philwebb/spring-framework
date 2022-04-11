@@ -80,7 +80,7 @@ public class FileSystemGeneratedFiles implements GeneratedFiles {
 	}
 
 	@Override
-	public void addFile(Kind kind, String path, InputStreamSource content) {
+	public void addFile(Kind kind, String path, InputStreamSource content, Class<?> targetClass) {
 		Assert.notNull(kind, "'kind' must not be null");
 		Assert.hasLength(path, "'path' must not be empty");
 		Assert.notNull(content, "'kind' must not be null");
