@@ -94,9 +94,8 @@ class InstanceSupplierCodeGenerator {
 			builder.returns(declaringClass);
 			builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
 			int parameterOffset = (!dependsOnBean) ? 0 : 1;
-			CodeBlock parameterTypes = generateParameterTypesCode(constructor.getParameterTypes(), parameterOffset);
-			builder.addStatement("return $T.forConstructor($L).resolveAndInstantiate($L)",
-					AutowiredInstantiationArgumentsResolver.class, parameterTypes, REGISTERED_BEAN_PARAMETER_NAME);
+			builder.addStatement(generateResolverForConstructor(constructor, parameterOffset));
+			builder.addStatement("return resolver.resolveAndInstantiate($L)", REGISTERED_BEAN_PARAMETER_NAME);
 		});
 		return CodeBlock.of("$T.of(this::$L)", InstanceSupplier.class, getInstanceMethod.getName());
 	}
@@ -142,15 +141,19 @@ class InstanceSupplierCodeGenerator {
 		}
 		else {
 			int parameterOffset = (!dependsOnBean) ? 0 : 1;
-			CodeBlock parameterTypes = generateParameterTypesCode(constructor.getParameterTypes(), parameterOffset);
+			CodeBlock.Builder code = CodeBlock.builder();
+			code.addStatement(generateResolverForConstructor(constructor, parameterOffset));
 			CodeBlock extraction = generateArgsExtractionCode(constructor.getParameterTypes(), parameterOffset);
 			CodeBlock newInstance = generateNewInstanceCodeForConstructor(dependsOnBean, declaringClass, extraction);
-			CodeBlock.Builder code = CodeBlock.builder();
-			code.addStatement("return $T.forConstructor($L).resolve($L, (args) -> $L)",
-					AutowiredInstantiationArgumentsResolver.class, parameterTypes, REGISTERED_BEAN_PARAMETER_NAME,
-					newInstance);
+			code.addStatement("return resolver.resolve($L, (args) -> $L)", REGISTERED_BEAN_PARAMETER_NAME, newInstance);
 			builder.addCode(code.build());
 		}
+	}
+
+	private CodeBlock generateResolverForConstructor(Constructor<?> constructor, int parameterOffset) {
+		CodeBlock parameterTypes = generateParameterTypesCode(constructor.getParameterTypes(), parameterOffset);
+		return CodeBlock.of("$T resolver = $T.forConstructor($L)", AutowiredInstantiationArgumentsResolver.class,
+				AutowiredInstantiationArgumentsResolver.class, parameterTypes);
 	}
 
 	private void buildGetInstanceMethodForFactoryMethod(MethodSpec.Builder builder, String name, Method factoryMethod,

@@ -21,7 +21,6 @@ import java.util.function.Supplier;
 
 import javax.lang.model.element.Modifier;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedMethods;
