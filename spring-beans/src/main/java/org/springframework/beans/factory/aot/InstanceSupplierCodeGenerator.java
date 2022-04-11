@@ -118,12 +118,11 @@ class InstanceSupplierCodeGenerator {
 		}
 		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(name).using(builder -> {
 			builder.addJavadoc("Instantiate the bean instance for '$L'.", name);
-			builder.returns(declaringClass);
+			builder.returns(factoryMethod.getReturnType());
 			builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
-			CodeBlock parameterTypes = generateParameterTypesCode(factoryMethod.getParameterTypes(), 0);
-			builder.addStatement("return $T.forFactoryMethod($T.class, $S, $L).resolveAndInstantiate($L)",
-					AutowiredInstantiationArgumentsResolver.class, declaringClass, factoryMethod.getName(),
-					parameterTypes, REGISTERED_BEAN_PARAMETER_NAME);
+			builder.addStatement(
+					generateResolverForFactoryMethod(factoryMethod, declaringClass, factoryMethod.getName()));
+			builder.addStatement("return resolver.resolveAndInstantiate($L)", REGISTERED_BEAN_PARAMETER_NAME);
 		});
 		return CodeBlock.of("$T.of(this::$L)", InstanceSupplier.class, getInstanceMethod.getName());
 	}
@@ -166,16 +165,27 @@ class InstanceSupplierCodeGenerator {
 			builder.addCode(generateReturnStatement(instantiationCode));
 		}
 		else {
-			CodeBlock parameterTypes = generateParameterTypesCode(factoryMethod.getParameterTypes(), 0);
+			CodeBlock.Builder code = CodeBlock.builder();
+			code.addStatement(generateResolverForFactoryMethod(factoryMethod, declaringClass, factoryMethodName));
 			CodeBlock extraction = generateArgsExtractionCode(factoryMethod.getParameterTypes(), 0);
 			CodeBlock newInstance = generateNewInstanceCodeForMethod(dependsOnBean, declaringClass, factoryMethodName,
 					extraction);
-			CodeBlock.Builder code = CodeBlock.builder();
-			code.addStatement("return $T.forFactoryMethod($T.class, $S, $L).resolve($L, (args) -> $L)",
-					AutowiredInstantiationArgumentsResolver.class, declaringClass, factoryMethodName, parameterTypes,
-					REGISTERED_BEAN_PARAMETER_NAME, newInstance);
+			code.addStatement("return resolver.resolve($L, (args) -> $L)", REGISTERED_BEAN_PARAMETER_NAME, newInstance);
 			builder.addCode(code.build());
 		}
+	}
+
+	private CodeBlock generateResolverForFactoryMethod(Method factoryMethod, Class<?> declaringClass,
+			String factoryMethodName) {
+		if (factoryMethod.getParameterCount() == 0) {
+			return CodeBlock.of("$T resolver = $T.forFactoryMethod($T.class, $S)",
+					AutowiredInstantiationArgumentsResolver.class, AutowiredInstantiationArgumentsResolver.class,
+					declaringClass, factoryMethodName);
+		}
+		CodeBlock parameterTypes = generateParameterTypesCode(factoryMethod.getParameterTypes(), 0);
+		return CodeBlock.of("$T resolver = $T.forFactoryMethod($T.class, $S, $L)",
+				AutowiredInstantiationArgumentsResolver.class, AutowiredInstantiationArgumentsResolver.class,
+				declaringClass, factoryMethodName, parameterTypes);
 	}
 
 	private CodeBlock generateNewInstanceCodeForConstructor(boolean dependsOnBean, Class<?> declaringClass,

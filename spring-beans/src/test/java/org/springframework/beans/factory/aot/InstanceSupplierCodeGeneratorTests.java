@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 
 import javax.lang.model.element.Modifier;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedMethods;
@@ -130,6 +131,7 @@ class InstanceSupplierCodeGeneratorTests {
 		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
 			TestBeanWithPrivateConstructor bean = getBean(beanFactory, beanDefinition, instanceSupplier);
 			assertThat(bean).isInstanceOf(TestBeanWithPrivateConstructor.class);
+			assertThat(compiled.getSourceFile()).contains("resolveAndInstantiate(registeredBean)");
 		});
 	}
 
@@ -160,8 +162,7 @@ class InstanceSupplierCodeGeneratorTests {
 			String bean = getBean(beanFactory, beanDefinition, instanceSupplier);
 			assertThat(bean).isInstanceOf(String.class);
 			assertThat(bean).isEqualTo("Hello");
-			assertThat(compiled.getSourceFile())
-					.contains("getBeanFactory().getBean(SimpleConfiguration.class).stringBean()");
+			assertThat(compiled.getSourceFile()).contains("resolveAndInstantiate(registeredBean)");
 		});
 	}
 
