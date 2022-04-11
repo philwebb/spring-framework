@@ -53,30 +53,18 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 	 * @throws IllegalArgumentException if no generation is possible for the given value
 	 */
 	default CodeBlock generateCode(@Nullable Object value) {
-		return generateCode(null, value);
-	}
-
-	/**
-	 * Generate code that we recreate the given instance value.
-	 * @param name a name to identify value instance, or {@code null} if unnamed
-	 * @param value the value to recreate
-	 * @return the generated code
-	 * @throws IllegalArgumentException if no generation is possible for the given value
-	 */
-	default CodeBlock generateCode(@Nullable String name, @Nullable Object value) {
 		ResolvableType type = (value != null) ? ResolvableType.forInstance(value) : ResolvableType.NONE;
-		return generateCode(name, value, type);
+		return generateCode(value, type);
 	}
 
 	/**
 	 * Generate code that we recreate the given instance value.
-	 * @param name a name to identify value instance, or {@code null} if unnamed
 	 * @param value the value to recreate
 	 * @param type the type of the value object
 	 * @return the generated code
 	 * @throws IllegalArgumentException if no generation is possible for the given value
 	 */
-	CodeBlock generateCode(@Nullable String name, @Nullable Object value, ResolvableType type);
+	CodeBlock generateCode(@Nullable Object value, ResolvableType type);
 
 	/**
 	 * Return if this service supports {@link GeneratedMethods}. If this method returns

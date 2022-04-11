@@ -33,8 +33,7 @@ class StringInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final StringInstanceCodeGenerator INSTANCE = new StringInstanceCodeGenerator();
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
-			InstanceCodeGenerationService service) {
+	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
 		if (value instanceof String) {
 			return CodeBlock.of("$S", value);
 		}

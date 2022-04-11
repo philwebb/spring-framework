@@ -43,14 +43,14 @@ public class SetInstanceCodeGenerator extends CollectionInstanceCodeGenerator<Se
 	}
 
 	@Override
-	protected CodeBlock generateCollectionCode(String name, InstanceCodeGenerationService service,
-			ResolvableType elementType, Set<?> set) {
+	protected CodeBlock generateCollectionCode(InstanceCodeGenerationService service, ResolvableType elementType,
+			Set<?> set) {
 		if (set instanceof LinkedHashSet) {
 			return CodeBlock.of("new $T($L)", LinkedHashSet.class,
-					generateCollectionOf(name, set, List.class, elementType, service));
+					generateCollectionOf(set, List.class, elementType, service));
 		}
 		set = orderForCodeConsistency(set);
-		return super.generateCollectionCode(name, service, elementType, set);
+		return super.generateCollectionCode(service, elementType, set);
 	}
 
 	private Set<?> orderForCodeConsistency(Set<?> set) {

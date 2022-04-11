@@ -36,14 +36,12 @@ public interface InstanceCodeGenerator {
 	/**
 	 * Return the generated code to recreate the given instance or {@code null} if the
 	 * instance type is not supported.
-	 * @param name the name of the instance (or {@code null})
 	 * @param value the instance value that should be recreated by the generated code
 	 * @param type the value type or {@code ResolvableType#NONE}
 	 * @param service the generation service calling the generator
 	 * @return the generated code or {@code null}
 	 */
 	@Nullable
-	CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
-			InstanceCodeGenerationService service);
+	CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service);
 
 }

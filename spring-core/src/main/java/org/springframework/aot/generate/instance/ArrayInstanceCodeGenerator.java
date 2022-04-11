@@ -35,8 +35,7 @@ class ArrayInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final ArrayInstanceCodeGenerator INSTANCE = new ArrayInstanceCodeGenerator();
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, @Nullable Object value, ResolvableType type,
-			InstanceCodeGenerationService service) {
+	public CodeBlock generateCode(@Nullable Object value, ResolvableType type, InstanceCodeGenerationService service) {
 		if (type.isArray()) {
 			ResolvableType componentType = type.getComponentType();
 			int length = Array.getLength(value);
@@ -44,7 +43,7 @@ class ArrayInstanceCodeGenerator implements InstanceCodeGenerator {
 			builder.add("new $T {", type.toClass());
 			for (int i = 0; i < length; i++) {
 				Object component = Array.get(value, i);
-				CodeBlock componentCode = service.generateCode(name, component, componentType);
+				CodeBlock componentCode = service.generateCode(component, componentType);
 				builder.add((i != 0) ? ", " : "");
 				builder.add("$L", componentCode);
 			}

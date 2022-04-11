@@ -22,7 +22,6 @@ import java.util.Iterator;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.CodeBlock.Builder;
-import org.springframework.lang.Nullable;
 
 public class CollectionInstanceCodeGenerator<T extends Collection<?>> implements InstanceCodeGenerator {
 
@@ -37,32 +36,31 @@ public class CollectionInstanceCodeGenerator<T extends Collection<?>> implements
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
-			InstanceCodeGenerationService service) {
+	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
 		if (this.collectionType.isInstance(value)) {
 			T collection = (T) value;
 			if (collection.isEmpty()) {
 				return this.emptyResult;
 			}
 			ResolvableType elementType = type.as(this.collectionType).getGeneric();
-			return generateCollectionCode(name, service, elementType, collection);
+			return generateCollectionCode(service, elementType, collection);
 		}
 		return null;
 	}
 
-	protected CodeBlock generateCollectionCode(String name, InstanceCodeGenerationService service,
-			ResolvableType elementType, T collection) {
-		return generateCollectionOf(name, collection, this.collectionType, elementType, service);
+	protected CodeBlock generateCollectionCode(InstanceCodeGenerationService service, ResolvableType elementType,
+			T collection) {
+		return generateCollectionOf(collection, this.collectionType, elementType, service);
 	}
 
-	protected final CodeBlock generateCollectionOf(String name, Collection<?> collection, Class<?> collectionType,
+	protected final CodeBlock generateCollectionOf(Collection<?> collection, Class<?> collectionType,
 			ResolvableType elementType, InstanceCodeGenerationService service) {
 		Builder builder = CodeBlock.builder();
 		builder.add("$T.of(", collectionType);
 		Iterator<?> iterator = collection.iterator();
 		while (iterator.hasNext()) {
 			Object element = iterator.next();
-			CodeBlock elementCode = service.generateCode(name, element, elementType);
+			CodeBlock elementCode = service.generateCode(element, elementType);
 			builder.add("$L", elementCode);
 			builder.add((!iterator.hasNext()) ? "" : ", ");
 		}

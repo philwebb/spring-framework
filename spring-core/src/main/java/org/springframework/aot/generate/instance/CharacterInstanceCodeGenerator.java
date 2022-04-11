@@ -34,6 +34,8 @@ import org.springframework.lang.Nullable;
  */
 class CharacterInstanceCodeGenerator implements InstanceCodeGenerator {
 
+	// FIXME merge with primitive
+
 	static final CharacterInstanceCodeGenerator INSTANCE = new CharacterInstanceCodeGenerator();
 
 	private static final Map<Character, String> ESCAPES;
@@ -51,8 +53,7 @@ class CharacterInstanceCodeGenerator implements InstanceCodeGenerator {
 	}
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, @Nullable Object value, ResolvableType type,
-			InstanceCodeGenerationService service) {
+	public CodeBlock generateCode(@Nullable Object value, ResolvableType type, InstanceCodeGenerationService service) {
 		if (value instanceof Character character) {
 			return CodeBlock.of("'$L'", escape(character));
 		}

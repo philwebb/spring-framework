@@ -36,8 +36,8 @@ import org.springframework.util.Assert;
  * By default, the following instance value types are supported:
  * <ul>
  * <li>{@link Character}</li>
- * <li>Primitives ({@link Boolean}, {@link Byte}, {@link Short}, {@link Integer},
- * {@link Long})</li>
+ * <li>Primitives and primitive wrappers ({@link Boolean}, {@link Byte}, {@link Short},
+ * {@link Integer}, {@link Long})</li>
  * <li>{@link String}</li>
  * <li>{@link Enum}</li>
  * <li>{@link Class}</li>
@@ -171,14 +171,14 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	}
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, @Nullable Object value, ResolvableType type) {
+	public CodeBlock generateCode(@Nullable Object value, ResolvableType type) {
 		if (value == null) {
 			return NULL_INSTANCE_CODE_BLOCK;
 		}
 		DefaultInstanceCodeGenerationService service = this;
 		while (service != null) {
 			for (InstanceCodeGenerator generator : service.generators) {
-				CodeBlock code = generator.generateCode(name, value, type, service);
+				CodeBlock code = generator.generateCode(value, type, service);
 				if (code != null) {
 					return code;
 				}

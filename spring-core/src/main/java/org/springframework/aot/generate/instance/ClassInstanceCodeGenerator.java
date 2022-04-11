@@ -18,7 +18,6 @@ package org.springframework.aot.generate.instance;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -34,8 +33,7 @@ class ClassInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final ClassInstanceCodeGenerator INSTANCE = new ClassInstanceCodeGenerator();
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
-			InstanceCodeGenerationService service) {
+	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
 		if (value instanceof Class<?> clazz) {
 			return CodeBlock.of("$T.class", ClassUtils.getUserClass(clazz));
 		}

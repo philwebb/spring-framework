@@ -36,8 +36,7 @@ class ResolvableTypeInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final ResolvableTypeInstanceCodeGenerator INSTANCE = new ResolvableTypeInstanceCodeGenerator();
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
-			InstanceCodeGenerationService service) {
+	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
 		if (value instanceof ResolvableType resolvableType) {
 			return generateCode(resolvableType, false);
 		}

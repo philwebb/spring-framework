@@ -48,15 +48,14 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 	private static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.emptyMap()", Collections.class);
 
 	@Override
-	public CodeBlock generateCode(@Nullable String name, Object value, ResolvableType type,
-			InstanceCodeGenerationService service) {
+	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
 		if (value instanceof Map<?, ?> map) {
-			return generateMapCode(name, type, service, map);
+			return generateMapCode(type, service, map);
 		}
 		return null;
 	}
 
-	private <K, V> CodeBlock generateMapCode(String name, ResolvableType type, InstanceCodeGenerationService service,
+	private <K, V> CodeBlock generateMapCode(ResolvableType type, InstanceCodeGenerationService service,
 			Map<K, V> map) {
 		if (map.isEmpty()) {
 			return EMPTY_RESULT;
@@ -64,7 +63,7 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 		ResolvableType keyType = type.as(Map.class).getGeneric(0);
 		ResolvableType valueType = type.as(Map.class).getGeneric(1);
 		if (map instanceof LinkedHashMap<?, ?>) {
-			return generateLinkedHashMapCode(name, service, map, keyType, valueType);
+			return generateLinkedHashMapCode(service, map, keyType, valueType);
 		}
 		map = orderForCodeConsistency(map);
 		boolean useOfEntries = map.size() > 10;
@@ -73,8 +72,8 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 		Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<K, V> entry = iterator.next();
-			CodeBlock keyCode = service.generateCode(name, entry.getKey(), keyType);
-			CodeBlock valueCode = service.generateCode(name, entry.getValue(), valueType);
+			CodeBlock keyCode = service.generateCode(entry.getKey(), keyType);
+			CodeBlock valueCode = service.generateCode(entry.getValue(), valueType);
 			if (!useOfEntries) {
 				builder.add("$L, $L", keyCode, valueCode);
 			}
@@ -91,23 +90,23 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 		return new TreeMap<>(map);
 	}
 
-	private <K, V> CodeBlock generateLinkedHashMapCode(String name, InstanceCodeGenerationService service,
-			Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
+	private <K, V> CodeBlock generateLinkedHashMapCode(InstanceCodeGenerationService service, Map<K, V> map,
+			ResolvableType keyType, ResolvableType valueType) {
 		if (!service.supportsMethodGeneration()) {
-			return generateLinkedHashMapCodeWithStream(name, service, map, keyType, valueType);
+			return generateLinkedHashMapCodeWithStream(service, map, keyType, valueType);
 		}
-		return generateLinkedHashMapCodeWithMethod(name, service, map, keyType, valueType);
+		return generateLinkedHashMapCodeWithMethod(service, map, keyType, valueType);
 	}
 
-	private <K, V> CodeBlock generateLinkedHashMapCodeWithStream(String name, InstanceCodeGenerationService service,
-			Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
+	private <K, V> CodeBlock generateLinkedHashMapCodeWithStream(InstanceCodeGenerationService service, Map<K, V> map,
+			ResolvableType keyType, ResolvableType valueType) {
 		CodeBlock.Builder builder = CodeBlock.builder();
 		builder.add("$T.of(", Stream.class);
 		Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<K, V> entry = iterator.next();
-			CodeBlock keyCode = service.generateCode(name, entry.getKey(), keyType);
-			CodeBlock valueCode = service.generateCode(name, entry.getValue(), valueType);
+			CodeBlock keyCode = service.generateCode(entry.getKey(), keyType);
+			CodeBlock valueCode = service.generateCode(entry.getValue(), valueType);
 			builder.add("$T.entry($L, $L)", Map.class, keyCode, valueCode);
 			builder.add((!iterator.hasNext()) ? "" : ", ");
 		}
@@ -116,17 +115,17 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 		return builder.build();
 	}
 
-	private <K, V> CodeBlock generateLinkedHashMapCodeWithMethod(String name, InstanceCodeGenerationService service,
-			Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
+	private <K, V> CodeBlock generateLinkedHashMapCodeWithMethod(InstanceCodeGenerationService service, Map<K, V> map,
+			ResolvableType keyType, ResolvableType valueType) {
 		GeneratedMethod method = service.getMethodGenerator()
-				.generateMethod(MethodNameGenerator.join("get", name, "map")).using(builder -> {
+				.generateMethod(MethodNameGenerator.join("get", "map")).using(builder -> {
 					builder.addAnnotation(AnnotationSpec.builder(SuppressWarnings.class)
 							.addMember("value", "{\"rawtypes\", \"unchecked\"}").build());
 					builder.returns(Map.class);
 					builder.addStatement("$T map = new $T($L)", Map.class, LinkedHashMap.class, map.size());
 					map.forEach((key, value) -> {
-						CodeBlock keyCode = service.generateCode(name, key, keyType);
-						CodeBlock valueCode = service.generateCode(name, value, valueType);
+						CodeBlock keyCode = service.generateCode(key, keyType);
+						CodeBlock valueCode = service.generateCode(value, valueType);
 						builder.addStatement("map.put($L, $L)", keyCode, valueCode);
 					});
 					builder.addStatement("return map");
