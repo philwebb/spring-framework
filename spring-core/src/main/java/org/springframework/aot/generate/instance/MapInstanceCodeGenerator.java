@@ -93,7 +93,7 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 
 	private <K, V> CodeBlock generateLinkedHashMapCode(String name, InstanceCodeGenerationService service,
 			Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
-		if (!service.supportsGeneratedMethods()) {
+		if (!service.supportsMethodGeneration()) {
 			return generateLinkedHashMapCodeWithStream(name, service, map, keyType, valueType);
 		}
 		return generateLinkedHashMapCodeWithMethod(name, service, map, keyType, valueType);
@@ -118,8 +118,8 @@ class MapInstanceCodeGenerator implements InstanceCodeGenerator {
 
 	private <K, V> CodeBlock generateLinkedHashMapCodeWithMethod(String name, InstanceCodeGenerationService service,
 			Map<K, V> map, ResolvableType keyType, ResolvableType valueType) {
-		GeneratedMethod method = service.getGeneratedMethods().add(MethodNameGenerator.join("get", name, "map"))
-				.using(builder -> {
+		GeneratedMethod method = service.getMethodGenerator()
+				.generateMethod(MethodNameGenerator.join("get", name, "map")).using(builder -> {
 					builder.addAnnotation(AnnotationSpec.builder(SuppressWarnings.class)
 							.addMember("value", "{\"rawtypes\", \"unchecked\"}").build());
 					builder.returns(Map.class);

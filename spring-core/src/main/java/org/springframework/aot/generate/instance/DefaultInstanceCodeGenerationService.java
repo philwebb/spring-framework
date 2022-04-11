@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
@@ -70,7 +70,7 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	private final DefaultInstanceCodeGenerationService parent;
 
 	@Nullable
-	private final GeneratedMethods generatedMethods; // FIXME replace with method generator
+	private final MethodGenerator methodGenerator;
 
 	private final boolean sharedInstance;
 
@@ -95,28 +95,28 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 
 	/**
 	 * Create a new {@link DefaultInstanceCodeGenerationService} with the specified
-	 * {@link GeneratedMethods} and a default set of generators.
-	 * @param generatedMethods the generated method instance to use
+	 * {@link MethodGenerator} and a default set of instance code generators.
+	 * @param methodGenerator the method generator instance to use
 	 */
-	public DefaultInstanceCodeGenerationService(@Nullable GeneratedMethods generatedMethods) {
-		this(null, generatedMethods, true, false);
+	public DefaultInstanceCodeGenerationService(@Nullable MethodGenerator methodGenerator) {
+		this(null, methodGenerator, true, false);
 	}
 
 	/**
 	 * Create a new {@link DefaultInstanceCodeGenerationService} with the specified
-	 * {@link GeneratedMethods} and default or empty set of generators.
-	 * @param generatedMethods the generated method instance to use
+	 * {@link MethodGenerator} and default or empty set of instance code generators.
+	 * @param methodGenerator the method generator instance to use
 	 * @param addDefaultGenerators if default generates should be added
 	 */
-	public DefaultInstanceCodeGenerationService(@Nullable GeneratedMethods generatedMethods,
+	public DefaultInstanceCodeGenerationService(@Nullable MethodGenerator methodGenerator,
 			boolean addDefaultGenerators) {
-		this(null, generatedMethods, addDefaultGenerators, false);
+		this(null, methodGenerator, addDefaultGenerators, false);
 	}
 
 	private DefaultInstanceCodeGenerationService(@Nullable DefaultInstanceCodeGenerationService parent,
-			@Nullable GeneratedMethods generatedMethods, boolean addDefaultGenerators, boolean sharedInstance) {
+			@Nullable MethodGenerator methodGenerator, boolean addDefaultGenerators, boolean sharedInstance) {
 		this.parent = parent;
-		this.generatedMethods = (generatedMethods != null) ? generatedMethods : getGeneratedMethodsFromParent(parent);
+		this.methodGenerator = (methodGenerator != null) ? methodGenerator : getGeneratedMethodsFromParent(parent);
 		this.sharedInstance = sharedInstance;
 		if (addDefaultGenerators) {
 			this.generators.add(CharacterInstanceCodeGenerator.INSTANCE);
@@ -133,8 +133,8 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	}
 
 	@Nullable
-	private GeneratedMethods getGeneratedMethodsFromParent(InstanceCodeGenerationService parent) {
-		return (parent != null && parent.supportsGeneratedMethods()) ? parent.getGeneratedMethods() : null;
+	private MethodGenerator getGeneratedMethodsFromParent(InstanceCodeGenerationService parent) {
+		return (parent != null && parent.supportsMethodGeneration()) ? parent.getMethodGenerator() : null;
 	}
 
 	/**
@@ -160,14 +160,14 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	}
 
 	@Override
-	public boolean supportsGeneratedMethods() {
-		return this.generatedMethods != null;
+	public boolean supportsMethodGeneration() {
+		return this.methodGenerator != null;
 	}
 
 	@Override
-	public GeneratedMethods getGeneratedMethods() {
-		Assert.state(this.generatedMethods != null, "No GeneratedMethods instance available");
-		return this.generatedMethods;
+	public MethodGenerator getMethodGenerator() {
+		Assert.state(this.methodGenerator != null, "No MethodGenerator available");
+		return this.methodGenerator;
 	}
 
 	@Override

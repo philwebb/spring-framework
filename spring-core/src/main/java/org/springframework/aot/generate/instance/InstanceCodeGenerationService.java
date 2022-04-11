@@ -19,6 +19,7 @@ package org.springframework.aot.generate.instance;
 import java.util.List;
 
 import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
@@ -83,7 +84,7 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 	 * @return {@code true} if generated methods are supported
 	 * @see #getGeneratedMethods()
 	 */
-	boolean supportsGeneratedMethods();
+	boolean supportsMethodGeneration();
 
 	/**
 	 * Return a {@link GeneratedMethods} instance that can be used to add methods to
@@ -93,6 +94,6 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 	 * service
 	 * @see #supportsGeneratedMethods()
 	 */
-	GeneratedMethods getGeneratedMethods();
+	MethodGenerator getMethodGenerator();
 
 }
