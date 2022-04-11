@@ -119,7 +119,6 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 		this.methodGenerator = (methodGenerator != null) ? methodGenerator : getGeneratedMethodsFromParent(parent);
 		this.sharedInstance = sharedInstance;
 		if (addDefaultGenerators) {
-			this.generators.add(CharacterInstanceCodeGenerator.INSTANCE);
 			this.generators.add(PrimitiveInstanceCodeGenerator.INSTANCE);
 			this.generators.add(StringInstanceCodeGenerator.INSTANCE);
 			this.generators.add(EnumInstanceCodeGenerator.INSTANCE);

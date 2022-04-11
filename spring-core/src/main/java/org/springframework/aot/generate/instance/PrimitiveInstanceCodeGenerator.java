@@ -16,9 +16,12 @@
 
 package org.springframework.aot.generate.instance;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.lang.Nullable;
 
 /**
  * {@link InstanceCodeGenerator} to {@link Class#isPrimitive() primitives}.
@@ -31,6 +34,20 @@ import org.springframework.lang.Nullable;
 class PrimitiveInstanceCodeGenerator implements InstanceCodeGenerator {
 
 	static final PrimitiveInstanceCodeGenerator INSTANCE = new PrimitiveInstanceCodeGenerator();
+
+	private static final Map<Character, String> CHAR_ESCAPES;
+	static {
+		Map<Character, String> escapes = new HashMap<>();
+		escapes.put('\b', "\\b");
+		escapes.put('\t', "\\t");
+		escapes.put('\n', "\\n");
+		escapes.put('\f', "\\f");
+		escapes.put('\r', "\\r");
+		escapes.put('\"', "\"");
+		escapes.put('\'', "\\'");
+		escapes.put('\\', "\\\\");
+		CHAR_ESCAPES = Collections.unmodifiableMap(escapes);
+	}
 
 	@Override
 	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
@@ -52,7 +69,17 @@ class PrimitiveInstanceCodeGenerator implements InstanceCodeGenerator {
 		if (value instanceof Double) {
 			return CodeBlock.of("(double) $L", value);
 		}
+		if (value instanceof Character character) {
+			return CodeBlock.of("'$L'", escape(character));
+		}
 		return null;
 	}
 
+	private String escape(char ch) {
+		String escaped = CHAR_ESCAPES.get(ch);
+		if (escaped != null) {
+			return escaped;
+		}
+		return (!Character.isISOControl(ch)) ? Character.toString(ch) : String.format("\\u%04x", (int) ch);
+	}
 }

@@ -43,6 +43,7 @@ import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
 import org.springframework.javapoet.TypeSpec;
+import org.springframework.lang.Nullable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -58,40 +59,38 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class DefaultInstanceCodeGenerationServiceCompilerTests {
 
-	private void compile(DefaultInstanceCodeGenerationService generators, Object value,
+	private void compile(DefaultInstanceCodeGenerationService generationService, Object value,
 			BiConsumer<Object, Compiled> result) {
-		compile(generators, value, (value != null) ? ResolvableType.forInstance(value) : null, result);
+		compile(generationService, null, value, result);
 	}
 
-	private void compile(DefaultInstanceCodeGenerationService generators, Object value, ResolvableType type,
+	private void compile(DefaultInstanceCodeGenerationService generationService,
+			@Nullable GeneratedMethods generatedMethods, Object value, BiConsumer<Object, Compiled> result) {
+		compile(generationService, generatedMethods, value, (value != null) ? ResolvableType.forInstance(value) : null,
+				result);
+	}
+
+	private void compile(DefaultInstanceCodeGenerationService generationService,
+			@Nullable GeneratedMethods generatedMethods, Object value, ResolvableType type,
 			BiConsumer<Object, Compiled> result) {
-		CodeBlock code = generators.generateCode(null, value, type);
-		JavaFile javaFile = createJavaFile(generators, code);
+		CodeBlock code = generationService.generateCode(value, type);
+		JavaFile javaFile = createJavaFile(generationService, generatedMethods, code);
 		System.out.println(javaFile);
 		TestCompiler.forSystem().compile(SourceFile.of(javaFile::writeTo),
 				compiled -> result.accept(compiled.getInstance(Supplier.class).get(), compiled));
 	}
 
-	private JavaFile createJavaFile(DefaultInstanceCodeGenerationService generators, CodeBlock code) {
+	private JavaFile createJavaFile(DefaultInstanceCodeGenerationService generationService,
+			@Nullable GeneratedMethods generatedMethods, CodeBlock code) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder("InstanceSupplier");
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addSuperinterface(ParameterizedTypeName.get(Supplier.class, Object.class));
 		builder.addMethod(MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(Object.class)
 				.addStatement("return $L", code).build());
-		GeneratedMethods generatedMethods = getGeneratedMethods(generators);
 		if (generatedMethods != null) {
 			generatedMethods.doWithMethodSpecs(builder::addMethod);
 		}
 		return JavaFile.builder("com.example", builder.build()).build();
-	}
-
-	private GeneratedMethods getGeneratedMethods(DefaultInstanceCodeGenerationService generators) {
-		try {
-			return generators.getGeneratedMethods();
-		}
-		catch (IllegalStateException ex) {
-			return null;
-		}
 	}
 
 	/**
@@ -104,46 +103,6 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		void generateWhenNull() {
 			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), null,
 					(instance, compiled) -> assertThat(instance).isNull());
-		}
-
-	}
-
-	/**
-	 * Tests for {@link CharacterInstanceCodeGenerator}.
-	 */
-	@Nested
-	class CharacterInstanceCodeGeneratorTests {
-
-		@Test
-		void generateReturnsCharacterInstance() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 'a', (instance, compiled) -> {
-				assertThat(instance).isEqualTo('a');
-				assertThat(compiled.getSourceFile()).contains("'a'");
-			});
-		}
-
-		@Test
-		void generateWhenSimpleEscapedReturnsEscaped() {
-			testEscaped('\b', "'\\b'");
-			testEscaped('\t', "'\\t'");
-			testEscaped('\n', "'\\n'");
-			testEscaped('\f', "'\\f'");
-			testEscaped('\r', "'\\r'");
-			testEscaped('\"', "'\"'");
-			testEscaped('\'', "'\\''");
-			testEscaped('\\', "'\\\\'");
-		}
-
-		@Test
-		void generatedWhenUnicodeEscapedReturnsEscaped() {
-			testEscaped('\u007f', "'\\u007f'");
-		}
-
-		private void testEscaped(char value, String expectedSourceContent) {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), value, (instance, compiled) -> {
-				assertThat(instance).isEqualTo(value);
-				assertThat(compiled.getSourceFile()).contains(expectedSourceContent);
-			});
 		}
 
 	}
@@ -207,6 +166,39 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 0.2, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(0.2);
 				assertThat(compiled.getSourceFile()).contains("(double) 0.2");
+			});
+		}
+
+
+		@Test
+		void generateWhenChar() {
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 'a', (instance, compiled) -> {
+				assertThat(instance).isEqualTo('a');
+				assertThat(compiled.getSourceFile()).contains("'a'");
+			});
+		}
+
+		@Test
+		void generateWhenSimpleEscapedCharReturnsEscaped() {
+			testEscaped('\b', "'\\b'");
+			testEscaped('\t', "'\\t'");
+			testEscaped('\n', "'\\n'");
+			testEscaped('\f', "'\\f'");
+			testEscaped('\r', "'\\r'");
+			testEscaped('\"', "'\"'");
+			testEscaped('\'', "'\\''");
+			testEscaped('\\', "'\\\\'");
+		}
+
+		@Test
+		void generatedWhenUnicodeEscapedCharReturnsEscaped() {
+			testEscaped('\u007f', "'\\u007f'");
+		}
+
+		private void testEscaped(char value, String expectedSourceContent) {
+			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), value, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(value);
+				assertThat(compiled.getSourceFile()).contains(expectedSourceContent);
 			});
 		}
 
@@ -438,9 +430,10 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			map.put("a", "A");
 			map.put("b", "B");
 			map.put("c", "C");
+			GeneratedMethods generatedMethods = new GeneratedMethods();
 			DefaultInstanceCodeGenerationService generators = new DefaultInstanceCodeGenerationService(
-					new GeneratedMethods());
-			compile(generators, map, (instance, compiler) -> {
+					generatedMethods::add);
+			compile(generators, generatedMethods, map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
 				assertThat(compiler.getSourceFile()).contains("getMap()");
 			});
