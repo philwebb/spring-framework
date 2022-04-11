@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see GeneratedMethod
  */
-public class GeneratedMethods implements Iterable<GeneratedMethod> {
+public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenerator {
 
 	private final MethodNameGenerator methodNameGenerator;
 
@@ -56,6 +56,11 @@ public class GeneratedMethods implements Iterable<GeneratedMethod> {
 	public GeneratedMethods(MethodNameGenerator methodNameGenerator) {
 		Assert.notNull(methodNameGenerator, "'methodNameGenerator' must not be null");
 		this.methodNameGenerator = methodNameGenerator;
+	}
+
+	@Override
+	public GeneratedMethod generateMethod(Object... methodNameParts) {
+		return add(methodNameParts);
 	}
 
 	/**

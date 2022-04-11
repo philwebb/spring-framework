@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.core.ResolvableType;
@@ -47,9 +48,10 @@ import org.springframework.util.Assert;
  * <li>{@link List}</li>
  * <li>{@link Map}</li>
  * </ul>
- * Set the {@code addDefaultGenerators} constructor parameter to {@code false} if these
- * are not required. Additional {@link InstanceCodeGenerator} implementations can be
- * {@link #add(InstanceCodeGenerator) added} to support other types.
+ * <p>
+ * If these are not required, or if additional {@link InstanceCodeGenerator}
+ * implementations are needed use an appropriate constructor to configure the
+ * {@link InstanceCodeGenerators}.
  * <p>
  * If no additional {@link InstanceCodeGenerator} implementations are needed then the
  * {@link InstanceCodeGenerationService#getSharedInstance()} may be used.
@@ -61,8 +63,7 @@ import org.springframework.util.Assert;
  */
 public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerationService {
 
-	private static final DefaultInstanceCodeGenerationService SHARED_INSTANCE = new DefaultInstanceCodeGenerationService(
-			null, null, true, true);
+	private static final DefaultInstanceCodeGenerationService SHARED_INSTANCE = new DefaultInstanceCodeGenerationService();
 
 	static final CodeBlock NULL_INSTANCE_CODE_BLOCK = CodeBlock.of("null");
 
@@ -72,63 +73,30 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	@Nullable
 	private final MethodGenerator methodGenerator;
 
-	private final boolean sharedInstance;
+	private final List<InstanceCodeGenerator> instanceCodeGenerators;
 
-	private final List<InstanceCodeGenerator> generators = new ArrayList<>();
-
-	/**
-	 * Crate a new {@link DefaultInstanceCodeGenerationService} with a default set of
-	 * generators.
-	 */
 	public DefaultInstanceCodeGenerationService() {
-		this(null, null, true, false);
+		this(null, null, InstanceCodeGenerators::onlyDefaults);
 	}
 
-	/**
-	 * Create a new {@link DefaultInstanceCodeGenerationService} with a parent
-	 * {@link InstanceCodeGenerationService}.
-	 * @param parent the parent {@link InstanceCodeGenerationService}
-	 */
-	public DefaultInstanceCodeGenerationService(DefaultInstanceCodeGenerationService parent) {
-		this(parent, null, false, false);
+	public DefaultInstanceCodeGenerationService(@Nullable DefaultInstanceCodeGenerationService parent) {
+		this(parent, null, InstanceCodeGenerators::onlyDefaults);
 	}
 
-	/**
-	 * Create a new {@link DefaultInstanceCodeGenerationService} with the specified
-	 * {@link MethodGenerator} and a default set of instance code generators.
-	 * @param methodGenerator the method generator instance to use
-	 */
 	public DefaultInstanceCodeGenerationService(@Nullable MethodGenerator methodGenerator) {
-		this(null, methodGenerator, true, false);
+		this(null, methodGenerator, InstanceCodeGenerators::onlyDefaults);
 	}
 
-	/**
-	 * Create a new {@link DefaultInstanceCodeGenerationService} with the specified
-	 * {@link MethodGenerator} and default or empty set of instance code generators.
-	 * @param methodGenerator the method generator instance to use
-	 * @param addDefaultGenerators if default generates should be added
-	 */
-	public DefaultInstanceCodeGenerationService(@Nullable MethodGenerator methodGenerator,
-			boolean addDefaultGenerators) {
-		this(null, methodGenerator, addDefaultGenerators, false);
+	public DefaultInstanceCodeGenerationService(Consumer<InstanceCodeGenerators> instanceCodeGenerators) {
+		this(null, null, instanceCodeGenerators);
 	}
 
-	private DefaultInstanceCodeGenerationService(@Nullable DefaultInstanceCodeGenerationService parent,
-			@Nullable MethodGenerator methodGenerator, boolean addDefaultGenerators, boolean sharedInstance) {
+	public DefaultInstanceCodeGenerationService(@Nullable DefaultInstanceCodeGenerationService parent,
+			@Nullable MethodGenerator methodGenerator, Consumer<InstanceCodeGenerators> instanceCodeGenerators) {
+		Assert.notNull(instanceCodeGenerators, "'instanceCodeGenerators' must not be null");
 		this.parent = parent;
 		this.methodGenerator = (methodGenerator != null) ? methodGenerator : getGeneratedMethodsFromParent(parent);
-		this.sharedInstance = sharedInstance;
-		if (addDefaultGenerators) {
-			this.generators.add(PrimitiveInstanceCodeGenerator.INSTANCE);
-			this.generators.add(StringInstanceCodeGenerator.INSTANCE);
-			this.generators.add(EnumInstanceCodeGenerator.INSTANCE);
-			this.generators.add(ClassInstanceCodeGenerator.INSTANCE);
-			this.generators.add(ResolvableTypeInstanceCodeGenerator.INSTANCE);
-			this.generators.add(ArrayInstanceCodeGenerator.INSTANCE);
-			this.generators.add(ListInstanceCodeGenerator.INSTANCE);
-			this.generators.add(SetInstanceCodeGenerator.INSTANCE);
-			this.generators.add(MapInstanceCodeGenerator.INSTANCE);
-		}
+		this.instanceCodeGenerators = InstanceCodeGenerators.get(instanceCodeGenerators);
 	}
 
 	@Nullable
@@ -144,18 +112,6 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 	 */
 	static DefaultInstanceCodeGenerationService getSharedInstance() {
 		return SHARED_INSTANCE;
-	}
-
-	/**
-	 * Add a new {@link InstanceCodeGenerator} to this service. Added generators take
-	 * precedence over existing generators.
-	 * @param generator the generator to add
-	 */
-	public void add(InstanceCodeGenerator generator) {
-		Assert.state(!this.sharedInstance,
-				"'DefaultInstanceCodeGenerationService.sharedInstance()' cannot be modified");
-		Assert.notNull(generator, "'generator' must not be null");
-		this.generators.add(0, generator);
 	}
 
 	@Override
@@ -176,7 +132,7 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 		}
 		DefaultInstanceCodeGenerationService service = this;
 		while (service != null) {
-			for (InstanceCodeGenerator generator : service.generators) {
+			for (InstanceCodeGenerator generator : service.instanceCodeGenerators) {
 				CodeBlock code = generator.generateCode(value, type, service);
 				if (code != null) {
 					return code;
@@ -189,6 +145,56 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 
 	@Override
 	public Iterator<InstanceCodeGenerator> iterator() {
-		return Collections.unmodifiableList(this.generators).iterator();
+		return Collections.unmodifiableList(this.instanceCodeGenerators).iterator();
 	}
+
+	/**
+	 * Manages the {@link InstanceCodeGenerator} instances used by the service.
+	 */
+	public static class InstanceCodeGenerators {
+
+		private final List<InstanceCodeGenerator> generators = new ArrayList<>();
+
+		InstanceCodeGenerators() {
+		}
+
+		/**
+		 * Adds the default generators.
+		 */
+		public void addDefaults() {
+			add(PrimitiveInstanceCodeGenerator.INSTANCE);
+			add(StringInstanceCodeGenerator.INSTANCE);
+			add(EnumInstanceCodeGenerator.INSTANCE);
+			add(ClassInstanceCodeGenerator.INSTANCE);
+			add(ResolvableTypeInstanceCodeGenerator.INSTANCE);
+			add(ArrayInstanceCodeGenerator.INSTANCE);
+			add(ListInstanceCodeGenerator.INSTANCE);
+			add(SetInstanceCodeGenerator.INSTANCE);
+			add(MapInstanceCodeGenerator.INSTANCE);
+		}
+
+		/**
+		 * Adds a specific generator.
+		 * @param instanceCodeGenerator the generator to add
+		 */
+		public void add(InstanceCodeGenerator instanceCodeGenerator) {
+			Assert.notNull(instanceCodeGenerator, "'instanceCodeGenerator' must not be null");
+			this.generators.add(instanceCodeGenerator);
+		}
+
+		static List<InstanceCodeGenerator> get(Consumer<InstanceCodeGenerators> customizer) {
+			InstanceCodeGenerators instanceCodeGenerators = new InstanceCodeGenerators();
+			customizer.accept(instanceCodeGenerators);
+			return Collections.unmodifiableList(instanceCodeGenerators.generators);
+		}
+
+		public static void onlyDefaults(InstanceCodeGenerators generators) {
+			generators.addDefaults();
+		}
+
+		public static void none(InstanceCodeGenerators generators) {
+		}
+
+	}
+
 }

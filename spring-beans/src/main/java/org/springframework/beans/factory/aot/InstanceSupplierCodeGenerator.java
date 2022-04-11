@@ -263,7 +263,7 @@ class InstanceSupplierCodeGenerator {
 	private CodeBlock generatePackagePrivateDelegation(String name, Class<?> declaringClass,
 			Consumer<Builder> delegateMethodBuilder) {
 		GeneratedMethods generatedMethods = new GeneratedMethods();
-		GeneratedMethod delegateMethod = generateGetInstanceMethod(generatedMethods::add, name)
+		GeneratedMethod delegateMethod = generateGetInstanceMethod(generatedMethods, name)
 				.using(delegateMethodBuilder);
 		GeneratedClassName generatedClassName = this.generationContext.getClassNameGenerator()
 				.generateClassName(declaringClass, FEATURE_NAME);

@@ -261,7 +261,7 @@ class InstanceSupplierCodeGeneratorTests {
 		RegisteredBean registeredBean = RegisteredBean.of(registrationBeanFactory, "testBean");
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(generationContext,
-				generatedMethods::add);
+				generatedMethods);
 		CodeBlock generatedCode = generator.generateCode(registeredBean);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
 		System.out.println(javaFile);

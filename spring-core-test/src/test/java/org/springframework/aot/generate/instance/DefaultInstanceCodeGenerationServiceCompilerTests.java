@@ -75,7 +75,6 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			BiConsumer<Object, Compiled> result) {
 		CodeBlock code = generationService.generateCode(value, type);
 		JavaFile javaFile = createJavaFile(generationService, generatedMethods, code);
-		System.out.println(javaFile);
 		TestCompiler.forSystem().compile(SourceFile.of(javaFile::writeTo),
 				compiled -> result.accept(compiled.getInstance(Supplier.class).get(), compiled));
 	}
@@ -168,7 +167,6 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 				assertThat(compiled.getSourceFile()).contains("(double) 0.2");
 			});
 		}
-
 
 		@Test
 		void generateWhenChar() {
@@ -432,7 +430,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			map.put("c", "C");
 			GeneratedMethods generatedMethods = new GeneratedMethods();
 			DefaultInstanceCodeGenerationService generators = new DefaultInstanceCodeGenerationService(
-					generatedMethods::add);
+					generatedMethods);
 			compile(generators, generatedMethods, map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
 				assertThat(compiler.getSourceFile()).contains("getMap()");

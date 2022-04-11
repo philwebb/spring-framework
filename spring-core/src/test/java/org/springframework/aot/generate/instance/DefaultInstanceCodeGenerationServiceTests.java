@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.instance.DefaultInstanceCodeGenerationService.InstanceCodeGenerators;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 
@@ -67,8 +68,30 @@ class DefaultInstanceCodeGenerationServiceTests {
 
 	@Test
 	void createWhenNotAddingDefaultGeneratorsHasNoGenerators() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(null, false);
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(null, null,
+				InstanceCodeGenerators::none);
 		assertThat(service).extracting("generators").asList().isEmpty();
+	}
+
+	@Test
+	void createWhenGeneratorsConsumerIsNullThrowsException() {
+		assertThatIllegalArgumentException()
+				.isThrownBy(() -> new DefaultInstanceCodeGenerationService(null, null, null))
+				.withMessage("'instanceCodeGenerators' must not be null");
+	}
+
+	@Test
+	void createWithAddedGeneratorWhenAddedIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new DefaultInstanceCodeGenerationService(null, null, (generators) -> generators.add(null)))
+				.withMessage("'instanceCodeGenerator' must not be null");
+	}
+
+	@Test
+	void createWithAddedGeneratorAddsGenerator() {
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(null, null,
+				(generators) -> generators.add(new TestInstanceCodeGenerator()));
+		assertThat(service.generateCode(new TestInstance())).hasToString("test");
 	}
 
 	@Test
@@ -78,38 +101,9 @@ class DefaultInstanceCodeGenerationServiceTests {
 	}
 
 	@Test
-	void addWhenSharedInstanceThrowsException() {
-		assertThatIllegalStateException().isThrownBy(
-				() -> DefaultInstanceCodeGenerationService.getSharedInstance().add(new TestInstanceCodeGenerator()))
-				.withMessage("'DefaultInstanceCodeGenerationService.sharedInstance()' cannot be modified");
-	}
-
-	@Test
-	void addAddsGenerator() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService();
-		service.add(new TestInstanceCodeGenerator());
-		assertThat(service.generateCode(new TestInstance())).hasToString("test");
-	}
-
-	@Test
-	void addWhenExistingGeneratorAddsAbove() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService();
-		CodeBlock block = CodeBlock.of("tset");
-		service.add((value, type, service2) -> "test".equals(value) ? block : null);
-		assertThat(service.generateCode("test")).isSameAs(block);
-	}
-
-	@Test
-	void addWhenNullThrowsException() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService();
-		assertThatIllegalArgumentException().isThrownBy(() -> service.add(null))
-				.withMessage("'generator' must not be null");
-	}
-
-	@Test
 	void supportsGeneratedMethodsWhenHasGeneratedMethodsReturnsTrue() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(
-				new GeneratedMethods()::add);
+		GeneratedMethods generatedMethods = new GeneratedMethods();
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(generatedMethods);
 		assertThat(service.supportsMethodGeneration()).isTrue();
 	}
 
@@ -122,9 +116,8 @@ class DefaultInstanceCodeGenerationServiceTests {
 	@Test
 	void getGeneratedMethodsWhenHasGeneratedMethodsReturnsGeneratedMethods() {
 		GeneratedMethods generatedMethods = new GeneratedMethods();
-		MethodGenerator methodGenerator = generatedMethods::add;
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(methodGenerator);
-		assertThat(service.getMethodGenerator()).isSameAs(methodGenerator);
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(generatedMethods);
+		assertThat(service.getMethodGenerator()).isSameAs(generatedMethods);
 	}
 
 	@Test
@@ -143,33 +136,37 @@ class DefaultInstanceCodeGenerationServiceTests {
 
 	@Test
 	void generateCodeGeneratesUsingFirstInstanceCodeGenerator() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(null, false);
 		InstanceCodeGenerator generator1 = mock(InstanceCodeGenerator.class);
 		InstanceCodeGenerator generator2 = mock(InstanceCodeGenerator.class);
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService((generators) -> {
+			generators.add(generator1);
+			generators.add(generator2);
+		});
 		CodeBlock block = CodeBlock.of("test");
 		given(generator1.generateCode("test", ResolvableType.forClass(String.class), service)).willReturn(block);
-		service.add(generator2); // Adds have higher priority
-		service.add(generator1);
 		assertThat(service.generateCode("test")).isSameAs(block);
 		verifyNoInteractions(generator2);
 	}
 
 	@Test
 	void generateCodeWhenHasNotInstanceCodeGeneratorThrowsException() {
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(null, false);
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(
+				InstanceCodeGenerators::none);
 		assertThatIllegalArgumentException().isThrownBy(() -> service.generateCode("test"))
 				.withMessage("'type' java.lang.String must be supported for instance code generation");
 	}
 
 	@Test
 	void createWithParent() {
-		DefaultInstanceCodeGenerationService parent = new DefaultInstanceCodeGenerationService(
-				new GeneratedMethods()::add, false);
-		parent.add(new TestInstanceCodeGenerator());
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(parent);
+		GeneratedMethods generatedMethods = new GeneratedMethods();
+		MethodGenerator methodGenerator = generatedMethods;
+		DefaultInstanceCodeGenerationService parent = new DefaultInstanceCodeGenerationService(null, methodGenerator,
+				(generators) -> generators.add(new TestInstanceCodeGenerator()));
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(parent, null,
+				InstanceCodeGenerators::none);
 		assertThat(service.supportsMethodGeneration()).isTrue();
 		assertThat(service.generateCode(new TestInstance())).isNotNull();
-		assertThatIllegalArgumentException().isThrownBy(() -> assertThat(service.generateCode("test")).isNull());
+		assertThatIllegalArgumentException().isThrownBy(() -> service.generateCode("test"));
 	}
 
 	private void assertCanGenerate(DefaultInstanceCodeGenerationService service, Object value) {
