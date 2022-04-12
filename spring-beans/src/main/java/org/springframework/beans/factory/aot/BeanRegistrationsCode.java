@@ -28,13 +28,19 @@ import org.springframework.aot.generate.MethodGenerator;
  * @since 6.0
  * @see BeanRegistrationCodeGenerator
  */
-public interface BeanRegistrationsCode extends MethodGenerator {
+public interface BeanRegistrationsCode {
 
 	/**
 	 * Return the name of the bean factory that will accept the registration.
 	 * @return the bean factory name
 	 */
 	String getBeanFactoryName();
+
+	/**
+	 * Return a {@link MethodGenerator} that can be used to add more methods to the registrations code.
+	 * @return the method generator
+	 */
+	MethodGenerator getMethodGenerator();
 
 	/**
 	 * Return an {@link InnerBeanRegistrationMethodGenerator} that can be used to generate

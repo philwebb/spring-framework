@@ -19,7 +19,7 @@ package org.springframework.beans.factory.aot;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.lang.Nullable;
@@ -70,8 +70,8 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 	}
 
 	@Override
-	public GeneratedMethod generateMethod(Object... methodNameParts) {
-		return this.beanRegistrationsCode.generateMethod(methodNameParts);
+	public MethodGenerator getMethodGenerator() {
+		return this.beanRegistrationsCode.getMethodGenerator();
 	}
 
 	@Override

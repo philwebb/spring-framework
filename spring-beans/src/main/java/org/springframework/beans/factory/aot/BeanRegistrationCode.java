@@ -31,7 +31,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
  * @since 6.0
  * @see BeanRegistrationCodeGenerator
  */
-public interface BeanRegistrationCode extends MethodGenerator {
+public interface BeanRegistrationCode  {
 
 	/**
 	 * Return the source bean that is being registered.
@@ -44,6 +44,12 @@ public interface BeanRegistrationCode extends MethodGenerator {
 	 * @return the bean factory name
 	 */
 	String getBeanFactoryName();
+
+	/**
+	 * Return a {@link MethodGenerator} that can be used to add more methods to the registrations code.
+	 * @return the method generator
+	 */
+	MethodGenerator getMethodGenerator();
 
 	/**
 	 * Add an instance post processor method call to the registration code.

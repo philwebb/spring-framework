@@ -143,10 +143,19 @@ public final class MethodReference {
 
 	}
 
-	private CodeBlock toCodeBlockForStatic(String instanceVariable) {
+	private CodeBlock toCodeBlockForStatic(@Nullable String instanceVariable) {
 		Assert.isTrue(instanceVariable == null, "'instanceVariable' must be null for static method references");
 		return CodeBlock.of("$T::$L", this.declaringClass, this.methodName);
 	}
+
+	public CodeBlock toInvokeCodeBlock(CodeBlock... arguments) {
+		return toInvokeCodeBlock(null, arguments);
+	}
+
+	public CodeBlock toInvokeCodeBlock(@Nullable String instanceVariable, CodeBlock... arguments) {
+		return null;
+	}
+
 
 	@Override
 	public String toString() {

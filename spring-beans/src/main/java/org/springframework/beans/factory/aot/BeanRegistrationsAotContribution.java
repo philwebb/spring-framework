@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.aot.generate.GeneratedClassName;
-import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.util.Assert;
 
@@ -98,13 +98,13 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		}
 
 		@Override
-		public InnerBeanRegistrationMethodGenerator getInnerBeanRegistrationMethodGenerator() {
-			return this.innerBeanRegistrationMethodGenerator;
+		public MethodGenerator getMethodGenerator() {
+			return this.generatedMethods;
 		}
 
 		@Override
-		public GeneratedMethod generateMethod(Object... methodNameParts) {
-			return this.generatedMethods.generateMethod(methodNameParts);
+		public InnerBeanRegistrationMethodGenerator getInnerBeanRegistrationMethodGenerator() {
+			return this.innerBeanRegistrationMethodGenerator;
 		}
 
 	}
