@@ -29,6 +29,8 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 /**
  * Generates bean registration code and returns a reference to the method that should be
  * called.
@@ -40,6 +42,8 @@ import org.springframework.lang.Nullable;
  * @see BeanRegistrationMethodGeneratorFactory
  */
 class BeanRegistrationMethodGenerator {
+
+	// FIXME rename
 
 	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodGenerator.class);
 
@@ -79,6 +83,9 @@ class BeanRegistrationMethodGenerator {
 		BeanRegistrationCodeGenerator codeGenerator = getCodeGenerator(beanRegistrationsCode);
 		this.aotContributions.forEach((aotContribution) -> aotContribution.applyTo(generationContext, codeGenerator));
 		CodeBlock generatedCode = codeGenerator.generateCode(generationContext);
+		String name = (this.innerBeanPropertyName != null) ? this.innerBeanPropertyName : this.registeredBean.getBeanName();
+
+
 		// FIXME wrap in a function named something or other
 		// return a reference to the function
 		return null;

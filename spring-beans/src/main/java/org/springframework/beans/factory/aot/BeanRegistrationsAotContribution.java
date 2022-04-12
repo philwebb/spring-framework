@@ -40,6 +40,7 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 	private final BeanRegistrationMethodGeneratorFactory methodGeneratorFactory;
 
+	// FIXME needs the bean names as well. A map?
 	private final List<BeanRegistrationMethodGenerator> methodGenerators;
 
 	BeanRegistrationsAotContribution(BeanRegistrationMethodGeneratorFactory methodGeneratorFactory,
