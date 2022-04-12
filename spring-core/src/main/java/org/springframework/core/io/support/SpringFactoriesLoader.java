@@ -358,34 +358,6 @@ public class SpringFactoriesLoader {
 	}
 
 	/**
-	 * Resolve the location to use for a named item in the form
-	 * {@code META-INF/spring/<classification>/<name>.factories}.
-	 * @param classification the classification used to group related items
-	 * @param name the name of the item
-	 * @return the resolved location
-	 * @since 6.0
-	 */
-	public static String resolveNamedItemLocation(Class<?> classification, String name) {
-		return resolveNamedItemLocation(classification.getName(), name);
-	}
-
-	/**
-	 * Resolve the location to use for a named item in the form
-	 * {@code META-INF/spring/<classification>/<name>.factories}.
-	 * @param classification the classification used to group related items
-	 * (usually a fully-qualified class name)
-	 * @param name the name of the item
-	 * @return the resolved location
-	 * @since 6.0
-	 */
-	public static String resolveNamedItemLocation(String classification, String name) {
-		Assert.hasLength(classification, "'classification' must not be empty");
-		Assert.hasLength(name, "'name' must not be empty");
-		return "META-INF/spring/" + classification + "/" + name + ".factories";
-	}
-
-
-	/**
 	 * Internal instantiator used to create the factory instance.
 	 * @param <T> the instance implementation type
 	 */
