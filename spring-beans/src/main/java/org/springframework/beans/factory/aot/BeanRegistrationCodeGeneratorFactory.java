@@ -37,11 +37,13 @@ public interface BeanRegistrationCodeGeneratorFactory {
 	 * registered bean or {@code null} if the registered bean isn't supported by this
 	 * factory.
 	 * @param registeredBean the registered bean
+	 * @param innerBeanPropertyName the name of the property that defined the registered
+	 * inner-bean or {@code null} for regular beans
 	 * @param beanRegistrationsCode the bean registrations code
 	 * @return a {@link BeanRegistrationCode} instance or {@code null}
 	 */
 	@Nullable
 	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
-			BeanRegistrationsCode beanRegistrationsCode);
+			@Nullable String innerBeanPropertyName, BeanRegistrationsCode beanRegistrationsCode);
 
 }

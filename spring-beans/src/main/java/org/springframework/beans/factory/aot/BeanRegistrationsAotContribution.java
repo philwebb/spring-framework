@@ -81,9 +81,10 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 		public BeanRegistrationsCodeGenerator(BeanFactoryInitializationCode beanFactoryInitializationCode,
 				BeanRegistrationMethodGeneratorFactory methodGeneratorFactory) {
-			this.innerBeanRegistrationMethodGenerator = (generationContext, innerRegisteredBean) -> {
+			this.innerBeanRegistrationMethodGenerator = (generationContext, innerRegisteredBean,
+					innerBeanPropertyName) -> {
 				BeanRegistrationMethodGenerator methodGenerator = methodGeneratorFactory
-						.getBeanRegistrationMethodGenerator(innerRegisteredBean);
+						.getBeanRegistrationMethodGenerator(innerRegisteredBean, innerBeanPropertyName);
 				Assert.state(methodGenerator != null, "Unexpected filtering of inner-bean");
 				return methodGenerator.generateRegistrationMethod(generationContext, this);
 			};
@@ -102,8 +103,8 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		}
 
 		@Override
-		public GeneratedMethod addMethod(Object... methodNameParts) {
-			return this.generatedMethods.add(methodNameParts);
+		public GeneratedMethod generateMethod(Object... methodNameParts) {
+			return this.generatedMethods.generateMethod(methodNameParts);
 		}
 
 	}

@@ -37,4 +37,38 @@ public interface MethodGenerator {
 	 */
 	GeneratedMethod generateMethod(Object... methodNameParts);
 
+	/**
+	 * Return a new {@link MethodGenerator} instance that generates method with additional
+	 * implicit method name parts. The final generated name will be of the following form:
+	 * <p>
+	 * <table border="1">
+	 * <tr>
+	 * <th>Original</th>
+	 * <th>Updated</th>
+	 * </tr>
+	 * <tr>
+	 * <td>run</td>
+	 * <td>&lt;name&gt;Run</td>
+	 * </tr>
+	 * <tr>
+	 * <td>getValue</td>
+	 * <td>get&lt;Name&gt;Value</td>
+	 * </tr>
+	 * <tr>
+	 * <td>setValue</td>
+	 * <td>set&lt;Name&gt;Value</td>
+	 * </tr>
+	 * <tr>
+	 * <td>isEnabled</td>
+	 * <td>is&lt;Name&gt;Enabled</td>
+	 * </tr>
+	 * </table>
+	 *
+	 * @param nameParts the implicit name parts
+	 * @return a new {@link MethodGenerator} instance
+	 */
+	default MethodGenerator withName(Object... nameParts) {
+		return new NamedMethodGenerator(this, nameParts);
+	}
+
 }

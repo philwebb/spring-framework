@@ -16,7 +16,7 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.InstancePostProcessor;
 import org.springframework.beans.factory.support.RegisteredBean;
@@ -31,7 +31,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
  * @since 6.0
  * @see BeanRegistrationCodeGenerator
  */
-public interface BeanRegistrationCode {
+public interface BeanRegistrationCode extends MethodGenerator {
 
 	/**
 	 * Return the source bean that is being registered.
@@ -44,15 +44,6 @@ public interface BeanRegistrationCode {
 	 * @return the bean factory name
 	 */
 	String getBeanFactoryName();
-
-	/**
-	 * Add a generated method to the registrations class. The returned instance must
-	 * define the method spec by calling {@code using(builder -> ...)}.
-	 * @param methodNameParts the method name parts that should be used to generate a
-	 * unique method name
-	 * @return the newly added {@link GeneratedMethod}
-	 */
-	GeneratedMethod addMethod(Object... methodNameParts);
 
 	/**
 	 * Add an instance post processor method call to the registration code.

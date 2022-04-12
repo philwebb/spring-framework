@@ -40,7 +40,7 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
 			RegisteredBean registeredBean = RegisteredBean.of(beanFactory, beanName);
 			BeanRegistrationMethodGenerator methodGenerator = methodGeneratorFactory
-					.getBeanRegistrationMethodGenerator(registeredBean);
+					.getBeanRegistrationMethodGenerator(registeredBean, null);
 			if (methodGenerator != null) {
 				methodGenerators.add(methodGenerator);
 			}

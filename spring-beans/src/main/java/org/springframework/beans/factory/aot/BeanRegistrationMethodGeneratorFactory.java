@@ -78,12 +78,14 @@ class BeanRegistrationMethodGeneratorFactory {
 	 * @return a new {@link BeanRegistrationMethodGenerator} instance or {@code null}
 	 */
 	@Nullable
-	BeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator(RegisteredBean registeredBean) {
+	BeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator(RegisteredBean registeredBean,
+			@Nullable String innerBeanPropertyName) {
 		if (isExcluded(registeredBean)) {
 			return null;
 		}
 		List<BeanRegistrationAotContribution> contributions = getAotContributions(registeredBean);
-		return new BeanRegistrationMethodGenerator(registeredBean, contributions, this.codeGeneratorFactories);
+		return new BeanRegistrationMethodGenerator(registeredBean, innerBeanPropertyName, contributions,
+				this.codeGeneratorFactories);
 	}
 
 	private boolean isExcluded(RegisteredBean registeredBean) {

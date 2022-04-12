@@ -37,9 +37,11 @@ public interface InnerBeanRegistrationMethodGenerator {
 	 * Generate a new method that will create a {@link BeanDefinition} for the inner-bean.
 	 * @param generationContext the generation context
 	 * @param innerRegisteredBean the inner-bean
+	 * @param innerBeanPropertyName the name of the property that defined the registered
+	 * inner-bean
 	 * @return a reference to the newly generated method
 	 */
 	MethodReference generateInnerBeanDefinitionMethod(GenerationContext generationContext,
-			RegisteredBean innerRegisteredBean);
+			RegisteredBean innerRegisteredBean, String innerBeanPropertyName);
 
 }

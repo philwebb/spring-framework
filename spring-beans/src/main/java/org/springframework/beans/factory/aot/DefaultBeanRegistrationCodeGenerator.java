@@ -16,7 +16,11 @@
 
 package org.springframework.beans.factory.aot;
 
+import java.util.List;
+
 import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
 
@@ -31,13 +35,21 @@ import org.springframework.javapoet.CodeBlock;
  */
 public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrationCodeGenerator {
 
-	public DefaultBeanRegistrationCodeGenerator(BeanRegistrationsCode beanRegistrationsCode,
-			RegisteredBean registeredBean) {
-		super(registeredBean, beanRegistrationsCode);
+	public DefaultBeanRegistrationCodeGenerator(RegisteredBean registeredBean, String innerBeanPropertyName,
+			BeanRegistrationsCode beanRegistrationsCode) {
+		super(registeredBean, innerBeanPropertyName, beanRegistrationsCode);
 	}
 
 	@Override
 	public CodeBlock generateCode(GenerationContext generationContext) {
+		List<MethodReference> postProcessors = getInstancePostProcessorMethodReferences();
+		MethodGenerator x = getBeanRegistrationsCode();
+		new BeanDefinitionPropertiesCodeGenerator(x, getBeanRegistrationsCode().getInnerBeanRegistrationMethodGenerator());
+
+		// BeanDefintion = ...
+		// setup
+		// return
+
 		return CodeBlock.of("// FIXME");
 		// FIXME hide other code generators in protected methods
 	}

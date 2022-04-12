@@ -27,6 +27,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.log.LogMessage;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.lang.Nullable;
 
 /**
  * Generates bean registration code and returns a reference to the method that should be
@@ -44,6 +45,9 @@ class BeanRegistrationMethodGenerator {
 
 	private final RegisteredBean registeredBean;
 
+	@Nullable
+	private final String innerBeanPropertyName;
+
 	private final List<BeanRegistrationAotContribution> aotContributions;
 
 	private final List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories;
@@ -54,10 +58,11 @@ class BeanRegistrationMethodGenerator {
 	 * @param aotContributions the AOT contributions that should be applied before
 	 * generating the registration method
 	 */
-	BeanRegistrationMethodGenerator(RegisteredBean registeredBean,
+	BeanRegistrationMethodGenerator(RegisteredBean registeredBean, @Nullable String innerBeanPropertyName,
 			List<BeanRegistrationAotContribution> aotContributions,
 			List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories) {
 		this.registeredBean = registeredBean;
+		this.innerBeanPropertyName = innerBeanPropertyName;
 		this.aotContributions = aotContributions;
 		this.codeGeneratorFactories = codeGeneratorFactories;
 	}
@@ -75,25 +80,22 @@ class BeanRegistrationMethodGenerator {
 		this.aotContributions.forEach((aotContribution) -> aotContribution.applyTo(generationContext, codeGenerator));
 		CodeBlock generatedCode = codeGenerator.generateCode(generationContext);
 
-
-
 		// wrap in a function named something or other
 		// return a reference to the function
-		return new MethodReference() {
-		};
+		return null;
 	}
 
 	private BeanRegistrationCodeGenerator getCodeGenerator(BeanRegistrationsCode beanRegistrationsCode) {
 		for (BeanRegistrationCodeGeneratorFactory codeGeneratorFactory : this.codeGeneratorFactories) {
 			BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory
-					.getBeanRegistrationCodeGenerator(registeredBean, beanRegistrationsCode);
+					.getBeanRegistrationCodeGenerator(registeredBean, innerBeanPropertyName, beanRegistrationsCode);
 			if (codeGenerator != null) {
 				logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
 						codeGenerator.getClass().getName(), registeredBean.getBeanName()));
 				return codeGenerator;
 			}
 		}
-		return new DefaultBeanRegistrationCodeGenerator(beanRegistrationsCode, registeredBean);
+		return new DefaultBeanRegistrationCodeGenerator(registeredBean, null, beanRegistrationsCode);
 	}
 
 }

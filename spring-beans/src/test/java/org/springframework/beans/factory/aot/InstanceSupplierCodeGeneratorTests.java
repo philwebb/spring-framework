@@ -270,6 +270,7 @@ class InstanceSupplierCodeGeneratorTests {
 		this.generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
 			Class<?> targetClass = this.generatedFiles.getTargetClass(path);
 			SourceFile sourceFile = SourceFile.of(path, inputStreamSource).withTargetClass(targetClass);
+			System.err.println(sourceFile.getContent());
 			sourceFiles.add(sourceFile);
 		});
 		TestCompiler.forSystem().withSources(sourceFiles).compile(

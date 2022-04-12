@@ -22,6 +22,7 @@ import java.util.List;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -35,21 +36,27 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegistrationCodeGenerator {
 
-	private final BeanRegistrationsCode beanRegistrationsCode;
-
 	private final RegisteredBean registeredBean;
+
+	@Nullable
+	private final String innerBeanPropertyName;
+
+	private final BeanRegistrationsCode beanRegistrationsCode;
 
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
 	/**
 	 * Create a new {@link AbstractBeanRegistrationCodeGenerator} instance.
 	 * @param registeredBean the registered bean
+	 * @param innerBeanPropertyName the name of the property that defined the registered
+	 * inner-bean or {@code null} for regular beans
 	 * @param beanRegistrationsCode the bean registrations code
 	 */
-	public AbstractBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+	public AbstractBeanRegistrationCodeGenerator(RegisteredBean registeredBean, @Nullable String innerBeanPropertyName,
 			BeanRegistrationsCode beanRegistrationsCode) {
-		this.beanRegistrationsCode = beanRegistrationsCode;
 		this.registeredBean = registeredBean;
+		this.innerBeanPropertyName = innerBeanPropertyName;
+		this.beanRegistrationsCode = beanRegistrationsCode;
 	}
 
 	@Override
@@ -63,8 +70,8 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 	}
 
 	@Override
-	public GeneratedMethod addMethod(Object... methodNameParts) {
-		return this.beanRegistrationsCode.addMethod(methodNameParts);
+	public GeneratedMethod generateMethod(Object... methodNameParts) {
+		return this.beanRegistrationsCode.generateMethod(methodNameParts);
 	}
 
 	@Override
