@@ -16,7 +16,6 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.MethodGenerator;
 
 /**
