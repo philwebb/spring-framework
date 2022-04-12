@@ -17,13 +17,24 @@
 package org.springframework.aot.generate;
 
 /**
+ * Generates new {@link GeneratedMethod} instances.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  * @since 6.0
+ * @see GeneratedMethods
  */
 @FunctionalInterface
 public interface MethodGenerator {
 
+	/**
+	 * Generate a new {@link GeneratedMethod}. The returned instance must define the
+	 * method spec by calling {@code using(builder -> ...)}.
+	 * @param methodNameParts the method name parts that should be used to generate a
+	 * unique method name
+	 * @return the newly added {@link GeneratedMethod}
+	 */
 	GeneratedMethod generateMethod(Object... methodNameParts);
 
 }

@@ -16,7 +16,8 @@
 
 package org.springframework.aot.generate;
 
-@SuppressWarnings("unused") class PackagePrivateClass {
+@SuppressWarnings("unused")
+class PackagePrivateClass {
 
 	public PackagePrivateClass() {
 	}

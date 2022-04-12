@@ -16,6 +16,8 @@
 
 package org.springframework.aot.generate;
 
+import java.io.InputStream;
+
 import org.junit.jupiter.api.Test;
 
 import org.springframework.javapoet.JavaFile;
@@ -27,8 +29,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 /**
  * Tests for {@link GeneratedClassName}.
  *
+ * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 6.0
+ * @author Andy Wilkinson
  */
 class GeneratedClassNameTests {
 
@@ -36,19 +39,19 @@ class GeneratedClassNameTests {
 
 	@Test
 	void getNameReturnsName() {
-		GeneratedClassName generated = new GeneratedClassName(NAME);
+		GeneratedClassName generated = new GeneratedClassName(NAME, null);
 		assertThat(generated.getName()).isEqualTo(NAME);
 	}
 
 	@Test
 	void getPackageNameReturnsPackageName() {
-		GeneratedClassName generated = new GeneratedClassName(NAME);
+		GeneratedClassName generated = new GeneratedClassName(NAME, null);
 		assertThat(generated.getPackageName()).isEqualTo("com.example");
 	}
 
 	@Test
 	void classBuilderReturnsClassBuilder() {
-		GeneratedClassName generated = new GeneratedClassName(NAME);
+		GeneratedClassName generated = new GeneratedClassName(NAME, null);
 		TypeSpec.Builder builder = generated.classBuilder();
 		assertThat(builder).isNotNull();
 		assertThat(builder.build().name).isEqualTo("Test$Thing__Feature");
@@ -56,14 +59,14 @@ class GeneratedClassNameTests {
 
 	@Test
 	void javaFileBuilderWhenNameIsNullThrowsException() {
-		GeneratedClassName generated = new GeneratedClassName(NAME);
+		GeneratedClassName generated = new GeneratedClassName(NAME, null);
 		assertThatIllegalArgumentException().isThrownBy(() -> generated.javaFileBuilder(null))
 				.withMessage("'typeSpec' must not be null");
 	}
 
 	@Test
 	void javaFileBuilderWhenNameIsWrongThrowsException() {
-		GeneratedClassName generated = new GeneratedClassName(NAME);
+		GeneratedClassName generated = new GeneratedClassName(NAME, null);
 		TypeSpec typeSpec = TypeSpec.classBuilder("com.example.Bad").build();
 		assertThatIllegalArgumentException().isThrownBy(() -> generated.javaFileBuilder(typeSpec))
 				.withMessage("'typeSpec' must be named 'Test$Thing__Feature' instead of 'com.example.Bad'");
@@ -71,7 +74,7 @@ class GeneratedClassNameTests {
 
 	@Test
 	void javaFileBuilderReturnsJavaFileBuilder() {
-		GeneratedClassName generated = new GeneratedClassName(NAME);
+		GeneratedClassName generated = new GeneratedClassName(NAME, null);
 		TypeSpec typeSpec = generated.classBuilder().build();
 		JavaFile.Builder builder = generated.javaFileBuilder(typeSpec);
 		assertThat(builder).isNotNull();
@@ -80,17 +83,29 @@ class GeneratedClassNameTests {
 	}
 
 	@Test
+	void getTargetClassWhenTargetIsClassReturnsTargetClass() {
+		GeneratedClassName generated = new GeneratedClassName(NAME, InputStream.class);
+		assertThat(generated.getTargetClass()).isEqualTo(InputStream.class);
+	}
+
+	@Test
+	void getTargetClassWhenTargetIsNotClassReturnsNull() {
+		GeneratedClassName generated = new GeneratedClassName(NAME, "java.io.InputStream");
+		assertThat(generated.getTargetClass()).isEqualTo(InputStream.class);
+	}
+
+	@Test
 	void hashCodeAndEquals() {
-		GeneratedClassName generated1 = new GeneratedClassName(NAME);
-		GeneratedClassName generated2 = new GeneratedClassName(new String(NAME));
-		GeneratedClassName generated3 = new GeneratedClassName("com.example.Other");
+		GeneratedClassName generated1 = new GeneratedClassName(NAME, null);
+		GeneratedClassName generated2 = new GeneratedClassName(new String(NAME), null);
+		GeneratedClassName generated3 = new GeneratedClassName("com.example.Other", null);
 		assertThat(generated1.hashCode()).isEqualTo(generated2.hashCode());
 		assertThat(generated1).isEqualTo(generated1).isEqualTo(generated2).isNotEqualTo(generated3);
 	}
 
 	@Test
 	void toStringReturnsName() {
-		GeneratedClassName generated = new GeneratedClassName(NAME);
+		GeneratedClassName generated = new GeneratedClassName(NAME, null);
 		assertThat(generated).hasToString(NAME);
 	}
 

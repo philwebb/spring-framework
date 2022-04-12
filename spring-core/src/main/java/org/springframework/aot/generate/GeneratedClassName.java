@@ -37,19 +37,19 @@ public final class GeneratedClassName {
 
 	private final String name;
 
-	private final Object source;
+	private final Object target;
 
 	/**
 	 * Create a new {@link GeneratedClassName} instance with the given name. This
 	 * constructor is package-private since names should only be generated via a
 	 * {@link ClassNameGenerator}.
 	 * @param name the generated name
-	 * @param source the original source for the generated name
+	 * @param target the target of the generated class
 	 * @param featureName the feature name
 	 */
-	GeneratedClassName(String name, Object source) {
+	GeneratedClassName(String name, Object target) {
 		this.name = name;
-		this.source = source;
+		this.target = target;
 	}
 
 	/**
@@ -78,16 +78,16 @@ public final class GeneratedClassName {
 	}
 
 	/**
-	 * Return the source class for this generated name.
-	 * @return the source class
+	 * Return the target class for this generated name or {@code null}.
+	 * @return the target class
 	 */
 	@Nullable
-	public Class<?> getSourceClass() {
-		if (this.source instanceof Class<?> sourceClass) {
-			return sourceClass;
+	public Class<?> getTargetClass() {
+		if (this.target instanceof Class<?> targetClass) {
+			return targetClass;
 		}
 		try {
-			return ClassUtils.forName((String) source, null);
+			return ClassUtils.forName((String) this.target, null);
 		}
 		catch (Exception ex) {
 			return null;
@@ -142,7 +142,14 @@ public final class GeneratedClassName {
 	 * @return a {@link ClassName} instance
 	 */
 	public ClassName toClassName() {
-		return ClassName.get(getPackageName(), getShortName());
+		String name = getShortName();
+		int indexOfDollar = name.indexOf('$');
+		if (indexOfDollar == -1) {
+			return ClassName.get(getPackageName(), name);
+		}
+		String[] nested = name.substring(indexOfDollar + 1).split("\\$");
+		name = name.substring(0, indexOfDollar);
+		return ClassName.get(getPackageName(), name, nested);
 	}
 
 	@Override

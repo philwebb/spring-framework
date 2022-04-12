@@ -29,22 +29,21 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 6.0
  */
 class ClassNameGeneratorTests {
 
 	private final ClassNameGenerator generator = new ClassNameGenerator();
 
 	@Test
-	void generateClassNameWhenSourceClassIsNullThrowsException() {
+	void generateClassNameWhenTargetClassIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(() -> this.generator.generateClassName((Class<?>) null, "Test"))
-				.withMessage("'source' must not be null");
+				.withMessage("'target' must not be null");
 	}
 
 	@Test
-	void generateClassNameWhenSourceStringIsEmptyThrowsException() {
+	void generateClassNameWhenTargetStringIsEmptyThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(() -> this.generator.generateClassName("", "Test"))
-				.withMessage("'source' must not be empty");
+				.withMessage("'target' must not be empty");
 	}
 
 	@Test
@@ -71,7 +70,7 @@ class ClassNameGeneratorTests {
 	void generateClassNameWithClassGeneratesName() {
 		GeneratedClassName generated = this.generator.generateClassName(InputStream.class, "Bytes");
 		assertThat(generated).hasToString("java.io.InputStream__Bytes");
-		assertThat(generated.getSourceClass()).isEqualTo(InputStream.class);
+		assertThat(generated.getTargetClass()).isEqualTo(InputStream.class);
 	}
 
 	@Test

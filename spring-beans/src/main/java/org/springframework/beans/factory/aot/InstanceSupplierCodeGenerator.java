@@ -271,7 +271,7 @@ class InstanceSupplierCodeGenerator {
 		classBuilder.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 		generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
 		JavaFile javaFile = generatedClassName.toJavaFile(classBuilder);
-		this.generationContext.getGeneratedFiles().addSourceFile(javaFile, generatedClassName.getSourceClass());
+		this.generationContext.getGeneratedFiles().addSourceFile(javaFile, generatedClassName.getTargetClass());
 		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, generatedClassName.toClassName(),
 				delegateMethod.getName());
 	}

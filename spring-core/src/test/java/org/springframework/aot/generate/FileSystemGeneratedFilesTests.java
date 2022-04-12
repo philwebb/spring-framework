@@ -32,8 +32,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 /**
  * Tests for {@link FileSystemGeneratedFiles}.
  *
+ * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 6.0
+ * @author Andy Wilkinson
  */
 class FileSystemGeneratedFilesTests {
 

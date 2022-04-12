@@ -31,8 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Tests for {@link DefaultGeneratedSpringFactories}.
  *
+ * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 6.0
+ * @author Andy Wilkinson
  */
 class DefaultGeneratedSpringFactoriesTests {
 
@@ -43,11 +44,6 @@ class DefaultGeneratedSpringFactoriesTests {
 
 			com.example.FactoryB=\\
 			com.example.FactoryB1
-			""";
-
-	private static final String NAMED_CONTENT = """
-			com.example.FactoryC=\\
-			com.example.FactoryC1
 			""";
 
 	private static final String CUSTOM_CONTENT = """
@@ -62,16 +58,12 @@ class DefaultGeneratedSpringFactoriesTests {
 		defaultLocation.add("com.example.FactoryA", "com.example.FactoryA1");
 		defaultLocation.add("com.example.FactoryA", "com.example.FactoryA2");
 		defaultLocation.add("com.example.FactoryB", "com.example.FactoryB1");
-		Declarations namedLocation = springFactories.forNamedItem("com.example.Classification", "test");
-		namedLocation.add("com.example.FactoryC", "com.example.FactoryC1");
 		Declarations resourceLocation = springFactories.forResourceLocation("META-INF/custom.factories");
 		resourceLocation.add("com.example.FactoryD", "com.example.FactoryD1");
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 		springFactories.writeTo(generatedFiles);
 		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/spring.factories"))
 				.isEqualTo(DEFAULT_CONTENT);
-		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE,
-				"META-INF/spring/com.example.Classification/test.factories")).isEqualTo(NAMED_CONTENT);
 		assertThat(generatedFiles.getGeneratedFileContent(Kind.RESOURCE, "META-INF/custom.factories"))
 				.isEqualTo(CUSTOM_CONTENT);
 	}

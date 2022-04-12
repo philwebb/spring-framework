@@ -25,8 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Tests for {@link GeneratedMethodName}.
  *
+ * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 6.0
+ * @author Andy Wilkinson
  */
 class GeneratedMethodNameTests {
 

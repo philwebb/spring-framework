@@ -43,32 +43,31 @@ public final class ClassNameGenerator {
 	private final Map<String, AtomicInteger> sequenceGenerator = new ConcurrentHashMap<>();
 
 	/**
-	 * Generate a new class name for the given {@code name} / {@code featureName}
+	 * Generate a new class name for the given {@code target} / {@code featureName}
 	 * combination.
-	 * @param name the name of the source item. Whenever possible this should be a target
-	 * {@link Class}
+	 * @param target the target of the newly generated class
 	 * @param featureName the name of the feature that the generated class supports
 	 * @return a unique generated class name
 	 */
-	public GeneratedClassName generateClassName(Class<?> source, String featureName) {
-		Assert.notNull(source, "'source' must not be null");
-		String rootName = source.getName();
-		return generateSequencedClassName(source, featureName, rootName);
+	public GeneratedClassName generateClassName(Class<?> target, String featureName) {
+		Assert.notNull(target, "'target' must not be null");
+		String rootName = target.getName();
+		return generateSequencedClassName(rootName, featureName, target);
 	}
 
 	/**
 	 * Generate a new class name for the given {@code name} / {@code featureName}
 	 * combination.
-	 * @param name the name of the source item. Whenever possible this should be a target
-	 * {@link Class}
+	 * @param target the target of the newly generated class. When possible, this should
+	 * be a class name
 	 * @param featureName the name of the feature that the generated class supports
 	 * @return a unique generated class name
 	 */
-	public GeneratedClassName generateClassName(String source, String featureName) {
-		Assert.hasLength(source, "'source' must not be empty");
-		String cleanedSource = clean(source);
-		String rootName = AOT_PACKAGE + "." + ((!cleanedSource.isEmpty()) ? cleanedSource : "Aot");
-		return generateSequencedClassName(source, featureName, rootName);
+	public GeneratedClassName generateClassName(String target, String featureName) {
+		Assert.hasLength(target, "'target' must not be empty");
+		String cleanedTarget = clean(target);
+		String rootName = AOT_PACKAGE + "." + ((!cleanedTarget.isEmpty()) ? cleanedTarget : "Aot");
+		return generateSequencedClassName(rootName, featureName, target);
 	}
 
 	private String clean(String name) {
@@ -85,11 +84,11 @@ public final class ClassNameGenerator {
 		return rootName.toString();
 	}
 
-	private GeneratedClassName generateSequencedClassName(Object source, String featureName, String rootName) {
+	private GeneratedClassName generateSequencedClassName(String rootName, String featureName, Object target) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
 		Assert.isTrue(featureName.chars().allMatch(Character::isLetter), "'featureName' must contain only letters");
-		String generatedName = addSequence(rootName + SEPARATOR + StringUtils.capitalize(featureName));
-		return new GeneratedClassName(generatedName, source);
+		String name = addSequence(rootName + SEPARATOR + StringUtils.capitalize(featureName));
+		return new GeneratedClassName(name, target);
 	}
 
 	private String addSequence(String name) {

@@ -29,8 +29,8 @@ import org.springframework.aot.hint.RuntimeHints;
  * <ul>
  * <li>Support for {@link #getClassNameGenerator() class name generation}.</li>
  * <li>Central management of all {@link #getGeneratedFiles() generated files}.</li>
- * <li>Support for the recording of {@link #getRuntimeHints() runtime hints}.</li>
  * <li>Registration of {@link #getGeneratedSpringFactories() spring.factories} content.
+ * <li>Support for the recording of {@link #getRuntimeHints() runtime hints}.</li>
  * </ul>
  *
  * @author Stephane Nicoll
@@ -46,7 +46,7 @@ public interface GenerationContext {
 	 * generated files}.
 	 * @return the class name generator
 	 */
-	ClassNameGenerator getClassNameGenerator(); // FIXME probably don't need to expose if we're only going to allow JavaPoet
+	ClassNameGenerator getClassNameGenerator();
 
 	/**
 	 * Return the {@link GeneratedFiles} being used by the context. Used to write
@@ -61,7 +61,7 @@ public interface GenerationContext {
 	 * that it will be applied when the AOT optimized application is run.
 	 * @return the spring factories
 	 */
-	GeneratedSpringFactories getGeneratedSpringFactories(); // FIXME might not need. Certainly don't need the name stuff
+	GeneratedSpringFactories getGeneratedSpringFactories();
 
 	/**
 	 * Return the {@link RuntimeHints} being used by the context. Used to record

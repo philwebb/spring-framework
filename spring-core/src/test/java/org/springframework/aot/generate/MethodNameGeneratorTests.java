@@ -25,8 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Tests for {@link MethodNameGenerator}.
  *
+ * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 6.0
+ * @author Andy Wilkinson
  */
 class MethodNameGeneratorTests {
 
@@ -52,7 +53,8 @@ class MethodNameGeneratorTests {
 
 	@Test
 	void generateMethodNameWhenHasDotsGeneratesCamelCaseName() {
-		GeneratedMethodName generated = this.generator.generateMethodName("register", "org.springframework.example.bean");
+		GeneratedMethodName generated = this.generator.generateMethodName("register",
+				"org.springframework.example.bean");
 		assertThat(generated).hasToString("registerOrgSpringframeworkExampleBean");
 	}
 

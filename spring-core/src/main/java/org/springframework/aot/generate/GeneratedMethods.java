@@ -76,6 +76,11 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 		return method;
 	}
 
+	/**
+	 * Call the given action with each of the {@link MethodSpec MethodSpecs} that have
+	 * been added to this collection.
+	 * @param action the action to perform
+	 */
 	public void doWithMethodSpecs(Consumer<MethodSpec> action) {
 		stream().map(GeneratedMethod::getSpec).forEach(action);
 	}
@@ -85,6 +90,10 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 		return this.methods.iterator();
 	}
 
+	/**
+	 * Return a {@link Stream} of all the methods in this collection.
+	 * @return a stream of {@link GeneratedMethod} instances
+	 */
 	public Stream<GeneratedMethod> stream() {
 		return this.methods.stream();
 	}

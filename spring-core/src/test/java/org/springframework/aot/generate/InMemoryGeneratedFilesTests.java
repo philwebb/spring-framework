@@ -26,8 +26,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 /**
  * Tests for {@link InMemoryGeneratedFiles}.
  *
+ * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 6.0
+ * @author Andy Wilkinson
  */
 class InMemoryGeneratedFilesTests {
 
