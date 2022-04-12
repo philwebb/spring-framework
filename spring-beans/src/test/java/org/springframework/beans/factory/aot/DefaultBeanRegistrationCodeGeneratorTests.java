@@ -18,6 +18,8 @@ package org.springframework.beans.factory.aot;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.aot.registration.DefaultBeanRegistrationCodeGenerator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

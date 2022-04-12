@@ -33,6 +33,7 @@ import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.aot.test.generator.file.SourceFile;
+import org.springframework.beans.factory.aot.registration.InstanceSupplierCodeGenerator;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;

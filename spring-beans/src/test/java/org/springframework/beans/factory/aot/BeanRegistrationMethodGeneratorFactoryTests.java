@@ -20,6 +20,14 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationAotProcessor;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationCodeGenerator;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationCodeGeneratorFactory;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationExcludeFilter;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationMethodGenerator;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationMethodGeneratorFactory;
+import org.springframework.beans.factory.aot.registration.DefaultBeanRegistrationCodeGenerator;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
