@@ -16,9 +16,7 @@
 
 package org.springframework.aot.generate;
 
-import java.io.ByteArrayInputStream;
 import java.lang.invoke.MethodHandles;
-import java.nio.charset.StandardCharsets;
 
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.javapoet.JavaFile;
@@ -217,12 +215,7 @@ public interface GeneratedFiles {
 	default void addFile(Kind kind, String path, ThrowableConsumer<Appendable> content,
 			@Nullable Class<?> targetClass) {
 		Assert.notNull(content, "'content' must not be null");
-		InputStreamSource inputStreamSource = () -> {
-			StringBuilder buffer = new StringBuilder();
-			content.accept(buffer);
-			return new ByteArrayInputStream(buffer.toString().getBytes(StandardCharsets.UTF_8));
-		};
-		addFile(kind, path, inputStreamSource, targetClass);
+		addFile(kind, path, new AppendableConsumerInputStreamSource(content), targetClass);
 	}
 
 	/**

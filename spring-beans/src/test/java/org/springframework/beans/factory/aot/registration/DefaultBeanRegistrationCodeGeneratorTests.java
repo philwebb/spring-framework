@@ -25,10 +25,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
-import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
-import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.aot.AotFactoriesLoader;
@@ -180,41 +178,6 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 				.returns(RootBeanDefinition.class).addCode(codeBlock).build());
 		this.beanRegistrationsCode.getGeneratedMethods().doWithMethodSpecs(builder::addMethod);
 		return JavaFile.builder("__", builder.build()).build();
-	}
-
-	/**
-	 * Mock {@link BeanRegistrationsCode}.
-	 */
-	static class MockBeanRegistrationsCode implements BeanRegistrationsCode {
-
-		private final GeneratedMethods generatedMethods = new GeneratedMethods();
-
-		private final InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator;
-
-		MockBeanRegistrationsCode(BeanDefinitionMethodGeneratorFactory methodGeneratorFactory) {
-			this.innerBeanDefinitionMethodGenerator = methodGeneratorFactory
-					.getInnerBeanDefinitionMethodGenerator(this);
-		}
-
-		GeneratedMethods getGeneratedMethods() {
-			return this.generatedMethods;
-		}
-
-		@Override
-		public String getBeanFactoryName() {
-			return "test";
-		}
-
-		@Override
-		public MethodGenerator getMethodGenerator() {
-			return this.generatedMethods;
-		}
-
-		@Override
-		public InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator() {
-			return this.innerBeanDefinitionMethodGenerator;
-		}
-
 	}
 
 }

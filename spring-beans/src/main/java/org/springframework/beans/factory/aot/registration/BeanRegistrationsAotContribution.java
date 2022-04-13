@@ -82,7 +82,7 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 			MethodReference beanDefinitionMethod = beanDefinitionMethodGenerator
 					.generateBeanDefinitionMethod(generationContext, beanRegistrationsCode);
 			code.addStatement("$L.registerBeanDefinition($S, $L)", BEAN_FACTORY_PARAMETER_NAME, beanName,
-					beanDefinitionMethod.toCodeBlock());
+					beanDefinitionMethod.toInvokeCodeBlock());
 		});
 		builder.addCode(code.build());
 	}

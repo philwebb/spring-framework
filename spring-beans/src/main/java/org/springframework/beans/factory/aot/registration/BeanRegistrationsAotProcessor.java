@@ -46,6 +46,9 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 				registrations.put(beanName, beanDefinitionMethodGenerator);
 			}
 		}
+		if (registrations.isEmpty()) {
+			return null;
+		}
 		return new BeanRegistrationsAotContribution(beanDefinitionMethodGeneratorFactory, registrations);
 	}
 

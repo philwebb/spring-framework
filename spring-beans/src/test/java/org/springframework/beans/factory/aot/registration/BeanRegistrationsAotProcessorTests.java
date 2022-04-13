@@ -16,9 +16,15 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.testfixture.beans.AnnotatedBean;
+import org.springframework.beans.testfixture.beans.TestBean;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link BeanRegistrationsAotProcessor}.
@@ -30,8 +36,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 class BeanRegistrationsAotProcessorTests {
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void processAheadOfTimeReturnsBeanRegistrationsAotContributionWithRegistrations() {
+		BeanRegistrationsAotProcessor processor = new BeanRegistrationsAotProcessor();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("b1", new RootBeanDefinition(TestBean.class));
+		beanFactory.registerBeanDefinition("b2", new RootBeanDefinition(AnnotatedBean.class));
+		BeanRegistrationsAotContribution contribution = processor.processAheadOfTime(beanFactory);
+		assertThat(contribution).extracting("registrations").asInstanceOf(InstanceOfAssertFactories.MAP)
+				.containsKeys("b1", "b2");
 	}
 
 }
