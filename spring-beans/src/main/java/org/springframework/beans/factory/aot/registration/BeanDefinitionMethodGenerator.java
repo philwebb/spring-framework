@@ -93,7 +93,7 @@ class BeanDefinitionMethodGenerator {
 	private CodeBlock generateBeanRegistrationCode(GenerationContext generationContext,
 			BeanRegistrationsCode beanRegistrationsCode) {
 		BeanRegistrationCodeGenerator codeGenerator = getBeanRegistrationCodeGenerator(beanRegistrationsCode);
-		this.aotContributions.forEach((aotContribution) -> aotContribution.applyTo(generationContext, codeGenerator));
+		this.aotContributions.forEach(aotContribution -> aotContribution.applyTo(generationContext, codeGenerator));
 		return codeGenerator.generateCode(generationContext);
 	}
 

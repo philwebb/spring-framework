@@ -45,7 +45,6 @@ public final class GeneratedClassName {
 	 * {@link ClassNameGenerator}.
 	 * @param name the generated name
 	 * @param target the target of the generated class
-	 * @param featureName the feature name
 	 */
 	GeneratedClassName(String name, Object target) {
 		this.name = name;

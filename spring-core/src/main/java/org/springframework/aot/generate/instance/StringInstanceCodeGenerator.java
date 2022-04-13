@@ -18,7 +18,6 @@ package org.springframework.aot.generate.instance;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.lang.Nullable;
 
 /**
  * {@link InstanceCodeGenerator} to support {@link String Strings}.

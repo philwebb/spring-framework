@@ -43,7 +43,7 @@ public interface BeanRegistrationAotProcessor {
 	 * <p>
 	 * If the given instance isn't relevant to the processor, it should return a
 	 * {@code null} contribution.
-	 * @param instance the instance to process
+	 * @param registeredBean the registered bean to process
 	 * @return a {@link BeanRegistrationAotContribution} or {@code null}
 	 */
 	@Nullable

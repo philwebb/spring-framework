@@ -107,7 +107,7 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 		@Override
 		public String getBeanFactoryName() {
-			return beanFactoryInitializationCode.getBeanFactoryName();
+			return this.beanFactoryInitializationCode.getBeanFactoryName();
 		}
 
 		@Override
@@ -123,7 +123,7 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		JavaFile generatedJavaFile(GeneratedClassName generatedClassName) {
 			TypeSpec.Builder classBuilder = generatedClassName.classBuilder();
 			classBuilder.addJavadoc("Register bean defintions for the '$L' bean factory.",
-					beanFactoryInitializationCode.getBeanFactoryName());
+					this.beanFactoryInitializationCode.getBeanFactoryName());
 			classBuilder.addModifiers(Modifier.PUBLIC);
 			this.generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
 			return generatedClassName.toJavaFile(classBuilder);

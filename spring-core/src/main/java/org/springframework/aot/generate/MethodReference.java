@@ -230,8 +230,8 @@ public final class MethodReference {
 	public String toString() {
 		return switch (this.kind) {
 		case INSTANCE -> ((this.declaringClass != null) ? "<" + this.declaringClass + ">" : "<instance>") + "::"
-				+ methodName;
-		case STATIC -> this.declaringClass + "::" + methodName;
+				+ this.methodName;
+		case STATIC -> this.declaringClass + "::" + this.methodName;
 		};
 	}
 

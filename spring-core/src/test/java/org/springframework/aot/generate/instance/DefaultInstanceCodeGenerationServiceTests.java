@@ -82,15 +82,16 @@ class DefaultInstanceCodeGenerationServiceTests {
 
 	@Test
 	void createWithAddedGeneratorWhenAddedIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new DefaultInstanceCodeGenerationService(null, null, (generators) -> generators.add(null)))
+		assertThatIllegalArgumentException()
+				.isThrownBy(
+						() -> new DefaultInstanceCodeGenerationService(null, null, generators -> generators.add(null)))
 				.withMessage("'instanceCodeGenerator' must not be null");
 	}
 
 	@Test
 	void createWithAddedGeneratorAddsGenerator() {
 		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(null, null,
-				(generators) -> generators.add(new TestInstanceCodeGenerator()));
+				generators -> generators.add(new TestInstanceCodeGenerator()));
 		assertThat(service.generateCode(new TestInstance())).hasToString("test");
 	}
 
@@ -138,7 +139,7 @@ class DefaultInstanceCodeGenerationServiceTests {
 	void generateCodeGeneratesUsingFirstInstanceCodeGenerator() {
 		InstanceCodeGenerator generator1 = mock(InstanceCodeGenerator.class);
 		InstanceCodeGenerator generator2 = mock(InstanceCodeGenerator.class);
-		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService((generators) -> {
+		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(generators -> {
 			generators.add(generator1);
 			generators.add(generator2);
 		});
@@ -161,7 +162,7 @@ class DefaultInstanceCodeGenerationServiceTests {
 		GeneratedMethods generatedMethods = new GeneratedMethods();
 		MethodGenerator methodGenerator = generatedMethods;
 		DefaultInstanceCodeGenerationService parent = new DefaultInstanceCodeGenerationService(null, methodGenerator,
-				(generators) -> generators.add(new TestInstanceCodeGenerator()));
+				generators -> generators.add(new TestInstanceCodeGenerator()));
 		DefaultInstanceCodeGenerationService service = new DefaultInstanceCodeGenerationService(parent, null,
 				InstanceCodeGenerators::none);
 		assertThat(service.supportsMethodGeneration()).isTrue();

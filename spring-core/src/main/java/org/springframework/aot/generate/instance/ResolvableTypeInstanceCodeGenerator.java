@@ -20,7 +20,6 @@ import java.util.Arrays;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**

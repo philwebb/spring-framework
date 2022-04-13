@@ -62,7 +62,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
 	private BeanDefinitionPropertiesCodeGenerator generator = new BeanDefinitionPropertiesCodeGenerator(
-			(attribute) -> true, this.generatedMethods, (propertyValue) -> null);
+			attribute -> true, this.generatedMethods, propertyValue -> null);
 
 	@Test
 	void setPrimaryWhenFalse() {
@@ -283,7 +283,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 		this.beanDefinition.setAttribute("b", "B");
 		Predicate<String> attributeFilter = attribute -> false;
 		this.generator = new BeanDefinitionPropertiesCodeGenerator(attributeFilter, this.generatedMethods,
-				(propertyValue) -> null);
+				propertyValue -> null);
 		testCompiledResult((actual, compiled) -> {
 			assertThat(compiled.getSourceFile()).doesNotContain("setAttribute");
 			assertThat(actual.getAttribute("a")).isNull();
@@ -297,7 +297,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 		this.beanDefinition.setAttribute("b", "B");
 		Predicate<String> attributeFilter = attribute -> "a".equals(attribute);
 		this.generator = new BeanDefinitionPropertiesCodeGenerator(attributeFilter, this.generatedMethods,
-				(propertyValue) -> null);
+				propertyValue -> null);
 		testCompiledResult(this.beanDefinition, (actual, compiled) -> {
 			assertThat(actual.getAttribute("a")).isEqualTo("A");
 			assertThat(actual.getAttribute("b")).isNull();

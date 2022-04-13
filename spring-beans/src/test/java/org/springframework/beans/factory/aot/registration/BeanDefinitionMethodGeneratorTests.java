@@ -110,10 +110,8 @@ class BeanDefinitionMethodGeneratorTests {
 	void generateBeanDefinitionMethodWhenHasAotContributionsAppliesContributions() {
 		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(TestBean.class));
 		List<BeanRegistrationAotContribution> aotContributions = new ArrayList<>();
-		aotContributions.add((generationContext, beanRegistrationCode) -> {
-			beanRegistrationCode.getMethodGenerator().generateMethod("aotContributedMethod")
-					.using(builder -> builder.addComment("Example Contribution"));
-		});
+		aotContributions.add((generationContext, beanRegistrationCode) -> beanRegistrationCode.getMethodGenerator()
+				.generateMethod("aotContributedMethod").using(builder -> builder.addComment("Example Contribution")));
 		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(registeredBean, null,
 				aotContributions, Collections.emptyList());
 		MethodReference method = generator.generateBeanDefinitionMethod(this.generationContext,
@@ -133,9 +131,8 @@ class BeanDefinitionMethodGeneratorTests {
 				Collections.emptyList(), codeGeneratorFactories);
 		MethodReference method = generator.generateBeanDefinitionMethod(this.generationContext,
 				this.beanRegistrationsCode);
-		testCompiledResult(method, (actual, compiled) -> {
-			assertThat(compiled.getSourceFile()).contains("// Custom Code");
-		});
+		testCompiledResult(method,
+				(actual, compiled) -> assertThat(compiled.getSourceFile()).contains("// Custom Code"));
 	}
 
 	private RegisteredBean registerBean(RootBeanDefinition beanDefinition) {

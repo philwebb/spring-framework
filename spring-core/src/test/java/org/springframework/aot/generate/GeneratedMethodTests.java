@@ -44,9 +44,7 @@ class GeneratedMethodTests {
 	@Test
 	void getSpecReturnsSpec() {
 		GeneratedMethod method = new GeneratedMethod(NAME);
-		method.using((builder) -> {
-			builder.addJavadoc("Test");
-		});
+		method.using(builder -> builder.addJavadoc("Test"));
 		assertThat(method.getSpec().javadoc.toString()).contains("Test");
 	}
 

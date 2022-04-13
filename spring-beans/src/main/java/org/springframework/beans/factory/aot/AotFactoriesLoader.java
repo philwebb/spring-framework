@@ -42,6 +42,9 @@ import org.springframework.util.Assert;
  */
 public class AotFactoriesLoader {
 
+	/**
+	 * The location to look for AOT factories.
+	 */
 	public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring/aot.factories";
 
 	private final ListableBeanFactory beanFactory;

@@ -63,7 +63,6 @@ public interface MethodGenerator {
 	 * <td>is&lt;Name&gt;Enabled</td>
 	 * </tr>
 	 * </table>
-	 *
 	 * @param nameParts the implicit name parts
 	 * @return a new {@link MethodGenerator} instance
 	 */

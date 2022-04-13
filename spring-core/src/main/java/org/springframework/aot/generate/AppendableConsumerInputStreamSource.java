@@ -35,7 +35,7 @@ import org.springframework.util.function.ThrowableConsumer;
  */
 class AppendableConsumerInputStreamSource implements InputStreamSource {
 
-	private ThrowableConsumer<Appendable> content;
+	private final ThrowableConsumer<Appendable> content;
 
 	AppendableConsumerInputStreamSource(ThrowableConsumer<Appendable> content) {
 		this.content = content;
@@ -49,7 +49,7 @@ class AppendableConsumerInputStreamSource implements InputStreamSource {
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		content.accept(buffer);
+		this.content.accept(buffer);
 		return buffer.toString();
 	}
 

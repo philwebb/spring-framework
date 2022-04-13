@@ -124,10 +124,8 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 		RegisteredBean registeredBean = getRegisteredBean();
 		BeanDefinition beanDefintion = registeredBean.getMergedBeanDefinition();
 		Predicate<String> attributeFilter = this::isAttributeIncluded;
-		Function<PropertyValue, CodeBlock> propertyValueCodeGenerator = (propertyValue) -> generatePropertyValueCode(
-				generationContext, propertyValue);
-		return generateBeanDefinitionPropertiesCode(attributeFilter, getMethodGenerator(), propertyValueCodeGenerator,
-				beanDefintion);
+		return generateBeanDefinitionPropertiesCode(attributeFilter, getMethodGenerator(),
+				propertyValue -> generatePropertyValueCode(generationContext, propertyValue), beanDefintion);
 	}
 
 	/**

@@ -88,7 +88,7 @@ public final class RegisteredBean {
 	/**
 	 * Create a new {@link RegisteredBean} instance for an inner-bean.
 	 * @param parent the parent of the inner-bean
-	 * @param innerBean a {@link BeanDefinition} for the inner bean
+	 * @param innerBeanDefinition the inner-bean definition
 	 * @return a new {@link RegisteredBean} instance
 	 */
 	public static RegisteredBean ofInnerBean(RegisteredBean parent, BeanDefinition innerBeanDefinition) {

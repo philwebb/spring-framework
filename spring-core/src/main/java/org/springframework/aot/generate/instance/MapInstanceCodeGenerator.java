@@ -30,7 +30,6 @@ import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.AnnotationSpec;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.lang.Nullable;
 
 /**
  * {@link InstanceCodeGenerator} to support {@link Map Maps} and {@link LinkedHashMap
