@@ -97,6 +97,16 @@ public final class TestCompiler {
 	 * @param sourceFiles the additional source files
 	 * @return a new {@link TestCompiler} instance
 	 */
+	public TestCompiler withSources(Iterable<SourceFile> sourceFiles) {
+		return new TestCompiler(this.classLoader, this.compiler,
+				this.sourceFiles.and(sourceFiles), this.resourceFiles);
+	}
+
+	/**
+	 * Return a new {@link TestCompiler} instance with addition source files.
+	 * @param sourceFiles the additional source files
+	 * @return a new {@link TestCompiler} instance
+	 */
 	public TestCompiler withSources(SourceFiles sourceFiles) {
 		return new TestCompiler(this.classLoader, this.compiler,
 				this.sourceFiles.and(sourceFiles), this.resourceFiles);
