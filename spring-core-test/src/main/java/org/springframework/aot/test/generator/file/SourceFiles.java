@@ -17,9 +17,10 @@
 package org.springframework.aot.test.generator.file;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 
 /**
  * An immutable collection of {@link SourceFile} instances.
@@ -65,6 +66,16 @@ public final class SourceFiles implements Iterable<SourceFile> {
 	 * @return a new {@link SourceFiles} instance containing merged content
 	 */
 	public SourceFiles and(SourceFile... sourceFiles) {
+		return new SourceFiles(this.files.and(sourceFiles));
+	}
+
+	/**
+	 * Return a new {@link SourceFiles} instance that merges files from another
+	 * array of {@link SourceFile} instances.
+	 * @param sourceFiles the instances to merge
+	 * @return a new {@link SourceFiles} instance containing merged content
+	 */
+	public SourceFiles and(Iterable<SourceFile> sourceFiles) {
 		return new SourceFiles(this.files.and(sourceFiles));
 	}
 
@@ -118,6 +129,17 @@ public final class SourceFiles implements Iterable<SourceFile> {
 	 */
 	public SourceFile getSingle() throws IllegalStateException {
 		return this.files.getSingle();
+	}
+
+	/**
+	 * Return a single source file contained in the specified package.
+	 * @return the single file
+	 * @throws IllegalStateException if the collection doesn't contain exactly
+	 * one file
+	 */
+	public SourceFile getSingleFromPackage(String packageName) {
+		return this.files.getSingle(candidate ->
+			Objects.equals(packageName, candidate.getJavaSource().getPackageName()));
 	}
 
 	@Override
