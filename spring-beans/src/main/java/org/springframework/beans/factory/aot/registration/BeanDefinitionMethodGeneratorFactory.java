@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.log.LogMessage;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -114,6 +115,21 @@ class BeanDefinitionMethodGeneratorFactory {
 			}
 		}
 		return contributions;
+	}
+
+	/**
+	 * Return a new {@link InnerBeanDefinitionMethodGenerator} for the given {@link BeanRegistrationsCode}.
+	 * @param beanRegistrationsCode the bean registrations code
+	 * @return a new {@link InnerBeanDefinitionMethodGenerator} instance
+	 */
+	InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator(
+			BeanRegistrationsCode beanRegistrationsCode) {
+		return (generationContext, innerRegisteredBean, innerBeanPropertyName) -> {
+			BeanDefinitionMethodGenerator methodGenerator = getBeanDefinitionMethodGenerator(innerRegisteredBean,
+					innerBeanPropertyName);
+			Assert.state(methodGenerator != null, "Unexpected filtering of inner-bean");
+			return methodGenerator.generateBeanDefinitionMethod(generationContext, beanRegistrationsCode);
+		};
 	}
 
 }

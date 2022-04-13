@@ -169,19 +169,6 @@ class SpringFactoriesLoaderTests {
 		assertThat(factories.get(0)).isInstanceOf(MyDummyFactory1.class);
 	}
 
-	@Test
-	void resolveNamedItemLocationWithClassResolvesName() {
-		String resolved = SpringFactoriesLoader.resolveNamedItemLocation(getClass(), "test");
-		assertThat(resolved).isEqualTo(
-				"META-INF/spring/org.springframework.core.io.support.SpringFactoriesLoaderTests/test.factories");
-	}
-
-	@Test
-	void resolveNamedItemLocationResolvesName() {
-		String resolved = SpringFactoriesLoader.resolveNamedItemLocation(getClass(), "test");
-		assertThat(resolved).isEqualTo(
-				"META-INF/spring/org.springframework.core.io.support.SpringFactoriesLoaderTests/test.factories");
-	}
 
 	@Nested
 	class FailureHandlerTests {

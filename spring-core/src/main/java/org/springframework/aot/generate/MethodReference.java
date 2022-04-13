@@ -16,8 +16,6 @@
 
 package org.springframework.aot.generate;
 
-import java.util.Arrays;
-
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;

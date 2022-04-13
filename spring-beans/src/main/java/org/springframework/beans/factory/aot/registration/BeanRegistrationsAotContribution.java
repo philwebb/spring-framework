@@ -33,7 +33,6 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeSpec;
-import org.springframework.util.Assert;
 
 /**
  * AOT contribution from a {@link BeanRegistrationsAotProcessor} used to register bean
@@ -55,20 +54,21 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 	BeanRegistrationsAotContribution(BeanDefinitionMethodGeneratorFactory beanDefinitionMethodGeneratorFactory,
 			Map<String, BeanDefinitionMethodGenerator> registrations) {
-		this.registrations = registrations;
 		this.beanDefinitionMethodGeneratorFactory = beanDefinitionMethodGeneratorFactory;
+		this.registrations = registrations;
 	}
 
 	@Override
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
-		String beanFactoryName = beanFactoryInitializationCode.getBeanFactoryName();
 		GeneratedClassName generatedClassName = generationContext.getClassNameGenerator()
-				.generateClassName(beanFactoryName, "Registrations");
+				.generateClassName(beanFactoryInitializationCode.getBeanFactoryName(), "Registrations");
 		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(beanFactoryInitializationCode,
 				this.beanDefinitionMethodGeneratorFactory);
 		GeneratedMethod registerMethod = codeGenerator.getMethodGenerator().generateMethod("registerBeanDefinitions")
 				.using(builder -> generateRegisterMethod(builder, generationContext, codeGenerator));
+		JavaFile javaFile = codeGenerator.generatedJavaFile(generatedClassName);
+		generationContext.getGeneratedFiles().addSourceFile(javaFile);
 		beanFactoryInitializationCode.addInitializer(MethodReference.of(generatedClassName, registerMethod.getName()));
 	}
 
@@ -87,7 +87,10 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		builder.addCode(code.build());
 	}
 
-	private static class BeanRegistrationsCodeGenerator implements BeanRegistrationsCode {
+	/**
+	 * {@link BeanRegistrationsCode} with generation support.
+	 */
+	static class BeanRegistrationsCodeGenerator implements BeanRegistrationsCode {
 
 		private final BeanFactoryInitializationCode beanFactoryInitializationCode;
 
@@ -97,13 +100,8 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 		public BeanRegistrationsCodeGenerator(BeanFactoryInitializationCode beanFactoryInitializationCode,
 				BeanDefinitionMethodGeneratorFactory methodGeneratorFactory) {
-			this.innerBeanDefinitionMethodGenerator = (generationContext, innerRegisteredBean,
-					innerBeanPropertyName) -> {
-				BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
-						.getBeanDefinitionMethodGenerator(innerRegisteredBean, innerBeanPropertyName);
-				Assert.state(methodGenerator != null, "Unexpected filtering of inner-bean");
-				return methodGenerator.generateBeanDefinitionMethod(generationContext, this);
-			};
+			this.innerBeanDefinitionMethodGenerator = methodGeneratorFactory
+					.getInnerBeanDefinitionMethodGenerator(this);
 			this.beanFactoryInitializationCode = beanFactoryInitializationCode;
 		}
 
@@ -124,7 +122,8 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 		JavaFile generatedJavaFile(GeneratedClassName generatedClassName) {
 			TypeSpec.Builder classBuilder = generatedClassName.classBuilder();
-			classBuilder.addJavadoc("Register bean defintions for the '$L' bean factory.", beanFactoryName);
+			classBuilder.addJavadoc("Register bean defintions for the '$L' bean factory.",
+					beanFactoryInitializationCode.getBeanFactoryName());
 			classBuilder.addModifiers(Modifier.PUBLIC);
 			this.generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
 			return generatedClassName.toJavaFile(classBuilder);

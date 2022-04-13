@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.lang.Nullable;
@@ -45,6 +46,8 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
+	private final MethodGenerator methodGenerator;
+
 	/**
 	 * Create a new {@link AbstractBeanRegistrationCodeGenerator} instance.
 	 * @param registeredBean the registered bean
@@ -57,6 +60,21 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 		this.registeredBean = registeredBean;
 		this.innerBeanPropertyName = innerBeanPropertyName;
 		this.beanRegistrationsCode = beanRegistrationsCode;
+		String name = (innerBeanPropertyName != null) ? innerBeanPropertyName : getName(registeredBean);
+		this.methodGenerator = beanRegistrationsCode.getMethodGenerator().withName(name);
+	}
+
+	private String getName(RegisteredBean registeredBean) {
+		if (!registeredBean.isGeneratedBeanName()) {
+			return registeredBean.getBeanName();
+		}
+		while (registeredBean != null && registeredBean.isGeneratedBeanName()) {
+			registeredBean = registeredBean.getParent();
+		}
+		if (registeredBean != null) {
+			return MethodNameGenerator.join(registeredBean.getBeanName(), "innerBean");
+		}
+		return "innerBean";
 	}
 
 	@Override
@@ -71,7 +89,7 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 
 	@Override
 	public MethodGenerator getMethodGenerator() {
-		return this.beanRegistrationsCode.getMethodGenerator();
+		return this.methodGenerator;
 	}
 
 	@Override
