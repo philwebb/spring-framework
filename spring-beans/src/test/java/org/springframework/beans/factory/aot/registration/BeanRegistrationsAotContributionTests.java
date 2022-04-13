@@ -21,9 +21,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
+ * Tests for {@link BeanRegistrationsAotContribution}.
  *
- * @author pwebb
- * @since 6.0
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 class BeanRegistrationsAotContributionTests {
 

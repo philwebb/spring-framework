@@ -65,7 +65,7 @@ public class AotFactoriesLoader {
 	 */
 	public AotFactoriesLoader(ListableBeanFactory beanFactory, SpringFactoriesLoader factoriesLoader) {
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
-		Assert.notNull(beanFactory, "'factoriesLoader' must not be null");
+		Assert.notNull(factoriesLoader, "'factoriesLoader' must not be null");
 		this.beanFactory = beanFactory;
 		this.factoriesLoader = factoriesLoader;
 	}

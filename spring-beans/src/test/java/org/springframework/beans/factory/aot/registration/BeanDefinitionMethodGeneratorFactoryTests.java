@@ -107,33 +107,40 @@ class BeanDefinitionMethodGeneratorFactoryTests {
 
 	// FIXME passes code generator factory
 
-//
-//   FIXME not sure where lives now
-//	@Test
-//	void getBeanDefinitionMethodGeneratorProvidesInnerBeanRegistrationMethodGeneratorToFactory() {
-//		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-//		BeanRegistrationCodeGenerator codeGenerator = mock(BeanRegistrationCodeGenerator.class);
-//		BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean, innerBeanPropertyName,
-//				beanRegistrationsCode) -> {
-//			if (!"test".equals(registeredBean.getBeanName())) {
-//				return null;
-//			}
-//			assertThat(beanRegistrationsCode).isNotNull();
-//			RegisteredBean innerBean = RegisteredBean.ofInnerBean(registeredBean,
-//					new RootBeanDefinition(InnerTestBean.class));
-//			MethodReference methodReference = beanRegistrationsCode.getInnerBeanDefinitionMethodGenerator()
-//					.generateInnerBeanDefinitionMethod(mock(GenerationContext.class), innerBean, "innerBeanProperty");
-//			assertThat(methodReference).isNotNull();
-//			return codeGenerator;
-//		};
-//		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
-//		RegisteredBean registeredBean = registerTestBean(beanFactory);
-//		BeanDefinitionMethodGeneratorFactory methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
-//				new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
-//		BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
-//				.getBeanDefinitionMethodGenerator(registeredBean, null);
-//		assertThat(methodGenerator).extracting("codeGenerator").isSameAs(codeGenerator);
-//	}
+	//
+	// FIXME not sure where lives now
+	// @Test
+	// void
+	// getBeanDefinitionMethodGeneratorProvidesInnerBeanRegistrationMethodGeneratorToFactory()
+	// {
+	// DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+	// BeanRegistrationCodeGenerator codeGenerator =
+	// mock(BeanRegistrationCodeGenerator.class);
+	// BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean,
+	// innerBeanPropertyName,
+	// beanRegistrationsCode) -> {
+	// if (!"test".equals(registeredBean.getBeanName())) {
+	// return null;
+	// }
+	// assertThat(beanRegistrationsCode).isNotNull();
+	// RegisteredBean innerBean = RegisteredBean.ofInnerBean(registeredBean,
+	// new RootBeanDefinition(InnerTestBean.class));
+	// MethodReference methodReference =
+	// beanRegistrationsCode.getInnerBeanDefinitionMethodGenerator()
+	// .generateInnerBeanDefinitionMethod(mock(GenerationContext.class), innerBean,
+	// "innerBeanProperty");
+	// assertThat(methodReference).isNotNull();
+	// return codeGenerator;
+	// };
+	// beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
+	// RegisteredBean registeredBean = registerTestBean(beanFactory);
+	// BeanDefinitionMethodGeneratorFactory methodGeneratorFactory = new
+	// BeanDefinitionMethodGeneratorFactory(
+	// new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
+	// BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
+	// .getBeanDefinitionMethodGenerator(registeredBean, null);
+	// assertThat(methodGenerator).extracting("codeGenerator").isSameAs(codeGenerator);
+	// }
 
 	private RegisteredBean registerTestBean(DefaultListableBeanFactory beanFactory) {
 		beanFactory.registerBeanDefinition("test",

@@ -144,9 +144,11 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 			RootBeanDefinition actualInnerBeanDefinition = (RootBeanDefinition) actual.getPropertyValues().get("name");
 			assertThat(actualInnerBeanDefinition.isPrimary()).isTrue();
 			assertThat(actualInnerBeanDefinition.getRole()).isEqualTo(BeanDefinition.ROLE_INFRASTRUCTURE);
-			InstanceSupplier<?> innerInstanceSupplier = (InstanceSupplier<?>) actualInnerBeanDefinition.getInstanceSupplier();
+			InstanceSupplier<?> innerInstanceSupplier = (InstanceSupplier<?>) actualInnerBeanDefinition
+					.getInstanceSupplier();
 			try {
-				assertThat(innerInstanceSupplier.get(RegisteredBean.of(this.beanFactory, "temp"))).isInstanceOf(AnnotatedBean.class);
+				assertThat(innerInstanceSupplier.get(RegisteredBean.of(this.beanFactory, "temp")))
+						.isInstanceOf(AnnotatedBean.class);
 			}
 			catch (Exception ex) {
 				throw new IllegalStateException(ex);
@@ -157,14 +159,13 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 	private RegisteredBean registerBean(RootBeanDefinition beanDefinition) {
 		String beanName = "testBean";
 		this.beanFactory.registerBeanDefinition(beanName, beanDefinition);
-		return RegisteredBean.of(beanFactory, beanName);
+		return RegisteredBean.of(this.beanFactory, beanName);
 	}
 
 	private void testCompiledResult(DefaultBeanRegistrationCodeGenerator generator, RegisteredBean registeredBean,
 			BiConsumer<RootBeanDefinition, Compiled> result) {
 		CodeBlock codeBlock = generator.generateCode(this.generationContext);
 		JavaFile javaFile = createJavaFile(codeBlock);
-		System.out.println(javaFile);
 		TestCompiler.forSystem().compile(javaFile::writeTo, compiled -> {
 			RootBeanDefinition beanDefinition = (RootBeanDefinition) compiled.getInstance(Supplier.class).get();
 			result.accept(beanDefinition, compiled);
@@ -186,7 +187,7 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 	 */
 	static class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 
-		private GeneratedMethods generatedMethods = new GeneratedMethods();
+		private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
 		private final InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator;
 
@@ -196,7 +197,7 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 		}
 
 		GeneratedMethods getGeneratedMethods() {
-			return generatedMethods;
+			return this.generatedMethods;
 		}
 
 		@Override

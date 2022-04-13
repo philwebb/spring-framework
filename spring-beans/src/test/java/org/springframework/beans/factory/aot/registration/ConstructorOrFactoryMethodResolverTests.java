@@ -41,7 +41,8 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * Tests for {@link ConstructorOrFactoryMethodResolver}.
  *
  * @author Stephane Nicoll
- * @since 6.0
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 class ConstructorOrFactoryMethodResolverTests {
 

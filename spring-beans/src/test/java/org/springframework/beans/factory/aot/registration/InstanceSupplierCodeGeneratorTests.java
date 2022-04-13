@@ -76,7 +76,7 @@ class InstanceSupplierCodeGeneratorTests {
 	@BeforeEach
 	void setup() {
 		this.generatedFiles = new InMemoryGeneratedFiles();
-		this.generationContext = new DefaultGenerationContext(generatedFiles);
+		this.generationContext = new DefaultGenerationContext(this.generatedFiles);
 	}
 
 	@Test
@@ -260,17 +260,15 @@ class InstanceSupplierCodeGeneratorTests {
 		registrationBeanFactory.registerBeanDefinition("testBean", beanDefinition);
 		RegisteredBean registeredBean = RegisteredBean.of(registrationBeanFactory, "testBean");
 		GeneratedMethods generatedMethods = new GeneratedMethods();
-		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(generationContext,
+		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(this.generationContext,
 				generatedMethods);
 		CodeBlock generatedCode = generator.generateCode(registeredBean);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
-		System.out.println(javaFile);
 		this.generatedFiles.addSourceFile(javaFile);
 		List<SourceFile> sourceFiles = new ArrayList<>();
 		this.generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
 			Class<?> targetClass = this.generatedFiles.getTargetClass(path);
 			SourceFile sourceFile = SourceFile.of(path, inputStreamSource).withTargetClass(targetClass);
-			System.err.println(sourceFile.getContent());
 			sourceFiles.add(sourceFile);
 		});
 		TestCompiler.forSystem().withSources(sourceFiles).compile(

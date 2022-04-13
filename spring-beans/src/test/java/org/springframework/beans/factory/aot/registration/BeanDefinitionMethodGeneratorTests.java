@@ -21,9 +21,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
+ * Tests for {@link BeanDefinitionMethodGenerator}.
  *
- * @author pwebb
- * @since 6.0
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 class BeanDefinitionMethodGeneratorTests {
 
@@ -32,34 +34,43 @@ class BeanDefinitionMethodGeneratorTests {
 		fail("Not yet implemented");
 	}
 
-//	@Test
-//	void getBeanDefinitionMethodGeneratorWhenCodeGeneratorFactoryReturnsNullUsesDefaultCodeGenerator() {
-//		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-//		BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean, innerBeanPropertyName,
-//				innerBeanRegistrationMethodGenerator) -> null;
-//		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
-//		RegisteredBean registeredBean = registerTestBean(beanFactory);
-//		BeanDefinitionMethodGeneratorFactory methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
-//				new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
-//		BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
-//				.getBeanDefinitionMethodGenerator(registeredBean, null);
-//		assertThat(methodGenerator).extracting("codeGenerator")
-//				.isInstanceOf(DefaultBeanRegistrationCodeGenerator.class);
-//	}
-//
-//	@Test
-//	void getBeanDefinitionMethodGeneratorWhenCodeGeneratorFactoryReturnsCustomGeneratorUsesCustomGenerator() {
-//		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-//		BeanRegistrationCodeGenerator codeGenerator = mock(BeanRegistrationCodeGenerator.class);
-//		BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean, innerBeanPropertyName,
-//				innerBeanRegistrationMethodGenerator) -> codeGenerator;
-//		beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
-//		RegisteredBean registeredBean = registerTestBean(beanFactory);
-//		BeanDefinitionMethodGeneratorFactory methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
-//				new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
-//		BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
-//				.getBeanDefinitionMethodGenerator(registeredBean, null);
-//		assertThat(methodGenerator).extracting("codeGenerator").isSameAs(codeGenerator);
-//	}
+	// @Test
+	// void
+	// getBeanDefinitionMethodGeneratorWhenCodeGeneratorFactoryReturnsNullUsesDefaultCodeGenerator()
+	// {
+	// DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+	// BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean,
+	// innerBeanPropertyName,
+	// innerBeanRegistrationMethodGenerator) -> null;
+	// beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
+	// RegisteredBean registeredBean = registerTestBean(beanFactory);
+	// BeanDefinitionMethodGeneratorFactory methodGeneratorFactory = new
+	// BeanDefinitionMethodGeneratorFactory(
+	// new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
+	// BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
+	// .getBeanDefinitionMethodGenerator(registeredBean, null);
+	// assertThat(methodGenerator).extracting("codeGenerator")
+	// .isInstanceOf(DefaultBeanRegistrationCodeGenerator.class);
+	// }
+	//
+	// @Test
+	// void
+	// getBeanDefinitionMethodGeneratorWhenCodeGeneratorFactoryReturnsCustomGeneratorUsesCustomGenerator()
+	// {
+	// DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+	// BeanRegistrationCodeGenerator codeGenerator =
+	// mock(BeanRegistrationCodeGenerator.class);
+	// BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = (registeredBean,
+	// innerBeanPropertyName,
+	// innerBeanRegistrationMethodGenerator) -> codeGenerator;
+	// beanFactory.registerSingleton("codeGeneratorFactory", codeGeneratorFactory);
+	// RegisteredBean registeredBean = registerTestBean(beanFactory);
+	// BeanDefinitionMethodGeneratorFactory methodGeneratorFactory = new
+	// BeanDefinitionMethodGeneratorFactory(
+	// new AotFactoriesLoader(beanFactory, new MockSpringFactoriesLoader()));
+	// BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
+	// .getBeanDefinitionMethodGenerator(registeredBean, null);
+	// assertThat(methodGenerator).extracting("codeGenerator").isSameAs(codeGenerator);
+	// }
 
 }

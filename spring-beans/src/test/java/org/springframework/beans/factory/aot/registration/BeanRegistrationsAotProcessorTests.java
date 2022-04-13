@@ -21,9 +21,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
+ * Tests for {@link BeanRegistrationsAotProcessor}.
  *
- * @author pwebb
- * @since 6.0
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 class BeanRegistrationsAotProcessorTests {
 
