@@ -26,6 +26,7 @@ import org.springframework.aot.test.generator.file.ResourceFiles;
 import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.aot.test.generator.file.SourceFiles;
 import org.springframework.aot.test.generator.file.WritableContent;
+import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -170,7 +171,7 @@ class TestCompilerTests {
 	}
 
 	@Test
-	void compiledCodeCanAccessExistingPackagePrivateClass() {
+	void compiledCodeCanAccessExistingPackagePrivateClassIfAnnotated() throws ClassNotFoundException, LinkageError {
 		SourceFiles sourceFiles = SourceFiles.of(SourceFile.of("""
 				package com.example;
 
@@ -181,7 +182,7 @@ class TestCompilerTests {
 					}
 
 				}
-				"""));
+				""").withTargetClass(ClassUtils.forName("com.example.PackagePrivate", null)));
 		TestCompiler.forSystem().compile(sourceFiles, compiled -> assertThat(
 				compiled.getInstance(PublicInterface.class, "com.example.Test").perform())
 				.isEqualTo("Hello from PackagePrivate"));

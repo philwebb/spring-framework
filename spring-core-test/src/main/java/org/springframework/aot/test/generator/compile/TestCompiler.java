@@ -200,8 +200,11 @@ public final class TestCompiler {
 		ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
 			Thread.currentThread().setContextClassLoader(dynamicClassLoader);
-			compiled.accept(new Compiled(dynamicClassLoader, this.sourceFiles,
-					this.resourceFiles));
+			compiled.accept(new Compiled(dynamicClassLoader, this.sourceFiles, this.resourceFiles));
+		}
+		catch (IllegalAccessError ex) {
+			throw new IllegalAccessError(ex.getMessage() + ". For non-public access ensure annotate "
+					+ "your tests with @CompileWithTargetClassAccess");
 		}
 		finally {
 			Thread.currentThread().setContextClassLoader(previousClassLoader);

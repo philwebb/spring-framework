@@ -50,10 +50,14 @@ public final class SourceFile extends DynamicFile
 
 	private final JavaSource javaSource;
 
+	@Nullable
+	private final Class<?> targetClass;
 
-	private SourceFile(String path, String content, JavaSource javaSource) {
+
+	private SourceFile(String path, String content, JavaSource javaSource, @Nullable Class<?> targetClass) {
 		super(path, content);
 		this.javaSource = javaSource;
+		this.targetClass = targetClass;
 	}
 
 
@@ -133,7 +137,7 @@ public final class SourceFile extends DynamicFile
 		if (path == null || path.isEmpty()) {
 			path = deducePath(javaSource);
 		}
-		return new SourceFile(path, content, javaSource);
+		return new SourceFile(path, content, javaSource, null);
 	}
 
 	private static JavaSource parse(String content) {
@@ -166,13 +170,25 @@ public final class SourceFile extends DynamicFile
 	}
 
 	/**
+	 * Return a new variant of this {@link SourceFile} that includes a target class.
+	 * @param targetClass the target class
+	 * @return a variant with a target class
+	 */
+	public SourceFile withTargetClass(@Nullable Class<?> targetClass) {
+		if (targetClass == null) {
+			return this;
+		}
+		return new SourceFile(getPath(), getContent(), this.javaSource, targetClass);
+	}
+
+	/**
 	 * Return the target class for this source file or {@code null}. The target
 	 * class can be used if private lookup access is required.
 	 * @return the target class
 	 */
 	@Nullable
-	public Class<?> getTarget() {
-		return null; // Not yet supported
+	public Class<?> getTargetClass() {
+		return this.targetClass;
 	}
 
 	public String getClassName() {
