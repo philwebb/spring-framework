@@ -30,18 +30,19 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Factory used to create a {@link BeanRegistrationMethodGenerator} instance for a
+ * Factory used to create a {@link BeanDefinitionMethodGenerator} instance for a
  * {@link RegisteredBean}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationMethodGenerator
+ * @see BeanDefinitionMethodGenerator
+ * @see #getBeanDefinitionMethodGenerator(RegisteredBean, String)
  */
-class BeanRegistrationMethodGeneratorFactory {
+class BeanDefinitionMethodGeneratorFactory {
 
-	private static final Log logger = LogFactory.getLog(BeanRegistrationMethodGeneratorFactory.class);
+	private static final Log logger = LogFactory.getLog(BeanDefinitionMethodGeneratorFactory.class);
 
 	private final List<BeanRegistrationAotProcessor> aotProcessors;
 
@@ -50,42 +51,42 @@ class BeanRegistrationMethodGeneratorFactory {
 	private final List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories;
 
 	/**
-	 * Create a new {@link BeanRegistrationMethodGeneratorFactory} backed by the given
+	 * Create a new {@link BeanDefinitionMethodGeneratorFactory} backed by the given
 	 * {@link ConfigurableListableBeanFactory}.
 	 * @param beanFactory the bean factory use
 	 */
-	BeanRegistrationMethodGeneratorFactory(ConfigurableListableBeanFactory beanFactory) {
+	BeanDefinitionMethodGeneratorFactory(ConfigurableListableBeanFactory beanFactory) {
 		this(new AotFactoriesLoader(beanFactory));
 	}
 
 	/**
-	 * Create a new {@link BeanRegistrationMethodGeneratorFactory} backed by the given
+	 * Create a new {@link BeanDefinitionMethodGeneratorFactory} backed by the given
 	 * {@link AotFactoriesLoader}.
 	 * @param loader the AOT factory loader to use
 	 */
-	BeanRegistrationMethodGeneratorFactory(AotFactoriesLoader loader) {
+	BeanDefinitionMethodGeneratorFactory(AotFactoriesLoader loader) {
 		this.aotProcessors = loader.load(BeanRegistrationAotProcessor.class);
 		this.excludeFilters = loader.load(BeanRegistrationExcludeFilter.class);
 		this.codeGeneratorFactories = loader.load(BeanRegistrationCodeGeneratorFactory.class);
 	}
 
 	/**
-	 * Return a {@link BeanRegistrationMethodGenerator} for the given
-	 * {@link RegisteredBean} or {@code null} if the registered bean is excluded by a
+	 * Return a {@link BeanDefinitionMethodGenerator} for the given {@link RegisteredBean}
+	 * or {@code null} if the registered bean is excluded by a
 	 * {@link BeanRegistrationExcludeFilter}. The resulting
-	 * {@link BeanRegistrationMethodGenerator} will include all
+	 * {@link BeanDefinitionMethodGenerator} will include all
 	 * {@link BeanRegistrationAotProcessor} provided contributions.
 	 * @param registeredBean the registered bean
-	 * @return a new {@link BeanRegistrationMethodGenerator} instance or {@code null}
+	 * @return a new {@link BeanDefinitionMethodGenerator} instance or {@code null}
 	 */
 	@Nullable
-	BeanRegistrationMethodGenerator getBeanRegistrationMethodGenerator(RegisteredBean registeredBean,
+	BeanDefinitionMethodGenerator getBeanDefinitionMethodGenerator(RegisteredBean registeredBean,
 			@Nullable String innerBeanPropertyName) {
 		if (isExcluded(registeredBean)) {
 			return null;
 		}
 		List<BeanRegistrationAotContribution> contributions = getAotContributions(registeredBean);
-		return new BeanRegistrationMethodGenerator(registeredBean, innerBeanPropertyName, contributions,
+		return new BeanDefinitionMethodGenerator(registeredBean, innerBeanPropertyName, contributions,
 				this.codeGeneratorFactories);
 	}
 

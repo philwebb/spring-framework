@@ -16,6 +16,8 @@
 
 package org.springframework.aot.generate;
 
+import java.util.Arrays;
+
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
@@ -64,6 +66,42 @@ public final class MethodReference {
 	}
 
 	/**
+	 * Create a new method reference that refers to the given instance method.
+	 * @param declaringClass the declaring class
+	 * @param methodName the method name
+	 * @return a new {@link MethodReference} instance
+	 */
+	public static MethodReference of(Class<?> declaringClass, String methodName) {
+		Assert.notNull(declaringClass, "'declaringClass' must not be null");
+		Assert.hasLength(methodName, "'methodName' must not be empty");
+		return new MethodReference(Kind.INSTANCE, ClassName.get(declaringClass), methodName);
+	}
+
+	/**
+	 * Create a new method reference that refers to the given instance method.
+	 * @param declaringClass the declaring class
+	 * @param methodName the method name
+	 * @return a new {@link MethodReference} instance
+	 */
+	public static MethodReference of(GeneratedClassName declaringClass, GeneratedMethodName methodName) {
+		Assert.notNull(declaringClass, "'declaringClass' must not be null");
+		Assert.notNull(methodName, "'methodName' must not be null");
+		return new MethodReference(Kind.INSTANCE, declaringClass.toClassName(), methodName.toString());
+	}
+
+	/**
+	 * Create a new method reference that refers to the given instance method.
+	 * @param declaringClass the declaring class
+	 * @param methodName the method name
+	 * @return a new {@link MethodReference} instance
+	 */
+	public static MethodReference of(ClassName declaringClass, String methodName) {
+		Assert.notNull(declaringClass, "'declaringClass' must not be null");
+		Assert.hasLength(methodName, "'methodName' must not be empty");
+		return new MethodReference(Kind.INSTANCE, declaringClass, methodName);
+	}
+
+	/**
 	 * Create a new method reference that refers to the given static method.
 	 * @param declaringClass the declaring class
 	 * @param methodName the method name
@@ -73,18 +111,6 @@ public final class MethodReference {
 		Assert.notNull(declaringClass, "'declaringClass' must not be null");
 		Assert.hasLength(methodName, "'methodName' must not be empty");
 		return new MethodReference(Kind.STATIC, ClassName.get(declaringClass), methodName);
-	}
-
-	/**
-	 * Create a new method reference that refers to the given static method.
-	 * @param declaringClass the declaring class
-	 * @param methodName the method name
-	 * @return a new {@link MethodReference} instance
-	 */
-	public static MethodReference ofStatic(GeneratedClassName declaringClass, String methodName) {
-		Assert.notNull(declaringClass, "'declaringClass' must not be null");
-		Assert.hasLength(methodName, "'methodName' must not be empty");
-		return new MethodReference(Kind.STATIC, declaringClass.toClassName(), methodName);
 	}
 
 	/**
@@ -148,19 +174,65 @@ public final class MethodReference {
 		return CodeBlock.of("$T::$L", this.declaringClass, this.methodName);
 	}
 
+	/**
+	 * Return this method reference as an invocation {@link CodeBlock}.
+	 * @param arguments the method arguments
+	 * @return a code back to invoke the method
+	 */
 	public CodeBlock toInvokeCodeBlock(CodeBlock... arguments) {
 		return toInvokeCodeBlock(null, arguments);
 	}
 
+	/**
+	 * Return this method reference as an invocation {@link CodeBlock}.
+	 * @param instanceVariable the instance variable or {@code null}
+	 * @param arguments the method arguments
+	 * @return a code back to invoke the method
+	 */
 	public CodeBlock toInvokeCodeBlock(@Nullable String instanceVariable, CodeBlock... arguments) {
-		return null;
+		return switch (this.kind) {
+		case INSTANCE -> toInvokeCodeBlockForInstance(instanceVariable, arguments);
+		case STATIC -> toInvokeCodeBlockForStatic(instanceVariable, arguments);
+		};
 	}
 
+	private CodeBlock toInvokeCodeBlockForInstance(@Nullable String instanceVariable, CodeBlock[] arguments) {
+		CodeBlock.Builder builder = CodeBlock.builder();
+		if (instanceVariable != null) {
+			builder.add("$L.", instanceVariable);
+		}
+		else if (this.declaringClass != null) {
+			builder.add("new $L().", this.declaringClass);
+		}
+		builder.add("$L", this.methodName);
+		addArguments(builder, arguments);
+		return builder.build();
+	}
+
+	private CodeBlock toInvokeCodeBlockForStatic(@Nullable String instanceVariable, CodeBlock[] arguments) {
+		Assert.isTrue(instanceVariable == null, "'instanceVariable' must be null for static method references");
+		CodeBlock.Builder builder = CodeBlock.builder();
+		builder.add("$L.$L", this.declaringClass, this.methodName);
+		addArguments(builder, arguments);
+		return builder.build();
+	}
+
+	private void addArguments(CodeBlock.Builder builder, CodeBlock[] arguments) {
+		builder.add("(");
+		for (int i = 0; i < arguments.length; i++) {
+			if (i != 0) {
+				builder.add(", ");
+			}
+			builder.add(arguments[i]);
+		}
+		builder.add(")");
+	}
 
 	@Override
 	public String toString() {
 		return switch (this.kind) {
-		case INSTANCE -> "<instance>::" + methodName;
+		case INSTANCE -> ((this.declaringClass != null) ? "<" + this.declaringClass + ">" : "<instance>") + "::"
+				+ methodName;
 		case STATIC -> this.declaringClass + "::" + methodName;
 		};
 	}

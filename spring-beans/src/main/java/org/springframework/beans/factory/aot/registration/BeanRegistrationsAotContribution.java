@@ -16,16 +16,23 @@
 
 package org.springframework.beans.factory.aot.registration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+
+import javax.lang.model.element.Modifier;
 
 import org.springframework.aot.generate.GeneratedClassName;
+import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.javapoet.CodeBlock;
+import org.springframework.javapoet.JavaFile;
+import org.springframework.javapoet.MethodSpec;
+import org.springframework.javapoet.TypeSpec;
 import org.springframework.util.Assert;
 
 /**
@@ -40,59 +47,64 @@ import org.springframework.util.Assert;
  */
 class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotContribution {
 
-	private final BeanRegistrationMethodGeneratorFactory methodGeneratorFactory;
+	private static final String BEAN_FACTORY_PARAMETER_NAME = "beanFactory";
 
-	// FIXME needs the bean names as well. A map?
-	private final List<BeanRegistrationMethodGenerator> methodGenerators;
+	private final BeanDefinitionMethodGeneratorFactory beanDefinitionMethodGeneratorFactory;
 
-	BeanRegistrationsAotContribution(BeanRegistrationMethodGeneratorFactory methodGeneratorFactory,
-			List<BeanRegistrationMethodGenerator> methodGenerators) {
-		this.methodGenerators = methodGenerators;
-		this.methodGeneratorFactory = methodGeneratorFactory;
+	private final Map<String, BeanDefinitionMethodGenerator> registrations;
+
+	BeanRegistrationsAotContribution(BeanDefinitionMethodGeneratorFactory beanDefinitionMethodGeneratorFactory,
+			Map<String, BeanDefinitionMethodGenerator> registrations) {
+		this.registrations = registrations;
+		this.beanDefinitionMethodGeneratorFactory = beanDefinitionMethodGeneratorFactory;
 	}
 
 	@Override
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 		String beanFactoryName = beanFactoryInitializationCode.getBeanFactoryName();
-		BeanRegistrationsCode code = new BeanRegistrationsCodeGenerator(beanFactoryInitializationCode,
-				this.methodGeneratorFactory);
-
-		// FIXME create a new file, create a new context, do the stuff, write the file,
-		// add a reference
-
-		GeneratedClassName generateClassName = generationContext.getClassNameGenerator()
+		GeneratedClassName generatedClassName = generationContext.getClassNameGenerator()
 				.generateClassName(beanFactoryName, "Registrations");
-
-		List<MethodReference> registrationMethods = new ArrayList<>();
-		for (BeanRegistrationMethodGenerator contributedBeanRegistration : this.methodGenerators) {
-			registrationMethods.add(contributedBeanRegistration.generateRegistrationMethod(generationContext, code));
-		}
-
-		// FIXME add the method
-
-		beanFactoryInitializationCode.addInitializer(null);
+		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(beanFactoryInitializationCode,
+				this.beanDefinitionMethodGeneratorFactory);
+		GeneratedMethod registerMethod = codeGenerator.getMethodGenerator().generateMethod("registerBeanDefinitions")
+				.using(builder -> generateRegisterMethod(builder, generationContext, codeGenerator));
+		beanFactoryInitializationCode.addInitializer(MethodReference.of(generatedClassName, registerMethod.getName()));
 	}
 
-	static class BeanRegistrationsCodeGenerator implements BeanRegistrationsCode {
+	private void generateRegisterMethod(MethodSpec.Builder builder, GenerationContext generationContext,
+			BeanRegistrationsCode beanRegistrationsCode) {
+		builder.addJavadoc("Register the bean definitions.");
+		builder.addModifiers(Modifier.PUBLIC);
+		builder.addParameter(DefaultListableBeanFactory.class, BEAN_FACTORY_PARAMETER_NAME);
+		CodeBlock.Builder code = CodeBlock.builder();
+		this.registrations.forEach((beanName, beanDefinitionMethodGenerator) -> {
+			MethodReference beanDefinitionMethod = beanDefinitionMethodGenerator
+					.generateBeanDefinitionMethod(generationContext, beanRegistrationsCode);
+			code.addStatement("$L.registerBeanDefinition($S, $L)", BEAN_FACTORY_PARAMETER_NAME, beanName,
+					beanDefinitionMethod.toCodeBlock());
+		});
+		builder.addCode(code.build());
+	}
+
+	private static class BeanRegistrationsCodeGenerator implements BeanRegistrationsCode {
 
 		private final BeanFactoryInitializationCode beanFactoryInitializationCode;
 
-		private final InnerBeanRegistrationMethodGenerator innerBeanRegistrationMethodGenerator;
+		private final InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator;
 
 		private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
 		public BeanRegistrationsCodeGenerator(BeanFactoryInitializationCode beanFactoryInitializationCode,
-				BeanRegistrationMethodGeneratorFactory methodGeneratorFactory) {
-			this.innerBeanRegistrationMethodGenerator = (generationContext, innerRegisteredBean,
+				BeanDefinitionMethodGeneratorFactory methodGeneratorFactory) {
+			this.innerBeanDefinitionMethodGenerator = (generationContext, innerRegisteredBean,
 					innerBeanPropertyName) -> {
-				BeanRegistrationMethodGenerator methodGenerator = methodGeneratorFactory
-						.getBeanRegistrationMethodGenerator(innerRegisteredBean, innerBeanPropertyName);
+				BeanDefinitionMethodGenerator methodGenerator = methodGeneratorFactory
+						.getBeanDefinitionMethodGenerator(innerRegisteredBean, innerBeanPropertyName);
 				Assert.state(methodGenerator != null, "Unexpected filtering of inner-bean");
-				return methodGenerator.generateRegistrationMethod(generationContext, this);
+				return methodGenerator.generateBeanDefinitionMethod(generationContext, this);
 			};
 			this.beanFactoryInitializationCode = beanFactoryInitializationCode;
-
 		}
 
 		@Override
@@ -106,8 +118,16 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		}
 
 		@Override
-		public InnerBeanRegistrationMethodGenerator getInnerBeanRegistrationMethodGenerator() {
-			return this.innerBeanRegistrationMethodGenerator;
+		public InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator() {
+			return this.innerBeanDefinitionMethodGenerator;
+		}
+
+		JavaFile generatedJavaFile(GeneratedClassName generatedClassName) {
+			TypeSpec.Builder classBuilder = generatedClassName.classBuilder();
+			classBuilder.addJavadoc("Register bean defintions for the '$L' bean factory.", beanFactoryName);
+			classBuilder.addModifiers(Modifier.PUBLIC);
+			this.generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
+			return generatedClassName.toJavaFile(classBuilder);
 		}
 
 	}

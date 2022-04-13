@@ -22,21 +22,21 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RegisteredBean;
 
 /**
- * Interface passed to {@link BeanRegistrationCodeGeneratorFactory} so that inner-bean
- * registration can be supported.
+ * Interface that can be used to generate a method to create an inner-bean.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see BeanRegistrationsCode#getInnerBeanDefinitionMethodGenerator()
  */
 @FunctionalInterface
-public interface InnerBeanRegistrationMethodGenerator {
+public interface InnerBeanDefinitionMethodGenerator {
 
 	/**
 	 * Generate a new method that will create a {@link BeanDefinition} for the inner-bean.
 	 * @param generationContext the generation context
-	 * @param innerRegisteredBean the inner-bean
+	 * @param innerRegisteredBean the registered inner-bean
 	 * @param innerBeanPropertyName the name of the property that defined the registered
 	 * inner-bean
 	 * @return a reference to the newly generated method

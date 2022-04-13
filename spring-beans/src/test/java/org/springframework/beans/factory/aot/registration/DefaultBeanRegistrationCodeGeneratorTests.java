@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.aot.registration;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
+ * Tests for {@link DefaultBeanRegistrationCodeGenerator}.
  *
  * @author pwebb
  * @since 6.0
  */
-class BeanRegistrationsAotProcessorTests {
+class DefaultBeanRegistrationCodeGeneratorTests {
 
 	@Test
 	void test() {
 		fail("Not yet implemented");
 	}
+
+	// FIXME we want to test an inner bean
 
 }

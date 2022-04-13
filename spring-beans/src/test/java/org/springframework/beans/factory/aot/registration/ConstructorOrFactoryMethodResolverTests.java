@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.aot.registration;
 
 import java.lang.reflect.Executable;
 import java.util.List;
@@ -24,7 +24,6 @@ import java.util.concurrent.Executor;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.aot.registration.ConstructorOrFactoryMethodResolver;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;

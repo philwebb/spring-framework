@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot;
+package org.springframework.beans.factory.aot.registration;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * 
+ *
  * @author pwebb
  * @since 6.0
  */

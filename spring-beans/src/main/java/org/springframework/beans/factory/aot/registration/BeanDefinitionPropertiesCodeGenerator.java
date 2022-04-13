@@ -69,6 +69,7 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see DefaultBeanRegistrationCodeGenerator
  */
 class BeanDefinitionPropertiesCodeGenerator {
 

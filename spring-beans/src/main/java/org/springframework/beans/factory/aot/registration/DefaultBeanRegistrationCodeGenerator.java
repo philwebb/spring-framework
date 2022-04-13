@@ -74,7 +74,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	protected CodeBlock generatePropertyValueCode(GenerationContext generationContext, PropertyValue propertyValue) {
 		RegisteredBean innerRegisteredBean = getInnerRegisteredBean(propertyValue.getValue());
 		if (innerRegisteredBean != null) {
-			MethodReference generatedMethod = getBeanRegistrationsCode().getInnerBeanRegistrationMethodGenerator()
+			MethodReference generatedMethod = getBeanRegistrationsCode().getInnerBeanDefinitionMethodGenerator()
 					.generateInnerBeanDefinitionMethod(generationContext, innerRegisteredBean, propertyValue.getName());
 			return generatedMethod.toInvokeCodeBlock();
 		}
