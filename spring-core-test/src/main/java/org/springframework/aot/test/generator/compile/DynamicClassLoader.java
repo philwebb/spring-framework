@@ -37,6 +37,7 @@ import org.springframework.aot.test.generator.file.ResourceFiles;
 import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.aot.test.generator.file.SourceFiles;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 
 /**
  * {@link ClassLoader} used to expose dynamically generated content.
@@ -68,7 +69,6 @@ public class DynamicClassLoader extends ClassLoader {
 		this.classFiles = classFiles;
 	}
 
-
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		DynamicClassFileObject classFile = this.classFiles.get(name);
@@ -85,27 +85,30 @@ public class DynamicClassLoader extends ClassLoader {
 			// Continue
 		}
 		try (InputStream classStream = this.sourceLoader.getResourceAsStream(name.replace(".", "/") + ".class")) {
-			byte[] bytes = classStream.readAllBytes();
-			return defineClass(name, bytes, 0, bytes.length, null);
+			if (classStream != null) {
+				byte[] bytes = classStream.readAllBytes();
+				return defineClass(name, bytes, 0, bytes.length, null);
+			}
 		}
 		catch (IOException ex) {
 			throw new ClassNotFoundException(name);
 		}
+		return super.findClass(name);
 	}
 
 	private Class<?> defineClass(String name, DynamicClassFileObject classFile) {
 		byte[] bytes = classFile.getBytes();
-		SourceFile sourceFile = this.sourceFiles.get(name);
-		if (sourceFile != null && sourceFile.getTarget() != null) {
+		String path = ClassUtils.convertClassNameToResourcePath(name) + ".java";
+		SourceFile sourceFile = this.sourceFiles.get(path);
+		if (sourceFile != null && sourceFile.getTargetClass() != null
+				&& getParent().getClass().getName().equals(CompileWithTargetClassAccessClassLoader.class.getName())) {
 			try {
-				Lookup lookup = MethodHandles.privateLookupIn(sourceFile.getTarget(),
-						MethodHandles.lookup());
+				Lookup lookup = MethodHandles.privateLookupIn(sourceFile.getTargetClass(), MethodHandles.lookup());
 				return lookup.defineClass(bytes);
 			}
 			catch (IllegalAccessException ex) {
-				logger.log(Level.WARNING,
-						"Unable to define class using MethodHandles Lookup, "
-								+ "only public methods and classes will be accessible");
+				logger.log(Level.WARNING, "Unable to define class using MethodHandles Lookup, "
+						+ "only public methods and classes will be accessible");
 			}
 		}
 		return defineClass(name, bytes, 0, bytes.length, null);
