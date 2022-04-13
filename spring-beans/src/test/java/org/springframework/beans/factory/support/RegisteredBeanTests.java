@@ -25,7 +25,6 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link RegisteredBean}.
@@ -60,7 +59,7 @@ class RegisteredBeanTests {
 
 	@Test
 	void ofInnerBeanWhenInnerBeanIsNullThrowsException() {
-		RegisteredBean parent = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
 		assertThatIllegalArgumentException()
 				.isThrownBy(() -> RegisteredBean.ofInnerBean(parent, (BeanDefinitionHolder) null))
 				.withMessage("'innerBean' must not be null");
@@ -71,25 +70,24 @@ class RegisteredBeanTests {
 		assertThatIllegalArgumentException()
 				.isThrownBy(() -> RegisteredBean.ofInnerBean(null, new RootBeanDefinition(TestInnerBean.class)))
 				.withMessage("'parent' must not be null");
-
 	}
 
 	@Test
 	void ofInnerBeanWhenInnerBeanDefinitionIsNullThrowsException() {
-		RegisteredBean parent = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
 		assertThatIllegalArgumentException().isThrownBy(() -> RegisteredBean.ofInnerBean(parent, "ib", null))
 				.withMessage("'innerBeanDefinition' must not be null");
 	}
 
 	@Test
 	void getBeanNameReturnsBeanName() {
-		RegisteredBean registeredBean = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
 		assertThat(registeredBean.getBeanName()).isEqualTo("bd");
 	}
 
 	@Test
 	void getBeanNameWhenNamedInnerBeanReturnsBeanName() {
-		RegisteredBean parent = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
 		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent, "ib",
 				new RootBeanDefinition(TestInnerBean.class));
 		assertThat(registeredBean.getBeanName()).isEqualTo("ib");
@@ -97,90 +95,101 @@ class RegisteredBeanTests {
 
 	@Test
 	void getBeanNameWhenUnnamedInnerBeanReturnsBeanName() {
-		RegisteredBean parent = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
 		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent, new RootBeanDefinition(TestInnerBean.class));
 		assertThat(registeredBean.getBeanName()).startsWith("(inner bean)#");
 	}
 
 	@Test
 	void getBeanClassReturnsBeanClass() {
-		RegisteredBean registeredBean = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
 		assertThat(registeredBean.getBeanClass()).isEqualTo(TestBean.class);
 	}
 
 	@Test
 	void getBeanClassWhenSingletonReturnsBeanClass() {
-		RegisteredBean registeredBean = RegisteredBean.of(beanFactory, "sb");
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "sb");
 		assertThat(registeredBean.getBeanClass()).isEqualTo(TestBean.class);
 	}
 
 	@Test
 	void getBeanTypeReturnsBeanType() {
-		RegisteredBean registeredBean = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
 		assertThat(registeredBean.getBeanType().toClass()).isEqualTo(TestBean.class);
 	}
 
 	@Test
 	void getBeanTypeWhenSingletonReturnsBeanType() {
-		RegisteredBean registeredBean = RegisteredBean.of(beanFactory, "sb");
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "sb");
 		assertThat(registeredBean.getBeanType().toClass()).isEqualTo(TestBean.class);
 	}
 
 	@Test
 	void getMergedBeanDefinitionReturnsMergedBeanDefinition() {
-		RegisteredBean registeredBean = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
 		assertThat(registeredBean.getMergedBeanDefinition().getBeanClass()).isEqualTo(TestBean.class);
 	}
 
 	@Test
 	void getMergedBeanDefinitionWhenSingletonThrowsException() {
-		RegisteredBean registeredBean = RegisteredBean.of(beanFactory, "sb");
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "sb");
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
 				.isThrownBy(() -> registeredBean.getMergedBeanDefinition());
 	}
 
 	@Test
 	void getMergedBeanDefinitionWhenInnerBeanReturnsMergedBeanDefinition() {
-		RegisteredBean parent = RegisteredBean.of(beanFactory, "bd");
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
 		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent, new RootBeanDefinition(TestInnerBean.class));
 		assertThat(registeredBean.getMergedBeanDefinition().getBeanClass()).isEqualTo(TestInnerBean.class);
 	}
 
 	@Test
 	void isInnerBeanWhenInnerBeanReturnsTrue() {
-		fail();
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent, new RootBeanDefinition(TestInnerBean.class));
+		assertThat(registeredBean.isInnerBean()).isTrue();
 	}
 
 	@Test
 	void isInnerBeanWhenNotInnerBeanReturnsTrue() {
-		fail();
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
+		assertThat(registeredBean.isInnerBean()).isFalse();
 	}
 
 	@Test
 	void getParentWhenInnerBeanReturnsParent() {
-
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent, new RootBeanDefinition(TestInnerBean.class));
+		assertThat(registeredBean.getParent()).isSameAs(parent);
 	}
 
 	@Test
 	void getParentWhenNotInnerBeanReturnsNull() {
-
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
+		assertThat(registeredBean.getParent()).isNull();
 	}
 
 	@Test
 	void isGeneratedBeanNameWhenInnerBeanWithoutNameReturnsTrue() {
-
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent, new RootBeanDefinition(TestInnerBean.class));
+		assertThat(registeredBean.isGeneratedBeanName()).isTrue();
 	}
 
 	@Test
 	void isGeneratedBeanNameWhenInnerBeanWithNameReturnsFalse() {
-
+		RegisteredBean parent = RegisteredBean.of(this.beanFactory, "bd");
+		RegisteredBean registeredBean = RegisteredBean.ofInnerBean(parent,
+				new BeanDefinitionHolder(new RootBeanDefinition(TestInnerBean.class), "test"));
+		assertThat(registeredBean.isGeneratedBeanName()).isFalse();
 	}
 
 	@Test
 	void isGeneratedBeanNameWhenNotInnerBeanReturnsFalse() {
-
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
+		assertThat(registeredBean.isGeneratedBeanName()).isFalse();
 	}
-
 
 	static class TestBean {
 	}
