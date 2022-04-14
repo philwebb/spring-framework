@@ -125,8 +125,7 @@ public final class BeanDefinitionBuilder {
 	 * @since 5.3.9
 	 */
 	public static <T> BeanDefinitionBuilder rootBeanDefinition(ResolvableType beanType, Supplier<T> instanceSupplier) {
-		RootBeanDefinition beanDefinition = new RootBeanDefinition();
-		beanDefinition.setTargetType(beanType);
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(beanType);
 		beanDefinition.setInstanceSupplier(instanceSupplier);
 		return new BeanDefinitionBuilder(beanDefinition);
 	}
