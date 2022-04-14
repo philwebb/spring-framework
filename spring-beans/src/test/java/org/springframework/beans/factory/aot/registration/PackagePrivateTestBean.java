@@ -16,30 +16,6 @@
 
 package org.springframework.beans.factory.aot.registration;
 
-import org.springframework.aot.generate.MethodGenerator;
-
-/**
- * Interface that can be used to configure the code that will be generated to register
- * beans.
- *
- * @author Stephane Nicoll
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @since 6.0
- * @see BeanRegistrationCodeGenerator
- */
-public interface BeanRegistrationsCode {
-
-	/**
-	 * Return the name of the bean factory that will accept the registration.
-	 * @return the bean factory name
-	 */
-	String getBeanFactoryName();
-
-	/**
-	 * Return a {@link MethodGenerator} that can be used to add more methods to the registrations code.
-	 * @return the method generator
-	 */
-	MethodGenerator getMethodGenerator();
+class PackagePrivateTestBean {
 
 }
