@@ -49,21 +49,7 @@ public class InjectionMetadata {
 	 * An empty {@code InjectionMetadata} instance with no-op callbacks.
 	 * @since 5.2
 	 */
-	public static final InjectionMetadata EMPTY = new InjectionMetadata(Object.class, Collections.emptyList()) {
-		@Override
-		protected boolean needsRefresh(Class<?> clazz) {
-			return false;
-		}
-		@Override
-		public void checkConfigMembers(RootBeanDefinition beanDefinition) {
-		}
-		@Override
-		public void inject(Object target, @Nullable String beanName, @Nullable PropertyValues pvs) {
-		}
-		@Override
-		public void clear(@Nullable PropertyValues pvs) {
-		}
-	};
+	public static final InjectionMetadata EMPTY = new EmptyInjectionMetadata();
 
 
 	private final Class<?> targetClass;
@@ -181,14 +167,23 @@ public class InjectionMetadata {
 		@Nullable
 		protected final PropertyDescriptor pd;
 
+		protected final boolean required;
+
 		@Nullable
 		protected volatile Boolean skip;
 
+
 		protected InjectedElement(Member member, @Nullable PropertyDescriptor pd) {
+			this(member, pd, true);
+		}
+
+		protected InjectedElement(Member member, @Nullable PropertyDescriptor pd, boolean required) {
 			this.member = member;
 			this.isField = (member instanceof Field);
 			this.pd = pd;
+			this.required = required;
 		}
+
 
 		public final Member getMember() {
 			return this.member;
@@ -329,4 +324,29 @@ public class InjectionMetadata {
 		}
 	}
 
+
+	private static class EmptyInjectionMetadata extends InjectionMetadata {
+
+		EmptyInjectionMetadata() {
+			super(Object.class, Collections.emptyList());
+		}
+
+		@Override
+		protected boolean needsRefresh(Class<?> clazz) {
+			return false;
+		}
+
+		@Override
+		public void checkConfigMembers(RootBeanDefinition beanDefinition) {
+		}
+
+		@Override
+		public void inject(Object target, @Nullable String beanName, @Nullable PropertyValues pvs) {
+		}
+
+		@Override
+		public void clear(@Nullable PropertyValues pvs) {
+		}
+
+	}
 }
