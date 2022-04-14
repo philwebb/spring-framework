@@ -21,10 +21,12 @@ import java.util.function.Supplier;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.util.StringUtils;
 import org.springframework.util.function.ThrowableSupplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
@@ -56,6 +58,30 @@ class InstanceSupplierTests {
 	void getReturnsResult() throws Exception {
 		InstanceSupplier<String> supplier = registeredBean -> "test";
 		assertThat(supplier.get(this.registeredBean)).isEqualTo("test");
+	}
+
+	@Test
+	void withPostProcessorWhenPostProcessorIsNullThrowsException() {
+		InstanceSupplier<String> supplier = registeredBean -> "test";
+		assertThatIllegalArgumentException().isThrownBy(() -> supplier.withPostProcessor(null))
+				.withMessage("'instancePostProcessor' must not be null");
+	}
+
+	@Test
+	void withPostProcessorAddsPostProcessor() throws Exception {
+		InstanceSupplier<String> supplier = registeredBean -> "test";
+		supplier = supplier.withPostProcessor(InstancePostProcessor.of(String::toUpperCase));
+		assertThat(supplier.get(this.registeredBean)).isEqualTo("TEST");
+	}
+
+	@Test
+	void withMultiplePostProcessorCallsAddsPostProcessors() throws Exception {
+		InstanceSupplier<String> supplier = registeredBean -> "test";
+		supplier = supplier.withPostProcessor(InstancePostProcessor.of(String::toUpperCase));
+		InstanceSupplier<String> supplier2 = supplier
+				.withPostProcessor(InstancePostProcessor.of(StringUtils::uncapitalize));
+		assertThat(supplier.get(this.registeredBean)).isEqualTo("TEST");
+		assertThat(supplier2.get(this.registeredBean)).isEqualTo("tEST");
 	}
 
 	@Test

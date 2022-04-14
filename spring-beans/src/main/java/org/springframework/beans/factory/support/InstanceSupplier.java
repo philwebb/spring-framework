@@ -53,6 +53,18 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	T get(RegisteredBean registeredBean) throws Exception;
 
 	/**
+	 * Return a new {@link InstanceSupplier} that applies the given
+	 * {@link InstancePostProcessor} when supplying a result.
+	 * @param instancePostProcessor the instance post processor to apply
+	 * @return a new {@link InstanceSupplier}
+	 */
+	@SuppressWarnings("unchecked")
+	default InstanceSupplier<T> withPostProcessor(InstancePostProcessor<T> instancePostProcessor) {
+		Assert.notNull(instancePostProcessor, "'instancePostProcessor' must not be null");
+		return new PostProcessingInstanceSupplier<>(this, instancePostProcessor);
+	}
+
+	/**
 	 * Factory method to create an {@link InstanceSupplier} from a
 	 * {@link ThrowableSupplier}.
 	 * @param <T> the type of instance supplied by this supplier
