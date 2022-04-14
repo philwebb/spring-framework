@@ -78,6 +78,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
+ * Tests for {@link AutowiredAnnotationBeanPostProcessor}.
+ *
  * @author Juergen Hoeller
  * @author Mark Fisher
  * @author Sam Brannen
