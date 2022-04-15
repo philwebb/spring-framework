@@ -25,6 +25,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RegisteredBean;
@@ -45,6 +47,8 @@ class BeanDefinitionMethodGenerator {
 
 	private static final Log logger = LogFactory.getLog(BeanDefinitionMethodGenerator.class);
 
+	private final BeanDefinitionMethodGeneratorFactory methodGeneratorFactory;
+
 	private final RegisteredBean registeredBean;
 
 	@Nullable
@@ -52,7 +56,7 @@ class BeanDefinitionMethodGenerator {
 
 	private final List<BeanRegistrationAotContribution> aotContributions;
 
-	private final List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories;
+	private final List<? extends BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories;
 
 	/**
 	 * Create a new {@link BeanDefinitionMethodGenerator} instance.
@@ -60,9 +64,11 @@ class BeanDefinitionMethodGenerator {
 	 * @param aotContributions the AOT contributions that should be applied before
 	 * generating the registration method
 	 */
-	BeanDefinitionMethodGenerator(RegisteredBean registeredBean, @Nullable String innerBeanPropertyName,
+	BeanDefinitionMethodGenerator(BeanDefinitionMethodGeneratorFactory methodGeneratorFactory,
+			RegisteredBean registeredBean, @Nullable String innerBeanPropertyName,
 			List<BeanRegistrationAotContribution> aotContributions,
-			List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories) {
+			List<? extends BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories) {
+		this.methodGeneratorFactory = methodGeneratorFactory;
 		this.registeredBean = registeredBean;
 		this.innerBeanPropertyName = innerBeanPropertyName;
 		this.aotContributions = aotContributions;
@@ -77,38 +83,90 @@ class BeanDefinitionMethodGenerator {
 	 */
 	MethodReference generateBeanDefinitionMethod(GenerationContext generationContext,
 			BeanRegistrationsCode beanRegistrationsCode) {
-		String name = (this.innerBeanPropertyName != null) ? this.innerBeanPropertyName
-				: this.registeredBean.getBeanName();
-		GeneratedMethod method = beanRegistrationsCode.getMethodGenerator()
-				.generateMethod("get", name, "BeanDefinition").using(builder -> {
-					builder.addJavadoc("Get the $L definition for '$L'",
-							(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean", name);
-					builder.addModifiers(Modifier.PRIVATE);
-					builder.returns(BeanDefinition.class);
-					builder.addCode(generateBeanRegistrationCode(generationContext, beanRegistrationsCode));
-				});
+		String name = (this.innerBeanPropertyName != null) ? this.innerBeanPropertyName : getName(registeredBean);
+		BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = getBeanRegistrationCodeGeneratorFactory();
+		Class<?> packagePrivateTarget = codeGeneratorFactory.getPackagePrivateTarget(this.registeredBean);
+		return (packagePrivateTarget != null)
+				? generateBeanDefinitionMethodForPackagePrivateTarget(generationContext, beanRegistrationsCode, name,
+						codeGeneratorFactory, packagePrivateTarget)
+				: generateBeanDefinitionMethodForAccessibleTarget(generationContext, beanRegistrationsCode, name,
+						codeGeneratorFactory);
+	}
+
+	private String getName(RegisteredBean registeredBean) {
+		if (!registeredBean.isGeneratedBeanName()) {
+			return registeredBean.getBeanName();
+		}
+		while (registeredBean != null && registeredBean.isGeneratedBeanName()) {
+			registeredBean = registeredBean.getParent();
+		}
+		if (registeredBean != null) {
+			return MethodNameGenerator.join(registeredBean.getBeanName(), "innerBean");
+		}
+		return "innerBean";
+	}
+
+	private BeanRegistrationCodeGeneratorFactory getBeanRegistrationCodeGeneratorFactory() {
+		for (BeanRegistrationCodeGeneratorFactory candidate : this.codeGeneratorFactories) {
+			if (candidate.isSupported(this.registeredBean)) {
+				return candidate;
+			}
+		}
+		return DefaultBeanRegistrationCodeGeneratorFactory.INSTANCE;
+	}
+
+	private MethodReference generateBeanDefinitionMethodForPackagePrivateTarget(GenerationContext generationContext,
+			BeanRegistrationsCode beanRegistrationsCode, String name,
+			BeanRegistrationCodeGeneratorFactory codeGeneratorFactory, Class<?> packagePrivateTarget) {
+		return generateBeanDefinitionMethodForAccessibleTarget(generationContext, beanRegistrationsCode, name,
+				codeGeneratorFactory);
+	}
+
+	private MethodReference generateBeanDefinitionMethodForAccessibleTarget(GenerationContext generationContext,
+			BeanRegistrationsCode beanRegistrationsCode, String name,
+			BeanRegistrationCodeGeneratorFactory codeGeneratorFactory) {
+		MethodGenerator methodGenerator = beanRegistrationsCode.getMethodGenerator().withName(name);
+		InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator = this.methodGeneratorFactory
+				.getInnerBeanDefinitionMethodGenerator(beanRegistrationsCode);
+		BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory.getBeanRegistrationCodeGenerator(
+				methodGenerator, innerBeanDefinitionMethodGenerator, this.registeredBean);
+		if (codeGeneratorFactory != DefaultBeanRegistrationCodeGeneratorFactory.INSTANCE) {
+			logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
+					codeGenerator.getClass().getName(), this.registeredBean.getBeanName()));
+		}
+		GeneratedMethod method = methodGenerator.generateMethod("get", name, "BeanDefinition").using(builder -> {
+			applyAotContributions(generationContext, codeGenerator);
+			builder.addJavadoc("Get the $L definition for '$L'",
+					(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean", name);
+			builder.addModifiers(Modifier.PRIVATE);
+			builder.returns(BeanDefinition.class);
+			CodeBlock methodCode = codeGenerator.generateCode(generationContext);
+			builder.addCode(methodCode);
+		});
 		return MethodReference.of(method.getName());
 	}
 
-	private CodeBlock generateBeanRegistrationCode(GenerationContext generationContext,
-			BeanRegistrationsCode beanRegistrationsCode) {
-		BeanRegistrationCodeGenerator codeGenerator = getBeanRegistrationCodeGenerator(beanRegistrationsCode);
-		this.aotContributions.forEach(aotContribution -> aotContribution.applyTo(generationContext, codeGenerator));
-		return codeGenerator.generateCode(generationContext);
+	private void applyAotContributions(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode) {
+		this.aotContributions
+				.forEach(aotContribution -> aotContribution.applyTo(generationContext, beanRegistrationCode));
 	}
 
-	private BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(
-			BeanRegistrationsCode beanRegistrationsCode) {
-		for (BeanRegistrationCodeGeneratorFactory codeGeneratorFactory : this.codeGeneratorFactories) {
-			BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory.getBeanRegistrationCodeGenerator(
-					this.registeredBean, this.innerBeanPropertyName, beanRegistrationsCode);
-			if (codeGenerator != null) {
-				logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
-						codeGenerator.getClass().getName(), this.registeredBean.getBeanName()));
-				return codeGenerator;
-			}
+	private static class DefaultBeanRegistrationCodeGeneratorFactory implements BeanRegistrationCodeGeneratorFactory {
+
+		static final DefaultBeanRegistrationCodeGeneratorFactory INSTANCE = new DefaultBeanRegistrationCodeGeneratorFactory();
+
+		@Override
+		public boolean isSupported(RegisteredBean registeredBean) {
+			return true;
 		}
-		return new DefaultBeanRegistrationCodeGenerator(this.registeredBean, null, beanRegistrationsCode);
+
+		@Override
+		public BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
+				InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
+			return new DefaultBeanRegistrationCodeGenerator(methodGenerator, innerBeanDefinitionMethodGenerator,
+					registeredBean);
+		}
+
 	}
 
 }

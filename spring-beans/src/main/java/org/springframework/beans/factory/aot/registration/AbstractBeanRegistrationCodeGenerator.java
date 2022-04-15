@@ -20,10 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.aot.generate.MethodGenerator;
-import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -37,54 +35,22 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegistrationCodeGenerator {
 
+	private final MethodGenerator methodGenerator;
+
+	private final InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator;
+
 	private final RegisteredBean registeredBean;
-
-	@Nullable
-	private final String innerBeanPropertyName;
-
-	private final BeanRegistrationsCode beanRegistrationsCode;
 
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
-	private final MethodGenerator methodGenerator;
-
 	/**
 	 * Create a new {@link AbstractBeanRegistrationCodeGenerator} instance.
-	 * @param registeredBean the registered bean
-	 * @param innerBeanPropertyName the name of the property that defined the registered
-	 * inner-bean or {@code null} for regular beans
-	 * @param beanRegistrationsCode the bean registrations code
 	 */
-	public AbstractBeanRegistrationCodeGenerator(RegisteredBean registeredBean, @Nullable String innerBeanPropertyName,
-			BeanRegistrationsCode beanRegistrationsCode) {
+	public AbstractBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
+			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
+		this.methodGenerator = methodGenerator;
+		this.innerBeanDefinitionMethodGenerator = innerBeanDefinitionMethodGenerator;
 		this.registeredBean = registeredBean;
-		this.innerBeanPropertyName = innerBeanPropertyName;
-		this.beanRegistrationsCode = beanRegistrationsCode;
-		String name = (innerBeanPropertyName != null) ? innerBeanPropertyName : getName(registeredBean);
-		this.methodGenerator = beanRegistrationsCode.getMethodGenerator().withName(name);
-	}
-
-	private String getName(RegisteredBean registeredBean) {
-		if (!registeredBean.isGeneratedBeanName()) {
-			return registeredBean.getBeanName();
-		}
-		while (registeredBean != null && registeredBean.isGeneratedBeanName()) {
-			registeredBean = registeredBean.getParent();
-		}
-		if (registeredBean != null) {
-			return MethodNameGenerator.join(registeredBean.getBeanName(), "innerBean");
-		}
-		return "innerBean";
-	}
-
-	@Override
-	public RegisteredBean getRegisteredBean() {
-		return this.registeredBean;
-	}
-
-	@Override
-	public String getBeanFactoryName() {
-		return this.beanRegistrationsCode.getBeanFactoryName();
 	}
 
 	@Override
@@ -92,18 +58,18 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 		return this.methodGenerator;
 	}
 
+	public InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator() {
+		return this.innerBeanDefinitionMethodGenerator;
+	}
+
+	protected final RegisteredBean getRegisteredBean() {
+		return this.registeredBean;
+	}
+
 	@Override
 	public void addInstancePostProcessor(MethodReference methodReference) {
 		Assert.notNull(methodReference, "'methodReference' must not be null");
 		this.instancePostProcessors.add(methodReference);
-	}
-
-	/**
-	 * Return the {@link BeanRegistrationCode} being used with this instance.
-	 * @return the bean registrations code
-	 */
-	protected BeanRegistrationsCode getBeanRegistrationsCode() {
-		return this.beanRegistrationsCode;
 	}
 
 	/**

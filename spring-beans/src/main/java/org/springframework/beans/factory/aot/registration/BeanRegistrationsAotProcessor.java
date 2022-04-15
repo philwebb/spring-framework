@@ -49,7 +49,7 @@ class BeanRegistrationsAotProcessor implements BeanFactoryInitializationAotProce
 		if (registrations.isEmpty()) {
 			return null;
 		}
-		return new BeanRegistrationsAotContribution(beanDefinitionMethodGeneratorFactory, registrations);
+		return new BeanRegistrationsAotContribution(registrations);
 	}
 
 }

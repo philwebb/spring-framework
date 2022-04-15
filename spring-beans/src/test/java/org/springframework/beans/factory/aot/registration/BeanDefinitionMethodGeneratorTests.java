@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.aot.generate.DefaultGenerationContext;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
@@ -68,22 +69,24 @@ class BeanDefinitionMethodGeneratorTests {
 
 	private MockBeanRegistrationsCode beanRegistrationsCode;
 
+	private BeanDefinitionMethodGeneratorFactory methodGeneratorFactory;
+
 	@BeforeEach
 	void setup() {
 		this.generatedFiles = new InMemoryGeneratedFiles();
 		this.generationContext = new DefaultGenerationContext(this.generatedFiles);
 		this.beanFactory = new DefaultListableBeanFactory();
 		this.springFactoriesLoader = new MockSpringFactoriesLoader();
-		BeanDefinitionMethodGeneratorFactory methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
+		this.methodGeneratorFactory = new BeanDefinitionMethodGeneratorFactory(
 				new AotFactoriesLoader(this.beanFactory, this.springFactoriesLoader));
-		this.beanRegistrationsCode = new MockBeanRegistrationsCode(methodGeneratorFactory);
+		this.beanRegistrationsCode = new MockBeanRegistrationsCode();
 	}
 
 	@Test
 	void generateBeanDefinitionMethodGeneratesMethod() {
 		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(TestBean.class));
-		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(registeredBean, null,
-				Collections.emptyList(), Collections.emptyList());
+		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,
+				registeredBean, null, Collections.emptyList(), Collections.emptyList());
 		MethodReference method = generator.generateBeanDefinitionMethod(this.generationContext,
 				this.beanRegistrationsCode);
 		testCompiledResult(method, (actual, compiled) -> {
@@ -96,8 +99,8 @@ class BeanDefinitionMethodGeneratorTests {
 	void generateBeanDefinitionMethodWhenInnerBeanGeneratesMethod() {
 		RegisteredBean parent = registerBean(new RootBeanDefinition(TestBean.class));
 		RegisteredBean innerBean = RegisteredBean.ofInnerBean(parent, new RootBeanDefinition(AnnotatedBean.class));
-		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(innerBean, "testInnerBean",
-				Collections.emptyList(), Collections.emptyList());
+		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory, innerBean,
+				"testInnerBean", Collections.emptyList(), Collections.emptyList());
 		MethodReference method = generator.generateBeanDefinitionMethod(this.generationContext,
 				this.beanRegistrationsCode);
 		testCompiledResult(method, (actual, compiled) -> {
@@ -112,8 +115,8 @@ class BeanDefinitionMethodGeneratorTests {
 		List<BeanRegistrationAotContribution> aotContributions = new ArrayList<>();
 		aotContributions.add((generationContext, beanRegistrationCode) -> beanRegistrationCode.getMethodGenerator()
 				.generateMethod("aotContributedMethod").using(builder -> builder.addComment("Example Contribution")));
-		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(registeredBean, null,
-				aotContributions, Collections.emptyList());
+		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,
+				registeredBean, null, aotContributions, Collections.emptyList());
 		MethodReference method = generator.generateBeanDefinitionMethod(this.generationContext,
 				this.beanRegistrationsCode);
 		testCompiledResult(method, (actual, compiled) -> {
@@ -125,10 +128,21 @@ class BeanDefinitionMethodGeneratorTests {
 	@Test
 	void generateBeanDefinitionMethodWhenBeanRegistrationCodeGeneratorFactoryReturnsCodeGeneratesMethod() {
 		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(TestBean.class));
-		List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories = new ArrayList<>();
+		List<TestBeanRegistrationCodeGeneratorFactory> codeGeneratorFactories = new ArrayList<>();
 		codeGeneratorFactories.add(TestBeanRegistrationCodeGenerator::new);
-		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(registeredBean, null,
-				Collections.emptyList(), codeGeneratorFactories);
+		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,
+				registeredBean, null, Collections.emptyList(), codeGeneratorFactories);
+		MethodReference method = generator.generateBeanDefinitionMethod(this.generationContext,
+				this.beanRegistrationsCode);
+		testCompiledResult(method,
+				(actual, compiled) -> assertThat(compiled.getSourceFile()).contains("// Custom Code"));
+	}
+
+	@Test
+	void generateBeanDefinitionMethodWhenPackagePrivateBean() {
+		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(PackagePrivateTestBean.class));
+		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,
+				registeredBean, null, Collections.emptyList(), Collections.emptyList());
 		MethodReference method = generator.generateBeanDefinitionMethod(this.generationContext,
 				this.beanRegistrationsCode);
 		testCompiledResult(method,
@@ -159,11 +173,20 @@ class BeanDefinitionMethodGeneratorTests {
 		return JavaFile.builder("__", builder.build()).build();
 	}
 
+	static interface TestBeanRegistrationCodeGeneratorFactory extends BeanRegistrationCodeGeneratorFactory {
+
+		@Override
+		default boolean isSupported(RegisteredBean registeredBean) {
+			return true;
+		}
+
+	}
+
 	static class TestBeanRegistrationCodeGenerator extends DefaultBeanRegistrationCodeGenerator {
 
-		TestBeanRegistrationCodeGenerator(RegisteredBean registeredBean, String innerBeanPropertyName,
-				BeanRegistrationsCode beanRegistrationsCode) {
-			super(registeredBean, innerBeanPropertyName, beanRegistrationsCode);
+		TestBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
+				InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
+			super(methodGenerator, innerBeanDefinitionMethodGenerator, registeredBean);
 		}
 
 		@Override

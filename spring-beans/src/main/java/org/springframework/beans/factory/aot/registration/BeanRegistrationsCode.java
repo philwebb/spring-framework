@@ -42,11 +42,4 @@ public interface BeanRegistrationsCode {
 	 */
 	MethodGenerator getMethodGenerator();
 
-	/**
-	 * Return an {@link InnerBeanDefinitionMethodGenerator} that can be used to generate
-	 * additional bean registration methods for inner-beans.
-	 * @return an inner-bean registration method generator
-	 */
-	InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator();
-
 }

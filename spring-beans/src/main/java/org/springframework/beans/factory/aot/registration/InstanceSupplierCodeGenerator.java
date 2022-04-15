@@ -68,22 +68,18 @@ class InstanceSupplierCodeGenerator {
 	}
 
 	CodeBlock generateCode(RegisteredBean registeredBean) {
-		return generateCode(registeredBean.getBeanName(), registeredBean);
-	}
-
-	CodeBlock generateCode(String name, RegisteredBean registeredBean) {
-		Executable constructorOrFactoryMethod = ConstructorOrFactoryMethodResolver.resolve(registeredBean);
+		Executable constructorOrFactoryMethod = resolveConstructorOrFactoryMethod(registeredBean);
 		if (constructorOrFactoryMethod instanceof Constructor<?> constructor) {
-			return generateCodeForConstructor(name, registeredBean, constructor);
+			return generateCodeForConstructor(registeredBean, constructor);
 		}
 		if (constructorOrFactoryMethod instanceof Method method) {
-			return generateCodeForFactoryMethod(name, registeredBean, method);
+			return generateCodeForFactoryMethod(registeredBean, method);
 		}
 		throw new IllegalStateException("No suitable executor found for " + registeredBean.getBeanName());
 	}
 
-	private CodeBlock generateCodeForConstructor(String name, RegisteredBean registeredBean,
-			Constructor<?> constructor) {
+	private CodeBlock generateCodeForConstructor(RegisteredBean registeredBean, Constructor<?> constructor) {
+		String name = registeredBean.getBeanName();
 		Class<?> declaringClass = ClassUtils.getUserClass(constructor.getDeclaringClass());
 		boolean dependsOnBean = ClassUtils.isInnerClass(declaringClass);
 		AccessVisibility accessVisibility = getAccessVisibility(registeredBean, constructor);
@@ -93,8 +89,8 @@ class InstanceSupplierCodeGenerator {
 		return generateCodeForInaccessibleConstructor(name, constructor, declaringClass, dependsOnBean);
 	}
 
-	private CodeBlock generateCodeForAccessibleConstructor(String name, Constructor<?> constructor, Class<?> declaringClass,
-			boolean dependsOnBean) {
+	private CodeBlock generateCodeForAccessibleConstructor(String name, Constructor<?> constructor,
+			Class<?> declaringClass, boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor, INTROSPECT);
 		if (!dependsOnBean && constructor.getParameterCount() == 0) {
 			return CodeBlock.of("$T.using($T::new)", InstanceSupplier.class, declaringClass);
@@ -104,7 +100,6 @@ class InstanceSupplierCodeGenerator {
 						dependsOnBean, javax.lang.model.element.Modifier.PRIVATE));
 		return CodeBlock.of("$T.of(this::$L)", InstanceSupplier.class, getInstanceMethod.getName());
 	}
-
 
 	private CodeBlock generateCodeForInaccessibleConstructor(String name, Constructor<?> constructor,
 			Class<?> declaringClass, boolean dependsOnBean) {
@@ -157,7 +152,8 @@ class InstanceSupplierCodeGenerator {
 				declaringClass.getEnclosingClass(), declaringClass.getSimpleName(), args);
 	}
 
-	private CodeBlock generateCodeForFactoryMethod(String name, RegisteredBean registeredBean, Method factoryMethod) {
+	private CodeBlock generateCodeForFactoryMethod(RegisteredBean registeredBean, Method factoryMethod) {
+		String name = registeredBean.getBeanName();
 		Class<?> declaringClass = ClassUtils.getUserClass(factoryMethod.getDeclaringClass());
 		boolean dependsOnBean = !Modifier.isStatic(factoryMethod.getModifiers());
 		AccessVisibility accessVisibility = getAccessVisibility(registeredBean, factoryMethod);
@@ -283,6 +279,20 @@ class InstanceSupplierCodeGenerator {
 
 	private GeneratedMethod generateGetInstanceMethod(MethodGenerator methodGenerator, String name) {
 		return methodGenerator.generateMethod("get", name, "instance");
+	}
+
+	static Class<?> getPackagePrivateTarget(RegisteredBean registeredBean) {
+		Executable constructorOrFactoryMethod = resolveConstructorOrFactoryMethod(registeredBean);
+		AccessVisibility memberVisibility = AccessVisibility.forMember(constructorOrFactoryMethod);
+		AccessVisibility typeVisibility = AccessVisibility.forResolvableType(registeredBean.getBeanType());
+		if (AccessVisibility.lowest(memberVisibility, typeVisibility) == AccessVisibility.PACKAGE_PRIVATE) {
+			return ClassUtils.getUserClass(constructorOrFactoryMethod.getDeclaringClass());
+		}
+		return null;
+	}
+
+	static Executable resolveConstructorOrFactoryMethod(RegisteredBean registeredBean) {
+		return ConstructorOrFactoryMethodResolver.resolve(registeredBean);
 	}
 
 }

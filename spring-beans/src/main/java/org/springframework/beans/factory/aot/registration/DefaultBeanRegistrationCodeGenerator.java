@@ -63,9 +63,9 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 
 	protected static final String INSTANCE_SUPPLIER_VARIABLE = "instanceSupplier";
 
-	public DefaultBeanRegistrationCodeGenerator(RegisteredBean registeredBean, String innerBeanPropertyName,
-			BeanRegistrationsCode beanRegistrationsCode) {
-		super(registeredBean, innerBeanPropertyName, beanRegistrationsCode);
+	public DefaultBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
+			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
+		super(methodGenerator, innerBeanDefinitionMethodGenerator, registeredBean);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	protected CodeBlock generatePropertyValueCode(GenerationContext generationContext, PropertyValue propertyValue) {
 		RegisteredBean innerRegisteredBean = getInnerRegisteredBean(propertyValue.getValue());
 		if (innerRegisteredBean != null) {
-			MethodReference generatedMethod = getBeanRegistrationsCode().getInnerBeanDefinitionMethodGenerator()
+			MethodReference generatedMethod = getInnerBeanDefinitionMethodGenerator()
 					.generateInnerBeanDefinitionMethod(generationContext, innerRegisteredBean, propertyValue.getName());
 			return generatedMethod.toInvokeCodeBlock();
 		}

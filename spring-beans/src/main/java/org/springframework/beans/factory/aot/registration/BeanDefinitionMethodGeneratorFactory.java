@@ -87,7 +87,7 @@ class BeanDefinitionMethodGeneratorFactory {
 			return null;
 		}
 		List<BeanRegistrationAotContribution> contributions = getAotContributions(registeredBean);
-		return new BeanDefinitionMethodGenerator(registeredBean, innerBeanPropertyName, contributions,
+		return new BeanDefinitionMethodGenerator(this, registeredBean, innerBeanPropertyName, contributions,
 				this.codeGeneratorFactories);
 	}
 
@@ -118,7 +118,8 @@ class BeanDefinitionMethodGeneratorFactory {
 	}
 
 	/**
-	 * Return a new {@link InnerBeanDefinitionMethodGenerator} for the given {@link BeanRegistrationsCode}.
+	 * Return a new {@link InnerBeanDefinitionMethodGenerator} for the given
+	 * {@link BeanRegistrationsCode}.
 	 * @param beanRegistrationsCode the bean registrations code
 	 * @return a new {@link InnerBeanDefinitionMethodGenerator} instance
 	 */

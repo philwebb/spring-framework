@@ -71,7 +71,7 @@ class BeanRegistrationsAotContributionTests {
 
 	private BeanDefinitionMethodGeneratorFactory methodGeneratorFactory;
 
-	private MockBeanFactoryInitializationCode beanFactoryInitializationCode = new MockBeanFactoryInitializationCode();
+	private final MockBeanFactoryInitializationCode beanFactoryInitializationCode = new MockBeanFactoryInitializationCode();
 
 	@BeforeEach
 	void setup() {
@@ -87,11 +87,10 @@ class BeanRegistrationsAotContributionTests {
 	void applyToAppliesContribution() {
 		Map<String, BeanDefinitionMethodGenerator> registrations = new LinkedHashMap<>();
 		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(TestBean.class));
-		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(registeredBean, null,
-				Collections.emptyList(), Collections.emptyList());
+		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,
+				registeredBean, null, Collections.emptyList(), Collections.emptyList());
 		registrations.put("testBean", generator);
-		BeanRegistrationsAotContribution contribution = new BeanRegistrationsAotContribution(methodGeneratorFactory,
-				registrations);
+		BeanRegistrationsAotContribution contribution = new BeanRegistrationsAotContribution(registrations);
 		contribution.applyTo(this.generationContext, this.beanFactoryInitializationCode);
 		testCompiledResult((consumer, compiled) -> {
 			DefaultListableBeanFactory freshBeanFactory = new DefaultListableBeanFactory();
@@ -105,8 +104,8 @@ class BeanRegistrationsAotContributionTests {
 		List<BeanRegistrationsCode> beanRegistrationsCodes = new ArrayList<>();
 		Map<String, BeanDefinitionMethodGenerator> registrations = new LinkedHashMap<>();
 		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(TestBean.class));
-		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(registeredBean, null,
-				Collections.emptyList(), Collections.emptyList()) {
+		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,
+				registeredBean, null, Collections.emptyList(), Collections.emptyList()) {
 
 			@Override
 			MethodReference generateBeanDefinitionMethod(GenerationContext generationContext,
@@ -117,13 +116,11 @@ class BeanRegistrationsAotContributionTests {
 
 		};
 		registrations.put("testBean", generator);
-		BeanRegistrationsAotContribution contribution = new BeanRegistrationsAotContribution(methodGeneratorFactory,
-				registrations);
+		BeanRegistrationsAotContribution contribution = new BeanRegistrationsAotContribution(registrations);
 		contribution.applyTo(this.generationContext, this.beanFactoryInitializationCode);
 		assertThat(beanRegistrationsCodes).hasSize(1);
 		BeanRegistrationsCode actual = beanRegistrationsCodes.get(0);
 		assertThat(actual.getBeanFactoryName()).isEqualTo("Test");
-		assertThat(actual.getInnerBeanDefinitionMethodGenerator()).isNotNull();
 		assertThat(actual.getMethodGenerator()).isNotNull();
 	}
 
@@ -144,7 +141,7 @@ class BeanRegistrationsAotContributionTests {
 		JavaFile javaFile = createJavaFile();
 		sourceFiles.add(SourceFile.of(javaFile::writeTo));
 		TestCompiler.forSystem().withSources(sourceFiles).compile(compiled -> result
-				.accept((Consumer<DefaultListableBeanFactory>) compiled.getInstance(Consumer.class), compiled));
+				.accept(compiled.getInstance(Consumer.class), compiled));
 	}
 
 	private JavaFile createJavaFile() {
@@ -173,7 +170,7 @@ class BeanRegistrationsAotContributionTests {
 		}
 
 		public List<MethodReference> getInitializers() {
-			return initializers;
+			return this.initializers;
 		}
 
 	}

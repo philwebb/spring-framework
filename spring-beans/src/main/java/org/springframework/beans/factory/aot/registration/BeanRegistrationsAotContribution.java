@@ -48,13 +48,9 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 	private static final String BEAN_FACTORY_PARAMETER_NAME = "beanFactory";
 
-	private final BeanDefinitionMethodGeneratorFactory beanDefinitionMethodGeneratorFactory;
-
 	private final Map<String, BeanDefinitionMethodGenerator> registrations;
 
-	BeanRegistrationsAotContribution(BeanDefinitionMethodGeneratorFactory beanDefinitionMethodGeneratorFactory,
-			Map<String, BeanDefinitionMethodGenerator> registrations) {
-		this.beanDefinitionMethodGeneratorFactory = beanDefinitionMethodGeneratorFactory;
+	BeanRegistrationsAotContribution(Map<String, BeanDefinitionMethodGenerator> registrations) {
 		this.registrations = registrations;
 	}
 
@@ -63,8 +59,8 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 		GeneratedClassName generatedClassName = generationContext.getClassNameGenerator()
 				.generateClassName(beanFactoryInitializationCode.getBeanFactoryName(), "Registrations");
-		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(beanFactoryInitializationCode,
-				this.beanDefinitionMethodGeneratorFactory);
+		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(
+				beanFactoryInitializationCode);
 		GeneratedMethod registerMethod = codeGenerator.getMethodGenerator().generateMethod("registerBeanDefinitions")
 				.using(builder -> generateRegisterMethod(builder, generationContext, codeGenerator));
 		JavaFile javaFile = codeGenerator.generatedJavaFile(generatedClassName);
@@ -94,14 +90,9 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 		private final BeanFactoryInitializationCode beanFactoryInitializationCode;
 
-		private final InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator;
-
 		private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
-		public BeanRegistrationsCodeGenerator(BeanFactoryInitializationCode beanFactoryInitializationCode,
-				BeanDefinitionMethodGeneratorFactory methodGeneratorFactory) {
-			this.innerBeanDefinitionMethodGenerator = methodGeneratorFactory
-					.getInnerBeanDefinitionMethodGenerator(this);
+		public BeanRegistrationsCodeGenerator(BeanFactoryInitializationCode beanFactoryInitializationCode) {
 			this.beanFactoryInitializationCode = beanFactoryInitializationCode;
 		}
 
@@ -113,11 +104,6 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		@Override
 		public MethodGenerator getMethodGenerator() {
 			return this.generatedMethods;
-		}
-
-		@Override
-		public InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator() {
-			return this.innerBeanDefinitionMethodGenerator;
 		}
 
 		JavaFile generatedJavaFile(GeneratedClassName generatedClassName) {

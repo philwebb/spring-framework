@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.lang.Nullable;
 
@@ -29,21 +30,27 @@ import org.springframework.lang.Nullable;
  * @author Andy Wilkinson
  * @since 6.0
  */
-@FunctionalInterface
 public interface BeanRegistrationCodeGeneratorFactory {
+
+	boolean isSupported(RegisteredBean registeredBean);
+
+	@Nullable
+	default Class<?> getPackagePrivateTarget(RegisteredBean registeredBean) {
+		return InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean);
+	}
 
 	/**
 	 * Return the {@link BeanRegistrationCode} that should be used for the given
-	 * registered bean or {@code null} if the registered bean isn't supported by this
-	 * factory.
+	 * registered bean. This method will only be called if
+	 * {@link #isSupported(RegisteredBean)} returns true.
+	 * @param methodGenerator a method generator that can be used to add additional
+	 * methods to support registration
+	 * @param innerBeanDefinitionMethodGenerator the inner-bean definition method
+	 * generator to use if inner-bean methods are required
 	 * @param registeredBean the registered bean
-	 * @param innerBeanPropertyName the name of the property that defined the registered
-	 * inner-bean or {@code null} for regular beans
-	 * @param beanRegistrationsCode the bean registrations code
-	 * @return a {@link BeanRegistrationCode} instance or {@code null}
+	 * @return a {@link BeanRegistrationCode} instance
 	 */
-	@Nullable
-	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
-			@Nullable String innerBeanPropertyName, BeanRegistrationsCode beanRegistrationsCode);
+	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
+			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean);
 
 }

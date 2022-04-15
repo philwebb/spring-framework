@@ -30,10 +30,7 @@ class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 
 	private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
-	private final InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator;
-
-	MockBeanRegistrationsCode(BeanDefinitionMethodGeneratorFactory methodGeneratorFactory) {
-		this.innerBeanDefinitionMethodGenerator = methodGeneratorFactory.getInnerBeanDefinitionMethodGenerator(this);
+	MockBeanRegistrationsCode() {
 	}
 
 	GeneratedMethods getGeneratedMethods() {
@@ -48,11 +45,6 @@ class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 	@Override
 	public MethodGenerator getMethodGenerator() {
 		return this.generatedMethods;
-	}
-
-	@Override
-	public InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator() {
-		return this.innerBeanDefinitionMethodGenerator;
 	}
 
 }
