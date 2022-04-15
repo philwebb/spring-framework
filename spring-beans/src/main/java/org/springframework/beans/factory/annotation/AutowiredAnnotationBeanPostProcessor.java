@@ -53,6 +53,8 @@ import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationAotProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
@@ -61,6 +63,7 @@ import org.springframework.beans.factory.generator.BeanInstantiationContribution
 import org.springframework.beans.factory.generator.InjectionGenerator;
 import org.springframework.beans.factory.support.LookupOverride;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.MethodParameter;
@@ -139,8 +142,9 @@ import org.springframework.util.StringUtils;
  * @see Autowired
  * @see Value
  */
-public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationAwareBeanPostProcessor,
-		MergedBeanDefinitionPostProcessor, AotContributingBeanPostProcessor, PriorityOrdered, BeanFactoryAware {
+public class AutowiredAnnotationBeanPostProcessor
+		implements SmartInstantiationAwareBeanPostProcessor, MergedBeanDefinitionPostProcessor,
+		AotContributingBeanPostProcessor, BeanRegistrationAotProcessor, PriorityOrdered, BeanFactoryAware {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -274,6 +278,19 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		return (!ObjectUtils.isEmpty(injectedElements)
 				? new AutowiredAnnotationBeanInstantiationContribution(injectedElements)
 				: null);
+	}
+
+	@Override
+	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
+		Class<?> beanClass = registeredBean.getBeanClass();
+		String beanName = registeredBean.getBeanName();
+		RootBeanDefinition beanDefinition = registeredBean.getMergedBeanDefinition();
+		InjectionMetadata metadata = findInjectionMetadata(beanName, beanClass, beanDefinition);
+		Collection<InjectedElement> injectedElements = metadata.getInjectedElements();
+		if (!ObjectUtils.isEmpty(injectedElements)) {
+			return new AutowiredAnnotationBeanRegistrationAotContribution(beanClass, injectedElements);
+		}
+		return null;
 	}
 
 	private InjectionMetadata findInjectionMetadata(String beanName, Class<?> beanType, RootBeanDefinition beanDefinition) {
