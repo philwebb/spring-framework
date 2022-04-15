@@ -154,7 +154,16 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 		});
 	}
 
-	// FIXME BeanRegistrationBeanFactoryContributionTests registerRuntimeHints*
+	@Test
+	void generateCodeForPackagePrivateType() {
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(PackagePrivateTestBean.class);
+		RegisteredBean registeredBean = registerBean(beanDefinition);
+		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(registeredBean, null,
+				this.beanRegistrationsCode);
+		testCompiledResult(generator, registeredBean, (actual, compiled) -> {
+			assertThat(actual.getBeanClass()).isEqualTo(PackagePrivateTestBean.class);
+		});
+	}
 
 	private RegisteredBean registerBean(RootBeanDefinition beanDefinition) {
 		String beanName = "testBean";
