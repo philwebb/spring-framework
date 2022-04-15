@@ -24,9 +24,7 @@ import java.lang.reflect.Modifier;
 import java.util.function.Consumer;
 
 import org.springframework.aot.generate.AccessVisibility;
-import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GeneratedMethod;
-import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
@@ -36,10 +34,7 @@ import org.springframework.beans.factory.support.AutowiredInstantiationArguments
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
-import org.springframework.javapoet.MethodSpec.Builder;
-import org.springframework.javapoet.TypeSpec;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -57,8 +52,6 @@ import org.springframework.util.ClassUtils;
 class InstanceSupplierCodeGenerator {
 
 	private static final String REGISTERED_BEAN_PARAMETER_NAME = "registeredBean";
-
-	private static final String FEATURE_NAME = "InstanceSupplier";
 
 	private static final CodeBlock NO_ARGS = CodeBlock.of("");
 
@@ -94,16 +87,13 @@ class InstanceSupplierCodeGenerator {
 		Class<?> declaringClass = ClassUtils.getUserClass(constructor.getDeclaringClass());
 		boolean dependsOnBean = ClassUtils.isInnerClass(declaringClass);
 		AccessVisibility accessVisibility = getAccessVisibility(registeredBean, constructor);
-		if (accessVisibility == AccessVisibility.PUBLIC) {
-			return generateCodeForPublicConstructor(name, constructor, declaringClass, dependsOnBean);
+		if (accessVisibility == AccessVisibility.PUBLIC || accessVisibility == AccessVisibility.PACKAGE_PRIVATE) {
+			return generateCodeForAccessibleConstructor(name, constructor, declaringClass, dependsOnBean);
 		}
-		if (accessVisibility == AccessVisibility.PACKAGE_PRIVATE) {
-			return generateCodeForPackagePrivateConstructor(name, constructor, declaringClass, dependsOnBean);
-		}
-		return generateCodeForPrivateConstructor(name, constructor, declaringClass, dependsOnBean);
+		return generateCodeForInaccessibleConstructor(name, constructor, declaringClass, dependsOnBean);
 	}
 
-	private CodeBlock generateCodeForPublicConstructor(String name, Constructor<?> constructor, Class<?> declaringClass,
+	private CodeBlock generateCodeForAccessibleConstructor(String name, Constructor<?> constructor, Class<?> declaringClass,
 			boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor, INTROSPECT);
 		if (!dependsOnBean && constructor.getParameterCount() == 0) {
@@ -115,16 +105,8 @@ class InstanceSupplierCodeGenerator {
 		return CodeBlock.of("$T.of(this::$L)", InstanceSupplier.class, getInstanceMethod.getName());
 	}
 
-	private CodeBlock generateCodeForPackagePrivateConstructor(String name, Constructor<?> constructor,
-			Class<?> declaringClass, boolean dependsOnBean) {
-		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor, INTROSPECT);
-		return generatePackagePrivateDelegation(name, declaringClass,
-				builder -> buildGetInstanceMethodForConstructor(builder, name, constructor, declaringClass,
-						dependsOnBean, javax.lang.model.element.Modifier.PUBLIC,
-						javax.lang.model.element.Modifier.STATIC));
-	}
 
-	private CodeBlock generateCodeForPrivateConstructor(String name, Constructor<?> constructor,
+	private CodeBlock generateCodeForInaccessibleConstructor(String name, Constructor<?> constructor,
 			Class<?> declaringClass, boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor);
 		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(name).using(builder -> {
@@ -179,16 +161,13 @@ class InstanceSupplierCodeGenerator {
 		Class<?> declaringClass = ClassUtils.getUserClass(factoryMethod.getDeclaringClass());
 		boolean dependsOnBean = !Modifier.isStatic(factoryMethod.getModifiers());
 		AccessVisibility accessVisibility = getAccessVisibility(registeredBean, factoryMethod);
-		if (accessVisibility == AccessVisibility.PUBLIC) {
-			return generateCodeForPublicFactoryMethod(name, factoryMethod, declaringClass, dependsOnBean);
+		if (accessVisibility == AccessVisibility.PUBLIC || accessVisibility == AccessVisibility.PACKAGE_PRIVATE) {
+			return generateCodeForAcessibleFactoryMethod(name, factoryMethod, declaringClass, dependsOnBean);
 		}
-		if (accessVisibility == AccessVisibility.PACKAGE_PRIVATE) {
-			return generateCodeForPackagePrivateFactoryMethod(name, factoryMethod, declaringClass, dependsOnBean);
-		}
-		return generateCodeForPrivateFactoryMethod(name, factoryMethod, declaringClass);
+		return generateCodeForInacessibleFactoryMethod(name, factoryMethod, declaringClass);
 	}
 
-	private CodeBlock generateCodeForPublicFactoryMethod(String name, Method factoryMethod, Class<?> declaringClass,
+	private CodeBlock generateCodeForAcessibleFactoryMethod(String name, Method factoryMethod, Class<?> declaringClass,
 			boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod, INTROSPECT);
 		if (!dependsOnBean && factoryMethod.getParameterCount() == 0) {
@@ -200,17 +179,8 @@ class InstanceSupplierCodeGenerator {
 		return CodeBlock.of("$T.of(this::$L)", InstanceSupplier.class, getInstanceMethod.getName());
 	}
 
-	private CodeBlock generateCodeForPackagePrivateFactoryMethod(String name, Method factoryMethod,
-			Class<?> declaringClass, boolean dependsOnBean) {
-		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod, INTROSPECT);
-		return generatePackagePrivateDelegation(name, declaringClass,
-				builder -> buildGetInstanceMethodForFactoryMethod(builder, name, factoryMethod, declaringClass,
-						dependsOnBean, javax.lang.model.element.Modifier.PUBLIC,
-						javax.lang.model.element.Modifier.STATIC));
-
-	}
-
-	private CodeBlock generateCodeForPrivateFactoryMethod(String name, Method factoryMethod, Class<?> declaringClass) {
+	private CodeBlock generateCodeForInacessibleFactoryMethod(String name, Method factoryMethod,
+			Class<?> declaringClass) {
 		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod);
 		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(name).using(builder -> {
 			builder.addJavadoc("Instantiate the bean instance for '$L'.", name);
@@ -268,22 +238,10 @@ class InstanceSupplierCodeGenerator {
 				declaringClass, factoryMethodName, args);
 	}
 
-	// FIXME this is in the wrong place!! If the class is package private then we need to create the entire
-	// RootBeanDefinition in the delegate. Otherwise we can't even access the class to call setBeanClass(...)
-	private CodeBlock generatePackagePrivateDelegation(String name, Class<?> declaringClass,
-			Consumer<Builder> delegateMethodBuilder) {
-		GeneratedMethods generatedMethods = new GeneratedMethods();
-		GeneratedMethod delegateMethod = generateGetInstanceMethod(generatedMethods, name).using(delegateMethodBuilder);
-		GeneratedClassName generatedClassName = this.generationContext.getClassNameGenerator()
-				.generateClassName(declaringClass, FEATURE_NAME);
-		TypeSpec.Builder classBuilder = generatedClassName.classBuilder();
-		classBuilder.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
-		generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
-		JavaFile javaFile = generatedClassName.toJavaFile(classBuilder);
-		this.generationContext.getGeneratedFiles().addSourceFile(javaFile, generatedClassName.getTargetClass());
-		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, generatedClassName.toClassName(),
-				delegateMethod.getName());
-	}
+	// FIXME this is in the wrong place!! If the class is package private then we need to
+	// create the entire
+	// RootBeanDefinition in the delegate. Otherwise we can't even access the class to
+	// call setBeanClass(...)
 
 	private CodeBlock generateReturnStatement(CodeBlock instantiationCode) {
 		CodeBlock.Builder code = CodeBlock.builder();

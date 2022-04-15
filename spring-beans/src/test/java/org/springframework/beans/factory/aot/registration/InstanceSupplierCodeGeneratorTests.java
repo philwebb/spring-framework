@@ -16,8 +16,6 @@
 
 package org.springframework.beans.factory.aot.registration;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -28,7 +26,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
-import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.hint.ExecutableHint;
@@ -45,7 +42,6 @@ import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
-import org.springframework.beans.testfixture.beans.TestBeanWithPackagePrivateConstructor;
 import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
@@ -170,19 +166,6 @@ class InstanceSupplierCodeGeneratorTests {
 	}
 
 	@Test
-	void generateWhenHasPackagePrivateConstructor() {
-		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPackagePrivateConstructor.class);
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
-			TestBeanWithPackagePrivateConstructor bean = getBean(beanFactory, beanDefinition, instanceSupplier);
-			assertThat(bean).isInstanceOf(TestBeanWithPackagePrivateConstructor.class);
-			assertThat(compiled.getSourceFileFromPackage("__")).contains("TestBeanWithPackagePrivateConstructor__");
-		});
-		assertThat(getReflectionHints().getTypeHint(TestBeanWithPackagePrivateConstructor.class))
-				.satisfies(hasConstructorWithMode(ExecutableMode.INTROSPECT));
-	}
-
-	@Test
 	void generateWhenHasFactoryMethodWithNoArg() {
 		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
 				.setFactoryMethodOnBean("stringBean", "config").getBeanDefinition();
@@ -215,23 +198,6 @@ class InstanceSupplierCodeGeneratorTests {
 		});
 		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INVOKE));
-	}
-
-	@Test
-	void generateWhenHasPackagePrivateStaticFactoryMethodWithNoArg() {
-		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
-				.setFactoryMethodOnBean("packageStaticStringBean", "config").getBeanDefinition();
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		beanFactory.registerBeanDefinition("config",
-				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
-		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
-			String bean = getBean(beanFactory, beanDefinition, instanceSupplier);
-			assertThat(bean).isInstanceOf(String.class);
-			assertThat(bean).isEqualTo("Hello");
-			assertThat(compiled.getSourceFileFromPackage("__")).contains("SimpleConfiguration__");
-		});
-		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
-				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
 	}
 
 	@Test
@@ -307,14 +273,7 @@ class InstanceSupplierCodeGeneratorTests {
 				generatedMethods);
 		CodeBlock generatedCode = generator.generateCode(registeredBean);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
-		this.generatedFiles.addSourceFile(javaFile);
-		List<SourceFile> sourceFiles = new ArrayList<>();
-		this.generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
-			Class<?> targetClass = this.generatedFiles.getTargetClass(path);
-			SourceFile sourceFile = SourceFile.of(path, inputStreamSource).withTargetClass(targetClass);
-			sourceFiles.add(sourceFile);
-		});
-		TestCompiler.forSystem().withSources(sourceFiles).compile(
+		TestCompiler.forSystem().withSources(SourceFile.of(javaFile::writeTo)).compile(
 				compiled -> result.accept((InstanceSupplier<?>) compiled.getInstance(Supplier.class).get(), compiled));
 	}
 
