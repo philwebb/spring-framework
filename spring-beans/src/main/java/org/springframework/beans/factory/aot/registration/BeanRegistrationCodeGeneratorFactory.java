@@ -30,26 +30,20 @@ import org.springframework.lang.Nullable;
  * @author Andy Wilkinson
  * @since 6.0
  */
+@FunctionalInterface
 public interface BeanRegistrationCodeGeneratorFactory {
-
-	boolean isSupported(RegisteredBean registeredBean);
-
-	@Nullable
-	default Class<?> getPackagePrivateTarget(RegisteredBean registeredBean) {
-		return InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean);
-	}
 
 	/**
 	 * Return the {@link BeanRegistrationCode} that should be used for the given
-	 * registered bean. This method will only be called if
-	 * {@link #isSupported(RegisteredBean)} returns true.
-	 * @param methodGenerator a method generator that can be used to add additional
-	 * methods to support registration
-	 * @param innerBeanDefinitionMethodGenerator the inner-bean definition method
-	 * generator to use if inner-bean methods are required
+	 * registered bean or {@code null} if the registered bean isn't supported by this
+	 * factory.
 	 * @param registeredBean the registered bean
-	 * @return a {@link BeanRegistrationCode} instance
+	 * @param innerBeanPropertyName the name of the property that defined the registered
+	 * inner-bean or {@code null} for regular beans
+	 * @param beanRegistrationsCode the bean registrations code
+	 * @return a {@link BeanRegistrationCode} instance or {@code null}
 	 */
+	@Nullable
 	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
 			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean);
 

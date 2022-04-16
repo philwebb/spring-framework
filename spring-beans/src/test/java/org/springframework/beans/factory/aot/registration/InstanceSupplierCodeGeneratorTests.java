@@ -42,6 +42,7 @@ import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
+import org.springframework.beans.testfixture.beans.TestBeanWithPackagePrivateConstructor;
 import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
@@ -73,6 +74,8 @@ class InstanceSupplierCodeGeneratorTests {
 	private InMemoryGeneratedFiles generatedFiles;
 
 	private DefaultGenerationContext generationContext;
+
+	private DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
 	@BeforeEach
 	void setup() {
@@ -236,6 +239,45 @@ class InstanceSupplierCodeGeneratorTests {
 		});
 		assertThat(getReflectionHints().getTypeHint(SampleFactory.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
+	}
+
+	@Test
+	void getPackagePrivateTargetWhenHasPackagePrivateStaticFactoryMethod() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
+				.setFactoryMethodOnBean("packageStaticStringBean", "config").getBeanDefinition();
+		this.beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean))
+				.isEqualTo(SimpleConfiguration.class);
+	}
+
+	@Test
+	void getPackagePrivateTargetWhenHasPackagePrivateConstructor() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPackagePrivateConstructor.class);
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean))
+				.isEqualTo(TestBeanWithPackagePrivateConstructor.class);
+	}
+
+	@Test
+	void getPackagePrivateTargetWhenPublicClassWithPublicConstructorReturnsNull() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBean.class);
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean)).isNull();
+	}
+
+	@Test
+	void getPackagePrivateTargetWhenHasPrivateConstructorReturnsNull() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPrivateConstructor.class);
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean)).isNull();
+	}
+
+	private RegisteredBean registerBean(RootBeanDefinition beanDefinition) {
+		String beanName = "testBean";
+		this.beanFactory.registerBeanDefinition(beanName, beanDefinition);
+		return RegisteredBean.of(this.beanFactory, beanName);
 	}
 
 	private ReflectionHints getReflectionHints() {

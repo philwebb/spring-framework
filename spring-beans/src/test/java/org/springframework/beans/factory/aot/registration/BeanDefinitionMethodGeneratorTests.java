@@ -130,7 +130,7 @@ class BeanDefinitionMethodGeneratorTests {
 	@Test
 	void generateBeanDefinitionMethodWhenBeanRegistrationCodeGeneratorFactoryReturnsCodeGeneratesMethod() {
 		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(TestBean.class));
-		List<TestBeanRegistrationCodeGeneratorFactory> codeGeneratorFactories = new ArrayList<>();
+		List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories = new ArrayList<>();
 		codeGeneratorFactories.add(TestBeanRegistrationCodeGenerator::new);
 		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,
 				registeredBean, null, Collections.emptyList(), codeGeneratorFactories);
@@ -184,15 +184,6 @@ class BeanDefinitionMethodGeneratorTests {
 				.addCode("return $L;", method.toInvokeCodeBlock()).build());
 		this.beanRegistrationsCode.getGeneratedMethods().doWithMethodSpecs(builder::addMethod);
 		return JavaFile.builder("__", builder.build()).build();
-	}
-
-	static interface TestBeanRegistrationCodeGeneratorFactory extends BeanRegistrationCodeGeneratorFactory {
-
-		@Override
-		default boolean isSupported(RegisteredBean registeredBean) {
-			return true;
-		}
-
 	}
 
 	static class TestBeanRegistrationCodeGenerator extends DefaultBeanRegistrationCodeGenerator {
