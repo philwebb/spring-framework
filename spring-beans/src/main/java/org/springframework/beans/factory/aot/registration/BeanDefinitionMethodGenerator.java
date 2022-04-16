@@ -23,15 +23,20 @@ import javax.lang.model.element.Modifier;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.MethodReference;
+import org.springframework.aot.generator.DefaultGeneratedTypeContext;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.log.LogMessage;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.javapoet.JavaFile;
+import org.springframework.javapoet.TypeSpec;
 import org.springframework.lang.Nullable;
 
 /**
@@ -83,14 +88,36 @@ class BeanDefinitionMethodGenerator {
 	 */
 	MethodReference generateBeanDefinitionMethod(GenerationContext generationContext,
 			BeanRegistrationsCode beanRegistrationsCode) {
-		String name = (this.innerBeanPropertyName != null) ? this.innerBeanPropertyName : getName(registeredBean);
 		BeanRegistrationCodeGeneratorFactory codeGeneratorFactory = getBeanRegistrationCodeGeneratorFactory();
 		Class<?> packagePrivateTarget = codeGeneratorFactory.getPackagePrivateTarget(this.registeredBean);
-		return (packagePrivateTarget != null)
-				? generateBeanDefinitionMethodForPackagePrivateTarget(generationContext, beanRegistrationsCode, name,
-						codeGeneratorFactory, packagePrivateTarget)
-				: generateBeanDefinitionMethodForAccessibleTarget(generationContext, beanRegistrationsCode, name,
-						codeGeneratorFactory);
+		if (packagePrivateTarget != null) {
+			GeneratedClassName registrarClassName = generationContext.getClassNameGenerator()
+					.generateClassName(packagePrivateTarget, "Registrar");
+			GeneratedMethods generatedMethods = new GeneratedMethods();
+			GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext, beanRegistrationsCode,
+					codeGeneratorFactory, generatedMethods, Modifier.PUBLIC);
+			JavaFile registrar = generateRegistrar(registrarClassName, generatedMethods);
+			generationContext.getGeneratedFiles().addSourceFile(registrar, packagePrivateTarget);
+			return MethodReference.of(registrarClassName, generatedMethod.getName());
+		}
+		MethodGenerator methodGenerator = beanRegistrationsCode.getMethodGenerator().withName(getName());
+		GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext, beanRegistrationsCode,
+				codeGeneratorFactory, methodGenerator, Modifier.PRIVATE);
+		return MethodReference.of(generatedMethod.getName());
+	}
+
+	private JavaFile generateRegistrar(GeneratedClassName registrarClassName,
+			GeneratedMethods generatedMethods) {
+		TypeSpec.Builder classBuilder = registrarClassName.classBuilder();
+		classBuilder.addJavadoc("BeanDefinition registrar for package-private bean '$L'", getName());
+		classBuilder.addModifiers(Modifier.PUBLIC);
+		generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
+		return registrarClassName.toJavaFile(classBuilder);
+	}
+
+	private String getName() {
+		String name = (this.innerBeanPropertyName != null) ? this.innerBeanPropertyName : getName(registeredBean);
+		return name;
 	}
 
 	private String getName(RegisteredBean registeredBean) {
@@ -115,35 +142,36 @@ class BeanDefinitionMethodGenerator {
 		return DefaultBeanRegistrationCodeGeneratorFactory.INSTANCE;
 	}
 
-	private MethodReference generateBeanDefinitionMethodForPackagePrivateTarget(GenerationContext generationContext,
-			BeanRegistrationsCode beanRegistrationsCode, String name,
-			BeanRegistrationCodeGeneratorFactory codeGeneratorFactory, Class<?> packagePrivateTarget) {
-		return generateBeanDefinitionMethodForAccessibleTarget(generationContext, beanRegistrationsCode, name,
-				codeGeneratorFactory);
-	}
-
-	private MethodReference generateBeanDefinitionMethodForAccessibleTarget(GenerationContext generationContext,
-			BeanRegistrationsCode beanRegistrationsCode, String name,
-			BeanRegistrationCodeGeneratorFactory codeGeneratorFactory) {
-		MethodGenerator methodGenerator = beanRegistrationsCode.getMethodGenerator().withName(name);
-		InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator = this.methodGeneratorFactory
-				.getInnerBeanDefinitionMethodGenerator(beanRegistrationsCode);
+	private GeneratedMethod generateBeanDefinitionMethod(GenerationContext generationContext,
+			BeanRegistrationsCode beanRegistrationsCode, BeanRegistrationCodeGeneratorFactory codeGeneratorFactory,
+			MethodGenerator methodGenerator, Modifier modifier) {
 		BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory.getBeanRegistrationCodeGenerator(
-				methodGenerator, innerBeanDefinitionMethodGenerator, this.registeredBean);
+				methodGenerator, getInnerBeanDefinitionMethodGenerator(beanRegistrationsCode), this.registeredBean);
 		if (codeGeneratorFactory != DefaultBeanRegistrationCodeGeneratorFactory.INSTANCE) {
-			logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
+			logger.trace(LogMessage.format("Using custom bean registration code generator %S for '%S'",
 					codeGenerator.getClass().getName(), this.registeredBean.getBeanName()));
 		}
-		GeneratedMethod method = methodGenerator.generateMethod("get", name, "BeanDefinition").using(builder -> {
-			applyAotContributions(generationContext, codeGenerator);
+		GeneratedMethod method = methodGenerator.generateMethod("get", getName(), "BeanDefinition");
+		applyAotContributions(generationContext, codeGenerator);
+		return method.using(builder -> {
 			builder.addJavadoc("Get the $L definition for '$L'",
-					(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean", name);
-			builder.addModifiers(Modifier.PRIVATE);
+					(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean", getName());
+			builder.addModifiers(modifier);
 			builder.returns(BeanDefinition.class);
 			CodeBlock methodCode = codeGenerator.generateCode(generationContext);
 			builder.addCode(methodCode);
 		});
-		return MethodReference.of(method.getName());
+	}
+
+	/**
+	 * @param beanRegistrationsCode
+	 * @return
+	 */
+	private InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator(
+			BeanRegistrationsCode beanRegistrationsCode) {
+		InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator = this.methodGeneratorFactory
+				.getInnerBeanDefinitionMethodGenerator(beanRegistrationsCode);
+		return innerBeanDefinitionMethodGenerator;
 	}
 
 	private void applyAotContributions(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode) {
