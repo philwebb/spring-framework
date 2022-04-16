@@ -18,66 +18,82 @@ package org.springframework.beans.factory.aot.registration;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.testfixture.beans.TestBean;
+import org.springframework.beans.testfixture.beans.TestBeanWithPackagePrivateConstructor;
+import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
+import org.springframework.beans.testfixture.beans.factory.generator.SimpleConfiguration;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * Tests for {@link BeanRegistrationCodeGeneratorFactory}.
  *
- * @author pwebb
- * @since 6.0
+ * @author Stephane Nicoll
+ * @author Phillip Webb
+ * @author Andy Wilkinson
  */
 class BeanRegistrationCodeGeneratorFactoryTests {
 
+	private final BeanRegistrationCodeGeneratorFactory factory = new TestBeanRegistrationCodeGeneratorFactory();
+	private final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void getPackagePrivateTargetWhenHasPackagePrivateStaticFactoryMethod() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
+				.setFactoryMethodOnBean("packageStaticStringBean", "config").getBeanDefinition();
+		this.beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(this.factory.getPackagePrivateTarget(registeredBean)).isEqualTo(SimpleConfiguration.class);
 	}
 
+	@Test
+	void getPackagePrivateTargetWhenHasPackagePrivateConstructor() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPackagePrivateConstructor.class);
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(this.factory.getPackagePrivateTarget(registeredBean))
+				.isEqualTo(TestBeanWithPackagePrivateConstructor.class);
+	}
 
-	// FIXME
-	// @Test
-	// void getPackagePrivateTargetWhenHasPackagePrivateStaticFactoryMethod() {
-	// BeanDefinition beanDefinition =
-	// BeanDefinitionBuilder.rootBeanDefinition(String.class)
-	// .setFactoryMethodOnBean("packageStaticStringBean", "config").getBeanDefinition();
-	// beanFactory.registerBeanDefinition("config",
-	// BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
-	// RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-	// DefaultBeanRegistrationCodeGenerator generator = new
-	// DefaultBeanRegistrationCodeGenerator(registeredBean, null,
-	// this.beanRegistrationsCode);
-	// assertThat(generator.getPackagePrivateTarget()).isEqualTo(SimpleConfiguration.class);
-	// }
-	//
-	// @Test
-	// void getPackagePrivateTargetWhenHasPackagePrivateConstructor() {
-	// BeanDefinition beanDefinition = new
-	// RootBeanDefinition(TestBeanWithPackagePrivateConstructor.class);
-	// RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-	// DefaultBeanRegistrationCodeGenerator generator = new
-	// DefaultBeanRegistrationCodeGenerator(registeredBean, null,
-	// this.beanRegistrationsCode);
-	// assertThat(generator.getPackagePrivateTarget()).isEqualTo(TestBeanWithPackagePrivateConstructor.class);
-	// }
-	//
-	// @Test
-	// void getPackagePrivateTargetWhenPublicClassWithPublicConstructorReturnsNull() {
-	// BeanDefinition beanDefinition = new RootBeanDefinition(TestBean.class);
-	// RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-	// DefaultBeanRegistrationCodeGenerator generator = new
-	// DefaultBeanRegistrationCodeGenerator(registeredBean, null,
-	// this.beanRegistrationsCode);
-	// assertThat(generator.getPackagePrivateTarget()).isNull();
-	// }
-	//
-	// @Test
-	// void getPackagePrivateTargetWhenHasPrivateConstructorReturnsNull() {
-	// BeanDefinition beanDefinition = new
-	// RootBeanDefinition(TestBeanWithPrivateConstructor.class);
-	// RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-	// DefaultBeanRegistrationCodeGenerator generator = new
-	// DefaultBeanRegistrationCodeGenerator(registeredBean, null,
-	// this.beanRegistrationsCode);
-	// assertThat(generator.getPackagePrivateTarget()).isNull();
-	// }
+	@Test
+	void getPackagePrivateTargetWhenPublicClassWithPublicConstructorReturnsNull() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBean.class);
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(this.factory.getPackagePrivateTarget(registeredBean)).isNull();
+	}
+
+	@Test
+	void getPackagePrivateTargetWhenHasPrivateConstructorReturnsNull() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPrivateConstructor.class);
+		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
+		assertThat(this.factory.getPackagePrivateTarget(registeredBean)).isNull();
+	}
+
+	private RegisteredBean registerBean(RootBeanDefinition beanDefinition) {
+		String beanName = "testBean";
+		this.beanFactory.registerBeanDefinition(beanName, beanDefinition);
+		return RegisteredBean.of(this.beanFactory, beanName);
+	}
+
+	private static class TestBeanRegistrationCodeGeneratorFactory implements BeanRegistrationCodeGeneratorFactory {
+
+		@Override
+		public boolean isSupported(RegisteredBean registeredBean) {
+			return true;
+		}
+
+		@Override
+		public BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
+				InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
+			throw new IllegalStateException();
+		}
+
+	}
 
 }

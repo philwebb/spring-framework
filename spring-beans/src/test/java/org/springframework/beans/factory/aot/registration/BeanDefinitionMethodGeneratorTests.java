@@ -19,7 +19,6 @@ package org.springframework.beans.factory.aot.registration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -44,7 +43,6 @@ import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.AnnotatedBean;
 import org.springframework.beans.testfixture.beans.TestBean;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.mock.MockSpringFactoriesLoader;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
