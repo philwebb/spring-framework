@@ -87,8 +87,8 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 	void generateCodeWhenBeanDoesNotHaveGenerics() {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(TestBean.class);
 		RegisteredBean registeredBean = registerBean(beanDefinition);
-		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(this.methodGenerator,
-				this.innerBeanDefinitionMethodGenerator, registeredBean);
+		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(registeredBean,
+				this.methodGenerator, this.innerBeanDefinitionMethodGenerator);
 		testCompiledResult(generator, registeredBean, (actual, compiled) -> {
 			assertThat(actual.getBeanClass()).isEqualTo(TestBean.class);
 			assertThat(compiled.getSourceFile()).contains("beanType = TestBean.class");
@@ -100,8 +100,8 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(
 				ResolvableType.forClassWithGenerics(GenericBean.class, Integer.class));
 		RegisteredBean registeredBean = registerBean(beanDefinition);
-		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(this.methodGenerator,
-				this.innerBeanDefinitionMethodGenerator, registeredBean);
+		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(registeredBean,
+				this.methodGenerator, this.innerBeanDefinitionMethodGenerator);
 		testCompiledResult(generator, registeredBean, (actual, compiled) -> {
 			assertThat(actual.getResolvableType().resolve()).isEqualTo(GenericBean.class);
 			assertThat(compiled.getSourceFile())
@@ -115,8 +115,8 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 		beanDefinition.setAttribute("a", "A");
 		beanDefinition.setAttribute("b", "B");
 		RegisteredBean registeredBean = registerBean(beanDefinition);
-		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(this.methodGenerator,
-				this.innerBeanDefinitionMethodGenerator, registeredBean) {
+		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(registeredBean,
+				this.methodGenerator, this.innerBeanDefinitionMethodGenerator) {
 
 			@Override
 			protected boolean isAttributeIncluded(String attributeName) {
@@ -138,8 +138,8 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(TestBean.class);
 		beanDefinition.getPropertyValues().add("name", innerBeanDefinition);
 		RegisteredBean registeredBean = registerBean(beanDefinition);
-		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(this.methodGenerator,
-				this.innerBeanDefinitionMethodGenerator, registeredBean);
+		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(registeredBean,
+				this.methodGenerator, this.innerBeanDefinitionMethodGenerator);
 		testCompiledResult(generator, registeredBean, (actual, compiled) -> {
 			RootBeanDefinition actualInnerBeanDefinition = (RootBeanDefinition) actual.getPropertyValues().get("name");
 			assertThat(actualInnerBeanDefinition.isPrimary()).isTrue();

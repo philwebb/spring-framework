@@ -63,9 +63,9 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 
 	protected static final String INSTANCE_SUPPLIER_VARIABLE = "instanceSupplier";
 
-	public DefaultBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
-			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
-		super(methodGenerator, innerBeanDefinitionMethodGenerator, registeredBean);
+	public DefaultBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+			MethodGenerator methodGenerator, InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
+		super(registeredBean, methodGenerator, innerBeanDefinitionMethodGenerator);
 	}
 
 	@Override

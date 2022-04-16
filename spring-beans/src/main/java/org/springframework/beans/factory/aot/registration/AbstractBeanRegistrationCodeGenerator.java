@@ -46,8 +46,8 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 	/**
 	 * Create a new {@link AbstractBeanRegistrationCodeGenerator} instance.
 	 */
-	public AbstractBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
-			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
+	public AbstractBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+			MethodGenerator methodGenerator, InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
 		this.methodGenerator = methodGenerator;
 		this.innerBeanDefinitionMethodGenerator = innerBeanDefinitionMethodGenerator;
 		this.registeredBean = registeredBean;

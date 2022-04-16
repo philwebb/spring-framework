@@ -188,9 +188,9 @@ class BeanDefinitionMethodGeneratorTests {
 
 	static class TestBeanRegistrationCodeGenerator extends DefaultBeanRegistrationCodeGenerator {
 
-		TestBeanRegistrationCodeGenerator(MethodGenerator methodGenerator,
-				InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator, RegisteredBean registeredBean) {
-			super(methodGenerator, innerBeanDefinitionMethodGenerator, registeredBean);
+		TestBeanRegistrationCodeGenerator(RegisteredBean registeredBean, MethodGenerator methodGenerator,
+				InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
+			super(registeredBean, methodGenerator, innerBeanDefinitionMethodGenerator);
 		}
 
 		@Override

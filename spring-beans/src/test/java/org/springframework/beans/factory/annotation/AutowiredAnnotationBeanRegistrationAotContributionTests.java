@@ -36,6 +36,7 @@ import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationCode;
+import org.springframework.beans.factory.aot.registration.InnerBeanDefinitionMethodGenerator;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.InstancePostProcessor;
 import org.springframework.beans.factory.support.RegisteredBean;
@@ -179,13 +180,8 @@ class AutowiredAnnotationBeanRegistrationAotContributionTests {
 		private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
 		@Override
-		public RegisteredBean getRegisteredBean() {
-			return null;
-		}
-
-		@Override
-		public String getBeanFactoryName() {
-			return "test";
+		public void addInstancePostProcessor(MethodReference methodReference) {
+			this.instancePostProcessors.add(methodReference);
 		}
 
 		@Override
@@ -194,9 +190,8 @@ class AutowiredAnnotationBeanRegistrationAotContributionTests {
 		}
 
 		@Override
-		public void addInstancePostProcessor(MethodReference methodReference) {
-			this.instancePostProcessors.add(methodReference);
-
+		public InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator() {
+			return null;
 		}
 
 	}

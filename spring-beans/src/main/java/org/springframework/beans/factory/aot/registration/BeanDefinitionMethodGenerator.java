@@ -133,15 +133,15 @@ class BeanDefinitionMethodGenerator {
 			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
 		for (BeanRegistrationCodeGeneratorFactory codeGeneratorFactory : this.codeGeneratorFactories) {
 			BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory.getBeanRegistrationCodeGenerator(
-					methodGenerator, innerBeanDefinitionMethodGenerator, this.registeredBean);
+					this.registeredBean, methodGenerator, innerBeanDefinitionMethodGenerator);
 			if (codeGenerator != null) {
 				logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
 						codeGenerator.getClass().getName(), this.registeredBean.getBeanName()));
 				return codeGenerator;
 			}
 		}
-		return new DefaultBeanRegistrationCodeGenerator(methodGenerator, innerBeanDefinitionMethodGenerator,
-				this.registeredBean);
+		return new DefaultBeanRegistrationCodeGenerator(this.registeredBean, methodGenerator,
+				innerBeanDefinitionMethodGenerator);
 	}
 
 	private String getName() {
