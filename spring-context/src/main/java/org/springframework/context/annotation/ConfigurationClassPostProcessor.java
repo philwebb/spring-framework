@@ -39,6 +39,8 @@ import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
+import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
+import org.springframework.beans.factory.aot.BeanFactoryInitializationAotProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -101,8 +103,8 @@ import org.springframework.util.ClassUtils;
  * @since 3.0
  */
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor,
-		AotContributingBeanFactoryPostProcessor, PriorityOrdered, ResourceLoaderAware, ApplicationStartupAware,
-		BeanClassLoaderAware, EnvironmentAware {
+		AotContributingBeanFactoryPostProcessor, BeanFactoryInitializationAotProcessor, PriorityOrdered,
+		ResourceLoaderAware, ApplicationStartupAware, BeanClassLoaderAware, EnvironmentAware {
 
 	/**
 	 * A {@code BeanNameGenerator} using fully qualified class names as default bean names.
@@ -116,7 +118,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	public static final AnnotationBeanNameGenerator IMPORT_BEAN_NAME_GENERATOR =
 			FullyQualifiedAnnotationBeanNameGenerator.INSTANCE;
 
-	private static final String IMPORT_REGISTRY_BEAN_NAME =
+	static final String IMPORT_REGISTRY_BEAN_NAME =
 			ConfigurationClassPostProcessor.class.getName() + ".importRegistry";
 
 
@@ -286,6 +288,12 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	public BeanFactoryContribution contribute(ConfigurableListableBeanFactory beanFactory) {
 		return (beanFactory.containsBean(IMPORT_REGISTRY_BEAN_NAME)
 				? new ImportAwareBeanFactoryConfiguration(beanFactory) : null);
+	}
+
+	@Override
+	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
+		return (beanFactory.containsBean(IMPORT_REGISTRY_BEAN_NAME)
+				? new ImportAwareBeanFactoryInitializationAotContribution(beanFactory) : null);
 	}
 
 	/**
