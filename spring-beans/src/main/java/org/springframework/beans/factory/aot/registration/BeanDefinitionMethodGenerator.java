@@ -105,7 +105,8 @@ class BeanDefinitionMethodGenerator {
 		return MethodReference.of(generatedMethod.getName());
 	}
 
-	private JavaFile generateBeanDefinitionsJavaFile(GeneratedClassName registrarClassName, GeneratedMethods generatedMethods) {
+	private JavaFile generateBeanDefinitionsJavaFile(GeneratedClassName registrarClassName,
+			GeneratedMethods generatedMethods) {
 		TypeSpec.Builder classBuilder = registrarClassName.classBuilder();
 		classBuilder.addJavadoc("Bean definitions for package-private bean '$L'", getName());
 		classBuilder.addModifiers(Modifier.PUBLIC);
@@ -118,7 +119,7 @@ class BeanDefinitionMethodGenerator {
 			Modifier modifier) {
 		BeanRegistrationCodeGenerator codeGenerator = getBeanRegistrationCodeGenerator(methodGenerator,
 				innerBeanDefinitionMethodGenerator);
-		GeneratedMethod method = methodGenerator.generateMethod("get", getName(), "BeanDefinition");
+		GeneratedMethod method = methodGenerator.generateMethod("get", "bean", "definition");
 		return method.using(builder -> {
 			builder.addJavadoc("Get the $L definition for '$L'",
 					(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean", getName());

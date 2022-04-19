@@ -286,7 +286,7 @@ class InstanceSupplierCodeGenerator {
 	}
 
 	private GeneratedMethod generateGetInstanceMethod(MethodGenerator methodGenerator, String name) {
-		return methodGenerator.generateMethod("get", name, "instance");
+		return methodGenerator.generateMethod("get", "instance");
 	}
 
 	private boolean isThrowingCheckedException(Executable executable) {
