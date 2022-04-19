@@ -22,6 +22,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.springframework.aot.generator.CodeContribution;
+import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
@@ -55,6 +58,9 @@ import org.springframework.beans.factory.aot.registration.BeanRegistrationAotPro
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.generator.AotContributingBeanPostProcessor;
+import org.springframework.beans.factory.generator.BeanInstantiationContribution;
+import org.springframework.beans.factory.generator.InjectionGenerator;
 import org.springframework.beans.factory.support.LookupOverride;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RegisteredBean;
@@ -136,8 +142,9 @@ import org.springframework.util.StringUtils;
  * @see Autowired
  * @see Value
  */
-public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationAwareBeanPostProcessor,
-		MergedBeanDefinitionPostProcessor, BeanRegistrationAotProcessor, PriorityOrdered, BeanFactoryAware {
+public class AutowiredAnnotationBeanPostProcessor
+		implements SmartInstantiationAwareBeanPostProcessor, MergedBeanDefinitionPostProcessor,
+		AotContributingBeanPostProcessor, BeanRegistrationAotProcessor, PriorityOrdered, BeanFactoryAware {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -262,6 +269,15 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
 		findInjectionMetadata(beanName, beanType, beanDefinition);
+	}
+
+	@Override
+	public BeanInstantiationContribution contribute(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+		InjectionMetadata metadata = findInjectionMetadata(beanName, beanType, beanDefinition);
+		Collection<InjectedElement> injectedElements = metadata.getInjectedElements();
+		return (!ObjectUtils.isEmpty(injectedElements)
+				? new AutowiredAnnotationBeanInstantiationContribution(injectedElements)
+				: null);
 	}
 
 	@Override
@@ -816,6 +832,52 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		}
 	}
 
+	private static final class AutowiredAnnotationBeanInstantiationContribution implements BeanInstantiationContribution {
+
+		private final Collection<InjectedElement> injectedElements;
+
+		private final InjectionGenerator generator;
+
+		AutowiredAnnotationBeanInstantiationContribution(Collection<InjectedElement> injectedElements) {
+			this.injectedElements = injectedElements;
+			this.generator = new InjectionGenerator();
+		}
+
+		@Override
+		public void applyTo(CodeContribution contribution) {
+			this.injectedElements.forEach(element -> {
+				boolean isRequired = isRequired(element);
+				Member member = element.getMember();
+				analyzeMember(contribution, member);
+				contribution.statements().addStatement(this.generator.generateInjection(member, isRequired));
+			});
+		}
+
+		private boolean isRequired(InjectedElement element) {
+			if (element instanceof AutowiredMethodElement injectedMethod) {
+				return injectedMethod.required;
+			}
+			else if (element instanceof AutowiredFieldElement injectedField) {
+				return injectedField.required;
+			}
+			return true;
+		}
+
+		private void analyzeMember(CodeContribution contribution, Member member) {
+			if (member instanceof Method method) {
+				contribution.runtimeHints().reflection().registerMethod(method,
+						hint -> hint.setModes(ExecutableMode.INTROSPECT));
+				contribution.protectedAccess().analyze(member,
+						this.generator.getProtectedAccessInjectionOptions(member));
+			}
+			else if (member instanceof Field field) {
+				contribution.runtimeHints().reflection().registerField(field);
+				contribution.protectedAccess().analyze(member,
+						this.generator.getProtectedAccessInjectionOptions(member));
+			}
+		}
+
+	}
 
 	/**
 	 * DependencyDescriptor variant with a pre-resolved target bean name.
