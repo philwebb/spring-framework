@@ -302,7 +302,7 @@ class InstanceSupplierCodeGenerator {
 		if (lowestVisibility == AccessVisibility.PACKAGE_PRIVATE || lowestVisibility == AccessVisibility.PROTECTED) {
 			return ClassUtils.getUserClass(constructorOrFactoryMethod.getDeclaringClass());
 		}
-		return null;
+		return ClassUtils.getUserClass(constructorOrFactoryMethod.getDeclaringClass());
 	}
 
 	static Executable resolveConstructorOrFactoryMethod(RegisteredBean registeredBean) {
