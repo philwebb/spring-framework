@@ -21,6 +21,8 @@ import java.lang.reflect.Executable;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import org.springframework.aot.generate.AccessVisibility;
@@ -33,6 +35,7 @@ import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.factory.support.AutowiredInstantiationArgumentsResolver;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.util.ClassUtils;
@@ -95,6 +98,8 @@ class InstanceSupplierCodeGenerator {
 
 	private CodeBlock generateCodeForAccessibleConstructor(String name, Constructor<?> constructor,
 			Class<?> declaringClass, boolean dependsOnBean) {
+		Arrays.stream(constructor.getGenericExceptionTypes()).map(ResolvableType::forType).map(ResolvableType::toClass)
+				.anyMatch(Exception.class::isAssignableFrom);
 		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor, INTROSPECT);
 		if (!dependsOnBean && constructor.getParameterCount() == 0) {
 			return (!this.allowDirectSupplierShortcut)
@@ -241,11 +246,6 @@ class InstanceSupplierCodeGenerator {
 		return CodeBlock.of("$L.getBeanFactory().getBean($T.class).$L($L)", REGISTERED_BEAN_PARAMETER_NAME,
 				declaringClass, factoryMethodName, args);
 	}
-
-	// FIXME this is in the wrong place!! If the class is package private then we need to
-	// create the entire
-	// RootBeanDefinition in the delegate. Otherwise we can't even access the class to
-	// call setBeanClass(...)
 
 	private CodeBlock generateReturnStatement(CodeBlock instantiationCode) {
 		CodeBlock.Builder code = CodeBlock.builder();

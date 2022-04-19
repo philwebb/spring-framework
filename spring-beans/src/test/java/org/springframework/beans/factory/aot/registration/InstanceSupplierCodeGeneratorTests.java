@@ -44,6 +44,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.beans.testfixture.beans.TestBeanWithPackagePrivateConstructor;
 import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
+import org.springframework.beans.testfixture.beans.TestBeanWithThrowingConstructor;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.NoDependencyComponent;
@@ -168,6 +169,17 @@ class InstanceSupplierCodeGeneratorTests {
 		});
 		assertThat(getReflectionHints().getTypeHint(TestBeanWithPrivateConstructor.class))
 				.satisfies(hasConstructorWithMode(ExecutableMode.INVOKE));
+	}
+
+	@Test
+	void generateWhenHasThrowingConstructor() {
+		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithThrowingConstructor.class);
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerSingleton("string", "Hello");
+		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
+			TestBeanWithThrowingConstructor bean = getBean(beanFactory, beanDefinition, instanceSupplier);
+			assertThat(bean).isInstanceOf(TestBeanWithThrowingConstructor.class);
+		});
 	}
 
 	@Test
@@ -317,6 +329,7 @@ class InstanceSupplierCodeGeneratorTests {
 				generatedMethods, this.allowDirectSupplierShortcut);
 		CodeBlock generatedCode = generator.generateCode(registeredBean);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
+		System.out.println(javaFile);
 		TestCompiler.forSystem().withSources(SourceFile.of(javaFile::writeTo)).compile(
 				compiled -> result.accept((InstanceSupplier<?>) compiled.getInstance(Supplier.class).get(), compiled));
 	}
