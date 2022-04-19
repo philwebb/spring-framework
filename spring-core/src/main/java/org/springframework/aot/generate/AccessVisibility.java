@@ -115,7 +115,7 @@ public enum AccessVisibility {
 		}
 		Class<?> userClass = ClassUtils.getUserClass(resolvableType.toClass());
 		ResolvableType userType = resolvableType.as(userClass);
-		AccessVisibility visibility = forClass(userType.resolve());
+		AccessVisibility visibility = forClass(userType.toClass());
 		for (ResolvableType generic : userType.getGenerics()) {
 			visibility = lowest(visibility, forResolvableType(generic, seen));
 		}
