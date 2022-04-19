@@ -298,7 +298,8 @@ class InstanceSupplierCodeGenerator {
 		Executable constructorOrFactoryMethod = resolveConstructorOrFactoryMethod(registeredBean);
 		AccessVisibility memberVisibility = AccessVisibility.forMember(constructorOrFactoryMethod);
 		AccessVisibility typeVisibility = AccessVisibility.forResolvableType(registeredBean.getBeanType());
-		if (AccessVisibility.lowest(memberVisibility, typeVisibility) == AccessVisibility.PACKAGE_PRIVATE) {
+		AccessVisibility lowestVisibility = AccessVisibility.lowest(memberVisibility, typeVisibility);
+		if (lowestVisibility == AccessVisibility.PACKAGE_PRIVATE || lowestVisibility == AccessVisibility.PROTECTED) {
 			return ClassUtils.getUserClass(constructorOrFactoryMethod.getDeclaringClass());
 		}
 		return null;
