@@ -124,6 +124,9 @@ class ConstructorOrFactoryMethodResolver {
 		if (value instanceof BeanDefinition) {
 			return extractTypeFromBeanDefinition(getBeanType((BeanDefinition) value));
 		}
+		if (value instanceof Class<?>) {
+			return ResolvableType.forClassWithGenerics(Class.class, (Class<?>) value);
+		}
 		return ResolvableType.forInstance(value);
 	}
 
