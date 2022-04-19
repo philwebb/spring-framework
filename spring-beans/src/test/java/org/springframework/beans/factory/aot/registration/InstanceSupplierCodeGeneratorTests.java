@@ -44,7 +44,6 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
 import org.springframework.beans.testfixture.beans.TestBeanWithPackagePrivateConstructor;
 import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
-import org.springframework.beans.testfixture.beans.TestBeanWithThrowingConstructor;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.NoDependencyComponent;
@@ -172,17 +171,6 @@ class InstanceSupplierCodeGeneratorTests {
 	}
 
 	@Test
-	void generateWhenHasThrowingConstructor() {
-		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithThrowingConstructor.class);
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		beanFactory.registerSingleton("string", "Hello");
-		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
-			TestBeanWithThrowingConstructor bean = getBean(beanFactory, beanDefinition, instanceSupplier);
-			assertThat(bean).isInstanceOf(TestBeanWithThrowingConstructor.class);
-		});
-	}
-
-	@Test
 	void generateWhenHasFactoryMethodWithNoArg() {
 		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
 				.setFactoryMethodOnBean("stringBean", "config").getBeanDefinition();
@@ -252,6 +240,23 @@ class InstanceSupplierCodeGeneratorTests {
 			assertThat(compiled.getSourceFile()).contains("SampleFactory.create(");
 		});
 		assertThat(getReflectionHints().getTypeHint(SampleFactory.class))
+				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
+	}
+
+	@Test
+	void generateWhenHasStaticFactoryMethodCheckedException() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(Integer.class)
+				.setFactoryMethodOnBean("throwingIntegerBean", "config").getBeanDefinition();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config",
+				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
+		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
+			Integer bean = getBean(beanFactory, beanDefinition, instanceSupplier);
+			assertThat(bean).isInstanceOf(Integer.class);
+			assertThat(bean).isEqualTo(42);
+			assertThat(compiled.getSourceFile()).contains(") throws Exception {");
+		});
+		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
 				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
 	}
 

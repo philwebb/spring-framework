@@ -97,11 +97,9 @@ class InstanceSupplierCodeGenerator {
 
 	private CodeBlock generateCodeForAccessibleConstructor(String name, Constructor<?> constructor,
 			Class<?> declaringClass, boolean dependsOnBean) {
-		Arrays.stream(constructor.getGenericExceptionTypes()).map(ResolvableType::forType).map(ResolvableType::toClass)
-				.anyMatch(Exception.class::isAssignableFrom);
 		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor, INTROSPECT);
 		if (!dependsOnBean && constructor.getParameterCount() == 0) {
-			return (!this.allowDirectSupplierShortcut)
+			return (!this.allowDirectSupplierShortcut || isThrowingCheckedException(constructor))
 					? CodeBlock.of("$T.using($T::new)", InstanceSupplier.class, declaringClass)
 					: CodeBlock.of("$T::new", declaringClass);
 		}
@@ -177,7 +175,7 @@ class InstanceSupplierCodeGenerator {
 			boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod, INTROSPECT);
 		if (!dependsOnBean && factoryMethod.getParameterCount() == 0) {
-			return (!this.allowDirectSupplierShortcut)
+			return (!this.allowDirectSupplierShortcut || isThrowingCheckedException(factoryMethod))
 					? CodeBlock.of("$T.using($T::$L)", InstanceSupplier.class, declaringClass, factoryMethod.getName())
 					: CodeBlock.of("$T::$L", declaringClass, factoryMethod.getName());
 		}
@@ -207,6 +205,9 @@ class InstanceSupplierCodeGenerator {
 		builder.addJavadoc("Get the bean instance for '$L'.", name);
 		builder.addModifiers(modifiers);
 		builder.returns(factoryMethod.getReturnType());
+		if (isThrowingCheckedException(factoryMethod)) {
+			builder.addException(Exception.class);
+		}
 		builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME);
 		if (factoryMethod.getParameterCount() == 0) {
 			CodeBlock instantiationCode = generateNewInstanceCodeForMethod(dependsOnBean, declaringClass,
@@ -286,6 +287,11 @@ class InstanceSupplierCodeGenerator {
 
 	private GeneratedMethod generateGetInstanceMethod(MethodGenerator methodGenerator, String name) {
 		return methodGenerator.generateMethod("get", name, "instance");
+	}
+
+	private boolean isThrowingCheckedException(Executable executable) {
+		return Arrays.stream(executable.getGenericExceptionTypes()).map(ResolvableType::forType)
+				.map(ResolvableType::toClass).anyMatch(Exception.class::isAssignableFrom);
 	}
 
 	static Class<?> getPackagePrivateTarget(RegisteredBean registeredBean) {

@@ -16,6 +16,8 @@
 
 package org.springframework.beans.testfixture.beans.factory.generator;
 
+import java.io.IOException;
+
 public class SimpleConfiguration {
 
 	public SimpleConfiguration() {
@@ -35,6 +37,10 @@ public class SimpleConfiguration {
 	}
 
 	public static Integer integerBean() {
+		return 42;
+	}
+
+	public Integer throwingIntegerBean() throws IOException {
 		return 42;
 	}
 
