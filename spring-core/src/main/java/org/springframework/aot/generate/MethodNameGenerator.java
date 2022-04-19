@@ -62,7 +62,7 @@ public class MethodNameGenerator {
 	 * names.
 	 * @param reservedNames the method names to reserve
 	 */
-	public MethodNameGenerator(List<String> reservedNames) {
+	public MethodNameGenerator(Iterable<String> reservedNames) {
 		Assert.notNull(reservedNames, "'reservedNames' must not be null");
 		for (String reservedName : reservedNames) {
 			addSequence(StringUtils.uncapitalize(reservedName));

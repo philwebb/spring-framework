@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +33,8 @@ import org.springframework.beans.testfixture.beans.factory.generator.factory.Num
 import org.springframework.beans.testfixture.beans.factory.generator.factory.NumberHolderFactoryBean;
 import org.springframework.beans.testfixture.beans.factory.generator.factory.SampleFactory;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -287,6 +290,16 @@ class ConstructorOrFactoryMethodResolverTests {
 		assertThat(executable).isEqualTo(ConstructorPrimitiveFallback.class.getDeclaredConstructor(boolean.class));
 	}
 
+	@Test
+	void beanDefinitionWithFactoryWithOverloadedClassMethodsOnInterface() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder
+				.rootBeanDefinition(FactoryWithOverloadedClassMethodsOnInterface.class).setFactoryMethod("byAnnotation")
+				.addConstructorArgValue(Nullable.class).getBeanDefinition();
+		Executable executable = resolve(new DefaultListableBeanFactory(), beanDefinition);
+		assertThat(executable).isEqualTo(ReflectionUtils.findMethod(FactoryWithOverloadedClassMethodsOnInterface.class,
+				"byAnnotation", Class.class));
+	}
+
 	private Executable resolve(DefaultListableBeanFactory beanFactory, BeanDefinition beanDefinition) {
 		return new ConstructorOrFactoryMethodResolver(beanFactory).resolve(beanDefinition);
 	}
@@ -417,6 +430,19 @@ class ConstructorOrFactoryMethodResolverTests {
 		}
 
 		public SampleBeanWithConstructors(Number number, String name) {
+		}
+
+	}
+
+	interface FactoryWithOverloadedClassMethodsOnInterface {
+
+		static FactoryWithOverloadedClassMethodsOnInterface byAnnotation(Class<? extends Annotation> annotationType) {
+			return byAnnotation(annotationType, SearchStrategy.INHERITED_ANNOTATIONS);
+		}
+
+		static FactoryWithOverloadedClassMethodsOnInterface byAnnotation(Class<? extends Annotation> annotationType,
+				SearchStrategy searchStrategy) {
+			return null;
 		}
 
 	}

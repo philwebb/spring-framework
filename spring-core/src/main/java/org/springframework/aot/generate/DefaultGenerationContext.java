@@ -16,6 +16,8 @@
 
 package org.springframework.aot.generate;
 
+import java.io.IOException;
+
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.util.Assert;
 
@@ -31,9 +33,9 @@ public class DefaultGenerationContext implements GenerationContext {
 
 	private final ClassNameGenerator classNameGenerator;
 
-	private final GeneratedFiles generatedFiles;
+	private final GeneratedClasses generatedClasses;
 
-	private final GeneratedSpringFactories generatedSpringFactories;
+	private final GeneratedFiles generatedFiles;
 
 	private final RuntimeHints runtimeHints;
 
@@ -43,7 +45,7 @@ public class DefaultGenerationContext implements GenerationContext {
 	 * @param generatedFiles the generated files
 	 */
 	public DefaultGenerationContext(GeneratedFiles generatedFiles) {
-		this(new ClassNameGenerator(), generatedFiles, new DefaultGeneratedSpringFactories(), new RuntimeHints());
+		this(new ClassNameGenerator(), generatedFiles, new RuntimeHints());
 	}
 
 	/**
@@ -51,18 +53,16 @@ public class DefaultGenerationContext implements GenerationContext {
 	 * items.
 	 * @param classNameGenerator the class name generator
 	 * @param generatedFiles the generated files
-	 * @param generatedSpringFactories the generated spring factories
 	 * @param runtimeHints the runtime hints
 	 */
 	public DefaultGenerationContext(ClassNameGenerator classNameGenerator, GeneratedFiles generatedFiles,
-			GeneratedSpringFactories generatedSpringFactories, RuntimeHints runtimeHints) {
+			RuntimeHints runtimeHints) {
 		Assert.notNull(classNameGenerator, "'classNameGenerator' must not be null");
 		Assert.notNull(generatedFiles, "'generatedFiles' must not be null");
-		Assert.notNull(generatedSpringFactories, "'generatedSpringFactories' must not be null");
 		Assert.notNull(runtimeHints, "'runtimeHints' must not be null");
 		this.classNameGenerator = classNameGenerator;
+		this.generatedClasses = new GeneratedClasses(classNameGenerator);
 		this.generatedFiles = generatedFiles;
-		this.generatedSpringFactories = generatedSpringFactories;
 		this.runtimeHints = runtimeHints;
 	}
 
@@ -72,18 +72,27 @@ public class DefaultGenerationContext implements GenerationContext {
 	}
 
 	@Override
+	public GeneratedClasses getClassGenerator() {
+		return this.generatedClasses;
+	}
+
+	@Override
 	public GeneratedFiles getGeneratedFiles() {
 		return this.generatedFiles;
 	}
 
 	@Override
-	public GeneratedSpringFactories getGeneratedSpringFactories() {
-		return this.generatedSpringFactories;
-	}
-
-	@Override
 	public RuntimeHints getRuntimeHints() {
 		return this.runtimeHints;
+	}
+
+	public void close() {
+		try {
+			this.generatedClasses.writeTo(this.generatedFiles);
+		}
+		catch (IOException ex) {
+			throw new IllegalStateException(ex);
+		}
 	}
 
 }

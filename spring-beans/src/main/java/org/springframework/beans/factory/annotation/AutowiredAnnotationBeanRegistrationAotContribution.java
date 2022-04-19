@@ -36,6 +36,7 @@ import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationCode;
+import org.springframework.beans.factory.support.AutowiredArgumentsCodeGenerator;
 import org.springframework.beans.factory.support.AutowiredFieldValueResolver;
 import org.springframework.beans.factory.support.AutowiredMethodArgumentsResolver;
 import org.springframework.beans.factory.support.RegisteredBean;
@@ -61,9 +62,10 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 
 	private static final String INSTANCE_PARAMETER = "instance";
 
-	private static final Consumer<ExecutableHint.Builder> INTROSPECT = builder -> builder.withMode(ExecutableMode.INTROSPECT);
+	private static final Consumer<ExecutableHint.Builder> INTROSPECT = builder -> builder
+			.withMode(ExecutableMode.INTROSPECT);
 
-	private static final Consumer<FieldHint.Builder> ALLOW_WRITE = builder->builder.allowWrite(true);
+	private static final Consumer<FieldHint.Builder> ALLOW_WRITE = builder -> builder.allowWrite(true);
 
 	private final Class<?> target;
 
@@ -83,7 +85,7 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 		classBuilder.addModifiers(Modifier.PUBLIC);
 		classBuilder.addMethod(generateMethod(generationContext.getRuntimeHints()));
 		JavaFile javaFile = className.toJavaFile(classBuilder);
-		generationContext.getGeneratedFiles().addSourceFile(javaFile, className.getTargetClass());
+		generationContext.getGeneratedFiles().addSourceFile(javaFile, this.target);
 		beanRegistrationCode.addInstancePostProcessor(MethodReference.ofStatic(className, APPLY_METHOD));
 	}
 
@@ -120,21 +122,15 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 	}
 
 	private CodeBlock generateMethodStatementForField(Field field, boolean required, RuntimeHints hints) {
-		CodeBlock.Builder builder = CodeBlock.builder();
-		builder.add("$T.$L", AutowiredFieldValueResolver.class, (!required) ? "forField" : "forRequiredField");
-		builder.add("($S)", field.getName());
+		CodeBlock resolver = CodeBlock.of("$T.$L($S)", AutowiredFieldValueResolver.class,
+				(!required) ? "forField" : "forRequiredField", field.getName());
 		AccessVisibility visibility = AccessVisibility.forMember(field);
 		if (visibility == AccessVisibility.PRIVATE || visibility == AccessVisibility.PROTECTED) {
 			hints.reflection().registerField(field);
-			builder.add(".resolveAndSet($L, $L)", REGISTERED_BEAN_PARAMETER, INSTANCE_PARAMETER);
+			return CodeBlock.of("$L.resolveAndSet($L, $L)", resolver, REGISTERED_BEAN_PARAMETER, INSTANCE_PARAMETER);
 		}
-		else {
-			hints.reflection().registerField(field, ALLOW_WRITE);
-			CodeBlock injectionCode = CodeBlock.of("value -> $L.$L = ($T) value", INSTANCE_PARAMETER, field.getName(),
-					field.getType());
-			builder.add(".resolve($L, $L)", REGISTERED_BEAN_PARAMETER, injectionCode);
-		}
-		return builder.build();
+		hints.reflection().registerField(field, ALLOW_WRITE);
+		return CodeBlock.of("$L.$L = $L.resolve($L)", INSTANCE_PARAMETER, field.getName(), resolver, REGISTERED_BEAN_PARAMETER);
 	}
 
 	private CodeBlock generateMethodStatementForMethod(Method method, boolean required, RuntimeHints hints) {
@@ -152,8 +148,10 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 		}
 		else {
 			hints.reflection().registerMethod(method, INTROSPECT);
+			CodeBlock arguments = new AutowiredArgumentsCodeGenerator(this.target, method)
+					.generateCode(method.getParameterTypes());
 			CodeBlock injectionCode = CodeBlock.of("args -> $L.$L($L)", INSTANCE_PARAMETER, method.getName(),
-					generateArgsExtractionCode(method.getParameterTypes()));
+					arguments);
 			builder.add(".resolve($L, $L)", REGISTERED_BEAN_PARAMETER, injectionCode);
 		}
 		return builder.build();
@@ -165,18 +163,6 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 		for (int i = 0; i < parameterTypes.length; i++) {
 			builder.add(i != 0 ? ", " : "");
 			builder.add(generationService.generateCode(parameterTypes[i]));
-		}
-		return builder.build();
-	}
-
-	private CodeBlock generateArgsExtractionCode(Class<?>[] parameterTypes) {
-		CodeBlock.Builder builder = CodeBlock.builder();
-		for (int i = 0; i < parameterTypes.length; i++) {
-			builder.add((i != 0) ? ", " : "");
-			if (!parameterTypes[i].equals(Object.class)) {
-				builder.add("($T) ", parameterTypes[i]);
-			}
-			builder.add("args[$L]", i);
 		}
 		return builder.build();
 	}

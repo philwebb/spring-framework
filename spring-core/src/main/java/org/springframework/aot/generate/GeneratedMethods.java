@@ -38,7 +38,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 
 	private final MethodNameGenerator methodNameGenerator;
 
-	private final List<GeneratedMethod> methods = new ArrayList<>();
+	private final List<GeneratedMethod> generatedMethods = new ArrayList<>();
 
 	/**
 	 * Create a new {@link GeneratedMethods} instance backed by a new
@@ -72,7 +72,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 	 */
 	public GeneratedMethod add(Object... methodNameParts) {
 		GeneratedMethod method = new GeneratedMethod(this.methodNameGenerator.generateMethodName(methodNameParts));
-		this.methods.add(method);
+		this.generatedMethods.add(method);
 		return method;
 	}
 
@@ -87,7 +87,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 
 	@Override
 	public Iterator<GeneratedMethod> iterator() {
-		return this.methods.iterator();
+		return this.generatedMethods.iterator();
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 	 * @return a stream of {@link GeneratedMethod} instances
 	 */
 	public Stream<GeneratedMethod> stream() {
-		return this.methods.stream();
+		return this.generatedMethods.stream();
 	}
 
 }

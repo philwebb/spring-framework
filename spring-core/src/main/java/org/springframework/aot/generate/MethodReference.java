@@ -234,7 +234,7 @@ public final class MethodReference {
 	private CodeBlock toInvokeCodeBlockForStatic(@Nullable String instanceVariable, CodeBlock[] arguments) {
 		Assert.isTrue(instanceVariable == null, "'instanceVariable' must be null for static method references");
 		CodeBlock.Builder builder = CodeBlock.builder();
-		builder.add("$L.$L", this.declaringClass, this.methodName);
+		builder.add("$T.$L", this.declaringClass, this.methodName);
 		addArguments(builder, arguments);
 		return builder.build();
 	}

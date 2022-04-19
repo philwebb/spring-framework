@@ -17,6 +17,7 @@
 package org.springframework.beans.factory.aot.registration;
 
 import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.javapoet.ClassName;
 
 /**
  * Interface that can be used to configure the code that will be generated to register
@@ -37,7 +38,14 @@ public interface BeanRegistrationsCode {
 	String getBeanFactoryName();
 
 	/**
-	 * Return a {@link MethodGenerator} that can be used to add more methods to the registrations code.
+	 * Return the name of the class being used for registrations.
+	 * @return the generated class name.
+	 */
+	ClassName getClassName();
+
+	/**
+	 * Return a {@link MethodGenerator} that can be used to add more methods to the
+	 * registrations code.
 	 * @return the method generator
 	 */
 	MethodGenerator getMethodGenerator();

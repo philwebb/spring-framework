@@ -18,6 +18,7 @@ package org.springframework.beans.factory.aot.registration;
 
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.javapoet.ClassName;
 
 /**
  * Mock {@link BeanRegistrationsCode} implementation.
@@ -28,13 +29,17 @@ import org.springframework.aot.generate.MethodGenerator;
  */
 class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 
+	private final ClassName className;
+
 	private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
-	MockBeanRegistrationsCode() {
+	MockBeanRegistrationsCode(ClassName className) {
+		this.className = className;
 	}
 
-	GeneratedMethods getGeneratedMethods() {
-		return this.generatedMethods;
+	@Override
+	public ClassName getClassName() {
+		return this.className;
 	}
 
 	@Override
@@ -44,6 +49,10 @@ class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 
 	@Override
 	public MethodGenerator getMethodGenerator() {
+		return this.generatedMethods;
+	}
+
+	GeneratedMethods getGeneratedMethods() {
 		return this.generatedMethods;
 	}
 

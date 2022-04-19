@@ -66,7 +66,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	private final RuntimeHints hints = new RuntimeHints();
 
 	private BeanDefinitionPropertiesCodeGenerator generator = new BeanDefinitionPropertiesCodeGenerator(this.hints,
-			attribute -> true, this.generatedMethods, propertyValue -> null);
+			attribute -> true, this.generatedMethods, (name, value) -> null);
 
 	@Test
 	void setPrimaryWhenFalse() {
@@ -240,7 +240,8 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 	void setDestroyMethodWhenMultipleDestroyMethods() {
 		this.beanDefinition.setTargetType(InitDestroyBean.class);
 		this.beanDefinition.setDestroyMethodNames("d1", "d2");
-		testCompiledResult((actual, compiled) -> assertThat(actual.getDestroyMethodNames()).containsExactly("d1", "d2"));
+		testCompiledResult(
+				(actual, compiled) -> assertThat(actual.getDestroyMethodNames()).containsExactly("d1", "d2"));
 		assertHasMethodInvokeHints("d1", "d2");
 	}
 
@@ -330,7 +331,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 		this.beanDefinition.setAttribute("b", "B");
 		Predicate<String> attributeFilter = attribute -> false;
 		this.generator = new BeanDefinitionPropertiesCodeGenerator(this.hints, attributeFilter, this.generatedMethods,
-				propertyValue -> null);
+				(name, value) -> null);
 		testCompiledResult((actual, compiled) -> {
 			assertThat(compiled.getSourceFile()).doesNotContain("setAttribute");
 			assertThat(actual.getAttribute("a")).isNull();
@@ -344,7 +345,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 		this.beanDefinition.setAttribute("b", "B");
 		Predicate<String> attributeFilter = attribute -> "a".equals(attribute);
 		this.generator = new BeanDefinitionPropertiesCodeGenerator(this.hints, attributeFilter, this.generatedMethods,
-				propertyValue -> null);
+				(name, value) -> null);
 		testCompiledResult(this.beanDefinition, (actual, compiled) -> {
 			assertThat(actual.getAttribute("a")).isEqualTo("A");
 			assertThat(actual.getAttribute("b")).isNull();

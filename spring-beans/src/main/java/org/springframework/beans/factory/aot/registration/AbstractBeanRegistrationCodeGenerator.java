@@ -16,12 +16,14 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import java.lang.reflect.Executable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.javapoet.ClassName;
 import org.springframework.util.Assert;
 
 /**
@@ -35,26 +37,49 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegistrationCodeGenerator {
 
+	private final RegisteredBean registeredBean;
+
+	private final Executable constructorOrFactoryMethod;
+
+	private final ClassName className;
+
 	private final MethodGenerator methodGenerator;
 
 	private final InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator;
-
-	private final RegisteredBean registeredBean;
 
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
 	/**
 	 * Create a new {@link AbstractBeanRegistrationCodeGenerator} instance.
 	 * @param registeredBean the registered bean
+	 * @param constructorOrFactoryMethod the constructor or factory method that creates
+	 * the bean
+	 * @param className the name of the class being used for registrations
 	 * @param methodGenerator the method generator to use
 	 * @param innerBeanDefinitionMethodGenerator the inner-bean definition method
 	 * generator to use
 	 */
 	protected AbstractBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
+			Executable constructorOrFactoryMethod, ClassName className,
 			MethodGenerator methodGenerator, InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
+		this.registeredBean = registeredBean;
+		this.constructorOrFactoryMethod = constructorOrFactoryMethod;
+		this.className = className;
 		this.methodGenerator = methodGenerator;
 		this.innerBeanDefinitionMethodGenerator = innerBeanDefinitionMethodGenerator;
-		this.registeredBean = registeredBean;
+	}
+
+	protected final RegisteredBean getRegisteredBean() {
+		return this.registeredBean;
+	}
+
+	protected final Executable getConstructorOrFactoryMethod() {
+		return this.constructorOrFactoryMethod;
+	}
+
+	@Override
+	public ClassName getClassName() {
+		return this.className;
 	}
 
 	@Override
@@ -64,10 +89,6 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 
 	public InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator() {
 		return this.innerBeanDefinitionMethodGenerator;
-	}
-
-	protected final RegisteredBean getRegisteredBean() {
-		return this.registeredBean;
 	}
 
 	@Override

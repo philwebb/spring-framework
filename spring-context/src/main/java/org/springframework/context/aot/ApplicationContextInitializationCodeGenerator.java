@@ -76,7 +76,7 @@ class ApplicationContextInitializationCodeGenerator implements BeanFactoryInitia
 				ParameterizedTypeName.get(ApplicationContextInitializer.class, GenericApplicationContext.class));
 		builder.addMethod(generateInitializeMethod());
 		this.generatedMethods.doWithMethodSpecs(builder::addMethod);
-		return JavaFile.builder("__", builder.build()).build();
+		return JavaFile.builder(className.packageName(), builder.build()).build();
 	}
 
 	private MethodSpec generateInitializeMethod() {

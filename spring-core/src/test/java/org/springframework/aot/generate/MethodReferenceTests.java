@@ -32,11 +32,13 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 class MethodReferenceTests {
 
-	private static final String EXPECTED_STATIC = "org.springframework.aot.generate.MethodReferenceTests.MyClass::someMethod";
+	private static final String NAME = MethodReferenceTests.class.getName();
+
+	private static final String EXPECTED_STATIC = "org.springframework.aot.generate.MethodReferenceTests::someMethod";
 
 	private static final String EXPECTED_ANONYMOUS_INSTANCE = "<instance>::someMethod";
 
-	private static final String EXPECTED_DECLARED_INSTANCE = "<org.springframework.aot.generate.MethodReferenceTests.MyClass>::someMethod";
+	private static final String EXPECTED_DECLARED_INSTANCE = "<org.springframework.aot.generate.MethodReferenceTests>::someMethod";
 
 	@Test
 	void ofWithStringWhenMethodNameIsNullThrowsException() {
@@ -76,7 +78,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithClassAndStringWhenMethodNameIsNullThrowsException() {
-		Class<?> declaringClass = MyClass.class;
+		Class<?> declaringClass = MethodReferenceTests.class;
 		String methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.of(declaringClass, methodName))
 				.withMessage("'methodName' must not be empty");
@@ -84,7 +86,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithClassAndStringCreatesMethodReference() {
-		Class<?> declaringClass = MyClass.class;
+		Class<?> declaringClass = MethodReferenceTests.class;
 		String methodName = "someMethod";
 		MethodReference reference = MethodReference.of(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_DECLARED_INSTANCE);
@@ -100,7 +102,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithGeneratedClassNameAndGeneratedMethodNameWhenMethodNameIsNullThrowsException() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		GeneratedMethodName methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.of(declaringClass, methodName))
 				.withMessage("'methodName' must not be null");
@@ -108,7 +110,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithGeneratedClassNameAndGeneratedMethodNameCreateMethodReference() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		GeneratedMethodName methodName = new GeneratedMethodName("someMethod");
 		MethodReference reference = MethodReference.of(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_DECLARED_INSTANCE);
@@ -124,7 +126,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithGeneratedClassNameAndStringMethodNameWhenMethodNameIsNullThrowsException() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		String methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.of(declaringClass, methodName))
 				.withMessage("'methodName' must not be empty");
@@ -132,7 +134,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithGeneratedClassNameAndStringMethodNameCreateMethodReference() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		String methodName = "someMethod";
 		MethodReference reference = MethodReference.of(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_DECLARED_INSTANCE);
@@ -148,7 +150,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithClassNameAndStringWhenMethodNameIsNullThrowsException() {
-		ClassName declaringClass = ClassName.get(MyClass.class);
+		ClassName declaringClass = ClassName.get(MethodReferenceTests.class);
 		String methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.of(declaringClass, methodName))
 				.withMessage("'methodName' must not be empty");
@@ -156,7 +158,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofWithClassNameAndStringCreateMethodReference() {
-		ClassName declaringClass = ClassName.get(MyClass.class);
+		ClassName declaringClass = ClassName.get(MethodReferenceTests.class);
 		String methodName = "someMethod";
 		MethodReference reference = MethodReference.of(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_DECLARED_INSTANCE);
@@ -172,7 +174,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithClassAndStringWhenMethodNameIsEmptyThrowsException() {
-		Class<?> declaringClass = MyClass.class;
+		Class<?> declaringClass = MethodReferenceTests.class;
 		String methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.ofStatic(declaringClass, methodName))
 				.withMessage("'methodName' must not be empty");
@@ -180,7 +182,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithClassAndStringCreatesMethodReference() {
-		Class<?> declaringClass = MyClass.class;
+		Class<?> declaringClass = MethodReferenceTests.class;
 		String methodName = "someMethod";
 		MethodReference reference = MethodReference.ofStatic(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_STATIC);
@@ -196,7 +198,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithGeneratedClassNameAndGeneratedMethodNameWhenMethodNameIsNullThrowsException() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		GeneratedMethodName methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.ofStatic(declaringClass, methodName))
 				.withMessage("'methodName' must not be null");
@@ -204,7 +206,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithGeneratedClassNameAndGeneratedMethodNameCreatesMethodReference() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		GeneratedMethodName methodName = new GeneratedMethodName("someMethod");
 		MethodReference reference = MethodReference.ofStatic(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_STATIC);
@@ -220,7 +222,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithGeneratedClassNameAndStringMethodNameWhenMethodNameIsNullThrowsException() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		String methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.ofStatic(declaringClass, methodName))
 				.withMessage("'methodName' must not be empty");
@@ -228,7 +230,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithGeneratedClassNameAndStringMethodNameCreatesMethodReference() {
-		GeneratedClassName declaringClass = new GeneratedClassName(MyClass.class.getName(), null);
+		GeneratedClassName declaringClass = new GeneratedClassName(NAME, null);
 		String methodName = "someMethod";
 		MethodReference reference = MethodReference.ofStatic(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_STATIC);
@@ -244,7 +246,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithClassNameAndGeneratedMethodNameWhenMethodNameIsEmptyThrowsException() {
-		ClassName declaringClass = ClassName.get(MyClass.class);
+		ClassName declaringClass = ClassName.get(MethodReferenceTests.class);
 		String methodName = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> MethodReference.ofStatic(declaringClass, methodName))
 				.withMessage("'methodName' must not be empty");
@@ -252,7 +254,7 @@ class MethodReferenceTests {
 
 	@Test
 	void ofStaticWithClassNameAndGeneratedMethodNameCreatesMethodReference() {
-		ClassName declaringClass = ClassName.get(MyClass.class);
+		ClassName declaringClass = ClassName.get(MethodReferenceTests.class);
 		String methodName = "someMethod";
 		MethodReference reference = MethodReference.ofStatic(declaringClass, methodName);
 		assertThat(reference).hasToString(EXPECTED_STATIC);
@@ -272,13 +274,13 @@ class MethodReferenceTests {
 
 	@Test
 	void toCodeBlockWhenStaticMethodReferenceAndInstanceVariableIsNull() {
-		MethodReference reference = MethodReference.ofStatic(MyClass.class, "someMethod");
+		MethodReference reference = MethodReference.ofStatic(MethodReferenceTests.class, "someMethod");
 		assertThat(reference.toCodeBlock(null)).hasToString(EXPECTED_STATIC);
 	}
 
 	@Test
 	void toCodeBlockWhenStaticMethodReferenceAndInstanceVariableIsNotNullThrowsException() {
-		MethodReference reference = MethodReference.ofStatic(MyClass.class, "someMethod");
+		MethodReference reference = MethodReference.ofStatic(MethodReferenceTests.class, "someMethod");
 		assertThatIllegalArgumentException().isThrownBy(() -> reference.toCodeBlock("myInstance"))
 				.withMessage("'instanceVariable' must be null for static method references");
 	}
@@ -291,9 +293,9 @@ class MethodReferenceTests {
 
 	@Test
 	void toInvokeCodeBlockWhenInstanceMethodReferenceAndInstanceVariableIsNullAndHasDecalredClass() {
-		MethodReference reference = MethodReference.of(MyClass.class, "someMethod");
+		MethodReference reference = MethodReference.of(MethodReferenceTests.class, "someMethod");
 		assertThat(reference.toInvokeCodeBlock())
-				.hasToString("new org.springframework.aot.generate.MethodReferenceTests.MyClass().someMethod()");
+				.hasToString("new org.springframework.aot.generate.MethodReferenceTests().someMethod()");
 	}
 
 	@Test
@@ -304,22 +306,16 @@ class MethodReferenceTests {
 
 	@Test
 	void toInvokeCodeBlockWhenStaticMethodReferenceAndInstanceVariableIsNull() {
-		MethodReference reference = MethodReference.ofStatic(MyClass.class, "someMethod");
+		MethodReference reference = MethodReference.ofStatic(MethodReferenceTests.class, "someMethod");
 		assertThat(reference.toInvokeCodeBlock())
-				.hasToString("org.springframework.aot.generate.MethodReferenceTests.MyClass.someMethod()");
+				.hasToString("org.springframework.aot.generate.MethodReferenceTests.someMethod()");
 	}
 
 	@Test
 	void toInvokeCodeBlockWhenStaticMethodReferenceAndInstanceVariableIsNotNullThrowsException() {
-		MethodReference reference = MethodReference.ofStatic(MyClass.class, "someMethod");
+		MethodReference reference = MethodReference.ofStatic(MethodReferenceTests.class, "someMethod");
 		assertThatIllegalArgumentException().isThrownBy(() -> reference.toInvokeCodeBlock("myInstance"))
 				.withMessage("'instanceVariable' must be null for static method references");
-	}
-
-	static interface MyClass {
-
-		void someMethod();
-
 	}
 
 }

@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -86,15 +87,15 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	private final Predicate<String> attributeFilter;
 
-	private final Function<PropertyValue, CodeBlock> propertyValueCodeGenerator;
+	private final BiFunction<String, Object, CodeBlock> valueCodeGenerator;
 
 	private final DefaultInstanceCodeGenerationService instanceCodeGenerationService;
 
 	BeanDefinitionPropertiesCodeGenerator(RuntimeHints hints, Predicate<String> attributeFilter,
-			MethodGenerator methodGenerator, Function<PropertyValue, CodeBlock> propertyValueCodeGenerator) {
+			MethodGenerator methodGenerator, BiFunction<String, Object, CodeBlock> valueCodeGenerator) {
 		this.hints = hints;
 		this.attributeFilter = attributeFilter;
-		this.propertyValueCodeGenerator = propertyValueCodeGenerator;
+		this.valueCodeGenerator = valueCodeGenerator;
 		this.instanceCodeGenerationService = new DefaultInstanceCodeGenerationService(null, methodGenerator,
 				this::addInstanceCodeGenerators);
 	}
@@ -159,9 +160,14 @@ class BeanDefinitionPropertiesCodeGenerator {
 				.getIndexedArgumentValues();
 		if (!argumentValues.isEmpty()) {
 			argumentValues.forEach((index, valueHolder) -> {
-				CodeBlock value = this.instanceCodeGenerationService.generateCode(valueHolder.getValue());
+				String name = valueHolder.getName();
+				Object value = valueHolder.getValue();
+				CodeBlock code = this.valueCodeGenerator.apply(name, value);
+				if (code == null) {
+					code = this.instanceCodeGenerationService.generateCode(value);
+				}
 				builder.addStatement("$L.getConstructorArgumentValues().addIndexedArgumentValue($L, $L)",
-						BEAN_DEFINITION_VARIABLE, index, value);
+						BEAN_DEFINITION_VARIABLE, index, code);
 			});
 		}
 	}
@@ -170,9 +176,11 @@ class BeanDefinitionPropertiesCodeGenerator {
 		MutablePropertyValues propertyValues = beanDefinition.getPropertyValues();
 		if (!propertyValues.isEmpty()) {
 			for (PropertyValue propertyValue : propertyValues) {
-				CodeBlock code = this.propertyValueCodeGenerator.apply(propertyValue);
+				String name = propertyValue.getName();
+				Object value = propertyValue.getValue();
+				CodeBlock code = this.valueCodeGenerator.apply(name, value);
 				if (code == null) {
-					code = this.instanceCodeGenerationService.generateCode(propertyValue.getValue());
+					code = this.instanceCodeGenerationService.generateCode(value);
 				}
 				builder.addStatement("$L.getPropertyValues().addPropertyValue($S, $L)", BEAN_DEFINITION_VARIABLE,
 						propertyValue.getName(), code);

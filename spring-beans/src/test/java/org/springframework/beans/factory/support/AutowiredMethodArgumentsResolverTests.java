@@ -79,8 +79,8 @@ class AutowiredMethodArgumentsResolverTests {
 		RegisteredBean registeredBean = registerTestBean(this.beanFactory);
 		AutowiredMethodArgumentsResolver resolver = AutowiredMethodArgumentsResolver.forRequiredMethod("injectString",
 				String.class);
-		Object[] resolved = resolver.resolve(registeredBean);
-		assertThat(resolved).containsExactly("testValue");
+		AutowiredArguments resolved = resolver.resolve(registeredBean);
+		assertThat(resolved.toArray()).containsExactly("testValue");
 	}
 
 	@Test
@@ -112,8 +112,8 @@ class AutowiredMethodArgumentsResolverTests {
 		RegisteredBean registeredBean = registerTestBean(this.beanFactory);
 		AutowiredMethodArgumentsResolver resolver = AutowiredMethodArgumentsResolver
 				.forRequiredMethod("injectStringAndEnvironment", String.class, Environment.class);
-		Object[] resolved = resolver.resolve(registeredBean);
-		assertThat(resolved).containsExactly("testValue", environment);
+		AutowiredArguments resolved = resolver.resolve(registeredBean);
+		assertThat(resolved.toArray()).containsExactly("testValue", environment);
 	}
 
 	@Test
@@ -150,7 +150,7 @@ class AutowiredMethodArgumentsResolverTests {
 		List<Object> result = new ArrayList<>();
 		AutowiredMethodArgumentsResolver.forMethod("injectString", String.class).resolve(registeredBean, result::add);
 		assertThat(result).hasSize(1);
-		assertThat((Object[]) result.get(0)).containsExactly("testValue");
+		assertThat(((AutowiredArguments) result.get(0)).toArray()).containsExactly("testValue");
 	}
 
 	@Test
@@ -168,7 +168,7 @@ class AutowiredMethodArgumentsResolverTests {
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
 		AutowiredMethodArgumentsResolver resolver = AutowiredMethodArgumentsResolver.forRequiredMethod("injectString", String.class);
 		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> resolver.resolve(registeredBean));
-		assertThat(resolver.withShortcut("test").resolve(registeredBean)[0]).isEqualTo("testValue");
+		assertThat(resolver.withShortcut("test").resolve(registeredBean).getObject(0)).isEqualTo("testValue");
 	}
 
 	@Test

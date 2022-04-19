@@ -29,6 +29,7 @@ import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -60,7 +61,7 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		GeneratedClassName generatedClassName = generationContext.getClassNameGenerator()
 				.generateClassName(beanFactoryInitializationCode.getBeanFactoryName(), "Registrations");
 		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(
-				beanFactoryInitializationCode);
+				generatedClassName.toClassName(), beanFactoryInitializationCode);
 		GeneratedMethod registerMethod = codeGenerator.getMethodGenerator().generateMethod("registerBeanDefinitions")
 				.using(builder -> generateRegisterMethod(builder, generationContext, codeGenerator));
 		JavaFile javaFile = codeGenerator.generatedJavaFile(generatedClassName);
@@ -88,11 +89,15 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 	 */
 	static class BeanRegistrationsCodeGenerator implements BeanRegistrationsCode {
 
+		private final ClassName className;
+
 		private final BeanFactoryInitializationCode beanFactoryInitializationCode;
 
 		private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
-		public BeanRegistrationsCodeGenerator(BeanFactoryInitializationCode beanFactoryInitializationCode) {
+		public BeanRegistrationsCodeGenerator(ClassName className,
+				BeanFactoryInitializationCode beanFactoryInitializationCode) {
+			this.className = className;
 			this.beanFactoryInitializationCode = beanFactoryInitializationCode;
 		}
 
@@ -102,13 +107,18 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 		}
 
 		@Override
+		public ClassName getClassName() {
+			return this.className;
+		}
+
+		@Override
 		public MethodGenerator getMethodGenerator() {
 			return this.generatedMethods;
 		}
 
 		JavaFile generatedJavaFile(GeneratedClassName generatedClassName) {
 			TypeSpec.Builder classBuilder = generatedClassName.classBuilder();
-			classBuilder.addJavadoc("Register bean defintions for the '$L' bean factory.",
+			classBuilder.addJavadoc("Register bean definitions for the '$L' bean factory.",
 					this.beanFactoryInitializationCode.getBeanFactoryName());
 			classBuilder.addModifiers(Modifier.PUBLIC);
 			this.generatedMethods.doWithMethodSpecs(classBuilder::addMethod);

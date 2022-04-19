@@ -150,7 +150,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 		List<Object> result = new ArrayList<>();
 		resolver.resolve(registerBean, result::add);
 		assertThat(result).hasSize(1);
-		assertThat((Object[]) result.get(0)).containsExactly("1");
+		assertThat(((AutowiredArguments) result.get(0)).toArray()).containsExactly("1");
 	}
 
 	@Test
@@ -190,22 +190,22 @@ class AutowiredInstantiationArgumentsResolverTests {
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(NoArgConstructor.class);
 		this.beanFactory.registerBeanDefinition("test", beanDefinition);
 		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "test");
-		Object[] resolved = AutowiredInstantiationArgumentsResolver.forConstructor().resolve(registeredBean);
-		assertThat(resolved).isEmpty();
+		AutowiredArguments resolved = AutowiredInstantiationArgumentsResolver.forConstructor().resolve(registeredBean);
+		assertThat(resolved.toArray()).isEmpty();
 	}
 
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
 	void resolveSingleArgConstructor(Source source) {
 		this.beanFactory.registerSingleton("one", "1");
 		RegisteredBean registeredBean = source.registerBean(this.beanFactory);
-		assertThat(source.getResolver().resolve(registeredBean)).containsExactly("1");
+		assertThat(source.getResolver().resolve(registeredBean).toArray()).containsExactly("1");
 	}
 
 	@ParameterizedResolverTest(Sources.INNER_CLASS_SINGLE_ARG)
 	void resolvedNestedSingleArgConstructor(Source source) {
 		this.beanFactory.registerSingleton("one", "1");
 		RegisteredBean registeredBean = source.registerBean(this.beanFactory);
-		assertThat(source.getResolver().resolve(registeredBean)).containsExactly("1");
+		assertThat(source.getResolver().resolve(registeredBean).toArray()).containsExactly("1");
 	}
 
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
@@ -226,9 +226,9 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor());
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(String.class);
 		beanDefinition.setInstanceSupplier(InstanceSupplier.of(registeredBean -> {
-			Object[] args = AutowiredInstantiationArgumentsResolver
+			AutowiredArguments args = AutowiredInstantiationArgumentsResolver
 					.forFactoryMethod(SingleArgFactory.class, "single", String.class).resolve(registeredBean);
-			return new SingleArgFactory().single((String) args[0]);
+			return new SingleArgFactory().single((String) args.get(0));
 		}));
 		this.beanFactory.registerBeanDefinition("test", beanDefinition);
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() -> this.beanFactory.getBean("test"))
@@ -240,17 +240,17 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.registerSingleton("one", "1");
 		this.beanFactory.registerSingleton("two", "2");
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat((Object[]) arguments[0]).containsExactly("1", "2");
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat((Object[]) arguments.get(0)).containsExactly("1", "2");
 	}
 
 	@ParameterizedResolverTest(Sources.ARRAY_OF_BEANS)
 	void resolveRequiredArrayOfBeansInjectEmptyArray(Source source) {
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat((Object[]) arguments[0]).isEmpty();
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat((Object[]) arguments.get(0)).isEmpty();
 	}
 
 	@ParameterizedResolverTest(Sources.LIST_OF_BEANS)
@@ -258,17 +258,17 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.registerSingleton("one", "1");
 		this.beanFactory.registerSingleton("two", "2");
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isInstanceOf(List.class).asList().containsExactly("1", "2");
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat(arguments.getObject(0)).isInstanceOf(List.class).asList().containsExactly("1", "2");
 	}
 
 	@ParameterizedResolverTest(Sources.LIST_OF_BEANS)
 	void resolveRequiredListOfBeansInjectEmptyList(Source source) {
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat((List<?>) arguments[0]).isEmpty();
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat((List<?>) arguments.get(0)).isEmpty();
 	}
 
 	@ParameterizedResolverTest(Sources.SET_OF_BEANS)
@@ -277,17 +277,17 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.registerSingleton("one", "1");
 		this.beanFactory.registerSingleton("two", "2");
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat((Set<String>) arguments[0]).containsExactly("1", "2");
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat((Set<String>) arguments.get(0)).containsExactly("1", "2");
 	}
 
 	@ParameterizedResolverTest(Sources.SET_OF_BEANS)
 	void resolveRequiredSetOfBeansInjectEmptySet(Source source) {
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat((Set<?>) arguments[0]).isEmpty();
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat((Set<?>) arguments.get(0)).isEmpty();
 	}
 
 	@ParameterizedResolverTest(Sources.MAP_OF_BEANS)
@@ -296,17 +296,17 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.registerSingleton("one", "1");
 		this.beanFactory.registerSingleton("two", "2");
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat((Map<String, String>) arguments[0]).containsExactly(entry("one", "1"), entry("two", "2"));
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat((Map<String, String>) arguments.get(0)).containsExactly(entry("one", "1"), entry("two", "2"));
 	}
 
 	@ParameterizedResolverTest(Sources.MAP_OF_BEANS)
 	void resolveRequiredMapOfBeansInjectEmptySet(Source source) {
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat((Map<?, ?>) arguments[0]).isEmpty();
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat((Map<?, ?>) arguments.get(0)).isEmpty();
 	}
 
 	@ParameterizedResolverTest(Sources.MULTI_ARGS)
@@ -317,11 +317,11 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.registerSingleton("environment", environment);
 		this.beanFactory.registerSingleton("one", "1");
 		RegisteredBean registerBean = source.registerBean(this.beanFactory);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(3);
-		assertThat(arguments[0]).isEqualTo(resourceLoader);
-		assertThat(arguments[1]).isEqualTo(environment);
-		assertThat(((ObjectProvider<?>) arguments[2]).getIfAvailable()).isEqualTo("1");
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(3);
+		assertThat(arguments.getObject(0)).isEqualTo(resourceLoader);
+		assertThat(arguments.getObject(1)).isEqualTo(environment);
+		assertThat(((ObjectProvider<?>) arguments.get(2)).getIfAvailable()).isEqualTo("1");
 	}
 
 	@ParameterizedResolverTest(Sources.MIXED_ARGS)
@@ -334,11 +334,11 @@ class AutowiredInstantiationArgumentsResolverTests {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, "user-value");
 		});
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(3);
-		assertThat(arguments[0]).isEqualTo(resourceLoader);
-		assertThat(arguments[1]).isEqualTo("user-value");
-		assertThat(arguments[2]).isEqualTo(environment);
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(3);
+		assertThat(arguments.getObject(0)).isEqualTo(resourceLoader);
+		assertThat(arguments.getObject(1)).isEqualTo("user-value");
+		assertThat(arguments.getObject(2)).isEqualTo(environment);
 	}
 
 	@ParameterizedResolverTest(Sources.MIXED_ARGS)
@@ -353,11 +353,11 @@ class AutowiredInstantiationArgumentsResolverTests {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(1, new RuntimeBeanReference("two"));
 		});
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(3);
-		assertThat(arguments[0]).isEqualTo(resourceLoader);
-		assertThat(arguments[1]).isEqualTo("2");
-		assertThat(arguments[2]).isEqualTo(environment);
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(3);
+		assertThat(arguments.getObject(0)).isEqualTo(resourceLoader);
+		assertThat(arguments.getObject(1)).isEqualTo("2");
+		assertThat(arguments.getObject(2)).isEqualTo(environment);
 	}
 
 	@Test
@@ -368,9 +368,9 @@ class AutowiredInstantiationArgumentsResolverTests {
 			beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, "\\");
 		});
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isInstanceOf(Character.class).isEqualTo('\\');
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat(arguments.getObject(0)).isInstanceOf(Character.class).isEqualTo('\\');
 	}
 
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
@@ -378,9 +378,9 @@ class AutowiredInstantiationArgumentsResolverTests {
 		this.beanFactory.registerSingleton("stringBean", "string");
 		RegisteredBean registerBean = source.registerBean(this.beanFactory, beanDefinition -> beanDefinition
 				.getConstructorArgumentValues().addIndexedArgumentValue(0, new RuntimeBeanReference("stringBean")));
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isEqualTo("string");
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat(arguments.getObject(0)).isEqualTo("string");
 	}
 
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
@@ -389,9 +389,9 @@ class AutowiredInstantiationArgumentsResolverTests {
 				.getBeanDefinition();
 		RegisteredBean registerBean = source.registerBean(this.beanFactory,
 				beanDefinition -> beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, userValue));
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isEqualTo("string");
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat(arguments.getObject(0)).isEqualTo("string");
 	}
 
 	@ParameterizedResolverTest(Sources.SINGLE_ARG)
@@ -401,9 +401,9 @@ class AutowiredInstantiationArgumentsResolverTests {
 		ValueHolder valueHolder = new ValueHolder('a');
 		valueHolder.setConvertedValue("this is an a");
 		mergedBeanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, valueHolder);
-		Object[] arguments = source.getResolver().resolve(registerBean);
-		assertThat(arguments).hasSize(1);
-		assertThat(arguments[0]).isEqualTo("this is an a");
+		AutowiredArguments arguments = source.getResolver().resolve(registerBean);
+		assertThat(arguments.toArray()).hasSize(1);
+		assertThat(arguments.getObject(0)).isEqualTo("this is an a");
 	}
 
 	@Test
@@ -423,7 +423,7 @@ class AutowiredInstantiationArgumentsResolverTests {
 		beanFactory.registerSingleton("one", "1");
 		RegisteredBean registeredBean = source.registerBean(beanFactory);
 		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> resolver.resolve(registeredBean));
-		assertThat(resolver.withShortcuts("one").resolve(registeredBean)).containsExactly("1");
+		assertThat(resolver.withShortcuts("one").resolve(registeredBean).toArray()).containsExactly("1");
 	}
 
 	@Test

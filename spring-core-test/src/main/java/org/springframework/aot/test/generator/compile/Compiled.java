@@ -75,6 +75,18 @@ public class Compiled {
 	}
 
 	/**
+	 * Return the single matching source file that was compiled.
+	 * @param pattern the pattern used to find the file
+	 * @return the single source file
+	 * @throws IllegalStateException if the compiler wasn't passed exactly one
+	 * file
+	 */
+	public SourceFile getSourceFile(String pattern) {
+		return this.sourceFiles.getSingle(pattern);
+	}
+
+
+	/**
 	 * Return the single source file that was compiled in the given package.
 	 * @param packageName the package name to check
 	 * @return the single source file

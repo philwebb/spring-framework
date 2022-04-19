@@ -26,6 +26,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import groovyjarjarantlr4.v4.runtime.misc.Nullable;
+
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
@@ -62,6 +64,7 @@ import org.springframework.util.function.ThrowableFunction;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
+ * @see AutowiredArguments
  */
 public final class AutowiredInstantiationArgumentsResolver extends AutowiredElementResolver {
 
@@ -127,10 +130,10 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 * @param generator the generator to execute with the resolved constructor or factory
 	 * method arguments
 	 */
-	public <T> T resolve(RegisteredBean registeredBean, ThrowableFunction<Object[], T> generator) {
+	public <T> T resolve(RegisteredBean registeredBean, ThrowableFunction<AutowiredArguments, T> generator) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(generator, "'action' must not be null");
-		Object[] resolved = resolveArguments(registeredBean, this.lookup.get(registeredBean));
+		AutowiredArguments resolved = resolveArguments(registeredBean, this.lookup.get(registeredBean));
 		return generator.apply(resolved);
 	}
 
@@ -139,7 +142,7 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 * @param registeredBean the registered bean
 	 * @return the resolved constructor or factory method arguments
 	 */
-	public Object[] resolve(RegisteredBean registeredBean) {
+	public AutowiredArguments resolve(RegisteredBean registeredBean) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		return resolveArguments(registeredBean, this.lookup.get(registeredBean));
 	}
@@ -167,13 +170,13 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(registeredBean, "'requiredType' must not be null");
 		Executable executable = this.lookup.get(registeredBean);
-		Object[] arguments = resolveArguments(registeredBean, executable);
-		Object instance = instantiate(registeredBean.getBeanFactory(), executable, arguments);
+		AutowiredArguments arguments = resolveArguments(registeredBean, executable);
+		Object instance = instantiate(registeredBean.getBeanFactory(), executable, arguments.toArray());
 		Assert.isInstanceOf(requiredType, instance);
 		return (T) instance;
 	}
 
-	private Object[] resolveArguments(RegisteredBean registeredBean, Executable executable) {
+	private AutowiredArguments resolveArguments(RegisteredBean registeredBean, Executable executable) {
 		Assert.isInstanceOf(AbstractAutowireCapableBeanFactory.class, registeredBean.getBeanFactory());
 		String beanName = registeredBean.getBeanName();
 		Class<?> beanClass = registeredBean.getBeanClass();
@@ -203,7 +206,7 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 		if (executable instanceof Method method) {
 			mergedBeanDefinition.setResolvedFactoryMethod(method);
 		}
-		return resolved;
+		return AutowiredArguments.of(resolved);
 	}
 
 	private MethodParameter getMethodParameter(Executable executable, int index) {
@@ -241,6 +244,7 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 		return resolvedValueHolder;
 	}
 
+	@Nullable
 	private Object resolveArgument(AbstractAutowireCapableBeanFactory beanFactory, String beanName,
 			Set<String> autowiredBeans, MethodParameter parameter, DependencyDescriptor dependencyDescriptor,
 			ValueHolder argumentValue) {

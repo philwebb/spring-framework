@@ -19,6 +19,7 @@ package org.springframework.beans.factory.aot.registration;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.InstanceSupplier;
+import org.springframework.javapoet.ClassName;
 
 /**
  * Interface that can be used to configure the code that will be generated to perform
@@ -31,6 +32,12 @@ import org.springframework.beans.factory.support.InstanceSupplier;
  * @see BeanRegistrationCodeGenerator
  */
 public interface BeanRegistrationCode {
+
+	/**
+	 * Return the name of the class being used for registrations.
+	 * @return the name of the class
+	 */
+	ClassName getClassName();
 
 	/**
 	 * Return a {@link MethodGenerator} that can be used to add more methods to the

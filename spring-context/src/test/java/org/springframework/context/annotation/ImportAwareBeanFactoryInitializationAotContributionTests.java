@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
 import org.springframework.aot.generate.GeneratedMethods;
-import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
@@ -64,7 +63,7 @@ class ImportAwareBeanFactoryInitializationAotContributionTests {
 
 	private InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 
-	private GenerationContext generationContext = new DefaultGenerationContext(this.generatedFiles);
+	private DefaultGenerationContext generationContext = new DefaultGenerationContext(this.generatedFiles);
 
 	private MockBeanFactoryInitializationCode beanFactoryInitializationCode = new MockBeanFactoryInitializationCode();
 
@@ -106,7 +105,8 @@ class ImportAwareBeanFactoryInitializationAotContributionTests {
 	@SuppressWarnings("unchecked")
 	private void testCompiledResult(BiConsumer<Consumer<DefaultListableBeanFactory>, Compiled> result) {
 		JavaFile javaFile = createJavaFile();
-		TestCompiler.forSystem().compile(javaFile::writeTo,
+		this.generationContext.close();
+		TestCompiler.forSystem().withFiles(this.generatedFiles).compile(javaFile::writeTo,
 				compiled -> result.accept(compiled.getInstance(Consumer.class), compiled));
 	}
 

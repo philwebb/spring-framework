@@ -18,6 +18,7 @@ package org.springframework.aot.test.generator.file;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.springframework.lang.Nullable;
@@ -32,14 +33,11 @@ public final class SourceFiles implements Iterable<SourceFile> {
 
 	private static final SourceFiles NONE = new SourceFiles(DynamicFiles.none());
 
-
 	private final DynamicFiles<SourceFile> files;
-
 
 	private SourceFiles(DynamicFiles<SourceFile> files) {
 		this.files = files;
 	}
-
 
 	/**
 	 * Return a {@link SourceFiles} instance with no items.
@@ -50,8 +48,8 @@ public final class SourceFiles implements Iterable<SourceFile> {
 	}
 
 	/**
-	 * Factory method that can be used to create a {@link SourceFiles} instance
-	 * containing the specified files.
+	 * Factory method that can be used to create a {@link SourceFiles} instance containing
+	 * the specified files.
 	 * @param sourceFiles the files to include
 	 * @return a {@link SourceFiles} instance
 	 */
@@ -60,8 +58,8 @@ public final class SourceFiles implements Iterable<SourceFile> {
 	}
 
 	/**
-	 * Return a new {@link SourceFiles} instance that merges files from another
-	 * array of {@link SourceFile} instances.
+	 * Return a new {@link SourceFiles} instance that merges files from another array of
+	 * {@link SourceFile} instances.
 	 * @param sourceFiles the instances to merge
 	 * @return a new {@link SourceFiles} instance containing merged content
 	 */
@@ -70,8 +68,8 @@ public final class SourceFiles implements Iterable<SourceFile> {
 	}
 
 	/**
-	 * Return a new {@link SourceFiles} instance that merges files from another
-	 * array of {@link SourceFile} instances.
+	 * Return a new {@link SourceFiles} instance that merges files from another iterable
+	 * of {@link SourceFile} instances.
 	 * @param sourceFiles the instances to merge
 	 * @return a new {@link SourceFiles} instance containing merged content
 	 */
@@ -111,8 +109,7 @@ public final class SourceFiles implements Iterable<SourceFile> {
 	}
 
 	/**
-	 * Get the {@link SourceFile} with the given
-	 * {@code DynamicFile#getPath() path}.
+	 * Get the {@link SourceFile} with the given {@code DynamicFile#getPath() path}.
 	 * @param path the path to find
 	 * @return a {@link SourceFile} instance or {@code null}
 	 */
@@ -124,22 +121,33 @@ public final class SourceFiles implements Iterable<SourceFile> {
 	/**
 	 * Return the single source file contained in the collection.
 	 * @return the single file
-	 * @throws IllegalStateException if the collection doesn't contain exactly
-	 * one file
+	 * @throws IllegalStateException if the collection doesn't contain exactly one file
 	 */
 	public SourceFile getSingle() throws IllegalStateException {
 		return this.files.getSingle();
 	}
 
 	/**
+	 * Return the single matching source file contained in the collection.
+	 * @return the single file
+	 * @throws IllegalStateException if the collection doesn't contain exactly one file
+	 */
+	public SourceFile getSingle(String pattern) throws IllegalStateException {
+		return getSingle(Pattern.compile(pattern));
+	}
+
+	private SourceFile getSingle(Pattern pattern) {
+		return this.files.getSingle(candidate -> pattern.matcher(candidate.getClassName()).matches());
+	}
+
+	/**
 	 * Return a single source file contained in the specified package.
 	 * @return the single file
-	 * @throws IllegalStateException if the collection doesn't contain exactly
-	 * one file
+	 * @throws IllegalStateException if the collection doesn't contain exactly one file
 	 */
 	public SourceFile getSingleFromPackage(String packageName) {
-		return this.files.getSingle(candidate ->
-			Objects.equals(packageName, candidate.getJavaSource().getPackageName()));
+		return this.files
+				.getSingle(candidate -> Objects.equals(packageName, candidate.getJavaSource().getPackageName()));
 	}
 
 	@Override

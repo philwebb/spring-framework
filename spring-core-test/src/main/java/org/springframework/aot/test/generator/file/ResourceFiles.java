@@ -61,11 +61,21 @@ public final class ResourceFiles implements Iterable<ResourceFile> {
 	/**
 	 * Return a new {@link ResourceFiles} instance that merges files from
 	 * another array of {@link ResourceFile} instances.
-	 * @param ResourceFiles the instances to merge
+	 * @param resourceFiles the instances to merge
 	 * @return a new {@link ResourceFiles} instance containing merged content
 	 */
-	public ResourceFiles and(ResourceFile... ResourceFiles) {
-		return new ResourceFiles(this.files.and(ResourceFiles));
+	public ResourceFiles and(ResourceFile... resourceFiles) {
+		return new ResourceFiles(this.files.and(resourceFiles));
+	}
+
+	/**
+	 * Return a new {@link ResourceFiles} instance that merges files from another iterable
+	 * of {@link ResourceFiles} instances.
+	 * @param resourceFiles the instances to merge
+	 * @return a new {@link ResourceFiles} instance containing merged content
+	 */
+	public ResourceFiles and(Iterable<ResourceFile> resourceFiles) {
+		return new ResourceFiles(this.files.and(resourceFiles));
 	}
 
 	/**

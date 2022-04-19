@@ -16,7 +16,9 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import java.lang.reflect.Executable;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -26,13 +28,13 @@ import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.javapoet.ParameterizedTypeName;
@@ -68,13 +70,18 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	/**
 	 * Create a new {@link DefaultBeanRegistrationCodeGenerator} instance.
 	 * @param registeredBean the registered bean
+	 * @param constructorOrFactoryMethod the constructor or factory method that creates
+	 * the bean
+	 * @param className the name of the class being used for registrations
 	 * @param methodGenerator the method generator to use
 	 * @param innerBeanDefinitionMethodGenerator the inner-bean definition method
 	 * generator to use
 	 */
-	public DefaultBeanRegistrationCodeGenerator(RegisteredBean registeredBean, MethodGenerator methodGenerator,
+	public DefaultBeanRegistrationCodeGenerator(RegisteredBean registeredBean, Executable constructorOrFactoryMethod,
+			ClassName className, MethodGenerator methodGenerator,
 			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
-		super(registeredBean, methodGenerator, innerBeanDefinitionMethodGenerator);
+		super(registeredBean, constructorOrFactoryMethod, className, methodGenerator,
+				innerBeanDefinitionMethodGenerator);
 	}
 
 	@Override
@@ -136,7 +143,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 		BeanDefinition beanDefintion = registeredBean.getMergedBeanDefinition();
 		Predicate<String> attributeFilter = this::isAttributeIncluded;
 		return generateBeanDefinitionPropertiesCode(hints, attributeFilter, getMethodGenerator(),
-				propertyValue -> generatePropertyValueCode(generationContext, propertyValue), beanDefintion);
+				(name, value) -> generateValueCode(generationContext, name, value), beanDefintion);
 	}
 
 	/**
@@ -151,18 +158,19 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	}
 
 	/**
-	 * Generate custom code for a bean {@link PropertyValue}. By default this method is
-	 * used to support inner-beans.
+	 * Generate custom code for a bean property or constructor value. By default this
+	 * method is used to support inner-beans.
 	 * @param generationContext the generation context
-	 * @param propertyValue the property value
-	 * @return generated code or {@code null} to use default generation.
+	 * @param name the name of the property or constructor argument
+	 * @param value the property or constructor argument value
+	 * @return generated code or {@code null} to use default generation
 	 */
 	@Nullable
-	protected CodeBlock generatePropertyValueCode(GenerationContext generationContext, PropertyValue propertyValue) {
-		RegisteredBean innerRegisteredBean = getInnerRegisteredBean(propertyValue.getValue());
+	protected CodeBlock generateValueCode(GenerationContext generationContext, String name, Object value) {
+		RegisteredBean innerRegisteredBean = getInnerRegisteredBean(value);
 		if (innerRegisteredBean != null) {
 			MethodReference generatedMethod = getInnerBeanDefinitionMethodGenerator()
-					.generateInnerBeanDefinitionMethod(generationContext, innerRegisteredBean, propertyValue.getName());
+					.generateInnerBeanDefinitionMethod(generationContext, innerRegisteredBean, name);
 			return generatedMethod.toInvokeCodeBlock();
 		}
 		return null;
@@ -187,8 +195,8 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	private CodeBlock generateSetBeanInstanceSupplierCode(GenerationContext generationContext) {
 		CodeBlock.Builder builder = CodeBlock.builder();
 		List<MethodReference> postProcessors = getInstancePostProcessorMethodReferences();
-		CodeBlock instanceSupplierCode = generateInstanceSupplierCode(generationContext, getMethodGenerator(),
-				getRegisteredBean(), postProcessors.isEmpty());
+		CodeBlock instanceSupplierCode = generateInstanceSupplierCode(generationContext, getClassName(),
+				getMethodGenerator(), getRegisteredBean(), getConstructorOrFactoryMethod(), postProcessors.isEmpty());
 		if (postProcessors.isEmpty()) {
 			builder.addStatement("$L.setInstanceSupplier($L)", BEAN_DEFINITION_VARIABLE, instanceSupplierCode);
 			return builder.build();
@@ -229,6 +237,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	/**
 	 * Generates standard instance supplier code for a {@link RegisteredBean}.
 	 * @param generationContext the generation context
+	 * @param className the name of the class being used
 	 * @param methodGenerator the method generator to use
 	 * @param registeredBean the registered bean
 	 * @param allowDirectSupplierShortcut if a direct {@link Supplier} shortcut can be
@@ -236,24 +245,25 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	 * @return a code block containing the {@link InstanceSupplier} code
 	 */
 	protected final CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
-			MethodGenerator methodGenerator, RegisteredBean registeredBean, boolean allowDirectSupplierShortcut) {
-		return new InstanceSupplierCodeGenerator(generationContext, methodGenerator, allowDirectSupplierShortcut)
-				.generateCode(registeredBean);
+			ClassName className, MethodGenerator methodGenerator, RegisteredBean registeredBean,
+			Executable constructorOrFactoryMethod, boolean allowDirectSupplierShortcut) {
+		return new InstanceSupplierCodeGenerator(generationContext, className, methodGenerator,
+				allowDirectSupplierShortcut).generateCode(registeredBean, constructorOrFactoryMethod);
 	}
 
 	/**
 	 * Generates standard {@link BeanDefinition} property setter code.
 	 * @param attributeFilter the attribute filter to use
 	 * @param methodGenerator the method generator to use
-	 * @param propertyValueCodeGenerator the property value code generator to use
+	 * @param valueCodeGenerator the value code generator to use
 	 * @param beanDefinition the source bean definition
 	 * @return a code block containing property setter code
 	 */
 	protected final CodeBlock generateBeanDefinitionPropertiesCode(RuntimeHints hints,
 			Predicate<String> attributeFilter, MethodGenerator methodGenerator,
-			Function<PropertyValue, CodeBlock> propertyValueCodeGenerator, BeanDefinition beanDefinition) {
-		return new BeanDefinitionPropertiesCodeGenerator(hints, attributeFilter, methodGenerator,
-				propertyValueCodeGenerator).generateCode(beanDefinition);
+			BiFunction<String, Object, CodeBlock> valueCodeGenerator, BeanDefinition beanDefinition) {
+		return new BeanDefinitionPropertiesCodeGenerator(hints, attributeFilter, methodGenerator, valueCodeGenerator)
+				.generateCode(beanDefinition);
 	}
 
 }

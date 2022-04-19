@@ -30,7 +30,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
-import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
@@ -38,7 +37,6 @@ import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
-import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.beans.factory.aot.AotFactoriesLoader;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -65,7 +63,7 @@ class BeanRegistrationsAotContributionTests {
 
 	private InMemoryGeneratedFiles generatedFiles;
 
-	private GenerationContext generationContext;
+	private DefaultGenerationContext generationContext;
 
 	private DefaultListableBeanFactory beanFactory;
 
@@ -134,16 +132,10 @@ class BeanRegistrationsAotContributionTests {
 
 	@SuppressWarnings({ "unchecked", "cast" })
 	private void testCompiledResult(BiConsumer<Consumer<DefaultListableBeanFactory>, Compiled> result) {
-		List<SourceFile> sourceFiles = new ArrayList<>();
-		this.generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
-			Class<?> targetClass = this.generatedFiles.getTargetClass(path);
-			SourceFile sourceFile = SourceFile.of(path, inputStreamSource).withTargetClass(targetClass);
-			sourceFiles.add(sourceFile);
-		});
+		this.generationContext.close();
 		JavaFile javaFile = createJavaFile();
-		sourceFiles.add(SourceFile.of(javaFile::writeTo));
-		TestCompiler.forSystem().withSources(sourceFiles)
-				.compile(compiled -> result.accept(compiled.getInstance(Consumer.class), compiled));
+		TestCompiler.forSystem().withFiles(this.generatedFiles).
+				compile(javaFile::writeTo, compiled -> result.accept(compiled.getInstance(Consumer.class), compiled));
 	}
 
 	private JavaFile createJavaFile() {

@@ -16,6 +16,8 @@
 
 package org.springframework.aot.test.generator.compile;
 
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -28,6 +30,8 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.springframework.aot.generate.GeneratedFiles.Kind;
+import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.test.generator.file.ResourceFile;
 import org.springframework.aot.test.generator.file.ResourceFiles;
 import org.springframework.aot.test.generator.file.SourceFile;
@@ -53,15 +57,13 @@ public final class TestCompiler {
 
 	private final ResourceFiles resourceFiles;
 
-
-	private TestCompiler(@Nullable ClassLoader classLoader, JavaCompiler compiler,
-			SourceFiles sourceFiles, ResourceFiles resourceFiles) {
+	private TestCompiler(@Nullable ClassLoader classLoader, JavaCompiler compiler, SourceFiles sourceFiles,
+			ResourceFiles resourceFiles) {
 		this.classLoader = classLoader;
 		this.compiler = compiler;
 		this.sourceFiles = sourceFiles;
 		this.resourceFiles = resourceFiles;
 	}
-
 
 	/**
 	 * Return a new {@link TestCompiler} backed by the system java compiler.
@@ -72,14 +74,24 @@ public final class TestCompiler {
 	}
 
 	/**
-	 * Return a new {@link TestCompiler} backed by the given
-	 * {@link JavaCompiler}.
+	 * Return a new {@link TestCompiler} backed by the given {@link JavaCompiler}.
 	 * @param javaCompiler the java compiler to use
 	 * @return a new {@link TestCompiler} instance
 	 */
 	public static TestCompiler forCompiler(JavaCompiler javaCompiler) {
-		return new TestCompiler(null, javaCompiler, SourceFiles.none(),
-				ResourceFiles.none());
+		return new TestCompiler(null, javaCompiler, SourceFiles.none(), ResourceFiles.none());
+	}
+
+	public TestCompiler withFiles(InMemoryGeneratedFiles generatedFiles) {
+		List<SourceFile> sourceFiles = new ArrayList<>();
+		generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
+			Class<?> targetClass = generatedFiles.getTargetClass(path);
+			sourceFiles.add(SourceFile.of(inputStreamSource).withTargetClass(targetClass));
+		});
+		List<ResourceFile> resourceFiles = new ArrayList<>();
+		generatedFiles.getGeneratedFiles(Kind.RESOURCE)
+				.forEach((path, inputStreamSource) -> resourceFiles.add(ResourceFile.of(path, inputStreamSource)));
+		return withSources(sourceFiles).withResources(resourceFiles);
 	}
 
 	/**
@@ -88,8 +100,7 @@ public final class TestCompiler {
 	 * @return a new {@link TestCompiler} instance
 	 */
 	public TestCompiler withSources(SourceFile... sourceFiles) {
-		return new TestCompiler(this.classLoader, this.compiler,
-				this.sourceFiles.and(sourceFiles), this.resourceFiles);
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles.and(sourceFiles), this.resourceFiles);
 	}
 
 	/**
@@ -98,8 +109,7 @@ public final class TestCompiler {
 	 * @return a new {@link TestCompiler} instance
 	 */
 	public TestCompiler withSources(Iterable<SourceFile> sourceFiles) {
-		return new TestCompiler(this.classLoader, this.compiler,
-				this.sourceFiles.and(sourceFiles), this.resourceFiles);
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles.and(sourceFiles), this.resourceFiles);
 	}
 
 	/**
@@ -108,8 +118,7 @@ public final class TestCompiler {
 	 * @return a new {@link TestCompiler} instance
 	 */
 	public TestCompiler withSources(SourceFiles sourceFiles) {
-		return new TestCompiler(this.classLoader, this.compiler,
-				this.sourceFiles.and(sourceFiles), this.resourceFiles);
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles.and(sourceFiles), this.resourceFiles);
 	}
 
 	/**
@@ -118,6 +127,16 @@ public final class TestCompiler {
 	 * @return a new {@link TestCompiler} instance
 	 */
 	public TestCompiler withResources(ResourceFile... resourceFiles) {
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles,
+				this.resourceFiles.and(resourceFiles));
+	}
+
+	/**
+	 * Return a new {@link TestCompiler} instance with addition source files.
+	 * @param resourceFiles the additional source files
+	 * @return a new {@link TestCompiler} instance
+	 */
+	public TestCompiler withResources(Iterable<ResourceFile> resourceFiles) {
 		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles,
 				this.resourceFiles.and(resourceFiles));
 	}
@@ -132,10 +151,16 @@ public final class TestCompiler {
 				this.resourceFiles.and(resourceFiles));
 	}
 
+	public TestCompiler withTargetClassAccess() {
+		return withTargetClassAccess(true);
+	}
+
+	public TestCompiler withTargetClassAccess(boolean targetClassAccess) {
+		return new TestCompiler(this.classLoader, this.compiler, this.sourceFiles, this.resourceFiles);
+	}
 
 	/**
-	 * Compile content from this instance along with the additional provided
-	 * content.
+	 * Compile content from this instance along with the additional provided content.
 	 * @param content the additional content to compile
 	 * @param compiled a consumed used to further assert the compiled code
 	 * @throws CompilationException if source cannot be compiled
@@ -145,8 +170,7 @@ public final class TestCompiler {
 	}
 
 	/**
-	 * Compile content from this instance along with the additional provided
-	 * source file.
+	 * Compile content from this instance along with the additional provided source file.
 	 * @param sourceFile the additional source file to compile
 	 * @param compiled a consumed used to further assert the compiled code
 	 * @throws CompilationException if source cannot be compiled
@@ -156,8 +180,7 @@ public final class TestCompiler {
 	}
 
 	/**
-	 * Compile content from this instance along with the additional provided
-	 * source files.
+	 * Compile content from this instance along with the additional provided source files.
 	 * @param sourceFiles the additional source files to compile
 	 * @param compiled a consumed used to further assert the compiled code
 	 * @throws CompilationException if source cannot be compiled
@@ -167,15 +190,14 @@ public final class TestCompiler {
 	}
 
 	/**
-	 * Compile content from this instance along with the additional provided
-	 * source and resource files.
+	 * Compile content from this instance along with the additional provided source and
+	 * resource files.
 	 * @param sourceFiles the additional source files to compile
 	 * @param resourceFiles the additional resource files to include
 	 * @param compiled a consumed used to further assert the compiled code
 	 * @throws CompilationException if source cannot be compiled
 	 */
-	public void compile(SourceFiles sourceFiles, ResourceFiles resourceFiles,
-			Consumer<Compiled> compiled) {
+	public void compile(SourceFiles sourceFiles, ResourceFiles resourceFiles, Consumer<Compiled> compiled) {
 		withSources(sourceFiles).withResources(resourceFiles).compile(compiled);
 	}
 
@@ -189,8 +211,11 @@ public final class TestCompiler {
 		ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
 			Thread.currentThread().setContextClassLoader(dynamicClassLoader);
-			compiled.accept(new Compiled(dynamicClassLoader, this.sourceFiles,
-					this.resourceFiles));
+			compiled.accept(new Compiled(dynamicClassLoader, this.sourceFiles, this.resourceFiles));
+		}
+		catch (IllegalAccessError ex) {
+			throw new IllegalAccessError(ex.getMessage() + ". For non-public access ensure annotate "
+					+ "your tests with @CompileWithTargetClassAccess");
 		}
 		finally {
 			Thread.currentThread().setContextClassLoader(previousClassLoader);
@@ -200,25 +225,41 @@ public final class TestCompiler {
 	private DynamicClassLoader compile() {
 		ClassLoader classLoaderToUse = (this.classLoader != null) ? this.classLoader
 				: Thread.currentThread().getContextClassLoader();
-		List<DynamicJavaFileObject> compilationUnits = this.sourceFiles.stream().map(
-				DynamicJavaFileObject::new).toList();
-		StandardJavaFileManager standardFileManager = this.compiler.getStandardFileManager(
-				null, null, null);
-		DynamicJavaFileManager fileManager = new DynamicJavaFileManager(
-				standardFileManager, classLoaderToUse);
+		List<DynamicJavaFileObject> compilationUnits = this.sourceFiles.stream().map(DynamicJavaFileObject::new)
+				.toList();
+		StandardJavaFileManager standardFileManager = this.compiler.getStandardFileManager(null, null, null);
+		DynamicJavaFileManager fileManager = new DynamicJavaFileManager(standardFileManager, classLoaderToUse);
 		if (!this.sourceFiles.isEmpty()) {
 			Errors errors = new Errors();
-			CompilationTask task = this.compiler.getTask(null, fileManager, errors, null,
-					null, compilationUnits);
+			CompilationTask task = this.compiler.getTask(null, fileManager, errors, null, null, compilationUnits);
 			boolean result = task.call();
 			if (!result || errors.hasReportedErrors()) {
-				throw new CompilationException("Unable to compile source" + errors);
+				throw new CompilationException(errors.toString(), this.sourceFiles, this.resourceFiles);
 			}
 		}
-		return new DynamicClassLoader(classLoaderToUse, this.sourceFiles,
-				this.resourceFiles, fileManager.getClassFiles());
+		return new DynamicClassLoader(classLoaderToUse, this.sourceFiles, this.resourceFiles,
+				fileManager.getClassFiles());
 	}
 
+	/**
+	 * Print the contents of the source and resource files to the specified
+	 * {@link PrintStream}.
+	 * @param printStream the destination print stream
+	 * @return this instance
+	 */
+	public TestCompiler printFiles(PrintStream printStream) {
+		for (SourceFile sourceFile : this.sourceFiles) {
+			printStream.append("---- source:   " + sourceFile.getPath() + "\n\n");
+			printStream.append(sourceFile.getContent());
+			printStream.append("\n\n");
+		}
+		for (ResourceFile resourceFile : this.resourceFiles) {
+			printStream.append("---- resource: " + resourceFile.getPath() + "\n\n");
+			printStream.append(resourceFile.getContent());
+			printStream.append("\n\n");
+		}
+		return this;
+	}
 
 	/**
 	 * {@link DiagnosticListener} used to collect errors.
@@ -235,8 +276,7 @@ public final class TestCompiler {
 				this.message.append(" ");
 				this.message.append(diagnostic.getSource().getName());
 				this.message.append(" ");
-				this.message.append(diagnostic.getLineNumber()).append(":")
-						.append(diagnostic.getColumnNumber());
+				this.message.append(diagnostic.getLineNumber()).append(":").append(diagnostic.getColumnNumber());
 			}
 		}
 

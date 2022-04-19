@@ -27,14 +27,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
-import org.springframework.aot.generate.GeneratedFiles.Kind;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
+import org.springframework.aot.test.generator.compile.CompileWithTargetClassAccess;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
-import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationCode;
 import org.springframework.beans.factory.aot.registration.InnerBeanDefinitionMethodGenerator;
@@ -43,6 +42,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -91,6 +91,7 @@ class AutowiredAnnotationBeanRegistrationAotContributionTests {
 	}
 
 	@Test
+	@CompileWithTargetClassAccess
 	void contributeWhenPackagePrivateFieldInjectionInjectsUsingConsumer() {
 		Environment environment = new StandardEnvironment();
 		this.beanFactory.registerSingleton("environment", environment);
@@ -100,7 +101,7 @@ class AutowiredAnnotationBeanRegistrationAotContributionTests {
 			postProcessor.apply(registeredBean, instance);
 			assertThat(instance).extracting("environment").isSameAs(environment);
 			assertThat(compiled.getSourceFileFromPackage(getClass().getPackageName()))
-					.contains("-> instance.environment =");
+					.contains("instance.environment =");
 		});
 	}
 
@@ -118,6 +119,7 @@ class AutowiredAnnotationBeanRegistrationAotContributionTests {
 	}
 
 	@Test
+	@CompileWithTargetClassAccess
 	void contributeWhenPackagePrivateMethodInjectionInjectsUsingConsumer() {
 		Environment environment = new StandardEnvironment();
 		this.beanFactory.registerSingleton("environment", environment);
@@ -148,16 +150,9 @@ class AutowiredAnnotationBeanRegistrationAotContributionTests {
 	@SuppressWarnings("unchecked")
 	private void testCompiledResult(RegisteredBean registeredBean,
 			BiConsumer<BiFunction<RegisteredBean, Object, Object>, Compiled> result) {
-		List<SourceFile> sourceFiles = new ArrayList<>();
 		JavaFile javaFile = createJavaFile(registeredBean.getBeanClass());
-		sourceFiles.add(SourceFile.of(javaFile::writeTo));
-		this.generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
-			Class<?> targetClass = this.generatedFiles.getTargetClass(path);
-			SourceFile sourceFile = SourceFile.of(path, inputStreamSource).withTargetClass(targetClass);
-			sourceFiles.add(sourceFile);
-		});
-		TestCompiler.forSystem().withSources(sourceFiles)
-				.compile(compiled -> result.accept(compiled.getInstance(BiFunction.class), compiled));
+		TestCompiler.forSystem().withFiles(this.generatedFiles).compile(javaFile::writeTo,
+				compiled -> result.accept(compiled.getInstance(BiFunction.class), compiled));
 	}
 
 	private JavaFile createJavaFile(Class<?> target) {
@@ -180,6 +175,11 @@ class AutowiredAnnotationBeanRegistrationAotContributionTests {
 		@Override
 		public void addInstancePostProcessor(MethodReference methodReference) {
 			this.instancePostProcessors.add(methodReference);
+		}
+
+		@Override
+		public ClassName getClassName() {
+			return null;
 		}
 
 		@Override

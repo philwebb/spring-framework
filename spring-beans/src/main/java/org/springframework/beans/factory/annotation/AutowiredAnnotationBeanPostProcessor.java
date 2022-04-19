@@ -272,7 +272,8 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 		InjectionMetadata metadata = findInjectionMetadata(beanName, beanClass, beanDefinition);
 		Collection<InjectedElement> injectedElements = metadata.getInjectedElements();
 		if (!ObjectUtils.isEmpty(injectedElements)) {
-			return new AutowiredAnnotationBeanRegistrationAotContribution(beanClass, injectedElements);
+			Class<?> target = ClassUtils.getUserClass(beanClass);
+			return new AutowiredAnnotationBeanRegistrationAotContribution(target, injectedElements);
 		}
 		return null;
 	}

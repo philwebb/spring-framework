@@ -113,10 +113,10 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	 * @param registeredBean the registered bean
 	 * @param action the action to execute with the resolved method arguments
 	 */
-	public void resolve(RegisteredBean registeredBean, ThrowableConsumer<Object[]> action) {
+	public void resolve(RegisteredBean registeredBean, ThrowableConsumer<AutowiredArguments> action) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(action, "'action' must not be null");
-		Object[] resolved = resolve(registeredBean);
+		AutowiredArguments resolved = resolve(registeredBean);
 		if (resolved != null) {
 			action.accept(resolved);
 		}
@@ -128,10 +128,10 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	 * @return the resolved method arguments
 	 */
 	@Nullable
-	public Object[] resolve(RegisteredBean registeredBean) {
+	public AutowiredArguments resolve(RegisteredBean registeredBean) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Method method = ReflectionUtils.findMethod(registeredBean.getBeanClass(), this.methodName, this.parameterTypes);
-		return resolveValue(registeredBean, method);
+		return resolveArguments(registeredBean, method);
 	}
 
 	/**
@@ -144,15 +144,15 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(instance, "'instance' must not be null");
 		Method method = ReflectionUtils.findMethod(registeredBean.getBeanClass(), this.methodName, this.parameterTypes);
-		Object[] resolved = resolveValue(registeredBean, method);
+		AutowiredArguments resolved = resolveArguments(registeredBean, method);
 		if (resolved != null) {
 			ReflectionUtils.makeAccessible(method);
-			ReflectionUtils.invokeMethod(method, instance, resolved);
+			ReflectionUtils.invokeMethod(method, instance, resolved.toArray());
 		}
 	}
 
 	@Nullable
-	private Object[] resolveValue(RegisteredBean registeredBean, Method method) {
+	private AutowiredArguments resolveArguments(RegisteredBean registeredBean, Method method) {
 		String beanName = registeredBean.getBeanName();
 		Class<?> beanClass = registeredBean.getBeanClass();
 		Assert.notNull(method, () -> String.format("Method '%s' with parameter types [%s] declared on %s",
@@ -185,7 +185,7 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 			}
 		}
 		registerDependentBeans(beanFactory, beanName, autowiredBeanNames);
-		return arguments;
+		return AutowiredArguments.of(arguments);
 	}
 
 	private String toCommaSeparatedNames(Class<?>... parameterTypes) {

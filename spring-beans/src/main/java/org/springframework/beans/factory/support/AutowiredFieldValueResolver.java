@@ -102,10 +102,10 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	 * @param registeredBean the registered bean
 	 * @param action the action to execute with the resolved field value
 	 */
-	public void resolve(RegisteredBean registeredBean, ThrowableConsumer<Object> action) {
+	public <T> void resolve(RegisteredBean registeredBean, ThrowableConsumer<T> action) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Assert.notNull(action, "'action' must not be null");
-		Object resolved = resolve(registeredBean);
+		T resolved = resolve(registeredBean);
 		if (resolved != null) {
 			action.accept(resolved);
 		}
@@ -114,14 +114,40 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	/**
 	 * Resolve the field value for the specified registered bean.
 	 * @param registeredBean the registered bean
+	 * @param requiredType the required type
 	 * @return the resolved field value
 	 */
 	@Nullable
-	public Object resolve(RegisteredBean registeredBean) {
+	@SuppressWarnings("unchecked")
+	public <T> T resolve(RegisteredBean registeredBean, Class<T> requiredType) {
+		Object value = resolveObject(registeredBean);
+		Assert.isInstanceOf(requiredType, value);
+		return (T) value;
+	}
+
+	/**
+	 * Resolve the field value for the specified registered bean.
+	 * @param registeredBean the registered bean
+	 * @return the resolved field value
+	 */
+	@Nullable
+	@SuppressWarnings("unchecked")
+	public <T> T resolve(RegisteredBean registeredBean) {
+		return (T) resolveObject(registeredBean);
+	}
+
+	/**
+	 * Resolve the field value for the specified registered bean.
+	 * @param registeredBean the registered bean
+	 * @return the resolved field value
+	 */
+	@Nullable
+	public Object resolveObject(RegisteredBean registeredBean) {
 		Assert.notNull(registeredBean, "'registeredBean' must not be null");
 		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
 		return resolveValue(registeredBean, field);
 	}
+
 
 	/**
 	 * Resolve the field value for the specified registered bean and set it using

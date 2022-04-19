@@ -33,7 +33,7 @@ import org.springframework.util.ClassUtils;
  * @since 6.0
  * @see ClassNameGenerator
  */
-public final class GeneratedClassName {
+public final class GeneratedClassName implements Comparable<GeneratedClassName> {
 
 	private final String name;
 
@@ -141,14 +141,7 @@ public final class GeneratedClassName {
 	 * @return a {@link ClassName} instance
 	 */
 	public ClassName toClassName() {
-		String name = getShortName();
-		int indexOfDollar = name.indexOf('$');
-		if (indexOfDollar == -1) {
-			return ClassName.get(getPackageName(), name);
-		}
-		String[] nested = name.substring(indexOfDollar + 1).split("\\$");
-		name = name.substring(0, indexOfDollar);
-		return ClassName.get(getPackageName(), name, nested);
+		return ClassName.get(getPackageName(), getShortName());
 	}
 
 	@Override
@@ -170,6 +163,11 @@ public final class GeneratedClassName {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+
+	@Override
+	public int compareTo(GeneratedClassName other) {
+		return this.name.compareTo(other.name);
 	}
 
 }

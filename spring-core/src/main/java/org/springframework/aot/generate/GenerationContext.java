@@ -45,8 +45,17 @@ public interface GenerationContext {
 	 * names to be generated before they are added to the {@link #getGeneratedFiles()
 	 * generated files}.
 	 * @return the class name generator
+	 * @see #getGeneratedFiles()
 	 */
 	ClassNameGenerator getClassNameGenerator();
+
+	/**
+	 * Return the {@link GeneratedClasses} being used by the context. Allows a single
+	 * generated class to be shared across multiple AOT processors. All generated classes
+	 * are written at the end of AOT processing.
+	 * @return the generated classes
+	 */
+	ClassGenerator getClassGenerator();
 
 	/**
 	 * Return the {@link GeneratedFiles} being used by the context. Used to write
@@ -54,14 +63,6 @@ public interface GenerationContext {
 	 * @return the generated files
 	 */
 	GeneratedFiles getGeneratedFiles();
-
-	/**
-	 * Return the {@link GeneratedSpringFactories} files that will be written once AOT
-	 * processing has completed. Typically used to register generated code as a service so
-	 * that it will be applied when the AOT optimized application is run.
-	 * @return the spring factories
-	 */
-	GeneratedSpringFactories getGeneratedSpringFactories();
 
 	/**
 	 * Return the {@link RuntimeHints} being used by the context. Used to record

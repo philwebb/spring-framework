@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import java.lang.reflect.Executable;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -34,7 +35,6 @@ import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.TypeHint;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
-import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -42,7 +42,6 @@ import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.testfixture.beans.TestBean;
-import org.springframework.beans.testfixture.beans.TestBeanWithPackagePrivateConstructor;
 import org.springframework.beans.testfixture.beans.TestBeanWithPrivateConstructor;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration;
 import org.springframework.beans.testfixture.beans.factory.generator.InnerComponentConfiguration.EnvironmentAwareComponent;
@@ -53,6 +52,7 @@ import org.springframework.beans.testfixture.beans.factory.generator.factory.Num
 import org.springframework.beans.testfixture.beans.factory.generator.factory.SampleFactory;
 import org.springframework.beans.testfixture.beans.factory.generator.injection.InjectionComponent;
 import org.springframework.core.env.StandardEnvironment;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -75,9 +75,9 @@ class InstanceSupplierCodeGeneratorTests {
 
 	private DefaultGenerationContext generationContext;
 
-	private DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-
 	private boolean allowDirectSupplierShortcut = false;
+
+	private ClassName className = ClassName.get("__", "InstanceSupplierSupplier");
 
 	@BeforeEach
 	void setup() {
@@ -244,42 +244,20 @@ class InstanceSupplierCodeGeneratorTests {
 	}
 
 	@Test
-	void getPackagePrivateTargetWhenHasPackagePrivateStaticFactoryMethod() {
-		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(String.class)
-				.setFactoryMethodOnBean("packageStaticStringBean", "config").getBeanDefinition();
-		this.beanFactory.registerBeanDefinition("config",
+	void generateWhenHasStaticFactoryMethodCheckedException() {
+		BeanDefinition beanDefinition = BeanDefinitionBuilder.rootBeanDefinition(Integer.class)
+				.setFactoryMethodOnBean("throwingIntegerBean", "config").getBeanDefinition();
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config",
 				BeanDefinitionBuilder.genericBeanDefinition(SimpleConfiguration.class).getBeanDefinition());
-		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean))
-				.isEqualTo(SimpleConfiguration.class);
-	}
-
-	@Test
-	void getPackagePrivateTargetWhenHasPackagePrivateConstructor() {
-		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPackagePrivateConstructor.class);
-		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean))
-				.isEqualTo(TestBeanWithPackagePrivateConstructor.class);
-	}
-
-	@Test
-	void getPackagePrivateTargetWhenPublicClassWithPublicConstructorReturnsNull() {
-		BeanDefinition beanDefinition = new RootBeanDefinition(TestBean.class);
-		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean)).isNull();
-	}
-
-	@Test
-	void getPackagePrivateTargetWhenHasPrivateConstructorReturnsNull() {
-		BeanDefinition beanDefinition = new RootBeanDefinition(TestBeanWithPrivateConstructor.class);
-		RegisteredBean registeredBean = registerBean((RootBeanDefinition) beanDefinition);
-		assertThat(InstanceSupplierCodeGenerator.getPackagePrivateTarget(registeredBean)).isNull();
-	}
-
-	private RegisteredBean registerBean(RootBeanDefinition beanDefinition) {
-		String beanName = "testBean";
-		this.beanFactory.registerBeanDefinition(beanName, beanDefinition);
-		return RegisteredBean.of(this.beanFactory, beanName);
+		testCompiledResult(beanFactory, beanDefinition, (instanceSupplier, compiled) -> {
+			Integer bean = getBean(beanFactory, beanDefinition, instanceSupplier);
+			assertThat(bean).isInstanceOf(Integer.class);
+			assertThat(bean).isEqualTo(42);
+			assertThat(compiled.getSourceFile()).contains(") throws Exception {");
+		});
+		assertThat(getReflectionHints().getTypeHint(SimpleConfiguration.class))
+				.satisfies(hasMethodWithMode(ExecutableMode.INTROSPECT));
 	}
 
 	private ReflectionHints getReflectionHints() {
@@ -309,15 +287,17 @@ class InstanceSupplierCodeGeneratorTests {
 	@SuppressWarnings("unchecked")
 	private void testCompiledResult(DefaultListableBeanFactory beanFactory, BeanDefinition beanDefinition,
 			BiConsumer<InstanceSupplier<?>, Compiled> result) {
+		this.generationContext.close();
 		DefaultListableBeanFactory registrationBeanFactory = new DefaultListableBeanFactory(beanFactory);
 		registrationBeanFactory.registerBeanDefinition("testBean", beanDefinition);
 		RegisteredBean registeredBean = RegisteredBean.of(registrationBeanFactory, "testBean");
 		GeneratedMethods generatedMethods = new GeneratedMethods();
-		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(this.generationContext,
+		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(this.generationContext, this.className,
 				generatedMethods, this.allowDirectSupplierShortcut);
-		CodeBlock generatedCode = generator.generateCode(registeredBean);
+		Executable constructorOrFactoryMethod = ConstructorOrFactoryMethodResolver.resolve(registeredBean);
+		CodeBlock generatedCode = generator.generateCode(registeredBean, constructorOrFactoryMethod);
 		JavaFile javaFile = createJavaFile(generatedCode, generatedMethods);
-		TestCompiler.forSystem().withSources(SourceFile.of(javaFile::writeTo)).compile(
+		TestCompiler.forSystem().withFiles(this.generatedFiles).compile(javaFile::writeTo,
 				compiled -> result.accept((InstanceSupplier<?>) compiled.getInstance(Supplier.class).get(), compiled));
 	}
 

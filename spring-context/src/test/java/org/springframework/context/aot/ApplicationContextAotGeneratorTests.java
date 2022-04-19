@@ -16,19 +16,14 @@
 
 package org.springframework.context.aot;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
-import org.springframework.aot.generate.GeneratedFiles.Kind;
-import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
-import org.springframework.aot.test.generator.file.SourceFile;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
@@ -170,16 +165,10 @@ class ApplicationContextAotGeneratorTests {
 			BiConsumer<ApplicationContextInitializer<GenericApplicationContext>, Compiled> result) {
 		ApplicationContextAotGenerator generator = new ApplicationContextAotGenerator();
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
-		GenerationContext generationContext = new DefaultGenerationContext(generatedFiles);
+		DefaultGenerationContext generationContext = new DefaultGenerationContext(generatedFiles);
 		generator.generateApplicationContext(applicationContext, generationContext, MAIN_GENERATED_TYPE);
-		List<SourceFile> sourceFiles = new ArrayList<>();
-		generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
-			Class<?> targetClass = generatedFiles.getTargetClass(path);
-			SourceFile sourceFile = SourceFile.of(path, inputStreamSource).withTargetClass(targetClass);
-			sourceFiles.add(sourceFile);
-			System.out.println(sourceFile.getContent());
-		});
-		TestCompiler.forSystem().withSources(sourceFiles).compile(
+		generationContext.close();
+		TestCompiler.forSystem().withFiles(generatedFiles).compile(
 				compiled -> result.accept(compiled.getInstance(ApplicationContextInitializer.class), compiled));
 	}
 

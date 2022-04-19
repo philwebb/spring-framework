@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.config.DependencyDescriptor;
+import org.springframework.util.function.ThrowableConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -123,9 +124,8 @@ class AutowiredFieldValueResolverTests {
 	@Test
 	void resolveWithActionWhenActionIsNullThrowsException() {
 		RegisteredBean registeredBean = registerTestBean(this.beanFactory);
-		assertThatIllegalArgumentException()
-				.isThrownBy(() -> AutowiredFieldValueResolver.forField("string").resolve(registeredBean, null))
-				.withMessage("'action' must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> AutowiredFieldValueResolver.forField("string")
+				.resolve(registeredBean, (ThrowableConsumer<Object>) null)).withMessage("'action' must not be null");
 	}
 
 	@Test
@@ -138,7 +138,15 @@ class AutowiredFieldValueResolverTests {
 	}
 
 	@Test
-	void resolveWhenUsingShortcutInjectsDirectly() {
+	void resolveWithActionWhenDeducedGenericCallsAction() {
+		this.beanFactory.registerSingleton("one", "1");
+		RegisteredBean registeredBean = registerTestBean(this.beanFactory);
+		TestBean testBean = new TestBean();
+		testBean.string = AutowiredFieldValueResolver.forField("string").resolve(registeredBean);
+	}
+
+	@Test
+	void resolveObjectWhenUsingShortcutInjectsDirectly() {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory() {
 
 			@Override
@@ -152,11 +160,11 @@ class AutowiredFieldValueResolverTests {
 		RegisteredBean registeredBean = registerTestBean(beanFactory);
 		AutowiredFieldValueResolver resolver = AutowiredFieldValueResolver.forField("string");
 		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> resolver.resolve(registeredBean));
-		assertThat(resolver.withShortcut("one").resolve(registeredBean)).isEqualTo("1");
+		assertThat(resolver.withShortcut("one").resolveObject(registeredBean)).isEqualTo("1");
 	}
 
 	@Test
-	void resolveRegisteresDependantBeans() {
+	void resolveRegistersDependantBeans() {
 		this.beanFactory.registerSingleton("one", "1");
 		RegisteredBean registeredBean = registerTestBean(this.beanFactory);
 		AutowiredFieldValueResolver.forField("string").resolve(registeredBean);

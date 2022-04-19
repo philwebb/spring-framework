@@ -24,6 +24,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -183,6 +184,12 @@ public final class RegisteredBean {
 	@Nullable
 	public RegisteredBean getParent() {
 		return this.parent;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringCreator(this).append("beanName", getBeanName())
+				.append("mergedBeanDefinition", getMergedBeanDefinition()).toString();
 	}
 
 	/**

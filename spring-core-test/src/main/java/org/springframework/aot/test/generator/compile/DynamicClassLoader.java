@@ -23,7 +23,6 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -57,18 +56,14 @@ public class DynamicClassLoader extends ClassLoader {
 
 	private final Map<String, DynamicClassFileObject> classFiles;
 
-	private final ClassLoader sourceLoader;
 
-
-	public DynamicClassLoader(ClassLoader sourceLoader, SourceFiles sourceFiles,
+	public DynamicClassLoader(ClassLoader parent, SourceFiles sourceFiles,
 			ResourceFiles resourceFiles, Map<String, DynamicClassFileObject> classFiles) {
-		super(sourceLoader.getParent());
-		this.sourceLoader = sourceLoader;
+		super(parent);
 		this.sourceFiles = sourceFiles;
 		this.resourceFiles = resourceFiles;
 		this.classFiles = classFiles;
 	}
-
 
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
@@ -76,43 +71,22 @@ public class DynamicClassLoader extends ClassLoader {
 		if (classFile != null) {
 			return defineClass(name, classFile);
 		}
-		try {
-			Class<?> fromSourceLoader = this.sourceLoader.loadClass(name);
-			if (Modifier.isPublic(fromSourceLoader.getModifiers())) {
-				return fromSourceLoader;
-			}
-		}
-		catch (Exception ex) {
-			// Continue
-		}
-		try (InputStream classStream = this.sourceLoader.getResourceAsStream(name.replace(".", "/") + ".class")) {
-			byte[] bytes = classStream.readAllBytes();
-			return defineClass(name, bytes, 0, bytes.length, null);
-		}
-		catch (IOException ex) {
-			throw new ClassNotFoundException(name);
-		}
+		return super.findClass(name);
 	}
 
 	private Class<?> defineClass(String name, DynamicClassFileObject classFile) {
-		String path = ClassUtils.convertClassNameToResourcePath(name) + ".java";
 		byte[] bytes = classFile.getBytes();
+		String path = ClassUtils.convertClassNameToResourcePath(name) + ".java";
 		SourceFile sourceFile = this.sourceFiles.get(path);
-		if (sourceFile != null && sourceFile.getTargetClass() != null) {
+		if (sourceFile != null && sourceFile.getTargetClass() != null
+				&& getParent().getClass().getName().equals(CompileWithTargetClassAccessClassLoader.class.getName())) {
 			try {
-				Lookup lookup = MethodHandles.privateLookupIn(sourceFile.getTargetClass(),
-						MethodHandles.lookup());
-				try {
-					return lookup.findClass(name);
-				}
-				catch (ClassNotFoundException ex) {
-					return lookup.defineClass(bytes);
-				}
+				Lookup lookup = MethodHandles.privateLookupIn(sourceFile.getTargetClass(), MethodHandles.lookup());
+				return lookup.defineClass(bytes);
 			}
 			catch (IllegalAccessException ex) {
-				logger.log(Level.WARNING,
-						"Unable to define class using MethodHandles Lookup, "
-								+ "only public methods and classes will be accessible");
+				logger.log(Level.WARNING, "Unable to define class using MethodHandles Lookup, "
+						+ "only public methods and classes will be accessible");
 			}
 		}
 		return defineClass(name, bytes, 0, bytes.length, null);
@@ -133,8 +107,7 @@ public class DynamicClassLoader extends ClassLoader {
 		ResourceFile file = this.resourceFiles.get(name);
 		if (file != null) {
 			try {
-				return new URL(null, "resource:///" + file.getPath(),
-						new ResourceFileHandler(file));
+				return new URL(null, "resource:///" + file.getPath(), new ResourceFileHandler(file));
 			}
 			catch (MalformedURLException ex) {
 				throw new IllegalStateException(ex);
