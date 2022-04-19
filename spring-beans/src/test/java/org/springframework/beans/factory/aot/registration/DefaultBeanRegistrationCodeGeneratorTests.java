@@ -33,6 +33,7 @@ import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.factory.aot.AotFactoriesLoader;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
@@ -153,7 +154,7 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 	}
 
 	@Test
-	void generateCodeWithInnerBean() {
+	void generateCodeWithInnerBeanPropertyValue() {
 		RootBeanDefinition innerBeanDefinition = (RootBeanDefinition) BeanDefinitionBuilder
 				.rootBeanDefinition(AnnotatedBean.class).setRole(BeanDefinition.ROLE_INFRASTRUCTURE).setPrimary(true)
 				.getBeanDefinition();
@@ -169,6 +170,33 @@ class DefaultBeanRegistrationCodeGeneratorTests {
 			Supplier<?> innerInstanceSupplier = actualInnerBeanDefinition.getInstanceSupplier();
 			try {
 				assertThat(innerInstanceSupplier.get()).isInstanceOf(AnnotatedBean.class);
+			}
+			catch (Exception ex) {
+				throw new IllegalStateException(ex);
+			}
+		});
+	}
+
+	@Test
+	void generateCodeWithInnerBeanConstructorValue() {
+		RootBeanDefinition innerBeanDefinition = (RootBeanDefinition) BeanDefinitionBuilder
+				.rootBeanDefinition(String.class).setRole(BeanDefinition.ROLE_INFRASTRUCTURE).setPrimary(true)
+				.getBeanDefinition();
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(TestBean.class);
+		ValueHolder valueHolder = new ValueHolder(innerBeanDefinition);
+		valueHolder.setName("second");
+		beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, valueHolder);
+		RegisteredBean registeredBean = registerBean(beanDefinition);
+		DefaultBeanRegistrationCodeGenerator generator = new DefaultBeanRegistrationCodeGenerator(registeredBean,
+				this.methodGenerator, this.innerBeanDefinitionMethodGenerator);
+		testCompiledResult(generator, registeredBean, (actual, compiled) -> {
+			RootBeanDefinition actualInnerBeanDefinition = (RootBeanDefinition) actual.getConstructorArgumentValues()
+					.getIndexedArgumentValue(0, RootBeanDefinition.class).getValue();
+			assertThat(actualInnerBeanDefinition.isPrimary()).isTrue();
+			assertThat(actualInnerBeanDefinition.getRole()).isEqualTo(BeanDefinition.ROLE_INFRASTRUCTURE);
+			Supplier<?> innerInstanceSupplier = actualInnerBeanDefinition.getInstanceSupplier();
+			try {
+				assertThat(innerInstanceSupplier.get()).isInstanceOf(String.class);
 			}
 			catch (Exception ex) {
 				throw new IllegalStateException(ex);

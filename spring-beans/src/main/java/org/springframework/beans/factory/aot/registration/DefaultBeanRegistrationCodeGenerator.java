@@ -17,6 +17,7 @@
 package org.springframework.beans.factory.aot.registration;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -26,7 +27,6 @@ import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.InstanceSupplier;
@@ -136,7 +136,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 		BeanDefinition beanDefintion = registeredBean.getMergedBeanDefinition();
 		Predicate<String> attributeFilter = this::isAttributeIncluded;
 		return generateBeanDefinitionPropertiesCode(hints, attributeFilter, getMethodGenerator(),
-				propertyValue -> generatePropertyValueCode(generationContext, propertyValue), beanDefintion);
+				(name, value) -> generateValueCode(generationContext, name, value), beanDefintion);
 	}
 
 	/**
@@ -151,18 +151,19 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	}
 
 	/**
-	 * Generate custom code for a bean {@link PropertyValue}. By default this method is
-	 * used to support inner-beans.
+	 * Generate custom code for a bean property or constructor value. By default this
+	 * method is used to support inner-beans.
 	 * @param generationContext the generation context
-	 * @param propertyValue the property value
-	 * @return generated code or {@code null} to use default generation.
+	 * @param name the name of the property or constructor argument
+	 * @param value the property or constructor argument value
+	 * @return generated code or {@code null} to use default generation
 	 */
 	@Nullable
-	protected CodeBlock generatePropertyValueCode(GenerationContext generationContext, PropertyValue propertyValue) {
-		RegisteredBean innerRegisteredBean = getInnerRegisteredBean(propertyValue.getValue());
+	protected CodeBlock generateValueCode(GenerationContext generationContext, String name, Object value) {
+		RegisteredBean innerRegisteredBean = getInnerRegisteredBean(value);
 		if (innerRegisteredBean != null) {
 			MethodReference generatedMethod = getInnerBeanDefinitionMethodGenerator()
-					.generateInnerBeanDefinitionMethod(generationContext, innerRegisteredBean, propertyValue.getName());
+					.generateInnerBeanDefinitionMethod(generationContext, innerRegisteredBean, name);
 			return generatedMethod.toInvokeCodeBlock();
 		}
 		return null;
@@ -245,15 +246,15 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	 * Generates standard {@link BeanDefinition} property setter code.
 	 * @param attributeFilter the attribute filter to use
 	 * @param methodGenerator the method generator to use
-	 * @param propertyValueCodeGenerator the property value code generator to use
+	 * @param valueCodeGenerator the value code generator to use
 	 * @param beanDefinition the source bean definition
 	 * @return a code block containing property setter code
 	 */
 	protected final CodeBlock generateBeanDefinitionPropertiesCode(RuntimeHints hints,
 			Predicate<String> attributeFilter, MethodGenerator methodGenerator,
-			Function<PropertyValue, CodeBlock> propertyValueCodeGenerator, BeanDefinition beanDefinition) {
-		return new BeanDefinitionPropertiesCodeGenerator(hints, attributeFilter, methodGenerator,
-				propertyValueCodeGenerator).generateCode(beanDefinition);
+			BiFunction<String, Object, CodeBlock> valueCodeGenerator, BeanDefinition beanDefinition) {
+		return new BeanDefinitionPropertiesCodeGenerator(hints, attributeFilter, methodGenerator, valueCodeGenerator)
+				.generateCode(beanDefinition);
 	}
 
 }
