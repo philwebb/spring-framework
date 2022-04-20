@@ -23,13 +23,14 @@ import org.springframework.javapoet.MethodSpec.Builder;
 import org.springframework.util.Assert;
 
 /**
- * A bean registration method that has been added to a {@link GeneratedMethods}
- * collection.
+ * A generated method.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
+ * @since 6.0
  * @see GeneratedMethods
+ * @see MethodGenerator
  */
 public final class GeneratedMethod {
 
