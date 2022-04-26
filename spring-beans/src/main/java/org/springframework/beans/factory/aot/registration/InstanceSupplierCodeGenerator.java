@@ -110,7 +110,7 @@ class InstanceSupplierCodeGenerator {
 					? CodeBlock.of("$T.using($T::new)", InstanceSupplier.class, declaringClass)
 					: CodeBlock.of("$T::new", declaringClass);
 		}
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(name)
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod()
 				.using(builder -> buildGetInstanceMethodForConstructor(builder, name, constructor, declaringClass,
 						dependsOnBean, PRIVATE_STATIC));
 		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, this.className, getInstanceMethod.getName());
@@ -119,7 +119,7 @@ class InstanceSupplierCodeGenerator {
 	private CodeBlock generateCodeForInaccessibleConstructor(String name, Constructor<?> constructor,
 			Class<?> declaringClass, boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor);
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(name).using(builder -> {
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod().using(builder -> {
 			builder.addJavadoc("Instantiate the bean instance for '$L'.", name);
 			builder.addModifiers(PRIVATE_STATIC);
 			builder.returns(declaringClass);
@@ -188,7 +188,7 @@ class InstanceSupplierCodeGenerator {
 					? CodeBlock.of("$T.using($T::$L)", InstanceSupplier.class, declaringClass, factoryMethod.getName())
 					: CodeBlock.of("$T::$L", declaringClass, factoryMethod.getName());
 		}
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(name)
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod()
 				.using(builder -> buildGetInstanceMethodForFactoryMethod(builder, name, factoryMethod, declaringClass,
 						dependsOnBean, PRIVATE_STATIC));
 		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, this.className, getInstanceMethod.getName());
@@ -197,7 +197,7 @@ class InstanceSupplierCodeGenerator {
 	private CodeBlock generateCodeForInacessibleFactoryMethod(String name, Method factoryMethod,
 			Class<?> declaringClass) {
 		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod);
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(name).using(builder -> {
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod().using(builder -> {
 			builder.addJavadoc("Instantiate the bean instance for '$L'.", name);
 			builder.addModifiers(PRIVATE_STATIC);
 			builder.returns(factoryMethod.getReturnType());
@@ -280,7 +280,7 @@ class InstanceSupplierCodeGenerator {
 		return builder.build();
 	}
 
-	private GeneratedMethod generateGetInstanceMethod(String name) {
+	private GeneratedMethod generateGetInstanceMethod() {
 		return this.methodGenerator.generateMethod("get", "instance");
 	}
 

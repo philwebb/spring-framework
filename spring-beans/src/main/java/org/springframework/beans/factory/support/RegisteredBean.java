@@ -18,12 +18,12 @@ package org.springframework.beans.factory.support;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.lang.Nullable;
@@ -43,7 +43,7 @@ import org.springframework.util.StringUtils;
  */
 public final class RegisteredBean {
 
-	private final ConfigurableListableBeanFactory beanFactory;
+	private final ConfigurableBeanFactory beanFactory;
 
 	private final Supplier<String> beanName;
 
@@ -54,7 +54,7 @@ public final class RegisteredBean {
 	@Nullable
 	private final RegisteredBean parent;
 
-	private RegisteredBean(ConfigurableListableBeanFactory beanFactory, Supplier<String> beanName, boolean generatedBeanName,
+	private RegisteredBean(ConfigurableBeanFactory beanFactory, Supplier<String> beanName, boolean generatedBeanName,
 			Supplier<RootBeanDefinition> mergedBeanDefinition, @Nullable RegisteredBean parent) {
 		this.beanFactory = beanFactory;
 		this.beanName = beanName;
@@ -69,7 +69,7 @@ public final class RegisteredBean {
 	 * @param beanName the bean name
 	 * @return a new {@link RegisteredBean} instance
 	 */
-	public static RegisteredBean of(ConfigurableListableBeanFactory beanFactory, String beanName) {
+	public static RegisteredBean of(ConfigurableBeanFactory beanFactory, String beanName) {
 		Assert.notNull(beanFactory, "'beanFactory' must not be null");
 		Assert.hasLength(beanName, "'beanName' must not be empty");
 		return new RegisteredBean(beanFactory, () -> beanName, false,
@@ -135,7 +135,7 @@ public final class RegisteredBean {
 	 * Return the bean factory containing the bean.
 	 * @return the bean factory
 	 */
-	public ConfigurableListableBeanFactory getBeanFactory() {
+	public ConfigurableBeanFactory getBeanFactory() {
 		return this.beanFactory;
 	}
 
@@ -185,6 +185,18 @@ public final class RegisteredBean {
 	@Nullable
 	public RegisteredBean getParent() {
 		return this.parent;
+	}
+
+	/**
+	 * Return a new {@link RegisteredBean} instance that will apply additional processing
+	 * to the result of {@link #getMergedBeanDefinition()} before it is returned.
+	 * @param processor the processor to apply
+	 * @return a new {@link RegisteredBean} instance
+	 */
+	public RegisteredBean withProcessedMergedBeanDefinition(UnaryOperator<RootBeanDefinition> processor) {
+		Assert.notNull(processor, "'processor' must not be null");
+		return new RegisteredBean(this.beanFactory, this.beanName, this.generatedBeanName,
+				() -> processor.apply(this.mergedBeanDefinition.get()), this.parent);
 	}
 
 	@Override

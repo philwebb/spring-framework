@@ -195,8 +195,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	private CodeBlock generateSetBeanInstanceSupplierCode(GenerationContext generationContext) {
 		CodeBlock.Builder builder = CodeBlock.builder();
 		List<MethodReference> postProcessors = getInstancePostProcessorMethodReferences();
-		CodeBlock instanceSupplierCode = generateInstanceSupplierCode(generationContext, getClassName(),
-				getMethodGenerator(), getRegisteredBean(), getConstructorOrFactoryMethod(), postProcessors.isEmpty());
+		CodeBlock instanceSupplierCode = generateInstanceSupplierCode(generationContext, postProcessors.isEmpty());
 		if (postProcessors.isEmpty()) {
 			builder.addStatement("$L.setInstanceSupplier($L)", BEAN_DEFINITION_VARIABLE, instanceSupplierCode);
 			return builder.build();
@@ -210,6 +209,18 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 		}
 		builder.addStatement("$L.setInstanceSupplier($L)", BEAN_DEFINITION_VARIABLE, INSTANCE_SUPPLIER_VARIABLE);
 		return builder.build();
+	}
+
+	/**
+	 * Generate the code that provides the instance supplier.
+	 * @param generationContext the generation context
+	 * @param allowDirectSupplierShortcut if a direct {@link Supplier} shortcut can be
+	 * @return the instance supplier code
+	 */
+	protected CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
+			boolean allowDirectSupplierShortcut) {
+		return generateInstanceSupplierCode(generationContext, getClassName(), getMethodGenerator(),
+				getRegisteredBean(), getConstructorOrFactoryMethod(), allowDirectSupplierShortcut);
 	}
 
 	/**

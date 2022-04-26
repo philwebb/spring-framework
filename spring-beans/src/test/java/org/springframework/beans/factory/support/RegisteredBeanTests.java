@@ -191,10 +191,31 @@ class RegisteredBeanTests {
 		assertThat(registeredBean.isGeneratedBeanName()).isFalse();
 	}
 
+	@Test
+	void withProcessedMergedBeanDefinitionWhenProcessorIsNullThrowsException() {
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
+		assertThatIllegalArgumentException().isThrownBy(() -> registeredBean.withProcessedMergedBeanDefinition(null))
+				.withMessage("'processor' must not be null");
+	}
+
+	@Test
+	void withProcessedMergedBeanDefinitionAppliesProcessor() {
+		RegisteredBean registeredBean = RegisteredBean.of(this.beanFactory, "bd");
+		RegisteredBean processedRegisteredBean = registeredBean.withProcessedMergedBeanDefinition(bd -> {
+			RootBeanDefinition processed = new RootBeanDefinition(bd);
+			processed.setAbstract(true);
+			return processed;
+		});
+		assertThat(registeredBean.getMergedBeanDefinition().isAbstract()).isFalse();
+		assertThat(processedRegisteredBean.getMergedBeanDefinition().isAbstract()).isTrue();
+	}
+
 	static class TestBean {
+		
 	}
 
 	static class TestInnerBean {
+
 	}
 
 }
