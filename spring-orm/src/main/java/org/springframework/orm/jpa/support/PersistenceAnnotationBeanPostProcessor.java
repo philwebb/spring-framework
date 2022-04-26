@@ -39,6 +39,7 @@ import jakarta.persistence.PersistenceProperty;
 import jakarta.persistence.PersistenceUnit;
 import jakarta.persistence.SynchronizationType;
 
+import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generator.CodeContribution;
 import org.springframework.aot.generator.ProtectedAccess.Options;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +51,9 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.InjectionMetadata;
 import org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationAotProcessor;
+import org.springframework.beans.factory.aot.registration.BeanRegistrationCode;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
@@ -59,6 +63,7 @@ import org.springframework.beans.factory.generator.AotContributingBeanPostProces
 import org.springframework.beans.factory.generator.BeanFieldGenerator;
 import org.springframework.beans.factory.generator.BeanInstantiationContribution;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.Ordered;
@@ -183,7 +188,7 @@ import org.springframework.util.StringUtils;
 @SuppressWarnings("serial")
 public class PersistenceAnnotationBeanPostProcessor
 		implements InstantiationAwareBeanPostProcessor, DestructionAwareBeanPostProcessor,
-		MergedBeanDefinitionPostProcessor, AotContributingBeanPostProcessor,
+		MergedBeanDefinitionPostProcessor, AotContributingBeanPostProcessor, BeanRegistrationAotProcessor,
 		PriorityOrdered, BeanFactoryAware, Serializable {
 
 	@Nullable
@@ -354,6 +359,19 @@ public class PersistenceAnnotationBeanPostProcessor
 		Collection<InjectedElement> injectedElements = metadata.getInjectedElements();
 		if (!CollectionUtils.isEmpty(injectedElements)) {
 			return new PersistenceAnnotationBeanInstantiationContribution(injectedElements);
+		}
+		return null;
+	}
+
+	@Override
+	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
+		Class<?> beanClass = registeredBean.getBeanClass();
+		String beanName = registeredBean.getBeanName();
+		RootBeanDefinition beanDefinition = registeredBean.getMergedBeanDefinition();
+		InjectionMetadata metadata = findInjectionMetadata(beanDefinition, beanClass, beanName);
+		Collection<InjectedElement> injectedElements = metadata.getInjectedElements();
+		if (!CollectionUtils.isEmpty(injectedElements)) {
+			return new AotContribution(injectedElements);
 		}
 		return null;
 	}
@@ -814,5 +832,29 @@ public class PersistenceAnnotationBeanPostProcessor
 		}
 
 	}
+
+	private static class AotContribution implements BeanRegistrationAotContribution {
+
+		private final Collection<InjectedElement> injectedElements;
+
+		AotContribution(Collection<InjectedElement> injectedElements) {
+			this.injectedElements = injectedElements;
+		}
+
+		@Override
+		public void applyTo(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode) {
+			for (InjectedElement injectedElement : this.injectedElements) {
+				if (injectedElement instanceof PersistenceElement persistenceElement) {
+					applyTo(generationContext, beanRegistrationCode, persistenceElement);
+				}
+			}
+		}
+
+		private void applyTo(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode,
+				PersistenceElement persistenceElement) {
+		}
+
+	}
+
 
 }

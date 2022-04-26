@@ -143,6 +143,7 @@ class PersistenceAnnotationBeanPostProcessorTests {
 		assertThat(contributor).isNotNull();
 		DefaultCodeContribution contribution = new DefaultCodeContribution(new RuntimeHints());
 		contributor.applyTo(contribution);
+		System.out.println(CodeSnippet.process(contribution.statements().toCodeBlock()));
 		return contribution;
 	}
 

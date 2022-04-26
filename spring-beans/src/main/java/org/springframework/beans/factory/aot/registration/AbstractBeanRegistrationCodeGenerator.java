@@ -17,6 +17,7 @@
 package org.springframework.beans.factory.aot.registration;
 
 import java.lang.reflect.Executable;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.ClassName;
+import org.springframework.javapoet.CodeBlock;
 import org.springframework.util.Assert;
 
 /**
@@ -49,6 +51,8 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
+	private final List<InjectionPostProcessor> injectionPostProcessors = new ArrayList<>();
+
 	/**
 	 * Create a new {@link AbstractBeanRegistrationCodeGenerator} instance.
 	 * @param registeredBean the registered bean
@@ -60,8 +64,8 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 	 * generator to use
 	 */
 	protected AbstractBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
-			Executable constructorOrFactoryMethod, ClassName className,
-			MethodGenerator methodGenerator, InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
+			Executable constructorOrFactoryMethod, ClassName className, MethodGenerator methodGenerator,
+			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
 		this.registeredBean = registeredBean;
 		this.constructorOrFactoryMethod = constructorOrFactoryMethod;
 		this.className = className;
@@ -104,6 +108,65 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 	 */
 	protected final List<MethodReference> getInstancePostProcessorMethodReferences() {
 		return this.instancePostProcessors;
+	}
+
+	@Override
+	public void addInjectionPostProcessor(String name, Member member, CodeBlock value) {
+		Assert.hasLength(name, "'name' must not be empty");
+		Assert.notNull(member, "'member' must not be null");
+		Assert.notNull(value, "'value' must not be null");
+		this.injectionPostProcessors.add(new InjectionPostProcessor(name, member, value));
+	}
+
+	/**
+	 * Return the injection post-processors that have been added to this instance.
+	 * @return the injection post-processors
+	 */
+	protected final List<InjectionPostProcessor> getInjectionPostProcessors() {
+		return this.injectionPostProcessors;
+	}
+
+	/**
+	 * Holds details of an injection post processor.
+	 */
+	protected static class InjectionPostProcessor {
+
+		private final String name;
+
+		private final Member member;
+
+		private final CodeBlock value;
+
+		InjectionPostProcessor(String name, Member member, CodeBlock value) {
+			this.name = name;
+			this.member = member;
+			this.value = value;
+		}
+
+		/**
+		 * Return the name of the item being injected.
+		 * @return the item name
+		 */
+		public String getName() {
+			return this.name;
+		}
+
+		/**
+		 * Return the member to inject into.
+		 * @return the member
+		 */
+		public Member getMember() {
+			return this.member;
+		}
+
+		/**
+		 * Return the value to inject.
+		 * @return the value
+		 */
+		public CodeBlock getValue() {
+			return this.value;
+		}
+
 	}
 
 }
