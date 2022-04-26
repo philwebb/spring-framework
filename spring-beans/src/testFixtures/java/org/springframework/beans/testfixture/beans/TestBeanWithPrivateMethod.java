@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.aot.registration;
+package org.springframework.beans.testfixture.beans;
 
-import org.junit.jupiter.api.Test;
+@SuppressWarnings("unused")
+public class TestBeanWithPrivateMethod {
 
-import static org.junit.jupiter.api.Assertions.*;
+	private int age;
 
-/**
- * Tests for {@link InjectionPostProcessorMethodGenerator}.
- *
- * @author pwebb
- * @since 6.0
- */
-class InjectionPostProcessorMethodGeneratorTests {
-
-	@Test
-	void test() {
-		fail("Not yet implemented");
+	private void setAge(int age) {
+		this.age = age;
 	}
 
 }

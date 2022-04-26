@@ -16,13 +16,10 @@
 
 package org.springframework.beans.factory.aot.registration;
 
-import java.lang.reflect.Member;
-
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.InstanceSupplier;
 import org.springframework.javapoet.ClassName;
-import org.springframework.javapoet.CodeBlock;
 
 /**
  * Interface that can be used to configure the code that will be generated to perform
@@ -64,14 +61,5 @@ public interface BeanRegistrationCode {
 	 * @see InstanceSupplier#andThen(org.springframework.util.function.ThrowableBiFunction)
 	 */
 	void addInstancePostProcessor(MethodReference methodReference);
-
-	/**
-	 * Add an instance post processor method call that will inject the given value into a
-	 * field or single-arg method.
-	 * @param name the name of the item being injected (used to generate method names)
-	 * @param member the field or method to inject into
-	 * @param value the value to inject
-	 */
-	void addInjectionPostProcessor(String name, Member member, CodeBlock value);
 
 }

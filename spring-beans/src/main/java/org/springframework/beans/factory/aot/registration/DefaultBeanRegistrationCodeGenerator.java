@@ -17,8 +17,6 @@
 package org.springframework.beans.factory.aot.registration;
 
 import java.lang.reflect.Executable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -196,9 +194,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	 */
 	private CodeBlock generateSetBeanInstanceSupplierCode(GenerationContext generationContext) {
 		CodeBlock.Builder builder = CodeBlock.builder();
-		List<MethodReference> postProcessors = new ArrayList<>();
-		postProcessors.addAll(getInstancePostProcessorMethodReferences());
-		postProcessors.addAll(generateInjectionPostProcessorMethods(generationContext));
+		List<MethodReference> postProcessors = getInstancePostProcessorMethodReferences();
 		CodeBlock instanceSupplierCode = generateInstanceSupplierCode(generationContext, getClassName(),
 				getMethodGenerator(), getRegisteredBean(), getConstructorOrFactoryMethod(), postProcessors.isEmpty());
 		if (postProcessors.isEmpty()) {
@@ -214,21 +210,6 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 		}
 		builder.addStatement("$L.setInstanceSupplier($L)", BEAN_DEFINITION_VARIABLE, INSTANCE_SUPPLIER_VARIABLE);
 		return builder.build();
-	}
-
-	protected List<MethodReference> generateInjectionPostProcessorMethods(GenerationContext generationContext) {
-		List<InjectionPostProcessor> injectionPostProcessors = getInjectionPostProcessors();
-		if (injectionPostProcessors.isEmpty()) {
-			return Collections.emptyList();
-		}
-		InjectionPostProcessorMethodGenerator generator = new InjectionPostProcessorMethodGenerator(
-				generationContext.getRuntimeHints(), getMethodGenerator());
-		List<MethodReference> methodReferences = new ArrayList<>(injectionPostProcessors.size());
-		for (InjectionPostProcessor injectionPostProcessor : injectionPostProcessors) {
-			methodReferences.add(generator.generateMethod(injectionPostProcessor.getName(),
-					injectionPostProcessor.getMember(), injectionPostProcessor.getValue()));
-		}
-		return Collections.unmodifiableList(methodReferences);
 	}
 
 	/**
