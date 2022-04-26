@@ -897,6 +897,7 @@ public class PersistenceAnnotationBeanPostProcessor
 				builder.add(injectionCodeGenerator.generateInjectionCode(injectedElement.getMember(),
 						INSTANCE_PARAMETER, resourceToInject));
 			}
+			builder.addStatement("return $L", INSTANCE_PARAMETER);
 			return builder.build();
 		}
 
@@ -904,22 +905,24 @@ public class PersistenceAnnotationBeanPostProcessor
 			String unitName = injectedElement.unitName;
 			boolean requireEntityManager = (injectedElement.type != null);
 			if (!requireEntityManager) {
-				return CodeBlock.of("$T.findEntityManagerFactory(beanFactory, $S)",
-						EntityManagerFactory.class, EntityManagerFactoryUtils.class, unitName);
+				return CodeBlock.of("$T.findEntityManagerFactory($L.getBeanFactory(), $S)",
+						EntityManagerFactoryUtils.class, REGISTERED_BEAN_PARAMETER, unitName);
 			}
 			GeneratedMethod getEntityManagerMethod = methodGenerator.generateMethod("get", unitName, "EntityManager")
 					.using(builder -> buildGetEntityManagerMethod(builder, injectedElement));
-			return CodeBlock.of("$L()", getEntityManagerMethod.getName());
+			return CodeBlock.of("$L($L)", getEntityManagerMethod.getName(), REGISTERED_BEAN_PARAMETER);
 		}
 
 		private void buildGetEntityManagerMethod(MethodSpec.Builder builder, PersistenceElement injectedElement) {
 			String unitName = injectedElement.unitName;
 			Properties properties = injectedElement.properties;
-			builder.addJavadoc("Get the '$L' {@link $T}", (StringUtils.hasLength(unitName)) ? unitName : "default", EntityManager.class);
+			builder.addJavadoc("Get the '$L' {@link $T}", (StringUtils.hasLength(unitName)) ? unitName : "default",
+					EntityManager.class);
 			builder.addModifiers(javax.lang.model.element.Modifier.PUBLIC, javax.lang.model.element.Modifier.STATIC);
 			builder.returns(EntityManager.class);
-			builder.addStatement("$T entityManagerFactory = $T.findEntityManagerFactory(beanFactory, $S)",
-					EntityManagerFactory.class, EntityManagerFactoryUtils.class, unitName);
+			builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER);
+			builder.addStatement("$T entityManagerFactory = $T.findEntityManagerFactory($L.getBeanFactory(), $S)",
+					EntityManagerFactory.class, EntityManagerFactoryUtils.class, REGISTERED_BEAN_PARAMETER, unitName);
 			boolean hasProperties = !CollectionUtils.isEmpty(properties);
 			if (hasProperties) {
 				builder.addStatement("$T properties = new Properties()", Properties.class);

@@ -131,7 +131,6 @@ class PersistenceAnnotationBeanPostProcessorTests {
 	void generateEntityManagerFactoryInjection() {
 		GenericApplicationContext context = new AnnotationConfigApplicationContext();
 		context.registerBeanDefinition("test", new RootBeanDefinition(DefaultPersistenceUnitField.class));
-
 		EntityManagerFactory entityManagerFactory = mock(EntityManagerFactory.class);
 		compile(context, toFreshApplicationContext(() -> {
 			GenericApplicationContext ctx = new GenericApplicationContext();
