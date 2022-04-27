@@ -23,7 +23,6 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -57,13 +56,10 @@ public class DynamicClassLoader extends ClassLoader {
 
 	private final Map<String, DynamicClassFileObject> classFiles;
 
-	private final ClassLoader sourceLoader;
 
-
-	public DynamicClassLoader(ClassLoader sourceLoader, SourceFiles sourceFiles,
+	public DynamicClassLoader(ClassLoader parent, SourceFiles sourceFiles,
 			ResourceFiles resourceFiles, Map<String, DynamicClassFileObject> classFiles) {
-		super(sourceLoader.getParent());
-		this.sourceLoader = sourceLoader;
+		super(parent);
 		this.sourceFiles = sourceFiles;
 		this.resourceFiles = resourceFiles;
 		this.classFiles = classFiles;
@@ -74,24 +70,6 @@ public class DynamicClassLoader extends ClassLoader {
 		DynamicClassFileObject classFile = this.classFiles.get(name);
 		if (classFile != null) {
 			return defineClass(name, classFile);
-		}
-		try {
-			Class<?> fromSourceLoader = this.sourceLoader.loadClass(name);
-			if (Modifier.isPublic(fromSourceLoader.getModifiers())) {
-				return fromSourceLoader;
-			}
-		}
-		catch (Exception ex) {
-			// Continue
-		}
-		try (InputStream classStream = this.sourceLoader.getResourceAsStream(name.replace(".", "/") + ".class")) {
-			if (classStream != null) {
-				byte[] bytes = classStream.readAllBytes();
-				return defineClass(name, bytes, 0, bytes.length, null);
-			}
-		}
-		catch (IOException ex) {
-			throw new ClassNotFoundException(name);
 		}
 		return super.findClass(name);
 	}

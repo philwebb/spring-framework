@@ -171,6 +171,7 @@ class TestCompilerTests {
 	}
 
 	@Test
+	@CompileWithTargetClassAccess
 	void compiledCodeCanAccessExistingPackagePrivateClassIfAnnotated() throws ClassNotFoundException, LinkageError {
 		SourceFiles sourceFiles = SourceFiles.of(SourceFile.of("""
 				package com.example;
@@ -187,6 +188,26 @@ class TestCompilerTests {
 				compiled.getInstance(PublicInterface.class, "com.example.Test").perform())
 				.isEqualTo("Hello from PackagePrivate"));
 	}
+
+	@Test
+	void compiledCodeCannotAccessExistingPackagePrivateClassIfNotAnnotated() {
+		SourceFiles sourceFiles = SourceFiles.of(SourceFile.of("""
+				package com.example;
+
+				public class Test implements PublicInterface {
+
+					public String perform() {
+						return new PackagePrivate().perform();
+					}
+
+				}
+				"""));
+		assertThatExceptionOfType(IllegalAccessError.class)
+				.isThrownBy(() -> TestCompiler.forSystem().compile(sourceFiles,
+						compiled -> compiled.getInstance(PublicInterface.class, "com.example.Test").perform()))
+				.withMessageContaining(ClassUtils.getShortName(CompileWithTargetClassAccess.class));
+	}
+
 
 	private void assertSuppliesHelloWorld(Compiled compiled) {
 		assertThat(compiled.getInstance(Supplier.class).get()).isEqualTo("Hello World!");
