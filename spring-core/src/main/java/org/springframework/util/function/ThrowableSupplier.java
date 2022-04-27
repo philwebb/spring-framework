@@ -91,17 +91,31 @@ public interface ThrowableSupplier<T> extends Supplier<T> {
 		};
 	}
 
+
+	/**
+	 * Lambda friendly convenience method that can be used to create
+	 * {@link ThrowableSupplier} where the {@link #get()} method wraps any thrown checked
+	 * exceptions.
+	 * @param <T> the type of results supplied by this supplier
+	 * @param supplier the source supplier
+	 * @return a new {@link ThrowableSupplier} instance
+	 */
+	static <T> ThrowableSupplier<T> of(ThrowableSupplier<T> supplier) {
+		return supplier;
+	}
+
 	/**
 	 * Lambda friendly convenience method that can be used to create
 	 * {@link ThrowableSupplier} where the {@link #get()} method wraps any
 	 * thrown checked exceptions using the given {@code exceptionWrapper}.
 	 * @param <T> the type of results supplied by this supplier
 	 * @param supplier the source supplier
+	 * @param exceptionWrapper the exception wrapper to use
 	 * @return a new {@link ThrowableSupplier} instance
 	 */
 	static <T> ThrowableSupplier<T> of(
-			BiFunction<String, Exception, RuntimeException> exceptionWrapper,
-			ThrowableSupplier<T> supplier) {
+			ThrowableSupplier<T> supplier,
+			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 
 		return supplier.throwing(exceptionWrapper);
 	}

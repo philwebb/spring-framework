@@ -113,6 +113,24 @@ public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 	 * @return a new {@link ThrowableFunction} instance
 	 */
 	static <T, U, R> ThrowableBiFunction<T, U, R> of(
+			ThrowableBiFunction<T, U, R> function) {
+
+		return function;
+	}
+
+	/**
+	 * Lambda friendly convenience method that can be used to create
+	 * {@link ThrowableBiFunction} where the {@link #apply(Object, Object)}
+	 * method wraps any thrown checked exceptions using the given
+	 * {@code exceptionWrapper}.
+	 * @param <T> the type of the first argument to the function
+	 * @param <U> the type of the second argument to the function
+	 * @param <R> the type of the result of the function
+	 * @param function the source function
+	 * @param exceptionWrapper the exception wrapper to use
+	 * @return a new {@link ThrowableFunction} instance
+	 */
+	static <T, U, R> ThrowableBiFunction<T, U, R> of(
 			ThrowableBiFunction<T, U, R> function,
 			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 
