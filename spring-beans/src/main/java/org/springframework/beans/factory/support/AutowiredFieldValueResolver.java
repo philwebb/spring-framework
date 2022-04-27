@@ -59,8 +59,8 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	@Nullable
 	private final String shortcut;
 
-	private AutowiredFieldValueResolver(String fieldName, boolean required, String shortcut) {
-		Assert.hasText(fieldName, "'fieldName' must not be empty");
+	private AutowiredFieldValueResolver(String fieldName, boolean required, @Nullable String shortcut) {
+		Assert.hasText(fieldName, "FieldName must not be empty");
 		this.fieldName = fieldName;
 		this.required = required;
 		this.shortcut = shortcut;
@@ -103,8 +103,8 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	 * @param action the action to execute with the resolved field value
 	 */
 	public <T> void resolve(RegisteredBean registeredBean, ThrowableConsumer<T> action) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(action, "'action' must not be null");
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		Assert.notNull(action, "Action must not be null");
 		T resolved = resolve(registeredBean);
 		if (resolved != null) {
 			action.accept(resolved);
@@ -143,11 +143,9 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	 */
 	@Nullable
 	public Object resolveObject(RegisteredBean registeredBean) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
-		return resolveValue(registeredBean, field);
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		return resolveValue(registeredBean, getField(registeredBean));
 	}
-
 
 	/**
 	 * Resolve the field value for the specified registered bean and set it using
@@ -156,9 +154,9 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	 * @param instance the bean instance
 	 */
 	public void resolveAndSet(RegisteredBean registeredBean, Object instance) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(instance, "'instance' must not be null");
-		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		Assert.notNull(instance, "Instance must not be null");
+		Field field = getField(registeredBean);
 		Object resolved = resolveValue(registeredBean, field);
 		if (resolved != null) {
 			ReflectionUtils.makeAccessible(field);
@@ -170,7 +168,6 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 	private Object resolveValue(RegisteredBean registeredBean, Field field) {
 		String beanName = registeredBean.getBeanName();
 		Class<?> beanClass = registeredBean.getBeanClass();
-		Assert.notNull(field, () -> "No field '" + this.fieldName + "' found on " + beanClass.getName());
 		ConfigurableBeanFactory beanFactory = registeredBean.getBeanFactory();
 		DependencyDescriptor descriptor = new DependencyDescriptor(field, this.required);
 		descriptor.setContainingClass(beanClass);
@@ -189,6 +186,12 @@ public final class AutowiredFieldValueResolver extends AutowiredElementResolver 
 		catch (BeansException ex) {
 			throw new UnsatisfiedDependencyException(null, beanName, new InjectionPoint(field), ex);
 		}
+	}
+
+	private Field getField(RegisteredBean registeredBean) {
+		Field field = ReflectionUtils.findField(registeredBean.getBeanClass(), this.fieldName);
+		Assert.notNull(field, () -> "No field '" + this.fieldName + "' found on " + registeredBean.getBeanClass().getName());
+		return field;
 	}
 
 }

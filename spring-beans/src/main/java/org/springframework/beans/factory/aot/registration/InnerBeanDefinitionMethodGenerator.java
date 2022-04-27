@@ -28,7 +28,6 @@ import org.springframework.beans.factory.support.RegisteredBean;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationsCode#getInnerBeanDefinitionMethodGenerator()
  */
 @FunctionalInterface
 public interface InnerBeanDefinitionMethodGenerator {

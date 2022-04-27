@@ -26,8 +26,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import groovyjarjarantlr4.v4.runtime.misc.Nullable;
-
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
@@ -42,6 +40,7 @@ import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueH
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
@@ -70,9 +69,10 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 
 	private final ExecutableLookup lookup;
 
+	@Nullable
 	private final String[] shortcuts;
 
-	private AutowiredInstantiationArgumentsResolver(ExecutableLookup lookup, String[] shortcuts) {
+	private AutowiredInstantiationArgumentsResolver(ExecutableLookup lookup, @Nullable String[] shortcuts) {
 		this.lookup = lookup;
 		this.shortcuts = shortcuts;
 	}
@@ -84,8 +84,8 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 * @return a new {@link AutowiredInstantiationArgumentsResolver} instance
 	 */
 	public static AutowiredInstantiationArgumentsResolver forConstructor(Class<?>... parameterTypes) {
-		Assert.notNull(parameterTypes, "'parameterTypes' must not be null");
-		Assert.noNullElements(parameterTypes, "'parameterTypes' must not contain null elements");
+		Assert.notNull(parameterTypes, "ParameterTypes must not be null");
+		Assert.noNullElements(parameterTypes, "ParameterTypes must not contain null elements");
 		return new AutowiredInstantiationArgumentsResolver(new ConstructorLookup(parameterTypes), null);
 	}
 
@@ -99,10 +99,10 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 */
 	public static AutowiredInstantiationArgumentsResolver forFactoryMethod(Class<?> declaringClass, String methodName,
 			Class<?>... parameterTypes) {
-		Assert.notNull(declaringClass, "'declaringClass' must not be null");
-		Assert.hasText(methodName, "'methodName' must not be empty");
-		Assert.notNull(parameterTypes, "'parameterTypes' must not be null");
-		Assert.noNullElements(parameterTypes, "'parameterTypes' must not contain null elements");
+		Assert.notNull(declaringClass, "DeclaringClass must not be null");
+		Assert.hasText(methodName, "MethodName must not be empty");
+		Assert.notNull(parameterTypes, "ParameterTypes must not be null");
+		Assert.noNullElements(parameterTypes, "ParameterTypes must not contain null elements");
 		return new AutowiredInstantiationArgumentsResolver(
 				new FactoryMethodLookup(declaringClass, methodName, parameterTypes), null);
 	}
@@ -131,8 +131,8 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 * method arguments
 	 */
 	public <T> T resolve(RegisteredBean registeredBean, ThrowableFunction<AutowiredArguments, T> generator) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(generator, "'action' must not be null");
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		Assert.notNull(generator, "Action must not be null");
 		AutowiredArguments resolved = resolveArguments(registeredBean, this.lookup.get(registeredBean));
 		return generator.apply(resolved);
 	}
@@ -143,7 +143,7 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 * @return the resolved constructor or factory method arguments
 	 */
 	public AutowiredArguments resolve(RegisteredBean registeredBean) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
 		return resolveArguments(registeredBean, this.lookup.get(registeredBean));
 	}
 
@@ -167,8 +167,8 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T resolveAndInstantiate(RegisteredBean registeredBean, Class<T> requiredType) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(registeredBean, "'requiredType' must not be null");
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		Assert.notNull(registeredBean, "RequiredType must not be null");
 		Executable executable = this.lookup.get(registeredBean);
 		AutowiredArguments arguments = resolveArguments(registeredBean, executable);
 		Object instance = instantiate(registeredBean.getBeanFactory(), executable, arguments.toArray());
@@ -247,7 +247,7 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 	@Nullable
 	private Object resolveArgument(AbstractAutowireCapableBeanFactory beanFactory, String beanName,
 			Set<String> autowiredBeans, MethodParameter parameter, DependencyDescriptor dependencyDescriptor,
-			ValueHolder argumentValue) {
+			@Nullable ValueHolder argumentValue) {
 		TypeConverter typeConverter = beanFactory.getTypeConverter();
 		Class<?> parameterType = parameter.getParameterType();
 		if (argumentValue != null) {
@@ -302,14 +302,14 @@ public final class AutowiredInstantiationArgumentsResolver extends AutowiredElem
 		return constructor.newInstance(arguments);
 	}
 
-	private Object instantiate(ConfigurableBeanFactory beanFactory, Method method, Object[] arguments)
-			throws Exception {
+	private Object instantiate(ConfigurableBeanFactory beanFactory, Method method, Object[] arguments) {
 		ReflectionUtils.makeAccessible(method);
 		Object target = getFactoryMethodTarget(beanFactory, method);
 		return ReflectionUtils.invokeMethod(method, target, arguments);
 	}
 
-	private Object getFactoryMethodTarget(BeanFactory beanFactory, Method method) throws Exception {
+	@Nullable
+	private Object getFactoryMethodTarget(BeanFactory beanFactory, Method method) {
 		if (Modifier.isStatic(method.getModifiers())) {
 			return null;
 		}

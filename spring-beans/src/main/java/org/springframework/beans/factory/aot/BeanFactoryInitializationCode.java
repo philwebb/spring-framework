@@ -34,13 +34,13 @@ public interface BeanFactoryInitializationCode {
 	/**
 	 * The recommended variable name to used referring to the bean factory.
 	 */
-	static final String BEAN_FACTORY_VARIABLE = "beanFactory";
+	String BEAN_FACTORY_VARIABLE = "beanFactory";
 
 	/**
 	 * Return the name of the bean factory.
 	 * @return the bean factory name
 	 */
-	public String getBeanFactoryName();
+	String getBeanFactoryName();
 
 	/**
 	 * Return a {@link MethodGenerator} that can be used to add more methods to the

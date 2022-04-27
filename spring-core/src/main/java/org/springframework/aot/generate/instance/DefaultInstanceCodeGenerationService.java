@@ -50,7 +50,7 @@ import org.springframework.util.Assert;
  * </ul>
  * <p>
  * If these are not required, or if additional {@link InstanceCodeGenerator}
- * implementations are needed use an appropriate constructor to configure the
+ * implementations are needed, use an appropriate constructor to configure the
  * {@link InstanceCodeGenerators}.
  * <p>
  * If no additional {@link InstanceCodeGenerator} implementations are needed then the
@@ -145,7 +145,7 @@ public class DefaultInstanceCodeGenerationService implements InstanceCodeGenerat
 
 	@Override
 	public Iterator<InstanceCodeGenerator> iterator() {
-		return Collections.unmodifiableList(this.instanceCodeGenerators).iterator();
+		return this.instanceCodeGenerators.iterator();
 	}
 
 	/**

@@ -19,7 +19,6 @@ package org.springframework.beans.factory.aot.registration;
 import java.lang.reflect.Executable;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -44,12 +43,12 @@ import org.springframework.lang.Nullable;
  * Default implementation of {@link BeanRegistrationCode} that should work for most beans.
  * Generates code in the following form:<blockquote><pre class="code">
  * Class&lt;?&gt; beanType = MyBean.class;
- * RootBeanDefinition beanDefintion = new RootBeanDefinition(beanType);
- * beanDefintion.setScope(...);
+ * RootBeanDefinition beanDefinition = new RootBeanDefinition(beanType);
+ * beanDefinition.setScope(...);
  * ...
  * InstanceSupplier&lt;...&gt; instanceSupplier = InstanceSupplier.of(...);
  * instanceSupplier = instanceSupplier.withPostProcessor(...);
- * beanDefintion.setInstanceSupplier(instanceSupplier);
+ * beanDefinition.setInstanceSupplier(instanceSupplier);
  * return beanDefinition;
  * </pre></blockquote>
  *
@@ -105,7 +104,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 
 	/**
 	 * Generate code to create a new {@link BeanDefinition} of the appropriate type.
-	 * @param generationContext the generate context
+	 * @param generationContext the generation context
 	 * @return the code to create the {@link BeanDefinition}
 	 */
 	protected CodeBlock generatedNewBeanDefinitionCode(GenerationContext generationContext) {
@@ -134,21 +133,21 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	 * Generate code to set the properties on the {@link BeanDefinition}.
 	 * @param generationContext the generation context
 	 * @return the code to set properties
-	 * @see #generateBeanDefinitionPropertiesCode(Predicate, MethodGenerator, Function,
+	 * @see #generateBeanDefinitionPropertiesCode(RuntimeHints, Predicate, MethodGenerator, BiFunction, BeanDefinition)
 	 * BeanDefinition)
 	 */
 	protected CodeBlock generateSetBeanDefinitionPropertiesCode(GenerationContext generationContext) {
 		RuntimeHints hints = generationContext.getRuntimeHints();
 		RegisteredBean registeredBean = getRegisteredBean();
-		BeanDefinition beanDefintion = registeredBean.getMergedBeanDefinition();
+		BeanDefinition beanDefinition = registeredBean.getMergedBeanDefinition();
 		Predicate<String> attributeFilter = this::isAttributeIncluded;
 		return generateBeanDefinitionPropertiesCode(hints, attributeFilter, getMethodGenerator(),
-				(name, value) -> generateValueCode(generationContext, name, value), beanDefintion);
+				(name, value) -> generateValueCode(generationContext, name, value), beanDefinition);
 	}
 
 	/**
 	 * Determines if the given attribute is to be included in the generated code. By
-	 * default this method always returns {@code true}. Subclasses can override this
+	 * default, this method always returns {@code true}. Subclasses can override this
 	 * method if custom attribute filtering is required.
 	 * @param attributeName the attribute name
 	 * @return if the attribute is filtered
@@ -158,7 +157,7 @@ public class DefaultBeanRegistrationCodeGenerator extends AbstractBeanRegistrati
 	}
 
 	/**
-	 * Generate custom code for a bean property or constructor value. By default this
+	 * Generate custom code for a bean property or constructor value. By default, this
 	 * method is used to support inner-beans.
 	 * @param generationContext the generation context
 	 * @param name the name of the property or constructor argument

@@ -65,8 +65,8 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	private final String[] shortcuts;
 
 	private AutowiredMethodArgumentsResolver(String methodName, Class<?>[] parameterTypes, boolean required,
-			String[] shortcuts) {
-		Assert.hasText(methodName, "'methodName' must not be empty");
+			@Nullable String[] shortcuts) {
+		Assert.hasText(methodName, "MethodName must not be empty");
 		this.methodName = methodName;
 		this.parameterTypes = parameterTypes;
 		this.required = required;
@@ -114,8 +114,8 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	 * @param action the action to execute with the resolved method arguments
 	 */
 	public void resolve(RegisteredBean registeredBean, ThrowableConsumer<AutowiredArguments> action) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(action, "'action' must not be null");
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		Assert.notNull(action, "Action must not be null");
 		AutowiredArguments resolved = resolve(registeredBean);
 		if (resolved != null) {
 			action.accept(resolved);
@@ -129,9 +129,8 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	 */
 	@Nullable
 	public AutowiredArguments resolve(RegisteredBean registeredBean) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Method method = ReflectionUtils.findMethod(registeredBean.getBeanClass(), this.methodName, this.parameterTypes);
-		return resolveArguments(registeredBean, method);
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		return resolveArguments(registeredBean, getMethod(registeredBean));
 	}
 
 	/**
@@ -141,9 +140,9 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	 * @param instance the bean instance
 	 */
 	public void resolveAndInvoke(RegisteredBean registeredBean, Object instance) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(instance, "'instance' must not be null");
-		Method method = ReflectionUtils.findMethod(registeredBean.getBeanClass(), this.methodName, this.parameterTypes);
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		Assert.notNull(instance, "Instance must not be null");
+		Method method = getMethod(registeredBean);
 		AutowiredArguments resolved = resolveArguments(registeredBean, method);
 		if (resolved != null) {
 			ReflectionUtils.makeAccessible(method);
@@ -155,8 +154,6 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 	private AutowiredArguments resolveArguments(RegisteredBean registeredBean, Method method) {
 		String beanName = registeredBean.getBeanName();
 		Class<?> beanClass = registeredBean.getBeanClass();
-		Assert.notNull(method, () -> String.format("Method '%s' with parameter types [%s] declared on %s",
-				this.methodName, toCommaSeparatedNames(this.parameterTypes), beanClass.getName()));
 		ConfigurableBeanFactory beanFactory = registeredBean.getBeanFactory();
 		Assert.isInstanceOf(AutowireCapableBeanFactory.class, beanFactory);
 		AutowireCapableBeanFactory autowireCapableBeanFactory = (AutowireCapableBeanFactory) beanFactory;
@@ -186,6 +183,13 @@ public final class AutowiredMethodArgumentsResolver extends AutowiredElementReso
 		}
 		registerDependentBeans(beanFactory, beanName, autowiredBeanNames);
 		return AutowiredArguments.of(arguments);
+	}
+
+	private Method getMethod(RegisteredBean registeredBean) {
+		Method method = ReflectionUtils.findMethod(registeredBean.getBeanClass(), this.methodName, this.parameterTypes);
+		Assert.notNull(method, () -> String.format("Method '%s' with parameter types [%s] declared on %s",
+				this.methodName, toCommaSeparatedNames(this.parameterTypes), registeredBean.getBeanClass().getName()));
+		return method;
 	}
 
 	private String toCommaSeparatedNames(Class<?>... parameterTypes) {

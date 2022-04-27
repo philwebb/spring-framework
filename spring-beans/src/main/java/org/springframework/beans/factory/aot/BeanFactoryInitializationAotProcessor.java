@@ -34,7 +34,7 @@ public interface BeanFactoryInitializationAotProcessor {
 
 	/**
 	 * Process the given {@link ConfigurableListableBeanFactory} instance ahead-of-time
-	 * and return an contribution or {@code null}.
+	 * and return a contribution or {@code null}.
 	 * <p>
 	 * Processors are free to use any techniques they like to analyze the given instance.
 	 * Most typically use reflection to find fields or methods to use in the contribution.

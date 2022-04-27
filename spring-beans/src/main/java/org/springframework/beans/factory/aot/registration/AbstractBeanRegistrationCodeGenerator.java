@@ -93,7 +93,7 @@ public abstract class AbstractBeanRegistrationCodeGenerator implements BeanRegis
 
 	@Override
 	public void addInstancePostProcessor(MethodReference methodReference) {
-		Assert.notNull(methodReference, "'methodReference' must not be null");
+		Assert.notNull(methodReference, "MethodReference must not be null");
 		this.instancePostProcessors.add(methodReference);
 	}
 

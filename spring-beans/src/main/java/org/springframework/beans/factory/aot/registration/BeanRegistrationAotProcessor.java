@@ -33,7 +33,7 @@ import org.springframework.lang.Nullable;
 public interface BeanRegistrationAotProcessor {
 
 	/**
-	 * Process the given {@link RegisteredBean} instance ahead-of-time and return an
+	 * Process the given {@link RegisteredBean} instance ahead-of-time and return a
 	 * contribution or {@code null}.
 	 * <p>
 	 * Processors are free to use any techniques they like to analyze the given instance.

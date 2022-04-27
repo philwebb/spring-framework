@@ -42,8 +42,8 @@ public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 	R applyWithException(T t, U u) throws Exception;
 
 	/**
-	 * Default {@link Function#apply(Object)} that wraps any thrown checked
-	 * exceptions (by default in a {@link RuntimeException}).
+	 * Default {@link BiFunction#apply(Object, Object)} that wraps any thrown
+	 * checked exceptions (by default in a {@link RuntimeException}).
 	 * @param t the first function argument
 	 * @param u the second function argument
 	 * @return the function result
@@ -55,7 +55,7 @@ public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 	}
 
 	/**
-	 * Applies this function to the given argument, wrapping any any thrown
+	 * Applies this function to the given argument, wrapping any thrown
 	 * checked exceptions using the given {@code exceptionWrapper}.
 	 * @param t the first function argument
 	 * @param u the second function argument
@@ -77,7 +77,7 @@ public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 	}
 
 	/**
-	 * Return a new {@link ThrowableBiFunction} where the {@link #apply(Object)}
+	 * Return a new {@link ThrowableBiFunction} where the {@link #apply(Object, Object)}
 	 * method wraps any thrown checked exceptions using the given
 	 * {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
@@ -103,8 +103,9 @@ public interface ThrowableBiFunction<T, U, R> extends BiFunction<T, U, R> {
 
 	/**
 	 * Lambda friendly convenience method that can be used to create
-	 * {@link ThrowableBiFunction} where the {@link #apply(Object)} method wraps
-	 * any thrown checked exceptions using the given {@code exceptionWrapper}.
+	 * {@link ThrowableBiFunction} where the {@link #apply(Object, Object)}
+	 * method wraps any thrown checked exceptions using the given
+	 * {@code exceptionWrapper}.
 	 * @param <T> the type of the first argument to the function
 	 * @param <U> the type of the second argument to the function
 	 * @param <R> the type of the result of the function

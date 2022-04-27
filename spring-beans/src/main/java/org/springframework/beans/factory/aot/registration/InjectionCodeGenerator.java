@@ -48,7 +48,7 @@ public class InjectionCodeGenerator {
 	private final RuntimeHints hints;
 
 	public InjectionCodeGenerator(RuntimeHints hints) {
-		Assert.notNull(hints, "'hints' must not be null");
+		Assert.notNull(hints, "Hints must not be null");
 		this.hints = hints;
 	}
 

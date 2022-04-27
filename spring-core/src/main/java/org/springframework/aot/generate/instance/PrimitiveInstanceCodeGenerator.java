@@ -36,6 +36,7 @@ class PrimitiveInstanceCodeGenerator implements InstanceCodeGenerator {
 	static final PrimitiveInstanceCodeGenerator INSTANCE = new PrimitiveInstanceCodeGenerator();
 
 	private static final Map<Character, String> CHAR_ESCAPES;
+
 	static {
 		Map<Character, String> escapes = new HashMap<>();
 		escapes.put('\b', "\\b");

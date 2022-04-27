@@ -27,8 +27,7 @@ import org.springframework.util.function.ThrowableSupplier;
  * Specialized {@link Supplier} that can be set on a
  * {@link AbstractBeanDefinition#setInstanceSupplier(Supplier) BeanDefinition} when
  * details about the {@link RegisteredBean registered bean} are needed to supply the
- * instance, or if additional {@link InstancePostProcessor instance post processing} is
- * required.
+ * instance.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
@@ -41,7 +40,7 @@ import org.springframework.util.function.ThrowableSupplier;
 public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 
 	@Override
-	default T getWithException() throws Exception {
+	default T getWithException() {
 		throw new IllegalStateException("No RegisteredBean parameter provided");
 	}
 
@@ -62,7 +61,7 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	 * @return a composed instance supplier
 	 */
 	default <V> InstanceSupplier<V> andThen(ThrowableBiFunction<RegisteredBean, ? super T, ? extends V> after) {
-		Assert.notNull(after, "'after' must not be null");
+		Assert.notNull(after, "After must not be null");
 		return registeredBean -> after.applyWithException(registeredBean, get(registeredBean));
 	}
 
@@ -74,7 +73,7 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	 * @return a new {@link InstanceSupplier}
 	 */
 	static <T> InstanceSupplier<T> using(ThrowableSupplier<T> supplier) {
-		Assert.notNull(supplier, "'supplier' must not be null");
+		Assert.notNull(supplier, "Supplier must not be null");
 		if (supplier instanceof InstanceSupplier<T> instanceSupplier) {
 			return instanceSupplier;
 		}
@@ -90,7 +89,7 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	 * @return a new {@link InstanceSupplier}
 	 */
 	static <T> InstanceSupplier<T> of(InstanceSupplier<T> instanceSupplier) {
-		Assert.notNull(instanceSupplier, "'instanceSupplier' must not be null");
+		Assert.notNull(instanceSupplier, "InstanceSupplier must not be null");
 		return instanceSupplier;
 	}
 
@@ -101,11 +100,10 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	 * @param registeredBean the registered bean calling the supplier
 	 * @param supplier the supplier to us
 	 * @return the supplied result
-	 * @throws Exception on error
 	 */
 	static <T> T getSuppliedInstance(RegisteredBean registeredBean, Supplier<T> supplier) {
-		Assert.notNull(registeredBean, "'registeredBean' must not be null");
-		Assert.notNull(supplier, "'supplier' must not be null");
+		Assert.notNull(registeredBean, "RegisteredBean must not be null");
+		Assert.notNull(supplier, "Supplier must not be null");
 		try {
 			if (supplier instanceof InstanceSupplier<T> instanceSupplier) {
 				return instanceSupplier.get(registeredBean);
