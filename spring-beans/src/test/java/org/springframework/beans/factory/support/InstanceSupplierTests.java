@@ -16,16 +16,11 @@
 
 package org.springframework.beans.factory.support;
 
-import java.util.function.Supplier;
-
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.util.function.ThrowableBiFunction;
-import org.springframework.util.function.ThrowableSupplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
@@ -91,57 +86,6 @@ class InstanceSupplierTests {
 	void ofInstanceSupplierAdaptsToInstanceSupplier() throws Exception {
 		InstanceSupplier<String> instanceSupplier = InstanceSupplier.of(registeredBean -> "test");
 		assertThat(instanceSupplier.get(this.registeredBean)).isEqualTo("test");
-	}
-
-	@Test
-	void getSuppliedInstanceWhenInstanceSupplierReturnsResult() throws Exception {
-		InstanceSupplier<String> supplier = registeredBean -> "test";
-		assertThat(InstanceSupplier.getSuppliedInstance(this.registeredBean, supplier)).isEqualTo("test");
-	}
-
-	@Test
-	void getSuppliedInstanceThrowableSupplierReturnsResult() throws Exception {
-		ThrowableSupplier<String> supplier = () -> "test";
-		assertThat(InstanceSupplier.getSuppliedInstance(this.registeredBean, supplier)).isEqualTo("test");
-	}
-
-	@Test
-	void getSuppliedInstanceThrowableSupplierWhenExceptionThrownDoesNotDoubleWrapException() {
-		RuntimeException ex = new RuntimeException();
-		ThrowableSupplier<String> supplier = () -> {
-			throw ex;
-		};
-		assertThatExceptionOfType(BeanCreationException.class)
-				.isThrownBy(() -> InstanceSupplier.getSuppliedInstance(this.registeredBean, supplier)).havingCause()
-				.isSameAs(ex);
-	}
-
-	@Test
-	void getSuppliedInstanceReturnsResult() throws Exception {
-		Supplier<String> supplier = () -> "test";
-		assertThat(InstanceSupplier.getSuppliedInstance(this.registeredBean, supplier)).isEqualTo("test");
-	}
-
-	@Test
-	void getSuppliedInstanceWhenThrowsExceptionThrowsBeanCreationException() {
-		RuntimeException ex = new RuntimeException();
-		InstanceSupplier<String> supplier = registeredBean -> {
-			throw ex;
-		};
-		assertThatExceptionOfType(BeanCreationException.class)
-				.isThrownBy(() -> InstanceSupplier.getSuppliedInstance(this.registeredBean, supplier)).havingCause()
-				.isSameAs(ex);
-
-	}
-
-	@Test
-	void callFromBeanFactoryProvidesRegisteredBean() {
-		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		RootBeanDefinition beanDefinition = new RootBeanDefinition();
-		beanDefinition.setInstanceSupplier(
-				InstanceSupplier.of(registeredBean -> "I am bean " + registeredBean.getBeanName()));
-		beanFactory.registerBeanDefinition("test", beanDefinition);
-		assertThat(beanFactory.getBean("test")).isEqualTo("I am bean test");
 	}
 
 }

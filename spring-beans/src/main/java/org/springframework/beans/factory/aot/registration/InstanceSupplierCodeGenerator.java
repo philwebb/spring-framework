@@ -40,6 +40,7 @@ import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.function.ThrowableSupplier;
 
 /**
  * Internal code generator to create an {@link InstanceSupplier}.
@@ -106,9 +107,13 @@ class InstanceSupplierCodeGenerator {
 			Class<?> declaringClass, boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerConstructor(constructor, INTROSPECT);
 		if (!dependsOnBean && constructor.getParameterCount() == 0) {
-			return (!this.allowDirectSupplierShortcut || isThrowingCheckedException(constructor))
-					? CodeBlock.of("$T.using($T::new)", InstanceSupplier.class, declaringClass)
-					: CodeBlock.of("$T::new", declaringClass);
+			if (!this.allowDirectSupplierShortcut) {
+				return CodeBlock.of("$T.using($T::new)", InstanceSupplier.class, declaringClass);
+			}
+			if (!isThrowingCheckedException(constructor)) {
+				return CodeBlock.of("$T::new", declaringClass);
+			}
+			return CodeBlock.of("$T.of($T::new)", ThrowableSupplier.class, declaringClass);
 		}
 		GeneratedMethod getInstanceMethod = generateGetInstanceMethod()
 				.using(builder -> buildGetInstanceMethodForConstructor(builder, name, constructor, declaringClass,
@@ -184,9 +189,13 @@ class InstanceSupplierCodeGenerator {
 			boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod, INTROSPECT);
 		if (!dependsOnBean && factoryMethod.getParameterCount() == 0) {
-			return (!this.allowDirectSupplierShortcut || isThrowingCheckedException(factoryMethod))
-					? CodeBlock.of("$T.using($T::$L)", InstanceSupplier.class, declaringClass, factoryMethod.getName())
-					: CodeBlock.of("$T::$L", declaringClass, factoryMethod.getName());
+			if (!this.allowDirectSupplierShortcut) {
+				return CodeBlock.of("$T.using($T::$L)", InstanceSupplier.class, declaringClass, factoryMethod.getName());
+			}
+			if (!isThrowingCheckedException(factoryMethod)) {
+				return CodeBlock.of("$T::$L", declaringClass, factoryMethod.getName());
+			}
+			return CodeBlock.of("$T.of($T::$L)", ThrowableSupplier.class, declaringClass, factoryMethod.getName());
 		}
 		GeneratedMethod getInstanceMethod = generateGetInstanceMethod()
 				.using(builder -> buildGetInstanceMethodForFactoryMethod(builder, name, factoryMethod, declaringClass,
