@@ -35,7 +35,6 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanCurrentlyInCreationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
@@ -231,8 +230,8 @@ class AutowiredInstantiationArgumentsResolverTests {
 			return new SingleArgFactory().single((String) args.get(0));
 		}));
 		this.beanFactory.registerBeanDefinition("test", beanDefinition);
-		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() -> this.beanFactory.getBean("test"))
-				.havingCause().isInstanceOf(UnsatisfiedDependencyException.class);
+		assertThatExceptionOfType(UnsatisfiedDependencyException.class)
+				.isThrownBy(() -> this.beanFactory.getBean("test"));
 	}
 
 	@ParameterizedResolverTest(Sources.ARRAY_OF_BEANS)

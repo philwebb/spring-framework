@@ -18,7 +18,6 @@ package org.springframework.beans.factory.support;
 
 import java.util.function.Supplier;
 
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.util.Assert;
 import org.springframework.util.function.ThrowableBiFunction;
 import org.springframework.util.function.ThrowableSupplier;
@@ -91,31 +90,6 @@ public interface InstanceSupplier<T> extends ThrowableSupplier<T> {
 	static <T> InstanceSupplier<T> of(InstanceSupplier<T> instanceSupplier) {
 		Assert.notNull(instanceSupplier, "InstanceSupplier must not be null");
 		return instanceSupplier;
-	}
-
-	/**
-	 * Get a supplied instance from the specified {@link Supplier}, casting it to an
-	 * {@link InstanceSupplier} if possible.
-	 * @param <T> the type of instance supplied by the supplier
-	 * @param registeredBean the registered bean calling the supplier
-	 * @param supplier the supplier to us
-	 * @return the supplied result
-	 */
-	static <T> T getSuppliedInstance(RegisteredBean registeredBean, Supplier<T> supplier) {
-		Assert.notNull(registeredBean, "RegisteredBean must not be null");
-		Assert.notNull(supplier, "Supplier must not be null");
-		try {
-			if (supplier instanceof InstanceSupplier<T> instanceSupplier) {
-				return instanceSupplier.get(registeredBean);
-			}
-			if (supplier instanceof ThrowableSupplier<T> throwableSupplier) {
-				return throwableSupplier.getWithException();
-			}
-			return supplier.get();
-		}
-		catch (Throwable ex) {
-			throw new BeanCreationException(registeredBean.getBeanName(), "Instantiation of supplied bean failed", ex);
-		}
 	}
 
 }
