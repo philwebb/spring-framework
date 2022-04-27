@@ -32,12 +32,6 @@ import org.springframework.javapoet.ClassName;
 public interface BeanRegistrationsCode {
 
 	/**
-	 * Return the name of the bean factory that will accept the registration.
-	 * @return the bean factory name
-	 */
-	String getBeanFactoryName();
-
-	/**
 	 * Return the name of the class being used for registrations.
 	 * @return the generated class name.
 	 */

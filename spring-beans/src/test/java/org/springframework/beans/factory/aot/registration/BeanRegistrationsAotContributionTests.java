@@ -120,7 +120,6 @@ class BeanRegistrationsAotContributionTests {
 		contribution.applyTo(this.generationContext, this.beanFactoryInitializationCode);
 		assertThat(beanRegistrationsCodes).hasSize(1);
 		BeanRegistrationsCode actual = beanRegistrationsCodes.get(0);
-		assertThat(actual.getBeanFactoryName()).isEqualTo("Test");
 		assertThat(actual.getMethodGenerator()).isNotNull();
 	}
 
@@ -158,11 +157,6 @@ class BeanRegistrationsAotContributionTests {
 		@Override
 		public MethodGenerator getMethodGenerator() {
 			return this.generatedMethods;
-		}
-
-		@Override
-		public String getBeanFactoryName() {
-			return "Test";
 		}
 
 		@Override

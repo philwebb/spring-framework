@@ -59,9 +59,9 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 		GeneratedClassName generatedClassName = generationContext.getClassNameGenerator()
-				.generateClassName(beanFactoryInitializationCode.getBeanFactoryName(), "Registrations");
+				.generateClassName("BeanFactory", "Registrations");
 		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(
-				generatedClassName.toClassName(), beanFactoryInitializationCode);
+				generatedClassName.toClassName());
 		GeneratedMethod registerMethod = codeGenerator.getMethodGenerator().generateMethod("registerBeanDefinitions")
 				.using(builder -> generateRegisterMethod(builder, generationContext, codeGenerator));
 		JavaFile javaFile = codeGenerator.generatedJavaFile(generatedClassName);
@@ -91,19 +91,10 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 		private final ClassName className;
 
-		private final BeanFactoryInitializationCode beanFactoryInitializationCode;
-
 		private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
-		public BeanRegistrationsCodeGenerator(ClassName className,
-				BeanFactoryInitializationCode beanFactoryInitializationCode) {
+		public BeanRegistrationsCodeGenerator(ClassName className) {
 			this.className = className;
-			this.beanFactoryInitializationCode = beanFactoryInitializationCode;
-		}
-
-		@Override
-		public String getBeanFactoryName() {
-			return this.beanFactoryInitializationCode.getBeanFactoryName();
 		}
 
 		@Override
@@ -118,8 +109,7 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 
 		JavaFile generatedJavaFile(GeneratedClassName generatedClassName) {
 			TypeSpec.Builder classBuilder = generatedClassName.classBuilder();
-			classBuilder.addJavadoc("Register bean definitions for the '$L' bean factory.",
-					this.beanFactoryInitializationCode.getBeanFactoryName());
+			classBuilder.addJavadoc("Register bean definitions for the bean factory.");
 			classBuilder.addModifiers(Modifier.PUBLIC);
 			this.generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
 			return generatedClassName.toJavaFile(classBuilder);

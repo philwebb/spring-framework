@@ -53,11 +53,6 @@ class ApplicationContextInitializationCodeGenerator implements BeanFactoryInitia
 	private final List<MethodReference> initializers = new ArrayList<>();
 
 	@Override
-	public String getBeanFactoryName() {
-		return "default";
-	}
-
-	@Override
 	public MethodGenerator getMethodGenerator() {
 		return this.generatedMethods;
 	}
