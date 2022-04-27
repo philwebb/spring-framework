@@ -19,7 +19,7 @@ package org.springframework.beans.factory.aot.registration;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.support.InstanceSupplier;
-import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.javapoet.ClassName;
 
 /**
  * Interface that can be used to configure the code that will be generated to perform
@@ -31,25 +31,27 @@ import org.springframework.beans.factory.support.RegisteredBean;
  * @since 6.0
  * @see BeanRegistrationCodeGenerator
  */
-public interface BeanRegistrationCode  {
+public interface BeanRegistrationCode {
 
 	/**
-	 * Return the source bean that is being registered.
-	 * @return the registered bean
+	 * Return the name of the class being used for registrations.
+	 * @return the name of the class
 	 */
-	RegisteredBean getRegisteredBean();
+	ClassName getClassName();
 
 	/**
-	 * Return the name of the bean factory that will accept the registration.
-	 * @return the bean factory name
-	 */
-	String getBeanFactoryName();
-
-	/**
-	 * Return a {@link MethodGenerator} that can be used to add more methods to the registrations code.
+	 * Return a {@link MethodGenerator} that can be used to add more methods to the
+	 * registrations code.
 	 * @return the method generator
 	 */
 	MethodGenerator getMethodGenerator();
+
+	/**
+	 * Return an {@link InnerBeanDefinitionMethodGenerator} that can be used to generate
+	 * additional bean registration methods for inner-beans.
+	 * @return an inner-bean registration method generator
+	 */
+	InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator();
 
 	/**
 	 * Add an instance post processor method call to the registration code.
