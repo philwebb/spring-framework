@@ -106,7 +106,7 @@ class PersistenceAnnotationBeanPostProcessorAotContributionTests {
 			actual.accept(registeredBean, instance);
 			assertThat(instance).extracting("emf").isSameAs(entityManagerFactory);
 			assertThat(compiled.getSourceFile())
-					.contains("findEntityManagerFactory(registeredBean.getBeanFactory(), \"custom\")");
+					.contains("findEntityManagerFactory((ListableBeanFactory) registeredBean.getBeanFactory(), \"custom\")");
 			assertThat(this.generationContext.getRuntimeHints().reflection().typeHints()).isEmpty();
 		});
 	}

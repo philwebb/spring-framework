@@ -28,6 +28,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -140,14 +141,14 @@ public final class RegisteredBean {
 	}
 
 	/**
-	 * Return the class of the bean.
+	 * Return the user-defined class of the bean.
 	 * @return the bean class
 	 */
 	public Class<?> getBeanClass() {
 		if (this.beanFactory.containsSingleton(getBeanName())) {
 			return this.beanFactory.getSingleton(getBeanName()).getClass();
 		}
-		return getBeanType().resolve();
+		return ClassUtils.getUserClass(getBeanType().toClass());
 	}
 
 	/**

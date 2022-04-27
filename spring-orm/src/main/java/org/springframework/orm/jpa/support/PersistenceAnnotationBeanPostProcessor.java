@@ -383,8 +383,7 @@ public class PersistenceAnnotationBeanPostProcessor
 		InjectionMetadata metadata = findInjectionMetadata(beanDefinition, beanClass, beanName);
 		Collection<InjectedElement> injectedElements = metadata.getInjectedElements();
 		if (!CollectionUtils.isEmpty(injectedElements)) {
-			Class<?> target = ClassUtils.getUserClass(beanClass);
-			return new AotContribution(target, injectedElements);
+			return new AotContribution(beanClass, injectedElements);
 		}
 		return null;
 	}
@@ -905,8 +904,8 @@ public class PersistenceAnnotationBeanPostProcessor
 			String unitName = injectedElement.unitName;
 			boolean requireEntityManager = (injectedElement.type != null);
 			if (!requireEntityManager) {
-				return CodeBlock.of("$T.findEntityManagerFactory($L.getBeanFactory(), $S)",
-						EntityManagerFactoryUtils.class, REGISTERED_BEAN_PARAMETER, unitName);
+				return CodeBlock.of("$T.findEntityManagerFactory(($T) $L.getBeanFactory(), $S)",
+						EntityManagerFactoryUtils.class, ListableBeanFactory.class, REGISTERED_BEAN_PARAMETER, unitName);
 			}
 			GeneratedMethod getEntityManagerMethod = methodGenerator.generateMethod("get", unitName, "EntityManager")
 					.using(builder -> buildGetEntityManagerMethod(builder, injectedElement));
@@ -921,8 +920,9 @@ public class PersistenceAnnotationBeanPostProcessor
 			builder.addModifiers(javax.lang.model.element.Modifier.PUBLIC, javax.lang.model.element.Modifier.STATIC);
 			builder.returns(EntityManager.class);
 			builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER);
-			builder.addStatement("$T entityManagerFactory = $T.findEntityManagerFactory($L.getBeanFactory(), $S)",
-					EntityManagerFactory.class, EntityManagerFactoryUtils.class, REGISTERED_BEAN_PARAMETER, unitName);
+			builder.addStatement("$T entityManagerFactory = $T.findEntityManagerFactory(($T) $L.getBeanFactory(), $S)",
+					EntityManagerFactory.class, EntityManagerFactoryUtils.class, ListableBeanFactory.class,
+					REGISTERED_BEAN_PARAMETER, unitName);
 			boolean hasProperties = !CollectionUtils.isEmpty(properties);
 			if (hasProperties) {
 				builder.addStatement("$T properties = new Properties()", Properties.class);

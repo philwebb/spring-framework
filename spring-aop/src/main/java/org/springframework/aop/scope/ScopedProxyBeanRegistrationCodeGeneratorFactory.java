@@ -40,8 +40,10 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.lang.Nullable;
 
 /**
+ * {@link BeanRegistrationCodeGeneratorFactory} for {@link ScopedProxyFactoryBean}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
  * @since 6.0
  */
 class ScopedProxyBeanRegistrationCodeGeneratorFactory implements BeanRegistrationCodeGeneratorFactory {
@@ -107,7 +109,7 @@ class ScopedProxyBeanRegistrationCodeGeneratorFactory implements BeanRegistratio
 		protected CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
 				boolean allowDirectSupplierShortcut) {
 			RegisteredBean registeredBean = getRegisteredBean();
-			GeneratedMethod method = getMethodGenerator().generateMethod("get", "scopedProxyInstance").using((builder) -> {
+			GeneratedMethod method = getMethodGenerator().generateMethod("get", "scopedProxyInstance").using(builder -> {
 				Class<?> beanClass = registeredBean.getBeanClass();
 				builder.addJavadoc("Create the scoped proxy bean instance for '$L'.", registeredBean.getBeanName());
 				builder.addModifiers(Modifier.PRIVATE, Modifier.STATIC);

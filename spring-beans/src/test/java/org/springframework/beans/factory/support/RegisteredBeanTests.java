@@ -211,7 +211,7 @@ class RegisteredBeanTests {
 	}
 
 	static class TestBean {
-		
+
 	}
 
 	static class TestInnerBean {

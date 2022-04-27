@@ -54,7 +54,8 @@ import static org.mockito.Mockito.mock;
 /**
  * Tests for {@link ScopedProxyBeanRegistrationCodeGeneratorFactory}.
  *
- * @author pwebb
+ * @author Stephane Nicoll
+ * @author Phillip Webb
  * @since 6.0
  */
 class ScopedProxyBeanRegistrationCodeGeneratorFactoryTests {
