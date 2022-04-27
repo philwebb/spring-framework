@@ -193,7 +193,7 @@ public interface GeneratedFiles {
 	}
 
 	/**
-	 * Add a generated file of the specified {@link Kind} with content content written to
+	 * Add a generated file of the specified {@link Kind} with content written to
 	 * an {@link Appendable} passed to the given {@link ThrowableConsumer}.
 	 * @param kind the kind of file being written
 	 * @param path the relative path of the file
@@ -205,7 +205,7 @@ public interface GeneratedFiles {
 	}
 
 	/**
-	 * Add a generated file of the specified {@link Kind} with content content written to
+	 * Add a generated file of the specified {@link Kind} with content written to
 	 * an {@link Appendable} passed to the given {@link ThrowableConsumer}.
 	 * @param kind the kind of file being written
 	 * @param path the relative path of the file

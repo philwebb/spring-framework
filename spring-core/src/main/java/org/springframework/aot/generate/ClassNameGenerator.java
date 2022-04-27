@@ -73,7 +73,7 @@ public final class ClassNameGenerator {
 	private String clean(String name) {
 		StringBuilder rootName = new StringBuilder();
 		boolean lastNotLetter = true;
-		for (char ch : name.toString().toCharArray()) {
+		for (char ch : name.toCharArray()) {
 			if (!Character.isLetter(ch)) {
 				lastNotLetter = true;
 				continue;

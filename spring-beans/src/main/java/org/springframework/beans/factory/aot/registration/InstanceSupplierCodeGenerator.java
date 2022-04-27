@@ -175,12 +175,12 @@ class InstanceSupplierCodeGenerator {
 		boolean dependsOnBean = !Modifier.isStatic(factoryMethod.getModifiers());
 		AccessVisibility accessVisibility = getAccessVisibility(registeredBean, factoryMethod);
 		if (accessVisibility == AccessVisibility.PUBLIC || accessVisibility == AccessVisibility.PACKAGE_PRIVATE) {
-			return generateCodeForAcessibleFactoryMethod(name, factoryMethod, declaringClass, dependsOnBean);
+			return generateCodeForAccessibleFactoryMethod(name, factoryMethod, declaringClass, dependsOnBean);
 		}
-		return generateCodeForInacessibleFactoryMethod(name, factoryMethod, declaringClass);
+		return generateCodeForInaccessibleFactoryMethod(name, factoryMethod, declaringClass);
 	}
 
-	private CodeBlock generateCodeForAcessibleFactoryMethod(String name, Method factoryMethod, Class<?> declaringClass,
+	private CodeBlock generateCodeForAccessibleFactoryMethod(String name, Method factoryMethod, Class<?> declaringClass,
 			boolean dependsOnBean) {
 		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod, INTROSPECT);
 		if (!dependsOnBean && factoryMethod.getParameterCount() == 0) {
@@ -194,7 +194,7 @@ class InstanceSupplierCodeGenerator {
 		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, this.className, getInstanceMethod.getName());
 	}
 
-	private CodeBlock generateCodeForInacessibleFactoryMethod(String name, Method factoryMethod,
+	private CodeBlock generateCodeForInaccessibleFactoryMethod(String name, Method factoryMethod,
 			Class<?> declaringClass) {
 		this.generationContext.getRuntimeHints().reflection().registerMethod(factoryMethod);
 		GeneratedMethod getInstanceMethod = generateGetInstanceMethod().using(builder -> {

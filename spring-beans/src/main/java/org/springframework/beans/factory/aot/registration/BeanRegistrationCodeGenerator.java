@@ -49,7 +49,7 @@ public interface BeanRegistrationCodeGenerator extends BeanRegistrationCode {
 	/**
 	 * The recommended variable name to used when creating the bean definition.
 	 */
-	static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
+	String BEAN_DEFINITION_VARIABLE = "beanDefinition";
 
 	/**
 	 * Generate a code block containing the method body to use for bean registration.

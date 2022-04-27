@@ -20,7 +20,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Internal class used to support {@link MethodGenerator#withName(String)}.
+ * Internal class used to support {@link MethodGenerator#withName(Object...)}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb

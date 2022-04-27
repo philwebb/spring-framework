@@ -38,7 +38,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
  */
 class BeanFactoryInitializationContributions {
 
-	private List<BeanFactoryInitializationAotContribution> contributions;
+	private final List<BeanFactoryInitializationAotContribution> contributions;
 
 	BeanFactoryInitializationContributions(DefaultListableBeanFactory beanFactory) {
 		this(beanFactory, new AotFactoriesLoader(beanFactory));

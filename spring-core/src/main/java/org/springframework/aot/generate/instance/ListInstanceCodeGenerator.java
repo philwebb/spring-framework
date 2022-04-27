@@ -36,4 +36,5 @@ class ListInstanceCodeGenerator extends CollectionInstanceCodeGenerator<List<?>>
 	ListInstanceCodeGenerator() {
 		super(List.class, CodeBlock.of("$T.emptyList()", Collections.class));
 	}
+
 }

@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  */
 class InstanceSupplierTests {
 
-	private RegisteredBean registeredBean = RegisteredBean.of(new DefaultListableBeanFactory(), "test");
+	private final RegisteredBean registeredBean = RegisteredBean.of(new DefaultListableBeanFactory(), "test");
 
 	@Test
 	void getWithoutRegisteredBeanThrowsException() {
@@ -65,7 +65,7 @@ class InstanceSupplierTests {
 		InstanceSupplier<String> supplier = registeredBean -> "test";
 		ThrowableBiFunction<RegisteredBean, String, String> after = null;
 		assertThatIllegalArgumentException().isThrownBy(() -> supplier.andThen(after))
-				.withMessage("'after' must not be null");
+				.withMessage("After must not be null");
 	}
 
 	@Test

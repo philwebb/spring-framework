@@ -79,7 +79,7 @@ import org.springframework.util.StringUtils;
  */
 class BeanDefinitionPropertiesCodeGenerator {
 
-	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITON = new RootBeanDefinition();
+	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITION = new RootBeanDefinition();
 
 	private static final String BEAN_DEFINITION_VARIABLE = BeanRegistrationCodeGenerator.BEAN_DEFINITION_VARIABLE;
 
@@ -224,10 +224,10 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	private Object toRole(int value) {
 		return switch (value) {
-		case BeanDefinition.ROLE_INFRASTRUCTURE -> CodeBlock.builder()
-				.add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
-		case BeanDefinition.ROLE_SUPPORT -> CodeBlock.builder().add("$T.ROLE_SUPPORT", BeanDefinition.class).build();
-		default -> value;
+			case BeanDefinition.ROLE_INFRASTRUCTURE -> CodeBlock.builder()
+					.add("$T.ROLE_INFRASTRUCTURE", BeanDefinition.class).build();
+			case BeanDefinition.ROLE_SUPPORT -> CodeBlock.builder().add("$T.ROLE_SUPPORT", BeanDefinition.class).build();
+			default -> value;
 		};
 	}
 
@@ -246,12 +246,13 @@ class BeanDefinitionPropertiesCodeGenerator {
 	private <B extends BeanDefinition, T> void addStatementForValue(CodeBlock.Builder builder,
 			BeanDefinition beanDefinition, Function<B, T> getter, BiPredicate<T, T> filter, String format,
 			Function<T, Object> formatter) {
-		T defaultValue = getter.apply((B) DEFAULT_BEAN_DEFINITON);
+		T defaultValue = getter.apply((B) DEFAULT_BEAN_DEFINITION);
 		T actualValue = getter.apply((B) beanDefinition);
 		if (filter.test(defaultValue, actualValue)) {
 			builder.addStatement(format, BEAN_DEFINITION_VARIABLE, formatter.apply(actualValue));
 		}
 	}
+
 
 	/**
 	 * {@link InstanceCodeGenerator} for {@link BeanReference} types.

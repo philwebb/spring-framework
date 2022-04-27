@@ -40,14 +40,14 @@ class AotFactoriesLoaderTests {
 	@Test
 	void createWhenBeanFactoryIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(() -> new AotFactoriesLoader(null))
-				.withMessage("'beanFactory' must not be null");
+				.withMessage("BeanFactory must not be null");
 	}
 
 	@Test
 	void createWhenSpringFactoriesLoaderIsNullThrowsException() {
 		ListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		assertThatIllegalArgumentException().isThrownBy(() -> new AotFactoriesLoader(beanFactory, null))
-				.withMessage("'factoriesLoader' must not be null");
+				.withMessage("FactoriesLoader must not be null");
 	}
 
 	@Test

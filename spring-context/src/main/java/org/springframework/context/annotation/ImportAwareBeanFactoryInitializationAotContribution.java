@@ -56,7 +56,7 @@ class ImportAwareBeanFactoryInitializationAotContribution implements BeanFactory
 
 	private static final String IMPORT_REGISTRY_BEAN_NAME = ConfigurationClassPostProcessor.IMPORT_REGISTRY_BEAN_NAME;
 
-	private static final String MAPPINGS_VARAIBLE = "mappings";
+	private static final String MAPPINGS_VARIABLE = "mappings";
 
 	private final ConfigurableListableBeanFactory beanFactory;
 
@@ -87,10 +87,10 @@ class ImportAwareBeanFactoryInitializationAotContribution implements BeanFactory
 
 	private CodeBlock generateAddPostProcessorCode(Map<String, String> mappings) {
 		CodeBlock.Builder builder = CodeBlock.builder();
-		builder.addStatement("$T $L = new $T<>()", STRING_STRING_MAP, MAPPINGS_VARAIBLE, HashMap.class);
-		mappings.forEach((type, from) -> builder.addStatement("$L.put($S, $S)", MAPPINGS_VARAIBLE, type, from));
+		builder.addStatement("$T $L = new $T<>()", STRING_STRING_MAP, MAPPINGS_VARIABLE, HashMap.class);
+		mappings.forEach((type, from) -> builder.addStatement("$L.put($S, $S)", MAPPINGS_VARIABLE, type, from));
 		builder.addStatement("$L.addBeanPostProcessor(new $T($L))", BEAN_FACTORY_VARIABLE,
-				ImportAwareAotBeanPostProcessor.class, MAPPINGS_VARAIBLE);
+				ImportAwareAotBeanPostProcessor.class, MAPPINGS_VARIABLE);
 		return builder.build();
 	}
 

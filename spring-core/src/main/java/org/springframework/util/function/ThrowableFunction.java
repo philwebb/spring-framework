@@ -52,7 +52,7 @@ public interface ThrowableFunction<T, R> extends Function<T, R> {
 	}
 
 	/**
-	 * Applies this function to the given argument, wrapping any any thrown
+	 * Applies this function to the given argument, wrapping any thrown
 	 * checked exceptions using the given {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
 	 * and checked exception into a runtime exception

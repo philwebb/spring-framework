@@ -50,7 +50,7 @@ public interface ThrowableConsumer<T> extends Consumer<T> {
 	}
 
 	/**
-	 * Performs this operation on the given argument, wrapping any any thrown
+	 * Performs this operation on the given argument, wrapping any thrown
 	 * checked exceptions using the given {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
 	 * and checked exception into a runtime exception
@@ -69,7 +69,7 @@ public interface ThrowableConsumer<T> extends Consumer<T> {
 	}
 
 	/**
-	 * Return a new {@link ThrowableConsumer} where the {@link #consume(Object)}
+	 * Return a new {@link ThrowableConsumer} where the {@link #accept(Object)}
 	 * method wraps any thrown checked exceptions using the given
 	 * {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
@@ -95,7 +95,7 @@ public interface ThrowableConsumer<T> extends Consumer<T> {
 
 	/**
 	 * Lambda friendly convenience method that can be used to create
-	 * {@link ThrowableConsumer} where the {@link #apply(Object)} method wraps
+	 * {@link ThrowableConsumer} where the {@link #accept(Object)} method wraps
 	 * any thrown checked exceptions using the given {@code exceptionWrapper}.
 	 * @param <T> the type of the input to the operation
 	 * @param consumer the source consumer

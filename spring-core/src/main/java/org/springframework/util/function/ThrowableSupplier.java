@@ -48,7 +48,7 @@ public interface ThrowableSupplier<T> extends Supplier<T> {
 	}
 
 	/**
-	 * Gets a result, wrapping any any thrown checked exceptions using the given
+	 * Gets a result, wrapping any thrown checked exceptions using the given
 	 * {@code exceptionWrapper}.
 	 * @param exceptionWrapper {@link BiFunction} that wraps the given message
 	 * and checked exception into a runtime exception

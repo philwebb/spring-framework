@@ -73,7 +73,7 @@ public final class GeneratedClassName implements Comparable<GeneratedClassName> 
 	 */
 	public String getShortName() {
 		int lastDotIndex = this.name.lastIndexOf('.');
-		return (lastDotIndex != -1) ? this.name.substring(lastDotIndex + 1, this.name.length()) : this.name;
+		return (lastDotIndex != -1) ? this.name.substring(lastDotIndex + 1) : this.name;
 	}
 
 	/**

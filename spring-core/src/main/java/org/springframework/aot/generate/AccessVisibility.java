@@ -75,13 +75,13 @@ public enum AccessVisibility {
 	 */
 	public static AccessVisibility forMember(Member member) {
 		Assert.notNull(member, "'member' must not be null");
-		AccessVisibility visibility = forModifers(member.getModifiers());
+		AccessVisibility visibility = forModifiers(member.getModifiers());
 		AccessVisibility declaringClassVisibility = forClass(member.getDeclaringClass());
 		visibility = lowest(visibility, declaringClassVisibility);
 		if (visibility != PRIVATE) {
 			if (member instanceof Field field) {
-				AccessVisibility fieldVisability = forResolvableType(ResolvableType.forField(field));
-				return lowest(visibility, fieldVisability);
+				AccessVisibility fieldVisibility = forResolvableType(ResolvableType.forField(field));
+				return lowest(visibility, fieldVisibility);
 			}
 			if (member instanceof Constructor<?> constructor) {
 				AccessVisibility parameterVisibility = forParameterTypes(constructor,
@@ -91,8 +91,8 @@ public enum AccessVisibility {
 			if (member instanceof Method method) {
 				AccessVisibility parameterVisibility = forParameterTypes(method,
 						i -> ResolvableType.forMethodParameter(method, i));
-				AccessVisibility returnTypeVisibilty = forResolvableType(ResolvableType.forMethodReturnType(method));
-				return lowest(visibility, parameterVisibility, returnTypeVisibilty);
+				AccessVisibility returnTypeVisibility = forResolvableType(ResolvableType.forMethodReturnType(method));
+				return lowest(visibility, parameterVisibility, returnTypeVisibility);
 			}
 		}
 		return PRIVATE;
@@ -140,7 +140,7 @@ public enum AccessVisibility {
 	 */
 	public static AccessVisibility forClass(Class<?> clazz) {
 		clazz = ClassUtils.getUserClass(clazz);
-		AccessVisibility visibility = forModifers(clazz.getModifiers());
+		AccessVisibility visibility = forModifiers(clazz.getModifiers());
 		if (clazz.isArray()) {
 			visibility = lowest(visibility, forClass(clazz.getComponentType()));
 		}
@@ -151,7 +151,7 @@ public enum AccessVisibility {
 		return visibility;
 	}
 
-	private static AccessVisibility forModifers(int modifiers) {
+	private static AccessVisibility forModifiers(int modifiers) {
 		if (Modifier.isPublic(modifiers)) {
 			return PUBLIC;
 		}

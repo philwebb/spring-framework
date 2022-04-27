@@ -68,9 +68,9 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 
 	/**
 	 * Return if this service supports {@link GeneratedMethods}. If this method returns
-	 * {@code true} then {@link #getGeneratedMethods()} can be safely called.
+	 * {@code true} then {@link #getMethodGenerator()} can be safely called.
 	 * @return {@code true} if generated methods are supported
-	 * @see #getGeneratedMethods()
+	 * @see #getMethodGenerator() ()
 	 */
 	boolean supportsMethodGeneration();
 
@@ -80,7 +80,7 @@ public interface InstanceCodeGenerationService extends Iterable<InstanceCodeGene
 	 * @return a generated methods instance
 	 * @throws IllegalStateException if generation methods cannot be used with this
 	 * service
-	 * @see #supportsGeneratedMethods()
+	 * @see #supportsMethodGeneration()
 	 */
 	MethodGenerator getMethodGenerator();
 

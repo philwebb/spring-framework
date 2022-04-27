@@ -38,7 +38,7 @@ public class GeneratedClasses implements ClassGenerator {
 
 	private final ClassNameGenerator classNameGenerator;
 
-	private Map<Owner, GeneratedClass> classes = new ConcurrentHashMap<>();
+	private final Map<Owner, GeneratedClass> classes = new ConcurrentHashMap<>();
 
 	public GeneratedClasses(ClassNameGenerator classNameGenerator) {
 		Assert.notNull(classNameGenerator, "'classNameGenerator' must not be null");
