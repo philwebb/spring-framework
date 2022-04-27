@@ -16,7 +16,11 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import java.lang.reflect.Executable;
+
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.javapoet.ClassName;
 import org.springframework.lang.Nullable;
 
 /**
@@ -37,13 +41,17 @@ public interface BeanRegistrationCodeGeneratorFactory {
 	 * registered bean or {@code null} if the registered bean isn't supported by this
 	 * factory.
 	 * @param registeredBean the registered bean
-	 * @param innerBeanPropertyName the name of the property that defined the registered
-	 * inner-bean or {@code null} for regular beans
-	 * @param beanRegistrationsCode the bean registrations code
+	 * @param constructorOrFactoryMethod the constructor or factory method that creates
+	 * the bean
+	 * @param className the name of the class being used for registrations
+	 * @param methodGenerator the method generator to use
+	 * @param innerBeanDefinitionMethodGenerator the inner-bean definition method
+	 * generator to use
 	 * @return a {@link BeanRegistrationCode} instance or {@code null}
 	 */
 	@Nullable
 	BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(RegisteredBean registeredBean,
-			@Nullable String innerBeanPropertyName, BeanRegistrationsCode beanRegistrationsCode);
+			Executable constructorOrFactoryMethod, ClassName className, MethodGenerator methodGenerator,
+			InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator);
 
 }
