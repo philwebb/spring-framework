@@ -139,11 +139,6 @@ class ImportAwareBeanFactoryInitializationAotContributionTests {
 		}
 
 		@Override
-		public String getBeanFactoryName() {
-			return "Test";
-		}
-
-		@Override
 		public void addInitializer(MethodReference methodReference) {
 			this.initializers.add(methodReference);
 		}

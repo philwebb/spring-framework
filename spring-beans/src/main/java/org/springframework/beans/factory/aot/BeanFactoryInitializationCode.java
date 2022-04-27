@@ -37,12 +37,6 @@ public interface BeanFactoryInitializationCode {
 	String BEAN_FACTORY_VARIABLE = "beanFactory";
 
 	/**
-	 * Return the name of the bean factory.
-	 * @return the bean factory name
-	 */
-	String getBeanFactoryName();
-
-	/**
 	 * Return a {@link MethodGenerator} that can be used to add more methods to the
 	 * Initializing code.
 	 * @return the method generator

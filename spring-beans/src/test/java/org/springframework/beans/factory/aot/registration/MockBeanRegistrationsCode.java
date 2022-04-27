@@ -43,11 +43,6 @@ class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 	}
 
 	@Override
-	public String getBeanFactoryName() {
-		return "test";
-	}
-
-	@Override
 	public MethodGenerator getMethodGenerator() {
 		return this.generatedMethods;
 	}
