@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support;
+package org.springframework.beans.factory.annotation;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
@@ -28,6 +28,7 @@ import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;

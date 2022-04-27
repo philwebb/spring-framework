@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support;
+package org.springframework.beans.factory.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -30,6 +30,7 @@ import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
+import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;

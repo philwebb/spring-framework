@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support;
+package org.springframework.beans.factory.annotation;
 
 import java.io.InputStream;
 import java.lang.annotation.Retention;
@@ -38,12 +38,17 @@ import org.junit.jupiter.params.support.AnnotationConsumer;
 import org.springframework.beans.factory.BeanCurrentlyInCreationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
-import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.springframework.beans.factory.annotation.AutowiredInstantiationArgumentsResolverTests.Enclosing.InnerSingleArgConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
-import org.springframework.beans.factory.support.AutowiredInstantiationArgumentsResolverTests.Enclosing.InnerSingleArgConstructor;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.InstanceSupplier;
+import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
