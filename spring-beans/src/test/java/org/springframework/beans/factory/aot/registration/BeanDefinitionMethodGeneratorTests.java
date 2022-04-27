@@ -177,10 +177,8 @@ class BeanDefinitionMethodGeneratorTests {
 			BiConsumer<BeanDefinition, Compiled> result) {
 		this.generationContext.close();
 		JavaFile javaFile = generateJavaFile(method);
-		System.err.println(javaFile);
-		TestCompiler.forSystem().withTargetClassAccess(targetClassAccess).withFiles(this.generatedFiles)
-				.printFiles(System.out).compile(javaFile::writeTo, compiled -> result
-						.accept((BeanDefinition) compiled.getInstance(Supplier.class).get(), compiled));
+		TestCompiler.forSystem().withFiles(this.generatedFiles).printFiles(System.out).compile(javaFile::writeTo,
+				compiled -> result.accept((BeanDefinition) compiled.getInstance(Supplier.class).get(), compiled));
 	}
 
 	private JavaFile generateJavaFile(MethodReference method) {
