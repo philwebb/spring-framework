@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support;
+package org.springframework.beans.factory.annotation;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

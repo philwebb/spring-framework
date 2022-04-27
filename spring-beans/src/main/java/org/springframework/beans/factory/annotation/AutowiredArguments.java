@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.beans.factory.support;
+package org.springframework.beans.factory.annotation;
 
 import groovyjarjarantlr4.v4.runtime.misc.Nullable;
 
