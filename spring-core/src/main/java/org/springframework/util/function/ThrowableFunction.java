@@ -105,6 +105,20 @@ public interface ThrowableFunction<T, R> extends Function<T, R> {
 	 * @param function the source function
 	 * @return a new {@link ThrowableFunction} instance
 	 */
+	static <T, R> ThrowableFunction<T, R> of(ThrowableFunction<T, R> function) {
+		return function;
+	}
+
+	/**
+	 * Lambda friendly convenience method that can be used to create
+	 * {@link ThrowableFunction} where the {@link #apply(Object)} method wraps
+	 * any thrown checked exceptions using the given {@code exceptionWrapper}.
+	 * @param <T> the type of the input to the function
+	 * @param <R> the type of the result of the function
+	 * @param function the source function
+	 * @param exceptionWrapper the exception wrapper to use
+	 * @return a new {@link ThrowableFunction} instance
+	 */
 	static <T, R> ThrowableFunction<T, R> of(ThrowableFunction<T, R> function,
 			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 

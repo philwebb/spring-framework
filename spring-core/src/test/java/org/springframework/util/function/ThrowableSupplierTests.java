@@ -72,7 +72,7 @@ class ThrowableSupplierTests {
 	@Test
 	void ofModifiesThrowException() {
 		ThrowableSupplier<Object> supplier = ThrowableSupplier.of(
-				IllegalStateException::new, this::throwIOException);
+				this::throwIOException, IllegalStateException::new);
 		assertThatIllegalStateException().isThrownBy(
 				() -> supplier.get()).withCauseInstanceOf(IOException.class);
 	}

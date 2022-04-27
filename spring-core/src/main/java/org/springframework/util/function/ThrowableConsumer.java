@@ -101,6 +101,19 @@ public interface ThrowableConsumer<T> extends Consumer<T> {
 	 * @param consumer the source consumer
 	 * @return a new {@link ThrowableConsumer} instance
 	 */
+	static <T> ThrowableConsumer<T> of(ThrowableConsumer<T> consumer) {
+		return consumer;
+	}
+
+	/**
+	 * Lambda friendly convenience method that can be used to create
+	 * {@link ThrowableConsumer} where the {@link #accept(Object)} method wraps
+	 * any thrown checked exceptions using the given {@code exceptionWrapper}.
+	 * @param <T> the type of the input to the operation
+	 * @param consumer the source consumer
+	 * @param exceptionWrapper the exception wrapper to use
+	 * @return a new {@link ThrowableConsumer} instance
+	 */
 	static <T> ThrowableConsumer<T> of(ThrowableConsumer<T> consumer,
 			BiFunction<String, Exception, RuntimeException> exceptionWrapper) {
 
