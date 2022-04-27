@@ -17,6 +17,7 @@
 package org.springframework.aot.test.generator.compile;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -29,6 +30,8 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.springframework.aot.generate.GeneratedFiles.Kind;
+import org.springframework.aot.generate.InMemoryGeneratedFiles;
 import org.springframework.aot.test.generator.file.ResourceFile;
 import org.springframework.aot.test.generator.file.ResourceFiles;
 import org.springframework.aot.test.generator.file.SourceFile;
@@ -81,6 +84,18 @@ public final class TestCompiler {
 	public static TestCompiler forCompiler(JavaCompiler javaCompiler) {
 		return new TestCompiler(null, javaCompiler, SourceFiles.none(),
 				ResourceFiles.none());
+	}
+
+	public TestCompiler withFiles(InMemoryGeneratedFiles generatedFiles) {
+		List<SourceFile> sourceFiles = new ArrayList<>();
+		generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
+			Class<?> targetClass = generatedFiles.getTargetClass(path);
+			sourceFiles.add(SourceFile.of(inputStreamSource).withTargetClass(targetClass));
+		});
+		List<ResourceFile> resourceFiles = new ArrayList<>();
+		generatedFiles.getGeneratedFiles(Kind.RESOURCE)
+				.forEach((path, inputStreamSource) -> resourceFiles.add(ResourceFile.of(path, inputStreamSource)));
+		return withSources(sourceFiles).withResources(resourceFiles);
 	}
 
 	/**
