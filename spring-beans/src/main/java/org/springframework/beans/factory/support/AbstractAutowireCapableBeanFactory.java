@@ -1229,8 +1229,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			return supplier.get();
 		}
 		catch (Throwable ex) {
-			if (ex instanceof RuntimeException runtimeException) {
-				throw runtimeException;
+			if (ex instanceof BeansException beansException) {
+				throw beansException;
 			}
 			throw new BeanCreationException(beanName, "Instantiation of supplied bean failed", ex);
 		}
