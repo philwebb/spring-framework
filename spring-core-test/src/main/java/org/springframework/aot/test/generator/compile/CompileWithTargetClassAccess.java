@@ -26,13 +26,11 @@ import java.lang.invoke.MethodHandles.Lookup;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.aot.test.generator.file.SourceFile;
-
 /**
  * Annotation that can be used on tests that need a {@link TestCompiler} with non-public
- * access to a {@link SourceFile#getTargetClass() target class}. Allows the compiler to
- * use {@link MethodHandles#privateLookupIn} to {@link Lookup#defineClass define the
- * class} without polluting the test {@link ClassLoader}.
+ * access to a target class. Allows the compiler to use
+ * {@link MethodHandles#privateLookupIn} to {@link Lookup#defineClass define the class}
+ * without polluting the test {@link ClassLoader}.
  *
  * @author Phillip Webb
  * @since 6.0
@@ -42,5 +40,17 @@ import org.springframework.aot.test.generator.file.SourceFile;
 @Documented
 @ExtendWith(CompileWithTargetClassAccessExtension.class)
 public @interface CompileWithTargetClassAccess {
+
+	/**
+	 * The target class names.
+	 * @return the class name
+	 */
+	String[] classNames() default {};
+
+	/**
+	 * The target classes.
+	 * @return the classes
+	 */
+	Class<?>[] classes() default {};
 
 }

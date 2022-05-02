@@ -35,14 +35,14 @@ class GeneratedClassTests {
 
 	@Test
 	void getNameReturnsName() {
-		GeneratedClassName name = new GeneratedClassName("test", "test");
+		GeneratedClassName name = new GeneratedClassName("test");
 		GeneratedClass generatedClass = new GeneratedClass(this::generateJavaFile, name);
 		assertThat(generatedClass.getName()).isSameAs(name);
 	}
 
 	@Test
 	void generateJavaFileSuppliesGeneratedMethods() {
-		GeneratedClassName name = new GeneratedClassName("test", "test");
+		GeneratedClassName name = new GeneratedClassName("test");
 		GeneratedClass generatedClass = new GeneratedClass(this::generateJavaFile, name);
 		MethodGenerator methodGenerator = generatedClass.getMethodGenerator();
 		methodGenerator.generateMethod("test").using(builder -> builder.addJavadoc("Test Method"));
@@ -51,7 +51,7 @@ class GeneratedClassTests {
 
 	@Test
 	void generateJavaFileWhenHasBadPackageThrowsException() {
-		GeneratedClassName name = new GeneratedClassName("test", "test");
+		GeneratedClassName name = new GeneratedClassName("test");
 		GeneratedClass generatedClass = new GeneratedClass(this::generateBadPackageJavaFile, name);
 		assertThatIllegalStateException().isThrownBy(() -> assertThat(generatedClass.generateJavaFile().toString()))
 				.withMessageContaining("should be in package");
@@ -59,7 +59,7 @@ class GeneratedClassTests {
 
 	@Test
 	void generateJavaFileWhenHasBadNameThrowsException() {
-		GeneratedClassName name = new GeneratedClassName("test", "test");
+		GeneratedClassName name = new GeneratedClassName("test");
 		GeneratedClass generatedClass = new GeneratedClass(this::generateBadNameJavaFile, name);
 		assertThatIllegalStateException().isThrownBy(() -> assertThat(generatedClass.generateJavaFile().toString()))
 				.withMessageContaining("should be named");

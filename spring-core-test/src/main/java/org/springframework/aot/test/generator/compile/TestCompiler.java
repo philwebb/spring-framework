@@ -88,10 +88,8 @@ public final class TestCompiler {
 
 	public TestCompiler withFiles(InMemoryGeneratedFiles generatedFiles) {
 		List<SourceFile> sourceFiles = new ArrayList<>();
-		generatedFiles.getGeneratedFiles(Kind.SOURCE).forEach((path, inputStreamSource) -> {
-			Class<?> targetClass = generatedFiles.getTargetClass(path);
-			sourceFiles.add(SourceFile.of(inputStreamSource).withTargetClass(targetClass));
-		});
+		generatedFiles.getGeneratedFiles(Kind.SOURCE)
+				.forEach((path, inputStreamSource) -> sourceFiles.add(SourceFile.of(inputStreamSource)));
 		List<ResourceFile> resourceFiles = new ArrayList<>();
 		generatedFiles.getGeneratedFiles(Kind.RESOURCE)
 				.forEach((path, inputStreamSource) -> resourceFiles.add(ResourceFile.of(path, inputStreamSource)));
@@ -244,8 +242,7 @@ public final class TestCompiler {
 				throw new CompilationException(errors.toString(), this.sourceFiles, this.resourceFiles);
 			}
 		}
-		return new DynamicClassLoader(classLoaderToUse, this.sourceFiles,
-				this.resourceFiles, fileManager.getClassFiles());
+		return new DynamicClassLoader(classLoaderToUse, this.resourceFiles, fileManager.getClassFiles());
 	}
 
 	/**

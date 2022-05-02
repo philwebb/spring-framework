@@ -309,7 +309,7 @@ class BeanDefinitionMethodGeneratorTests {
 	}
 
 	@Test
-	@CompileWithTargetClassAccess
+	@CompileWithTargetClassAccess(classes = PackagePrivateTestBean.class)
 	void generateBeanDefinitionMethodWhenPackagePrivateBean() {
 		RegisteredBean registeredBean = registerBean(new RootBeanDefinition(PackagePrivateTestBean.class));
 		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(this.methodGeneratorFactory,

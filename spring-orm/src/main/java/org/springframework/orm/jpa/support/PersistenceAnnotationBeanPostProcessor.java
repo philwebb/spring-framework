@@ -792,7 +792,7 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 			classBuilder.addMethod(generateMethod(generationContext.getRuntimeHints(), className, methods));
 			methods.doWithMethodSpecs(classBuilder::addMethod);
 			JavaFile javaFile = className.toJavaFile(classBuilder);
-			generationContext.getGeneratedFiles().addSourceFile(javaFile, this.target);
+			generationContext.getGeneratedFiles().addSourceFile(javaFile);
 			beanRegistrationCode.addInstancePostProcessor(MethodReference.ofStatic(className, APPLY_METHOD));
 		}
 

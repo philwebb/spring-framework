@@ -16,11 +16,8 @@
 
 package org.springframework.aot.generate;
 
-import java.lang.invoke.MethodHandles;
-
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.javapoet.JavaFile;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.function.ThrowableConsumer;
@@ -46,19 +43,8 @@ public interface GeneratedFiles {
 	 * @param javaFile the java file to add
 	 */
 	default void addSourceFile(JavaFile javaFile) {
-		addSourceFile(javaFile, null);
-	}
-
-	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content from the given
-	 * {@link JavaFile}.
-	 * @param javaFile the java file to add
-	 * @param targetClass the target class that can be used with a {@link MethodHandles}
-	 * lookup or {@code null}
-	 */
-	default void addSourceFile(JavaFile javaFile, @Nullable Class<?> targetClass) {
 		String className = javaFile.packageName + "." + javaFile.typeSpec.name;
-		addSourceFile(className, javaFile::writeTo, targetClass);
+		addSourceFile(className, javaFile::writeTo);
 	}
 
 	/**
@@ -69,20 +55,7 @@ public interface GeneratedFiles {
 	 * @param content the contents of the file
 	 */
 	default void addSourceFile(String className, CharSequence content) {
-		addSourceFile(className, content, null);
-	}
-
-	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content from the given
-	 * {@link CharSequence}.
-	 * @param className the class name that should be used to determine the path of the
-	 * file
-	 * @param content the contents of the file
-	 * @param targetClass the target class that can be used with a {@link MethodHandles}
-	 * lookup or {@code null}
-	 */
-	default void addSourceFile(String className, CharSequence content, @Nullable Class<?> targetClass) {
-		addSourceFile(className, appendable -> appendable.append(content), targetClass);
+		addSourceFile(className, appendable -> appendable.append(content));
 	}
 
 	/**
@@ -94,22 +67,7 @@ public interface GeneratedFiles {
 	 * will receive the file contents
 	 */
 	default void addSourceFile(String className, ThrowableConsumer<Appendable> content) {
-		addSourceFile(className, content, null);
-	}
-
-	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content written to an
-	 * {@link Appendable} passed to the given {@link ThrowableConsumer}.
-	 * @param className the class name that should be used to determine the path of the
-	 * file
-	 * @param content a {@link ThrowableConsumer} that accepts an {@link Appendable} which
-	 * will receive the file contents
-	 * @param targetClass the target class that can be used with a {@link MethodHandles}
-	 * lookup or {@code null}
-	 */
-	default void addSourceFile(String className, ThrowableConsumer<Appendable> content,
-			@Nullable Class<?> targetClass) {
-		addFile(Kind.SOURCE, getClassNamePath(className), content, targetClass);
+		addFile(Kind.SOURCE, getClassNamePath(className), content);
 	}
 
 	/**
@@ -121,21 +79,7 @@ public interface GeneratedFiles {
 	 * containing the file contents
 	 */
 	default void addSourceFile(String className, InputStreamSource content) {
-		addSourceFile(className, content, null);
-	}
-
-	/**
-	 * Add a generated {@link Kind#SOURCE source file} with content from the given
-	 * {@link InputStreamSource}.
-	 * @param className the class name that should be used to determine the path of the
-	 * file
-	 * @param content an {@link InputStreamSource} that will provide an input stream
-	 * containing the file contents
-	 * @param targetClass the target class that can be used with a {@link MethodHandles}
-	 * lookup or {@code null}
-	 */
-	default void addSourceFile(String className, InputStreamSource content, @Nullable Class<?> targetClass) {
-		addFile(Kind.SOURCE, getClassNamePath(className), content, targetClass);
+		addFile(Kind.SOURCE, getClassNamePath(className), content);
 	}
 
 	/**
@@ -201,21 +145,8 @@ public interface GeneratedFiles {
 	 * will receive the file contents
 	 */
 	default void addFile(Kind kind, String path, ThrowableConsumer<Appendable> content) {
-		addFile(kind, path, content, null);
-	}
-
-	/**
-	 * Add a generated file of the specified {@link Kind} with content written to
-	 * an {@link Appendable} passed to the given {@link ThrowableConsumer}.
-	 * @param kind the kind of file being written
-	 * @param path the relative path of the file
-	 * @param content a {@link ThrowableConsumer} that accepts an {@link Appendable} which
-	 * will receive the file contents
-	 */
-	default void addFile(Kind kind, String path, ThrowableConsumer<Appendable> content,
-			@Nullable Class<?> targetClass) {
 		Assert.notNull(content, "'content' must not be null");
-		addFile(kind, path, new AppendableConsumerInputStreamSource(content), targetClass);
+		addFile(kind, path, new AppendableConsumerInputStreamSource(content));
 	}
 
 	/**
@@ -226,19 +157,7 @@ public interface GeneratedFiles {
 	 * @param content an {@link InputStreamSource} that will provide an input stream
 	 * containing the file contents
 	 */
-	default void addFile(Kind kind, String path, InputStreamSource content) {
-		addFile(kind, path, content, null);
-	}
-
-	/**
-	 * Add a generated file of the specified {@link Kind} with content from the given
-	 * {@link InputStreamSource}.
-	 * @param kind the kind of file being written
-	 * @param path the relative path of the file
-	 * @param content an {@link InputStreamSource} that will provide an input stream
-	 * containing the file contents
-	 */
-	void addFile(Kind kind, String path, InputStreamSource content, @Nullable Class<?> targetClass);
+	void addFile(Kind kind, String path, InputStreamSource content);
 
 	private static String getClassNamePath(String className) {
 		Assert.hasLength(className, "'className' must not be empty");

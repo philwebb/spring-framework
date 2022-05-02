@@ -16,7 +16,11 @@
 
 package org.springframework.aot.test.generator.compile;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
@@ -30,6 +34,8 @@ import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
@@ -99,9 +105,10 @@ class CompileWithTargetClassAccessExtension implements InvocationInterceptor {
 			ExtensionContext extensionContext) throws Throwable {
 		Class<?> testClass = extensionContext.getRequiredTestClass();
 		Method testMethod = invocationContext.getExecutable();
+		String[] targetClasses = getTargetClasses(testClass, testMethod);
 		ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
-		ClassLoader forkedClassPathClassLoader = new CompileWithTargetClassAccessClassLoader(
-				testClass.getClassLoader());
+		ClassLoader forkedClassPathClassLoader = new CompileWithTargetClassAccessClassLoader(testClass.getClassLoader(),
+				targetClasses);
 		Thread.currentThread().setContextClassLoader(forkedClassPathClassLoader);
 		try {
 			runTest(forkedClassPathClassLoader, testClass.getName(), testMethod.getName());
@@ -109,6 +116,21 @@ class CompileWithTargetClassAccessExtension implements InvocationInterceptor {
 		finally {
 			Thread.currentThread().setContextClassLoader(originalClassLoader);
 		}
+	}
+
+	private String[] getTargetClasses(AnnotatedElement... elements) {
+		Set<String> targetClasses = new LinkedHashSet<>();
+		for (AnnotatedElement element : elements) {
+			MergedAnnotation<?> annotation = MergedAnnotations.from(element).get(CompileWithTargetClassAccess.class);
+			if (annotation.isPresent()) {
+				Arrays.stream(annotation.getStringArray("classNames")).forEach(targetClasses::add);
+				Arrays.stream(annotation.getClassArray("classes")).map(Class::getName).forEach(targetClasses::add);
+				if (element instanceof Class<?> clazz) {
+					targetClasses.add(clazz.getName());
+				}
+			}
+		}
+		return targetClasses.toArray(String[]::new);
 	}
 
 	private void runTest(ClassLoader classLoader, String testClassName, String testMethodName) throws Throwable {

@@ -76,7 +76,7 @@ public class GeneratedClasses implements ClassGenerator {
 		List<GeneratedClass> generatedClasses = new ArrayList<>(this.classes.values());
 		generatedClasses.sort(Comparator.comparing(GeneratedClass::getName));
 		for (GeneratedClass generatedClass : generatedClasses) {
-			generatedFiles.addSourceFile(generatedClass.generateJavaFile(), generatedClass.getName().getTargetClass());
+			generatedFiles.addSourceFile(generatedClass.generateJavaFile());
 		}
 	}
 

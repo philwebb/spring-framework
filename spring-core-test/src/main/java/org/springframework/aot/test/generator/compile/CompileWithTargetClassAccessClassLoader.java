@@ -32,9 +32,16 @@ final class CompileWithTargetClassAccessClassLoader extends ClassLoader {
 
 	private final ClassLoader testClassLoader;
 
-	public CompileWithTargetClassAccessClassLoader(ClassLoader testClassLoader) {
+	private final String[] targetClasses;
+
+	public CompileWithTargetClassAccessClassLoader(ClassLoader testClassLoader, String[] targetClasses) {
 		super(testClassLoader.getParent());
 		this.testClassLoader = testClassLoader;
+		this.targetClasses = targetClasses;
+	}
+
+	public String[] getTargetClasses() {
+		return this.targetClasses;
 	}
 
 	@Override

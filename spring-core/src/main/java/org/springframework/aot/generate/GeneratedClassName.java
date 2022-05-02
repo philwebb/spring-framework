@@ -16,8 +16,6 @@
 
 package org.springframework.aot.generate;
 
-import javax.annotation.Nullable;
-
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.TypeSpec;
@@ -37,18 +35,14 @@ public final class GeneratedClassName implements Comparable<GeneratedClassName> 
 
 	private final String name;
 
-	private final Object target;
-
 	/**
 	 * Create a new {@link GeneratedClassName} instance with the given name. This
 	 * constructor is package-private since names should only be generated via a
 	 * {@link ClassNameGenerator}.
 	 * @param name the generated name
-	 * @param target the target of the generated class
 	 */
-	GeneratedClassName(String name, Object target) {
+	GeneratedClassName(String name) {
 		this.name = name;
-		this.target = target;
 	}
 
 	/**
@@ -74,23 +68,6 @@ public final class GeneratedClassName implements Comparable<GeneratedClassName> 
 	public String getShortName() {
 		int lastDotIndex = this.name.lastIndexOf('.');
 		return (lastDotIndex != -1) ? this.name.substring(lastDotIndex + 1) : this.name;
-	}
-
-	/**
-	 * Return the target class for this generated name or {@code null}.
-	 * @return the target class
-	 */
-	@Nullable
-	public Class<?> getTargetClass() {
-		if (this.target instanceof Class<?> targetClass) {
-			return targetClass;
-		}
-		try {
-			return ClassUtils.forName((String) this.target, null);
-		}
-		catch (Exception ex) {
-			return null;
-		}
 	}
 
 	/**

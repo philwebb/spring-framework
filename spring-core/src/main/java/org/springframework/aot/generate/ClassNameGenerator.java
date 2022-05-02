@@ -52,7 +52,7 @@ public final class ClassNameGenerator {
 	public GeneratedClassName generateClassName(Class<?> target, String featureName) {
 		Assert.notNull(target, "'target' must not be null");
 		String rootName = target.getName().replace("$", "_");
-		return generateSequencedClassName(rootName, featureName, target);
+		return generateSequencedClassName(rootName, featureName);
 	}
 
 	/**
@@ -65,9 +65,9 @@ public final class ClassNameGenerator {
 	 */
 	public GeneratedClassName generateClassName(String target, String featureName) {
 		Assert.hasLength(target, "'target' must not be empty");
-		String cleanedTarget = clean(target);
-		String rootName = AOT_PACKAGE + "." + ((!cleanedTarget.isEmpty()) ? cleanedTarget : "Aot");
-		return generateSequencedClassName(rootName, featureName, target);
+		target = clean(target);
+		String rootName = AOT_PACKAGE + "." + ((!target.isEmpty()) ? target : "Aot");
+		return generateSequencedClassName(rootName, featureName);
 	}
 
 	private String clean(String name) {
@@ -84,11 +84,11 @@ public final class ClassNameGenerator {
 		return rootName.toString();
 	}
 
-	private GeneratedClassName generateSequencedClassName(String rootName, String featureName, Object target) {
+	private GeneratedClassName generateSequencedClassName(String rootName, String featureName) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
 		Assert.isTrue(featureName.chars().allMatch(Character::isLetter), "'featureName' must contain only letters");
 		String name = addSequence(rootName + SEPARATOR + StringUtils.capitalize(featureName));
-		return new GeneratedClassName(name, target);
+		return new GeneratedClassName(name);
 	}
 
 	private String addSequence(String name) {

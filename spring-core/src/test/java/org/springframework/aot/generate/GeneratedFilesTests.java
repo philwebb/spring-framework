@@ -32,7 +32,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeSpec;
-import org.springframework.lang.Nullable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -143,7 +142,7 @@ class GeneratedFilesTests {
 		private InputStreamSource content;
 
 		@Override
-		public void addFile(Kind kind, String path, InputStreamSource content, @Nullable Class<?> targetClass) {
+		public void addFile(Kind kind, String path, InputStreamSource content) {
 			this.kind = kind;
 			this.path = path;
 			this.content = content;
