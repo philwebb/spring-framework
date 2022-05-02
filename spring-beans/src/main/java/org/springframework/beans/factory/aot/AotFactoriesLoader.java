@@ -87,7 +87,7 @@ public class AotFactoriesLoader {
 	 */
 	public <T> List<T> load(Class<T> type) {
 		List<T> result = new ArrayList<>();
-		result.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(this.beanFactory, type).values());
+		result.addAll(BeanFactoryUtils.beansOfTypeIncludingAncestors(this.beanFactory, type, true, false).values());
 		result.addAll(this.factoriesLoader.load(type));
 		AnnotationAwareOrderComparator.sort(result);
 		return Collections.unmodifiableList(result);
