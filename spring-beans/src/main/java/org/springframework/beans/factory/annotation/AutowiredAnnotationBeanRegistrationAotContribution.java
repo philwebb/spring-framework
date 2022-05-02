@@ -28,7 +28,6 @@ import org.springframework.aot.generate.AccessVisibility;
 import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
-import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.aot.hint.ExecutableHint;
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.aot.hint.FieldHint;
@@ -155,11 +154,10 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 	}
 
 	private CodeBlock generateParameterTypesCode(Class<?>[] parameterTypes) {
-		InstanceCodeGenerationService generationService = InstanceCodeGenerationService.getSharedInstance();
 		CodeBlock.Builder builder = CodeBlock.builder();
 		for (int i = 0; i < parameterTypes.length; i++) {
 			builder.add(i != 0 ? ", " : "");
-			builder.add(generationService.generateCode(parameterTypes[i]));
+			builder.add("$T.class", parameterTypes[i]);
 		}
 		return builder.build();
 	}
