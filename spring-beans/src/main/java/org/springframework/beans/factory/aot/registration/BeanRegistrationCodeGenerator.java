@@ -16,46 +16,80 @@
 
 package org.springframework.beans.factory.aot.registration;
 
+import java.lang.reflect.Executable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.MethodReference;
+import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.util.Assert;
 
 /**
- * {@link BeanRegistrationCode} with generation support. Instances of this interface can
- * be supplied by a {@link BeanRegistrationCodeGeneratorFactory} if custom code generation
- * is required.
- * <p>
- * Implementations can assume that they will be included in the body of a new method must
- * generate code that returns a fully configured {@link BeanDefinition}. For
- * example:<blockquote><pre class="code">
- * RootBeanDefinition beanDefinition = new RootBeanDefinition(MyBean.class);
- * beanDefinition.setPrimary(true);
- * beanDefinition.setScope(BeanDefinition.SCOPE_PROTOTYPE);
- * ...
- * return beanDefinition;
- * </pre></blockquote>
- * <p>
+ * {@link BeanRegistrationCode} implementation with code generation support.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationCodeGeneratorFactory
- * @see AbstractBeanRegistrationCodeGenerator
- * @see DefaultBeanRegistrationCodeGenerator
  */
-public interface BeanRegistrationCodeGenerator extends BeanRegistrationCode {
+class BeanRegistrationCodeGenerator implements BeanRegistrationCode {
 
-	/**
-	 * The recommended variable name to used when creating the bean definition.
-	 */
-	String BEAN_DEFINITION_VARIABLE = "beanDefinition";
+	private static final Predicate<String> NO_ATTRIBUTE_FILTER = attribute -> true;
 
-	/**
-	 * Generate a code block containing the method body to use for bean registration.
-	 * @param generationContext the generation context
-	 * @return a code block containing the method body
-	 */
-	CodeBlock generateCode(GenerationContext generationContext);
+	private final ClassName className;
+
+	private final MethodGenerator methodGenerator;
+
+	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
+
+	private final RegisteredBean registeredBean;
+
+	private final Executable constructorOrFactoryMethod;
+
+	private final BeanRegistrationCodeFragments codeFragments;
+
+	BeanRegistrationCodeGenerator(ClassName className, MethodGenerator methodGenerator, RegisteredBean registeredBean,
+			Executable constructorOrFactoryMethod, BeanRegistrationCodeFragments codeFragments) {
+		this.className = className;
+		this.methodGenerator = methodGenerator;
+		this.registeredBean = registeredBean;
+		this.constructorOrFactoryMethod = constructorOrFactoryMethod;
+		this.codeFragments = codeFragments;
+	}
+
+	@Override
+	public ClassName getClassName() {
+		return this.className;
+	}
+
+	@Override
+	public MethodGenerator getMethodGenerator() {
+		return this.methodGenerator;
+	}
+
+	@Override
+	public void addInstancePostProcessor(MethodReference methodReference) {
+		Assert.notNull(methodReference, "MethodReference must not be null");
+		this.instancePostProcessors.add(methodReference);
+	}
+
+	CodeBlock generateCode(GenerationContext generationContext) {
+		CodeBlock.Builder builder = CodeBlock.builder();
+		builder.add(this.codeFragments.generateNewBeanDefinitionCode(generationContext,
+				this.registeredBean.getBeanType(), this));
+		builder.add(this.codeFragments.generateSetBeanDefinitionPropertiesCode(generationContext, this,
+				this.registeredBean.getMergedBeanDefinition(), NO_ATTRIBUTE_FILTER));
+		CodeBlock instanceSupplierCode = this.codeFragments.generateInstanceSupplierCode(generationContext, this,
+				this.constructorOrFactoryMethod, this.instancePostProcessors.isEmpty());
+		builder.add(this.codeFragments.generateSetBeanInstanceSupplierCode(generationContext, this,
+				instanceSupplierCode, this.instancePostProcessors));
+		builder.add(this.codeFragments.generateReturnCode(generationContext, this));
+		return builder.build();
+	}
 
 }

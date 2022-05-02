@@ -75,13 +75,12 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see DefaultBeanRegistrationCodeGenerator
  */
 class BeanDefinitionPropertiesCodeGenerator {
 
 	private static final RootBeanDefinition DEFAULT_BEAN_DEFINITION = new RootBeanDefinition();
 
-	private static final String BEAN_DEFINITION_VARIABLE = BeanRegistrationCodeGenerator.BEAN_DEFINITION_VARIABLE;
+	private static final String BEAN_DEFINITION_VARIABLE = BeanRegistrationCodeFragments.BEAN_DEFINITION_VARIABLE;
 
 	private final RuntimeHints hints;
 

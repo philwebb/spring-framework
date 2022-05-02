@@ -29,7 +29,8 @@ import org.springframework.javapoet.ClassName;
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see BeanRegistrationCodeGenerator
+ * @see BeanRegistrationCodeFragments
+ * @see BeanRegistrationCodeFragmentsCustomizer
  */
 public interface BeanRegistrationCode {
 
@@ -45,13 +46,6 @@ public interface BeanRegistrationCode {
 	 * @return the method generator
 	 */
 	MethodGenerator getMethodGenerator();
-
-	/**
-	 * Return an {@link InnerBeanDefinitionMethodGenerator} that can be used to generate
-	 * additional bean registration methods for inner-beans.
-	 * @return an inner-bean registration method generator
-	 */
-	InnerBeanDefinitionMethodGenerator getInnerBeanDefinitionMethodGenerator();
 
 	/**
 	 * Add an instance post processor method call to the registration code.

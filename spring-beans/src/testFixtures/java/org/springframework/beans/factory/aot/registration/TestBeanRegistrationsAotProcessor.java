@@ -16,31 +16,11 @@
 
 package org.springframework.beans.factory.aot.registration;
 
-import org.springframework.aot.generate.MethodGenerator;
-import org.springframework.javapoet.ClassName;
-
 /**
- * Interface that can be used to configure the code that will be generated to register
- * beans.
+ * Public variant of {@link BeanRegistrationAotProcessor} for use in tests.
  *
- * @author Stephane Nicoll
  * @author Phillip Webb
- * @author Andy Wilkinson
- * @since 6.0
  */
-public interface BeanRegistrationsCode {
-
-	/**
-	 * Return the name of the class being used for registrations.
-	 * @return the generated class name.
-	 */
-	ClassName getClassName();
-
-	/**
-	 * Return a {@link MethodGenerator} that can be used to add more methods to the
-	 * registrations code.
-	 * @return the method generator
-	 */
-	MethodGenerator getMethodGenerator();
+public class TestBeanRegistrationsAotProcessor extends BeanRegistrationsAotProcessor {
 
 }

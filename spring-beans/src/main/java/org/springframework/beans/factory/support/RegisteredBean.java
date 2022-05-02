@@ -18,7 +18,6 @@ package org.springframework.beans.factory.support;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -186,18 +185,6 @@ public final class RegisteredBean {
 	@Nullable
 	public RegisteredBean getParent() {
 		return this.parent;
-	}
-
-	/**
-	 * Return a new {@link RegisteredBean} instance that will apply additional processing
-	 * to the result of {@link #getMergedBeanDefinition()} before it is returned.
-	 * @param processor the processor to apply
-	 * @return a new {@link RegisteredBean} instance
-	 */
-	public RegisteredBean withProcessedMergedBeanDefinition(UnaryOperator<RootBeanDefinition> processor) {
-		Assert.notNull(processor, "Processor must not be null");
-		return new RegisteredBean(this.beanFactory, this.beanName, this.generatedBeanName,
-				() -> processor.apply(this.mergedBeanDefinition.get()), this.parent);
 	}
 
 	@Override

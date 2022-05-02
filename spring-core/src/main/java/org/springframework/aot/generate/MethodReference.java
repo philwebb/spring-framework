@@ -44,6 +44,22 @@ public final class MethodReference {
 	}
 
 	/**
+	 * Return the referenced declaring class.
+	 * @return the declaring class
+	 */
+	public ClassName getDeclaringClass() {
+		return this.declaringClass;
+	}
+
+	/**
+	 * Return the referenced method name.
+	 * @return the method name
+	 */
+	public String getMethodName() {
+		return this.methodName;
+	}
+
+	/**
 	 * Create a new method reference that refers to the given instance method.
 	 * @param methodName the method name
 	 * @return a new {@link MethodReference} instance

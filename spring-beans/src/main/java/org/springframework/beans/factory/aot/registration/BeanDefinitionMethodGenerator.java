@@ -21,9 +21,6 @@ import java.util.List;
 
 import javax.lang.model.element.Modifier;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aot.generate.ClassGenerator.JavaFileGenerator;
 import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedClassName;
@@ -35,12 +32,10 @@ import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.core.log.LogMessage;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.TypeSpec;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ClassUtils;
 
 /**
  * Generates a method that returns a {@link BeanDefinition} to be registered.
@@ -53,8 +48,6 @@ import org.springframework.util.ClassUtils;
  */
 class BeanDefinitionMethodGenerator {
 
-	private static final Log logger = LogFactory.getLog(BeanDefinitionMethodGenerator.class);
-
 	private final BeanDefinitionMethodGeneratorFactory methodGeneratorFactory;
 
 	private final RegisteredBean registeredBean;
@@ -66,24 +59,26 @@ class BeanDefinitionMethodGenerator {
 
 	private final List<BeanRegistrationAotContribution> aotContributions;
 
-	private final List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories;
+	private final List<BeanRegistrationCodeFragmentsCustomizer> codeFragmentsCustomizers;
 
 	/**
 	 * Create a new {@link BeanDefinitionMethodGenerator} instance.
+	 * @param methodGeneratorFactory the method generator factory
 	 * @param registeredBean the registered bean
-	 * @param aotContributions the AOT contributions that should be applied before
-	 * generating the registration method
+	 * @param innerBeanPropertyName the inner bean property name
+	 * @param aotContributions the AOT contributions
+	 * @param codeFragmentsCustomizers the code fragments customizers
 	 */
 	BeanDefinitionMethodGenerator(BeanDefinitionMethodGeneratorFactory methodGeneratorFactory,
 			RegisteredBean registeredBean, @Nullable String innerBeanPropertyName,
 			List<BeanRegistrationAotContribution> aotContributions,
-			List<BeanRegistrationCodeGeneratorFactory> codeGeneratorFactories) {
+			List<BeanRegistrationCodeFragmentsCustomizer> codeFragmentsCustomizers) {
 		this.methodGeneratorFactory = methodGeneratorFactory;
 		this.registeredBean = registeredBean;
 		this.constructorOrFactoryMethod = ConstructorOrFactoryMethodResolver.resolve(registeredBean);
 		this.innerBeanPropertyName = innerBeanPropertyName;
 		this.aotContributions = aotContributions;
-		this.codeGeneratorFactories = codeGeneratorFactories;
+		this.codeFragmentsCustomizers = codeFragmentsCustomizers;
 	}
 
 	/**
@@ -94,56 +89,45 @@ class BeanDefinitionMethodGenerator {
 	 */
 	MethodReference generateBeanDefinitionMethod(GenerationContext generationContext,
 			BeanRegistrationsCode beanRegistrationsCode) {
-		InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator = this.methodGeneratorFactory
-				.getInnerBeanDefinitionMethodGenerator(beanRegistrationsCode);
-		Class<?> target = ClassUtils.getUserClass(this.constructorOrFactoryMethod.getDeclaringClass());
+		BeanRegistrationCodeFragments codeFragments = getCodeFragments(beanRegistrationsCode);
+		Class<?> target = codeFragments.getTarget(this.registeredBean, this.constructorOrFactoryMethod);
 		if (!target.getName().startsWith("java.")) {
 			GeneratedClass generatedClass = generationContext.getClassGenerator()
 					.getOrGenerateClass(new BeanDefinitionsJavaFileGenerator(target), target, "BeanDefinitions");
 			MethodGenerator methodGenerator = generatedClass.getMethodGenerator().withName(getName());
 			GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext,
-					generatedClass.getName().toClassName(), methodGenerator, innerBeanDefinitionMethodGenerator,
-					Modifier.PUBLIC);
+					generatedClass.getName().toClassName(), methodGenerator, codeFragments, Modifier.PUBLIC);
 			return MethodReference.ofStatic(generatedClass.getName(), generatedMethod.getName());
 		}
 		MethodGenerator methodGenerator = beanRegistrationsCode.getMethodGenerator().withName(getName());
 		GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext,
-				beanRegistrationsCode.getClassName(), methodGenerator, innerBeanDefinitionMethodGenerator,
-				Modifier.PRIVATE);
+				beanRegistrationsCode.getClassName(), methodGenerator, codeFragments, Modifier.PRIVATE);
 		return MethodReference.ofStatic(beanRegistrationsCode.getClassName(), generatedMethod.getName().toString());
 
 	}
 
 	private GeneratedMethod generateBeanDefinitionMethod(GenerationContext generationContext, ClassName className,
-			MethodGenerator methodGenerator, InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator,
-			Modifier modifier) {
-		BeanRegistrationCodeGenerator codeGenerator = getBeanRegistrationCodeGenerator(className, methodGenerator,
-				innerBeanDefinitionMethodGenerator);
+			MethodGenerator methodGenerator, BeanRegistrationCodeFragments codeFragments, Modifier modifier) {
+		BeanRegistrationCodeGenerator codeGenerator = new BeanRegistrationCodeGenerator(className, methodGenerator,
+				this.registeredBean, this.constructorOrFactoryMethod, codeFragments);
 		GeneratedMethod method = methodGenerator.generateMethod("get", "bean", "definition");
+		this.aotContributions.forEach(aotContribution -> aotContribution.applyTo(generationContext, codeGenerator));
 		return method.using(builder -> {
 			builder.addJavadoc("Get the $L definition for '$L'",
 					(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean", getName());
 			builder.addModifiers(modifier, Modifier.STATIC);
 			builder.returns(BeanDefinition.class);
-			this.aotContributions.forEach(aotContribution -> aotContribution.applyTo(generationContext, codeGenerator));
 			builder.addCode(codeGenerator.generateCode(generationContext));
 		});
 	}
 
-	private BeanRegistrationCodeGenerator getBeanRegistrationCodeGenerator(ClassName className,
-			MethodGenerator methodGenerator, InnerBeanDefinitionMethodGenerator innerBeanDefinitionMethodGenerator) {
-		for (BeanRegistrationCodeGeneratorFactory codeGeneratorFactory : this.codeGeneratorFactories) {
-			BeanRegistrationCodeGenerator codeGenerator = codeGeneratorFactory.getBeanRegistrationCodeGenerator(
-					this.registeredBean, this.constructorOrFactoryMethod, className, methodGenerator,
-					innerBeanDefinitionMethodGenerator);
-			if (codeGenerator != null) {
-				logger.trace(LogMessage.format("Using bean registration code generator %S for '%S'",
-						codeGenerator.getClass().getName(), this.registeredBean.getBeanName()));
-				return codeGenerator;
-			}
+	private BeanRegistrationCodeFragments getCodeFragments(BeanRegistrationsCode beanRegistrationsCode) {
+		BeanRegistrationCodeFragments codeFragments = new DefaultBeanRegistrationCodeFragments(beanRegistrationsCode,
+				this.registeredBean, this.methodGeneratorFactory);
+		for (BeanRegistrationCodeFragmentsCustomizer customizer : this.codeFragmentsCustomizers) {
+			codeFragments = customizer.customizeBeanRegistrationCodeFragments(this.registeredBean, codeFragments);
 		}
-		return new DefaultBeanRegistrationCodeGenerator(this.registeredBean, this.constructorOrFactoryMethod, className,
-				methodGenerator, innerBeanDefinitionMethodGenerator);
+		return codeFragments;
 	}
 
 	private String getName() {
