@@ -27,6 +27,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
+import org.springframework.util.Assert;
 
 /**
  * Interface used to generate the various fragments of code needed to register a bean.
@@ -38,17 +39,32 @@ import org.springframework.javapoet.CodeBlock;
  * @see BeanRegistrationCodeFragmentsWrapper
  * @see BeanRegistrationCodeFragmentsCustomizer
  */
-public interface BeanRegistrationCodeFragments {
+public abstract class BeanRegistrationCodeFragments {
 
 	/**
 	 * The variable name to used when creating the bean definition.
 	 */
-	String BEAN_DEFINITION_VARIABLE = "beanDefinition";
+	protected static final String BEAN_DEFINITION_VARIABLE = "beanDefinition";
 
 	/**
 	 * The variable name to used when creating the bean definition.
 	 */
-	String INSTANCE_SUPPLIER_VARIABLE = "instanceSupplier";
+	protected static final String INSTANCE_SUPPLIER_VARIABLE = "instanceSupplier";
+
+	private final BeanRegistrationCodeFragments codeFragments;
+
+	protected BeanRegistrationCodeFragments(BeanRegistrationCodeFragments codeFragments) {
+		Assert.notNull(codeFragments, "'codeFragments' must not be null");
+		this.codeFragments = codeFragments;
+	}
+
+	/**
+	 * Package-private constructor exclusively for
+	 * {@link DefaultBeanRegistrationCodeFragments}.
+	 */
+	BeanRegistrationCodeFragments() {
+		this.codeFragments = null;
+	}
 
 	/**
 	 * Return the target for the registration. Used to determine where to write the code.
@@ -56,7 +72,9 @@ public interface BeanRegistrationCodeFragments {
 	 * @param constructorOrFactoryMethod the constructor or factory method
 	 * @return the target class
 	 */
-	Class<?> getTarget(RegisteredBean registeredBean, Executable constructorOrFactoryMethod);
+	public Class<?> getTarget(RegisteredBean registeredBean, Executable constructorOrFactoryMethod) {
+		return this.codeFragments.getTarget(registeredBean, constructorOrFactoryMethod);
+	}
 
 	/**
 	 * Generate the code that defines the new bean definition instance.
@@ -65,8 +83,11 @@ public interface BeanRegistrationCodeFragments {
 	 * @param beanRegistrationCode the bean registration code
 	 * @return the generated code
 	 */
-	CodeBlock generateNewBeanDefinitionCode(GenerationContext generationContext, ResolvableType beanType,
-			BeanRegistrationCode beanRegistrationCode);
+	public CodeBlock generateNewBeanDefinitionCode(GenerationContext generationContext, ResolvableType beanType,
+			BeanRegistrationCode beanRegistrationCode) {
+		return this.codeFragments.generateNewBeanDefinitionCode(generationContext, beanType, beanRegistrationCode);
+
+	}
 
 	/**
 	 * Generate the code that sets the properties of the bean definition.
@@ -75,9 +96,13 @@ public interface BeanRegistrationCodeFragments {
 	 * @param attributeFilter any attribute filtering that should be applied
 	 * @return the generated code
 	 */
-	CodeBlock generateSetBeanDefinitionPropertiesCode(GenerationContext generationContext,
+	public CodeBlock generateSetBeanDefinitionPropertiesCode(GenerationContext generationContext,
 			BeanRegistrationCode beanRegistrationCode, RootBeanDefinition beanDefinition,
-			Predicate<String> attributeFilter);
+			Predicate<String> attributeFilter) {
+		return this.codeFragments.generateSetBeanDefinitionPropertiesCode(generationContext, beanRegistrationCode,
+				beanDefinition, attributeFilter);
+
+	}
 
 	/**
 	 * Generate the code that sets the instance supplier on the bean definition.
@@ -88,9 +113,12 @@ public interface BeanRegistrationCodeFragments {
 	 * @return the generated code
 	 * @see #generateInstanceSupplierCode
 	 */
-	CodeBlock generateSetBeanInstanceSupplierCode(GenerationContext generationContext,
+	public CodeBlock generateSetBeanInstanceSupplierCode(GenerationContext generationContext,
 			BeanRegistrationCode beanRegistrationCode, CodeBlock instanceSupplierCode,
-			List<MethodReference> postProcessors);
+			List<MethodReference> postProcessors) {
+		return this.codeFragments.generateSetBeanInstanceSupplierCode(generationContext, beanRegistrationCode,
+				instanceSupplierCode, postProcessors);
+	}
 
 	/**
 	 * Generate the instance supplier code.
@@ -101,9 +129,12 @@ public interface BeanRegistrationCodeFragments {
 	 * always needing an {@link InstanceSupplier}
 	 * @return the generated code
 	 */
-	CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
+	public CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
 			BeanRegistrationCode beanRegistrationCode, Executable constructorOrFactoryMethod,
-			boolean allowDirectSupplierShortcut);
+			boolean allowDirectSupplierShortcut) {
+		return this.codeFragments.generateInstanceSupplierCode(generationContext, beanRegistrationCode,
+				constructorOrFactoryMethod, allowDirectSupplierShortcut);
+	}
 
 	/**
 	 * Generate the return statement.
@@ -111,6 +142,9 @@ public interface BeanRegistrationCodeFragments {
 	 * @param beanRegistrationCode the bean registration code
 	 * @return the generated code
 	 */
-	CodeBlock generateReturnCode(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode);
+	public CodeBlock generateReturnCode(GenerationContext generationContext,
+			BeanRegistrationCode beanRegistrationCode) {
+		return this.codeFragments.generateReturnCode(generationContext, beanRegistrationCode);
+	}
 
 }

@@ -29,7 +29,6 @@ import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationCode;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationCodeFragments;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationCodeFragmentsCustomizer;
-import org.springframework.beans.factory.aot.registration.BeanRegistrationCodeFragmentsWrapper;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;
@@ -83,7 +82,7 @@ class ScopedProxyBeanRegistrationCodeFragmentsCustomizer implements BeanRegistra
 		return null;
 	}
 
-	private static class ScopedProxyBeanRegistrationCodeFragments extends BeanRegistrationCodeFragmentsWrapper {
+	private static class ScopedProxyBeanRegistrationCodeFragments extends BeanRegistrationCodeFragments {
 
 		private static final String REGISTERED_BEAN_PARAMETER_NAME = "registeredBean";
 

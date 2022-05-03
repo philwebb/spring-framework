@@ -43,7 +43,7 @@ import org.springframework.util.ClassUtils;
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
-class DefaultBeanRegistrationCodeFragments implements BeanRegistrationCodeFragments {
+class DefaultBeanRegistrationCodeFragments extends BeanRegistrationCodeFragments {
 
 	/**
 	 * The variable name used to hold the bean type.
