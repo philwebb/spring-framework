@@ -16,8 +16,7 @@
 
 package org.springframework.beans.factory.annotation;
 
-import groovyjarjarantlr4.v4.runtime.misc.Nullable;
-
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
