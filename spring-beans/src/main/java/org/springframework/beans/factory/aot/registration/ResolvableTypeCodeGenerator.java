@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate.instance;
+package org.springframework.beans.factory.aot.registration;
 
 import java.util.Arrays;
 
@@ -23,26 +23,23 @@ import org.springframework.javapoet.CodeBlock;
 import org.springframework.util.ClassUtils;
 
 /**
- * {@link InstanceCodeGenerator} to support {@link ResolvableType ResolvableTypes}.
+ * Internal code generator used to support {@link ResolvableType}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
  */
-class ResolvableTypeInstanceCodeGenerator implements InstanceCodeGenerator {
+final class ResolvableTypeCodeGenerator {
 
-	static final ResolvableTypeInstanceCodeGenerator INSTANCE = new ResolvableTypeInstanceCodeGenerator();
-
-	@Override
-	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
-		if (value instanceof ResolvableType resolvableType) {
-			return generateCode(resolvableType, false);
-		}
-		return null;
+	private ResolvableTypeCodeGenerator() {
 	}
 
-	private CodeBlock generateCode(ResolvableType resolvableType, boolean allowClassResult) {
+	public static CodeBlock generateCode(ResolvableType resolvableType) {
+		return generateCode(resolvableType, false);
+	}
+
+	private static CodeBlock generateCode(ResolvableType resolvableType, boolean allowClassResult) {
 		if (ResolvableType.NONE.equals(resolvableType)) {
 			return CodeBlock.of("$T.NONE", ResolvableType.class);
 		}
@@ -56,7 +53,7 @@ class ResolvableTypeInstanceCodeGenerator implements InstanceCodeGenerator {
 		return CodeBlock.of("$T.forClass($T.class)", ResolvableType.class, type);
 	}
 
-	private CodeBlock generateCodeWithGenerics(ResolvableType target, Class<?> type) {
+	private static CodeBlock generateCodeWithGenerics(ResolvableType target, Class<?> type) {
 		ResolvableType[] generics = target.getGenerics();
 		boolean hasNoNestedGenerics = Arrays.stream(generics).noneMatch(ResolvableType::hasGenerics);
 		CodeBlock.Builder builder = CodeBlock.builder();

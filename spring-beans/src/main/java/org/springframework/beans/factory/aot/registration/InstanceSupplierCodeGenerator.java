@@ -28,7 +28,6 @@ import org.springframework.aot.generate.AccessVisibility;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodGenerator;
-import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.aot.hint.ExecutableHint;
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.factory.annotation.AutowiredArgumentsCodeGenerator;
@@ -280,11 +279,10 @@ class InstanceSupplierCodeGenerator {
 	}
 
 	private CodeBlock generateParameterTypesCode(Class<?>[] parameterTypes, int offset) {
-		InstanceCodeGenerationService generationService = InstanceCodeGenerationService.getSharedInstance();
 		CodeBlock.Builder builder = CodeBlock.builder();
 		for (int i = offset; i < parameterTypes.length; i++) {
 			builder.add(i != offset ? ", " : "");
-			builder.add(generationService.generateCode(parameterTypes[i]));
+			builder.add("$T.class", parameterTypes[i]);
 		}
 		return builder.build();
 	}

@@ -18,12 +18,10 @@ package org.springframework.beans.factory.aot.registration;
 
 import java.lang.reflect.Executable;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
-import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.InstanceSupplier;
@@ -84,21 +82,19 @@ class DefaultBeanRegistrationCodeFragments extends BeanRegistrationCodeFragments
 
 	private CodeBlock generateBeanTypeCode(ResolvableType beanType) {
 		if (!beanType.hasGenerics()) {
-			return CodeBlock.of("$T<?> $L = $L", Class.class, BEAN_TYPE_VARIABLE,
-					InstanceCodeGenerationService.getSharedInstance().generateCode(beanType.toClass()));
+			return CodeBlock.of("$T<?> $L = $T.class", Class.class, BEAN_TYPE_VARIABLE, beanType.toClass());
 		}
 		return CodeBlock.of("$T $L = $L", ResolvableType.class, BEAN_TYPE_VARIABLE,
-				InstanceCodeGenerationService.getSharedInstance().generateCode(beanType));
+				ResolvableTypeCodeGenerator.generateCode(beanType));
 	}
 
 	@Override
 	public CodeBlock generateSetBeanDefinitionPropertiesCode(GenerationContext generationContext,
 			BeanRegistrationCode beanRegistrationCode, RootBeanDefinition beanDefinition,
 			Predicate<String> attributeFilter) {
-		BiFunction<String, Object, CodeBlock> valueCodeGenerator = (name, value) -> generateValueCode(generationContext,
-				name, value);
 		return new BeanDefinitionPropertiesCodeGenerator(generationContext.getRuntimeHints(), attributeFilter,
-				beanRegistrationCode.getMethodGenerator(), valueCodeGenerator).generateCode(beanDefinition);
+				beanRegistrationCode.getMethodGenerator(),
+				(name, value) -> generateValueCode(generationContext, name, value)).generateCode(beanDefinition);
 	}
 
 	@Nullable

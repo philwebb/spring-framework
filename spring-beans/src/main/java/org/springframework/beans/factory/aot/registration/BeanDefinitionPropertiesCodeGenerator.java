@@ -17,9 +17,7 @@
 package org.springframework.beans.factory.aot.registration;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -27,26 +25,15 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.springframework.aot.generate.MethodGenerator;
-import org.springframework.aot.generate.instance.CollectionInstanceCodeGenerator;
-import org.springframework.aot.generate.instance.DefaultInstanceCodeGenerationService;
-import org.springframework.aot.generate.instance.DefaultInstanceCodeGenerationService.InstanceCodeGenerators;
-import org.springframework.aot.generate.instance.InstanceCodeGenerationService;
-import org.springframework.aot.generate.instance.InstanceCodeGenerator;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
-import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.InstanceSupplier;
-import org.springframework.beans.factory.support.ManagedList;
-import org.springframework.beans.factory.support.ManagedMap;
-import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.CodeBlock.Builder;
 import org.springframework.util.ClassUtils;
@@ -86,25 +73,16 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	private final Predicate<String> attributeFilter;
 
-	private final BiFunction<String, Object, CodeBlock> valueCodeGenerator;
+	private final BiFunction<String, Object, CodeBlock> customValueCodeGenerator;
 
-	private final DefaultInstanceCodeGenerationService instanceCodeGenerationService;
+	private final BeanDefinitionPropertyValueCodeGenerator valueCodeGenerator;
 
 	BeanDefinitionPropertiesCodeGenerator(RuntimeHints hints, Predicate<String> attributeFilter,
-			MethodGenerator methodGenerator, BiFunction<String, Object, CodeBlock> valueCodeGenerator) {
+			MethodGenerator methodGenerator, BiFunction<String, Object, CodeBlock> customValueCodeGenerator) {
 		this.hints = hints;
 		this.attributeFilter = attributeFilter;
-		this.valueCodeGenerator = valueCodeGenerator;
-		this.instanceCodeGenerationService = new DefaultInstanceCodeGenerationService(null, methodGenerator,
-				this::addInstanceCodeGenerators);
-	}
-
-	private void addInstanceCodeGenerators(InstanceCodeGenerators instanceCodeGenerators) {
-		instanceCodeGenerators.add(BeanReferenceInstanceCodeGenerator.INSTANCE);
-		instanceCodeGenerators.add(ManagedListInstanceCodeGenerator.INSTANCE);
-		instanceCodeGenerators.add(ManagedSetInstanceCodeGenerator.INSTANCE);
-		instanceCodeGenerators.add(ManagedMapInstanceCodeGenerator.INSTANCE);
-		instanceCodeGenerators.addDefaults();
+		this.customValueCodeGenerator = customValueCodeGenerator;
+		this.valueCodeGenerator = new BeanDefinitionPropertyValueCodeGenerator(methodGenerator);
 	}
 
 	CodeBlock generateCode(BeanDefinition beanDefinition) {
@@ -161,9 +139,9 @@ class BeanDefinitionPropertiesCodeGenerator {
 			argumentValues.forEach((index, valueHolder) -> {
 				String name = valueHolder.getName();
 				Object value = valueHolder.getValue();
-				CodeBlock code = this.valueCodeGenerator.apply(name, value);
+				CodeBlock code = this.customValueCodeGenerator.apply(name, value);
 				if (code == null) {
-					code = this.instanceCodeGenerationService.generateCode(value);
+					code = this.valueCodeGenerator.generateCode(value);
 				}
 				builder.addStatement("$L.getConstructorArgumentValues().addIndexedArgumentValue($L, $L)",
 						BEAN_DEFINITION_VARIABLE, index, code);
@@ -177,9 +155,9 @@ class BeanDefinitionPropertiesCodeGenerator {
 			for (PropertyValue propertyValue : propertyValues) {
 				String name = propertyValue.getName();
 				Object value = propertyValue.getValue();
-				CodeBlock code = this.valueCodeGenerator.apply(name, value);
+				CodeBlock code = this.customValueCodeGenerator.apply(name, value);
 				if (code == null) {
-					code = this.instanceCodeGenerationService.generateCode(value);
+					code = this.valueCodeGenerator.generateCode(value);
 				}
 				builder.addStatement("$L.getPropertyValues().addPropertyValue($S, $L)", BEAN_DEFINITION_VARIABLE,
 						propertyValue.getName(), code);
@@ -192,7 +170,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 		if (!ObjectUtils.isEmpty(attributeNames)) {
 			for (String attributeName : attributeNames) {
 				if (this.attributeFilter.test(attributeName)) {
-					CodeBlock value = this.instanceCodeGenerationService
+					CodeBlock value = this.valueCodeGenerator
 							.generateCode(beanDefinition.getAttribute(attributeName));
 					builder.addStatement("$L.setAttribute($S, $L)", BEAN_DEFINITION_VARIABLE, attributeName, value);
 				}
@@ -253,86 +231,6 @@ class BeanDefinitionPropertiesCodeGenerator {
 	}
 
 
-	/**
-	 * {@link InstanceCodeGenerator} for {@link BeanReference} types.
-	 */
-	static class BeanReferenceInstanceCodeGenerator implements InstanceCodeGenerator {
 
-		public static final BeanReferenceInstanceCodeGenerator INSTANCE = new BeanReferenceInstanceCodeGenerator();
-
-		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
-			if (value instanceof BeanReference beanReference) {
-				return CodeBlock.of("new $T($S)", RuntimeBeanReference.class, beanReference.getBeanName());
-			}
-			return null;
-		}
-
-	}
-
-	/**
-	 * {@link InstanceCodeGenerator} for {@link ManagedList} types.
-	 */
-	static class ManagedListInstanceCodeGenerator extends CollectionInstanceCodeGenerator<ManagedList<?>> {
-
-		static final ManagedListInstanceCodeGenerator INSTANCE = new ManagedListInstanceCodeGenerator();
-
-		public ManagedListInstanceCodeGenerator() {
-			super(ManagedList.class, CodeBlock.of("new $T()", ManagedList.class));
-		}
-	}
-
-	/**
-	 * {@link InstanceCodeGenerator} for {@link ManagedSet} types.
-	 */
-	static class ManagedSetInstanceCodeGenerator extends CollectionInstanceCodeGenerator<ManagedSet<?>> {
-
-		static final ManagedSetInstanceCodeGenerator INSTANCE = new ManagedSetInstanceCodeGenerator();
-
-		public ManagedSetInstanceCodeGenerator() {
-			super(ManagedSet.class, CodeBlock.of("new $T()", ManagedSet.class));
-		}
-
-	}
-
-	/**
-	 * {@link InstanceCodeGenerator} for {@link ManagedMap} types.
-	 */
-	static class ManagedMapInstanceCodeGenerator implements InstanceCodeGenerator {
-
-		static final ManagedMapInstanceCodeGenerator INSTANCE = new ManagedMapInstanceCodeGenerator();
-
-		private static final CodeBlock EMPTY_RESULT = CodeBlock.of("$T.ofEntries()", ManagedMap.class);
-
-		@Override
-		public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
-			if (value instanceof ManagedMap<?, ?> managedMap) {
-				return generateManagedMapCode(type, service, managedMap);
-			}
-			return null;
-		}
-
-		private <K, V> CodeBlock generateManagedMapCode(ResolvableType type, InstanceCodeGenerationService service,
-				ManagedMap<K, V> managedMap) {
-			if (managedMap.isEmpty()) {
-				return EMPTY_RESULT;
-			}
-			ResolvableType keyType = type.as(Map.class).getGeneric(0);
-			ResolvableType valueType = type.as(Map.class).getGeneric(1);
-			CodeBlock.Builder builder = CodeBlock.builder();
-			builder.add("$T.ofEntries(", ManagedMap.class);
-			Iterator<Map.Entry<K, V>> iterator = managedMap.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Entry<?, ?> entry = iterator.next();
-				CodeBlock keyCode = service.generateCode(entry.getKey(), keyType);
-				CodeBlock valueCode = service.generateCode(entry.getValue(), valueType);
-				builder.add("$T.entry($L,$L)", Map.class, keyCode, valueCode);
-				builder.add((!iterator.hasNext()) ? "" : ", ");
-			}
-			builder.add(")");
-			return builder.build();
-		}
-
-	}
 
 }

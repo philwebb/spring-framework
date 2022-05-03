@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate.instance;
+package org.springframework.beans.factory.aot.registration;
 
 /**
  * Test enum that include a class body.

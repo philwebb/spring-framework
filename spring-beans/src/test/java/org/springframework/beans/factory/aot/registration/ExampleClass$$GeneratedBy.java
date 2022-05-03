@@ -14,29 +14,15 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate.instance;
-
-import org.springframework.core.ResolvableType;
-import org.springframework.javapoet.CodeBlock;
+package org.springframework.beans.factory.aot.registration;
 
 /**
- * {@link InstanceCodeGenerator} to support {@link Enum enums}.
+ * Fake CGLIB generated class.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 6.0
  */
-class EnumInstanceCodeGenerator implements InstanceCodeGenerator {
-
-	static final EnumInstanceCodeGenerator INSTANCE = new EnumInstanceCodeGenerator();
-
-	@Override
-	public CodeBlock generateCode(Object value, ResolvableType type, InstanceCodeGenerationService service) {
-		if (value instanceof Enum<?> enumValue) {
-			return CodeBlock.of("$T.$L", enumValue.getDeclaringClass(), enumValue.name());
-		}
-		return null;
-	}
+class ExampleClass$$GeneratedBy extends ExampleClass {
 
 }

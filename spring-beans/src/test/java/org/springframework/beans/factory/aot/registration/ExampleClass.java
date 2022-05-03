@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate.instance;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.javapoet.CodeBlock;
+package org.springframework.beans.factory.aot.registration;
 
 /**
- * {@link InstanceCodeGenerator} to support {@link List Lists}.
+ * Public example class used for test.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 6.0
  */
-class ListInstanceCodeGenerator extends CollectionInstanceCodeGenerator<List<?>> {
-
-	static final ListInstanceCodeGenerator INSTANCE = new ListInstanceCodeGenerator();
-
-	ListInstanceCodeGenerator() {
-		super(List.class, CodeBlock.of("$T.emptyList()", Collections.class));
-	}
+public class ExampleClass {
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.aot.generate.instance;
+package org.springframework.beans.factory.aot.registration;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,84 +37,69 @@ import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.aot.test.generator.file.SourceFile;
+import org.springframework.beans.factory.config.BeanReference;
+import org.springframework.beans.factory.config.RuntimeBeanNameReference;
+import org.springframework.beans.factory.support.ManagedList;
+import org.springframework.beans.factory.support.ManagedMap;
+import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.ParameterizedTypeName;
 import org.springframework.javapoet.TypeSpec;
-import org.springframework.lang.Nullable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link DefaultInstanceCodeGenerationService} that use the
- * {@link TestCompiler} to verify results.
+ * Tests for {@link BeanDefinitionPropertyValueCodeGenerator}.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
  * @since 6.0
- * @see DefaultInstanceCodeGenerationServiceTests
+ * @see BeanDefinitionPropertyValueCodeGeneratorTests
  */
-class DefaultInstanceCodeGenerationServiceCompilerTests {
+class BeanDefinitionPropertyValueCodeGeneratorTests {
 
-	private void compile(DefaultInstanceCodeGenerationService generationService, Object value,
-			BiConsumer<Object, Compiled> result) {
-		compile(generationService, null, value, result);
-	}
+	private GeneratedMethods generatedMethods = new GeneratedMethods();
 
-	private void compile(DefaultInstanceCodeGenerationService generationService,
-			@Nullable GeneratedMethods generatedMethods, Object value, BiConsumer<Object, Compiled> result) {
-		compile(generationService, generatedMethods, value, (value != null) ? ResolvableType.forInstance(value) : null,
-				result);
-	}
+	private BeanDefinitionPropertyValueCodeGenerator instance = new BeanDefinitionPropertyValueCodeGenerator(
+			generatedMethods);
 
-	private void compile(DefaultInstanceCodeGenerationService generationService,
-			@Nullable GeneratedMethods generatedMethods, Object value, ResolvableType type,
-			BiConsumer<Object, Compiled> result) {
-		CodeBlock code = generationService.generateCode(value, type);
-		JavaFile javaFile = createJavaFile(generationService, generatedMethods, code);
+	private void compile(Object value, BiConsumer<Object, Compiled> result) {
+		CodeBlock code = instance.generateCode(value);
+		JavaFile javaFile = createJavaFile(code);
 		TestCompiler.forSystem().compile(SourceFile.of(javaFile::writeTo),
 				compiled -> result.accept(compiled.getInstance(Supplier.class).get(), compiled));
 	}
 
-	private JavaFile createJavaFile(DefaultInstanceCodeGenerationService generationService,
-			@Nullable GeneratedMethods generatedMethods, CodeBlock code) {
+	private JavaFile createJavaFile(CodeBlock code) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder("InstanceSupplier");
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addSuperinterface(ParameterizedTypeName.get(Supplier.class, Object.class));
 		builder.addMethod(MethodSpec.methodBuilder("get").addModifiers(Modifier.PUBLIC).returns(Object.class)
 				.addStatement("return $L", code).build());
-		if (generatedMethods != null) {
-			generatedMethods.doWithMethodSpecs(builder::addMethod);
-		}
+		generatedMethods.doWithMethodSpecs(builder::addMethod);
 		return JavaFile.builder("com.example", builder.build()).build();
 	}
 
-	/**
-	 * Tests for {@link NullInstanceCodeGenerator}.
-	 */
 	@Nested
-	class NullInstanceCodeGeneratorTests {
+	class NullTests {
 
 		@Test
 		void generateWhenNull() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), null,
-					(instance, compiled) -> assertThat(instance).isNull());
+			compile(null, (instance, compiled) -> assertThat(instance).isNull());
 		}
 
 	}
 
-	/**
-	 * Tests for {@link PrimitiveInstanceCodeGenerator}.
-	 */
 	@Nested
-	class PrimitiveInstanceCodeGeneratorTests {
+	class PrimitiveTests {
 
 		@Test
 		void generateWhenBoolean() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), true, (instance, compiled) -> {
+			compile(true, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(Boolean.TRUE);
 				assertThat(compiled.getSourceFile()).contains("true");
 			});
@@ -122,7 +107,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenByte() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), (byte) 2, (instance, compiled) -> {
+			compile((byte) 2, (instance, compiled) -> {
 				assertThat(instance).isEqualTo((byte) 2);
 				assertThat(compiled.getSourceFile()).contains("(byte) 2");
 			});
@@ -130,7 +115,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenShort() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), (short) 3, (instance, compiled) -> {
+			compile((short) 3, (instance, compiled) -> {
 				assertThat(instance).isEqualTo((short) 3);
 				assertThat(compiled.getSourceFile()).contains("(short) 3");
 			});
@@ -138,7 +123,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenInt() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 4, (instance, compiled) -> {
+			compile(4, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(4);
 				assertThat(compiled.getSourceFile()).contains("return 4;");
 			});
@@ -146,7 +131,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenLong() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 5L, (instance, compiled) -> {
+			compile(5L, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(5L);
 				assertThat(compiled.getSourceFile()).contains("5L");
 			});
@@ -154,7 +139,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenFloat() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 0.1F, (instance, compiled) -> {
+			compile(0.1F, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(0.1F);
 				assertThat(compiled.getSourceFile()).contains("0.1F");
 			});
@@ -162,7 +147,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenDouble() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 0.2, (instance, compiled) -> {
+			compile(0.2, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(0.2);
 				assertThat(compiled.getSourceFile()).contains("(double) 0.2");
 			});
@@ -170,7 +155,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenChar() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), 'a', (instance, compiled) -> {
+			compile('a', (instance, compiled) -> {
 				assertThat(instance).isEqualTo('a');
 				assertThat(compiled.getSourceFile()).contains("'a'");
 			});
@@ -194,7 +179,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		}
 
 		private void testEscaped(char value, String expectedSourceContent) {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), value, (instance, compiled) -> {
+			compile(value, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(value);
 				assertThat(compiled.getSourceFile()).contains(expectedSourceContent);
 			});
@@ -202,15 +187,12 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 	}
 
-	/**
-	 * Tests for {@link StringInstanceCodeGenerator}.
-	 */
 	@Nested
-	class StringInstanceCodeGeneratorTests {
+	class StringTests {
 
 		@Test
 		void generateWhenString() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), "test\n", (instance, compiled) -> {
+			compile("test\n", (instance, compiled) -> {
 				assertThat(instance).isEqualTo("test\n");
 				assertThat(compiled.getSourceFile()).contains("\n");
 			});
@@ -218,15 +200,12 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 	}
 
-	/**
-	 * Test for {@link EnumInstanceCodeGenerator}.
-	 */
 	@Nested
-	class EnumInstanceCodeGeneratorTests {
+	class EnumTests {
 
 		@Test
 		void generateWhenEnum() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), ChronoUnit.DAYS, (instance, compiled) -> {
+			compile(ChronoUnit.DAYS, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(ChronoUnit.DAYS);
 				assertThat(compiled.getSourceFile()).contains("ChronoUnit.DAYS");
 			});
@@ -234,52 +213,43 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 		@Test
 		void generateWhenEnumWithClassBody() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), EnumWithClassBody.TWO,
-					(instance, compiled) -> {
-						assertThat(instance).isEqualTo(EnumWithClassBody.TWO);
-						assertThat(compiled.getSourceFile()).contains("EnumWithClassBody.TWO");
-					});
+			compile(EnumWithClassBody.TWO, (instance, compiled) -> {
+				assertThat(instance).isEqualTo(EnumWithClassBody.TWO);
+				assertThat(compiled.getSourceFile()).contains("EnumWithClassBody.TWO");
+			});
 		}
 
 	}
 
-	/**
-	 * Tests for {@link ClassInstanceCodeGenerator}.
-	 */
 	@Nested
-	class ClassInstanceCodeGeneratorTests {
+	class ClassTests {
 
 		@Test
 		void generateWhenClass() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), InputStream.class,
-					(instance, compiled) -> assertThat(instance).isEqualTo(InputStream.class));
+			compile(InputStream.class, (instance, compiled) -> assertThat(instance).isEqualTo(InputStream.class));
 		}
 
 		@Test
 		void generateWhenCglibClass() {
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), ExampleClass$$GeneratedBy.class,
+			compile(ExampleClass$$GeneratedBy.class,
 					(instance, compiled) -> assertThat(instance).isEqualTo(ExampleClass.class));
 		}
 
 	}
 
-	/**
-	 * Tests for {@link ResolvableTypeInstanceCodeGenerator}.
-	 */
 	@Nested
-	class ResolvableTypeInstanceCodeGeneratorTests {
+	class ResolvableTypeTests {
 
 		@Test
 		void generateWhenSimpleResolvableType() {
 			ResolvableType resolvableType = ResolvableType.forClass(String.class);
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType,
-					(instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
+			compile(resolvableType, (instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 		@Test
 		void generateWhenNoneResolvableType() {
 			ResolvableType resolvableType = ResolvableType.NONE;
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType, (instance, compiled) -> {
+			compile(resolvableType, (instance, compiled) -> {
 				assertThat(instance).isEqualTo(resolvableType);
 				assertThat(compiled.getSourceFile()).contains("ResolvableType.NONE");
 			});
@@ -288,8 +258,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		@Test
 		void generateWhenGenericResolvableType() {
 			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(List.class, String.class);
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType,
-					(instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
+			compile(resolvableType, (instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 		@Test
@@ -297,22 +266,18 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			ResolvableType stringList = ResolvableType.forClassWithGenerics(List.class, String.class);
 			ResolvableType resolvableType = ResolvableType.forClassWithGenerics(Map.class,
 					ResolvableType.forClass(Integer.class), stringList);
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), resolvableType,
-					(instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
+			compile(resolvableType, (instance, compiled) -> assertThat(instance).isEqualTo(resolvableType));
 		}
 
 	}
 
-	/**
-	 * Tests for {@link ArrayInstanceCodeGenerator}.
-	 */
 	@Nested
-	class ArrayInstanceCodeGeneratorTests {
+	class ArrayTests {
 
 		@Test
 		void generateWhenPrimitiveArray() {
 			byte[] bytes = { 0, 1, 2 };
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), bytes, (instance, compiler) -> {
+			compile(bytes, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(bytes);
 				assertThat(compiler.getSourceFile()).contains("new byte[]");
 			});
@@ -321,7 +286,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		@Test
 		void generateWhenWrapperArray() {
 			Byte[] bytes = { 0, 1, 2 };
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), bytes, (instance, compiler) -> {
+			compile(bytes, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(bytes);
 				assertThat(compiler.getSourceFile()).contains("new Byte[]");
 			});
@@ -330,7 +295,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		@Test
 		void generateWhenClassArray() {
 			Class<?>[] classes = new Class<?>[] { InputStream.class, OutputStream.class };
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), classes, (instance, compiler) -> {
+			compile(classes, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(classes);
 				assertThat(compiler.getSourceFile()).contains("new Class[]");
 			});
@@ -338,23 +303,79 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 	}
 
-	/**
-	 * Tests for {@link ListInstanceCodeGenerator}.
-	 */
 	@Nested
-	class ListInstanceCodeGeneratorTests {
+	class ManagedListTests {
+
+		@Test
+		void generateWhenStringManagedList() {
+			ManagedList<String> list = new ManagedList<>();
+			list.add("a");
+			list.add("b");
+			list.add("c");
+			compile(list, (instance, compiler) -> assertThat(instance).isEqualTo(list).isInstanceOf(ManagedList.class));
+		}
+
+		@Test
+		void generateWhenEmptyManagedList() {
+			ManagedList<String> list = new ManagedList<>();
+			compile(list, (instance, compiler) -> assertThat(instance).isEqualTo(list).isInstanceOf(ManagedList.class));
+		}
+
+	}
+
+	@Nested
+	class ManagedSetTests {
+
+		@Test
+		void generateWhenStringManagedSet() {
+			ManagedSet<String> set = new ManagedSet<>();
+			set.add("a");
+			set.add("b");
+			set.add("c");
+			compile(set, (instance, compiler) -> assertThat(instance).isEqualTo(set).isInstanceOf(ManagedSet.class));
+		}
+
+		@Test
+		void generateWhenEmptyManagedSet() {
+			ManagedSet<String> set = new ManagedSet<>();
+			compile(set, (instance, compiler) -> assertThat(instance).isEqualTo(set).isInstanceOf(ManagedSet.class));
+		}
+
+	}
+
+	@Nested
+	class ManagedMapTests {
+
+		@Test
+		void generateWhenManagedMap() {
+			ManagedMap<String, String> map = new ManagedMap<>();
+			map.put("k1", "v1");
+			map.put("k2", "v2");
+			compile(map, (instance, compiler) -> assertThat(instance).isEqualTo(map).isInstanceOf(ManagedMap.class));
+		}
+
+		@Test
+		void generateWhenEmptyManagedMap() {
+			ManagedMap<String, String> map = new ManagedMap<>();
+			compile(map, (instance, compiler) -> assertThat(instance).isEqualTo(map).isInstanceOf(ManagedMap.class));
+		}
+
+	}
+
+	@Nested
+	class ListTests {
 
 		@Test
 		void generateWhenStringList() {
 			List<String> list = List.of("a", "b", "c");
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), list,
-					(instance, compiler) -> assertThat(instance).isEqualTo(list));
+			compile(list,
+					(instance, compiler) -> assertThat(instance).isEqualTo(list).isNotInstanceOf(ManagedList.class));
 		}
 
 		@Test
 		void generateWhenEmptyList() {
 			List<String> list = List.of();
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), list, (instance, compiler) -> {
+			compile(list, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(list);
 				assertThat(compiler.getSourceFile()).contains("Collections.emptyList();");
 			});
@@ -362,23 +383,19 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 	}
 
-	/**
-	 * Tests for {@link SetInstanceCodeGenerator}.
-	 */
 	@Nested
-	class SetInstanceCodeGeneratorTests {
+	class SetTests {
 
 		@Test
 		void generateWhenStringSet() {
 			Set<String> set = Set.of("a", "b", "c");
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set,
-					(instance, compiler) -> assertThat(instance).isEqualTo(set));
+			compile(set, (instance, compiler) -> assertThat(instance).isEqualTo(set).isNotInstanceOf(ManagedSet.class));
 		}
 
 		@Test
 		void generateWhenEmptySet() {
 			Set<String> set = Set.of();
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set, (instance, compiler) -> {
+			compile(set, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(set);
 				assertThat(compiler.getSourceFile()).contains("Collections.emptySet();");
 			});
@@ -387,7 +404,7 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 		@Test
 		void generateWhenLinkedHashSet() {
 			Set<String> set = new LinkedHashSet<>(List.of("a", "b", "c"));
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), set, (instance, compiler) -> {
+			compile(set, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(set).isInstanceOf(LinkedHashSet.class);
 				assertThat(compiler.getSourceFile()).contains("new LinkedHashSet(List.of(");
 			});
@@ -395,16 +412,13 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 
 	}
 
-	/**
-	 * Tests for {@link MapInstanceCodeGenerator}.
-	 */
 	@Nested
-	class MapInstanceCodeGeneratorTests {
+	class MapTests {
 
 		@Test
 		void generateWhenSmallMap() {
 			Map<String, String> map = Map.of("k1", "v1", "k2", "v2");
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map, (instance, compiler) -> {
+			compile(map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map);
 				assertThat(compiler.getSourceFile()).contains("Map.of(");
 			});
@@ -416,37 +430,34 @@ class DefaultInstanceCodeGenerationServiceCompilerTests {
 			for (int i = 1; i <= 11; i++) {
 				map.put("k" + i, "v" + i);
 			}
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map, (instance, compiler) -> {
+			compile(map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map);
 				assertThat(compiler.getSourceFile()).contains("Map.ofEntries(");
 			});
 		}
 
 		@Test
-		void generateWhenLinkedHashMapAndCanGenerateMethod() {
+		void generateWhenLinkedHashMap() {
 			Map<String, String> map = new LinkedHashMap<>();
 			map.put("a", "A");
 			map.put("b", "B");
 			map.put("c", "C");
-			GeneratedMethods generatedMethods = new GeneratedMethods();
-			DefaultInstanceCodeGenerationService generators = new DefaultInstanceCodeGenerationService(
-					generatedMethods);
-			compile(generators, generatedMethods, map, (instance, compiler) -> {
+			compile(map, (instance, compiler) -> {
 				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
 				assertThat(compiler.getSourceFile()).contains("getMap()");
 			});
 		}
 
+	}
+
+	@Nested
+	class BeanReferenceTests {
+
 		@Test
-		void generateWhenLinkedHashMapAndCannotGenerateMethod() {
-			Map<String, String> map = new LinkedHashMap<>();
-			map.put("a", "A");
-			map.put("b", "B");
-			map.put("c", "C");
-			compile(DefaultInstanceCodeGenerationService.getSharedInstance(), map, (instance, compiler) -> {
-				assertThat(instance).isEqualTo(map).isInstanceOf(LinkedHashMap.class);
-				assertThat(compiler.getSourceFile()).contains("Collectors.toMap(");
-			});
+		void generatedWhenBeanReference() {
+			BeanReference beanReference = new RuntimeBeanNameReference("test");
+			compile(beanReference, (instance, compiler) -> assertThat(((BeanReference) instance).getBeanName())
+					.isEqualTo(beanReference.getBeanName()));
 		}
 
 	}
