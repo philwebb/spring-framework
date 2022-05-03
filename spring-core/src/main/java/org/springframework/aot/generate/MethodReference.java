@@ -71,16 +71,6 @@ public final class MethodReference {
 
 	/**
 	 * Create a new method reference that refers to the given instance method.
-	 * @param methodName the method name
-	 * @return a new {@link MethodReference} instance
-	 */
-	public static MethodReference of(GeneratedMethodName methodName) {
-		Assert.notNull(methodName, "'methodName' must not be null");
-		return new MethodReference(Kind.INSTANCE, null, methodName.toString());
-	}
-
-	/**
-	 * Create a new method reference that refers to the given instance method.
 	 * @param declaringClass the declaring class
 	 * @param methodName the method name
 	 * @return a new {@link MethodReference} instance
@@ -89,18 +79,6 @@ public final class MethodReference {
 		Assert.notNull(declaringClass, "'declaringClass' must not be null");
 		Assert.hasLength(methodName, "'methodName' must not be empty");
 		return new MethodReference(Kind.INSTANCE, ClassName.get(declaringClass), methodName);
-	}
-
-	/**
-	 * Create a new method reference that refers to the given instance method.
-	 * @param declaringClass the declaring class
-	 * @param methodName the method name
-	 * @return a new {@link MethodReference} instance
-	 */
-	public static MethodReference of(GeneratedClassName declaringClass, GeneratedMethodName methodName) {
-		Assert.notNull(declaringClass, "'declaringClass' must not be null");
-		Assert.notNull(methodName, "'methodName' must not be null");
-		return new MethodReference(Kind.INSTANCE, declaringClass.toClassName(), methodName.toString());
 	}
 
 	/**
@@ -137,18 +115,6 @@ public final class MethodReference {
 		Assert.notNull(declaringClass, "'declaringClass' must not be null");
 		Assert.hasLength(methodName, "'methodName' must not be empty");
 		return new MethodReference(Kind.STATIC, ClassName.get(declaringClass), methodName);
-	}
-
-	/**
-	 * Create a new method reference that refers to the given static method.
-	 * @param declaringClass the declaring class
-	 * @param methodName the method name
-	 * @return a new {@link MethodReference} instance
-	 */
-	public static MethodReference ofStatic(GeneratedClassName declaringClass, GeneratedMethodName methodName) {
-		Assert.notNull(declaringClass, "'declaringClass' must not be null");
-		Assert.notNull(methodName, "'methodName' must not be null");
-		return new MethodReference(Kind.STATIC, declaringClass.toClassName(), methodName.toString());
 	}
 
 	/**

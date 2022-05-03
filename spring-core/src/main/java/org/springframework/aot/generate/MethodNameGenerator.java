@@ -74,9 +74,9 @@ public class MethodNameGenerator {
 	 * @param parts the parts used to build the name.
 	 * @return the generated method name
 	 */
-	public GeneratedMethodName generateMethodName(Object... parts) {
+	public String generateMethodName(Object... parts) {
 		String generatedName = join(parts);
-		return new GeneratedMethodName(addSequence(generatedName.isEmpty() ? "$$aot" : generatedName));
+		return addSequence(generatedName.isEmpty() ? "$$aot" : generatedName);
 	}
 
 	private String addSequence(String name) {

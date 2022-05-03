@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  */
 class GeneratedMethodTests {
 
-	private static final GeneratedMethodName NAME = new GeneratedMethodName("spring");
+	private static final String NAME = "spring";
 
 	@Test
 	void getNameReturnsName() {
