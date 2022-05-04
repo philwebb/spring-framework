@@ -122,10 +122,9 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 				(!required) ? "forField" : "forRequiredField", field.getName());
 		AccessVisibility visibility = AccessVisibility.forMember(field);
 		if (visibility == AccessVisibility.PRIVATE || visibility == AccessVisibility.PROTECTED) {
-			hints.reflection().registerField(field);
+			hints.reflection().registerField(field, ALLOW_WRITE);
 			return CodeBlock.of("$L.resolveAndSet($L, $L)", resolver, REGISTERED_BEAN_PARAMETER, INSTANCE_PARAMETER);
 		}
-		hints.reflection().registerField(field, ALLOW_WRITE);
 		return CodeBlock.of("$L.$L = $L.resolve($L)", INSTANCE_PARAMETER, field.getName(), resolver, REGISTERED_BEAN_PARAMETER);
 	}
 
