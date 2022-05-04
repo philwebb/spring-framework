@@ -287,7 +287,7 @@ class InstanceSupplierCodeGeneratorTests {
 	@SuppressWarnings("unchecked")
 	private void testCompiledResult(DefaultListableBeanFactory beanFactory, BeanDefinition beanDefinition,
 			BiConsumer<InstanceSupplier<?>, Compiled> result) {
-		this.generationContext.close();
+		this.generationContext.writeGeneratedContent();
 		DefaultListableBeanFactory registrationBeanFactory = new DefaultListableBeanFactory(beanFactory);
 		registrationBeanFactory.registerBeanDefinition("testBean", beanDefinition);
 		RegisteredBean registeredBean = RegisteredBean.of(registrationBeanFactory, "testBean");

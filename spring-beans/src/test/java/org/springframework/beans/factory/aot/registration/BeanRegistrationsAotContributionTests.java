@@ -131,7 +131,7 @@ class BeanRegistrationsAotContributionTests {
 
 	@SuppressWarnings({ "unchecked", "cast" })
 	private void testCompiledResult(BiConsumer<Consumer<DefaultListableBeanFactory>, Compiled> result) {
-		this.generationContext.close();
+		this.generationContext.writeGeneratedContent();
 		JavaFile javaFile = createJavaFile();
 		TestCompiler.forSystem().withFiles(this.generatedFiles).
 				compile(javaFile::writeTo, compiled -> result.accept(compiled.getInstance(Consumer.class), compiled));

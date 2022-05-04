@@ -340,7 +340,7 @@ class BeanDefinitionMethodGeneratorTests {
 	@SuppressWarnings("unchecked")
 	private void testCompiledResult(MethodReference method, boolean targetClassAccess,
 			BiConsumer<RootBeanDefinition, Compiled> result) {
-		this.generationContext.close();
+		this.generationContext.writeGeneratedContent();
 		JavaFile javaFile = generateJavaFile(method);
 		TestCompiler.forSystem().withFiles(this.generatedFiles).printFiles(System.out).compile(javaFile::writeTo,
 				compiled -> result.accept((RootBeanDefinition) compiled.getInstance(Supplier.class).get(), compiled));

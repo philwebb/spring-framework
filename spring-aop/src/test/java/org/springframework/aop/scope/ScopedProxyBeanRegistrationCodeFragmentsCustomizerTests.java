@@ -126,7 +126,7 @@ class ScopedProxyBeanRegistrationCodeFragmentsCustomizerTests {
 	private void testCompile(BiConsumer<DefaultListableBeanFactory, Compiled> result) {
 		BeanFactoryInitializationAotContribution contribution = this.processor.processAheadOfTime(this.beanFactory);
 		contribution.applyTo(this.generationContext, this.beanFactoryInitializationCode);
-		this.generationContext.close();
+		this.generationContext.writeGeneratedContent();
 		TestCompiler.forSystem().withFiles(this.generatedFiles).printFiles(System.out).compile(compiled -> {
 			MethodReference reference = this.beanFactoryInitializationCode.getInitializers().get(0);
 			Object instance = compiled.getInstance(Object.class, reference.getDeclaringClass().toString());

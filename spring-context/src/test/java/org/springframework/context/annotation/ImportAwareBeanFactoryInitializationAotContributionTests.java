@@ -105,7 +105,7 @@ class ImportAwareBeanFactoryInitializationAotContributionTests {
 	@SuppressWarnings("unchecked")
 	private void testCompiledResult(BiConsumer<Consumer<DefaultListableBeanFactory>, Compiled> result) {
 		JavaFile javaFile = createJavaFile();
-		this.generationContext.close();
+		this.generationContext.writeGeneratedContent();
 		TestCompiler.forSystem().withFiles(this.generatedFiles).compile(javaFile::writeTo,
 				compiled -> result.accept(compiled.getInstance(Consumer.class), compiled));
 	}

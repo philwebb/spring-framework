@@ -167,7 +167,7 @@ class ApplicationContextAotGeneratorTests {
 		InMemoryGeneratedFiles generatedFiles = new InMemoryGeneratedFiles();
 		DefaultGenerationContext generationContext = new DefaultGenerationContext(generatedFiles);
 		generator.generateApplicationContext(applicationContext, generationContext, MAIN_GENERATED_TYPE);
-		generationContext.close();
+		generationContext.writeGeneratedContent();
 		TestCompiler.forSystem().withFiles(generatedFiles).compile(
 				compiled -> result.accept(compiled.getInstance(ApplicationContextInitializer.class), compiled));
 	}

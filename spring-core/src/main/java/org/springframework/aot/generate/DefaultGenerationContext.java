@@ -86,7 +86,10 @@ public class DefaultGenerationContext implements GenerationContext {
 		return this.runtimeHints;
 	}
 
-	public void close() {
+	/**
+	 * Write any generated content out to the generated files.
+	 */
+	public void writeGeneratedContent() {
 		try {
 			this.generatedClasses.writeTo(this.generatedFiles);
 		}
