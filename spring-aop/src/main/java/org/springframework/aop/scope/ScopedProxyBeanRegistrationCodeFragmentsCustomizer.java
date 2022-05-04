@@ -26,9 +26,9 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.beans.factory.aot.registration.BeanRegistrationCode;
-import org.springframework.beans.factory.aot.registration.BeanRegistrationCodeFragments;
-import org.springframework.beans.factory.aot.registration.BeanRegistrationCodeFragmentsCustomizer;
+import org.springframework.beans.factory.aot.BeanRegistrationCode;
+import org.springframework.beans.factory.aot.BeanRegistrationCodeFragments;
+import org.springframework.beans.factory.aot.BeanRegistrationCodeFragmentsCustomizer;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.InstanceSupplier;

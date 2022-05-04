@@ -14,42 +14,33 @@
  * limitations under the License.
  */
 
-package org.springframework.aop.scope;
+package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.MethodGenerator;
-import org.springframework.beans.factory.aot.BeanRegistrationsCode;
 import org.springframework.javapoet.ClassName;
 
 /**
- * Mock {@link BeanRegistrationsCode} implementation.
+ * Interface that can be used to configure the code that will be generated to register
+ * beans.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
  * @author Andy Wilkinson
+ * @since 6.0
  */
-class MockBeanRegistrationsCode implements BeanRegistrationsCode {
+public interface BeanRegistrationsCode {
 
-	private final ClassName className;
+	/**
+	 * Return the name of the class being used for registrations.
+	 * @return the generated class name.
+	 */
+	ClassName getClassName();
 
-	private final GeneratedMethods generatedMethods = new GeneratedMethods();
-
-	MockBeanRegistrationsCode(ClassName className) {
-		this.className = className;
-	}
-
-	@Override
-	public ClassName getClassName() {
-		return this.className;
-	}
-
-	@Override
-	public MethodGenerator getMethodGenerator() {
-		return this.generatedMethods;
-	}
-
-	GeneratedMethods getGeneratedMethods() {
-		return this.generatedMethods;
-	}
+	/**
+	 * Return a {@link MethodGenerator} that can be used to add more methods to the
+	 * registrations code.
+	 * @return the method generator
+	 */
+	MethodGenerator getMethodGenerator();
 
 }

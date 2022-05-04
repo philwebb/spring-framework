@@ -39,8 +39,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
-import org.springframework.beans.factory.aot.registration.BeanRegistrationAotProcessor;
+import org.springframework.beans.factory.aot.BeanRegistrationAotContribution;
+import org.springframework.beans.factory.aot.BeanRegistrationAotProcessor;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RegisteredBean;

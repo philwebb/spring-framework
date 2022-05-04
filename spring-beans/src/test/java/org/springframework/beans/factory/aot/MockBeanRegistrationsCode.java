@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package org.springframework.aop.scope;
+package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.MethodGenerator;
-import org.springframework.beans.factory.aot.BeanRegistrationsCode;
 import org.springframework.javapoet.ClassName;
 
 /**
