@@ -167,21 +167,14 @@ public class InjectionMetadata {
 		@Nullable
 		protected final PropertyDescriptor pd;
 
-		protected final boolean required;
-
 		@Nullable
 		protected volatile Boolean skip;
 
 
 		protected InjectedElement(Member member, @Nullable PropertyDescriptor pd) {
-			this(member, pd, true);
-		}
-
-		protected InjectedElement(Member member, @Nullable PropertyDescriptor pd, boolean required) {
 			this.member = member;
 			this.isField = (member instanceof Field);
 			this.pd = pd;
-			this.required = required;
 		}
 
 

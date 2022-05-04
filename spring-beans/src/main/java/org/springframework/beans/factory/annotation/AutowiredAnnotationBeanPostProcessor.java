@@ -636,13 +636,16 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	 */
 	private class AutowiredFieldElement extends InjectionMetadata.InjectedElement {
 
+		private final boolean required;
+
 		private volatile boolean cached;
 
 		@Nullable
 		private volatile Object cachedFieldValue;
 
 		public AutowiredFieldElement(Field field, boolean required) {
-			super(field, null, required);
+			super(field, null);
+			this.required = required;
 		}
 
 		@Override
@@ -710,13 +713,16 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 	 */
 	private class AutowiredMethodElement extends InjectionMetadata.InjectedElement {
 
+		private final boolean required;
+
 		private volatile boolean cached;
 
 		@Nullable
 		private volatile Object[] cachedMethodArguments;
 
 		public AutowiredMethodElement(Method method, boolean required, @Nullable PropertyDescriptor pd) {
-			super(method, pd, required);
+			super(method, pd);
+			this.required = required;
 		}
 
 		@Override
