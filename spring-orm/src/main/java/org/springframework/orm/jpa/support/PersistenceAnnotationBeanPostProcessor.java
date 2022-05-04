@@ -39,7 +39,6 @@ import jakarta.persistence.PersistenceProperty;
 import jakarta.persistence.PersistenceUnit;
 import jakarta.persistence.SynchronizationType;
 
-import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
@@ -72,6 +71,7 @@ import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -784,19 +784,19 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 
 		@Override
 		public void applyTo(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode) {
-			GeneratedClassName className = generationContext.getClassNameGenerator().generateClassName(this.target, "PersistenceInjection");
-			TypeSpec.Builder classBuilder = className.classBuilder();
+			ClassName className = generationContext.getClassNameGenerator().generateClassName(this.target, "PersistenceInjection");
+			TypeSpec.Builder classBuilder = TypeSpec.classBuilder(className);
 			classBuilder.addJavadoc("Persistence injection for {@link $T}.", this.target);
 			classBuilder.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 			GeneratedMethods methods = new GeneratedMethods(new MethodNameGenerator(APPLY_METHOD));
 			classBuilder.addMethod(generateMethod(generationContext.getRuntimeHints(), className, methods));
 			methods.doWithMethodSpecs(classBuilder::addMethod);
-			JavaFile javaFile = className.toJavaFile(classBuilder);
+			JavaFile javaFile = JavaFile.builder(className.packageName(), classBuilder.build()).build();
 			generationContext.getGeneratedFiles().addSourceFile(javaFile);
 			beanRegistrationCode.addInstancePostProcessor(MethodReference.ofStatic(className, APPLY_METHOD));
 		}
 
-		private MethodSpec generateMethod(RuntimeHints hints, GeneratedClassName className,
+		private MethodSpec generateMethod(RuntimeHints hints, ClassName className,
 				MethodGenerator methodGenerator) {
 			MethodSpec.Builder builder = MethodSpec.methodBuilder(APPLY_METHOD);
 			builder.addJavadoc("Apply the persistence injection.");

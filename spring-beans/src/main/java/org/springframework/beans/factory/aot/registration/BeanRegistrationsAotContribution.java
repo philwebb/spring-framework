@@ -20,7 +20,6 @@ import java.util.Map;
 
 import javax.lang.model.element.Modifier;
 
-import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
@@ -58,15 +57,14 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 	@Override
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
-		GeneratedClassName generatedClassName = generationContext.getClassNameGenerator()
-				.generateClassName("BeanFactory", "Registrations");
-		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(
-				generatedClassName.toClassName());
+		ClassName className = generationContext.getClassNameGenerator().generateClassName("BeanFactory",
+				"Registrations");
+		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(className);
 		GeneratedMethod registerMethod = codeGenerator.getMethodGenerator().generateMethod("registerBeanDefinitions")
 				.using(builder -> generateRegisterMethod(builder, generationContext, codeGenerator));
-		JavaFile javaFile = codeGenerator.generatedJavaFile(generatedClassName);
+		JavaFile javaFile = codeGenerator.generatedJavaFile(className);
 		generationContext.getGeneratedFiles().addSourceFile(javaFile);
-		beanFactoryInitializationCode.addInitializer(MethodReference.of(generatedClassName, registerMethod.getName()));
+		beanFactoryInitializationCode.addInitializer(MethodReference.of(className, registerMethod.getName()));
 	}
 
 	private void generateRegisterMethod(MethodSpec.Builder builder, GenerationContext generationContext,
@@ -107,12 +105,12 @@ class BeanRegistrationsAotContribution implements BeanFactoryInitializationAotCo
 			return this.generatedMethods;
 		}
 
-		JavaFile generatedJavaFile(GeneratedClassName generatedClassName) {
-			TypeSpec.Builder classBuilder = generatedClassName.classBuilder();
+		JavaFile generatedJavaFile(ClassName className) {
+			TypeSpec.Builder classBuilder = TypeSpec.classBuilder(className);
 			classBuilder.addJavadoc("Register bean definitions for the bean factory.");
 			classBuilder.addModifiers(Modifier.PUBLIC);
 			this.generatedMethods.doWithMethodSpecs(classBuilder::addMethod);
-			return generatedClassName.toJavaFile(classBuilder);
+			return JavaFile.builder(className.packageName(), classBuilder.build()).build();
 		}
 
 	}

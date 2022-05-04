@@ -25,7 +25,6 @@ import java.util.function.Consumer;
 import javax.lang.model.element.Modifier;
 
 import org.springframework.aot.generate.AccessVisibility;
-import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.hint.ExecutableHint;
@@ -36,6 +35,7 @@ import org.springframework.beans.factory.annotation.InjectionMetadata.InjectedEl
 import org.springframework.beans.factory.aot.registration.BeanRegistrationAotContribution;
 import org.springframework.beans.factory.aot.registration.BeanRegistrationCode;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
@@ -74,13 +74,13 @@ class AutowiredAnnotationBeanRegistrationAotContribution implements BeanRegistra
 
 	@Override
 	public void applyTo(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode) {
-		GeneratedClassName className = generationContext.getClassNameGenerator().generateClassName(this.target,
+		ClassName className = generationContext.getClassNameGenerator().generateClassName(this.target,
 				"Autowiring");
-		TypeSpec.Builder classBuilder = className.classBuilder();
+		TypeSpec.Builder classBuilder = TypeSpec.classBuilder(className);
 		classBuilder.addJavadoc("Autowiring for {@link $T}.", this.target);
 		classBuilder.addModifiers(Modifier.PUBLIC);
 		classBuilder.addMethod(generateMethod(generationContext.getRuntimeHints()));
-		JavaFile javaFile = className.toJavaFile(classBuilder);
+		JavaFile javaFile = JavaFile.builder(className.packageName(), classBuilder.build()).build();
 		generationContext.getGeneratedFiles().addSourceFile(javaFile);
 		beanRegistrationCode.addInstancePostProcessor(MethodReference.ofStatic(className, APPLY_METHOD));
 	}

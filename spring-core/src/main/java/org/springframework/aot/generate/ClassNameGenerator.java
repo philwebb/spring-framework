@@ -20,7 +20,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.javapoet.ClassName;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -49,7 +51,7 @@ public final class ClassNameGenerator {
 	 * @param featureName the name of the feature that the generated class supports
 	 * @return a unique generated class name
 	 */
-	public GeneratedClassName generateClassName(Class<?> target, String featureName) {
+	public ClassName generateClassName(Class<?> target, String featureName) {
 		Assert.notNull(target, "'target' must not be null");
 		String rootName = target.getName().replace("$", "_");
 		return generateSequencedClassName(rootName, featureName);
@@ -63,7 +65,7 @@ public final class ClassNameGenerator {
 	 * @param featureName the name of the feature that the generated class supports
 	 * @return a unique generated class name
 	 */
-	public GeneratedClassName generateClassName(String target, String featureName) {
+	public ClassName generateClassName(String target, String featureName) {
 		Assert.hasLength(target, "'target' must not be empty");
 		target = clean(target);
 		String rootName = AOT_PACKAGE + "." + ((!target.isEmpty()) ? target : "Aot");
@@ -84,11 +86,11 @@ public final class ClassNameGenerator {
 		return rootName.toString();
 	}
 
-	private GeneratedClassName generateSequencedClassName(String rootName, String featureName) {
+	private ClassName generateSequencedClassName(String rootName, String featureName) {
 		Assert.hasLength(featureName, "'featureName' must not be empty");
 		Assert.isTrue(featureName.chars().allMatch(Character::isLetter), "'featureName' must contain only letters");
 		String name = addSequence(rootName + SEPARATOR + StringUtils.capitalize(featureName));
-		return new GeneratedClassName(name);
+		return ClassName.get(ClassUtils.getPackageName(name), ClassUtils.getShortName(name));
 	}
 
 	private String addSequence(String name) {

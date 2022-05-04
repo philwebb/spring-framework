@@ -23,7 +23,6 @@ import javax.lang.model.element.Modifier;
 
 import org.springframework.aot.generate.ClassGenerator.JavaFileGenerator;
 import org.springframework.aot.generate.GeneratedClass;
-import org.springframework.aot.generate.GeneratedClassName;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
@@ -96,7 +95,7 @@ class BeanDefinitionMethodGenerator {
 					.getOrGenerateClass(new BeanDefinitionsJavaFileGenerator(target), target, "BeanDefinitions");
 			MethodGenerator methodGenerator = generatedClass.getMethodGenerator().withName(getName());
 			GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext,
-					generatedClass.getName().toClassName(), methodGenerator, codeFragments, Modifier.PUBLIC);
+					generatedClass.getName(), methodGenerator, codeFragments, Modifier.PUBLIC);
 			return MethodReference.ofStatic(generatedClass.getName(), generatedMethod.getName());
 		}
 		MethodGenerator methodGenerator = beanRegistrationsCode.getMethodGenerator().withName(getName());
@@ -167,12 +166,12 @@ class BeanDefinitionMethodGenerator {
 		}
 
 		@Override
-		public JavaFile generateJavaFile(GeneratedClassName className, GeneratedMethods methods) {
-			TypeSpec.Builder classBuilder = className.classBuilder();
+		public JavaFile generateJavaFile(ClassName className, GeneratedMethods methods) {
+			TypeSpec.Builder classBuilder = TypeSpec.classBuilder(className);
 			classBuilder.addJavadoc("Bean definitions for {@link $T}", this.target);
 			classBuilder.addModifiers(Modifier.PUBLIC);
 			methods.doWithMethodSpecs(classBuilder::addMethod);
-			return className.toJavaFile(classBuilder);
+			return JavaFile.builder(className.packageName(), classBuilder.build()).build();
 		}
 
 		@Override

@@ -19,6 +19,7 @@ package org.springframework.aot.generate;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.ClassGenerator.JavaFileGenerator;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.TypeSpec;
 
@@ -109,9 +110,9 @@ class GeneratedClassesTests {
 				.isNotSameAs(generatedClass4);
 	}
 
-	static JavaFile generateJavaFile(GeneratedClassName className, GeneratedMethods generatedMethods) {
-		TypeSpec typeSpec = className.classBuilder().addJavadoc("Test").build();
-		return className.toJavaFile(typeSpec);
+	static JavaFile generateJavaFile(ClassName className, GeneratedMethods generatedMethods) {
+		TypeSpec typeSpec = TypeSpec.classBuilder(className).addJavadoc("Test").build();
+		return JavaFile.builder(className.packageName(), typeSpec).build();
 	}
 
 	private static class TestTarget {

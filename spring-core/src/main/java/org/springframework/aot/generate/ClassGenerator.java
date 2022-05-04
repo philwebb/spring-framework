@@ -19,6 +19,7 @@ package org.springframework.aot.generate;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 
 /**
@@ -67,7 +68,7 @@ public interface ClassGenerator {
 		 * @param methods the generated methods that must be included
 		 * @return the generated files
 		 */
-		JavaFile generateJavaFile(GeneratedClassName className, GeneratedMethods methods);
+		JavaFile generateJavaFile(ClassName className, GeneratedMethods methods);
 
 		/**
 		 * Return method names that must not be generated.

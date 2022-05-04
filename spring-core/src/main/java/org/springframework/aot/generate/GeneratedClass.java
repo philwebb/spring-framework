@@ -17,6 +17,7 @@
 package org.springframework.aot.generate;
 
 import org.springframework.aot.generate.ClassGenerator.JavaFileGenerator;
+import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.util.Assert;
 
@@ -34,7 +35,7 @@ public final class GeneratedClass {
 
 	private final JavaFileGenerator JavaFileGenerator;
 
-	private final GeneratedClassName name;
+	private final ClassName name;
 
 	private final GeneratedMethods methods;
 
@@ -44,7 +45,7 @@ public final class GeneratedClass {
 	 * {@link GeneratedClasses}.
 	 * @param name the generated name
 	 */
-	GeneratedClass(JavaFileGenerator javaFileGenerator, GeneratedClassName name) {
+	GeneratedClass(JavaFileGenerator javaFileGenerator, ClassName name) {
 		MethodNameGenerator methodNameGenerator = new MethodNameGenerator(javaFileGenerator.getReservedMethodNames());
 		this.JavaFileGenerator = javaFileGenerator;
 		this.name = name;
@@ -55,7 +56,7 @@ public final class GeneratedClass {
 	 * Return the name of the generated class.
 	 * @return the name of the generated class
 	 */
-	public GeneratedClassName getName() {
+	public ClassName getName() {
 		return this.name;
 	}
 
@@ -69,10 +70,10 @@ public final class GeneratedClass {
 
 	JavaFile generateJavaFile() {
 		JavaFile javaFile = this.JavaFileGenerator.generateJavaFile(this.name, this.methods);
-		Assert.state(this.name.getPackageName().equals(javaFile.packageName),
-				() -> "Generated JavaFile should be in package '" + this.name.getPackageName() + "'");
-		Assert.state(this.name.getShortName().equals(javaFile.typeSpec.name),
-				() -> "Generated JavaFile should be named '" + this.name.getShortName() + "'");
+		Assert.state(this.name.packageName().equals(javaFile.packageName),
+				() -> "Generated JavaFile should be in package '" + this.name.packageName() + "'");
+		Assert.state(this.name.simpleName().equals(javaFile.typeSpec.name),
+				() -> "Generated JavaFile should be named '" + this.name.simpleName() + "'");
 		return javaFile;
 	}
 
