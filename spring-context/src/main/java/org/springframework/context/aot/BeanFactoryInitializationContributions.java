@@ -52,8 +52,9 @@ class BeanFactoryInitializationContributions {
 
 	private List<BeanFactoryInitializationAotProcessor> getProcessors(
 			AotFactoriesLoader loader) {
-		List<BeanFactoryInitializationAotProcessor> processors = new ArrayList<>(
-				loader.load(BeanFactoryInitializationAotProcessor.class));
+		List<BeanFactoryInitializationAotProcessor> processors = new ArrayList<>();
+		processors.add(new SpringFactoriesBeanFactoryInitializationAotProcessor());
+		processors.addAll(loader.load(BeanFactoryInitializationAotProcessor.class));
 		processors.add(new RuntimeHintsBeanFactoryInitializationAotProcessor());
 		return Collections.unmodifiableList(processors);
 	}

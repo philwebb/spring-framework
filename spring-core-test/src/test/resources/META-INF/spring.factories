@@ -1,0 +1,7 @@
+org.springframework.core.io.support.StaticSpringFactoriesGeneratorTests.DummyFactory=\
+org.springframework.core.io.support.StaticSpringFactoriesGeneratorTests.MyDummyFactory,\
+org.springframework.core.io.support.StaticSpringFactoriesGeneratorTests.OtherDummyFactory
+org.springframework.core.io.support.test.NonPublicFactory=\
+org.springframework.core.io.support.test.PackagePrivateFactory
+org.springframework.core.io.support.StaticSpringFactoriesGeneratorTests.ConstructorFactory=\
+org.springframework.core.io.support.StaticSpringFactoriesGeneratorTests.MyConstructorFactory

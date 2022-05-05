@@ -38,7 +38,7 @@ import org.springframework.lang.Nullable;
 /**
  * AOT {@code BeanFactoryPostProcessor} that processes
  * {@link RuntimeHintsRegistrar} implementations declared as
- * {@code spring.factories} or using
+ * {@code spring/aot.factories} or using
  * {@link ImportRuntimeHints @ImportRuntimeHints} annotated configuration
  * classes or bean methods.
  * <p>

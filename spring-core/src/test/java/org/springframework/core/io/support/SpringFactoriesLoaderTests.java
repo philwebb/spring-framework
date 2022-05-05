@@ -16,17 +16,13 @@
 
 package org.springframework.core.io.support;
 
-import java.io.File;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +34,7 @@ import org.springframework.core.log.LogMessage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
@@ -51,6 +48,7 @@ import static org.mockito.Mockito.verify;
  * @author Sam Brannen
  * @author Andy Wilkinson
  * @author Madhura Bhave
+ * @author Brian Clozel
  */
 class SpringFactoriesLoaderTests {
 
@@ -58,12 +56,6 @@ class SpringFactoriesLoaderTests {
 	static void clearCache() {
 		SpringFactoriesLoader.cache.clear();
 		assertThat(SpringFactoriesLoader.cache).isEmpty();
-	}
-
-	@AfterAll
-	static void checkCache() {
-		assertThat(SpringFactoriesLoader.cache).hasSize(3);
-		SpringFactoriesLoader.cache.clear();
 	}
 
 
@@ -401,23 +393,73 @@ class SpringFactoriesLoaderTests {
 
 	}
 
-	private static class LimitedClassLoader extends URLClassLoader {
+	@Nested
+	class AotSpringFactoriesTests {
 
-		private static final ClassLoader constructorArgumentFactories = new LimitedClassLoader("constructor-argument-factories");
-
-		private static final ClassLoader multipleArgumentFactories = new LimitedClassLoader("multiple-arguments-factories");
-
-		LimitedClassLoader(String location) {
-			super(new URL[] { toUrl(location) });
+		@BeforeEach
+		void clearCache() {
+			SpringFactoriesLoader.cache.clear();
+			assertThat(SpringFactoriesLoader.cache).isEmpty();
 		}
 
-		private static URL toUrl(String location) {
-			try {
-				return new File("src/test/resources/org/springframework/core/io/support/" + location + "/").toURI().toURL();
-			}
-			catch (MalformedURLException ex) {
-				throw new IllegalStateException(ex);
-			}
+		@Test
+		void loadFactoryNamesForDefaultLocation() {
+			SpringFactoriesLoader.staticFactories(null, SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION)
+					.addFactory(DummyFactory.class, MyDummyFactory1.class.getCanonicalName(), MyDummyFactory1::new)
+					.addFactory(DummyFactory.class, MyDummyFactory2.class.getCanonicalName(), MyDummyFactory2::new)
+					.register();
+
+			List<String> factoryNames = SpringFactoriesLoader.loadFactoryNames(DummyFactory.class, null);
+
+			assertThat(factoryNames).containsExactlyInAnyOrder(MyDummyFactory1.class.getName(), MyDummyFactory2.class.getName());
+		}
+
+		@Test
+		void loadFactoriesForDefaultLocation() {
+			SpringFactoriesLoader.staticFactories(null, SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION)
+					.addFactory(DummyFactory.class, MyDummyFactory1.class.getCanonicalName(), MyDummyFactory1::new)
+					.addFactory(DummyFactory.class, MyDummyFactory2.class.getCanonicalName(), MyDummyFactory2::new)
+					.register();
+
+			List<DummyFactory> factories = SpringFactoriesLoader.loadFactories(DummyFactory.class, null);
+
+			assertThat(factories).hasSize(2);
+			assertThat(factories.get(0)).isInstanceOf(MyDummyFactory1.class);
+			assertThat(factories.get(1)).isInstanceOf(MyDummyFactory2.class);
+		}
+
+		@Test
+		void loadFactoryWithArgumentResolver() {
+			ArgumentResolver resolver = ArgumentResolver.of(String.class, "testing");
+			SpringFactoriesLoader.staticFactories(null, SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION)
+					.addFactory(DummyFactory.class, ConstructorArgsDummyFactory.class.getCanonicalName(),
+							argumentResolver -> new ConstructorArgsDummyFactory(argumentResolver.resolve(String.class)))
+					.register();
+
+			List<DummyFactory> factories = SpringFactoriesLoader.forDefaultResourceLocation().load(DummyFactory.class, resolver);
+
+			assertThat(factories).hasSize(1);
+			assertThat(factories.get(0)).isInstanceOf(ConstructorArgsDummyFactory.class);
+			assertThat(factories.get(0).getString()).isEqualTo("testing");
+		}
+
+		@Test
+		void failsWithDuplicateAotFactoriesLoaderRegistration() {
+			SpringFactoriesLoader.staticFactories(null, SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION)
+					.addFactory(DummyFactory.class, MyDummyFactory1.class.getCanonicalName(), MyDummyFactory1::new)
+					.register();
+
+			assertThatThrownBy(() -> SpringFactoriesLoader.staticFactories(null, SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION)
+					.addFactory(DummyFactory.class, MyDummyFactory2.class.getCanonicalName(), MyDummyFactory2::new)
+					.register()).isInstanceOf(IllegalArgumentException.class)
+					.hasMessageContaining("a SpringFactoryLoader instance is already cached for location: META-INF/spring.factories");
+		}
+
+		@Test
+		void loadWhenNoRegisteredImplementationsReturnsEmptyList() {
+			SpringFactoriesLoader.staticFactories(null, SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION).register();
+			List<Integer> factories = SpringFactoriesLoader.forDefaultResourceLocation().load(Integer.class);
+			assertThat(factories).isEmpty();
 		}
 
 	}

@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.generate.DefaultGenerationContext;
 import org.springframework.aot.generate.InMemoryGeneratedFiles;
+import org.springframework.aot.test.generator.compile.CompileWithTargetClassAccess;
 import org.springframework.aot.test.generator.compile.Compiled;
 import org.springframework.aot.test.generator.compile.TestCompiler;
 import org.springframework.beans.BeansException;
@@ -44,6 +45,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.testfixture.context.generator.SimpleComponent;
 import org.springframework.context.testfixture.context.generator.annotation.AutowiredComponent;
 import org.springframework.context.testfixture.context.generator.annotation.InitDestroyComponent;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.javapoet.ClassName;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,6 +56,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stephane Nicoll
  * @author Phillip Webb
  */
+@CompileWithTargetClassAccess(classes = SpringFactoriesLoader.class)
 class ApplicationContextAotGeneratorTests {
 
 	private static final ClassName MAIN_GENERATED_TYPE = ClassName.get("__",
@@ -157,7 +160,7 @@ class ApplicationContextAotGeneratorTests {
 			GenericApplicationContext freshApplicationContext = toFreshApplicationContext(
 					initializer);
 			assertThat(freshApplicationContext.getBeanDefinitionNames()).isEmpty();
-			assertThat(compiled.getSourceFile()).contains(
+			assertThat(compiled.getSourceFile(".*TestInitializer")).contains(
 					"beanFactory.setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver())");
 		});
 	}
