@@ -51,10 +51,11 @@ public class ApplicationContextAotGenerator {
 		applicationContext.refreshForAotProcessing();
 		DefaultListableBeanFactory beanFactory = applicationContext
 				.getDefaultListableBeanFactory();
-		ApplicationContextInitializationCodeGenerator codeGenerator = new ApplicationContextInitializationCodeGenerator();
+		ApplicationContextInitializationCodeGenerator codeGenerator =
+				new ApplicationContextInitializationCodeGenerator(applicationContext.getClassLoader());
 		new BeanFactoryInitializationContributions(beanFactory).applyTo(generationContext,
 				codeGenerator);
-		JavaFile javaFile = codeGenerator.generateJavaFile(generatedInitializerClassName);
+		JavaFile javaFile = codeGenerator.generateJavaFile(generatedInitializerClassName, generationContext);
 		generationContext.getGeneratedFiles().addSourceFile(javaFile);
 	}
 

@@ -22,6 +22,7 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 
 import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.annotation.ContextAnnotationAutowireCandidateResolver;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.support.StaticSpringFactoriesGenerator;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.JavaFile;
@@ -47,10 +49,15 @@ class ApplicationContextInitializationCodeGenerator
 
 	private static final String APPLICATION_CONTEXT_VARIABLE = "applicationContext";
 
+	private final StaticSpringFactoriesGenerator factoriesGenerator;
 
 	private final GeneratedMethods generatedMethods = new GeneratedMethods();
 
 	private final List<MethodReference> initializers = new ArrayList<>();
+
+	public ApplicationContextInitializationCodeGenerator(ClassLoader classLoader) {
+		this.factoriesGenerator = new StaticSpringFactoriesGenerator(classLoader);
+	}
 
 
 	@Override
@@ -63,7 +70,7 @@ class ApplicationContextInitializationCodeGenerator
 		this.initializers.add(methodReference);
 	}
 
-	JavaFile generateJavaFile(ClassName className) {
+	JavaFile generateJavaFile(ClassName className, GenerationContext generationContext) {
 		TypeSpec.Builder builder = TypeSpec.classBuilder(className);
 		builder.addJavadoc(
 				"{@link $T} to restore an application context based on previous AOT processing.",
@@ -71,9 +78,17 @@ class ApplicationContextInitializationCodeGenerator
 		builder.addModifiers(Modifier.PUBLIC);
 		builder.addSuperinterface(ParameterizedTypeName.get(
 				ApplicationContextInitializer.class, GenericApplicationContext.class));
+		builder.addStaticBlock(generateInitializeSpringFactories(generationContext));
 		builder.addMethod(generateInitializeMethod());
 		this.generatedMethods.doWithMethodSpecs(builder::addMethod);
 		return JavaFile.builder(className.packageName(), builder.build()).build();
+	}
+
+	private CodeBlock generateInitializeSpringFactories(GenerationContext generationContext) {
+		MethodReference initSpringFactories = this.factoriesGenerator.generateStaticSpringFactories(generationContext);
+		return CodeBlock.builder()
+				.addStatement(initSpringFactories.toInvokeCodeBlock(CodeBlock.of("null")))
+				.build();
 	}
 
 	private MethodSpec generateInitializeMethod() {
