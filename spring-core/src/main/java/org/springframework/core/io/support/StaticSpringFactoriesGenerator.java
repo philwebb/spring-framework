@@ -94,8 +94,7 @@ public class StaticSpringFactoriesGenerator {
 	 * @return a {@link MethodReference} to a method that needs to be executed before any {@link SpringFactoriesLoader} call is made.
 	 */
 	public MethodReference generateStaticSpringFactories(GenerationContext generationContext) {
-		SpringFactoriesLoader springFactoriesLoader = SpringFactoriesLoader.forResourceLocation(this.classLoader, this.resourceLocation);
-		Map<String, List<String>> factories = springFactoriesLoader.loadFactoriesResource(this.classLoader, this.resourceLocation);
+		Map<String, List<String>> factories = SpringFactoriesLoader.loadFactoriesResource(this.classLoader, this.resourceLocation);
 
 		GeneratedClass staticSpringFactoriesClass = generationContext.getClassGenerator()
 				.getOrGenerateClass(this.javaFileGenerator, SpringFactoriesLoader.class, "SpringFactories");
