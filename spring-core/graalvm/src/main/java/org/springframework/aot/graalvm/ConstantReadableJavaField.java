@@ -26,6 +26,8 @@ import jdk.vm.ci.meta.ResolvedJavaField;
 import jdk.vm.ci.meta.ResolvedJavaType;
 
 /**
+ * {@link ReadableJavaField} for a constant value.
+ *
  * @author Phillip Webb
  */
 class ConstantReadableJavaField implements ReadableJavaField {
@@ -34,54 +36,66 @@ class ConstantReadableJavaField implements ReadableJavaField {
 
 	private final JavaConstant constant;
 
+
 	public ConstantReadableJavaField(ResolvedJavaField original, JavaConstant constant) {
 		this.original = original;
 		this.constant = constant;
 	}
 
+
+	@Override
 	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
 		return this.original.getAnnotation(annotationClass);
 	}
 
+	@Override
 	public Annotation[] getAnnotations() {
 		return this.original.getAnnotations();
 	}
 
+	@Override
 	public Annotation[] getDeclaredAnnotations() {
 		return this.original.getDeclaredAnnotations();
 	}
 
+	@Override
 	public ResolvedJavaType getDeclaringClass() {
 		return this.original.getDeclaringClass();
 	}
 
+	@Override
 	public int getModifiers() {
 		return this.original.getModifiers();
 	}
 
+	@Override
 	public String getName() {
 		return this.original.getName();
 	}
 
+	@Override
 	public int getOffset() {
 		return this.original.getOffset();
 	}
 
+	@Override
 	public JavaType getType() {
 		return this.original.getType();
 	}
 
+	@Override
 	public boolean isInternal() {
 		return this.original.isInternal();
 	}
 
+	@Override
 	public boolean isSynthetic() {
 		return this.original.isSynthetic();
 	}
 
 	@Override
 	public JavaConstant readValue(MetaAccessProvider metaAccess, JavaConstant receiver) {
-		return constant;
+		return this.constant;
 	}
 
 	@Override

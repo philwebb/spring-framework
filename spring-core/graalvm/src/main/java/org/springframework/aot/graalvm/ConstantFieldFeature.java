@@ -22,6 +22,9 @@ import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.nativeimage.hosted.Feature;
 
 /**
+ * Graal {@link Feature} that substitutes field values that match a certain with
+ * constants without causing build-time initialization.
+ *
  * @author Phillip Webb
  * @author Sebastien Deleuze
  */

@@ -29,8 +29,9 @@ import jdk.vm.ci.meta.ResolvedJavaType;
 import org.graalvm.compiler.debug.DebugContext;
 
 /**
- * Compute at build time the value of the boolean static fields identified by {@link #patterns} in order
- * to allow efficient code shrinking without using class build time initialization.
+ * {@link SubstitutionProcessor} to compute at build time the value of the
+ * boolean static fields identified by {@link #patterns} in order to allow
+ * efficient code shrinking without using class build time initialization.
  *
  * @author Phillip Webb
  * @author Sebastien Deleuze
@@ -42,11 +43,16 @@ class ConstantFieldSubstitutionProcessor extends SubstitutionProcessor {
 			Pattern.compile(Pattern.quote("org.springframework.") + ".*#.*Present"),
 	};
 
+	private final DebugContext debug;
+
 	private final ThrowawayClassLoader throwawayClassLoader;
 
-	public ConstantFieldSubstitutionProcessor(DebugContext debug, ClassLoader applicationClassLoader) {
+
+	ConstantFieldSubstitutionProcessor(DebugContext debug, ClassLoader applicationClassLoader) {
+		this.debug = debug;
 		this.throwawayClassLoader = new ThrowawayClassLoader(applicationClassLoader);
 	}
+
 
 	@Override
 	public ResolvedJavaField lookup(ResolvedJavaField field) {
@@ -57,7 +63,8 @@ class ConstantFieldSubstitutionProcessor extends SubstitutionProcessor {
 				if (pattern.matcher(fieldIdentifier).matches()) {
 					JavaConstant constant = lookupConstant(declaringClass.toJavaName(), field.getName());
 					if (constant != null) {
-						System.out.println("Processing " + fieldIdentifier + " : set it to " + constant.toValueString() + " at build time");
+						this.debug.log(DebugContext.VERBOSE_LEVEL, "Processing " + fieldIdentifier + " : set it to "
+								+ constant.toValueString() + " at build time");
 						return new ConstantReadableJavaField(field, constant);
 					}
 				}
@@ -72,12 +79,12 @@ class ConstantFieldSubstitutionProcessor extends SubstitutionProcessor {
 			Field field = throwawayClass.getDeclaredField(fieldName);
 			field.setAccessible(true);
 			Object value = field.get(null);
-			if (value == null || !field.getType().isPrimitive()) {
+			if (value == null || !(value instanceof Boolean)) {
 				throw UserError.abort("Unable to get the value of " + className + "." + fieldName);
 			}
 			return SubstrateObjectConstant.forBoxedValue(JavaKind.Boolean, value);
-
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new IllegalStateException("Unable to read value from " + className + "." + fieldName, ex);
 		}
 	}
