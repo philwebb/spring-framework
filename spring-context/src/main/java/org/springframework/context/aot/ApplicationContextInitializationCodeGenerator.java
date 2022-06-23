@@ -18,11 +18,11 @@ package org.springframework.context.aot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.lang.model.element.Modifier;
 
-import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.GeneratedClass;
+import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
@@ -46,15 +46,24 @@ class ApplicationContextInitializationCodeGenerator
 
 	private static final String APPLICATION_CONTEXT_VARIABLE = "applicationContext";
 
-
-	private final GeneratedMethods generatedMethods = new GeneratedMethods();
-
 	private final List<MethodReference> initializers = new ArrayList<>();
 
+	private final GeneratedClass generatedClass;
+
+
+	ApplicationContextInitializationCodeGenerator(GenerationContext generationContext) {
+		this.generatedClass = generationContext.getClassGenerator()
+				.generateClass("ApplicationContextInitializer").using(this::build);
+	}
+
+
+	GeneratedClass getGeneratedClass() {
+		return this.generatedClass;
+	}
 
 	@Override
 	public MethodGenerator getMethodGenerator() {
-		return this.generatedMethods;
+		return this.generatedClass.getMethodGenerator();
 	}
 
 	@Override
@@ -62,18 +71,16 @@ class ApplicationContextInitializationCodeGenerator
 		this.initializers.add(methodReference);
 	}
 
-	Consumer<TypeSpec.Builder> generateJavaFile() {
-		return builder -> {
-			builder.addJavadoc(
-					"{@link $T} to restore an application context based on previous AOT processing.",
-					ApplicationContextInitializer.class);
-			builder.addModifiers(Modifier.PUBLIC);
-			builder.addSuperinterface(ParameterizedTypeName.get(
-					ApplicationContextInitializer.class, GenericApplicationContext.class));
-			builder.addMethod(generateInitializeMethod());
-			this.generatedMethods.doWithMethodSpecs(builder::addMethod);
-		};
+	private void build(TypeSpec.Builder builder) {
+		builder.addJavadoc(
+				"{@link $T} to restore an application context based on previous AOT processing.",
+				ApplicationContextInitializer.class);
+		builder.addModifiers(Modifier.PUBLIC);
+		builder.addSuperinterface(ParameterizedTypeName.get(
+				ApplicationContextInitializer.class, GenericApplicationContext.class));
+		builder.addMethod(generateInitializeMethod());
 	}
+
 
 	private MethodSpec generateInitializeMethod() {
 		MethodSpec.Builder builder = MethodSpec.methodBuilder("initialize");
@@ -93,8 +100,7 @@ class ApplicationContextInitializationCodeGenerator
 		builder.addStatement("$L.setAutowireCandidateResolver(new $T())",
 				BEAN_FACTORY_VARIABLE, ContextAnnotationAutowireCandidateResolver.class);
 		for (MethodReference initializer : this.initializers) {
-			builder.addStatement(
-					initializer.toInvokeCodeBlock(CodeBlock.of(BEAN_FACTORY_VARIABLE)));
+			builder.addStatement(initializer.toInvokeCodeBlock(CodeBlock.of(BEAN_FACTORY_VARIABLE)));
 		}
 		return builder.build();
 	}

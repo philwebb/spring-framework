@@ -33,17 +33,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class GeneratedClassTests {
 
+	private static final Consumer<Builder> EMPTY_TYPE_SPEC = type -> {};
+
 	@Test
 	void getNameReturnsName() {
 		ClassName name = ClassName.bestGuess("com.example.Test");
-		GeneratedClass generatedClass = new GeneratedClass(emptyTypeSpec(), name);
+		GeneratedClass generatedClass = new GeneratedClass(name);
 		assertThat(generatedClass.getName()).isSameAs(name);
 	}
 
 	@Test
 	void generateJavaFileIncludesGeneratedMethods() {
 		ClassName name = ClassName.bestGuess("com.example.Test");
-		GeneratedClass generatedClass = new GeneratedClass(emptyTypeSpec(), name);
+		GeneratedClass generatedClass = new GeneratedClass(name).using(EMPTY_TYPE_SPEC);
 		MethodGenerator methodGenerator = generatedClass.getMethodGenerator();
 		methodGenerator.generateMethod("test")
 				.using(builder -> builder.addJavadoc("Test Method"));
@@ -51,8 +53,5 @@ class GeneratedClassTests {
 	}
 
 
-	private Consumer<Builder> emptyTypeSpec() {
-		return type -> {};
-	}
 
 }

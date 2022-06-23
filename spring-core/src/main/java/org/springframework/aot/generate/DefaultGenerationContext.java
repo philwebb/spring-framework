@@ -45,6 +45,15 @@ public class DefaultGenerationContext implements GenerationContext {
 	/**
 	 * Create a new {@link DefaultGenerationContext} instance backed by the
 	 * specified {@link ClassNameGenerator} and {@link GeneratedFiles}.
+	 * @param generatedFiles the generated files
+	 */
+	public DefaultGenerationContext(GeneratedFiles generatedFiles) {
+		this(new GeneratedClasses(new ClassNameGenerator(null)), generatedFiles, new RuntimeHints());
+	}
+
+	/**
+	 * Create a new {@link DefaultGenerationContext} instance backed by the
+	 * specified {@link ClassNameGenerator} and {@link GeneratedFiles}.
 	 * @param classNameGenerator the naming convention to use for generated
 	 * class names
 	 * @param generatedFiles the generated files
@@ -82,7 +91,7 @@ public class DefaultGenerationContext implements GenerationContext {
 	}
 
 	@Override
-	public GeneratedClasses getGeneratedClasses() {
+	public ClassGenerator getClassGenerator() {
 		return this.generatedClasses;
 	}
 

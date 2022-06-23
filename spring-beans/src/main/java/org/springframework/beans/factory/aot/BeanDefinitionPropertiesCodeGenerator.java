@@ -81,7 +81,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 	private static final String BEAN_DEFINITION_VARIABLE = BeanRegistrationCodeFragments.BEAN_DEFINITION_VARIABLE;
 
-	private static final	Consumer<ExecutableHint.Builder> INVOKE_HINT = hint -> hint.withMode(ExecutableMode.INVOKE);
+	private static final Consumer<ExecutableHint.Builder> INVOKE_HINT = hint -> hint.withMode(ExecutableMode.INVOKE);
 
 	private static final BeanInfoFactory beanInfoFactory = new ExtendedBeanInfoFactory();
 

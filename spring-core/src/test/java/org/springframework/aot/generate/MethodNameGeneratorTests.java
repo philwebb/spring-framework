@@ -16,8 +16,6 @@
 
 package org.springframework.aot.generate;
 
-import java.io.InputStream;
-
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -85,7 +83,7 @@ class MethodNameGeneratorTests {
 				.isEqualTo("getFactory");
 		assertThat(MethodNameGenerator.join(null, null)).isEqualTo("");
 		assertThat(MethodNameGenerator.join("", null)).isEqualTo("");
-		assertThat(MethodNameGenerator.join("get", InputStream.class))
+		assertThat(MethodNameGenerator.join("get", "InputStream"))
 				.isEqualTo("getInputStream");
 
 	}

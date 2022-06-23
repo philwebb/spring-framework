@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.GeneratedClass;
+import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
 
@@ -28,16 +30,27 @@ import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
  * Mock {@link BeanFactoryInitializationCode} implementation.
  *
  * @author Stephane Nicoll
+ * @author Phillip Webb
  */
 public class MockBeanFactoryInitializationCode implements BeanFactoryInitializationCode {
 
-	private final GeneratedMethods generatedMethods = new GeneratedMethods();
+	private final GeneratedClass generatedClass;
 
 	private final List<MethodReference> initializers = new ArrayList<>();
 
+
+	public MockBeanFactoryInitializationCode(GenerationContext generationContext) {
+		this.generatedClass = generationContext.getClassGenerator().generateClass("TestCode");
+	}
+
+
+	public GeneratedClass getGeneratedClass() {
+		return generatedClass;
+	}
+
 	@Override
-	public GeneratedMethods getMethodGenerator() {
-		return this.generatedMethods;
+	public MethodGenerator getMethodGenerator() {
+		return this.generatedClass.getMethodGenerator();
 	}
 
 	@Override

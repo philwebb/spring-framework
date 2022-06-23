@@ -59,8 +59,8 @@ class BeanRegistrationsAotContribution
 	public void applyTo(GenerationContext generationContext,
 			BeanFactoryInitializationCode beanFactoryInitializationCode) {
 
-		GeneratedClass generatedClass = generationContext.getGeneratedClasses()
-				.forFeature("BeanFactoryRegistrations").generate(type -> {
+		GeneratedClass generatedClass = generationContext.getClassGenerator()
+				.generateClass("BeanFactoryRegistrations").using(type -> {
 					type.addJavadoc("Register bean definitions for the bean factory.");
 					type.addModifiers(Modifier.PUBLIC);
 				});

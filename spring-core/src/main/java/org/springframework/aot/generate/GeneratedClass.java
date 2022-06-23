@@ -21,10 +21,10 @@ import java.util.function.Consumer;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.TypeSpec;
-import org.springframework.javapoet.TypeSpec.Builder;
+import org.springframework.util.Assert;
 
 /**
- * A generated class is a container for generated methods.
+ * A generated class.
  *
  * @author Phillip Webb
  * @author Stephane Nicoll
@@ -33,11 +33,11 @@ import org.springframework.javapoet.TypeSpec.Builder;
  */
 public final class GeneratedClass {
 
-	private final Consumer<Builder> typeSpecCustomizer;
-
 	private final ClassName name;
 
 	private final GeneratedMethods methods;
+
+	private Consumer<TypeSpec.Builder> builder;
 
 
 	/**
@@ -46,8 +46,7 @@ public final class GeneratedClass {
 	 * {@link GeneratedClasses}.
 	 * @param name the generated name
 	 */
-	GeneratedClass(Consumer<Builder> typeSpecCustomizer, ClassName name) {
-		this.typeSpecCustomizer = typeSpecCustomizer;
+	GeneratedClass(ClassName name) {
 		this.name = name;
 		this.methods = new GeneratedMethods(new MethodNameGenerator());
 	}
@@ -69,12 +68,31 @@ public final class GeneratedClass {
 		return this.methods;
 	}
 
+	public GeneratedClass using(Consumer<TypeSpec.Builder> builder) {
+		Assert.notNull(builder, "'builder' must not be null");
+		Assert.state(this.builder == null || buildsSameTypeSpec(this.builder, builder),
+				"GeneratedClass is already using a builder");
+		this.builder = builder;
+		return this;
+	}
+
+	private boolean buildsSameTypeSpec(Consumer<TypeSpec.Builder> existingBuilder, Consumer<TypeSpec.Builder> replacementBuilder) {
+		TypeSpec existing = classBuilder(existingBuilder).build();
+		TypeSpec replacement = classBuilder(replacementBuilder).build();
+		return existing.equals(replacement);
+	}
+
 	JavaFile generateJavaFile() {
-		TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(this.name);
-		this.typeSpecCustomizer.accept(typeSpecBuilder);
-		this.methods.doWithMethodSpecs(typeSpecBuilder::addMethod);
-		return JavaFile.builder(this.name.packageName(), typeSpecBuilder.build())
+		TypeSpec.Builder builder = classBuilder(this.builder);
+		this.methods.doWithMethodSpecs(builder::addMethod);
+		return JavaFile.builder(this.name.packageName(), builder.build())
 				.build();
+	}
+
+	private TypeSpec.Builder classBuilder(Consumer<TypeSpec.Builder> consumer) {
+		TypeSpec.Builder builder = TypeSpec.classBuilder(this.name);
+		consumer.accept(builder);
+		return builder;
 	}
 
 }

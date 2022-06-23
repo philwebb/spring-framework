@@ -31,7 +31,6 @@ import java.util.TreeSet;
 
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.MethodGenerator;
-import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
@@ -486,7 +485,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		private <K, V> CodeBlock generateLinkedHashMapCode(Map<K, V> map,
 				ResolvableType keyType, ResolvableType valueType) {
 			GeneratedMethod method = BeanDefinitionPropertyValueCodeGenerator.this.methodGenerator
-					.generateMethod(MethodNameGenerator.join("get", "map"))
+					.generateMethod("get", "map")
 					.using(builder -> {
 						builder.addAnnotation(AnnotationSpec
 								.builder(SuppressWarnings.class)
