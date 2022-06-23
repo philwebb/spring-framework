@@ -90,7 +90,7 @@ class DefaultGenerationContextTests {
 	void getGeneratedClassesReturnsClassNameGenerator() {
 		DefaultGenerationContext context = new DefaultGenerationContext(
 				this.generatedClasses, this.generatedFiles, this.runtimeHints);
-		assertThat(context.getGeneratedClasses()).isSameAs(this.generatedClasses);
+		assertThat(context.getClassGenerator()).isSameAs(this.generatedClasses);
 	}
 
 	@Test
@@ -112,8 +112,8 @@ class DefaultGenerationContextTests {
 		DefaultGenerationContext context = new DefaultGenerationContext(
 				new ClassNameGenerator(TestTarget.class), this.generatedFiles);
 		GenerationContext anotherContext = context.withName("Another");
-		GeneratedClass generatedClass = anotherContext.getGeneratedClasses()
-				.forFeature("Test").generate(typeSpecCustomizer);
+		GeneratedClass generatedClass = anotherContext.getClassGenerator()
+				.generateClass("Test").using(typeSpecCustomizer);
 		assertThat(generatedClass.getName().simpleName()).endsWith("__AnotherTest");
 	}
 
@@ -121,12 +121,12 @@ class DefaultGenerationContextTests {
 	void withNameKeepTrackOfAllGeneratedFiles() {
 		DefaultGenerationContext context = new DefaultGenerationContext(
 				new ClassNameGenerator(TestTarget.class), this.generatedFiles);
-		context.getGeneratedClasses().forFeature("Test").generate(typeSpecCustomizer);
+		context.getClassGenerator().generateClass("Test").using(typeSpecCustomizer);
 		GenerationContext anotherContext = context.withName("Another");
-		assertThat(anotherContext.getGeneratedClasses()).isNotSameAs(context.getGeneratedClasses());
+		assertThat(anotherContext.getClassGenerator()).isNotSameAs(context.getClassGenerator());
 		assertThat(anotherContext.getGeneratedFiles()).isSameAs(context.getGeneratedFiles());
 		assertThat(anotherContext.getRuntimeHints()).isSameAs(context.getRuntimeHints());
-		anotherContext.getGeneratedClasses().forFeature("Test").generate(typeSpecCustomizer);
+		anotherContext.getClassGenerator().generateClass("Test").using(typeSpecCustomizer);
 		context.writeGeneratedContent();
 		assertThat(this.generatedFiles.getGeneratedFiles(Kind.SOURCE)).hasSize(2);
 	}
@@ -135,12 +135,12 @@ class DefaultGenerationContextTests {
 	void withNameGenerateUniqueName() {
 		DefaultGenerationContext context = new DefaultGenerationContext(
 				new ClassNameGenerator(Object.class), this.generatedFiles);
-		context.withName("Test").getGeneratedClasses()
-				.forFeature("Feature").generate(typeSpecCustomizer);
-		context.withName("Test").getGeneratedClasses()
-				.forFeature("Feature").generate(typeSpecCustomizer);
-		context.withName("Test").getGeneratedClasses()
-				.forFeature("Feature").generate(typeSpecCustomizer);
+		context.withName("Test").getClassGenerator()
+				.generateClass("Feature").using(typeSpecCustomizer);
+		context.withName("Test").getClassGenerator()
+				.generateClass("Feature").using(typeSpecCustomizer);
+		context.withName("Test").getClassGenerator()
+				.generateClass("Feature").using(typeSpecCustomizer);
 		context.writeGeneratedContent();
 		assertThat(this.generatedFiles.getGeneratedFiles(Kind.SOURCE)).containsOnlyKeys(
 				"java/lang/Object__TestFeature.java",

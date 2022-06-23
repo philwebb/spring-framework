@@ -43,7 +43,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 	 * Create a new {@link GeneratedMethods} instance backed by a new
 	 * {@link MethodNameGenerator}.
 	 */
-	public GeneratedMethods() {
+	GeneratedMethods() {
 		this(new MethodNameGenerator());
 	}
 
@@ -52,7 +52,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 	 * {@link MethodNameGenerator}.
 	 * @param methodNameGenerator the method name generator
 	 */
-	public GeneratedMethods(MethodNameGenerator methodNameGenerator) {
+	GeneratedMethods(MethodNameGenerator methodNameGenerator) {
 		Assert.notNull(methodNameGenerator, "'methodNameGenerator' must not be null");
 		this.methodNameGenerator = methodNameGenerator;
 	}

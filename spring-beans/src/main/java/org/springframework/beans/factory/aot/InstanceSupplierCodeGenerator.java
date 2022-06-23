@@ -77,6 +77,7 @@ class InstanceSupplierCodeGenerator {
 			ClassName className, MethodGenerator methodGenerator,
 			boolean allowDirectSupplierShortcut) {
 
+		// FIXME pass in generated class
 		this.generationContext = generationContext;
 		this.className = className;
 		this.methodGenerator = methodGenerator;

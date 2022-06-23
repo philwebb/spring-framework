@@ -64,7 +64,7 @@ public final class GeneratedMethod {
 	 * @throws IllegalStateException if one of the {@code generateBy(...)}
 	 * methods has not been called
 	 */
-	public MethodSpec getSpec() {
+	MethodSpec getSpec() {
 		Assert.state(this.spec != null,
 				() -> String.format("Method '%s' has no method spec defined", this.name));
 		return this.spec;

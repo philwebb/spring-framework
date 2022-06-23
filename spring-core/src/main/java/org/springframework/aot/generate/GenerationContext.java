@@ -48,7 +48,7 @@ public interface GenerationContext {
 	 * generated classes are written at the end of AOT processing.
 	 * @return the generated classes
 	 */
-	GeneratedClasses getGeneratedClasses();
+	ClassGenerator getClassGenerator();
 
 	/**
 	 * Return the {@link GeneratedFiles} being used by the context. Used to
