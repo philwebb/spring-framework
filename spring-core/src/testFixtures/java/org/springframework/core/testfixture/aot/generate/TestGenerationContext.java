@@ -28,6 +28,7 @@ import org.springframework.aot.generate.InMemoryGeneratedFiles;
  *
  * @author Stephane Nicoll
  */
+@Deprecated
 public class TestGenerationContext extends DefaultGenerationContext {
 
 	public TestGenerationContext(GeneratedFiles generatedFiles) {

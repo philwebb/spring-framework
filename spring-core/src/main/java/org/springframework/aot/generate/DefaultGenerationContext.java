@@ -45,6 +45,15 @@ public class DefaultGenerationContext implements GenerationContext {
 	/**
 	 * Create a new {@link DefaultGenerationContext} instance backed by the
 	 * specified {@link ClassNameGenerator} and {@link GeneratedFiles}.
+	 * @param generatedFiles the generated files
+	 */
+	public DefaultGenerationContext(GeneratedFiles generatedFiles) {
+		this(new GeneratedClasses(new ClassNameGenerator(null)), generatedFiles, new RuntimeHints());
+	}
+
+	/**
+	 * Create a new {@link DefaultGenerationContext} instance backed by the
+	 * specified {@link ClassNameGenerator} and {@link GeneratedFiles}.
 	 * @param classNameGenerator the naming convention to use for generated
 	 * class names
 	 * @param generatedFiles the generated files
@@ -74,9 +83,9 @@ public class DefaultGenerationContext implements GenerationContext {
 	private DefaultGenerationContext(DefaultGenerationContext existing, String name) {
 		int sequence = existing.sequenceGenerator
 				.computeIfAbsent(name, key -> new AtomicInteger()).getAndIncrement();
-		String nameToUse = (sequence > 0 ? name + sequence : name);
+		String featureName = (sequence > 0 ? name + sequence : name);
 		this.sequenceGenerator = existing.sequenceGenerator;
-		this.generatedClasses = existing.generatedClasses.withName(nameToUse);
+		this.generatedClasses = existing.generatedClasses.withFeatureNamePrefix(featureName);
 		this.generatedFiles = existing.generatedFiles;
 		this.runtimeHints = existing.runtimeHints;
 	}
