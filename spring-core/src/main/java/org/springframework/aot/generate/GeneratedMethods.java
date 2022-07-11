@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see GeneratedMethod
  */
-public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenerator {
+public class GeneratedMethods implements Iterable<GeneratedMethod> {
 
 	private final MethodNameGenerator methodNameGenerator;
 
@@ -58,7 +58,6 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 	}
 
 
-	@Override
 	public GeneratedMethod generateMethod(String... methodNameParts) {
 		return add(methodNameParts);
 	}
@@ -97,6 +96,10 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 	 */
 	public Stream<GeneratedMethod> stream() {
 		return this.generatedMethods.stream();
+	}
+
+	public GeneratedMethods withName(String... parts) {
+		return null;
 	}
 
 }

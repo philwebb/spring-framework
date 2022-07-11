@@ -42,8 +42,8 @@ import jakarta.persistence.SynchronizationType;
 
 import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.beans.BeanUtils;
@@ -798,7 +798,7 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 					MethodReference.ofStatic(generatedClass.getName(), APPLY_METHOD));
 		}
 
-		private Consumer<Builder> generateMethod(RuntimeHints hints, MethodGenerator methodGenerator) {
+		private Consumer<Builder> generateMethod(RuntimeHints hints, GeneratedMethods methodGenerator) {
 			return method -> {
 				method.addJavadoc("Apply the persistence injection.");
 				method.addModifiers(javax.lang.model.element.Modifier.PUBLIC,
@@ -811,7 +811,7 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 		}
 
 		private CodeBlock generateMethodCode(RuntimeHints hints,
-				MethodGenerator methodGenerator) {
+				GeneratedMethods methodGenerator) {
 			CodeBlock.Builder builder = CodeBlock.builder();
 			InjectionCodeGenerator injectionCodeGenerator = new InjectionCodeGenerator(
 					hints);
@@ -826,7 +826,7 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 			return builder.build();
 		}
 
-		private CodeBlock getResourceToInject(MethodGenerator methodGenerator,
+		private CodeBlock getResourceToInject(GeneratedMethods methodGenerator,
 				PersistenceElement injectedElement) {
 			String unitName = injectedElement.unitName;
 			boolean requireEntityManager = (injectedElement.type != null);

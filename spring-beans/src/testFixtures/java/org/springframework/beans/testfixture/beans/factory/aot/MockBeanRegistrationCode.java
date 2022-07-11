@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.aot.generate.GeneratedClass;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanRegistrationCode;
 import org.springframework.javapoet.ClassName;
@@ -55,7 +55,7 @@ public class MockBeanRegistrationCode implements BeanRegistrationCode {
 	}
 
 	@Override
-	public MethodGenerator getMethodGenerator() {
+	public GeneratedMethods getMethodGenerator() {
 		return this.generatedClass.getMethodGenerator();
 	}
 

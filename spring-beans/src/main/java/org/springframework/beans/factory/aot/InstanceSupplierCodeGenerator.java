@@ -26,8 +26,8 @@ import java.util.function.Consumer;
 
 import org.springframework.aot.generate.AccessVisibility;
 import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.hint.ExecutableHint;
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.factory.support.InstanceSupplier;
@@ -68,13 +68,13 @@ class InstanceSupplierCodeGenerator {
 
 	private final ClassName className;
 
-	private final MethodGenerator methodGenerator;
+	private final GeneratedMethods methodGenerator;
 
 	private final boolean allowDirectSupplierShortcut;
 
 
 	InstanceSupplierCodeGenerator(GenerationContext generationContext,
-			ClassName className, MethodGenerator methodGenerator,
+			ClassName className, GeneratedMethods methodGenerator,
 			boolean allowDirectSupplierShortcut) {
 
 		this.generationContext = generationContext;

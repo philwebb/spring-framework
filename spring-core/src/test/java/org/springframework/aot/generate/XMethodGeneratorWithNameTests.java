@@ -21,12 +21,12 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests {@link MethodGeneratorWithName}.
+ * Tests {@link XMethodGeneratorWithName}.
  *
  * @author Phillip Webb
  * @since 6.0
  */
-class MethodGeneratorWithNameTests {
+class XMethodGeneratorWithNameTests {
 
 	private final GeneratedMethods generatedMethods = new GeneratedMethods();
 

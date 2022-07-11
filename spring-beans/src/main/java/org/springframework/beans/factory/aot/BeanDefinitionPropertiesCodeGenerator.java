@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.hint.ExecutableHint;
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.aot.hint.RuntimeHints;
@@ -95,7 +95,7 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 
 	BeanDefinitionPropertiesCodeGenerator(RuntimeHints hints,
-			Predicate<String> attributeFilter, MethodGenerator methodGenerator,
+			Predicate<String> attributeFilter, GeneratedMethods methodGenerator,
 			BiFunction<String, Object, CodeBlock> customValueCodeGenerator) {
 
 		this.hints = hints;

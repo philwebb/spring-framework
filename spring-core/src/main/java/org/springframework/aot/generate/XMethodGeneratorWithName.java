@@ -20,21 +20,21 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Internal class used to support {@link MethodGenerator#withName(Object...)}.
+ * Internal class used to support {@link XMethodGenerator#withName(Object...)}.
  *
  * @author Phillip Webb
  * @since 6.0
  */
-class MethodGeneratorWithName implements MethodGenerator {
+class XMethodGeneratorWithName implements XMethodGenerator {
 
 	private static final String[] PREFIXES = { "get", "set", "is" };
 
-	private final MethodGenerator methodGenerator;
+	private final XMethodGenerator methodGenerator;
 
 	private final String[] nameParts;
 
 
-	MethodGeneratorWithName(MethodGenerator methodGenerator, String[] nameParts) {
+	XMethodGeneratorWithName(XMethodGenerator methodGenerator, String[] nameParts) {
 		this.methodGenerator = methodGenerator;
 		this.nameParts = nameParts;
 	}

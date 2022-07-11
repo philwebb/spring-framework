@@ -29,7 +29,6 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @since 6.0
  * @see GeneratedMethods
- * @see MethodGenerator
  */
 public final class GeneratedMethod {
 

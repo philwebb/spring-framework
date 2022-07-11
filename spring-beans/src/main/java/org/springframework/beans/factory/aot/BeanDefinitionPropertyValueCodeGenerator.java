@@ -30,7 +30,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.springframework.aot.generate.GeneratedMethod;
-import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
@@ -56,7 +56,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 
 	static final CodeBlock NULL_VALUE_CODE_BLOCK = CodeBlock.of("null");
 
-	private final MethodGenerator methodGenerator;
+	private final GeneratedMethods methodGenerator;
 
 	private final List<Delegate> delegates = List.of(
 			new PrimitiveDelegate(),
@@ -75,7 +75,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		);
 
 
-	BeanDefinitionPropertyValueCodeGenerator(MethodGenerator methodGenerator) {
+	BeanDefinitionPropertyValueCodeGenerator(GeneratedMethods methodGenerator) {
 		this.methodGenerator = methodGenerator;
 	}
 

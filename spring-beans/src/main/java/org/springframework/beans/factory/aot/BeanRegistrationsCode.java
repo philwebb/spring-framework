@@ -16,7 +16,8 @@
 
 package org.springframework.beans.factory.aot;
 
-import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.GeneratedMethods;
+import org.springframework.aot.generate.XMethodGenerator;
 import org.springframework.javapoet.ClassName;
 
 /**
@@ -35,10 +36,10 @@ public interface BeanRegistrationsCode {
 	ClassName getClassName();
 
 	/**
-	 * Return a {@link MethodGenerator} that can be used to add more methods to
+	 * Return a {@link GeneratedMethods} that can be used to add more methods to
 	 * the registrations code.
 	 * @return the method generator
 	 */
-	MethodGenerator getMethodGenerator();
+	GeneratedMethods getMethodGenerator();
 
 }

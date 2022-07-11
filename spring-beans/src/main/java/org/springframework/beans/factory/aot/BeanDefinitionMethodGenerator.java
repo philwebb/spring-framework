@@ -23,8 +23,9 @@ import javax.lang.model.element.Modifier;
 
 import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedMethod;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodGenerator;
+import org.springframework.aot.generate.XMethodGenerator;
 import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -95,7 +96,7 @@ class BeanDefinitionMethodGenerator {
 						type.addJavadoc("Bean definitions for {@link $T}", target);
 						type.addModifiers(Modifier.PUBLIC);
 					});
-			MethodGenerator methodGenerator = generatedClass.getMethodGenerator()
+			GeneratedMethods methodGenerator = generatedClass.getMethodGenerator()
 					.withName(getName());
 			GeneratedMethod generatedMethod = generateBeanDefinitionMethod(
 					generationContext, generatedClass.getName(), methodGenerator,
@@ -103,7 +104,7 @@ class BeanDefinitionMethodGenerator {
 			return MethodReference.ofStatic(generatedClass.getName(),
 					generatedMethod.getName());
 		}
-		MethodGenerator methodGenerator = beanRegistrationsCode.getMethodGenerator()
+		GeneratedMethods methodGenerator = beanRegistrationsCode.getMethodGenerator()
 				.withName(getName());
 		GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext,
 				beanRegistrationsCode.getClassName(), methodGenerator, codeFragments,
@@ -125,7 +126,7 @@ class BeanDefinitionMethodGenerator {
 
 	private GeneratedMethod generateBeanDefinitionMethod(
 			GenerationContext generationContext, ClassName className,
-			MethodGenerator methodGenerator, BeanRegistrationCodeFragments codeFragments,
+			GeneratedMethods methodGenerator, BeanRegistrationCodeFragments codeFragments,
 			Modifier modifier) {
 
 		BeanRegistrationCodeGenerator codeGenerator = new BeanRegistrationCodeGenerator(

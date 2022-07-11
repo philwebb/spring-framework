@@ -22,8 +22,8 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 
 import org.springframework.aot.generate.GeneratedClass;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationCode;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -62,7 +62,7 @@ class ApplicationContextInitializationCodeGenerator
 	}
 
 	@Override
-	public MethodGenerator getMethodGenerator() {
+	public GeneratedMethods getMethodGenerator() {
 		return this.generatedClass.getMethodGenerator();
 	}
 

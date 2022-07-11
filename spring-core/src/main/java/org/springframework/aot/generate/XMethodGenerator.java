@@ -24,7 +24,7 @@ package org.springframework.aot.generate;
  * @see GeneratedMethods
  */
 @FunctionalInterface
-public interface MethodGenerator {
+public interface XMethodGenerator {
 
 	/**
 	 * Generate a new {@link GeneratedMethod}. The returned instance must define
@@ -36,7 +36,7 @@ public interface MethodGenerator {
 	GeneratedMethod generateMethod(String... nameParts);
 
 	/**
-	 * Return a new {@link MethodGenerator} instance that generates method with
+	 * Return a new {@link XMethodGenerator} instance that generates method with
 	 * additional implicit method name parts. The final generated name will be
 	 * of the following form:
 	 * <p>
@@ -63,10 +63,10 @@ public interface MethodGenerator {
 	 * </tr>
 	 * </table>
 	 * @param nameParts the implicit name parts
-	 * @return a new {@link MethodGenerator} instance
+	 * @return a new {@link XMethodGenerator} instance
 	 */
-	default MethodGenerator withName(String... nameParts) {
-		return new MethodGeneratorWithName(this, nameParts);
+	default XMethodGenerator withName(String... nameParts) {
+		return new XMethodGeneratorWithName(this, nameParts);
 	}
 
 }

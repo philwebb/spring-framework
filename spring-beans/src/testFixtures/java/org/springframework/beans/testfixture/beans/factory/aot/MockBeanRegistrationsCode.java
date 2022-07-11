@@ -17,8 +17,8 @@
 package org.springframework.beans.testfixture.beans.factory.aot;
 
 import org.springframework.aot.generate.GeneratedClass;
+import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.MethodGenerator;
 import org.springframework.beans.factory.aot.BeanRegistrationsCode;
 import org.springframework.javapoet.ClassName;
 
@@ -48,7 +48,7 @@ public class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 	}
 
 	@Override
-	public MethodGenerator getMethodGenerator() {
+	public GeneratedMethods getMethodGenerator() {
 		return this.generatedClass.getMethodGenerator();
 	}
 

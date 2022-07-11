@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -99,12 +98,9 @@ public class MethodNameGenerator {
 				.uncapitalize(capitalizedPartNames.collect(Collectors.joining()));
 	}
 
-	private static String getPartName(@Nullable Object part) {
+	private static String getPartName(@Nullable String part) {
 		if (part == null) {
 			return "";
-		}
-		if (part instanceof Class<?> clazz) {
-			return clean(ClassUtils.getShortName(clazz));
 		}
 		return clean(part.toString());
 	}
