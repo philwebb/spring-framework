@@ -31,25 +31,25 @@ class MethodGeneratorWithName implements MethodGenerator {
 
 	private final MethodGenerator methodGenerator;
 
-	private final Object[] nameParts;
+	private final String[] nameParts;
 
 
-	MethodGeneratorWithName(MethodGenerator methodGenerator, Object[] nameParts) {
+	MethodGeneratorWithName(MethodGenerator methodGenerator, String[] nameParts) {
 		this.methodGenerator = methodGenerator;
 		this.nameParts = nameParts;
 	}
 
 
 	@Override
-	public GeneratedMethod generateMethod(Object... methodNameParts) {
+	public GeneratedMethod generateMethod(String... methodNameParts) {
 		return this.methodGenerator.generateMethod(generateName(methodNameParts));
 	}
 
-	private Object[] generateName(Object... methodNameParts) {
+	private String[] generateName(String... methodNameParts) {
 		String joined = MethodNameGenerator.join(methodNameParts);
 		String prefix = getPrefix(joined);
 		String suffix = joined.substring(prefix.length());
-		Object[] result = this.nameParts;
+		String[] result = this.nameParts;
 		if (StringUtils.hasLength(prefix)) {
 			result = ObjectUtils.addObjectToArray(result, prefix, 0);
 		}

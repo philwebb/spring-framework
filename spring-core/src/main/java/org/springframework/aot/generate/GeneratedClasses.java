@@ -100,7 +100,7 @@ public class GeneratedClasses implements ClassGenerator {
 	}
 
 	GeneratedClasses withName(String name) {
-		return new GeneratedClasses(this.classNameGenerator.usingFeatureNamePrefix(name),
+		return new GeneratedClasses(this.classNameGenerator.withFeatureNamePrefix(name),
 				this.classes, this.classesByOwner);
 	}
 

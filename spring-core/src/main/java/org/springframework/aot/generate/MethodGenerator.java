@@ -29,11 +29,11 @@ public interface MethodGenerator {
 	/**
 	 * Generate a new {@link GeneratedMethod}. The returned instance must define
 	 * the method spec by calling {@code using(builder -> ...)}.
-	 * @param methodNameParts the method name parts that should be used to
+	 * @param nameParts the method name parts that should be used to
 	 * generate a unique method name
 	 * @return the newly added {@link GeneratedMethod}
 	 */
-	GeneratedMethod generateMethod(Object... methodNameParts);
+	GeneratedMethod generateMethod(String... nameParts);
 
 	/**
 	 * Return a new {@link MethodGenerator} instance that generates method with
@@ -65,7 +65,7 @@ public interface MethodGenerator {
 	 * @param nameParts the implicit name parts
 	 * @return a new {@link MethodGenerator} instance
 	 */
-	default MethodGenerator withName(Object... nameParts) {
+	default MethodGenerator withName(String... nameParts) {
 		return new MethodGeneratorWithName(this, nameParts);
 	}
 

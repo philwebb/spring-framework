@@ -118,7 +118,7 @@ public final class ClassNameGenerator {
 	 * @param featureNamePrefix the feature name prefix to use
 	 * @return a new instance for the specified feature name prefix
 	 */
-	ClassNameGenerator usingFeatureNamePrefix(String featureNamePrefix) {
+	ClassNameGenerator withFeatureNamePrefix(String featureNamePrefix) {
 		return new ClassNameGenerator(this.defaultTarget, featureNamePrefix,
 				this.sequenceGenerator);
 	}

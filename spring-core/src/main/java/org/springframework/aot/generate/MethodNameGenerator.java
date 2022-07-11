@@ -76,7 +76,7 @@ public class MethodNameGenerator {
 	 * @param parts the parts used to build the name.
 	 * @return the generated method name
 	 */
-	public String generateMethodName(Object... parts) {
+	public String generateMethodName(String... parts) {
 		String generatedName = join(parts);
 		return addSequence(generatedName.isEmpty() ? "$$aot" : generatedName);
 	}
@@ -92,7 +92,7 @@ public class MethodNameGenerator {
 	 * @param parts the parts to join
 	 * @return a method name from the joined parts.
 	 */
-	public static String join(Object... parts) {
+	public static String join(String... parts) {
 		Stream<String> capitalizedPartNames = Arrays.stream(parts)
 				.map(MethodNameGenerator::getPartName).map(StringUtils::capitalize);
 		return StringUtils

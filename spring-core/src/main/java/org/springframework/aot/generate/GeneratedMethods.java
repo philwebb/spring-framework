@@ -59,7 +59,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 
 
 	@Override
-	public GeneratedMethod generateMethod(Object... methodNameParts) {
+	public GeneratedMethod generateMethod(String... methodNameParts) {
 		return add(methodNameParts);
 	}
 
@@ -70,7 +70,7 @@ public class GeneratedMethods implements Iterable<GeneratedMethod>, MethodGenera
 	 * generate a unique method name
 	 * @return the newly added {@link GeneratedMethod}
 	 */
-	public GeneratedMethod add(Object... methodNameParts) {
+	public GeneratedMethod add(String... methodNameParts) {
 		GeneratedMethod method = new GeneratedMethod(
 				this.methodNameGenerator.generateMethodName(methodNameParts));
 		this.generatedMethods.add(method);
