@@ -913,7 +913,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 						type.addJavadoc("Autowiring for {@link $T}.", this.target);
 						type.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 					});
-			generatedClass.getMethodGenerator().generateMethod(APPLY_METHOD)
+			generatedClass.getMethods().generateMethod(APPLY_METHOD)
 					.using(generateMethod(generationContext.getRuntimeHints()));
 			beanRegistrationCode.addInstancePostProcessor(
 					MethodReference.ofStatic(generatedClass.getName(), APPLY_METHOD));

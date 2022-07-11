@@ -65,7 +65,7 @@ class BeanDefinitionPropertyValueCodeGeneratorTests {
 		DefaultGenerationContext generationContext = new DefaultGenerationContext(generatedFiles);
 		GeneratedClass generatedClass = generationContext.getClassGenerator().generateClass("TestCode");
 		CodeBlock generatedCode = new BeanDefinitionPropertyValueCodeGenerator(
-				generatedClass.getMethodGenerator()).generateCode(value);
+				generatedClass.getMethods()).generateCode(value);
 		generatedClass.using(builder -> {
 			builder.addModifiers(Modifier.PUBLIC);
 			builder.addSuperinterface(

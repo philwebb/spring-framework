@@ -36,11 +36,10 @@ public interface BeanFactoryInitializationCode {
 	String BEAN_FACTORY_VARIABLE = "beanFactory";
 
 	/**
-	 * Return a {@link GeneratedMethods} that can be used to add more methods to
-	 * the Initializing code.
+	 * Return the {@link GeneratedMethods} being used by the Initializing code.
 	 * @return the method generator
 	 */
-	GeneratedMethods getMethodGenerator();
+	GeneratedMethods getMethods();
 
 	/**
 	 * Add an initializer method call.

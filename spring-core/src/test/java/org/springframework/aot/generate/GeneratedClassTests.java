@@ -46,7 +46,7 @@ class GeneratedClassTests {
 	void generateJavaFileIncludesGeneratedMethods() {
 		ClassName name = ClassName.bestGuess("com.example.Test");
 		GeneratedClass generatedClass = new GeneratedClass(name).using(EMPTY_TYPE_SPEC);
-		GeneratedMethods methodGenerator = generatedClass.getMethodGenerator();
+		GeneratedMethods methodGenerator = generatedClass.getMethods();
 		methodGenerator.generateMethod("test")
 				.using(builder -> builder.addJavadoc("Test Method"));
 		assertThat(generatedClass.generateJavaFile().toString()).contains("Test Method");

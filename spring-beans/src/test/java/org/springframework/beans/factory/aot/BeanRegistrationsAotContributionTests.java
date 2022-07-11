@@ -147,7 +147,7 @@ class BeanRegistrationsAotContributionTests {
 		contribution.applyTo(this.generationContext, this.beanFactoryInitializationCode);
 		assertThat(beanRegistrationsCodes).hasSize(1);
 		BeanRegistrationsCode actual = beanRegistrationsCodes.get(0);
-		assertThat(actual.getMethodGenerator()).isNotNull();
+		assertThat(actual.getMethods()).isNotNull();
 	}
 
 	private RegisteredBean registerBean(RootBeanDefinition rootBeanDefinition) {

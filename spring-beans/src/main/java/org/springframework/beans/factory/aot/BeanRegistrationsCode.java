@@ -36,10 +36,9 @@ public interface BeanRegistrationsCode {
 	ClassName getClassName();
 
 	/**
-	 * Return a {@link GeneratedMethods} that can be used to add more methods to
-	 * the registrations code.
+	 * Return a {@link GeneratedMethods} being used by the registrations code.
 	 * @return the method generator
 	 */
-	GeneratedMethods getMethodGenerator();
+	GeneratedMethods getMethods();
 
 }

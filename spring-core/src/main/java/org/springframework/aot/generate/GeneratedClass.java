@@ -64,7 +64,7 @@ public final class GeneratedClass {
 	 * Return the method generator that can be used for this generated class.
 	 * @return the method generator
 	 */
-	public GeneratedMethods getMethodGenerator() {
+	public GeneratedMethods getMethods() {
 		return this.methods;
 	}
 

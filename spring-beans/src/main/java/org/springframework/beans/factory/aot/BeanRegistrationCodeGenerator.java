@@ -41,7 +41,7 @@ class BeanRegistrationCodeGenerator implements BeanRegistrationCode {
 
 	private final ClassName className;
 
-	private final GeneratedMethods methodGenerator;
+	private final GeneratedMethods generatedMethods;
 
 	private final List<MethodReference> instancePostProcessors = new ArrayList<>();
 
@@ -57,7 +57,7 @@ class BeanRegistrationCodeGenerator implements BeanRegistrationCode {
 			BeanRegistrationCodeFragments codeFragments) {
 
 		this.className = className;
-		this.methodGenerator = methodGenerator;
+		this.generatedMethods = methodGenerator;
 		this.registeredBean = registeredBean;
 		this.constructorOrFactoryMethod = constructorOrFactoryMethod;
 		this.codeFragments = codeFragments;
@@ -69,8 +69,8 @@ class BeanRegistrationCodeGenerator implements BeanRegistrationCode {
 	}
 
 	@Override
-	public GeneratedMethods getMethodGenerator() {
-		return this.methodGenerator;
+	public GeneratedMethods getMethods() {
+		return this.generatedMethods;
 	}
 
 	@Override

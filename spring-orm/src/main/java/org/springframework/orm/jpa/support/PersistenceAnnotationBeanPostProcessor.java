@@ -792,13 +792,13 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 						type.addJavadoc("Persistence injection for {@link $T}.", this.target);
 						type.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 					});
-			generatedClass.getMethodGenerator().generateMethod(APPLY_METHOD)
-					.using(generateMethod(generationContext.getRuntimeHints(), generatedClass.getMethodGenerator()));
+			generatedClass.getMethods().generateMethod(APPLY_METHOD)
+					.using(generateMethod(generationContext.getRuntimeHints(), generatedClass.getMethods()));
 			beanRegistrationCode.addInstancePostProcessor(
 					MethodReference.ofStatic(generatedClass.getName(), APPLY_METHOD));
 		}
 
-		private Consumer<Builder> generateMethod(RuntimeHints hints, GeneratedMethods methodGenerator) {
+		private Consumer<Builder> generateMethod(RuntimeHints hints, GeneratedMethods generatedMethods) {
 			return method -> {
 				method.addJavadoc("Apply the persistence injection.");
 				method.addModifiers(javax.lang.model.element.Modifier.PUBLIC,
@@ -806,17 +806,16 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 				method.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER);
 				method.addParameter(this.target, INSTANCE_PARAMETER);
 				method.returns(this.target);
-				method.addCode(generateMethodCode(hints, methodGenerator));
+				method.addCode(generateMethodCode(hints, generatedMethods));
 			};
 		}
 
-		private CodeBlock generateMethodCode(RuntimeHints hints,
-				GeneratedMethods methodGenerator) {
+		private CodeBlock generateMethodCode(RuntimeHints hints, GeneratedMethods generatedMethods) {
 			CodeBlock.Builder builder = CodeBlock.builder();
 			InjectionCodeGenerator injectionCodeGenerator = new InjectionCodeGenerator(
 					hints);
 			for (InjectedElement injectedElement : this.injectedElements) {
-				CodeBlock resourceToInject = getResourceToInject(methodGenerator,
+				CodeBlock resourceToInject = getResourceToInject(generatedMethods,
 						(PersistenceElement) injectedElement);
 				builder.add(injectionCodeGenerator.generateInjectionCode(
 						injectedElement.getMember(), INSTANCE_PARAMETER,
@@ -826,7 +825,7 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 			return builder.build();
 		}
 
-		private CodeBlock getResourceToInject(GeneratedMethods methodGenerator,
+		private CodeBlock getResourceToInject(GeneratedMethods generatedMethods,
 				PersistenceElement injectedElement) {
 			String unitName = injectedElement.unitName;
 			boolean requireEntityManager = (injectedElement.type != null);
@@ -836,7 +835,7 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 						EntityManagerFactoryUtils.class, ListableBeanFactory.class,
 						REGISTERED_BEAN_PARAMETER, unitName);
 			}
-			GeneratedMethod getEntityManagerMethod = methodGenerator
+			GeneratedMethod getEntityManagerMethod = generatedMethods
 					.generateMethod("get", unitName, "EntityManager")
 					.using(builder -> buildGetEntityManagerMethod(builder,
 							injectedElement));

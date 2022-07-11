@@ -96,18 +96,18 @@ class BeanDefinitionMethodGenerator {
 						type.addJavadoc("Bean definitions for {@link $T}", target);
 						type.addModifiers(Modifier.PUBLIC);
 					});
-			GeneratedMethods methodGenerator = generatedClass.getMethodGenerator()
+			GeneratedMethods generatedMethods = generatedClass.getMethods()
 					.withName(getName());
 			GeneratedMethod generatedMethod = generateBeanDefinitionMethod(
-					generationContext, generatedClass.getName(), methodGenerator,
+					generationContext, generatedClass.getName(), generatedMethods,
 					codeFragments, Modifier.PUBLIC);
 			return MethodReference.ofStatic(generatedClass.getName(),
 					generatedMethod.getName());
 		}
-		GeneratedMethods methodGenerator = beanRegistrationsCode.getMethodGenerator()
+		GeneratedMethods generatedMethods = beanRegistrationsCode.getMethods()
 				.withName(getName());
 		GeneratedMethod generatedMethod = generateBeanDefinitionMethod(generationContext,
-				beanRegistrationsCode.getClassName(), methodGenerator, codeFragments,
+				beanRegistrationsCode.getClassName(), generatedMethods, codeFragments,
 				Modifier.PRIVATE);
 		return MethodReference.ofStatic(beanRegistrationsCode.getClassName(),
 				generatedMethod.getName());
@@ -126,13 +126,13 @@ class BeanDefinitionMethodGenerator {
 
 	private GeneratedMethod generateBeanDefinitionMethod(
 			GenerationContext generationContext, ClassName className,
-			GeneratedMethods methodGenerator, BeanRegistrationCodeFragments codeFragments,
+			GeneratedMethods generatedMethods, BeanRegistrationCodeFragments codeFragments,
 			Modifier modifier) {
 
 		BeanRegistrationCodeGenerator codeGenerator = new BeanRegistrationCodeGenerator(
-				className, methodGenerator, this.registeredBean,
+				className, generatedMethods, this.registeredBean,
 				this.constructorOrFactoryMethod, codeFragments);
-		GeneratedMethod method = methodGenerator.generateMethod("get", "bean", "definition");
+		GeneratedMethod method = generatedMethods.generateMethod("get", "bean", "definition");
 		this.aotContributions.forEach(aotContribution -> aotContribution
 				.applyTo(generationContext, codeGenerator));
 		return method.using(builder -> {

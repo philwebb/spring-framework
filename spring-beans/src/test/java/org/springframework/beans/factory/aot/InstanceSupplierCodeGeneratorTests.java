@@ -309,7 +309,7 @@ class InstanceSupplierCodeGeneratorTests {
 		GeneratedClass generateClass = this.generationContext.getClassGenerator().generateClass("TestCode");
 		InstanceSupplierCodeGenerator generator = new InstanceSupplierCodeGenerator(
 				this.generationContext, generateClass.getName(),
-				generateClass.getMethodGenerator(), this.allowDirectSupplierShortcut);
+				generateClass.getMethods(), this.allowDirectSupplierShortcut);
 		Executable constructorOrFactoryMethod = ConstructorOrFactoryMethodResolver.resolve(registeredBean);
 		CodeBlock generatedCode = generator.generateCode(registeredBean, constructorOrFactoryMethod);
 		generateClass.using(builder -> {

@@ -403,7 +403,7 @@ class BeanDefinitionPropertiesCodeGeneratorTests {
 				.generateClass("TestCode");
 		BeanDefinitionPropertiesCodeGenerator codeGenerator = new BeanDefinitionPropertiesCodeGenerator(
 				this.generationContext.getRuntimeHints(), attributeFilter,
-				generatedClass.getMethodGenerator(), (name, value) -> null);
+				generatedClass.getMethods(), (name, value) -> null);
 		CodeBlock generatedCode = codeGenerator.generateCode(this.beanDefinition);
 		generatedClass.using(builder -> {
 			builder.addModifiers(Modifier.PUBLIC);

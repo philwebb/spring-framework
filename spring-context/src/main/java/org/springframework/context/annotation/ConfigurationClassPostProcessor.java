@@ -534,7 +534,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			Map<String, String> mappings = buildImportAwareMappings();
 			if (!mappings.isEmpty()) {
 				GeneratedMethod generatedMethod = beanFactoryInitializationCode
-						.getMethodGenerator()
+						.getMethods()
 						.generateMethod("addImportAwareBeanPostProcessors")
 						.using(builder -> generateAddPostProcessorMethod(builder,
 								mappings));

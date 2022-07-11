@@ -95,14 +95,14 @@ class BeanDefinitionPropertiesCodeGenerator {
 
 
 	BeanDefinitionPropertiesCodeGenerator(RuntimeHints hints,
-			Predicate<String> attributeFilter, GeneratedMethods methodGenerator,
+			Predicate<String> attributeFilter, GeneratedMethods generatedMethods,
 			BiFunction<String, Object, CodeBlock> customValueCodeGenerator) {
 
 		this.hints = hints;
 		this.attributeFilter = attributeFilter;
 		this.customValueCodeGenerator = customValueCodeGenerator;
 		this.valueCodeGenerator = new BeanDefinitionPropertyValueCodeGenerator(
-				methodGenerator);
+				generatedMethods);
 	}
 
 

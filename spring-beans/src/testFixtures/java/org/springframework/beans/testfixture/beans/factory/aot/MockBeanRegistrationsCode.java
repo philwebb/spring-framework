@@ -48,8 +48,8 @@ public class MockBeanRegistrationsCode implements BeanRegistrationsCode {
 	}
 
 	@Override
-	public GeneratedMethods getMethodGenerator() {
-		return this.generatedClass.getMethodGenerator();
+	public GeneratedMethods getMethods() {
+		return this.generatedClass.getMethods();
 	}
 
 }

@@ -68,18 +68,18 @@ class InstanceSupplierCodeGenerator {
 
 	private final ClassName className;
 
-	private final GeneratedMethods methodGenerator;
+	private final GeneratedMethods generatedMethods;
 
 	private final boolean allowDirectSupplierShortcut;
 
 
 	InstanceSupplierCodeGenerator(GenerationContext generationContext,
-			ClassName className, GeneratedMethods methodGenerator,
+			ClassName className, GeneratedMethods generatedMethods,
 			boolean allowDirectSupplierShortcut) {
 
 		this.generationContext = generationContext;
 		this.className = className;
-		this.methodGenerator = methodGenerator;
+		this.generatedMethods = generatedMethods;
 		this.allowDirectSupplierShortcut = allowDirectSupplierShortcut;
 	}
 
@@ -350,7 +350,7 @@ class InstanceSupplierCodeGenerator {
 	}
 
 	private GeneratedMethod generateGetInstanceMethod() {
-		return this.methodGenerator.generateMethod("get", "instance");
+		return this.generatedMethods.generateMethod("get", "instance");
 	}
 
 	private boolean isThrowingCheckedException(Executable executable) {

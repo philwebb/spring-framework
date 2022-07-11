@@ -49,8 +49,8 @@ public class MockBeanFactoryInitializationCode implements BeanFactoryInitializat
 	}
 
 	@Override
-	public GeneratedMethods getMethodGenerator() {
-		return this.generatedClass.getMethodGenerator();
+	public GeneratedMethods getMethods() {
+		return this.generatedClass.getMethods();
 	}
 
 	@Override

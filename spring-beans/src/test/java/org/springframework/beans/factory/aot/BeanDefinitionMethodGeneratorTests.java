@@ -128,7 +128,7 @@ class BeanDefinitionMethodGeneratorTests {
 				new RootBeanDefinition(TestBean.class));
 		BeanRegistrationAotContribution aotContribution = (generationContext,
 				beanRegistrationCode) -> {
-			GeneratedMethod method = beanRegistrationCode.getMethodGenerator()
+			GeneratedMethod method = beanRegistrationCode.getMethods()
 					.generateMethod("postProcess")
 					.using(builder -> builder.addModifiers(Modifier.STATIC)
 							.addParameter(RegisteredBean.class, "registeredBean")
@@ -325,7 +325,7 @@ class BeanDefinitionMethodGeneratorTests {
 		List<BeanRegistrationAotContribution> aotContributions = new ArrayList<>();
 		aotContributions
 				.add((generationContext, beanRegistrationCode) -> beanRegistrationCode
-						.getMethodGenerator().generateMethod("aotContributedMethod")
+						.getMethods().generateMethod("aotContributedMethod")
 						.using(builder -> builder.addComment("Example Contribution")));
 		BeanDefinitionMethodGenerator generator = new BeanDefinitionMethodGenerator(
 				this.methodGeneratorFactory, registeredBean, null, aotContributions);

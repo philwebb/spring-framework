@@ -56,7 +56,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 
 	static final CodeBlock NULL_VALUE_CODE_BLOCK = CodeBlock.of("null");
 
-	private final GeneratedMethods methodGenerator;
+	private final GeneratedMethods generatedMethods;
 
 	private final List<Delegate> delegates = List.of(
 			new PrimitiveDelegate(),
@@ -75,8 +75,8 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		);
 
 
-	BeanDefinitionPropertyValueCodeGenerator(GeneratedMethods methodGenerator) {
-		this.methodGenerator = methodGenerator;
+	BeanDefinitionPropertyValueCodeGenerator(GeneratedMethods generatedMethods) {
+		this.generatedMethods = generatedMethods;
 	}
 
 
@@ -484,7 +484,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 
 		private <K, V> CodeBlock generateLinkedHashMapCode(Map<K, V> map,
 				ResolvableType keyType, ResolvableType valueType) {
-			GeneratedMethod method = BeanDefinitionPropertyValueCodeGenerator.this.methodGenerator
+			GeneratedMethod method = BeanDefinitionPropertyValueCodeGenerator.this.generatedMethods
 					.generateMethod("get", "map")
 					.using(builder -> {
 						builder.addAnnotation(AnnotationSpec

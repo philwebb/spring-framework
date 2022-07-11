@@ -152,7 +152,7 @@ class ScopedProxyBeanRegistrationAotProcessor
 				Executable constructorOrFactoryMethod,
 				boolean allowDirectSupplierShortcut) {
 
-			GeneratedMethod method = beanRegistrationCode.getMethodGenerator()
+			GeneratedMethod method = beanRegistrationCode.getMethods()
 					.generateMethod("get", "scopedProxyInstance").using(builder -> {
 						Class<?> beanClass = this.targetBeanDefinition.getResolvableType()
 								.toClass();

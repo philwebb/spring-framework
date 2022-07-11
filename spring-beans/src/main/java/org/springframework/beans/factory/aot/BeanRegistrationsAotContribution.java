@@ -66,7 +66,7 @@ class BeanRegistrationsAotContribution
 				});
 		BeanRegistrationsCodeGenerator codeGenerator = new BeanRegistrationsCodeGenerator(
 				generatedClass);
-		GeneratedMethod registerMethod = codeGenerator.getMethodGenerator()
+		GeneratedMethod registerMethod = codeGenerator.getMethods()
 				.generateMethod("registerBeanDefinitions")
 				.using(builder -> generateRegisterMethod(builder, generationContext,
 						codeGenerator));
@@ -113,8 +113,8 @@ class BeanRegistrationsAotContribution
 		}
 
 		@Override
-		public GeneratedMethods getMethodGenerator() {
-			return this.generatedClass.getMethodGenerator();
+		public GeneratedMethods getMethods() {
+			return this.generatedClass.getMethods();
 		}
 
 	}
