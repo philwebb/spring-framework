@@ -132,7 +132,7 @@ class BeanDefinitionMethodGenerator {
 		BeanRegistrationCodeGenerator codeGenerator = new BeanRegistrationCodeGenerator(
 				className, generatedMethods, this.registeredBean,
 				this.constructorOrFactoryMethod, codeFragments);
-		GeneratedMethod method = generatedMethods.generateMethod("get", "bean", "definition");
+		GeneratedMethod method = generatedMethods.generateMethod("getBeanDefinition");
 		this.aotContributions.forEach(aotContribution -> aotContribution
 				.applyTo(generationContext, codeGenerator));
 		return method.using(builder -> {

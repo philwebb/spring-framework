@@ -44,6 +44,7 @@ import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
+import org.springframework.aot.generate.MethodName;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.beans.BeanUtils;
@@ -836,7 +837,7 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 						REGISTERED_BEAN_PARAMETER, unitName);
 			}
 			GeneratedMethod getEntityManagerMethod = generatedMethods
-					.generateMethod("get", unitName, "EntityManager")
+					.generateMethod(MethodName.of("get", unitName, "EntityManager"))
 					.using(builder -> buildGetEntityManagerMethod(builder,
 							injectedElement));
 			return CodeBlock.of("$L($L)", getEntityManagerMethod.getName(),

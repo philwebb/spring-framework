@@ -350,7 +350,7 @@ class InstanceSupplierCodeGenerator {
 	}
 
 	private GeneratedMethod generateGetInstanceMethod() {
-		return this.generatedMethods.generateMethod("get", "instance");
+		return this.generatedMethods.generateMethod("getInstance");
 	}
 
 	private boolean isThrowingCheckedException(Executable executable) {

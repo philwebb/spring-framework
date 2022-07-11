@@ -17,7 +17,6 @@
 package org.springframework.aot.generate;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -32,7 +31,7 @@ import org.springframework.util.Assert;
  * @since 6.0
  * @see GeneratedMethod
  */
-public class GeneratedMethods implements Iterable<GeneratedMethod> {
+public class GeneratedMethods {
 
 	private final MethodNameGenerator methodNameGenerator;
 
@@ -58,8 +57,12 @@ public class GeneratedMethods implements Iterable<GeneratedMethod> {
 	}
 
 
-	public GeneratedMethod generateMethod(String... methodNameParts) {
-		return add(methodNameParts);
+	public GeneratedMethod generateMethod(String name) {
+		return null; // FIXME
+	}
+
+	public GeneratedMethod generateMethod(MethodName name) {
+		return null;
 	}
 
 	/**
@@ -81,13 +84,8 @@ public class GeneratedMethods implements Iterable<GeneratedMethod> {
 	 * that have been added to this collection.
 	 * @param action the action to perform
 	 */
-	public void doWithMethodSpecs(Consumer<MethodSpec> action) {
+	void doWithMethodSpecs(Consumer<MethodSpec> action) {
 		stream().map(GeneratedMethod::getSpec).forEach(action);
-	}
-
-	@Override
-	public Iterator<GeneratedMethod> iterator() {
-		return this.generatedMethods.iterator();
 	}
 
 	/**
