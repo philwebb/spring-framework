@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.springframework.javapoet.MethodSpec;
+import org.springframework.javapoet.MethodSpec.Builder;
 import org.springframework.util.Assert;
 
 /**
@@ -57,12 +58,15 @@ public class GeneratedMethods {
 	}
 
 
-	public GeneratedMethod generateMethod(String name) {
-		return null; // FIXME
+	public GeneratedMethod generateMethod(String suggestedName, Consumer<Builder> builder) {
+		return generateMethod(MethodName.of(suggestedName), builder);
 	}
 
-	public GeneratedMethod generateMethod(MethodName name) {
-		return null;
+	public GeneratedMethod generateMethod(MethodName suggestedName, Consumer<Builder> builder) {
+		// FIXME
+		GeneratedMethod method = new GeneratedMethod("FIXME", builder);
+		this.generatedMethods.add(method);
+		return method;
 	}
 
 	/**
@@ -72,11 +76,12 @@ public class GeneratedMethods {
 	 * generate a unique method name
 	 * @return the newly added {@link GeneratedMethod}
 	 */
-	public GeneratedMethod add(String... methodNameParts) {
-		GeneratedMethod method = new GeneratedMethod(
-				this.methodNameGenerator.generateMethodName(methodNameParts));
-		this.generatedMethods.add(method);
-		return method;
+	private GeneratedMethod add(String... methodNameParts) {
+//		GeneratedMethod method = new GeneratedMethod(
+//				this.methodNameGenerator.generateMethodName(methodNameParts));
+//		this.generatedMethods.add(method);
+//		return method;
+		return null;
 	}
 
 	/**

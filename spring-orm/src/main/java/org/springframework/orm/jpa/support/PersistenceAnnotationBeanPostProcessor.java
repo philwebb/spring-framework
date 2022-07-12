@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -73,7 +72,6 @@ import org.springframework.core.PriorityOrdered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
-import org.springframework.javapoet.MethodSpec.Builder;
 import org.springframework.jndi.JndiLocatorDelegate;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.lang.Nullable;
@@ -767,8 +765,6 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 
 	private static class AotContribution implements BeanRegistrationAotContribution {
 
-		private static final String APPLY_METHOD = "apply";
-
 		private static final String REGISTERED_BEAN_PARAMETER = "registeredBean";
 
 		private static final String INSTANCE_PARAMETER = "instance";
@@ -793,22 +789,17 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 						type.addJavadoc("Persistence injection for {@link $T}.", this.target);
 						type.addModifiers(javax.lang.model.element.Modifier.PUBLIC);
 					});
-			generatedClass.getMethods().generateMethod(APPLY_METHOD)
-					.using(generateMethod(generationContext.getRuntimeHints(), generatedClass.getMethods()));
-			beanRegistrationCode.addInstancePostProcessor(
-					MethodReference.ofStatic(generatedClass.getName(), APPLY_METHOD));
-		}
-
-		private Consumer<Builder> generateMethod(RuntimeHints hints, GeneratedMethods generatedMethods) {
-			return method -> {
-				method.addJavadoc("Apply the persistence injection.");
-				method.addModifiers(javax.lang.model.element.Modifier.PUBLIC,
+			GeneratedMethod generatedMethod = generatedClass.getMethods().generateMethod("apply", builder -> {
+				builder.addJavadoc("Apply the persistence injection.");
+				builder.addModifiers(javax.lang.model.element.Modifier.PUBLIC,
 						javax.lang.model.element.Modifier.STATIC);
-				method.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER);
-				method.addParameter(this.target, INSTANCE_PARAMETER);
-				method.returns(this.target);
-				method.addCode(generateMethodCode(hints, generatedMethods));
-			};
+				builder.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER);
+				builder.addParameter(this.target, INSTANCE_PARAMETER);
+				builder.returns(this.target);
+				builder.addCode(generateMethodCode(generationContext.getRuntimeHints(), generatedClass.getMethods()));
+			});
+			beanRegistrationCode.addInstancePostProcessor(MethodReference
+					.ofStatic(generatedClass.getName(), generatedMethod.getName()));
 		}
 
 		private CodeBlock generateMethodCode(RuntimeHints hints, GeneratedMethods generatedMethods) {
@@ -837,9 +828,8 @@ public class PersistenceAnnotationBeanPostProcessor implements InstantiationAwar
 						REGISTERED_BEAN_PARAMETER, unitName);
 			}
 			GeneratedMethod getEntityManagerMethod = generatedMethods
-					.generateMethod(MethodName.of("get", unitName, "EntityManager"))
-					.using(builder -> buildGetEntityManagerMethod(builder,
-							injectedElement));
+					.generateMethod(MethodName.of("get", unitName, "EntityManager"), builder ->
+							buildGetEntityManagerMethod(builder, injectedElement));
 			return CodeBlock.of("$L($L)", getEntityManagerMethod.getName(),
 					REGISTERED_BEAN_PARAMETER);
 		}

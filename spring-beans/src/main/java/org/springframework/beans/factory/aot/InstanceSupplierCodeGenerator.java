@@ -36,6 +36,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
+import org.springframework.javapoet.MethodSpec.Builder;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.function.ThrowingSupplier;
 
@@ -131,9 +132,9 @@ class InstanceSupplierCodeGenerator {
 			return CodeBlock.of("$T.of($T::new)", ThrowingSupplier.class,
 					declaringClass);
 		}
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod()
-				.using(builder -> buildGetInstanceMethodForConstructor(builder, name,
-						constructor, declaringClass, dependsOnBean, PRIVATE_STATIC));
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(builder ->
+				buildGetInstanceMethodForConstructor(builder, name, constructor, declaringClass,
+						dependsOnBean, PRIVATE_STATIC));
 		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, this.className,
 				getInstanceMethod.getName());
 	}
@@ -143,7 +144,7 @@ class InstanceSupplierCodeGenerator {
 
 		this.generationContext.getRuntimeHints().reflection()
 				.registerConstructor(constructor);
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod().using(builder -> {
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(builder -> {
 			builder.addJavadoc("Instantiate the bean instance for '$L'.", name);
 			builder.addModifiers(PRIVATE_STATIC);
 			builder.returns(declaringClass);
@@ -241,9 +242,9 @@ class InstanceSupplierCodeGenerator {
 			return CodeBlock.of("$T.of($T::$L)", ThrowingSupplier.class, declaringClass,
 					factoryMethod.getName());
 		}
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod()
-				.using(builder -> buildGetInstanceMethodForFactoryMethod(builder, name,
-						factoryMethod, declaringClass, dependsOnBean, PRIVATE_STATIC));
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(builder ->
+				buildGetInstanceMethodForFactoryMethod(builder, name, factoryMethod, declaringClass,
+						dependsOnBean, PRIVATE_STATIC));
 		return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, this.className,
 				getInstanceMethod.getName());
 	}
@@ -253,7 +254,7 @@ class InstanceSupplierCodeGenerator {
 
 		this.generationContext.getRuntimeHints().reflection()
 				.registerMethod(factoryMethod);
-		GeneratedMethod getInstanceMethod = generateGetInstanceMethod().using(builder -> {
+		GeneratedMethod getInstanceMethod = generateGetInstanceMethod(builder -> {
 			builder.addJavadoc("Instantiate the bean instance for '$L'.", name);
 			builder.addModifiers(PRIVATE_STATIC);
 			builder.returns(factoryMethod.getReturnType());
@@ -349,8 +350,8 @@ class InstanceSupplierCodeGenerator {
 		return builder.build();
 	}
 
-	private GeneratedMethod generateGetInstanceMethod() {
-		return this.generatedMethods.generateMethod("getInstance");
+	private GeneratedMethod generateGetInstanceMethod(Consumer<Builder> builder) {
+		return this.generatedMethods.generateMethod("getInstance", builder);
 	}
 
 	private boolean isThrowingCheckedException(Executable executable) {

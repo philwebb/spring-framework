@@ -17,7 +17,6 @@
 package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.generate.GeneratedMethods;
-import org.springframework.aot.generate.XMethodGenerator;
 import org.springframework.javapoet.ClassName;
 
 /**

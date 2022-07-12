@@ -485,8 +485,7 @@ class BeanDefinitionPropertyValueCodeGenerator {
 		private <K, V> CodeBlock generateLinkedHashMapCode(Map<K, V> map,
 				ResolvableType keyType, ResolvableType valueType) {
 			GeneratedMethod method = BeanDefinitionPropertyValueCodeGenerator.this.generatedMethods
-					.generateMethod("getMap")
-					.using(builder -> {
+					.generateMethod("getMap", builder -> {
 						builder.addAnnotation(AnnotationSpec
 								.builder(SuppressWarnings.class)
 								.addMember("value", "{\"rawtypes\", \"unchecked\"}")

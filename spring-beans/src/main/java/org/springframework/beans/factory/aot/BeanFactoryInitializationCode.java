@@ -18,7 +18,6 @@ package org.springframework.beans.factory.aot;
 
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.MethodReference;
-import org.springframework.aot.generate.XMethodGenerator;
 
 /**
  * Interface that can be used to configure the code that will be generated to

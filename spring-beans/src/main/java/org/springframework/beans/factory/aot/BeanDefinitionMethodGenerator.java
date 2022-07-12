@@ -25,7 +25,6 @@ import org.springframework.aot.generate.GeneratedClass;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GeneratedMethods;
 import org.springframework.aot.generate.GenerationContext;
-import org.springframework.aot.generate.XMethodGenerator;
 import org.springframework.aot.generate.MethodNameGenerator;
 import org.springframework.aot.generate.MethodReference;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -132,10 +131,9 @@ class BeanDefinitionMethodGenerator {
 		BeanRegistrationCodeGenerator codeGenerator = new BeanRegistrationCodeGenerator(
 				className, generatedMethods, this.registeredBean,
 				this.constructorOrFactoryMethod, codeFragments);
-		GeneratedMethod method = generatedMethods.generateMethod("getBeanDefinition");
 		this.aotContributions.forEach(aotContribution -> aotContribution
 				.applyTo(generationContext, codeGenerator));
-		return method.using(builder -> {
+		return generatedMethods.generateMethod("getBeanDefinition", builder -> {
 			builder.addJavadoc("Get the $L definition for '$L'",
 					(!this.registeredBean.isInnerBean()) ? "bean" : "inner-bean",
 					getName());

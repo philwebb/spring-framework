@@ -44,7 +44,7 @@ public final class GeneratedMethod {
 	 * {@link GeneratedMethods}.
 	 * @param name the generated name
 	 */
-	GeneratedMethod(String name) {
+	GeneratedMethod(String name, Consumer<MethodSpec.Builder> builder) {
 		this.name = name;
 	}
 
@@ -75,6 +75,7 @@ public final class GeneratedMethod {
 	 * configure it as necessary
 	 * @return this instance
 	 */
+	@Deprecated
 	public GeneratedMethod using(Consumer<MethodSpec.Builder> builder) {
 		Builder builderToUse = MethodSpec.methodBuilder(this.name);
 		builder.accept(builderToUse);
